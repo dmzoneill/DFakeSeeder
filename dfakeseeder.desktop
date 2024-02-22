@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=D' Fake Seeder
+Exec=env LOG_LEVEL=DEBUG /usr/bin/python3 dfakeseeder.py
+Icon=dfakeseeder
+StartupWMClass=dfakeseeder
+Terminal=false
+Categories=Utility;Network;

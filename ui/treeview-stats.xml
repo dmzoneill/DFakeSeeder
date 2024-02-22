@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkTreeView" id="states_treeview">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <child internal-child="selection">
+        <object class="GtkTreeSelection"/>
+    </child>
+</object>

@@ -1,0 +1,17 @@
+**/torrents/**
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Visual Studio Code
+.vscode/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp

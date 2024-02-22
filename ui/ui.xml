@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.40.0 -->
+<interface>
+  <requires lib="gtk+" version="3.0"/>
+  <object class="GtkWindow" id="main_window">
+    <property name="can-focus">False</property>
+    <property name="title">D' Fake Seeder</property>
+    <property name="default-width">1024</property>
+    <property name="default-height">600</property>
+    <property name="icon-name">../images/dfakeseeder</property>
+    <signal name="destroy" handler="on_window_destroy" swapped="no"/>
+    <child>
+      <object class="GtkOverlay" id="overlay">
+        <property name="can-focus">False</property>
+        <child>
+          <object class="GtkBox" id="main_box">
+            <property name="can-focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="menu.xml"/>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="toolbar.xml"/>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkPaned" id="main_paned">
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>                  
+                  <object class="GtkPaned" id="paned">
+                    <property name="can-focus">False</property>
+                    <child>
+                      <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="treeview-stats.xml"/>
+                      <packing>
+                        <property name="resize">False</property>
+                        <property name="shrink">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="can-focus">False</property>
+                        <child>
+                          <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="treeview-main.xml"/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="resize">True</property>
+                        <property name="shrink">True</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="notebook.xml"/>
+                  <packing>
+                    <property name="resize">True</property>
+                    <property name="shrink">True</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="statusbar.xml"/>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
