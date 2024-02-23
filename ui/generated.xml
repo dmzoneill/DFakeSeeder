@@ -33,21 +33,6 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
-                <object class="GtkImageMenuItem" id="imagemenuitem1">
-                <property name="label">gtk-new</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="use-underline">True</property>
-                <property name="use-stock">True</property>
-                </object>
-            </child>
-            <child>
-                <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                </object>
-            </child>
-            <child>
                 <object class="GtkImageMenuItem" id="quit_menu_item">
                 <property name="label">gtk-quit</property>
                 <property name="visible">True</property>
@@ -62,40 +47,25 @@
     </child>
     <child>
         <object class="GtkMenuItem" id="menuitem2">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="label" translatable="yes">_Help</property>
-        <property name="use-underline">True</property>
-        <child type="submenu">
-            <object class="GtkMenu" id="menu2">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <child>
-                <object class="GtkImageMenuItem" id="imagemenuitem2">
-                <property name="label">gtk-new</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="use-underline">True</property>
-                <property name="use-stock">True</property>
+            <property name="label" translatable="yes">_Help</property>
+            <property name="use-underline">True</property>
+            <child type="submenu">
+                <object class="GtkMenu" id="menu2">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                        <object class="GtkImageMenuItem" id="imagemenuitem2">
+                        <property name="label">Github</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="use-underline">True</property>
+                        <property name="use-stock">True</property>
+                        </object>
+                    </child>
                 </object>
             </child>
-            <child>
-                <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                </object>
-            </child>
-            <child>
-                <object class="GtkImageMenuItem" id="quit_menu_item2">
-                <property name="label">gtk-quit</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="use-underline">True</property>
-                <property name="use-stock">True</property>
-                </object>
-            </child>
-            </object>
-        </child>
         </object>
     </child>
 </object>
@@ -114,6 +84,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="receives-default">False</property>
+            <property name="tooltip-text">Add torrent</property> 
             <property name="relief">none</property>
             <child>
                 <object class="GtkImage">
@@ -134,6 +105,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="receives-default">False</property>
+            <property name="tooltip-text">Remove torrent</property> 
             <property name="relief">none</property>
             <child>
                 <object class="GtkImage">
@@ -151,122 +123,142 @@
     </child>
     <child>
         <object class="GtkButton" id="toolbar_search">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="receives-default">False</property>
-        <property name="relief">none</property>
-        <child>
-            <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="icon-name">edit-find-symbolic</property>
-            </object>
-        </child>
+            <property name="receives-default">False</property>
+            <property name="relief">none</property>
+            <property name="tooltip-text">Search for torrent</property> 
+            <child>
+                <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">edit-find-symbolic</property>
+                </object>
+            </child>
         </object>
         <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
         </packing>
     </child>
     <child>
         <object class="GtkButton" id="toolbar_pause">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="receives-default">False</property>
-        <property name="relief">none</property>
-        <child>
-            <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="icon-name">media-playback-pause-symbolic</property>
-            </object>
-        </child>
+            <property name="receives-default">False</property>
+            <property name="relief">none</property>
+            <property name="tooltip-text">Pause torrent</property> 
+            <child>
+                <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">media-playback-pause-symbolic</property>
+                </object>
+            </child>
         </object>
         <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">3</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
         </packing>
     </child>
     <child>
         <object class="GtkButton" id="toolbar_resume">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="receives-default">False</property>
-        <property name="relief">none</property>
-        <child>
-            <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="icon-name">media-playback-start-symbolic</property>
-            </object>
-        </child>
+            <property name="receives-default">False</property>
+            <property name="relief">none</property>
+            <property name="tooltip-text">Resume torrent</property> 
+            <child>
+                <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">media-playback-start-symbolic</property>
+                </object>
+            </child>
         </object>
         <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">4</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
         </packing>
     </child>
     <child>
         <object class="GtkButton" id="toolbar_up">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="receives-default">False</property>
-        <property name="relief">none</property>
-        <child>
-            <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="icon-name">go-up-symbolic</property>
-            </object>
-        </child>
+            <property name="receives-default">False</property>
+            <property name="relief">none</property>
+            <property name="tooltip-text">Priority Up</property> 
+            <child>
+                <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">go-up-symbolic</property>
+                </object>
+            </child>
         </object>
         <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">5</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">5</property>
         </packing>
     </child>
     <child>
         <object class="GtkButton" id="toolbar_down">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="receives-default">False</property>
-        <property name="relief">none</property>
-        <child>
-            <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="icon-name">go-down-symbolic</property>
-            </object>
-        </child>
+            <property name="receives-default">False</property>
+            <property name="relief">none</property>
+            <property name="tooltip-text">Priority Down</property> 
+            <child>
+                <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">go-down-symbolic</property>
+                </object>
+            </child>
         </object>
         <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">6</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">6</property>
         </packing>
     </child>
     <child>
         <object class="GtkButton" id="toolbar_settings">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="receives-default">False</property>
-        <property name="relief">none</property>
-        <child>
-            <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="icon-name">preferences-system-symbolic</property>
-            </object>
-        </child>
+            <property name="receives-default">False</property>
+            <property name="relief">none</property>
+            <property name="tooltip-text">Preferences</property> 
+            <child>
+                <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">preferences-system-symbolic</property>
+                </object>
+            </child>
         </object>
         <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">7</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">7</property>
+        </packing>
+    </child>
+    <child>
+        <object class="GtkScale" id="toolbar_refresh_rate">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="tooltip-text">UI Refresh Rate</property>
+            <property name="draw-value">True</property>
+            <property name="value-pos">right</property>
+        </object>
+        <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">8</property>
         </packing>
     </child>
 </object>
@@ -618,6 +610,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes"/>
+                <property name="tooltip-text">Last Notification</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -654,6 +647,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes"/>
+                <property name="tooltip-text">Upload Speed</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -690,6 +684,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes"/>
+                <property name="tooltip-text">Downloaded Speed</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -726,6 +721,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes"/>
+                <property name="tooltip-text">Uploaded Session / Total</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -762,6 +758,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes"/>
+                <property name="tooltip-text">Downloaded Session / Total</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -798,6 +795,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes"/>
+                <property name="tooltip-text">My IP address</property>
               </object>
               <packing>
                 <property name="expand">False</property>

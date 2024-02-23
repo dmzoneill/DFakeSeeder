@@ -32,6 +32,18 @@ class DFakeSeeder:
         self.splash_window.set_app_paintable(True)
         self.splash_window.connect("draw", self.on_draw)
 
+        # Make sure GTK can't know the filename the bytes came from
+        with open("./images/dfakeseeder.png", "rb") as fobj:
+            data = fobj.read()
+
+        loader = GdkPixbuf.PixbufLoader.new_with_type("png")
+        loader.write(data)
+        loader.close()
+
+        self.splash_window.set_icon(loader.get_pixbuf())
+        self.splash_window.set_title("D' Fake Seeder")
+        self.splash_window.set_tooltip_text("D' Fake Seeder")
+
         # Load and display the splash screen image
         image = Gtk.Image()
         pixbuf = GdkPixbuf.Pixbuf.new_from_file("images/dfakeseeder-logo.png")

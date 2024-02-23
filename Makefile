@@ -7,10 +7,12 @@ lint: clearlog
 icons: lint
 	{ \
 		for X in 16 32 48 64 96 128 192 256; do \
-			mkdir -vp $(HOME)/.icons/hicolor/$${X}x$${X}/; \
-			mkdir -vp $(HOME)/.local/share/icons/hicolor/$${X}x$${X}/; \
-			cp -f $$(pwd)/images/dfakeseeder.png $(HOME)/.local/share/icons/hicolor/$${X}x$${X}/; \
-			cp -f $$(pwd)/images/dfakeseeder.png $(HOME)/.icons/hicolor/$${X}x$${X}/; \
+			mkdir -vp $(HOME)/.icons/hicolor/$${X}x$${X}/apps; \
+			mkdir -vp $(HOME)/.local/share/icons/hicolor/$${X}x$${X}/apps; \
+			cp -f $$(pwd)/images/dfakeseeder.png $(HOME)/.local/share/icons/hicolor/$${X}x$${X}/apps/; \
+			rm -f $(HOME)/.local/share/icons/hicolor/$${X}x$${X}/dfakeseeder.png; \
+			cp -f $$(pwd)/images/dfakeseeder.png $(HOME)/.icons/hicolor/$${X}x$${X}/apps/; \
+			rm -f $(HOME)/.icons/hicolor/$${X}x$${X}/dfakeseeder.png; \
 		done; \
 	}
 	{ \
@@ -46,3 +48,6 @@ valgrind: ui-build
 preferences:
 	echo "Running program..."
 	python3 preferences.py
+
+xprod-wmclass:
+	xprop WM_CLASS

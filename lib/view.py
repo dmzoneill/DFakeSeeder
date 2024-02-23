@@ -3,7 +3,7 @@ import signal
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib
+from gi.repository import Gtk, GLib, GdkPixbuf
 from lib.settings import Settings
 from sys import exit
 import time
@@ -70,6 +70,18 @@ class View:
 
         self.window.set_position(Gtk.WindowPosition.CENTER)
         self.window.move(x, y)
+
+        # Make sure GTK can't know the filename the bytes came from
+        with open("./images/dfakeseeder.png", "rb") as fobj:
+            data = fobj.read()
+
+        loader = GdkPixbuf.PixbufLoader.new_with_type("png")
+        loader.write(data)
+        loader.close()
+
+        self.window.set_icon(loader.get_pixbuf())
+        self.window.set_title("D' Fake Seeder")
+        self.window.set_tooltip_text("D' Fake Seeder")
 
         self.main_paned = self.builder.get_object("main_paned")
         self.current_time = time.time()
