@@ -15,3 +15,8 @@ __pycache__/
 # Temporary files
 *.tmp
 *.swp
+
+# build dirs / files
+*.deb
+debbuild/**
+rpmbuild/**
