@@ -1,6 +1,8 @@
 import gi
+import math
 import os
 import shutil
+import time
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
@@ -18,29 +20,47 @@ class Toolbar:
         self.settings = Settings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
 
-        toolbar_add_button = self.builder.get_object("toolbar_add")
-        toolbar_add_button.connect("clicked", self.on_toolbar_add_clicked)
+        self.toolbar_add_button = self.builder.get_object("toolbar_add")
+        self.toolbar_add_button.connect("clicked", self.on_toolbar_add_clicked)
 
-        toolbar_remove_button = self.builder.get_object("toolbar_remove")
-        toolbar_remove_button.connect("clicked", self.on_toolbar_remove_clicked)
+        self.toolbar_remove_button = self.builder.get_object("toolbar_remove")
+        self.toolbar_remove_button.connect("clicked", self.on_toolbar_remove_clicked)
 
-        toolbar_pause_button = self.builder.get_object("toolbar_pause")
-        toolbar_pause_button.connect("clicked", self.on_toolbar_pause_clicked)
+        self.toolbar_pause_button = self.builder.get_object("toolbar_pause")
+        self.toolbar_pause_button.connect("clicked", self.on_toolbar_pause_clicked)
 
-        toolbar_resume_button = self.builder.get_object("toolbar_resume")
-        toolbar_resume_button.connect("clicked", self.on_toolbar_resume_clicked)
+        self.toolbar_resume_button = self.builder.get_object("toolbar_resume")
+        self.toolbar_resume_button.connect("clicked", self.on_toolbar_resume_clicked)
 
-        toolbar_up_button = self.builder.get_object("toolbar_up")
-        toolbar_up_button.connect("clicked", self.on_toolbar_up_clicked)
+        self.toolbar_up_button = self.builder.get_object("toolbar_up")
+        self.toolbar_up_button.connect("clicked", self.on_toolbar_up_clicked)
 
-        toolbar_down_button = self.builder.get_object("toolbar_down")
-        toolbar_down_button.connect("clicked", self.on_toolbar_down_clicked)
+        self.toolbar_down_button = self.builder.get_object("toolbar_down")
+        self.toolbar_down_button.connect("clicked", self.on_toolbar_down_clicked)
 
-        toolbar_settings_button = self.builder.get_object("toolbar_settings")
-        toolbar_settings_button.connect("clicked", self.on_toolbar_settings_clicked)
+        self.toolbar_settings_button = self.builder.get_object("toolbar_settings")
+        self.toolbar_settings_button.connect(
+            "clicked", self.on_toolbar_settings_clicked
+        )
+
+        self.toolbar_refresh_rate = self.builder.get_object("toolbar_refresh_rate")
+        adjustment = Gtk.Adjustment(0, 1, 60, 1, 1, 1)
+        adjustment.set_step_increment(1)
+        self.toolbar_refresh_rate.set_adjustment(adjustment)
+        self.toolbar_refresh_rate.set_digits(0)
+        self.toolbar_refresh_rate.connect(
+            "button-release-event", self.on_toolbar_refresh_rate_changed
+        )
+        self.toolbar_refresh_rate.set_value(int(self.settings.tickspeed))
+        self.toolbar_refresh_rate.set_size_request(150, -1)
 
     def set_model(self, model):
         self.model = model
+
+    def on_toolbar_refresh_rate_changed(self, scale, value):
+        self.settings.tickspeed = math.ceil(
+            float(self.toolbar_refresh_rate.get_value())
+        )
 
     def on_toolbar_add_clicked(self, button):
         logger.info(
@@ -141,7 +161,9 @@ class Toolbar:
         current_path = os.path.dirname(os.path.abspath(__file__))
         torrents_path = os.path.join(current_path, "torrents")
         shutil.copy(os.path.abspath(selected_file), torrents_path)
-        copied_torrent_path = os.path.join(torrents_path, os.path.basename(selected_file))
+        copied_torrent_path = os.path.join(
+            torrents_path, os.path.basename(selected_file)
+        )
         self.model.add_torrent(os.path.relpath(copied_torrent_path))
 
     def show_file_selection_dialog(self):

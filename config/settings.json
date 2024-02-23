@@ -43,7 +43,7 @@
         "threshold": "add_percent"
     },
     "threshold": 30,
-    "tickspeed": 5.0,
+    "tickspeed": 3,
     "editwidgets": {
         "active": "Gtk.Switch",
         "announce_interval": "Gtk.SpinButton",

@@ -18,8 +18,6 @@ class Notebook:
         self.model = model
 
         self.selected_path = None
-        self.last_call_time = time.time()
-        self.status_last_called = time.time()
 
         self.notebook = self.builder.get_object("notebook1")
         self.torrents_treeview = self.builder.get_object("treeview1")
@@ -109,17 +107,12 @@ class Notebook:
         if iter is not None:
             self.selected_path = model.get_path(iter)
 
-        current_time = time.time()
-        if current_time - self.last_call_time < 1:
-            return
-
         if self.selected_path is None:
             return
 
         if iter is None:
             return
 
-        self.last_call_time = current_time
         torrent = model.get_path(iter).get_indices()[0]
         if torrent is not None:
             self.update_notebook_status(torrent)
@@ -163,7 +156,7 @@ class Notebook:
 
         source = None
         for torrent_obj in self.model.torrent_list:
-            if torrent_obj.id == torrent:
+            if torrent_obj.id == torrent + 1:
                 source = torrent_obj
                 break
 
@@ -206,9 +199,6 @@ class Notebook:
             "Notebook update status", extra={"class_name": self.__class__.__name__}
         )
 
-        if time.time() - self.status_last_called < 10:
-            return
-
         compatible_attributes, store = self.model.get_liststore()
 
         grid = Gtk.Grid()
@@ -243,7 +233,6 @@ class Notebook:
             child.destroy()
 
         self.status_tab.add(grid)
-        self.status_last_called = time.time()
 
     def update_view(self, model, _, torrent, attribute):
         pass
