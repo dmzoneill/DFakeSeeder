@@ -25,14 +25,18 @@ ui-build: icons
 	xmllint --xinclude d_fake_seeder/ui/ui.xml > d_fake_seeder/ui/generated.xml
 	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/ui/generated.xml
 
+clean_settings:
+	jq '.torrents = {}' d_fake_seeder/config/settings.json > temp.json && mv temp.json d_fake_seeder/config/settings.json
+
 run: ui-build
 	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
 	-ps aux | grep "dfakeseeder.py" | awk '{print $$2}' | xargs kill -9
 	echo "Running program..."
 	{ \
 		cd d_fake_seeder && \
-		gtk-launch dfakeseeder &; \
+		gtk-launch dfakeseeder; \
 	}
+	$(MAKE) clean_settings;
 
 run-debug: ui-build
 	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
@@ -42,6 +46,7 @@ run-debug: ui-build
 		cd d_fake_seeder && \
 		LOG_LEVEL=INFO /usr/bin/python3 dfakeseeder.py; \
 	}
+	$(MAKE) clean_settings;
 
 valgrind: ui-build
 	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
@@ -51,28 +56,30 @@ valgrind: ui-build
 		cd d_fake_seeder && \
 		valgrind --tool=memcheck --leak-check=full /usr/bin/python3 dfakeseeder.py; \
 	}
+	$(MAKE) clean_settings;
 
 xprod-wmclass:
 	xprop WM_CLASS
 
 rpm:
-	sudo dnf install -y rpm-build rpmlint python3-setuptools
+	- sudo dnf install -y rpm-build rpmlint python3-setuptools
+	- sudo apt install -y rpm rpmlint python3-setuptools
 	rm -rvf ./rpmbuild
-	mkdir -vp ./rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
-	cp -r dfakeseeder.spec ./rpmbuild/SPECS
-	cp -r config ./rpmbuild/SOURCE
-	cp -r d_fake_seeder/images ./rpmbuild/SOURCE
-	cp -r d_fake_seeder/lib ./rpmbuild/SOURCE
-	cp -r d_fake_seeder/ui ./rpmbuild/SOURCE
-	cp -r d_fake_seeder/dfakeseeder.py ./rpmbuild/SOURCE
-	cp -r d_fake_seeder/dfakeseeder.desktop ./rpmbuild/SOURCE
-	rpmbuild -ba ~/rpmbuild/SPECS/dfakeseeder.spec
-	# sudo dnf install ~/rpmbuild/RPMS/<architecture>/python-example-1.0-1.<architecture>.rpm
+	mkdir -p ./rpmbuild/BUILD ./rpmbuild/BUILDROOT ./rpmbuild/RPMS ./rpmbuild/SOURCES ./rpmbuild/SPECS ./rpmbuild/SRPMS
+	cp -r dfakeseeder.spec ./rpmbuild/SPECS/
+	cp -r d_fake_seeder/images ./rpmbuild/SOURCE/
+	cp -r d_fake_seeder/lib ./rpmbuild/SOURCE/
+	cp -r d_fake_seeder/ui ./rpmbuild/SOURCE/
+	cp -r d_fake_seeder/dfakeseeder.py ./rpmbuild/SOURCE/
+	cp -r d_fake_seeder/dfakeseeder.desktop ./rpmbuild/SOURCE/
+	tar -czvf rpmbuild/SOURCES/DFakeSeeder-1.0.tar.gz d_fake_seeder/ 
+	rpmbuild -ba rpmbuild/SPECS/dfakeseeder.spec
+	# sudo dnf install rpmbuild/RPMS/<architecture>/python-example-1.0-1.<architecture>.rpm
 	# rpmlint
 
 deb:
 	sudo apt-get install dpkg dpkg-dev fakeroot
-	rm -rvf ./debbuild
+	sudo rm -rvf ./debbuild
 	mkdir -vp ./debbuild/DEBIAN
 	cp control ./debbuild/DEBIAN
 	mkdir -vp ./debbuild/opt/dfakeseeder

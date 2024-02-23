@@ -1,4 +1,4 @@
-Name:       D' Fake Seeder
+Name: DFakeSeeder
 Version:    1.0
 Release:    1%{?dist}
 Summary:    Deluge fake seeder
@@ -8,7 +8,6 @@ URL:        http://example.com
 
 Source0:    %{name}-%{version}.tar.gz
 
-BuildRequires:  python3-setuptools
 
 %description
 ...
