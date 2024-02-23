@@ -1,0 +1,19 @@
+Metadata-Version: 0.0.2
+Name: dfakeseeder
+Version: 0.0.2
+Summary: 
+Home-page: https://github.com/dmzoneill/DFakeSeeder
+Author: David O Neill
+Author-email: dmz.oneill@gmail.com
+Requires-Python: >=3.8,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: requests
+Project-URL: Repository, https://github.com/dmzoneill/DFakeSeeder
+Description-Content-Type: text/markdown
+
+
+
+# DFakeSeeder youtube downloader
+Fake seeder
