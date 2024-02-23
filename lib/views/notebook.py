@@ -161,8 +161,6 @@ class Notebook:
             grid.remove(child)
             child.destroy()
 
-        print(torrent)
-
         source = None
         for torrent_obj in self.model.torrent_list:
             if torrent_obj.id == torrent:

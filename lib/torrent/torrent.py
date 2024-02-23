@@ -70,6 +70,9 @@ class Torrent(GObject.Object):
             value = self.settings.torrents[self.file_path][attr]
             setattr(self.torrent_attributes, attr, value)
 
+        self.session_uploaded = 0
+        self.session_downloaded = 0
+
         # Start the thread to update the name
         self.torrent_worker_stop_event = threading.Event()
         self.torrent_worker = threading.Thread(target=self.update_torrent_worker)
@@ -184,6 +187,15 @@ class Torrent(GObject.Object):
             else:
                 self.next_update = self.announce_interval
                 changed["next_update"] = self.announce_interval
+                # announce
+                download_left = (
+                    self.total_size - self.total_downloaded
+                    if self.total_size - self.total_downloaded > 0
+                    else 0
+                )
+                self.seeder.upload(
+                    self.session_uploaded, self.session_downloaded, download_left
+                )
         else:
             if self.next_update > 0:
                 self.next_update = 0

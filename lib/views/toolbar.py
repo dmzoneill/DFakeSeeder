@@ -1,4 +1,6 @@
 import gi
+import os
+import shutil
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
@@ -63,8 +65,8 @@ class Toolbar:
             "Toolbar remove " + str(selected.id),
             extra={"class_name": self.__class__.__name__},
         )
-        # os.remove(selected.filepath)
-        # self.model.torrent_list.remove(selected)
+        os.remove(selected.filepath)
+        self.model.torrent_list.remove(selected)
 
     def on_toolbar_pause_clicked(self, button):
         logger.info(
@@ -136,6 +138,11 @@ class Toolbar:
         # Get the selected file
         selected_file = dialog.get_filename()
         print("Selected File:", selected_file)
+        current_path = os.path.dirname(os.path.abspath(__file__))
+        torrents_path = os.path.join(current_path, "torrents")
+        shutil.copy(os.path.abspath(selected_file), torrents_path)
+        copied_torrent_path = os.path.join(torrents_path, os.path.basename(selected_file))
+        self.model.add_torrent(os.path.relpath(copied_torrent_path))
 
     def show_file_selection_dialog(self):
         logger.info(

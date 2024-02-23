@@ -170,13 +170,17 @@ class Seeder:
                         "supportcrypto": 1,
                         "no_peer_id": 1,
                     }
-                    requests.get(
-                        self.tracker_url,
-                        params=http_params,
-                        proxies=self.settings.proxies,
-                        headers=self.settings.http_headers,
-                        timeout=10,
-                    )
+                    # requests.get(
+                    #     self.tracker_url,
+                    #     params=http_params,
+                    #     proxies=self.settings.proxies,
+                    #     headers=self.settings.http_headers,
+                    #     timeout=10,
+                    # )
+                    print("Announced - currently disabled")
+                    print(uploaded_bytes)
+                    print(downloaded_bytes)
+                    print(download_left)
                     break
                 except:
                     i += 1
