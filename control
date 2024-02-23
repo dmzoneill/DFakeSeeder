@@ -1,0 +1,5 @@
+Package: dfakeseeder
+Version: 1.0
+Architecture: amd64
+Maintainer: D <dmz.oneill@gmail.com>
+Description: D' Fake Seeder

@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(numeric_level)
 
 # Create a file handler
-file_handler = logging.FileHandler("my_log_file.log")
+file_handler = logging.FileHandler("log.log")
 file_handler.setLevel(numeric_level)
 
 # Add a custom formatter
