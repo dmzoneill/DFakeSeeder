@@ -4,4 +4,4 @@
 - Upload functionality is still disabled in this as it's in development.
 - Fake seeding can get you banned from trackers.
 
-![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/images/screenshot.png)
+![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/images/screenshot.png)
