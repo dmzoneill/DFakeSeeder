@@ -1,9 +1,12 @@
+# import gettext
 import gi
 
 # Ensure the correct version of Gtk is used
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GdkPixbuf, GLib, Gdk
-import cairo
+from gi.repository import Gtk
+
+# import locale
+# import os
 
 # Import the Model, View, and Controller classes from their respective modules
 from lib.model import Model
@@ -13,8 +16,19 @@ from lib.settings import Settings
 from lib.logger import logger
 
 
+# # Set the directory containing the translation files
+# locale_dir = os.path.join(os.path.dirname(__file__), 'locale')
+# gettext.bindtextdomain('dfakeseeder', locale_dir)
+# gettext.textdomain('dfakeseeder')
+# locale.setlocale(locale.LC_ALL, '')
+
+# # Get the `_()` function for translating strings
+# _ = gettext.gettext
+
+
 class DFakeSeeder:
     def __init__(self):
+        # logger.info(_("Startup"), extra={"class_name": self.__class__.__name__})
         logger.info("Startup", extra={"class_name": self.__class__.__name__})
         # subscribe to settings changed
         self.settings = Settings.get_instance()
