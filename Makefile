@@ -98,3 +98,10 @@ deb:
 docker:
 	docker build -t dfakeseeder .
 	docker run --rm -it --net=host --env="DISPLAY" --volume="$$HOME/.Xauthority:/root/.Xauthority:rw" dfakeseeder
+
+clean:
+	sudo rm -rvf debbuild
+	sudo rm -rvf rpmbuild
+	sudo rm -rvf *.deb
+	sudo rm -rvf *.rpm
+	$(MAKE) lint
