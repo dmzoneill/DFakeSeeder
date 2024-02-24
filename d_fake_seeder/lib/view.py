@@ -46,6 +46,9 @@ class View:
         self.window = self.builder.get_object("main_window")
         self.quit_menu_item = self.builder.get_object("quit_menu_item")
         self.overlay = self.builder.get_object("overlay")
+        self.status = self.builder.get_object("status_label")
+        self.main_paned = self.builder.get_object("main_paned")
+        self.current_time = time.time()
 
         # notification overlay
         self.notify_label = Gtk.Label(label="Overlayed Button")
@@ -56,7 +59,21 @@ class View:
         self.notify_label.set_halign(Gtk.Align.CENTER)
         self.overlay.add_overlay(self.notify_label)
 
-        self.status = self.builder.get_object("status_label")
+        self.setup_window()
+        self.show_splash_image()
+        GLib.timeout_add_seconds(0.5, self.resize_panes)
+
+    def setup_window(self):
+        # Make sure GTK can't know the filename the bytes came from
+        with open("./images/dfakeseeder.png", "rb") as fobj:
+            data = fobj.read()
+
+        loader = GdkPixbuf.PixbufLoader.new_with_type("png")
+        loader.write(data)
+        loader.close()
+
+        self.window.set_icon(loader.get_pixbuf())
+        self.window.set_title("D' Fake Seeder")
 
         screen = self.window.get_screen()
         screen_width = screen.get_width()
@@ -71,22 +88,31 @@ class View:
         self.window.set_position(Gtk.WindowPosition.CENTER)
         self.window.move(x, y)
 
-        # Make sure GTK can't know the filename the bytes came from
-        with open("./images/dfakeseeder.png", "rb") as fobj:
-            data = fobj.read()
+    def show_splash_image(self):
+        # splash image
+        self.splash_image = Gtk.Image()
+        self.splash_image.set_from_file("images/dfakeseeder.png")
+        self.splash_image.set_no_show_all(False)
+        self.splash_image.set_visible(True)
+        self.splash_image.show()
+        self.splash_image.set_valign(Gtk.Align.CENTER)
+        self.splash_image.set_halign(Gtk.Align.CENTER)
+        self.overlay.add_overlay(self.splash_image)
+        GLib.timeout_add_seconds(2, self.fade_out_image)
 
-        loader = GdkPixbuf.PixbufLoader.new_with_type("png")
-        loader.write(data)
-        loader.close()
+    def fade_out_image(self):
+        self.splash_image.fade_out = 1.0
+        GLib.timeout_add(75, self.fade_image)
 
-        self.window.set_icon(loader.get_pixbuf())
-        self.window.set_title("D' Fake Seeder")
-        self.window.set_tooltip_text("D' Fake Seeder")
-
-        self.main_paned = self.builder.get_object("main_paned")
-        self.current_time = time.time()
-
-        GLib.timeout_add_seconds(0.5, self.resize_panes)
+    def fade_image(self):
+        self.splash_image.fade_out -= 0.025
+        if self.splash_image.fade_out > 0:
+            self.splash_image.set_opacity(self.splash_image.fade_out)
+            return True
+        else:
+            self.splash_image.hide()
+            self.splash_image.destroy()
+            return False
 
     def resize_panes(self):
         logger.info("View resize_panes", extra={"class_name": self.__class__.__name__})
