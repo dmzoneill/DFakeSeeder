@@ -105,3 +105,20 @@ clean:
 	sudo rm -rvf *.deb
 	sudo rm -rvf *.rpm
 	$(MAKE) lint
+
+translatepy:
+	xgettext --verbose --language=Python --keyword=_ --output=d_fake_seeder/locale/dfakeseederpy.pot d_fake_seeder/dfakeseeder.py
+	#msginit --no-translator --output-file=d_fake_seeder/locale/en_US/LC_MESSAGES/en_USpy.po --input=d_fake_seeder/locale/dfakeseederpy.pot --locale=en_US
+	#msgfmt --output-file=d_fake_seeder/locale/en_US/LC_MESSAGES/dfakeseederpy.mo d_fake_seeder/locale/en_US/LC_MESSAGES/en_USpy.po
+
+translatexml:
+	xgettext --keyword=translatable --language=Glade --from-code=UTF-8 --output=d_fake_seeder/locale/dfakeseederxml.pot d_fake_seeder/ui/generated.xml
+	msginit --no-translator --output-file=d_fake_seeder/locale/en_US/LC_MESSAGES/en_USxml.po --input=d_fake_seeder/locale/dfakeseederxml.pot --locale=en_US
+	msgfmt --output-file=d_fake_seeder/locale/en_US/LC_MESSAGES/dfakeseederxml.mo d_fake_seeder/locale/en_US/LC_MESSAGES/en_USxml.po
+
+translate:
+	rm -rvf d_fake_seeder/locale/
+	mkdir -vp locale/en_US/LC_MESSAGES/
+	mkdir -vp d_fake_seeder/locale/en_US/LC_MESSAGES/
+	$(MAKE) translatepy
+	#$(MAKE) translatexml
