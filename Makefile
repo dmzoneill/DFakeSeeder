@@ -74,8 +74,10 @@ rpm:
 	cp -r d_fake_seeder/dfakeseeder.desktop ./rpmbuild/SOURCE/
 	tar -czvf rpmbuild/SOURCES/DFakeSeeder-1.0.tar.gz d_fake_seeder/ 
 	rpmbuild -ba rpmbuild/SPECS/dfakeseeder.spec
-	# sudo dnf install rpmbuild/RPMS/<architecture>/python-example-1.0-1.<architecture>.rpm
-	# rpmlint
+
+rpm-install: rpm
+	sudo dnf install rpmbuild/RPMS/<architecture>/python-example-1.0-1.<architecture>.rpm
+	rpmlint
 
 deb:
 	sudo apt-get install dpkg dpkg-dev fakeroot
@@ -93,7 +95,9 @@ deb:
 	fakeroot dpkg-deb --build debbuild
 	dpkg -c debbuild.deb
 	dpkg -I debbuild.deb
-	#sudo dpkg -i debbuild.deb
+
+deb-install: deb	
+	sudo dpkg -i debbuild.deb
 
 docker:
 	docker build -t dfakeseeder .
