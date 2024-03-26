@@ -36,7 +36,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                        <object class="GtkImageMenuItem" id="imagemenuitem2">
+                        <object class="GtkImageMenuItem" id="help_menu_item">
                         <property name="label">Github</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>

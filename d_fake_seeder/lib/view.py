@@ -1,6 +1,7 @@
 # Importing necessary libraries
 import signal
 import gi
+import webbrowser
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, GdkPixbuf
@@ -45,6 +46,7 @@ class View:
         # Getting relevant objects
         self.window = self.builder.get_object("main_window")
         self.quit_menu_item = self.builder.get_object("quit_menu_item")
+        self.help_menu_item = self.builder.get_object("help_menu_item")
         self.overlay = self.builder.get_object("overlay")
         self.status = self.builder.get_object("status_label")
         self.main_paned = self.builder.get_object("main_paned")
@@ -159,6 +161,7 @@ class View:
         self.window.connect("destroy", self.quit)
         self.window.connect("delete-event", self.quit)
         self.quit_menu_item.connect("activate", self.on_quit_clicked)
+        self.help_menu_item.connect("activate", self.on_help_clicked)
         self.model.connect("data-changed", self.torrents.update_view)
         self.model.connect("data-changed", self.notebook.update_view)
         self.model.connect("data-changed", self.states.update_view)
@@ -179,6 +182,13 @@ class View:
         self.remove_signals()
         self.quit()
 
+    # open github webpage
+    def on_help_clicked(self, menu_item):
+        logger.info(
+            "Opening GitHub webpage", extra={"class_name": self.__class__.__name__}
+        )
+        webbrowser.open(self.settings.issues_page)
+
     # Function to quit the application
     def quit(self, widget=None, event=None):
         logger.info("View quit", extra={"class_name": self.__class__.__name__})
@@ -195,4 +205,3 @@ class View:
         logger.info(
             "View settings changed", extra={"class_name": self.__class__.__name__}
         )
-        # print(key + " = " + value)

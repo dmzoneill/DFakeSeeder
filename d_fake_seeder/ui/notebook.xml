@@ -8,10 +8,7 @@
         <object class="GtkBox" id="details_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-left">10</property>
-            <property name="margin-right">10</property>
-            <property name="margin-top">10</property>
-            <property name="margin-bottom">10</property>
+            <property name="margin">10</property>
             <child>
                 <object class="GtkLabel">
                     <property name="visible">True</property>
@@ -42,10 +39,7 @@
                 <object class="GtkBox" id="status_tab">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-left">10</property>
-                    <property name="margin-right">10</property>
-                    <property name="margin-top">10</property>
-                    <property name="margin-bottom">10</property>
+                    <property name="margin">10</property>
                 </object>
             </child>
         </object>
@@ -57,6 +51,7 @@
         <object class="GtkBox" id="options_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="margin">10</property>
             <child>
                 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="notebook/options.xml"/>
             </child>
@@ -69,10 +64,7 @@
         <object class="GtkBox" id="peers_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-left">10</property>
-            <property name="margin-right">10</property>
-            <property name="margin-top">10</property>
-            <property name="margin-bottom">10</property>
+            <property name="margin">10</property>
             <child>
                 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="notebook/peers.xml"/>
             </child>
@@ -85,10 +77,7 @@
         <object class="GtkBox" id="trackers_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-left">10</property>
-            <property name="margin-right">10</property>
-            <property name="margin-top">10</property>
-            <property name="margin-bottom">10</property>
+            <property name="margin">10</property>
             <child>
                 <object class="GtkLabel">
                     <property name="visible">True</property>
@@ -117,10 +106,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="homogeneous">True</property>
-            <property name="margin-left">10</property>
-            <property name="margin-right">10</property>
-            <property name="margin-top">10</property>
-            <property name="margin-bottom">10</property>
+            <property name="margin">10</property>
             <child>
                 <object class="GtkScrolledWindow" id="log_scroll">
                     <property name="visible">True</property>
@@ -128,10 +114,7 @@
                         <object class="GtkTextView" id="log_viewer">
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
-                            <property name="left-margin">5</property>
-                            <property name="right-margin">5</property>
-                            <property name="top-margin">5</property>
-                            <property name="bottom-margin">5</property>
+                            <property name="margin">10</property>
                             <property name="monospace">True</property>
                             <property name="vexpand">True</property>
                             <property name="hexpand">True</property>

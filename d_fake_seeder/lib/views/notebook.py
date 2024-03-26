@@ -160,6 +160,16 @@ class Notebook:
                 source = torrent_obj
                 break
 
+        def on_value_changed(widget, *args):
+            attribute = args[-1]
+            if isinstance(widget, Gtk.Switch):
+                value = widget.get_active()
+            else:
+                adjustment = widget.get_adjustment()
+                value = adjustment.get_value()
+            setattr(source, attribute, value)
+            source.emit("attribute-changed", source, {attribute: value})
+
         row = 0
         for index, attribute in enumerate(self.settings.editwidgets):
             col = 0 if index % 2 == 0 else 2
@@ -171,6 +181,8 @@ class Notebook:
             dynamic_widget.set_hexpand(True)
             if isinstance(dynamic_widget, Gtk.Switch):
                 dynamic_widget.set_active(getattr(source, attribute))
+                # Connect "state-set" signal for Gtk.Switch
+                dynamic_widget.connect("state-set", on_value_changed, attribute)
             else:
                 adjustment = Gtk.Adjustment(
                     value=getattr(source, attribute),
@@ -181,6 +193,10 @@ class Notebook:
                 )
                 dynamic_widget.set_adjustment(adjustment)
                 dynamic_widget.set_wrap(True)
+                # Connect "value-changed" signal for other widgets
+                dynamic_widget.connect(
+                    "value-changed", on_value_changed, adjustment, attribute
+                )
 
             label = Gtk.Label()
             label.set_text(attribute)

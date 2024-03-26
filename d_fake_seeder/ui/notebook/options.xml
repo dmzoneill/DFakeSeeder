@@ -8,7 +8,7 @@
     <property name="hexpand">False</property>
     <property name="vexpand">False</property>
     <property name="halign">center</property>
-    <property name="valign">center</property>
+    <property name="valign">start</property>
     <property name="border-width">1</property>
   </object>
 </interface>
