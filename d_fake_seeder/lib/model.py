@@ -7,7 +7,6 @@ from lib.settings import Settings
 from lib.torrent.attributes import Attributes
 from urllib.parse import urlparse
 from lib.logger import logger
-import time
 
 
 # Class for handling Torrent data

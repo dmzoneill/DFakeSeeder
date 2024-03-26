@@ -4,7 +4,7 @@ Release:    1%{?dist}
 Summary:    Deluge fake seeder
 
 License:    GPL
-URL:        http://example.com
+URL:        https://github.com/dmzoneill/DFakeSeeder
 
 Source0:    %{name}-%{version}.tar.gz
 

@@ -16,7 +16,7 @@ entry_points = {
 setup_kwargs = {
     "name": "d-fake-seeder",
     "version": "0.0.6",
-    "description": "",
+    "description": "Python gtk fake seeder",
     "long_description": "",
     "author": "David O Neill",
     "author_email": "dmz.oneill@gmail.com",

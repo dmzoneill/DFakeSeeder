@@ -5,25 +5,12 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-# import locale
-# import os
-
 # Import the Model, View, and Controller classes from their respective modules
 from lib.model import Model
 from lib.view import View
 from lib.controller import Controller
 from lib.settings import Settings
 from lib.logger import logger
-
-
-# # Set the directory containing the translation files
-# locale_dir = os.path.join(os.path.dirname(__file__), 'locale')
-# gettext.bindtextdomain('dfakeseeder', locale_dir)
-# gettext.textdomain('dfakeseeder')
-# locale.setlocale(locale.LC_ALL, '')
-
-# # Get the `_()` function for translating strings
-# _ = gettext.gettext
 
 
 class DFakeSeeder:
