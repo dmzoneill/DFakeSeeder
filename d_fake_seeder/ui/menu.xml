@@ -1,51 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object class="GtkMenuBar" id="menubar1">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <child>
-        <object class="GtkMenuItem" id="menuitem1">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="label" translatable="yes">_File</property>
-        <property name="use-underline">True</property>
-        <child type="submenu">
-            <object class="GtkMenu" id="menu1">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <child>
-                <object class="GtkImageMenuItem" id="quit_menu_item">
-                <property name="label">gtk-quit</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="use-underline">True</property>
-                <property name="use-stock">True</property>
-                </object>
-            </child>
-            </object>
-        </child>
-        </object>
-    </child>
-    <child>
-        <object class="GtkMenuItem" id="menuitem2">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="label" translatable="yes">_Help</property>
-            <property name="use-underline">True</property>
-            <child type="submenu">
-                <object class="GtkMenu" id="menu2">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <child>
-                        <object class="GtkImageMenuItem" id="help_menu_item">
-                        <property name="label">Github</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
-                        </object>
-                    </child>
-                </object>
-            </child>
-        </object>
-    </child>
+<object class="GtkPopoverMenuBar" id="menubar1">
+    <property name="menu-model">
+        <menu id="menu1">
+        <submenu>
+            <attribute name="label">File</attribute>
+            <item>
+                <attribute name="label">Quit</attribute>
+            </item>
+        </submenu>
+        <submenu>
+            <attribute name="label">Help</attribute>
+            <item>
+                <attribute name="label">Github</attribute>
+            </item>
+        </submenu>
+        </menu>
+    </property>
 </object>

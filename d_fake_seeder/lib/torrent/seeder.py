@@ -176,11 +176,6 @@ class Seeder:
                     headers=self.settings.http_headers,
                     timeout=10,
                 )
-                print("Announced")
-                print(self.torrent.filepath)
-                print(uploaded_bytes)
-                print(downloaded_bytes)
-                print(download_left)
                 break
             except:
                 traceback.print_exc()

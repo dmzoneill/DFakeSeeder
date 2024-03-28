@@ -18,9 +18,13 @@ class Controller:
 
     def run(self):
         logger.info("Controller Run", extra={"class_name": self.__class__.__name__})
-        for filename in os.listdir(self.settings.directory):
+        for filename in os.listdir(
+            os.path.expanduser("~/.config/dfakeseeder/torrents")
+        ):
             if filename.endswith(".torrent"):
-                torrent_file = os.path.join(self.settings.directory, filename)
+                torrent_file = os.path.join(
+                    os.path.expanduser("~/.config/dfakeseeder/torrents"), filename
+                )
                 self.model.add_torrent(torrent_file)
 
     def handle_settings_changed(self, source, key, value):

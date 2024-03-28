@@ -2,11 +2,11 @@
 import signal
 import gi
 import webbrowser
+import os
 
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib, GdkPixbuf
+gi.require_version("Gtk", "4.0")
+from gi.repository import Gtk, GLib
 from lib.settings import Settings
-from sys import exit
 import time
 from lib.views.toolbar import Toolbar
 from lib.views.statusbar import Statusbar
@@ -24,8 +24,9 @@ class View:
     torrents_treeview = None
     torrents_states = None
 
-    def __init__(self):
+    def __init__(self, app):
         logger.info("View instantiate", extra={"class_name": self.__class__.__name__})
+        self.app = app
         View.instance = self
 
         # subscribe to settings changed
@@ -34,7 +35,11 @@ class View:
 
         # Loading GUI from XML
         self.builder = Gtk.Builder()
-        self.builder.add_from_file("ui/generated.xml")
+        self.builder.add_from_file(os.environ.get("DFS_PATH") + "/ui/generated.xml")
+
+        # Load CSS stylesheet
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_path(os.environ.get("DFS_PATH") + "/ui/styles.css")
 
         # views
         self.toolbar = Toolbar(self.builder, None)
@@ -54,7 +59,7 @@ class View:
 
         # notification overlay
         self.notify_label = Gtk.Label(label="Overlayed Button")
-        self.notify_label.set_no_show_all(True)
+        # self.notify_label.set_no_show_all(True)
         self.notify_label.set_visible(False)
         self.notify_label.hide()
         self.notify_label.set_valign(Gtk.Align.CENTER)
@@ -63,42 +68,36 @@ class View:
 
         self.setup_window()
         self.show_splash_image()
-        GLib.timeout_add_seconds(0.5, self.resize_panes)
+        GLib.timeout_add_seconds(1.0, self.resize_panes)
 
     def setup_window(self):
-        # Make sure GTK can't know the filename the bytes came from
-        with open("./images/dfakeseeder.png", "rb") as fobj:
-            data = fobj.read()
-
-        loader = GdkPixbuf.PixbufLoader.new_with_type("png")
-        loader.write(data)
-        loader.close()
-
-        self.window.set_icon(loader.get_pixbuf())
         self.window.set_title("D' Fake Seeder")
+        self.window.set_application(self.app)
 
-        screen = self.window.get_screen()
-        screen_width = screen.get_width()
-        screen_height = screen.get_height()
+        # Load CSS stylesheet
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_path("styles.css")  # Load CSS from file
 
-        window_width = self.window.get_size()[0]
-        window_height = self.window.get_size()[1]
+        # Apply CSS to the window
+        style_context = self.window.get_style_context()
+        style_context.add_provider(
+            css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
 
-        x = (screen_width - window_width) // 2
-        y = (screen_height - window_height) // 2
-
-        self.window.set_position(Gtk.WindowPosition.CENTER)
-        self.window.move(x, y)
+        self.window.present()
 
     def show_splash_image(self):
         # splash image
         self.splash_image = Gtk.Image()
-        self.splash_image.set_from_file("images/dfakeseeder.png")
-        self.splash_image.set_no_show_all(False)
+        self.splash_image.set_from_file(
+            os.environ.get("DFS_PATH") + "/images/dfakeseeder.png"
+        )
+        # self.splash_image.set_no_show_all(False)
         self.splash_image.set_visible(True)
         self.splash_image.show()
         self.splash_image.set_valign(Gtk.Align.CENTER)
         self.splash_image.set_halign(Gtk.Align.CENTER)
+        self.splash_image.set_size_request(100, 100)
         self.overlay.add_overlay(self.splash_image)
         GLib.timeout_add_seconds(2, self.fade_out_image)
 
@@ -113,7 +112,8 @@ class View:
             return True
         else:
             self.splash_image.hide()
-            self.splash_image.destroy()
+            self.splash_image.unparent()
+            self.splash_image = None
             return False
 
     def resize_panes(self):
@@ -131,16 +131,14 @@ class View:
         if hasattr(self, "timeout_id") and self.timeout_id > 0:
             GLib.source_remove(self.timeout_id)
 
-        self.notify_label.set_no_show_all(False)
+        # self.notify_label.set_no_show_all(False)
         self.notify_label.set_visible(True)
         self.notify_label.show()
         self.notify_label.set_text(text)
         self.status.set_text(text)
         self.timeout_id = GLib.timeout_add(
             3000,
-            lambda: self.notify_label.set_no_show_all(True)
-            or self.notify_label.set_visible(False)
-            or self.notify_label.hide(),
+            lambda: self.notify_label.set_visible(False) or self.notify_label.hide(),
         )
 
     # Setting model for the view
@@ -159,9 +157,9 @@ class View:
             "View connect signals", extra={"class_name": self.__class__.__name__}
         )
         self.window.connect("destroy", self.quit)
-        self.window.connect("delete-event", self.quit)
-        self.quit_menu_item.connect("activate", self.on_quit_clicked)
-        self.help_menu_item.connect("activate", self.on_help_clicked)
+        self.window.connect("close-request", self.quit)
+        # self.quit_menu_item.connect("activate", self.on_quit_clicked)
+        # self.help_menu_item.connect("activate", self.on_help_clicked)
         self.model.connect("data-changed", self.torrents.update_view)
         self.model.connect("data-changed", self.notebook.update_view)
         self.model.connect("data-changed", self.states.update_view)
@@ -198,8 +196,8 @@ class View:
             torrent.stop()
         self.settings.save_quit()
         self.window.destroy()
-        Gtk.main_quit()
-        exit(0)
+        # Gtk.main_quit()
+        # exit(0)
 
     def handle_settings_changed(self, source, key, value):
         logger.info(

@@ -44,7 +44,7 @@ run-debug: ui-build
 	echo "Running program..."
 	{ \
 		cd d_fake_seeder && \
-		LOG_LEVEL=INFO /usr/bin/python3 dfakeseeder.py; \
+		LOG_LEVEL=INFO DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder.py; \
 	}
 	$(MAKE) clean_settings;
 
@@ -126,3 +126,6 @@ translate:
 	mkdir -vp d_fake_seeder/locale/en_US/LC_MESSAGES/
 	$(MAKE) translatepy
 	#$(MAKE) translatexml
+
+test:
+	DFS_PATH=$$(pwd)/d_fake_seeder pytest -vvv tests/

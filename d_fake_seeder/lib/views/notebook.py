@@ -1,12 +1,10 @@
 import gi
 
-gi.require_version("Gtk", "3.0")
+gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk, GLib
 from lib.settings import Settings
-import time
 import logging
 from lib.logger import logger
-from lib.torrent.attributes import Attributes
 
 
 class Notebook:
@@ -25,17 +23,32 @@ class Notebook:
         self.log_scroll = self.builder.get_object("log_scroll")
         self.log_viewer = self.builder.get_object("log_viewer")
         self.setup_log_viewer_handler(self.log_viewer)
-        self.log_viewer.connect("size-allocate", self.on_size_allocate)
+        # self.log_viewer.connect("size-allocate", self.on_size_allocate)
 
-        # tabs
+        tab_names = [
+            "status_tab",
+            "details_tab",
+            "options_tab",
+            "peers_tab",
+            "trackers_tab",
+            "log_tab",
+        ]
+
+        for tab_name in tab_names:
+            tab = self.builder.get_object(tab_name)
+            tab.set_visible(True)
+            tab.set_margin_top(10)
+            tab.set_margin_bottom(10)
+            tab.set_margin_start(10)
+            tab.set_margin_end(10)
+
         self.status_tab = self.builder.get_object("status_tab")
-        self.status_tab.set_visible(True)
         self.notebook.set_current_page(0)
         self.notebook.page_num(self.status_tab)
-        label_widget = self.notebook.get_tab_label(self.notebook.get_nth_page(0))
-        self.notebook.set_current_page(
-            self.notebook.page_num(label_widget.get_parent())
-        )
+        # label_widget = self.notebook.get_tab_label(self.notebook.get_nth_page(0))
+        # self.notebook.set_current_page(
+        #     self.notebook.page_num(label_widget.get_parent())
+        # )
 
         # Connect the signals
         self.selection = self.torrents_treeview.get_selection()
@@ -46,12 +59,16 @@ class Notebook:
         self.settings = Settings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
 
+        # tab children
+        self.status_grid_child = None
+        self.options_grid_children = []
+
     def set_model(self, model):
         self.model = model
 
-    def on_size_allocate(self, widget, allocation):
-        adj = self.log_scroll.get_vadjustment()
-        adj.set_value(adj.get_upper() - adj.get_page_size())
+    # def on_size_allocate(self, widget, allocation):
+    #     adj = self.log_scroll.get_vadjustment()
+    #     adj.set_value(adj.get_upper() - adj.get_page_size())
 
     def setup_log_viewer_handler(self, text_view):
         def update_textview(record):
@@ -150,9 +167,11 @@ class Notebook:
 
     def update_notebook_options(self, torrent):
         grid = self.builder.get_object("options_grid")
-        for child in grid.get_children():
+
+        for child in self.options_grid_children:
             grid.remove(child)
-            child.destroy()
+            child.unparent()
+        self.options_grid_children = []
 
         source = None
         for torrent_obj in self.model.torrent_list:
@@ -206,6 +225,8 @@ class Notebook:
 
             grid.attach(label, col, row, 1, 1)
             grid.attach(dynamic_widget, col + 1, row, 1, 1)
+            self.options_grid_children.append(label)
+            self.options_grid_children.append(dynamic_widget)
 
             if col == 2:
                 row += 1
@@ -217,11 +238,15 @@ class Notebook:
 
         compatible_attributes, store = self.model.get_liststore()
 
-        grid = Gtk.Grid()
-        grid.set_column_spacing(10)
-        grid.set_hexpand(True)
-        grid.set_vexpand(True)
-        grid.set_visible(True)
+        if self.status_grid_child is not None:
+            self.status_tab.remove(self.status_grid_child)
+            self.status_grid_child.unparent()
+
+        self.status_grid_child = Gtk.Grid()
+        self.status_grid_child.set_column_spacing(10)
+        self.status_grid_child.set_hexpand(True)
+        self.status_grid_child.set_vexpand(True)
+        self.status_grid_child.set_visible(True)
 
         # Create columns and add them to the TreeView
         for attribute_index, attribute in enumerate(compatible_attributes):
@@ -229,26 +254,22 @@ class Notebook:
 
             labeln = Gtk.Label(label=attribute, xalign=0)
             labeln.set_visible(True)
-            labeln.set_margin_left(10)
+            # labeln.set_margin_left(10)
             labeln.set_halign(Gtk.Align.START)
             labeln.set_size_request(80, -1)
-            grid.attach(labeln, 0, row, 1, 1)
+            self.status_grid_child.attach(labeln, 0, row, 1, 1)
 
             selected_iter = store.get_iter(self.selected_path)
             val = str(store.get_value(selected_iter, attribute_index))
             labelv = Gtk.Label(label=val, xalign=0)
             labelv.set_visible(True)
-            labelv.set_margin_left(10)
+            # labelv.set_margin_left(10)
             labelv.set_halign(Gtk.Align.START)
             labeln.set_size_request(280, -1)
             labelv.set_selectable(True)  # Enable text selection
-            grid.attach(labelv, 1, row, 1, 1)
+            self.status_grid_child.attach(labelv, 1, row, 1, 1)
 
-        for child in self.status_tab.get_children():
-            self.status_tab.remove(child)
-            child.destroy()
-
-        self.status_tab.add(grid)
+        self.status_tab.append(self.status_grid_child)
 
     def update_view(self, model, _, torrent, attribute):
         pass

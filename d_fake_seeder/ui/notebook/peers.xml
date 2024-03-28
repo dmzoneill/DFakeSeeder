@@ -3,7 +3,6 @@
     <property name="can-focus">False</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
-    <property name="margin">10</property>
     <child>
         <object class="GtkTreeView" id="peers_treeview">
             <property name="can-focus">False</property>

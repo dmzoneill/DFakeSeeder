@@ -1,0 +1,85 @@
+{
+    "directory": "./torrents",
+    "upload_speed": 50,
+    "download_speed": 500,
+    "total_upload_speed": 50,
+    "total_download_speed": 500,
+    "announce_interval": 1800,
+    "torrents": {
+        "./torrents/f4da7e75d3bedb9475a84b43e1c566e2c5d2321e.torrent": {
+            "active": true,
+            "id": 1,
+            "announce_interval": 1800,
+            "download_speed": 500,
+            "filepath": "./torrents/f4da7e75d3bedb9475a84b43e1c566e2c5d2321e.torrent",
+            "leechers": 0,
+            "name": "3022 (2019) ITA-ENG Ac3 5.1 BDRip 1080p H264 [ArMor]",
+            "next_update": 0,
+            "progress": 100,
+            "seeders": 0,
+            "session_downloaded": 0,
+            "session_uploaded": 0,
+            "small_torrent_limit": 0,
+            "threshold": 30,
+            "total_downloaded": 2573164032,
+            "total_size": 2585414669,
+            "total_uploaded": 2573164032,
+            "upload_speed": 50,
+            "uploading": true
+        }
+    },
+    "http_headers": {
+        "Accept-Encoding": "gzip",
+        "User-Agent": "Deluge/2.0.3 libtorrent/2.0.5.0"
+    },
+    "agents": [
+        "Deluge/2.0.3 libtorrent/2.0.5.0",
+        "qBittorrent/4.3.1",
+        "Transmission/3.00",
+        "uTorrent/3.5.5",
+        "Vuze/5.7.6.0",
+        "BitTorrent/7.10.5",
+        "rTorrent/0.9.6"
+    ],
+    "proxies": {
+        "http": "http://127.0.0.1:3128",
+        "https": "http://127.0.0.1:3128"
+    },
+    "columns": "",
+    "concurrent_http_connections": 2,
+    "concurrent_peer_connections": 10,
+    "cellrenderers": {
+        "progress": "Gtk.CellRendererProgress"
+    },
+    "textrenderers": {
+        "total_uploaded": "humanbytes",
+        "total_downloaded": "humanbytes",
+        "session_uploaded": "humanbytes",
+        "session_downloaded": "humanbytes",
+        "total_size": "humanbytes",
+        "announce_interval": "convert_seconds_to_hours_mins_seconds",
+        "next_update": "convert_seconds_to_hours_mins_seconds",
+        "upload_speed": "add_kb",
+        "download_speed": "add_kb",
+        "threshold": "add_percent"
+    },
+    "threshold": 30,
+    "tickspeed": 3,
+    "editwidgets": {
+        "active": "Gtk.Switch",
+        "announce_interval": "Gtk.SpinButton",
+        "download_speed": "Gtk.SpinButton",
+        "next_update": "Gtk.SpinButton",
+        "session_downloaded": "Gtk.SpinButton",
+        "session_uploaded": "Gtk.SpinButton",
+        "small_torrent_limit": "Gtk.SpinButton",
+        "threshold": "Gtk.SpinButton",
+        "total_downloaded": "Gtk.SpinButton",
+        "total_uploaded": "Gtk.SpinButton",
+        "upload_speed": "Gtk.SpinButton"
+    },
+    "object": {
+        "torrents": {}
+    },
+    "issues_page": "https://github.com/dmzoneill/DFakeSeeder/issues"
+}
