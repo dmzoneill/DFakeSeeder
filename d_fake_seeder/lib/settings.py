@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 from gi.repository import GObject
 from watchdog.observers import Observer
 
@@ -20,8 +21,21 @@ class Settings(GObject.Object):
     @staticmethod
     def get_instance(file_path=None):
         logger.info("Settings get instance", extra={"class_name": "Settings"})
-        env_file = os.getenv("FS_SETTINGS", "config/settings.json")
+        env_file = os.getenv(
+            "DFS_SETTINGS",
+            os.path.expanduser("~/.config/dfakeseeder") + "/settings.json",
+        )
         file_path = env_file if file_path is None else file_path
+
+        home_config_path = os.path.expanduser("~/.config/dfakeseeder")
+
+        # Check if the destination directory exists, if not create it
+        if not os.path.exists(home_config_path):
+            source_path = "config/default.json"
+            os.makedirs(home_config_path)
+            os.makedirs(home_config_path + "/torrents")
+            # Copy the source file to the destination directory
+            shutil.copy(source_path, home_config_path)
 
         if Settings._instance is None:
             Settings._instance = Settings(file_path)

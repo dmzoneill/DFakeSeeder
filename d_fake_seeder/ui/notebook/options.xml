@@ -2,13 +2,11 @@
 <interface>
   <object class="GtkGrid" id="options_grid">
     <property name="visible">True</property>
-    <property name="margin">10</property>
     <property name="row-spacing">10</property>
     <property name="column-spacing">10</property>
     <property name="hexpand">False</property>
     <property name="vexpand">False</property>
     <property name="halign">center</property>
     <property name="valign">start</property>
-    <property name="border-width">1</property>
   </object>
 </interface>

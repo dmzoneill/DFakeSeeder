@@ -7,7 +7,6 @@
     <property name="default-width">1024</property>
     <property name="default-height">600</property>
     <property name="icon-name">../images/dfakeseeder</property>
-    <signal name="destroy" handler="on_window_destroy" swapped="no"/>
     <child>
       <object class="GtkOverlay" id="overlay">
         <property name="can-focus">False</property>
@@ -17,63 +16,11 @@
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
             <property name="orientation">vertical</property>
+            <!---
             <child>
-              <object class="GtkMenuBar" id="menubar1">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <child>
-        <object class="GtkMenuItem" id="menuitem1">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="label" translatable="yes">_File</property>
-        <property name="use-underline">True</property>
-        <child type="submenu">
-            <object class="GtkMenu" id="menu1">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <child>
-                <object class="GtkImageMenuItem" id="quit_menu_item">
-                <property name="label">gtk-quit</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="use-underline">True</property>
-                <property name="use-stock">True</property>
-                </object>
+              <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="menu.xml"/>
             </child>
-            </object>
-        </child>
-        </object>
-    </child>
-    <child>
-        <object class="GtkMenuItem" id="menuitem2">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="label" translatable="yes">_Help</property>
-            <property name="use-underline">True</property>
-            <child type="submenu">
-                <object class="GtkMenu" id="menu2">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <child>
-                        <object class="GtkImageMenuItem" id="help_menu_item">
-                        <property name="label">Github</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
-                        </object>
-                    </child>
-                </object>
-            </child>
-        </object>
-    </child>
-</object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
+            // -->
             <child>
               <object class="GtkBox" id="main_toolbar">
     <property name="visible">True</property>
@@ -83,8 +30,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="receives-default">False</property>
-            <property name="tooltip-text">Add torrent</property> 
-            <property name="relief">none</property>
+            <property name="tooltip-text">Add torrent</property>
             <child>
                 <object class="GtkImage">
                 <property name="visible">True</property>
@@ -93,11 +39,6 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-        </packing>
     </child>
     <child>
         <object class="GtkButton" id="toolbar_remove">
@@ -105,7 +46,6 @@
             <property name="can-focus">False</property>
             <property name="receives-default">False</property>
             <property name="tooltip-text">Remove torrent</property> 
-            <property name="relief">none</property>
             <child>
                 <object class="GtkImage">
                 <property name="visible">True</property>
@@ -113,19 +53,13 @@
                 <property name="icon-name">list-remove-symbolic</property>
                 </object>
             </child>
-            </object>
-        <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-        </packing>
+        </object>
     </child>
     <child>
         <object class="GtkButton" id="toolbar_search">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="receives-default">False</property>
-            <property name="relief">none</property>
             <property name="tooltip-text">Search for torrent</property> 
             <child>
                 <object class="GtkImage">
@@ -135,18 +69,12 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-        </packing>
     </child>
     <child>
         <object class="GtkButton" id="toolbar_pause">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="receives-default">False</property>
-            <property name="relief">none</property>
             <property name="tooltip-text">Pause torrent</property> 
             <child>
                 <object class="GtkImage">
@@ -156,18 +84,12 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
-        </packing>
     </child>
     <child>
         <object class="GtkButton" id="toolbar_resume">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="receives-default">False</property>
-            <property name="relief">none</property>
             <property name="tooltip-text">Resume torrent</property> 
             <child>
                 <object class="GtkImage">
@@ -177,18 +99,12 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">4</property>
-        </packing>
     </child>
     <child>
         <object class="GtkButton" id="toolbar_up">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="receives-default">False</property>
-            <property name="relief">none</property>
             <property name="tooltip-text">Priority Up</property> 
             <child>
                 <object class="GtkImage">
@@ -198,18 +114,12 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">5</property>
-        </packing>
     </child>
     <child>
         <object class="GtkButton" id="toolbar_down">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="receives-default">False</property>
-            <property name="relief">none</property>
             <property name="tooltip-text">Priority Down</property> 
             <child>
                 <object class="GtkImage">
@@ -219,18 +129,12 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">6</property>
-        </packing>
     </child>
     <child>
         <object class="GtkButton" id="toolbar_settings">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="receives-default">False</property>
-            <property name="relief">none</property>
             <property name="tooltip-text">Preferences</property> 
             <child>
                 <object class="GtkImage">
@@ -240,11 +144,6 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">7</property>
-        </packing>
     </child>
     <child>
         <object class="GtkScale" id="toolbar_refresh_rate">
@@ -254,18 +153,8 @@
             <property name="draw-value">True</property>
             <property name="value-pos">right</property>
         </object>
-        <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">8</property>
-        </packing>
     </child>
 </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
             <child>
               <object class="GtkPaned" id="main_paned">
@@ -282,10 +171,6 @@
         <object class="GtkTreeSelection"/>
     </child>
 </object>
-                      <packing>
-                        <property name="resize">False</property>
-                        <property name="shrink">True</property>
-                      </packing>
                     </child>
                     <child>
                       <object class="GtkScrolledWindow">
@@ -297,7 +182,6 @@
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="reorderable">True</property>
-    <property name="rules-hint">True</property>
     <property name="search-column">0</property>
     <property name="hover-selection">False</property>
     <property name="hover-expand">False</property>
@@ -309,10 +193,6 @@
 </object>
                         </child>
                       </object>
-                      <packing>
-                        <property name="resize">True</property>
-                        <property name="shrink">True</property>
-                      </packing>
                     </child>
                   </object>
                 </child>
@@ -325,12 +205,11 @@
         <object class="GtkBox" id="details_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin">10</property>
             <child>
                 <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label"/>
+                    <property name="label">Details</property>
                     <property name="halign">center</property>
                     <property name="use-markup">True</property>
                     <property name="wrap">True</property>
@@ -345,9 +224,11 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="tab-label">Details</property>
-        </packing>
+    </child>
+    <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Details</property>
+        </object>
     </child>
     <child>
         <object class="GtkScrolledWindow">
@@ -356,50 +237,48 @@
                 <object class="GtkBox" id="status_tab">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin">10</property>
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="tab-label">Status</property>
-        </packing>
+    </child>
+    <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Status</property>
+        </object>
     </child>
     <child>
         <object class="GtkBox" id="options_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin">10</property>
             <child>
                 <interface >
   <object class="GtkGrid" id="options_grid">
     <property name="visible">True</property>
-    <property name="margin">10</property>
     <property name="row-spacing">10</property>
     <property name="column-spacing">10</property>
     <property name="hexpand">False</property>
     <property name="vexpand">False</property>
     <property name="halign">center</property>
     <property name="valign">start</property>
-    <property name="border-width">1</property>
   </object>
 </interface>
             </child>
         </object>
-        <packing>
-            <property name="tab-label">Options</property>
-        </packing>
+    </child>
+    <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Options</property>
+        </object>
     </child>
     <child>
         <object class="GtkBox" id="peers_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin">10</property>
             <child>
                 <object class="GtkScrolledWindow" >
     <property name="can-focus">False</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
-    <property name="margin">10</property>
     <child>
         <object class="GtkTreeView" id="peers_treeview">
             <property name="can-focus">False</property>
@@ -496,15 +375,16 @@
 </object>
             </child>
         </object>
-        <packing>
-            <property name="tab-label">Peers</property>
-        </packing>
+    </child>
+    <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Peers</property>
+        </object>
     </child>
     <child>
         <object class="GtkBox" id="trackers_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin">10</property>
             <child>
                 <object class="GtkLabel">
                     <property name="visible">True</property>
@@ -524,16 +404,17 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="tab-label">Trackers</property>
-        </packing>
+    </child>
+    <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Trackers</property>
+        </object>
     </child>
     <child>
         <object class="GtkBox" id="log_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="homogeneous">True</property>
-            <property name="margin">10</property>
             <child>
                 <object class="GtkScrolledWindow" id="log_scroll">
                     <property name="visible">True</property>
@@ -541,7 +422,6 @@
                         <object class="GtkTextView" id="log_viewer">
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
-                            <property name="margin">10</property>
                             <property name="monospace">True</property>
                             <property name="vexpand">True</property>
                             <property name="hexpand">True</property>
@@ -550,25 +430,18 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="tab-label">Log</property>
-        </packing>
+    </child>
+        <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Log</property>
+        </object>
     </child>
 </object>
-                  <packing>
-                    <property name="resize">True</property>
-                    <property name="shrink">True</property>
-                  </packing>
                 </child>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
             </child>
             <child>
-              <object class="GtkStatusbar" id="status_bar">
+              <object class="GtkBox" id="status_bar">
     <property name="can-focus">False</property>
     <property name="hexpand">True</property>
     <property name="vexpand">False</property>
@@ -582,11 +455,6 @@
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">  </property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkLabel" id="status_label">
@@ -595,11 +463,6 @@
                 <property name="label" translatable="yes"/>
                 <property name="tooltip-text">Last Notification</property>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
             <child>
               <object class="GtkLabel">
@@ -607,23 +470,13 @@
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">  </property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
             </child>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">../images/seeding16.png</property>
+                <property name="file">images/seeding16.png</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">3</property>
-              </packing>
             </child>
             <child>
               <object class="GtkLabel" id="status_uploading">
@@ -632,11 +485,6 @@
                 <property name="label" translatable="yes"/>
                 <property name="tooltip-text">Upload Speed</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">4</property>
-              </packing>
             </child>
             <child>
               <object class="GtkLabel">
@@ -644,23 +492,13 @@
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">     </property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">5</property>
-              </packing>
             </child>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">../images/downloading16.png</property>
+                <property name="file">images/downloading16.png</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">6</property>
-              </packing>
             </child>
             <child>
               <object class="GtkLabel" id="status_downloading">
@@ -669,11 +507,6 @@
                 <property name="label" translatable="yes"/>
                 <property name="tooltip-text">Downloaded Speed</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">7</property>
-              </packing>
             </child>
             <child>
               <object class="GtkLabel">
@@ -681,23 +514,13 @@
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">     </property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">8</property>
-              </packing>
             </child>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">../images/seeding16.png</property>
+                <property name="file">images/seeding16.png</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">9</property>
-              </packing>
             </child>
             <child>
               <object class="GtkLabel" id="status_uploaded">
@@ -706,11 +529,6 @@
                 <property name="label" translatable="yes"/>
                 <property name="tooltip-text">Uploaded Session / Total</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">10</property>
-              </packing>
             </child>
             <child>
               <object class="GtkLabel">
@@ -718,23 +536,13 @@
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">     </property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">11</property>
-              </packing>
             </child>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">../images/downloading16.png</property>
+                <property name="file">images/downloading16.png</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">12</property>
-              </packing>
             </child>
             <child>
               <object class="GtkLabel" id="status_downloaded">
@@ -743,11 +551,6 @@
                 <property name="label" translatable="yes"/>
                 <property name="tooltip-text">Downloaded Session / Total</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">13</property>
-              </packing>
             </child>
             <child>
               <object class="GtkLabel">
@@ -755,57 +558,32 @@
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">     </property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">14</property>
-              </packing>
             </child>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="stock">gtk-missing-image</property>
+                <property name="icon-name">gtk-missing-image</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">15</property>
-              </packing>
             </child>
-            <child>
+            <child type="end">
               <object class="GtkLabel" id="status_ip">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes"/>
                 <property name="tooltip-text">My IP address</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">16</property>
-              </packing>
             </child>
-            <child>
+            <child type="end">
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes"> </property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">17</property>
-              </packing>
             </child>
         </object>
     </child>
 </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">3</property>
-              </packing>
             </child>
           </object>
         </child>

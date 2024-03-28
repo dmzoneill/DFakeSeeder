@@ -1,7 +1,7 @@
 import gi
 
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, Pango
+gi.require_version("Gtk", "4.0")
+from gi.repository import Gtk, Pango, Gdk
 import time
 from lib.settings import Settings
 from lib.logger import logger
@@ -34,30 +34,41 @@ class Torrents:
         self.last_row_call_time = time.time()
 
         self.torrents_treeview = self.builder.get_object("treeview1")
-        self.torrents_treeview.connect("button-press-event", self.column_selection_menu)
-        self.column_selection_menu = Gtk.Menu()
-        self.column_selection_menu.connect("destroy", self.destroy_menu)
 
-    def destroy_menu(self):
-        for item in self.column_selection_menu.get_children():
-            self.column_selection_menu.remove(item)
-            item.destroy()
+        # Create a gesture recognizer
+        gesture = Gtk.GestureClick()
+        gesture.set_button(Gdk.BUTTON_SECONDARY)
+        gesture.connect("released", self.column_selection_menu)
 
-    def column_selection_menu(self, widget, event):
-        if event.button == 3:  # Right click
-            self.update_column_menu()
-            self.column_selection_menu.popup(
-                None, None, None, None, event.button, event.time
-            )
-            self.column_selection_menu.show_all()
+        # Attach the gesture to the TreeView
+        self.torrents_treeview.add_controller(gesture)
+
+        self.column_selection_popover = Gtk.Popover()
+        self.column_selection_popover.connect("closed", self.destroy_menu)
+
+    def destroy_menu(self, popover):
+        for child in self.column_selection_popover.get_child().get_children():
+            self.column_selection_popover.get_child().remove(child)
+
+    def column_selection_menu(self, gesture, n_press, x, y):
+        if n_press == 1:
+            path_info = self.torrents_treeview.get_path_at_pos(x, y)
+            if path_info is not None:
+                path, column, cell_x, cell_y = path_info
+                self.update_column_menu()
+                # self.column_selection_popover.show_all()
+                self.column_selection_popover.set_position(Gtk.PositionType.RIGHT)
+                self.column_selection_popover.popup()
 
     def update_column_menu(self):
         ATTRIBUTES = Attributes
         attributes = list(vars(ATTRIBUTES)["__annotations__"].keys())
 
-        self.column_selection_menu.foreach(Gtk.Widget.destroy)
+        popover_child = Gtk.ListBox()
+        self.column_selection_popover.set_child(popover_child)
+
         for attr in attributes:
-            item = Gtk.CheckMenuItem(attr)
+            item = Gtk.CheckButton.new_with_label(attr)
             if attr == "id":
                 for column in self.torrents_treeview.get_columns():
                     if column.get_title() == "#":
@@ -70,8 +81,7 @@ class Torrents:
                         break
 
             item.connect("toggled", self.on_column_checkbox_toggled)
-            self.column_selection_menu.append(item)
-        self.column_selection_menu.show_all()
+            popover_child.append(item)
 
     def on_column_checkbox_toggled(self, widget):
         checked_items = []
@@ -85,7 +95,7 @@ class Torrents:
         for title in column_titles:
             if title == "#":
                 title = "id"
-            for item in self.column_selection_menu.get_children():
+            for item in self.column_selection_popover.get_child().get_children():
                 if item.get_label() == title and item.get_active():
                     checked_items.append(title)
                     all_unchecked = False
@@ -290,174 +300,6 @@ class Torrents:
                         row[compatible_attributes.index(key)] = value
                     except ValueError:
                         pass
-
-        # Update existing model and insert or remove rows
-        # for row in store:
-        #     filepath_attr_index = compatible_attributes.index("filepath")
-        #     filepath = row[filepath_attr_index]
-        #     model_iter = model.get_iter_first()
-        #     found = False
-        #     while model_iter is not None:
-        #         if model.get_value(model_iter, filepath_attr_index) == filepath:
-        #             found = True
-        #             for i, attr in enumerate(compatible_attributes):
-        #                 model.set_value(model_iter, i, row[i])
-        #             break
-        #         model_iter = model.iter_next(model_iter)
-
-        #     if not found:
-        #         new_row = [None] * len(compatible_attributes)
-        #         for i, attr in enumerate(compatible_attributes):
-        #             new_row[i] = row[i]
-        #         model.append(new_row)
-
-        # # Remove rows not found in store
-        # to_remove = []
-        # model_iter = model.get_iter_first()
-        # while model_iter is not None:
-        #     if model.get_value(model_iter, filepath_attr_index) not in [
-        #         row[filepath_attr_index] for row in store
-        #     ]:
-        #         to_remove.append(model_iter)
-        #     model_iter = model.iter_next(model_iter)
-
-        # for iter_to_remove in to_remove:
-        #     model.remove(iter_to_remove)
-
-    # # Method to update the TreeView with compatible attributes
-    # def update_view(self, model, torrent, attribute):
-    #     logger.debug(
-    #         "Torrents update view", extra={"class_name": self.__class__.__name__}
-    #     )
-    #     tree_model_sort = self.torrents_treeview.get_model()
-    #     if tree_model_sort is not None:
-    #         prev_sort_column, prev_sort_order = tree_model_sort.get_sort_column_id()
-    #         if prev_sort_column is not None and prev_sort_order is not None:
-    #             self.sort_column = prev_sort_column
-    #             self.sort_order = prev_sort_order
-
-    #     compatible_attributes, store = self.model.get_liststore()
-
-    #     if len(compatible_attributes) != len(self.torrents_treeview.get_columns()):
-    #         # Clear existing columns in the TreeView
-    #         for column in self.torrents_treeview.get_columns():
-    #             self.torrents_treeview.remove_column(column)
-    #             for cell_renderer in column.get_cell_renderers():
-    #                 column.clear_attributes(cell_renderer)
-    #                 column.remove(cell_renderer)
-    #                 cell_renderer.destroy()
-    #             column.destroy()
-
-    #         renderers = self.settings.cellrenderers
-    #         textrenderers = self.settings.textrenderers
-
-    #         # Create columns and add them to the TreeView
-    #         for attribute_index, attribute in enumerate(compatible_attributes):
-    #             column = Gtk.TreeViewColumn("#" if attribute == "id" else attribute)
-    #             column.set_reorderable(True)
-    #             column.set_clickable(True)
-    #             column.set_resizable(True)
-    #             column.set_sort_indicator(True)
-    #             column.set_sizing(Gtk.TreeViewColumnSizing.GROW_ONLY)
-    #             cell_renderer = None
-
-    #             if attribute in renderers:
-    #                 renderer_string = renderers[attribute]
-    #                 renderer_class = eval(renderer_string)
-    #                 cell_renderer = renderer_class()
-    #                 column.pack_start(cell_renderer, True)
-    #                 column.set_sort_indicator(True)
-    #                 column.set_sort_order(Gtk.SortType.ASCENDING)
-    #                 column.add_attribute(
-    #                     cell_renderer, "text", compatible_attributes.index(attribute)
-    #                 )
-    #                 column.set_cell_data_func(
-    #                     cell_renderer, self.format_progress_text, attribute_index
-    #                 )
-    #             elif attribute in textrenderers:
-    #                 text_renderer_func_name = textrenderers[attribute]
-    #                 cell_renderer = Gtk.CellRendererText()
-    #                 cell_renderer.set_property("ellipsize", Pango.EllipsizeMode.END)
-    #                 column.pack_start(cell_renderer, True)
-    #                 column.set_sort_indicator(True)
-    #                 column.set_sort_order(Gtk.SortType.ASCENDING)
-    #                 column.add_attribute(
-    #                     cell_renderer,
-    #                     "text",
-    #                     compatible_attributes.index(attribute),
-    #                 )
-    #                 if text_renderer_func_name == "humanbytes":
-    #                     column.set_cell_data_func(
-    #                         cell_renderer, self.render_humanbytes, attribute_index
-    #                     )
-    #                 elif (
-    #                     text_renderer_func_name
-    #                     == "convert_seconds_to_hours_mins_seconds"
-    #                 ):
-    #                     column.set_cell_data_func(
-    #                         cell_renderer, self.render_seconds, attribute_index
-    #                     )
-
-    #             else:
-    #                 cell_renderer = Gtk.CellRendererText()
-    #                 cell_renderer.set_property("ellipsize", Pango.EllipsizeMode.END)
-    #                 column.pack_start(cell_renderer, True)
-    #                 column.set_sort_indicator(True)
-    #                 column.set_sort_order(Gtk.SortType.ASCENDING)
-    #                 column.add_attribute(
-    #                     cell_renderer, "text", compatible_attributes.index(attribute)
-    #                 )
-
-    #             self.torrents_treeview.append_column(column)
-
-    #     # Set the model for the TreeView and make them sortable
-    #     columns = self.torrents_treeview.get_columns()
-    #     for i, column in enumerate(columns):
-    #         column = self.torrents_treeview.get_column(i)
-    #         column.set_sort_column_id(i)
-    #     self.torrents_treeview.set_model(store)
-
-    #     if self.sort_column is not None:
-    #         tree_model_sort = self.torrents_treeview.get_model()
-    #         tree_model_sort.set_sort_column_id(self.sort_column, self.sort_order)
-
-    #     # Enable row selection
-    #     self.selection = self.torrents_treeview.get_selection()
-    #     self.selection.set_mode(
-    #         Gtk.SelectionMode.SINGLE
-    #     )  # or Gtk.SelectionMode.MULTIPLE
-
-    #     # Connect the signals
-    #     try:
-    #         self.torrents_treeview.disconnect_by_func(self.on_row_activated)
-    #     except:
-    #         pass
-
-    #     try:
-    #         self.selection.disconnect_by_func(self.on_selection_changed)
-    #     except:
-    #         pass
-
-    #     # self.torrents_treeview.connect("row-activated", self.on_row_activated)
-    #     self.selection.connect("changed", self.on_selection_changed)
-
-    #     # Reselect the previously selected item if it still exists
-    #     if self.selected_path:
-    #         self.selection.select_path(self.selected_path)
-
-    # def on_row_activated(self, treeview, path, column):
-    #     logger.debug(
-    #         "Torrents view row activate", extra={"class_name": self.__class__.__name__}
-    #     )
-    #     selection = treeview.get_selection()
-    #     model, iter = selection.get_selected()
-    #     if iter is not None:
-    #         self.selected_path = model.get_path(iter)
-
-    #     self.selected_path = model.get_path(iter)
-
-    #     if iter is None:
-    #         return
 
     def on_selection_changed(self, selection):
         logger.debug(

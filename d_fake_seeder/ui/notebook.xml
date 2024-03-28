@@ -8,12 +8,11 @@
         <object class="GtkBox" id="details_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin">10</property>
             <child>
                 <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label"></property>
+                    <property name="label">Details</property>
                     <property name="halign">center</property>
                     <property name="use-markup">True</property>
                     <property name="wrap">True</property>
@@ -28,9 +27,11 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="tab-label">Details</property>
-        </packing>
+    </child>
+    <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Details</property>
+        </object>
     </child>
     <child>
         <object class="GtkScrolledWindow">
@@ -39,45 +40,47 @@
                 <object class="GtkBox" id="status_tab">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin">10</property>
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="tab-label">Status</property>
-        </packing>
+    </child>
+    <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Status</property>
+        </object>
     </child>
     <child>
         <object class="GtkBox" id="options_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin">10</property>
             <child>
                 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="notebook/options.xml"/>
             </child>
         </object>
-        <packing>
-            <property name="tab-label">Options</property>
-        </packing>
+    </child>
+    <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Options</property>
+        </object>
     </child>
     <child>
         <object class="GtkBox" id="peers_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin">10</property>
             <child>
                 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="notebook/peers.xml"/>
             </child>
         </object>
-        <packing>
-            <property name="tab-label">Peers</property>
-        </packing>
+    </child>
+    <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Peers</property>
+        </object>
     </child>
     <child>
         <object class="GtkBox" id="trackers_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin">10</property>
             <child>
                 <object class="GtkLabel">
                     <property name="visible">True</property>
@@ -97,16 +100,17 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="tab-label">Trackers</property>
-        </packing>
+    </child>
+    <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Trackers</property>
+        </object>
     </child>
     <child>
         <object class="GtkBox" id="log_tab">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="homogeneous">True</property>
-            <property name="margin">10</property>
             <child>
                 <object class="GtkScrolledWindow" id="log_scroll">
                     <property name="visible">True</property>
@@ -114,7 +118,6 @@
                         <object class="GtkTextView" id="log_viewer">
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
-                            <property name="margin">10</property>
                             <property name="monospace">True</property>
                             <property name="vexpand">True</property>
                             <property name="hexpand">True</property>
@@ -123,8 +126,10 @@
                 </object>
             </child>
         </object>
-        <packing>
-            <property name="tab-label">Log</property>
-        </packing>
+    </child>
+        <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Log</property>
+        </object>
     </child>
 </object>

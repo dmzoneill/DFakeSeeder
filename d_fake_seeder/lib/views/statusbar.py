@@ -2,7 +2,7 @@ import gi
 import requests
 import time
 
-gi.require_version("Gtk", "3.0")
+gi.require_version("Gtk", "4.0")
 from lib.settings import Settings
 from lib.logger import logger
 from lib.util.helpers import humanbytes
@@ -29,6 +29,15 @@ class Statusbar:
         self.last_session_uploaded = 0
         self.last_session_downloaded = 0
         self.last_execution_time = time.time()
+
+        self.status_bar = builder.get_object("status_bar")
+        self.status_bar.set_css_name("statusbar")
+
+        # Adjust padding of the box
+        self.status_bar.set_margin_top(10)
+        self.status_bar.set_margin_bottom(10)
+        self.status_bar.set_margin_start(10)
+        self.status_bar.set_margin_end(10)
 
     def set_model(self, model):
         self.model = model

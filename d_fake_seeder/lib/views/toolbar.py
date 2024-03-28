@@ -2,9 +2,8 @@ import gi
 import math
 import os
 import shutil
-import time
 
-gi.require_version("Gtk", "3.0")
+gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk
 from lib.settings import Settings
 from lib.logger import logger
@@ -22,34 +21,45 @@ class Toolbar:
 
         self.toolbar_add_button = self.builder.get_object("toolbar_add")
         self.toolbar_add_button.connect("clicked", self.on_toolbar_add_clicked)
+        self.toolbar_add_button.add_css_class("flat")
 
         self.toolbar_remove_button = self.builder.get_object("toolbar_remove")
         self.toolbar_remove_button.connect("clicked", self.on_toolbar_remove_clicked)
+        self.toolbar_remove_button.add_css_class("flat")
+
+        self.toolbar_search_button = self.builder.get_object("toolbar_search")
+        self.toolbar_search_button.connect("clicked", self.on_toolbar_remove_clicked)
+        self.toolbar_search_button.add_css_class("flat")
 
         self.toolbar_pause_button = self.builder.get_object("toolbar_pause")
         self.toolbar_pause_button.connect("clicked", self.on_toolbar_pause_clicked)
+        self.toolbar_pause_button.add_css_class("flat")
 
         self.toolbar_resume_button = self.builder.get_object("toolbar_resume")
         self.toolbar_resume_button.connect("clicked", self.on_toolbar_resume_clicked)
+        self.toolbar_resume_button.add_css_class("flat")
 
         self.toolbar_up_button = self.builder.get_object("toolbar_up")
         self.toolbar_up_button.connect("clicked", self.on_toolbar_up_clicked)
+        self.toolbar_up_button.add_css_class("flat")
 
         self.toolbar_down_button = self.builder.get_object("toolbar_down")
         self.toolbar_down_button.connect("clicked", self.on_toolbar_down_clicked)
+        self.toolbar_down_button.add_css_class("flat")
 
         self.toolbar_settings_button = self.builder.get_object("toolbar_settings")
         self.toolbar_settings_button.connect(
             "clicked", self.on_toolbar_settings_clicked
         )
+        self.toolbar_settings_button.add_css_class("flat")
 
         self.toolbar_refresh_rate = self.builder.get_object("toolbar_refresh_rate")
-        adjustment = Gtk.Adjustment(0, 1, 60, 1, 1, 1)
+        adjustment = Gtk.Adjustment.new(0, 1, 60, 1, 1, 1)
         adjustment.set_step_increment(1)
         self.toolbar_refresh_rate.set_adjustment(adjustment)
         self.toolbar_refresh_rate.set_digits(0)
         self.toolbar_refresh_rate.connect(
-            "button-release-event", self.on_toolbar_refresh_rate_changed
+            "value-changed", self.on_toolbar_refresh_rate_changed
         )
         self.toolbar_refresh_rate.set_value(int(self.settings.tickspeed))
         self.toolbar_refresh_rate.set_size_request(150, -1)
@@ -57,7 +67,7 @@ class Toolbar:
     def set_model(self, model):
         self.model = model
 
-    def on_toolbar_refresh_rate_changed(self, scale, value):
+    def on_toolbar_refresh_rate_changed(self, value):
         self.settings.tickspeed = math.ceil(
             float(self.toolbar_refresh_rate.get_value())
         )
