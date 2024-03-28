@@ -11,7 +11,6 @@
 # Typical setup
 ```
 {
-    "directory": "./torrents",
     "upload_speed": 50,
     "download_speed": 500,
     "total_upload_speed": 50,
@@ -33,8 +32,8 @@
         "rTorrent/0.9.6"
     ],
     "proxies": {
-        "http": "http://127.0.0.1:3128",
-        "https": "http://127.0.0.1:3128"
+        "http": "",
+        "https": ""
     },
     "columns": "",
     "concurrent_http_connections": 2,
@@ -68,6 +67,10 @@
         "total_downloaded": "Gtk.SpinButton",
         "total_uploaded": "Gtk.SpinButton",
         "upload_speed": "Gtk.SpinButton"
-    }
+    },
+    "object": {
+        "torrents": {}
+    },
+    "issues_page": "https://github.com/dmzoneill/DFakeSeeder/issues"
 }
 ```
