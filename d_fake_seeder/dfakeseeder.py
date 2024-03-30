@@ -16,7 +16,7 @@ from lib.logger import logger
 class DFakeSeeder(Gtk.Application):
     def __init__(self):
         super().__init__(
-            application_id="org.example.myapp", flags=Gio.ApplicationFlags.FLAGS_NONE
+            application_id="ie.fio.dfakeseeder", flags=Gio.ApplicationFlags.FLAGS_NONE
         )
         logger.info("Startup", extra={"class_name": self.__class__.__name__})
         # subscribe to settings changed
