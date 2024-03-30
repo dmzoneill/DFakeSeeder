@@ -68,9 +68,6 @@
         "total_uploaded": "Gtk.SpinButton",
         "upload_speed": "Gtk.SpinButton"
     },
-    "object": {
-        "torrents": {}
-    },
     "issues_page": "https://github.com/dmzoneill/DFakeSeeder/issues"
 }
 ```

@@ -4,8 +4,9 @@ import gi
 import webbrowser
 import os
 
+gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, GLib
+from gi.repository import Gtk, GLib, Gio
 from lib.settings import Settings
 import time
 from lib.views.toolbar import Toolbar
@@ -84,6 +85,42 @@ class View:
             css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         )
 
+        # Create an action group
+        self.action_group = Gio.SimpleActionGroup()
+
+        # add hamburger menu
+        self.header = Gtk.HeaderBar()
+        self.window.set_titlebar(self.header)
+
+        # Create a new "Action"
+        action = Gio.SimpleAction.new("quit", None)
+        action.connect("activate", self.quit)
+        self.action_group.add_action(action)
+
+        menu = Gio.Menu.new()
+        menu.append("Quit", "win.quit")
+
+        # Create a popover
+        self.popover = Gtk.PopoverMenu()
+        self.popover.set_menu_model(menu)
+
+        # Create a menu button
+        self.hamburger = Gtk.MenuButton()
+        self.hamburger.set_popover(self.popover)
+        self.hamburger.set_icon_name("open-menu-symbolic")
+
+        # Add menu button to the header bar
+        self.header.pack_start(self.hamburger)
+
+        # Add an about dialog
+        action = Gio.SimpleAction.new("about", None)
+        action.connect("activate", self.show_about)
+        self.action_group.add_action(action)
+        menu.append("About", "win.about")
+
+        # Insert the action group into the window
+        self.window.insert_action_group("win", self.action_group)
+
         self.window.present()
 
     def show_splash_image(self):
@@ -100,6 +137,19 @@ class View:
         self.splash_image.set_size_request(100, 100)
         self.overlay.add_overlay(self.splash_image)
         GLib.timeout_add_seconds(2, self.fade_out_image)
+
+    def show_about(self, action, param):
+        self.window.about = Gtk.AboutDialog()
+        self.window.about.set_transient_for(self.window)
+        self.window.about.set_modal(self)
+        self.window.about.set_authors([self.settings.author])
+        self.window.about.set_copyright(self.settings.copyright)
+        self.window.about.set_license_type(Gtk.License.APACHE_2_0)
+        self.window.about.set_website(self.settings.website)
+        self.window.about.set_website_label("Github")
+        self.window.about.set_version(self.settings.version)
+        self.window.about.set_logo_icon_name(self.settings.logo)
+        self.window.about.show()
 
     def fade_out_image(self):
         self.splash_image.fade_out = 1.0

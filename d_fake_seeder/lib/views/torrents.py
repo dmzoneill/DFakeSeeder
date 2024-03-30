@@ -1,7 +1,9 @@
 import gi
 
+gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, Pango, Gdk
+
+from gi.repository import Gtk, Gio, Gdk, GLib, Pango
 import time
 from lib.settings import Settings
 from lib.logger import logger
@@ -22,6 +24,9 @@ class Torrents:
         self.builder = builder
         self.model = model
 
+        # window
+        self.window = self.builder.get_object("main_window")
+
         # subscribe to settings changed
         self.settings = Settings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
@@ -36,54 +41,70 @@ class Torrents:
         self.torrents_treeview = self.builder.get_object("treeview1")
 
         # Create a gesture recognizer
-        gesture = Gtk.GestureClick()
-        gesture.set_button(Gdk.BUTTON_SECONDARY)
+        gesture = Gtk.GestureClick.new()
         gesture.connect("released", self.column_selection_menu)
+        gesture.set_button(3)
+
+        # Create an action group
+        self.action_group = Gio.SimpleActionGroup()
+        self.stateful_actions = {}
+
+        # Insert the action group into the window
+        self.window.insert_action_group("app", self.action_group)
 
         # Attach the gesture to the TreeView
         self.torrents_treeview.add_controller(gesture)
 
-        self.column_selection_popover = Gtk.Popover()
-        self.column_selection_popover.connect("closed", self.destroy_menu)
-
-    def destroy_menu(self, popover):
-        for child in self.column_selection_popover.get_child().get_children():
-            self.column_selection_popover.get_child().remove(child)
-
     def column_selection_menu(self, gesture, n_press, x, y):
-        if n_press == 1:
-            path_info = self.torrents_treeview.get_path_at_pos(x, y)
-            if path_info is not None:
-                path, column, cell_x, cell_y = path_info
-                self.update_column_menu()
-                # self.column_selection_popover.show_all()
-                self.column_selection_popover.set_position(Gtk.PositionType.RIGHT)
-                self.column_selection_popover.popup()
+        rect = self.torrents_treeview.get_allocation()
+        rect.width = 0
+        rect.height = 0
+        rect.x = x
+        rect.y = y
 
-    def update_column_menu(self):
         ATTRIBUTES = Attributes
         attributes = list(vars(ATTRIBUTES)["__annotations__"].keys())
 
-        popover_child = Gtk.ListBox()
-        self.column_selection_popover.set_child(popover_child)
+        menu = Gio.Menu.new()
 
-        for attr in attributes:
-            item = Gtk.CheckButton.new_with_label(attr)
-            if attr == "id":
-                for column in self.torrents_treeview.get_columns():
-                    if column.get_title() == "#":
-                        item.set_active(True)
-                        break
-            else:
-                for column in self.torrents_treeview.get_columns():
-                    if column.get_title() == attr:
-                        item.set_active(True)
-                        break
+        # Check if the attribute is a column in the treeview
+        column_titles = [
+            "id" if column.get_title() == "#" else column.get_title()
+            for column in self.torrents_treeview.get_columns()
+        ]
 
-            item.connect("toggled", self.on_column_checkbox_toggled)
-            popover_child.append(item)
+        # Create a stateful action for each attribute
+        for attribute in attributes:
+            if attribute not in self.stateful_actions.keys():
+                state = attribute in column_titles
 
-    def on_column_checkbox_toggled(self, widget):
+                self.stateful_actions[attribute] = Gio.SimpleAction.new_stateful(
+                    f"toggle_{attribute}", None, GLib.Variant.new_boolean(state)
+                )
+                self.stateful_actions[attribute].connect(
+                    "change-state", self.on_stateful_action_change_state
+                )
+
+                self.action_group.add_action(self.stateful_actions[attribute])
+
+        # Iterate over attributes and add toggle items for each one
+        for attribute in attributes:
+            toggle_item = Gio.MenuItem.new(label=f"{attribute}")
+            toggle_item.set_detailed_action(f"app.toggle_{attribute}")
+            menu.append_item(toggle_item)
+
+        self.popover = Gtk.PopoverMenu().new_from_model(menu)
+        self.popover.set_parent(self.torrents_treeview)
+        self.popover.set_has_arrow(False)
+        self.popover.set_halign(Gtk.Align.START)
+        self.popover.set_pointing_to(rect)
+        self.popover.popup()
+
+    def on_stateful_action_change_state(self, action, value):
+        self.stateful_actions[action.get_name()[len("toggle_") :]].set_state(
+            GLib.Variant.new_boolean(value.get_boolean())
+        )
+
         checked_items = []
         all_unchecked = True
 
@@ -93,13 +114,12 @@ class Torrents:
         column_titles = [column if column != "#" else "id" for column in attributes]
 
         for title in column_titles:
-            if title == "#":
-                title = "id"
-            for item in self.column_selection_popover.get_child().get_children():
-                if item.get_label() == title and item.get_active():
+            for k, v in self.stateful_actions.items():
+                if k == title and v.get_state().get_boolean():
                     checked_items.append(title)
                     all_unchecked = False
                     break
+
         if all_unchecked or len(checked_items) == len(attributes):
             self.settings.columns = ""
         else:
