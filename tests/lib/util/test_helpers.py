@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import patch
 from d_fake_seeder.lib.util.helpers import (
     sizeof_fmt,
     urlencode,

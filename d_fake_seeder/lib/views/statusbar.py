@@ -1,11 +1,11 @@
+from lib.util.helpers import humanbytes
+from lib.logger import logger
+from lib.settings import Settings
 import gi
 import requests
 import time
 
 gi.require_version("Gtk", "4.0")
-from lib.settings import Settings
-from lib.logger import logger
-from lib.util.helpers import humanbytes
 
 
 class Statusbar:
@@ -109,6 +109,7 @@ class Statusbar:
 
     def handle_settings_changed(self, source, key, value):
         logger.info(
-            "StatusBar settings changed", extra={"class_name": self.__class__.__name__}
+            "StatusBar settings changed",
+            extra={"class_name": self.__class__.__name__},
         )
         # print(key + " = " + value)

@@ -20,9 +20,7 @@ class TestFile(unittest.TestCase):
         self.assertTrue(file.torrent_header)
         self.assertTrue(file.announce)
         self.assertTrue(file.file_hash)
-        mock_logger_info.assert_called_with(
-            "File Startup", extra={"class_name": "File"}
-        )
+        mock_logger_info.assert_called_with("File Startup", extra={"class_name": "File"})
 
     @pytest.mark.timeout(5)
     @patch("d_fake_seeder.lib.torrent.file.logger.info")

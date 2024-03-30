@@ -35,10 +35,10 @@ def _decode(raw_buffer, elements, index=0):
             pos = index + raw_buffer[index:].find(ord(":"))
             size = int(raw_buffer[index:pos])
             index = pos + 1
-            data = raw_buffer[index : index + size]
+            data = raw_buffer[index : index + size]  # noqa: E203
             index += size
             elements.append(data)
-        except:
+        except BaseException:
             pass
     return index
 

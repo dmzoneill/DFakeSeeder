@@ -1,22 +1,23 @@
 # import gettext
+from lib.logger import logger
+from lib.settings import Settings
+from lib.controller import Controller
+from lib.view import View
+from lib.model import Model
+from gi.repository import Gtk, Gio
 import gi
 
 # Ensure the correct version of Gtk is used
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, Gio
 
 # Import the Model, View, and Controller classes from their respective modules
-from lib.model import Model
-from lib.view import View
-from lib.controller import Controller
-from lib.settings import Settings
-from lib.logger import logger
 
 
 class DFakeSeeder(Gtk.Application):
     def __init__(self):
         super().__init__(
-            application_id="ie.fio.dfakeseeder", flags=Gio.ApplicationFlags.FLAGS_NONE
+            application_id="ie.fio.dfakeseeder",
+            flags=Gio.ApplicationFlags.FLAGS_NONE,
         )
         logger.info("Startup", extra={"class_name": self.__class__.__name__})
         # subscribe to settings changed
@@ -43,7 +44,8 @@ class DFakeSeeder(Gtk.Application):
         # print(key + " = " + value)
 
 
-# If the script is run directly (rather than imported as a module), create an instance of the UI class
+# If the script is run directly (rather than imported as a module), create
+# an instance of the UI class
 if __name__ == "__main__":
     d = DFakeSeeder()
     d.run()

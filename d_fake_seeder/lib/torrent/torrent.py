@@ -1,6 +1,3 @@
-import gi
-
-gi.require_version("Gtk", "4.0")
 from gi.repository import GObject, GLib
 import threading
 import time
@@ -16,15 +13,17 @@ import random
 # Torrent class definition
 class Torrent(GObject.Object):
     __gsignals__ = {
-        "attribute-changed": (GObject.SignalFlags.RUN_FIRST, None, (object, object))
+        "attribute-changed": (
+            GObject.SignalFlags.RUN_FIRST,
+            None,
+            (object, object),
+        )
     }
 
     torrent_attributes = Attributes()
 
     def __init__(self, filepath):
-        logger.info(
-            "Torrent instantiate", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Torrent instantiate", extra={"class_name": self.__class__.__name__})
         # subscribe to settings changed
         self.settings = Settings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
@@ -80,17 +79,18 @@ class Torrent(GObject.Object):
 
     def update_torrent_worker(self):
         logger.info(
-            "Torrent update worker", extra={"class_name": self.__class__.__name__}
+            "Torrent update worker",
+            extra={"class_name": self.__class__.__name__},
         )
         try:
             fetched = False
-            while fetched == False:
+            while fetched is False:
                 logger.debug(
                     "Requesting seeder information",
                     extra={"class_name": self.__class__.__name__},
                 )
                 fetched = self.seeder.load_peers()
-                if fetched == False:
+                if fetched is False:
                     print("sleeping 30")
                     time.sleep(30)
 
@@ -146,7 +146,7 @@ class Torrent(GObject.Object):
 
         if self.progress < 100:
             if self.progress >= threshold and not self.uploading:
-                if self.uploading != True:
+                if self.uploading is True:
                     self.uploading = True
                     changed["uploading"] = True
 
@@ -194,7 +194,9 @@ class Torrent(GObject.Object):
                     else 0
                 )
                 self.seeder.upload(
-                    self.session_uploaded, self.session_downloaded, download_left
+                    self.session_uploaded,
+                    self.session_downloaded,
+                    download_left,
                 )
         else:
             if self.next_update > 0:
@@ -226,7 +228,8 @@ class Torrent(GObject.Object):
 
     def handle_settings_changed(self, source, key, value):
         logger.info(
-            "Torrent settings changed", extra={"class_name": self.__class__.__name__}
+            "Torrent settings changed",
+            extra={"class_name": self.__class__.__name__},
         )
         # print(key + " = " + value)
 

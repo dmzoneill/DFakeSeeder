@@ -51,7 +51,6 @@ class File:
     @property
     def name(self):
         logger.debug("File name", extra={"class_name": self.__class__.__name__})
-        size = 0
         torrent_info = self.torrent_header[b"info"]
         return torrent_info[b"name"].decode("utf-8")
 

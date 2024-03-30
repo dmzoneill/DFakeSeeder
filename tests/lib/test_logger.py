@@ -1,6 +1,5 @@
 import unittest
 import logging
-import os
 from d_fake_seeder.lib.logger import ClassNameFilter
 import pytest
 
