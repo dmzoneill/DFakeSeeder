@@ -2,18 +2,19 @@
 RFC: https://wiki.theory.org/index.php/BitTorrentSpecification
 """
 
-import struct
 import random
-import requests
-import traceback
+import struct
 import threading
-import lib.torrent.bencoding as bencoding
-import lib.util.helpers as helpers
-from lib.settings import Settings
-from lib.view import View
+import traceback
 from time import sleep
 from urllib.parse import urlparse
+
+import lib.torrent.bencoding as bencoding
+import lib.util.helpers as helpers
+import requests
 from lib.logger import logger
+from lib.settings import Settings
+from lib.view import View
 from requests.exceptions import ProxyError
 from urllib3.exceptions import MaxRetryError, ReadTimeoutError
 

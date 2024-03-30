@@ -1,7 +1,9 @@
 import unittest
-from unittest.mock import patch, MagicMock
-from d_fake_seeder.lib.views.states import States
+from unittest.mock import MagicMock, patch
+
 import pytest
+
+from d_fake_seeder.lib.views.states import States
 
 
 class TestStates(unittest.TestCase):

@@ -1,11 +1,12 @@
 import unittest
-from unittest.mock import patch, MagicMock
-from gi.repository import Gtk, GLib
 import webbrowser
+from unittest.mock import MagicMock, patch
 
-from d_fake_seeder.lib.view import View  # Import your View class here
-from d_fake_seeder.lib.logger import logger
 import pytest
+from gi.repository import GLib, Gtk
+
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.view import View  # Import your View class here
 
 
 class TestViewSetupWindow(unittest.TestCase):

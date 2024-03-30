@@ -1,12 +1,12 @@
 import json
 import os
 import shutil
-from gi.repository import GObject
-from watchdog.observers import Observer
-
-from lib.handlers.FileModifiedEventHandler import FileModifiedEventHandler
 from threading import Lock
+
+from gi.repository import GObject
+from lib.handlers.FileModifiedEventHandler import FileModifiedEventHandler
 from lib.logger import logger
+from watchdog.observers import Observer
 
 
 class Settings(GObject.Object):

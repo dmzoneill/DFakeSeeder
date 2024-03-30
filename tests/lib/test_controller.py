@@ -1,8 +1,10 @@
+import os
 import unittest
 from unittest.mock import MagicMock
-from d_fake_seeder.lib.controller import Controller
-import os
+
 import pytest
+
+from d_fake_seeder.lib.controller import Controller
 
 
 class TestController(unittest.TestCase):

@@ -1,18 +1,19 @@
+import random
 import threading
 import time
-from lib.torrent.seeder import Seeder
-from lib.torrent.file import File
+
+import gi
+from lib.logger import logger
 from lib.settings import Settings
 from lib.torrent.attributes import Attributes
+from lib.torrent.file import File
+from lib.torrent.seeder import Seeder
 from lib.view import View
-from lib.logger import logger
-import random
-import gi
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 
-from gi.repository import GObject, GLib  # noqa
+from gi.repository import GLib, GObject  # noqa
 
 
 # Torrent class definition

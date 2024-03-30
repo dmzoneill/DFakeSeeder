@@ -1,7 +1,9 @@
 import unittest
 from unittest.mock import patch
-from d_fake_seeder.lib.torrent.torrent import Torrent
+
 import pytest
+
+from d_fake_seeder.lib.torrent.torrent import Torrent
 
 
 class TestTorrent(unittest.TestCase):

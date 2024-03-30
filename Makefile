@@ -4,6 +4,7 @@ clearlog:
 lint: clearlog
 	black -v --line-length=90 .
 	flake8 --max-line-length=90
+	find . -iname "*.py" -exec isort --profile=black --df {} \;
 
 icons: lint
 	{ \

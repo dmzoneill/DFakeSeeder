@@ -68,6 +68,12 @@
         "total_uploaded": "Gtk.SpinButton",
         "upload_speed": "Gtk.SpinButton"
     },
-    "issues_page": "https://github.com/dmzoneill/DFakeSeeder/issues"
+    "issues_page": "https://github.com/dmzoneill/DFakeSeeder/issues",
+    "website": "https://github.com/dmzoneill/DFakeSeeder/",
+    "author": "David O Neill",
+    "copyright": "Copyright {year}",
+    "license": "Copyright {year}",
+    "version": "1.0",
+    "logo": "images/dfakeseeder.png"
 }
 ```

@@ -1,7 +1,9 @@
 import unittest
-from unittest.mock import patch, call
-from d_fake_seeder.dfakeseeder import DFakeSeeder
+from unittest.mock import call, patch
+
 import pytest
+
+from d_fake_seeder.dfakeseeder import DFakeSeeder
 
 
 class TestDFakeSeeder(unittest.TestCase):

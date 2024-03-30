@@ -1,19 +1,20 @@
-from lib.util.helpers import (
-    humanbytes,
-    convert_seconds_to_hours_mins_seconds,
-    add_kb,
-    add_percent,
-)
-from lib.torrent.attributes import Attributes
+import time
+
+import gi
 from lib.logger import logger
 from lib.settings import Settings
-import time
-import gi
+from lib.torrent.attributes import Attributes
+from lib.util.helpers import (
+    add_kb,
+    add_percent,
+    convert_seconds_to_hours_mins_seconds,
+    humanbytes,
+)
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 
-from gi.repository import Gtk, Gio, GLib, Pango  # noqa
+from gi.repository import Gio, GLib, Gtk, Pango  # noqa
 
 
 class Torrents:

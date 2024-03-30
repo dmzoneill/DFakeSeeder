@@ -1,5 +1,5 @@
-from datetime import datetime
 import hashlib
+from datetime import datetime
 
 import lib.torrent.bencoding as bencoding
 import lib.util.helpers as helpers

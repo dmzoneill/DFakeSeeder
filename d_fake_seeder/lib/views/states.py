@@ -1,6 +1,6 @@
+import gi
 from lib.logger import logger
 from lib.settings import Settings
-import gi
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")

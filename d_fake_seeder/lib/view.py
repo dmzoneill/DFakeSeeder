@@ -1,21 +1,22 @@
-import webbrowser
 import os
 import signal
 import time
+import webbrowser
+
+import gi  # noqa
 
 # Importing necessary libraries
 from lib.logger import logger
-from lib.views.states import States
-from lib.views.torrents import Torrents
+from lib.settings import Settings
 from lib.views.notebook import Notebook
+from lib.views.states import States
 from lib.views.statusbar import Statusbar
 from lib.views.toolbar import Toolbar
-from lib.settings import Settings
-import gi  # noqa
+from lib.views.torrents import Torrents
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, GLib, Gio  # noqa
+from gi.repository import Gio, GLib, Gtk  # noqa
 
 
 # View class for Torrent Application

@@ -1,6 +1,8 @@
 import unittest
-from d_fake_seeder.lib.torrent.bencoding import decode, encode
+
 import pytest
+
+from d_fake_seeder.lib.torrent.bencoding import decode, encode
 
 
 class TestBencodingMethods(unittest.TestCase):

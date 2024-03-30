@@ -1,7 +1,9 @@
-import unittest
 import logging
-from d_fake_seeder.lib.logger import ClassNameFilter
+import unittest
+
 import pytest
+
+from d_fake_seeder.lib.logger import ClassNameFilter
 
 
 class TestClassNameFilter(unittest.TestCase):

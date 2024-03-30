@@ -1,6 +1,7 @@
 import os
-from lib.settings import Settings
+
 from lib.logger import logger
+from lib.settings import Settings
 
 
 # Cont roller
