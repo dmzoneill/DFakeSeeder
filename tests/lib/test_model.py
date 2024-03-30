@@ -75,9 +75,12 @@ class TestModel(unittest.TestCase):
     @pytest.mark.timeout(5)
     def test_get_liststore(self):
         mock_filter_torrent = Mock()
-        mock_attributes = {"attribute1": "value1", "attribute2": "value2"}
         mock_torrent_list = [
-            Mock(filepath="test_filepath", attribute1="value1", attribute2="value2")
+            Mock(
+                filepath="test_filepath",
+                attribute1="value1",
+                attribute2="value2",
+            )
         ]
 
         test_instance = Model()

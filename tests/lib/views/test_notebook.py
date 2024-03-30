@@ -32,7 +32,7 @@ class TestNotebook(unittest.TestCase):
         notebook.torrents_treeview = MagicMock()
         notebook.model = MagicMock()
         notebook.model.torrent_list = [MagicMock(id=1), MagicMock(id=2)]
-        notebook.torrents_treeview.get_selection().get_selected.return_value = (
+        notebook.torrents_treeview.get_selection().get_selected.return_value = (  # noqa
             None,
             None,
         )
@@ -41,7 +41,7 @@ class TestNotebook(unittest.TestCase):
 
         self.assertFalse(result)
 
-        notebook.torrents_treeview.get_selection().get_selected.return_value = (
+        notebook.torrents_treeview.get_selection().get_selected.return_value = (  # noqa
             MagicMock(),
             MagicMock(),
         )
@@ -55,14 +55,14 @@ class TestNotebook(unittest.TestCase):
     def test_on_selection_changed(self, mock_logger_info):
         notebook = Notebook(MagicMock(), MagicMock())
         notebook.torrents_treeview = MagicMock()
-        notebook.torrents_treeview.get_selection().get_selected.return_value = (
+        notebook.torrents_treeview.get_selection().get_selected.return_value = (  # noqa
             None,
             None,
         )
 
         notebook.on_selection_changed(MagicMock())
 
-        notebook.torrents_treeview.get_selection().get_selected.return_value = (
+        notebook.torrents_treeview.get_selection().get_selected.return_value = (  # noqa
             MagicMock(),
             MagicMock(),
         )
@@ -83,10 +83,12 @@ class TestNotebook(unittest.TestCase):
         notebook.peers_treeview = MagicMock()
 
         # Case where store is None
-        notebook.model.get_liststore_item.return_value.get_seeder.return_value.peers = [
-            1,
-            2,
-        ]
+        notebook.model.get_liststore_item.return_value.get_seeder.return_value.peers = (
+            [  # noqa
+                1,
+                2,
+            ]
+        )
         notebook.update_notebook_peers(1)
 
         self.assertTrue(notebook.peers_treeview.set_model.called)
@@ -99,11 +101,13 @@ class TestNotebook(unittest.TestCase):
         store = MagicMock()
         store.clear = MagicMock()
         notebook.peers_treeview.get_model.return_value = store
-        notebook.model.get_liststore_item.return_value.get_seeder.return_value.peers = [
-            1,
-            2,
-            3,
-        ]
+        notebook.model.get_liststore_item.return_value.get_seeder.return_value.peers = (
+            [  # noqa
+                1,
+                2,
+                3,
+            ]
+        )
 
         notebook.update_notebook_peers(1)
 

@@ -1,16 +1,17 @@
+from lib.logger import logger
+import logging
+from lib.settings import Settings
+from gi.repository import Gtk, GLib
 import gi
 
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, GLib
-from lib.settings import Settings
-import logging
-from lib.logger import logger
 
 
 class Notebook:
     def __init__(self, builder, model):
         logger.info(
-            "Notebook view startup", extra={"class_name": self.__class__.__name__}
+            "Notebook view startup",
+            extra={"class_name": self.__class__.__name__},
         )
         self.builder = builder
         self.model = model
@@ -45,7 +46,8 @@ class Notebook:
         self.status_tab = self.builder.get_object("status_tab")
         self.notebook.set_current_page(0)
         self.notebook.page_num(self.status_tab)
-        # label_widget = self.notebook.get_tab_label(self.notebook.get_nth_page(0))
+        # label_widget =
+        # self.notebook.get_tab_label(self.notebook.get_nth_page(0))
         # self.notebook.set_current_page(
         #     self.notebook.page_num(label_widget.get_parent())
         # )
@@ -53,7 +55,8 @@ class Notebook:
         # Connect the signals
         self.selection = self.torrents_treeview.get_selection()
         self.selection.connect("changed", self.on_selection_changed)
-        # self.torrents_treeview.connect("row-activated", self.on_row_activated)
+        # self.torrents_treeview.connect("row-activated",
+        # self.on_row_activated)
 
         # subscribe to settings changed
         self.settings = Settings.get_instance()
@@ -118,7 +121,8 @@ class Notebook:
 
     def on_selection_changed(self, selection):
         logger.debug(
-            "Notebook selection changed", extra={"class_name": self.__class__.__name__}
+            "Notebook selection changed",
+            extra={"class_name": self.__class__.__name__},
         )
         model, iter = selection.get_selected()
         if iter is not None:
@@ -138,7 +142,8 @@ class Notebook:
 
     def update_notebook_peers(self, id):
         logger.info(
-            "Notebook update peers", extra={"class_name": self.__class__.__name__}
+            "Notebook update peers",
+            extra={"class_name": self.__class__.__name__},
         )
         torrent = self.model.get_liststore_item(id)
 
@@ -233,7 +238,8 @@ class Notebook:
 
     def update_notebook_status(self, torrent):
         logger.info(
-            "Notebook update status", extra={"class_name": self.__class__.__name__}
+            "Notebook update status",
+            extra={"class_name": self.__class__.__name__},
         )
 
         compatible_attributes, store = self.model.get_liststore()
@@ -276,6 +282,7 @@ class Notebook:
 
     def handle_settings_changed(self, source, key, value):
         logger.info(
-            "Notebook settings changed", extra={"class_name": self.__class__.__name__}
+            "Notebook settings changed",
+            extra={"class_name": self.__class__.__name__},
         )
         # print(key + " = " + value)

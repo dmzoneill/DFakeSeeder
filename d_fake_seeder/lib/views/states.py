@@ -1,9 +1,9 @@
+from lib.logger import logger
+from lib.settings import Settings
+from gi.repository import Gtk
 import gi
 
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, GLib
-from lib.settings import Settings
-from lib.logger import logger
 
 
 class States:
@@ -23,9 +23,7 @@ class States:
 
     # Method to update the TreeView with compatible attributes
     def update_view(self, model, _, torrent, attribute):
-        logger.debug(
-            "States update view", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("States update view", extra={"class_name": self.__class__.__name__})
         if len(self.states_treeview.get_columns()) != 2:
             # Create the column for the tracker name
             tracker_col = Gtk.TreeViewColumn("Tracker", Gtk.CellRendererText(), text=0)
@@ -38,6 +36,7 @@ class States:
 
     def handle_settings_changed(self, source, key, value):
         logger.debug(
-            "States settings update", extra={"class_name": self.__class__.__name__}
+            "States settings update",
+            extra={"class_name": self.__class__.__name__},
         )
         # print(key + " = " + value)

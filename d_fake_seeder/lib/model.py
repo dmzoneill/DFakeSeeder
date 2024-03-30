@@ -1,19 +1,25 @@
+from lib.logger import logger
+from urllib.parse import urlparse
+from lib.torrent.attributes import Attributes
+from lib.settings import Settings
+from lib.torrent.torrent import Torrent
+from gi.repository import Gtk, GObject
 import gi
 
+gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, GObject
-from lib.torrent.torrent import Torrent
-from lib.settings import Settings
-from lib.torrent.attributes import Attributes
-from urllib.parse import urlparse
-from lib.logger import logger
 
 
 # Class for handling Torrent data
 class Model(GObject.GObject):
-    # Define custom signal 'data-changed' which is emitted when torrent data is modified
+    # Define custom signal 'data-changed' which is emitted when torrent data
+    # is modified
     __gsignals__ = {
-        "data-changed": (GObject.SignalFlags.RUN_FIRST, None, (object, object, object))
+        "data-changed": (
+            GObject.SignalFlags.RUN_FIRST,
+            None,
+            (object, object, object),
+        )
     }
 
     def __init__(self):
@@ -36,7 +42,8 @@ class Model(GObject.GObject):
         # Create new Torrent instance
         torrent = Torrent(filepath)
 
-        # Connect 'attribute-changed' signal of torrent to on_attribute_changed method
+        # Connect 'attribute-changed' signal of torrent to on_attribute_changed
+        # method
         torrent.connect("attribute-changed", self.on_attribute_changed)
         self.torrent_list.append(torrent)
 
@@ -58,7 +65,8 @@ class Model(GObject.GObject):
         # Create new Torrent instance
         torrent = Torrent(filepath)
 
-        # Connect 'attribute-changed' signal of torrent to on_attribute_changed method
+        # Connect 'attribute-changed' signal of torrent to on_attribute_changed
+        # method
         torrent.connect("attribute-changed", self.on_attribute_changed)
         self.torrent_list.append(torrent)
 
@@ -68,20 +76,20 @@ class Model(GObject.GObject):
     # Method to handle 'attribute-changed' signal of Torrent instance
     def on_attribute_changed(self, model, torrent, attributes):
         logger.debug(
-            "Model on attribute changed", extra={"class_name": self.__class__.__name__}
+            "Model on attribute changed",
+            extra={"class_name": self.__class__.__name__},
         )
         # current_time = time.time()
         # if current_time - self.last_data_changed_time >= 1:
         #     self.last_data_changed_time = current_time
-        # Emit 'data-changed' signal with torrent instance and modified attribute
+        # Emit 'data-changed' signal with torrent instance and modified
+        # attribute
 
         self.emit("data-changed", model, torrent, attributes)
 
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore(self, filter_torrent=None):
-        logger.debug(
-            "Model get_liststore", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Model get_liststore", extra={"class_name": self.__class__.__name__})
         ATTRIBUTES = Attributes
         attributes = list(vars(ATTRIBUTES)["__annotations__"].keys())
         cols = self.settings.columns if hasattr(self.settings, "columns") else None
@@ -131,9 +139,7 @@ class Model(GObject.GObject):
 
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore_model(self):
-        logger.debug(
-            "Model get_liststore", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Model get_liststore", extra={"class_name": self.__class__.__name__})
         ATTRIBUTES = Attributes
         attributes = list(vars(ATTRIBUTES)["__annotations__"].keys())
         cols = self.settings.columns if hasattr(self.settings, "columns") else None
@@ -187,12 +193,14 @@ class Model(GObject.GObject):
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore_item(self, index):
         logger.info(
-            "Model get list store item", extra={"class_name": self.__class__.__name__}
+            "Model get list store item",
+            extra={"class_name": self.__class__.__name__},
         )
         return self.torrent_list[index]
 
     def handle_settings_changed(self, source, key, value):
         logger.info(
-            "Model settings changed", extra={"class_name": self.__class__.__name__}
+            "Model settings changed",
+            extra={"class_name": self.__class__.__name__},
         )
         # print(key + " = " + value)

@@ -1,25 +1,25 @@
-import gi
-
-gi.require_version("Gdk", "4.0")
-gi.require_version("Gtk", "4.0")
-
-from gi.repository import Gtk, Gio, Gdk, GLib, Pango
-import time
-from lib.settings import Settings
-from lib.logger import logger
-from lib.torrent.attributes import Attributes
 from lib.util.helpers import (
     humanbytes,
     convert_seconds_to_hours_mins_seconds,
     add_kb,
     add_percent,
 )
+from lib.torrent.attributes import Attributes
+from lib.logger import logger
+from lib.settings import Settings
+import time
+from gi.repository import Gtk, Gio, GLib, Pango
+import gi
+
+gi.require_version("Gdk", "4.0")
+gi.require_version("Gtk", "4.0")
 
 
 class Torrents:
     def __init__(self, builder, model):
         logger.info(
-            "Torrents view startup", extra={"class_name": self.__class__.__name__}
+            "Torrents view startup",
+            extra={"class_name": self.__class__.__name__},
         )
         self.builder = builder
         self.model = model
@@ -101,9 +101,9 @@ class Torrents:
         self.popover.popup()
 
     def on_stateful_action_change_state(self, action, value):
-        self.stateful_actions[action.get_name()[len("toggle_") :]].set_state(
-            GLib.Variant.new_boolean(value.get_boolean())
-        )
+        self.stateful_actions[
+            action.get_name()[len("toggle_") :]  # noqa: E203
+        ].set_state(GLib.Variant.new_boolean(value.get_boolean()))
 
         checked_items = []
         all_unchecked = True
@@ -136,7 +136,8 @@ class Torrents:
             "Torrent view format progress",
             extra={"class_name": self.__class__.__name__},
         )
-        value = model.get_value(iter, attribute_index)  # Get the value from the model
+        # Get the value from the model
+        value = model.get_value(iter, attribute_index)
         cell_renderer.set_property("text", f"{int(value)}%")
         cell_renderer.set_property("value", round(int(value)))
 
@@ -198,10 +199,14 @@ class Torrents:
                     column.set_sort_indicator(True)
                     column.set_sort_order(Gtk.SortType.ASCENDING)
                     column.add_attribute(
-                        cell_renderer, "text", compatible_attributes.index(attribute)
+                        cell_renderer,
+                        "text",
+                        compatible_attributes.index(attribute),
                     )
                     column.set_cell_data_func(
-                        cell_renderer, self.format_progress_text, attribute_index
+                        cell_renderer,
+                        self.format_progress_text,
+                        attribute_index,
                     )
                 elif attribute in textrenderers:
                     text_renderer_func_name = textrenderers[attribute]
@@ -217,11 +222,12 @@ class Torrents:
                     )
                     if text_renderer_func_name == "humanbytes":
                         column.set_cell_data_func(
-                            cell_renderer, self.render_humanbytes, attribute_index
+                            cell_renderer,
+                            self.render_humanbytes,
+                            attribute_index,
                         )
                     elif (
-                        text_renderer_func_name
-                        == "convert_seconds_to_hours_mins_seconds"
+                        text_renderer_func_name == "convert_seconds_to_hours_mins_seconds"
                     ):
                         column.set_cell_data_func(
                             cell_renderer, self.render_seconds, attribute_index
@@ -242,7 +248,9 @@ class Torrents:
                     column.set_sort_indicator(True)
                     column.set_sort_order(Gtk.SortType.ASCENDING)
                     column.add_attribute(
-                        cell_renderer, "text", compatible_attributes.index(attribute)
+                        cell_renderer,
+                        "text",
+                        compatible_attributes.index(attribute),
                     )
 
                 self.torrents_treeview.append_column(column)
@@ -272,7 +280,8 @@ class Torrents:
     # Method to update the TreeView with compatible attributes
     def update_view(self, model, _, torrent, updated_attributes):
         logger.debug(
-            "Torrents update view", extra={"class_name": self.__class__.__name__}
+            "Torrents update view",
+            extra={"class_name": self.__class__.__name__},
         )
 
         if updated_attributes == "columnupdate":

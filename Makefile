@@ -2,7 +2,8 @@ clearlog:
 	truncate -s 0 d_fake_seeder/log.log
 
 lint: clearlog
-	black -v .
+	black -v --line-length=90 .
+	flake8 --max-line-length=90
 
 icons: lint
 	{ \

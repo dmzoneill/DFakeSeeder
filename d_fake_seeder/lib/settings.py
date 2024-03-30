@@ -15,7 +15,11 @@ class Settings(GObject.Object):
     _lock = Lock()  # Lock for thread safety
 
     __gsignals__ = {
-        "attribute-changed": (GObject.SignalFlags.RUN_FIRST, None, (str, object))
+        "attribute-changed": (
+            GObject.SignalFlags.RUN_FIRST,
+            None,
+            (str, object),
+        )
     }
 
     @staticmethod
@@ -43,7 +47,8 @@ class Settings(GObject.Object):
 
     def __init__(self, file_path):
         logger.info(
-            "Settings instantiate", extra={"class_name": self.__class__.__name__}
+            "Settings instantiate",
+            extra={"class_name": self.__class__.__name__},
         )
         if Settings._instance is not None:
             raise Exception("Only one instance of Settings class is allowed.")
@@ -105,7 +110,8 @@ class Settings(GObject.Object):
 
     def __setattr__(self, name, value):
         logger.debug(
-            "Settings __setattr__", extra={"class_name": self.__class__.__name__}
+            "Settings __setattr__",
+            extra={"class_name": self.__class__.__name__},
         )
         # Acquire the lock before modifying the settings
         with Settings._lock:
@@ -113,7 +119,8 @@ class Settings(GObject.Object):
                 # Directly set the 'settings' attribute
                 super().__setattr__(name, value)
             elif name.startswith("_"):
-                # Set the attribute without modifying 'settings' or emitting signals
+                # Set the attribute without modifying 'settings' or emitting
+                # signals
                 super().__setattr__(name, value)
             else:
                 nested_attribute = name.split(".")
@@ -124,7 +131,8 @@ class Settings(GObject.Object):
                         current = current.setdefault(attr, {})
                     current[nested_attribute[-1]] = value
                 else:
-                    # Set the setting value and emit the 'attribute-changed' signal
+                    # Set the setting value and emit the 'attribute-changed'
+                    # signal
                     self._settings[name] = value
                     self.emit("attribute-changed", name, value)
                     self.save_settings()

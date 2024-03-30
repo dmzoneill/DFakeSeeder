@@ -11,7 +11,15 @@ def generate_transaction_id():
 
 def build_announce_packet(connection_id, transaction_id, info_hash, peer_id):
     packet = struct.pack(
-        "!QII20s20sQQQ", connection_id, 1, transaction_id, info_hash, peer_id, 0, 0, 0
+        "!QII20s20sQQQ",
+        connection_id,
+        1,
+        transaction_id,
+        info_hash,
+        peer_id,
+        0,
+        0,
+        0,
     )
     return packet
 
@@ -82,6 +90,7 @@ def udp_tracker_announce(tracker_url, info_hash, peer_id):
         print(f"Seeders: {seeders}")
 
     except Exception as e:
+        print(e)
         print(traceback.format_exc())
         print("An error occurred while connecting to the tracker.")
 

@@ -1,12 +1,12 @@
+from lib.logger import logger
+from lib.settings import Settings
+from gi.repository import Gtk
 import gi
 import math
 import os
 import shutil
 
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk
-from lib.settings import Settings
-from lib.logger import logger
 
 
 class Toolbar:
@@ -48,9 +48,7 @@ class Toolbar:
         self.toolbar_down_button.add_css_class("flat")
 
         self.toolbar_settings_button = self.builder.get_object("toolbar_settings")
-        self.toolbar_settings_button.connect(
-            "clicked", self.on_toolbar_settings_clicked
-        )
+        self.toolbar_settings_button.connect("clicked", self.on_toolbar_settings_clicked)
         self.toolbar_settings_button.add_css_class("flat")
 
         self.toolbar_refresh_rate = self.builder.get_object("toolbar_refresh_rate")
@@ -68,13 +66,12 @@ class Toolbar:
         self.model = model
 
     def on_toolbar_refresh_rate_changed(self, value):
-        self.settings.tickspeed = math.ceil(
-            float(self.toolbar_refresh_rate.get_value())
-        )
+        self.settings.tickspeed = math.ceil(float(self.toolbar_refresh_rate.get_value()))
 
     def on_toolbar_add_clicked(self, button):
         logger.info(
-            "Toolbar add button clicked", extra={"class_name": self.__class__.__name__}
+            "Toolbar add button clicked",
+            extra={"class_name": self.__class__.__name__},
         )
         self.show_file_selection_dialog()
 
@@ -122,7 +119,8 @@ class Toolbar:
 
     def on_toolbar_up_clicked(self, button):
         logger.info(
-            "Toolbar up button clicked", extra={"class_name": self.__class__.__name__}
+            "Toolbar up button clicked",
+            extra={"class_name": self.__class__.__name__},
         )
         selected = self.get_selected_torrent()
         if not selected:
@@ -139,7 +137,8 @@ class Toolbar:
 
     def on_toolbar_down_clicked(self, button):
         logger.info(
-            "Toolbar down button clicked", extra={"class_name": self.__class__.__name__}
+            "Toolbar down button clicked",
+            extra={"class_name": self.__class__.__name__},
         )
         selected = self.get_selected_torrent()
         if not selected:
@@ -171,15 +170,11 @@ class Toolbar:
         current_path = os.path.dirname(os.path.abspath(__file__))
         torrents_path = os.path.join(current_path, "torrents")
         shutil.copy(os.path.abspath(selected_file), torrents_path)
-        copied_torrent_path = os.path.join(
-            torrents_path, os.path.basename(selected_file)
-        )
+        copied_torrent_path = os.path.join(torrents_path, os.path.basename(selected_file))
         self.model.add_torrent(os.path.relpath(copied_torrent_path))
 
     def show_file_selection_dialog(self):
-        logger.info(
-            "Toolbar file dialog", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Toolbar file dialog", extra={"class_name": self.__class__.__name__})
         # Create a new file chooser dialog
         dialog = Gtk.FileChooserDialog(
             "Select File",
@@ -243,6 +238,7 @@ class Toolbar:
 
     def handle_settings_changed(self, source, key, value):
         logger.info(
-            "Toolbar settings changed", extra={"class_name": self.__class__.__name__}
+            "Toolbar settings changed",
+            extra={"class_name": self.__class__.__name__},
         )
         # print(key + " = " + value)

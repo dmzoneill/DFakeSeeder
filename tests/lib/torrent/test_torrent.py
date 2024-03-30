@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from d_fake_seeder.lib.torrent.torrent import Torrent
 import pytest
 
@@ -108,9 +108,7 @@ class TestTorrent(unittest.TestCase):
         mock_logger_debug.assert_called_with(
             "Torrent settings changed", extra={"class_name": "Torrent"}
         )
-        mock_gobject_emit.assert_called_with(
-            "attribute-changed", torrent, {source: key}
-        )
+        mock_gobject_emit.assert_called_with("attribute-changed", torrent, {source: key})
 
     @patch("d_fake_seeder.lib.torrent.torrent.logger.info")
     @pytest.mark.timeout(5)

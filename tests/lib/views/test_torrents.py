@@ -1,4 +1,3 @@
-import torrents
 import pytest
 
 

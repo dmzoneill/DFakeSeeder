@@ -1,4 +1,13 @@
 # Importing necessary libraries
+from lib.logger import logger
+from lib.views.states import States
+from lib.views.torrents import Torrents
+from lib.views.notebook import Notebook
+from lib.views.statusbar import Statusbar
+from lib.views.toolbar import Toolbar
+import time
+from lib.settings import Settings
+from gi.repository import Gtk, GLib, Gio
 import signal
 import gi
 import webbrowser
@@ -6,15 +15,6 @@ import os
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, GLib, Gio
-from lib.settings import Settings
-import time
-from lib.views.toolbar import Toolbar
-from lib.views.statusbar import Statusbar
-from lib.views.notebook import Notebook
-from lib.views.torrents import Torrents
-from lib.views.states import States
-from lib.logger import logger
 
 
 # View class for Torrent Application
@@ -81,9 +81,7 @@ class View:
 
         # Apply CSS to the window
         style_context = self.window.get_style_context()
-        style_context.add_provider(
-            css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        )
+        style_context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         # Create an action group
         self.action_group = Gio.SimpleActionGroup()
@@ -204,7 +202,8 @@ class View:
     # Connecting signals for different events
     def connect_signals(self):
         logger.info(
-            "View connect signals", extra={"class_name": self.__class__.__name__}
+            "View connect signals",
+            extra={"class_name": self.__class__.__name__},
         )
         self.window.connect("destroy", self.quit)
         self.window.connect("close-request", self.quit)
@@ -233,7 +232,8 @@ class View:
     # open github webpage
     def on_help_clicked(self, menu_item):
         logger.info(
-            "Opening GitHub webpage", extra={"class_name": self.__class__.__name__}
+            "Opening GitHub webpage",
+            extra={"class_name": self.__class__.__name__},
         )
         webbrowser.open(self.settings.issues_page)
 
@@ -251,5 +251,6 @@ class View:
 
     def handle_settings_changed(self, source, key, value):
         logger.info(
-            "View settings changed", extra={"class_name": self.__class__.__name__}
+            "View settings changed",
+            extra={"class_name": self.__class__.__name__},
         )

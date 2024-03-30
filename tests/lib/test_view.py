@@ -190,7 +190,8 @@ class TestViewSetupWindow(unittest.TestCase):
         view.handle_settings_changed(source, key, value)
 
         logger.info.assert_called_with(
-            "View settings changed", extra={"class_name": view.__class__.__name__}
+            "View settings changed",
+            extra={"class_name": view.__class__.__name__},
         )
 
 

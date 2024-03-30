@@ -42,7 +42,8 @@ class Seeder:
     @staticmethod
     def recreate_semaphore(self):
         logger.info(
-            "Seeder recreate_semaphore", extra={"class_name": self.__class__.__name__}
+            "Seeder recreate_semaphore",
+            extra={"class_name": self.__class__.__name__},
         )
         current_count = Seeder.tracker_semaphore._value
 
@@ -177,7 +178,7 @@ class Seeder:
                     timeout=10,
                 )
                 break
-            except:
+            except BaseException:
                 traceback.print_exc()
             finally:
                 self.tracker_semaphore.release()
@@ -191,9 +192,9 @@ class Seeder:
             return result
         peers = self.info[b"peers"]
         for i in range(len(peers) // 6):
-            ip = peers[i : i + 4]
+            ip = peers[i : i + 4]  # noqa: E203
             ip = ".".join("%d" % x for x in ip)
-            port = peers[i + 4 : i + 6]
+            port = peers[i + 4 : i + 6]  # noqa: E203
             port = struct.unpack(">H", port)[0]
             result.append("%s:%d" % (ip, port))
 
@@ -201,35 +202,34 @@ class Seeder:
 
     @property
     def clients(self):
-        logger.debug(
-            "Seeder get clients", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Seeder get clients", extra={"class_name": self.__class__.__name__})
         return Seeder.peer_clients
 
     @property
     def seeders(self):
         # logger.debug(
-        #     "Seeder get seeders", extra={"class_name": self.__class__.__name__}
+        #     "Seeder get seeders",
+        #     extra={"class_name": self.__class__.__name__}
         # )
         return self.info[b"complete"] if b"complete" in self.info else 0
 
     @property
     def tracker(self):
         # logger.debug(
-        #     "Seeder get tracker", extra={"class_name": self.__class__.__name__}
+        #     "Seeder get tracker",
+        #     extra={"class_name": self.__class__.__name__}
         # )
         return self.tracker_url
 
     @property
     def leechers(self):
-        logger.debug(
-            "Seeder get leechers", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Seeder get leechers", extra={"class_name": self.__class__.__name__})
         return self.info[b"incomplete"] if b"incomplete" in self.info else 0
 
     def handle_settings_changed(self, source, key, value):
         logger.info(
-            "Seeder settings changed", extra={"class_name": self.__class__.__name__}
+            "Seeder settings changed",
+            extra={"class_name": self.__class__.__name__},
         )
         if key == "concurrent_http_connections":
             Seeder.recreate_semaphore(self)
