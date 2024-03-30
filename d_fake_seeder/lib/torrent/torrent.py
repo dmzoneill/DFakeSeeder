@@ -1,4 +1,3 @@
-from gi.repository import GObject, GLib
 import threading
 import time
 from lib.torrent.seeder import Seeder
@@ -8,6 +7,12 @@ from lib.torrent.attributes import Attributes
 from lib.view import View
 from lib.logger import logger
 import random
+import gi
+
+gi.require_version("Gdk", "4.0")
+gi.require_version("Gtk", "4.0")
+
+from gi.repository import GObject, GLib  # noqa
 
 
 # Torrent class definition

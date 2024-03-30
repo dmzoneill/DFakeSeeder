@@ -1,9 +1,11 @@
 from lib.logger import logger
 from lib.settings import Settings
-from gi.repository import Gtk
 import gi
 
+gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
+
+from gi.repository import Gtk  # noqa
 
 
 class States:

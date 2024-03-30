@@ -11,7 +11,7 @@ import pytest
 class TestViewSetupWindow(unittest.TestCase):
     @pytest.mark.timeout(5)
     def test_setup_window(self):
-        view = View()
+        view = View(MagicMock())
 
         view.window = MagicMock()
         view.window.get_screen.return_value.get_width.return_value = 1920
@@ -28,7 +28,7 @@ class TestViewSetupWindow(unittest.TestCase):
 
     @pytest.mark.timeout(5)
     def test_show_splash_image(self):
-        view = View()
+        view = View(MagicMock())
         view.overlay = MagicMock()
         view.fade_out_image = MagicMock()
 
@@ -43,7 +43,7 @@ class TestViewSetupWindow(unittest.TestCase):
 
     @pytest.mark.timeout(5)
     def test_fade_out_image(self):
-        view = View()
+        view = View(MagicMock())
         view.splash_image = MagicMock()
         view.fade_image = MagicMock()
 
@@ -54,7 +54,7 @@ class TestViewSetupWindow(unittest.TestCase):
 
     @pytest.mark.timeout(5)
     def test_fade_image(self):
-        view = View()
+        view = View(MagicMock())
         view.splash_image = MagicMock()
         view.splash_image.fade_out = 0.5
 
@@ -64,7 +64,7 @@ class TestViewSetupWindow(unittest.TestCase):
 
     @pytest.mark.timeout(5)
     def test_resize_panes(self):
-        view = View()
+        view = View(MagicMock())
         view.main_paned = MagicMock()
         view.main_paned.get_allocation.return_value.height = 800
 
@@ -75,7 +75,7 @@ class TestViewSetupWindow(unittest.TestCase):
 
     @pytest.mark.timeout(5)
     def test_notify(self):
-        view = View()
+        view = View(MagicMock())
         view.notify_label = MagicMock()
         view.status = MagicMock()
         view.timeout_id = 1
@@ -90,7 +90,7 @@ class TestViewSetupWindow(unittest.TestCase):
 
     @pytest.mark.timeout(5)
     def test_set_model(self):
-        view = View()
+        view = View(MagicMock())
         model = MagicMock()
 
         view.set_model(model)
@@ -104,7 +104,7 @@ class TestViewSetupWindow(unittest.TestCase):
 
     @pytest.mark.timeout(5)
     def test_connect_signals(self):
-        view = View()
+        view = View(MagicMock())
         view.window = MagicMock()
         view.quit_menu_item = MagicMock()
         view.help_menu_item = MagicMock()
@@ -123,7 +123,7 @@ class TestViewSetupWindow(unittest.TestCase):
 
     @pytest.mark.timeout(5)
     def test_remove_signals(self):
-        view = View()
+        view = View(MagicMock())
         view.model = MagicMock()
         view.torrents.update_view = MagicMock()
         view.notebook.update_view = MagicMock()
@@ -139,7 +139,7 @@ class TestViewSetupWindow(unittest.TestCase):
 
     @pytest.mark.timeout(5)
     def test_on_quit_clicked(self):
-        view = View()
+        view = View(MagicMock())
         view.remove_signals = MagicMock()
         view.quit = MagicMock()
         menu_item = MagicMock()
@@ -151,7 +151,7 @@ class TestViewSetupWindow(unittest.TestCase):
 
     @pytest.mark.timeout(5)
     def test_on_help_clicked(self):
-        view = View()
+        view = View(MagicMock())
         view.settings = MagicMock()
         view.settings.issues_page = "https://github.com/issues"
         webbrowser.open = MagicMock()
@@ -165,7 +165,7 @@ class TestViewSetupWindow(unittest.TestCase):
     @patch("builtins.exit")
     @pytest.mark.timeout(5)
     def test_quit(self, mock_exit, sys_exit):
-        view = View()
+        view = View(MagicMock())
         view.model = MagicMock()
         view.model.torrent_list = [MagicMock(), MagicMock()]
         view.settings = MagicMock()
@@ -182,7 +182,7 @@ class TestViewSetupWindow(unittest.TestCase):
 
     @pytest.mark.timeout(5)
     def test_handle_settings_changed(self):
-        view = View()
+        view = View(MagicMock())
         source = MagicMock()
         key = "test_key"
         value = "test_value"

@@ -1,11 +1,8 @@
 from lib.util.helpers import humanbytes
 from lib.logger import logger
 from lib.settings import Settings
-import gi
 import requests
 import time
-
-gi.require_version("Gtk", "4.0")
 
 
 class Statusbar:

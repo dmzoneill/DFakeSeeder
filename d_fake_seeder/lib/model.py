@@ -3,11 +3,12 @@ from urllib.parse import urlparse
 from lib.torrent.attributes import Attributes
 from lib.settings import Settings
 from lib.torrent.torrent import Torrent
-from gi.repository import Gtk, GObject
 import gi
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
+
+from gi.repository import Gtk, GObject  # noqa
 
 
 # Class for handling Torrent data
