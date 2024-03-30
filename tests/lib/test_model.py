@@ -1,8 +1,15 @@
 import unittest
 from unittest.mock import Mock, patch
-from gi.repository import Gtk
-from d_fake_seeder.lib.model import Model
+
+import gi  # noqa
 import pytest
+
+gi.require_version("Gdk", "4.0")
+gi.require_version("Gtk", "4.0")
+
+from gi.repository import Gtk  # noqa
+
+from d_fake_seeder.lib.model import Model  # noqa
 
 
 class TestModel(unittest.TestCase):

@@ -1,7 +1,9 @@
 import unittest
 from unittest.mock import MagicMock
-from d_fake_seeder.lib.handlers import FileModifiedEventHandler
+
 import pytest
+
+from d_fake_seeder.lib.handlers import FileModifiedEventHandler
 
 
 class TestFileModifiedEventHandler(unittest.TestCase):

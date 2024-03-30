@@ -1,15 +1,15 @@
 # import gettext
-from lib.logger import logger
-from lib.settings import Settings
-from lib.controller import Controller
-from lib.view import View
-from lib.model import Model
 import gi
+from lib.controller import Controller
+from lib.logger import logger
+from lib.model import Model
+from lib.settings import Settings
+from lib.view import View
 
 # Ensure the correct version of Gtk is used
 gi.require_version("Gtk", "4.0")
 
-from gi.repository import Gtk, Gio  # noqa
+from gi.repository import Gio, Gtk  # noqa
 
 # Import the Model, View, and Controller classes from their respective modules
 

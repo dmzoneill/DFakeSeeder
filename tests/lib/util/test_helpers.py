@@ -1,14 +1,16 @@
 import unittest
+
+import pytest
+
 from d_fake_seeder.lib.util.helpers import (
-    sizeof_fmt,
-    urlencode,
-    random_id,
-    humanbytes,
-    convert_seconds_to_hours_mins_seconds,
     add_kb,
     add_percent,
+    convert_seconds_to_hours_mins_seconds,
+    humanbytes,
+    random_id,
+    sizeof_fmt,
+    urlencode,
 )
-import pytest
 
 
 class TestHelperFunctions(unittest.TestCase):

@@ -1,14 +1,15 @@
-from lib.logger import logger
 from urllib.parse import urlparse
-from lib.torrent.attributes import Attributes
+
+import gi  # noqa
+from lib.logger import logger
 from lib.settings import Settings
+from lib.torrent.attributes import Attributes
 from lib.torrent.torrent import Torrent
-import gi
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 
-from gi.repository import Gtk, GObject  # noqa
+from gi.repository import GObject, Gtk  # noqa
 
 
 # Class for handling Torrent data

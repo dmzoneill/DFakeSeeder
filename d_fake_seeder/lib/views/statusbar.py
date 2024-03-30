@@ -1,8 +1,9 @@
-from lib.util.helpers import humanbytes
+import time
+
+import requests
 from lib.logger import logger
 from lib.settings import Settings
-import requests
-import time
+from lib.util.helpers import humanbytes
 
 
 class Statusbar:

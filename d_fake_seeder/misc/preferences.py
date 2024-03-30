@@ -1,7 +1,8 @@
-from gi.repository import Gtk
 import gi
 
 gi.require_version("Gtk", "4.0")
+
+from gi.repository import Gtk  # noqa
 
 
 class PreferencesDialog(Gtk.Dialog):

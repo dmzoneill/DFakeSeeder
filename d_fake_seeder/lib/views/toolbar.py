@@ -1,9 +1,10 @@
-from lib.logger import logger
-from lib.settings import Settings
 import math
 import os
 import shutil
+
 import gi
+from lib.logger import logger
+from lib.settings import Settings
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")

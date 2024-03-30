@@ -1,7 +1,8 @@
+import random
 import socket
 import struct
-import random
 import traceback
+
 from lib.torrent.file import TorrentFile
 
 
