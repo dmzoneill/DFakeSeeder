@@ -7,7 +7,7 @@ import pytest
 class TestDFakeSeeder(unittest.TestCase):
     @patch("d_fake_seeder.dfakeseeder.logger.info")
     @pytest.mark.timeout(5)
-    def test_init(self, mock_start, mock_logger_info):
+    def test_init(self, mock_logger_info):
         DFakeSeeder()
         mock_logger_info.assert_has_calls(
             [
@@ -37,9 +37,8 @@ class TestDFakeSeeder(unittest.TestCase):
         mock_controller_run.assert_called_once()
 
     @patch("d_fake_seeder.dfakeseeder.logger.info")
-    @patch("d_fake_seeder.dfakeseeder.DFakeSeeder.start")
     @pytest.mark.timeout(5)
-    def test_handle_settings_changed(self, mock_start, mock_logger_info):
+    def test_handle_settings_changed(self, mock_logger_info):
         fake_seeder = DFakeSeeder()
         fake_seeder.handle_settings_changed(None, "key", "value")
         mock_logger_info.assert_called_with(
