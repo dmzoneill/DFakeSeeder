@@ -87,6 +87,7 @@ rpm-install: rpm
 
 deb: clean
 	sudo apt-get install dpkg dpkg-dev fakeroot
+	pip3 install black flake8 isort
 	sudo rm -rvf ./debbuild
 	mkdir -vp ./debbuild/DEBIAN
 	cp control ./debbuild/DEBIAN
@@ -128,6 +129,8 @@ docker:
 	docker run --rm -it --net=host --env="DISPLAY" --volume="$$HOME/.Xauthority:/root/.Xauthority:rw" dfakeseeder
 
 clean:
+	- sudo rm -rvf log.log
+	- sudo rm -rvf d_fake_seeder/log.log
 	- sudo rm -rvf dist
 	- sudo rm -rvf .pytest_cache
 	- sudo find . -type d -iname __pycache__ -exec rm -rf {} \;
