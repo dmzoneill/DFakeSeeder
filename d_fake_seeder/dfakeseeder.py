@@ -59,7 +59,7 @@ def run():
         raise ImportError("Module d_fake_seeder not found.")
 
     if os.getenv("DFS_PATH") is None:
-        os.environ["DFS_PATH"] = spec.origin
+        os.environ["DFS_PATH"] = spec.submodule_search_locations[0]
     d = DFakeSeeder()
     d.run()
 
