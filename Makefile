@@ -6,7 +6,11 @@ clearlog:
 	truncate -s 0 d_fake_seeder/log.log
 
 lint: clearlog
-	pip3 install black flake8 isort
+	@which black > /dev/null || \
+	( \
+		pip3 install black flake8 isort --break-system-packages --break-system-packages \
+	)
+	
 	black -v --line-length=90 .
 	flake8 --max-line-length=90
 	find . -iname "*.py" -exec isort --profile=black --df {} \;
