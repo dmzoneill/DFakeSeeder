@@ -8,7 +8,7 @@ clearlog:
 lint: clearlog
 	@which black > /dev/null || \
 	( \
-		pip3 install black flake8 isort --break-system-packages \
+		pip3 install black flake8 isort \
 	)
 	
 	black -v --line-length=90 .
