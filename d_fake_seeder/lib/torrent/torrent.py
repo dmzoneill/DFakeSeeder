@@ -90,7 +90,8 @@ class Torrent(GObject.Object):
         )
         try:
             fetched = False
-            while fetched is False:
+            count = 3
+            while fetched is False and count != 0:
                 logger.debug(
                     "Requesting seeder information",
                     extra={"class_name": self.__class__.__name__},
@@ -99,6 +100,11 @@ class Torrent(GObject.Object):
                 if fetched is False:
                     print("sleeping 30")
                     time.sleep(30)
+                    count -= 1
+                    if count == 0:
+                        print("Paused")
+                        self.active = False
+                        self.emit("attribute-changed", self, {"id": False})
 
             ticker = 0.0
             GLib.idle_add(self.update_torrent_callback)
@@ -239,6 +245,27 @@ class Torrent(GObject.Object):
         )
         # print(key + " = " + value)
 
+    def restart_worker(self, state):
+        logger.info(
+            "Torrent restart worker",
+            extra={"class_name": self.__class__.__name__},
+        )
+        try:
+            View.instance.notify("Stopping fake seeder " + self.name)
+            self.torrent_worker_stop_event.set()
+            self.torrent_worker.join()
+        except Exception as e:
+            print(e)
+
+        if state:
+            try:
+                View.instance.notify("Starting fake seeder " + self.name)
+                self.torrent_worker_stop_event = threading.Event()
+                self.torrent_worker = threading.Thread(target=self.update_torrent_worker)
+                self.torrent_worker.start()
+            except Exception as e:
+                print(e)
+
     def __getattr__(self, attr):
         if hasattr(self.torrent_attributes, attr):
             return getattr(self.torrent_attributes, attr)
@@ -251,5 +278,7 @@ class Torrent(GObject.Object):
     def __setattr__(self, attr, value):
         if hasattr(self.torrent_attributes, attr):
             setattr(self.torrent_attributes, attr, value)
+            if attr == "active":
+                self.restart_worker(value)
         else:
             super().__setattr__(attr, value)

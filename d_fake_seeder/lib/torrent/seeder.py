@@ -154,31 +154,34 @@ class Seeder:
         logger.info("Seeder upload", extra={"class_name": self.__class__.__name__})
         while True:
             try:
-                if "udp://" in self.torrent.announce:
+                if hasattr(self.torrent, "announce"):
+                    if "udp://" in self.torrent.announce:
+                        break
+                    self.tracker_semaphore.acquire()
+                    self.tracker_url = self.torrent.announce
+                    http_params = {
+                        "info_hash": self.torrent.file_hash,
+                        "peer_id": self.peer_id.encode("ascii"),
+                        "port": self.port,
+                        "uploaded": uploaded_bytes,
+                        "downloaded": downloaded_bytes,
+                        "left": download_left,
+                        "key": self.download_key,
+                        "compact": 1,
+                        "numwant": 0,
+                        "supportcrypto": 1,
+                        "no_peer_id": 1,
+                    }
+                    requests.get(
+                        self.tracker_url,
+                        params=http_params,
+                        proxies=self.settings.proxies,
+                        headers=self.settings.http_headers,
+                        timeout=10,
+                    )
                     break
-                self.tracker_semaphore.acquire()
-                self.tracker_url = self.torrent.announce
-                http_params = {
-                    "info_hash": self.torrent.file_hash,
-                    "peer_id": self.peer_id.encode("ascii"),
-                    "port": self.port,
-                    "uploaded": uploaded_bytes,
-                    "downloaded": downloaded_bytes,
-                    "left": download_left,
-                    "key": self.download_key,
-                    "compact": 1,
-                    "numwant": 0,
-                    "supportcrypto": 1,
-                    "no_peer_id": 1,
-                }
-                requests.get(
-                    self.tracker_url,
-                    params=http_params,
-                    proxies=self.settings.proxies,
-                    headers=self.settings.http_headers,
-                    timeout=10,
-                )
-                break
+                else:
+                    break
             except BaseException:
                 traceback.print_exc()
             finally:

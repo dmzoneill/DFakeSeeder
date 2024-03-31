@@ -164,13 +164,18 @@
                   <object class="GtkPaned" id="paned">
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkTreeView" id="states_treeview">
+                      <object class="GtkScrolledWindow">
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkTreeView" id="states_treeview">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <child internal-child="selection">
         <object class="GtkTreeSelection"/>
     </child>
 </object>
+                        </child>
+                      </object>                      
                     </child>
                     <child>
                       <object class="GtkScrolledWindow">
