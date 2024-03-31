@@ -1,5 +1,5 @@
-package_name := $(shell cat debbuild/DEBIAN/control | grep Package | sed 's/Package: //')
-package_version := $(shell cat debbuild/DEBIAN/control | grep Version | sed 's/Version: //')
+package_name := $(shell cat control | grep Package | sed 's/Package: //')
+package_version := $(shell cat control | grep Version | sed 's/Version: //')
 DEB_FILENAME := $(package_name)_$(package_version).deb
 
 clearlog:
@@ -8,7 +8,7 @@ clearlog:
 lint: clearlog
 	@which black > /dev/null || \
 	( \
-		pip3 install black flake8 isort --break-system-packages --break-system-packages \
+		pip3 install black flake8 isort --break-system-packages \
 	)
 	
 	black -v --line-length=90 .
