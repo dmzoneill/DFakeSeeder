@@ -90,7 +90,7 @@ make run-debug
     "website": "https://github.com/dmzoneill/DFakeSeeder/",
     "author": "David O Neill",
     "copyright": "Copyright {year}",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "logo": "images/dfakeseeder.png"
 }
 ```
