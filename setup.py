@@ -3,7 +3,7 @@ from setuptools import setup
 
 packages = ["d_fake_seeder"]
 
-package_data = {"": ["*", "dfakeseeder/*"]}
+package_data = {"": ["*", "d_fake_seeder/*"]}
 
 install_requires = ["requests"]
 
