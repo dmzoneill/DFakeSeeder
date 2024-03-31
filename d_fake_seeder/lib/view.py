@@ -1,8 +1,8 @@
-from datetime import datetime
 import os
 import signal
 import time
 import webbrowser
+from datetime import datetime
 
 import gi  # noqa
 
@@ -155,7 +155,9 @@ class View:
         self.window.about.set_website(self.settings.website)
         self.window.about.set_website_label("Github - D' Fake Seeder")
         self.window.about.set_version(self.settings.version)
-        file = Gio.File.new_for_path(os.environ.get("DFS_PATH") + "/" + self.settings.logo)
+        file = Gio.File.new_for_path(
+            os.environ.get("DFS_PATH") + "/" + self.settings.logo
+        )
         texture = Gdk.Texture.new_from_file(file)
         self.window.about.set_logo(texture)
         self.window.about.show()
