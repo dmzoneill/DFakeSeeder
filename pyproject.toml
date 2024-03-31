@@ -15,8 +15,7 @@ requests = "*"
 pytest = "^6.0.2"
 
 [tool.poetry.scripts]
-dfakeseeder = "dfakeseeder.dfakeseeder:app"
-dfakeseeder-unmapped = "dfakeseeder.dfakeseeder-unmapped:app"
+dfakeseeder = "d_fake_seeder.dfakeseeder:app"
 
 [build-system]
 requires = ["poetry>=0.12"]
