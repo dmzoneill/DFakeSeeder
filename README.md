@@ -2,13 +2,22 @@
 
 # D' Fake Seeder
 
-- If you are looking to start using this immediately, i'm afraid you are out of luck.
-- Upload functionality is still disabled in this as it's in development.
-- Fake seeding can get you banned from trackers.
+- This is a Python GTK4 app very much under active development
+
+## How to run
+- Run make run-debug
+```
+make run-debug
+```
+
+## Todo
+- loads of stuff, deb, rpms, pypi build, docker build
+- fix a chunk of small bugs and finish some of the toolbar and other options.
+- All PR's welcome
 
 ![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/images/screenshot.png)
 
-# Typical setup
+## Typical setup
 ```
 {
     "upload_speed": 50,
