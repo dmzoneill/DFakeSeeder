@@ -1,3 +1,7 @@
+package_name := $(shell cat debbuild/DEBIAN/control | grep Package | sed 's/Package: //')
+package_version := $(shell cat debbuild/DEBIAN/control | grep Version | sed 's/Version: //')
+DEB_FILENAME := $(package_name)_$(package_version).deb
+
 clearlog:
 	truncate -s 0 d_fake_seeder/log.log
 
@@ -63,7 +67,7 @@ valgrind: ui-build
 xprod-wmclass:
 	xprop WM_CLASS
 
-rpm:
+rpm: clean
 	- sudo dnf install -y rpm-build rpmlint python3-setuptools
 	- sudo apt install -y rpm rpmlint python3-setuptools
 	rm -rvf ./rpmbuild
@@ -81,35 +85,56 @@ rpm-install: rpm
 	sudo dnf install rpmbuild/RPMS/<architecture>/python-example-1.0-1.<architecture>.rpm
 	rpmlint
 
-deb:
+deb: clean
 	sudo apt-get install dpkg dpkg-dev fakeroot
 	sudo rm -rvf ./debbuild
 	mkdir -vp ./debbuild/DEBIAN
 	cp control ./debbuild/DEBIAN
 	mkdir -vp ./debbuild/opt/dfakeseeder
+	mkdir -vp ./debbuild/usr/share/applications/
+	cp -r d_fake_seeder/dfakeseeder.desktop ./debbuild/usr/share/applications/
 	cp -r d_fake_seeder/config ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/images ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/lib ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/ui ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/dfakeseeder.py ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/dfakeseeder.desktop ./debbuild/opt/dfakeseeder
+	sed 's#dfakeseeder.py#/opt/dfakeseeder/dfakeseeder.py#g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
+	touch ./debbuild/DEBIAN/postinst
+
+	echo "#!/bin/bash -x" >> ./debbuild/DEBIAN/postinst
+	echo "for X in 16 32 48 64 96 128 192 256; do " >> ./debbuild/DEBIAN/postinst
+	echo "mkdir -vp \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
+	echo "mkdir -vp \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
+	echo "cp -f /opt/dfakeseeder/d_fake_seeder/images/dfakeseeder.png \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps/ " >> ./debbuild/DEBIAN/postinst
+	echo "cp -f /opt/dfakeseeder/d_fake_seeder/images/dfakeseeder.png \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps/ " >> ./debbuild/DEBIAN/postinst
+	echo "done " >> ./debbuild/DEBIAN/postinst
+	echo "cd \$$HOME/.local/share/icons/ && \\" >> ./debbuild/DEBIAN/postinst
+	echo "gtk-update-icon-cache -t -f hicolor; \\" >> ./debbuild/DEBIAN/postinst
+	echo "cd \$$HOME/.icons/ && \\" >> ./debbuild/DEBIAN/postinst
+	echo "gtk-update-icon-cache -t -f hicolor; " >> ./debbuild/DEBIAN/postinst
+	chmod 755 ./debbuild/DEBIAN/postinst
+
 	sudo chown -R root:root debbuild
-	fakeroot dpkg-deb --build debbuild
-	dpkg -c debbuild.deb
-	dpkg -I debbuild.deb
+	fakeroot dpkg-deb --build debbuild $(DEB_FILENAME)
+
+	dpkg -c $(DEB_FILENAME)
+	dpkg -I $(DEB_FILENAME)
 
 deb-install: deb	
-	sudo dpkg -i debbuild.deb
+	sudo dpkg -i $(DEB_FILENAME)
 
 docker:
 	docker build -t dfakeseeder .
 	docker run --rm -it --net=host --env="DISPLAY" --volume="$$HOME/.Xauthority:/root/.Xauthority:rw" dfakeseeder
 
 clean:
-	sudo rm -rvf debbuild
-	sudo rm -rvf rpmbuild
-	sudo rm -rvf *.deb
-	sudo rm -rvf *.rpm
+	- sudo rm -rvf dist
+	- sudo rm -rvf .pytest_cache
+	- sudo find . -type d -iname __pycache__ -exec rm -rf {} \;
+	- sudo rm -rvf debbuild
+	- sudo rm -rvf rpmbuild
+	- sudo rm -rvf *.deb
+	- sudo rm -rvf *.rpm
 	$(MAKE) lint
 
 translatepy:
