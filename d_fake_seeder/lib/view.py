@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import signal
 import time
@@ -16,7 +17,7 @@ from lib.views.torrents import Torrents
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gio, GLib, Gtk  # noqa
+from gi.repository import Gdk, Gio, GLib, Gtk  # noqa
 
 
 # View class for Torrent Application
@@ -44,20 +45,23 @@ class View:
         css_provider = Gtk.CssProvider()
         css_provider.load_from_path(os.environ.get("DFS_PATH") + "/ui/styles.css")
 
+        # Get window object
+        self.window = self.builder.get_object("main_window")
+
         # views
-        self.toolbar = Toolbar(self.builder, None)
+        self.toolbar = Toolbar(self.builder, None, self.window)
         self.notebook = Notebook(self.builder, None)
         self.torrents = Torrents(self.builder, None)
         self.states = States(self.builder, None)
         self.statusbar = Statusbar(self.builder, None)
 
         # Getting relevant objects
-        self.window = self.builder.get_object("main_window")
         self.quit_menu_item = self.builder.get_object("quit_menu_item")
         self.help_menu_item = self.builder.get_object("help_menu_item")
         self.overlay = self.builder.get_object("overlay")
         self.status = self.builder.get_object("status_label")
         self.main_paned = self.builder.get_object("main_paned")
+        self.paned = self.builder.get_object("paned")
         self.current_time = time.time()
 
         # notification overlay
@@ -142,13 +146,18 @@ class View:
         self.window.about = Gtk.AboutDialog()
         self.window.about.set_transient_for(self.window)
         self.window.about.set_modal(self)
+        self.window.about.set_program_name("D' Fake Seeder")
         self.window.about.set_authors([self.settings.author])
-        self.window.about.set_copyright(self.settings.copyright)
+        self.window.about.set_copyright(
+            self.settings.copyright.replace("{year}", str(datetime.now().year))
+        )
         self.window.about.set_license_type(Gtk.License.APACHE_2_0)
         self.window.about.set_website(self.settings.website)
-        self.window.about.set_website_label("Github")
+        self.window.about.set_website_label("Github - D' Fake Seeder")
         self.window.about.set_version(self.settings.version)
-        self.window.about.set_logo_icon_name(self.settings.logo)
+        file = Gio.File.new_for_path(os.environ.get("DFS_PATH") + "/" + self.settings.logo)
+        texture = Gdk.Texture.new_from_file(file)
+        self.window.about.set_logo(texture)
         self.window.about.show()
 
     def fade_out_image(self):
@@ -172,7 +181,11 @@ class View:
         available_height = allocation.height
         position = available_height // 2
         self.main_paned.set_position(position)
-        self.status_position = position
+
+        allocation = self.paned.get_allocation()
+        available_width = allocation.width
+        position = available_width // 4
+        self.paned.set_position(position)
 
     # Setting model for the view
     def notify(self, text):

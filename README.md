@@ -72,8 +72,7 @@
     "website": "https://github.com/dmzoneill/DFakeSeeder/",
     "author": "David O Neill",
     "copyright": "Copyright {year}",
-    "license": "Copyright {year}",
-    "version": "1.0",
+    "version": "0.0.6",
     "logo": "images/dfakeseeder.png"
 }
 ```

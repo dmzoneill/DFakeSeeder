@@ -13,10 +13,11 @@ from gi.repository import Gtk  # noqa
 
 
 class Toolbar:
-    def __init__(self, builder, model):
+    def __init__(self, builder, model, app):
         logger.info("Toolbar startup", extra={"class_name": self.__class__.__name__})
         self.builder = builder
         self.model = model
+        self.app = app
 
         # subscribe to settings changed
         self.settings = Settings.get_instance()
@@ -108,6 +109,7 @@ class Toolbar:
             return
 
         selected.active = False
+        self.model.emit("data-changed", self.model, selected, {"active": selected.active})
 
     def on_toolbar_resume_clicked(self, button):
         logger.info(
@@ -119,6 +121,7 @@ class Toolbar:
             return
 
         selected.active = True
+        self.model.emit("data-changed", self.model, selected, {"active": selected.active})
 
     def on_toolbar_up_clicked(self, button):
         logger.info(
@@ -136,6 +139,8 @@ class Toolbar:
             if torrent.id == selected.id - 1:
                 torrent.id = selected.id
                 selected.id -= 1
+                self.model.emit("data-changed", self.model, selected, {"id": selected.id})
+                self.model.emit("data-changed", self.model, torrent, {"id": torrent.id})
                 break
 
     def on_toolbar_down_clicked(self, button):
@@ -154,6 +159,8 @@ class Toolbar:
             if torrent.id == selected.id + 1:
                 torrent.id = selected.id
                 selected.id += 1
+                self.model.emit("data-changed", self.model, selected, {"id": selected.id})
+                self.model.emit("data-changed", self.model, torrent, {"id": torrent.id})
                 break
 
     def on_toolbar_settings_clicked(self, button):
@@ -165,31 +172,37 @@ class Toolbar:
         if not selected:
             return
 
-    def on_file_selected(self, dialog, args):
-        logger.info("Toolbar file added", extra={"class_name": self.__class__.__name__})
-        # Get the selected file
-        selected_file = dialog.get_filename()
-        print("Selected File:", selected_file)
-        current_path = os.path.dirname(os.path.abspath(__file__))
-        torrents_path = os.path.join(current_path, "torrents")
-        shutil.copy(os.path.abspath(selected_file), torrents_path)
-        copied_torrent_path = os.path.join(torrents_path, os.path.basename(selected_file))
-        self.model.add_torrent(os.path.relpath(copied_torrent_path))
+    def on_dialog_response(self, dialog, response_id):
+        if response_id == Gtk.ResponseType.OK:
+            logger.info(
+                "Toolbar file added", extra={"class_name": self.__class__.__name__}
+            )
+            # Get the selected file
+            selected_file = dialog.get_file()
+            print("Selected File:", selected_file)
+            current_path = os.path.dirname(os.path.abspath(__file__))
+            torrents_path = os.path.join(current_path, "torrents")
+            shutil.copy(os.path.abspath(selected_file.get_path()), torrents_path)
+            copied_torrent_path = os.path.join(
+                torrents_path, os.path.basename(selected_file)
+            )
+            self.model.add_torrent(os.path.relpath(copied_torrent_path))
+            dialog.destroy()
+        else:
+            dialog.destroy()
 
     def show_file_selection_dialog(self):
         logger.info("Toolbar file dialog", extra={"class_name": self.__class__.__name__})
         # Create a new file chooser dialog
         dialog = Gtk.FileChooserDialog(
-            "Select File",
-            None,
-            Gtk.FileChooserAction.OPEN,
-            (
-                Gtk.STOCK_CANCEL,
-                Gtk.ResponseType.CANCEL,
-                Gtk.STOCK_OPEN,
-                Gtk.ResponseType.OK,
-            ),
+            title="Select torrent",
+            transient_for=self.app,
+            modal=True,
+            action=Gtk.FileChooserAction.OPEN,
         )
+
+        dialog.add_button("Cancel", Gtk.ResponseType.CANCEL)
+        dialog.add_button("Add", Gtk.ResponseType.OK)
 
         filter_torrent = Gtk.FileFilter()
         filter_torrent.set_name("Torrent Files")
@@ -197,19 +210,10 @@ class Toolbar:
         dialog.add_filter(filter_torrent)
 
         # Connect the "response" signal to the callback function
-        dialog.connect("response", self.on_file_selected)
+        dialog.connect("response", self.on_dialog_response)
 
         # Run the dialog
-        response = dialog.run()
-
-        # Close the dialog
-        dialog.destroy()
-
-        # Handle the user's response
-        if response == Gtk.ResponseType.OK:
-            print("User clicked Open button")
-        elif response == Gtk.ResponseType.CANCEL:
-            print("User clicked Cancel button")
+        dialog.show()
 
     def get_selected_torrent(self):
         logger.info(
