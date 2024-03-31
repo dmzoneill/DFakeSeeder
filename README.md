@@ -1,4 +1,5 @@
-<!-- markdownlint-disable-line -->![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/images/dfakeseeder.png)
+<!-- markdownlint-disable MD041 -->
+![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/images/dfakeseeder.png)
 
 # D' Fake Seeder
 
