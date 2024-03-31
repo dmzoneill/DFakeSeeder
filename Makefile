@@ -6,6 +6,7 @@ clearlog:
 	truncate -s 0 d_fake_seeder/log.log
 
 lint: clearlog
+	pip3 install black flake8 isort
 	black -v --line-length=90 .
 	flake8 --max-line-length=90
 	find . -iname "*.py" -exec isort --profile=black --df {} \;
@@ -87,7 +88,6 @@ rpm-install: rpm
 
 deb: clean
 	sudo apt-get install dpkg dpkg-dev fakeroot
-	pip3 install black flake8 isort
 	sudo rm -rvf ./debbuild
 	mkdir -vp ./debbuild/DEBIAN
 	cp control ./debbuild/DEBIAN
