@@ -1,4 +1,7 @@
 # import gettext
+import importlib.util
+import os
+
 import gi
 import typer
 from lib.controller import Controller
@@ -51,6 +54,12 @@ app = typer.Typer()
 
 @app.command()
 def run():
+    spec = importlib.util.find_spec("d_fake_seeder")
+    if spec is None:
+        raise ImportError("Module d_fake_seeder not found.")
+
+    if os.getenv("DFS_PATH") is None:
+        os.environ["DFS_PATH"] = spec
     d = DFakeSeeder()
     d.run()
 
