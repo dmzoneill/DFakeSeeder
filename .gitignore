@@ -6,6 +6,7 @@ __pycache__/
 *.pyo
 *.pyd
 *.pytest**
+*.pytest_cache**
 dist/**
 
 # Visual Studio Code
