@@ -4,22 +4,30 @@
 # D' Fake Seeder
 
 - This is a Python GTK4 app very much under active development
+- Obviously supported multiple torrents
+- only supporting tcp/http at this time, but i have UDP in the works
+- Based off of deluge, hense "D' Fake Seeder", but also a colloquialism for 'the'.
+- Recently upgraded it from gtk3 to gtk4 so some functionality is under flux/might be buggy.
 
 ## How to run
-- Run make run-debug
-```
+- Use make
+```bash
 make run-debug
 ```
 
 ## Todo
-- loads of stuff, deb, rpms, pypi build, docker build
+- loads of stuff, deb, rpms, pypi, docker build
+- need to fix requiremnts.txt/piplock and convert the solution to venv.
 - fix a chunk of small bugs and finish some of the toolbar and other options.
+- Udp
+- Better user feedback
 - All PR's welcome
+
 
 ![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/images/screenshot.png)
 
 ## Typical setup
-```
+```text
 {
     "upload_speed": 50,
     "download_speed": 500,
