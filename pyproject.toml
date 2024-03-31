@@ -1,11 +1,10 @@
 [tool.poetry]
-name = "dfakeseeder"
+name = "d_fake_seeder"
 version = "0.0.8"
 description = "Python gtk fake seeder"
 readme = "README.md"
 repository = "https://github.com/dmzoneill/DFakeSeeder"
 authors = ["David O Neill <dmz.oneill@gmail.com>"]
-
 
 [tool.poetry.dependencies]
 python = "^3.11"
