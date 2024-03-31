@@ -1,5 +1,6 @@
 # import gettext
 import gi
+import typer
 from lib.controller import Controller
 from lib.logger import logger
 from lib.model import Model
@@ -10,6 +11,7 @@ from lib.view import View
 gi.require_version("Gtk", "4.0")
 
 from gi.repository import Gio, Gtk  # noqa
+
 
 # Import the Model, View, and Controller classes from their respective modules
 
@@ -45,8 +47,16 @@ class DFakeSeeder(Gtk.Application):
         # print(key + " = " + value)
 
 
+app = typer.Typer()
+
+
+@app.command()
+def run():
+    d = DFakeSeeder()
+    d.run()
+
+
 # If the script is run directly (rather than imported as a module), create
 # an instance of the UI class
 if __name__ == "__main__":
-    d = DFakeSeeder()
-    d.run()
+    app()
