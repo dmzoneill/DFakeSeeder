@@ -1,5 +1,5 @@
 Name: DFakeSeeder
-Version:    0.0.15
+Version:    0.0.16
 Release:    1%{?dist}
 Summary:    Deluge fake seeder
 
