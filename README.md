@@ -24,7 +24,7 @@ dfakeseeder
 ```
 
 - Docker build local
-```
+```bash
 make docker
 ```
 
