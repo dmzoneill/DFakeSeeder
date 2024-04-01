@@ -53,14 +53,21 @@ app = typer.Typer()
 
 @app.command()
 def run():
-    spec = importlib.util.find_spec("d_fake_seeder")
-    if spec is None:
-        raise ImportError("Module d_fake_seeder not found.")
-
-    if os.getenv("DFS_PATH") is None:
-        os.environ["DFS_PATH"] = spec.submodule_search_locations[0]
-    d = DFakeSeeder()
-    d.run()
+    try:
+        os.environ["DFS_PATH"] = os.getcwd()
+        d = DFakeSeeder()
+        d.run()
+        return
+    except Exception as e:
+        print(f"Tried to run from current directory failed, trying module find_spec {e}")
+        try:
+            spec = importlib.util.find_spec("d_fake_seeder")
+            if os.getenv("DFS_PATH") is None:
+                os.environ["DFS_PATH"] = spec.submodule_search_locations[0]
+            d = DFakeSeeder()
+            d.run()
+        except Exception as e:
+            raise ImportError(f"Module d_fake_seeder not found. {e}")
 
 
 # If the script is run directly (rather than imported as a module), create
