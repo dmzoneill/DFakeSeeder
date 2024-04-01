@@ -163,3 +163,6 @@ translate:
 
 test:
 	DFS_PATH=$$(pwd)/d_fake_seeder pytest -vvv tests/
+
+flatpak: clean
+	flatpak-builder build-dir ie.fio.dfakeseeder manifest.json
