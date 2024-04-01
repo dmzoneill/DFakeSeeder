@@ -39,7 +39,7 @@ class Settings(GObject.Object):
             os.makedirs(home_config_path)
             os.makedirs(home_config_path + "/torrents")
             # Copy the source file to the destination directory
-            shutil.copy(source_path, home_config_path)
+            shutil.copy(source_path, home_config_path + "/settings.json")
 
         if Settings._instance is None:
             Settings._instance = Settings(file_path)

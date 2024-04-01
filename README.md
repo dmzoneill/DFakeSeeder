@@ -15,6 +15,13 @@
 make run-debug
 ```
 
+- Docker
+```bash
+xhost +local:
+docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it dfakeseeder
+```
+
+
 ## Todo
 - loads of stuff, deb, rpms, pypi, docker build
 - need to fix requiremnts.txt/piplock and convert the solution to venv.
