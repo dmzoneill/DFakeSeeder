@@ -8,3 +8,4 @@ StartupWMClass=Dfakeseeder.py
 StartupNotify=false
 Terminal=false
 Categories=Utility;Network;
+Path=/opt/dfakeseeder
