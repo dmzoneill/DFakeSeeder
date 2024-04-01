@@ -1,6 +1,6 @@
-Metadata-Version: 0.0.14
+Metadata-Version: 0.0.15
 Name: dfakeseeder
-Version: 0.0.14
+Version: 0.0.15
 Summary: Python gtk fake seeder
 Home-page: https://github.com/dmzoneill/DFakeSeeder
 Author: David O Neill
