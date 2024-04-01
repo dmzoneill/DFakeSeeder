@@ -14,45 +14,45 @@
 ## How to run
 - Development or run locally
 ```bash
-$ make run-debug
+make run-debug
 ```
 
 - Pypi
 ```bash
-$ pip3 install dfakeseeder
-$ dfakeseeder
+pip3 install dfakeseeder
+dfakeseeder
 ```
 
 - Docker build local
 ```
-$ make docker
+make docker
 ```
 
 - Docker hub / ghcr
 ```bash
-$ xhost +local:
+xhost +local:
 
-$ docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it feeditout/dfakeseeder
+docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it feeditout/dfakeseeder
 
-$ docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it ghcr.io/dmzoneill/dfakeseeder
+docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it ghcr.io/dmzoneill/dfakeseeder
 ```
 
 - Debian based deb package
 ```bash
-$ curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep deb) -o dfakeseeder.deb
+curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep deb) -o dfakeseeder.deb
 
-$ sudo dpkg -i dfakeseeder.deb
+sudo dpkg -i dfakeseeder.deb
 
-$ gtk-launch /usr/share/applications/dfakeseeder.desktop
+gtk-launch /usr/share/applications/dfakeseeder.desktop
 ```
 
 - Redhat based rpm package
 ```bash
-$ curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep rpm) -o dfakeseeder.rpm
+curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep rpm) -o dfakeseeder.rpm
 
-$ sudo rpm -i dfakeseeder.deb
+sudo rpm -i dfakeseeder.deb
 
-$ gtk-launch /usr/share/applications/dfakeseeder.desktop
+gtk-launch /usr/share/applications/dfakeseeder.desktop
 ```
 
 ## Todo
