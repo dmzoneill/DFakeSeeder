@@ -97,7 +97,7 @@ docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xa
     "website": "https://github.com/dmzoneill/DFakeSeeder/",
     "author": "David O Neill",
     "copyright": "Copyright {year}",
-    "version": "0.0.18",
+    "version": "0.0.19",
     "logo": "images/dfakeseeder.png"
 }
 ```
