@@ -1,0 +1,19 @@
+{
+    "app-id": "ie.fio.dfakeseeder",
+    "runtime": "org.freedesktop.Platform",
+    "runtime-version": "22.08",
+    "sdk": "org.freedesktop.Sdk",
+    "command": "python3 dfakeseeder.py",
+    "modules": [
+        {
+            "name": "dfakeseeder",
+            "buildsystem": "simple",
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "./d_fake_seeder"
+                }
+            ]
+        }
+    ]
+}
