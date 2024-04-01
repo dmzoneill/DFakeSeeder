@@ -135,7 +135,7 @@ It will looks something like this
     "website": "https://github.com/dmzoneill/DFakeSeeder/",
     "author": "David O Neill",
     "copyright": "Copyright {year}",
-    "version": "0.0.22",
+    "version": "0.0.23",
     "logo": "images/dfakeseeder.png"
 }
 ```
