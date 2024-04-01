@@ -8,12 +8,13 @@ URL:        https://github.com/dmzoneill/DFakeSeeder
 
 Source0:    %{name}-%{version}.tar.gz
 
-
 %description
 ...
 
 %prep
-%autosetup
+%setup -n %{name}-%{version}
+# Optionally, apply any patches here if needed
+
 
 %build
 python3 setup.py build
@@ -24,6 +25,5 @@ python3 setup.py install --root=%{buildroot}
 %files
 %defattr(-,root,root,-)
 %{python3_sitelib}/*
-
-%changelog
-...
+%dir %{_datadir}/d_fake_seeder
+%{_datadir}/d_fake_seeder/*

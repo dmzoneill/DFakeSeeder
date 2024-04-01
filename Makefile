@@ -128,9 +128,20 @@ deb: clean
 deb-install: deb	
 	sudo dpkg -i $(DEB_FILENAME)
 
-docker:
+xhosts:
+	xhost +local:
+
+docker: xhosts
 	docker build -t dfakeseeder .
-	docker run --rm -it --net=host --env="DISPLAY" --volume="$$HOME/.Xauthority:/root/.Xauthority:rw" dfakeseeder
+	docker run --rm --net=host --env="DISPLAY" --volume="\$$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it dfakeseeder
+
+docker-hub: xhosts
+	docker run --rm --net=host --env="DISPLAY" --volume="\$$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it feeditout/dfakeseeder
+
+docker-ghcr: xhosts
+	docker run --rm --net=host --env="DISPLAY" --volume="\$$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it ghcr.io/dfakeseeder
+
+
 
 clean:
 	- sudo rm -rvf log.log

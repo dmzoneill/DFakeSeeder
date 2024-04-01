@@ -9,18 +9,51 @@
 - Based off of deluge, hense "D' Fake Seeder", but also a colloquialism for 'the'.
 - Recently upgraded it from gtk3 to gtk4 so some functionality is under flux/might be buggy.
 
+![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/images/screenshot.png)
+
 ## How to run
-- Use make
+- Development or run locally
 ```bash
-make run-debug
+$ make run-debug
 ```
 
-- Docker
+- Pypi
 ```bash
-xhost +local:
-docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it dfakeseeder
+$ pip3 install dfakeseeder
+$ dfakeseeder
 ```
 
+- Docker build local
+```
+$ make docker
+```
+
+- Docker hub / ghcr
+```bash
+$ xhost +local:
+
+$ docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it feeditout/dfakeseeder
+
+$ docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it ghcr.io/dmzoneill/dfakeseeder
+```
+
+- Debian based deb package
+```bash
+$ curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep deb) -o dfakeseeder.deb
+
+$ sudo dpkg -i dfakeseeder.deb
+
+$ gtk-launch /usr/share/applications/dfakeseeder.desktop
+```
+
+- Redhat based rpm package
+```bash
+$ curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep rpm) -o dfakeseeder.rpm
+
+$ sudo rpm -i dfakeseeder.deb
+
+$ gtk-launch /usr/share/applications/dfakeseeder.desktop
+```
 
 ## Todo
 - loads of stuff, deb, rpms, pypi, docker build
@@ -31,9 +64,14 @@ docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xa
 - All PR's welcome
 
 
-![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/images/screenshot.png)
-
 ## Typical setup
+
+The application copies a config file to
+```text
+~/.config/dfakeseeder/settings.json
+```
+It will looks something like this
+
 ```text
 {
     "upload_speed": 50,
