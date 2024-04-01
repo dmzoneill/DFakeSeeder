@@ -16,6 +16,7 @@ jobs:
     with:
       pypi-extension: "true"
       deb-build: "true"
+      rpm-build: "true"
       docker-build: "true"
       flatpak-build: "true"
       VALIDATE_JSCPD: "false"
