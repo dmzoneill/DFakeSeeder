@@ -15,7 +15,7 @@ entry_points = {
 
 setup_kwargs = {
     "name": "d-fake-seeder",
-    "version": "0.0.19",
+    "version": "0.0.20",
     "description": "Python gtk4 fake torrent seeder",
     "long_description": "",
     "author": "David O Neill",
