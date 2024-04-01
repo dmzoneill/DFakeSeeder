@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "d_fake_seeder"
-version = "0.0.18"
+version = "0.0.19"
 description = "Python gtk fake seeder"
 readme = "README.md"
 repository = "https://github.com/dmzoneill/DFakeSeeder"
