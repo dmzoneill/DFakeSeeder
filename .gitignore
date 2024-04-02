@@ -24,4 +24,4 @@ dist/**
 debbuild/**
 rpmbuild/**
 
-# test other
+# test
