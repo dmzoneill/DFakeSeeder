@@ -23,3 +23,5 @@ dist/**
 *.deb
 debbuild/**
 rpmbuild/**
+
+# other
