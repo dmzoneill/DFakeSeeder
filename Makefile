@@ -1,6 +1,8 @@
-package_name := $(shell cat control | grep Package | sed 's/Package: //')
+deb_package_name := $(shell cat control | grep Package | sed 's/Package: //')
+rpm_package_name := $(shell cat dfakeseeder.spec | grep Name | cut -d: -f 2 | tr -d ' ')
 package_version := $(shell cat control | grep Version | sed 's/Version: //')
-DEB_FILENAME := $(package_name)_$(package_version).deb
+DEB_FILENAME := $(deb_package_name)_$(package_version).deb
+RPM_FILENAME := $(rpm_package_name)-$(package_version)
 
 clearlog:
 	truncate -s 0 d_fake_seeder/log.log
@@ -73,8 +75,8 @@ xprod-wmclass:
 	xprop WM_CLASS
 
 rpm: clean
-	- sudo dnf install -y rpm-build rpmlint python3-setuptools
-	- sudo apt install -y rpm rpmlint python3-setuptools
+    
+	- sudo dnf install -y rpm-build rpmlint python3-setuptools python3-setuptools
 	rm -rvf ./rpmbuild
 	mkdir -p ./rpmbuild/BUILD ./rpmbuild/BUILDROOT ./rpmbuild/RPMS ./rpmbuild/SOURCES ./rpmbuild/SPECS ./rpmbuild/SRPMS
 	cp -r dfakeseeder.spec ./rpmbuild/SPECS/
@@ -83,8 +85,8 @@ rpm: clean
 	cp -r d_fake_seeder/ui ./rpmbuild/SOURCE/
 	cp -r d_fake_seeder/dfakeseeder.py ./rpmbuild/SOURCE/
 	cp -r d_fake_seeder/dfakeseeder.desktop ./rpmbuild/SOURCE/
-	tar -czvf rpmbuild/SOURCES/DFakeSeeder-1.0.tar.gz d_fake_seeder/ 
-	rpmbuild -ba rpmbuild/SPECS/dfakeseeder.spec
+	tar -czvf rpmbuild/SOURCES/$(RPM_FILENAME).tar.gz d_fake_seeder/ 
+	rpmbuild --define "_topdir `pwd`/rpmbuild" -v -ba ./rpmbuild/SPECS/dfakeseeder.spec
 
 rpm-install: rpm
 	sudo dnf install rpmbuild/RPMS/<architecture>/python-example-1.0-1.<architecture>.rpm
@@ -140,8 +142,6 @@ docker-hub: xhosts
 
 docker-ghcr: xhosts
 	docker run --rm --net=host --env="DISPLAY" --volume="\$$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it ghcr.io/dfakeseeder
-
-
 
 clean:
 	- sudo rm -rvf log.log
