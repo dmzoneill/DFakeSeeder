@@ -128,4 +128,4 @@ class Model(GObject.GObject):
             "Notebook settings changed",
             extra={"class_name": self.__class__.__name__},
         )
-        # print(key + " = " + value)
+        self.emit("data-changed", data_obj, "attribute")

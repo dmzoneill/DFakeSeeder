@@ -13,7 +13,6 @@ clearlog: required
 
 lint: clearlog
 	echo "Running lint commands..."
-	touch .last_run
 	black -v --line-length=90 .
 	flake8 --max-line-length=90
 	find . -iname "*.py" -exec isort --profile=black --df {} \;

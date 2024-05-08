@@ -75,7 +75,7 @@ class Notebook(Component):
         _, end_iter = buffer.get_bounds()
         end_line = end_iter.get_line()
         if end_line > 1000:
-            start_iter = buffer.get_iter_at_line(end_line - 1000)
+            start_iter, _ = buffer.get_iter_at_line(end_line - 1000)
             buffer.delete(start_iter, buffer.get_start_iter())
 
     def init_peers_column_view(self):
@@ -134,7 +134,7 @@ class Notebook(Component):
         num_peers = len(torrent.get_seeder().peers)
 
         if num_rows != num_peers:
-            self.peers_store.clear()
+            self.peers_store.remove_all()
 
             for peer in torrent.get_seeder().peers:
                 client = (
