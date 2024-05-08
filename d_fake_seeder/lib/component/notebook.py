@@ -5,11 +5,12 @@ from lib.component.component import Component
 from lib.logger import logger
 from lib.settings import Settings
 from lib.torrent.model.attributes import Attributes
+from lib.torrent.model.torrent_peer import TorrentPeer
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 
-from gi.repository import GLib, GObject, Gtk  # noqa
+from gi.repository import Gio, GLib, GObject, Gtk  # noqa
 
 
 class Notebook(Component):
@@ -25,8 +26,17 @@ class Notebook(Component):
         self.peers_columnview = self.builder.get_object("peers_columnview")
         self.log_scroll = self.builder.get_object("log_scroll")
         self.log_viewer = self.builder.get_object("log_viewer")
-        self.setup_log_viewer_handler(self.log_viewer)
-        # self.log_viewer.connect("size-allocate", self.on_size_allocate)
+
+        self.setup_log_viewer_handler()
+        self.init_peers_column_view()
+
+        # subscribe to settings changed
+        self.settings = Settings.get_instance()
+        self.settings.connect("attribute-changed", self.handle_settings_changed)
+
+        # tab children
+        self.status_grid_child = None
+        self.options_grid_children = []
 
         tab_names = [
             "status_tab",
@@ -45,31 +55,10 @@ class Notebook(Component):
             tab.set_margin_start(10)
             tab.set_margin_end(10)
 
-        self.status_tab = self.builder.get_object("status_tab")
-        self.notebook.set_current_page(0)
-        self.notebook.page_num(self.status_tab)
-        # label_widget =
-        # self.notebook.get_tab_label(self.notebook.get_nth_page(0))
-        # self.notebook.set_current_page(
-        #     self.notebook.page_num(label_widget.get_parent())
-        # )
-
-        # subscribe to settings changed
-        self.settings = Settings.get_instance()
-        self.settings.connect("attribute-changed", self.handle_settings_changed)
-
-        # tab children
-        self.status_grid_child = None
-        self.options_grid_children = []
-
-    # def on_size_allocate(self, widget, allocation):
-    #     adj = self.log_scroll.get_vadjustment()
-    #     adj.set_value(adj.get_upper() - adj.get_page_size())
-
-    def setup_log_viewer_handler(self, text_view):
+    def setup_log_viewer_handler(self):
         def update_textview(record):
             msg = f"{record.levelname}: {record.getMessage()}\n"
-            GLib.idle_add(lambda: self.update_text_buffer(text_view, msg))
+            GLib.idle_add(lambda: self.update_text_buffer(self.log_viewer, msg))
 
         handler = logging.StreamHandler()
         handler.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
@@ -89,24 +78,63 @@ class Notebook(Component):
             start_iter = buffer.get_iter_at_line(end_line - 1000)
             buffer.delete(start_iter, buffer.get_start_iter())
 
-    def update_notebook_peers(self, id):
+    def init_peers_column_view(self):
+        logger.info(
+            "Notebook init peers columnview",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        self.peers_store = Gio.ListStore.new(TorrentPeer)
+
+        properties = [prop.name for prop in TorrentPeer.list_properties()]
+
+        for i, property_name in enumerate(properties):
+            factory = Gtk.SignalListItemFactory()
+            factory.connect("setup", self.setup, property_name)
+            factory.connect("bind", self.bind, property_name)
+            column = Gtk.ColumnViewColumn.new(property_name, factory)
+
+            # Create a Gtk.Expression for the property
+            property_expression = Gtk.PropertyExpression.new(
+                TorrentPeer, None, property_name
+            )
+
+            # Create a Gtk.Sorter based on the property type
+            property_type = TorrentPeer.find_property(
+                property_name
+            ).value_type.fundamental
+            if property_type == GObject.TYPE_STRING:
+                sorter = Gtk.StringSorter.new(property_expression)
+            elif property_type == GObject.TYPE_FLOAT:
+                sorter = Gtk.NumericSorter.new(property_expression)
+            elif property_type == GObject.TYPE_BOOLEAN:
+                sorter = Gtk.NumericSorter.new(property_expression)
+
+            # Set the sorter on the column
+            column.set_sorter(sorter)
+
+            self.peers_columnview.append_column(column)
+
+        sorter = Gtk.ColumnView.get_sorter(self.peers_columnview)
+        self.sort_model = Gtk.SortListModel.new(self.peers_store, sorter)
+        self.selection = Gtk.SingleSelection.new(self.sort_model)
+        self.peers_columnview.set_model(self.selection)
+
+    def update_notebook_peers(self, torrent):
         logger.info(
             "Notebook update peers",
             extra={"class_name": self.__class__.__name__},
         )
-        torrent = self.model.get_liststore_item(id)
 
-        store = self.peers_columnview.get_model()
+        torrent = next(
+            (item for item in self.model.get_torrents() if item.id == torrent.id), None
+        )
 
-        if store is None:
-            store = Gtk.ListStore(str, str, float, float, float)
-            self.peers_columnview.set_model(store)
-
-        num_rows = len(store)
+        num_rows = len(self.peers_columnview.get_model())
         num_peers = len(torrent.get_seeder().peers)
 
         if num_rows != num_peers:
-            store.clear()
+            self.peers_store.clear()
 
             for peer in torrent.get_seeder().peers:
                 client = (
@@ -114,10 +142,49 @@ class Notebook(Component):
                     if peer in torrent.get_seeder().clients
                     else ""
                 )
-                row = [str(peer), client, 0.0, 0.0, 0.0]
-                store.append(row)
+                row = TorrentPeer(str(peer), client, 0.0, 0.0, 0.0)
+                self.peers_store.append(row)
 
-            self.peers_columnview.set_model(store)
+            self.peers_columnview.set_model(self.peers_store)
+
+    def setup(self, widget, item, property_name):
+        def setup_when_idle():
+            obj = item.get_item()
+            property_type = obj.find_property(property_name).value_type
+            if property_type == GObject.TYPE_BOOLEAN:
+                widget_type = Gtk.CheckButton
+            else:
+                widget_type = Gtk.Label
+            widget = widget_type()
+            item.set_child(widget)
+
+        GLib.idle_add(setup_when_idle)
+
+    def bind(self, widget, item, property_name):
+        def bind_when_idle():
+            child = item.get_child()
+            obj = item.get_item()
+            if obj is not None:
+                property_type = obj.find_property(property_name).value_type
+                if property_type == GObject.TYPE_BOOLEAN:
+                    widget_property = "active"
+                    obj.bind_property(
+                        property_name,
+                        child,
+                        widget_property,
+                        GObject.BindingFlags.SYNC_CREATE,
+                    )
+                else:
+                    widget_property = "label"
+                    obj.bind_property(
+                        property_name,
+                        child,
+                        widget_property,
+                        GObject.BindingFlags.SYNC_CREATE,
+                        self.to_str,
+                    )
+
+        GLib.idle_add(bind_when_idle)
 
     def update_notebook_options(self, torrent):
         grid = self.builder.get_object("options_grid")
@@ -219,6 +286,7 @@ class Notebook(Component):
             labelv.set_selectable(True)  # Enable text selection
             self.status_grid_child.attach(labelv, 1, row, 1, 1)
 
+        self.status_tab = self.builder.get_object("status_tab")
         self.status_tab.append(self.status_grid_child)
 
     def update_view(self, model, torrent, attribute):
@@ -252,4 +320,4 @@ class Notebook(Component):
         if torrent is not None:
             self.update_notebook_status(torrent)
             self.update_notebook_options(torrent)
-            self.update_notebook_peers(torrent.id)
+            self.update_notebook_peers(torrent)
