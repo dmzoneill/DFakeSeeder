@@ -102,7 +102,7 @@ It will looks something like this
     "concurrent_http_connections": 2,
     "concurrent_peer_connections": 10,
     "cellrenderers": {
-        "progress": "Gtk.CellRendererProgress"
+        "progress": "Gtk.ProgressBar"
     },
     "textrenderers": {
         "total_uploaded": "humanbytes",
