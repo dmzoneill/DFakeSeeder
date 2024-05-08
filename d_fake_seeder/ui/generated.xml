@@ -167,12 +167,12 @@
                       <object class="GtkScrolledWindow">
                         <property name="can-focus">False</property>
                         <child>
-                          <object class="GtkTreeView" id="states_treeview">
-    <property name="visible">True</property>
+                          <object class="GtkColumnView" id="states_columnview">
+    <property name="name">states_columnview</property>
     <property name="can-focus">False</property>
-    <child internal-child="selection">
-        <object class="GtkTreeSelection"/>
-    </child>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <property name="reorderable">True</property>
 </object>
                         </child>
                       </object>                      
@@ -181,20 +181,12 @@
                       <object class="GtkScrolledWindow">
                         <property name="can-focus">False</property>
                         <child>
-                          <object class="GtkTreeView" id="treeview1">
-    <property name="name">treeview1</property>
+                          <object class="GtkColumnView" id="columnview1">
+    <property name="name">columnview1</property>
     <property name="can-focus">False</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="reorderable">True</property>
-    <property name="search-column">0</property>
-    <property name="hover-selection">False</property>
-    <property name="hover-expand">False</property>
-    <child internal-child="selection">
-        <object class="GtkTreeSelection">
-            <property name="mode">single</property>
-        </object>
-    </child>
 </object>
                         </child>
                       </object>
@@ -285,7 +277,7 @@
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <child>
-        <object class="GtkTreeView" id="peers_treeview">
+        <object class="GtkTreeView" id="peers_columnview">
             <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>

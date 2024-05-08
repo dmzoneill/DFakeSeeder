@@ -3,6 +3,7 @@ import os
 import shutil
 
 import gi
+from lib.component.component import Component
 from lib.logger import logger
 from lib.settings import Settings
 
@@ -12,7 +13,7 @@ gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa
 
 
-class Toolbar:
+class Toolbar(Component):
     def __init__(self, builder, model, app):
         logger.info("Toolbar startup", extra={"class_name": self.__class__.__name__})
         self.builder = builder
@@ -65,9 +66,6 @@ class Toolbar:
         )
         self.toolbar_refresh_rate.set_value(int(self.settings.tickspeed))
         self.toolbar_refresh_rate.set_size_request(150, -1)
-
-    def set_model(self, model):
-        self.model = model
 
     def on_toolbar_refresh_rate_changed(self, value):
         self.settings.tickspeed = math.ceil(float(self.toolbar_refresh_rate.get_value()))
@@ -183,9 +181,11 @@ class Toolbar:
             current_path = os.path.dirname(os.path.abspath(__file__))
             torrents_path = os.path.join(current_path, "torrents")
             shutil.copy(os.path.abspath(selected_file.get_path()), torrents_path)
-            copied_torrent_path = os.path.join(
-                torrents_path, os.path.basename(selected_file)
-            )
+
+            # Assuming selected_file is a GLocalFile object
+            file_path = selected_file.get_path()
+
+            copied_torrent_path = os.path.join(torrents_path, os.path.basename(file_path))
             self.model.add_torrent(os.path.relpath(copied_torrent_path))
             dialog.destroy()
         else:
@@ -221,10 +221,10 @@ class Toolbar:
             extra={"class_name": self.__class__.__name__},
         )
         # Get the TreeView object using self.builder.get_object
-        treeview1 = self.builder.get_object("treeview1")
+        columnview1 = self.builder.get_object("columnview1")
 
         # Get the currently selected item
-        selection = treeview1.get_selection()
+        selection = columnview1.get_selection()
         lmodel, tree_iter = selection.get_selected()
 
         if tree_iter is None:
@@ -240,12 +240,31 @@ class Toolbar:
 
         return False
 
-    def update_view(self, model, _, torrent, attribute):
+    def update_view(self, model, torrent, attribute):
         pass
 
     def handle_settings_changed(self, source, key, value):
+        logger.debug(
+            "Torrents view settings changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+        # print(key + " = " + value)
+
+    def handle_model_changed(self, source, data_obj, data_changed):
         logger.info(
             "Toolbar settings changed",
             extra={"class_name": self.__class__.__name__},
         )
         # print(key + " = " + value)
+
+    def handle_attribute_changed(self, source, key, value):
+        logger.debug(
+            "Attribute changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def model_selection_changed(self, source, model, torrent):
+        logger.debug(
+            "Model selection changed",
+            extra={"class_name": self.__class__.__name__},
+        )

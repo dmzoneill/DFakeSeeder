@@ -5,8 +5,8 @@ import time
 import gi
 from lib.logger import logger
 from lib.settings import Settings
-from lib.torrent.attributes import Attributes
 from lib.torrent.file import File
+from lib.torrent.model.attributes import Attributes
 from lib.torrent.seeder import Seeder
 from lib.view import View
 
@@ -17,7 +17,9 @@ from gi.repository import GLib, GObject  # noqa
 
 
 # Torrent class definition
-class Torrent(GObject.Object):
+class Torrent(GObject.GObject):
+    # Define custom signal 'attribute-changed' which is emitted when torrent data
+    # is modified
     __gsignals__ = {
         "attribute-changed": (
             GObject.SignalFlags.RUN_FIRST,
@@ -26,10 +28,12 @@ class Torrent(GObject.Object):
         )
     }
 
-    torrent_attributes = Attributes()
-
     def __init__(self, filepath):
+        super().__init__()
         logger.info("Torrent instantiate", extra={"class_name": self.__class__.__name__})
+
+        self.torrent_attributes = Attributes()
+
         # subscribe to settings changed
         self.settings = Settings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
@@ -39,9 +43,11 @@ class Torrent(GObject.Object):
         if self.file_path not in self.settings.torrents:
             self.settings.torrents[self.file_path] = {
                 "active": True,
-                "id": len(self.settings.torrents) + 1
-                if len(self.settings.torrents) > 0
-                else 1,
+                "id": (
+                    len(self.settings.torrents) + 1
+                    if len(self.settings.torrents) > 0
+                    else 1
+                ),
                 "name": "",
                 "upload_speed": self.settings.upload_speed,
                 "download_speed": self.settings.download_speed,
@@ -62,18 +68,20 @@ class Torrent(GObject.Object):
             }
             self.settings.save_settings()
 
-        self.torrent_attributes = Attributes()
-
-        GObject.Object.__init__(self)
+        ATTRIBUTES = Attributes
+        attributes = [
+            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
+        ]
 
         self.torrent_file = File(self.file_path)
         self.seeder = Seeder(self.torrent_file)
 
-        ATTRIBUTES = Attributes
-        attributes = list(vars(ATTRIBUTES)["__annotations__"].keys())
         for attr in attributes:
-            value = self.settings.torrents[self.file_path][attr]
-            setattr(self.torrent_attributes, attr, value)
+            setattr(
+                self.torrent_attributes,
+                attr,
+                self.settings.torrents[self.file_path][attr],
+            )
 
         self.session_uploaded = 0
         self.session_downloaded = 0
@@ -104,7 +112,6 @@ class Torrent(GObject.Object):
                     if count == 0:
                         print("Paused")
                         self.active = False
-                        self.emit("attribute-changed", self, {"id": False})
 
             ticker = 0.0
             GLib.idle_add(self.update_torrent_callback)
@@ -127,24 +134,19 @@ class Torrent(GObject.Object):
             extra={"class_name": self.__class__.__name__},
         )
 
-        changed = {}
         update_internal = int(self.settings.tickspeed)
 
         if self.name != self.torrent_file.name:
             self.name = self.torrent_file.name
-            changed["name"] = self.name
 
         if self.total_size != self.torrent_file.total_size:
             self.total_size = self.torrent_file.total_size
-            changed["total_size"] = self.total_size
 
         if self.seeders != self.seeder.seeders:
             self.seeders = self.seeder.seeders
-            changed["seeders"] = self.seeders
 
         if self.leechers != self.seeder.leechers:
             self.leechers = self.seeder.leechers
-            changed["leechers"] = self.leechers
 
         threshold = (
             self.settings.torrents[self.file_path]["threshold"]
@@ -154,69 +156,51 @@ class Torrent(GObject.Object):
 
         if self.threshold != threshold:
             self.threshold = threshold
-            changed["threshold"] = self.threshold
+
+        if self.progress >= threshold and not self.uploading:
+            if self.uploading is False:
+                self.uploading = True
+
+        if self.uploading:
+            upload_factor = int(random.uniform(0.200, 0.800) * 1000)
+            next_speed = self.upload_speed * 1024 * upload_factor
+            next_speed *= update_internal
+            next_speed /= 1000
+            self.session_uploaded += int(next_speed)
+            self.total_uploaded += self.session_uploaded
 
         if self.progress < 100:
-            if self.progress >= threshold and not self.uploading:
-                if self.uploading is True:
-                    self.uploading = True
-                    changed["uploading"] = True
-
-            if self.uploading:
-                upload_factor = int(random.uniform(0.200, 0.800) * 1000)
-                next_speed = self.upload_speed * 1024 * upload_factor
-                next_speed *= update_internal
-                next_speed /= 1000
-                self.session_uploaded += int(next_speed)
-                changed["session_uploaded"] = self.session_uploaded
-
             download_factor = int(random.uniform(0.200, 0.800) * 1000)
             next_speed = self.download_speed * 1024 * download_factor
             next_speed *= update_internal
             next_speed /= 1000
             self.session_downloaded += int(next_speed)
-            changed["session_downloaded"] = self.session_downloaded
-
-            self.total_uploaded += self.session_uploaded
             self.total_downloaded += int(next_speed)
-            changed["total_downloaded"] = self.total_downloaded
-
-            if self.total_uploaded > self.total_downloaded:
-                self.total_uploaded = self.total_downloaded
-                changed["total_uploaded"] = self.total_downloaded
 
             if self.total_downloaded >= self.total_size:
                 self.progress = 100
-                changed["progress"] = self.progress
             else:
                 self.progress = round((self.total_downloaded / self.total_size) * 100)
-                changed["progress"] = self.progress
 
-            if self.next_update > 0:
-                update = self.next_update - int(self.settings.tickspeed)
-                self.next_update = update if update > 0 else 0
-                changed["next_update"] = self.next_update
-            else:
-                self.next_update = self.announce_interval
-                changed["next_update"] = self.announce_interval
-                # announce
-                download_left = (
-                    self.total_size - self.total_downloaded
-                    if self.total_size - self.total_downloaded > 0
-                    else 0
-                )
-                self.seeder.upload(
-                    self.session_uploaded,
-                    self.session_downloaded,
-                    download_left,
-                )
-        else:
-            if self.next_update > 0:
-                self.next_update = 0
-                changed["next_update"] = self.next_update
+        if self.next_update > 0:
+            update = self.next_update - int(self.settings.tickspeed)
+            self.next_update = update if update > 0 else 0
 
-        if len(changed.keys()) > 0:
-            self.emit("attribute-changed", self, changed)
+        if self.next_update <= 0:
+            self.next_update = self.announce_interval
+            # announce
+            download_left = (
+                self.total_size - self.total_downloaded
+                if self.total_size - self.total_downloaded > 0
+                else 0
+            )
+            self.seeder.upload(
+                self.session_uploaded,
+                self.session_downloaded,
+                download_left,
+            )
+
+        self.emit("attribute-changed", None, None)
 
     def stop(self):
         logger.info("Torrent stop", extra={"class_name": self.__class__.__name__})
@@ -229,7 +213,9 @@ class Torrent(GObject.Object):
         self.torrent_worker_stop_event.set()
         self.torrent_worker.join()
         ATTRIBUTES = Attributes
-        attributes = list(vars(ATTRIBUTES)["__annotations__"].keys())
+        attributes = [
+            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
+        ]
         self.settings.torrents[self.file_path] = {
             attr: getattr(self, attr) for attr in attributes
         }
@@ -266,8 +252,14 @@ class Torrent(GObject.Object):
             except Exception as e:
                 print(e)
 
+    def get_attributes(self):
+        return self.torrent_attributes
+
     def __getattr__(self, attr):
-        if hasattr(self.torrent_attributes, attr):
+        if attr == "torrent_attributes":
+            self.torrent_attributes = Attributes()
+            return self.torrent_attributes
+        elif hasattr(self.torrent_attributes, attr):
             return getattr(self.torrent_attributes, attr)
         elif hasattr(self, attr):
             return getattr(self, attr)
@@ -276,7 +268,9 @@ class Torrent(GObject.Object):
         )
 
     def __setattr__(self, attr, value):
-        if hasattr(self.torrent_attributes, attr):
+        if attr == "torrent_attributes":
+            self.__dict__["torrent_attributes"] = value
+        elif hasattr(self.torrent_attributes, attr):
             setattr(self.torrent_attributes, attr, value)
             if attr == "active":
                 self.restart_worker(value)

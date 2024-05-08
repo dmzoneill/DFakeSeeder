@@ -4,15 +4,16 @@ package_version := $(shell cat control | grep Version | sed 's/Version: //')
 DEB_FILENAME := $(deb_package_name)_$(package_version).deb
 RPM_FILENAME := $(rpm_package_name)-$(package_version)
 
-clearlog:
+required:
+	pip3 install -r requirements.txt
+
+
+clearlog: required
 	truncate -s 0 d_fake_seeder/log.log
 
 lint: clearlog
-	@which black > /dev/null || \
-	( \
-		pip3 install black flake8 isort \
-	)
-	
+	echo "Running lint commands..."
+	touch .last_run
 	black -v --line-length=90 .
 	flake8 --max-line-length=90
 	find . -iname "*.py" -exec isort --profile=black --df {} \;
@@ -39,7 +40,7 @@ ui-build: icons
 	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/ui/generated.xml
 
 clean_settings:
-	jq '.torrents = {}' d_fake_seeder/config/settings.json > temp.json && mv temp.json d_fake_seeder/config/settings.json
+	jq '.torrents = {}' ~/.config/dfakeseeder/settings.json > temp.json && mv temp.json ~/.config/dfakeseeder/settings.json
 
 run: ui-build
 	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
@@ -60,6 +61,18 @@ run-debug: ui-build
 		LOG_LEVEL=INFO DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder.py; \
 	}
 	$(MAKE) clean_settings;
+
+clean:
+	- sudo rm -rvf log.log
+	- sudo rm -rvf d_fake_seeder/log.log
+	- sudo rm -rvf dist
+	- sudo rm -rvf .pytest_cache
+	- sudo find . -type d -iname __pycache__ -exec rm -rf {} \;
+	- sudo rm -rvf debbuild
+	- sudo rm -rvf rpmbuild
+	- sudo rm -rvf *.deb
+	- sudo rm -rvf *.rpm
+	$(MAKE) lint
 
 valgrind: ui-build
 	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
@@ -142,18 +155,6 @@ docker-hub: xhosts
 
 docker-ghcr: xhosts
 	docker run --rm --net=host --env="DISPLAY" --volume="\$$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it ghcr.io/dfakeseeder
-
-clean:
-	- sudo rm -rvf log.log
-	- sudo rm -rvf d_fake_seeder/log.log
-	- sudo rm -rvf dist
-	- sudo rm -rvf .pytest_cache
-	- sudo find . -type d -iname __pycache__ -exec rm -rf {} \;
-	- sudo rm -rvf debbuild
-	- sudo rm -rvf rpmbuild
-	- sudo rm -rvf *.deb
-	- sudo rm -rvf *.rpm
-	$(MAKE) lint
 
 translatepy:
 	xgettext --verbose --language=Python --keyword=_ --output=d_fake_seeder/locale/dfakeseederpy.pot d_fake_seeder/dfakeseeder.py
