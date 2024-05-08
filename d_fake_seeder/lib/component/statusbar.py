@@ -70,6 +70,7 @@ class Statusbar(Component):
         current_time = time.time()
         if current_time < self.last_execution_time + self.settings.tickspeed:
             return False
+
         self.last_execution_time = current_time
 
         session_uploaded = self.sum_column_values("session_uploaded")
