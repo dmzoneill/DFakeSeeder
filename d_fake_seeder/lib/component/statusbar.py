@@ -1,12 +1,13 @@
 import time
 
 import requests
+from lib.component.component import Component
 from lib.logger import logger
 from lib.settings import Settings
 from lib.util.helpers import humanbytes
 
 
-class Statusbar:
+class Statusbar(Component):
     def __init__(self, builder, model):
         logger.info("StatusBar startup", extra={"class_name": self.__class__.__name__})
         self.builder = builder
@@ -37,9 +38,6 @@ class Statusbar:
         self.status_bar.set_margin_start(10)
         self.status_bar.set_margin_end(10)
 
-    def set_model(self, model):
-        self.model = model
-
     def get_ip(self):
         try:
             if self.ip != "0.0.0.0":
@@ -56,16 +54,19 @@ class Statusbar:
             return self.ip
 
     def sum_column_values(self, column_name):
-        column_names, liststore = self.model.get_liststore()
-        column_index = column_names.index(column_name)
-
         total_sum = 0
-        for row in liststore:
-            total_sum += row[column_index]
+
+        # Get the list of attributes for each entry in the torrent_list
+        attribute_list = [
+            getattr(entry, column_name) for entry in self.model.torrent_list
+        ]
+
+        # Sum the values based on the specified attribute
+        total_sum = sum(attribute_list)
 
         return total_sum
 
-    def update_view(self, model, _, torrent, attribute):
+    def update_view(self, model, torrent, attribute):
         current_time = time.time()
         if current_time < self.last_execution_time + self.settings.tickspeed:
             return False
@@ -106,8 +107,28 @@ class Statusbar:
         self.status_ip.set_text("  " + self.get_ip())
 
     def handle_settings_changed(self, source, key, value):
+        logger.debug(
+            "Torrents view settings changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+        # print(key + " = " + value)
+
+    def handle_model_changed(self, source, data_obj, data_changed):
         logger.info(
             "StatusBar settings changed",
             extra={"class_name": self.__class__.__name__},
         )
-        # print(key + " = " + value)
+        self.update_view(None, None, None)
+
+    def handle_attribute_changed(self, source, key, value):
+        logger.debug(
+            "Attribute changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+        self.update_view(None, None, None)
+
+    def model_selection_changed(self, source, model, torrent):
+        logger.debug(
+            "Model selection changed",
+            extra={"class_name": self.__class__.__name__},
+        )

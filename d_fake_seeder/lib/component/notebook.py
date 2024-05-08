@@ -1,16 +1,18 @@
 import logging
 
 import gi
+from lib.component.component import Component
 from lib.logger import logger
 from lib.settings import Settings
+from lib.torrent.model.attributes import Attributes
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 
-from gi.repository import GLib, Gtk  # noqa
+from gi.repository import GLib, GObject, Gtk  # noqa
 
 
-class Notebook:
+class Notebook(Component):
     def __init__(self, builder, model):
         logger.info(
             "Notebook view startup",
@@ -19,11 +21,8 @@ class Notebook:
         self.builder = builder
         self.model = model
 
-        self.selected_path = None
-
         self.notebook = self.builder.get_object("notebook1")
-        self.torrents_treeview = self.builder.get_object("treeview1")
-        self.peers_treeview = self.builder.get_object("peers_treeview")
+        self.peers_columnview = self.builder.get_object("peers_columnview")
         self.log_scroll = self.builder.get_object("log_scroll")
         self.log_viewer = self.builder.get_object("log_viewer")
         self.setup_log_viewer_handler(self.log_viewer)
@@ -55,12 +54,6 @@ class Notebook:
         #     self.notebook.page_num(label_widget.get_parent())
         # )
 
-        # Connect the signals
-        self.selection = self.torrents_treeview.get_selection()
-        self.selection.connect("changed", self.on_selection_changed)
-        # self.torrents_treeview.connect("row-activated",
-        # self.on_row_activated)
-
         # subscribe to settings changed
         self.settings = Settings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
@@ -68,9 +61,6 @@ class Notebook:
         # tab children
         self.status_grid_child = None
         self.options_grid_children = []
-
-    def set_model(self, model):
-        self.model = model
 
     # def on_size_allocate(self, widget, allocation):
     #     adj = self.log_scroll.get_vadjustment()
@@ -99,50 +89,6 @@ class Notebook:
             start_iter = buffer.get_iter_at_line(end_line - 1000)
             buffer.delete(start_iter, buffer.get_start_iter())
 
-    def get_selected_torrent(self):
-        logger.info(
-            "Notebook get selected torrent",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-        # Get the currently selected item
-        selection = self.torrents_treeview.get_selection()
-        lmodel, tree_iter = selection.get_selected()
-
-        if tree_iter is None:
-            return
-
-        # Get the index of the selected item
-        index = int(lmodel.get_path(tree_iter).get_indices()[0]) + 1
-
-        # Remove the torrent from self.model.torrent_list
-        for torrent in self.model.torrent_list:
-            if torrent.id == index:
-                return torrent
-
-        return False
-
-    def on_selection_changed(self, selection):
-        logger.debug(
-            "Notebook selection changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-        model, iter = selection.get_selected()
-        if iter is not None:
-            self.selected_path = model.get_path(iter)
-
-        if self.selected_path is None:
-            return
-
-        if iter is None:
-            return
-
-        torrent = model.get_path(iter).get_indices()[0]
-        if torrent is not None:
-            self.update_notebook_status(torrent)
-            self.update_notebook_options(torrent)
-            self.update_notebook_peers(torrent)
-
     def update_notebook_peers(self, id):
         logger.info(
             "Notebook update peers",
@@ -150,11 +96,11 @@ class Notebook:
         )
         torrent = self.model.get_liststore_item(id)
 
-        store = self.peers_treeview.get_model()
+        store = self.peers_columnview.get_model()
 
         if store is None:
             store = Gtk.ListStore(str, str, float, float, float)
-            self.peers_treeview.set_model(store)
+            self.peers_columnview.set_model(store)
 
         num_rows = len(store)
         num_peers = len(torrent.get_seeder().peers)
@@ -171,7 +117,7 @@ class Notebook:
                 row = [str(peer), client, 0.0, 0.0, 0.0]
                 store.append(row)
 
-            self.peers_treeview.set_model(store)
+            self.peers_columnview.set_model(store)
 
     def update_notebook_options(self, torrent):
         grid = self.builder.get_object("options_grid")
@@ -181,12 +127,6 @@ class Notebook:
             child.unparent()
         self.options_grid_children = []
 
-        source = None
-        for torrent_obj in self.model.torrent_list:
-            if torrent_obj.id == torrent + 1:
-                source = torrent_obj
-                break
-
         def on_value_changed(widget, *args):
             attribute = args[-1]
             if isinstance(widget, Gtk.Switch):
@@ -194,8 +134,7 @@ class Notebook:
             else:
                 adjustment = widget.get_adjustment()
                 value = adjustment.get_value()
-            setattr(source, attribute, value)
-            source.emit("attribute-changed", source, {attribute: value})
+            setattr(torrent, attribute, value)
 
         row = 0
         for index, attribute in enumerate(self.settings.editwidgets):
@@ -207,13 +146,13 @@ class Notebook:
             dynamic_widget.set_visible(True)
             dynamic_widget.set_hexpand(True)
             if isinstance(dynamic_widget, Gtk.Switch):
-                dynamic_widget.set_active(getattr(source, attribute))
+                dynamic_widget.set_active(getattr(torrent, attribute))
                 # Connect "state-set" signal for Gtk.Switch
                 dynamic_widget.connect("state-set", on_value_changed, attribute)
             else:
                 adjustment = Gtk.Adjustment(
-                    value=getattr(source, attribute),
-                    upper=getattr(source, attribute) * 10,
+                    value=getattr(torrent, attribute),
+                    upper=getattr(torrent, attribute) * 10,
                     lower=0,
                     step_increment=1,
                     page_increment=10,
@@ -245,8 +184,6 @@ class Notebook:
             extra={"class_name": self.__class__.__name__},
         )
 
-        compatible_attributes, store = self.model.get_liststore()
-
         if self.status_grid_child is not None:
             self.status_tab.remove(self.status_grid_child)
             self.status_grid_child.unparent()
@@ -256,6 +193,11 @@ class Notebook:
         self.status_grid_child.set_hexpand(True)
         self.status_grid_child.set_vexpand(True)
         self.status_grid_child.set_visible(True)
+
+        ATTRIBUTES = Attributes
+        compatible_attributes = [
+            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
+        ]
 
         # Create columns and add them to the TreeView
         for attribute_index, attribute in enumerate(compatible_attributes):
@@ -268,8 +210,7 @@ class Notebook:
             labeln.set_size_request(80, -1)
             self.status_grid_child.attach(labeln, 0, row, 1, 1)
 
-            selected_iter = store.get_iter(self.selected_path)
-            val = str(store.get_value(selected_iter, attribute_index))
+            val = torrent.get_property(attribute)
             labelv = Gtk.Label(label=val, xalign=0)
             labelv.set_visible(True)
             # labelv.set_margin_left(10)
@@ -280,12 +221,35 @@ class Notebook:
 
         self.status_tab.append(self.status_grid_child)
 
-    def update_view(self, model, _, torrent, attribute):
+    def update_view(self, model, torrent, attribute):
         pass
 
     def handle_settings_changed(self, source, key, value):
+        logger.debug(
+            "Torrents view settings changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+        # print(key + " = " + value)
+
+    def handle_model_changed(self, source, data_obj, data_changed):
         logger.info(
             "Notebook settings changed",
             extra={"class_name": self.__class__.__name__},
         )
         # print(key + " = " + value)
+
+    def handle_attribute_changed(self, source, key, value):
+        logger.debug(
+            "Attribute changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def model_selection_changed(self, source, model, torrent):
+        logger.debug(
+            "Model selection changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+        if torrent is not None:
+            self.update_notebook_status(torrent)
+            self.update_notebook_options(torrent)
+            self.update_notebook_peers(torrent.id)

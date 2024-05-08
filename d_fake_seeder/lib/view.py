@@ -4,16 +4,16 @@ import time
 import webbrowser
 from datetime import datetime
 
-import gi  # noqa
+import gi
 
 # Importing necessary libraries
+from lib.component.notebook import Notebook
+from lib.component.states import States
+from lib.component.statusbar import Statusbar
+from lib.component.toolbar import Toolbar
+from lib.component.torrents import Torrents
 from lib.logger import logger
 from lib.settings import Settings
-from lib.views.notebook import Notebook
-from lib.views.states import States
-from lib.views.statusbar import Statusbar
-from lib.views.toolbar import Toolbar
-from lib.views.torrents import Torrents
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
@@ -25,7 +25,7 @@ class View:
     instance = None
     toolbar = None
     notebook = None
-    torrents_treeview = None
+    torrents_columnview = None
     torrents_states = None
 
     def __init__(self, app):
@@ -49,9 +49,9 @@ class View:
         self.window = self.builder.get_object("main_window")
 
         # views
+        self.torrents = Torrents(self.builder, None)
         self.toolbar = Toolbar(self.builder, None, self.window)
         self.notebook = Notebook(self.builder, None)
-        self.torrents = Torrents(self.builder, None)
         self.states = States(self.builder, None)
         self.statusbar = Statusbar(self.builder, None)
 
@@ -83,7 +83,7 @@ class View:
 
         # Load CSS stylesheet
         css_provider = Gtk.CssProvider()
-        css_provider.load_from_path("styles.css")  # Load CSS from file
+        css_provider.load_from_path("ui/styles.css")  # Load CSS from file
 
         # Apply CSS to the window
         style_context = self.window.get_style_context()
@@ -224,12 +224,16 @@ class View:
         )
         self.window.connect("destroy", self.quit)
         self.window.connect("close-request", self.quit)
-        # self.quit_menu_item.connect("activate", self.on_quit_clicked)
-        # self.help_menu_item.connect("activate", self.on_help_clicked)
         self.model.connect("data-changed", self.torrents.update_view)
         self.model.connect("data-changed", self.notebook.update_view)
         self.model.connect("data-changed", self.states.update_view)
         self.model.connect("data-changed", self.statusbar.update_view)
+        self.model.connect("data-changed", self.toolbar.update_view)
+        self.model.connect("selection-changed", self.torrents.model_selection_changed)
+        self.model.connect("selection-changed", self.notebook.model_selection_changed)
+        self.model.connect("selection-changed", self.states.model_selection_changed)
+        self.model.connect("selection-changed", self.statusbar.model_selection_changed)
+        self.model.connect("selection-changed", self.toolbar.model_selection_changed)
         signal.signal(signal.SIGINT, self.quit)
 
     # Connecting signals for different events
@@ -263,11 +267,10 @@ class View:
             torrent.stop()
         self.settings.save_quit()
         self.window.destroy()
-        # Gtk.main_quit()
-        # exit(0)
 
     def handle_settings_changed(self, source, key, value):
-        logger.info(
-            "View settings changed",
+        logger.debug(
+            "Torrents view settings changed",
             extra={"class_name": self.__class__.__name__},
         )
+        # print(key + " = " + value)

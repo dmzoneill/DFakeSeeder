@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from d_fake_seeder.lib.views.statusbar import Statusbar
+from d_fake_seeder.lib.component.statusbar import Statusbar
 
 
 class TestStatusbar(unittest.TestCase):

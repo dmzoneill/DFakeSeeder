@@ -2,3 +2,8 @@
     padding: 50px;
     margin: 50px;
 }
+
+columnview column header {
+    padding: 5px;
+    margin: 0;
+}
