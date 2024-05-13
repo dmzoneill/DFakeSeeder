@@ -75,7 +75,8 @@ class Notebook(Component):
         _, end_iter = buffer.get_bounds()
         end_line = end_iter.get_line()
         if end_line > 1000:
-            start_iter, _ = buffer.get_iter_at_line(end_line - 1000)
+            start_iter = buffer.get_start_iter()
+            start_iter.set_line(end_line - 1000)
             buffer.delete(start_iter, buffer.get_start_iter())
 
     def init_peers_column_view(self):

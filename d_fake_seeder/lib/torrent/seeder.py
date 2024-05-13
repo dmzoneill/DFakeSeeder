@@ -3,6 +3,7 @@ RFC: https://wiki.theory.org/index.php/BitTorrentSpecification
 """
 
 import random
+import socket
 import struct
 import threading
 import traceback
@@ -64,6 +65,70 @@ class Seeder:
         Seeder.tracker_semaphore = new_semaphore
 
     def load_peers(self):
+        parsed_url = urlparse(self.torrent.announce)
+
+        if parsed_url.scheme == "http" or parsed_url.scheme == "https":
+            self.load_peers_http()
+        elif parsed_url.scheme == "udp":
+            self.load_peers_udp()
+        else:
+            print("Unsupported tracker scheme: " + parsed_url.scheme)
+
+    def load_peers_udp(self):
+        logger.info("Seeder load peers", extra={"class_name": self.__class__.__name__})
+        try:
+            self.tracker_semaphore.acquire()
+            if hasattr(self.torrent, "announce") is False:
+                self.tracker_semaphore.release()
+                return
+
+            self.tracker_url = self.torrent.announce
+            parsed_url = urlparse(self.tracker_url)
+
+            if parsed_url.scheme == "udp":
+                View.instance.notify("load_peers " + self.tracker_url)
+
+                # UDP tracker
+                with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+                    sock.connect((parsed_url.hostname, parsed_url.port))
+                    # Construct the UDP message here
+                    # This will depend on the specific protocol used by the tracker
+                    message = self.construct_udp_message(
+                        self.torrent.file_hash,
+                        self.peer_id.encode("ascii"),
+                        self.port,
+                        0,  # uploaded
+                        0,  # downloaded
+                        self.torrent.total_size,  # left
+                        self.download_key,
+                        "started",  # event
+                    )
+                    sock.send(message)
+                    # Handle the response here
+                    response = sock.recv(1024)
+                    data = self.handle_udp_response(response)
+                    if data is not None:
+                        self.info = data
+                        self.update_interval = self.info[b"interval"]
+                        self.tracker_semaphore.release()
+                        return True
+
+                self.tracker_semaphore.release()
+                return False
+            else:
+                View.instance.notify("Unsupported tracker scheme: " + parsed_url.scheme)
+                print("Unsupported tracker scheme: " + parsed_url.scheme)
+                self.tracker_semaphore.release()
+                return True
+        except Exception as e:
+            logger.info(
+                "Seeder unknown error: " + str(e),
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.tracker_semaphore.release()
+            return False
+
+    def load_peers_http(self):
         logger.info("Seeder load peers", extra={"class_name": self.__class__.__name__})
         try:
             self.tracker_semaphore.acquire()
@@ -151,6 +216,15 @@ class Seeder:
             return False
 
     def upload(self, uploaded_bytes, downloaded_bytes, download_left):
+        parsed_url = urlparse(self.torrent.announce)
+        if parsed_url.scheme == "http" or parsed_url.scheme == "https":
+            self.upload_http(uploaded_bytes, downloaded_bytes, download_left)
+        elif parsed_url.scheme == "udp":
+            self.upload_udp(uploaded_bytes, downloaded_bytes, download_left)
+        else:
+            print("Unsupported tracker scheme: " + parsed_url.scheme)
+
+    def upload_http(self, uploaded_bytes, downloaded_bytes, download_left):
         logger.info("Seeder upload", extra={"class_name": self.__class__.__name__})
         while True:
             try:
@@ -187,6 +261,73 @@ class Seeder:
             finally:
                 self.tracker_semaphore.release()
             sleep(0.5)
+
+    def upload_udp(self, uploaded_bytes, downloaded_bytes, download_left):
+        logger.info("Seeder upload", extra={"class_name": self.__class__.__name__})
+        while True:
+            try:
+                if hasattr(self.torrent, "announce"):
+                    self.tracker_url = self.torrent.announce
+                    parsed_url = urlparse(self.tracker_url)
+                    if "udp://" in parsed_url.scheme:
+                        # UDP tracker
+                        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+                            sock.connect((parsed_url.hostname, parsed_url.port))
+                            # Construct the UDP message here
+                            # This will depend on the specific protocol
+                            # used by the tracker
+                            message = self.construct_udp_message(
+                                self.torrent.file_hash,
+                                self.peer_id.encode("ascii"),
+                                self.port,
+                                uploaded_bytes,
+                                downloaded_bytes,
+                                download_left,
+                                self.download_key,
+                            )
+                            sock.send(message)
+                            # Handle the response here
+                            response = sock.recv(1024)
+                            self.handle_udp_response(response)
+                            break
+                    else:
+                        # Existing HTTP/HTTPS tracker code here
+                        # ...
+                        break
+                else:
+                    break
+            except BaseException:
+                traceback.print_exc()
+            sleep(0.5)
+
+    def construct_udp_message(
+        self,
+        file_hash,
+        peer_id,
+        port,
+        uploaded_bytes,
+        downloaded_bytes,
+        download_left,
+        download_key,
+    ):
+        # This is a very basic example and may not work for your specific use case
+        # You will need to modify this to match the
+        # specific protocol used by your tracker
+        message = (
+            f"{file_hash}"
+            f"{peer_id}"
+            f"{port}"
+            f"{uploaded_bytes}"
+            f"{downloaded_bytes}"
+            f"{download_left}"
+            f"{download_key}"
+        )
+        return message.encode("ascii")
+
+    def handle_udp_response(self, response):
+        # This is a very basic example and may not work for your specific use case
+        # You will need to modify this to match the specific protocol used by your tracker
+        print(f"Received response: {response.decode('ascii')}")
 
     @property
     def peers(self):
