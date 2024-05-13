@@ -77,15 +77,11 @@ class Model(GObject.GObject):
 
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore(self):
-        logger.debug(
-            "Model get_liststore", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Model get_liststore", extra={"class_name": self.__class__.__name__})
         return self.torrent_list_attributes
 
     def get_torrents(self):
-        logger.debug(
-            "Model get_torrents", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Model get_torrents", extra={"class_name": self.__class__.__name__})
         return self.torrent_list
 
     def get_trackers_liststore(self):
