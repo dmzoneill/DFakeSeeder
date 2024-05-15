@@ -8,9 +8,8 @@ from lib.torrent.model.torrentstate import TorrentState
 from lib.torrent.torrent import Torrent
 
 gi.require_version("Gdk", "4.0")
-gi.require_version("Gtk", "4.0")
 
-from gi.repository import Gio, GObject, Gtk  # noqa
+from gi.repository import Gio, GObject  # noqa
 
 
 # Class for handling Torrent data
