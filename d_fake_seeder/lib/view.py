@@ -262,9 +262,7 @@ class View:
     def quit(self, widget=None, event=None):
         logger.info("View quit", extra={"class_name": self.__class__.__name__})
 
-        # Stopping all torrents before quitting
-        for torrent in self.model.torrent_list:
-            torrent.stop()
+        self.model.stop()
         self.settings.save_quit()
         self.window.destroy()
 

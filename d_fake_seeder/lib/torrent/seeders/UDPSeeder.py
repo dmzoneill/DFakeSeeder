@@ -9,12 +9,8 @@ from lib.view import View
 
 
 class UDPSeeder(BaseSeeder):
-
     def __init__(self, torrent):
         super().__init__(torrent)
-
-    def generate_transaction_id(self):
-        return random.randint(0, 255)
 
     def build_announce_packet(self, connection_id, transaction_id, info_hash, peer_id):
         info_hash = (info_hash + b"\x00" * 20)[:20]

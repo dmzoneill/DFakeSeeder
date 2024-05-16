@@ -5,7 +5,7 @@ DEB_FILENAME := $(deb_package_name)_$(package_version).deb
 RPM_FILENAME := $(rpm_package_name)-$(package_version)
 
 required:
-	pip3 install -r requirements.txt
+	pip3 install -r requirements.txt --break-system-packages
 
 
 clearlog: required

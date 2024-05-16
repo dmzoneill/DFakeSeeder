@@ -17,7 +17,6 @@ from gi.repository import Gio, GLib, GObject, Gtk  # noqa
 
 
 class Torrents(Component):
-
     def __init__(self, builder, model):
         logger.info(
             "Torrents view startup",
