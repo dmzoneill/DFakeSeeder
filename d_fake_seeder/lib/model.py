@@ -107,6 +107,11 @@ class Model(GObject.GObject):
 
         return list_store
 
+    def stop(self):
+        # Stopping all torrents before quitting
+        for torrent in self.torrent_list:
+            torrent.stop()
+
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore_item(self, index):
         logger.info(

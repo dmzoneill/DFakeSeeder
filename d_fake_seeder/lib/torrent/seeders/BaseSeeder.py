@@ -76,6 +76,9 @@ class BaseSeeder:
         if key == "concurrent_http_connections":
             BaseSeeder.recreate_semaphore(self)
 
+    def generate_transaction_id(self):
+        return random.randint(0, 255)
+
     def __str__(self):
         logger.info("Seeder __get__", extra={"class_name": self.__class__.__name__})
         result = "Peer ID: %s\n" % self.peer_id

@@ -10,7 +10,6 @@ from lib.torrent.seeders.UDPSeeder import UDPSeeder
 
 
 class Seeder:
-
     def __init__(self, torrent):
         logger.info("Seeder Startup", extra={"class_name": self.__class__.__name__})
         parsed_url = urlparse(torrent.announce)

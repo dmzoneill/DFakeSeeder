@@ -9,7 +9,6 @@ from lib.view import View
 
 
 class HTTPSeeder(BaseSeeder):
-
     def __init__(self, torrent):
         super().__init__(torrent)
 
