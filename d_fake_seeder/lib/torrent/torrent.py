@@ -100,6 +100,10 @@ class Torrent(GObject.GObject):
         try:
             fetched = False
             count = 5
+
+            GLib.idle_add(self.update_torrent_callback)
+            time.sleep(random.uniform(1.0, self.settings.tickspeed))
+
             while fetched is False and count != 0:
                 logger.debug(
                     "Requesting seeder information",
@@ -107,15 +111,13 @@ class Torrent(GObject.GObject):
                 )
                 fetched = self.seeder.load_peers()
                 if fetched is False:
-                    print("sleeping 30")
-                    time.sleep(30)
+                    print("sleeping 3")
+                    time.sleep(3)
                     count -= 1
                     if count == 0:
                         self.active = False
 
             ticker = 0.0
-            GLib.idle_add(self.update_torrent_callback)
-            time.sleep(random.uniform(1.0, self.settings.tickspeed))
 
             while not self.torrent_worker_stop_event.is_set():
                 if ticker == self.settings.tickspeed and self.active:
