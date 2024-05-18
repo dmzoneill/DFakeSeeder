@@ -3,7 +3,7 @@ FROM fedora:40
 
 # Install necessary packages
 RUN dnf update -y && \
-    dnf install -y python3 python3-pip python3-gobject gtk4 xauth mesa-libGL mesa-dri-drivers
+    dnf install -y python3 python3-pip python3-gobject gtk4 xauth mesa-libGL mesa-dri-drivers which
 
 # Set user and group IDs
 ARG USER_ID
@@ -32,6 +32,13 @@ ENV LIBGL_ALWAYS_SOFTWARE=1
 
 # Install Python dependencies
 RUN pip3 install -r requirements.txt --no-warn-script-location
+
+USER 0
+
+RUN ln -s /home/dfakeseeder/.local/bin/py.test /usr/bin/pytest
+
+# Switch to the created user
+USER ${USER_NAME}
 
 # Copy application code
 COPY . /app
