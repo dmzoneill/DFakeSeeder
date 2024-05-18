@@ -75,6 +75,7 @@ run-debug-docker: ui-build
 	    -e DFS_PATH=/app \
 	    -e DISPLAY=$$DISPLAY \
 	    -v $$HOME/.config/dfakeseeder:/home/dfakeseeder/.config/dfakeseeder \
+		-v $$HOME/Downloads:/home/dfakeseeder/Downloads \
 	    -v $$(pwd):/app \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 	    dfakeseeder
@@ -194,7 +195,28 @@ translate:
 	#$(MAKE) translatexml
 
 test:
-	DFS_PATH=$$(pwd)/d_fake_seeder pytest -vvv tests/
+	DFS_PATH=$$(pwd)/d_fake_seeder cd d_fake_seeder/ && pytest -vvv .
+
+test-docker:
+	-docker build \
+		--build-arg USER_ID=$$(id -u) \
+		--build-arg GROUP_ID=$$(id -g) \
+		-t dfakeseeder .
+
+	-docker ps -a -q --filter "name=dfakeseeder" | xargs -r docker rm -f
+
+	-docker run --privileged -it --rm \
+	    --name dfakeseeder \
+	    -e LOG_LEVEL=INFO \
+	    -e DFS_PATH=/app \
+	    -e DISPLAY=$$DISPLAY \
+		-e PYTHONPATH=/app/d_fake_seeder/ \
+	    -v $$HOME/.config/dfakeseeder:/home/dfakeseeder/.config/dfakeseeder \
+		-v $$HOME/Downloads:/home/dfakeseeder/Downloads \
+	    -v $$(pwd):/app \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+	    dfakeseeder \
+	    pytest -s -x -vvv .
 
 flatpak: clean
 	flatpak-builder build-dir ie.fio.dfakeseeder manifest.json

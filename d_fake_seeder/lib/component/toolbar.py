@@ -181,16 +181,11 @@ class Toolbar(Component):
             )
             # Get the selected file
             selected_file = dialog.get_file()
-            print("Selected File:", selected_file)
-            current_path = os.path.dirname(os.path.abspath(__file__))
-            torrents_path = os.path.join(current_path, "torrents")
+            torrents_path = os.path.expanduser("~/.config/dfakeseeder/torrents")
             shutil.copy(os.path.abspath(selected_file.get_path()), torrents_path)
-
-            # Assuming selected_file is a GLocalFile object
             file_path = selected_file.get_path()
-
             copied_torrent_path = os.path.join(torrents_path, os.path.basename(file_path))
-            self.model.add_torrent(os.path.relpath(copied_torrent_path))
+            self.model.add_torrent(copied_torrent_path)
             dialog.destroy()
         else:
             dialog.destroy()
