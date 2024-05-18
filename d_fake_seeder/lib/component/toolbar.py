@@ -94,8 +94,12 @@ class Toolbar(Component):
             "Toolbar remove " + str(selected.id),
             extra={"class_name": self.__class__.__name__},
         )
-        os.remove(selected.filepath)
-        self.model.torrent_list.remove(selected)
+        try:
+            os.remove(selected.filepath)
+        except Exception as e:
+            print(e)
+            pass
+        self.model.remove_torrent(selected.filepath)
 
     def on_toolbar_pause_clicked(self, button):
         logger.info(
@@ -107,7 +111,7 @@ class Toolbar(Component):
             return
 
         selected.active = False
-        self.model.emit("data-changed", self.model, selected, {"active": selected.active})
+        self.model.emit("data-changed", self.model, selected)
 
     def on_toolbar_resume_clicked(self, button):
         logger.info(
@@ -119,7 +123,7 @@ class Toolbar(Component):
             return
 
         selected.active = True
-        self.model.emit("data-changed", self.model, selected, {"active": selected.active})
+        self.model.emit("data-changed", self.model, selected)
 
     def on_toolbar_up_clicked(self, button):
         logger.info(
@@ -137,8 +141,8 @@ class Toolbar(Component):
             if torrent.id == selected.id - 1:
                 torrent.id = selected.id
                 selected.id -= 1
-                self.model.emit("data-changed", self.model, selected, {"id": selected.id})
-                self.model.emit("data-changed", self.model, torrent, {"id": torrent.id})
+                self.model.emit("data-changed", self.model, selected)
+                self.model.emit("data-changed", self.model, torrent)
                 break
 
     def on_toolbar_down_clicked(self, button):
@@ -157,8 +161,8 @@ class Toolbar(Component):
             if torrent.id == selected.id + 1:
                 torrent.id = selected.id
                 selected.id += 1
-                self.model.emit("data-changed", self.model, selected, {"id": selected.id})
-                self.model.emit("data-changed", self.model, torrent, {"id": torrent.id})
+                self.model.emit("data-changed", self.model, selected)
+                self.model.emit("data-changed", self.model, torrent)
                 break
 
     def on_toolbar_settings_clicked(self, button):
@@ -216,29 +220,7 @@ class Toolbar(Component):
         dialog.show()
 
     def get_selected_torrent(self):
-        logger.info(
-            "Toolbar get selected torrent",
-            extra={"class_name": self.__class__.__name__},
-        )
-        # Get the TreeView object using self.builder.get_object
-        columnview1 = self.builder.get_object("columnview1")
-
-        # Get the currently selected item
-        selection = columnview1.get_selection()
-        lmodel, tree_iter = selection.get_selected()
-
-        if tree_iter is None:
-            return
-
-        # Get the index of the selected item
-        index = int(lmodel.get_path(tree_iter).get_indices()[0]) + 1
-
-        # Remove the torrent from self.model.torrent_list
-        for torrent in self.model.torrent_list:
-            if torrent.id == index:
-                return torrent
-
-        return False
+        return self.selection
 
     def update_view(self, model, torrent, attribute):
         pass
@@ -268,3 +250,4 @@ class Toolbar(Component):
             "Model selection changed",
             extra={"class_name": self.__class__.__name__},
         )
+        self.selection = torrent

@@ -29,6 +29,7 @@ class HTTPSeeder(BaseSeeder):
             self.tracker_semaphore.release()
             return False
         except Exception as e:
+            self.set_random_announce_url()
             self.handle_exception(e, "Seeder unknown error in load_peers_http")
             return False
 
@@ -42,6 +43,7 @@ class HTTPSeeder(BaseSeeder):
                 )
                 break
             except BaseException:
+                self.set_random_announce_url()
                 traceback.print_exc()
             finally:
                 self.tracker_semaphore.release()

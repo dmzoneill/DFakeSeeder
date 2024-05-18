@@ -37,7 +37,7 @@ class Torrents(Component):
 
         # Create a gesture recognizer
         gesture = Gtk.GestureClick.new()
-        gesture.connect("released", self.column_selection_menu)
+        gesture.connect("released", self.main_menu)
         gesture.set_button(3)
 
         # Create an action group
@@ -57,7 +57,7 @@ class Torrents(Component):
 
         self.update_columns()
 
-    def column_selection_menu(self, gesture, n_press, x, y):
+    def main_menu(self, gesture, n_press, x, y):
         rect = self.torrents_columnview.get_allocation()
         rect.width = 0
         rect.height = 0
@@ -70,6 +70,21 @@ class Torrents(Component):
         ]
 
         menu = Gio.Menu.new()
+
+        # Create submenus
+        queue_submenu = Gio.Menu()
+        queue_submenu.append("Top", "app.queue_top")
+        queue_submenu.append("Up", "app.queue_up")
+        queue_submenu.append("Down", "app.queue_down")
+        queue_submenu.append("Bottom", "app.queue_bottom")
+
+        # Add menu items and submenus to the main menu
+        menu.append("Pause", "app.pause")
+        menu.append("Resume", "app.resume")
+        menu.append("Update Tracker", "app.update_tracker")
+        menu.append_submenu("Queue", queue_submenu)
+
+        columns_menu = Gio.Menu.new()
 
         # Check if the attribute is a visible column in the columnview
         visible_columns = [
@@ -96,7 +111,9 @@ class Torrents(Component):
         for attribute in attributes:
             toggle_item = Gio.MenuItem.new(label=f"{attribute}")
             toggle_item.set_detailed_action(f"app.toggle_{attribute}")
-            menu.append_item(toggle_item)
+            columns_menu.append_item(toggle_item)
+
+        menu.append_submenu("Columns", columns_menu)
 
         self.popover = Gtk.PopoverMenu().new_from_model(menu)
         self.popover.set_parent(self.torrents_columnview)
@@ -193,6 +210,7 @@ class Torrents(Component):
                 elif (
                     attribute_type == GObject.TYPE_LONG
                     or attribute_type == GObject.TYPE_BOOLEAN
+                    or attribute_type == GObject.TYPE_FLOAT
                 ):
                     sorter = Gtk.NumericSorter.new(attribute_expression)
 
@@ -225,6 +243,7 @@ class Torrents(Component):
                 widget = Gtk.Label()
                 widget.set_hexpand(True)  # Make the widget expand horizontally
                 widget.set_halign(Gtk.Align.START)  # Align text to the left
+                widget.set_vexpand(True)
 
             # Set the child widget for the item
             item.set_child(widget)
@@ -266,9 +285,11 @@ class Torrents(Component):
                         self.to_str,
                     )
                 elif isinstance(widget, Gtk.ProgressBar):
-                    # Bind the attribute to the widget's fraction property
                     item_data.bind_property(
-                        attribute, widget, "fraction", GObject.BindingFlags.SYNC_CREATE
+                        attribute,
+                        widget,
+                        "fraction",
+                        GObject.BindingFlags.SYNC_CREATE,
                     )
                 # Add more cases for other widget types as needed
 
@@ -295,7 +316,7 @@ class Torrents(Component):
         self.store = self.model.get_liststore()
         self.sorter = Gtk.ColumnView.get_sorter(self.torrents_columnview)
         self.sort_model = Gtk.SortListModel.new(self.store, self.sorter)
-        self.selection = Gtk.SingleSelection.new(self.sort_model)
+        self.selection = Gtk.MultiSelection.new(self.sort_model)
         self.selection.connect("selection-changed", self.on_selection_changed)
         self.torrents_columnview.set_model(self.selection)
 
@@ -314,9 +335,16 @@ class Torrents(Component):
             self.update_model()
 
     def on_selection_changed(self, selection, position, item):
-        item = selection.get_selected_item()
-        if item is not None:
-            self.model.emit("selection-changed", self.model, item)
+        # item = selection.get_selected_item()
+        # if item is not None:
+        #     self.model.emit("selection-changed", self.model, item)
+        for i in range(self.store.get_n_items()):
+            if self.torrents_columnview.get_model().is_selected(i):
+                self.model.emit(
+                    "selection-changed",
+                    self.model,
+                    self.torrents_columnview.get_model().get_item(i),
+                )
 
     def handle_settings_changed(self, source, key, value):
         logger.debug(

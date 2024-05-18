@@ -1,6 +1,6 @@
 import os
 
-from lib.listener import Listener
+# from lib.listener import Listener
 from lib.logger import logger
 from lib.settings import Settings
 
@@ -15,8 +15,8 @@ class Controller:
 
         self.view = view
         self.model = model
-        self.listener = Listener(self.model)
-        self.listener.start()
+        # self.listener = Listener(self.model)
+        # self.listener.start()
         self.view.set_model(self.model)
         self.view.connect_signals()
 
