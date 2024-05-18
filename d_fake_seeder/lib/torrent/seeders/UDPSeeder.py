@@ -1,7 +1,7 @@
 import random
+import select
 import socket
 import struct
-from time import sleep
 
 from lib.logger import logger
 from lib.torrent.seeders.BaseSeeder import BaseSeeder
@@ -54,6 +54,8 @@ class UDPSeeder(BaseSeeder):
 
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
                 sock.connect((self.tracker_hostname, self.tracker_port))
+                sock.settimeout(5)  # Set a timeout of 5 seconds for socket operations
+
                 connection_id = 0x41727101980
                 transaction_id = self.generate_transaction_id()
                 announce_packet = self.build_announce_packet(
@@ -63,45 +65,11 @@ class UDPSeeder(BaseSeeder):
                     self.peer_id.encode("ascii"),
                 )
                 sock.send(announce_packet)
-                response = sock.recv(2048)
-                peers, interval, leechers, seeders = self.process_announce_response(
-                    response
-                )
-                if peers is not None:
-                    self.info = {
-                        b"peers": peers,
-                        b"interval": interval,
-                        b"leechers": leechers,
-                        b"seeders": seeders,
-                    }
-                    self.update_interval = self.info[b"interval"]
-                    self.tracker_semaphore.release()
-                    return True
 
-            self.tracker_semaphore.release()
-            return False
-        except Exception as e:
-            self.handle_exception(e, "Seeder unknown error in load_peers_udp")
-            return False
-
-    def upload(self, uploaded_bytes, downloaded_bytes, download_left):
-        logger.info("Seeder upload", extra={"class_name": self.__class__.__name__})
-        while True:
-            try:
-                with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-                    sock.connect((self.tracker_hostname, self.tracker_port))
-                    connection_id = 0x41727101980
-                    transaction_id = self.generate_transaction_id()
-                    announce_packet = self.build_announce_packet(
-                        connection_id,
-                        transaction_id,
-                        self.torrent.file_hash,
-                        self.peer_id.encode("ascii"),
-                        uploaded_bytes,
-                        downloaded_bytes,
-                        download_left,
-                    )
-                    sock.send(announce_packet)
+                ready = select.select(
+                    [sock], [], [], 5
+                )  # Wait for the socket to be ready for reading
+                if ready[0]:
                     response = sock.recv(2048)
                     peers, interval, leechers, seeders = self.process_announce_response(
                         response
@@ -114,7 +82,65 @@ class UDPSeeder(BaseSeeder):
                             b"seeders": seeders,
                         }
                         self.update_interval = self.info[b"interval"]
-                        break
-            except Exception as e:
-                self.handle_exception(e, "Seeder unknown error in upload")
-            sleep(0.5)
+                    self.tracker_semaphore.release()
+                    return True
+                else:
+                    # Timeout occurred
+                    self.set_random_announce_url()
+                    logger.error("Socket operation timed out")
+                    self.tracker_semaphore.release()
+                    return False
+
+        except Exception as e:
+            self.set_random_announce_url()
+            self.handle_exception(e, "Seeder unknown error in load_peers_udp")
+            return False
+
+    def upload(self, uploaded_bytes, downloaded_bytes, download_left):
+        logger.info("Seeder upload", extra={"class_name": self.__class__.__name__})
+
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+                sock.connect((self.tracker_hostname, self.tracker_port))
+                sock.settimeout(4)  # Set a socket timeout of 4 seconds
+
+                connection_id = 0x41727101980
+                transaction_id = self.generate_transaction_id()
+                announce_packet = self.build_announce_packet(
+                    connection_id,
+                    transaction_id,
+                    self.torrent.file_hash,
+                    self.peer_id.encode("ascii"),
+                    uploaded_bytes,
+                    downloaded_bytes,
+                    download_left,
+                )
+                sock.send(announce_packet)
+
+                ready = select.select(
+                    [sock], [], [], 4
+                )  # Wait for the socket to be ready for reading
+                if ready[0]:
+                    response = sock.recv(2048)
+                    peers, interval, leechers, seeders = self.process_announce_response(
+                        response
+                    )
+                    if peers is not None:
+                        self.info = {
+                            b"peers": peers,
+                            b"interval": interval,
+                            b"leechers": leechers,
+                            b"seeders": seeders,
+                        }
+                        self.update_interval = self.info[b"interval"]
+                    return True
+                else:
+                    # Timeout occurred
+                    self.set_random_announce_url()
+                    logger.error("Socket operation timed out")
+                    return False
+
+        except Exception as e:
+            self.set_random_announce_url()
+            self.handle_exception(e, "Seeder unknown error in upload")
+            return False

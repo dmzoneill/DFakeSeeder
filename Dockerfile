@@ -1,31 +1,52 @@
-FROM python:3.11
+# Stage 1: Build Environment
+FROM fedora:40
 
-# Update
-RUN apt-get update  
+# Install necessary packages
+RUN dnf update -y && \
+    dnf install -y python3 python3-pip python3-gobject gtk4 xauth mesa-libGL mesa-dri-drivers
 
-# Install dependencies
-RUN apt-get install -y gtk-4-examples libgtk-4-dev python3-gi python3-gi-cairo python3-requests gir1.2-gtk-4.0
+# Set user and group IDs
+ARG USER_ID
+ARG GROUP_ID
+ARG USER_NAME=dfakeseeder
+RUN groupadd -g ${GROUP_ID} ${USER_NAME} && \
+    useradd -m -u ${USER_ID} -g ${GROUP_ID} -s /bin/bash ${USER_NAME}
 
-# cleanup
-RUN  rm -rf /var/lib/apt/lists/*
-
-# Copy the application files into the container
-COPY . /app
-
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
+# Change ownership of directories
+RUN chown -R ${USER_NAME}:${USER_NAME} /app
+COPY requirements.txt /app/
+
+# Create necessary directories and set permissions
+RUN mkdir -vp /run/user/${USER_ID}/at-spi /home/${USER_NAME}/.cache /home/${USER_NAME}/.config
+RUN chown -R ${USER_NAME}:${USER_NAME} /app /run/user/${USER_ID} /home/${USER_NAME}/.cache /home/${USER_NAME}/.config
+
+# Switch to the created user
+USER ${USER_NAME}
+
+# Set environment variables
+ENV XDG_RUNTIME_DIR=/run/user/${USER_ID}
+ENV LIBGL_ALWAYS_SOFTWARE=1
+
 # Install Python dependencies
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt --no-warn-script-location
 
-# Set environment variable to display GUI on the host
+# Copy application code
+COPY . /app
+
+# Set display environment variable
 ENV DISPLAY=:0
+ENV GTK_THEME=Adwaita:dark
 
-# set working directory
-WORKDIR /app/d_fake_seeder
-
-# Set environment variable to include the path
+# Set Python path
 ENV PYTHONPATH="/usr/lib/python3/dist-packages:${PYTHONPATH}"
 
-# Run the Python GTK application
+# Mount host's GTK theme configuration directory into the container
+VOLUME /usr/share/themes
+VOLUME /tmp/.X11-unix
+
+# Set entrypoint command
+WORKDIR /app/d_fake_seeder
 CMD ["python3", "dfakeseeder.py"]

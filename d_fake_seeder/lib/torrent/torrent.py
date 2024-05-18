@@ -51,7 +51,7 @@ class Torrent(GObject.GObject):
                 "name": "",
                 "upload_speed": self.settings.upload_speed,
                 "download_speed": self.settings.download_speed,
-                "progress": 0,
+                "progress": 0.0,
                 "announce_interval": self.settings.announce_interval,
                 "next_update": self.settings.announce_interval,
                 "uploading": False,
@@ -96,9 +96,10 @@ class Torrent(GObject.GObject):
             "Torrent update worker",
             extra={"class_name": self.__class__.__name__},
         )
+
         try:
             fetched = False
-            count = 3
+            count = 5
             while fetched is False and count != 0:
                 logger.debug(
                     "Requesting seeder information",
@@ -110,7 +111,6 @@ class Torrent(GObject.GObject):
                     time.sleep(30)
                     count -= 1
                     if count == 0:
-                        print("Paused")
                         self.active = False
 
             ticker = 0.0
@@ -125,8 +125,8 @@ class Torrent(GObject.GObject):
                 ticker += 0.5
                 time.sleep(0.5)
 
-        except KeyboardInterrupt:
-            pass
+        except Exception as e:
+            print(e)
 
     def update_torrent_callback(self):
         logger.debug(
@@ -142,11 +142,12 @@ class Torrent(GObject.GObject):
         if self.total_size != self.torrent_file.total_size:
             self.total_size = self.torrent_file.total_size
 
-        if self.seeders != self.seeder.seeders:
-            self.seeders = self.seeder.seeders
+        if self.seeder.ready:
+            if self.seeders != self.seeder.seeders:
+                self.seeders = self.seeder.seeders
 
-        if self.leechers != self.seeder.leechers:
-            self.leechers = self.seeder.leechers
+            if self.leechers != self.seeder.leechers:
+                self.leechers = self.seeder.leechers
 
         threshold = (
             self.settings.torrents[self.file_path]["threshold"]
@@ -157,7 +158,7 @@ class Torrent(GObject.GObject):
         if self.threshold != threshold:
             self.threshold = threshold
 
-        if self.progress >= threshold and not self.uploading:
+        if self.progress >= (threshold / 100) and not self.uploading:
             if self.uploading is False:
                 self.uploading = True
 
@@ -169,7 +170,7 @@ class Torrent(GObject.GObject):
             self.session_uploaded += int(next_speed)
             self.total_uploaded += self.session_uploaded
 
-        if self.progress < 100:
+        if self.progress < 1.0:
             download_factor = int(random.uniform(0.200, 0.800) * 1000)
             next_speed = self.download_speed * 1024 * download_factor
             next_speed *= update_internal
@@ -178,9 +179,9 @@ class Torrent(GObject.GObject):
             self.total_downloaded += int(next_speed)
 
             if self.total_downloaded >= self.total_size:
-                self.progress = 100
+                self.progress = 1.0
             else:
-                self.progress = round((self.total_downloaded / self.total_size) * 100)
+                self.progress = self.total_downloaded / self.total_size
 
         if self.next_update > 0:
             update = self.next_update - int(self.settings.tickspeed)
@@ -221,8 +222,12 @@ class Torrent(GObject.GObject):
         }
 
     def get_seeder(self):
-        logger.info("Torrent get seeder", extra={"class_name": self.__class__.__name__})
+        # logger.info("Torrent get seeder", extra={"class_name": self.__class__.__name__})
         return self.seeder
+
+    def is_ready(self):
+        # logger.info("Torrent get seeder", extra={"class_name": self.__class__.__name__})
+        return self.seeder.ready
 
     def handle_settings_changed(self, source, key, value):
         logger.info(
@@ -254,6 +259,9 @@ class Torrent(GObject.GObject):
 
     def get_attributes(self):
         return self.torrent_attributes
+
+    def get_torrent_file(self):
+        return self.torrent_file
 
     def __getattr__(self, attr):
         if attr == "torrent_attributes":

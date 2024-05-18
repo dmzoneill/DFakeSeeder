@@ -69,7 +69,17 @@ class Model(GObject.GObject):
         torrent = next((t for t in self.torrent_list if t.filepath == filepath), None)
         if torrent is not None:
             self.torrent_list.remove(torrent)
-            self.torrent_list_attributes.remove(torrent.torrent_attributes)
+            for index, item in enumerate(self.torrent_list_attributes):
+                if item.filepath == torrent.filepath:
+                    del self.torrent_list_attributes[index]
+                    break
+
+            sorted_list = sorted(self.torrent_list_attributes, key=lambda x: x.id)
+            # Sort the list by member attribute 'id'
+            for item in sorted_list:
+                if item.id <= torrent.id:
+                    continue
+                item.id -= 1
 
         # Emit 'data-changed' signal with torrent instance and message
         self.emit("data-changed", torrent, "remove")
@@ -90,13 +100,14 @@ class Model(GObject.GObject):
         )
         tracker_count = {}
         for torrent in self.torrent_list:
-            tracker_url = torrent.seeder.tracker
-            parsed_url = urlparse(tracker_url)
-            fqdn = parsed_url.hostname
-            if fqdn in tracker_count:
-                tracker_count[fqdn] += 1
-            else:
-                tracker_count[fqdn] = 1
+            if torrent.is_ready():
+                tracker_url = torrent.seeder.tracker
+                parsed_url = urlparse(tracker_url)
+                fqdn = parsed_url.hostname
+                if fqdn in tracker_count:
+                    tracker_count[fqdn] += 1
+                else:
+                    tracker_count[fqdn] = 1
 
         # Create a list store with the custom GObject type TorrentState
         list_store = Gio.ListStore.new(TorrentState)

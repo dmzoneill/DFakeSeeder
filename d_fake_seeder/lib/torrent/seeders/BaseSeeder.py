@@ -35,8 +35,35 @@ class BaseSeeder:
         self.tracker_url = self.torrent.announce
         self.parsed_url = urlparse(self.tracker_url)
         self.tracker_scheme = self.parsed_url.scheme
+        if hasattr(self.torrent, "announce_list"):
+            self.tracker_urls = [
+                url
+                for url in self.torrent.announce_list
+                if urlparse(url).scheme == self.tracker_scheme
+            ]
         self.tracker_hostname = self.parsed_url.hostname
         self.tracker_port = self.parsed_url.port
+
+    def set_random_announce_url(self):
+        if hasattr(self.torrent, "announce_list") and self.torrent.announce_list:
+            same_schema_urls = [
+                url
+                for url in self.torrent.announce_list
+                if urlparse(url).scheme == self.tracker_scheme
+            ]
+            if same_schema_urls:
+                random_url = random.choice(same_schema_urls)
+                self.tracker_url = random_url
+                self.parsed_url = urlparse(self.tracker_url)
+                self.tracker_scheme = self.parsed_url.scheme
+                self.tracker_hostname = self.parsed_url.hostname
+                self.tracker_port = self.parsed_url.port
+        else:
+            self.tracker_url = self.torrent.announce
+            self.parsed_url = urlparse(self.tracker_url)
+            self.tracker_scheme = self.parsed_url.scheme
+            self.tracker_hostname = self.parsed_url.hostname
+            self.tracker_port = self.parsed_url.port
 
     @staticmethod
     def recreate_semaphore(obj):

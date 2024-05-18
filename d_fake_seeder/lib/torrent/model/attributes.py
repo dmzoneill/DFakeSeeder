@@ -15,7 +15,7 @@ class Attributes(GObject.Object):
     leechers = GObject.Property(type=GObject.TYPE_LONG, default=0)
     name = GObject.Property(type=GObject.TYPE_STRING, default="")
     next_update = GObject.Property(type=GObject.TYPE_LONG, default=0)
-    progress = GObject.Property(type=GObject.TYPE_LONG, default=0)
+    progress = GObject.Property(type=GObject.TYPE_FLOAT, default=0.0)
     seeders = GObject.Property(type=GObject.TYPE_LONG, default=0)
     session_downloaded = GObject.Property(type=GObject.TYPE_LONG, default=0)
     session_uploaded = GObject.Property(type=GObject.TYPE_LONG, default=0)

@@ -7,7 +7,6 @@ RPM_FILENAME := $(rpm_package_name)-$(package_version)
 required:
 	pip3 install -r requirements.txt --break-system-packages
 
-
 clearlog: required
 	truncate -s 0 d_fake_seeder/log.log
 
@@ -59,6 +58,28 @@ run-debug: ui-build
 		cd d_fake_seeder && \
 		LOG_LEVEL=INFO DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder.py; \
 	}
+	$(MAKE) clean_settings;
+
+run-debug-docker: ui-build
+	-docker build \
+		--build-arg USER_ID=$$(id -u) \
+		--build-arg GROUP_ID=$$(id -g) \
+		-t dfakeseeder .
+
+	-docker ps -a -q --filter "name=dfakeseeder" | xargs -r docker rm -f
+
+	xhost +local:root
+	-docker run --privileged -it --rm \
+	    --name dfakeseeder \
+	    -e LOG_LEVEL=INFO \
+	    -e DFS_PATH=/app \
+	    -e DISPLAY=$$DISPLAY \
+	    -v $$HOME/.config/dfakeseeder:/home/dfakeseeder/.config/dfakeseeder \
+	    -v $$(pwd):/app \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+	    dfakeseeder
+	xhost -local:root
+
 	$(MAKE) clean_settings;
 
 clean:

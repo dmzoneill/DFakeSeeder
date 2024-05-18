@@ -227,6 +227,7 @@
             <property name="label">Details</property>
         </object>
     </child>
+
     <child>
         <object class="GtkScrolledWindow">
             <property name="can-focus">False</property>
@@ -243,12 +244,16 @@
             <property name="label">Status</property>
         </object>
     </child>
+
     <child>
-        <object class="GtkBox" id="options_tab">
-            <property name="visible">True</property>
+        <object class="GtkScrolledWindow">
             <property name="can-focus">False</property>
             <child>
-                <interface >
+                <object class="GtkBox" id="options_tab">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                        <interface >
   <object class="GtkGrid" id="options_grid">
     <property name="visible">True</property>
     <property name="row-spacing">10</property>
@@ -259,14 +264,34 @@
     <property name="valign">start</property>
   </object>
 </interface>
+                    </child>
+                </object>
             </child>
         </object>
-    </child>
+    </child>    
     <child type="tab">
         <object class="GtkLabel">
             <property name="label">Options</property>
         </object>
     </child>
+
+    <child>
+        <object class="GtkScrolledWindow">
+            <property name="can-focus">False</property>
+            <child>
+                <object class="GtkBox" id="files_tab">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                </object>
+            </child>
+        </object>
+    </child>
+    <child type="tab">
+        <object class="GtkLabel">
+            <property name="label">Files</property>
+        </object>
+    </child>
+
     <child>
         <object class="GtkBox" id="peers_tab">
             <property name="visible">True</property>
@@ -292,6 +317,7 @@
             <property name="label">Peers</property>
         </object>
     </child>
+
     <child>
         <object class="GtkBox" id="trackers_tab">
             <property name="visible">True</property>
@@ -321,6 +347,7 @@
             <property name="label">Trackers</property>
         </object>
     </child>
+
     <child>
         <object class="GtkBox" id="log_tab">
             <property name="visible">True</property>
@@ -341,8 +368,8 @@
                 </object>
             </child>
         </object>
-    </child>
-        <child type="tab">
+    </child>    
+    <child type="tab">
         <object class="GtkLabel">
             <property name="label">Log</property>
         </object>

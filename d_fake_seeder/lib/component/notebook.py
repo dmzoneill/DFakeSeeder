@@ -36,10 +36,12 @@ class Notebook(Component):
 
         # tab children
         self.status_grid_child = None
+        self.files_grid_child = None
         self.options_grid_children = []
 
         tab_names = [
             "status_tab",
+            "files_tab",
             "details_tab",
             "options_tab",
             "peers_tab",
@@ -146,11 +148,13 @@ class Notebook(Component):
                 row = TorrentPeer(str(peer), client, 0.0, 0.0, 0.0)
                 self.peers_store.append(row)
 
-            self.peers_columnview.set_model(self.peers_store)
+            self.peers_columnview.set_model(self.selection)
 
     def setup(self, widget, item, property_name):
         def setup_when_idle():
             obj = item.get_item()
+            if obj is None:
+                return
             property_type = obj.find_property(property_name).value_type
             if property_type == GObject.TYPE_BOOLEAN:
                 widget_type = Gtk.CheckButton
@@ -290,6 +294,47 @@ class Notebook(Component):
         self.status_tab = self.builder.get_object("status_tab")
         self.status_tab.append(self.status_grid_child)
 
+    def update_notebook_files(self, torrent):
+        logger.info(
+            "Notebook update files",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        if self.files_grid_child is not None:
+            self.status_tab.remove(self.files_grid_child)
+            self.files_grid_child.unparent()
+
+        self.files_grid_child = Gtk.Grid()
+        self.files_grid_child.set_column_spacing(10)
+        self.files_grid_child.set_hexpand(True)
+        self.files_grid_child.set_vexpand(True)
+        self.files_grid_child.set_visible(True)
+
+        files = self.model.get_torrents()
+        filtered_torrent = next((t for t in files if t.id == torrent.id), None)
+
+        # Create columns and add them to the TreeView
+        for attribute_index, (fullpath, length) in enumerate(
+            filtered_torrent.get_torrent_file().get_files()
+        ):
+            row = attribute_index
+
+            labeln = Gtk.Label(label=fullpath, xalign=0)
+            labeln.set_visible(True)
+            labeln.set_halign(Gtk.Align.START)
+            labeln.set_size_request(80, -1)
+            self.files_grid_child.attach(labeln, 0, row, 1, 1)
+
+            labelv = Gtk.Label(label=length, xalign=0)
+            labelv.set_visible(True)
+            labelv.set_halign(Gtk.Align.START)
+            labelv.set_size_request(280, -1)
+            labelv.set_selectable(True)  # Enable text selection
+            self.files_grid_child.attach(labelv, 1, row, 1, 1)
+
+        self.files_tab = self.builder.get_object("files_tab")
+        self.files_tab.append(self.files_grid_child)
+
     def update_view(self, model, torrent, attribute):
         pass
 
@@ -322,3 +367,4 @@ class Notebook(Component):
             self.update_notebook_status(torrent)
             self.update_notebook_options(torrent)
             self.update_notebook_peers(torrent)
+            self.update_notebook_files(torrent)

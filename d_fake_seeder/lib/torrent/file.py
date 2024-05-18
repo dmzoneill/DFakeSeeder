@@ -17,10 +17,19 @@ class File:
                 f.close()
                 self.torrent_header = bencoding.decode(self.raw_torrent)
 
-                if b"announce" not in self.torrent_header:
-                    return
+                if b"announce" in self.torrent_header:
+                    self.announce = self.torrent_header[b"announce"].decode("utf-8")
 
-                self.announce = self.torrent_header[b"announce"].decode("utf-8")
+                if b"announce-list" in self.torrent_header:
+                    announce_list = self.torrent_header[b"announce-list"]
+                    if isinstance(announce_list, list):
+                        # Extract announce URLs from the announce-list
+                        announce_urls = [
+                            url.decode("utf-8")
+                            for sublist in announce_list
+                            for url in sublist
+                        ]
+                        self.announce_list = announce_urls
 
                 torrent_info = self.torrent_header[b"info"]
                 m = hashlib.sha1()
@@ -98,3 +107,50 @@ class File:
                 result += "Md5: %s\n" % torrent_info[b"md5sum"]
 
         return result
+
+    def get_announce(self):
+        return self.torrent_header[b"announce"].decode("utf-8")
+
+    def get_creation_date(self):
+        if b"creation date" in self.torrent_header:
+            creation_date = self.torrent_header[b"creation date"]
+            creation_date = datetime.fromtimestamp(creation_date)
+            return creation_date.strftime("%Y/%m/%d %H:%M:%S")
+        return None
+
+    def get_created_by(self):
+        if b"created by" in self.torrent_header:
+            return self.torrent_header[b"created by"].decode("utf-8")
+        return None
+
+    def get_encoding(self):
+        if b"encoding" in self.torrent_header:
+            return self.torrent_header[b"encoding"].decode("utf-8")
+        return None
+
+    def get_piece_length(self):
+        return helpers.sizeof_fmt(self.torrent_header[b"info"][b"piece length"])
+
+    def get_num_pieces(self):
+        return len(self.torrent_header[b"info"][b"pieces"]) / 20
+
+    def get_torrent_name(self):
+        return self.torrent_header[b"info"][b"name"].decode("utf-8")
+
+    def get_files(self):
+        files = []
+        if b"files" in self.torrent_header[b"info"]:
+            for file_info in self.torrent_header[b"info"][b"files"]:
+                fullpath = "/".join([x.decode("utf-8") for x in file_info[b"path"]])
+                files.append((fullpath, helpers.sizeof_fmt(file_info[b"length"])))
+        return files
+
+    def get_single_file_info(self):
+        if b"files" not in self.torrent_header[b"info"]:
+            return helpers.sizeof_fmt(self.torrent_header[b"info"][b"length"])
+        return None
+
+    def get_md5sum(self):
+        if b"md5sum" in self.torrent_header[b"info"]:
+            return self.torrent_header[b"info"][b"md5sum"]
+        return None
