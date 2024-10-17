@@ -30,7 +30,9 @@ class Torrent(GObject.GObject):
 
     def __init__(self, filepath):
         super().__init__()
-        logger.info("Torrent instantiate", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Torrent instantiate", extra={"class_name": self.__class__.__name__}
+        )
 
         self.torrent_attributes = Attributes()
 
@@ -91,18 +93,20 @@ class Torrent(GObject.GObject):
         self.torrent_worker = threading.Thread(target=self.update_torrent_worker)
         self.torrent_worker.start()
 
-    def update_torrent_worker(self):
+        # Start the thread to update the name
+        self.peers_worker_stop_event = threading.Event()
+        self.peers_worker = threading.Thread(target=self.peers_worker_update)
+        self.peers_worker.start()
+
+    def peers_worker_update(self):
         logger.info(
-            "Torrent update worker",
+            "Peers worker",
             extra={"class_name": self.__class__.__name__},
         )
 
         try:
             fetched = False
             count = 5
-
-            GLib.idle_add(self.update_torrent_callback)
-            time.sleep(random.uniform(1.0, self.settings.tickspeed))
 
             while fetched is False and count != 0:
                 logger.debug(
@@ -117,6 +121,16 @@ class Torrent(GObject.GObject):
                     if count == 0:
                         self.active = False
 
+        except Exception as e:
+            print(e)
+
+    def update_torrent_worker(self):
+        logger.info(
+            "Torrent update worker",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        try:
             ticker = 0.0
 
             while not self.torrent_worker_stop_event.is_set():
@@ -215,6 +229,11 @@ class Torrent(GObject.GObject):
         View.instance.notify("Stopping fake seeder " + self.name)
         self.torrent_worker_stop_event.set()
         self.torrent_worker.join()
+
+        # Start the thread to update the name
+        self.peers_worker_stop_event.set()
+        self.peers_worker.join()
+
         ATTRIBUTES = Attributes
         attributes = [
             prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
@@ -247,6 +266,9 @@ class Torrent(GObject.GObject):
             View.instance.notify("Stopping fake seeder " + self.name)
             self.torrent_worker_stop_event.set()
             self.torrent_worker.join()
+
+            self.peers_worker_stop_event.set()
+            self.peers_worker.join()
         except Exception as e:
             print(e)
 
@@ -254,8 +276,15 @@ class Torrent(GObject.GObject):
             try:
                 View.instance.notify("Starting fake seeder " + self.name)
                 self.torrent_worker_stop_event = threading.Event()
-                self.torrent_worker = threading.Thread(target=self.update_torrent_worker)
+                self.torrent_worker = threading.Thread(
+                    target=self.update_torrent_worker
+                )
                 self.torrent_worker.start()
+
+                # Start the thread to update the name
+                self.peers_worker_stop_event = threading.Event()
+                self.peers_worker = threading.Thread(target=self.peers_worker_update)
+                self.peers_worker.start()
             except Exception as e:
                 print(e)
 

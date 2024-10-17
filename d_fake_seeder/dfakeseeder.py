@@ -59,7 +59,9 @@ def run():
         d.run()
         return
     except Exception as e:
-        print(f"Tried to run from current directory failed, trying module find_spec {e}")
+        print(
+            f"Tried to run from current directory failed, trying module find_spec {e}"
+        )
         try:
             spec = importlib.util.find_spec("d_fake_seeder")
             if os.getenv("DFS_PATH") is None:

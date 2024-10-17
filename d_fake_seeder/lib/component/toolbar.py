@@ -53,7 +53,9 @@ class Toolbar(Component):
         self.toolbar_down_button.add_css_class("flat")
 
         self.toolbar_settings_button = self.builder.get_object("toolbar_settings")
-        self.toolbar_settings_button.connect("clicked", self.on_toolbar_settings_clicked)
+        self.toolbar_settings_button.connect(
+            "clicked", self.on_toolbar_settings_clicked
+        )
         self.toolbar_settings_button.add_css_class("flat")
 
         self.toolbar_refresh_rate = self.builder.get_object("toolbar_refresh_rate")
@@ -68,7 +70,9 @@ class Toolbar(Component):
         self.toolbar_refresh_rate.set_size_request(150, -1)
 
     def on_toolbar_refresh_rate_changed(self, value):
-        self.settings.tickspeed = math.ceil(float(self.toolbar_refresh_rate.get_value()))
+        self.settings.tickspeed = math.ceil(
+            float(self.toolbar_refresh_rate.get_value())
+        )
 
     def on_toolbar_add_clicked(self, button):
         logger.info(
@@ -184,14 +188,18 @@ class Toolbar(Component):
             torrents_path = os.path.expanduser("~/.config/dfakeseeder/torrents")
             shutil.copy(os.path.abspath(selected_file.get_path()), torrents_path)
             file_path = selected_file.get_path()
-            copied_torrent_path = os.path.join(torrents_path, os.path.basename(file_path))
+            copied_torrent_path = os.path.join(
+                torrents_path, os.path.basename(file_path)
+            )
             self.model.add_torrent(copied_torrent_path)
             dialog.destroy()
         else:
             dialog.destroy()
 
     def show_file_selection_dialog(self):
-        logger.info("Toolbar file dialog", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Toolbar file dialog", extra={"class_name": self.__class__.__name__}
+        )
         # Create a new file chooser dialog
         dialog = Gtk.FileChooserDialog(
             title="Select torrent",
