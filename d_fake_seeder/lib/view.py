@@ -87,9 +87,7 @@ class View:
 
         # Apply CSS to the window
         style_context = self.window.get_style_context()
-        style_context.add_provider(
-            css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        )
+        style_context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         # Create an action group
         self.action_group = Gio.SimpleActionGroup()
