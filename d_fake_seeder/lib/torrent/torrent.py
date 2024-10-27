@@ -30,7 +30,9 @@ class Torrent(GObject.GObject):
 
     def __init__(self, filepath):
         super().__init__()
-        logger.info("Torrent instantiate", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Torrent instantiate", extra={"class_name": self.__class__.__name__}
+        )
 
         self.torrent_attributes = Attributes()
 
@@ -276,7 +278,9 @@ class Torrent(GObject.GObject):
             try:
                 View.instance.notify("Starting fake seeder " + self.name)
                 self.torrent_worker_stop_event = threading.Event()
-                self.torrent_worker = threading.Thread(target=self.update_torrent_worker)
+                self.torrent_worker = threading.Thread(
+                    target=self.update_torrent_worker
+                )
                 self.torrent_worker.start()
 
                 # Start the thread to update the name

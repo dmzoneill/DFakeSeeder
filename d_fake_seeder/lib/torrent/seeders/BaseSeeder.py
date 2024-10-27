@@ -132,20 +132,28 @@ class BaseSeeder:
 
     @property
     def clients(self):
-        logger.debug("Seeder get clients", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Seeder get clients", extra={"class_name": self.__class__.__name__}
+        )
         return BaseSeeder.peer_clients
 
     @property
     def seeders(self):
-        logger.debug("Seeder get seeders", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Seeder get seeders", extra={"class_name": self.__class__.__name__}
+        )
         return self.info[b"complete"] if b"complete" in self.info else 0
 
     @property
     def tracker(self):
-        logger.debug("Seeder get tracker", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Seeder get tracker", extra={"class_name": self.__class__.__name__}
+        )
         return self.tracker_url
 
     @property
     def leechers(self):
-        logger.debug("Seeder get leechers", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Seeder get leechers", extra={"class_name": self.__class__.__name__}
+        )
         return self.info[b"incomplete"] if b"incomplete" in self.info else 0
