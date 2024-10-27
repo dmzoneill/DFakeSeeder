@@ -48,7 +48,7 @@ class UDPSeeder(BaseSeeder):
 
     def handle_announce(self, packet_data, timeout, log_msg):
         logger.info(log_msg, extra={"class_name": self.__class__.__name__})
-        
+
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
                 sock.connect((self.tracker_hostname, self.tracker_port))
@@ -61,14 +61,16 @@ class UDPSeeder(BaseSeeder):
                     transaction_id,
                     self.torrent.file_hash,
                     self.peer_id.encode("ascii"),
-                    *packet_data  # Unpack additional packet data
+                    *packet_data,  # Unpack additional packet data
                 )
                 sock.send(announce_packet)
 
                 ready = select.select([sock], [], [], timeout)
                 if ready[0]:
                     response = sock.recv(2048)
-                    peers, interval, leechers, seeders = self.process_announce_response(response)
+                    peers, interval, leechers, seeders = self.process_announce_response(
+                        response
+                    )
                     if peers is not None:
                         self.info = {
                             b"peers": peers,
@@ -92,9 +94,7 @@ class UDPSeeder(BaseSeeder):
     def load_peers(self):
         self.tracker_semaphore.acquire()
         result = self.handle_announce(
-            packet_data=(),
-            timeout=5,
-            log_msg="Seeder load peers"
+            packet_data=(), timeout=5, log_msg="Seeder load peers"
         )
         self.tracker_semaphore.release()
         return result
@@ -102,7 +102,5 @@ class UDPSeeder(BaseSeeder):
     def upload(self, uploaded_bytes, downloaded_bytes, download_left):
         packet_data = (uploaded_bytes, downloaded_bytes, download_left)
         return self.handle_announce(
-            packet_data=packet_data,
-            timeout=4,
-            log_msg="Seeder upload"
+            packet_data=packet_data, timeout=4, log_msg="Seeder upload"
         )
