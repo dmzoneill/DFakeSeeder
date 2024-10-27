@@ -16,9 +16,7 @@ class BaseSeeder:
 
     # Common functionality goes here
     def __init__(self, torrent):
-        logger.info(
-            "Seeder Startup", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Seeder Startup", extra={"class_name": self.__class__.__name__})
 
         # subscribe to settings changed
         self.settings = Settings.get_instance()
@@ -47,10 +45,7 @@ class BaseSeeder:
         self.tracker_port = self.parsed_url.port
 
     def set_random_announce_url(self):
-        if (
-            hasattr(self.torrent, "announce_list")
-            and self.torrent.announce_list
-        ):
+        if hasattr(self.torrent, "announce_list") and self.torrent.announce_list:
             same_schema_urls = [
                 url
                 for url in self.torrent.announce_list
@@ -85,9 +80,7 @@ class BaseSeeder:
         BaseSeeder.tracker_semaphore.acquire(current_count)
 
         # Create a new semaphore with the desired count
-        new_semaphore = threading.Semaphore(
-            obj.settings.concurrent_http_connections
-        )
+        new_semaphore = threading.Semaphore(obj.settings.concurrent_http_connections)
 
         # Release the acquired permits on the new semaphore
         new_semaphore.release(current_count)
@@ -114,9 +107,7 @@ class BaseSeeder:
         return random.randint(0, 255)
 
     def __str__(self):
-        logger.info(
-            "Seeder __get__", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Seeder __get__", extra={"class_name": self.__class__.__name__})
         result = "Peer ID: %s\n" % self.peer_id
         result += "Key: %s\n" % self.download_key
         result += "Port: %d\n" % self.port
@@ -125,9 +116,7 @@ class BaseSeeder:
 
     @property
     def peers(self):
-        logger.info(
-            "Seeder get peers", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Seeder get peers", extra={"class_name": self.__class__.__name__})
         result = []
         if b"peers" not in self.info:
             return result
@@ -143,28 +132,20 @@ class BaseSeeder:
 
     @property
     def clients(self):
-        logger.debug(
-            "Seeder get clients", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Seeder get clients", extra={"class_name": self.__class__.__name__})
         return BaseSeeder.peer_clients
 
     @property
     def seeders(self):
-        logger.debug(
-            "Seeder get seeders", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Seeder get seeders", extra={"class_name": self.__class__.__name__})
         return self.info[b"complete"] if b"complete" in self.info else 0
 
     @property
     def tracker(self):
-        logger.debug(
-            "Seeder get tracker", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Seeder get tracker", extra={"class_name": self.__class__.__name__})
         return self.tracker_url
 
     @property
     def leechers(self):
-        logger.debug(
-            "Seeder get leechers", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Seeder get leechers", extra={"class_name": self.__class__.__name__})
         return self.info[b"incomplete"] if b"incomplete" in self.info else 0

@@ -9,9 +9,7 @@ from lib.util.helpers import humanbytes
 
 class Statusbar(Component):
     def __init__(self, builder, model):
-        logger.info(
-            "StatusBar startup", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("StatusBar startup", extra={"class_name": self.__class__.__name__})
         self.builder = builder
         self.model = model
 
@@ -76,9 +74,9 @@ class Statusbar(Component):
         self.last_execution_time = current_time
 
         session_uploaded = self.sum_column_values("session_uploaded")
-        session_upload_speed = (
-            session_uploaded - self.last_session_uploaded
-        ) / int(self.settings.tickspeed)
+        session_upload_speed = (session_uploaded - self.last_session_uploaded) / int(
+            self.settings.tickspeed
+        )
         self.last_session_uploaded = session_uploaded
 
         session_upload_speed = humanbytes(session_upload_speed)

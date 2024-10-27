@@ -5,9 +5,7 @@ import os
 class ClassNameFilter(logging.Filter):
     def filter(self, record):
         record.class_name = (
-            record.name
-            if not hasattr(record, "class_name")
-            else record.class_name
+            record.name if not hasattr(record, "class_name") else record.class_name
         )
         return True
 

@@ -63,15 +63,11 @@ class Settings(GObject.Object):
 
         # Create a file system observer
         self._observer = Observer()
-        self._observer.schedule(
-            self._event_handler, path=os.getcwd(), recursive=False
-        )
+        self._observer.schedule(self._event_handler, path=os.getcwd(), recursive=False)
         self._observer.start()
 
     def load_settings(self):
-        logger.info(
-            "Settings load", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Settings load", extra={"class_name": self.__class__.__name__})
         try:
             # Check if the file has been modified since last load
             modified = os.path.getmtime(self._file_path)
@@ -95,16 +91,12 @@ class Settings(GObject.Object):
                     json.dump(self._settings, f, indent=4)
 
     def save_settings(self):
-        logger.info(
-            "Settings save", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Settings save", extra={"class_name": self.__class__.__name__})
         with open(self._file_path, "w") as f:
             json.dump(self._settings, f, indent=4)
 
     def save_quit(self):
-        logger.info(
-            "Settings quit", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Settings quit", extra={"class_name": self.__class__.__name__})
         self._observer.stop()
         self.save_settings()
 

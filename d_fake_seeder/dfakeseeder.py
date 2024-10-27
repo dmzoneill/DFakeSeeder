@@ -29,9 +29,7 @@ class DFakeSeeder(Gtk.Application):
         self.settings.connect("attribute-changed", self.handle_settings_changed)
 
     def do_activate(self):
-        logger.info(
-            "Run Controller", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Run Controller", extra={"class_name": self.__class__.__name__})
 
         # The Model manages the data and logic
         self.model = Model()
@@ -46,9 +44,7 @@ class DFakeSeeder(Gtk.Application):
         self.view.window.show()
 
     def handle_settings_changed(self, source, key, value):
-        logger.info(
-            "Settings changed", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Settings changed", extra={"class_name": self.__class__.__name__})
         # print(key + " = " + value)
 
 

@@ -130,11 +130,7 @@ class Notebook(Component):
         )
 
         torrent = next(
-            (
-                item
-                for item in self.model.get_torrents()
-                if item.id == torrent.id
-            ),
+            (item for item in self.model.get_torrents() if item.id == torrent.id),
             None,
         )
 
@@ -273,8 +269,7 @@ class Notebook(Component):
 
         ATTRIBUTES = Attributes
         compatible_attributes = [
-            prop.name.replace("-", "_")
-            for prop in GObject.list_properties(ATTRIBUTES)
+            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
         ]
 
         # Create columns and add them to the TreeView

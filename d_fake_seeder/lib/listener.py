@@ -26,9 +26,7 @@ class Listener:
                 break
             # Process the received data
             # You can send responses back to the client if needed
-            logger.info(
-                "Expected input information for BitTorrent client connection"
-            )
+            logger.info("Expected input information for BitTorrent client connection")
 
     def start_listening(self, port):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

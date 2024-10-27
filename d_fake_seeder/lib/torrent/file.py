@@ -8,9 +8,7 @@ from lib.logger import logger
 
 class File:
     def __init__(self, filepath):
-        logger.info(
-            "File Startup", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("File Startup", extra={"class_name": self.__class__.__name__})
         while True:
             try:
                 self.filepath = filepath
@@ -20,9 +18,7 @@ class File:
                 self.torrent_header = bencoding.decode(self.raw_torrent)
 
                 if b"announce" in self.torrent_header:
-                    self.announce = self.torrent_header[b"announce"].decode(
-                        "utf-8"
-                    )
+                    self.announce = self.torrent_header[b"announce"].decode("utf-8")
 
                 if b"announce-list" in self.torrent_header:
                     announce_list = self.torrent_header[b"announce-list"]
@@ -68,9 +64,7 @@ class File:
         return torrent_info[b"name"].decode("utf-8")
 
     def __str__(self):
-        logger.debug(
-            "File attribute", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("File attribute", extra={"class_name": self.__class__.__name__})
         announce = self.torrent_header[b"announce"].decode("utf-8")
         result = "Announce: %s\n" % announce
 
@@ -101,18 +95,14 @@ class File:
             # Multiple File Mode
             result += "Files:\n"
             for file_info in torrent_info[b"files"]:
-                fullpath = "/".join(
-                    [x.decode("utf-8") for x in file_info[b"path"]]
-                )
+                fullpath = "/".join([x.decode("utf-8") for x in file_info[b"path"]])
                 result += "  '%s' (%s)\n" % (
                     fullpath,
                     helpers.sizeof_fmt(file_info[b"length"]),
                 )
         else:
             # Single File Mode
-            result += "Length: %s\n" % helpers.sizeof_fmt(
-                torrent_info[b"length"]
-            )
+            result += "Length: %s\n" % helpers.sizeof_fmt(torrent_info[b"length"])
             if b"md5sum" in torrent_info:
                 result += "Md5: %s\n" % torrent_info[b"md5sum"]
 
@@ -151,12 +141,8 @@ class File:
         files = []
         if b"files" in self.torrent_header[b"info"]:
             for file_info in self.torrent_header[b"info"][b"files"]:
-                fullpath = "/".join(
-                    [x.decode("utf-8") for x in file_info[b"path"]]
-                )
-                files.append(
-                    (fullpath, helpers.sizeof_fmt(file_info[b"length"]))
-                )
+                fullpath = "/".join([x.decode("utf-8") for x in file_info[b"path"]])
+                files.append((fullpath, helpers.sizeof_fmt(file_info[b"length"])))
         return files
 
     def get_single_file_info(self):
