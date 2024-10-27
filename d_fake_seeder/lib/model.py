@@ -31,9 +31,7 @@ class Model(GObject.GObject):
 
     def __init__(self):
         GObject.GObject.__init__(self)
-        logger.info(
-            "Model instantiate", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Model instantiate", extra={"class_name": self.__class__.__name__})
 
         # subscribe to settings changed
         self.settings = Settings.get_instance()
@@ -46,9 +44,7 @@ class Model(GObject.GObject):
 
     # Method to add a new torrent
     def add_torrent(self, filepath):
-        logger.info(
-            "Model add torrent", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Model add torrent", extra={"class_name": self.__class__.__name__})
 
         # Create new Torrent instance
         torrent = Torrent(filepath)
@@ -67,14 +63,10 @@ class Model(GObject.GObject):
 
     # Method to add a new torrent
     def remove_torrent(self, filepath):
-        logger.info(
-            "Model add torrent", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Model add torrent", extra={"class_name": self.__class__.__name__})
 
         # Find the Torrent instance
-        torrent = next(
-            (t for t in self.torrent_list if t.filepath == filepath), None
-        )
+        torrent = next((t for t in self.torrent_list if t.filepath == filepath), None)
         if torrent is not None:
             self.torrent_list.remove(torrent)
             for index, item in enumerate(self.torrent_list_attributes):
@@ -82,9 +74,7 @@ class Model(GObject.GObject):
                     del self.torrent_list_attributes[index]
                     break
 
-            sorted_list = sorted(
-                self.torrent_list_attributes, key=lambda x: x.id
-            )
+            sorted_list = sorted(self.torrent_list_attributes, key=lambda x: x.id)
             # Sort the list by member attribute 'id'
             for item in sorted_list:
                 if item.id <= torrent.id:
@@ -96,15 +86,11 @@ class Model(GObject.GObject):
 
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore(self):
-        logger.debug(
-            "Model get_liststore", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Model get_liststore", extra={"class_name": self.__class__.__name__})
         return self.torrent_list_attributes
 
     def get_torrents(self):
-        logger.debug(
-            "Model get_torrents", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Model get_torrents", extra={"class_name": self.__class__.__name__})
         return self.torrent_list
 
     def get_trackers_liststore(self):

@@ -59,9 +59,7 @@ class States(Component):
         torrent_state = item.get_item()
 
         # Update the label with the tracker data
-        value = (
-            torrent_state.tracker if torrent_state.tracker is not None else ""
-        )
+        value = torrent_state.tracker if torrent_state.tracker is not None else ""
         item.get_child().set_label(value)
 
     def setup_count_factory(self, factory, item):
@@ -76,9 +74,7 @@ class States(Component):
 
     # Method to update the ColumnView with compatible attributes
     def update_view(self, model, torrent, attribute):
-        selection_model = Gtk.SingleSelection.new(
-            model.get_trackers_liststore()
-        )
+        selection_model = Gtk.SingleSelection.new(model.get_trackers_liststore())
         self.states_columnview.set_model(selection_model)
 
     def handle_settings_changed(self, source, key, value):
