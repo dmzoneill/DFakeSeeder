@@ -5,7 +5,6 @@ import struct
 
 from lib.logger import logger
 from lib.torrent.seeders.BaseSeeder import BaseSeeder
-from lib.view import View
 
 
 class UDPSeeder(BaseSeeder):
