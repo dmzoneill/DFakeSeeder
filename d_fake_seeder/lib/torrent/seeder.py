@@ -12,7 +12,9 @@ from lib.torrent.seeders.UDPSeeder import UDPSeeder
 
 class Seeder:
     def __init__(self, torrent):
-        logger.info("Seeder Startup", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Seeder Startup", extra={"class_name": self.__class__.__name__}
+        )
         self.ready = False
         self.seeder = None
         self.check_announce_attribute(torrent)

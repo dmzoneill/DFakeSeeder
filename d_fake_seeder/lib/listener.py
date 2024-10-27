@@ -14,7 +14,8 @@ class Listener:
         self.thread = None
         self.running = False
         logger.info(
-            "Listener instantiated", extra={"class_name": self.__class__.__name__}
+            "Listener instantiated",
+            extra={"class_name": self.__class__.__name__},
         )
         signal.signal(signal.SIGINT, self.quit)
 
@@ -25,7 +26,9 @@ class Listener:
                 break
             # Process the received data
             # You can send responses back to the client if needed
-            logger.info("Expected input information for BitTorrent client connection")
+            logger.info(
+                "Expected input information for BitTorrent client connection"
+            )
 
     def start_listening(self, port):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

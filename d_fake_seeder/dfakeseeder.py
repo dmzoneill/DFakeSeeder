@@ -29,7 +29,9 @@ class DFakeSeeder(Gtk.Application):
         self.settings.connect("attribute-changed", self.handle_settings_changed)
 
     def do_activate(self):
-        logger.info("Run Controller", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Run Controller", extra={"class_name": self.__class__.__name__}
+        )
 
         # The Model manages the data and logic
         self.model = Model()
@@ -44,7 +46,9 @@ class DFakeSeeder(Gtk.Application):
         self.view.window.show()
 
     def handle_settings_changed(self, source, key, value):
-        logger.info("Settings changed", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Settings changed", extra={"class_name": self.__class__.__name__}
+        )
         # print(key + " = " + value)
 
 
@@ -59,7 +63,10 @@ def run():
         d.run()
         return
     except Exception as e:
-        print(f"Tried to run from current directory failed, trying module find_spec {e}")
+        print(
+            f"""Tried to run from current directory failed,
+             trying module find_spec {e}"""
+        )
         try:
             spec = importlib.util.find_spec("d_fake_seeder")
             if os.getenv("DFS_PATH") is None:

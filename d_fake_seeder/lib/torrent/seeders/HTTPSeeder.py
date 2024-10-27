@@ -13,7 +13,9 @@ class HTTPSeeder(BaseSeeder):
         super().__init__(torrent)
 
     def load_peers(self):
-        logger.info("Seeder load peers", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Seeder load peers", extra={"class_name": self.__class__.__name__}
+        )
         try:
             self.tracker_semaphore.acquire()
             View.instance.notify("load_peers " + self.tracker_url)
@@ -34,7 +36,9 @@ class HTTPSeeder(BaseSeeder):
             return False
 
     def upload(self, uploaded_bytes, downloaded_bytes, download_left):
-        logger.info("Seeder upload", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Seeder upload", extra={"class_name": self.__class__.__name__}
+        )
         while True:
             try:
                 self.tracker_semaphore.acquire()
@@ -50,7 +54,11 @@ class HTTPSeeder(BaseSeeder):
             sleep(0.5)
 
     def make_http_request(
-        self, uploaded_bytes=0, downloaded_bytes=0, download_left=0, num_want=200
+        self,
+        uploaded_bytes=0,
+        downloaded_bytes=0,
+        download_left=0,
+        num_want=200,
     ):
         http_params = {
             "info_hash": self.torrent.file_hash,

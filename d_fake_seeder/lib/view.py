@@ -29,7 +29,9 @@ class View:
     torrents_states = None
 
     def __init__(self, app):
-        logger.info("View instantiate", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "View instantiate", extra={"class_name": self.__class__.__name__}
+        )
         self.app = app
         View.instance = self
 
@@ -39,11 +41,15 @@ class View:
 
         # Loading GUI from XML
         self.builder = Gtk.Builder()
-        self.builder.add_from_file(os.environ.get("DFS_PATH") + "/ui/generated.xml")
+        self.builder.add_from_file(
+            os.environ.get("DFS_PATH") + "/ui/generated.xml"
+        )
 
         # Load CSS stylesheet
         css_provider = Gtk.CssProvider()
-        css_provider.load_from_path(os.environ.get("DFS_PATH") + "/ui/styles.css")
+        css_provider.load_from_path(
+            os.environ.get("DFS_PATH") + "/ui/styles.css"
+        )
 
         # Get window object
         self.window = self.builder.get_object("main_window")
@@ -87,7 +93,9 @@ class View:
 
         # Apply CSS to the window
         style_context = self.window.get_style_context()
-        style_context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        style_context.add_provider(
+            css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
 
         # Create an action group
         self.action_group = Gio.SimpleActionGroup()
@@ -178,7 +186,9 @@ class View:
             return False
 
     def resize_panes(self):
-        logger.info("View resize_panes", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "View resize_panes", extra={"class_name": self.__class__.__name__}
+        )
         allocation = self.main_paned.get_allocation()
         available_height = allocation.height
         position = available_height // 2
@@ -191,7 +201,9 @@ class View:
 
     # Setting model for the view
     def notify(self, text):
-        logger.info("View notify", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "View notify", extra={"class_name": self.__class__.__name__}
+        )
         # Cancel the previous timeout, if it exists
         if hasattr(self, "timeout_id") and self.timeout_id > 0:
             GLib.source_remove(self.timeout_id)
@@ -203,12 +215,15 @@ class View:
         self.status.set_text(text)
         self.timeout_id = GLib.timeout_add(
             3000,
-            lambda: self.notify_label.set_visible(False) or self.notify_label.hide(),
+            lambda: self.notify_label.set_visible(False)
+            or self.notify_label.hide(),
         )
 
     # Setting model for the view
     def set_model(self, model):
-        logger.info("View set model", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "View set model", extra={"class_name": self.__class__.__name__}
+        )
         self.model = model
         self.notebook.set_model(model)
         self.toolbar.set_model(model)
@@ -229,16 +244,28 @@ class View:
         self.model.connect("data-changed", self.states.update_view)
         self.model.connect("data-changed", self.statusbar.update_view)
         self.model.connect("data-changed", self.toolbar.update_view)
-        self.model.connect("selection-changed", self.torrents.model_selection_changed)
-        self.model.connect("selection-changed", self.notebook.model_selection_changed)
-        self.model.connect("selection-changed", self.states.model_selection_changed)
-        self.model.connect("selection-changed", self.statusbar.model_selection_changed)
-        self.model.connect("selection-changed", self.toolbar.model_selection_changed)
+        self.model.connect(
+            "selection-changed", self.torrents.model_selection_changed
+        )
+        self.model.connect(
+            "selection-changed", self.notebook.model_selection_changed
+        )
+        self.model.connect(
+            "selection-changed", self.states.model_selection_changed
+        )
+        self.model.connect(
+            "selection-changed", self.statusbar.model_selection_changed
+        )
+        self.model.connect(
+            "selection-changed", self.toolbar.model_selection_changed
+        )
         signal.signal(signal.SIGINT, self.quit)
 
     # Connecting signals for different events
     def remove_signals(self):
-        logger.info("Remove signals", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Remove signals", extra={"class_name": self.__class__.__name__}
+        )
         self.model.disconnect_by_func(self.torrents.update_view)
         self.model.disconnect_by_func(self.notebook.update_view)
         self.model.disconnect_by_func(self.states.update_view)

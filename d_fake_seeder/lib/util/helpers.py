@@ -27,7 +27,9 @@ def urlencode(bytes):
 
 def random_id(length):
     """Generate a random ID of given length."""
-    return "".join(random.choices(string.ascii_letters + string.digits, k=length))
+    return "".join(
+        random.choices(string.ascii_letters + string.digits, k=length)
+    )
 
 
 def humanbytes(B):

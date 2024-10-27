@@ -12,7 +12,9 @@ class UDPSeeder(BaseSeeder):
     def __init__(self, torrent):
         super().__init__(torrent)
 
-    def build_announce_packet(self, connection_id, transaction_id, info_hash, peer_id):
+    def build_announce_packet(
+        self, connection_id, transaction_id, info_hash, peer_id
+    ):
         info_hash = (info_hash + b"\x00" * 20)[:20]
         peer_id = (peer_id + b"\x00" * 20)[:20]
         packet = struct.pack(
@@ -35,8 +37,8 @@ class UDPSeeder(BaseSeeder):
 
     def process_announce_response(self, response):
         peers = []
-        action, transaction_id, interval, leechers, seeders = struct.unpack_from(
-            "!IIIII", response, offset=0
+        action, transaction_id, interval, leechers, seeders = (
+            struct.unpack_from("!IIIII", response, offset=0)
         )
         offset = 20
         while offset + 6 <= len(response):
@@ -47,14 +49,18 @@ class UDPSeeder(BaseSeeder):
         return peers, interval, leechers, seeders
 
     def load_peers(self):
-        logger.info("Seeder load peers", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Seeder load peers", extra={"class_name": self.__class__.__name__}
+        )
         try:
             self.tracker_semaphore.acquire()
             View.instance.notify("load_peers " + self.tracker_url)
 
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
                 sock.connect((self.tracker_hostname, self.tracker_port))
-                sock.settimeout(5)  # Set a timeout of 5 seconds for socket operations
+                sock.settimeout(
+                    5
+                )  # Set a timeout of 5 seconds for socket operations
 
                 connection_id = 0x41727101980
                 transaction_id = self.generate_transaction_id()
@@ -71,8 +77,8 @@ class UDPSeeder(BaseSeeder):
                 )  # Wait for the socket to be ready for reading
                 if ready[0]:
                     response = sock.recv(2048)
-                    peers, interval, leechers, seeders = self.process_announce_response(
-                        response
+                    peers, interval, leechers, seeders = (
+                        self.process_announce_response(response)
                     )
                     if peers is not None:
                         self.info = {
@@ -97,7 +103,9 @@ class UDPSeeder(BaseSeeder):
             return False
 
     def upload(self, uploaded_bytes, downloaded_bytes, download_left):
-        logger.info("Seeder upload", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Seeder upload", extra={"class_name": self.__class__.__name__}
+        )
 
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
@@ -122,8 +130,8 @@ class UDPSeeder(BaseSeeder):
                 )  # Wait for the socket to be ready for reading
                 if ready[0]:
                     response = sock.recv(2048)
-                    peers, interval, leechers, seeders = self.process_announce_response(
-                        response
+                    peers, interval, leechers, seeders = (
+                        self.process_announce_response(response)
                     )
                     if peers is not None:
                         self.info = {
