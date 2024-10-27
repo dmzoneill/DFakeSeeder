@@ -3,7 +3,7 @@
 
 # D' Fake Seeder
 
-- Developed on Fedora 40 - Implications for gobject versioing
+- Developed on Fedora 40 - Implications for gobject versioning
 - This is a Python GTK4 app very much under active development
 - Supports multiple torrents
 - Supporter HTTp/UDP trackers
