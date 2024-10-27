@@ -31,7 +31,9 @@ class Torrents(Component):
 
         # subscribe to settings changed
         self.settings = Settings.get_instance()
-        self.settings.connect("attribute-changed", self.handle_attribute_changed)
+        self.settings.connect(
+            "attribute-changed", self.handle_attribute_changed
+        )
 
         self.torrents_columnview = self.builder.get_object("columnview1")
 
@@ -66,7 +68,8 @@ class Torrents(Component):
 
         ATTRIBUTES = Attributes
         attributes = [
-            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
+            prop.name.replace("-", "_")
+            for prop in GObject.list_properties(ATTRIBUTES)
         ]
 
         menu = Gio.Menu.new()
@@ -98,8 +101,12 @@ class Torrents(Component):
             if attribute not in self.stateful_actions.keys():
                 state = attribute in visible_columns
 
-                self.stateful_actions[attribute] = Gio.SimpleAction.new_stateful(
-                    f"toggle_{attribute}", None, GLib.Variant.new_boolean(state)
+                self.stateful_actions[attribute] = (
+                    Gio.SimpleAction.new_stateful(
+                        f"toggle_{attribute}",
+                        None,
+                        GLib.Variant.new_boolean(state),
+                    )
                 )
                 self.stateful_actions[attribute].connect(
                     "change-state", self.on_stateful_action_change_state
@@ -132,10 +139,13 @@ class Torrents(Component):
 
         ATTRIBUTES = Attributes
         attributes = [
-            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
+            prop.name.replace("-", "_")
+            for prop in GObject.list_properties(ATTRIBUTES)
         ]
 
-        column_titles = [column if column != "#" else "id" for column in attributes]
+        column_titles = [
+            column if column != "#" else "id" for column in attributes
+        ]
 
         for title in column_titles:
             for k, v in self.stateful_actions.items():
@@ -155,7 +165,8 @@ class Torrents(Component):
     def update_columns(self):
         ATTRIBUTES = Attributes
         attributes = [
-            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
+            prop.name.replace("-", "_")
+            for prop in GObject.list_properties(ATTRIBUTES)
         ]
 
         attributes.remove("id")
@@ -163,7 +174,9 @@ class Torrents(Component):
 
         # Parse self.settings.columns into a list of column names
         visible_columns = (
-            self.settings.columns.split(",") if self.settings.columns.strip() else []
+            self.settings.columns.split(",")
+            if self.settings.columns.strip()
+            else []
         )
 
         # If the list is empty, set all columns to visible
@@ -190,8 +203,12 @@ class Torrents(Component):
 
                 # Create a custom factory for the column
                 column_factory = Gtk.SignalListItemFactory()
-                column_factory.connect("setup", self.setup_column_factory, attribute)
-                column_factory.connect("bind", self.bind_column_factory, attribute)
+                column_factory.connect(
+                    "setup", self.setup_column_factory, attribute
+                )
+                column_factory.connect(
+                    "bind", self.bind_column_factory, attribute
+                )
                 column.set_factory(column_factory)
 
                 # Get the type of the attribute

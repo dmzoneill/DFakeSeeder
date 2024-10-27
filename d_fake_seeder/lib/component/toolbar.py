@@ -15,7 +15,9 @@ from gi.repository import Gtk  # noqa
 
 class Toolbar(Component):
     def __init__(self, builder, model, app):
-        logger.info("Toolbar startup", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Toolbar startup", extra={"class_name": self.__class__.__name__}
+        )
         self.builder = builder
         self.model = model
         self.app = app
@@ -29,19 +31,27 @@ class Toolbar(Component):
         self.toolbar_add_button.add_css_class("flat")
 
         self.toolbar_remove_button = self.builder.get_object("toolbar_remove")
-        self.toolbar_remove_button.connect("clicked", self.on_toolbar_remove_clicked)
+        self.toolbar_remove_button.connect(
+            "clicked", self.on_toolbar_remove_clicked
+        )
         self.toolbar_remove_button.add_css_class("flat")
 
         self.toolbar_search_button = self.builder.get_object("toolbar_search")
-        self.toolbar_search_button.connect("clicked", self.on_toolbar_remove_clicked)
+        self.toolbar_search_button.connect(
+            "clicked", self.on_toolbar_remove_clicked
+        )
         self.toolbar_search_button.add_css_class("flat")
 
         self.toolbar_pause_button = self.builder.get_object("toolbar_pause")
-        self.toolbar_pause_button.connect("clicked", self.on_toolbar_pause_clicked)
+        self.toolbar_pause_button.connect(
+            "clicked", self.on_toolbar_pause_clicked
+        )
         self.toolbar_pause_button.add_css_class("flat")
 
         self.toolbar_resume_button = self.builder.get_object("toolbar_resume")
-        self.toolbar_resume_button.connect("clicked", self.on_toolbar_resume_clicked)
+        self.toolbar_resume_button.connect(
+            "clicked", self.on_toolbar_resume_clicked
+        )
         self.toolbar_resume_button.add_css_class("flat")
 
         self.toolbar_up_button = self.builder.get_object("toolbar_up")
@@ -49,14 +59,22 @@ class Toolbar(Component):
         self.toolbar_up_button.add_css_class("flat")
 
         self.toolbar_down_button = self.builder.get_object("toolbar_down")
-        self.toolbar_down_button.connect("clicked", self.on_toolbar_down_clicked)
+        self.toolbar_down_button.connect(
+            "clicked", self.on_toolbar_down_clicked
+        )
         self.toolbar_down_button.add_css_class("flat")
 
-        self.toolbar_settings_button = self.builder.get_object("toolbar_settings")
-        self.toolbar_settings_button.connect("clicked", self.on_toolbar_settings_clicked)
+        self.toolbar_settings_button = self.builder.get_object(
+            "toolbar_settings"
+        )
+        self.toolbar_settings_button.connect(
+            "clicked", self.on_toolbar_settings_clicked
+        )
         self.toolbar_settings_button.add_css_class("flat")
 
-        self.toolbar_refresh_rate = self.builder.get_object("toolbar_refresh_rate")
+        self.toolbar_refresh_rate = self.builder.get_object(
+            "toolbar_refresh_rate"
+        )
         adjustment = Gtk.Adjustment.new(0, 1, 60, 1, 1, 1)
         adjustment.set_step_increment(1)
         self.toolbar_refresh_rate.set_adjustment(adjustment)
@@ -68,7 +86,9 @@ class Toolbar(Component):
         self.toolbar_refresh_rate.set_size_request(150, -1)
 
     def on_toolbar_refresh_rate_changed(self, value):
-        self.settings.tickspeed = math.ceil(float(self.toolbar_refresh_rate.get_value()))
+        self.settings.tickspeed = math.ceil(
+            float(self.toolbar_refresh_rate.get_value())
+        )
 
     def on_toolbar_add_clicked(self, button):
         logger.info(
@@ -177,21 +197,28 @@ class Toolbar(Component):
     def on_dialog_response(self, dialog, response_id):
         if response_id == Gtk.ResponseType.OK:
             logger.info(
-                "Toolbar file added", extra={"class_name": self.__class__.__name__}
+                "Toolbar file added",
+                extra={"class_name": self.__class__.__name__},
             )
             # Get the selected file
             selected_file = dialog.get_file()
             torrents_path = os.path.expanduser("~/.config/dfakeseeder/torrents")
-            shutil.copy(os.path.abspath(selected_file.get_path()), torrents_path)
+            shutil.copy(
+                os.path.abspath(selected_file.get_path()), torrents_path
+            )
             file_path = selected_file.get_path()
-            copied_torrent_path = os.path.join(torrents_path, os.path.basename(file_path))
+            copied_torrent_path = os.path.join(
+                torrents_path, os.path.basename(file_path)
+            )
             self.model.add_torrent(copied_torrent_path)
             dialog.destroy()
         else:
             dialog.destroy()
 
     def show_file_selection_dialog(self):
-        logger.info("Toolbar file dialog", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Toolbar file dialog", extra={"class_name": self.__class__.__name__}
+        )
         # Create a new file chooser dialog
         dialog = Gtk.FileChooserDialog(
             title="Select torrent",
