@@ -1394,6 +1394,12 @@ msgstr "Enviado"
 msgid "Server:"
 msgstr "Servidor:"
 
+msgid "Session Downloaded"
+msgstr "Session Downloaded"
+
+msgid "Session Uploaded"
+msgstr "Session Uploaded"
+
 msgid "Session timeout (min):"
 msgstr "Timeout sesión (min):"
 

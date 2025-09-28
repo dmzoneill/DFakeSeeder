@@ -1423,6 +1423,12 @@ msgstr ""
 msgid "Server:"
 msgstr ""
 
+msgid "Session Downloaded"
+msgstr ""
+
+msgid "Session Uploaded"
+msgstr ""
+
 msgid "Session timeout (min):"
 msgstr ""
 
