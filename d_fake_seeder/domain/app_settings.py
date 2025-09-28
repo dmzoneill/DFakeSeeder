@@ -1,0 +1,654 @@
+import json
+import os
+import shutil
+import tempfile
+from pathlib import Path
+from threading import Lock
+
+import gi
+
+gi.require_version("Gdk", "4.0")
+gi.require_version("Gtk", "4.0")
+
+from gi.repository import GObject  # noqa: E402
+from lib.handlers.file_modified_event_handler import FileModifiedEventHandler  # noqa: E402
+from watchdog.observers import Observer  # noqa: E402
+
+
+class AppSettings(GObject.GObject):
+    """
+    Unified application settings manager (replaces both Settings and old AppSettings)
+    Thread-safe singleton with nested attribute access, file watching, and GObject signals
+    Manages all application configuration in ~/.config/dfakeseeder/settings.json
+    """
+
+    __gsignals__ = {
+        "settings-attribute-changed": (
+            GObject.SignalFlags.RUN_FIRST,
+            None,
+            (str, object),  # key, value
+        ),
+        "settings-value-changed": (
+            GObject.SignalFlags.RUN_FIRST,
+            None,
+            (str, object),  # key, value
+        ),
+        # Legacy compatibility signals (deprecated)
+        "attribute-changed": (
+            GObject.SignalFlags.RUN_FIRST,
+            None,
+            (str, object),  # key, value
+        ),
+        "setting-changed": (
+            GObject.SignalFlags.RUN_FIRST,
+            None,
+            (str, object),  # key, value
+        ),
+    }
+
+    _instance = None
+    _lock = Lock()  # Thread safety
+    _logger = None  # Lazy logger instance
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            # Initialize GObject early to avoid "not initialized" errors
+            GObject.GObject.__init__(cls._instance)
+        return cls._instance
+
+    def __init__(self, file_path=None):
+        if hasattr(self, "_initialized"):
+            return
+
+        # GObject.__init__ already called in __new__
+        self._initialized = True
+
+        self.logger.info("AppSettings instantiate", extra={"class_name": self.__class__.__name__})
+
+        # Initialize file paths (compatible with Settings API)
+        if file_path is None:
+            env_file = os.getenv(
+                "DFS_SETTINGS",
+                os.path.expanduser("~/.config/dfakeseeder") + "/settings.json",
+            )
+            file_path = env_file
+
+        self._file_path = file_path
+        self.config_dir = Path(file_path).parent
+        self.config_file = Path(file_path)
+        self.default_config_file = Path(__file__).parent / "config" / "default.json"
+
+        # Initialize settings storage (compatible with both APIs)
+        self.settings = {}  # New API
+        self._settings = {}  # Legacy API compatibility
+        self._defaults = {}
+        self._last_modified = 0
+
+        # Create config directory if needed (like Settings does)
+        home_config_path = os.path.expanduser("~/.config/dfakeseeder")
+        if not os.path.exists(home_config_path):
+            source_path = str(self.default_config_file)
+            os.makedirs(home_config_path, exist_ok=True)
+            os.makedirs(home_config_path + "/torrents", exist_ok=True)
+            # Copy the source file to the destination directory
+            if os.path.exists(source_path):
+                shutil.copy(source_path, home_config_path + "/settings.json")
+
+        # Load defaults and settings
+        self._load_defaults()
+        self.load_settings()
+
+        # Set up file watching
+        self._event_handler = FileModifiedEventHandler(self)
+        self._observer = Observer()
+        self._observer.schedule(self._event_handler, path=str(self.config_dir), recursive=False)
+        self._observer.start()
+
+    @property
+    def logger(self):
+        """Get logger instance with lazy import to avoid circular dependency"""
+        if AppSettings._logger is None:
+            try:
+                from lib.logger import logger
+
+                AppSettings._logger = logger
+            except ImportError:
+                # Fallback to print if logger not available
+                import logging
+
+                AppSettings._logger = logging.getLogger(__name__)
+        return AppSettings._logger
+
+    def _load_defaults(self):
+        """Load default settings from config/default.json"""
+        try:
+            with open(self.default_config_file, "r") as f:
+                self._defaults = json.load(f)
+            self.logger.info(f"Loaded {len(self._defaults)} default settings from {self.default_config_file}")
+        except FileNotFoundError:
+            self.logger.warning(f"Default settings file not found: {self.default_config_file}")
+            self._defaults = {
+                "upload_speed": 50,
+                "download_speed": 500,
+                "announce_interval": 1800,
+                "concurrent_http_connections": 2,
+                "torrents": {},
+                "language": "auto",
+            }
+
+    def _merge_with_defaults(self, user_settings):
+        """Recursively merge user settings with defaults"""
+
+        def deep_merge(default_dict, user_dict):
+            result = default_dict.copy()
+            for key, value in user_dict.items():
+                if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+                    result[key] = deep_merge(result[key], value)
+                else:
+                    result[key] = value
+            return result
+
+        return deep_merge(self._defaults, user_settings)
+
+    def _get_nested_value(self, data, key):
+        """Get value from nested dictionary using dot notation"""
+        keys = key.split(".")
+        for k in keys:
+            if isinstance(data, dict) and k in data:
+                data = data[k]
+            else:
+                return None
+        return data
+
+    def _set_nested_value(self, data, key, value):
+        """Set value in nested dictionary using dot notation"""
+        keys = key.split(".")
+        for k in keys[:-1]:
+            data = data.setdefault(k, {})
+        data[keys[-1]] = value
+
+    def load_settings(self):
+        """Load settings from files (compatible with Settings API)"""
+        self.logger.info("Settings load", extra={"class_name": self.__class__.__name__})
+        try:
+            # Check if the file has been modified since last load
+            modified = os.path.getmtime(self._file_path)
+            if modified > self._last_modified:
+                with open(self._file_path, "r") as f:
+                    user_settings = json.load(f)
+                # Merge user settings with defaults
+                merged_settings = self._merge_with_defaults(user_settings)
+
+                # Update both storage systems
+                self._settings = merged_settings
+                self.settings = merged_settings.copy()
+                self._last_modified = modified
+                self.logger.debug(f"Loaded and merged settings, total: {len(self.settings)}")
+        except FileNotFoundError:
+            # If the file doesn't exist, start with defaults and create the file
+            self._settings = self._defaults.copy()
+            self.settings = self._defaults.copy()
+
+            if not os.path.exists(self._file_path):
+                # Create the JSON file with default contents
+                with open(self._file_path, "w") as f:
+                    json.dump(self._settings, f, indent=4)
+                self.logger.info("Created new settings file with defaults")
+        except Exception as e:
+            self.logger.error(f"Error loading settings: {e}")
+
+    def save_settings(self):
+        """Save current settings to user config file (thread-safe with atomic writes)"""
+        self.logger.info("Settings save", extra={"class_name": self.__class__.__name__})
+        try:
+            # Use lock to prevent concurrent save operations
+            with AppSettings._lock:
+                self._save_settings_unlocked()
+        except Exception as e:
+            self.logger.error(f"Failed to save settings: {e}")
+
+    def _save_settings_unlocked(self):
+        """Save current settings without acquiring lock (for internal use when lock already held)"""
+        self.config_dir.mkdir(parents=True, exist_ok=True)
+
+        # Use atomic write: write to temporary file first, then rename
+        # This prevents corruption from incomplete writes during race conditions
+        temp_fd = None
+        temp_path = None
+        try:
+            # Create temporary file in same directory as target file
+            temp_fd, temp_path = tempfile.mkstemp(dir=str(self.config_dir), prefix=".settings_tmp_", suffix=".json")
+
+            # Write settings to temporary file
+            with os.fdopen(temp_fd, "w") as temp_file:
+                json.dump(self._settings, temp_file, indent=4)
+                temp_file.flush()  # Ensure data is written to disk
+                os.fsync(temp_file.fileno())  # Force OS to write to disk
+
+            temp_fd = None  # File is now closed
+
+            # Atomically replace the original file with the temporary file
+            # This operation is atomic on POSIX systems, preventing corruption
+            os.replace(temp_path, self._file_path)
+            temp_path = None  # Successfully moved, don't clean up
+
+            self.logger.debug("Settings saved successfully with atomic write")
+
+        except Exception as write_error:
+            # Clean up on error
+            if temp_fd is not None:
+                try:
+                    os.close(temp_fd)
+                except OSError:
+                    pass
+            if temp_path and os.path.exists(temp_path):
+                try:
+                    os.unlink(temp_path)
+                except OSError:
+                    pass
+            raise write_error
+
+    def save_quit(self):
+        """Save settings and stop file watching (Settings API compatibility)"""
+        self.logger.info("Settings quit", extra={"class_name": self.__class__.__name__})
+        if hasattr(self, "_observer"):
+            self._observer.stop()
+        self.save_settings()
+
+    def get(self, key, default=None):
+        """Get a setting value"""
+        return self._settings.get(key, default)
+
+    def set(self, key, value):
+        """Set a setting value and save immediately"""
+        print(f"[AppSettings] ===== set() method called =====")
+        print(f"[AppSettings] Setting: {key} = {value}")
+        with AppSettings._lock:
+            old_value = self._settings.get(key)
+            print(f"[AppSettings] Old value: {old_value}")
+            if old_value != value:
+                print(f"[AppSettings] Value changed, updating and emitting signals...")
+                self._settings[key] = value
+                # Update both storage systems directly to avoid recursion
+                super().__setattr__("settings", self._settings.copy())
+                print(f"[AppSettings] About to save settings...")
+                self._save_settings_unlocked()
+                print(f"[AppSettings] Settings saved, about to emit signals...")
+
+                # Emit new signals
+                print(f"[AppSettings] Emitting 'settings-value-changed' signal...")
+                self.emit("settings-value-changed", key, value)
+                print(f"[AppSettings] Emitting 'settings-attribute-changed' signal...")
+                self.emit("settings-attribute-changed", key, value)
+                # Legacy compatibility signals
+                print(f"[AppSettings] Emitting 'setting-changed' signal...")
+                self.emit("setting-changed", key, value)
+                print(f"[AppSettings] Emitting 'attribute-changed' signal...")
+                self.emit("attribute-changed", key, value)
+                print(f"[AppSettings] All signals emitted successfully")
+                self.logger.debug(f"Setting changed: {key} = {value}")
+            else:
+                print(f"[AppSettings] Value unchanged, skipping update")
+        print(f"[AppSettings] ===== set() method completed =====")
+
+
+    def __getattr__(self, name):
+        """Dynamic attribute access (Settings API compatibility)"""
+        if name == "settings":
+            try:
+                return super().__getattribute__("_settings")
+            except AttributeError:
+                return {}
+
+        try:
+            settings = super().__getattribute__("_settings")
+            if name in settings:
+                return settings[name]
+        except AttributeError:
+            pass
+
+        # Check if setting exists in defaults (supports nested paths)
+        try:
+            defaults = super().__getattribute__("_defaults")
+        except AttributeError:
+            defaults = {}
+
+        default_value = self._get_nested_value(defaults, name)
+        if default_value is not None:
+            # Setting exists in defaults but not in user settings, use default and save it
+            try:
+                # Use lock to prevent race conditions when setting defaults
+                with AppSettings._lock:
+                    settings = super().__getattribute__("_settings")
+                    self._set_nested_value(settings, name, default_value)
+                    # Update both storage systems directly to avoid recursion
+                    super().__setattr__("settings", settings.copy())
+                    # Skip logger call during initialization to avoid recursion
+                    # self.logger.info(f"Using default value for missing setting '{name}': {default_value}")
+                    self.save_settings()
+                    return default_value
+            except AttributeError:
+                return default_value
+        else:
+            raise AttributeError(f"Setting '{name}' not found in user settings or defaults.")
+
+    def __setattr__(self, name, value):
+        """Dynamic attribute setting (Settings API compatibility)"""
+        # Handle private attributes and initialization normally
+        if (
+            name.startswith("_")
+            or name in ["settings", "config_dir", "config_file", "default_config_file"]
+            or not hasattr(self, "_initialized")
+        ):
+            super().__setattr__(name, value)
+            return
+
+        self.logger.debug("Settings __setattr__", extra={"class_name": self.__class__.__name__})
+
+        # Acquire the lock before modifying the settings
+        with AppSettings._lock:
+            if name == "_settings":
+                # Directly set the '_settings' attribute
+                super().__setattr__(name, value)
+            elif name.startswith("_"):
+                # Set private attributes without modifying settings or emitting signals
+                super().__setattr__(name, value)
+            else:
+                nested_attribute = name.split(".")
+                if len(nested_attribute) > 1:
+                    # Update the nested attribute
+                    current = self._settings
+                    for attr in nested_attribute[:-1]:
+                        current = current.setdefault(attr, {})
+                    current[nested_attribute[-1]] = value
+                    # Also update the flat settings dict directly to avoid recursion
+                    super().__setattr__("settings", self._settings.copy())
+                else:
+                    # Set the setting value and emit signals
+                    self._settings[name] = value
+                    # Update settings dict directly to avoid recursion
+                    super().__setattr__("settings", self._settings.copy())
+                    # Emit new signals
+                    self.emit("settings-attribute-changed", name, value)
+                    self.emit("settings-value-changed", name, value)
+                    # Legacy compatibility signals
+                    self.emit("attribute-changed", name, value)
+                    self.emit("setting-changed", name, value)
+                    self.save_settings()
+
+    def get_all(self):
+        """Get all settings as a dict"""
+        return self._settings.copy()
+
+    def reset_to_defaults(self):
+        """Reset all settings to defaults"""
+        try:
+            with open(self.default_config_file, "r") as f:
+                defaults = json.load(f)
+                self.settings = defaults.copy()
+                self.save_settings()
+                self.logger.info("Settings reset to defaults")
+                # Emit signals for each changed setting
+                for key, value in defaults.items():
+                    # Emit new signals
+                    self.emit("settings-value-changed", key, value)
+                    self.emit("settings-attribute-changed", key, value)
+                    # Legacy compatibility signal
+                    self.emit("setting-changed", key, value)
+        except Exception as e:
+            self.logger.error(f"Failed to reset settings: {e}")
+
+    @classmethod
+    def get_instance(cls, file_path=None):
+        """Get singleton instance (Settings API compatibility)"""
+        # Note: Can't use self.logger here since this is a class method
+        try:
+            from lib.logger import logger
+
+            logger.info("AppSettings get instance", extra={"class_name": "AppSettings"})
+        except ImportError:
+            pass
+        if cls._instance is None:
+            cls._instance = cls(file_path)
+        return cls._instance
+
+    # Application-specific setting accessors
+    @property
+    def window_width(self):
+        return self.get("window_width", 1024)
+
+    @window_width.setter
+    def window_width(self, value):
+        self.set("window_width", value)
+
+    @property
+    def window_height(self):
+        return self.get("window_height", 600)
+
+    @window_height.setter
+    def window_height(self, value):
+        self.set("window_height", value)
+
+    @property
+    def start_minimized(self):
+        return self.get("start_minimized", False)
+
+    @start_minimized.setter
+    def start_minimized(self, value):
+        self.set("start_minimized", value)
+
+    @property
+    def minimize_to_tray(self):
+        return self.get("minimize_to_tray", False)
+
+    @minimize_to_tray.setter
+    def minimize_to_tray(self, value):
+        self.set("minimize_to_tray", value)
+
+    @property
+    def auto_start(self):
+        return self.get("auto_start", False)
+
+    @auto_start.setter
+    def auto_start(self, value):
+        self.set("auto_start", value)
+
+    @property
+    def theme(self):
+        return self.get("theme", "system")
+
+    @theme.setter
+    def theme(self, value):
+        self.set("theme", value)
+
+    @property
+    def language(self):
+        return self.get("language", "auto")
+
+    @language.setter
+    def language(self, value):
+        self.set("language", value)
+
+    def get_language(self):
+        """
+        Centralized language getter with proper fallback logic.
+
+        Returns the actual language code to use, handling:
+        1. User configured language from settings
+        2. "auto" setting -> system locale detection
+        3. Ultimate fallback to English if all else fails
+
+        This is the ONLY method that should contain language fallback logic.
+        All other parts of the application should use this method.
+        """
+        import locale
+
+        # Get the configured language from settings
+        configured_lang = self.get("language", "auto")
+
+        # If it's a specific language (not "auto"), use it directly
+        if configured_lang != "auto":
+            return configured_lang
+
+        # "auto" means detect system language
+        try:
+            # Get system locale using newer method
+            try:
+                current_locale = locale.getlocale()[0]
+                if current_locale:
+                    system_locale = current_locale
+                else:
+                    # Fallback to deprecated method if getlocale returns None
+                    system_locale = locale.getdefaultlocale()[0]
+            except Exception:
+                system_locale = locale.getdefaultlocale()[0]
+
+            if system_locale:
+                # Extract language code (e.g., 'en_US' -> 'en')
+                lang_code = system_locale.split("_")[0].lower()
+                return lang_code
+        except Exception as e:
+            self.logger.warning(f"Could not detect system locale: {e}")
+
+        # Ultimate fallback to English
+        return "en"
+
+    # Connection settings
+    @property
+    def listening_port(self):
+        return self.get("listening_port", 6881)
+
+    @listening_port.setter
+    def listening_port(self, value):
+        self.set("listening_port", value)
+
+    @property
+    def enable_upnp(self):
+        return self.get("enable_upnp", True)
+
+    @enable_upnp.setter
+    def enable_upnp(self, value):
+        self.set("enable_upnp", value)
+
+    @property
+    def enable_dht(self):
+        return self.get("enable_dht", True)
+
+    @enable_dht.setter
+    def enable_dht(self, value):
+        self.set("enable_dht", value)
+
+    @property
+    def enable_pex(self):
+        return self.get("enable_pex", True)
+
+    @enable_pex.setter
+    def enable_pex(self, value):
+        self.set("enable_pex", value)
+
+    # Speed settings
+    @property
+    def global_upload_limit(self):
+        return self.get("global_upload_limit", 0)  # 0 = unlimited
+
+    @global_upload_limit.setter
+    def global_upload_limit(self, value):
+        self.set("global_upload_limit", value)
+
+    @property
+    def global_download_limit(self):
+        return self.get("global_download_limit", 0)  # 0 = unlimited
+
+    @global_download_limit.setter
+    def global_download_limit(self, value):
+        self.set("global_download_limit", value)
+
+    # Web UI settings
+    @property
+    def enable_webui(self):
+        return self.get("enable_webui", False)
+
+    @enable_webui.setter
+    def enable_webui(self, value):
+        self.set("enable_webui", value)
+
+    @property
+    def webui_port(self):
+        return self.get("webui_port", 8080)
+
+    @webui_port.setter
+    def webui_port(self, value):
+        self.set("webui_port", value)
+
+    @property
+    def webui_username(self):
+        return self.get("webui_username", "admin")
+
+    @webui_username.setter
+    def webui_username(self, value):
+        self.set("webui_username", value)
+
+    @property
+    def webui_password(self):
+        return self.get("webui_password", "")
+
+    @webui_password.setter
+    def webui_password(self, value):
+        self.set("webui_password", value)
+
+    # Advanced settings
+    @property
+    def log_level(self):
+        return self.get("log_level", "INFO")
+
+    @log_level.setter
+    def log_level(self, value):
+        self.set("log_level", value)
+
+    @property
+    def disk_cache_size(self):
+        return self.get("disk_cache_size", 64)  # MB
+
+    @disk_cache_size.setter
+    def disk_cache_size(self, value):
+        self.set("disk_cache_size", value)
+
+    # Client detection methods
+    def add_detected_client(self, user_agent):
+        """Add a newly detected client to the detected clients list"""
+        if not user_agent or user_agent.strip() == "":
+            return
+
+        detected_clients = self.get("detected_clients", [])
+
+        # Clean up the user agent string
+        user_agent = user_agent.strip()
+
+        # Don't add if it's already in detected clients
+        if user_agent in detected_clients:
+            return
+
+        # Don't add if it's already in default agents
+        default_agents = self.get("agents", [])
+        for agent in default_agents:
+            if "," in agent:
+                default_user_agent = agent.split(",")[0]
+            else:
+                default_user_agent = agent
+            if user_agent == default_user_agent:
+                return
+
+        # Add to detected clients
+        detected_clients.append(user_agent)
+        self.set("detected_clients", detected_clients)
+        self.logger.info(f"Added detected client: {user_agent}")
+
+    def get_detected_clients(self):
+        """Get list of detected clients"""
+        return self.get("detected_clients", [])
+
+    def clear_detected_clients(self):
+        """Clear all detected clients"""
+        self.set("detected_clients", [])
+        self.logger.info("Cleared all detected clients")
