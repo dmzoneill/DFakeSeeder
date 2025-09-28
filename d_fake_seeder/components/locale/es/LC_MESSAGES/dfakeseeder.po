@@ -225,7 +225,7 @@ msgid "Announcement Interval:"
 msgstr "Intervalo de anuncio:"
 
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "Árabe"
 
 msgid "Auto-bootstrap DHT"
 msgstr "Arranque automático DHT"
@@ -498,7 +498,7 @@ msgid "Dropout probability:"
 msgstr "Probabilidad deserción:"
 
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "Holandés"
 
 msgid "Dynamic profile switching"
 msgstr "Cambio dinámico de perfil"
@@ -864,7 +864,7 @@ msgid "Keep alive interval for connections (seconds)"
 msgstr "Intervalo de mantenimiento para conexiones (segundos)"
 
 msgid "Korean"
-msgstr "Korean"
+msgstr "Coreano"
 
 msgid "Label"
 msgstr "Etiqueta"
@@ -1143,7 +1143,7 @@ msgid "Pieces Received"
 msgstr "Piezas Recibidas"
 
 msgid "Polish"
-msgstr "Polish"
+msgstr "Polaco"
 
 msgid "Port"
 msgstr "Puerto"
@@ -1395,10 +1395,10 @@ msgid "Server:"
 msgstr "Servidor:"
 
 msgid "Session Downloaded"
-msgstr "Session Downloaded"
+msgstr "Sesión Descargada"
 
 msgid "Session Uploaded"
-msgstr "Session Uploaded"
+msgstr "Sesión Subida"
 
 msgid "Session timeout (min):"
 msgstr "Timeout sesión (min):"
@@ -1476,7 +1476,7 @@ msgid "Sunday"
 msgstr "Domingo"
 
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "Sueco"
 
 msgid "Synthetic Peer Count:"
 msgstr "Cantidad de pares sintéticos:"

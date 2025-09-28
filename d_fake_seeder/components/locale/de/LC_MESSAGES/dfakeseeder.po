@@ -225,7 +225,7 @@ msgid "Announcement Interval:"
 msgstr "Ankündigungs-Intervall:"
 
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "Arabisch"
 
 msgid "Auto-bootstrap DHT"
 msgstr "DHT automatisch bootstrappen"
@@ -237,10 +237,10 @@ msgid "Auto-save settings"
 msgstr "Einstellungen automatisch speichern"
 
 msgid "Auto-start disabled"
-msgstr "Auto-start disabled"
+msgstr "Autostart deaktiviert"
 
 msgid "Auto-start enabled"
-msgstr "Auto-start enabled"
+msgstr "Autostart aktiviert"
 
 msgid "Automatic logout after inactivity (5-1440 minutes)"
 msgstr "Automatische Abmeldung nach Inaktivität (5-1440 Minuten)"
@@ -498,7 +498,7 @@ msgid "Dropout probability:"
 msgstr "Ausfallwahrscheinlichkeit:"
 
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "Niederländisch"
 
 msgid "Dynamic profile switching"
 msgstr "Dynamisches Profil-Wechseln"
@@ -666,7 +666,7 @@ msgid "Error"
 msgstr "Fehler"
 
 msgid "Error changing language"
-msgstr "Error changing language"
+msgstr "Fehler beim Wechseln der Sprache"
 
 msgid "Export"
 msgstr "Exportieren"
@@ -705,7 +705,7 @@ msgid "Files"
 msgstr "Dateien"
 
 msgid "Flags"
-msgstr "Flags"
+msgstr "Flaggen"
 
 msgid "Follow System"
 msgstr "System folgen"
@@ -729,7 +729,7 @@ msgid "General"
 msgstr "Allgemein"
 
 msgid "General settings reset to defaults"
-msgstr "General settings reset to defaults"
+msgstr "Allgemeine Einstellungen auf Standard zurückgesetzt"
 
 msgid "General timeout for extension operations (seconds)"
 msgstr "Allgemeiner Timeout für Erweiterungs-Operationen (Sekunden)"
@@ -825,7 +825,7 @@ msgid "Incoming"
 msgstr "Eingehend"
 
 msgid "Incoming Connections"
-msgstr "Incoming Connections"
+msgstr "Eingehende Verbindungen"
 
 msgid "Incoming Peer Connections"
 msgstr "Eingehende Peer-Verbindungen"
@@ -864,13 +864,13 @@ msgid "Keep alive interval for connections (seconds)"
 msgstr "Keep-Alive-Intervall für Verbindungen (Sekunden)"
 
 msgid "Korean"
-msgstr "Korean"
+msgstr "Koreanisch"
 
 msgid "Label"
-msgstr "Label"
+msgstr "Bezeichnung"
 
 msgid "Language switched to"
-msgstr "Language switched to"
+msgstr "Sprache gewechselt zu"
 
 msgid "Language:"
 msgstr "Sprache:"
@@ -1071,7 +1071,7 @@ msgid "Outgoing"
 msgstr "Ausgehend"
 
 msgid "Outgoing Connections"
-msgstr "Outgoing Connections"
+msgstr "Ausgehende Verbindungen"
 
 msgid "Outgoing Peer Connections"
 msgstr "Ausgehende Peer-Verbindungen"
@@ -1143,7 +1143,7 @@ msgid "Pieces Received"
 msgstr "Teile empfangen"
 
 msgid "Polish"
-msgstr "Polish"
+msgstr "Polnisch"
 
 msgid "Port"
 msgstr "Anschluss"
@@ -1395,10 +1395,10 @@ msgid "Server:"
 msgstr "Server:"
 
 msgid "Session Downloaded"
-msgstr "Session Downloaded"
+msgstr "Sitzung heruntergeladen"
 
 msgid "Session Uploaded"
-msgstr "Session Uploaded"
+msgstr "Sitzung hochgeladen"
 
 msgid "Session timeout (min):"
 msgstr "Sitzungs-Timeout (Min):"
@@ -1443,10 +1443,10 @@ msgid "Start minimized"
 msgstr "Minimiert starten"
 
 msgid "Start minimized disabled"
-msgstr "Start minimized disabled"
+msgstr "Minimiert starten deaktiviert"
 
 msgid "Start minimized enabled"
-msgstr "Start minimized enabled"
+msgstr "Minimiert starten aktiviert"
 
 msgid "Start minute"
 msgstr "Startminute"
@@ -1476,7 +1476,7 @@ msgid "Sunday"
 msgstr "Sonntag"
 
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "Schwedisch"
 
 msgid "Synthetic Peer Count:"
 msgstr "Synthetische Peer-Anzahl:"
