@@ -60,35 +60,49 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error removing trackers grid child: {e}")
 
-    def update_content(self, torrent) -> None:
+    def update_content(self, attributes) -> None:
         """
         Update trackers tab content with torrent tracker data.
 
         Args:
-            torrent: Torrent object to display
+            attributes: Attributes object from the torrent list
         """
         try:
             self.logger.info(
-                f"Updating trackers tab for torrent: {torrent}", extra={"class_name": self.__class__.__name__}
+                f"🔄 TRACKERS TAB: Starting update_content for attributes: {attributes}",
+                extra={"class_name": self.__class__.__name__},
             )
 
-            # Remove existing content
-            self._remove_current_grid()
-
-            # Create new grid with proper styling
-            self._trackers_grid_child = self._create_trackers_grid()
-
-            if not torrent:
+            if attributes is None:
                 self.logger.warning(
-                    "No torrent provided to trackers tab", extra={"class_name": self.__class__.__name__}
+                    "🚨 TRACKERS TAB: Received None attributes in update_content",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 self._show_no_trackers_message()
                 return
 
+            # Remove existing content
+            self.logger.debug(
+                "🗑️ TRACKERS TAB: Removing existing grid content",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self._remove_current_grid()
+
+            # Create new grid with proper styling
+            self.logger.debug(
+                "🏗️ TRACKERS TAB: Creating new grid",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self._trackers_grid_child = self._create_trackers_grid()
+
             # Get tracker information
-            trackers = self._get_tracker_data(torrent)
+            self.logger.debug(
+                "🔍 TRACKERS TAB: Calling _get_tracker_data()",
+                extra={"class_name": self.__class__.__name__},
+            )
+            trackers = self._get_tracker_data(attributes)
             self.logger.info(
-                f"Trackers data retrieved: {len(trackers) if trackers else 0} trackers",
+                f"📊 TRACKERS TAB: Retrieved {len(trackers) if trackers else 0} trackers from torrent",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -128,53 +142,124 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             self.logger.error(f"Error creating trackers grid: {e}")
             return self.create_grid()  # Fallback to base grid
 
-    def _get_tracker_data(self, torrent) -> list:
+    def _get_tracker_data(self, attributes) -> list:
         """
         Get tracker data from the torrent.
 
         Args:
-            torrent: Torrent object
+            attributes: Attributes object from the torrent list
 
         Returns:
             List of tracker dictionaries
         """
         try:
+            self.logger.debug(
+                "🚀 TRACKERS TAB: _get_tracker_data() started",
+                extra={"class_name": self.__class__.__name__},
+            )
             trackers: List[Dict[str, Any]] = []
 
-            if not torrent:
+            if not attributes:
                 self.logger.warning(
-                    "No torrent provided to _get_tracker_data", extra={"class_name": self.__class__.__name__}
+                    "🚨 TRACKERS TAB: No attributes provided to _get_tracker_data",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 return trackers
 
-            # Get torrent file and extract tracker information directly from the torrent
-            torrent_file = torrent.get_torrent_file()
-            self.logger.info(f"Torrent file retrieved: {torrent_file}", extra={"class_name": self.__class__.__name__})
-            if not torrent_file:
+            self.logger.debug(
+                f"🔍 TRACKERS TAB: Attributes object type: {type(attributes)}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.logger.debug(
+                f"🔍 TRACKERS TAB: Attributes has get_torrent_file method: {hasattr(attributes, 'get_torrent_file')}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+            # Get the actual Torrent object from the model using the attributes
+            self.logger.debug(
+                "🔍 TRACKERS TAB: Getting torrent object from model using attributes",
+                extra={"class_name": self.__class__.__name__},
+            )
+            torrent = self.model.get_torrent_by_attributes(attributes)
+            if not torrent:
                 self.logger.warning(
-                    f"No torrent file found for torrent {self.safe_get_property(torrent, 'id', 'unknown')}"
+                    f"🚨 TRACKERS TAB: No torrent found for attributes {getattr(attributes, 'id', 'unknown')}",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 return trackers
+
+            self.logger.debug(
+                f"✅ TRACKERS TAB: Found torrent object: {type(torrent)}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.logger.debug(
+                f"🔍 TRACKERS TAB: Torrent has get_torrent_file method: {hasattr(torrent, 'get_torrent_file')}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+            # Get torrent file and extract tracker information directly from the torrent
+            self.logger.debug(
+                "📁 TRACKERS TAB: Calling torrent.get_torrent_file()",
+                extra={"class_name": self.__class__.__name__},
+            )
+            torrent_file = torrent.get_torrent_file()
+            self.logger.info(
+                f"📁 TRACKERS TAB: Torrent file retrieved: {torrent_file} (type: {type(torrent_file)})",
+                extra={"class_name": self.__class__.__name__},
+            )
+            if not torrent_file:
+                self.logger.warning(
+                    f"🚨 TRACKERS TAB: No torrent file found for torrent {getattr(torrent, 'id', 'unknown')}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                return trackers
+
+            self.logger.debug(
+                f"📋 TRACKERS TAB: Torrent file has announce: {hasattr(torrent_file, 'announce')}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.logger.debug(
+                f"📋 TRACKERS TAB: Torrent file has announce_list: {hasattr(torrent_file, 'announce_list')}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             # Add primary announce URL
             if hasattr(torrent_file, "announce") and torrent_file.announce:
-                trackers.append({"url": torrent_file.announce, "tier": 0, "type": "Primary"})
-                self.logger.info(f"Found primary tracker: {torrent_file.announce}")
+                trackers.append(
+                    {"url": torrent_file.announce, "tier": 0, "type": "Primary"}
+                )
+                self.logger.info(
+                    f"📡 TRACKERS TAB: Found primary tracker: {torrent_file.announce}",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
             # Add backup trackers from announce-list
             if hasattr(torrent_file, "announce_list") and torrent_file.announce_list:
                 # The announce_list is already flattened to a simple list of URLs
                 primary_url = getattr(torrent_file, "announce", None)
+                self.logger.debug(
+                    f"📡 TRACKERS TAB: Processing {len(torrent_file.announce_list)} backup trackers",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
                 for tier_index, tracker_url in enumerate(torrent_file.announce_list):
                     # Skip if already added as primary
                     if tracker_url == primary_url:
                         continue
 
-                    trackers.append({"url": tracker_url, "tier": tier_index + 1, "type": "Backup"})
+                    trackers.append(
+                        {"url": tracker_url, "tier": tier_index + 1, "type": "Backup"}
+                    )
 
-                self.logger.info(f"Found {len(torrent_file.announce_list)} backup trackers")
+                self.logger.info(
+                    f"📡 TRACKERS TAB: Found {len(torrent_file.announce_list)} backup trackers",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
+            self.logger.info(
+                f"🎯 TRACKERS TAB: Final tracker list: {len(trackers)} trackers",
+                extra={"class_name": self.__class__.__name__},
+            )
             return trackers
 
         except Exception as e:
@@ -204,10 +289,17 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         try:
             # Get translation function from model
             translate_func = (
-                self.model.get_translate_func() if hasattr(self.model, "get_translate_func") else lambda x: x
+                self.model.get_translate_func()
+                if hasattr(self.model, "get_translate_func")
+                else lambda x: x
             )
 
-            headers = [translate_func("Type"), translate_func("Tier"), translate_func("URL"), translate_func("Status")]
+            headers = [
+                translate_func("Type"),
+                translate_func("Tier"),
+                translate_func("URL"),
+                translate_func("Status"),
+            ]
 
             for col, header_text in enumerate(headers):
                 header_label = Gtk.Label(label=header_text)
@@ -269,7 +361,9 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if not self._trackers_grid_child:
                 self._trackers_grid_child = self._create_trackers_grid()
 
-            message_label = self.create_info_label("No trackers available for this torrent.")
+            message_label = self.create_info_label(
+                "No trackers available for this torrent."
+            )
             self.set_widget_margins(message_label, self.ui_margin_large)
 
             # Add message to the grid instead of directly to the tab
