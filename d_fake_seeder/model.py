@@ -53,10 +53,16 @@ class Model(GObject.GObject):
 
         # Connect to both new and legacy signals to ensure we catch the change
         try:
-            self.settings.connect("settings-attribute-changed", self.handle_settings_changed)
-            logger.debug("DEBUG: Connected to 'settings-attribute-changed' signal", "Model")
+            self.settings.connect(
+                "settings-attribute-changed", self.handle_settings_changed
+            )
+            logger.debug(
+                "DEBUG: Connected to 'settings-attribute-changed' signal", "Model"
+            )
         except Exception as e:
-            logger.debug("DEBUG: Failed to connect to 'settings-attribute-changed':", "Model")
+            logger.debug(
+                "DEBUG: Failed to connect to 'settings-attribute-changed':", "Model"
+            )
 
         try:
             self.settings.connect("attribute-changed", self.handle_settings_changed)
@@ -70,7 +76,9 @@ class Model(GObject.GObject):
         logger.debug("About to create TranslationManager", "Model")
         self.translation_manager = TranslationManager(
             domain="dfakeseeder",
-            localedir=os.path.join(os.environ.get("DFS_PATH", "."), "components", "locale"),
+            localedir=os.path.join(
+                os.environ.get("DFS_PATH", "."), "components", "locale"
+            ),
             config_file=os.path.expanduser("~/.config/dfakeseeder/settings.json"),
             fallback_language="en",
         )
@@ -86,11 +94,17 @@ class Model(GObject.GObject):
 
         # Register translation function with ColumnTranslations to avoid expensive gc.get_objects() calls
         if hasattr(self.translation_manager, "translate_func"):
-            ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
-            logger.debug("Registered translation function with ColumnTranslations", "Model")
+            ColumnTranslations.register_translation_function(
+                self.translation_manager.translate_func
+            )
+            logger.debug(
+                "Registered translation function with ColumnTranslations", "Model"
+            )
 
         self.torrent_list = []  # List to hold all torrent instances
-        self.torrent_list_attributes = Gio.ListStore.new(Attributes)  # List to hold all Attributes instances
+        self.torrent_list_attributes = Gio.ListStore.new(
+            Attributes
+        )  # List to hold all Attributes instances
 
         # Search filtering
         logger.debug("About to initialize search filtering", "Model")
@@ -100,7 +114,10 @@ class Model(GObject.GObject):
         self._setup_filtering()
         logger.debug("_setup_filtering() completed", "Model")
         logger.debug("===== Model.__init__ COMPLETE =====", "Model")
-        logger.info("Model initialization completed successfully", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Model initialization completed successfully",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     # Method to add a new torrent
     def add_torrent(self, filepath):
@@ -199,7 +216,10 @@ class Model(GObject.GObject):
 
     def stop(self, shutdown_tracker=None):
         # Stopping all torrents before quitting
-        logger.info(f"Stopping {len(self.torrent_list)} torrents", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            f"Stopping {len(self.torrent_list)} torrents",
+            extra={"class_name": self.__class__.__name__},
+        )
 
         for torrent in self.torrent_list:
             torrent.stop()
@@ -207,7 +227,9 @@ class Model(GObject.GObject):
             if shutdown_tracker:
                 shutdown_tracker.mark_completed("model_torrents", 1)
 
-        logger.info("All model torrents stopped", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "All model torrents stopped", extra={"class_name": self.__class__.__name__}
+        )
 
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore_item(self, index):
@@ -216,6 +238,55 @@ class Model(GObject.GObject):
             extra={"class_name": self.__class__.__name__},
         )
         return self.torrent_list[index]
+
+    def get_torrent_by_attributes(self, attributes):
+        """
+        Get the Torrent object corresponding to the given Attributes object.
+
+        Args:
+            attributes: Attributes object to find corresponding Torrent for
+
+        Returns:
+            Torrent object if found, None otherwise
+        """
+        try:
+            if not attributes:
+                logger.warning(
+                    "No attributes provided to get_torrent_by_attributes",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                return None
+
+            # Get the ID from the attributes object
+            torrent_id = getattr(attributes, "id", None)
+            if torrent_id is None:
+                logger.warning(
+                    "Attributes object has no ID",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                return None
+
+            # Find the torrent with matching ID
+            for torrent in self.torrent_list:
+                if hasattr(torrent, "id") and torrent.id == torrent_id:
+                    logger.debug(
+                        f"Found torrent {torrent_id} for attributes",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                    return torrent
+
+            logger.warning(
+                f"No torrent found with ID {torrent_id}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return None
+
+        except Exception as e:
+            logger.error(
+                f"Error getting torrent by attributes: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return None
 
     def handle_settings_changed(self, source, key, value):
         logger.debug("===== handle_settings_changed() CALLED =====", "Model")
@@ -233,14 +304,21 @@ class Model(GObject.GObject):
             logger.debug("New language value: ''", "Model")
             try:
                 logger.info(f"Language change detected from AppSettings: {value}")
-                logger.debug("About to check translation_manager availability...", "Model")
+                logger.debug(
+                    "About to check translation_manager availability...", "Model"
+                )
 
                 # Use the translation manager to switch language
-                if hasattr(self, 'translation_manager') and self.translation_manager:
-                    logger.debug("Translation manager available, calling switch_language('')", "Model")
+                if hasattr(self, "translation_manager") and self.translation_manager:
+                    logger.debug(
+                        "Translation manager available, calling switch_language('')",
+                        "Model",
+                    )
                     actual_lang = self.translation_manager.switch_language(value)
                     logger.debug("switch_language() returned: ''", "Model")
-                    logger.info(f"Language switched via translation manager: {actual_lang}")
+                    logger.info(
+                        f"Language switched via translation manager: {actual_lang}"
+                    )
 
                     # Update translate function reference
                     logger.debug("Updating translate function reference...", "Model")
@@ -249,23 +327,37 @@ class Model(GObject.GObject):
 
                     # CRITICAL: Re-register the NEW translation function with ColumnTranslations
                     # This must happen BEFORE emitting the signal so column components get the new function
-                    logger.debug("About to re-register translation function with ColumnTranslations...", "Model")
+                    logger.debug(
+                        "About to re-register translation function with ColumnTranslations...",
+                        "Model",
+                    )
                     if hasattr(self.translation_manager, "translate_func"):
-                        ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
-                        logger.debug("Re-registered NEW translation function with ColumnTranslations for language:", "Model")
+                        ColumnTranslations.register_translation_function(
+                            self.translation_manager.translate_func
+                        )
+                        logger.debug(
+                            "Re-registered NEW translation function with ColumnTranslations for language:",
+                            "Model",
+                        )
 
                     # Emit our own language-changed signal for UI components
-                    logger.debug("About to emit 'language-changed' signal with: ''", "Model")
+                    logger.debug(
+                        "About to emit 'language-changed' signal with: ''", "Model"
+                    )
                     self.emit("language-changed", actual_lang)
                     logger.debug("Successfully emitted language-changed signal:", "Model")
                 else:
                     logger.debug("ERROR: Translation manager not available!", "Model")
                     logger.debug("hasattr(self, 'translation_manager'):", "Model")
-                    if hasattr(self, 'translation_manager'):
+                    if hasattr(self, "translation_manager"):
                         logger.debug("self.translation_manager:", "Model")
                     logger.error("Translation manager not available for language change")
             except Exception as e:
-                logger.error(f"Error handling language change from AppSettings: {e}", "Model", exc_info=True)
+                logger.error(
+                    f"Error handling language change from AppSettings: {e}",
+                    "Model",
+                    exc_info=True,
+                )
         else:
             logger.debug("Non-language setting change:  =", "Model")
 
@@ -295,7 +387,9 @@ class Model(GObject.GObject):
             # Use fuzzy matching from utilities
             from lib.util.helpers import fuzzy_match
 
-            return fuzzy_match(self.search_filter, name) or fuzzy_match(self.search_filter, filepath)
+            return fuzzy_match(self.search_filter, name) or fuzzy_match(
+                self.search_filter, filepath
+            )
 
         # Create filter and filter model
         self.filter = Gtk.Filter()
@@ -340,7 +434,9 @@ class Model(GObject.GObject):
             filepath = getattr(item, "filepath", "") or ""
 
             # Check if torrent matches search filter
-            if fuzzy_match(self.search_filter, name) or fuzzy_match(self.search_filter, filepath):
+            if fuzzy_match(self.search_filter, name) or fuzzy_match(
+                self.search_filter, filepath
+            ):
                 self.filtered_torrent_list_attributes.append(item)
 
         logger.debug(
@@ -359,11 +455,21 @@ class Model(GObject.GObject):
         """Switch language and notify views"""
         with logger.performance.operation_context("model_switch_language", "Model"):
             logger.debug(f"switch_language() called with: {lang_code}", "Model")
-            logger.info(f"Switching language to: {lang_code}", extra={"class_name": self.__class__.__name__})
+            logger.info(
+                f"Switching language to: {lang_code}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             # Check widget registration before switching
-            widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0
-            logger.debug(f"TranslationManager has {widget_count} registered widgets before switch", "Model")
+            widget_count = (
+                len(self.translation_manager.translatable_widgets)
+                if self.translation_manager
+                else 0
+            )
+            logger.debug(
+                f"TranslationManager has {widget_count} registered widgets before switch",
+                "Model",
+            )
             logger.info(
                 f"TranslationManager has {widget_count} registered widgets before switch",
                 extra={"class_name": self.__class__.__name__},
@@ -374,12 +480,20 @@ class Model(GObject.GObject):
                 logger.debug("Calling TranslationManager.switch_language()", "Model")
                 actual_lang = self.translation_manager.switch_language(lang_code)
                 logger.info(
-                    f"TranslationManager.switch_language returned: {actual_lang}", extra={"class_name": self.__class__.__name__}
+                    f"TranslationManager.switch_language returned: {actual_lang}",
+                    extra={"class_name": self.__class__.__name__},
                 )
 
             # Check widget registration after switching
-            widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0
-            logger.debug(f"TranslationManager has {widget_count} registered widgets after switch", "Model")
+            widget_count = (
+                len(self.translation_manager.translatable_widgets)
+                if self.translation_manager
+                else 0
+            )
+            logger.debug(
+                f"TranslationManager has {widget_count} registered widgets after switch",
+                "Model",
+            )
             logger.info(
                 f"TranslationManager has {widget_count} registered widgets after switch",
                 extra={"class_name": self.__class__.__name__},
@@ -392,8 +506,13 @@ class Model(GObject.GObject):
             # This is critical - the translation function changes when language changes!
             with logger.performance.operation_context("translation_reregister", "Model"):
                 if hasattr(self.translation_manager, "translate_func"):
-                    ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
-                    logger.debug(f"Re-registered NEW translation function with ColumnTranslations for language: {lang_code}", "Model")
+                    ColumnTranslations.register_translation_function(
+                        self.translation_manager.translate_func
+                    )
+                    logger.debug(
+                        f"Re-registered NEW translation function with ColumnTranslations for language: {lang_code}",
+                        "Model",
+                    )
 
             # Emit signal for any manual handling needed
             with logger.performance.operation_context("language_signal_emit", "Model"):
@@ -402,7 +521,8 @@ class Model(GObject.GObject):
 
             logger.debug("Language switch completed", "Model")
             logger.info(
-                f"Language switched to: {actual_lang}, signal emitted", extra={"class_name": self.__class__.__name__}
+                f"Language switched to: {actual_lang}, signal emitted",
+                extra={"class_name": self.__class__.__name__},
             )
             return actual_lang
 

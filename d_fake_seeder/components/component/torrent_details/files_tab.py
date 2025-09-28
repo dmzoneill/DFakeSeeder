@@ -58,28 +58,49 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error removing files grid child: {e}")
 
-    def update_content(self, torrent) -> None:
+    def update_content(self, attributes) -> None:
         """
         Update files tab content with torrent file data.
 
         Args:
-            torrent: Torrent object to display
+            attributes: Attributes object from the torrent list
         """
         try:
             self.logger.info(
-                f"Updating files tab for torrent: {torrent}", extra={"class_name": self.__class__.__name__}
+                f"🔄 FILES TAB: Starting update_content for attributes: {attributes}",
+                extra={"class_name": self.__class__.__name__},
             )
 
+            if attributes is None:
+                self.logger.warning(
+                    "🚨 FILES TAB: Received None attributes in update_content",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                self.clear_content()
+                return
+
             # Remove existing content
+            self.logger.debug(
+                "📂 FILES TAB: Removing existing grid content",
+                extra={"class_name": self.__class__.__name__},
+            )
             self._remove_current_grid()
 
             # Create new grid
+            self.logger.debug(
+                "🏗️ FILES TAB: Creating new grid",
+                extra={"class_name": self.__class__.__name__},
+            )
             self._files_grid_child = self.create_grid()
 
             # Get torrent files
-            files_data = self._get_torrent_files(torrent)
+            self.logger.debug(
+                "🔍 FILES TAB: Calling _get_torrent_files()",
+                extra={"class_name": self.__class__.__name__},
+            )
+            files_data = self._get_torrent_files(attributes)
             self.logger.info(
-                f"Files data retrieved: {len(files_data) if files_data else 0} files",
+                f"📊 FILES TAB: Retrieved {len(files_data) if files_data else 0} files from torrent",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -98,51 +119,123 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error updating files tab content: {e}")
 
-    def _get_torrent_files(self, torrent) -> list:
+    def _get_torrent_files(self, attributes) -> list:
         """
         Get files from the torrent.
 
         Args:
-            torrent: Torrent object
+            attributes: Attributes object from the torrent list
 
         Returns:
             List of (fullpath, length) tuples
         """
         try:
+            self.logger.debug(
+                "🚀 FILES TAB: _get_torrent_files() started",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+            if not attributes:
+                self.logger.warning(
+                    "🚨 FILES TAB: No attributes provided to _get_torrent_files",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                return []
+
+            self.logger.debug(
+                f"🔍 FILES TAB: Attributes object type: {type(attributes)}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.logger.debug(
+                f"🔍 FILES TAB: Attributes has get_torrent_file method: {hasattr(attributes, 'get_torrent_file')}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+            # Get the actual Torrent object from the model using the attributes
+            self.logger.debug(
+                "🔍 FILES TAB: Getting torrent object from model using attributes",
+                extra={"class_name": self.__class__.__name__},
+            )
+            torrent = self.model.get_torrent_by_attributes(attributes)
             if not torrent:
                 self.logger.warning(
-                    "No torrent provided to _get_torrent_files", extra={"class_name": self.__class__.__name__}
+                    f"🚨 FILES TAB: No torrent found for attributes {getattr(attributes, 'id', 'unknown')}",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 return []
+
+            self.logger.debug(
+                f"✅ FILES TAB: Found torrent object: {type(torrent)}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.logger.debug(
+                f"🔍 FILES TAB: Torrent has get_torrent_file method: {hasattr(torrent, 'get_torrent_file')}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             # Get torrent file and extract files directly from the torrent
+            self.logger.debug(
+                "📁 FILES TAB: Calling torrent.get_torrent_file()",
+                extra={"class_name": self.__class__.__name__},
+            )
             torrent_file = torrent.get_torrent_file()
-            self.logger.info(f"Torrent file retrieved: {torrent_file}", extra={"class_name": self.__class__.__name__})
+            self.logger.info(
+                f"📁 FILES TAB: Torrent file retrieved: {torrent_file} (type: {type(torrent_file)})",
+                extra={"class_name": self.__class__.__name__},
+            )
             if not torrent_file:
                 self.logger.warning(
-                    f"No torrent file found for torrent {self.safe_get_property(torrent, 'id', 'unknown')}"
+                    f"🚨 FILES TAB: No torrent file found for torrent {getattr(torrent, 'id', 'unknown')}",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 return []
 
+            self.logger.debug(
+                f"📋 FILES TAB: Torrent file has get_files method: {hasattr(torrent_file, 'get_files')}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
             # Get multi-file torrent files
+            self.logger.debug(
+                "📂 FILES TAB: Calling torrent_file.get_files()",
+                extra={"class_name": self.__class__.__name__},
+            )
             files = list(torrent_file.get_files())
             self.logger.info(
-                f"Multi-file torrent files: {len(files)} files", extra={"class_name": self.__class__.__name__}
+                f"📂 FILES TAB: Multi-file torrent files: {len(files)} files",
+                extra={"class_name": self.__class__.__name__},
             )
+
+            if files:
+                self.logger.debug(
+                    f"📝 FILES TAB: Sample file data: {files[0] if files else 'none'}",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
             # If no files (single-file torrent), get the single file info
             if not files:
+                self.logger.debug(
+                    "🔍 FILES TAB: No multi-file data, checking single file",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 single_file_info = torrent_file.get_single_file_info()
-                self.logger.info(f"Single file info: {single_file_info}", extra={"class_name": self.__class__.__name__})
+                self.logger.info(
+                    f"📄 FILES TAB: Single file info: {single_file_info}",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 if single_file_info:
                     # Use the torrent name as the filename for single-file torrents
-                    filename = getattr(torrent, "name", "unknown.file")
+                    filename = getattr(attributes, "name", "unknown.file")
                     files = [(filename, single_file_info)]
                     self.logger.info(
-                        f"Created single file entry: {files}", extra={"class_name": self.__class__.__name__}
+                        f"✅ FILES TAB: Created single file entry: {files}",
+                        extra={"class_name": self.__class__.__name__},
                     )
 
-            self.logger.info(f"Final files list: {files}", extra={"class_name": self.__class__.__name__})
+            self.logger.info(
+                f"🎯 FILES TAB: Final files list: {len(files)} files - {files[:2] if files else 'empty'}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return files
 
         except Exception as e:
@@ -163,7 +256,9 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             formatted_length = self._format_file_size(length)
 
             # Create the label pair for file path and size
-            self.create_label_pair(fullpath, formatted_length, row, self._files_grid_child)
+            self.create_label_pair(
+                fullpath, formatted_length, row, self._files_grid_child
+            )
 
         except Exception as e:
             self.logger.error(f"Error creating file row for {fullpath}: {e}")
