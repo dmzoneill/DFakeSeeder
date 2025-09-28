@@ -42,67 +42,64 @@ class Model(GObject.GObject):
 
     def __init__(self):
         GObject.GObject.__init__(self)
-        print("[Model] ===== Model.__init__ START =====")
+        logger.debug("===== Model.__init__ START =====", "Model")
         logger.info("Model instantiate", extra={"class_name": self.__class__.__name__})
-        print("[Model] Logger call completed")
+        logger.debug("Logger call completed", "Model")
 
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
-        print(f"[Model] DEBUG: Connecting to AppSettings signals...")
-        print(f"[Model] DEBUG: AppSettings instance: {self.settings}")
+        logger.debug("DEBUG: Connecting to AppSettings signals...", "Model")
+        logger.debug("DEBUG: AppSettings instance:", "Model")
 
         # Connect to both new and legacy signals to ensure we catch the change
         try:
             self.settings.connect("settings-attribute-changed", self.handle_settings_changed)
-            print(f"[Model] DEBUG: Connected to 'settings-attribute-changed' signal")
+            logger.debug("DEBUG: Connected to 'settings-attribute-changed' signal", "Model")
         except Exception as e:
-            print(f"[Model] DEBUG: Failed to connect to 'settings-attribute-changed': {e}")
+            logger.debug("DEBUG: Failed to connect to 'settings-attribute-changed':", "Model")
 
         try:
             self.settings.connect("attribute-changed", self.handle_settings_changed)
-            print(f"[Model] DEBUG: Connected to 'attribute-changed' signal")
+            logger.debug("DEBUG: Connected to 'attribute-changed' signal", "Model")
         except Exception as e:
-            print(f"[Model] DEBUG: Failed to connect to 'attribute-changed': {e}")
+            logger.debug("DEBUG: Failed to connect to 'attribute-changed':", "Model")
 
-        print(f"[Model] DEBUG: AppSettings signal connections completed")
+        logger.debug("DEBUG: AppSettings signal connections completed", "Model")
 
         # Initialize translation manager
-        print("[Model] About to create TranslationManager")
+        logger.debug("About to create TranslationManager", "Model")
         self.translation_manager = TranslationManager(
             domain="dfakeseeder",
             localedir=os.path.join(os.environ.get("DFS_PATH", "."), "components", "locale"),
             config_file=os.path.expanduser("~/.config/dfakeseeder/settings.json"),
             fallback_language="en",
         )
-        print("[Model] TranslationManager created successfully")
+        logger.debug("TranslationManager created successfully", "Model")
 
         # Setup automatic translation
-        print("[Model] About to call setup_translations()")
+        logger.debug("About to call setup_translations()", "Model")
         try:
             result = self.translation_manager.setup_translations()
-            print(f"[Model] setup_translations() returned: {result}")
+            logger.debug("setup_translations() returned:", "Model")
         except Exception as e:
-            print(f"[Model] Exception in setup_translations(): {e}")
-            import traceback
-
-            traceback.print_exc()
+            logger.error("Exception in setup_translations()", "Model", exc_info=True)
 
         # Register translation function with ColumnTranslations to avoid expensive gc.get_objects() calls
         if hasattr(self.translation_manager, "translate_func"):
             ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
-            print("[Model] Registered translation function with ColumnTranslations")
+            logger.debug("Registered translation function with ColumnTranslations", "Model")
 
         self.torrent_list = []  # List to hold all torrent instances
         self.torrent_list_attributes = Gio.ListStore.new(Attributes)  # List to hold all Attributes instances
 
         # Search filtering
-        print("[Model] About to initialize search filtering")
+        logger.debug("About to initialize search filtering", "Model")
         self.search_filter = ""
         self.filtered_torrent_list_attributes = None
-        print("[Model] About to call _setup_filtering()")
+        logger.debug("About to call _setup_filtering()", "Model")
         self._setup_filtering()
-        print("[Model] _setup_filtering() completed")
-        print("[Model] ===== Model.__init__ COMPLETE =====")
+        logger.debug("_setup_filtering() completed", "Model")
+        logger.debug("===== Model.__init__ COMPLETE =====", "Model")
         logger.info("Model initialization completed successfully", extra={"class_name": self.__class__.__name__})
 
     # Method to add a new torrent
@@ -221,10 +218,10 @@ class Model(GObject.GObject):
         return self.torrent_list[index]
 
     def handle_settings_changed(self, source, key, value):
-        print(f"[Model] ===== handle_settings_changed() CALLED =====")
-        print(f"[Model] DEBUG: Signal received - key='{key}', value='{value}'")
-        print(f"[Model] DEBUG: Source object: {source}")
-        print(f"[Model] DEBUG: Source type: {type(source)}")
+        logger.debug("===== handle_settings_changed() CALLED =====", "Model")
+        logger.debug("DEBUG: Signal received - key='', value=''", "Model")
+        logger.debug("DEBUG: Source object:", "Model")
+        logger.debug("DEBUG: Source type:", "Model")
         logger.info(
             f"Model settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},
@@ -232,50 +229,47 @@ class Model(GObject.GObject):
 
         # Handle language changes from AppSettings
         if key == "language":
-            print(f"[Model] ===== LANGUAGE CHANGE DETECTED =====")
-            print(f"[Model] New language value: '{value}'")
+            logger.debug("===== LANGUAGE CHANGE DETECTED =====", "Model")
+            logger.debug("New language value: ''", "Model")
             try:
                 logger.info(f"Language change detected from AppSettings: {value}")
-                print(f"[Model] About to check translation_manager availability...")
+                logger.debug("About to check translation_manager availability...", "Model")
 
                 # Use the translation manager to switch language
                 if hasattr(self, 'translation_manager') and self.translation_manager:
-                    print(f"[Model] Translation manager available, calling switch_language('{value}')")
+                    logger.debug("Translation manager available, calling switch_language('')", "Model")
                     actual_lang = self.translation_manager.switch_language(value)
-                    print(f"[Model] switch_language() returned: '{actual_lang}'")
+                    logger.debug("switch_language() returned: ''", "Model")
                     logger.info(f"Language switched via translation manager: {actual_lang}")
 
                     # Update translate function reference
-                    print(f"[Model] Updating translate function reference...")
+                    logger.debug("Updating translate function reference...", "Model")
                     self.translate_func = self.translation_manager.translate_func
-                    print(f"[Model] Translate function updated")
+                    logger.debug("Translate function updated", "Model")
 
                     # CRITICAL: Re-register the NEW translation function with ColumnTranslations
                     # This must happen BEFORE emitting the signal so column components get the new function
-                    print(f"[Model] About to re-register translation function with ColumnTranslations...")
+                    logger.debug("About to re-register translation function with ColumnTranslations...", "Model")
                     if hasattr(self.translation_manager, "translate_func"):
                         ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
-                        print(f"[Model] Re-registered NEW translation function with ColumnTranslations for language: {actual_lang}")
+                        logger.debug("Re-registered NEW translation function with ColumnTranslations for language:", "Model")
 
                     # Emit our own language-changed signal for UI components
-                    print(f"[Model] About to emit 'language-changed' signal with: '{actual_lang}'")
+                    logger.debug("About to emit 'language-changed' signal with: ''", "Model")
                     self.emit("language-changed", actual_lang)
-                    print(f"[Model] Successfully emitted language-changed signal: {actual_lang}")
+                    logger.debug("Successfully emitted language-changed signal:", "Model")
                 else:
-                    print(f"[Model] ERROR: Translation manager not available!")
-                    print(f"[Model] hasattr(self, 'translation_manager'): {hasattr(self, 'translation_manager')}")
+                    logger.debug("ERROR: Translation manager not available!", "Model")
+                    logger.debug("hasattr(self, 'translation_manager'):", "Model")
                     if hasattr(self, 'translation_manager'):
-                        print(f"[Model] self.translation_manager: {self.translation_manager}")
+                        logger.debug("self.translation_manager:", "Model")
                     logger.error("Translation manager not available for language change")
             except Exception as e:
-                print(f"[Model] EXCEPTION in language change handling: {e}")
-                import traceback
-                traceback.print_exc()
-                logger.error(f"Error handling language change from AppSettings: {e}")
+                logger.error(f"Error handling language change from AppSettings: {e}", "Model", exc_info=True)
         else:
-            print(f"[Model] Non-language setting change: {key} = {value}")
+            logger.debug("Non-language setting change:  =", "Model")
 
-        print(f"[Model] ===== handle_settings_changed() COMPLETED =====")
+        logger.debug("===== handle_settings_changed() COMPLETED =====", "Model")
         # Handle other setting changes as needed
         # Add other key-specific handling here in the future
 
@@ -363,65 +357,54 @@ class Model(GObject.GObject):
 
     def switch_language(self, lang_code: str):
         """Switch language and notify views"""
-        start_time = time.time()
-        print(f"[Model] [{start_time:.3f}] switch_language() called with: {lang_code}")
-        logger.info(f"Switching language to: {lang_code}", extra={"class_name": self.__class__.__name__})
+        with logger.performance.operation_context("model_switch_language", "Model"):
+            logger.debug(f"switch_language() called with: {lang_code}", "Model")
+            logger.info(f"Switching language to: {lang_code}", extra={"class_name": self.__class__.__name__})
 
-        # Check widget registration before switching
-        widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0
-        print(f"[Model] [{time.time():.3f}] TranslationManager has {widget_count} registered widgets before switch")
-        logger.info(
-            f"TranslationManager has {widget_count} registered widgets before switch",
-            extra={"class_name": self.__class__.__name__},
-        )
+            # Check widget registration before switching
+            widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0
+            logger.debug(f"TranslationManager has {widget_count} registered widgets before switch", "Model")
+            logger.info(
+                f"TranslationManager has {widget_count} registered widgets before switch",
+                extra={"class_name": self.__class__.__name__},
+            )
 
-        # Call the TranslationManager's switch_language method
-        tm_start = time.time()
-        print(f"[Model] [{tm_start:.3f}] Calling TranslationManager.switch_language()")
-        actual_lang = self.translation_manager.switch_language(lang_code)
-        tm_end = time.time()
-        print(
-            f"[Model] [{tm_end:.3f}] TranslationManager.switch_language() took "
-            f"{(tm_end - tm_start)*1000:.1f}ms, returned: {actual_lang}"
-        )
-        logger.info(
-            f"TranslationManager.switch_language returned: {actual_lang}", extra={"class_name": self.__class__.__name__}
-        )
+            # Call the TranslationManager's switch_language method
+            with logger.performance.operation_context("translation_switch", "Model"):
+                logger.debug("Calling TranslationManager.switch_language()", "Model")
+                actual_lang = self.translation_manager.switch_language(lang_code)
+                logger.info(
+                    f"TranslationManager.switch_language returned: {actual_lang}", extra={"class_name": self.__class__.__name__}
+                )
 
-        # Check widget registration after switching
-        widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0
-        print(f"[Model] [{time.time():.3f}] TranslationManager has {widget_count} registered widgets after switch")
-        logger.info(
-            f"TranslationManager has {widget_count} registered widgets after switch",
-            extra={"class_name": self.__class__.__name__},
-        )
+            # Check widget registration after switching
+            widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0
+            logger.debug(f"TranslationManager has {widget_count} registered widgets after switch", "Model")
+            logger.info(
+                f"TranslationManager has {widget_count} registered widgets after switch",
+                extra={"class_name": self.__class__.__name__},
+            )
 
-        # TranslationManager.switch_language() already calls refresh_all_translations() internally
-        # No need to call it manually here to avoid infinite loops
+            # TranslationManager.switch_language() already calls refresh_all_translations() internally
+            # No need to call it manually here to avoid infinite loops
 
-        # Re-register the NEW translation function with ColumnTranslations
-        # This is critical - the translation function changes when language changes!
-        re_register_start = time.time()
-        if hasattr(self.translation_manager, "translate_func"):
-            ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
-            print(f"[Model] Re-registered NEW translation function with ColumnTranslations for language: {actual_lang}")
-        re_register_end = time.time()
-        print(f"[Model] [{re_register_end:.3f}] Translation function re-registration took {(re_register_end - re_register_start)*1000:.1f}ms")
+            # Re-register the NEW translation function with ColumnTranslations
+            # This is critical - the translation function changes when language changes!
+            with logger.performance.operation_context("translation_reregister", "Model"):
+                if hasattr(self.translation_manager, "translate_func"):
+                    ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
+                    logger.debug(f"Re-registered NEW translation function with ColumnTranslations for language: {lang_code}", "Model")
 
-        # Emit signal for any manual handling needed
-        signal_start = time.time()
-        print(f"[Model] [{signal_start:.3f}] Emitting language-changed signal")
-        self.emit("language-changed", actual_lang)
-        signal_end = time.time()
-        print(f"[Model] [{signal_end:.3f}] Signal emitted in {(signal_end - signal_start)*1000:.1f}ms")
+            # Emit signal for any manual handling needed
+            with logger.performance.operation_context("language_signal_emit", "Model"):
+                logger.debug("Emitting language-changed signal", "Model")
+                self.emit("language-changed", actual_lang)
 
-        end_time = time.time()
-        total_time = (end_time - start_time) * 1000
-        print(f"[Model] [{end_time:.3f}] Language switch completed - TOTAL MODEL TIME: {total_time:.1f}ms")
-        logger.info(
-            f"Language switched to: {actual_lang}, signal emitted", extra={"class_name": self.__class__.__name__}
-        )
-        return actual_lang
+            logger.debug("Language switch completed", "Model")
+            logger.info(
+                f"Language switched to: {actual_lang}, signal emitted", extra={"class_name": self.__class__.__name__}
+            )
+            return actual_lang
 
     def get_translate_func(self):
         """Get current translation function for manual translations"""
