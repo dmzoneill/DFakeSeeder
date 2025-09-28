@@ -82,14 +82,12 @@ class States(Component):
             "Torrents view settings changed",
             extra={"class_name": self.__class__.__name__},
         )
-        # print(key + " = " + value)
 
     def handle_model_changed(self, source, data_obj, data_changed):
         logger.debug(
             "States settings update",
             extra={"class_name": self.__class__.__name__},
         )
-        # print(key + " = " + value)
 
     def handle_attribute_changed(self, source, key, value):
         logger.debug(

@@ -115,14 +115,14 @@ class Torrent(GObject.GObject):
                 )
                 fetched = self.seeder.load_peers()
                 if fetched is False:
-                    print("sleeping 3")
+                    logger.debug("Failed to load peers, sleeping 3 seconds", self.__class__.__name__)
                     time.sleep(3)
                     count -= 1
                     if count == 0:
                         self.active = False
 
         except Exception as e:
-            print(e)
+            logger.error(f"Error in run_worker: {e}", self.__class__.__name__, exc_info=True)
 
     def update_torrent_worker(self):
         logger.info(
@@ -142,7 +142,7 @@ class Torrent(GObject.GObject):
                 time.sleep(0.5)
 
         except Exception as e:
-            print(e)
+            logger.error(f"Error in update_torrent_worker: {e}", self.__class__.__name__, exc_info=True)
 
     def update_torrent_callback(self):
         logger.debug(
@@ -257,7 +257,6 @@ class Torrent(GObject.GObject):
             "Torrent settings changed",
             extra={"class_name": self.__class__.__name__},
         )
-        # print(key + " = " + value)
 
     def restart_worker(self, state):
         logger.info(
@@ -272,7 +271,7 @@ class Torrent(GObject.GObject):
             self.peers_worker_stop_event.set()
             self.peers_worker.join()
         except Exception as e:
-            print(e)
+            logger.error(f"Error stopping workers: {e}", self.__class__.__name__, exc_info=True)
 
         if state:
             try:
@@ -288,7 +287,7 @@ class Torrent(GObject.GObject):
                 self.peers_worker = threading.Thread(target=self.peers_worker_update)
                 self.peers_worker.start()
             except Exception as e:
-                print(e)
+                logger.error(f"Error starting workers: {e}", self.__class__.__name__, exc_info=True)
 
     def get_attributes(self):
         return self.torrent_attributes

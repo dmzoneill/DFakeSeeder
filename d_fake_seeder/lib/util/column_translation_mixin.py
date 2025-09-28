@@ -80,9 +80,8 @@ class ColumnTranslationMixin:
         This method should be called when the language changes to update
         all column headers with new translations.
         """
-        print(f"[ColumnTranslationMixin] ===== refresh_column_translations() CALLED =====")
-        print(f"[ColumnTranslationMixin] Class: {self.__class__.__name__}")
-        print(f"[ColumnTranslationMixin] Number of column views: {len(self._translatable_columns)}")
+        logger.debug("Refreshing column translations", self.__class__.__name__)
+        logger.debug(f"Number of column views: {len(self._translatable_columns)}", self.__class__.__name__)
 
         logger.debug(
             f"Refreshing column translations for {len(self._translatable_columns)} column views",
@@ -90,13 +89,13 @@ class ColumnTranslationMixin:
         )
 
         for column_view, columns in self._translatable_columns.items():
-            print(f"[ColumnTranslationMixin] Processing column view: {column_view}")
-            print(f"[ColumnTranslationMixin] Number of columns: {len(columns)}")
+            logger.debug(f"Processing column view: {column_view}", self.__class__.__name__)
+            logger.debug(f"Number of columns: {len(columns)}", self.__class__.__name__)
             for column, property_name, column_type in columns:
-                print(f"[ColumnTranslationMixin] Updating column: {property_name} ({column_type})")
+                logger.debug(f"Updating column: {property_name} ({column_type})", self.__class__.__name__)
                 self._update_column_title(column, property_name, column_type)
 
-        print(f"[ColumnTranslationMixin] refresh_column_translations() completed")
+        logger.debug("Column translations refresh completed", self.__class__.__name__)
 
     def on_language_changed(self, model, lang_code):
         """
@@ -109,11 +108,10 @@ class ColumnTranslationMixin:
             model: The model that emitted the signal
             lang_code: The new language code
         """
-        print(f"[ColumnTranslationMixin] ===== on_language_changed() CALLED =====")
-        print(f"[ColumnTranslationMixin] Class: {self.__class__.__name__}")
-        print(f"[ColumnTranslationMixin] Model: {model}")
-        print(f"[ColumnTranslationMixin] Language code: {lang_code}")
-        print(f"[ColumnTranslationMixin] Number of column views: {len(self._translatable_columns)}")
+        logger.debug("Language change received", self.__class__.__name__)
+        logger.debug(f"Model: {model}", self.__class__.__name__)
+        logger.debug(f"Language code: {lang_code}", self.__class__.__name__)
+        logger.debug(f"Number of column views: {len(self._translatable_columns)}", self.__class__.__name__)
 
         logger.debug(
             f"Column translation mixin received language change: {lang_code}",
@@ -121,9 +119,9 @@ class ColumnTranslationMixin:
         )
 
         # Refresh all column translations
-        print(f"[ColumnTranslationMixin] About to call refresh_column_translations()...")
+        logger.debug("About to refresh column translations", self.__class__.__name__)
         self.refresh_column_translations()
-        print(f"[ColumnTranslationMixin] refresh_column_translations() completed")
+        logger.debug("Column translations refresh completed", self.__class__.__name__)
 
     def create_translated_column(self, column_view, property_name, column_type, factory=None):
         """

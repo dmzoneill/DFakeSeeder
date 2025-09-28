@@ -101,8 +101,7 @@ class Toolbar(Component):
         try:
             os.remove(selected.filepath)
         except Exception as e:
-            print(e)
-            pass
+            logger.error(f"Failed to remove torrent file: {e}", self.__class__.__name__, exc_info=True)
         self.model.remove_torrent(selected.filepath)
 
     def on_toolbar_pause_clicked(self, button):
@@ -232,14 +231,12 @@ class Toolbar(Component):
             "Torrents view settings changed",
             extra={"class_name": self.__class__.__name__},
         )
-        # print(key + " = " + value)
 
     def handle_model_changed(self, source, data_obj, data_changed):
         logger.info(
             "Toolbar settings changed",
             extra={"class_name": self.__class__.__name__},
         )
-        # print(key + " = " + value)
 
     def handle_attribute_changed(self, source, key, value):
         logger.debug(

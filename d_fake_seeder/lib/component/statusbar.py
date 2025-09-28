@@ -112,7 +112,6 @@ class Statusbar(Component):
             "Torrents view settings changed",
             extra={"class_name": self.__class__.__name__},
         )
-        # print(key + " = " + value)
 
     def handle_model_changed(self, source, data_obj, data_changed):
         logger.info(

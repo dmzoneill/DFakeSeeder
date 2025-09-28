@@ -26,14 +26,14 @@ class Seeder:
             elif parsed_url.scheme == "udp":
                 self.seeder = UDPSeeder(torrent)
             else:
-                print("Unsupported tracker scheme: " + parsed_url.scheme)
+                logger.warning(f"Unsupported tracker scheme: {parsed_url.scheme}", "Seeder")
         else:
             if attempts > 0:
                 GLib.timeout_add_seconds(
                     1, self.check_announce_attribute, torrent, attempts - 1
                 )
             else:
-                print("Problem with torrent: " + torrent.filepath)
+                logger.error(f"Problem with torrent: {torrent.filepath}", "Seeder")
 
     def load_peers(self):
         if self.seeder:

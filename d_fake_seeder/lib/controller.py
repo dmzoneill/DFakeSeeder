@@ -37,4 +37,3 @@ class Controller:
             "Controller settings changed",
             extra={"class_name": self.__class__.__name__},
         )
-        # print(key + " = " + value)
