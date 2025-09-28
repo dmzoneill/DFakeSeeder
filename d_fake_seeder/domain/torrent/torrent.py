@@ -139,7 +139,7 @@ class Torrent(GObject.GObject):
 
     def update_torrent_worker(self):
         logger.info(
-            "Torrent update worker",
+            f"🔄 TORRENT UPDATE WORKER STARTED for {self.name}",
             extra={"class_name": self.__class__.__name__},
         )
 
@@ -147,9 +147,17 @@ class Torrent(GObject.GObject):
             ticker = 0.0
 
             while not self.torrent_worker_stop_event.is_set():
-                if ticker == self.settings.tickspeed and self.active:
+                logger.debug(
+                    f"🔄 WORKER LOOP: {self.name} ticker={ticker:.2f}, tickspeed={self.settings.tickspeed}, active={self.active}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                if ticker >= self.settings.tickspeed and self.active:
+                    logger.info(
+                        f"🔄 WORKER: Adding update callback to UI thread for {self.name} (ticker={ticker}, tickspeed={self.settings.tickspeed})",
+                        extra={"class_name": self.__class__.__name__},
+                    )
                     GLib.idle_add(self.update_torrent_callback)
-                if ticker == self.settings.tickspeed:
+                if ticker >= self.settings.tickspeed:
                     ticker = 0.0
                 ticker += self.worker_sleep_interval
                 time.sleep(self.worker_sleep_interval)
@@ -161,8 +169,8 @@ class Torrent(GObject.GObject):
             )
 
     def update_torrent_callback(self):
-        logger.debug(
-            "Torrent torrent update callback",
+        logger.info(
+            f"📊 TORRENT UPDATE CALLBACK STARTED for {self.name} - updating values",
             extra={"class_name": self.__class__.__name__},
         )
 
@@ -216,11 +224,20 @@ class Torrent(GObject.GObject):
                 self.progress = self.total_downloaded / self.total_size
 
         if self.next_update > 0:
+            old_next_update = self.next_update
             update = self.next_update - int(self.settings.tickspeed)
             self.next_update = update if update > 0 else 0
+            logger.debug(
+                f"📊 COUNTDOWN UPDATE: {self.name} next_update {old_next_update} -> {self.next_update}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         if self.next_update <= 0:
             self.next_update = self.announce_interval
+            logger.debug(
+                f"📊 ANNOUNCE CYCLE: {self.name} resetting next_update to {self.announce_interval}",
+                extra={"class_name": self.__class__.__name__},
+            )
             # announce
             download_left = (
                 self.total_size - self.total_downloaded if self.total_size - self.total_downloaded > 0 else 0
@@ -231,6 +248,10 @@ class Torrent(GObject.GObject):
                 download_left,
             )
 
+        logger.info(
+            f"🚀 EMITTING SIGNAL: {self.name} - progress={self.progress:.3f}, up_speed={self.session_uploaded}, down_speed={self.session_downloaded}, next_update={self.next_update}",
+            extra={"class_name": self.__class__.__name__},
+        )
         self.emit("attribute-changed", None, None)
 
     def stop(self):
@@ -281,7 +302,7 @@ class Torrent(GObject.GObject):
 
     def restart_worker(self, state):
         logger.info(
-            "Torrent restart worker",
+            f"⚡ RESTART WORKER: {self.name} state={state} (active={getattr(self, 'active', 'Unknown')})",
             extra={"class_name": self.__class__.__name__},
         )
         try:
@@ -291,6 +312,7 @@ class Torrent(GObject.GObject):
 
             self.peers_worker_stop_event.set()
             self.peers_worker.join()
+            logger.info(f"⚡ STOPPED WORKERS: {self.name}", extra={"class_name": self.__class__.__name__})
         except Exception as e:
             logger.error(
                 f"Error stopping peers worker: {e}",
@@ -303,11 +325,13 @@ class Torrent(GObject.GObject):
                 self.torrent_worker_stop_event = threading.Event()
                 self.torrent_worker = threading.Thread(target=self.update_torrent_worker)
                 self.torrent_worker.start()
+                logger.info(f"⚡ STARTED UPDATE WORKER: {self.name}", extra={"class_name": self.__class__.__name__})
 
                 # Start the thread to update the name
                 self.peers_worker_stop_event = threading.Event()
                 self.peers_worker = threading.Thread(target=self.peers_worker_update)
                 self.peers_worker.start()
+                logger.info(f"⚡ STARTED PEERS WORKER: {self.name}", extra={"class_name": self.__class__.__name__})
             except Exception as e:
                 logger.error(
                     f"Error starting peers worker: {e}",
@@ -334,6 +358,11 @@ class Torrent(GObject.GObject):
         if attr == "torrent_attributes":
             self.__dict__["torrent_attributes"] = value
         elif hasattr(self.torrent_attributes, attr):
+            if attr == "active":
+                logger.info(
+                    f"🔄 ACTIVE CHANGED: {getattr(self, 'name', 'Unknown')} active={value}",
+                    extra={"class_name": self.__class__.__name__},
+                )
             setattr(self.torrent_attributes, attr, value)
             if attr == "active":
                 self.restart_worker(value)

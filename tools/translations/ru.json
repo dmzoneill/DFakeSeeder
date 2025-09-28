@@ -1,7 +1,6 @@
 {
   "#": "#",
   "(0 = unlimited)": "(0 = неограничено)",
-  ")\n            return": ")\n            return",
   "0 / 250": "0 / 250",
   "127.0.0.1": "127.0.0.1",
   ":": ":",
@@ -100,7 +99,6 @@
   "Burst Probability:": "Вероятность всплеска:",
   "CRITICAL": "КРИТИЧЕСКИЙ",
   "Cancel": "Отмена",
-  "Check if widget is visible in current viewport.\n\n        Args:\n            widget: Widget to check\n\n        Returns:\n            True if visible": "Проверить, виден ли виджет в текущей области просмотра.\n\n        Args:\n            widget: Виджет для проверки\n\n        Returns:\n            True если виден",
   "Chinese": "Китайский",
   "Choose a pre-configured seeding profile": "Выберите предустановленный профиль сидирования",
   "Choose the application theme": "Выберите тему приложения",
@@ -248,8 +246,6 @@
   "Generate synthetic peer data for PEX": "Генерировать синтетические данные пиров для PEX",
   "Generate synthetic peers": "Генерировать синтетических пиров",
   "German": "Немецкий",
-  "Get the number of options displayed.\n\n        Returns:\n            Number of options": "Получить количество отображаемых опций.\n\n        Returns:\n            Количество опций",
-  "Get the number of peers currently displayed.\n\n        Returns:\n            Number of peers": "Получить количество пиров, отображаемых в данный момент.\n\n        Returns:\n            Количество пиров",
   "Github - D' Fake Seeder": "Github - D' Fake Seeder",
   "Global download speed limit in KB/s (0 = unlimited)": "Глобальный лимит скорости загрузки в КБ/с (0 = неограничено)",
   "Global upload speed limit in KB/s (0 = unlimited)": "Глобальный лимит скорости отдачи в КБ/с (0 = неограничено)",
@@ -628,5 +624,11 @@
   "ut_pex (Peer Exchange)": "ut_pex (обмен пирами)",
   "µTorrent": "µTorrent",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Расширенные настройки - изменяйте с осторожностью. Неправильные значения могут повлиять на производительность или стабильность.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Веб-интерфейс позволяет удалённо управлять приложением. Используйте надёжную аутентификацию."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Веб-интерфейс позволяет удалённо управлять приложением. Используйте надёжную аутентификацию.",
+  "TranslationManager": "TranslationManager",
+  "Preference 1:": "Preference 1:",
+  "Preference 2:": "Preference 2:",
+  "Fallback configuration": "Fallback configuration",
+  "No editable options available for this torrent.": "No editable options available for this torrent.",
+  "GeneralTab": "GeneralTab"
 }

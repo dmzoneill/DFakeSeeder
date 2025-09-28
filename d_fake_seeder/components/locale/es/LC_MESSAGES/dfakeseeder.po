@@ -689,6 +689,9 @@ msgstr "Razón Falla"
 msgid "Fall back to TCP if µTP fails"
 msgstr "Volver a TCP si µTP falla"
 
+msgid "Fallback configuration"
+msgstr "Fallback configuration"
+
 msgid "Fast Extension (BEP-006)"
 msgstr "Extensión Rápida (BEP-006)"
 
@@ -733,6 +736,9 @@ msgstr "Configuración general restablecida a valores predeterminados"
 
 msgid "General timeout for extension operations (seconds)"
 msgstr "Tiempo de espera general para operaciones de extensión (segundos)"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
 
 msgid "Generate Secure Password"
 msgstr "Generar Contraseña Segura"
@@ -1046,6 +1052,9 @@ msgstr "Próximo Anuncio"
 msgid "Next Update"
 msgstr "Próxima Actualización"
 
+msgid "No editable options available for this torrent."
+msgstr "No editable options available for this torrent."
+
 msgid "None"
 msgstr "Ninguno"
 
@@ -1159,6 +1168,12 @@ msgstr "Puerto:"
 
 msgid "Portuguese"
 msgstr "Portugués"
+
+msgid "Preference 1:"
+msgstr "Preference 1:"
+
+msgid "Preference 2:"
+msgstr "Preference 2:"
 
 msgid "Preferences"
 msgstr "Preferencias"
@@ -1576,6 +1591,9 @@ msgstr "Rango ID transacción (máx):"
 
 msgid "Transaction ID range (min):"
 msgstr "Rango ID transacción (mín):"
+
+msgid "TranslationManager"
+msgstr "TranslationManager"
 
 msgid "Transmission"
 msgstr "Transmission"

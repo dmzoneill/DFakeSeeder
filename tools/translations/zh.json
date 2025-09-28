@@ -1,7 +1,6 @@
 {
   "#": "#",
   "(0 = unlimited)": "(0 = 无限制)",
-  ")\n            return": ")\n            return",
   "0 / 250": "0 / 250",
   "127.0.0.1": "127.0.0.1",
   ":": ":",
@@ -100,7 +99,6 @@
   "Burst Probability:": "突发概率:",
   "CRITICAL": "严重",
   "Cancel": "取消",
-  "Check if widget is visible in current viewport.\n\n        Args:\n            widget: Widget to check\n\n        Returns:\n            True if visible": "检查小部件在当前视口中是否可见。\n\n        Args:\n            widget: 要检查的小部件\n\n        Returns:\n            如果可见则返回 True",
   "Chinese": "中文",
   "Choose a pre-configured seeding profile": "选择预配置的做种配置文件",
   "Choose the application theme": "选择应用程序主题",
@@ -248,8 +246,6 @@
   "Generate synthetic peer data for PEX": "为 PEX 生成合成节点数据",
   "Generate synthetic peers": "生成合成节点",
   "German": "德语",
-  "Get the number of options displayed.\n\n        Returns:\n            Number of options": "获取显示的选项数量。\n\n        Returns:\n            选项数量",
-  "Get the number of peers currently displayed.\n\n        Returns:\n            Number of peers": "获取当前显示的节点数量。\n\n        Returns:\n            节点数量",
   "Github - D' Fake Seeder": "Github - D' Fake Seeder",
   "Global download speed limit in KB/s (0 = unlimited)": "全局下载速度限制 (KB/s) (0 = 无限制)",
   "Global upload speed limit in KB/s (0 = unlimited)": "全局上传速度限制 (KB/s) (0 = 无限制)",
@@ -628,5 +624,11 @@
   "ut_pex (Peer Exchange)": "ut_pex（节点交换）",
   "µTorrent": "µTorrent",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ 高级设置 - 请谨慎修改。错误的值可能影响性能或稳定性。",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ 网页界面允许远程控制应用程序。请使用强身份验证。"
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ 网页界面允许远程控制应用程序。请使用强身份验证。",
+  "TranslationManager": "TranslationManager",
+  "Preference 1:": "Preference 1:",
+  "Preference 2:": "Preference 2:",
+  "Fallback configuration": "Fallback configuration",
+  "No editable options available for this torrent.": "No editable options available for this torrent.",
+  "GeneralTab": "GeneralTab"
 }

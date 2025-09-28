@@ -689,6 +689,9 @@ msgstr "Причина ошибки"
 msgid "Fall back to TCP if µTP fails"
 msgstr "Переключаться на TCP если µTP не работает"
 
+msgid "Fallback configuration"
+msgstr "Fallback configuration"
+
 msgid "Fast Extension (BEP-006)"
 msgstr "Быстрое расширение (BEP-006)"
 
@@ -733,6 +736,9 @@ msgstr "Общие настройки сброшены по умолчанию"
 
 msgid "General timeout for extension operations (seconds)"
 msgstr "Общий таймаут для операций расширений (секунды)"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
 
 msgid "Generate Secure Password"
 msgstr "Создать безопасный пароль"
@@ -1046,6 +1052,9 @@ msgstr "Следующее объявление"
 msgid "Next Update"
 msgstr "Следующее Обновление"
 
+msgid "No editable options available for this torrent."
+msgstr "No editable options available for this torrent."
+
 msgid "None"
 msgstr "Нет"
 
@@ -1159,6 +1168,12 @@ msgstr "Порт:"
 
 msgid "Portuguese"
 msgstr "Португальский"
+
+msgid "Preference 1:"
+msgstr "Preference 1:"
+
+msgid "Preference 2:"
+msgstr "Preference 2:"
 
 msgid "Preferences"
 msgstr "Настройки"
@@ -1576,6 +1591,9 @@ msgstr "Диапазон ID транзакций (макс.):"
 
 msgid "Transaction ID range (min):"
 msgstr "Диапазон ID транзакций (мин.):"
+
+msgid "TranslationManager"
+msgstr "TranslationManager"
 
 msgid "Transmission"
 msgstr "Transmission"

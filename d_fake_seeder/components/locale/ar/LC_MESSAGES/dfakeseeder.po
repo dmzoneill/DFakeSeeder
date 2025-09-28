@@ -689,6 +689,9 @@ msgstr "سبب الفشل"
 msgid "Fall back to TCP if µTP fails"
 msgstr "الرجوع إلى TCP إذا فشل µTP"
 
+msgid "Fallback configuration"
+msgstr "Fallback configuration"
+
 msgid "Fast Extension (BEP-006)"
 msgstr "التمديد السريع (BEP-006)"
 
@@ -733,6 +736,9 @@ msgstr "تم إعادة تعيين الإعدادات العامة للافتر�
 
 msgid "General timeout for extension operations (seconds)"
 msgstr "انتهاء المهلة العام لعمليات التمديد (ثواني)"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
 
 msgid "Generate Secure Password"
 msgstr "إنشاء كلمة مرور آمنة"
@@ -1046,6 +1052,9 @@ msgstr "الإعلان التالي"
 msgid "Next Update"
 msgstr "التحديث التالي"
 
+msgid "No editable options available for this torrent."
+msgstr "No editable options available for this torrent."
+
 msgid "None"
 msgstr "لا شيء"
 
@@ -1159,6 +1168,12 @@ msgstr "المنفذ:"
 
 msgid "Portuguese"
 msgstr "البرتغالية"
+
+msgid "Preference 1:"
+msgstr "Preference 1:"
+
+msgid "Preference 2:"
+msgstr "Preference 2:"
 
 msgid "Preferences"
 msgstr "التفضيلات"
@@ -1576,6 +1591,9 @@ msgstr "نطاق معرف المعاملة (الحد الأقصى):"
 
 msgid "Transaction ID range (min):"
 msgstr "نطاق معرف المعاملة (الحد الأدنى):"
+
+msgid "TranslationManager"
+msgstr "TranslationManager"
 
 msgid "Transmission"
 msgstr "Transmission"

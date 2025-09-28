@@ -689,6 +689,9 @@ msgstr "विफलता कारण"
 msgid "Fall back to TCP if µTP fails"
 msgstr "यदि µTP विफल हो जाए तो TCP पर वापस जाएं"
 
+msgid "Fallback configuration"
+msgstr "Fallback configuration"
+
 msgid "Fast Extension (BEP-006)"
 msgstr "फास्ट एक्सटेंशन (BEP-006)"
 
@@ -733,6 +736,9 @@ msgstr "सामान्य सेटिंग्स डिफ़ॉल्ट 
 
 msgid "General timeout for extension operations (seconds)"
 msgstr "एक्सटेंशन ऑपरेशन के लिए सामान्य टाइमआउट (सेकंड)"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
 
 msgid "Generate Secure Password"
 msgstr "सुरक्षित पासवर्ड बनाएं"
@@ -1046,6 +1052,9 @@ msgstr "अगली घोषणा"
 msgid "Next Update"
 msgstr "अगला अपडेट"
 
+msgid "No editable options available for this torrent."
+msgstr "No editable options available for this torrent."
+
 msgid "None"
 msgstr "कोई नहीं"
 
@@ -1159,6 +1168,12 @@ msgstr "पोर्ट:"
 
 msgid "Portuguese"
 msgstr "पुर्तगाली"
+
+msgid "Preference 1:"
+msgstr "Preference 1:"
+
+msgid "Preference 2:"
+msgstr "Preference 2:"
 
 msgid "Preferences"
 msgstr "प्राथमिकताएं"
@@ -1576,6 +1591,9 @@ msgstr "लेनदेन ID रेंज (अधिकतम):"
 
 msgid "Transaction ID range (min):"
 msgstr "लेनदेन ID रेंज (न्यूनतम):"
+
+msgid "TranslationManager"
+msgstr "TranslationManager"
 
 msgid "Transmission"
 msgstr "Transmission"

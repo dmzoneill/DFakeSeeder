@@ -23,11 +23,6 @@ msgstr ""
 msgid "(0 = unlimited)"
 msgstr ""
 
-msgid ""
-")\n"
-"            return"
-msgstr ""
-
 msgid "0 / 250"
 msgstr ""
 
@@ -320,16 +315,6 @@ msgid "CRITICAL"
 msgstr ""
 
 msgid "Cancel"
-msgstr ""
-
-msgid ""
-"Check if widget is visible in current viewport.\n"
-"\n"
-"        Args:\n"
-"            widget: Widget to check\n"
-"\n"
-"        Returns:\n"
-"            True if visible"
 msgstr ""
 
 msgid "Chinese"
@@ -704,6 +689,9 @@ msgstr ""
 msgid "Fall back to TCP if µTP fails"
 msgstr ""
 
+msgid "Fallback configuration"
+msgstr ""
+
 msgid "Fast Extension (BEP-006)"
 msgstr ""
 
@@ -749,6 +737,9 @@ msgstr ""
 msgid "General timeout for extension operations (seconds)"
 msgstr ""
 
+msgid "GeneralTab"
+msgstr ""
+
 msgid "Generate Secure Password"
 msgstr ""
 
@@ -771,20 +762,6 @@ msgid "Generate synthetic peers"
 msgstr ""
 
 msgid "German"
-msgstr ""
-
-msgid ""
-"Get the number of options displayed.\n"
-"\n"
-"        Returns:\n"
-"            Number of options"
-msgstr ""
-
-msgid ""
-"Get the number of peers currently displayed.\n"
-"\n"
-"        Returns:\n"
-"            Number of peers"
 msgstr ""
 
 msgid "Github - D' Fake Seeder"
@@ -1075,6 +1052,9 @@ msgstr ""
 msgid "Next Update"
 msgstr ""
 
+msgid "No editable options available for this torrent."
+msgstr ""
+
 msgid "None"
 msgstr ""
 
@@ -1187,6 +1167,12 @@ msgid "Port:"
 msgstr ""
 
 msgid "Portuguese"
+msgstr ""
+
+msgid "Preference 1:"
+msgstr ""
+
+msgid "Preference 2:"
 msgstr ""
 
 msgid "Preferences"
@@ -1604,6 +1590,9 @@ msgid "Transaction ID range (max):"
 msgstr ""
 
 msgid "Transaction ID range (min):"
+msgstr ""
+
+msgid "TranslationManager"
 msgstr ""
 
 msgid "Transmission"

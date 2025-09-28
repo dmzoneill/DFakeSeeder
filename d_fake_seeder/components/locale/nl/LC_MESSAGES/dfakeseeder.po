@@ -689,6 +689,9 @@ msgstr "Faalreden"
 msgid "Fall back to TCP if µTP fails"
 msgstr "Terugvallen op TCP als µTP faalt"
 
+msgid "Fallback configuration"
+msgstr "Fallback configuration"
+
 msgid "Fast Extension (BEP-006)"
 msgstr "Snelle Extensie (BEP-006)"
 
@@ -733,6 +736,9 @@ msgstr "Algemene instellingen hersteld naar standaard"
 
 msgid "General timeout for extension operations (seconds)"
 msgstr "Algemene time-out voor extensie operaties (seconden)"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
 
 msgid "Generate Secure Password"
 msgstr "Veilig wachtwoord genereren"
@@ -1046,6 +1052,9 @@ msgstr "Volgende aankondiging"
 msgid "Next Update"
 msgstr "Volgende Update"
 
+msgid "No editable options available for this torrent."
+msgstr "No editable options available for this torrent."
+
 msgid "None"
 msgstr "Geen"
 
@@ -1159,6 +1168,12 @@ msgstr "Poort:"
 
 msgid "Portuguese"
 msgstr "Portugees"
+
+msgid "Preference 1:"
+msgstr "Preference 1:"
+
+msgid "Preference 2:"
+msgstr "Preference 2:"
 
 msgid "Preferences"
 msgstr "Voorkeuren"
@@ -1576,6 +1591,9 @@ msgstr "Transactie ID bereik (max):"
 
 msgid "Transaction ID range (min):"
 msgstr "Transactie ID bereik (min):"
+
+msgid "TranslationManager"
+msgstr "TranslationManager"
 
 msgid "Transmission"
 msgstr "Transmission"

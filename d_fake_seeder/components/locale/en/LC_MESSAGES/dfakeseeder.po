@@ -689,6 +689,9 @@ msgstr "Failure Reason"
 msgid "Fall back to TCP if µTP fails"
 msgstr "Fall back to TCP if µTP fails"
 
+msgid "Fallback configuration"
+msgstr "Fallback configuration"
+
 msgid "Fast Extension (BEP-006)"
 msgstr "Fast Extension (BEP-006)"
 
@@ -733,6 +736,9 @@ msgstr "General settings reset to defaults"
 
 msgid "General timeout for extension operations (seconds)"
 msgstr "General timeout for extension operations (seconds)"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
 
 msgid "Generate Secure Password"
 msgstr "Generate Secure Password"
@@ -1046,6 +1052,9 @@ msgstr "Next Announce"
 msgid "Next Update"
 msgstr "Next Update"
 
+msgid "No editable options available for this torrent."
+msgstr "No editable options available for this torrent."
+
 msgid "None"
 msgstr "None"
 
@@ -1159,6 +1168,12 @@ msgstr "Port:"
 
 msgid "Portuguese"
 msgstr "Portuguese"
+
+msgid "Preference 1:"
+msgstr "Preference 1:"
+
+msgid "Preference 2:"
+msgstr "Preference 2:"
 
 msgid "Preferences"
 msgstr "Preferences"
@@ -1577,6 +1592,9 @@ msgstr "Transaction ID range (max):"
 msgid "Transaction ID range (min):"
 msgstr "Transaction ID range (min):"
 
+msgid "TranslationManager"
+msgstr "TranslationManager"
+
 msgid "Transmission"
 msgstr "Transmission"
 
@@ -1758,7 +1776,7 @@ msgid "download_rate"
 msgstr "Download Rate"
 
 msgid "download_speed"
-msgstr "Down Speed"
+msgstr "Download Speed"
 
 msgid "failure_reason"
 msgstr "Failure Reason"
@@ -1767,7 +1785,7 @@ msgid "filepath"
 msgstr "File Path"
 
 msgid "files_tab"
-msgstr "Files Tab"
+msgstr "Files"
 
 msgid "handshake_complete"
 msgstr "Handshake Complete"
@@ -1779,7 +1797,7 @@ msgid "leechers"
 msgstr "Leechers"
 
 msgid "log_tab"
-msgstr "Log Tab"
+msgstr "Log"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (Piece Availability)"
@@ -1794,7 +1812,7 @@ msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"
 
 msgid "options_tab"
-msgstr "Options Tab"
+msgstr "Options"
 
 msgid "peer_choking"
 msgstr "Peer Choking"
@@ -1803,7 +1821,7 @@ msgid "peer_interested"
 msgstr "Peer Interested"
 
 msgid "peers_tab"
-msgstr "Peers Tab"
+msgstr "Peers"
 
 msgid "pieces_received"
 msgstr "Pieces Received"
@@ -1839,10 +1857,10 @@ msgid "seeders"
 msgstr "Seeds"
 
 msgid "session_downloaded"
-msgstr "Downloaded"
+msgstr "Session Downloaded"
 
 msgid "session_uploaded"
-msgstr "Uploaded"
+msgstr "Session Uploaded"
 
 msgid "small_torrent_limit"
 msgstr "Small Torrent Limit"
@@ -1857,13 +1875,13 @@ msgid "total_downloaded"
 msgstr "Total Downloaded"
 
 msgid "total_size"
-msgstr "Size"
+msgstr "Total Size"
 
 msgid "total_uploaded"
 msgstr "Total Uploaded"
 
 msgid "trackers_tab"
-msgstr "Trackers Tab"
+msgstr "Trackers"
 
 msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
@@ -1872,7 +1890,7 @@ msgid "upload_rate"
 msgstr "Upload Rate"
 
 msgid "upload_speed"
-msgstr "Up Speed"
+msgstr "Upload Speed"
 
 msgid "uploading"
 msgstr "Uploading"

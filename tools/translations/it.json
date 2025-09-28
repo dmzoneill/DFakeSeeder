@@ -1,7 +1,6 @@
 {
   "#": "#",
   "(0 = unlimited)": "(0 = illimitato)",
-  ")\n            return": ")\n            return",
   "0 / 250": "0 / 250",
   "127.0.0.1": "127.0.0.1",
   ":": ":",
@@ -100,7 +99,6 @@
   "Burst Probability:": "Probabilità picco:",
   "CRITICAL": "CRITICO",
   "Cancel": "Annulla",
-  "Check if widget is visible in current viewport.\n\n        Args:\n            widget: Widget to check\n\n        Returns:\n            True if visible": "Controlla se il widget è visibile nella viewport corrente.\n\n        Args:\n            widget: Widget da controllare\n\n        Returns:\n            True se visibile",
   "Chinese": "Cinese",
   "Choose a pre-configured seeding profile": "Scegli profilo seeding preconfigurato",
   "Choose the application theme": "Scegli tema applicazione",
@@ -248,8 +246,6 @@
   "Generate synthetic peer data for PEX": "Genera dati peer sintetici per PEX",
   "Generate synthetic peers": "Genera peer sintetici",
   "German": "Tedesco",
-  "Get the number of options displayed.\n\n        Returns:\n            Number of options": "Ottieni il numero di opzioni visualizzate.\n\n        Returns:\n            Numero di opzioni",
-  "Get the number of peers currently displayed.\n\n        Returns:\n            Number of peers": "Ottieni il numero di peer attualmente visualizzati.\n\n        Returns:\n            Numero di peer",
   "Github - D' Fake Seeder": "Github - D' Fake Seeder",
   "Global download speed limit in KB/s (0 = unlimited)": "Limite velocità download globale in KB/s (0 = illimitato)",
   "Global upload speed limit in KB/s (0 = unlimited)": "Limite velocità upload globale in KB/s (0 = illimitato)",
@@ -628,5 +624,11 @@
   "ut_pex (Peer Exchange)": "ut_pex (Scambio Peer)",
   "µTorrent": "µTorrent",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Impostazioni avanzate - modificare con cautela. Valori errati possono influire su prestazioni o stabilità.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Interfaccia Web consente controllo remoto applicazione. Usare autenticazione forte."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Interfaccia Web consente controllo remoto applicazione. Usare autenticazione forte.",
+  "TranslationManager": "TranslationManager",
+  "Preference 1:": "Preference 1:",
+  "Preference 2:": "Preference 2:",
+  "Fallback configuration": "Fallback configuration",
+  "No editable options available for this torrent.": "No editable options available for this torrent.",
+  "GeneralTab": "GeneralTab"
 }
