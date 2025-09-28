@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional, Set
 import gi
 
 gi.require_version("Gtk", "4.0")  # noqa: E402
-from gi.repository import Gtk  # noqa: E402
+from gi.repository import Gio, Gtk  # noqa: E402
 
 # Import logger for structured logging
 from lib.logger import logger  # noqa: E402
@@ -58,6 +58,7 @@ class TranslationManager:
         self.current_language: Optional[str] = None
         self.translate_func = lambda x: x  # Default passthrough
         self.translatable_widgets: List[Dict[str, Any]] = []
+        self.translatable_menus: List[Dict[str, Any]] = []  # Menu registry for recreation
         self.state_storage: Dict[str, Any] = {}
 
         # Simple recursion guard
@@ -295,6 +296,12 @@ class TranslationManager:
             with logger.performance.operation_context("widget_refresh", "TranslationManager"):
                 logger.debug(f"Starting widget refresh for {len(self.translatable_widgets)} widgets", "TranslationManager")
                 self._refresh_translations_immediate()
+
+        # Refresh translations for all registered menus immediately
+        if self.translatable_menus:
+            with logger.performance.operation_context("menu_refresh", "TranslationManager"):
+                logger.debug(f"Starting menu refresh for {len(self.translatable_menus)} menus", "TranslationManager")
+                self.refresh_menu_translations()
 
         logger.debug(f"Language switched to '{lang_code}'", "TranslationManager")
 
@@ -582,9 +589,74 @@ class TranslationManager:
         return self.translatable_widgets.copy()
 
     def clear_registrations(self):
-        """Clear all registered widgets."""
+        """Clear all registered widgets and menus."""
         self.translatable_widgets.clear()
+        self.translatable_menus.clear()
         self.state_storage.clear()
+
+    def register_menu(self, menu: Gio.Menu, menu_items: List[Dict[str, str]], popover: Optional[Gtk.PopoverMenu] = None):
+        """
+        Register a menu for translation updates.
+
+        Args:
+            menu: The Gio.Menu object to register
+            menu_items: List of menu item dictionaries with 'action' and 'key' fields
+            popover: Optional popover that displays this menu (for triggering updates)
+        """
+        # Check if this menu is already registered
+        for existing_menu in self.translatable_menus:
+            if existing_menu["menu"] is menu:
+                logger.debug("Skipping duplicate menu registration", "TranslationManager")
+                return
+
+        menu_info = {
+            "menu": menu,
+            "items": menu_items,
+            "popover": popover
+        }
+
+        self.translatable_menus.append(menu_info)
+        logger.debug(f"Registered menu with {len(menu_items)} items for translation", "TranslationManager")
+
+    def refresh_menu_translations(self):
+        """Recreate all registered menus with translated text."""
+        if not self.translatable_menus:
+            logger.debug("No menus registered for translation", "TranslationManager")
+            return
+
+        logger.debug(f"Refreshing translations for {len(self.translatable_menus)} menus", "TranslationManager")
+
+        for menu_info in self.translatable_menus:
+            try:
+                self._recreate_menu(menu_info)
+            except Exception as e:
+                logger.debug(f"Warning: Could not refresh menu translations: {e}", "TranslationManager")
+
+    def _recreate_menu(self, menu_info: Dict[str, Any]):
+        """
+        Recreate a menu with translated text.
+
+        Args:
+            menu_info: Dictionary containing menu, items, and optional popover
+        """
+        menu = menu_info["menu"]
+        items = menu_info["items"]
+        popover = menu_info.get("popover")
+
+        # Clear existing menu items
+        menu.remove_all()
+
+        # Recreate menu with translated text
+        for item in items:
+            translated_text = self.translate_func(item["key"])
+            menu.append(translated_text, item["action"])
+            logger.debug(f"Menu item: '{item['key']}' -> '{translated_text}' (action: {item['action']})", "TranslationManager")
+
+        # If menu is attached to a popover, trigger UI update
+        if popover:
+            # Force popover to recognize the menu model changes
+            popover.set_menu_model(menu)
+            logger.debug("Updated popover menu model", "TranslationManager")
 
     def print_discovered_widgets(self):
         """Debug method to print all discovered translatable widgets."""
