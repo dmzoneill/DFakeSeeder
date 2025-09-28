@@ -213,10 +213,16 @@ class View:
         action.connect("activate", self.quit)
         self.action_group.add_action(action)
 
-        # Create standard menu
+        # Create standard menu with translatable structure
+        self.main_menu_items = [
+            {"action": "win.about", "key": "About"},
+            {"action": "win.quit", "key": "Quit"}
+        ]
+
         self.main_menu = Gio.Menu()
-        self.main_menu.append(self._("About"), "win.about")
-        self.main_menu.append(self._("Quit"), "win.quit")
+        for item in self.main_menu_items:
+            translated_text = self._(item["key"])
+            self.main_menu.append(translated_text, item["action"])
 
         # Create a popover
         self.popover = Gtk.PopoverMenu()
@@ -371,6 +377,18 @@ class View:
         # Register notebook for translation updates
         if hasattr(self.notebook, "register_for_translation"):
             self.notebook.register_for_translation()
+
+        # Register main menu for translation updates
+        if hasattr(self, 'main_menu') and hasattr(self, 'main_menu_items'):
+            self.model.translation_manager.register_menu(
+                self.main_menu,
+                self.main_menu_items,
+                popover=self.popover
+            )
+            logger.info(
+                f"Registered main menu with {len(self.main_menu_items)} items for translation",
+                extra={"class_name": self.__class__.__name__}
+            )
 
     # Connecting signals for different events
     def connect_signals(self):
@@ -596,11 +614,13 @@ class View:
         logger.debug("on_language_changed() called with:", "View")
         logger.info(f"View received language change: {lang_code}", extra={"class_name": self.__class__.__name__})
 
-        # TranslationManager should automatically refresh all registered widgets
+        # TranslationManager should automatically refresh all registered widgets and menus
         widget_count = len(model.translation_manager.translatable_widgets) if model.translation_manager else 0
-        logger.debug("TranslationManager has  registered widgets", "View")
+        menu_count = len(model.translation_manager.translatable_menus) if model.translation_manager else 0
+        logger.debug(f"TranslationManager has {widget_count} registered widgets and {menu_count} registered menus", "View")
         logger.info(
-            f"TranslationManager has {widget_count} registered widgets", extra={"class_name": self.__class__.__name__}
+            f"TranslationManager has {widget_count} registered widgets and {menu_count} registered menus",
+            extra={"class_name": self.__class__.__name__}
         )
 
         # TranslationManager.switch_language() already handles widget refresh
@@ -609,7 +629,7 @@ class View:
         total_time = (end_time - start_time) * 1000
         logger.debug("Language change signal processed in ms", "View")
         logger.info(
-            "Language changed signal received, translations already refreshed",
+            "Language changed signal received, widget and menu translations already refreshed",
             extra={"class_name": self.__class__.__name__},
         )
 
