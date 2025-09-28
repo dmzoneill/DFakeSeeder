@@ -689,6 +689,9 @@ msgstr "Felorsak"
 msgid "Fall back to TCP if µTP fails"
 msgstr "Falla tillbaka till TCP om µTP misslyckas"
 
+msgid "Fallback configuration"
+msgstr "Fallback configuration"
+
 msgid "Fast Extension (BEP-006)"
 msgstr "Snabbtillägg (BEP-006)"
 
@@ -733,6 +736,9 @@ msgstr "Allmänna inställningar återställda till standard"
 
 msgid "General timeout for extension operations (seconds)"
 msgstr "Allmän timeout för tilläggsoperationer (sekunder)"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
 
 msgid "Generate Secure Password"
 msgstr "Generera säkert lösenord"
@@ -1046,6 +1052,9 @@ msgstr "Nästa annonsering"
 msgid "Next Update"
 msgstr "Nästa Uppdatering"
 
+msgid "No editable options available for this torrent."
+msgstr "No editable options available for this torrent."
+
 msgid "None"
 msgstr "Ingen"
 
@@ -1159,6 +1168,12 @@ msgstr "Hamn:"
 
 msgid "Portuguese"
 msgstr "Portugisiska"
+
+msgid "Preference 1:"
+msgstr "Preference 1:"
+
+msgid "Preference 2:"
+msgstr "Preference 2:"
 
 msgid "Preferences"
 msgstr "Inställningar"
@@ -1576,6 +1591,9 @@ msgstr "Transaktions-ID-område (max):"
 
 msgid "Transaction ID range (min):"
 msgstr "Transaktions-ID-område (min):"
+
+msgid "TranslationManager"
+msgstr "TranslationManager"
 
 msgid "Transmission"
 msgstr "Transmission"

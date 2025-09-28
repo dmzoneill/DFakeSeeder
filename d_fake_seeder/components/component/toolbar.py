@@ -153,6 +153,14 @@ class Toolbar(Component):
         logger.debug("About to connect value-changed signal", "Toolbar")
         logger.debug("Signal connected successfully", "Toolbar")
         logger.debug("About to access self.settings.tickspeed:", "Toolbar")
+
+        # Add event controller for button release to avoid continuous updates during drag
+        from gi.repository import Gtk
+
+        button_controller = Gtk.GestureClick()
+        button_controller.connect("released", self.on_toolbar_refresh_rate_released)
+        self.toolbar_refresh_rate.add_controller(button_controller)
+
         try:
             logger.debug("Trying to access self.settings.tickspeed", "Toolbar")
             tickspeed_value = self.settings.tickspeed
@@ -161,14 +169,14 @@ class Toolbar(Component):
             # Set value first without triggering signal to avoid initialization deadlock
             self.toolbar_refresh_rate.set_value(int(tickspeed_value))
             logger.debug("set_value completed, now connecting signal", "Toolbar")
-            # Now connect the signal handler for future changes
-            self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_changed)
+            # Connect value-changed for real-time visual feedback but don't save to settings yet
+            self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_preview)
         except Exception:
             logger.debug("ERROR accessing tickspeed:", "Toolbar")
             logger.debug("Using default value of 9", "Toolbar")
             self.toolbar_refresh_rate.set_value(9)
             # Connect signal even on error
-            self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_changed)
+            self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_preview)
         logger.debug("set_value completed successfully", "Toolbar")
         logger.debug("About to set size request", "Toolbar")
         self.toolbar_refresh_rate.set_size_request(150, -1)
@@ -181,8 +189,18 @@ class Toolbar(Component):
             return self.model.translation_manager.translate_func(text)
         return text  # Fallback if model not set yet
 
-    def on_toolbar_refresh_rate_changed(self, value):
-        self.settings.tickspeed = math.ceil(float(self.toolbar_refresh_rate.get_value()))
+    def on_toolbar_refresh_rate_preview(self, scale):
+        """Preview changes without saving to settings to avoid UI hanging during drag"""
+        # This method is called continuously during drag for visual feedback
+        # but doesn't save to settings to prevent UI freezing
+        pass
+
+    def on_toolbar_refresh_rate_released(self, gesture, n_press, x, y):
+        """Save settings only when user releases the mouse button"""
+        value = self.toolbar_refresh_rate.get_value()
+        logger.debug(f"Slider released with value: {value}", "Toolbar")
+        self.settings.tickspeed = math.ceil(float(value))
+        logger.debug(f"Saved tickspeed to settings: {self.settings.tickspeed}", "Toolbar")
 
     def on_toolbar_add_clicked(self, button):
         logger.info(

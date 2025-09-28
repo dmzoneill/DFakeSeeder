@@ -689,6 +689,9 @@ msgstr "失敗理由"
 msgid "Fall back to TCP if µTP fails"
 msgstr "µTP が失敗した場合TCPにフォールバック"
 
+msgid "Fallback configuration"
+msgstr "Fallback configuration"
+
 msgid "Fast Extension (BEP-006)"
 msgstr "高速拡張 (BEP-006)"
 
@@ -733,6 +736,9 @@ msgstr "一般設定をデフォルトにリセットしました"
 
 msgid "General timeout for extension operations (seconds)"
 msgstr "拡張操作の一般タイムアウト（秒）"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
 
 msgid "Generate Secure Password"
 msgstr "安全なパスワードを生成"
@@ -1046,6 +1052,9 @@ msgstr "次回アナウンス"
 msgid "Next Update"
 msgstr "次回更新"
 
+msgid "No editable options available for this torrent."
+msgstr "No editable options available for this torrent."
+
 msgid "None"
 msgstr "なし"
 
@@ -1159,6 +1168,12 @@ msgstr "ポート:"
 
 msgid "Portuguese"
 msgstr "ポルトガル語"
+
+msgid "Preference 1:"
+msgstr "Preference 1:"
+
+msgid "Preference 2:"
+msgstr "Preference 2:"
 
 msgid "Preferences"
 msgstr "環境設定"
@@ -1576,6 +1591,9 @@ msgstr "トランザクションID範囲 (最大):"
 
 msgid "Transaction ID range (min):"
 msgstr "トランザクションID範囲 (最小):"
+
+msgid "TranslationManager"
+msgstr "TranslationManager"
 
 msgid "Transmission"
 msgstr "Transmission"

@@ -213,11 +213,17 @@ class View:
     # Connecting signals for different events
     def connect_signals(self):
         logger.info(
-            "View connect signals",
+            "🔗 VIEW: Setting up signal connections",
             extra={"class_name": self.__class__.__name__},
         )
         self.window.connect("destroy", self.quit)
         self.window.connect("close-request", self.quit)
+
+        # Critical signal connections for update flow
+        logger.info(
+            "🔗 VIEW: Connecting model data-changed -> torrents.update_view",
+            extra={"class_name": self.__class__.__name__},
+        )
         self.model.connect("data-changed", self.torrents.update_view)
         self.model.connect("data-changed", self.notebook.update_view)
         self.model.connect("data-changed", self.states.update_view)
@@ -229,6 +235,11 @@ class View:
         self.model.connect("selection-changed", self.statusbar.model_selection_changed)
         self.model.connect("selection-changed", self.toolbar.model_selection_changed)
         signal.signal(signal.SIGINT, self.quit)
+
+        logger.info(
+            "🔗 VIEW: All signal connections completed",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     # Connecting signals for different events
     def remove_signals(self):

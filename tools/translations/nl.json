@@ -1,7 +1,6 @@
 {
   "#": "#",
   "(0 = unlimited)": "(0 = onbeperkt)",
-  ")\n            return": ")\n            return",
   "0 / 250": "0 / 250",
   "127.0.0.1": "127.0.0.1",
   ":": ":",
@@ -100,7 +99,6 @@
   "Burst Probability:": "Uitbarsting Kans:",
   "CRITICAL": "KRITIEK",
   "Cancel": "Annuleren",
-  "Check if widget is visible in current viewport.\n\n        Args:\n            widget: Widget to check\n\n        Returns:\n            True if visible": "Controleer of widget zichtbaar is in huidige viewport.\n\n        Args:\n            widget: Widget om te controleren\n\n        Returns:\n            True als zichtbaar",
   "Chinese": "Chinees",
   "Choose a pre-configured seeding profile": "Kies een vooraf geconfigureerd seeding profiel",
   "Choose the application theme": "Kies het applicatiethema",
@@ -248,8 +246,6 @@
   "Generate synthetic peer data for PEX": "Synthetische peer data genereren voor PEX",
   "Generate synthetic peers": "Synthetische peers genereren",
   "German": "Duits",
-  "Get the number of options displayed.\n\n        Returns:\n            Number of options": "Krijg het aantal weergegeven opties.\n\n        Returns:\n            Aantal opties",
-  "Get the number of peers currently displayed.\n\n        Returns:\n            Number of peers": "Krijg het aantal peers dat momenteel wordt weergegeven.\n\n        Returns:\n            Aantal peers",
   "Github - D' Fake Seeder": "Github - D' Fake Seeder",
   "Global download speed limit in KB/s (0 = unlimited)": "Globale downloadsnelheidslimiet in KB/s (0 = onbeperkt)",
   "Global upload speed limit in KB/s (0 = unlimited)": "Globale uploadsnelheidslimiet in KB/s (0 = onbeperkt)",
@@ -628,5 +624,11 @@
   "ut_pex (Peer Exchange)": "ut_pex (Peer Uitwisseling)",
   "µTorrent": "µTorrent",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Geavanceerde instellingen - wijzig met voorzichtigheid. Onjuiste waarden kunnen prestaties of stabiliteit beïnvloeden.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Web UI maakt externe bediening van de applicatie mogelijk. Gebruik sterke authenticatie."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Web UI maakt externe bediening van de applicatie mogelijk. Gebruik sterke authenticatie.",
+  "TranslationManager": "TranslationManager",
+  "Preference 1:": "Preference 1:",
+  "Preference 2:": "Preference 2:",
+  "Fallback configuration": "Fallback configuration",
+  "No editable options available for this torrent.": "No editable options available for this torrent.",
+  "GeneralTab": "GeneralTab"
 }

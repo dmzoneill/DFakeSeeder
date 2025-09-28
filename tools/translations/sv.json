@@ -1,7 +1,6 @@
 {
   "#": "#",
   "(0 = unlimited)": "(0 = obegränsat)",
-  ")\n            return": ")\n            return",
   "0 / 250": "0 / 250",
   "127.0.0.1": "127.0.0.1",
   ":": ":",
@@ -100,7 +99,6 @@
   "Burst Probability:": "Skursannolikhet:",
   "CRITICAL": "KRITISK",
   "Cancel": "Avbryt",
-  "Check if widget is visible in current viewport.\n\n        Args:\n            widget: Widget to check\n\n        Returns:\n            True if visible": "Kontrollera om widget är synlig i nuvarande visningsområde.\n\n        Args:\n            widget: Widget att kontrollera\n\n        Returns:\n            True om synlig",
   "Chinese": "Kinesiska",
   "Choose a pre-configured seeding profile": "Välj en förkonfigurerad seeding-profil",
   "Choose the application theme": "Välj applikationstema",
@@ -248,8 +246,6 @@
   "Generate synthetic peer data for PEX": "Generera syntetisk peer-data för PEX",
   "Generate synthetic peers": "Generera syntetiska peers",
   "German": "Tyska",
-  "Get the number of options displayed.\n\n        Returns:\n            Number of options": "Hämta antalet visade alternativ.\n\n        Returns:\n            Antal alternativ",
-  "Get the number of peers currently displayed.\n\n        Returns:\n            Number of peers": "Hämta antalet peers som för närvarande visas.\n\n        Returns:\n            Antal peers",
   "Github - D' Fake Seeder": "Github - D' Fake Seeder",
   "Global download speed limit in KB/s (0 = unlimited)": "Global nedladdningshastighetsgräns i KB/s (0 = obegränsat)",
   "Global upload speed limit in KB/s (0 = unlimited)": "Global uppladdningshastighetsgräns i KB/s (0 = obegränsat)",
@@ -628,5 +624,11 @@
   "ut_pex (Peer Exchange)": "ut_pex (Peer-utbyte)",
   "µTorrent": "µTorrent",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Avancerade inställningar - modifiera försiktigt. Felaktiga värden kan påverka prestanda eller stabilitet.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Webb-UI tillåter fjärrkontroll av applikationen. Använd stark autentisering."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Webb-UI tillåter fjärrkontroll av applikationen. Använd stark autentisering.",
+  "TranslationManager": "TranslationManager",
+  "Preference 1:": "Preference 1:",
+  "Preference 2:": "Preference 2:",
+  "Fallback configuration": "Fallback configuration",
+  "No editable options available for this torrent.": "No editable options available for this torrent.",
+  "GeneralTab": "GeneralTab"
 }

@@ -689,6 +689,9 @@ msgstr "失败原因"
 msgid "Fall back to TCP if µTP fails"
 msgstr "如果 µTP 失败则回退到 TCP"
 
+msgid "Fallback configuration"
+msgstr "Fallback configuration"
+
 msgid "Fast Extension (BEP-006)"
 msgstr "快速扩展 (BEP-006)"
 
@@ -733,6 +736,9 @@ msgstr "常规设置已重置为默认值"
 
 msgid "General timeout for extension operations (seconds)"
 msgstr "扩展操作的通用超时（秒）"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
 
 msgid "Generate Secure Password"
 msgstr "生成安全密码"
@@ -1046,6 +1052,9 @@ msgstr "下次通告"
 msgid "Next Update"
 msgstr "下次更新"
 
+msgid "No editable options available for this torrent."
+msgstr "No editable options available for this torrent."
+
 msgid "None"
 msgstr "无"
 
@@ -1159,6 +1168,12 @@ msgstr "端口："
 
 msgid "Portuguese"
 msgstr "葡萄牙语"
+
+msgid "Preference 1:"
+msgstr "Preference 1:"
+
+msgid "Preference 2:"
+msgstr "Preference 2:"
 
 msgid "Preferences"
 msgstr "首选项"
@@ -1576,6 +1591,9 @@ msgstr "事务 ID 范围 (最大):"
 
 msgid "Transaction ID range (min):"
 msgstr "事务 ID 范围 (最小):"
+
+msgid "TranslationManager"
+msgstr "TranslationManager"
 
 msgid "Transmission"
 msgstr "Transmission"

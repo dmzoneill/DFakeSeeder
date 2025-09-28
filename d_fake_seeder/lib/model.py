@@ -42,10 +42,11 @@ class Model(GObject.GObject):
 
     # Method to add a new torrent
     def add_torrent(self, filepath):
-        logger.info("Model add torrent", extra={"class_name": self.__class__.__name__})
+        logger.info(f"➕ MODEL: Adding torrent from {filepath}", extra={"class_name": self.__class__.__name__})
 
         # Create new Torrent instance
         torrent = Torrent(filepath)
+        logger.info(f"🔗 MODEL: Connecting torrent {torrent.name} signal to handle_model_changed", extra={"class_name": self.__class__.__name__})
         torrent.connect("attribute-changed", self.handle_model_changed)
         self.torrent_list.append(torrent)
         self.torrent_list_attributes.append(torrent.get_attributes())
@@ -57,6 +58,7 @@ class Model(GObject.GObject):
             current_id += 1
 
         # Emit 'data-changed' signal with torrent instance and message
+        logger.info(f"🚀 MODEL: Emitting data-changed signal for torrent add: {torrent.name}", extra={"class_name": self.__class__.__name__})
         self.emit("data-changed", torrent, "add")
 
     # Method to add a new torrent
@@ -138,7 +140,11 @@ class Model(GObject.GObject):
 
     def handle_model_changed(self, source, data_obj, data_changed):
         logger.info(
-            "Notebook settings changed",
+            f"📥 MODEL RECEIVED SIGNAL: source={source}, data_obj={getattr(data_obj, 'name', 'Unknown') if data_obj else 'None'}, data_changed={data_changed}",
+            extra={"class_name": self.__class__.__name__},
+        )
+        logger.info(
+            f"🔄 MODEL RE-EMITTING: About to emit data-changed signal to views",
             extra={"class_name": self.__class__.__name__},
         )
         self.emit("data-changed", data_obj, "attribute")

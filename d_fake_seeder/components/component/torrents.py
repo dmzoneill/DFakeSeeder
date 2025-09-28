@@ -409,8 +409,8 @@ class Torrents(Component, ColumnTranslationMixin):
 
     # Method to update the ColumnView with compatible attributes
     def update_view(self, model, torrent, updated_attributes):
-        logger.debug(
-            "Torrents update view",
+        logger.info(
+            f"📺 VIEW RECEIVED SIGNAL: torrent={getattr(torrent, 'name', 'Unknown') if torrent else 'None'}, attributes={updated_attributes}",
             extra={"class_name": self.__class__.__name__},
         )
         self.model = model
@@ -425,7 +425,16 @@ class Torrents(Component, ColumnTranslationMixin):
         # Check if the model is initialized
         current_model = self.torrents_columnview.get_model()
         if current_model is None:
+            logger.info(
+                f"📺 VIEW: No current model, initializing with update_model()",
+                extra={"class_name": self.__class__.__name__},
+            )
             self.update_model()
+        else:
+            logger.info(
+                f"📺 VIEW: Column view has model, torrent update should be visible",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def on_selection_changed(self, selection, pspec):
         selected_position = selection.get_selected()

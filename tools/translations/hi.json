@@ -1,7 +1,6 @@
 {
   "#": "#",
   "(0 = unlimited)": "(0 = असीमित)",
-  ")\n            return": ")\n            return",
   "0 / 250": "0 / 250",
   "127.0.0.1": "127.0.0.1",
   ":": ":",
@@ -100,7 +99,6 @@
   "Burst Probability:": "बर्स्ट संभावना:",
   "CRITICAL": "गंभीर",
   "Cancel": "रद्द करें",
-  "Check if widget is visible in current viewport.\n\n        Args:\n            widget: Widget to check\n\n        Returns:\n            True if visible": "जांचें कि विजेट वर्तमान व्यूपोर्ट में दिखाई दे रहा है या नहीं।\n\n        Args:\n            widget: जांचने के लिए विजेट\n\n        Returns:\n            True यदि दिखाई दे रहा है",
   "Chinese": "चीनी",
   "Choose a pre-configured seeding profile": "पूर्व-कॉन्फ़िगर किया गया सीडिंग प्रोफ़ाइल चुनें",
   "Choose the application theme": "एप्लिकेशन थीम चुनें",
@@ -248,8 +246,6 @@
   "Generate synthetic peer data for PEX": "PEX के लिए सिंथेटिक पीयर डेटा जेनरेट करें",
   "Generate synthetic peers": "कृत्रिम पीयर उत्पन्न करें",
   "German": "जर्मन",
-  "Get the number of options displayed.\n\n        Returns:\n            Number of options": "प्रदर्शित विकल्पों की संख्या प्राप्त करें।\n\n        Returns:\n            विकल्पों की संख्या",
-  "Get the number of peers currently displayed.\n\n        Returns:\n            Number of peers": "वर्तमान में प्रदर्शित पीयर्स की संख्या प्राप्त करें।\n\n        Returns:\n            पीयर्स की संख्या",
   "Github - D' Fake Seeder": "Github - D' Fake Seeder",
   "Global download speed limit in KB/s (0 = unlimited)": "KB/s में वैश्विक डाउनलोड गति सीमा (0 = असीमित)",
   "Global upload speed limit in KB/s (0 = unlimited)": "KB/s में वैश्विक अपलोड गति सीमा (0 = असीमित)",
@@ -628,5 +624,11 @@
   "ut_pex (Peer Exchange)": "ut_pex (पीयर एक्सचेंज)",
   "µTorrent": "µTorrent",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ उन्नत सेटिंग्स - सावधानी से संशोधित करें। गलत मूल्य प्रदर्शन या स्थिरता को प्रभावित कर सकते हैं।",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ वेब UI एप्लिकेशन के रिमोट कंट्रोल की अनुमति देता है। मजबूत प्रमाणीकरण का उपयोग करें।"
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ वेब UI एप्लिकेशन के रिमोट कंट्रोल की अनुमति देता है। मजबूत प्रमाणीकरण का उपयोग करें।",
+  "TranslationManager": "TranslationManager",
+  "Preference 1:": "Preference 1:",
+  "Preference 2:": "Preference 2:",
+  "Fallback configuration": "Fallback configuration",
+  "No editable options available for this torrent.": "No editable options available for this torrent.",
+  "GeneralTab": "GeneralTab"
 }

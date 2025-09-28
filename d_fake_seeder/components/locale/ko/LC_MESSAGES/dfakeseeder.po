@@ -689,6 +689,9 @@ msgstr "실패 원인"
 msgid "Fall back to TCP if µTP fails"
 msgstr "µTP 실패 시 TCP로 대체"
 
+msgid "Fallback configuration"
+msgstr "Fallback configuration"
+
 msgid "Fast Extension (BEP-006)"
 msgstr "고속 확장 (BEP-006)"
 
@@ -733,6 +736,9 @@ msgstr "일반 설정이 기본값으로 재설정됨"
 
 msgid "General timeout for extension operations (seconds)"
 msgstr "확장 작업의 일반 타임아웃(초)"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
 
 msgid "Generate Secure Password"
 msgstr "보안 비밀번호 생성"
@@ -1046,6 +1052,9 @@ msgstr "다음 알림"
 msgid "Next Update"
 msgstr "다음 업데이트"
 
+msgid "No editable options available for this torrent."
+msgstr "No editable options available for this torrent."
+
 msgid "None"
 msgstr "없음"
 
@@ -1159,6 +1168,12 @@ msgstr "포트:"
 
 msgid "Portuguese"
 msgstr "포르투갈어"
+
+msgid "Preference 1:"
+msgstr "Preference 1:"
+
+msgid "Preference 2:"
+msgstr "Preference 2:"
 
 msgid "Preferences"
 msgstr "환경설정"
@@ -1576,6 +1591,9 @@ msgstr "트랜잭션 ID 범위 (최대):"
 
 msgid "Transaction ID range (min):"
 msgstr "트랜잭션 ID 범위 (최소):"
+
+msgid "TranslationManager"
+msgstr "TranslationManager"
 
 msgid "Transmission"
 msgstr "Transmission"
