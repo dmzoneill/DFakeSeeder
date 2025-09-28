@@ -9,7 +9,6 @@ import json
 import os
 from pathlib import Path
 from typing import Dict, Any, Optional
-from lib.logger import logger
 
 
 def get_languages_config_path() -> Path:
@@ -56,7 +55,7 @@ def get_supported_languages() -> Dict[str, Dict[str, str]]:
         return config.get("languages", {})
     except (FileNotFoundError, json.JSONDecodeError) as e:
         # Fallback to hardcoded minimal set if config loading fails
-        logger.debug("Warning: Could not load languages config (...), using fallback", "UnknownClass")
+        print(f"Warning: Could not load languages config ({e}), using fallback")
         return {
             "en": {"name": "English", "plural_forms": "nplurals=2; plural=n != 1;"},
             "es": {"name": "Spanish", "plural_forms": "nplurals=2; plural=n != 1;"},

@@ -1750,7 +1750,16 @@ msgstr ""
 msgid "active"
 msgstr ""
 
+msgid "address"
+msgstr ""
+
 msgid "admin"
+msgstr ""
+
+msgid "am_choking"
+msgstr ""
+
+msgid "am_interested"
 msgstr ""
 
 msgid "announce_interval"
@@ -1759,16 +1768,37 @@ msgstr ""
 msgid "bytes"
 msgstr ""
 
+msgid "bytes_downloaded"
+msgstr ""
+
+msgid "bytes_uploaded"
+msgstr ""
+
 msgid "class_name"
 msgstr ""
 
+msgid "client"
+msgstr ""
+
+msgid "connection_time"
+msgstr ""
+
+msgid "download_rate"
+msgstr ""
+
 msgid "download_speed"
+msgstr ""
+
+msgid "failure_reason"
 msgstr ""
 
 msgid "filepath"
 msgstr ""
 
 msgid "files_tab"
+msgstr ""
+
+msgid "handshake_complete"
 msgstr ""
 
 msgid "id"
@@ -1795,7 +1825,19 @@ msgstr ""
 msgid "options_tab"
 msgstr ""
 
+msgid "peer_choking"
+msgstr ""
+
+msgid "peer_interested"
+msgstr ""
+
 msgid "peers_tab"
+msgstr ""
+
+msgid "pieces_received"
+msgstr ""
+
+msgid "pieces_sent"
 msgstr ""
 
 msgid "progress"
@@ -1813,6 +1855,12 @@ msgstr ""
 msgid "rTorrent/0.9.6"
 msgstr ""
 
+msgid "requests_received"
+msgstr ""
+
+msgid "requests_sent"
+msgstr ""
+
 msgid "seconds"
 msgstr ""
 
@@ -1826,6 +1874,9 @@ msgid "session_uploaded"
 msgstr ""
 
 msgid "small_torrent_limit"
+msgstr ""
+
+msgid "status"
 msgstr ""
 
 msgid "threshold"
@@ -1844,6 +1895,9 @@ msgid "trackers_tab"
 msgstr ""
 
 msgid "uTorrent/3.5.5"
+msgstr ""
+
+msgid "upload_rate"
 msgstr ""
 
 msgid "upload_speed"

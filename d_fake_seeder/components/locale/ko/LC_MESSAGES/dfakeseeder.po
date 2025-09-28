@@ -225,7 +225,7 @@ msgid "Announcement Interval:"
 msgstr "발표 간격:"
 
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "아랍어"
 
 msgid "Auto-bootstrap DHT"
 msgstr "DHT 자동 부트스트랩"
@@ -498,7 +498,7 @@ msgid "Dropout probability:"
 msgstr "중단 확률:"
 
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "네덜란드어"
 
 msgid "Dynamic profile switching"
 msgstr "동적 프로필 전환"
@@ -864,7 +864,7 @@ msgid "Keep alive interval for connections (seconds)"
 msgstr "연결의 keep alive 간격(초)"
 
 msgid "Korean"
-msgstr "Korean"
+msgstr "한국어"
 
 msgid "Label"
 msgstr "라벨"
@@ -1143,7 +1143,7 @@ msgid "Pieces Received"
 msgstr "수신된 조각"
 
 msgid "Polish"
-msgstr "Polish"
+msgstr "폴란드어"
 
 msgid "Port"
 msgstr "포트"
@@ -1394,6 +1394,12 @@ msgstr "전송됨"
 msgid "Server:"
 msgstr "서버:"
 
+msgid "Session Downloaded"
+msgstr "会话下载"
+
+msgid "Session Uploaded"
+msgstr "会话上传"
+
 msgid "Session timeout (min):"
 msgstr "세션 타임아웃 (분):"
 
@@ -1470,7 +1476,7 @@ msgid "Sunday"
 msgstr "일요일"
 
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "스웨덴어"
 
 msgid "Synthetic Peer Count:"
 msgstr "합성 피어 수:"
@@ -1715,8 +1721,17 @@ msgstr "수요일"
 msgid "active"
 msgstr "활성"
 
+msgid "address"
+msgstr "地址"
+
 msgid "admin"
 msgstr "admin"
+
+msgid "am_choking"
+msgstr "차단 중"
+
+msgid "am_interested"
+msgstr "관심 있음"
 
 msgid "announce_interval"
 msgstr "공지 간격"
@@ -1724,17 +1739,38 @@ msgstr "공지 간격"
 msgid "bytes"
 msgstr "바이트"
 
+msgid "bytes_downloaded"
+msgstr "字节已下载"
+
+msgid "bytes_uploaded"
+msgstr "字节已上传"
+
 msgid "class_name"
 msgstr "클래스명"
 
+msgid "client"
+msgstr "客户端"
+
+msgid "connection_time"
+msgstr "连接时间"
+
+msgid "download_rate"
+msgstr "다운로드 속도"
+
 msgid "download_speed"
 msgstr "다운로드 속도"
+
+msgid "failure_reason"
+msgstr "실패 이유"
 
 msgid "filepath"
 msgstr "파일 경로"
 
 msgid "files_tab"
 msgstr "파일 탭"
+
+msgid "handshake_complete"
+msgstr "핸드셰이크 완료"
 
 msgid "id"
 msgstr "#"
@@ -1760,8 +1796,20 @@ msgstr "open-menu-symbolic"
 msgid "options_tab"
 msgstr "옵션 탭"
 
+msgid "peer_choking"
+msgstr "피어 차단 중"
+
+msgid "peer_interested"
+msgstr "피어 관심 있음"
+
 msgid "peers_tab"
 msgstr "피어 탭"
+
+msgid "pieces_received"
+msgstr "수신된 조각"
+
+msgid "pieces_sent"
+msgstr "전송된 조각"
 
 msgid "progress"
 msgstr "진행률"
@@ -1778,6 +1826,12 @@ msgstr "rTorrent"
 msgid "rTorrent/0.9.6"
 msgstr "rTorrent/0.9.6"
 
+msgid "requests_received"
+msgstr "수신된 요청"
+
+msgid "requests_sent"
+msgstr "전송된 요청"
+
 msgid "seconds"
 msgstr "초"
 
@@ -1792,6 +1846,9 @@ msgstr "업로드됨"
 
 msgid "small_torrent_limit"
 msgstr "작은 토렌트 제한"
+
+msgid "status"
+msgstr "状态"
 
 msgid "threshold"
 msgstr "임계값"
@@ -1810,6 +1867,9 @@ msgstr "트래커 탭"
 
 msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
+
+msgid "upload_rate"
+msgstr "Upload Rate"
 
 msgid "upload_speed"
 msgstr "업로드 속도"

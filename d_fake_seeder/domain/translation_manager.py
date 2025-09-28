@@ -419,6 +419,17 @@ class TranslationManager:
             if tooltip_text and tooltip_text.strip():
                 translatable_properties.append(("tooltip_text", tooltip_text))
 
+        elif isinstance(widget, Gtk.CheckButton):
+            # Check for checkbox label
+            text = widget.get_label()
+            if text and text.strip():
+                translatable_properties.append(("label", text))
+
+            # Check for tooltip text on checkboxes
+            tooltip_text = widget.get_tooltip_text()
+            if tooltip_text and tooltip_text.strip():
+                translatable_properties.append(("tooltip_text", tooltip_text))
+
         elif isinstance(widget, (Gtk.Window, Gtk.Dialog)):
             text = widget.get_title()
             if text and text.strip():

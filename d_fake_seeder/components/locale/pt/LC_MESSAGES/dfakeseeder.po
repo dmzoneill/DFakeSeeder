@@ -225,7 +225,7 @@ msgid "Announcement Interval:"
 msgstr "Intervalo de Anúncio:"
 
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "Árabe"
 
 msgid "Auto-bootstrap DHT"
 msgstr "Auto-bootstrap DHT"
@@ -498,7 +498,7 @@ msgid "Dropout probability:"
 msgstr "Probabilidade abandono:"
 
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "Holandês"
 
 msgid "Dynamic profile switching"
 msgstr "Alternância dinâmica de perfil"
@@ -864,7 +864,7 @@ msgid "Keep alive interval for connections (seconds)"
 msgstr "Intervalo keep alive para conexões (segundos)"
 
 msgid "Korean"
-msgstr "Korean"
+msgstr "Coreano"
 
 msgid "Label"
 msgstr "Etiqueta"
@@ -1143,7 +1143,7 @@ msgid "Pieces Received"
 msgstr "Peças Recebidas"
 
 msgid "Polish"
-msgstr "Polish"
+msgstr "Polonês"
 
 msgid "Port"
 msgstr "Porta"
@@ -1394,6 +1394,12 @@ msgstr "Enviado"
 msgid "Server:"
 msgstr "Servidor:"
 
+msgid "Session Downloaded"
+msgstr "Sessão Baixada"
+
+msgid "Session Uploaded"
+msgstr "Sessão Enviada"
+
 msgid "Session timeout (min):"
 msgstr "Timeout sessão (min):"
 
@@ -1470,7 +1476,7 @@ msgid "Sunday"
 msgstr "Domingo"
 
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "Sueco"
 
 msgid "Synthetic Peer Count:"
 msgstr "Contagem de Peers Sintéticos:"
@@ -1715,8 +1721,17 @@ msgstr "Quarta-feira"
 msgid "active"
 msgstr "Ativo"
 
+msgid "address"
+msgstr "Endereço"
+
 msgid "admin"
 msgstr "admin"
+
+msgid "am_choking"
+msgstr "Estou Bloqueando"
+
+msgid "am_interested"
+msgstr "Estou Interessado"
 
 msgid "announce_interval"
 msgstr "Intervalo de Anúncio"
@@ -1724,17 +1739,38 @@ msgstr "Intervalo de Anúncio"
 msgid "bytes"
 msgstr "bytes"
 
+msgid "bytes_downloaded"
+msgstr "Bytes Baixados"
+
+msgid "bytes_uploaded"
+msgstr "Bytes Enviados"
+
 msgid "class_name"
 msgstr "Nome da Classe"
 
+msgid "client"
+msgstr "Cliente"
+
+msgid "connection_time"
+msgstr "Tempo de Conexão"
+
+msgid "download_rate"
+msgstr "Taxa de Download"
+
 msgid "download_speed"
 msgstr "Velocidade de Download"
+
+msgid "failure_reason"
+msgstr "Motivo da Falha"
 
 msgid "filepath"
 msgstr "Caminho do Arquivo"
 
 msgid "files_tab"
 msgstr "Aba Arquivos"
+
+msgid "handshake_complete"
+msgstr "Handshake Completo"
 
 msgid "id"
 msgstr "#"
@@ -1760,8 +1796,20 @@ msgstr "open-menu-symbolic"
 msgid "options_tab"
 msgstr "Aba Opções"
 
+msgid "peer_choking"
+msgstr "Peer Bloqueando"
+
+msgid "peer_interested"
+msgstr "Peer Interessado"
+
 msgid "peers_tab"
 msgstr "Aba Pares"
+
+msgid "pieces_received"
+msgstr "Partes Recebidas"
+
+msgid "pieces_sent"
+msgstr "Partes Enviadas"
 
 msgid "progress"
 msgstr "Progresso"
@@ -1778,6 +1826,12 @@ msgstr "rTorrent"
 msgid "rTorrent/0.9.6"
 msgstr "rTorrent versão 0.9.6"
 
+msgid "requests_received"
+msgstr "Solicitações Recebidas"
+
+msgid "requests_sent"
+msgstr "Solicitações Enviadas"
+
 msgid "seconds"
 msgstr "segundos"
 
@@ -1792,6 +1846,9 @@ msgstr "Enviado"
 
 msgid "small_torrent_limit"
 msgstr "Limite de Torrent Pequeno"
+
+msgid "status"
+msgstr "Status"
 
 msgid "threshold"
 msgstr "Limite"
@@ -1810,6 +1867,9 @@ msgstr "Aba Rastreadores"
 
 msgid "uTorrent/3.5.5"
 msgstr "µTorrent versão 3.5.5"
+
+msgid "upload_rate"
+msgstr "Taxa de Upload"
 
 msgid "upload_speed"
 msgstr "Velocidade de Upload"

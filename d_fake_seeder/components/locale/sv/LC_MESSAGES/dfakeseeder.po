@@ -1394,6 +1394,12 @@ msgstr "Skickat"
 msgid "Server:"
 msgstr "Server:"
 
+msgid "Session Downloaded"
+msgstr "会话下载"
+
+msgid "Session Uploaded"
+msgstr "会话上传"
+
 msgid "Session timeout (min):"
 msgstr "Sessions timeout (min):"
 
@@ -1715,8 +1721,17 @@ msgstr "Onsdag"
 msgid "active"
 msgstr "Aktiv"
 
+msgid "address"
+msgstr "地址"
+
 msgid "admin"
 msgstr "admin"
+
+msgid "am_choking"
+msgstr "Jag stryper"
+
+msgid "am_interested"
+msgstr "Jag är intresserad"
 
 msgid "announce_interval"
 msgstr "Annonsintervall"
@@ -1724,17 +1739,38 @@ msgstr "Annonsintervall"
 msgid "bytes"
 msgstr "bytes"
 
+msgid "bytes_downloaded"
+msgstr "字节已下载"
+
+msgid "bytes_uploaded"
+msgstr "字节已上传"
+
 msgid "class_name"
 msgstr "klassnamn"
 
+msgid "client"
+msgstr "客户端"
+
+msgid "connection_time"
+msgstr "连接时间"
+
+msgid "download_rate"
+msgstr "Nedladdningshastighet"
+
 msgid "download_speed"
 msgstr "Nedladdningshastighet"
+
+msgid "failure_reason"
+msgstr "Felorsak"
 
 msgid "filepath"
 msgstr "Filsökväg"
 
 msgid "files_tab"
 msgstr "filer_flik"
+
+msgid "handshake_complete"
+msgstr "Handskakning slutförd"
 
 msgid "id"
 msgstr "#"
@@ -1760,8 +1796,20 @@ msgstr "open-menu-symbolic"
 msgid "options_tab"
 msgstr "alternativ_flik"
 
+msgid "peer_choking"
+msgstr "Peer stryper"
+
+msgid "peer_interested"
+msgstr "Peer intresserad"
+
 msgid "peers_tab"
 msgstr "peers_flik"
+
+msgid "pieces_received"
+msgstr "Mottagna delar"
+
+msgid "pieces_sent"
+msgstr "Skickade delar"
 
 msgid "progress"
 msgstr "Framsteg"
@@ -1778,6 +1826,12 @@ msgstr "rTorrent"
 msgid "rTorrent/0.9.6"
 msgstr "rTorrent/0.9.6"
 
+msgid "requests_received"
+msgstr "Mottagna förfrågningar"
+
+msgid "requests_sent"
+msgstr "Skickade förfrågningar"
+
 msgid "seconds"
 msgstr "sekunder"
 
@@ -1792,6 +1846,9 @@ msgstr "Uppladdat"
 
 msgid "small_torrent_limit"
 msgstr "Liten Torrent Gräns"
+
+msgid "status"
+msgstr "状态"
 
 msgid "threshold"
 msgstr "Tröskel"
@@ -1810,6 +1867,9 @@ msgstr "spårare_flik"
 
 msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
+
+msgid "upload_rate"
+msgstr "Upload Rate"
 
 msgid "upload_speed"
 msgstr "Uppladdningshastighet"

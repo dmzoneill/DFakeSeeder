@@ -225,7 +225,7 @@ msgid "Announcement Interval:"
 msgstr "Intervallo annuncio:"
 
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "Arabo"
 
 msgid "Auto-bootstrap DHT"
 msgstr "Bootstrap automatico DHT"
@@ -498,7 +498,7 @@ msgid "Dropout probability:"
 msgstr "Probabilità abbandono:"
 
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "Olandese"
 
 msgid "Dynamic profile switching"
 msgstr "Cambio profilo dinamico"
@@ -507,7 +507,7 @@ msgid "ERROR"
 msgstr "ERRORE"
 
 msgid "ETA"
-msgstr "ETA"
+msgstr "Tempo Rimasto"
 
 msgid "Enable CSRF protection"
 msgstr "Abilita protezione CSRF"
@@ -705,7 +705,7 @@ msgid "Files"
 msgstr "File"
 
 msgid "Flags"
-msgstr "Flags"
+msgstr "Bandiere"
 
 msgid "Follow System"
 msgstr "Segui Sistema"
@@ -864,7 +864,7 @@ msgid "Keep alive interval for connections (seconds)"
 msgstr "Intervallo keep alive per connessioni (secondi)"
 
 msgid "Korean"
-msgstr "Korean"
+msgstr "Coreano"
 
 msgid "Label"
 msgstr "Etichetta"
@@ -1143,7 +1143,7 @@ msgid "Pieces Received"
 msgstr "Pezzi Ricevuti"
 
 msgid "Polish"
-msgstr "Polish"
+msgstr "Polacco"
 
 msgid "Port"
 msgstr "Porta"
@@ -1377,7 +1377,7 @@ msgid "Seeders"
 msgstr "Seeder"
 
 msgid "Seeds"
-msgstr "Seeds"
+msgstr "Semi"
 
 msgid "Select proxy type for connections"
 msgstr "Seleziona tipo proxy per connessioni"
@@ -1393,6 +1393,12 @@ msgstr "Inviato"
 
 msgid "Server:"
 msgstr "Server:"
+
+msgid "Session Downloaded"
+msgstr "Sessione Scaricata"
+
+msgid "Session Uploaded"
+msgstr "Sessione Caricata"
 
 msgid "Session timeout (min):"
 msgstr "Timeout sessione (min):"
@@ -1470,7 +1476,7 @@ msgid "Sunday"
 msgstr "Domenica"
 
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "Svedese"
 
 msgid "Synthetic Peer Count:"
 msgstr "Conteggio peer sintetici:"
@@ -1715,8 +1721,17 @@ msgstr "Mercoledì"
 msgid "active"
 msgstr "Attivo"
 
+msgid "address"
+msgstr "Indirizzo"
+
 msgid "admin"
 msgstr "admin"
+
+msgid "am_choking"
+msgstr "Sto Bloccando"
+
+msgid "am_interested"
+msgstr "Sono Interessato"
 
 msgid "announce_interval"
 msgstr "Intervallo Annuncio"
@@ -1724,17 +1739,38 @@ msgstr "Intervallo Annuncio"
 msgid "bytes"
 msgstr "byte"
 
+msgid "bytes_downloaded"
+msgstr "Byte Scaricati"
+
+msgid "bytes_uploaded"
+msgstr "Byte Caricati"
+
 msgid "class_name"
 msgstr "Nome Classe"
 
+msgid "client"
+msgstr "Client"
+
+msgid "connection_time"
+msgstr "Tempo di Connessione"
+
+msgid "download_rate"
+msgstr "Velocità di Download"
+
 msgid "download_speed"
 msgstr "Velocità Download"
+
+msgid "failure_reason"
+msgstr "Motivo del Fallimento"
 
 msgid "filepath"
 msgstr "Percorso File"
 
 msgid "files_tab"
 msgstr "Scheda File"
+
+msgid "handshake_complete"
+msgstr "Handshake Completo"
 
 msgid "id"
 msgstr "#"
@@ -1760,8 +1796,20 @@ msgstr "open-menu-symbolic"
 msgid "options_tab"
 msgstr "Scheda Opzioni"
 
+msgid "peer_choking"
+msgstr "Peer Bloccante"
+
+msgid "peer_interested"
+msgstr "Peer Interessato"
+
 msgid "peers_tab"
 msgstr "Scheda Peer"
+
+msgid "pieces_received"
+msgstr "Pezzi Ricevuti"
+
+msgid "pieces_sent"
+msgstr "Pezzi Inviati"
 
 msgid "progress"
 msgstr "Progresso"
@@ -1778,6 +1826,12 @@ msgstr "rTorrent"
 msgid "rTorrent/0.9.6"
 msgstr "rTorrent versione 0.9.6"
 
+msgid "requests_received"
+msgstr "Richieste Ricevute"
+
+msgid "requests_sent"
+msgstr "Richieste Inviate"
+
 msgid "seconds"
 msgstr "secondi"
 
@@ -1792,6 +1846,9 @@ msgstr "Caricato"
 
 msgid "small_torrent_limit"
 msgstr "Limite Torrent Piccolo"
+
+msgid "status"
+msgstr "Stato"
 
 msgid "threshold"
 msgstr "Soglia"
@@ -1810,6 +1867,9 @@ msgstr "Scheda Tracker"
 
 msgid "uTorrent/3.5.5"
 msgstr "µTorrent versione 3.5.5"
+
+msgid "upload_rate"
+msgstr "Velocità di Upload"
 
 msgid "upload_speed"
 msgstr "Velocità Upload"

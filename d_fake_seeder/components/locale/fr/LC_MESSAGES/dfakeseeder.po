@@ -507,7 +507,7 @@ msgid "ERROR"
 msgstr "ERREUR"
 
 msgid "ETA"
-msgstr "ETA"
+msgstr "Temps restant"
 
 msgid "Enable CSRF protection"
 msgstr "Activer protection CSRF"
@@ -1721,8 +1721,17 @@ msgstr "Mercredi"
 msgid "active"
 msgstr "Actif"
 
+msgid "address"
+msgstr "Adresse"
+
 msgid "admin"
 msgstr "admin"
+
+msgid "am_choking"
+msgstr "Je Bloque"
+
+msgid "am_interested"
+msgstr "Je Suis Intéressé"
 
 msgid "announce_interval"
 msgstr "Intervalle d'Annonce"
@@ -1730,17 +1739,38 @@ msgstr "Intervalle d'Annonce"
 msgid "bytes"
 msgstr "octets"
 
+msgid "bytes_downloaded"
+msgstr "Octets Téléchargés"
+
+msgid "bytes_uploaded"
+msgstr "Octets Envoyés"
+
 msgid "class_name"
 msgstr "Nom de Classe"
 
+msgid "client"
+msgstr "Client"
+
+msgid "connection_time"
+msgstr "Temps de Connexion"
+
+msgid "download_rate"
+msgstr "Vitesse de Téléchargement"
+
 msgid "download_speed"
 msgstr "Vitesse de Téléchargement"
+
+msgid "failure_reason"
+msgstr "Raison de l'Échec"
 
 msgid "filepath"
 msgstr "Chemin du Fichier"
 
 msgid "files_tab"
 msgstr "Onglet Fichiers"
+
+msgid "handshake_complete"
+msgstr "Poignée de Main Complète"
 
 msgid "id"
 msgstr "#"
@@ -1766,8 +1796,20 @@ msgstr "open-menu-symbolic"
 msgid "options_tab"
 msgstr "Onglet Options"
 
+msgid "peer_choking"
+msgstr "Pair Bloque"
+
+msgid "peer_interested"
+msgstr "Pair Intéressé"
+
 msgid "peers_tab"
 msgstr "Onglet Pairs"
+
+msgid "pieces_received"
+msgstr "Pièces Reçues"
+
+msgid "pieces_sent"
+msgstr "Pièces Envoyées"
 
 msgid "progress"
 msgstr "Progrès"
@@ -1784,6 +1826,12 @@ msgstr "rTorrent"
 msgid "rTorrent/0.9.6"
 msgstr "rTorrent version 0.9.6"
 
+msgid "requests_received"
+msgstr "Demandes Reçues"
+
+msgid "requests_sent"
+msgstr "Demandes Envoyées"
+
 msgid "seconds"
 msgstr "secondes"
 
@@ -1798,6 +1846,9 @@ msgstr "Envoyé"
 
 msgid "small_torrent_limit"
 msgstr "Limite de Petit Torrent"
+
+msgid "status"
+msgstr "Statut"
 
 msgid "threshold"
 msgstr "Seuil"
@@ -1816,6 +1867,9 @@ msgstr "Onglet Traqueurs"
 
 msgid "uTorrent/3.5.5"
 msgstr "µTorrent version 3.5.5"
+
+msgid "upload_rate"
+msgstr "Vitesse d'Envoi"
 
 msgid "upload_speed"
 msgstr "Vitesse d'Envoi"
