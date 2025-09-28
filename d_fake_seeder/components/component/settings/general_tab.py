@@ -12,6 +12,7 @@ from lib.logger import logger
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa: E402
+from lib.seeding_profile_manager import SeedingProfileManager  # noqa: E402
 from lib.util.language_config import get_language_display_names  # noqa: E402
 from view import View  # noqa
 
@@ -34,6 +35,8 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         """Initialize the General tab."""
         self.app = app
         super().__init__(builder, app_settings)
+        # Initialize seeding profile manager
+        self.profile_manager = SeedingProfileManager(app_settings)
 
     @property
     def tab_name(self) -> str:
@@ -89,6 +92,10 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         theme_dropdown = self.get_widget("settings_theme")
         if theme_dropdown:
             theme_dropdown.connect("notify::selected", self.on_theme_changed)
+        # Seeding profile dropdown
+        profile_dropdown = self.get_widget("settings_seeding_profile")
+        if profile_dropdown:
+            profile_dropdown.connect("notify::selected", self.on_seeding_profile_changed)
         # Language dropdown - signal connection handled in _setup_language_dropdown()
         # to avoid dual connections and ensure proper disconnect/reconnect during population
 
@@ -109,6 +116,12 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 current_theme = getattr(self.app_settings, "theme", "system")
                 theme_mapping = {"system": 0, "light": 1, "dark": 2}
                 theme_dropdown.set_selected(theme_mapping.get(current_theme, 0))
+            # Seeding profile setting
+            profile_dropdown = self.get_widget("settings_seeding_profile")
+            if profile_dropdown:
+                current_profile = self.profile_manager.get_current_profile()
+                profile_index = self.profile_manager.get_profile_dropdown_index(current_profile)
+                profile_dropdown.set_selected(profile_index)
             self.logger.debug("General tab settings loaded")
         except Exception as e:
             self.logger.error(f"Error loading General tab settings: {e}")
@@ -137,6 +150,12 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 selected_index = theme_dropdown.get_selected()
                 if 0 <= selected_index < len(theme_values):
                     settings["theme"] = theme_values[selected_index]
+            # Seeding profile setting
+            profile_dropdown = self.get_widget("settings_seeding_profile")
+            if profile_dropdown:
+                selected_index = profile_dropdown.get_selected()
+                profile_name = self.profile_manager.get_profile_from_dropdown_index(selected_index)
+                settings["seeding_profile"] = profile_name
         except Exception as e:
             self.logger.error(f"Error collecting General tab settings: {e}")
         return settings
@@ -184,6 +203,34 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         except Exception as e:
             self.logger.error(f"Error changing theme setting: {e}")
 
+    def on_seeding_profile_changed(self, dropdown: Gtk.DropDown, param) -> None:
+        """Handle seeding profile setting change."""
+        try:
+            selected_index = dropdown.get_selected()
+            profile_name = self.profile_manager.get_profile_from_dropdown_index(selected_index)
+
+            self.logger.debug(f"Seeding profile changed to: {profile_name}")
+
+            # Apply profile immediately
+            if self.profile_manager.apply_profile(profile_name):
+                # Show notification with profile summary
+                profile_summary = self.profile_manager.get_profile_summary(profile_name)
+                profile_names = {
+                    "conservative": "Conservative",
+                    "balanced": "Balanced",
+                    "aggressive": "Aggressive",
+                    "custom": "Custom"
+                }
+                display_name = profile_names.get(profile_name, profile_name.title())
+                message = f"Applied {display_name} profile: {profile_summary}"
+                self.show_notification(message, "success")
+            else:
+                self.show_notification("Failed to apply seeding profile", "error")
+
+        except Exception as e:
+            self.logger.error(f"Error changing seeding profile setting: {e}")
+            self.show_notification("Error applying seeding profile", "error")
+
     def _reset_tab_defaults(self) -> None:
         """Reset General tab to default values."""
         try:
@@ -198,6 +245,10 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             theme_dropdown = self.get_widget("settings_theme")
             if theme_dropdown:
                 theme_dropdown.set_selected(0)  # "system" is index 0
+            # Reset seeding profile to balanced default
+            profile_dropdown = self.get_widget("settings_seeding_profile")
+            if profile_dropdown:
+                profile_dropdown.set_selected(1)  # "balanced" is index 1
             self.show_notification("General settings reset to defaults", "success")
         except Exception as e:
             self.logger.error(f"Error resetting General tab to defaults: {e}")
