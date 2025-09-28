@@ -171,6 +171,20 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             "pieces": translate_func("Pieces"),
             "id": translate_func("ID"),
             "size": translate_func("Size"),
+            "session_downloaded": translate_func("Session Downloaded"),
+            "session_uploaded": translate_func("Session Uploaded"),
+            "total_downloaded": translate_func("Total Downloaded"),
+            "total_uploaded": translate_func("Total Uploaded"),
+            "upload_speed": translate_func("Up Speed"),
+            "download_speed": translate_func("Down Speed"),
+            "seeders": translate_func("Seeds"),
+            "leechers": translate_func("Leechers"),
+            "announce_interval": translate_func("Announce Interval"),
+            "next_update": translate_func("Next Update"),
+            "threshold": translate_func("Threshold"),
+            "small_torrent_limit": translate_func("Small Torrent Limit"),
+            "uploading": translate_func("Uploading"),
+            "active": translate_func("Active"),
             # Add more mappings as needed
         }
 

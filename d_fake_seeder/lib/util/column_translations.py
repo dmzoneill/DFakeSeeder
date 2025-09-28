@@ -61,8 +61,8 @@ class ColumnTranslations:
             "name": _("Name"),
             "progress": _("Progress"),
             "total_size": _("Size"),
-            "session_downloaded": _("Downloaded"),
-            "session_uploaded": _("Uploaded"),
+            "session_downloaded": _("Session Downloaded"),
+            "session_uploaded": _("Session Uploaded"),
             "total_downloaded": _("Total Downloaded"),
             "total_uploaded": _("Total Uploaded"),
             "upload_speed": _("Up Speed"),
@@ -82,6 +82,14 @@ class ColumnTranslations:
             "downloaded": _("Downloaded"),  # fallback for session_downloaded
             "uploaded": _("Uploaded"),  # fallback for session_uploaded
             "ratio": _("Ratio"),
+
+            # Additional details tab strings
+            "created": _("Created"),
+            "comment": _("Comment"),
+            "created_by": _("Created By"),
+            "piece_length": _("Piece Length"),
+            "pieces": _("Pieces"),
+            "piece_count": _("Pieces"),
             "speed_up": _("Up Speed"),  # fallback for upload_speed
             "speed_down": _("Down Speed"),  # fallback for download_speed
             "peers": _("Peers"),

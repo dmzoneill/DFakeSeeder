@@ -27,6 +27,10 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         super().__init__(builder, model)
         self._options_grid_children: List[Any] = []
 
+        # Connect to language change signal for translation updates
+        if hasattr(self.model, "connect"):
+            self.model.connect("language-changed", self.on_language_changed)
+
     @property
     def tab_name(self) -> str:
         """Return the name of this tab."""
@@ -71,6 +75,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         try:
             self.logger.info("Updating options tab for torrent", extra={"class_name": self.__class__.__name__})
 
+            # Store current torrent for language change handling
+            self._current_torrent = torrent
+
             # Clear existing content
             self.clear_content()
 
@@ -79,6 +86,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 return
 
             if not torrent:
+                self._current_torrent = None
                 self._show_no_options_message()
                 return
 
@@ -277,8 +285,62 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             Configured label widget
         """
         try:
+            # Get translation function from model
+            translate_func = (
+                self.model.get_translate_func()
+                if hasattr(self.model, "get_translate_func")
+                else lambda x: x
+            )
+
+            # Create mapping of attribute names to translatable display strings
+            # This ensures fresh translations on each call, respecting language changes
+            attribute_display_map = {
+                "name": translate_func("Name"),
+                "filepath": translate_func("File Path"),
+                "total_size": translate_func("Total Size"),
+                "progress": translate_func("Progress"),
+                "created": translate_func("Created"),
+                "comment": translate_func("Comment"),
+                "created_by": translate_func("Created By"),
+                "piece_length": translate_func("Piece Length"),
+                "pieces": translate_func("Pieces"),
+                "id": translate_func("ID"),
+                "size": translate_func("Size"),
+                "session_downloaded": translate_func("Session Downloaded"),
+                "session_uploaded": translate_func("Session Uploaded"),
+                "total_downloaded": translate_func("Total Downloaded"),
+                "total_uploaded": translate_func("Total Uploaded"),
+                "upload_speed": translate_func("Up Speed"),
+                "download_speed": translate_func("Down Speed"),
+                "seeders": translate_func("Seeds"),
+                "leechers": translate_func("Leechers"),
+                "announce_interval": translate_func("Announce Interval"),
+                "next_update": translate_func("Next Update"),
+                "threshold": translate_func("Threshold"),
+                "small_torrent_limit": translate_func("Small Torrent Limit"),
+                "uploading": translate_func("Uploading"),
+                "active": translate_func("Active"),
+                "ratio": translate_func("Ratio"),
+                "availability": translate_func("Availability"),
+                "private": translate_func("Private"),
+                "added": translate_func("Added"),
+                "completed": translate_func("Completed"),
+                "label": translate_func("Label"),
+                "eta": translate_func("ETA"),
+                "priority": translate_func("Priority"),
+                "status": translate_func("Status"),
+                "tracker": translate_func("Tracker"),
+            }
+
+            # Use mapped display name or fallback to translated attribute name
+            if attribute in attribute_display_map:
+                display_text = attribute_display_map[attribute]
+            else:
+                # Fallback: translate the attribute name directly
+                display_text = translate_func(attribute.replace("_", " ").title())
+
             label = Gtk.Label()
-            label.set_text(attribute)
+            label.set_text(display_text)
             label.set_name(f"label_{attribute}")
             label.set_visible(True)
             label.set_hexpand(True)
@@ -292,7 +354,15 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
     def _show_no_options_message(self) -> None:
         """Show a message when no options are available."""
         try:
-            message_label = self.create_info_label("No editable options available for this torrent.")
+            # Get translation function from model
+            translate_func = (
+                self.model.get_translate_func()
+                if hasattr(self.model, "get_translate_func")
+                else lambda x: x
+            )
+
+            message_text = translate_func("No editable options available for this torrent.")
+            message_label = self.create_info_label(message_text)
             self.set_widget_margins(message_label, self.ui_margin_large)
 
             if self._options_grid:
@@ -348,3 +418,19 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             return len(edit_widgets)
         except Exception:
             return 0
+
+    def on_language_changed(self, source=None, new_language=None):
+        """
+        Handle language change events by refreshing the options content.
+
+        Args:
+            source: Event source
+            new_language: New language code
+        """
+        try:
+            self.logger.debug(f"Language changed to {new_language}, refreshing options tab content")
+            # Refresh content to update all labels with new translations
+            if hasattr(self, '_current_torrent') and self._current_torrent:
+                self.update_content(self._current_torrent)
+        except Exception as e:
+            self.logger.error(f"Error handling language change in options tab: {e}")
