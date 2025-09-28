@@ -5,10 +5,10 @@ Displays key torrent information like name, ID, file path, size, and progress.
 """
 
 import gi
+from lib.util.constants import SIZE_UNITS_BASIC
 
 from .base_tab import BaseTorrentTab
 from .tab_mixins import DataUpdateMixin, UIUtilityMixin
-from lib.util.constants import SIZE_UNITS_BASIC
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa

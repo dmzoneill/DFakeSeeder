@@ -1,14 +1,13 @@
 """
 Tab configuration loader for DFakeSeeder.
-
 Provides functionality to load tab configurations from JSON files
 instead of hardcoded class lists, enabling modular tab management.
 """
 
 import json
-import os
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Type
+from typing import Any, Dict, List, Type
+
 from lib.logger import logger
 
 
@@ -23,19 +22,15 @@ def get_tabs_config_path() -> Path:
 def load_tabs_config() -> Dict[str, Any]:
     """
     Load tab configurations from JSON file.
-
     Returns:
         Dictionary containing tab configurations with metadata
-
     Raises:
         FileNotFoundError: If tabs config file not found
         json.JSONDecodeError: If config file is invalid JSON
     """
     config_path = get_tabs_config_path()
-
     if not config_path.exists():
         raise FileNotFoundError(f"Tabs configuration file not found: {config_path}")
-
     try:
         with open(config_path, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -46,14 +41,13 @@ def load_tabs_config() -> Dict[str, Any]:
 def get_settings_tab_config() -> Dict[str, Any]:
     """
     Get settings tab configuration.
-
     Returns:
         Dictionary with settings tab configuration
     """
     try:
         config = load_tabs_config()
         return config.get("settings_tabs", {})
-    except (FileNotFoundError, json.JSONDecodeError) as e:
+    except Exception:
         logger.debug("Warning: Could not load tabs config (...), using fallback", "UnknownClass")
         return {
             "enabled": True,
@@ -66,14 +60,13 @@ def get_settings_tab_config() -> Dict[str, Any]:
 def get_torrent_details_tab_config() -> Dict[str, Any]:
     """
     Get torrent details tab configuration.
-
     Returns:
         Dictionary with torrent details tab configuration
     """
     try:
         config = load_tabs_config()
         return config.get("torrent_details_tabs", {})
-    except (FileNotFoundError, json.JSONDecodeError) as e:
+    except Exception:
         logger.debug("Warning: Could not load tabs config (...), using fallback", "UnknownClass")
         return {
             "enabled": True,
@@ -86,7 +79,6 @@ def get_torrent_details_tab_config() -> Dict[str, Any]:
 def get_tab_features() -> Dict[str, Any]:
     """
     Get tab feature configuration.
-
     Returns:
         Dictionary with tab feature settings
     """
@@ -106,14 +98,11 @@ def get_tab_features() -> Dict[str, Any]:
 def resolve_tab_classes(tab_names: List[str], module_mapping: Dict[str, Type]) -> List[Type]:
     """
     Resolve tab class names to actual class objects.
-
     Args:
         tab_names: List of tab class names from configuration
         module_mapping: Dictionary mapping class names to actual classes
-
     Returns:
         List of resolved tab classes
-
     Raises:
         KeyError: If a tab class name cannot be resolved
     """
@@ -128,17 +117,14 @@ def resolve_tab_classes(tab_names: List[str], module_mapping: Dict[str, Type]) -
 def get_settings_tab_classes(module_mapping: Dict[str, Type]) -> List[Type]:
     """
     Get settings tab classes in configured order.
-
     Args:
         module_mapping: Dictionary mapping class names to actual classes
-
     Returns:
         List of tab classes in configured order
     """
     config = get_settings_tab_config()
     if not config.get("enabled", True):
         return []
-
     tab_names = config.get("order", [])
     return resolve_tab_classes(tab_names, module_mapping)
 
@@ -146,17 +132,14 @@ def get_settings_tab_classes(module_mapping: Dict[str, Type]) -> List[Type]:
 def get_torrent_details_tab_classes(module_mapping: Dict[str, Type]) -> List[Type]:
     """
     Get torrent details tab classes in configured order.
-
     Args:
         module_mapping: Dictionary mapping class names to actual classes
-
     Returns:
         List of tab classes in configured order
     """
     config = get_torrent_details_tab_config()
     if not config.get("enabled", True):
         return []
-
     tab_names = config.get("order", [])
     return resolve_tab_classes(tab_names, module_mapping)
 
@@ -164,10 +147,8 @@ def get_torrent_details_tab_classes(module_mapping: Dict[str, Type]) -> List[Typ
 def get_essential_tab_classes(module_mapping: Dict[str, Type]) -> List[Type]:
     """
     Get essential torrent details tab classes only.
-
     Args:
         module_mapping: Dictionary mapping class names to actual classes
-
     Returns:
         List of essential tab classes
     """
@@ -179,10 +160,8 @@ def get_essential_tab_classes(module_mapping: Dict[str, Type]) -> List[Type]:
 def get_lazy_load_tab_classes(module_mapping: Dict[str, Type]) -> List[Type]:
     """
     Get tab classes that should be lazy loaded.
-
     Args:
         module_mapping: Dictionary mapping class names to actual classes
-
     Returns:
         List of lazy-loadable tab classes
     """
@@ -194,11 +173,9 @@ def get_lazy_load_tab_classes(module_mapping: Dict[str, Type]) -> List[Type]:
 def is_tab_enabled(tab_name: str, context: str = "settings") -> bool:
     """
     Check if a tab is enabled in configuration.
-
     Args:
         tab_name: Name of the tab class
         context: Context ("settings" or "torrent_details")
-
     Returns:
         True if tab is enabled, False otherwise
     """
@@ -217,10 +194,8 @@ def is_tab_enabled(tab_name: str, context: str = "settings") -> bool:
 def is_feature_enabled(feature_name: str) -> bool:
     """
     Check if a tab feature is enabled.
-
     Args:
         feature_name: Name of the feature
-
     Returns:
         True if feature is enabled, False otherwise
     """
@@ -231,7 +206,6 @@ def is_feature_enabled(feature_name: str) -> bool:
 def get_config_metadata() -> Dict[str, Any]:
     """
     Get metadata about the tab configuration.
-
     Returns:
         Metadata dictionary with version, description, etc.
     """

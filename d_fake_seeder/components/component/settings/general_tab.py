@@ -1,33 +1,29 @@
 """
 General settings tab for the settings dialog.
-
 Handles general application settings like auto-start, minimized start,
 language selection, and other basic preferences.
 """
 
 import os
 from typing import Any, Dict
-from lib.logger import logger
-
-import time
 
 import gi
+from lib.logger import logger
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa: E402
+from lib.util.language_config import get_language_display_names  # noqa: E402
 from view import View  # noqa
 
 from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import NotificationMixin  # noqa: E402
 from .settings_mixins import TranslationMixin  # noqa: E402
 from .settings_mixins import ValidationMixin  # noqa: E402
-from lib.util.language_config import get_language_display_names  # noqa: E402
 
 
 class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin):
     """
     General settings tab component.
-
     Manages:
     - Application startup behavior (auto-start, start minimized)
     - Theme preferences
@@ -37,7 +33,6 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
     def __init__(self, builder: Gtk.Builder, app_settings, app=None):
         """Initialize the General tab."""
         self.app = app
-
         super().__init__(builder, app_settings)
 
     @property
@@ -49,7 +44,6 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         """Initialize General tab widgets."""
         logger.debug("===== _init_widgets() CALLED =====", "GeneralTab")
         logger.debug("Builder:", "GeneralTab")
-
         # Let's try to debug what objects are available in the builder
         if self.builder:
             logger.debug("Checking for language-related objects in builder...", "GeneralTab")
@@ -62,26 +56,20 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 "language_selection",
                 "combo_language",
                 "general_language",
-                "preferences_language"
+                "preferences_language",
             ]
-
             for name in possible_names:
-                obj = self.builder.get_object(name)
                 logger.debug("- :  (type: )", "GeneralTab")
-
         # Cache commonly used widgets
         widget_objects = {
             "auto_start": self.builder.get_object("settings_auto_start"),
             "start_minimized": self.builder.get_object("settings_start_minimized"),
             "language_dropdown": self.builder.get_object("settings_language"),
         }
-
         logger.debug("Widget lookup results:", "GeneralTab")
         for name, widget in widget_objects.items():
             logger.debug("- :  (type: )", "GeneralTab")
-
         self._widgets.update(widget_objects)
-
         # Initialize language dropdown if available
         logger.debug("About to call _setup_language_dropdown()...", "GeneralTab")
         self._setup_language_dropdown()
@@ -93,12 +81,10 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         auto_start = self.get_widget("auto_start")
         if auto_start:
             auto_start.connect("state-set", self.on_auto_start_changed)
-
         # Start minimized toggle
         start_minimized = self.get_widget("start_minimized")
         if start_minimized:
             start_minimized.connect("state-set", self.on_start_minimized_changed)
-
         # Language dropdown - signal connection handled in _setup_language_dropdown()
         # to avoid dual connections and ensure proper disconnect/reconnect during population
 
@@ -109,14 +95,11 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             auto_start = self.get_widget("auto_start")
             if auto_start:
                 auto_start.set_active(getattr(self.app_settings, "auto_start", False))
-
             # Start minimized setting
             start_minimized = self.get_widget("start_minimized")
             if start_minimized:
                 start_minimized.set_active(getattr(self.app_settings, "start_minimized", False))
-
             self.logger.debug("General tab settings loaded")
-
         except Exception as e:
             self.logger.error(f"Error loading General tab settings: {e}")
 
@@ -128,21 +111,17 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
     def _collect_settings(self) -> Dict[str, Any]:
         """Collect current settings from General tab widgets."""
         settings = {}
-
         try:
             # Auto-start setting
             auto_start = self.get_widget("auto_start")
             if auto_start:
                 settings["auto_start"] = auto_start.get_active()
-
             # Start minimized setting
             start_minimized = self.get_widget("start_minimized")
             if start_minimized:
                 settings["start_minimized"] = start_minimized.get_active()
-
         except Exception as e:
             self.logger.error(f"Error collecting General tab settings: {e}")
-
         return settings
 
     def on_auto_start_changed(self, switch: Gtk.Switch, state: bool) -> None:
@@ -150,11 +129,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         try:
             self.app_settings.set("auto_start", state)
             self.logger.debug(f"Auto-start changed to: {state}")
-
             # Show notification
             message = "Auto-start enabled" if state else "Auto-start disabled"
             self.show_notification(message, "success")
-
         except Exception as e:
             self.logger.error(f"Error changing auto-start setting: {e}")
 
@@ -163,11 +140,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         try:
             self.app_settings.set("start_minimized", state)
             self.logger.debug(f"Start minimized changed to: {state}")
-
             # Show notification
             message = "Start minimized enabled" if state else "Start minimized disabled"
             self.show_notification(message, "success")
-
         except Exception as e:
             self.logger.error(f"Error changing start minimized setting: {e}")
 
@@ -178,13 +153,10 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             auto_start = self.get_widget("auto_start")
             if auto_start:
                 auto_start.set_active(False)
-
             start_minimized = self.get_widget("start_minimized")
             if start_minimized:
                 start_minimized.set_active(False)
-
             self.show_notification("General settings reset to defaults", "success")
-
         except Exception as e:
             self.logger.error(f"Error resetting General tab to defaults: {e}")
 
@@ -225,18 +197,14 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         # Store model reference for language functionality
         self.model = model
         self.logger.debug(f"Model stored in GeneralTab: {model is not None}")
-
         # Set initialization flag to prevent triggering language changes during setup
         self._initializing = True
-
         # DO NOT connect to language-changed signal - this would create a loop!
         # The settings dialog handles its own translation when the user changes language
         logger.debug("NOT connecting to model language-changed signal to avoid loops", "GeneralTab")
         logger.debug("Settings dialog will handle its own translation directly", "GeneralTab")
-
         # Note: Language dropdown population postponed to avoid initialization loops
         # self._populate_language_dropdown() will be called when needed
-
         # Translate dropdown items now that we have the model
         # But prevent TranslationMixin from connecting to language-changed signal to avoid loops
         self._language_change_connected = True  # Block TranslationMixin from connecting
@@ -252,17 +220,14 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         if not language_dropdown:
             logger.debug("ERROR: Language dropdown widget not found!", "GeneralTab")
             return
-
         # Create string list for dropdown
         logger.debug("Creating Gtk.StringList for language dropdown...", "GeneralTab")
         self.language_list = Gtk.StringList()
         self.language_codes = []
-
         # We'll populate this when we have access to the model
         # For now, just set up the basic structure
         logger.debug("Setting model on language dropdown...", "GeneralTab")
         language_dropdown.set_model(self.language_list)
-
         # Connect the language change signal
         logger.debug("About to connect language change signal...", "GeneralTab")
         try:
@@ -270,7 +235,6 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             logger.debug("Language signal connected successfully with ID:", "GeneralTab")
         except Exception as e:
             logger.error(f"FAILED to connect language signal: {e}", "GeneralTab", exc_info=True)
-
         logger.debug("Language dropdown setup completed", "GeneralTab")
         self.logger.debug("Language dropdown setup completed with empty StringList")
 
@@ -279,26 +243,21 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         logger.debug("===== _populate_language_dropdown() CALLED =====", "GeneralTab")
         logger.debug("_initializing flag at start:", "GeneralTab")
         self.logger.debug("_populate_language_dropdown called")
-
         if not hasattr(self, "model") or not self.model:
             self.logger.debug("Model not available, skipping language dropdown population")
             return
-
         language_dropdown = self.get_widget("language_dropdown")
         if not language_dropdown:
             self.logger.debug("Language dropdown widget not found")
             return
-
         try:
             # Get supported languages from locale directory
             locale_dir = os.path.join(os.environ.get("DFS_PATH", "."), "components", "locale")
-
             if not os.path.exists(locale_dir):
                 self.logger.error(f"Locale directory not found: {locale_dir}")
                 self.logger.warning("Language dropdown will be disabled")
                 language_dropdown.set_sensitive(False)
                 return
-
             # Scan locale directory for available languages
             supported_languages = []
             for item in os.listdir(locale_dir):
@@ -306,37 +265,24 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 mo_file = os.path.join(lang_dir, "LC_MESSAGES", "dfakeseeder.mo")
                 if os.path.isdir(lang_dir) and os.path.exists(mo_file):
                     supported_languages.append(item)
-
             if not supported_languages:
                 self.logger.error(f"No translation files found in locale directory: {locale_dir}")
                 self.logger.warning("Language dropdown will show default language only")
                 # Fall back to English as default
                 supported_languages = ["en"]
-
             # Sort languages for consistent display
             supported_languages.sort()
-
             # Get current language from settings
             current_language = self.app_settings.get_language()
-
             self.logger.debug(f"Found {len(supported_languages)} languages in locale directory: {supported_languages}")
             self.logger.debug(f"Current language: {current_language}")
-
             # Clear existing items
             self.language_list.splice(0, self.language_list.get_n_items(), [])
             self.language_codes.clear()
-
-            # Get translation function
-            translate_func = (
-                self.model.get_translate_func()
-                if hasattr(self, "model") and hasattr(self.model, "get_translate_func")
-                else lambda x: x
-            )
-
+            # Get translation function (currently unused but may be needed for future enhancement)
             # Language display names - get from settings configuration
             # This ensures users can always identify their own language regardless of current UI language
             language_names = getattr(self.app_settings, "language_display_names", {})
-
             # Fallback to external config if config doesn't have them
             if not language_names:
                 self.logger.warning("language_display_names not found in settings, using external language config")
@@ -346,12 +292,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 except Exception as e:
                     self.logger.error(f"Failed to load external language config: {e}")
                     # Final fallback to minimal set
-                    language_names = {
-                        "en": "English",
-                        "es": "Español",
-                        "fr": "Français"
-                    }
-
+                    language_names = {"en": "English", "es": "Español", "fr": "Français"}
             # Add supported languages to dropdown
             selected_index = 0
             for i, lang_code in enumerate(sorted(supported_languages)):
@@ -359,10 +300,8 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 self.language_list.append(display_name)
                 self.language_codes.append(lang_code)
                 self.logger.debug(f"Added language {i}: {lang_code} -> {display_name}")
-
                 if lang_code == current_language:
                     selected_index = i
-
             # Temporarily disconnect the signal to avoid triggering the callback
             # when setting the selection programmatically
             signal_was_connected = False
@@ -372,28 +311,25 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                     language_dropdown.handler_block(self._language_signal_id)
                     signal_was_connected = True
                     logger.debug("Language signal blocked successfully", "GeneralTab")
-            except Exception as e:
+            except Exception:
                 logger.debug("Failed to block language signal:", "GeneralTab")
-
             # Set current selection
             logger.debug("Setting dropdown selection to index:", "GeneralTab")
             language_dropdown.set_selected(selected_index)
-
             # Reconnect the signal handler
             try:
                 if signal_was_connected:
                     logger.debug("Unblocking language signal ID:", "GeneralTab")
                     language_dropdown.handler_unblock(self._language_signal_id)
                     logger.debug("Language signal unblocked successfully", "GeneralTab")
-            except Exception as e:
+            except Exception:
                 logger.debug("Failed to unblock language signal:", "GeneralTab")
                 # If unblocking fails, try to reconnect
                 try:
                     self._language_signal_id = language_dropdown.connect("notify::selected", self.on_language_changed)
                     logger.debug("Reconnected language signal with new ID:", "GeneralTab")
-                except Exception as e2:
+                except Exception:
                     logger.debug("Failed to reconnect language signal:", "GeneralTab")
-
             # Clear initialization flag here after setting up the dropdown
             # This ensures the signal handler can work for user interactions
             logger.debug("About to clear _initializing flag...", "GeneralTab")
@@ -405,12 +341,10 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 self.logger.debug("Language dropdown initialization completed - enabling user interactions")
             else:
                 logger.debug("Warning: _initializing attribute not found", "GeneralTab")
-
             lang_count = len(self.language_codes)
             self.logger.debug(
                 f"Language dropdown populated with {lang_count} languages, selected index: {selected_index}"
             )
-
         except Exception as e:
             self.logger.error(f"Error populating language dropdown: {e}")
 
@@ -420,24 +354,20 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         logger.debug("Dropdown:", "GeneralTab")
         logger.debug("Param:", "GeneralTab")
         logger.debug("Selected index:", "GeneralTab")
-
         # Note: No need for recursive call prevention since we removed the problematic signal connection
-
         if not hasattr(self, "model") or not self.model:
             logger.debug("No model available, returning early", "GeneralTab")
             logger.debug("hasattr(self, 'model'):", "GeneralTab")
             logger.debug("self.model:", "GeneralTab")
             return
-
         # Skip language changes during initialization to prevent loops
         if hasattr(self, "_initializing") and self._initializing:
             logger.debug("Skipping language change during initialization", "GeneralTab")
             logger.debug("_initializing flag:", "GeneralTab")
             logger.debug("Need to clear _initializing flag for user interactions to work", "GeneralTab")
-
             # EMERGENCY FIX: If the language dropdown has content, we can clear the initialization flag
             # This handles cases where _populate_language_dropdown() didn't complete properly
-            if hasattr(self, 'language_codes') and len(self.language_codes) > 0:
+            if hasattr(self, "language_codes") and len(self.language_codes) > 0:
                 logger.debug("EMERGENCY FIX: Language codes available (), clearing _initializing flag", "GeneralTab")
                 self._initializing = False
                 logger.debug("_initializing flag cleared, continuing with language change...", "GeneralTab")
@@ -446,46 +376,38 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 logger.debug("Language codes not available, keeping initialization flag", "GeneralTab")
                 self.logger.debug("Skipping language change during initialization")
                 return
-
         # Prevent concurrent language changes - use class-level lock
         if hasattr(self.__class__, "_changing_language") and self.__class__._changing_language:
             self.logger.debug("Skipping language change - already in progress globally")
             return
-
         # Check if the selected language is already the current language
         selected_index = dropdown.get_selected()
         if 0 <= selected_index < len(self.language_codes):
             selected_lang = self.language_codes[selected_index]
             current_lang = getattr(self.app_settings, "language", "en")
-
             # If we're trying to switch to the same language, skip
             if selected_lang == current_lang:
                 self.logger.debug(f"Skipping language change - already using {selected_lang}")
                 return
-
-        start_time = time.time()
-        logger.debug("Language change initiated: {current_lang} -> {self.language_codesif 0 <= selected_index < len(self.language_codes) else 'unknown'}", "UnknownClass")
-
+        logger.debug(
+            f"Language change initiated: {current_lang} -> "
+            f"{self.language_codes[selected_index] if 0 <= selected_index < len(self.language_codes) else 'unknown'}",
+            "UnknownClass",
+        )
         # Set class-level guard to prevent concurrent changes
         self.__class__._changing_language = True
         try:
             if 0 <= selected_index < len(self.language_codes):
                 selected_lang = self.language_codes[selected_index]
-
                 logger.debug("User language change request: {current_lang} -> {selected_lang}", "UnknownClass")
                 self.logger.info(f"User language change request: {current_lang} -> {selected_lang}")
-
                 # Temporarily disconnect the signal to prevent feedback loops
-                disconnect_start = time.time()
                 signal_was_blocked = False
                 if hasattr(self, "_language_signal_id") and self._language_signal_id:
                     dropdown.handler_block(self._language_signal_id)
                     signal_was_blocked = True
-                disconnect_end = time.time()
                 logger.debug("Signal block took {(disconnect_end - disconnect_start)*1000:.1f}ms", "UnknownClass")
-
                 # Update AppSettings which will trigger Model to handle the rest of the app
-                settings_start = time.time()
                 logger.debug("Saving language to AppSettings:", "GeneralTab")
                 logger.debug("DEBUG: About to call app_settings.set('language', '')", "GeneralTab")
                 logger.debug("DEBUG: AppSettings instance:", "GeneralTab")
@@ -493,31 +415,20 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 self.app_settings.set("language", selected_lang)
                 logger.debug("DEBUG: app_settings.set() completed", "GeneralTab")
                 logger.debug("DEBUG: Current language after set:", "GeneralTab")
-                settings_end = time.time()
                 logger.debug("AppSettings.set() took {(settings_end - settings_start)*1000:.1f}ms", "UnknownClass")
-
                 # Handle settings dialog translation directly (not via model signal to avoid loops)
                 logger.debug("Handling settings dialog translation directly...", "GeneralTab")
                 self._handle_settings_translation(selected_lang)
                 logger.debug("Settings dialog translation completed", "GeneralTab")
-
                 # Unblock the signal
-                reconnect_start = time.time()
                 if signal_was_blocked and hasattr(self, "_language_signal_id") and self._language_signal_id:
                     dropdown.handler_unblock(self._language_signal_id)
                     logger.debug("Signal unblocked successfully", "GeneralTab")
-                reconnect_end = time.time()
                 logger.debug("Signal unblock took {(reconnect_end - reconnect_start)*1000:.1f}ms", "UnknownClass")
-
                 # Show success notification
-                notification_start = time.time()
                 self.show_notification(f"Language switched to {selected_lang}", "success")
-                notification_end = time.time()
                 logger.debug("Notification took {(notification_end - notification_start)*1000:.1f}ms", "UnknownClass")
-
-                total_time = (time.time() - start_time) * 1000
                 logger.debug("Language change completed - TOTAL UI TIME: ms", "GeneralTab")
-
         except Exception as e:
             self.logger.error(f"Error changing language: {e}")
             self.show_notification("Error changing language", "error")
@@ -535,17 +446,14 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         """Handle translation for the settings dialog directly (not via model signal)."""
         logger.debug("===== _handle_settings_translation() CALLED =====", "GeneralTab")
         logger.debug("New language:", "GeneralTab")
-
         try:
             # DON'T repopulate the language dropdown - it doesn't need translation and
             # manipulating the signal could break subsequent language changes
             logger.debug("Skipping language dropdown repopulation to preserve signal", "GeneralTab")
-
             # Refresh all other dropdowns with new translations
             logger.debug("About to translate common dropdowns...", "GeneralTab")
             self.translate_common_dropdowns()
             logger.debug("Common dropdowns translated", "GeneralTab")
-
             logger.debug("Settings dialog translation completed successfully", "GeneralTab")
         except Exception as e:
             logger.error(f"Error handling settings dialog translation: {e}", "GeneralTab", exc_info=True)

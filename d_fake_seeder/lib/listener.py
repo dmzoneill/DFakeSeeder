@@ -50,9 +50,7 @@ class Listener:
     def send_handshake(peer_id, info_hash, peer_ip, peer_port):
         info_hash = (info_hash + b"\x00" * 20)[:20]
         peer_id = (peer_id + b"\x00" * 20)[:20]
-        handshake = struct.pack(
-            "!B19s8x20s20s", 19, b"BitTorrent protocol", info_hash, peer_id
-        )
+        handshake = struct.pack("!B19s8x20s20s", 19, b"BitTorrent protocol", info_hash, peer_id)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((peer_ip, peer_port))
         sock.send(handshake)
@@ -61,9 +59,7 @@ class Listener:
 
     # Sending an "interested" message
     def send_interested(peer_ip, peer_port):
-        interested = struct.pack(
-            "!IB", 1, 2
-        )  # Message length (1) and message ID for "interested" (2)
+        interested = struct.pack("!IB", 1, 2)  # Message length (1) and message ID for "interested" (2)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((peer_ip, peer_port))
         sock.send(interested)
@@ -75,9 +71,7 @@ class Listener:
         action, transaction_id = struct.unpack_from("!II", response, offset=0)
         offset = 8
         while offset + 12 <= len(response):
-            seeders, completed, leechers = struct.unpack_from(
-                "!III", response, offset=offset
-            )
+            seeders, completed, leechers = struct.unpack_from("!III", response, offset=offset)
             files.append((seeders, completed, leechers))
             offset += 12
         return files

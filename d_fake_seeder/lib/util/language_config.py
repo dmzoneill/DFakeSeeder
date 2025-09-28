@@ -6,9 +6,8 @@ instead of hardcoded dictionaries.
 """
 
 import json
-import os
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 
 def get_languages_config_path() -> Path:

@@ -1,8 +1,8 @@
+import functools
 import logging
 import sys
 import time
-import functools
-from typing import Optional, Dict, Any
+from typing import Dict
 
 # Try to import systemd journal support
 try:
@@ -119,15 +119,18 @@ class OperationTimer:
 
 def timing_decorator(operation_name: str = None, level: str = "debug"):
     """Decorator to automatically time function execution."""
+
     def decorator(func):
         @functools.wraps(func)
         def wrapper(self, *args, **kwargs):
             op_name = operation_name or func.__name__
-            class_name = self.__class__.__name__ if hasattr(self, '__class__') else None
+            class_name = self.__class__.__name__ if hasattr(self, "__class__") else None
 
             with logger.performance.operation_context(op_name, class_name):
                 return func(self, *args, **kwargs)
+
         return wrapper
+
     return decorator
 
 
@@ -233,18 +236,18 @@ def setup_logger():
 
         def debug(self, message: str, class_name: str = None, **kwargs):
             """Enhanced debug with automatic class name."""
-            extra = kwargs.get('extra', {})
+            extra = kwargs.get("extra", {})
             if class_name:
-                extra['class_name'] = class_name
-            kwargs['extra'] = extra
+                extra["class_name"] = class_name
+            kwargs["extra"] = extra
             return self._logger.debug(message, **kwargs)
 
         def info(self, message: str, class_name: str = None, **kwargs):
             """Enhanced info with automatic class name."""
-            extra = kwargs.get('extra', {})
+            extra = kwargs.get("extra", {})
             if class_name:
-                extra['class_name'] = class_name
-            kwargs['extra'] = extra
+                extra["class_name"] = class_name
+            kwargs["extra"] = extra
             return self._logger.info(message, **kwargs)
 
     enhanced_logger = EnhancedLogger(logger_instance)
@@ -260,7 +263,7 @@ def reconfigure_logger():
 
 def get_performance_logger():
     """Get a performance logger instance for timing operations."""
-    return logger.performance if hasattr(logger, 'performance') else None
+    return logger.performance if hasattr(logger, "performance") else None
 
 
 def debug(message: str, class_name: str = None, **kwargs):

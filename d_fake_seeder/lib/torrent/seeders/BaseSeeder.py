@@ -9,9 +9,7 @@ from lib.settings import Settings
 
 
 class BaseSeeder:
-    tracker_semaphore = threading.Semaphore(
-        Settings.get_instance().concurrent_http_connections
-    )
+    tracker_semaphore = threading.Semaphore(Settings.get_instance().concurrent_http_connections)
     peer_clients = {}
 
     # Common functionality goes here
@@ -24,9 +22,7 @@ class BaseSeeder:
 
         self.torrent = torrent
         self.tracker_url = ""
-        self.peer_id = self.settings.agents[self.settings.agent].split(",")[
-            1
-        ] + helpers.random_id(12)
+        self.peer_id = self.settings.agents[self.settings.agent].split(",")[1] + helpers.random_id(12)
         self.download_key = helpers.random_id(12)
         self.port = random.randint(1025, 65000)
         self.info = {}
@@ -37,9 +33,7 @@ class BaseSeeder:
         self.tracker_scheme = self.parsed_url.scheme
         if hasattr(self.torrent, "announce_list"):
             self.tracker_urls = [
-                url
-                for url in self.torrent.announce_list
-                if urlparse(url).scheme == self.tracker_scheme
+                url for url in self.torrent.announce_list if urlparse(url).scheme == self.tracker_scheme
             ]
         self.tracker_hostname = self.parsed_url.hostname
         self.tracker_port = self.parsed_url.port
@@ -47,9 +41,7 @@ class BaseSeeder:
     def set_random_announce_url(self):
         if hasattr(self.torrent, "announce_list") and self.torrent.announce_list:
             same_schema_urls = [
-                url
-                for url in self.torrent.announce_list
-                if urlparse(url).scheme == self.tracker_scheme
+                url for url in self.torrent.announce_list if urlparse(url).scheme == self.tracker_scheme
             ]
             if same_schema_urls:
                 random_url = random.choice(same_schema_urls)
@@ -132,28 +124,20 @@ class BaseSeeder:
 
     @property
     def clients(self):
-        logger.debug(
-            "Seeder get clients", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Seeder get clients", extra={"class_name": self.__class__.__name__})
         return BaseSeeder.peer_clients
 
     @property
     def seeders(self):
-        logger.debug(
-            "Seeder get seeders", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Seeder get seeders", extra={"class_name": self.__class__.__name__})
         return self.info[b"complete"] if b"complete" in self.info else 0
 
     @property
     def tracker(self):
-        logger.debug(
-            "Seeder get tracker", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Seeder get tracker", extra={"class_name": self.__class__.__name__})
         return self.tracker_url
 
     @property
     def leechers(self):
-        logger.debug(
-            "Seeder get leechers", extra={"class_name": self.__class__.__name__}
-        )
+        logger.debug("Seeder get leechers", extra={"class_name": self.__class__.__name__})
         return self.info[b"incomplete"] if b"incomplete" in self.info else 0

@@ -34,9 +34,7 @@ class UDPSeeder(BaseSeeder):
 
     def process_announce_response(self, response):
         peers = []
-        action, transaction_id, interval, leechers, seeders = struct.unpack_from(
-            "!IIIII", response, offset=0
-        )
+        action, transaction_id, interval, leechers, seeders = struct.unpack_from("!IIIII", response, offset=0)
         offset = 20
         while offset + 6 <= len(response):
             ip, port = struct.unpack_from("!IH", response, offset=offset)
@@ -67,9 +65,7 @@ class UDPSeeder(BaseSeeder):
                 ready = select.select([sock], [], [], timeout)
                 if ready[0]:
                     response = sock.recv(2048)
-                    peers, interval, leechers, seeders = self.process_announce_response(
-                        response
-                    )
+                    peers, interval, leechers, seeders = self.process_announce_response(response)
                     if peers is not None:
                         self.info = {
                             b"peers": peers,
@@ -92,14 +88,10 @@ class UDPSeeder(BaseSeeder):
 
     def load_peers(self):
         self.tracker_semaphore.acquire()
-        result = self.handle_announce(
-            packet_data=(), timeout=5, log_msg="Seeder load peers"
-        )
+        result = self.handle_announce(packet_data=(), timeout=5, log_msg="Seeder load peers")
         self.tracker_semaphore.release()
         return result
 
     def upload(self, uploaded_bytes, downloaded_bytes, download_left):
         packet_data = (uploaded_bytes, downloaded_bytes, download_left)
-        return self.handle_announce(
-            packet_data=packet_data, timeout=4, log_msg="Seeder upload"
-        )
+        return self.handle_announce(packet_data=packet_data, timeout=4, log_msg="Seeder upload")

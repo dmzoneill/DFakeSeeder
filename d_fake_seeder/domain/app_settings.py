@@ -11,7 +11,9 @@ gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 
 from gi.repository import GObject  # noqa: E402
-from lib.handlers.file_modified_event_handler import FileModifiedEventHandler  # noqa: E402
+from lib.handlers.file_modified_event_handler import (  # noqa: E402
+    FileModifiedEventHandler,
+)
 from lib.logger import logger  # noqa: E402
 from watchdog.observers import Observer  # noqa: E402
 
@@ -292,7 +294,6 @@ class AppSettings(GObject.GObject):
             else:
                 logger.debug("Value unchanged, skipping update", "AppSettings")
         logger.debug("Setting method completed", "AppSettings")
-
 
     def __getattr__(self, name):
         """Dynamic attribute access (Settings API compatibility)"""

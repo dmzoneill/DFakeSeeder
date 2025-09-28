@@ -16,7 +16,11 @@ from .connection_tab import ConnectionTab
 from .general_tab import GeneralTab
 from .peer_protocol_tab import PeerProtocolTab
 from .settings_dialog import SettingsDialog
-from .settings_mixins import KeyboardShortcutMixin, NotificationMixin, ValidationMixin  # noqa: E402
+from .settings_mixins import (  # noqa: E402
+    KeyboardShortcutMixin,
+    NotificationMixin,
+    ValidationMixin,
+)
 from .speed_tab import SpeedTab
 from .webui_tab import WebUITab
 

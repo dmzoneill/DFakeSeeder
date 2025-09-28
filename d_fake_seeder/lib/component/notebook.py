@@ -98,14 +98,10 @@ class Notebook(Component):
             column = Gtk.ColumnViewColumn.new(property_name, factory)
 
             # Create a Gtk.Expression for the property
-            property_expression = Gtk.PropertyExpression.new(
-                TorrentPeer, None, property_name
-            )
+            property_expression = Gtk.PropertyExpression.new(TorrentPeer, None, property_name)
 
             # Create a Gtk.Sorter based on the property type
-            property_type = TorrentPeer.find_property(
-                property_name
-            ).value_type.fundamental
+            property_type = TorrentPeer.find_property(property_name).value_type.fundamental
             if property_type == GObject.TYPE_STRING:
                 sorter = Gtk.StringSorter.new(property_expression)
             elif property_type == GObject.TYPE_FLOAT:
@@ -141,11 +137,7 @@ class Notebook(Component):
             self.peers_store.remove_all()
 
             for peer in torrent.get_seeder().peers:
-                client = (
-                    torrent.get_seeder().clients[peer]
-                    if peer in torrent.get_seeder().clients
-                    else ""
-                )
+                client = torrent.get_seeder().clients[peer] if peer in torrent.get_seeder().clients else ""
                 row = TorrentPeer(str(peer), client, 0.0, 0.0, 0.0)
                 self.peers_store.append(row)
 
@@ -233,9 +225,7 @@ class Notebook(Component):
                 dynamic_widget.set_adjustment(adjustment)
                 dynamic_widget.set_wrap(True)
                 # Connect "value-changed" signal for other widgets
-                dynamic_widget.connect(
-                    "value-changed", on_value_changed, adjustment, attribute
-                )
+                dynamic_widget.connect("value-changed", on_value_changed, adjustment, attribute)
 
             label = Gtk.Label()
             label.set_text(attribute)
@@ -268,9 +258,7 @@ class Notebook(Component):
         self.status_grid_child.set_visible(True)
 
         ATTRIBUTES = Attributes
-        compatible_attributes = [
-            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
-        ]
+        compatible_attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
 
         # Create columns and add them to the TreeView
         for attribute_index, attribute in enumerate(compatible_attributes):
@@ -315,9 +303,7 @@ class Notebook(Component):
         filtered_torrent = next((t for t in files if t.id == torrent.id), None)
 
         # Create columns and add them to the TreeView
-        for attribute_index, (fullpath, length) in enumerate(
-            filtered_torrent.get_torrent_file().get_files()
-        ):
+        for attribute_index, (fullpath, length) in enumerate(filtered_torrent.get_torrent_file().get_files()):
             row = attribute_index
 
             labeln = Gtk.Label(label=fullpath, xalign=0)

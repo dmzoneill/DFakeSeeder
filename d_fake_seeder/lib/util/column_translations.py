@@ -76,13 +76,11 @@ class ColumnTranslations:
             "small_torrent_limit": _("small_torrent_limit"),
             "uploading": _("uploading"),
             "active": _("active"),
-
             # Legacy/computed columns (may exist in UI)
             "size": _("Size"),  # fallback for total_size
             "downloaded": _("Downloaded"),  # fallback for session_downloaded
             "uploaded": _("Uploaded"),  # fallback for session_uploaded
             "ratio": _("Ratio"),
-
             # Additional details tab strings
             "created": _("Created"),
             "comment": _("Comment"),
