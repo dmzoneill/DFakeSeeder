@@ -1,0 +1,1837 @@
+# Polish translation for DFakeSeeder
+# Copyright (C) 2024 DFakeSeeder Contributors
+# This file is distributed under the same license as the DFakeSeeder package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DFakeSeeder 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"POT-Creation-Date: 2025-09-18 17:51+0100\n"
+"PO-Revision-Date: 2024-09-18 18:30+0100\n"
+"Last-Translator: Claude <noreply@anthropic.com>\n"
+"Language-Team: Polish <pl@li.org>\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+
+msgid "#"
+msgstr "#"
+
+msgid "(0 = unlimited)"
+msgstr "(0 = nieograniczone)"
+
+msgid "0 / 250"
+msgstr "0 / 250"
+
+msgid "127.0.0.1"
+msgstr "127.0.0.1"
+
+msgid ":"
+msgstr ":"
+
+msgid "<b>Advanced Extension Settings</b>"
+msgstr "<b>Zaawansowane ustawienia rozszerzeń</b>"
+
+msgid "<b>Aggressive Profile Settings</b>"
+msgstr "<b>Ustawienia profilu agresywnego</b>"
+
+msgid "<b>Alternative Speed Limits</b>"
+msgstr "<b>Alternatywne limity prędkości</b>"
+
+msgid "<b>Application Behavior</b>"
+msgstr "<b>Zachowanie aplikacji</b>"
+
+msgid "<b>Authentication</b>"
+msgstr "<b>Uwierzytelnienie</b>"
+
+msgid "<b>Balanced Profile Settings</b>"
+msgstr "<b>Ustawienia profilu zrównoważonego</b>"
+
+msgid "<b>Bootstrap Settings</b>"
+msgstr "<b>Ustawienia bootstrap</b>"
+
+msgid "<b>Client Behavior Engine</b>"
+msgstr "<b>Silnik zachowania klienta</b>"
+
+msgid "<b>Client Identification</b>"
+msgstr "<b>Identyfikacja klienta</b>"
+
+msgid "<b>Configuration Management</b>"
+msgstr "<b>Zarządzanie konfiguracją</b>"
+
+msgid "<b>Connection Limits</b>"
+msgstr "<b>Limity połączeń</b>"
+
+msgid "<b>Connection Settings</b>"
+msgstr "<b>Ustawienia połączenia</b>"
+
+msgid "<b>Conservative Profile Settings</b>"
+msgstr "<b>Ustawienia profilu konserwatywnego</b>"
+
+msgid "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT (Rozproszona tablica mieszająca)</b>"
+
+msgid "<b>Encryption</b>"
+msgstr "<b>Szyfrowanie</b>"
+
+msgid "<b>Expert Settings</b>"
+msgstr "<b>Ustawienia eksperta</b>"
+
+msgid "<b>Extension Protocol (BEP-010)</b>"
+msgstr "<b>Protokół rozszerzeń (BEP-010)</b>"
+
+msgid "<b>Global Speed Limits</b>"
+msgstr "<b>Globalne limity prędkości</b>"
+
+msgid "<b>Interface</b>"
+msgstr "<b>Interfejs</b>"
+
+msgid "<b>Keyboard Shortcuts</b>"
+msgstr "<b>Skróty klawiszowe</b>"
+
+msgid "<b>Listening Port</b>"
+msgstr "<b>Port nasłuchujący</b>"
+
+msgid "<b>Logging</b>"
+msgstr "<b>Rejestrowanie</b>"
+
+msgid "<b>Metadata Extension Settings</b>"
+msgstr "<b>Ustawienia rozszerzenia metadanych</b>"
+
+msgid "<b>Network Settings</b>"
+msgstr "<b>Ustawienia sieci</b>"
+
+msgid "<b>Node Configuration</b>"
+msgstr "<b>Konfiguracja węzła</b>"
+
+msgid "<b>Peer Behavior Settings</b>"
+msgstr "<b>Ustawienia zachowania peerów</b>"
+
+msgid "<b>Peer Exchange (PEX) Settings</b>"
+msgstr "<b>Ustawienia wymiany peerów (PEX)</b>"
+
+msgid "<b>Peer Protocol Timeouts</b>"
+msgstr "<b>Timeouty protokołu peer</b>"
+
+msgid "<b>Performance</b>"
+msgstr "<b>Wydajność</b>"
+
+msgid "<b>Protocol Extensions</b>"
+msgstr "<b>Rozszerzenia protokołu</b>"
+
+msgid "<b>Protocol Features</b>"
+msgstr "<b>Funkcje protokołu</b>"
+
+msgid "<b>Proxy Settings</b>"
+msgstr "<b>Ustawienia proxy</b>"
+
+msgid "<b>Security Options</b>"
+msgstr "<b>Opcje bezpieczeństwa</b>"
+
+msgid "<b>Seeder Protocol Settings</b>"
+msgstr "<b>Ustawienia protokołu seedera</b>"
+
+msgid "<b>Seeding Profiles</b>"
+msgstr "<b>Profile seedowania</b>"
+
+msgid "<b>Settings Search</b>"
+msgstr "<b>Wyszukiwanie ustawień</b>"
+
+msgid "<b>Speed Scheduler</b>"
+msgstr "<b>Harmonogram prędkości</b>"
+
+msgid "<b>Statistics and Security</b>"
+msgstr "<b>Statystyki i bezpieczeństwo</b>"
+
+msgid "<b>Swarm Intelligence</b>"
+msgstr "<b>Inteligencja roju</b>"
+
+msgid "<b>Timing Settings</b>"
+msgstr "<b>Ustawienia czasu</b>"
+
+msgid "<b>Tracker Announce Settings</b>"
+msgstr "<b>Ustawienia ogłoszeń trackera</b>"
+
+msgid "<b>Traffic Pattern Settings</b>"
+msgstr "<b>Ustawienia wzorców ruchu</b>"
+
+msgid "<b>Transport Protocol Settings</b>"
+msgstr "<b>Ustawienia protokołu transportowego</b>"
+
+msgid "<b>Web Interface</b>"
+msgstr "<b>Interfejs WWW</b>"
+
+msgid "About"
+msgstr "O programie"
+
+msgid "Active"
+msgstr "Aktywny"
+
+msgid "Active Profile:"
+msgstr "Aktywny profil:"
+
+msgid "Adaptation Rate:"
+msgstr "Tempo adaptacji:"
+
+msgid "Add"
+msgstr "Dodaj"
+
+msgid "Add torrent"
+msgstr "Dodaj torrent"
+
+msgid "Added"
+msgstr "Dodano"
+
+msgid "Advanced"
+msgstr "Zaawansowane"
+
+msgid "Advanced settings reset to defaults"
+msgstr "Zaawansowane ustawienia przywrócone do domyślnych"
+
+msgid "Aggressive"
+msgstr "Agresywny"
+
+msgid "Aggressive profile download speed"
+msgstr "Prędkość pobierania profilu agresywnego"
+
+msgid "Aggressive profile upload speed (0 = unlimited)"
+msgstr "Prędkość wysyłania profilu agresywnego (0 = nieograniczona)"
+
+msgid "Alt download limit (KB/s):"
+msgstr "Alt. limit pobierania (KB/s):"
+
+msgid "Alt upload limit (KB/s):"
+msgstr "Alt. limit wysyłania (KB/s):"
+
+msgid "Alternative download speed limit in KB/s"
+msgstr "Alternatywny limit prędkości pobierania w KB/s"
+
+msgid "Alternative upload speed limit in KB/s"
+msgstr "Alternatywny limit prędkości wysyłania w KB/s"
+
+msgid "Amount of RAM to use for disk caching"
+msgstr "Ilość RAM do wykorzystania na cache dysku"
+
+msgid "Announce Interval"
+msgstr "Interwał Ogłoszenia"
+
+msgid "Announce interval (sec):"
+msgstr "Interwał ogłoszeń (sek):"
+
+msgid "Announcement Interval:"
+msgstr "Interwał ogłoszeń:"
+
+msgid "Arabic"
+msgstr "Arabic"
+
+msgid "Auto-bootstrap DHT"
+msgstr "Auto-bootstrap DHT"
+
+msgid "Auto-generate node ID"
+msgstr "Automatyczne generowanie ID węzła"
+
+msgid "Auto-save settings"
+msgstr "Automatyczne zapisywanie ustawień"
+
+msgid "Auto-start disabled"
+msgstr "Autostart wyłączony"
+
+msgid "Auto-start enabled"
+msgstr "Autostart włączony"
+
+msgid "Automatic logout after inactivity (5-1440 minutes)"
+msgstr "Automatyczne wylogowanie po bezczynności (5-1440 minut)"
+
+msgid "Automatically bootstrap DHT using known nodes"
+msgstr "Automatycznie bootstrap DHT używając znanych węzłów"
+
+msgid "Automatically configure router port forwarding using UPnP/NAT-PMP"
+msgstr "Automatycznie konfiguruj przekierowanie portów routera za pomocą UPnP/NAT-PMP"
+
+msgid "Automatically generate a unique node ID"
+msgstr "Automatycznie generuj unikalny ID węzła"
+
+msgid "Automatically save settings when changed"
+msgstr "Automatycznie zapisuj ustawienia po zmianie"
+
+msgid "Automatically switch to alternative speeds during specified hours"
+msgstr "Automatycznie przełączaj na alternatywne prędkości w określonych godzinach"
+
+msgid "Availability"
+msgstr "Dostępność"
+
+msgid "Balanced"
+msgstr "Zrównoważony"
+
+msgid "Balanced profile download speed"
+msgstr "Prędkość pobierania profilu zrównoważonego"
+
+msgid "Balanced profile upload speed"
+msgstr "Prędkość wysyłania profilu zrównoważonego"
+
+msgid "Behavior Variation:"
+msgstr "Wariacja zachowania:"
+
+msgid "Behavior analysis probability:"
+msgstr "Prawdopodobieństwo analizy zachowania:"
+
+msgid "Behavior randomization"
+msgstr "Randomizacja zachowania"
+
+msgid "BiglyBT"
+msgstr "BiglyBT"
+
+msgid "Bind to localhost only"
+msgstr "Powiąż tylko z localhost"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "BitTorrent settings reset to defaults"
+msgstr "Ustawienia BitTorrent przywrócone do domyślnych"
+
+msgid "BitTorrent/7.10.5"
+msgstr "BitTorrent/7.10.5"
+
+msgid "Bootstrap Nodes (one per line, format: host:port):"
+msgstr "Węzły bootstrap (jeden na linię, format: host:port):"
+
+msgid "Bootstrap Timeout:"
+msgstr "Timeout bootstrap:"
+
+msgid "Bottom"
+msgstr "Na dół"
+
+msgid "Bucket Size:"
+msgstr "Rozmiar kubełka:"
+
+msgid "Burst Probability:"
+msgstr "Prawdopodobieństwo skoków:"
+
+msgid "CRITICAL"
+msgstr "KRYTYCZNY"
+
+msgid "Cancel"
+msgstr "Anuluj"
+
+msgid "Chinese"
+msgstr "Chiński"
+
+msgid "Choose a pre-configured seeding profile"
+msgstr "Wybierz prekonfigurowany profil seedowania"
+
+msgid "Choose the application theme"
+msgstr "Wybierz motyw aplikacji"
+
+msgid "Choose the interface language"
+msgstr "Wybierz język interfejsu"
+
+msgid "Clear search"
+msgstr "Wyczyść wyszukiwanie"
+
+msgid "Client"
+msgstr "Klient"
+
+msgid "Client Switch Probability:"
+msgstr "Prawdopodobieństwo przełączenia klienta:"
+
+msgid "Comment"
+msgstr "Komentarz"
+
+msgid "Completed"
+msgstr "Ukończono"
+
+msgid "Concurrent Queries:"
+msgstr "Równoczesne zapytania:"
+
+msgid "Config export not yet implemented"
+msgstr "Eksport konfiguracji jeszcze nie zaimplementowany"
+
+msgid "Config import not yet implemented"
+msgstr "Import konfiguracji jeszcze nie zaimplementowany"
+
+msgid "Connected"
+msgstr "Połączony"
+
+msgid "Connected At"
+msgstr "Połączono o"
+
+msgid "Connected Peers / Total Peers"
+msgstr "Połączeni peerzy / Łącznie peerów"
+
+msgid "Connection"
+msgstr "Połączenie"
+
+msgid "Connection Status"
+msgstr "Status połączenia"
+
+msgid "Connection Timeout:"
+msgstr "Timeout połączenia:"
+
+msgid "Connection rotation percentage:"
+msgstr "Procent rotacji połączeń:"
+
+msgid "Connection settings reset to defaults"
+msgstr "Ustawienia połączenia przywrócone do domyślnych"
+
+msgid "Connection timeout for extensions (seconds)"
+msgstr "Timeout połączenia dla rozszerzeń (sekundy)"
+
+msgid "Conservative"
+msgstr "Konserwatywny"
+
+msgid "Conservative profile download speed"
+msgstr "Prędkość pobierania profilu konserwatywnego"
+
+msgid "Conservative profile upload speed"
+msgstr "Prędkość wysyłania profilu konserwatywnego"
+
+msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
+msgstr "Konserwatywny: Niższe prędkości, mniej połączeń, idealny do seedowania w tle"
+
+msgid "Country"
+msgstr "Kraj"
+
+msgid "Created"
+msgstr "Utworzony"
+
+msgid "Created By"
+msgstr "Utworzony przez"
+
+msgid "Ctrl+,"
+msgstr "Ctrl+,"
+
+msgid "Ctrl+F"
+msgstr "Ctrl+F"
+
+msgid "Ctrl+R"
+msgstr "Ctrl+R"
+
+msgid "Custom"
+msgstr "Niestandardowy"
+
+msgid "Custom Agent:"
+msgstr "Niestandardowy agent:"
+
+msgid "Custom Node ID:"
+msgstr "Niestandardowy ID węzła:"
+
+msgid "Custom node ID (40 hex characters)"
+msgstr "Niestandardowy ID węzła (40 znaków hex)"
+
+msgid "Custom user agent string"
+msgstr "Niestandardowy ciąg agenta użytkownika"
+
+msgid "D' Fake Seeder"
+msgstr "D' Fake Seeder"
+
+msgid "DEBUG"
+msgstr "DEBUGOWANIE"
+
+msgid "DHT"
+msgstr "DHT"
+
+msgid "Dark"
+msgstr "Ciemny"
+
+msgid "Days:"
+msgstr "Dni:"
+
+msgid "Deluge"
+msgstr "Deluge"
+
+msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
+msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
+
+msgid "Details"
+msgstr "Szczegóły"
+
+msgid "Disabled"
+msgstr "Wyłączony"
+
+msgid "Disconnected"
+msgstr "Rozłączony"
+
+msgid "Disk cache size (MB):"
+msgstr "Rozmiar cache dysku (MB):"
+
+msgid "Down"
+msgstr "W dół"
+
+msgid "Down Speed"
+msgstr "Prędkość pobierania"
+
+msgid "Download Rate"
+msgstr "Prędkość pobierania"
+
+msgid "Download Speed (KB/s):"
+msgstr "Prędkość pobierania (KB/s):"
+
+msgid "Download Variance:"
+msgstr "Wariancja pobierania:"
+
+msgid "Download limit (KB/s):"
+msgstr "Limit pobierania (KB/s):"
+
+msgid "Download speed variance for aggressive profile"
+msgstr "Wariancja prędkości pobierania dla profilu agresywnego"
+
+msgid "Download speed variance for balanced profile"
+msgstr "Wariancja prędkości pobierania dla profilu zrównoważonego"
+
+msgid "Download speed variance for conservative profile"
+msgstr "Wariancja prędkości pobierania dla profilu konserwatywnego"
+
+msgid "Downloaded"
+msgstr "Pobrano"
+
+msgid "Downloaded Session / Total"
+msgstr "Pobrano sesja / łącznie"
+
+msgid "Downloaded Speed"
+msgstr "Prędkość pobierania"
+
+msgid "Dropout probability:"
+msgstr "Prawdopodobieństwo odpadnięcia:"
+
+msgid "Dutch"
+msgstr "Dutch"
+
+msgid "Dynamic profile switching"
+msgstr "Dynamiczne przełączanie profili"
+
+msgid "ERROR"
+msgstr "BŁĄD"
+
+msgid "ETA"
+msgstr "Pozostały czas"
+
+msgid "Enable CSRF protection"
+msgstr "Włącz ochronę CSRF"
+
+msgid "Enable Cross-Site Request Forgery protection"
+msgstr "Włącz ochronę przed Cross-Site Request Forgery"
+
+msgid "Enable DHT"
+msgstr "Włącz DHT"
+
+msgid "Enable DHT (Distributed Hash Table)"
+msgstr "Włącz DHT (Distributed Hash Table)"
+
+msgid "Enable DHT query rate limiting"
+msgstr "Włącz ograniczenie częstotliwości zapytań DHT"
+
+msgid "Enable DHT statistics collection"
+msgstr "Włącz zbieranie statystyk DHT"
+
+msgid "Enable Distributed Hash Table for trackerless torrents"
+msgstr "Włącz Distributed Hash Table dla torrentów bez trackera"
+
+msgid "Enable Fast Extension (BEP-006) for improved performance"
+msgstr "Włącz szybkie rozszerzenie (BEP-006) dla lepszej wydajności"
+
+msgid "Enable LPD (Local Peer Discovery)"
+msgstr "Włącz LPD (Local Peer Discovery)"
+
+msgid "Enable Local Peer Discovery for finding peers on local network"
+msgstr "Włącz Local Peer Discovery do znajdowania peerów w sieci lokalnej"
+
+msgid "Enable Nagle algorithm"
+msgstr "Włącz algorytm Nagle"
+
+msgid "Enable Nagle algorithm for TCP"
+msgstr "Włącz algorytm Nagle dla TCP"
+
+msgid "Enable PEX (Peer Exchange)"
+msgstr "Włącz PEX (Peer Exchange)"
+
+msgid "Enable Peer Exchange for discovering new peers"
+msgstr "Włącz Peer Exchange do odkrywania nowych peerów"
+
+msgid "Enable Protocol Extensions"
+msgstr "Włącz rozszerzenia protokołu"
+
+msgid "Enable TCP keepalive"
+msgstr "Włącz TCP keepalive"
+
+msgid "Enable UPnP/NAT-PMP port mapping"
+msgstr "Włącz mapowanie portów UPnP/NAT-PMP"
+
+msgid "Enable Web UI"
+msgstr "Włącz interfejs WWW"
+
+msgid "Enable alternative speed limits"
+msgstr "Włącz alternatywne limity prędkości"
+
+msgid "Enable alternative speed limits (useful for limiting speeds during certain hours)"
+msgstr "Włącz alternatywne limity prędkości (przydatne do ograniczania prędkości w określonych godzinach)"
+
+msgid "Enable clickjacking protection"
+msgstr "Włącz ochronę przed clickjacking"
+
+msgid "Enable client behavior simulation"
+msgstr "Włącz symulację zachowania klienta"
+
+msgid "Enable client behavior simulation engine"
+msgstr "Włącz silnik symulacji zachowania klienta"
+
+msgid "Enable debug mode"
+msgstr "Włącz tryb debugowania"
+
+msgid "Enable debug mode with extra logging and error details"
+msgstr "Włącz tryb debugowania z dodatkowym logowaniem i szczegółami błędów"
+
+msgid "Enable dynamic client profile switching"
+msgstr "Włącz dynamiczne przełączanie profili klienta"
+
+msgid "Enable lt_donthave extension for piece availability"
+msgstr "Włącz rozszerzenie lt_donthave dla dostępności fragmentów"
+
+msgid "Enable metadata extension"
+msgstr "Włącz rozszerzenie metadanych"
+
+msgid "Enable metadata extension features"
+msgstr "Włącz funkcje rozszerzenia metadanych"
+
+msgid "Enable or disable BitTorrent protocol extensions"
+msgstr "Włącz lub wyłącz rozszerzenia protokołu BitTorrent"
+
+msgid "Enable or disable DHT for trackerless torrent support"
+msgstr "Włącz lub wyłącz DHT dla obsługi torrentów bez trackerów"
+
+msgid "Enable proxy authentication"
+msgstr "Włącz uwierzytelnienie proxy"
+
+msgid "Enable random variations in client behavior"
+msgstr "Włącz losowe wariacje w zachowaniu klienta"
+
+msgid "Enable rate limiting"
+msgstr "Włącz ograniczenie prędkości"
+
+msgid "Enable realistic traffic variations"
+msgstr "Włącz realistyczne wariacje ruchu"
+
+msgid "Enable secure HTTP headers"
+msgstr "Włącz bezpieczne nagłówki HTTP"
+
+msgid "Enable speed scheduler"
+msgstr "Włącz harmonogram prędkości"
+
+msgid "Enable statistics"
+msgstr "Włącz statystyki"
+
+msgid "Enable swarm intelligence"
+msgstr "Włącz inteligencję roju"
+
+msgid "Enable swarm intelligence for adaptive behavior"
+msgstr "Włącz inteligencję roju dla adaptacyjnego zachowania"
+
+msgid "Enable time-based traffic patterns (peak hours, night hours)"
+msgstr "Włącz wzorce ruchu oparte na czasie (godziny szczytu, godziny nocne)"
+
+msgid "Enable ut_holepunch extension for NAT traversal"
+msgstr "Włącz rozszerzenie ut_holepunch dla przechodzenia NAT"
+
+msgid "Enable ut_metadata extension for metadata exchange"
+msgstr "Włącz rozszerzenie ut_metadata dla wymiany metadanych"
+
+msgid "Enable ut_pex extension for peer exchange"
+msgstr "Włącz rozszerzenie ut_pex dla wymiany peerów"
+
+msgid "Enable web-based remote control interface"
+msgstr "Włącz webowy interfejs zdalnego sterowania"
+
+msgid "Enable µTP (Micro Transport Protocol)"
+msgstr "Włącz µTP (Micro Transport Protocol)"
+
+msgid "Enabled"
+msgstr "Włączony"
+
+msgid "Encryption:"
+msgstr "Szyfrowanie:"
+
+msgid "End hour (24-hour format)"
+msgstr "Godzina końcowa (format 24-godzinny)"
+
+msgid "End minute"
+msgstr "Minuta końcowa"
+
+msgid "English"
+msgstr "Angielski"
+
+msgid "Error"
+msgstr "Błąd"
+
+msgid "Error changing language"
+msgstr "Błąd zmiany języka"
+
+msgid "Export"
+msgstr "Eksportuj"
+
+msgid "Export Settings"
+msgstr "Eksportuj ustawienia"
+
+msgid "Export current settings to a file"
+msgstr "Eksportuj bieżące ustawienia do pliku"
+
+msgid "Extension Timeout:"
+msgstr "Timeout rozszerzenia:"
+
+msgid "Extension statistics update interval (seconds)"
+msgstr "Interwał aktualizacji statystyk rozszerzeń (sekundy)"
+
+msgid "Failure Reason"
+msgstr "Przyczyna niepowodzenia"
+
+msgid "Fall back to TCP if µTP fails"
+msgstr "Przejdź na TCP jeśli µTP zawiedzie"
+
+msgid "Fast Extension (BEP-006)"
+msgstr "Szybkie rozszerzenie (BEP-006)"
+
+msgid "File"
+msgstr "Plik"
+
+msgid "File Path"
+msgstr "Ścieżka pliku"
+
+msgid "File chooser not yet implemented"
+msgstr "Wybieracz plików jeszcze nie zaimplementowany"
+
+msgid "Files"
+msgstr "Pliki"
+
+msgid "Flags"
+msgstr "Flagi"
+
+msgid "Follow System"
+msgstr "Podążaj za systemem"
+
+msgid "Forced"
+msgstr "Wymuszony"
+
+msgid "French"
+msgstr "Francuski"
+
+msgid "Fri"
+msgstr "Pt"
+
+msgid "Friday"
+msgstr "Piątek"
+
+msgid "From:"
+msgstr "Od:"
+
+msgid "General"
+msgstr "Ogólne"
+
+msgid "General settings reset to defaults"
+msgstr "Ustawienia ogólne przywrócone do domyślnych"
+
+msgid "General timeout for extension operations (seconds)"
+msgstr "Ogólny timeout dla operacji rozszerzeń (sekundy)"
+
+msgid "Generate Secure Password"
+msgstr "Generuj bezpieczne hasło"
+
+msgid "Generate a random port number"
+msgstr "Generuj losowy numer portu"
+
+msgid "Generate a random secure password"
+msgstr "Generuj losowe bezpieczne hasło"
+
+msgid "Generate synthetic metadata"
+msgstr "Generuj syntetyczne metadane"
+
+msgid "Generate synthetic metadata for simulation"
+msgstr "Generuj syntetyczne metadane dla symulacji"
+
+msgid "Generate synthetic peer data for PEX"
+msgstr "Generuj syntetyczne dane peerów dla PEX"
+
+msgid "Generate synthetic peers"
+msgstr "Generuj syntetycznych peerów"
+
+msgid "German"
+msgstr "Niemiecki"
+
+msgid "Github - D' Fake Seeder"
+msgstr "Github - D' Fake Seeder"
+
+msgid "Global download speed limit in KB/s (0 = unlimited)"
+msgstr "Globalny limit prędkości pobierania w KB/s (0 = bez limitu)"
+
+msgid "Global upload speed limit in KB/s (0 = unlimited)"
+msgstr "Globalny limit prędkości wysyłania w KB/s (0 = bez limitu)"
+
+msgid "HTTP"
+msgstr "HTTP"
+
+msgid "HTTP seeder timeout (seconds):"
+msgstr "Timeout HTTP seedera (sekundy):"
+
+msgid "Handshake"
+msgstr "Uścisk dłoni"
+
+msgid "Handshake timeout (seconds):"
+msgstr "Timeout handshake (sekundy):"
+
+msgid "Hide to system tray when window is minimized"
+msgstr "Ukryj w zasobniku systemowym gdy okno jest zminimalizowane"
+
+msgid "Hindi"
+msgstr "Hindi"
+
+msgid "How often to announce to trackers (60-7200 seconds)"
+msgstr "Jak często ogłaszać się trackerom (60-7200 sekund)"
+
+msgid "How often to scrape tracker for swarm statistics"
+msgstr "Jak często pobierać statystyki roju z trackera"
+
+msgid "How often to update the user interface"
+msgstr "Jak często aktualizować interfejs użytkownika"
+
+msgid "ID"
+msgstr "Identyfikator"
+
+msgid "INFO"
+msgstr "INFO"
+
+msgid "IP Address"
+msgstr "Adres IP"
+
+msgid "IP address to bind to (0.0.0.0 for all interfaces)"
+msgstr "Adres IP do powiązania (0.0.0.0 dla wszystkich interfejsów)"
+
+msgid "Idle Probability:"
+msgstr "Prawdopodobieństwo bezczynności:"
+
+msgid "Import"
+msgstr "Importuj"
+
+msgid "Import Settings"
+msgstr "Importuj ustawienia"
+
+msgid "Import settings from a file"
+msgstr "Importuj ustawienia z pliku"
+
+msgid "Inactive"
+msgstr "Nieaktywny"
+
+msgid "Incoming"
+msgstr "Przychodzące"
+
+msgid "Incoming Connections"
+msgstr "Połączenia przychodzące"
+
+msgid "Incoming Peer Connections"
+msgstr "Przychodzące połączenia peerów"
+
+msgid "Interested"
+msgstr "Zainteresowany"
+
+msgid "Interval between DHT announcements (seconds)"
+msgstr "Interwał między ogłoszeniami DHT (sekundy)"
+
+msgid "Interval between PEX message exchanges (seconds)"
+msgstr "Interwał między wymianą wiadomości PEX (sekundy)"
+
+msgid "Interval for DHT statistics updates (seconds)"
+msgstr "Interwał aktualizacji statystyk DHT (sekundy)"
+
+msgid "Interval for contacting peers in seconds"
+msgstr "Interwał kontaktowania się z peerami w sekundach"
+
+msgid "Interval for sending keep alive messages in seconds"
+msgstr "Interwał wysyłania wiadomości keep alive w sekundach"
+
+msgid "Italian"
+msgstr "Włoski"
+
+msgid "Japanese"
+msgstr "Japoński"
+
+msgid "Keep Alive Interval:"
+msgstr "Interwał Keep Alive:"
+
+msgid "Keep alive interval (seconds):"
+msgstr "Interwał keep alive (sekundy):"
+
+msgid "Keep alive interval for connections (seconds)"
+msgstr "Interwał keep alive dla połączeń (sekundy)"
+
+msgid "Korean"
+msgstr "Korean"
+
+msgid "Label"
+msgstr "Etykieta"
+
+msgid "Language switched to"
+msgstr "Język zmieniony na"
+
+msgid "Language:"
+msgstr "Język:"
+
+msgid "Last Announce"
+msgstr "Ostatnie ogłoszenie"
+
+msgid "Last Notification"
+msgstr "Ostatnie powiadomienie"
+
+msgid "Leechers"
+msgstr "Pobierający"
+
+msgid "Level of BitTorrent protocol compliance"
+msgstr "Poziom zgodności z protokołem BitTorrent"
+
+msgid "Light"
+msgstr "Jasny"
+
+msgid "Limit extension message rate"
+msgstr "Ogranicz częstotliwość wiadomości rozszerzeń"
+
+msgid "List of bootstrap nodes for DHT initialization"
+msgstr "Lista węzłów bootstrap do inicjalizacji DHT"
+
+msgid "Log"
+msgstr "Dziennik"
+
+msgid "Log Level:"
+msgstr "Poziom logowania:"
+
+msgid "Log to file"
+msgstr "Loguj do pliku"
+
+msgid "Max Connections:"
+msgstr "Maks. połączeń:"
+
+msgid "Max Dropped Peers:"
+msgstr "Max porzuconych peerów:"
+
+msgid "Max Message Size:"
+msgstr "Max rozmiar wiadomości:"
+
+msgid "Max Messages/Second:"
+msgstr "Max wiadomości/sekundę:"
+
+msgid "Max Nodes:"
+msgstr "Max węzłów:"
+
+msgid "Max Peers/Message:"
+msgstr "Max peerów/wiadomość:"
+
+msgid "Max Queries/Second:"
+msgstr "Max zapytań/sekundę:"
+
+msgid "Max global connections:"
+msgstr "Maks. połączenia globalne:"
+
+msgid "Max log file size (MB):"
+msgstr "Maks. rozmiar pliku loga (MB):"
+
+msgid "Max per torrent:"
+msgstr "Maks. na torrent:"
+
+msgid "Max upload slots:"
+msgstr "Maks. sloty wysyłania:"
+
+msgid "Maximum DHT queries per second"
+msgstr "Maksimum zapytań DHT na sekundę"
+
+msgid "Maximum connections for aggressive profile"
+msgstr "Maksimum połączeń dla profilu agresywnego"
+
+msgid "Maximum connections for balanced profile"
+msgstr "Maksimum połączeń dla profilu zrównoważonego"
+
+msgid "Maximum connections for conservative profile"
+msgstr "Maksimum połączeń dla profilu konserwatywnego"
+
+msgid "Maximum dropped peers to track for PEX"
+msgstr "Maksimum porzuconych peerów do śledzenia dla PEX"
+
+msgid "Maximum extension messages per second"
+msgstr "Maksimum wiadomości rozszerzeń na sekundę"
+
+msgid "Maximum number of DHT nodes to maintain"
+msgstr "Maksymalna liczba węzłów DHT do utrzymania"
+
+msgid "Maximum number of concurrent DHT queries"
+msgstr "Maksymalna liczba równoczesnych zapytań DHT"
+
+msgid "Maximum number of connections per individual torrent"
+msgstr "Maksymalna liczba połączeń na poszczególny torrent"
+
+msgid "Maximum number of connections to all torrents"
+msgstr "Maksymalna liczba połączeń do wszystkich torrentów"
+
+msgid "Maximum number of nodes in the routing table"
+msgstr "Maksymalna liczba węzłów w tabeli routingu"
+
+msgid "Maximum number of nodes per bucket"
+msgstr "Maksymalna liczba węzłów na kubełek"
+
+msgid "Maximum number of simultaneous upload slots"
+msgstr "Maksymalna liczba jednoczesnych slotów wysyłania"
+
+msgid "Maximum peers to include in a PEX message"
+msgstr "Maksimum peerów do uwzględnienia w wiadomości PEX"
+
+msgid "Maximum port for seeder connections"
+msgstr "Maksymalny port dla połączeń seedera"
+
+msgid "Maximum size for extension messages (bytes)"
+msgstr "Maksymalny rozmiar wiadomości rozszerzeń (bajty)"
+
+msgid "Maximum size of log file before rotation"
+msgstr "Maksymalny rozmiar pliku loga przed rotacją"
+
+msgid "Maximum transaction ID for tracker communication"
+msgstr "Maksymalne ID transakcji dla komunikacji z trackerem"
+
+msgid "Message"
+msgstr "Wiadomość"
+
+msgid "Message read timeout (seconds):"
+msgstr "Timeout odczytu wiadomości (sekundy):"
+
+msgid "Metadata Piece Size:"
+msgstr "Rozmiar fragmentu metadanych:"
+
+msgid "Metadata Timeout:"
+msgstr "Timeout metadanych:"
+
+msgid "Min announce interval (sec):"
+msgstr "Min. interwał ogłoszeń (sek):"
+
+msgid "Minimize to system tray"
+msgstr "Minimalizuj do zasobnika systemowego"
+
+msgid "Minimum log level to record"
+msgstr "Minimalny poziom logowania do nagrywania"
+
+msgid "Minimum port for seeder connections"
+msgstr "Minimalny port dla połączeń seedera"
+
+msgid "Minimum time between announces (10-3600 seconds)"
+msgstr "Minimalny czas między ogłoszeniami (10-3600 sekund)"
+
+msgid "Minimum transaction ID for tracker communication"
+msgstr "Minimalne ID transakcji dla komunikacji z trackerem"
+
+msgid "Mon"
+msgstr "Pon"
+
+msgid "Monday"
+msgstr "Poniedziałek"
+
+msgid "My IP address"
+msgstr "Mój adres IP"
+
+msgid "N/A"
+msgstr "Nie dotyczy"
+
+msgid "Name"
+msgstr "Nazwa"
+
+msgid "Network interface:"
+msgstr "Interfejs sieciowy:"
+
+msgid "Next Announce"
+msgstr "Następne ogłoszenie"
+
+msgid "Next Update"
+msgstr "Następna Aktualizacja"
+
+msgid "None"
+msgstr "Brak"
+
+msgid "Number of peers to analyze for behavior patterns"
+msgstr "Liczba peerów do analizy wzorców zachowania"
+
+msgid "Number of peers to request from tracker"
+msgstr "Liczba peerów do żądania od trackera"
+
+msgid "Number of synthetic peers to generate"
+msgstr "Liczba syntetycznych peerów do wygenerowania"
+
+msgid "Only allow connections from localhost (more secure)"
+msgstr "Zezwalaj tylko na połączenia z localhost (bardziej bezpieczne)"
+
+msgid "Open preferences"
+msgstr "Otwórz preferencje"
+
+msgid "Options"
+msgstr "Opcje"
+
+msgid "Outgoing"
+msgstr "Wychodzące"
+
+msgid "Outgoing Connections"
+msgstr "Połączenia wychodzące"
+
+msgid "Outgoing Peer Connections"
+msgstr "Wychodzące połączenia peerów"
+
+msgid "Overlay Notification"
+msgstr "Powiadomienie nakładkowe"
+
+msgid "PEX Interval:"
+msgstr "Interwał PEX:"
+
+msgid "Password for web interface login"
+msgstr "Hasło do logowania interfejsu webowego"
+
+msgid "Password:"
+msgstr "Hasło:"
+
+msgid "Path"
+msgstr "Ścieżka"
+
+msgid "Pause"
+msgstr "Wstrzymaj"
+
+msgid "Pause torrent"
+msgstr "Wstrzymaj torrent"
+
+msgid "Peer Analysis Depth:"
+msgstr "Głębokość analizy peerów:"
+
+msgid "Peer Choking"
+msgstr "Blokowanie peera"
+
+msgid "Peer ID"
+msgstr "ID Peera"
+
+msgid "Peer ID Prefix:"
+msgstr "Prefiks ID peera:"
+
+msgid "Peer ID prefix to identify client type"
+msgstr "Prefiks ID peera do identyfikacji typu klienta"
+
+msgid "Peer Protocol"
+msgstr "Protokół peer"
+
+msgid "Peer Protocol settings reset to defaults"
+msgstr "Ustawienia protokołu peerów przywrócone do domyślnych"
+
+msgid "Peer contact interval (seconds):"
+msgstr "Interwał kontaktu z peerem (sekundy):"
+
+msgid "Peer idle chance:"
+msgstr "Szansa na bezczynność peera:"
+
+msgid "Peer request count:"
+msgstr "Liczba żądań peera:"
+
+msgid "Peers"
+msgstr "Peery"
+
+msgid "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr "Procent połączeń do rotacji (0.0 - 1.0)"
+
+msgid "Piece Length"
+msgstr "Długość kawałka"
+
+msgid "Pieces"
+msgstr "Kawałki"
+
+msgid "Pieces Received"
+msgstr "Otrzymane kawałki"
+
+msgid "Polish"
+msgstr "Polish"
+
+msgid "Port"
+msgstr "Port TCP/UDP"
+
+msgid "Port for incoming BitTorrent connections (1024-65535)"
+msgstr "Port dla przychodzących połączeń BitTorrent (1024-65535)"
+
+msgid "Port for web interface (1024-65535)"
+msgstr "Port dla interfejsu webowego (1024-65535)"
+
+msgid "Port:"
+msgstr "Numer portu:"
+
+msgid "Portuguese"
+msgstr "Portugalski"
+
+msgid "Preferences"
+msgstr "Preferencje"
+
+msgid "Prevent embedding in frames (X-Frame-Options)"
+msgstr "Zapobiegaj osadzaniu w ramkach (X-Frame-Options)"
+
+msgid "Primary BitTorrent client to simulate"
+msgstr "Główny klient BitTorrent do symulacji"
+
+msgid "Primary Client:"
+msgstr "Główny klient:"
+
+msgid "Priority"
+msgstr "Priorytet"
+
+msgid "Priority Down"
+msgstr "Priorytet w dół"
+
+msgid "Priority Up"
+msgstr "Priorytet w górę"
+
+msgid "Private"
+msgstr "Prywatny"
+
+msgid "Probability of idle periods for aggressive profile"
+msgstr "Prawdopodobieństwo okresów bezczynności dla profilu agresywnego"
+
+msgid "Probability of idle periods for balanced profile"
+msgstr "Prawdopodobieństwo okresów bezczynności dla profilu zrównoważonego"
+
+msgid "Probability of idle periods for conservative profile"
+msgstr "Prawdopodobieństwo okresów bezczynności dla profilu konserwatywnego"
+
+msgid "Probability of peer behavior analysis (0.0 - 1.0)"
+msgstr "Prawdopodobieństwo analizy zachowania peera (0.0 - 1.0)"
+
+msgid "Probability of peer being idle (0.0 - 1.0)"
+msgstr "Prawdopodobieństwo bezczynności peera (0.0 - 1.0)"
+
+msgid "Probability of peer dropping out (0.0 - 1.0)"
+msgstr "Prawdopodobieństwo odpadnięcia peera (0.0 - 1.0)"
+
+msgid "Probability of peer status changes (0.0 - 1.0)"
+msgstr "Prawdopodobieństwo zmian statusu peera (0.0 - 1.0)"
+
+msgid "Probability of seeder upload activity (0.0 - 1.0)"
+msgstr "Prawdopodobieństwo aktywności wysyłania seedera (0.0 - 1.0)"
+
+msgid "Probability of switching to a different client behavior"
+msgstr "Prawdopodobieństwo przełączenia na inne zachowanie klienta"
+
+msgid "Probability of traffic bursts for aggressive profile"
+msgstr "Prawdopodobieństwo skoków ruchu dla profilu agresywnego"
+
+msgid "Probability of traffic bursts for balanced profile"
+msgstr "Prawdopodobieństwo skoków ruchu dla profilu zrównoważonego"
+
+msgid "Probability of traffic bursts for conservative profile"
+msgstr "Prawdopodobieństwo skoków ruchu dla profilu konserwatywnego"
+
+msgid "Progress"
+msgstr "Postęp"
+
+msgid "Progress distribution (almost):"
+msgstr "Rozkład postępu (prawie):"
+
+msgid "Progress distribution (middle):"
+msgstr "Rozkład postępu (środek):"
+
+msgid "Progress distribution (start):"
+msgstr "Rozkład postępu (start):"
+
+msgid "Progress distribution for almost complete peers (0.0 - 1.0)"
+msgstr "Rozkład postępu dla prawie ukończonych peerów (0.0 - 1.0)"
+
+msgid "Progress distribution for middle progress peers (0.0 - 1.0)"
+msgstr "Rozkład postępu dla peerów o średnim postępie (0.0 - 1.0)"
+
+msgid "Progress distribution for starting peers (0.0 - 1.0)"
+msgstr "Rozkład postępu dla rozpoczynających peerów (0.0 - 1.0)"
+
+msgid "Protocol Compliance:"
+msgstr "Zgodność protokołu:"
+
+msgid "Protocol Extensions"
+msgstr "Rozszerzenia protokołu"
+
+msgid "Protocol encryption mode for peer communications"
+msgstr "Tryb szyfrowania protokołu dla komunikacji peer"
+
+msgid "Proxy authentication password"
+msgstr "Hasło uwierzytelnienia proxy"
+
+msgid "Proxy authentication username"
+msgstr "Nazwa użytkownika uwierzytelnienia proxy"
+
+msgid "Proxy server hostname or IP address"
+msgstr "Nazwa hosta lub adres IP serwera proxy"
+
+msgid "Proxy server port number"
+msgstr "Numer portu serwera proxy"
+
+msgid "Query Timeout:"
+msgstr "Timeout zapytania:"
+
+msgid "Queue"
+msgstr "Kolejka"
+
+msgid "Quit"
+msgstr "Zakończ"
+
+msgid "Random"
+msgstr "Losowy"
+
+msgid "Rate of adaptation to swarm behavior"
+msgstr "Tempo adaptacji do zachowania roju"
+
+msgid "Ratio"
+msgstr "Współczynnik"
+
+msgid "Realistic variations"
+msgstr "Realistyczne wariacje"
+
+msgid "Received"
+msgstr "Odebrano"
+
+msgid "Relaxed"
+msgstr "Luźny"
+
+msgid "Remember window size and position"
+msgstr "Zapamiętaj rozmiar i pozycję okna"
+
+msgid "Remember window size and position between sessions"
+msgstr "Zapamiętaj rozmiar i pozycję okna między sesjami"
+
+msgid "Remove torrent"
+msgstr "Usuń torrent"
+
+msgid "Requests"
+msgstr "Żądania"
+
+msgid "Require authentication"
+msgstr "Wymagaj uwierzytelnienia"
+
+msgid "Require username and password for web access"
+msgstr "Wymagaj nazwy użytkownika i hasła dla dostępu webowego"
+
+msgid "Reset"
+msgstr "Resetuj"
+
+msgid "Reset all settings not yet implemented"
+msgstr "Reset wszystkich ustawień jeszcze nie zaimplementowany"
+
+msgid "Reset all settings to default values"
+msgstr "Resetuj wszystkie ustawienia do wartości domyślnych"
+
+msgid "Reset to Defaults"
+msgstr "Resetuj do domyślnych"
+
+msgid "Reset to defaults"
+msgstr "Resetuj do domyślnych"
+
+msgid "Resume"
+msgstr "Wznów"
+
+msgid "Resume torrent"
+msgstr "Wznów torrent"
+
+msgid "Routing Table Size:"
+msgstr "Rozmiar tabeli routingu:"
+
+msgid "Russian"
+msgstr "Rosyjski"
+
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+msgid "Sat"
+msgstr "Sob"
+
+msgid "Saturday"
+msgstr "Sobota"
+
+msgid "Save logs to file in addition to console"
+msgstr "Zapisuj logi do pliku oprócz konsoli"
+
+msgid "Scrape interval (sec):"
+msgstr "Interwał scrapowania (sek):"
+
+msgid "Search by torrent name or file path"
+msgstr "Szukaj po nazwie torrenta lub ścieżce pliku"
+
+msgid "Search for settings across all tabs"
+msgstr "Szukaj ustawień we wszystkich zakładkach"
+
+msgid "Search for torrent"
+msgstr "Szukaj torrenta"
+
+msgid "Search settings"
+msgstr "Szukaj ustawień"
+
+msgid "Secure password generated"
+msgstr "Wygenerowano bezpieczne hasło"
+
+msgid "Seeder port range (max):"
+msgstr "Zakres portów seedera (maks):"
+
+msgid "Seeder port range (min):"
+msgstr "Zakres portów seedera (min):"
+
+msgid "Seeders"
+msgstr "Rozdający"
+
+msgid "Seeds"
+msgstr "Seedy"
+
+msgid "Select proxy type for connections"
+msgstr "Wybierz typ proxy dla połączeń"
+
+msgid "Select torrent"
+msgstr "Wybierz torrent"
+
+msgid "Send security-related HTTP headers"
+msgstr "Wysyłaj nagłówki HTTP związane z bezpieczeństwem"
+
+msgid "Sent"
+msgstr "Wysłano"
+
+msgid "Server:"
+msgstr "Serwer:"
+
+msgid "Session timeout (min):"
+msgstr "Timeout sesji (min):"
+
+msgid "Shortcuts configuration not yet implemented"
+msgstr "Konfiguracja skrótów jeszcze nie zaimplementowana"
+
+msgid "Show only selected torrent connections"
+msgstr "Pokaż tylko połączenia wybranego torrenta"
+
+msgid "Simulation"
+msgstr "Symulacja"
+
+msgid "Size"
+msgstr "Rozmiar"
+
+msgid "Size of metadata pieces in bytes"
+msgstr "Rozmiar fragmentów metadanych w bajtach"
+
+msgid "Small Torrent Limit"
+msgstr "Limit Małego Torrenta"
+
+msgid "Spanish"
+msgstr "Hiszpański"
+
+msgid "Speed"
+msgstr "Prędkość"
+
+msgid "Speed settings reset to defaults"
+msgstr "Ustawienia prędkości przywrócone do domyślnych"
+
+msgid "Standard"
+msgstr "Standardowy"
+
+msgid "Start DFakeSeeder automatically when the system boots"
+msgstr "Uruchamiaj DFakeSeeder automatycznie przy starcie systemu"
+
+msgid "Start hour (24-hour format)"
+msgstr "Godzina rozpoczęcia (format 24-godzinny)"
+
+msgid "Start minimized"
+msgstr "Uruchom zminimalizowany"
+
+msgid "Start minimized disabled"
+msgstr "Start zminimalizowany wyłączony"
+
+msgid "Start minimized enabled"
+msgstr "Start zminimalizowany włączony"
+
+msgid "Start minute"
+msgstr "Minuta rozpoczęcia"
+
+msgid "Start on system startup"
+msgstr "Uruchom przy starcie systemu"
+
+msgid "Start the application minimized to system tray"
+msgstr "Uruchom aplikację zminimalizowaną do zasobnika systemowego"
+
+msgid "Stats Update Interval:"
+msgstr "Interwał aktualizacji statystyk:"
+
+msgid "Status"
+msgstr "Stan"
+
+msgid "Status change probability:"
+msgstr "Prawdopodobieństwo zmiany statusu:"
+
+msgid "Strict"
+msgstr "Ścisły"
+
+msgid "Sun"
+msgstr "Nie"
+
+msgid "Sunday"
+msgstr "Niedziela"
+
+msgid "Swedish"
+msgstr "Swedish"
+
+msgid "Synthetic Peer Count:"
+msgstr "Liczba syntetycznych peerów:"
+
+msgid "TCP fallback"
+msgstr "Fallback TCP"
+
+msgid "TCP keepalive"
+msgstr "TCP keepalive"
+
+msgid "Theme:"
+msgstr "Motyw:"
+
+msgid "Threshold"
+msgstr "Próg"
+
+msgid "Thu"
+msgstr "Czw"
+
+msgid "Thursday"
+msgstr "Czwartek"
+
+msgid "Tier"
+msgstr "Warstwa"
+
+msgid "Time-based patterns"
+msgstr "Wzorce czasowe"
+
+msgid "Timeout for DHT bootstrap operations (seconds)"
+msgstr "Timeout dla operacji bootstrap DHT (sekundy)"
+
+msgid "Timeout for DHT queries (seconds)"
+msgstr "Timeout dla zapytań DHT (sekundy)"
+
+msgid "Timeout for HTTP seeder connections in seconds"
+msgstr "Timeout dla połączeń HTTP seedera w sekundach"
+
+msgid "Timeout for UDP seeder connections in seconds"
+msgstr "Timeout dla połączeń UDP seedera w sekundach"
+
+msgid "Timeout for metadata requests (seconds)"
+msgstr "Timeout dla żądań metadanych (sekundy)"
+
+msgid "Timeout for peer handshake in seconds"
+msgstr "Timeout dla handshake peera w sekundach"
+
+msgid "Timeout for reading peer messages in seconds"
+msgstr "Timeout dla odczytu wiadomości peera w sekundach"
+
+msgid "To:"
+msgstr "Do:"
+
+msgid "Top"
+msgstr "Na górę"
+
+msgid "Torrent"
+msgstr "Torrent"
+
+msgid "Torrent Files"
+msgstr "Pliki torrent"
+
+msgid "Torrents"
+msgstr "Torrenty"
+
+msgid "Total Downloaded"
+msgstr "Całkowicie Pobrano"
+
+msgid "Total Size"
+msgstr "Całkowity rozmiar"
+
+msgid "Total Uploaded"
+msgstr "Całkowicie Wysłano"
+
+msgid "Track extension statistics"
+msgstr "Śledź statystyki rozszerzeń"
+
+msgid "Track extension usage statistics"
+msgstr "Śledź statystyki użycia rozszerzeń"
+
+msgid "Tracker"
+msgstr "Tracker"
+
+msgid "Tracker URL"
+msgstr "URL Trackera"
+
+msgid "Trackers"
+msgstr "Śledzące"
+
+msgid "Traffic Profile:"
+msgstr "Profil ruchu:"
+
+msgid "Traffic pattern profile for simulation"
+msgstr "Profil wzorca ruchu dla symulacji"
+
+msgid "Transaction ID range (max):"
+msgstr "Zakres ID transakcji (maks):"
+
+msgid "Transaction ID range (min):"
+msgstr "Zakres ID transakcji (min):"
+
+msgid "Transmission"
+msgstr "Transmission"
+
+msgid "Transmission/3.00"
+msgstr "Transmission/3.00"
+
+msgid "Tue"
+msgstr "Wt"
+
+msgid "Tuesday"
+msgstr "Wtorek"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Type:"
+msgstr "Typ:"
+
+msgid "UDP seeder timeout (seconds):"
+msgstr "Timeout UDP seedera (sekundy):"
+
+msgid "UI Refresh Rate"
+msgstr "Częstotliwość odświeżania UI"
+
+msgid "UI refresh rate (sec):"
+msgstr "Częstotliwość odświeżania UI (sek):"
+
+msgid "URL"
+msgstr "Adres URL"
+
+msgid "URL: http://localhost:8080"
+msgstr "Adres URL: http://localhost:8080"
+
+msgid "Unknown"
+msgstr "Nieznany"
+
+msgid "Up"
+msgstr "W górę"
+
+msgid "Up Speed"
+msgstr "Prędkość wysyłania"
+
+msgid "Update Tracker"
+msgstr "Aktualizuj tracker"
+
+msgid "Upload Speed"
+msgstr "Prędkość wysyłania"
+
+msgid "Upload Speed (KB/s):"
+msgstr "Prędkość wysyłania (KB/s):"
+
+msgid "Upload Variance:"
+msgstr "Wariancja wysyłania:"
+
+msgid "Upload activity probability:"
+msgstr "Prawdopodobieństwo aktywności wysyłania:"
+
+msgid "Upload limit (KB/s):"
+msgstr "Limit wysyłania (KB/s):"
+
+msgid "Upload speed variance for aggressive profile"
+msgstr "Wariancja prędkości wysyłania dla profilu agresywnego"
+
+msgid "Upload speed variance for balanced profile"
+msgstr "Wariancja prędkości wysyłania dla profilu zrównoważonego"
+
+msgid "Upload speed variance for conservative profile"
+msgstr "Wariancja prędkości wysyłania dla profilu konserwatywnego"
+
+msgid "Uploaded"
+msgstr "Wysłano"
+
+msgid "Uploaded Session / Total"
+msgstr "Wysłano sesja / łącznie"
+
+msgid "Uploading"
+msgstr "Wysyłanie"
+
+msgid "Use HTTPS (SSL/TLS)"
+msgstr "Użyj HTTPS (SSL/TLS)"
+
+msgid "Use HTTPS for secure connections (requires SSL certificate)"
+msgstr "Użyj HTTPS dla bezpiecznych połączeń (wymaga certyfikatu SSL)"
+
+msgid "Use authentication"
+msgstr "Użyj uwierzytelnienia"
+
+msgid "User Agent:"
+msgstr "Agent użytkownika:"
+
+msgid "User agent string to identify the client to trackers"
+msgstr "Ciąg user agent do identyfikacji klienta wobec trackerów"
+
+msgid "Username for web interface login"
+msgstr "Nazwa użytkownika do logowania interfejsu webowego"
+
+msgid "Username:"
+msgstr "Nazwa użytkownika:"
+
+msgid "Validate DHT security tokens"
+msgstr "Waliduj tokeny bezpieczeństwa DHT"
+
+msgid "Validate extension messages"
+msgstr "Waliduj wiadomości rozszerzeń"
+
+msgid "Validate extension messages for security"
+msgstr "Waliduj wiadomości rozszerzeń pod kątem bezpieczeństwa"
+
+msgid "Validate security tokens"
+msgstr "Waliduj tokeny bezpieczeństwa"
+
+msgid "Validate setting values and show warnings for invalid combinations"
+msgstr "Weryfikuj wartości ustawień i pokazuj ostrzeżenia dla nieprawidłowych kombinacji"
+
+msgid "Validate settings on change"
+msgstr "Weryfikuj ustawienia przy zmianie"
+
+msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr "Wariacja w zachowaniu klienta (0.0 = brak wariacji, 1.0 = maksymalna wariacja)"
+
+msgid "Vuze"
+msgstr "Vuze"
+
+msgid "Vuze/5.7.6.0"
+msgstr "Vuze/5.7.6.0"
+
+msgid "WARNING"
+msgstr "OSTRZEŻENIE"
+
+msgid "Web UI"
+msgstr "Interfejs WWW"
+
+msgid "Web UI settings reset to defaults"
+msgstr "Ustawienia interfejsu internetowego przywrócone do domyślnych"
+
+msgid "Wed"
+msgstr "Śr"
+
+msgid "Wednesday"
+msgstr "Środa"
+
+msgid "active"
+msgstr "Aktywny"
+
+msgid "admin"
+msgstr "admin"
+
+msgid "announce_interval"
+msgstr "Interwał Ogłoszenia"
+
+msgid "bytes"
+msgstr "bajty"
+
+msgid "class_name"
+msgstr "nazwa_klasy"
+
+msgid "download_speed"
+msgstr "Prędkość Pobierania"
+
+msgid "filepath"
+msgstr "Ścieżka Pliku"
+
+msgid "files_tab"
+msgstr "zakładka_plików"
+
+msgid "id"
+msgstr "#"
+
+msgid "leechers"
+msgstr "Leecherzy"
+
+msgid "log_tab"
+msgstr "zakładka_logów"
+
+msgid "lt_donthave (Piece Availability)"
+msgstr "lt_donthave (dostępność fragmentów)"
+
+msgid "name"
+msgstr "Nazwa"
+
+msgid "next_update"
+msgstr "Następna Aktualizacja"
+
+msgid "open-menu-symbolic"
+msgstr "open-menu-symbolic"
+
+msgid "options_tab"
+msgstr "zakładka_opcji"
+
+msgid "peers_tab"
+msgstr "zakładka_peerów"
+
+msgid "progress"
+msgstr "Postęp"
+
+msgid "qBittorrent"
+msgstr "qBittorrent"
+
+msgid "qBittorrent/4.3.1"
+msgstr "qBittorrent/4.3.1"
+
+msgid "rTorrent"
+msgstr "rTorrent"
+
+msgid "rTorrent/0.9.6"
+msgstr "rTorrent/0.9.6"
+
+msgid "seconds"
+msgstr "sekundy"
+
+msgid "seeders"
+msgstr "Seederzy"
+
+msgid "session_downloaded"
+msgstr "Pobrano"
+
+msgid "session_uploaded"
+msgstr "Wysłano"
+
+msgid "small_torrent_limit"
+msgstr "Limit Małego Torrenta"
+
+msgid "threshold"
+msgstr "Próg"
+
+msgid "total_downloaded"
+msgstr "Całkowicie Pobrano"
+
+msgid "total_size"
+msgstr "Rozmiar"
+
+msgid "total_uploaded"
+msgstr "Całkowicie Wysłano"
+
+msgid "trackers_tab"
+msgstr "zakładka_trackerów"
+
+msgid "uTorrent/3.5.5"
+msgstr "uTorrent/3.5.5"
+
+msgid "upload_speed"
+msgstr "Prędkość Wysyłania"
+
+msgid "uploading"
+msgstr "Wysyłanie"
+
+msgid "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch (przechodzenie NAT)"
+
+msgid "ut_metadata (Metadata Exchange)"
+msgstr "ut_metadata (wymiana metadanych)"
+
+msgid "ut_pex (Peer Exchange)"
+msgstr "ut_pex (wymiana peerów)"
+
+msgid "µTorrent"
+msgstr "µTorrent"
+
+msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
+msgstr "⚠️ Ustawienia zaawansowane - modyfikuj ostrożnie. Nieprawidłowe wartości mogą wpłynąć na wydajność lub stabilność."
+
+msgid "⚠️ Web UI allows remote control of the application. Use strong authentication."
+msgstr "⚠️ Interfejs WWW umożliwia zdalne sterowanie aplikacją. Używaj silnego uwierzytelnienia."
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkPopoverMenuBar" id="menubar1">
+    <property name="menu-model">
+        <menu id="menu1">
+        <submenu>
+            <attribute name="label" translatable="yes">File</attribute>
+            <item>
+                <attribute name="label" translatable="yes">Quit</attribute>
+            </item>
+        </submenu>
+        <submenu>
+            <attribute name="label" translatable="yes">Help</attribute>
+            <item>
+                <attribute name="label" translatable="yes">Github</attribute>
+            </item>
+        </submenu>
+        </menu>
+    </property>
+</object>

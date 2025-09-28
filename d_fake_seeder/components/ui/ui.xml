@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="4.0"/>
+  <object class="GtkWindow" id="main_window">
+    <property name="can-focus">False</property>
+    <property name="title" translatable="yes">D' Fake Seeder</property>
+    <property name="default-width">1024</property>
+    <property name="default-height">600</property>
+    <property name="icon-name">../images/dfakeseeder</property>
+    <child>
+      <object class="GtkOverlay" id="overlay">
+        <property name="can-focus">False</property>
+        <child>
+          <object class="GtkBox" id="main_box">
+            <property name="can-focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="orientation">vertical</property>
+            <!---
+            <child>
+              <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/menu.xml"/>
+            </child>
+            // -->
+            <child>
+              <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/toolbar.xml"/>
+            </child>
+            <child>
+              <object class="GtkPaned" id="main_paned">
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>                  
+                  <object class="GtkPaned" id="paned">
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="can-focus">False</property>
+                        <child>
+                          <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/columnview-stats.xml"/>
+                        </child>
+                      </object>                      
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="can-focus">False</property>
+                        <child>
+                          <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/columnview-main.xml"/>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="notebook/notebook.xml"/>
+                </child>
+              </object>
+            </child>
+            <child>
+              <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/statusbar.xml"/>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

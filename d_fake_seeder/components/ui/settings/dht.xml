@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkScrolledWindow" id="settings_dht_scroll">
+    <property name="hscrollbar-policy">never</property>
+    <property name="vscrollbar-policy">automatic</property>
+    <child>
+        <object class="GtkBox" id="settings_dht_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">18</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+
+            <!-- DHT Enable/Disable Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;DHT (Distributed Hash Table)&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable DHT -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="dht_enabled_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable or disable DHT for trackerless torrent support</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable DHT</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Node Configuration Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Node Configuration&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Auto-generate node ID -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="node_id_auto_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Automatically generate a unique node ID</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Auto-generate node ID</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Custom node ID -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Custom Node ID:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkEntry" id="node_id_custom_entry">
+                                            <property name="placeholder-text" translatable="yes">40 hexadecimal characters (20 bytes)</property>
+                                            <property name="tooltip-text" translatable="yes">Custom node ID (40 hex characters)</property>
+                                            <property name="hexpand">True</property>
+                                            <property name="sensitive">False</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Routing table size -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Routing Table Size:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="routing_table_size_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">8</property>
+                                                    <property name="upper">512</property>
+                                                    <property name="step-increment">8</property>
+                                                    <property name="page-increment">32</property>
+                                                    <property name="value">160</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum number of nodes in the routing table</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Timing Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Timing Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Announcement interval -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Announcement Interval:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="dht_announcement_interval_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">300</property>
+                                                    <property name="upper">7200</property>
+                                                    <property name="step-increment">60</property>
+                                                    <property name="page-increment">300</property>
+                                                    <property name="value">1800</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Interval between DHT announcements (seconds)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">seconds</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Bootstrap timeout -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Bootstrap Timeout:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="bootstrap_timeout_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">5</property>
+                                                    <property name="upper">300</property>
+                                                    <property name="step-increment">5</property>
+                                                    <property name="page-increment">30</property>
+                                                    <property name="value">30</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Timeout for DHT bootstrap operations (seconds)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">seconds</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Query timeout -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Query Timeout:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="dht_query_timeout_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">5</property>
+                                                    <property name="upper">120</property>
+                                                    <property name="step-increment">5</property>
+                                                    <property name="page-increment">15</property>
+                                                    <property name="value">10</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Timeout for DHT queries (seconds)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">seconds</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Network Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Network Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Max nodes -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Max Nodes:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="dht_max_nodes_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">100</property>
+                                                    <property name="upper">5000</property>
+                                                    <property name="step-increment">50</property>
+                                                    <property name="page-increment">500</property>
+                                                    <property name="value">1000</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum number of DHT nodes to maintain</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Bucket size -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Bucket Size:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="dht_bucket_size_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">4</property>
+                                                    <property name="upper">20</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">2</property>
+                                                    <property name="value">8</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum number of nodes per bucket</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Concurrent queries -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Concurrent Queries:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="dht_concurrent_queries_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1</property>
+                                                    <property name="upper">10</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">1</property>
+                                                    <property name="value">3</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum number of concurrent DHT queries</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Bootstrap Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Bootstrap Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Auto bootstrap -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="auto_bootstrap_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Automatically bootstrap DHT using known nodes</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Auto-bootstrap DHT</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Bootstrap nodes -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">8</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Bootstrap Nodes (one per line, format: host:port):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkFrame">
+                                            <property name="child">
+                                                <object class="GtkScrolledWindow">
+                                                    <property name="height-request">120</property>
+                                                    <property name="hscrollbar-policy">automatic</property>
+                                                    <property name="vscrollbar-policy">automatic</property>
+                                                    <child>
+                                                        <object class="GtkTextView" id="bootstrap_nodes_textview">
+                                                            <property name="tooltip-text" translatable="yes">List of bootstrap nodes for DHT initialization</property>
+                                                            <property name="monospace">True</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Statistics and Security Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Statistics and Security&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable statistics -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="dht_enable_stats_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable DHT statistics collection</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable statistics</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Statistics interval -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Stats Update Interval:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="dht_stats_interval_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">10</property>
+                                                    <property name="upper">600</property>
+                                                    <property name="step-increment">10</property>
+                                                    <property name="page-increment">60</property>
+                                                    <property name="value">60</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Interval for DHT statistics updates (seconds)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">seconds</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Validate tokens -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="dht_validate_tokens_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Validate DHT security tokens</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Validate security tokens</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Rate limiting -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="dht_rate_limit_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable DHT query rate limiting</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable rate limiting</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Max queries per second -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Max Queries/Second:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="dht_max_queries_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1</property>
+                                                    <property name="upper">100</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">5</property>
+                                                    <property name="value">10</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum DHT queries per second</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+    </child>
+</object>

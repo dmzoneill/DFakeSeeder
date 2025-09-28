@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="4.0"/>
+  <object class="GtkWindow" id="settings_window">
+    <property name="can-focus">False</property>
+    <property name="title" translatable="yes">Preferences</property>
+    <property name="default-width">600</property>
+    <property name="default-height">500</property>
+    <property name="resizable">True</property>
+    <property name="icon-name">preferences-system-symbolic</property>
+    <child>
+        <object class="GtkBox" id="settings_main_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">0</property>
+            <child>
+                <object class="GtkNotebook" id="settings_notebook">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="show-tabs">True</property>
+                    <property name="show-border">True</property>
+                    <property name="scrollable">True</property>
+
+                    <!-- General Tab -->
+                    <child>
+                        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/general.xml"/>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">General</property>
+                        </object>
+                    </child>
+
+                    <!-- Connection Tab -->
+                    <child>
+                        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/connection.xml"/>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">Connection</property>
+                        </object>
+                    </child>
+
+                    <!-- Peer Protocol Tab -->
+                    <child>
+                        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/peer_protocol.xml"/>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">Peer Protocol</property>
+                        </object>
+                    </child>
+
+                    <!-- Speed Tab -->
+                    <child>
+                        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/speed.xml"/>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">Speed</property>
+                        </object>
+                    </child>
+
+                    <!-- BitTorrent Tab -->
+                    <child>
+                        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/bittorrent.xml"/>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">BitTorrent</property>
+                        </object>
+                    </child>
+
+                    <!-- DHT Tab -->
+                    <child>
+                        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/dht.xml"/>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">DHT</property>
+                        </object>
+                    </child>
+
+                    <!-- Protocol Extensions Tab -->
+                    <child>
+                        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/protocol_extensions.xml"/>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">Protocol Extensions</property>
+                        </object>
+                    </child>
+
+                    <!-- Simulation Tab -->
+                    <child>
+                        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/simulation.xml"/>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">Simulation</property>
+                        </object>
+                    </child>
+
+                    <!-- Web UI Tab -->
+                    <child>
+                        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/webui.xml"/>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">Web UI</property>
+                        </object>
+                    </child>
+
+                    <!-- Advanced Tab (temporarily disabled due to extensive XML structure issues) -->
+                    <!-- <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/advanced.xml"/> -->
+                </object>
+            </child>
+        </object>
+    </child>
+  </object>
+</interface>

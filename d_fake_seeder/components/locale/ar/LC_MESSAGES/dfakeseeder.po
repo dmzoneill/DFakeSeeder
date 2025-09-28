@@ -1,0 +1,1837 @@
+# Arabic translation for DFakeSeeder
+# Copyright (C) 2024 DFakeSeeder Contributors
+# This file is distributed under the same license as the DFakeSeeder package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DFakeSeeder 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"POT-Creation-Date: 2025-09-18 17:51+0100\n"
+"PO-Revision-Date: 2024-09-18 18:30+0100\n"
+"Last-Translator: Claude <noreply@anthropic.com>\n"
+"Language-Team: Arabic <ar@li.org>\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+msgid "#"
+msgstr "#"
+
+msgid "(0 = unlimited)"
+msgstr "(0 = غير محدود)"
+
+msgid "0 / 250"
+msgstr "0 / 250"
+
+msgid "127.0.0.1"
+msgstr "127.0.0.1"
+
+msgid ":"
+msgstr ":"
+
+msgid "<b>Advanced Extension Settings</b>"
+msgstr "<b>إعدادات التمديد المتقدمة</b>"
+
+msgid "<b>Aggressive Profile Settings</b>"
+msgstr "<b>إعدادات الملف العدواني</b>"
+
+msgid "<b>Alternative Speed Limits</b>"
+msgstr "<b>حدود السرعة البديلة</b>"
+
+msgid "<b>Application Behavior</b>"
+msgstr "<b>سلوك التطبيق</b>"
+
+msgid "<b>Authentication</b>"
+msgstr "<b>المصادقة</b>"
+
+msgid "<b>Balanced Profile Settings</b>"
+msgstr "<b>إعدادات الملف المتوازن</b>"
+
+msgid "<b>Bootstrap Settings</b>"
+msgstr "<b>إعدادات التمهيد</b>"
+
+msgid "<b>Client Behavior Engine</b>"
+msgstr "<b>محرك سلوك العميل</b>"
+
+msgid "<b>Client Identification</b>"
+msgstr "<b>تحديد العميل</b>"
+
+msgid "<b>Configuration Management</b>"
+msgstr "<b>إدارة التكوين</b>"
+
+msgid "<b>Connection Limits</b>"
+msgstr "<b>حدود الاتصال</b>"
+
+msgid "<b>Connection Settings</b>"
+msgstr "<b>إعدادات الاتصال</b>"
+
+msgid "<b>Conservative Profile Settings</b>"
+msgstr "<b>إعدادات الملف المحافظ</b>"
+
+msgid "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT (جدول التجمع الموزع)</b>"
+
+msgid "<b>Encryption</b>"
+msgstr "<b>التشفير</b>"
+
+msgid "<b>Expert Settings</b>"
+msgstr "<b>إعدادات الخبراء</b>"
+
+msgid "<b>Extension Protocol (BEP-010)</b>"
+msgstr "<b>بروتوكول التمديد (BEP-010)</b>"
+
+msgid "<b>Global Speed Limits</b>"
+msgstr "<b>حدود السرعة العامة</b>"
+
+msgid "<b>Interface</b>"
+msgstr "<b>الواجهة</b>"
+
+msgid "<b>Keyboard Shortcuts</b>"
+msgstr "<b>اختصارات لوحة المفاتيح</b>"
+
+msgid "<b>Listening Port</b>"
+msgstr "<b>منفذ الاستماع</b>"
+
+msgid "<b>Logging</b>"
+msgstr "<b>التسجيل</b>"
+
+msgid "<b>Metadata Extension Settings</b>"
+msgstr "<b>إعدادات امتداد البيانات الوصفية</b>"
+
+msgid "<b>Network Settings</b>"
+msgstr "<b>إعدادات الشبكة</b>"
+
+msgid "<b>Node Configuration</b>"
+msgstr "<b>تكوين العقدة</b>"
+
+msgid "<b>Peer Behavior Settings</b>"
+msgstr "<b>إعدادات سلوك الأقران</b>"
+
+msgid "<b>Peer Exchange (PEX) Settings</b>"
+msgstr "<b>إعدادات تبادل الأقران (PEX)</b>"
+
+msgid "<b>Peer Protocol Timeouts</b>"
+msgstr "<b>مهلة بروتوكول الأقران</b>"
+
+msgid "<b>Performance</b>"
+msgstr "<b>الأداء</b>"
+
+msgid "<b>Protocol Extensions</b>"
+msgstr "<b>امتدادات البروتوكول</b>"
+
+msgid "<b>Protocol Features</b>"
+msgstr "<b>ميزات البروتوكول</b>"
+
+msgid "<b>Proxy Settings</b>"
+msgstr "<b>إعدادات البروكسي</b>"
+
+msgid "<b>Security Options</b>"
+msgstr "<b>خيارات الأمان</b>"
+
+msgid "<b>Seeder Protocol Settings</b>"
+msgstr "<b>إعدادات بروتوكول المشارك</b>"
+
+msgid "<b>Seeding Profiles</b>"
+msgstr "<b>ملفات المشاركة</b>"
+
+msgid "<b>Settings Search</b>"
+msgstr "<b>البحث في الإعدادات</b>"
+
+msgid "<b>Speed Scheduler</b>"
+msgstr "<b>جدولة السرعة</b>"
+
+msgid "<b>Statistics and Security</b>"
+msgstr "<b>الإحصائيات والأمان</b>"
+
+msgid "<b>Swarm Intelligence</b>"
+msgstr "<b>ذكاء السرب</b>"
+
+msgid "<b>Timing Settings</b>"
+msgstr "<b>إعدادات التوقيت</b>"
+
+msgid "<b>Tracker Announce Settings</b>"
+msgstr "<b>إعدادات إعلان المتتبع</b>"
+
+msgid "<b>Traffic Pattern Settings</b>"
+msgstr "<b>إعدادات نمط حركة المرور</b>"
+
+msgid "<b>Transport Protocol Settings</b>"
+msgstr "<b>إعدادات بروتوكول النقل</b>"
+
+msgid "<b>Web Interface</b>"
+msgstr "<b>واجهة الويب</b>"
+
+msgid "About"
+msgstr "حول"
+
+msgid "Active"
+msgstr "نشط"
+
+msgid "Active Profile:"
+msgstr "الملف النشط:"
+
+msgid "Adaptation Rate:"
+msgstr "معدل التكيف:"
+
+msgid "Add"
+msgstr "إضافة"
+
+msgid "Add torrent"
+msgstr "إضافة تورنت"
+
+msgid "Added"
+msgstr "تم الإضافة"
+
+msgid "Advanced"
+msgstr "متقدم"
+
+msgid "Advanced settings reset to defaults"
+msgstr "إعادة تعيين الإعدادات المتقدمة للافتراضية"
+
+msgid "Aggressive"
+msgstr "عدواني"
+
+msgid "Aggressive profile download speed"
+msgstr "سرعة تنزيل الملف العدواني"
+
+msgid "Aggressive profile upload speed (0 = unlimited)"
+msgstr "سرعة رفع الملف العدواني (0 = غير محدود)"
+
+msgid "Alt download limit (KB/s):"
+msgstr "حد التنزيل البديل (كيلوبايت/ثانية):"
+
+msgid "Alt upload limit (KB/s):"
+msgstr "حد الرفع البديل (كيلوبايت/ثانية):"
+
+msgid "Alternative download speed limit in KB/s"
+msgstr "حد سرعة التنزيل البديل بالكيلوبايت/ثانية"
+
+msgid "Alternative upload speed limit in KB/s"
+msgstr "حد سرعة الرفع البديل بالكيلوبايت/ثانية"
+
+msgid "Amount of RAM to use for disk caching"
+msgstr "مقدار ذاكرة الوصول العشوائي للتخزين المؤقت"
+
+msgid "Announce Interval"
+msgstr "فترة الإعلان"
+
+msgid "Announce interval (sec):"
+msgstr "فترة الإعلان (ثانية):"
+
+msgid "Announcement Interval:"
+msgstr "فترة الإعلان:"
+
+msgid "Arabic"
+msgstr "Arabic"
+
+msgid "Auto-bootstrap DHT"
+msgstr "تمهيد DHT تلقائياً"
+
+msgid "Auto-generate node ID"
+msgstr "توليد معرف العقدة تلقائياً"
+
+msgid "Auto-save settings"
+msgstr "حفظ الإعدادات تلقائياً"
+
+msgid "Auto-start disabled"
+msgstr "تم تعطيل البدء التلقائي"
+
+msgid "Auto-start enabled"
+msgstr "تم تمكين البدء التلقائي"
+
+msgid "Automatic logout after inactivity (5-1440 minutes)"
+msgstr "تسجيل الخروج التلقائي بعد عدم النشاط (5-1440 دقيقة)"
+
+msgid "Automatically bootstrap DHT using known nodes"
+msgstr "تمهيد DHT تلقائياً باستخدام العقد المعروفة"
+
+msgid "Automatically configure router port forwarding using UPnP/NAT-PMP"
+msgstr "تكوين إعادة توجيه منفذ الموجه تلقائياً باستخدام UPnP/NAT-PMP"
+
+msgid "Automatically generate a unique node ID"
+msgstr "إنشاء معرف عقدة فريد تلقائياً"
+
+msgid "Automatically save settings when changed"
+msgstr "حفظ الإعدادات تلقائياً عند التغيير"
+
+msgid "Automatically switch to alternative speeds during specified hours"
+msgstr "التبديل تلقائياً للسرعات البديلة خلال الساعات المحددة"
+
+msgid "Availability"
+msgstr "التوفر"
+
+msgid "Balanced"
+msgstr "متوازن"
+
+msgid "Balanced profile download speed"
+msgstr "سرعة تنزيل الملف المتوازن"
+
+msgid "Balanced profile upload speed"
+msgstr "سرعة رفع الملف المتوازن"
+
+msgid "Behavior Variation:"
+msgstr "تنوع السلوك:"
+
+msgid "Behavior analysis probability:"
+msgstr "احتمالية تحليل السلوك:"
+
+msgid "Behavior randomization"
+msgstr "عشوائية السلوك"
+
+msgid "BiglyBT"
+msgstr "BiglyBT"
+
+msgid "Bind to localhost only"
+msgstr "ربط بالمضيف المحلي فقط"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "BitTorrent settings reset to defaults"
+msgstr "إعادة تعيين إعدادات BitTorrent للافتراضية"
+
+msgid "BitTorrent/7.10.5"
+msgstr "BitTorrent/7.10.5"
+
+msgid "Bootstrap Nodes (one per line, format: host:port):"
+msgstr "عقد التمهيد (واحدة لكل سطر، التنسيق: المضيف:المنفذ):"
+
+msgid "Bootstrap Timeout:"
+msgstr "انتهاء مهلة التمهيد:"
+
+msgid "Bottom"
+msgstr "الأسفل"
+
+msgid "Bucket Size:"
+msgstr "حجم الدلو:"
+
+msgid "Burst Probability:"
+msgstr "احتمالية الاندفاع:"
+
+msgid "CRITICAL"
+msgstr "حرج"
+
+msgid "Cancel"
+msgstr "إلغاء"
+
+msgid "Chinese"
+msgstr "الصينية"
+
+msgid "Choose a pre-configured seeding profile"
+msgstr "اختر ملف مشاركة معد مسبقاً"
+
+msgid "Choose the application theme"
+msgstr "اختر موضوع التطبيق"
+
+msgid "Choose the interface language"
+msgstr "اختر لغة الواجهة"
+
+msgid "Clear search"
+msgstr "مسح البحث"
+
+msgid "Client"
+msgstr "العميل"
+
+msgid "Client Switch Probability:"
+msgstr "احتمالية تبديل العميل:"
+
+msgid "Comment"
+msgstr "تعليق"
+
+msgid "Completed"
+msgstr "مكتمل"
+
+msgid "Concurrent Queries:"
+msgstr "الاستعلامات المتزامنة:"
+
+msgid "Config export not yet implemented"
+msgstr "تصدير التكوين غير مُطبَّق بعد"
+
+msgid "Config import not yet implemented"
+msgstr "استيراد التكوين غير مُطبَّق بعد"
+
+msgid "Connected"
+msgstr "متصل"
+
+msgid "Connected At"
+msgstr "متصل في"
+
+msgid "Connected Peers / Total Peers"
+msgstr "الأقران المتصلون / إجمالي الأقران"
+
+msgid "Connection"
+msgstr "الاتصال"
+
+msgid "Connection Status"
+msgstr "حالة الاتصال"
+
+msgid "Connection Timeout:"
+msgstr "انتهاء مهلة الاتصال:"
+
+msgid "Connection rotation percentage:"
+msgstr "نسبة تدوير الاتصال:"
+
+msgid "Connection settings reset to defaults"
+msgstr "إعادة تعيين إعدادات الاتصال للافتراضية"
+
+msgid "Connection timeout for extensions (seconds)"
+msgstr "انتهاء مهلة الاتصال للتمديدات (ثواني)"
+
+msgid "Conservative"
+msgstr "محافظ"
+
+msgid "Conservative profile download speed"
+msgstr "سرعة تنزيل الملف المحافظ"
+
+msgid "Conservative profile upload speed"
+msgstr "سرعة رفع الملف المحافظ"
+
+msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
+msgstr "محافظ: سرعات أقل، اتصالات أقل، مثالي للمشاركة في الخلفية"
+
+msgid "Country"
+msgstr "البلد"
+
+msgid "Created"
+msgstr "تم إنشاءه"
+
+msgid "Created By"
+msgstr "أنشئ بواسطة"
+
+msgid "Ctrl+,"
+msgstr "Ctrl+,"
+
+msgid "Ctrl+F"
+msgstr "Ctrl+F"
+
+msgid "Ctrl+R"
+msgstr "Ctrl+R"
+
+msgid "Custom"
+msgstr "مخصص"
+
+msgid "Custom Agent:"
+msgstr "وكيل مخصص:"
+
+msgid "Custom Node ID:"
+msgstr "معرف العقدة المخصص:"
+
+msgid "Custom node ID (40 hex characters)"
+msgstr "معرف عقدة مخصص (40 حرف سادس عشري)"
+
+msgid "Custom user agent string"
+msgstr "نص وكيل المستخدم المخصص"
+
+msgid "D' Fake Seeder"
+msgstr "D' Fake Seeder"
+
+msgid "DEBUG"
+msgstr "تصحيح"
+
+msgid "DHT"
+msgstr "DHT"
+
+msgid "Dark"
+msgstr "داكن"
+
+msgid "Days:"
+msgstr "الأيام:"
+
+msgid "Deluge"
+msgstr "Deluge"
+
+msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
+msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
+
+msgid "Details"
+msgstr "التفاصيل"
+
+msgid "Disabled"
+msgstr "معطل"
+
+msgid "Disconnected"
+msgstr "منقطع"
+
+msgid "Disk cache size (MB):"
+msgstr "حجم ذاكرة التخزين المؤقت (ميجابايت):"
+
+msgid "Down"
+msgstr "أسفل"
+
+msgid "Down Speed"
+msgstr "سرعة التحميل"
+
+msgid "Download Rate"
+msgstr "معدل التنزيل"
+
+msgid "Download Speed (KB/s):"
+msgstr "سرعة التحميل (KB/s):"
+
+msgid "Download Variance:"
+msgstr "تباين التنزيل:"
+
+msgid "Download limit (KB/s):"
+msgstr "حد التنزيل (كيلوبايت/ثانية):"
+
+msgid "Download speed variance for aggressive profile"
+msgstr "تباين سرعة التنزيل للملف العدواني"
+
+msgid "Download speed variance for balanced profile"
+msgstr "تباين سرعة التنزيل للملف المتوازن"
+
+msgid "Download speed variance for conservative profile"
+msgstr "تباين سرعة التنزيل للملف المحافظ"
+
+msgid "Downloaded"
+msgstr "تم تنزيله"
+
+msgid "Downloaded Session / Total"
+msgstr "تنزيل الجلسة / الإجمالي"
+
+msgid "Downloaded Speed"
+msgstr "سرعة التنزيل"
+
+msgid "Dropout probability:"
+msgstr "احتمالية الانقطاع:"
+
+msgid "Dutch"
+msgstr "Dutch"
+
+msgid "Dynamic profile switching"
+msgstr "تبديل الملف الشخصي الديناميكي"
+
+msgid "ERROR"
+msgstr "خطأ"
+
+msgid "ETA"
+msgstr "الوقت المتبقي"
+
+msgid "Enable CSRF protection"
+msgstr "تمكين حماية CSRF"
+
+msgid "Enable Cross-Site Request Forgery protection"
+msgstr "تمكين حماية تزوير الطلبات عبر المواقع"
+
+msgid "Enable DHT"
+msgstr "تمكين DHT"
+
+msgid "Enable DHT (Distributed Hash Table)"
+msgstr "تمكين DHT (جدول التجمع الموزع)"
+
+msgid "Enable DHT query rate limiting"
+msgstr "تمكين تحديد معدل استعلام DHT"
+
+msgid "Enable DHT statistics collection"
+msgstr "تمكين جمع إحصائيات DHT"
+
+msgid "Enable Distributed Hash Table for trackerless torrents"
+msgstr "تمكين جدول التجمع الموزع للتورنت بدون متتبع"
+
+msgid "Enable Fast Extension (BEP-006) for improved performance"
+msgstr "تمكين التمديد السريع (BEP-006) لتحسين الأداء"
+
+msgid "Enable LPD (Local Peer Discovery)"
+msgstr "تمكين LPD (اكتشاف الأقران المحليين)"
+
+msgid "Enable Local Peer Discovery for finding peers on local network"
+msgstr "تمكين اكتشاف الأقران المحليين للعثور على الأقران في الشبكة المحلية"
+
+msgid "Enable Nagle algorithm"
+msgstr "تمكين خوارزمية Nagle"
+
+msgid "Enable Nagle algorithm for TCP"
+msgstr "تمكين خوارزمية Nagle لـ TCP"
+
+msgid "Enable PEX (Peer Exchange)"
+msgstr "تمكين PEX (تبادل الأقران)"
+
+msgid "Enable Peer Exchange for discovering new peers"
+msgstr "تمكين تبادل الأقران لاكتشاف أقران جدد"
+
+msgid "Enable Protocol Extensions"
+msgstr "تمكين امتدادات البروتوكول"
+
+msgid "Enable TCP keepalive"
+msgstr "تمكين TCP keepalive"
+
+msgid "Enable UPnP/NAT-PMP port mapping"
+msgstr "تمكين ربط منفذ UPnP/NAT-PMP"
+
+msgid "Enable Web UI"
+msgstr "تمكين واجهة الويب"
+
+msgid "Enable alternative speed limits"
+msgstr "تمكين حدود السرعة البديلة"
+
+msgid "Enable alternative speed limits (useful for limiting speeds during certain hours)"
+msgstr "تمكين حدود السرعة البديلة (مفيد لتحديد السرعات خلال ساعات معينة)"
+
+msgid "Enable clickjacking protection"
+msgstr "تمكين حماية خطف النقر"
+
+msgid "Enable client behavior simulation"
+msgstr "تمكين محاكاة سلوك العميل"
+
+msgid "Enable client behavior simulation engine"
+msgstr "تمكين محرك محاكاة سلوك العميل"
+
+msgid "Enable debug mode"
+msgstr "تمكين وضع التصحيح"
+
+msgid "Enable debug mode with extra logging and error details"
+msgstr "تمكين وضع التصحيح مع تسجيل إضافي وتفاصيل الأخطاء"
+
+msgid "Enable dynamic client profile switching"
+msgstr "تمكين تبديل ملف العميل الديناميكي"
+
+msgid "Enable lt_donthave extension for piece availability"
+msgstr "تمكين امتداد lt_donthave لتوفر القطع"
+
+msgid "Enable metadata extension"
+msgstr "تمكين امتداد البيانات الوصفية"
+
+msgid "Enable metadata extension features"
+msgstr "تمكين ميزات امتداد البيانات الوصفية"
+
+msgid "Enable or disable BitTorrent protocol extensions"
+msgstr "تمكين أو تعطيل امتدادات بروتوكول BitTorrent"
+
+msgid "Enable or disable DHT for trackerless torrent support"
+msgstr "تمكين أو تعطيل DHT لدعم التورنت بدون متتبع"
+
+msgid "Enable proxy authentication"
+msgstr "تمكين مصادقة البروكسي"
+
+msgid "Enable random variations in client behavior"
+msgstr "تمكين التنوعات العشوائية في سلوك العميل"
+
+msgid "Enable rate limiting"
+msgstr "تمكين تحديد المعدل"
+
+msgid "Enable realistic traffic variations"
+msgstr "تمكين اختلافات حركة المرور الواقعية"
+
+msgid "Enable secure HTTP headers"
+msgstr "تمكين رؤوس HTTP الآمنة"
+
+msgid "Enable speed scheduler"
+msgstr "تمكين جدولة السرعة"
+
+msgid "Enable statistics"
+msgstr "تمكين الإحصائيات"
+
+msgid "Enable swarm intelligence"
+msgstr "تمكين ذكاء السرب"
+
+msgid "Enable swarm intelligence for adaptive behavior"
+msgstr "تمكين ذكاء السرب للسلوك التكيفي"
+
+msgid "Enable time-based traffic patterns (peak hours, night hours)"
+msgstr "تمكين أنماط حركة المرور القائمة على الوقت (ساعات الذروة، ساعات الليل)"
+
+msgid "Enable ut_holepunch extension for NAT traversal"
+msgstr "تمكين امتداد ut_holepunch لاجتياز NAT"
+
+msgid "Enable ut_metadata extension for metadata exchange"
+msgstr "تمكين امتداد ut_metadata لتبادل البيانات الوصفية"
+
+msgid "Enable ut_pex extension for peer exchange"
+msgstr "تمكين امتداد ut_pex لتبادل الأقران"
+
+msgid "Enable web-based remote control interface"
+msgstr "تمكين واجهة التحكم عن بُعد عبر الويب"
+
+msgid "Enable µTP (Micro Transport Protocol)"
+msgstr "تمكين µTP (بروتوكول النقل المصغر)"
+
+msgid "Enabled"
+msgstr "مُمكَّن"
+
+msgid "Encryption:"
+msgstr "التشفير:"
+
+msgid "End hour (24-hour format)"
+msgstr "ساعة الانتهاء (تنسيق 24 ساعة)"
+
+msgid "End minute"
+msgstr "دقيقة الانتهاء"
+
+msgid "English"
+msgstr "الإنجليزية"
+
+msgid "Error"
+msgstr "خطأ"
+
+msgid "Error changing language"
+msgstr "خطأ في تغيير اللغة"
+
+msgid "Export"
+msgstr "تصدير"
+
+msgid "Export Settings"
+msgstr "تصدير الإعدادات"
+
+msgid "Export current settings to a file"
+msgstr "تصدير الإعدادات الحالية إلى ملف"
+
+msgid "Extension Timeout:"
+msgstr "انتهاء مهلة التمديد:"
+
+msgid "Extension statistics update interval (seconds)"
+msgstr "فترة تحديث إحصائيات التمديد (ثواني)"
+
+msgid "Failure Reason"
+msgstr "سبب الفشل"
+
+msgid "Fall back to TCP if µTP fails"
+msgstr "الرجوع إلى TCP إذا فشل µTP"
+
+msgid "Fast Extension (BEP-006)"
+msgstr "التمديد السريع (BEP-006)"
+
+msgid "File"
+msgstr "ملف"
+
+msgid "File Path"
+msgstr "مسار الملف"
+
+msgid "File chooser not yet implemented"
+msgstr "منتقي الملفات غير مُطبَّق بعد"
+
+msgid "Files"
+msgstr "الملفات"
+
+msgid "Flags"
+msgstr "الأعلام"
+
+msgid "Follow System"
+msgstr "اتباع النظام"
+
+msgid "Forced"
+msgstr "مُجبَر"
+
+msgid "French"
+msgstr "الفرنسية"
+
+msgid "Fri"
+msgstr "جمعة"
+
+msgid "Friday"
+msgstr "الجمعة"
+
+msgid "From:"
+msgstr "من:"
+
+msgid "General"
+msgstr "عام"
+
+msgid "General settings reset to defaults"
+msgstr "تم إعادة تعيين الإعدادات العامة للافتراضية"
+
+msgid "General timeout for extension operations (seconds)"
+msgstr "انتهاء المهلة العام لعمليات التمديد (ثواني)"
+
+msgid "Generate Secure Password"
+msgstr "إنشاء كلمة مرور آمنة"
+
+msgid "Generate a random port number"
+msgstr "إنشاء رقم منفذ عشوائي"
+
+msgid "Generate a random secure password"
+msgstr "إنشاء كلمة مرور آمنة عشوائية"
+
+msgid "Generate synthetic metadata"
+msgstr "توليد بيانات وصفية اصطناعية"
+
+msgid "Generate synthetic metadata for simulation"
+msgstr "إنشاء بيانات وصفية اصطناعية للمحاكاة"
+
+msgid "Generate synthetic peer data for PEX"
+msgstr "إنشاء بيانات أقران اصطناعية لـ PEX"
+
+msgid "Generate synthetic peers"
+msgstr "توليد نظراء اصطناعيين"
+
+msgid "German"
+msgstr "الألمانية"
+
+msgid "Github - D' Fake Seeder"
+msgstr "Github - D' Fake Seeder"
+
+msgid "Global download speed limit in KB/s (0 = unlimited)"
+msgstr "حد سرعة التنزيل العام بالكيلوبايت/ثانية (0 = غير محدود)"
+
+msgid "Global upload speed limit in KB/s (0 = unlimited)"
+msgstr "حد سرعة الرفع العام بالكيلوبايت/ثانية (0 = غير محدود)"
+
+msgid "HTTP"
+msgstr "HTTP"
+
+msgid "HTTP seeder timeout (seconds):"
+msgstr "انتهاء مهلة مشارك HTTP (ثواني):"
+
+msgid "Handshake"
+msgstr "المصافحة"
+
+msgid "Handshake timeout (seconds):"
+msgstr "انتهاء مهلة المصافحة (ثواني):"
+
+msgid "Hide to system tray when window is minimized"
+msgstr "إخفاء إلى شريط النظام عند تصغير النافذة"
+
+msgid "Hindi"
+msgstr "Hindi"
+
+msgid "How often to announce to trackers (60-7200 seconds)"
+msgstr "كم مرة للإعلان للمتتبعات (60-7200 ثانية)"
+
+msgid "How often to scrape tracker for swarm statistics"
+msgstr "كم مرة لاستخراج إحصائيات السرب من المتتبع"
+
+msgid "How often to update the user interface"
+msgstr "كم مرة لتحديث واجهة المستخدم"
+
+msgid "ID"
+msgstr "المعرف"
+
+msgid "INFO"
+msgstr "معلومات"
+
+msgid "IP Address"
+msgstr "عنوان IP"
+
+msgid "IP address to bind to (0.0.0.0 for all interfaces)"
+msgstr "عنوان IP للربط به (0.0.0.0 لجميع الواجهات)"
+
+msgid "Idle Probability:"
+msgstr "احتمالية الخمول:"
+
+msgid "Import"
+msgstr "استيراد"
+
+msgid "Import Settings"
+msgstr "استيراد الإعدادات"
+
+msgid "Import settings from a file"
+msgstr "استيراد الإعدادات من ملف"
+
+msgid "Inactive"
+msgstr "غير نشط"
+
+msgid "Incoming"
+msgstr "واردة"
+
+msgid "Incoming Connections"
+msgstr "الاتصالات الواردة"
+
+msgid "Incoming Peer Connections"
+msgstr "اتصالات الأقران الواردة"
+
+msgid "Interested"
+msgstr "مهتم"
+
+msgid "Interval between DHT announcements (seconds)"
+msgstr "الفترة بين إعلانات DHT (ثواني)"
+
+msgid "Interval between PEX message exchanges (seconds)"
+msgstr "الفترة بين تبادل رسائل PEX (ثواني)"
+
+msgid "Interval for DHT statistics updates (seconds)"
+msgstr "فترة تحديثات إحصائيات DHT (ثواني)"
+
+msgid "Interval for contacting peers in seconds"
+msgstr "فترة الاتصال بالأقران بالثواني"
+
+msgid "Interval for sending keep alive messages in seconds"
+msgstr "فترة إرسال رسائل الإبقاء على قيد الحياة بالثواني"
+
+msgid "Italian"
+msgstr "الإيطالية"
+
+msgid "Japanese"
+msgstr "اليابانية"
+
+msgid "Keep Alive Interval:"
+msgstr "فترة الإبقاء على قيد الحياة:"
+
+msgid "Keep alive interval (seconds):"
+msgstr "فترة الإبقاء على قيد الحياة (ثواني):"
+
+msgid "Keep alive interval for connections (seconds)"
+msgstr "فترة الإبقاء على قيد الحياة للاتصالات (ثواني)"
+
+msgid "Korean"
+msgstr "Korean"
+
+msgid "Label"
+msgstr "التسمية"
+
+msgid "Language switched to"
+msgstr "تم تغيير اللغة إلى"
+
+msgid "Language:"
+msgstr "اللغة:"
+
+msgid "Last Announce"
+msgstr "آخر إعلان"
+
+msgid "Last Notification"
+msgstr "آخر إشعار"
+
+msgid "Leechers"
+msgstr "المتحملون"
+
+msgid "Level of BitTorrent protocol compliance"
+msgstr "مستوى الامتثال لبروتوكول BitTorrent"
+
+msgid "Light"
+msgstr "فاتح"
+
+msgid "Limit extension message rate"
+msgstr "تحديد معدل رسائل التمديد"
+
+msgid "List of bootstrap nodes for DHT initialization"
+msgstr "قائمة عقد التمهيد لتهيئة DHT"
+
+msgid "Log"
+msgstr "السجل"
+
+msgid "Log Level:"
+msgstr "مستوى السجل:"
+
+msgid "Log to file"
+msgstr "تسجيل في ملف"
+
+msgid "Max Connections:"
+msgstr "أقصى عدد اتصالات:"
+
+msgid "Max Dropped Peers:"
+msgstr "الحد الأقصى للأقران المنقطعين:"
+
+msgid "Max Message Size:"
+msgstr "الحد الأقصى لحجم الرسالة:"
+
+msgid "Max Messages/Second:"
+msgstr "الحد الأقصى للرسائل/الثانية:"
+
+msgid "Max Nodes:"
+msgstr "الحد الأقصى للعقد:"
+
+msgid "Max Peers/Message:"
+msgstr "الحد الأقصى للأقران/الرسالة:"
+
+msgid "Max Queries/Second:"
+msgstr "الحد الأقصى للاستعلامات/الثانية:"
+
+msgid "Max global connections:"
+msgstr "الحد الأقصى للاتصالات العامة:"
+
+msgid "Max log file size (MB):"
+msgstr "الحد الأقصى لحجم ملف السجل (ميجابايت):"
+
+msgid "Max per torrent:"
+msgstr "الحد الأقصى لكل تورنت:"
+
+msgid "Max upload slots:"
+msgstr "الحد الأقصى لفتحات الرفع:"
+
+msgid "Maximum DHT queries per second"
+msgstr "الحد الأقصى لاستعلامات DHT في الثانية"
+
+msgid "Maximum connections for aggressive profile"
+msgstr "الحد الأقصى للاتصالات للملف العدواني"
+
+msgid "Maximum connections for balanced profile"
+msgstr "الحد الأقصى للاتصالات للملف المتوازن"
+
+msgid "Maximum connections for conservative profile"
+msgstr "الحد الأقصى للاتصالات للملف المحافظ"
+
+msgid "Maximum dropped peers to track for PEX"
+msgstr "الحد الأقصى للأقران المنقطعين لتتبعهم لـ PEX"
+
+msgid "Maximum extension messages per second"
+msgstr "الحد الأقصى لرسائل التمديد في الثانية"
+
+msgid "Maximum number of DHT nodes to maintain"
+msgstr "الحد الأقصى لعدد عقد DHT للاحتفاظ بها"
+
+msgid "Maximum number of concurrent DHT queries"
+msgstr "الحد الأقصى لعدد استعلامات DHT المتزامنة"
+
+msgid "Maximum number of connections per individual torrent"
+msgstr "الحد الأقصى لعدد الاتصالات لكل تورنت فردي"
+
+msgid "Maximum number of connections to all torrents"
+msgstr "الحد الأقصى لعدد الاتصالات لجميع التورنت"
+
+msgid "Maximum number of nodes in the routing table"
+msgstr "الحد الأقصى لعدد العقد في جدول التوجيه"
+
+msgid "Maximum number of nodes per bucket"
+msgstr "الحد الأقصى لعدد العقد لكل دلو"
+
+msgid "Maximum number of simultaneous upload slots"
+msgstr "الحد الأقصى لعدد فتحات الرفع المتزامنة"
+
+msgid "Maximum peers to include in a PEX message"
+msgstr "الحد الأقصى للأقران لتضمينهم في رسالة PEX"
+
+msgid "Maximum port for seeder connections"
+msgstr "الحد الأقصى للمنفذ لاتصالات المشارك"
+
+msgid "Maximum size for extension messages (bytes)"
+msgstr "الحد الأقصى لحجم رسائل التمديد (بايت)"
+
+msgid "Maximum size of log file before rotation"
+msgstr "الحد الأقصى لحجم ملف السجل قبل التدوير"
+
+msgid "Maximum transaction ID for tracker communication"
+msgstr "الحد الأقصى لمعرف المعاملة لاتصال المتتبع"
+
+msgid "Message"
+msgstr "الرسالة"
+
+msgid "Message read timeout (seconds):"
+msgstr "انتهاء مهلة قراءة الرسالة (ثواني):"
+
+msgid "Metadata Piece Size:"
+msgstr "حجم قطعة البيانات الوصفية:"
+
+msgid "Metadata Timeout:"
+msgstr "انتهاء مهلة البيانات الوصفية:"
+
+msgid "Min announce interval (sec):"
+msgstr "الحد الأدنى لفترة الإعلان (ثانية):"
+
+msgid "Minimize to system tray"
+msgstr "تصغير إلى شريط النظام"
+
+msgid "Minimum log level to record"
+msgstr "الحد الأدنى لمستوى السجل للتسجيل"
+
+msgid "Minimum port for seeder connections"
+msgstr "الحد الأدنى للمنفذ لاتصالات المشارك"
+
+msgid "Minimum time between announces (10-3600 seconds)"
+msgstr "الحد الأدنى للوقت بين الإعلانات (10-3600 ثانية)"
+
+msgid "Minimum transaction ID for tracker communication"
+msgstr "الحد الأدنى لمعرف المعاملة لاتصال المتتبع"
+
+msgid "Mon"
+msgstr "اثنين"
+
+msgid "Monday"
+msgstr "الاثنين"
+
+msgid "My IP address"
+msgstr "عنوان IP الخاص بي"
+
+msgid "N/A"
+msgstr "غير متاح"
+
+msgid "Name"
+msgstr "الاسم"
+
+msgid "Network interface:"
+msgstr "واجهة الشبكة:"
+
+msgid "Next Announce"
+msgstr "الإعلان التالي"
+
+msgid "Next Update"
+msgstr "التحديث التالي"
+
+msgid "None"
+msgstr "لا شيء"
+
+msgid "Number of peers to analyze for behavior patterns"
+msgstr "عدد الأقران للتحليل لأنماط السلوك"
+
+msgid "Number of peers to request from tracker"
+msgstr "عدد الأقران للطلب من المتتبع"
+
+msgid "Number of synthetic peers to generate"
+msgstr "عدد الأقران الاصطناعيين لإنشائهم"
+
+msgid "Only allow connections from localhost (more secure)"
+msgstr "السماح بالاتصالات من المضيف المحلي فقط (أكثر أماناً)"
+
+msgid "Open preferences"
+msgstr "فتح التفضيلات"
+
+msgid "Options"
+msgstr "الخيارات"
+
+msgid "Outgoing"
+msgstr "صادرة"
+
+msgid "Outgoing Connections"
+msgstr "الاتصالات الصادرة"
+
+msgid "Outgoing Peer Connections"
+msgstr "اتصالات الأقران الصادرة"
+
+msgid "Overlay Notification"
+msgstr "إشعار تراكبي"
+
+msgid "PEX Interval:"
+msgstr "فترة PEX:"
+
+msgid "Password for web interface login"
+msgstr "كلمة المرور لتسجيل دخول واجهة الويب"
+
+msgid "Password:"
+msgstr "كلمة المرور:"
+
+msgid "Path"
+msgstr "المسار"
+
+msgid "Pause"
+msgstr "إيقاف مؤقت"
+
+msgid "Pause torrent"
+msgstr "إيقاف التورنت مؤقتاً"
+
+msgid "Peer Analysis Depth:"
+msgstr "عمق تحليل الأقران:"
+
+msgid "Peer Choking"
+msgstr "خنق الأقران"
+
+msgid "Peer ID"
+msgstr "معرف النظير"
+
+msgid "Peer ID Prefix:"
+msgstr "بادئة معرف الأقران:"
+
+msgid "Peer ID prefix to identify client type"
+msgstr "بادئة معرف الأقران لتحديد نوع العميل"
+
+msgid "Peer Protocol"
+msgstr "بروتوكول الأقران"
+
+msgid "Peer Protocol settings reset to defaults"
+msgstr "إعادة تعيين إعدادات بروتوكول الأقران للافتراضية"
+
+msgid "Peer contact interval (seconds):"
+msgstr "فترة الاتصال بالأقران (ثواني):"
+
+msgid "Peer idle chance:"
+msgstr "فرصة خمول الأقران:"
+
+msgid "Peer request count:"
+msgstr "عدد طلبات الأقران:"
+
+msgid "Peers"
+msgstr "الأقران"
+
+msgid "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr "نسبة الاتصالات للتدوير (0.0 - 1.0)"
+
+msgid "Piece Length"
+msgstr "طول القطعة"
+
+msgid "Pieces"
+msgstr "القطع"
+
+msgid "Pieces Received"
+msgstr "القطع المستلمة"
+
+msgid "Polish"
+msgstr "Polish"
+
+msgid "Port"
+msgstr "المنفذ"
+
+msgid "Port for incoming BitTorrent connections (1024-65535)"
+msgstr "المنفذ لاتصالات BitTorrent الواردة (1024-65535)"
+
+msgid "Port for web interface (1024-65535)"
+msgstr "المنفذ لواجهة الويب (1024-65535)"
+
+msgid "Port:"
+msgstr "المنفذ:"
+
+msgid "Portuguese"
+msgstr "البرتغالية"
+
+msgid "Preferences"
+msgstr "التفضيلات"
+
+msgid "Prevent embedding in frames (X-Frame-Options)"
+msgstr "منع التضمين في الإطارات (X-Frame-Options)"
+
+msgid "Primary BitTorrent client to simulate"
+msgstr "عميل BitTorrent الأساسي للمحاكاة"
+
+msgid "Primary Client:"
+msgstr "العميل الأساسي:"
+
+msgid "Priority"
+msgstr "الأولوية"
+
+msgid "Priority Down"
+msgstr "تقليل الأولوية"
+
+msgid "Priority Up"
+msgstr "زيادة الأولوية"
+
+msgid "Private"
+msgstr "خاص"
+
+msgid "Probability of idle periods for aggressive profile"
+msgstr "احتمالية فترات الخمول للملف العدواني"
+
+msgid "Probability of idle periods for balanced profile"
+msgstr "احتمالية فترات الخمول للملف المتوازن"
+
+msgid "Probability of idle periods for conservative profile"
+msgstr "احتمالية فترات الخمول للملف المحافظ"
+
+msgid "Probability of peer behavior analysis (0.0 - 1.0)"
+msgstr "احتمالية تحليل سلوك الأقران (0.0 - 1.0)"
+
+msgid "Probability of peer being idle (0.0 - 1.0)"
+msgstr "احتمالية كون الأقران خاملين (0.0 - 1.0)"
+
+msgid "Probability of peer dropping out (0.0 - 1.0)"
+msgstr "احتمالية انقطاع الأقران (0.0 - 1.0)"
+
+msgid "Probability of peer status changes (0.0 - 1.0)"
+msgstr "احتمالية تغيير حالة الأقران (0.0 - 1.0)"
+
+msgid "Probability of seeder upload activity (0.0 - 1.0)"
+msgstr "احتمالية نشاط رفع المشارك (0.0 - 1.0)"
+
+msgid "Probability of switching to a different client behavior"
+msgstr "احتمالية التبديل إلى سلوك عميل مختلف"
+
+msgid "Probability of traffic bursts for aggressive profile"
+msgstr "احتمالية اندفاعات حركة المرور للملف العدواني"
+
+msgid "Probability of traffic bursts for balanced profile"
+msgstr "احتمالية اندفاعات حركة المرور للملف المتوازن"
+
+msgid "Probability of traffic bursts for conservative profile"
+msgstr "احتمالية اندفاعات حركة المرور للملف المحافظ"
+
+msgid "Progress"
+msgstr "التقدم"
+
+msgid "Progress distribution (almost):"
+msgstr "توزيع التقدم (تقريباً):"
+
+msgid "Progress distribution (middle):"
+msgstr "توزيع التقدم (وسط):"
+
+msgid "Progress distribution (start):"
+msgstr "توزيع التقدم (بداية):"
+
+msgid "Progress distribution for almost complete peers (0.0 - 1.0)"
+msgstr "توزيع التقدم للأقران المكتملين تقريباً (0.0 - 1.0)"
+
+msgid "Progress distribution for middle progress peers (0.0 - 1.0)"
+msgstr "توزيع التقدم للأقران متوسطي التقدم (0.0 - 1.0)"
+
+msgid "Progress distribution for starting peers (0.0 - 1.0)"
+msgstr "توزيع التقدم للأقران المبتدئين (0.0 - 1.0)"
+
+msgid "Protocol Compliance:"
+msgstr "الامتثال للبروتوكول:"
+
+msgid "Protocol Extensions"
+msgstr "امتدادات البروتوكول"
+
+msgid "Protocol encryption mode for peer communications"
+msgstr "وضع تشفير البروتوكول لاتصالات الأقران"
+
+msgid "Proxy authentication password"
+msgstr "كلمة مرور مصادقة البروكسي"
+
+msgid "Proxy authentication username"
+msgstr "اسم مستخدم مصادقة البروكسي"
+
+msgid "Proxy server hostname or IP address"
+msgstr "اسم مضيف خادم البروكسي أو عنوان IP"
+
+msgid "Proxy server port number"
+msgstr "رقم منفذ خادم البروكسي"
+
+msgid "Query Timeout:"
+msgstr "انتهاء مهلة الاستعلام:"
+
+msgid "Queue"
+msgstr "الطابور"
+
+msgid "Quit"
+msgstr "خروج"
+
+msgid "Random"
+msgstr "عشوائي"
+
+msgid "Rate of adaptation to swarm behavior"
+msgstr "معدل التكيف مع سلوك السرب"
+
+msgid "Ratio"
+msgstr "النسبة"
+
+msgid "Realistic variations"
+msgstr "تنوعات واقعية"
+
+msgid "Received"
+msgstr "تم الاستلام"
+
+msgid "Relaxed"
+msgstr "مرن"
+
+msgid "Remember window size and position"
+msgstr "تذكر حجم النافذة وموقعها"
+
+msgid "Remember window size and position between sessions"
+msgstr "تذكر حجم النافذة وموقعها بين الجلسات"
+
+msgid "Remove torrent"
+msgstr "إزالة التورنت"
+
+msgid "Requests"
+msgstr "الطلبات"
+
+msgid "Require authentication"
+msgstr "طلب المصادقة"
+
+msgid "Require username and password for web access"
+msgstr "طلب اسم المستخدم وكلمة المرور للوصول عبر الويب"
+
+msgid "Reset"
+msgstr "إعادة تعيين"
+
+msgid "Reset all settings not yet implemented"
+msgstr "إعادة تعيين جميع الإعدادات غير مُطبَّقة بعد"
+
+msgid "Reset all settings to default values"
+msgstr "إعادة تعيين جميع الإعدادات للقيم الافتراضية"
+
+msgid "Reset to Defaults"
+msgstr "إعادة تعيين للافتراضية"
+
+msgid "Reset to defaults"
+msgstr "إعادة تعيين للافتراضية"
+
+msgid "Resume"
+msgstr "استئناف"
+
+msgid "Resume torrent"
+msgstr "استئناف التورنت"
+
+msgid "Routing Table Size:"
+msgstr "حجم جدول التوجيه:"
+
+msgid "Russian"
+msgstr "الروسية"
+
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+msgid "Sat"
+msgstr "سبت"
+
+msgid "Saturday"
+msgstr "السبت"
+
+msgid "Save logs to file in addition to console"
+msgstr "حفظ السجلات في ملف بالإضافة لوحة التحكم"
+
+msgid "Scrape interval (sec):"
+msgstr "فترة الاستخراج (ثانية):"
+
+msgid "Search by torrent name or file path"
+msgstr "البحث باسم التورنت أو مسار الملف"
+
+msgid "Search for settings across all tabs"
+msgstr "البحث عن الإعدادات عبر جميع التبويبات"
+
+msgid "Search for torrent"
+msgstr "البحث عن تورنت"
+
+msgid "Search settings"
+msgstr "البحث في الإعدادات"
+
+msgid "Secure password generated"
+msgstr "تم إنشاء كلمة مرور آمنة"
+
+msgid "Seeder port range (max):"
+msgstr "نطاق منفذ المشارك (الحد الأقصى):"
+
+msgid "Seeder port range (min):"
+msgstr "نطاق منفذ المشارك (الحد الأدنى):"
+
+msgid "Seeders"
+msgstr "المشاركون"
+
+msgid "Seeds"
+msgstr "البذور"
+
+msgid "Select proxy type for connections"
+msgstr "اختر نوع البروكسي للاتصالات"
+
+msgid "Select torrent"
+msgstr "اختر التورنت"
+
+msgid "Send security-related HTTP headers"
+msgstr "إرسال رؤوس HTTP المتعلقة بالأمان"
+
+msgid "Sent"
+msgstr "تم الإرسال"
+
+msgid "Server:"
+msgstr "الخادم:"
+
+msgid "Session timeout (min):"
+msgstr "انتهاء مهلة الجلسة (دقيقة):"
+
+msgid "Shortcuts configuration not yet implemented"
+msgstr "تكوين الاختصارات غير مُطبَّق بعد"
+
+msgid "Show only selected torrent connections"
+msgstr "إظهار اتصالات التورنت المحدد فقط"
+
+msgid "Simulation"
+msgstr "المحاكاة"
+
+msgid "Size"
+msgstr "الحجم"
+
+msgid "Size of metadata pieces in bytes"
+msgstr "حجم قطع البيانات الوصفية بالبايت"
+
+msgid "Small Torrent Limit"
+msgstr "حد التورنت الصغير"
+
+msgid "Spanish"
+msgstr "الإسبانية"
+
+msgid "Speed"
+msgstr "السرعة"
+
+msgid "Speed settings reset to defaults"
+msgstr "إعادة تعيين إعدادات السرعة للافتراضية"
+
+msgid "Standard"
+msgstr "قياسي"
+
+msgid "Start DFakeSeeder automatically when the system boots"
+msgstr "بدء DFakeSeeder تلقائياً عند إقلاع النظام"
+
+msgid "Start hour (24-hour format)"
+msgstr "ساعة البداية (تنسيق 24 ساعة)"
+
+msgid "Start minimized"
+msgstr "بدء مصغر"
+
+msgid "Start minimized disabled"
+msgstr "تم تعطيل البدء مصغراً"
+
+msgid "Start minimized enabled"
+msgstr "تم تمكين البدء مصغراً"
+
+msgid "Start minute"
+msgstr "دقيقة البداية"
+
+msgid "Start on system startup"
+msgstr "بدء عند إقلاع النظام"
+
+msgid "Start the application minimized to system tray"
+msgstr "بدء التطبيق مصغراً إلى شريط النظام"
+
+msgid "Stats Update Interval:"
+msgstr "فترة تحديث الإحصائيات:"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Status change probability:"
+msgstr "احتمالية تغيير الحالة:"
+
+msgid "Strict"
+msgstr "صارم"
+
+msgid "Sun"
+msgstr "أحد"
+
+msgid "Sunday"
+msgstr "الأحد"
+
+msgid "Swedish"
+msgstr "Swedish"
+
+msgid "Synthetic Peer Count:"
+msgstr "عدد الأقران الاصطناعيين:"
+
+msgid "TCP fallback"
+msgstr "TCP احتياطي"
+
+msgid "TCP keepalive"
+msgstr "إبقاء TCP على قيد الحياة"
+
+msgid "Theme:"
+msgstr "المظهر:"
+
+msgid "Threshold"
+msgstr "العتبة"
+
+msgid "Thu"
+msgstr "خميس"
+
+msgid "Thursday"
+msgstr "الخميس"
+
+msgid "Tier"
+msgstr "المستوى"
+
+msgid "Time-based patterns"
+msgstr "الأنماط المبنية على الوقت"
+
+msgid "Timeout for DHT bootstrap operations (seconds)"
+msgstr "انتهاء مهلة عمليات تمهيد DHT (ثواني)"
+
+msgid "Timeout for DHT queries (seconds)"
+msgstr "انتهاء مهلة استعلامات DHT (ثواني)"
+
+msgid "Timeout for HTTP seeder connections in seconds"
+msgstr "انتهاء مهلة اتصالات مشارك HTTP بالثواني"
+
+msgid "Timeout for UDP seeder connections in seconds"
+msgstr "انتهاء مهلة اتصالات مشارك UDP بالثواني"
+
+msgid "Timeout for metadata requests (seconds)"
+msgstr "انتهاء مهلة طلبات البيانات الوصفية (ثواني)"
+
+msgid "Timeout for peer handshake in seconds"
+msgstr "انتهاء مهلة مصافحة الأقران بالثواني"
+
+msgid "Timeout for reading peer messages in seconds"
+msgstr "انتهاء مهلة قراءة رسائل الأقران بالثواني"
+
+msgid "To:"
+msgstr "إلى:"
+
+msgid "Top"
+msgstr "الأعلى"
+
+msgid "Torrent"
+msgstr "التورنت"
+
+msgid "Torrent Files"
+msgstr "ملفات التورنت"
+
+msgid "Torrents"
+msgstr "التورنت"
+
+msgid "Total Downloaded"
+msgstr "إجمالي التحميل"
+
+msgid "Total Size"
+msgstr "الحجم الإجمالي"
+
+msgid "Total Uploaded"
+msgstr "إجمالي الرفع"
+
+msgid "Track extension statistics"
+msgstr "تتبع إحصائيات الامتداد"
+
+msgid "Track extension usage statistics"
+msgstr "تتبع إحصائيات استخدام التمديد"
+
+msgid "Tracker"
+msgstr "المتتبع"
+
+msgid "Tracker URL"
+msgstr "رابط المتتبع"
+
+msgid "Trackers"
+msgstr "المتتبعات"
+
+msgid "Traffic Profile:"
+msgstr "ملف حركة المرور:"
+
+msgid "Traffic pattern profile for simulation"
+msgstr "ملف نمط حركة المرور للمحاكاة"
+
+msgid "Transaction ID range (max):"
+msgstr "نطاق معرف المعاملة (الحد الأقصى):"
+
+msgid "Transaction ID range (min):"
+msgstr "نطاق معرف المعاملة (الحد الأدنى):"
+
+msgid "Transmission"
+msgstr "Transmission"
+
+msgid "Transmission/3.00"
+msgstr "Transmission/3.00"
+
+msgid "Tue"
+msgstr "ثلاثاء"
+
+msgid "Tuesday"
+msgstr "الثلاثاء"
+
+msgid "Type"
+msgstr "النوع"
+
+msgid "Type:"
+msgstr "النوع:"
+
+msgid "UDP seeder timeout (seconds):"
+msgstr "انتهاء مهلة مشارك UDP (ثواني):"
+
+msgid "UI Refresh Rate"
+msgstr "معدل تحديث الواجهة"
+
+msgid "UI refresh rate (sec):"
+msgstr "معدل تحديث الواجهة (ثانية):"
+
+msgid "URL"
+msgstr "الرابط"
+
+msgid "URL: http://localhost:8080"
+msgstr "الرابط: http://localhost:8080"
+
+msgid "Unknown"
+msgstr "غير معروف"
+
+msgid "Up"
+msgstr "أعلى"
+
+msgid "Up Speed"
+msgstr "سرعة الرفع"
+
+msgid "Update Tracker"
+msgstr "تحديث المتتبع"
+
+msgid "Upload Speed"
+msgstr "سرعة الرفع"
+
+msgid "Upload Speed (KB/s):"
+msgstr "سرعة الرفع (KB/s):"
+
+msgid "Upload Variance:"
+msgstr "تباين الرفع:"
+
+msgid "Upload activity probability:"
+msgstr "احتمالية نشاط الرفع:"
+
+msgid "Upload limit (KB/s):"
+msgstr "حد الرفع (كيلوبايت/ثانية):"
+
+msgid "Upload speed variance for aggressive profile"
+msgstr "تباين سرعة الرفع للملف العدواني"
+
+msgid "Upload speed variance for balanced profile"
+msgstr "تباين سرعة الرفع للملف المتوازن"
+
+msgid "Upload speed variance for conservative profile"
+msgstr "تباين سرعة الرفع للملف المحافظ"
+
+msgid "Uploaded"
+msgstr "تم الرفع"
+
+msgid "Uploaded Session / Total"
+msgstr "رفع الجلسة / الإجمالي"
+
+msgid "Uploading"
+msgstr "جاري الرفع"
+
+msgid "Use HTTPS (SSL/TLS)"
+msgstr "استخدام HTTPS (SSL/TLS)"
+
+msgid "Use HTTPS for secure connections (requires SSL certificate)"
+msgstr "استخدام HTTPS للاتصالات الآمنة (يتطلب شهادة SSL)"
+
+msgid "Use authentication"
+msgstr "استخدام المصادقة"
+
+msgid "User Agent:"
+msgstr "وكيل المستخدم:"
+
+msgid "User agent string to identify the client to trackers"
+msgstr "نص وكيل المستخدم لتحديد العميل للمتتبعات"
+
+msgid "Username for web interface login"
+msgstr "اسم المستخدم لتسجيل دخول واجهة الويب"
+
+msgid "Username:"
+msgstr "اسم المستخدم:"
+
+msgid "Validate DHT security tokens"
+msgstr "التحقق من رموز أمان DHT"
+
+msgid "Validate extension messages"
+msgstr "التحقق من رسائل الامتداد"
+
+msgid "Validate extension messages for security"
+msgstr "التحقق من رسائل التمديد للأمان"
+
+msgid "Validate security tokens"
+msgstr "التحقق من رموز الأمان"
+
+msgid "Validate setting values and show warnings for invalid combinations"
+msgstr "التحقق من قيم الإعدادات وإظهار تحذيرات للتركيبات غير الصحيحة"
+
+msgid "Validate settings on change"
+msgstr "التحقق من الإعدادات عند التغيير"
+
+msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr "التنوع في سلوك العميل (0.0 = لا تنوع، 1.0 = الحد الأقصى للتنوع)"
+
+msgid "Vuze"
+msgstr "Vuze"
+
+msgid "Vuze/5.7.6.0"
+msgstr "Vuze/5.7.6.0"
+
+msgid "WARNING"
+msgstr "تحذير"
+
+msgid "Web UI"
+msgstr "واجهة الويب"
+
+msgid "Web UI settings reset to defaults"
+msgstr "إعادة تعيين إعدادات واجهة الويب للافتراضية"
+
+msgid "Wed"
+msgstr "أربعاء"
+
+msgid "Wednesday"
+msgstr "الأربعاء"
+
+msgid "active"
+msgstr "نشط"
+
+msgid "admin"
+msgstr "مدير"
+
+msgid "announce_interval"
+msgstr "فترة الإعلان"
+
+msgid "bytes"
+msgstr "بايت"
+
+msgid "class_name"
+msgstr "اسم_الفئة"
+
+msgid "download_speed"
+msgstr "سرعة التحميل"
+
+msgid "filepath"
+msgstr "مسار الملف"
+
+msgid "files_tab"
+msgstr "تبويب_الملفات"
+
+msgid "id"
+msgstr "#"
+
+msgid "leechers"
+msgstr "المحملون"
+
+msgid "log_tab"
+msgstr "تبويب_السجل"
+
+msgid "lt_donthave (Piece Availability)"
+msgstr "lt_donthave (توفر القطع)"
+
+msgid "name"
+msgstr "الاسم"
+
+msgid "next_update"
+msgstr "التحديث التالي"
+
+msgid "open-menu-symbolic"
+msgstr "open-menu-symbolic"
+
+msgid "options_tab"
+msgstr "تبويب_الخيارات"
+
+msgid "peers_tab"
+msgstr "تبويب_الأقران"
+
+msgid "progress"
+msgstr "التقدم"
+
+msgid "qBittorrent"
+msgstr "qBittorrent"
+
+msgid "qBittorrent/4.3.1"
+msgstr "qBittorrent/4.3.1"
+
+msgid "rTorrent"
+msgstr "rTorrent"
+
+msgid "rTorrent/0.9.6"
+msgstr "rTorrent/0.9.6"
+
+msgid "seconds"
+msgstr "ثوان"
+
+msgid "seeders"
+msgstr "المشاركون"
+
+msgid "session_downloaded"
+msgstr "تم تحميله"
+
+msgid "session_uploaded"
+msgstr "تم رفعه"
+
+msgid "small_torrent_limit"
+msgstr "حد التورنت الصغير"
+
+msgid "threshold"
+msgstr "العتبة"
+
+msgid "total_downloaded"
+msgstr "إجمالي التحميل"
+
+msgid "total_size"
+msgstr "الحجم"
+
+msgid "total_uploaded"
+msgstr "إجمالي الرفع"
+
+msgid "trackers_tab"
+msgstr "تبويب_المتتبعات"
+
+msgid "uTorrent/3.5.5"
+msgstr "uTorrent/3.5.5"
+
+msgid "upload_speed"
+msgstr "سرعة الرفع"
+
+msgid "uploading"
+msgstr "جاري الرفع"
+
+msgid "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch (اجتياز NAT)"
+
+msgid "ut_metadata (Metadata Exchange)"
+msgstr "ut_metadata (تبادل البيانات الوصفية)"
+
+msgid "ut_pex (Peer Exchange)"
+msgstr "ut_pex (تبادل الأقران)"
+
+msgid "µTorrent"
+msgstr "µTorrent"
+
+msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
+msgstr "⚠️ إعدادات متقدمة - عدل بحذر. القيم غير الصحيحة قد تؤثر على الأداء أو الاستقرار."
+
+msgid "⚠️ Web UI allows remote control of the application. Use strong authentication."
+msgstr "⚠️ واجهة الويب تسمح بالتحكم عن بُعد في التطبيق. استخدم مصادقة قوية."
+

@@ -1,0 +1,1178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkScrolledWindow" id="settings_simulation_scroll">
+    <property name="hscrollbar-policy">never</property>
+    <property name="vscrollbar-policy">automatic</property>
+    <child>
+        <object class="GtkBox" id="settings_simulation_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">18</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+
+            <!-- Client Behavior Engine Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Client Behavior Engine&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable client behavior engine -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="client_behavior_enabled_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable client behavior simulation engine</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable client behavior simulation</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Primary client -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Primary Client:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkDropDown" id="primary_client_combo">
+                                            <property name="model">
+                                                <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">qBittorrent</item>
+                                                        <item translatable="yes">Deluge</item>
+                                                        <item translatable="yes">Transmission</item>
+                                                        <item translatable="yes">µTorrent</item>
+                                                        <item translatable="yes">Vuze</item>
+                                                        <item translatable="yes">rTorrent</item>
+                                                        <item translatable="yes">BiglyBT</item>
+                                                    </items>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Primary BitTorrent client to simulate</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Behavior variation -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Behavior Variation:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="behavior_variation_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0.0</property>
+                                                    <property name="upper">1.0</property>
+                                                    <property name="step-increment">0.1</property>
+                                                    <property name="page-increment">0.1</property>
+                                                    <property name="value">0.3</property>
+                                                </object>
+                                            </property>
+                                            
+                                            <property name="tooltip-text" translatable="yes">Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Switch client probability -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Client Switch Probability:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="switch_client_probability_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0.0</property>
+                                                    <property name="upper">1.0</property>
+                                                    <property name="step-increment">0.01</property>
+                                                    <property name="page-increment">0.05</property>
+                                                    <property name="value">0.05</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">2</property>
+                                            <property name="tooltip-text" translatable="yes">Probability of switching to a different client behavior</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Advanced behavior settings -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="client_profile_switching_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable dynamic client profile switching</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Dynamic profile switching</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Protocol compliance level -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Protocol Compliance:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkDropDown" id="protocol_compliance_level_combo">
+                                            <property name="model">
+                                                <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">Strict</item>
+                                                        <item translatable="yes">Standard</item>
+                                                        <item translatable="yes">Relaxed</item>
+                                                    </items>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Level of BitTorrent protocol compliance</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Behavior randomization -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="behavior_randomization_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable random variations in client behavior</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Behavior randomization</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Traffic Pattern Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Traffic Pattern Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Traffic profile -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Traffic Profile:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkDropDown" id="traffic_profile_combo">
+                                            <property name="model">
+                                                <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">Conservative</item>
+                                                        <item translatable="yes">Balanced</item>
+                                                        <item translatable="yes">Aggressive</item>
+                                                    </items>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Traffic pattern profile for simulation</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Realistic variations -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="realistic_variations_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable realistic traffic variations</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Realistic variations</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Time-based patterns -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="time_based_patterns_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable time-based traffic patterns (peak hours, night hours)</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Time-based patterns</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Conservative Profile Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Conservative Profile Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkGrid">
+                            <property name="margin-start">12</property>
+                            <property name="row-spacing">8</property>
+                            <property name="column-spacing">12</property>
+
+                            <!-- Upload speed -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Upload Speed (KB/s):</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">0</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="conservative_upload_speed_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">10</property>
+                                            <property name="upper">1000</property>
+                                            <property name="step-increment">10</property>
+                                            <property name="page-increment">50</property>
+                                            <property name="value">50</property>
+                                        </object>
+                                    </property>
+                                    <property name="tooltip-text" translatable="yes">Conservative profile upload speed</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">0</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Download speed -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Download Speed (KB/s):</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">1</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="conservative_download_speed_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">50</property>
+                                            <property name="upper">5000</property>
+                                            <property name="step-increment">50</property>
+                                            <property name="page-increment">100</property>
+                                            <property name="value">200</property>
+                                        </object>
+                                    </property>
+                                    <property name="tooltip-text" translatable="yes">Conservative profile download speed</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">1</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Upload variance -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Upload Variance:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">2</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="conservative_upload_variance_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0.0</property>
+                                            <property name="upper">1.0</property>
+                                            <property name="step-increment">0.1</property>
+                                            <property name="page-increment">0.1</property>
+                                            <property name="value">0.1</property>
+                                        </object>
+                                    </property>
+                                    
+                                    <property name="tooltip-text" translatable="yes">Upload speed variance for conservative profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">2</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Download variance -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Download Variance:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">3</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="conservative_download_variance_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0.0</property>
+                                            <property name="upper">1.0</property>
+                                            <property name="step-increment">0.1</property>
+                                            <property name="page-increment">0.1</property>
+                                            <property name="value">0.15</property>
+                                        </object>
+                                    </property>
+                                    <property name="digits">1</property>
+                                    <property name="tooltip-text" translatable="yes">Download speed variance for conservative profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">3</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Max connections -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Max Connections:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">4</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="conservative_max_connections_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">10</property>
+                                            <property name="upper">500</property>
+                                            <property name="step-increment">10</property>
+                                            <property name="page-increment">50</property>
+                                            <property name="value">100</property>
+                                        </object>
+                                    </property>
+                                    <property name="tooltip-text" translatable="yes">Maximum connections for conservative profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">4</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Burst probability -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Burst Probability:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">5</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="conservative_burst_probability_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0.0</property>
+                                            <property name="upper">1.0</property>
+                                            <property name="step-increment">0.01</property>
+                                            <property name="page-increment">0.05</property>
+                                            <property name="value">0.05</property>
+                                            
+                                        </object>
+                                    </property>
+                                    <property name="digits">2</property>
+                                    <property name="tooltip-text" translatable="yes">Probability of traffic bursts for conservative profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">5</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Idle probability -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Idle Probability:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">6</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="conservative_idle_probability_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0.0</property>
+                                            <property name="upper">1.0</property>
+                                            <property name="step-increment">0.01</property>
+                                            <property name="page-increment">0.05</property>
+                                            <property name="value">0.2</property>
+                                            
+                                        </object>
+                                    </property>
+                                    <property name="digits">2</property>
+                                    <property name="tooltip-text" translatable="yes">Probability of idle periods for conservative profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">6</property>
+                                    </layout>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Balanced Profile Group (Similar structure, abbreviated for brevity) -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Balanced Profile Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkGrid">
+                            <property name="margin-start">12</property>
+                            <property name="row-spacing">8</property>
+                            <property name="column-spacing">12</property>
+
+                            <!-- Upload speed -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Upload Speed (KB/s):</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">0</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="balanced_upload_speed_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">50</property>
+                                            <property name="upper">2000</property>
+                                            <property name="step-increment">25</property>
+                                            <property name="page-increment">100</property>
+                                            <property name="value">200</property>
+                                        </object>
+                                    </property>
+                                    <property name="tooltip-text" translatable="yes">Balanced profile upload speed</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">0</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Download speed -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Download Speed (KB/s):</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">1</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="balanced_download_speed_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">200</property>
+                                            <property name="upper">10000</property>
+                                            <property name="step-increment">100</property>
+                                            <property name="page-increment">500</property>
+                                            <property name="value">800</property>
+                                        </object>
+                                    </property>
+                                    <property name="tooltip-text" translatable="yes">Balanced profile download speed</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">1</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Upload variance -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Upload Variance:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">2</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="balanced_upload_variance_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0.0</property>
+                                            <property name="upper">1.0</property>
+                                            <property name="step-increment">0.1</property>
+                                            <property name="page-increment">0.1</property>
+                                            <property name="value">0.3</property>
+                                            
+                                        </object>
+                                    </property>
+                                    <property name="digits">1</property>
+                                    <property name="tooltip-text" translatable="yes">Upload speed variance for balanced profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">2</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Download variance -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Download Variance:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">3</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="balanced_download_variance_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0.0</property>
+                                            <property name="upper">1.0</property>
+                                            <property name="step-increment">0.05</property>
+                                            <property name="page-increment">0.1</property>
+                                            <property name="value">0.25</property>
+                                            
+                                        </object>
+                                    </property>
+                                    <property name="digits">2</property>
+                                    <property name="tooltip-text" translatable="yes">Download speed variance for balanced profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">3</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Max connections -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Max Connections:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">4</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="balanced_max_connections_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">50</property>
+                                            <property name="upper">1000</property>
+                                            <property name="step-increment">25</property>
+                                            <property name="page-increment">100</property>
+                                            <property name="value">200</property>
+                                        </object>
+                                    </property>
+                                    <property name="tooltip-text" translatable="yes">Maximum connections for balanced profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">4</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Burst probability -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Burst Probability:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">5</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="balanced_burst_probability_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0.0</property>
+                                            <property name="upper">1.0</property>
+                                            <property name="step-increment">0.01</property>
+                                            <property name="page-increment">0.05</property>
+                                            <property name="value">0.15</property>
+                                            
+                                        </object>
+                                    </property>
+                                    <property name="digits">2</property>
+                                    <property name="tooltip-text" translatable="yes">Probability of traffic bursts for balanced profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">5</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Idle probability -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Idle Probability:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">6</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="balanced_idle_probability_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0.0</property>
+                                            <property name="upper">1.0</property>
+                                            <property name="step-increment">0.01</property>
+                                            <property name="page-increment">0.05</property>
+                                            <property name="value">0.1</property>
+                                            
+                                        </object>
+                                    </property>
+                                    <property name="digits">2</property>
+                                    <property name="tooltip-text" translatable="yes">Probability of idle periods for balanced profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">6</property>
+                                    </layout>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Aggressive Profile Group (Similar structure, abbreviated for brevity) -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Aggressive Profile Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkGrid">
+                            <property name="margin-start">12</property>
+                            <property name="row-spacing">8</property>
+                            <property name="column-spacing">12</property>
+
+                            <!-- Upload speed -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Upload Speed (KB/s):</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">0</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="aggressive_upload_speed_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0</property>
+                                            <property name="upper">5000</property>
+                                            <property name="step-increment">50</property>
+                                            <property name="page-increment">250</property>
+                                            <property name="value">500</property>
+                                        </object>
+                                    </property>
+                                    <property name="tooltip-text" translatable="yes">Aggressive profile upload speed (0 = unlimited)</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">0</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Download speed -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Download Speed (KB/s):</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">1</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="aggressive_download_speed_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">500</property>
+                                            <property name="upper">20000</property>
+                                            <property name="step-increment">250</property>
+                                            <property name="page-increment">1000</property>
+                                            <property name="value">2048</property>
+                                        </object>
+                                    </property>
+                                    <property name="tooltip-text" translatable="yes">Aggressive profile download speed</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">1</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Upload variance -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Upload Variance:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">2</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="aggressive_upload_variance_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0.0</property>
+                                            <property name="upper">1.0</property>
+                                            <property name="step-increment">0.1</property>
+                                            <property name="page-increment">0.1</property>
+                                            <property name="value">0.5</property>
+                                            
+                                        </object>
+                                    </property>
+                                    <property name="digits">1</property>
+                                    <property name="tooltip-text" translatable="yes">Upload speed variance for aggressive profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">2</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Download variance -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Download Variance:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">3</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="aggressive_download_variance_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0.0</property>
+                                            <property name="upper">1.0</property>
+                                            <property name="step-increment">0.05</property>
+                                            <property name="page-increment">0.1</property>
+                                            <property name="value">0.4</property>
+                                            
+                                        </object>
+                                    </property>
+                                    <property name="digits">1</property>
+                                    <property name="tooltip-text" translatable="yes">Download speed variance for aggressive profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">3</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Max connections -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Max Connections:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">4</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="aggressive_max_connections_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">100</property>
+                                            <property name="upper">2000</property>
+                                            <property name="step-increment">50</property>
+                                            <property name="page-increment">250</property>
+                                            <property name="value">500</property>
+                                        </object>
+                                    </property>
+                                    <property name="tooltip-text" translatable="yes">Maximum connections for aggressive profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">4</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Burst probability -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Burst Probability:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">5</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="aggressive_burst_probability_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0.0</property>
+                                            <property name="upper">1.0</property>
+                                            <property name="step-increment">0.01</property>
+                                            <property name="page-increment">0.05</property>
+                                            <property name="value">0.3</property>
+                                            
+                                        </object>
+                                    </property>
+                                    <property name="digits">2</property>
+                                    <property name="tooltip-text" translatable="yes">Probability of traffic bursts for aggressive profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">5</property>
+                                    </layout>
+                                </object>
+                            </child>
+
+                            <!-- Idle probability -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Idle Probability:</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <layout>
+                                        <property name="column">0</property>
+                                        <property name="row">6</property>
+                                    </layout>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkSpinButton" id="aggressive_idle_probability_spin">
+                                    <property name="adjustment">
+                                        <object class="GtkAdjustment">
+                                            <property name="lower">0.0</property>
+                                            <property name="upper">1.0</property>
+                                            <property name="step-increment">0.01</property>
+                                            <property name="page-increment">0.05</property>
+                                            <property name="value">0.05</property>
+                                            
+                                        </object>
+                                    </property>
+                                    <property name="digits">2</property>
+                                    <property name="tooltip-text" translatable="yes">Probability of idle periods for aggressive profile</property>
+                                    <layout>
+                                        <property name="column">1</property>
+                                        <property name="row">6</property>
+                                    </layout>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Swarm Intelligence Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Swarm Intelligence&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable swarm intelligence -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="swarm_intelligence_enabled_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable swarm intelligence for adaptive behavior</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable swarm intelligence</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Adaptation rate -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Adaptation Rate:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="adaptation_rate_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0.0</property>
+                                                    <property name="upper">1.0</property>
+                                                    <property name="step-increment">0.1</property>
+                                                    <property name="page-increment">0.1</property>
+                                                    <property name="value">0.5</property>
+                                                    
+                                                </object>
+                                            </property>
+                                    <property name="digits">1</property>
+                                            <property name="tooltip-text" translatable="yes">Rate of adaptation to swarm behavior</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Peer analysis depth -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Peer Analysis Depth:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="peer_analysis_depth_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">5</property>
+                                                    <property name="upper">50</property>
+                                                    <property name="step-increment">5</property>
+                                                    <property name="page-increment">10</property>
+                                                    <property name="value">10</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Number of peers to analyze for behavior patterns</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+    </child>
+</object>

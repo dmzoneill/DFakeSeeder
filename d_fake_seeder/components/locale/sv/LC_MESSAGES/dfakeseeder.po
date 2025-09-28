@@ -1,0 +1,1837 @@
+# Swedish translation for DFakeSeeder
+# Copyright (C) 2024 DFakeSeeder Contributors
+# This file is distributed under the same license as the DFakeSeeder package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DFakeSeeder 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"POT-Creation-Date: 2025-09-18 17:51+0100\n"
+"PO-Revision-Date: 2024-09-18 18:30+0100\n"
+"Last-Translator: Claude <noreply@anthropic.com>\n"
+"Language-Team: Swedish <sv@li.org>\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid "#"
+msgstr "#"
+
+msgid "(0 = unlimited)"
+msgstr "(0 = obegränsat)"
+
+msgid "0 / 250"
+msgstr "0 / 250"
+
+msgid "127.0.0.1"
+msgstr "127.0.0.1"
+
+msgid ":"
+msgstr ":"
+
+msgid "<b>Advanced Extension Settings</b>"
+msgstr "<b>Avancerade tilläggsinställningar</b>"
+
+msgid "<b>Aggressive Profile Settings</b>"
+msgstr "<b>Aggressiva profilinställningar</b>"
+
+msgid "<b>Alternative Speed Limits</b>"
+msgstr "<b>Alternativa hastighetsgränser</b>"
+
+msgid "<b>Application Behavior</b>"
+msgstr "<b>Applikationsbeteende</b>"
+
+msgid "<b>Authentication</b>"
+msgstr "<b>Autentisering</b>"
+
+msgid "<b>Balanced Profile Settings</b>"
+msgstr "<b>Balanserade profilinställningar</b>"
+
+msgid "<b>Bootstrap Settings</b>"
+msgstr "<b>Bootstrap-inställningar</b>"
+
+msgid "<b>Client Behavior Engine</b>"
+msgstr "<b>Klientbeteendemotor</b>"
+
+msgid "<b>Client Identification</b>"
+msgstr "<b>Klientidentifiering</b>"
+
+msgid "<b>Configuration Management</b>"
+msgstr "<b>Konfigurationshantering</b>"
+
+msgid "<b>Connection Limits</b>"
+msgstr "<b>Anslutningsgränser</b>"
+
+msgid "<b>Connection Settings</b>"
+msgstr "<b>Anslutningsinställningar</b>"
+
+msgid "<b>Conservative Profile Settings</b>"
+msgstr "<b>Konservativa profilinställningar</b>"
+
+msgid "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT (Distribuerad hashtabell)</b>"
+
+msgid "<b>Encryption</b>"
+msgstr "<b>Kryptering</b>"
+
+msgid "<b>Expert Settings</b>"
+msgstr "<b>Expertinställningar</b>"
+
+msgid "<b>Extension Protocol (BEP-010)</b>"
+msgstr "<b>Tilläggsprotokoll (BEP-010)</b>"
+
+msgid "<b>Global Speed Limits</b>"
+msgstr "<b>Globala hastighetsgränser</b>"
+
+msgid "<b>Interface</b>"
+msgstr "<b>Gränssnitt</b>"
+
+msgid "<b>Keyboard Shortcuts</b>"
+msgstr "<b>Tangentbordsgenvägar</b>"
+
+msgid "<b>Listening Port</b>"
+msgstr "<b>Lyssningsport</b>"
+
+msgid "<b>Logging</b>"
+msgstr "<b>Loggning</b>"
+
+msgid "<b>Metadata Extension Settings</b>"
+msgstr "<b>Metadatatilläggsinställningar</b>"
+
+msgid "<b>Network Settings</b>"
+msgstr "<b>Nätverksinställningar</b>"
+
+msgid "<b>Node Configuration</b>"
+msgstr "<b>Nodkonfiguration</b>"
+
+msgid "<b>Peer Behavior Settings</b>"
+msgstr "<b>Peer Beteendeinställningar</b>"
+
+msgid "<b>Peer Exchange (PEX) Settings</b>"
+msgstr "<b>Peer Exchange (PEX) inställningar</b>"
+
+msgid "<b>Peer Protocol Timeouts</b>"
+msgstr "<b>Peer-protokoll Timeouts</b>"
+
+msgid "<b>Performance</b>"
+msgstr "<b>Prestanda</b>"
+
+msgid "<b>Protocol Extensions</b>"
+msgstr "<b>Protokolltillägg</b>"
+
+msgid "<b>Protocol Features</b>"
+msgstr "<b>Protokollfunktioner</b>"
+
+msgid "<b>Proxy Settings</b>"
+msgstr "<b>Proxyinställningar</b>"
+
+msgid "<b>Security Options</b>"
+msgstr "<b>Säkerhetsalternativ</b>"
+
+msgid "<b>Seeder Protocol Settings</b>"
+msgstr "<b>Seeder Protokollinställningar</b>"
+
+msgid "<b>Seeding Profiles</b>"
+msgstr "<b>Seeding-profiler</b>"
+
+msgid "<b>Settings Search</b>"
+msgstr "<b>Inställningssökning</b>"
+
+msgid "<b>Speed Scheduler</b>"
+msgstr "<b>Hastighetsschemaläggare</b>"
+
+msgid "<b>Statistics and Security</b>"
+msgstr "<b>Statistik och säkerhet</b>"
+
+msgid "<b>Swarm Intelligence</b>"
+msgstr "<b>Svärmintelligens</b>"
+
+msgid "<b>Timing Settings</b>"
+msgstr "<b>Tidsinställningar</b>"
+
+msgid "<b>Tracker Announce Settings</b>"
+msgstr "<b>Spårare Annonsinställningar</b>"
+
+msgid "<b>Traffic Pattern Settings</b>"
+msgstr "<b>Trafikmönsterinställningar</b>"
+
+msgid "<b>Transport Protocol Settings</b>"
+msgstr "<b>Transportprotokollinställningar</b>"
+
+msgid "<b>Web Interface</b>"
+msgstr "<b>Webbgränssnitt</b>"
+
+msgid "About"
+msgstr "Om"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Active Profile:"
+msgstr "Aktiv profil:"
+
+msgid "Adaptation Rate:"
+msgstr "Anpassningshastighet:"
+
+msgid "Add"
+msgstr "Lägg till"
+
+msgid "Add torrent"
+msgstr "Lägg till torrent"
+
+msgid "Added"
+msgstr "Tillagd"
+
+msgid "Advanced"
+msgstr "Avancerat"
+
+msgid "Advanced settings reset to defaults"
+msgstr "Avancerade inställningar återställda till standard"
+
+msgid "Aggressive"
+msgstr "Aggressiv"
+
+msgid "Aggressive profile download speed"
+msgstr "Aggressiv profil nedladdningshastighet"
+
+msgid "Aggressive profile upload speed (0 = unlimited)"
+msgstr "Aggressiv profil uppladdningshastighet (0 = obegränsad)"
+
+msgid "Alt download limit (KB/s):"
+msgstr "Alt. nedladdningsgräns (KB/s):"
+
+msgid "Alt upload limit (KB/s):"
+msgstr "Alt. uppladdningsgräns (KB/s):"
+
+msgid "Alternative download speed limit in KB/s"
+msgstr "Alternativ nedladdningshastighetsgräns i KB/s"
+
+msgid "Alternative upload speed limit in KB/s"
+msgstr "Alternativ uppladdningshastighetsgräns i KB/s"
+
+msgid "Amount of RAM to use for disk caching"
+msgstr "Mängd RAM att använda för diskcache"
+
+msgid "Announce Interval"
+msgstr "Annonsintervall"
+
+msgid "Announce interval (sec):"
+msgstr "Annonsintervall (sek):"
+
+msgid "Announcement Interval:"
+msgstr "Meddelningsintervall:"
+
+msgid "Arabic"
+msgstr "Arabic"
+
+msgid "Auto-bootstrap DHT"
+msgstr "Auto-bootstrap DHT"
+
+msgid "Auto-generate node ID"
+msgstr "Auto-generera nod-ID"
+
+msgid "Auto-save settings"
+msgstr "Spara inställningar automatiskt"
+
+msgid "Auto-start disabled"
+msgstr "Autostart inaktiverad"
+
+msgid "Auto-start enabled"
+msgstr "Autostart aktiverad"
+
+msgid "Automatic logout after inactivity (5-1440 minutes)"
+msgstr "Automatisk utloggning efter inaktivitet (5-1440 minuter)"
+
+msgid "Automatically bootstrap DHT using known nodes"
+msgstr "Bootstrap DHT automatiskt med kända noder"
+
+msgid "Automatically configure router port forwarding using UPnP/NAT-PMP"
+msgstr "Konfigurera router portvidarebefordran automatiskt med UPnP/NAT-PMP"
+
+msgid "Automatically generate a unique node ID"
+msgstr "Generera automatiskt ett unikt nod-ID"
+
+msgid "Automatically save settings when changed"
+msgstr "Spara inställningar automatiskt vid ändring"
+
+msgid "Automatically switch to alternative speeds during specified hours"
+msgstr "Växla automatiskt till alternativa hastigheter under angivna timmar"
+
+msgid "Availability"
+msgstr "Tillgänglighet"
+
+msgid "Balanced"
+msgstr "Balanserad"
+
+msgid "Balanced profile download speed"
+msgstr "Balanserad profil nedladdningshastighet"
+
+msgid "Balanced profile upload speed"
+msgstr "Balanserad profil uppladdningshastighet"
+
+msgid "Behavior Variation:"
+msgstr "Beteendevariation:"
+
+msgid "Behavior analysis probability:"
+msgstr "Beteendeanalyse sannolikhet:"
+
+msgid "Behavior randomization"
+msgstr "Beteenderandomisering"
+
+msgid "BiglyBT"
+msgstr "BiglyBT"
+
+msgid "Bind to localhost only"
+msgstr "Bind endast till localhost"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "BitTorrent settings reset to defaults"
+msgstr "BitTorrent-inställningar återställda till standard"
+
+msgid "BitTorrent/7.10.5"
+msgstr "BitTorrent/7.10.5"
+
+msgid "Bootstrap Nodes (one per line, format: host:port):"
+msgstr "Bootstrap-noder (en per rad, format: värd:port):"
+
+msgid "Bootstrap Timeout:"
+msgstr "Bootstrap-timeout:"
+
+msgid "Bottom"
+msgstr "Botten"
+
+msgid "Bucket Size:"
+msgstr "Bucketstorlek:"
+
+msgid "Burst Probability:"
+msgstr "Skursannolikhet:"
+
+msgid "CRITICAL"
+msgstr "KRITISK"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Chinese"
+msgstr "Kinesiska"
+
+msgid "Choose a pre-configured seeding profile"
+msgstr "Välj en förkonfigurerad seeding-profil"
+
+msgid "Choose the application theme"
+msgstr "Välj applikationstema"
+
+msgid "Choose the interface language"
+msgstr "Välj gränssnittsspråk"
+
+msgid "Clear search"
+msgstr "Rensa sökning"
+
+msgid "Client"
+msgstr "Klient"
+
+msgid "Client Switch Probability:"
+msgstr "Klientbytessannolikhet:"
+
+msgid "Comment"
+msgstr "Kommentar"
+
+msgid "Completed"
+msgstr "Slutförd"
+
+msgid "Concurrent Queries:"
+msgstr "Samtidiga förfrågningar:"
+
+msgid "Config export not yet implemented"
+msgstr "Konfigurationsexport ännu inte implementerad"
+
+msgid "Config import not yet implemented"
+msgstr "Konfigurationsimport ännu inte implementerad"
+
+msgid "Connected"
+msgstr "Ansluten"
+
+msgid "Connected At"
+msgstr "Ansluten vid"
+
+msgid "Connected Peers / Total Peers"
+msgstr "Anslutna Peers / Totalt Peers"
+
+msgid "Connection"
+msgstr "Anslutning"
+
+msgid "Connection Status"
+msgstr "Anslutningsstatus"
+
+msgid "Connection Timeout:"
+msgstr "Anslutningstimeout:"
+
+msgid "Connection rotation percentage:"
+msgstr "Anslutningsrotation procent:"
+
+msgid "Connection settings reset to defaults"
+msgstr "Anslutningsinställningar återställda till standard"
+
+msgid "Connection timeout for extensions (seconds)"
+msgstr "Anslutningstimeout för tillägg (sekunder)"
+
+msgid "Conservative"
+msgstr "Konservativ"
+
+msgid "Conservative profile download speed"
+msgstr "Konservativ profil nedladdningshastighet"
+
+msgid "Conservative profile upload speed"
+msgstr "Konservativ profil uppladdningshastighet"
+
+msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
+msgstr "Konservativ: Lägre hastigheter, färre anslutningar, idealisk för bakgrundsseedning"
+
+msgid "Country"
+msgstr "Land"
+
+msgid "Created"
+msgstr "Skapad"
+
+msgid "Created By"
+msgstr "Skapad av"
+
+msgid "Ctrl+,"
+msgstr "Ctrl+,"
+
+msgid "Ctrl+F"
+msgstr "Ctrl+F"
+
+msgid "Ctrl+R"
+msgstr "Ctrl+R"
+
+msgid "Custom"
+msgstr "Anpassad"
+
+msgid "Custom Agent:"
+msgstr "Anpassad Agent:"
+
+msgid "Custom Node ID:"
+msgstr "Anpassat nod-ID:"
+
+msgid "Custom node ID (40 hex characters)"
+msgstr "Anpassat nod-ID (40 hex-tecken)"
+
+msgid "Custom user agent string"
+msgstr "Anpassad användaragentsträng"
+
+msgid "D' Fake Seeder"
+msgstr "D' Fake Seeder"
+
+msgid "DEBUG"
+msgstr "FELSÖK"
+
+msgid "DHT"
+msgstr "DHT"
+
+msgid "Dark"
+msgstr "Mörk"
+
+msgid "Days:"
+msgstr "Dagar:"
+
+msgid "Deluge"
+msgstr "Deluge"
+
+msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
+msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
+
+msgid "Details"
+msgstr "Detaljer"
+
+msgid "Disabled"
+msgstr "Avaktiverad"
+
+msgid "Disconnected"
+msgstr "Frånkopplad"
+
+msgid "Disk cache size (MB):"
+msgstr "Diskcache storlek (MB):"
+
+msgid "Down"
+msgstr "Ner"
+
+msgid "Down Speed"
+msgstr "Ner-hastighet"
+
+msgid "Download Rate"
+msgstr "Nedladdningshastighet"
+
+msgid "Download Speed (KB/s):"
+msgstr "Nedladdningshastighet (KB/s):"
+
+msgid "Download Variance:"
+msgstr "Nedladdningsvariation:"
+
+msgid "Download limit (KB/s):"
+msgstr "Nedladdningsgräns (KB/s):"
+
+msgid "Download speed variance for aggressive profile"
+msgstr "Nedladdningshastighetsvariation för aggressiv profil"
+
+msgid "Download speed variance for balanced profile"
+msgstr "Nedladdningshastighetsvariation för balanserad profil"
+
+msgid "Download speed variance for conservative profile"
+msgstr "Nedladdningshastighetsvariation för konservativ profil"
+
+msgid "Downloaded"
+msgstr "Nedladdat"
+
+msgid "Downloaded Session / Total"
+msgstr "Nedladdat Session / Totalt"
+
+msgid "Downloaded Speed"
+msgstr "Nedladdningshastighet"
+
+msgid "Dropout probability:"
+msgstr "Utfallssannolikhet:"
+
+msgid "Dutch"
+msgstr "Dutch"
+
+msgid "Dynamic profile switching"
+msgstr "Dynamisk profilväxling"
+
+msgid "ERROR"
+msgstr "FEL"
+
+msgid "ETA"
+msgstr "Återstående tid"
+
+msgid "Enable CSRF protection"
+msgstr "Aktivera CSRF-skydd"
+
+msgid "Enable Cross-Site Request Forgery protection"
+msgstr "Aktivera Cross-Site Request Forgery-skydd"
+
+msgid "Enable DHT"
+msgstr "Aktivera DHT"
+
+msgid "Enable DHT (Distributed Hash Table)"
+msgstr "Aktivera DHT (Distributed Hash Table)"
+
+msgid "Enable DHT query rate limiting"
+msgstr "Aktivera DHT-förfrågningshastighets begränsning"
+
+msgid "Enable DHT statistics collection"
+msgstr "Aktivera DHT-statistikinsamling"
+
+msgid "Enable Distributed Hash Table for trackerless torrents"
+msgstr "Aktivera Distributed Hash Table för spårarlösa torrents"
+
+msgid "Enable Fast Extension (BEP-006) for improved performance"
+msgstr "Aktivera snabbtillägg (BEP-006) för förbättrad prestanda"
+
+msgid "Enable LPD (Local Peer Discovery)"
+msgstr "Aktivera LPD (Local Peer Discovery)"
+
+msgid "Enable Local Peer Discovery for finding peers on local network"
+msgstr "Aktivera Local Peer Discovery för att hitta peers på lokalt nätverk"
+
+msgid "Enable Nagle algorithm"
+msgstr "Aktivera Nagle-algoritm"
+
+msgid "Enable Nagle algorithm for TCP"
+msgstr "Aktivera Nagle-algoritm för TCP"
+
+msgid "Enable PEX (Peer Exchange)"
+msgstr "Aktivera PEX (Peer Exchange)"
+
+msgid "Enable Peer Exchange for discovering new peers"
+msgstr "Aktivera Peer Exchange för att upptäcka nya peers"
+
+msgid "Enable Protocol Extensions"
+msgstr "Aktivera protokolltillägg"
+
+msgid "Enable TCP keepalive"
+msgstr "Aktivera TCP keepalive"
+
+msgid "Enable UPnP/NAT-PMP port mapping"
+msgstr "Aktivera UPnP/NAT-PMP portmappning"
+
+msgid "Enable Web UI"
+msgstr "Aktivera Webb-UI"
+
+msgid "Enable alternative speed limits"
+msgstr "Aktivera alternativa hastighetsgränser"
+
+msgid "Enable alternative speed limits (useful for limiting speeds during certain hours)"
+msgstr "Aktivera alternativa hastighetsgränser (användbart för att begränsa hastigheter under vissa timmar)"
+
+msgid "Enable clickjacking protection"
+msgstr "Aktivera clickjacking-skydd"
+
+msgid "Enable client behavior simulation"
+msgstr "Aktivera simulering av klientbeteende"
+
+msgid "Enable client behavior simulation engine"
+msgstr "Aktivera klientbeteendesimulatormotor"
+
+msgid "Enable debug mode"
+msgstr "Aktivera felsökningsläge"
+
+msgid "Enable debug mode with extra logging and error details"
+msgstr "Aktivera felsökningsläge med extra loggning och feldetaljer"
+
+msgid "Enable dynamic client profile switching"
+msgstr "Aktivera dynamisk klientprofilväxling"
+
+msgid "Enable lt_donthave extension for piece availability"
+msgstr "Aktivera lt_donthave-tillägg för bittillgänglighet"
+
+msgid "Enable metadata extension"
+msgstr "Aktivera metadatatillägg"
+
+msgid "Enable metadata extension features"
+msgstr "Aktivera metadatatilläggsfunktioner"
+
+msgid "Enable or disable BitTorrent protocol extensions"
+msgstr "Aktivera eller inaktivera BitTorrent-protokolltillägg"
+
+msgid "Enable or disable DHT for trackerless torrent support"
+msgstr "Aktivera eller inaktivera DHT för spårarlös torrentstöd"
+
+msgid "Enable proxy authentication"
+msgstr "Aktivera proxy-autentisering"
+
+msgid "Enable random variations in client behavior"
+msgstr "Aktivera slumpmässiga variationer i klientbeteende"
+
+msgid "Enable rate limiting"
+msgstr "Aktivera hastighetsbegränsning"
+
+msgid "Enable realistic traffic variations"
+msgstr "Aktivera realistiska trafikvariationer"
+
+msgid "Enable secure HTTP headers"
+msgstr "Aktivera säkra HTTP-headers"
+
+msgid "Enable speed scheduler"
+msgstr "Aktivera hastighetsschemaläggare"
+
+msgid "Enable statistics"
+msgstr "Aktivera statistik"
+
+msgid "Enable swarm intelligence"
+msgstr "Aktivera svärmintelligens"
+
+msgid "Enable swarm intelligence for adaptive behavior"
+msgstr "Aktivera svärmintelligens för adaptivt beteende"
+
+msgid "Enable time-based traffic patterns (peak hours, night hours)"
+msgstr "Aktivera tidsbaserade trafikmönster (rusningstid, natttimmar)"
+
+msgid "Enable ut_holepunch extension for NAT traversal"
+msgstr "Aktivera ut_holepunch-tillägg för NAT-genomgång"
+
+msgid "Enable ut_metadata extension for metadata exchange"
+msgstr "Aktivera ut_metadata-tillägg för metadatautbyte"
+
+msgid "Enable ut_pex extension for peer exchange"
+msgstr "Aktivera ut_pex-tillägg för peer-utbyte"
+
+msgid "Enable web-based remote control interface"
+msgstr "Aktivera webbaserat fjärrkontrollgränssnitt"
+
+msgid "Enable µTP (Micro Transport Protocol)"
+msgstr "Aktivera µTP (Micro Transport Protocol)"
+
+msgid "Enabled"
+msgstr "Aktiverad"
+
+msgid "Encryption:"
+msgstr "Kryptering:"
+
+msgid "End hour (24-hour format)"
+msgstr "Sluttimme (24-timmarsformat)"
+
+msgid "End minute"
+msgstr "Slutminut"
+
+msgid "English"
+msgstr "Engelska"
+
+msgid "Error"
+msgstr "Fel"
+
+msgid "Error changing language"
+msgstr "Fel vid språkbyte"
+
+msgid "Export"
+msgstr "Exportera"
+
+msgid "Export Settings"
+msgstr "Exportera Inställningar"
+
+msgid "Export current settings to a file"
+msgstr "Exportera nuvarande inställningar till fil"
+
+msgid "Extension Timeout:"
+msgstr "Tilläggstimeout:"
+
+msgid "Extension statistics update interval (seconds)"
+msgstr "Statistikuppdateringsintervall för tillägg (sekunder)"
+
+msgid "Failure Reason"
+msgstr "Felorsak"
+
+msgid "Fall back to TCP if µTP fails"
+msgstr "Falla tillbaka till TCP om µTP misslyckas"
+
+msgid "Fast Extension (BEP-006)"
+msgstr "Snabbtillägg (BEP-006)"
+
+msgid "File"
+msgstr "Fil"
+
+msgid "File Path"
+msgstr "Filsökväg"
+
+msgid "File chooser not yet implemented"
+msgstr "Filväljare ännu inte implementerad"
+
+msgid "Files"
+msgstr "Filer"
+
+msgid "Flags"
+msgstr "Flaggor"
+
+msgid "Follow System"
+msgstr "Följ System"
+
+msgid "Forced"
+msgstr "Tvingad"
+
+msgid "French"
+msgstr "Franska"
+
+msgid "Fri"
+msgstr "Fre"
+
+msgid "Friday"
+msgstr "Fredag"
+
+msgid "From:"
+msgstr "Från:"
+
+msgid "General"
+msgstr "Allmänt"
+
+msgid "General settings reset to defaults"
+msgstr "Allmänna inställningar återställda till standard"
+
+msgid "General timeout for extension operations (seconds)"
+msgstr "Allmän timeout för tilläggsoperationer (sekunder)"
+
+msgid "Generate Secure Password"
+msgstr "Generera säkert lösenord"
+
+msgid "Generate a random port number"
+msgstr "Generera ett slumpmässigt portnummer"
+
+msgid "Generate a random secure password"
+msgstr "Generera ett slumpmässigt säkert lösenord"
+
+msgid "Generate synthetic metadata"
+msgstr "Generera syntetisk metadata"
+
+msgid "Generate synthetic metadata for simulation"
+msgstr "Generera syntetisk metadata för simulering"
+
+msgid "Generate synthetic peer data for PEX"
+msgstr "Generera syntetisk peer-data för PEX"
+
+msgid "Generate synthetic peers"
+msgstr "Generera syntetiska peers"
+
+msgid "German"
+msgstr "Tyska"
+
+msgid "Github - D' Fake Seeder"
+msgstr "Github - D' Fake Seeder"
+
+msgid "Global download speed limit in KB/s (0 = unlimited)"
+msgstr "Global nedladdningshastighetsgräns i KB/s (0 = obegränsat)"
+
+msgid "Global upload speed limit in KB/s (0 = unlimited)"
+msgstr "Global uppladdningshastighetsgräns i KB/s (0 = obegränsat)"
+
+msgid "HTTP"
+msgstr "HTTP"
+
+msgid "HTTP seeder timeout (seconds):"
+msgstr "HTTP seeder timeout (sekunder):"
+
+msgid "Handshake"
+msgstr "Handskakning"
+
+msgid "Handshake timeout (seconds):"
+msgstr "Handskaknings timeout (sekunder):"
+
+msgid "Hide to system tray when window is minimized"
+msgstr "Dölj i systemfältet när fönstret minimeras"
+
+msgid "Hindi"
+msgstr "Hindi"
+
+msgid "How often to announce to trackers (60-7200 seconds)"
+msgstr "Hur ofta annonsera till spårare (60-7200 sekunder)"
+
+msgid "How often to scrape tracker for swarm statistics"
+msgstr "Hur ofta skrapa spårare för svärmsstatistik"
+
+msgid "How often to update the user interface"
+msgstr "Hur ofta uppdatera användargränssnittet"
+
+msgid "ID"
+msgstr "Identifierare"
+
+msgid "INFO"
+msgstr "INFORMATION"
+
+msgid "IP Address"
+msgstr "IP-adress"
+
+msgid "IP address to bind to (0.0.0.0 for all interfaces)"
+msgstr "IP-adress att binda till (0.0.0.0 för alla gränssnitt)"
+
+msgid "Idle Probability:"
+msgstr "Vilande sannolikhet:"
+
+msgid "Import"
+msgstr "Importera"
+
+msgid "Import Settings"
+msgstr "Importera Inställningar"
+
+msgid "Import settings from a file"
+msgstr "Importera inställningar från fil"
+
+msgid "Inactive"
+msgstr "Inaktiv"
+
+msgid "Incoming"
+msgstr "Inkommande"
+
+msgid "Incoming Connections"
+msgstr "Inkommande anslutningar"
+
+msgid "Incoming Peer Connections"
+msgstr "Inkommande Peer-anslutningar"
+
+msgid "Interested"
+msgstr "Intresserad"
+
+msgid "Interval between DHT announcements (seconds)"
+msgstr "Intervall mellan DHT-meddelanden (sekunder)"
+
+msgid "Interval between PEX message exchanges (seconds)"
+msgstr "Intervall mellan PEX-meddelandeutbyten (sekunder)"
+
+msgid "Interval for DHT statistics updates (seconds)"
+msgstr "Intervall för DHT-statistikuppdateringar (sekunder)"
+
+msgid "Interval for contacting peers in seconds"
+msgstr "Intervall för att kontakta peers i sekunder"
+
+msgid "Interval for sending keep alive messages in seconds"
+msgstr "Intervall för att skicka keep alive-meddelanden i sekunder"
+
+msgid "Italian"
+msgstr "Italienska"
+
+msgid "Japanese"
+msgstr "Japanska"
+
+msgid "Keep Alive Interval:"
+msgstr "Keep Alive-intervall:"
+
+msgid "Keep alive interval (seconds):"
+msgstr "Keep alive-intervall (sekunder):"
+
+msgid "Keep alive interval for connections (seconds)"
+msgstr "Keep alive-intervall för anslutningar (sekunder)"
+
+msgid "Korean"
+msgstr "Korean"
+
+msgid "Label"
+msgstr "Etikett"
+
+msgid "Language switched to"
+msgstr "Språk bytt till"
+
+msgid "Language:"
+msgstr "Språk:"
+
+msgid "Last Announce"
+msgstr "Senaste annonsering"
+
+msgid "Last Notification"
+msgstr "Senaste Meddelande"
+
+msgid "Leechers"
+msgstr "Leechere"
+
+msgid "Level of BitTorrent protocol compliance"
+msgstr "Nivå av BitTorrent-protokollefterlevnad"
+
+msgid "Light"
+msgstr "Ljus"
+
+msgid "Limit extension message rate"
+msgstr "Begränsa tilläggsmeddelanden hastighet"
+
+msgid "List of bootstrap nodes for DHT initialization"
+msgstr "Lista över bootstrap-noder för DHT-initialisering"
+
+msgid "Log"
+msgstr "Logg"
+
+msgid "Log Level:"
+msgstr "Loggnivå:"
+
+msgid "Log to file"
+msgstr "Logga till fil"
+
+msgid "Max Connections:"
+msgstr "Max anslutningar:"
+
+msgid "Max Dropped Peers:"
+msgstr "Max tappade peers:"
+
+msgid "Max Message Size:"
+msgstr "Max meddelandestorlek:"
+
+msgid "Max Messages/Second:"
+msgstr "Max meddelanden/sekund:"
+
+msgid "Max Nodes:"
+msgstr "Max noder:"
+
+msgid "Max Peers/Message:"
+msgstr "Max peers/meddelande:"
+
+msgid "Max Queries/Second:"
+msgstr "Max förfrågningar/sekund:"
+
+msgid "Max global connections:"
+msgstr "Max globala anslutningar:"
+
+msgid "Max log file size (MB):"
+msgstr "Max loggfilsstorlek (MB):"
+
+msgid "Max per torrent:"
+msgstr "Max per torrent:"
+
+msgid "Max upload slots:"
+msgstr "Max uppladdningsplatser:"
+
+msgid "Maximum DHT queries per second"
+msgstr "Maximala DHT-förfrågningar per sekund"
+
+msgid "Maximum connections for aggressive profile"
+msgstr "Maximala anslutningar för aggressiv profil"
+
+msgid "Maximum connections for balanced profile"
+msgstr "Maximala anslutningar för balanserad profil"
+
+msgid "Maximum connections for conservative profile"
+msgstr "Maximala anslutningar för konservativ profil"
+
+msgid "Maximum dropped peers to track for PEX"
+msgstr "Maximala tappade peers att spåra för PEX"
+
+msgid "Maximum extension messages per second"
+msgstr "Maximalt tilläggsmeddelanden per sekund"
+
+msgid "Maximum number of DHT nodes to maintain"
+msgstr "Maximalt antal DHT-noder att underhålla"
+
+msgid "Maximum number of concurrent DHT queries"
+msgstr "Maximalt antal samtidiga DHT-förfrågningar"
+
+msgid "Maximum number of connections per individual torrent"
+msgstr "Maximalt antal anslutningar per enskild torrent"
+
+msgid "Maximum number of connections to all torrents"
+msgstr "Maximalt antal anslutningar till alla torrents"
+
+msgid "Maximum number of nodes in the routing table"
+msgstr "Maximalt antal noder i routingtabellen"
+
+msgid "Maximum number of nodes per bucket"
+msgstr "Maximalt antal noder per bucket"
+
+msgid "Maximum number of simultaneous upload slots"
+msgstr "Maximalt antal samtidiga uppladdningsplatser"
+
+msgid "Maximum peers to include in a PEX message"
+msgstr "Maximala peers att inkludera i ett PEX-meddelande"
+
+msgid "Maximum port for seeder connections"
+msgstr "Maximal port för seeder-anslutningar"
+
+msgid "Maximum size for extension messages (bytes)"
+msgstr "Maximal storlek för tilläggsmeddelanden (bytes)"
+
+msgid "Maximum size of log file before rotation"
+msgstr "Maximal storlek på loggfil före rotation"
+
+msgid "Maximum transaction ID for tracker communication"
+msgstr "Maximalt transaktions-ID för spårarkommunikation"
+
+msgid "Message"
+msgstr "Meddelande"
+
+msgid "Message read timeout (seconds):"
+msgstr "Meddelandeläsnings timeout (sekunder):"
+
+msgid "Metadata Piece Size:"
+msgstr "Metadatabit storlek:"
+
+msgid "Metadata Timeout:"
+msgstr "Metadata-timeout:"
+
+msgid "Min announce interval (sec):"
+msgstr "Min annonsintervall (sek):"
+
+msgid "Minimize to system tray"
+msgstr "Minimera till systemfältet"
+
+msgid "Minimum log level to record"
+msgstr "Minsta loggnivå att spela in"
+
+msgid "Minimum port for seeder connections"
+msgstr "Minimal port för seeder-anslutningar"
+
+msgid "Minimum time between announces (10-3600 seconds)"
+msgstr "Minimitid mellan annonser (10-3600 sekunder)"
+
+msgid "Minimum transaction ID for tracker communication"
+msgstr "Minimalt transaktions-ID för spårarkommunikation"
+
+msgid "Mon"
+msgstr "Mån"
+
+msgid "Monday"
+msgstr "Måndag"
+
+msgid "My IP address"
+msgstr "Min IP-adress"
+
+msgid "N/A"
+msgstr "Inte tillgänglig"
+
+msgid "Name"
+msgstr "Namn"
+
+msgid "Network interface:"
+msgstr "Nätverksgränssnitt:"
+
+msgid "Next Announce"
+msgstr "Nästa annonsering"
+
+msgid "Next Update"
+msgstr "Nästa Uppdatering"
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "Number of peers to analyze for behavior patterns"
+msgstr "Antal peers att analysera för beteendemönster"
+
+msgid "Number of peers to request from tracker"
+msgstr "Antal peers att begära från spårare"
+
+msgid "Number of synthetic peers to generate"
+msgstr "Antal syntetiska peers att generera"
+
+msgid "Only allow connections from localhost (more secure)"
+msgstr "Tillåt endast anslutningar från localhost (säkrare)"
+
+msgid "Open preferences"
+msgstr "Öppna inställningar"
+
+msgid "Options"
+msgstr "Alternativ"
+
+msgid "Outgoing"
+msgstr "Utgående"
+
+msgid "Outgoing Connections"
+msgstr "Utgående anslutningar"
+
+msgid "Outgoing Peer Connections"
+msgstr "Utgående Peer-anslutningar"
+
+msgid "Overlay Notification"
+msgstr "Overlay-notifiering"
+
+msgid "PEX Interval:"
+msgstr "PEX-intervall:"
+
+msgid "Password for web interface login"
+msgstr "Lösenord för webbgränssnittsinloggning"
+
+msgid "Password:"
+msgstr "Lösenord:"
+
+msgid "Path"
+msgstr "Sökväg"
+
+msgid "Pause"
+msgstr "Pausa"
+
+msgid "Pause torrent"
+msgstr "Pausa torrent"
+
+msgid "Peer Analysis Depth:"
+msgstr "Peer-analysdjup:"
+
+msgid "Peer Choking"
+msgstr "Peer-strypning"
+
+msgid "Peer ID"
+msgstr "Peer-ID"
+
+msgid "Peer ID Prefix:"
+msgstr "Peer ID-prefix:"
+
+msgid "Peer ID prefix to identify client type"
+msgstr "Peer ID-prefix för att identifiera klienttyp"
+
+msgid "Peer Protocol"
+msgstr "Peer-protokoll"
+
+msgid "Peer Protocol settings reset to defaults"
+msgstr "Peer-protokollinställningar återställda till standard"
+
+msgid "Peer contact interval (seconds):"
+msgstr "Peer kontaktintervall (sekunder):"
+
+msgid "Peer idle chance:"
+msgstr "Peer vilochans:"
+
+msgid "Peer request count:"
+msgstr "Peer begärandeantal:"
+
+msgid "Peers"
+msgstr "Kamrater"
+
+msgid "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr "Procent av anslutningar att rotera (0.0 - 1.0)"
+
+msgid "Piece Length"
+msgstr "Styckeslängd"
+
+msgid "Pieces"
+msgstr "Stycken"
+
+msgid "Pieces Received"
+msgstr "Mottagna delar"
+
+msgid "Polish"
+msgstr "Polish"
+
+msgid "Port"
+msgstr "Hamn"
+
+msgid "Port for incoming BitTorrent connections (1024-65535)"
+msgstr "Port för inkommande BitTorrent-anslutningar (1024-65535)"
+
+msgid "Port for web interface (1024-65535)"
+msgstr "Port för webbgränssnitt (1024-65535)"
+
+msgid "Port:"
+msgstr "Hamn:"
+
+msgid "Portuguese"
+msgstr "Portugisiska"
+
+msgid "Preferences"
+msgstr "Inställningar"
+
+msgid "Prevent embedding in frames (X-Frame-Options)"
+msgstr "Förhindra inbäddning i ramar (X-Frame-Options)"
+
+msgid "Primary BitTorrent client to simulate"
+msgstr "Primär BitTorrent-klient att simulera"
+
+msgid "Primary Client:"
+msgstr "Primär klient:"
+
+msgid "Priority"
+msgstr "Prioritet"
+
+msgid "Priority Down"
+msgstr "Prioritet Ner"
+
+msgid "Priority Up"
+msgstr "Prioritet Upp"
+
+msgid "Private"
+msgstr "Privat"
+
+msgid "Probability of idle periods for aggressive profile"
+msgstr "Sannolikhet för vilande perioder för aggressiv profil"
+
+msgid "Probability of idle periods for balanced profile"
+msgstr "Sannolikhet för vilande perioder för balanserad profil"
+
+msgid "Probability of idle periods for conservative profile"
+msgstr "Sannolikhet för vilande perioder för konservativ profil"
+
+msgid "Probability of peer behavior analysis (0.0 - 1.0)"
+msgstr "Sannolikhet för peer-beteendeanalys (0.0 - 1.0)"
+
+msgid "Probability of peer being idle (0.0 - 1.0)"
+msgstr "Sannolikhet för peer att vara inaktiv (0.0 - 1.0)"
+
+msgid "Probability of peer dropping out (0.0 - 1.0)"
+msgstr "Sannolikhet för peer att hoppa av (0.0 - 1.0)"
+
+msgid "Probability of peer status changes (0.0 - 1.0)"
+msgstr "Sannolikhet för peer statusändringar (0.0 - 1.0)"
+
+msgid "Probability of seeder upload activity (0.0 - 1.0)"
+msgstr "Sannolikhet för seeder uppladdningsaktivitet (0.0 - 1.0)"
+
+msgid "Probability of switching to a different client behavior"
+msgstr "Sannolikhet att byta till ett annat klientbeteende"
+
+msgid "Probability of traffic bursts for aggressive profile"
+msgstr "Sannolikhet för trafikskurar för aggressiv profil"
+
+msgid "Probability of traffic bursts for balanced profile"
+msgstr "Sannolikhet för trafikskurar för balanserad profil"
+
+msgid "Probability of traffic bursts for conservative profile"
+msgstr "Sannolikhet för trafikskurar för konservativ profil"
+
+msgid "Progress"
+msgstr "Framsteg"
+
+msgid "Progress distribution (almost):"
+msgstr "Förloppsfördelning (nästan):"
+
+msgid "Progress distribution (middle):"
+msgstr "Förloppsfördelning (mitt):"
+
+msgid "Progress distribution (start):"
+msgstr "Förloppsfördelning (start):"
+
+msgid "Progress distribution for almost complete peers (0.0 - 1.0)"
+msgstr "Förloppsfördelning för nästan färdiga peers (0.0 - 1.0)"
+
+msgid "Progress distribution for middle progress peers (0.0 - 1.0)"
+msgstr "Förloppsfördelning för medelförlopps-peers (0.0 - 1.0)"
+
+msgid "Progress distribution for starting peers (0.0 - 1.0)"
+msgstr "Förloppsfördelning för startande peers (0.0 - 1.0)"
+
+msgid "Protocol Compliance:"
+msgstr "Protokollefterlevnad:"
+
+msgid "Protocol Extensions"
+msgstr "Protokolltillägg"
+
+msgid "Protocol encryption mode for peer communications"
+msgstr "Protokollkrypteringsläge för peer-kommunikation"
+
+msgid "Proxy authentication password"
+msgstr "Proxy-autentiseringslösenord"
+
+msgid "Proxy authentication username"
+msgstr "Proxy-autentiseringsanvändarnamn"
+
+msgid "Proxy server hostname or IP address"
+msgstr "Proxy-server värdnamn eller IP-adress"
+
+msgid "Proxy server port number"
+msgstr "Proxy-server portnummer"
+
+msgid "Query Timeout:"
+msgstr "Förfrågningstimeout:"
+
+msgid "Queue"
+msgstr "Kö"
+
+msgid "Quit"
+msgstr "Avsluta"
+
+msgid "Random"
+msgstr "Slumpmässig"
+
+msgid "Rate of adaptation to swarm behavior"
+msgstr "Anpassningshastighet till svärmens beteende"
+
+msgid "Ratio"
+msgstr "Kvot"
+
+msgid "Realistic variations"
+msgstr "Realistiska variationer"
+
+msgid "Received"
+msgstr "Mottaget"
+
+msgid "Relaxed"
+msgstr "Avslappnad"
+
+msgid "Remember window size and position"
+msgstr "Kom ihåg fönsterstorlek och position"
+
+msgid "Remember window size and position between sessions"
+msgstr "Kom ihåg fönsterstorlek och position mellan sessioner"
+
+msgid "Remove torrent"
+msgstr "Ta bort torrent"
+
+msgid "Requests"
+msgstr "Förfrågningar"
+
+msgid "Require authentication"
+msgstr "Kräv autentisering"
+
+msgid "Require username and password for web access"
+msgstr "Kräv användarnamn och lösenord för webbåtkomst"
+
+msgid "Reset"
+msgstr "Återställ"
+
+msgid "Reset all settings not yet implemented"
+msgstr "Återställ alla inställningar ännu inte implementerat"
+
+msgid "Reset all settings to default values"
+msgstr "Återställ alla inställningar till standardvärden"
+
+msgid "Reset to Defaults"
+msgstr "Återställ till Standard"
+
+msgid "Reset to defaults"
+msgstr "Återställ till standard"
+
+msgid "Resume"
+msgstr "Återuppta"
+
+msgid "Resume torrent"
+msgstr "Återuppta torrent"
+
+msgid "Routing Table Size:"
+msgstr "Routingtabellstorlek:"
+
+msgid "Russian"
+msgstr "Ryska"
+
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+msgid "Sat"
+msgstr "Lör"
+
+msgid "Saturday"
+msgstr "Lördag"
+
+msgid "Save logs to file in addition to console"
+msgstr "Spara loggar till fil utöver konsol"
+
+msgid "Scrape interval (sec):"
+msgstr "Skrapintervall (sek):"
+
+msgid "Search by torrent name or file path"
+msgstr "Sök efter torrentnamn eller filsökväg"
+
+msgid "Search for settings across all tabs"
+msgstr "Sök efter inställningar i alla flikar"
+
+msgid "Search for torrent"
+msgstr "Sök torrent"
+
+msgid "Search settings"
+msgstr "Sökinställningar"
+
+msgid "Secure password generated"
+msgstr "Säkert lösenord genererat"
+
+msgid "Seeder port range (max):"
+msgstr "Seeder portområde (max):"
+
+msgid "Seeder port range (min):"
+msgstr "Seeder portområde (min):"
+
+msgid "Seeders"
+msgstr "Seedrar"
+
+msgid "Seeds"
+msgstr "Frön"
+
+msgid "Select proxy type for connections"
+msgstr "Välj proxy-typ för anslutningar"
+
+msgid "Select torrent"
+msgstr "Välj torrent"
+
+msgid "Send security-related HTTP headers"
+msgstr "Skicka säkerhetsrelaterade HTTP-headers"
+
+msgid "Sent"
+msgstr "Skickat"
+
+msgid "Server:"
+msgstr "Server:"
+
+msgid "Session timeout (min):"
+msgstr "Sessions timeout (min):"
+
+msgid "Shortcuts configuration not yet implemented"
+msgstr "Genvägarskonfiguration ännu inte implementerad"
+
+msgid "Show only selected torrent connections"
+msgstr "Visa endast valda torrent-anslutningar"
+
+msgid "Simulation"
+msgstr "Simulering"
+
+msgid "Size"
+msgstr "Storlek"
+
+msgid "Size of metadata pieces in bytes"
+msgstr "Storlek på metadatabitar i bytes"
+
+msgid "Small Torrent Limit"
+msgstr "Liten Torrent Gräns"
+
+msgid "Spanish"
+msgstr "Spanska"
+
+msgid "Speed"
+msgstr "Hastighet"
+
+msgid "Speed settings reset to defaults"
+msgstr "Hastighetsinställningar återställda till standard"
+
+msgid "Standard"
+msgstr "Standard"
+
+msgid "Start DFakeSeeder automatically when the system boots"
+msgstr "Starta DFakeSeeder automatiskt när systemet startar"
+
+msgid "Start hour (24-hour format)"
+msgstr "Starttimme (24-timmarsformat)"
+
+msgid "Start minimized"
+msgstr "Starta minimerad"
+
+msgid "Start minimized disabled"
+msgstr "Starta minimerad inaktiverad"
+
+msgid "Start minimized enabled"
+msgstr "Starta minimerad aktiverad"
+
+msgid "Start minute"
+msgstr "Startminut"
+
+msgid "Start on system startup"
+msgstr "Starta vid systemstart"
+
+msgid "Start the application minimized to system tray"
+msgstr "Starta applikationen minimerad till systemfältet"
+
+msgid "Stats Update Interval:"
+msgstr "Statistikuppdateringsintervall:"
+
+msgid "Status"
+msgstr "Tillstånd"
+
+msgid "Status change probability:"
+msgstr "Statusändringssannolikhet:"
+
+msgid "Strict"
+msgstr "Strikt"
+
+msgid "Sun"
+msgstr "Sön"
+
+msgid "Sunday"
+msgstr "Söndag"
+
+msgid "Swedish"
+msgstr "Swedish"
+
+msgid "Synthetic Peer Count:"
+msgstr "Syntetisk peer-antal:"
+
+msgid "TCP fallback"
+msgstr "TCP-reserv"
+
+msgid "TCP keepalive"
+msgstr "TCP keepalive"
+
+msgid "Theme:"
+msgstr "Tema:"
+
+msgid "Threshold"
+msgstr "Tröskel"
+
+msgid "Thu"
+msgstr "Tor"
+
+msgid "Thursday"
+msgstr "Torsdag"
+
+msgid "Tier"
+msgstr "Nivå"
+
+msgid "Time-based patterns"
+msgstr "Tidsbaserade mönster"
+
+msgid "Timeout for DHT bootstrap operations (seconds)"
+msgstr "Timeout för DHT bootstrap-operationer (sekunder)"
+
+msgid "Timeout for DHT queries (seconds)"
+msgstr "Timeout för DHT-förfrågningar (sekunder)"
+
+msgid "Timeout for HTTP seeder connections in seconds"
+msgstr "Timeout för HTTP seeder-anslutningar i sekunder"
+
+msgid "Timeout for UDP seeder connections in seconds"
+msgstr "Timeout för UDP seeder-anslutningar i sekunder"
+
+msgid "Timeout for metadata requests (seconds)"
+msgstr "Timeout för metadataförfrågningar (sekunder)"
+
+msgid "Timeout for peer handshake in seconds"
+msgstr "Timeout för peer-handskakning i sekunder"
+
+msgid "Timeout for reading peer messages in seconds"
+msgstr "Timeout för läsning av peer-meddelanden i sekunder"
+
+msgid "To:"
+msgstr "Till:"
+
+msgid "Top"
+msgstr "Toppen"
+
+msgid "Torrent"
+msgstr "Torrent"
+
+msgid "Torrent Files"
+msgstr "Torrent-filer"
+
+msgid "Torrents"
+msgstr "Torrenter"
+
+msgid "Total Downloaded"
+msgstr "Totalt Nedladdat"
+
+msgid "Total Size"
+msgstr "Total storlek"
+
+msgid "Total Uploaded"
+msgstr "Totalt Uppladdat"
+
+msgid "Track extension statistics"
+msgstr "Spåra tilläggsstatistik"
+
+msgid "Track extension usage statistics"
+msgstr "Spåra statistik för tilläggsanvändning"
+
+msgid "Tracker"
+msgstr "Spårare"
+
+msgid "Tracker URL"
+msgstr "Tracker-URL"
+
+msgid "Trackers"
+msgstr "Spårare"
+
+msgid "Traffic Profile:"
+msgstr "Trafikprofil:"
+
+msgid "Traffic pattern profile for simulation"
+msgstr "Trafikmönsterprofil för simulering"
+
+msgid "Transaction ID range (max):"
+msgstr "Transaktions-ID-område (max):"
+
+msgid "Transaction ID range (min):"
+msgstr "Transaktions-ID-område (min):"
+
+msgid "Transmission"
+msgstr "Transmission"
+
+msgid "Transmission/3.00"
+msgstr "Transmission/3.00"
+
+msgid "Tue"
+msgstr "Tis"
+
+msgid "Tuesday"
+msgstr "Tisdag"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Type:"
+msgstr "Typ:"
+
+msgid "UDP seeder timeout (seconds):"
+msgstr "UDP seeder timeout (sekunder):"
+
+msgid "UI Refresh Rate"
+msgstr "UI Uppdateringsfrekvens"
+
+msgid "UI refresh rate (sec):"
+msgstr "UI uppdateringsfrekvens (sek):"
+
+msgid "URL"
+msgstr "Adress"
+
+msgid "URL: http://localhost:8080"
+msgstr "Adress: http://localhost:8080"
+
+msgid "Unknown"
+msgstr "Okänd"
+
+msgid "Up"
+msgstr "Upp"
+
+msgid "Up Speed"
+msgstr "Upp-hastighet"
+
+msgid "Update Tracker"
+msgstr "Uppdatera tracker"
+
+msgid "Upload Speed"
+msgstr "Uppladdningshastighet"
+
+msgid "Upload Speed (KB/s):"
+msgstr "Uppladdningshastighet (KB/s):"
+
+msgid "Upload Variance:"
+msgstr "Uppladdningsvariation:"
+
+msgid "Upload activity probability:"
+msgstr "Uppladdningsaktivitetssannolikhet:"
+
+msgid "Upload limit (KB/s):"
+msgstr "Uppladdningsgräns (KB/s):"
+
+msgid "Upload speed variance for aggressive profile"
+msgstr "Uppladdningshastighetsvariation för aggressiv profil"
+
+msgid "Upload speed variance for balanced profile"
+msgstr "Uppladdningshastighetsvariation för balanserad profil"
+
+msgid "Upload speed variance for conservative profile"
+msgstr "Uppladdningshastighetsvariation för konservativ profil"
+
+msgid "Uploaded"
+msgstr "Uppladdad"
+
+msgid "Uploaded Session / Total"
+msgstr "Uppladdat Session / Totalt"
+
+msgid "Uploading"
+msgstr "Laddar upp"
+
+msgid "Use HTTPS (SSL/TLS)"
+msgstr "Använd HTTPS (SSL/TLS)"
+
+msgid "Use HTTPS for secure connections (requires SSL certificate)"
+msgstr "Använd HTTPS för säkra anslutningar (kräver SSL-certifikat)"
+
+msgid "Use authentication"
+msgstr "Använd autentisering"
+
+msgid "User Agent:"
+msgstr "Användaragent:"
+
+msgid "User agent string to identify the client to trackers"
+msgstr "Användaragent-sträng för att identifiera klienten till spårare"
+
+msgid "Username for web interface login"
+msgstr "Användarnamn för webbgränssnittsinloggning"
+
+msgid "Username:"
+msgstr "Användarnamn:"
+
+msgid "Validate DHT security tokens"
+msgstr "Validera DHT-säkerhetstokens"
+
+msgid "Validate extension messages"
+msgstr "Validera tilläggsmeddelanden"
+
+msgid "Validate extension messages for security"
+msgstr "Validera tilläggsmeddelanden för säkerhet"
+
+msgid "Validate security tokens"
+msgstr "Validera säkerhetstokens"
+
+msgid "Validate setting values and show warnings for invalid combinations"
+msgstr "Validera inställningsvärden och visa varningar för ogiltiga kombinationer"
+
+msgid "Validate settings on change"
+msgstr "Validera inställningar vid ändring"
+
+msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr "Variation i klientbeteende (0.0 = ingen variation, 1.0 = maximal variation)"
+
+msgid "Vuze"
+msgstr "Vuze"
+
+msgid "Vuze/5.7.6.0"
+msgstr "Vuze/5.7.6.0"
+
+msgid "WARNING"
+msgstr "VARNING"
+
+msgid "Web UI"
+msgstr "Webb-gränssnitt"
+
+msgid "Web UI settings reset to defaults"
+msgstr "Webbgränssnitt inställningar återställda till standard"
+
+msgid "Wed"
+msgstr "Ons"
+
+msgid "Wednesday"
+msgstr "Onsdag"
+
+msgid "active"
+msgstr "Aktiv"
+
+msgid "admin"
+msgstr "admin"
+
+msgid "announce_interval"
+msgstr "Annonsintervall"
+
+msgid "bytes"
+msgstr "bytes"
+
+msgid "class_name"
+msgstr "klassnamn"
+
+msgid "download_speed"
+msgstr "Nedladdningshastighet"
+
+msgid "filepath"
+msgstr "Filsökväg"
+
+msgid "files_tab"
+msgstr "filer_flik"
+
+msgid "id"
+msgstr "#"
+
+msgid "leechers"
+msgstr "Leechers"
+
+msgid "log_tab"
+msgstr "logg_flik"
+
+msgid "lt_donthave (Piece Availability)"
+msgstr "lt_donthave (Bittillgänglighet)"
+
+msgid "name"
+msgstr "Namn"
+
+msgid "next_update"
+msgstr "Nästa Uppdatering"
+
+msgid "open-menu-symbolic"
+msgstr "open-menu-symbolic"
+
+msgid "options_tab"
+msgstr "alternativ_flik"
+
+msgid "peers_tab"
+msgstr "peers_flik"
+
+msgid "progress"
+msgstr "Framsteg"
+
+msgid "qBittorrent"
+msgstr "qBittorrent"
+
+msgid "qBittorrent/4.3.1"
+msgstr "qBittorrent/4.3.1"
+
+msgid "rTorrent"
+msgstr "rTorrent"
+
+msgid "rTorrent/0.9.6"
+msgstr "rTorrent/0.9.6"
+
+msgid "seconds"
+msgstr "sekunder"
+
+msgid "seeders"
+msgstr "Seeders"
+
+msgid "session_downloaded"
+msgstr "Nedladdat"
+
+msgid "session_uploaded"
+msgstr "Uppladdat"
+
+msgid "small_torrent_limit"
+msgstr "Liten Torrent Gräns"
+
+msgid "threshold"
+msgstr "Tröskel"
+
+msgid "total_downloaded"
+msgstr "Totalt Nedladdat"
+
+msgid "total_size"
+msgstr "Storlek"
+
+msgid "total_uploaded"
+msgstr "Totalt Uppladdat"
+
+msgid "trackers_tab"
+msgstr "spårare_flik"
+
+msgid "uTorrent/3.5.5"
+msgstr "uTorrent/3.5.5"
+
+msgid "upload_speed"
+msgstr "Uppladdningshastighet"
+
+msgid "uploading"
+msgstr "Laddar upp"
+
+msgid "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch (NAT-genomgång)"
+
+msgid "ut_metadata (Metadata Exchange)"
+msgstr "ut_metadata (Metadatautbyte)"
+
+msgid "ut_pex (Peer Exchange)"
+msgstr "ut_pex (Peer-utbyte)"
+
+msgid "µTorrent"
+msgstr "µTorrent"
+
+msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
+msgstr "⚠️ Avancerade inställningar - modifiera försiktigt. Felaktiga värden kan påverka prestanda eller stabilitet."
+
+msgid "⚠️ Web UI allows remote control of the application. Use strong authentication."
+msgstr "⚠️ Webb-UI tillåter fjärrkontroll av applikationen. Använd stark autentisering."
+

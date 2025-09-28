@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkGrid" id="options_grid">
+    <property name="visible">True</property>
+    <property name="row-spacing">10</property>
+    <property name="column-spacing">10</property>
+    <property name="hexpand">False</property>
+    <property name="vexpand">False</property>
+    <property name="halign">center</property>
+    <property name="valign">start</property>
+  </object>
+</interface>

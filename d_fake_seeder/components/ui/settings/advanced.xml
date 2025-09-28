@@ -1,0 +1,485 @@
+<child>
+<object class="GtkScrolledWindow" id="settings_advanced_scroll">
+    <property name="hscrollbar-policy">never</property>
+    <property name="vscrollbar-policy">automatic</property>
+    <child>
+        <object class="GtkBox" id="settings_advanced_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">18</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+
+            <!-- Warning -->
+            <child>
+                <object class="GtkInfoBar" id="settings_advanced_warning">
+                    <property name="message-type">warning</property>
+                    <property name="show-close-button">False</property>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="spacing">8</property>
+                            <child>
+                                <object class="GtkImage">
+                                    <property name="icon-name">dialog-warning-symbolic</property>
+                                </object>
+                            </object>
+                            <child>
+                                <object class="GtkLabel">
+                                <property name="label" translatable="yes">⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.</property>
+                                    <property name="wrap">True</property>
+                                    <property name="wrap-mode">word</property>
+                                </object>
+                            </object>
+                        </object>
+                    </object>
+                </object>
+            </object>
+
+            <!-- Search Settings -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                        <property name="label" translatable="yes">&lt;b&gt;Settings Search&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </object>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+                            <child>
+                                <object class="GtkSearchEntry" id="settings_search_entry">
+                                    <property name="placeholder-text" translatable="yes">Search settings...</property>
+                                    <property name="tooltip-text" translatable="yes">Search for settings across all tabs</property>
+                                    <property name="hexpand">True</property>
+                                </object>
+                            </object>
+                            <child>
+                                <object class="GtkButton" id="settings_search_clear">
+                                    <property name="icon-name">edit-clear-symbolic</property>
+                                    <property name="tooltip-text" translatable="yes">Clear search</property>
+                                </object>
+                            </object>
+                        </object>
+                    </object>
+                </object>
+            </object>
+
+            <!-- Logging Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                        <property name="label" translatable="yes">&lt;b&gt;Logging&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </object>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Log level -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Log Level:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </object>
+                                    <child>
+                                        <object class="GtkDropDown" id="settings_log_level">
+                                            <property name="model">
+                                                <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">DEBUG</item>
+                                                        <item translatable="yes">INFO</item>
+                                                        <item translatable="yes">WARNING</item>
+                                                        <item translatable="yes">ERROR</item>
+                                                        <item translatable="yes">CRITICAL</item>
+                                                    </items>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Minimum log level to record</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </object>
+                                </object>
+                            </object>
+
+                            <!-- Log to file -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_log_to_file">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Save logs to file in addition to console</property>
+                                        </object>
+                                    </object>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Log to file</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </object>
+                                </object>
+                            </object>
+
+                            <!-- Max log file size -->
+                            <child>
+                                <object class="GtkBox" id="settings_log_file_box">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <property name="sensitive">False</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Max log file size (MB):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </object>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_max_log_size">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1</property>
+                                                    <property name="upper">1000</property>
+                                                    <property name="value">10</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">10</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum size of log file before rotation</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </object>
+                                </object>
+                            </object>
+                        </object>
+                    </object>
+                </object>
+            </object>
+
+            <!-- Performance Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                        <property name="label" translatable="yes">&lt;b&gt;Performance&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </object>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Disk cache size -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Disk cache size (MB):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </object>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_disk_cache_size">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1</property>
+                                                    <property name="upper">2048</property>
+                                                    <property name="value">64</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">32</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Amount of RAM to use for disk caching</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </object>
+                                </object>
+                            </object>
+
+                            <!-- UI refresh rate -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">UI refresh rate (sec):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </object>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_ui_refresh_rate">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1</property>
+                                                    <property name="upper">60</property>
+                                                    <property name="value">9</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">5</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">How often to update the user interface</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </object>
+                                </object>
+                            </object>
+
+                            <!-- Network interface -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Network interface:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </object>
+                                    <child>
+                                        <object class="GtkEntry" id="settings_network_interface">
+                                            <property name="placeholder-text" translatable="yes">0.0.0.0 (all interfaces)</property>
+                                            <property name="tooltip-text" translatable="yes">IP address to bind to (0.0.0.0 for all interfaces)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </object>
+                                </object>
+                            </object>
+                        </object>
+                    </object>
+                </object>
+            </object>
+
+            <!-- Expert Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                        <property name="label" translatable="yes">&lt;b&gt;Expert Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </object>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable debug mode -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_debug_mode">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable debug mode with extra logging and error details</property>
+                                        </object>
+                                    </object>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Enable debug mode</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </object>
+                                </object>
+                            </object>
+
+                            <!-- Validate settings -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_validate_settings">
+                                            <property name="valign">center</property>
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Validate setting values and show warnings for invalid combinations</property>
+                                        </object>
+                                    </object>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Validate settings on change</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </object>
+                                </object>
+                            </object>
+
+                            <!-- Auto-save settings -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_auto_save">
+                                            <property name="valign">center</property>
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Automatically save settings when changed</property>
+                                        </object>
+                                    </object>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Auto-save settings</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </object>
+                                </object>
+                            </object>
+                        </object>
+                    </object>
+                </object>
+            </object>
+
+            <!-- Keyboard Shortcuts Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                        <property name="label" translatable="yes">&lt;b&gt;Keyboard Shortcuts&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </object>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Shortcuts list -->
+                            <child>
+                                <object class="GtkListBox" id="settings_shortcuts_list">
+                                    <property name="selection-mode">none</property>
+                                    <property name="css-classes">boxed-list</property>
+                                    <row>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="margin-start">12</property>
+                                            <property name="margin-end">12</property>
+                                            <property name="margin-top">8</property>
+                                            <property name="margin-bottom">8</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Open preferences</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="hexpand">True</property>
+                                                </object>
+                                            </object>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Ctrl+,</property>
+                                                    <property name="css-classes">keycap</property>
+                                                </object>
+                                            </object>
+                                        </object>
+                                    </row>
+                                    <row>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="margin-start">12</property>
+                                            <property name="margin-end">12</property>
+                                            <property name="margin-top">8</property>
+                                            <property name="margin-bottom">8</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Search settings</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="hexpand">True</property>
+                                                </object>
+                                            </object>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Ctrl+F</property>
+                                                    <property name="css-classes">keycap</property>
+                                                </object>
+                                            </object>
+                                        </object>
+                                    </row>
+                                    <row>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="margin-start">12</property>
+                                            <property name="margin-end">12</property>
+                                            <property name="margin-top">8</property>
+                                            <property name="margin-bottom">8</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Reset to defaults</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="hexpand">True</property>
+                                                </object>
+                                            </object>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Ctrl+R</property>
+                                                    <property name="css-classes">keycap</property>
+                                                </object>
+                                            </object>
+                                        </object>
+                                    </row>
+                                </object>
+                            </object>
+                        </object>
+                    </object>
+                </object>
+            </object>
+    </object>
+</object>
+<property name="tab">
+    <object class="GtkLabel">
+        <property name="label" translatable="yes">Advanced</property>
+    </object>
+</property>
+</child>

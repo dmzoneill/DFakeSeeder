@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkBox" id="status_bar">
+    <property name="can-focus">False</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">False</property>
+    <child>
+        <object class="GtkBox" id="status_left_box">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="halign">start</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">  </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="status_label">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes"></property>
+                <property name="tooltip-text" translatable="yes">Last Notification</property>
+                <property name="halign">start</property>
+              </object>
+            </child>
+        </object>
+    </child>
+    <child>
+        <object class="GtkBox" id="status_right_box">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="halign">end</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="file">images/seeding16.png</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="status_uploading">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes"></property>
+                <property name="tooltip-text" translatable="yes">Upload Speed</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">     </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="file">images/downloading16.png</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="status_downloading">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes"></property>
+                <property name="tooltip-text" translatable="yes">Downloaded Speed</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">     </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="file">images/seeding16.png</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="status_uploaded">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes"></property>
+                <property name="tooltip-text" translatable="yes">Uploaded Session / Total</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">     </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="file">images/downloading16.png</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="status_downloaded">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes"></property>
+                <property name="tooltip-text" translatable="yes">Downloaded Session / Total</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">     </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">network-wired-symbolic</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="status_peers">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes"></property>
+                <property name="tooltip-text" translatable="yes">Connected Peers / Total Peers</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">     </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">gtk-missing-image</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="status_ip">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes"></property>
+                <property name="tooltip-text" translatable="yes">My IP address</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes"> </property>
+              </object>
+            </child>
+        </object>
+    </child>
+</object>

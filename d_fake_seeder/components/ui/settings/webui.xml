@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkScrolledWindow" id="settings_webui_scroll">
+    <property name="hscrollbar-policy">never</property>
+    <property name="vscrollbar-policy">automatic</property>
+    <child>
+        <object class="GtkBox" id="settings_webui_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">18</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+
+            <!-- Enable Web UI Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Web Interface&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable Web UI -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_enable_webui">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable web-based remote control interface</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable Web UI</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Warning note -->
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">⚠️ Web UI allows remote control of the application. Use strong authentication.</property>
+                                    <property name="halign">start</property>
+                                    <property name="wrap">True</property>
+                                    <property name="wrap-mode">word</property>
+                                    <property name="css-classes">warning</property>
+                                    <property name="margin-start">12</property>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Connection Settings Group -->
+            <child>
+                <object class="GtkBox" id="settings_webui_config_box">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <property name="sensitive">False</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Connection Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Port -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Port:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_webui_port">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1024</property>
+                                                    <property name="upper">65535</property>
+                                                    <property name="value">8080</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">10</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Port for web interface (1024-65535)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel" id="settings_webui_url_label">
+                                            <property name="label" translatable="yes">URL: http://localhost:8080</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="css-classes">dim-label</property>
+                                            <property name="margin-start">12</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Enable HTTPS -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_webui_https">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Use HTTPS for secure connections (requires SSL certificate)</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Use HTTPS (SSL/TLS)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Bind to localhost only -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_webui_localhost_only">
+                                            <property name="valign">center</property>
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Only allow connections from localhost (more secure)</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Bind to localhost only</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Authentication Group -->
+            <child>
+                <object class="GtkBox" id="settings_webui_auth_box">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <property name="sensitive">False</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Authentication&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable authentication -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_webui_auth_enabled">
+                                            <property name="valign">center</property>
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Require username and password for web access</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Require authentication</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Auth settings box -->
+                            <child>
+                                <object class="GtkBox" id="settings_webui_auth_settings_box">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">12</property>
+
+                                    <!-- Username -->
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="halign">fill</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">Username:</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="valign">center</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">15</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkEntry" id="settings_webui_username">
+                                                    <property name="text">admin</property>
+                                                    <property name="tooltip-text" translatable="yes">Username for web interface login</property>
+                                                    <property name="hexpand">True</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+
+                                    <!-- Password -->
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="halign">fill</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">Password:</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="valign">center</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">15</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkPasswordEntry" id="settings_webui_password">
+                                                    <property name="placeholder-text" translatable="yes">Enter password</property>
+                                                    <property name="tooltip-text" translatable="yes">Password for web interface login</property>
+                                                    <property name="hexpand">True</property>
+                                                    <property name="show-peek-icon">True</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+
+                                    <!-- Generate password button -->
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="halign">start</property>
+                                            <child>
+                                                <object class="GtkButton" id="settings_webui_generate_password">
+                                                    <property name="tooltip-text" translatable="yes">Generate a random secure password</property>
+                                                    <child>
+                                                        <object class="GtkBox">
+                                                            <property name="spacing">6</property>
+                                                            <child>
+                                                                <object class="GtkImage">
+                                                                    <property name="icon-name">view-refresh-symbolic</property>
+                                                                </object>
+                                                            </child>
+                                                            <child>
+                                                                <object class="GtkLabel">
+                                                                    <property name="label" translatable="yes">Generate Secure Password</property>
+                                                                </object>
+                                                            </child>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+
+                                    <!-- Session timeout -->
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="halign">fill</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">Session timeout (min):</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="valign">center</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">15</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkSpinButton" id="settings_webui_session_timeout">
+                                                    <property name="adjustment">
+                                                        <object class="GtkAdjustment">
+                                                            <property name="lower">5</property>
+                                                            <property name="upper">1440</property>
+                                                            <property name="value">60</property>
+                                                            <property name="step-increment">5</property>
+                                                            <property name="page-increment">30</property>
+                                                        </object>
+                                                    </property>
+                                                    <property name="tooltip-text" translatable="yes">Automatic logout after inactivity (5-1440 minutes)</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">8</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Security Group -->
+            <child>
+                <object class="GtkBox" id="settings_webui_security_box">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <property name="sensitive">False</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Security Options&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable CSRF protection -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_webui_csrf_protection">
+                                            <property name="valign">center</property>
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable Cross-Site Request Forgery protection</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable CSRF protection</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Enable clickjacking protection -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_webui_clickjacking_protection">
+                                            <property name="valign">center</property>
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Prevent embedding in frames (X-Frame-Options)</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable clickjacking protection</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Secure headers -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_webui_secure_headers">
+                                            <property name="valign">center</property>
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Send security-related HTTP headers</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable secure HTTP headers</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+    </child>
+</object>

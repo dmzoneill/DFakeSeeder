@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Language configurations with proper plural forms for DFakeSeeder internationalization",
+    "last_updated": "2024-09-28"
+  },
+  "languages": {
+    "en": {
+      "name": "English",
+      "plural_forms": "nplurals=2; plural=n != 1;"
+    },
+    "es": {
+      "name": "Spanish",
+      "plural_forms": "nplurals=2; plural=n != 1;"
+    },
+    "fr": {
+      "name": "French",
+      "plural_forms": "nplurals=2; plural=n > 1;"
+    },
+    "de": {
+      "name": "German",
+      "plural_forms": "nplurals=2; plural=n != 1;"
+    },
+    "it": {
+      "name": "Italian",
+      "plural_forms": "nplurals=2; plural=n != 1;"
+    },
+    "pt": {
+      "name": "Portuguese",
+      "plural_forms": "nplurals=2; plural=n != 1;"
+    },
+    "ru": {
+      "name": "Russian",
+      "plural_forms": "nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;"
+    },
+    "zh": {
+      "name": "Chinese",
+      "plural_forms": "nplurals=1; plural=0;"
+    },
+    "ja": {
+      "name": "Japanese",
+      "plural_forms": "nplurals=1; plural=0;"
+    },
+    "ko": {
+      "name": "Korean",
+      "plural_forms": "nplurals=1; plural=0;"
+    },
+    "ar": {
+      "name": "Arabic",
+      "plural_forms": "nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;"
+    },
+    "hi": {
+      "name": "Hindi",
+      "plural_forms": "nplurals=2; plural=n != 1;"
+    },
+    "nl": {
+      "name": "Dutch",
+      "plural_forms": "nplurals=2; plural=n != 1;"
+    },
+    "sv": {
+      "name": "Swedish",
+      "plural_forms": "nplurals=2; plural=n != 1;"
+    },
+    "pl": {
+      "name": "Polish",
+      "plural_forms": "nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;"
+    }
+  }
+}

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkBox" id="main_toolbar">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="spacing">6</property>
+    <child>
+        <object class="GtkButton" id="toolbar_add">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-text" translatable="yes">Add torrent</property>
+            <child>
+                <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">list-add-symbolic</property>
+                </object>
+            </child>
+        </object>
+    </child>
+    <child>
+        <object class="GtkButton" id="toolbar_remove">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-text" translatable="yes">Remove torrent</property> 
+            <child>
+                <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">list-remove-symbolic</property>
+                </object>
+            </child>
+        </object>
+    </child>
+    <child>
+        <object class="GtkButton" id="toolbar_search">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-text" translatable="yes">Search for torrent</property> 
+            <child>
+                <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">edit-find-symbolic</property>
+                </object>
+            </child>
+        </object>
+    </child>
+    <child>
+        <object class="GtkButton" id="toolbar_pause">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-text" translatable="yes">Pause torrent</property> 
+            <child>
+                <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">media-playback-pause-symbolic</property>
+                </object>
+            </child>
+        </object>
+    </child>
+    <child>
+        <object class="GtkButton" id="toolbar_resume">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-text" translatable="yes">Resume torrent</property> 
+            <child>
+                <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">media-playback-start-symbolic</property>
+                </object>
+            </child>
+        </object>
+    </child>
+    <child>
+        <object class="GtkButton" id="toolbar_up">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-text" translatable="yes">Priority Up</property> 
+            <child>
+                <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">go-up-symbolic</property>
+                </object>
+            </child>
+        </object>
+    </child>
+    <child>
+        <object class="GtkButton" id="toolbar_down">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-text" translatable="yes">Priority Down</property> 
+            <child>
+                <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">go-down-symbolic</property>
+                </object>
+            </child>
+        </object>
+    </child>
+    <child>
+        <object class="GtkButton" id="toolbar_settings">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-text" translatable="yes">Preferences</property> 
+            <child>
+                <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">preferences-system-symbolic</property>
+                </object>
+            </child>
+        </object>
+    </child>
+    <child>
+        <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="hexpand">True</property>
+            <property name="halign">end</property>
+            <property name="spacing">6</property>
+            <child>
+                <object class="GtkEntry" id="toolbar_search_entry">
+                    <property name="visible">False</property>
+                    <property name="can-focus">True</property>
+                    <property name="placeholder-text" translatable="yes">Search torrents...</property>
+                    <property name="width-chars">30</property>
+                    <property name="tooltip-text" translatable="yes">Search by torrent name or file path</property>
+                </object>
+            </child>
+            <child>
+                <object class="GtkScale" id="toolbar_refresh_rate">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="tooltip-text" translatable="yes">UI Refresh Rate</property>
+                    <property name="draw-value">True</property>
+                    <property name="value-pos">right</property>
+                </object>
+            </child>
+        </object>
+    </child>
+</object>

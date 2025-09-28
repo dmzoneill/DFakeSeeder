@@ -1,0 +1,1837 @@
+# Russian translation for DFakeSeeder
+# Copyright (C) 2024 DFakeSeeder Contributors
+# This file is distributed under the same license as the DFakeSeeder package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DFakeSeeder 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"POT-Creation-Date: 2025-09-18 17:51+0100\n"
+"PO-Revision-Date: 2024-09-18 18:30+0100\n"
+"Last-Translator: Claude <noreply@anthropic.com>\n"
+"Language-Team: Russian <ru@li.org>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+
+msgid "#"
+msgstr "#"
+
+msgid "(0 = unlimited)"
+msgstr "(0 = неограничено)"
+
+msgid "0 / 250"
+msgstr "0 / 250"
+
+msgid "127.0.0.1"
+msgstr "127.0.0.1"
+
+msgid ":"
+msgstr ":"
+
+msgid "<b>Advanced Extension Settings</b>"
+msgstr "<b>Дополнительные настройки расширений</b>"
+
+msgid "<b>Aggressive Profile Settings</b>"
+msgstr "<b>Настройки агрессивного профиля</b>"
+
+msgid "<b>Alternative Speed Limits</b>"
+msgstr "<b>Альтернативные ограничения скорости</b>"
+
+msgid "<b>Application Behavior</b>"
+msgstr "<b>Поведение приложения</b>"
+
+msgid "<b>Authentication</b>"
+msgstr "<b>Аутентификация</b>"
+
+msgid "<b>Balanced Profile Settings</b>"
+msgstr "<b>Настройки сбалансированного профиля</b>"
+
+msgid "<b>Bootstrap Settings</b>"
+msgstr "<b>Настройки Bootstrap</b>"
+
+msgid "<b>Client Behavior Engine</b>"
+msgstr "<b>Движок поведения клиента</b>"
+
+msgid "<b>Client Identification</b>"
+msgstr "<b>Идентификация клиента</b>"
+
+msgid "<b>Configuration Management</b>"
+msgstr "<b>Управление конфигурацией</b>"
+
+msgid "<b>Connection Limits</b>"
+msgstr "<b>Ограничения соединений</b>"
+
+msgid "<b>Connection Settings</b>"
+msgstr "<b>Настройки соединения</b>"
+
+msgid "<b>Conservative Profile Settings</b>"
+msgstr "<b>Настройки консервативного профиля</b>"
+
+msgid "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT (Распределенная хеш-таблица)</b>"
+
+msgid "<b>Encryption</b>"
+msgstr "<b>Шифрование</b>"
+
+msgid "<b>Expert Settings</b>"
+msgstr "<b>Экспертные настройки</b>"
+
+msgid "<b>Extension Protocol (BEP-010)</b>"
+msgstr "<b>Протокол расширений (BEP-010)</b>"
+
+msgid "<b>Global Speed Limits</b>"
+msgstr "<b>Глобальные ограничения скорости</b>"
+
+msgid "<b>Interface</b>"
+msgstr "<b>Интерфейс</b>"
+
+msgid "<b>Keyboard Shortcuts</b>"
+msgstr "<b>Клавиатурные сокращения</b>"
+
+msgid "<b>Listening Port</b>"
+msgstr "<b>Порт прослушивания</b>"
+
+msgid "<b>Logging</b>"
+msgstr "<b>Ведение журнала</b>"
+
+msgid "<b>Metadata Extension Settings</b>"
+msgstr "<b>Настройки расширения метаданных</b>"
+
+msgid "<b>Network Settings</b>"
+msgstr "<b>Настройки сети</b>"
+
+msgid "<b>Node Configuration</b>"
+msgstr "<b>Конфигурация узла</b>"
+
+msgid "<b>Peer Behavior Settings</b>"
+msgstr "<b>Настройки поведения пиров</b>"
+
+msgid "<b>Peer Exchange (PEX) Settings</b>"
+msgstr "<b>Настройки обмена пирами (PEX)</b>"
+
+msgid "<b>Peer Protocol Timeouts</b>"
+msgstr "<b>Таймауты протокола пиров</b>"
+
+msgid "<b>Performance</b>"
+msgstr "<b>Производительность</b>"
+
+msgid "<b>Protocol Extensions</b>"
+msgstr "<b>Расширения протокола</b>"
+
+msgid "<b>Protocol Features</b>"
+msgstr "<b>Функции протокола</b>"
+
+msgid "<b>Proxy Settings</b>"
+msgstr "<b>Настройки прокси</b>"
+
+msgid "<b>Security Options</b>"
+msgstr "<b>Параметры безопасности</b>"
+
+msgid "<b>Seeder Protocol Settings</b>"
+msgstr "<b>Настройки протокола сидера</b>"
+
+msgid "<b>Seeding Profiles</b>"
+msgstr "<b>Профили сидирования</b>"
+
+msgid "<b>Settings Search</b>"
+msgstr "<b>Поиск настроек</b>"
+
+msgid "<b>Speed Scheduler</b>"
+msgstr "<b>Планировщик скорости</b>"
+
+msgid "<b>Statistics and Security</b>"
+msgstr "<b>Статистика и безопасность</b>"
+
+msgid "<b>Swarm Intelligence</b>"
+msgstr "<b>Интеллект роя</b>"
+
+msgid "<b>Timing Settings</b>"
+msgstr "<b>Настройки времени</b>"
+
+msgid "<b>Tracker Announce Settings</b>"
+msgstr "<b>Настройки анонсов трекера</b>"
+
+msgid "<b>Traffic Pattern Settings</b>"
+msgstr "<b>Настройки шаблона трафика</b>"
+
+msgid "<b>Transport Protocol Settings</b>"
+msgstr "<b>Настройки транспортного протокола</b>"
+
+msgid "<b>Web Interface</b>"
+msgstr "<b>Веб-интерфейс</b>"
+
+msgid "About"
+msgstr "О программе"
+
+msgid "Active"
+msgstr "Активный"
+
+msgid "Active Profile:"
+msgstr "Активный профиль:"
+
+msgid "Adaptation Rate:"
+msgstr "Скорость адаптации:"
+
+msgid "Add"
+msgstr "Добавить"
+
+msgid "Add torrent"
+msgstr "Добавить торрент"
+
+msgid "Added"
+msgstr "Добавлен"
+
+msgid "Advanced"
+msgstr "Дополнительно"
+
+msgid "Advanced settings reset to defaults"
+msgstr "Дополнительные настройки сброшены по умолчанию"
+
+msgid "Aggressive"
+msgstr "Агрессивный"
+
+msgid "Aggressive profile download speed"
+msgstr "Скорость загрузки агрессивного профиля"
+
+msgid "Aggressive profile upload speed (0 = unlimited)"
+msgstr "Скорость отдачи агрессивного профиля (0 = неограничено)"
+
+msgid "Alt download limit (KB/s):"
+msgstr "Альт. лимит загрузки (КБ/с):"
+
+msgid "Alt upload limit (KB/s):"
+msgstr "Альт. лимит отдачи (КБ/с):"
+
+msgid "Alternative download speed limit in KB/s"
+msgstr "Альтернативный лимит скорости загрузки в КБ/с"
+
+msgid "Alternative upload speed limit in KB/s"
+msgstr "Альтернативный лимит скорости отдачи в КБ/с"
+
+msgid "Amount of RAM to use for disk caching"
+msgstr "Объём ОЗУ для кэширования диска"
+
+msgid "Announce Interval"
+msgstr "Интервал Анонса"
+
+msgid "Announce interval (sec):"
+msgstr "Интервал анонсов (сек):"
+
+msgid "Announcement Interval:"
+msgstr "Интервал объявлений:"
+
+msgid "Arabic"
+msgstr "Arabic"
+
+msgid "Auto-bootstrap DHT"
+msgstr "Авто-bootstrap DHT"
+
+msgid "Auto-generate node ID"
+msgstr "Автогенерация ID узла"
+
+msgid "Auto-save settings"
+msgstr "Автосохранение настроек"
+
+msgid "Auto-start disabled"
+msgstr "Автозапуск отключен"
+
+msgid "Auto-start enabled"
+msgstr "Автозапуск включен"
+
+msgid "Automatic logout after inactivity (5-1440 minutes)"
+msgstr "Автовыход после бездействия (5-1440 минут)"
+
+msgid "Automatically bootstrap DHT using known nodes"
+msgstr "Автоматически загружать DHT используя известные узлы"
+
+msgid "Automatically configure router port forwarding using UPnP/NAT-PMP"
+msgstr "Автоматически настроить проброс портов роутера через UPnP/NAT-PMP"
+
+msgid "Automatically generate a unique node ID"
+msgstr "Автоматически генерировать уникальный ID узла"
+
+msgid "Automatically save settings when changed"
+msgstr "Автоматически сохранять настройки при изменении"
+
+msgid "Automatically switch to alternative speeds during specified hours"
+msgstr "Автоматически переключаться на альтернативные скорости в указанные часы"
+
+msgid "Availability"
+msgstr "Доступность"
+
+msgid "Balanced"
+msgstr "Сбалансированный"
+
+msgid "Balanced profile download speed"
+msgstr "Скорость загрузки сбалансированного профиля"
+
+msgid "Balanced profile upload speed"
+msgstr "Скорость отдачи сбалансированного профиля"
+
+msgid "Behavior Variation:"
+msgstr "Вариация поведения:"
+
+msgid "Behavior analysis probability:"
+msgstr "Вероятность анализа поведения:"
+
+msgid "Behavior randomization"
+msgstr "Рандомизация поведения"
+
+msgid "BiglyBT"
+msgstr "BiglyBT"
+
+msgid "Bind to localhost only"
+msgstr "Привязать только к localhost"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "BitTorrent settings reset to defaults"
+msgstr "Настройки BitTorrent сброшены по умолчанию"
+
+msgid "BitTorrent/7.10.5"
+msgstr "BitTorrent/7.10.5"
+
+msgid "Bootstrap Nodes (one per line, format: host:port):"
+msgstr "Узлы Bootstrap (по одному на строку, формат: хост:порт):"
+
+msgid "Bootstrap Timeout:"
+msgstr "Таймаут Bootstrap:"
+
+msgid "Bottom"
+msgstr "Вниз"
+
+msgid "Bucket Size:"
+msgstr "Размер корзины:"
+
+msgid "Burst Probability:"
+msgstr "Вероятность всплеска:"
+
+msgid "CRITICAL"
+msgstr "КРИТИЧЕСКИЙ"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Chinese"
+msgstr "Китайский"
+
+msgid "Choose a pre-configured seeding profile"
+msgstr "Выберите предустановленный профиль сидирования"
+
+msgid "Choose the application theme"
+msgstr "Выберите тему приложения"
+
+msgid "Choose the interface language"
+msgstr "Выберите язык интерфейса"
+
+msgid "Clear search"
+msgstr "Очистить поиск"
+
+msgid "Client"
+msgstr "Клиент"
+
+msgid "Client Switch Probability:"
+msgstr "Вероятность переключения клиента:"
+
+msgid "Comment"
+msgstr "Комментарий"
+
+msgid "Completed"
+msgstr "Завершен"
+
+msgid "Concurrent Queries:"
+msgstr "Одновременные запросы:"
+
+msgid "Config export not yet implemented"
+msgstr "Экспорт конфигурации еще не реализован"
+
+msgid "Config import not yet implemented"
+msgstr "Импорт конфигурации еще не реализован"
+
+msgid "Connected"
+msgstr "Подключен"
+
+msgid "Connected At"
+msgstr "Подключён в"
+
+msgid "Connected Peers / Total Peers"
+msgstr "Подключённые пиры / Всего пиров"
+
+msgid "Connection"
+msgstr "Соединение"
+
+msgid "Connection Status"
+msgstr "Статус подключения"
+
+msgid "Connection Timeout:"
+msgstr "Таймаут соединения:"
+
+msgid "Connection rotation percentage:"
+msgstr "Процент ротации соединений:"
+
+msgid "Connection settings reset to defaults"
+msgstr "Настройки соединения сброшены по умолчанию"
+
+msgid "Connection timeout for extensions (seconds)"
+msgstr "Таймаут соединения для расширений (секунды)"
+
+msgid "Conservative"
+msgstr "Консервативный"
+
+msgid "Conservative profile download speed"
+msgstr "Скорость загрузки консервативного профиля"
+
+msgid "Conservative profile upload speed"
+msgstr "Скорость отдачи консервативного профиля"
+
+msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
+msgstr "Консервативный: Низкие скорости, меньше соединений, идеален для фонового сидирования"
+
+msgid "Country"
+msgstr "Страна"
+
+msgid "Created"
+msgstr "Создан"
+
+msgid "Created By"
+msgstr "Создан"
+
+msgid "Ctrl+,"
+msgstr "Ctrl+,"
+
+msgid "Ctrl+F"
+msgstr "Ctrl+F"
+
+msgid "Ctrl+R"
+msgstr "Ctrl+R"
+
+msgid "Custom"
+msgstr "Пользовательский"
+
+msgid "Custom Agent:"
+msgstr "Пользовательский агент:"
+
+msgid "Custom Node ID:"
+msgstr "Пользовательский ID узла:"
+
+msgid "Custom node ID (40 hex characters)"
+msgstr "Пользовательский ID узла (40 hex символов)"
+
+msgid "Custom user agent string"
+msgstr "Пользовательская строка агента"
+
+msgid "D' Fake Seeder"
+msgstr "D' Fake Seeder"
+
+msgid "DEBUG"
+msgstr "ОТЛАДКА"
+
+msgid "DHT"
+msgstr "DHT"
+
+msgid "Dark"
+msgstr "Тёмная"
+
+msgid "Days:"
+msgstr "Дни:"
+
+msgid "Deluge"
+msgstr "Deluge"
+
+msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
+msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
+
+msgid "Details"
+msgstr "Подробности"
+
+msgid "Disabled"
+msgstr "Отключено"
+
+msgid "Disconnected"
+msgstr "Отключен"
+
+msgid "Disk cache size (MB):"
+msgstr "Размер кэша диска (МБ):"
+
+msgid "Down"
+msgstr "Ниже"
+
+msgid "Down Speed"
+msgstr "Скор. загрузки"
+
+msgid "Download Rate"
+msgstr "Скорость загрузки"
+
+msgid "Download Speed (KB/s):"
+msgstr "Скорость загрузки (КБ/с):"
+
+msgid "Download Variance:"
+msgstr "Вариация загрузки:"
+
+msgid "Download limit (KB/s):"
+msgstr "Лимит загрузки (КБ/с):"
+
+msgid "Download speed variance for aggressive profile"
+msgstr "Вариация скорости загрузки для агрессивного профиля"
+
+msgid "Download speed variance for balanced profile"
+msgstr "Вариация скорости загрузки для сбалансированного профиля"
+
+msgid "Download speed variance for conservative profile"
+msgstr "Вариация скорости загрузки для консервативного профиля"
+
+msgid "Downloaded"
+msgstr "Загружено"
+
+msgid "Downloaded Session / Total"
+msgstr "Загружено за сессию / всего"
+
+msgid "Downloaded Speed"
+msgstr "Скорость загрузки"
+
+msgid "Dropout probability:"
+msgstr "Вероятность отключения:"
+
+msgid "Dutch"
+msgstr "Dutch"
+
+msgid "Dynamic profile switching"
+msgstr "Динамическое переключение профиля"
+
+msgid "ERROR"
+msgstr "ОШИБКА"
+
+msgid "ETA"
+msgstr "Осталось времени"
+
+msgid "Enable CSRF protection"
+msgstr "Включить защиту от CSRF"
+
+msgid "Enable Cross-Site Request Forgery protection"
+msgstr "Включить защиту от межсайтовой подделки запросов"
+
+msgid "Enable DHT"
+msgstr "Включить DHT"
+
+msgid "Enable DHT (Distributed Hash Table)"
+msgstr "Включить DHT (распределённая хеш-таблица)"
+
+msgid "Enable DHT query rate limiting"
+msgstr "Включить ограничение скорости запросов DHT"
+
+msgid "Enable DHT statistics collection"
+msgstr "Включить сбор статистики DHT"
+
+msgid "Enable Distributed Hash Table for trackerless torrents"
+msgstr "Включить распределённую хеш-таблицу для торрентов без трекеров"
+
+msgid "Enable Fast Extension (BEP-006) for improved performance"
+msgstr "Включить быстрое расширение (BEP-006) для улучшения производительности"
+
+msgid "Enable LPD (Local Peer Discovery)"
+msgstr "Включить LPD (обнаружение локальных пиров)"
+
+msgid "Enable Local Peer Discovery for finding peers on local network"
+msgstr "Включить обнаружение локальных пиров для поиска в локальной сети"
+
+msgid "Enable Nagle algorithm"
+msgstr "Включить алгоритм Nagle"
+
+msgid "Enable Nagle algorithm for TCP"
+msgstr "Включить алгоритм Nagle для TCP"
+
+msgid "Enable PEX (Peer Exchange)"
+msgstr "Включить PEX (обмен пирами)"
+
+msgid "Enable Peer Exchange for discovering new peers"
+msgstr "Включить обмен пирами для обнаружения новых пиров"
+
+msgid "Enable Protocol Extensions"
+msgstr "Включить расширения протокола"
+
+msgid "Enable TCP keepalive"
+msgstr "Включить TCP keepalive"
+
+msgid "Enable UPnP/NAT-PMP port mapping"
+msgstr "Включить проброс портов UPnP/NAT-PMP"
+
+msgid "Enable Web UI"
+msgstr "Включить веб-интерфейс"
+
+msgid "Enable alternative speed limits"
+msgstr "Включить альтернативные ограничения скорости"
+
+msgid "Enable alternative speed limits (useful for limiting speeds during certain hours)"
+msgstr "Включить альтернативные ограничения скорости (полезно для ограничения скорости в определённые часы)"
+
+msgid "Enable clickjacking protection"
+msgstr "Включить защиту от кликджекинга"
+
+msgid "Enable client behavior simulation"
+msgstr "Включить симуляцию поведения клиента"
+
+msgid "Enable client behavior simulation engine"
+msgstr "Включить движок симуляции поведения клиента"
+
+msgid "Enable debug mode"
+msgstr "Включить режим отладки"
+
+msgid "Enable debug mode with extra logging and error details"
+msgstr "Включить режим отладки с дополнительным логированием и деталями ошибок"
+
+msgid "Enable dynamic client profile switching"
+msgstr "Включить динамическое переключение профиля клиента"
+
+msgid "Enable lt_donthave extension for piece availability"
+msgstr "Включить расширение lt_donthave для доступности частей"
+
+msgid "Enable metadata extension"
+msgstr "Включить расширение метаданных"
+
+msgid "Enable metadata extension features"
+msgstr "Включить функции расширения метаданных"
+
+msgid "Enable or disable BitTorrent protocol extensions"
+msgstr "Включить или отключить расширения протокола BitTorrent"
+
+msgid "Enable or disable DHT for trackerless torrent support"
+msgstr "Включить или отключить DHT для поддержки торрентов без трекера"
+
+msgid "Enable proxy authentication"
+msgstr "Включить аутентификацию прокси"
+
+msgid "Enable random variations in client behavior"
+msgstr "Включить случайные вариации в поведении клиента"
+
+msgid "Enable rate limiting"
+msgstr "Включить ограничение скорости"
+
+msgid "Enable realistic traffic variations"
+msgstr "Включить реалистичные вариации трафика"
+
+msgid "Enable secure HTTP headers"
+msgstr "Включить безопасные HTTP-заголовки"
+
+msgid "Enable speed scheduler"
+msgstr "Включить планировщик скорости"
+
+msgid "Enable statistics"
+msgstr "Включить статистику"
+
+msgid "Enable swarm intelligence"
+msgstr "Включить интеллект роя"
+
+msgid "Enable swarm intelligence for adaptive behavior"
+msgstr "Включить интеллект роя для адаптивного поведения"
+
+msgid "Enable time-based traffic patterns (peak hours, night hours)"
+msgstr "Включить временные шаблоны трафика (часы пик, ночные часы)"
+
+msgid "Enable ut_holepunch extension for NAT traversal"
+msgstr "Включить расширение ut_holepunch для прохождения NAT"
+
+msgid "Enable ut_metadata extension for metadata exchange"
+msgstr "Включить расширение ut_metadata для обмена метаданными"
+
+msgid "Enable ut_pex extension for peer exchange"
+msgstr "Включить расширение ut_pex для обмена пирами"
+
+msgid "Enable web-based remote control interface"
+msgstr "Включить веб-интерфейс удалённого управления"
+
+msgid "Enable µTP (Micro Transport Protocol)"
+msgstr "Включить µTP (Микро транспортный протокол)"
+
+msgid "Enabled"
+msgstr "Включено"
+
+msgid "Encryption:"
+msgstr "Шифрование:"
+
+msgid "End hour (24-hour format)"
+msgstr "Час окончания (24-часовой формат)"
+
+msgid "End minute"
+msgstr "Минута окончания"
+
+msgid "English"
+msgstr "Английский"
+
+msgid "Error"
+msgstr "Ошибка"
+
+msgid "Error changing language"
+msgstr "Ошибка смены языка"
+
+msgid "Export"
+msgstr "Экспорт"
+
+msgid "Export Settings"
+msgstr "Экспорт настроек"
+
+msgid "Export current settings to a file"
+msgstr "Экспортировать текущие настройки в файл"
+
+msgid "Extension Timeout:"
+msgstr "Таймаут расширения:"
+
+msgid "Extension statistics update interval (seconds)"
+msgstr "Интервал обновления статистики расширений (секунды)"
+
+msgid "Failure Reason"
+msgstr "Причина ошибки"
+
+msgid "Fall back to TCP if µTP fails"
+msgstr "Переключаться на TCP если µTP не работает"
+
+msgid "Fast Extension (BEP-006)"
+msgstr "Быстрое расширение (BEP-006)"
+
+msgid "File"
+msgstr "Файл"
+
+msgid "File Path"
+msgstr "Путь к файлу"
+
+msgid "File chooser not yet implemented"
+msgstr "Выбор файлов еще не реализован"
+
+msgid "Files"
+msgstr "Файлы"
+
+msgid "Flags"
+msgstr "Флаги"
+
+msgid "Follow System"
+msgstr "Следовать системе"
+
+msgid "Forced"
+msgstr "Принудительно"
+
+msgid "French"
+msgstr "Французский"
+
+msgid "Fri"
+msgstr "Пт"
+
+msgid "Friday"
+msgstr "Пятница"
+
+msgid "From:"
+msgstr "От:"
+
+msgid "General"
+msgstr "Общие"
+
+msgid "General settings reset to defaults"
+msgstr "Общие настройки сброшены по умолчанию"
+
+msgid "General timeout for extension operations (seconds)"
+msgstr "Общий таймаут для операций расширений (секунды)"
+
+msgid "Generate Secure Password"
+msgstr "Создать безопасный пароль"
+
+msgid "Generate a random port number"
+msgstr "Генерировать случайный номер порта"
+
+msgid "Generate a random secure password"
+msgstr "Генерировать случайный безопасный пароль"
+
+msgid "Generate synthetic metadata"
+msgstr "Генерировать синтетические метаданные"
+
+msgid "Generate synthetic metadata for simulation"
+msgstr "Генерировать синтетические метаданные для симуляции"
+
+msgid "Generate synthetic peer data for PEX"
+msgstr "Генерировать синтетические данные пиров для PEX"
+
+msgid "Generate synthetic peers"
+msgstr "Генерировать синтетических пиров"
+
+msgid "German"
+msgstr "Немецкий"
+
+msgid "Github - D' Fake Seeder"
+msgstr "Github - D' Fake Seeder"
+
+msgid "Global download speed limit in KB/s (0 = unlimited)"
+msgstr "Глобальный лимит скорости загрузки в КБ/с (0 = неограничено)"
+
+msgid "Global upload speed limit in KB/s (0 = unlimited)"
+msgstr "Глобальный лимит скорости отдачи в КБ/с (0 = неограничено)"
+
+msgid "HTTP"
+msgstr "HTTP"
+
+msgid "HTTP seeder timeout (seconds):"
+msgstr "Таймаут HTTP-сидера (секунды):"
+
+msgid "Handshake"
+msgstr "Рукопожатие"
+
+msgid "Handshake timeout (seconds):"
+msgstr "Таймаут рукопожатия (секунды):"
+
+msgid "Hide to system tray when window is minimized"
+msgstr "Скрывать в системный трей при сворачивании окна"
+
+msgid "Hindi"
+msgstr "Hindi"
+
+msgid "How often to announce to trackers (60-7200 seconds)"
+msgstr "Как часто анонсировать трекерам (60-7200 секунд)"
+
+msgid "How often to scrape tracker for swarm statistics"
+msgstr "Как часто опрашивать трекер для статистики роя"
+
+msgid "How often to update the user interface"
+msgstr "Как часто обновлять пользовательский интерфейс"
+
+msgid "ID"
+msgstr "Идентификатор"
+
+msgid "INFO"
+msgstr "ИНФО"
+
+msgid "IP Address"
+msgstr "IP-адрес"
+
+msgid "IP address to bind to (0.0.0.0 for all interfaces)"
+msgstr "IP-адрес для привязки (0.0.0.0 для всех интерфейсов)"
+
+msgid "Idle Probability:"
+msgstr "Вероятность простоя:"
+
+msgid "Import"
+msgstr "Импорт"
+
+msgid "Import Settings"
+msgstr "Импорт настроек"
+
+msgid "Import settings from a file"
+msgstr "Импортировать настройки из файла"
+
+msgid "Inactive"
+msgstr "Неактивный"
+
+msgid "Incoming"
+msgstr "Входящие"
+
+msgid "Incoming Connections"
+msgstr "Входящие соединения"
+
+msgid "Incoming Peer Connections"
+msgstr "Входящие соединения с пирами"
+
+msgid "Interested"
+msgstr "Заинтересован"
+
+msgid "Interval between DHT announcements (seconds)"
+msgstr "Интервал между объявлениями DHT (секунды)"
+
+msgid "Interval between PEX message exchanges (seconds)"
+msgstr "Интервал между обменами сообщениями PEX (секунды)"
+
+msgid "Interval for DHT statistics updates (seconds)"
+msgstr "Интервал для обновления статистики DHT (секунды)"
+
+msgid "Interval for contacting peers in seconds"
+msgstr "Интервал для связи с пирами в секундах"
+
+msgid "Interval for sending keep alive messages in seconds"
+msgstr "Интервал для отправки keep-alive сообщений в секундах"
+
+msgid "Italian"
+msgstr "Итальянский"
+
+msgid "Japanese"
+msgstr "Японский"
+
+msgid "Keep Alive Interval:"
+msgstr "Интервал Keep Alive:"
+
+msgid "Keep alive interval (seconds):"
+msgstr "Интервал keep-alive (секунды):"
+
+msgid "Keep alive interval for connections (seconds)"
+msgstr "Интервал keep alive для соединений (секунды)"
+
+msgid "Korean"
+msgstr "Korean"
+
+msgid "Label"
+msgstr "Метка"
+
+msgid "Language switched to"
+msgstr "Язык переключен на"
+
+msgid "Language:"
+msgstr "Язык:"
+
+msgid "Last Announce"
+msgstr "Последнее объявление"
+
+msgid "Last Notification"
+msgstr "Последнее уведомление"
+
+msgid "Leechers"
+msgstr "Личи"
+
+msgid "Level of BitTorrent protocol compliance"
+msgstr "Уровень соответствия протоколу BitTorrent"
+
+msgid "Light"
+msgstr "Светлая"
+
+msgid "Limit extension message rate"
+msgstr "Ограничить скорость сообщений расширений"
+
+msgid "List of bootstrap nodes for DHT initialization"
+msgstr "Список узлов bootstrap для инициализации DHT"
+
+msgid "Log"
+msgstr "Журнал"
+
+msgid "Log Level:"
+msgstr "Уровень логирования:"
+
+msgid "Log to file"
+msgstr "Логировать в файл"
+
+msgid "Max Connections:"
+msgstr "Макс. соединений:"
+
+msgid "Max Dropped Peers:"
+msgstr "Макс. отключенных пиров:"
+
+msgid "Max Message Size:"
+msgstr "Макс. размер сообщения:"
+
+msgid "Max Messages/Second:"
+msgstr "Макс. сообщений/сек:"
+
+msgid "Max Nodes:"
+msgstr "Макс. узлов:"
+
+msgid "Max Peers/Message:"
+msgstr "Макс. пиров/сообщение:"
+
+msgid "Max Queries/Second:"
+msgstr "Макс. запросов/сек:"
+
+msgid "Max global connections:"
+msgstr "Макс. глобальных соединений:"
+
+msgid "Max log file size (MB):"
+msgstr "Макс. размер лог-файла (МБ):"
+
+msgid "Max per torrent:"
+msgstr "Макс. на торрент:"
+
+msgid "Max upload slots:"
+msgstr "Макс. слотов отдачи:"
+
+msgid "Maximum DHT queries per second"
+msgstr "Максимум запросов DHT в секунду"
+
+msgid "Maximum connections for aggressive profile"
+msgstr "Максимум соединений для агрессивного профиля"
+
+msgid "Maximum connections for balanced profile"
+msgstr "Максимум соединений для сбалансированного профиля"
+
+msgid "Maximum connections for conservative profile"
+msgstr "Максимум соединений для консервативного профиля"
+
+msgid "Maximum dropped peers to track for PEX"
+msgstr "Максимум отключенных пиров для отслеживания для PEX"
+
+msgid "Maximum extension messages per second"
+msgstr "Максимум сообщений расширений в секунду"
+
+msgid "Maximum number of DHT nodes to maintain"
+msgstr "Максимальное количество узлов DHT для поддержания"
+
+msgid "Maximum number of concurrent DHT queries"
+msgstr "Максимальное количество одновременных запросов DHT"
+
+msgid "Maximum number of connections per individual torrent"
+msgstr "Максимальное количество соединений на отдельный торрент"
+
+msgid "Maximum number of connections to all torrents"
+msgstr "Максимальное количество соединений ко всем торрентам"
+
+msgid "Maximum number of nodes in the routing table"
+msgstr "Максимальное количество узлов в таблице маршрутизации"
+
+msgid "Maximum number of nodes per bucket"
+msgstr "Максимальное количество узлов на корзину"
+
+msgid "Maximum number of simultaneous upload slots"
+msgstr "Максимальное количество одновременных слотов отдачи"
+
+msgid "Maximum peers to include in a PEX message"
+msgstr "Максимум пиров для включения в сообщение PEX"
+
+msgid "Maximum port for seeder connections"
+msgstr "Максимальный порт для соединений сидера"
+
+msgid "Maximum size for extension messages (bytes)"
+msgstr "Максимальный размер для сообщений расширений (байты)"
+
+msgid "Maximum size of log file before rotation"
+msgstr "Максимальный размер лог-файла перед ротацией"
+
+msgid "Maximum transaction ID for tracker communication"
+msgstr "Максимальный ID транзакции для связи с трекером"
+
+msgid "Message"
+msgstr "Сообщение"
+
+msgid "Message read timeout (seconds):"
+msgstr "Таймаут чтения сообщения (секунды):"
+
+msgid "Metadata Piece Size:"
+msgstr "Размер части метаданных:"
+
+msgid "Metadata Timeout:"
+msgstr "Таймаут метаданных:"
+
+msgid "Min announce interval (sec):"
+msgstr "Мин. интервал анонсов (сек):"
+
+msgid "Minimize to system tray"
+msgstr "Свернуть в системный трей"
+
+msgid "Minimum log level to record"
+msgstr "Минимальный уровень логирования для записи"
+
+msgid "Minimum port for seeder connections"
+msgstr "Минимальный порт для соединений сидера"
+
+msgid "Minimum time between announces (10-3600 seconds)"
+msgstr "Минимальное время между анонсами (10-3600 секунд)"
+
+msgid "Minimum transaction ID for tracker communication"
+msgstr "Минимальный ID транзакции для связи с трекером"
+
+msgid "Mon"
+msgstr "Пн"
+
+msgid "Monday"
+msgstr "Понедельник"
+
+msgid "My IP address"
+msgstr "Мой IP-адрес"
+
+msgid "N/A"
+msgstr "Н/Д"
+
+msgid "Name"
+msgstr "Имя"
+
+msgid "Network interface:"
+msgstr "Сетевой интерфейс:"
+
+msgid "Next Announce"
+msgstr "Следующее объявление"
+
+msgid "Next Update"
+msgstr "Следующее Обновление"
+
+msgid "None"
+msgstr "Нет"
+
+msgid "Number of peers to analyze for behavior patterns"
+msgstr "Количество пиров для анализа поведенческих шаблонов"
+
+msgid "Number of peers to request from tracker"
+msgstr "Количество пиров для запроса у трекера"
+
+msgid "Number of synthetic peers to generate"
+msgstr "Количество синтетических пиров для генерации"
+
+msgid "Only allow connections from localhost (more secure)"
+msgstr "Разрешить соединения только с localhost (более безопасно)"
+
+msgid "Open preferences"
+msgstr "Открыть настройки"
+
+msgid "Options"
+msgstr "Опции"
+
+msgid "Outgoing"
+msgstr "Исходящие"
+
+msgid "Outgoing Connections"
+msgstr "Исходящие соединения"
+
+msgid "Outgoing Peer Connections"
+msgstr "Исходящие соединения с пирами"
+
+msgid "Overlay Notification"
+msgstr "Уведомление наложения"
+
+msgid "PEX Interval:"
+msgstr "Интервал PEX:"
+
+msgid "Password for web interface login"
+msgstr "Пароль для входа в веб-интерфейс"
+
+msgid "Password:"
+msgstr "Пароль:"
+
+msgid "Path"
+msgstr "Путь"
+
+msgid "Pause"
+msgstr "Пауза"
+
+msgid "Pause torrent"
+msgstr "Приостановить торрент"
+
+msgid "Peer Analysis Depth:"
+msgstr "Глубина анализа пиров:"
+
+msgid "Peer Choking"
+msgstr "Блокировка пира"
+
+msgid "Peer ID"
+msgstr "ID пира"
+
+msgid "Peer ID Prefix:"
+msgstr "Префикс ID пира:"
+
+msgid "Peer ID prefix to identify client type"
+msgstr "Префикс ID пира для идентификации типа клиента"
+
+msgid "Peer Protocol"
+msgstr "Протокол пиров"
+
+msgid "Peer Protocol settings reset to defaults"
+msgstr "Настройки протокола пиров сброшены по умолчанию"
+
+msgid "Peer contact interval (seconds):"
+msgstr "Интервал связи с пирами (секунды):"
+
+msgid "Peer idle chance:"
+msgstr "Шанс простоя пира:"
+
+msgid "Peer request count:"
+msgstr "Количество запросов пира:"
+
+msgid "Peers"
+msgstr "Пиры"
+
+msgid "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr "Процент соединений для ротации (0.0 - 1.0)"
+
+msgid "Piece Length"
+msgstr "Длина части"
+
+msgid "Pieces"
+msgstr "Части"
+
+msgid "Pieces Received"
+msgstr "Получено частей"
+
+msgid "Polish"
+msgstr "Polish"
+
+msgid "Port"
+msgstr "Порт"
+
+msgid "Port for incoming BitTorrent connections (1024-65535)"
+msgstr "Порт для входящих BitTorrent соединений (1024-65535)"
+
+msgid "Port for web interface (1024-65535)"
+msgstr "Порт для веб-интерфейса (1024-65535)"
+
+msgid "Port:"
+msgstr "Порт:"
+
+msgid "Portuguese"
+msgstr "Португальский"
+
+msgid "Preferences"
+msgstr "Настройки"
+
+msgid "Prevent embedding in frames (X-Frame-Options)"
+msgstr "Предотвратить встраивание в фреймы (X-Frame-Options)"
+
+msgid "Primary BitTorrent client to simulate"
+msgstr "Основной BitTorrent клиент для симуляции"
+
+msgid "Primary Client:"
+msgstr "Основной клиент:"
+
+msgid "Priority"
+msgstr "Приоритет"
+
+msgid "Priority Down"
+msgstr "Приоритет вниз"
+
+msgid "Priority Up"
+msgstr "Приоритет вверх"
+
+msgid "Private"
+msgstr "Приватный"
+
+msgid "Probability of idle periods for aggressive profile"
+msgstr "Вероятность периодов простоя для агрессивного профиля"
+
+msgid "Probability of idle periods for balanced profile"
+msgstr "Вероятность периодов простоя для сбалансированного профиля"
+
+msgid "Probability of idle periods for conservative profile"
+msgstr "Вероятность периодов простоя для консервативного профиля"
+
+msgid "Probability of peer behavior analysis (0.0 - 1.0)"
+msgstr "Вероятность анализа поведения пира (0.0 - 1.0)"
+
+msgid "Probability of peer being idle (0.0 - 1.0)"
+msgstr "Вероятность простоя пира (0.0 - 1.0)"
+
+msgid "Probability of peer dropping out (0.0 - 1.0)"
+msgstr "Вероятность отключения пира (0.0 - 1.0)"
+
+msgid "Probability of peer status changes (0.0 - 1.0)"
+msgstr "Вероятность изменений статуса пира (0.0 - 1.0)"
+
+msgid "Probability of seeder upload activity (0.0 - 1.0)"
+msgstr "Вероятность активности отдачи сидера (0.0 - 1.0)"
+
+msgid "Probability of switching to a different client behavior"
+msgstr "Вероятность переключения на другое поведение клиента"
+
+msgid "Probability of traffic bursts for aggressive profile"
+msgstr "Вероятность всплесков трафика для агрессивного профиля"
+
+msgid "Probability of traffic bursts for balanced profile"
+msgstr "Вероятность всплесков трафика для сбалансированного профиля"
+
+msgid "Probability of traffic bursts for conservative profile"
+msgstr "Вероятность всплесков трафика для консервативного профиля"
+
+msgid "Progress"
+msgstr "Прогресс"
+
+msgid "Progress distribution (almost):"
+msgstr "Распределение прогресса (почти):"
+
+msgid "Progress distribution (middle):"
+msgstr "Распределение прогресса (середина):"
+
+msgid "Progress distribution (start):"
+msgstr "Распределение прогресса (начало):"
+
+msgid "Progress distribution for almost complete peers (0.0 - 1.0)"
+msgstr "Распределение прогресса для почти завершённых пиров (0.0 - 1.0)"
+
+msgid "Progress distribution for middle progress peers (0.0 - 1.0)"
+msgstr "Распределение прогресса для пиров со средним прогрессом (0.0 - 1.0)"
+
+msgid "Progress distribution for starting peers (0.0 - 1.0)"
+msgstr "Распределение прогресса для начинающих пиров (0.0 - 1.0)"
+
+msgid "Protocol Compliance:"
+msgstr "Соответствие протоколу:"
+
+msgid "Protocol Extensions"
+msgstr "Расширения протокола"
+
+msgid "Protocol encryption mode for peer communications"
+msgstr "Режим шифрования протокола для связи с пирами"
+
+msgid "Proxy authentication password"
+msgstr "Пароль аутентификации прокси"
+
+msgid "Proxy authentication username"
+msgstr "Имя пользователя аутентификации прокси"
+
+msgid "Proxy server hostname or IP address"
+msgstr "Имя хоста или IP-адрес прокси-сервера"
+
+msgid "Proxy server port number"
+msgstr "Номер порта прокси-сервера"
+
+msgid "Query Timeout:"
+msgstr "Таймаут запроса:"
+
+msgid "Queue"
+msgstr "Очередь"
+
+msgid "Quit"
+msgstr "Выйти"
+
+msgid "Random"
+msgstr "Случайный"
+
+msgid "Rate of adaptation to swarm behavior"
+msgstr "Скорость адаптации к поведению роя"
+
+msgid "Ratio"
+msgstr "Рейтинг"
+
+msgid "Realistic variations"
+msgstr "Реалистичные вариации"
+
+msgid "Received"
+msgstr "Получено"
+
+msgid "Relaxed"
+msgstr "Расслабленный"
+
+msgid "Remember window size and position"
+msgstr "Запомнить размер и положение окна"
+
+msgid "Remember window size and position between sessions"
+msgstr "Запомнить размер и положение окна между сессиями"
+
+msgid "Remove torrent"
+msgstr "Удалить торрент"
+
+msgid "Requests"
+msgstr "Запросы"
+
+msgid "Require authentication"
+msgstr "Требовать аутентификацию"
+
+msgid "Require username and password for web access"
+msgstr "Требовать имя пользователя и пароль для веб-доступа"
+
+msgid "Reset"
+msgstr "Сброс"
+
+msgid "Reset all settings not yet implemented"
+msgstr "Сброс всех настроек еще не реализован"
+
+msgid "Reset all settings to default values"
+msgstr "Сбросить все настройки к значениям по умолчанию"
+
+msgid "Reset to Defaults"
+msgstr "Сброс к умолчанию"
+
+msgid "Reset to defaults"
+msgstr "Сброс к умолчанию"
+
+msgid "Resume"
+msgstr "Возобновить"
+
+msgid "Resume torrent"
+msgstr "Возобновить торрент"
+
+msgid "Routing Table Size:"
+msgstr "Размер таблицы маршрутизации:"
+
+msgid "Russian"
+msgstr "Русский"
+
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+msgid "Sat"
+msgstr "Сб"
+
+msgid "Saturday"
+msgstr "Суббота"
+
+msgid "Save logs to file in addition to console"
+msgstr "Сохранять логи в файл в дополнение к консоли"
+
+msgid "Scrape interval (sec):"
+msgstr "Интервал опроса (сек):"
+
+msgid "Search by torrent name or file path"
+msgstr "Поиск по имени торрента или пути к файлу"
+
+msgid "Search for settings across all tabs"
+msgstr "Поиск настроек по всем вкладкам"
+
+msgid "Search for torrent"
+msgstr "Поиск торрента"
+
+msgid "Search settings"
+msgstr "Поиск настроек"
+
+msgid "Secure password generated"
+msgstr "Создан безопасный пароль"
+
+msgid "Seeder port range (max):"
+msgstr "Диапазон портов сидера (макс.):"
+
+msgid "Seeder port range (min):"
+msgstr "Диапазон портов сидера (мин.):"
+
+msgid "Seeders"
+msgstr "Сиды"
+
+msgid "Seeds"
+msgstr "Сиды"
+
+msgid "Select proxy type for connections"
+msgstr "Выберите тип прокси для соединений"
+
+msgid "Select torrent"
+msgstr "Выбрать торрент"
+
+msgid "Send security-related HTTP headers"
+msgstr "Отправлять HTTP-заголовки безопасности"
+
+msgid "Sent"
+msgstr "Отправлено"
+
+msgid "Server:"
+msgstr "Сервер:"
+
+msgid "Session timeout (min):"
+msgstr "Таймаут сессии (мин):"
+
+msgid "Shortcuts configuration not yet implemented"
+msgstr "Настройка горячих клавиш еще не реализована"
+
+msgid "Show only selected torrent connections"
+msgstr "Показывать только соединения выбранного торрента"
+
+msgid "Simulation"
+msgstr "Симуляция"
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "Size of metadata pieces in bytes"
+msgstr "Размер частей метаданных в байтах"
+
+msgid "Small Torrent Limit"
+msgstr "Лимит Малого Торрента"
+
+msgid "Spanish"
+msgstr "Испанский"
+
+msgid "Speed"
+msgstr "Скорость"
+
+msgid "Speed settings reset to defaults"
+msgstr "Настройки скорости сброшены по умолчанию"
+
+msgid "Standard"
+msgstr "Стандартный"
+
+msgid "Start DFakeSeeder automatically when the system boots"
+msgstr "Запускать DFakeSeeder автоматически при загрузке системы"
+
+msgid "Start hour (24-hour format)"
+msgstr "Час начала (24-часовой формат)"
+
+msgid "Start minimized"
+msgstr "Запустить свёрнутым"
+
+msgid "Start minimized disabled"
+msgstr "Запуск свернутым отключен"
+
+msgid "Start minimized enabled"
+msgstr "Запуск свернутым включен"
+
+msgid "Start minute"
+msgstr "Минута начала"
+
+msgid "Start on system startup"
+msgstr "Запускать при старте системы"
+
+msgid "Start the application minimized to system tray"
+msgstr "Запустить приложение свёрнутым в системный трей"
+
+msgid "Stats Update Interval:"
+msgstr "Интервал обновления статистики:"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Status change probability:"
+msgstr "Вероятность изменения статуса:"
+
+msgid "Strict"
+msgstr "Строгий"
+
+msgid "Sun"
+msgstr "Вс"
+
+msgid "Sunday"
+msgstr "Воскресенье"
+
+msgid "Swedish"
+msgstr "Swedish"
+
+msgid "Synthetic Peer Count:"
+msgstr "Количество синтетических пиров:"
+
+msgid "TCP fallback"
+msgstr "Резерв TCP"
+
+msgid "TCP keepalive"
+msgstr "TCP keepalive"
+
+msgid "Theme:"
+msgstr "Тема:"
+
+msgid "Threshold"
+msgstr "Порог"
+
+msgid "Thu"
+msgstr "Чт"
+
+msgid "Thursday"
+msgstr "Четверг"
+
+msgid "Tier"
+msgstr "Уровень"
+
+msgid "Time-based patterns"
+msgstr "Временные шаблоны"
+
+msgid "Timeout for DHT bootstrap operations (seconds)"
+msgstr "Таймаут для операций bootstrap DHT (секунды)"
+
+msgid "Timeout for DHT queries (seconds)"
+msgstr "Таймаут для запросов DHT (секунды)"
+
+msgid "Timeout for HTTP seeder connections in seconds"
+msgstr "Таймаут для HTTP соединений сидера в секундах"
+
+msgid "Timeout for UDP seeder connections in seconds"
+msgstr "Таймаут для UDP соединений сидера в секундах"
+
+msgid "Timeout for metadata requests (seconds)"
+msgstr "Таймаут для запросов метаданных (секунды)"
+
+msgid "Timeout for peer handshake in seconds"
+msgstr "Таймаут для рукопожатия с пиром в секундах"
+
+msgid "Timeout for reading peer messages in seconds"
+msgstr "Таймаут для чтения сообщений пира в секундах"
+
+msgid "To:"
+msgstr "До:"
+
+msgid "Top"
+msgstr "Вверх"
+
+msgid "Torrent"
+msgstr "Торрент"
+
+msgid "Torrent Files"
+msgstr "Файлы торрентов"
+
+msgid "Torrents"
+msgstr "Торренты"
+
+msgid "Total Downloaded"
+msgstr "Всего Загружено"
+
+msgid "Total Size"
+msgstr "Общий размер"
+
+msgid "Total Uploaded"
+msgstr "Всего Отправлено"
+
+msgid "Track extension statistics"
+msgstr "Отслеживать статистику расширений"
+
+msgid "Track extension usage statistics"
+msgstr "Отслеживать статистику использования расширений"
+
+msgid "Tracker"
+msgstr "Трекер"
+
+msgid "Tracker URL"
+msgstr "URL трекера"
+
+msgid "Trackers"
+msgstr "Трекеры"
+
+msgid "Traffic Profile:"
+msgstr "Профиль трафика:"
+
+msgid "Traffic pattern profile for simulation"
+msgstr "Профиль шаблона трафика для симуляции"
+
+msgid "Transaction ID range (max):"
+msgstr "Диапазон ID транзакций (макс.):"
+
+msgid "Transaction ID range (min):"
+msgstr "Диапазон ID транзакций (мин.):"
+
+msgid "Transmission"
+msgstr "Transmission"
+
+msgid "Transmission/3.00"
+msgstr "Transmission/3.00"
+
+msgid "Tue"
+msgstr "Вт"
+
+msgid "Tuesday"
+msgstr "Вторник"
+
+msgid "Type"
+msgstr "Тип"
+
+msgid "Type:"
+msgstr "Тип:"
+
+msgid "UDP seeder timeout (seconds):"
+msgstr "Таймаут UDP сидера (секунды):"
+
+msgid "UI Refresh Rate"
+msgstr "Частота обновления UI"
+
+msgid "UI refresh rate (sec):"
+msgstr "Частота обновления UI (сек):"
+
+msgid "URL"
+msgstr "Ссылка"
+
+msgid "URL: http://localhost:8080"
+msgstr "Ссылка: http://localhost:8080"
+
+msgid "Unknown"
+msgstr "Неизвестно"
+
+msgid "Up"
+msgstr "Выше"
+
+msgid "Up Speed"
+msgstr "Скор. отдачи"
+
+msgid "Update Tracker"
+msgstr "Обновить трекер"
+
+msgid "Upload Speed"
+msgstr "Скорость отдачи"
+
+msgid "Upload Speed (KB/s):"
+msgstr "Скорость отдачи (КБ/с):"
+
+msgid "Upload Variance:"
+msgstr "Вариация отдачи:"
+
+msgid "Upload activity probability:"
+msgstr "Вероятность активности отдачи:"
+
+msgid "Upload limit (KB/s):"
+msgstr "Лимит отдачи (КБ/с):"
+
+msgid "Upload speed variance for aggressive profile"
+msgstr "Вариация скорости отдачи для агрессивного профиля"
+
+msgid "Upload speed variance for balanced profile"
+msgstr "Вариация скорости отдачи для сбалансированного профиля"
+
+msgid "Upload speed variance for conservative profile"
+msgstr "Вариация скорости отдачи для консервативного профиля"
+
+msgid "Uploaded"
+msgstr "Отправлено"
+
+msgid "Uploaded Session / Total"
+msgstr "Отдано за сессию / всего"
+
+msgid "Uploading"
+msgstr "Загрузка"
+
+msgid "Use HTTPS (SSL/TLS)"
+msgstr "Использовать HTTPS (SSL/TLS)"
+
+msgid "Use HTTPS for secure connections (requires SSL certificate)"
+msgstr "Использовать HTTPS для безопасных соединений (требует SSL сертификат)"
+
+msgid "Use authentication"
+msgstr "Использовать аутентификацию"
+
+msgid "User Agent:"
+msgstr "Пользовательский агент:"
+
+msgid "User agent string to identify the client to trackers"
+msgstr "Строка пользовательского агента для идентификации клиента у трекеров"
+
+msgid "Username for web interface login"
+msgstr "Имя пользователя для входа в веб-интерфейс"
+
+msgid "Username:"
+msgstr "Имя пользователя:"
+
+msgid "Validate DHT security tokens"
+msgstr "Проверять токены безопасности DHT"
+
+msgid "Validate extension messages"
+msgstr "Проверять сообщения расширений"
+
+msgid "Validate extension messages for security"
+msgstr "Проверять сообщения расширений для безопасности"
+
+msgid "Validate security tokens"
+msgstr "Проверять токены безопасности"
+
+msgid "Validate setting values and show warnings for invalid combinations"
+msgstr "Проверять значения настроек и показывать предупреждения для недопустимых комбинаций"
+
+msgid "Validate settings on change"
+msgstr "Проверять настройки при изменении"
+
+msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr "Вариация в поведении клиента (0.0 = без вариации, 1.0 = максимальная вариация)"
+
+msgid "Vuze"
+msgstr "Vuze"
+
+msgid "Vuze/5.7.6.0"
+msgstr "Vuze/5.7.6.0"
+
+msgid "WARNING"
+msgstr "ПРЕДУПРЕЖДЕНИЕ"
+
+msgid "Web UI"
+msgstr "Веб-интерфейс"
+
+msgid "Web UI settings reset to defaults"
+msgstr "Настройки веб-интерфейса сброшены по умолчанию"
+
+msgid "Wed"
+msgstr "Ср"
+
+msgid "Wednesday"
+msgstr "Среда"
+
+msgid "active"
+msgstr "Активный"
+
+msgid "admin"
+msgstr "admin"
+
+msgid "announce_interval"
+msgstr "Интервал Анонса"
+
+msgid "bytes"
+msgstr "байты"
+
+msgid "class_name"
+msgstr "Название класса"
+
+msgid "download_speed"
+msgstr "Скорость Загрузки"
+
+msgid "filepath"
+msgstr "Путь к Файлу"
+
+msgid "files_tab"
+msgstr "Вкладка файлов"
+
+msgid "id"
+msgstr "#"
+
+msgid "leechers"
+msgstr "Личеры"
+
+msgid "log_tab"
+msgstr "Вкладка журнала"
+
+msgid "lt_donthave (Piece Availability)"
+msgstr "lt_donthave (доступность частей)"
+
+msgid "name"
+msgstr "Имя"
+
+msgid "next_update"
+msgstr "Следующее Обновление"
+
+msgid "open-menu-symbolic"
+msgstr "open-menu-symbolic"
+
+msgid "options_tab"
+msgstr "Вкладка настроек"
+
+msgid "peers_tab"
+msgstr "Вкладка пиров"
+
+msgid "progress"
+msgstr "Прогресс"
+
+msgid "qBittorrent"
+msgstr "qBittorrent"
+
+msgid "qBittorrent/4.3.1"
+msgstr "qBittorrent/4.3.1"
+
+msgid "rTorrent"
+msgstr "rTorrent"
+
+msgid "rTorrent/0.9.6"
+msgstr "rTorrent/0.9.6"
+
+msgid "seconds"
+msgstr "секунды"
+
+msgid "seeders"
+msgstr "Сидеры"
+
+msgid "session_downloaded"
+msgstr "Загружено"
+
+msgid "session_uploaded"
+msgstr "Отправлено"
+
+msgid "small_torrent_limit"
+msgstr "Лимит Малого Торрента"
+
+msgid "threshold"
+msgstr "Порог"
+
+msgid "total_downloaded"
+msgstr "Всего Загружено"
+
+msgid "total_size"
+msgstr "Размер"
+
+msgid "total_uploaded"
+msgstr "Всего Отправлено"
+
+msgid "trackers_tab"
+msgstr "Вкладка трекеров"
+
+msgid "uTorrent/3.5.5"
+msgstr "uTorrent/3.5.5"
+
+msgid "upload_speed"
+msgstr "Скорость Отдачи"
+
+msgid "uploading"
+msgstr "Загрузка"
+
+msgid "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch (прохождение NAT)"
+
+msgid "ut_metadata (Metadata Exchange)"
+msgstr "ut_metadata (обмен метаданными)"
+
+msgid "ut_pex (Peer Exchange)"
+msgstr "ut_pex (обмен пирами)"
+
+msgid "µTorrent"
+msgstr "µTorrent"
+
+msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
+msgstr "⚠️ Расширенные настройки - изменяйте с осторожностью. Неправильные значения могут повлиять на производительность или стабильность."
+
+msgid "⚠️ Web UI allows remote control of the application. Use strong authentication."
+msgstr "⚠️ Веб-интерфейс позволяет удалённо управлять приложением. Используйте надёжную аутентификацию."
+

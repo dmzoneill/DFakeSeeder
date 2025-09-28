@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkScrolledWindow" id="settings_bittorrent_scroll">
+    <property name="hscrollbar-policy">never</property>
+    <property name="vscrollbar-policy">automatic</property>
+    <child>
+        <object class="GtkBox" id="settings_bittorrent_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">18</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+
+            <!-- Protocol Features Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Protocol Features&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable DHT -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_enable_dht">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable Distributed Hash Table for trackerless torrents</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable DHT (Distributed Hash Table)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Enable PEX -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_enable_pex">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable Peer Exchange for discovering new peers</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable PEX (Peer Exchange)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Enable LPD -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_enable_lpd">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable Local Peer Discovery for finding peers on local network</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable LPD (Local Peer Discovery)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Encryption Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Encryption&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Encryption mode -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Encryption:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkDropDown" id="settings_encryption_mode">
+                                            <property name="model">
+                                                <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">Disabled</item>
+                                                        <item translatable="yes">Enabled</item>
+                                                        <item translatable="yes">Forced</item>
+                                                    </items>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Protocol encryption mode for peer communications</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Client Identification Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Client Identification&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- User Agent -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">User Agent:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkDropDown" id="settings_user_agent">
+                                            <property name="model">
+                                                <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">Deluge/2.0.3 libtorrent/2.0.5.0</item>
+                                                        <item translatable="yes">qBittorrent/4.3.1</item>
+                                                        <item translatable="yes">Transmission/3.00</item>
+                                                        <item translatable="yes">uTorrent/3.5.5</item>
+                                                        <item translatable="yes">Vuze/5.7.6.0</item>
+                                                        <item translatable="yes">BitTorrent/7.10.5</item>
+                                                        <item translatable="yes">rTorrent/0.9.6</item>
+                                                        <item translatable="yes">Custom</item>
+                                                    </items>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">User agent string to identify the client to trackers</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Custom User Agent -->
+                            <child>
+                                <object class="GtkBox" id="settings_custom_agent_box">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <property name="sensitive">False</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Custom Agent:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkEntry" id="settings_custom_user_agent">
+                                            <property name="placeholder-text" translatable="yes">MyClient/1.0.0</property>
+                                            <property name="tooltip-text" translatable="yes">Custom user agent string</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Peer ID -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Peer ID Prefix:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkEntry" id="settings_peer_id_prefix">
+                                            <property name="placeholder-text" translatable="yes">-DE2003-</property>
+                                            <property name="tooltip-text" translatable="yes">Peer ID prefix to identify client type</property>
+                                            <property name="max-length">8</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Announce Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Tracker Announce Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Announce interval -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Announce interval (sec):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_announce_interval">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">60</property>
+                                                    <property name="upper">7200</property>
+                                                    <property name="value">1800</property>
+                                                    <property name="step-increment">30</property>
+                                                    <property name="page-increment">300</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">How often to announce to trackers (60-7200 seconds)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Min announce interval -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Min announce interval (sec):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_min_announce_interval">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">10</property>
+                                                    <property name="upper">3600</property>
+                                                    <property name="value">300</property>
+                                                    <property name="step-increment">10</property>
+                                                    <property name="page-increment">60</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Minimum time between announces (10-3600 seconds)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Scrape interval -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Scrape interval (sec):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_scrape_interval">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">60</property>
+                                                    <property name="upper">7200</property>
+                                                    <property name="value">900</property>
+                                                    <property name="step-increment">30</property>
+                                                    <property name="page-increment">300</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">How often to scrape tracker for swarm statistics</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+    </child>
+</object>

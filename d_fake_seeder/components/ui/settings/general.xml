@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkScrolledWindow" id="settings_general_scroll">
+    <property name="hscrollbar-policy">never</property>
+    <property name="vscrollbar-policy">automatic</property>
+    <child>
+        <object class="GtkBox" id="settings_general_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">18</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+
+            <!-- Application Behavior Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Application Behavior&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Start on system startup -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_auto_start">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Start DFakeSeeder automatically when the system boots</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Start on system startup</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Start minimized -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_start_minimized">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Start the application minimized to system tray</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Start minimized</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Minimize to tray -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_minimize_to_tray">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Hide to system tray when window is minimized</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Minimize to system tray</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Interface Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Interface&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Theme selection -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Theme:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkDropDown" id="settings_theme">
+                                            <property name="model">
+                                                <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">Follow System</item>
+                                                        <item translatable="yes">Light</item>
+                                                        <item translatable="yes">Dark</item>
+                                                    </items>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Choose the application theme</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Language selection -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Language:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkDropDown" id="settings_language">
+                                            <property name="model">
+                                                <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">English</item>
+                                                        <item translatable="yes">Spanish</item>
+                                                        <item translatable="yes">French</item>
+                                                        <item translatable="yes">German</item>
+                                                        <item translatable="yes">Italian</item>
+                                                        <item translatable="yes">Portuguese</item>
+                                                        <item translatable="yes">Russian</item>
+                                                        <item translatable="yes">Chinese</item>
+                                                        <item translatable="yes">Japanese</item>
+                                                    </items>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Choose the interface language</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Window size persistence -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_remember_window_size">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Remember window size and position between sessions</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Remember window size and position</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Configuration Management Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Configuration Management&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">horizontal</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+                            <property name="halign">start</property>
+
+                            <!-- Export settings -->
+                            <child>
+                                <object class="GtkButton" id="settings_export_button">
+                                    <property name="label" translatable="yes">Export Settings</property>
+                                    <property name="tooltip-text" translatable="yes">Export current settings to a file</property>
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">6</property>
+                                            <child>
+                                                <object class="GtkImage">
+                                                    <property name="icon-name">document-save-symbolic</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">Export</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Import settings -->
+                            <child>
+                                <object class="GtkButton" id="settings_import_button">
+                                    <property name="label" translatable="yes">Import Settings</property>
+                                    <property name="tooltip-text" translatable="yes">Import settings from a file</property>
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">6</property>
+                                            <child>
+                                                <object class="GtkImage">
+                                                    <property name="icon-name">document-open-symbolic</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">Import</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Reset to defaults -->
+                            <child>
+                                <object class="GtkButton" id="settings_reset_button">
+                                    <property name="label" translatable="yes">Reset to Defaults</property>
+                                    <property name="tooltip-text" translatable="yes">Reset all settings to default values</property>
+                                    <property name="css-classes">destructive-action</property>
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">6</property>
+                                            <child>
+                                                <object class="GtkImage">
+                                                    <property name="icon-name">edit-undo-symbolic</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">Reset</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Seeding Profiles Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Seeding Profiles&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Profile selection -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Active Profile:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkDropDown" id="settings_seeding_profile">
+                                            <property name="model">
+                                                <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">Conservative</item>
+                                                        <item translatable="yes">Balanced</item>
+                                                        <item translatable="yes">Aggressive</item>
+                                                        <item translatable="yes">Custom</item>
+                                                    </items>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Choose a pre-configured seeding profile</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Profile description -->
+                            <child>
+                                <object class="GtkLabel" id="settings_profile_description">
+                                    <property name="label" translatable="yes">Conservative: Lower speeds, fewer connections, ideal for background seeding</property>
+                                    <property name="halign">start</property>
+                                    <property name="wrap">True</property>
+                                    <property name="wrap-mode">word</property>
+                                    <property name="css-classes">dim-label</property>
+                                    <property name="margin-start">12</property>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+    </child>
+</object>

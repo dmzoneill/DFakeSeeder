@@ -1,0 +1,752 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkScrolledWindow" id="settings_peer_protocol_scroll">
+    <property name="hscrollbar-policy">never</property>
+    <property name="vscrollbar-policy">automatic</property>
+    <child>
+        <object class="GtkBox" id="settings_peer_protocol_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">18</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+
+            <!-- Peer Protocol Timeouts Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Peer Protocol Timeouts&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Handshake timeout -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Handshake timeout (seconds):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_handshake_timeout">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1.0</property>
+                                                    <property name="upper">300.0</property>
+                                                    <property name="value">30.0</property>
+                                                    <property name="step-increment">1.0</property>
+                                                    <property name="page-increment">5.0</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">1</property>
+                                            <property name="tooltip-text" translatable="yes">Timeout for peer handshake in seconds</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Message read timeout -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Message read timeout (seconds):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_message_read_timeout">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1.0</property>
+                                                    <property name="upper">600.0</property>
+                                                    <property name="value">60.0</property>
+                                                    <property name="step-increment">1.0</property>
+                                                    <property name="page-increment">10.0</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">1</property>
+                                            <property name="tooltip-text" translatable="yes">Timeout for reading peer messages in seconds</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Keep alive interval -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Keep alive interval (seconds):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_keep_alive_interval">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">10.0</property>
+                                                    <property name="upper">600.0</property>
+                                                    <property name="value">120.0</property>
+                                                    <property name="step-increment">10.0</property>
+                                                    <property name="page-increment">30.0</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">1</property>
+                                            <property name="tooltip-text" translatable="yes">Interval for sending keep alive messages in seconds</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Peer contact interval -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Peer contact interval (seconds):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_peer_contact_interval">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">30.0</property>
+                                                    <property name="upper">3600.0</property>
+                                                    <property name="value">300.0</property>
+                                                    <property name="step-increment">30.0</property>
+                                                    <property name="page-increment">60.0</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">1</property>
+                                            <property name="tooltip-text" translatable="yes">Interval for contacting peers in seconds</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Seeder Protocol Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Seeder Protocol Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- UDP seeder timeout -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">UDP seeder timeout (seconds):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_udp_seeder_timeout">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1.0</property>
+                                                    <property name="upper">60.0</property>
+                                                    <property name="value">5.0</property>
+                                                    <property name="step-increment">1.0</property>
+                                                    <property name="page-increment">5.0</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">1</property>
+                                            <property name="tooltip-text" translatable="yes">Timeout for UDP seeder connections in seconds</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- HTTP seeder timeout -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">HTTP seeder timeout (seconds):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_http_seeder_timeout">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1.0</property>
+                                                    <property name="upper">120.0</property>
+                                                    <property name="value">10.0</property>
+                                                    <property name="step-increment">1.0</property>
+                                                    <property name="page-increment">5.0</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">1</property>
+                                            <property name="tooltip-text" translatable="yes">Timeout for HTTP seeder connections in seconds</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Seeder port range -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Seeder port range (min):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_seeder_port_min">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1024</property>
+                                                    <property name="upper">65534</property>
+                                                    <property name="value">1025</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">100</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Minimum port for seeder connections</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Seeder port range (max):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_seeder_port_max">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1025</property>
+                                                    <property name="upper">65535</property>
+                                                    <property name="value">65000</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">100</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum port for seeder connections</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Transaction ID range -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Transaction ID range (min):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_transaction_id_min">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0</property>
+                                                    <property name="upper">254</property>
+                                                    <property name="value">0</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">10</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Minimum transaction ID for tracker communication</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Transaction ID range (max):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_transaction_id_max">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1</property>
+                                                    <property name="upper">255</property>
+                                                    <property name="value">255</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">10</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum transaction ID for tracker communication</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Peer request count -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Peer request count:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_peer_request_count">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1</property>
+                                                    <property name="upper">1000</property>
+                                                    <property name="value">200</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">10</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Number of peers to request from tracker</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Peer Behavior Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Peer Behavior Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Upload activity probability -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Upload activity probability:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_seeder_upload_activity_probability">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0.0</property>
+                                                    <property name="upper">1.0</property>
+                                                    <property name="value">0.3</property>
+                                                    <property name="step-increment">0.01</property>
+                                                    <property name="page-increment">0.1</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">2</property>
+                                            <property name="tooltip-text" translatable="yes">Probability of seeder upload activity (0.0 - 1.0)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Peer idle chance -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Peer idle chance:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_peer_idle_chance">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0.0</property>
+                                                    <property name="upper">1.0</property>
+                                                    <property name="value">0.3</property>
+                                                    <property name="step-increment">0.01</property>
+                                                    <property name="page-increment">0.1</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">2</property>
+                                            <property name="tooltip-text" translatable="yes">Probability of peer being idle (0.0 - 1.0)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Progress distribution settings -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Progress distribution (start):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_progress_distribution_start">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0.0</property>
+                                                    <property name="upper">1.0</property>
+                                                    <property name="value">0.1</property>
+                                                    <property name="step-increment">0.01</property>
+                                                    <property name="page-increment">0.1</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">2</property>
+                                            <property name="tooltip-text" translatable="yes">Progress distribution for starting peers (0.0 - 1.0)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Progress distribution (middle):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_progress_distribution_middle">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0.0</property>
+                                                    <property name="upper">1.0</property>
+                                                    <property name="value">0.3</property>
+                                                    <property name="step-increment">0.01</property>
+                                                    <property name="page-increment">0.1</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">2</property>
+                                            <property name="tooltip-text" translatable="yes">Progress distribution for middle progress peers (0.0 - 1.0)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Progress distribution (almost):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_progress_distribution_almost">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0.0</property>
+                                                    <property name="upper">1.0</property>
+                                                    <property name="value">0.7</property>
+                                                    <property name="step-increment">0.01</property>
+                                                    <property name="page-increment">0.1</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">2</property>
+                                            <property name="tooltip-text" translatable="yes">Progress distribution for almost complete peers (0.0 - 1.0)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Behavior analysis probability -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Behavior analysis probability:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_peer_behavior_analysis_probability">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0.0</property>
+                                                    <property name="upper">1.0</property>
+                                                    <property name="value">0.2</property>
+                                                    <property name="step-increment">0.01</property>
+                                                    <property name="page-increment">0.1</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">2</property>
+                                            <property name="tooltip-text" translatable="yes">Probability of peer behavior analysis (0.0 - 1.0)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Status change probability -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Status change probability:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_peer_status_change_probability">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0.0</property>
+                                                    <property name="upper">1.0</property>
+                                                    <property name="value">0.4</property>
+                                                    <property name="step-increment">0.01</property>
+                                                    <property name="page-increment">0.1</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">2</property>
+                                            <property name="tooltip-text" translatable="yes">Probability of peer status changes (0.0 - 1.0)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Dropout probability -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Dropout probability:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_peer_dropout_probability">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0.0</property>
+                                                    <property name="upper">1.0</property>
+                                                    <property name="value">0.1</property>
+                                                    <property name="step-increment">0.01</property>
+                                                    <property name="page-increment">0.1</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">2</property>
+                                            <property name="tooltip-text" translatable="yes">Probability of peer dropping out (0.0 - 1.0)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Connection rotation percentage -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Connection rotation percentage:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">25</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_connection_rotation_percentage">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0.0</property>
+                                                    <property name="upper">1.0</property>
+                                                    <property name="value">0.25</property>
+                                                    <property name="step-increment">0.01</property>
+                                                    <property name="page-increment">0.1</property>
+                                                </object>
+                                            </property>
+                                            <property name="digits">2</property>
+                                            <property name="tooltip-text" translatable="yes">Percentage of connections to rotate (0.0 - 1.0)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+    </child>
+</object>

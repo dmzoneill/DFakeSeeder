@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkScrolledWindow" id="settings_speed_scroll">
+    <property name="hscrollbar-policy">never</property>
+    <property name="vscrollbar-policy">automatic</property>
+    <child>
+        <object class="GtkBox" id="settings_speed_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">18</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+
+            <!-- Global Speed Limits Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Global Speed Limits&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Upload limit -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Upload limit (KB/s):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_upload_limit">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0</property>
+                                                    <property name="upper">999999</property>
+                                                    <property name="value">0</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">10</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Global upload speed limit in KB/s (0 = unlimited)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">10</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">(0 = unlimited)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="css-classes">dim-label</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Download limit -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Download limit (KB/s):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_download_limit">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0</property>
+                                                    <property name="upper">999999</property>
+                                                    <property name="value">0</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">10</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Global download speed limit in KB/s (0 = unlimited)</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">10</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">(0 = unlimited)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="css-classes">dim-label</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Alternative Speed Limits Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Alternative Speed Limits&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable alternative speeds -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_enable_alt_speeds">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable alternative speed limits (useful for limiting speeds during certain hours)</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable alternative speed limits</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Alternative speed settings -->
+                            <child>
+                                <object class="GtkBox" id="settings_alt_speed_box">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">12</property>
+                                    <property name="sensitive">False</property>
+
+                                    <!-- Alt upload limit -->
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="halign">fill</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">Alt upload limit (KB/s):</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="valign">center</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">20</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkSpinButton" id="settings_alt_upload_limit">
+                                                    <property name="adjustment">
+                                                        <object class="GtkAdjustment">
+                                                            <property name="lower">0</property>
+                                                            <property name="upper">999999</property>
+                                                            <property name="value">50</property>
+                                                            <property name="step-increment">1</property>
+                                                            <property name="page-increment">10</property>
+                                                        </object>
+                                                    </property>
+                                                    <property name="tooltip-text" translatable="yes">Alternative upload speed limit in KB/s</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">10</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+
+                                    <!-- Alt download limit -->
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="halign">fill</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">Alt download limit (KB/s):</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="valign">center</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">20</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkSpinButton" id="settings_alt_download_limit">
+                                                    <property name="adjustment">
+                                                        <object class="GtkAdjustment">
+                                                            <property name="lower">0</property>
+                                                            <property name="upper">999999</property>
+                                                            <property name="value">100</property>
+                                                            <property name="step-increment">1</property>
+                                                            <property name="page-increment">10</property>
+                                                        </object>
+                                                    </property>
+                                                    <property name="tooltip-text" translatable="yes">Alternative download speed limit in KB/s</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">10</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Speed Scheduler Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Speed Scheduler&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable scheduler -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_enable_scheduler">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Automatically switch to alternative speeds during specified hours</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable speed scheduler</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Scheduler settings -->
+                            <child>
+                                <object class="GtkBox" id="settings_scheduler_box">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">12</property>
+                                    <property name="sensitive">False</property>
+
+                                    <!-- Time range -->
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="halign">fill</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">From:</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="valign">center</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">8</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkSpinButton" id="settings_scheduler_start_hour">
+                                                    <property name="adjustment">
+                                                        <object class="GtkAdjustment">
+                                                            <property name="lower">0</property>
+                                                            <property name="upper">23</property>
+                                                            <property name="value">22</property>
+                                                            <property name="step-increment">1</property>
+                                                            <property name="page-increment">1</property>
+                                                        </object>
+                                                    </property>
+                                                    <property name="tooltip-text" translatable="yes">Start hour (24-hour format)</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">4</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">:</property>
+                                                    <property name="halign">center</property>
+                                                    <property name="valign">center</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkSpinButton" id="settings_scheduler_start_minute">
+                                                    <property name="adjustment">
+                                                        <object class="GtkAdjustment">
+                                                            <property name="lower">0</property>
+                                                            <property name="upper">59</property>
+                                                            <property name="value">0</property>
+                                                            <property name="step-increment">1</property>
+                                                            <property name="page-increment">5</property>
+                                                        </object>
+                                                    </property>
+                                                    <property name="tooltip-text" translatable="yes">Start minute</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">4</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">To:</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="valign">center</property>
+                                                    <property name="margin-start">20</property>
+                                                    <property name="width-chars">8</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkSpinButton" id="settings_scheduler_end_hour">
+                                                    <property name="adjustment">
+                                                        <object class="GtkAdjustment">
+                                                            <property name="lower">0</property>
+                                                            <property name="upper">23</property>
+                                                            <property name="value">6</property>
+                                                            <property name="step-increment">1</property>
+                                                            <property name="page-increment">1</property>
+                                                        </object>
+                                                    </property>
+                                                    <property name="tooltip-text" translatable="yes">End hour (24-hour format)</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">4</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">:</property>
+                                                    <property name="halign">center</property>
+                                                    <property name="valign">center</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkSpinButton" id="settings_scheduler_end_minute">
+                                                    <property name="adjustment">
+                                                        <object class="GtkAdjustment">
+                                                            <property name="lower">0</property>
+                                                            <property name="upper">59</property>
+                                                            <property name="value">0</property>
+                                                            <property name="step-increment">1</property>
+                                                            <property name="page-increment">5</property>
+                                                        </object>
+                                                    </property>
+                                                    <property name="tooltip-text" translatable="yes">End minute</property>
+                                                    <property name="hexpand">False</property>
+                                                    <property name="width-chars">4</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+
+                                    <!-- Days selection -->
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">8</property>
+                                            <property name="halign">start</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">Days:</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="valign">center</property>
+                                                    <property name="width-chars">8</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkBox">
+                                                    <property name="spacing">4</property>
+                                                    <child>
+                                                        <object class="GtkCheckButton" id="settings_scheduler_mon">
+                                                            <property name="label" translatable="yes">Mon</property>
+                                                            <property name="tooltip-text" translatable="yes">Monday</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkCheckButton" id="settings_scheduler_tue">
+                                                            <property name="label" translatable="yes">Tue</property>
+                                                            <property name="tooltip-text" translatable="yes">Tuesday</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkCheckButton" id="settings_scheduler_wed">
+                                                            <property name="label" translatable="yes">Wed</property>
+                                                            <property name="tooltip-text" translatable="yes">Wednesday</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkCheckButton" id="settings_scheduler_thu">
+                                                            <property name="label" translatable="yes">Thu</property>
+                                                            <property name="tooltip-text" translatable="yes">Thursday</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkCheckButton" id="settings_scheduler_fri">
+                                                            <property name="label" translatable="yes">Fri</property>
+                                                            <property name="tooltip-text" translatable="yes">Friday</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkCheckButton" id="settings_scheduler_sat">
+                                                            <property name="label" translatable="yes">Sat</property>
+                                                            <property name="tooltip-text" translatable="yes">Saturday</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkCheckButton" id="settings_scheduler_sun">
+                                                            <property name="label" translatable="yes">Sun</property>
+                                                            <property name="tooltip-text" translatable="yes">Sunday</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+    </child>
+</object>

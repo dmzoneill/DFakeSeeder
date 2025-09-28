@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<object class="GtkBox">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">10</property>
+    <child>
+        <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">10</property>
+            <child>
+                <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label" translatable="yes">Incoming Peer Connections</property>
+                    <property name="halign">start</property>
+                    <attributes>
+                        <attribute name="weight" value="bold"/>
+                    </attributes>
+                </object>
+            </child>
+            <child>
+                <object class="GtkCheckButton" id="incoming_filter_selected_checkbox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="label" translatable="yes">Show only selected torrent connections</property>
+                    <property name="active">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="halign">end</property>
+                </object>
+            </child>
+        </object>
+    </child>
+    <child>
+        <object class="GtkScrolledWindow">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <child>
+                <object class="GtkColumnView" id="incoming_columnview">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="show-row-separators">True</property>
+                    <property name="show-column-separators">True</property>
+                </object>
+            </child>
+        </object>
+    </child>
+</object>
