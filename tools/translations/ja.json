@@ -159,6 +159,8 @@
   "Downloaded": "ダウンロード済み",
   "Downloaded Session / Total": "ダウンロード済み セッション / 合計",
   "Downloaded Speed": "ダウンロード速度",
+  "Session Downloaded": "セッションダウンロード",
+  "Session Uploaded": "セッションアップロード",
   "Dropout probability:": "ドロップアウト確率:",
   "Dynamic profile switching": "動的プロファイル切り替え",
   "ERROR": "エラー",

@@ -462,6 +462,8 @@
     "Send security-related HTTP headers": "Enviar cabeceras HTTP relacionadas seguridad",
     "Sent": "Enviado",
     "Server:": "Servidor:",
+    "Session Downloaded": "Session Downloaded",
+    "Session Uploaded": "Session Uploaded",
     "Session timeout (min):": "Timeout sesión (min):",
     "Shortcuts configuration not yet implemented": "Configuración de atajos aún no implementada",
     "Show only selected torrent connections": "Mostrar solo conexiones torrent seleccionado",

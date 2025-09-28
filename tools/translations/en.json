@@ -159,6 +159,8 @@
   "Downloaded": "Downloaded",
   "Downloaded Session / Total": "Downloaded Session / Total",
   "Downloaded Speed": "Downloaded Speed",
+  "Session Downloaded": "Session Downloaded",
+  "Session Uploaded": "Session Uploaded",
   "Dropout probability:": "Dropout probability:",
   "Dynamic profile switching": "Dynamic profile switching",
   "ERROR": "ERROR",
