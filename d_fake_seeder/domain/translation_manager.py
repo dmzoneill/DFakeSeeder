@@ -392,44 +392,79 @@ class TranslationManager:
 
     def _check_and_register_widget(self, widget: Gtk.Widget, widget_id: Optional[str]):
         """Check if a widget should be registered for translation and register it."""
-        translation_key = None
-        property_name = None
+        # List to store multiple translatable properties for this widget
+        translatable_properties = []
 
-        # Determine if this widget type can be translated and get its current text
+        # Check for different translatable properties based on widget type
         if isinstance(widget, Gtk.Label):
             text = widget.get_label()
-            if text:
-                translation_key = text
-                property_name = "label"
+            if text and text.strip():
+                translatable_properties.append(("label", text))
 
         elif isinstance(widget, Gtk.Button):
+            # Check for button label
             text = widget.get_label()
-            if text:
-                translation_key = text
-                property_name = "label"
+            if text and text.strip():
+                translatable_properties.append(("label", text))
+
+            # Check for tooltip text on buttons
+            tooltip_text = widget.get_tooltip_text()
+            if tooltip_text and tooltip_text.strip():
+                translatable_properties.append(("tooltip_text", tooltip_text))
 
         elif isinstance(widget, (Gtk.Window, Gtk.Dialog)):
             text = widget.get_title()
-            if text:
-                translation_key = text
-                property_name = "title"
+            if text and text.strip():
+                translatable_properties.append(("title", text))
 
         elif isinstance(widget, Gtk.MenuButton):
             text = widget.get_label()
-            if text:
-                translation_key = text
-                property_name = "label"
+            if text and text.strip():
+                translatable_properties.append(("label", text))
 
-        # Only register if we found translatable text
-        if translation_key and translation_key.strip():
-            # Check if this widget is already registered to prevent duplicates
-            widget_already_registered = False
+            # Check for tooltip text on menu buttons
+            tooltip_text = widget.get_tooltip_text()
+            if tooltip_text and tooltip_text.strip():
+                translatable_properties.append(("tooltip_text", tooltip_text))
+
+        elif isinstance(widget, Gtk.Entry):
+            # Check for placeholder text in entries
+            placeholder_text = widget.get_placeholder_text()
+            if placeholder_text and placeholder_text.strip():
+                translatable_properties.append(("placeholder_text", placeholder_text))
+
+            # Check for tooltip text on entries
+            tooltip_text = widget.get_tooltip_text()
+            if tooltip_text and tooltip_text.strip():
+                translatable_properties.append(("tooltip_text", tooltip_text))
+
+        elif isinstance(widget, Gtk.Scale):
+            # Check for tooltip text on scales
+            tooltip_text = widget.get_tooltip_text()
+            if tooltip_text and tooltip_text.strip():
+                translatable_properties.append(("tooltip_text", tooltip_text))
+
+        else:
+            # For any other widget, check for tooltip text
+            try:
+                tooltip_text = widget.get_tooltip_text()
+                if tooltip_text and tooltip_text.strip():
+                    translatable_properties.append(("tooltip_text", tooltip_text))
+            except AttributeError:
+                # Some widgets might not support tooltips
+                pass
+
+        # Register each translatable property separately
+        for property_name, translation_key in translatable_properties:
+            # Check if this specific widget+property combination is already registered
+            already_registered = False
             for existing_widget in self.translatable_widgets:
-                if existing_widget["widget"] is widget:
-                    widget_already_registered = True
+                if (existing_widget["widget"] is widget and
+                    existing_widget["property_name"] == property_name):
+                    already_registered = True
                     break
 
-            if not widget_already_registered:
+            if not already_registered:
                 self.translatable_widgets.append(
                     {
                         "widget": widget,
@@ -441,11 +476,11 @@ class TranslationManager:
                 )
                 widget_name = widget.__class__.__name__
                 widget_display = widget_id or "(no id)"
-                logger.debug("Registered {widget_name} '{widget_display}' with text: '{translation_key}'", "TranslationManager")
+                logger.debug("Registered {widget_name} '{widget_display}' property '{property_name}' with text: '{translation_key}'", "TranslationManager")
             else:
                 widget_name = widget.__class__.__name__
                 widget_display = widget_id or "(no id)"
-                logger.debug("Skipped duplicate {widget_name} '{widget_display}' with text: '{translation_key}'", "TranslationManager")
+                logger.debug("Skipped duplicate {widget_name} '{widget_display}' property '{property_name}' with text: '{translation_key}'", "TranslationManager")
 
     def set_widget_state(self, widget_id: str, key: str, value: Any):
         """Store state for a widget (e.g., whether button was clicked)."""
@@ -529,12 +564,18 @@ class TranslationManager:
         elif property_name == "text":
             if hasattr(widget, "set_text"):
                 widget.set_text(value)
+        elif property_name == "tooltip_text":
+            if hasattr(widget, "set_tooltip_text"):
+                widget.set_tooltip_text(value)
+        elif property_name == "placeholder_text":
+            if hasattr(widget, "set_placeholder_text"):
+                widget.set_placeholder_text(value)
         else:
             # Try generic property setting
             try:
                 widget.set_property(property_name, value)
             except Exception as e:
-                logger.debug("Warning: Could not set property ...: ...", "TranslationManager")
+                logger.debug(f"Warning: Could not set property '{property_name}' on {widget.__class__.__name__}: {e}", "TranslationManager")
 
     def get_translatable_widgets(self) -> List[Dict[str, Any]]:
         """Get list of all registered translatable widgets."""
