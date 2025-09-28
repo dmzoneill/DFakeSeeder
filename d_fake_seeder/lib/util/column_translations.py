@@ -145,13 +145,18 @@ class ColumnTranslations:
         """
         _ = cls._get_translation_function()
         return {
-            "ip": _("IP Address"),
-            "port": _("Port"),
-            "connection_time": _("Connected"),
-            "torrent_hash": _("Torrent"),
-            "status": _("Status"),
-            "bytes_received": _("Received"),
-            "bytes_sent": _("Sent"),
+            "address": _("address"),
+            "status": _("status"),
+            "client": _("client"),
+            "connection_time": _("connection_time"),
+            "handshake_complete": _("handshake_complete"),
+            "peer_interested": _("peer_interested"),
+            "am_choking": _("am_choking"),
+            "bytes_uploaded": _("bytes_uploaded"),
+            "upload_rate": _("upload_rate"),
+            "requests_received": _("requests_received"),
+            "pieces_sent": _("pieces_sent"),
+            "failure_reason": _("failure_reason"),
         }
 
     @classmethod
@@ -161,13 +166,18 @@ class ColumnTranslations:
         """
         _ = cls._get_translation_function()
         return {
-            "ip": _("IP Address"),
-            "port": _("Port"),
-            "connection_time": _("Connected"),
-            "torrent_hash": _("Torrent"),
-            "status": _("Status"),
-            "bytes_received": _("Received"),
-            "bytes_sent": _("Sent"),
+            "address": _("address"),
+            "status": _("status"),
+            "client": _("client"),
+            "connection_time": _("connection_time"),
+            "handshake_complete": _("handshake_complete"),
+            "am_interested": _("am_interested"),
+            "peer_choking": _("peer_choking"),
+            "bytes_downloaded": _("bytes_downloaded"),
+            "download_rate": _("download_rate"),
+            "requests_sent": _("requests_sent"),
+            "pieces_received": _("pieces_received"),
+            "failure_reason": _("failure_reason"),
         }
 
     @classmethod
