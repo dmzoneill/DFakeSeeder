@@ -130,7 +130,7 @@ class Torrent(GObject.GObject):
                     GLib.idle_add(self.update_torrent_callback)
                 if ticker == self.settings.tickspeed:
                     ticker = 0.0
-                ticker += 0.5
+                ticker += 0.5  # PyPy optimized: using 0.5s intervals
                 time.sleep(0.5)
 
         except Exception as e:

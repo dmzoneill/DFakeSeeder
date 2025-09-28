@@ -10,7 +10,7 @@ from lib.settings import Settings
 
 class BaseSeeder:
     tracker_semaphore = threading.Semaphore(Settings.get_instance().concurrent_http_connections)
-    peer_clients = {}
+    peer_clients: dict[str, str] = {}
 
     # Common functionality goes here
     def __init__(self, torrent):

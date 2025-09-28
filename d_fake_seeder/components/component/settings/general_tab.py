@@ -444,19 +444,34 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
     def _handle_settings_translation(self, new_language):
         """Handle translation for the settings dialog directly (not via model signal)."""
-        logger.debug("===== _handle_settings_translation() CALLED =====", "GeneralTab")
-        logger.debug("New language:", "GeneralTab")
         try:
-            # DON'T repopulate the language dropdown - it doesn't need translation and
-            # manipulating the signal could break subsequent language changes
-            logger.debug("Skipping language dropdown repopulation to preserve signal", "GeneralTab")
-            # Refresh all other dropdowns with new translations
-            logger.debug("About to translate common dropdowns...", "GeneralTab")
+            self.logger.info(f"_handle_settings_translation() called with language: {new_language}")
+
+            # First, handle GeneralTab's own dropdowns
             self.translate_common_dropdowns()
-            logger.debug("Common dropdowns translated", "GeneralTab")
-            logger.debug("Settings dialog translation completed successfully", "GeneralTab")
+
+            # Then handle other tabs
+            if hasattr(self, "settings_dialog") and hasattr(self.settings_dialog, "tabs"):
+                # Use a direct approach: call translate_all_dropdowns() on each tab that has it
+                for i, tab in enumerate(self.settings_dialog.tabs):
+                    if hasattr(tab, "tab_name") and tab.tab_name != "General":
+                        # Try direct dropdown translation instead of update_view
+                        if hasattr(tab, "translate_all_dropdowns"):
+                            try:
+                                tab.translate_all_dropdowns()
+                                self.logger.debug(f"Updated {tab.tab_name} dropdowns via translate_all_dropdowns()")
+                            except Exception as e:
+                                self.logger.error(f"Error updating {tab.tab_name} via translate_all_dropdowns: {e}")
+                        elif hasattr(tab, "update_view"):
+                            try:
+                                # Use the same call pattern as SettingsDialog.__init__
+                                tab.update_view(self.model, None, None)
+                                self.logger.debug(f"Updated {tab.tab_name} dropdowns via update_view()")
+                            except Exception as e:
+                                self.logger.error(f"Error updating {tab.tab_name} via update_view: {e}")
+
         except Exception as e:
-            logger.error(f"Error handling settings dialog translation: {e}", "GeneralTab", exc_info=True)
+            self.logger.error(f"Error handling settings dialog translation: {e}", exc_info=True)
 
     # REMOVED: on_model_language_changed() - settings dialog should not listen to model language changes
     # This was causing infinite loops. Settings dialog handles its own translation directly.

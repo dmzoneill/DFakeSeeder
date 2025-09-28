@@ -13,12 +13,7 @@ from gi.repository import Gtk  # noqa: E402
 
 from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import KeyboardShortcutMixin  # noqa: E402
-from .settings_mixins import (  # noqa: E402
-    NotificationMixin,
-    TranslationMixin,
-    UtilityMixin,
-    ValidationMixin,
-)
+from .settings_mixins import NotificationMixin, TranslationMixin, UtilityMixin, ValidationMixin  # noqa: E402
 
 
 class AdvancedTab(

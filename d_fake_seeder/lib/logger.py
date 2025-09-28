@@ -2,7 +2,7 @@ import functools
 import logging
 import sys
 import time
-from typing import Dict
+from typing import Dict, Optional
 
 # Try to import systemd journal support
 try:
@@ -36,7 +36,7 @@ class PerformanceLogger:
         self._timers: Dict[str, float] = {}
         self._operation_stack: list = []
 
-    def timing_info(self, message: str, class_name: str = None, operation_time_ms: float = None):
+    def timing_info(self, message: str, class_name: Optional[str] = None, operation_time_ms: Optional[float] = None):
         """Log with timing information similar to the old print statements."""
         extra = {}
         if class_name:
@@ -47,7 +47,7 @@ class PerformanceLogger:
 
         self._logger.info(message, extra=extra)
 
-    def timing_debug(self, message: str, class_name: str = None, operation_time_ms: float = None):
+    def timing_debug(self, message: str, class_name: Optional[str] = None, operation_time_ms: Optional[float] = None):
         """Debug level timing information."""
         extra = {}
         if class_name:
@@ -64,7 +64,9 @@ class PerformanceLogger:
         self._timers[operation_name] = start_time
         return start_time
 
-    def end_timer(self, operation_name: str, message: str = None, class_name: str = None, level: str = "info") -> float:
+    def end_timer(
+        self, operation_name: str, message: Optional[str] = None, class_name: Optional[str] = None, level: str = "info"
+    ) -> float:
         """End a named timer and log the duration."""
         if operation_name not in self._timers:
             self._logger.warning(f"Timer '{operation_name}' was not started")
@@ -85,11 +87,11 @@ class PerformanceLogger:
 
         return duration_ms
 
-    def operation_context(self, operation_name: str, class_name: str = None):
+    def operation_context(self, operation_name: str, class_name: Optional[str] = None):
         """Context manager for timing operations."""
         return OperationTimer(self, operation_name, class_name)
 
-    def performance_info(self, message: str, class_name: str = None, **metrics):
+    def performance_info(self, message: str, class_name: Optional[str] = None, **metrics):
         """Log performance information with custom metrics."""
         extra = {"class_name": class_name} if class_name else {}
         extra.update(metrics)
@@ -103,7 +105,7 @@ class PerformanceLogger:
 class OperationTimer:
     """Context manager for timing operations."""
 
-    def __init__(self, perf_logger: PerformanceLogger, operation_name: str, class_name: str = None):
+    def __init__(self, perf_logger: PerformanceLogger, operation_name: str, class_name: Optional[str] = None):
         self.perf_logger = perf_logger
         self.operation_name = operation_name
         self.class_name = class_name
@@ -117,7 +119,7 @@ class OperationTimer:
         self.perf_logger.end_timer(self.operation_name, class_name=self.class_name)
 
 
-def timing_decorator(operation_name: str = None, level: str = "debug"):
+def timing_decorator(operation_name: Optional[str] = None, level: str = "debug"):
     """Decorator to automatically time function execution."""
 
     def decorator(func):
@@ -234,7 +236,7 @@ def setup_logger():
             # Delegate all other attributes to the underlying logger
             return getattr(self._logger, name)
 
-        def debug(self, message: str, class_name: str = None, **kwargs):
+        def debug(self, message: str, class_name: Optional[str] = None, **kwargs):
             """Enhanced debug with automatic class name."""
             extra = kwargs.get("extra", {})
             if class_name:
@@ -242,7 +244,7 @@ def setup_logger():
             kwargs["extra"] = extra
             return self._logger.debug(message, **kwargs)
 
-        def info(self, message: str, class_name: str = None, **kwargs):
+        def info(self, message: str, class_name: Optional[str] = None, **kwargs):
             """Enhanced info with automatic class name."""
             extra = kwargs.get("extra", {})
             if class_name:
@@ -266,12 +268,12 @@ def get_performance_logger():
     return logger.performance if hasattr(logger, "performance") else None
 
 
-def debug(message: str, class_name: str = None, **kwargs):
+def debug(message: str, class_name: Optional[str] = None, **kwargs):
     """Global convenience function for debug logs with class name."""
     logger.debug(message, class_name, **kwargs)
 
 
-def info(message: str, class_name: str = None, **kwargs):
+def info(message: str, class_name: Optional[str] = None, **kwargs):
     """Global convenience function for info logs with class name."""
     logger.info(message, class_name, **kwargs)
 

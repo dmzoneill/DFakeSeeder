@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 from threading import Lock
+from typing import Any
 
 from gi.repository import GObject
 from lib.handlers.FileModifiedEventHandler import FileModifiedEventHandler
@@ -10,7 +11,7 @@ from watchdog.observers import Observer
 
 
 class Settings(GObject.Object):
-    _settings = {}
+    _settings: dict[str, Any] = {}
     _instance = None  # Singleton instance
     _lock = Lock()  # Lock for thread safety
 

@@ -11,11 +11,7 @@ from domain.app_settings import AppSettings
 from lib.logger import logger
 
 # Import tab configuration system
-from lib.util.tab_config import (
-    get_essential_tab_classes,
-    get_lazy_load_tab_classes,
-    get_torrent_details_tab_classes,
-)
+from lib.util.tab_config import get_essential_tab_classes, get_lazy_load_tab_classes, get_torrent_details_tab_classes
 
 from .details_tab import DetailsTab
 from .files_tab import FilesTab

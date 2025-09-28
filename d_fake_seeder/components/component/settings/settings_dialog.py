@@ -152,6 +152,10 @@ class SettingsDialog:
                         tab = tab_class(self.builder, self.app_settings, self.app)
                     else:
                         tab = tab_class(self.builder, self.app_settings)
+
+                    # Set back-reference to settings dialog for cross-tab communication
+                    tab.settings_dialog = self
+
                     self.tabs.append(tab)
                     logger.debug("Successfully initialized", "SettingsDialog")
                     # logger.debug(f"Initialized {tab.tab_name} tab")  # Temporarily commented out - causes hang
