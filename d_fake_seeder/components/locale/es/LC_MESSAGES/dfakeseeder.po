@@ -1485,7 +1485,7 @@ msgid "TCP fallback"
 msgstr "Respaldo TCP"
 
 msgid "TCP keepalive"
-msgstr "TCP keepalive"
+msgstr "Mantener conexión TCP"
 
 msgid "Theme:"
 msgstr "Tema:"
@@ -1721,8 +1721,17 @@ msgstr "Miércoles"
 msgid "active"
 msgstr "Activo"
 
+msgid "address"
+msgstr "Dirección"
+
 msgid "admin"
 msgstr "admin"
+
+msgid "am_choking"
+msgstr "Estoy Bloqueando"
+
+msgid "am_interested"
+msgstr "Estoy Interesado"
 
 msgid "announce_interval"
 msgstr "Intervalo de Anuncio"
@@ -1730,17 +1739,38 @@ msgstr "Intervalo de Anuncio"
 msgid "bytes"
 msgstr "bytes"
 
+msgid "bytes_downloaded"
+msgstr "Bytes Descargados"
+
+msgid "bytes_uploaded"
+msgstr "Bytes Subidos"
+
 msgid "class_name"
 msgstr "Nombre de Clase"
 
+msgid "client"
+msgstr "Cliente"
+
+msgid "connection_time"
+msgstr "Tiempo de Conexión"
+
+msgid "download_rate"
+msgstr "Velocidad de Descarga"
+
 msgid "download_speed"
 msgstr "Velocidad de Descarga"
+
+msgid "failure_reason"
+msgstr "Razón del Fallo"
 
 msgid "filepath"
 msgstr "Ruta del Archivo"
 
 msgid "files_tab"
 msgstr "Pestaña Archivos"
+
+msgid "handshake_complete"
+msgstr "Saludo Completo"
 
 msgid "id"
 msgstr "#"
@@ -1766,8 +1796,20 @@ msgstr "open-menu-symbolic"
 msgid "options_tab"
 msgstr "Pestaña Opciones"
 
+msgid "peer_choking"
+msgstr "Peer Bloqueando"
+
+msgid "peer_interested"
+msgstr "Peer Interesado"
+
 msgid "peers_tab"
 msgstr "Pestaña Pares"
+
+msgid "pieces_received"
+msgstr "Piezas Recibidas"
+
+msgid "pieces_sent"
+msgstr "Piezas Enviadas"
 
 msgid "progress"
 msgstr "Progreso"
@@ -1784,6 +1826,12 @@ msgstr "rTorrent"
 msgid "rTorrent/0.9.6"
 msgstr "rTorrent versión 0.9.6"
 
+msgid "requests_received"
+msgstr "Solicitudes Recibidas"
+
+msgid "requests_sent"
+msgstr "Solicitudes Enviadas"
+
 msgid "seconds"
 msgstr "segundos"
 
@@ -1798,6 +1846,9 @@ msgstr "Subido"
 
 msgid "small_torrent_limit"
 msgstr "Límite de Torrent Pequeño"
+
+msgid "status"
+msgstr "Estado"
 
 msgid "threshold"
 msgstr "Umbral"
@@ -1816,6 +1867,9 @@ msgstr "Pestaña Rastreadores"
 
 msgid "uTorrent/3.5.5"
 msgstr "µTorrent versión 3.5.5"
+
+msgid "upload_rate"
+msgstr "Velocidad de Subida"
 
 msgid "upload_speed"
 msgstr "Velocidad de Subida"

@@ -1394,6 +1394,12 @@ msgstr "Verzonden"
 msgid "Server:"
 msgstr "Server:"
 
+msgid "Session Downloaded"
+msgstr "会话下载"
+
+msgid "Session Uploaded"
+msgstr "会话上传"
+
 msgid "Session timeout (min):"
 msgstr "Sessie timeout (min):"
 
@@ -1715,8 +1721,17 @@ msgstr "Woensdag"
 msgid "active"
 msgstr "Actief"
 
+msgid "address"
+msgstr "地址"
+
 msgid "admin"
 msgstr "admin"
+
+msgid "am_choking"
+msgstr "Ik blokkeer"
+
+msgid "am_interested"
+msgstr "Ik ben geïnteresseerd"
 
 msgid "announce_interval"
 msgstr "Aankondigingsinterval"
@@ -1724,17 +1739,38 @@ msgstr "Aankondigingsinterval"
 msgid "bytes"
 msgstr "bytes"
 
+msgid "bytes_downloaded"
+msgstr "字节已下载"
+
+msgid "bytes_uploaded"
+msgstr "字节已上传"
+
 msgid "class_name"
 msgstr "klassenaam"
 
+msgid "client"
+msgstr "客户端"
+
+msgid "connection_time"
+msgstr "连接时间"
+
+msgid "download_rate"
+msgstr "Downloadsnelheid"
+
 msgid "download_speed"
 msgstr "Downloadsnelheid"
+
+msgid "failure_reason"
+msgstr "Faalreden"
 
 msgid "filepath"
 msgstr "Bestandspad"
 
 msgid "files_tab"
 msgstr "bestanden_tab"
+
+msgid "handshake_complete"
+msgstr "Handdruk voltooid"
 
 msgid "id"
 msgstr "#"
@@ -1760,8 +1796,20 @@ msgstr "open-menu-symbolic"
 msgid "options_tab"
 msgstr "opties_tab"
 
+msgid "peer_choking"
+msgstr "Peer blokkeert"
+
+msgid "peer_interested"
+msgstr "Peer geïnteresseerd"
+
 msgid "peers_tab"
 msgstr "peers_tab"
+
+msgid "pieces_received"
+msgstr "Ontvangen stukken"
+
+msgid "pieces_sent"
+msgstr "Verzonden stukken"
 
 msgid "progress"
 msgstr "Voortgang"
@@ -1778,6 +1826,12 @@ msgstr "rTorrent"
 msgid "rTorrent/0.9.6"
 msgstr "rTorrent/0.9.6"
 
+msgid "requests_received"
+msgstr "Ontvangen verzoeken"
+
+msgid "requests_sent"
+msgstr "Verzonden verzoeken"
+
 msgid "seconds"
 msgstr "seconden"
 
@@ -1792,6 +1846,9 @@ msgstr "Geüpload"
 
 msgid "small_torrent_limit"
 msgstr "Klein Torrent Limiet"
+
+msgid "status"
+msgstr "状态"
 
 msgid "threshold"
 msgstr "Drempel"
@@ -1810,6 +1867,9 @@ msgstr "trackers_tab"
 
 msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
+
+msgid "upload_rate"
+msgstr "Upload Rate"
 
 msgid "upload_speed"
 msgstr "Uploadsnelheid"

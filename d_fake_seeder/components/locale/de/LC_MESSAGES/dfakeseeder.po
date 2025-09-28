@@ -507,7 +507,7 @@ msgid "ERROR"
 msgstr "FEHLER"
 
 msgid "ETA"
-msgstr "ETA"
+msgstr "Verbleibende Zeit"
 
 msgid "Enable CSRF protection"
 msgstr "CSRF-Schutz aktivieren"
@@ -1721,8 +1721,17 @@ msgstr "Mittwoch"
 msgid "active"
 msgstr "Aktiv"
 
+msgid "address"
+msgstr "Adresse"
+
 msgid "admin"
 msgstr "admin"
+
+msgid "am_choking"
+msgstr "Ich Blockiere"
+
+msgid "am_interested"
+msgstr "Ich Bin Interessiert"
 
 msgid "announce_interval"
 msgstr "Ankündigungsintervall"
@@ -1730,17 +1739,38 @@ msgstr "Ankündigungsintervall"
 msgid "bytes"
 msgstr "Bytes"
 
+msgid "bytes_downloaded"
+msgstr "Bytes Heruntergeladen"
+
+msgid "bytes_uploaded"
+msgstr "Bytes Hochgeladen"
+
 msgid "class_name"
 msgstr "Klassenname"
 
+msgid "client"
+msgstr "Klient"
+
+msgid "connection_time"
+msgstr "Verbindungszeit"
+
+msgid "download_rate"
+msgstr "Download-Rate"
+
 msgid "download_speed"
 msgstr "Download-Geschwindigkeit"
+
+msgid "failure_reason"
+msgstr "Fehlergrund"
 
 msgid "filepath"
 msgstr "Dateipfad"
 
 msgid "files_tab"
 msgstr "Dateien-Tab"
+
+msgid "handshake_complete"
+msgstr "Handshake Vollständig"
 
 msgid "id"
 msgstr "#"
@@ -1766,8 +1796,20 @@ msgstr "open-menu-symbolic"
 msgid "options_tab"
 msgstr "Optionen-Tab"
 
+msgid "peer_choking"
+msgstr "Peer Blockiert"
+
+msgid "peer_interested"
+msgstr "Peer Interessiert"
+
 msgid "peers_tab"
 msgstr "Peers-Tab"
+
+msgid "pieces_received"
+msgstr "Teile Empfangen"
+
+msgid "pieces_sent"
+msgstr "Teile Gesendet"
 
 msgid "progress"
 msgstr "Fortschritt"
@@ -1784,6 +1826,12 @@ msgstr "rTorrent"
 msgid "rTorrent/0.9.6"
 msgstr "rTorrent Version 0.9.6"
 
+msgid "requests_received"
+msgstr "Anfragen Empfangen"
+
+msgid "requests_sent"
+msgstr "Anfragen Gesendet"
+
 msgid "seconds"
 msgstr "Sekunden"
 
@@ -1798,6 +1846,9 @@ msgstr "Hochgeladen"
 
 msgid "small_torrent_limit"
 msgstr "Kleines Torrent-Limit"
+
+msgid "status"
+msgstr "Status"
 
 msgid "threshold"
 msgstr "Schwellenwert"
@@ -1816,6 +1867,9 @@ msgstr "Tracker-Tab"
 
 msgid "uTorrent/3.5.5"
 msgstr "µTorrent Version 3.5.5"
+
+msgid "upload_rate"
+msgstr "Upload-Rate"
 
 msgid "upload_speed"
 msgstr "Upload-Geschwindigkeit"

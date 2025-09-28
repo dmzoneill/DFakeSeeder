@@ -1394,6 +1394,12 @@ msgstr "تم الإرسال"
 msgid "Server:"
 msgstr "الخادم:"
 
+msgid "Session Downloaded"
+msgstr "会话下载"
+
+msgid "Session Uploaded"
+msgstr "会话上传"
+
 msgid "Session timeout (min):"
 msgstr "انتهاء مهلة الجلسة (دقيقة):"
 
@@ -1715,8 +1721,17 @@ msgstr "الأربعاء"
 msgid "active"
 msgstr "نشط"
 
+msgid "address"
+msgstr "地址"
+
 msgid "admin"
 msgstr "مدير"
+
+msgid "am_choking"
+msgstr "أخنق"
+
+msgid "am_interested"
+msgstr "أنا مهتم"
 
 msgid "announce_interval"
 msgstr "فترة الإعلان"
@@ -1724,17 +1739,38 @@ msgstr "فترة الإعلان"
 msgid "bytes"
 msgstr "بايت"
 
+msgid "bytes_downloaded"
+msgstr "字节已下载"
+
+msgid "bytes_uploaded"
+msgstr "字节已上传"
+
 msgid "class_name"
 msgstr "اسم_الفئة"
 
+msgid "client"
+msgstr "客户端"
+
+msgid "connection_time"
+msgstr "连接时间"
+
+msgid "download_rate"
+msgstr "معدل التنزيل"
+
 msgid "download_speed"
 msgstr "سرعة التحميل"
+
+msgid "failure_reason"
+msgstr "سبب الفشل"
 
 msgid "filepath"
 msgstr "مسار الملف"
 
 msgid "files_tab"
 msgstr "تبويب_الملفات"
+
+msgid "handshake_complete"
+msgstr "اكتملت المصافحة"
 
 msgid "id"
 msgstr "#"
@@ -1760,8 +1796,20 @@ msgstr "open-menu-symbolic"
 msgid "options_tab"
 msgstr "تبويب_الخيارات"
 
+msgid "peer_choking"
+msgstr "النظير يخنق"
+
+msgid "peer_interested"
+msgstr "النظير مهتم"
+
 msgid "peers_tab"
 msgstr "تبويب_الأقران"
+
+msgid "pieces_received"
+msgstr "القطع المستلمة"
+
+msgid "pieces_sent"
+msgstr "القطع المرسلة"
 
 msgid "progress"
 msgstr "التقدم"
@@ -1778,6 +1826,12 @@ msgstr "rTorrent"
 msgid "rTorrent/0.9.6"
 msgstr "rTorrent/0.9.6"
 
+msgid "requests_received"
+msgstr "الطلبات المستلمة"
+
+msgid "requests_sent"
+msgstr "الطلبات المرسلة"
+
 msgid "seconds"
 msgstr "ثوان"
 
@@ -1792,6 +1846,9 @@ msgstr "تم رفعه"
 
 msgid "small_torrent_limit"
 msgstr "حد التورنت الصغير"
+
+msgid "status"
+msgstr "状态"
 
 msgid "threshold"
 msgstr "العتبة"
@@ -1810,6 +1867,9 @@ msgstr "تبويب_المتتبعات"
 
 msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
+
+msgid "upload_rate"
+msgstr "Upload Rate"
 
 msgid "upload_speed"
 msgstr "سرعة الرفع"

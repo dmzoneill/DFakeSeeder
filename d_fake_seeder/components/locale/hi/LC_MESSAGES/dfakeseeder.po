@@ -1394,6 +1394,12 @@ msgstr "भेजा गया"
 msgid "Server:"
 msgstr "सर्वर:"
 
+msgid "Session Downloaded"
+msgstr "会话下载"
+
+msgid "Session Uploaded"
+msgstr "会话上传"
+
 msgid "Session timeout (min):"
 msgstr "सत्र टाइमआउट (मिनट):"
 
@@ -1715,8 +1721,17 @@ msgstr "बुधवार"
 msgid "active"
 msgstr "सक्रिय"
 
+msgid "address"
+msgstr "地址"
+
 msgid "admin"
 msgstr "एडमिन"
+
+msgid "am_choking"
+msgstr "मैं चोक कर रहा हूँ"
+
+msgid "am_interested"
+msgstr "मैं रुचि रखता हूँ"
 
 msgid "announce_interval"
 msgstr "घोषणा अंतराल"
@@ -1724,17 +1739,38 @@ msgstr "घोषणा अंतराल"
 msgid "bytes"
 msgstr "बाइट्स"
 
+msgid "bytes_downloaded"
+msgstr "字节已下载"
+
+msgid "bytes_uploaded"
+msgstr "字节已上传"
+
 msgid "class_name"
 msgstr "क्लास_नाम"
 
+msgid "client"
+msgstr "客户端"
+
+msgid "connection_time"
+msgstr "连接时间"
+
+msgid "download_rate"
+msgstr "डाउनलोड दर"
+
 msgid "download_speed"
 msgstr "डाउनलोड गति"
+
+msgid "failure_reason"
+msgstr "विफलता का कारण"
 
 msgid "filepath"
 msgstr "फ़ाइल पथ"
 
 msgid "files_tab"
 msgstr "फाइल्स_टैब"
+
+msgid "handshake_complete"
+msgstr "हैंडशेक पूरा"
 
 msgid "id"
 msgstr "#"
@@ -1760,8 +1796,20 @@ msgstr "open-menu-symbolic"
 msgid "options_tab"
 msgstr "ऑप्शन्स_टैब"
 
+msgid "peer_choking"
+msgstr "पीयर चोक कर रहा है"
+
+msgid "peer_interested"
+msgstr "पीयर रुचि रखता है"
+
 msgid "peers_tab"
 msgstr "पीयर्स_टैब"
+
+msgid "pieces_received"
+msgstr "प्राप्त टुकड़े"
+
+msgid "pieces_sent"
+msgstr "भेजे गए टुकड़े"
 
 msgid "progress"
 msgstr "प्रगति"
@@ -1778,6 +1826,12 @@ msgstr "rTorrent"
 msgid "rTorrent/0.9.6"
 msgstr "rTorrent/0.9.6"
 
+msgid "requests_received"
+msgstr "प्राप्त अनुरोध"
+
+msgid "requests_sent"
+msgstr "भेजे गए अनुरोध"
+
 msgid "seconds"
 msgstr "सेकंड"
 
@@ -1792,6 +1846,9 @@ msgstr "अपलोड किया गया"
 
 msgid "small_torrent_limit"
 msgstr "छोटी टॉरेंट सीमा"
+
+msgid "status"
+msgstr "状态"
 
 msgid "threshold"
 msgstr "सीमा"
@@ -1810,6 +1867,9 @@ msgstr "ट्रैकर्स_टैब"
 
 msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
+
+msgid "upload_rate"
+msgstr "Upload Rate"
 
 msgid "upload_speed"
 msgstr "अपलोड गति"

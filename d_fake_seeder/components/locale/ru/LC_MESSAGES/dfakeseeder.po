@@ -225,7 +225,7 @@ msgid "Announcement Interval:"
 msgstr "Интервал объявлений:"
 
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "Арабский"
 
 msgid "Auto-bootstrap DHT"
 msgstr "Авто-bootstrap DHT"
@@ -498,7 +498,7 @@ msgid "Dropout probability:"
 msgstr "Вероятность отключения:"
 
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "Голландский"
 
 msgid "Dynamic profile switching"
 msgstr "Динамическое переключение профиля"
@@ -864,7 +864,7 @@ msgid "Keep alive interval for connections (seconds)"
 msgstr "Интервал keep alive для соединений (секунды)"
 
 msgid "Korean"
-msgstr "Korean"
+msgstr "Корейский"
 
 msgid "Label"
 msgstr "Метка"
@@ -1143,7 +1143,7 @@ msgid "Pieces Received"
 msgstr "Получено частей"
 
 msgid "Polish"
-msgstr "Polish"
+msgstr "Польский"
 
 msgid "Port"
 msgstr "Порт"
@@ -1394,6 +1394,12 @@ msgstr "Отправлено"
 msgid "Server:"
 msgstr "Сервер:"
 
+msgid "Session Downloaded"
+msgstr "Загружено в сессии"
+
+msgid "Session Uploaded"
+msgstr "Отправлено в сессии"
+
 msgid "Session timeout (min):"
 msgstr "Таймаут сессии (мин):"
 
@@ -1470,7 +1476,7 @@ msgid "Sunday"
 msgstr "Воскресенье"
 
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "Шведский"
 
 msgid "Synthetic Peer Count:"
 msgstr "Количество синтетических пиров:"
@@ -1715,8 +1721,17 @@ msgstr "Среда"
 msgid "active"
 msgstr "Активный"
 
+msgid "address"
+msgstr "Адрес"
+
 msgid "admin"
 msgstr "admin"
+
+msgid "am_choking"
+msgstr "Я блокирую"
+
+msgid "am_interested"
+msgstr "Я заинтересован"
 
 msgid "announce_interval"
 msgstr "Интервал Анонса"
@@ -1724,17 +1739,38 @@ msgstr "Интервал Анонса"
 msgid "bytes"
 msgstr "байты"
 
+msgid "bytes_downloaded"
+msgstr "Байт загружено"
+
+msgid "bytes_uploaded"
+msgstr "Байт отправлено"
+
 msgid "class_name"
 msgstr "Название класса"
 
+msgid "client"
+msgstr "Клиент"
+
+msgid "connection_time"
+msgstr "Время соединения"
+
+msgid "download_rate"
+msgstr "Скорость загрузки"
+
 msgid "download_speed"
 msgstr "Скорость Загрузки"
+
+msgid "failure_reason"
+msgstr "Причина сбоя"
 
 msgid "filepath"
 msgstr "Путь к Файлу"
 
 msgid "files_tab"
 msgstr "Вкладка файлов"
+
+msgid "handshake_complete"
+msgstr "Рукопожатие завершено"
 
 msgid "id"
 msgstr "#"
@@ -1760,8 +1796,20 @@ msgstr "open-menu-symbolic"
 msgid "options_tab"
 msgstr "Вкладка настроек"
 
+msgid "peer_choking"
+msgstr "Пир блокирует"
+
+msgid "peer_interested"
+msgstr "Пир заинтересован"
+
 msgid "peers_tab"
 msgstr "Вкладка пиров"
+
+msgid "pieces_received"
+msgstr "Частей получено"
+
+msgid "pieces_sent"
+msgstr "Частей отправлено"
 
 msgid "progress"
 msgstr "Прогресс"
@@ -1778,6 +1826,12 @@ msgstr "rTorrent"
 msgid "rTorrent/0.9.6"
 msgstr "rTorrent/0.9.6"
 
+msgid "requests_received"
+msgstr "Запросов получено"
+
+msgid "requests_sent"
+msgstr "Запросов отправлено"
+
 msgid "seconds"
 msgstr "секунды"
 
@@ -1792,6 +1846,9 @@ msgstr "Отправлено"
 
 msgid "small_torrent_limit"
 msgstr "Лимит Малого Торрента"
+
+msgid "status"
+msgstr "Статус"
 
 msgid "threshold"
 msgstr "Порог"
@@ -1810,6 +1867,9 @@ msgstr "Вкладка трекеров"
 
 msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
+
+msgid "upload_rate"
+msgstr "Скорость отдачи"
 
 msgid "upload_speed"
 msgstr "Скорость Отдачи"

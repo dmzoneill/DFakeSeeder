@@ -1394,6 +1394,12 @@ msgstr "Wysłano"
 msgid "Server:"
 msgstr "Serwer:"
 
+msgid "Session Downloaded"
+msgstr "会话下载"
+
+msgid "Session Uploaded"
+msgstr "会话上传"
+
 msgid "Session timeout (min):"
 msgstr "Timeout sesji (min):"
 
@@ -1715,8 +1721,17 @@ msgstr "Środa"
 msgid "active"
 msgstr "Aktywny"
 
+msgid "address"
+msgstr "地址"
+
 msgid "admin"
 msgstr "admin"
+
+msgid "am_choking"
+msgstr "Blokuję"
+
+msgid "am_interested"
+msgstr "Jestem zainteresowany"
 
 msgid "announce_interval"
 msgstr "Interwał Ogłoszenia"
@@ -1724,17 +1739,38 @@ msgstr "Interwał Ogłoszenia"
 msgid "bytes"
 msgstr "bajty"
 
+msgid "bytes_downloaded"
+msgstr "字节已下载"
+
+msgid "bytes_uploaded"
+msgstr "字节已上传"
+
 msgid "class_name"
 msgstr "nazwa_klasy"
 
+msgid "client"
+msgstr "客户端"
+
+msgid "connection_time"
+msgstr "连接时间"
+
+msgid "download_rate"
+msgstr "Prędkość pobierania"
+
 msgid "download_speed"
 msgstr "Prędkość Pobierania"
+
+msgid "failure_reason"
+msgstr "Przyczyna niepowodzenia"
 
 msgid "filepath"
 msgstr "Ścieżka Pliku"
 
 msgid "files_tab"
 msgstr "zakładka_plików"
+
+msgid "handshake_complete"
+msgstr "Uścisk dłoni zakończony"
 
 msgid "id"
 msgstr "#"
@@ -1760,8 +1796,20 @@ msgstr "open-menu-symbolic"
 msgid "options_tab"
 msgstr "zakładka_opcji"
 
+msgid "peer_choking"
+msgstr "Peer blokuje"
+
+msgid "peer_interested"
+msgstr "Peer zainteresowany"
+
 msgid "peers_tab"
 msgstr "zakładka_peerów"
+
+msgid "pieces_received"
+msgstr "Otrzymane części"
+
+msgid "pieces_sent"
+msgstr "Wysłane części"
 
 msgid "progress"
 msgstr "Postęp"
@@ -1778,6 +1826,12 @@ msgstr "rTorrent"
 msgid "rTorrent/0.9.6"
 msgstr "rTorrent/0.9.6"
 
+msgid "requests_received"
+msgstr "Otrzymane żądania"
+
+msgid "requests_sent"
+msgstr "Wysłane żądania"
+
 msgid "seconds"
 msgstr "sekundy"
 
@@ -1792,6 +1846,9 @@ msgstr "Wysłano"
 
 msgid "small_torrent_limit"
 msgstr "Limit Małego Torrenta"
+
+msgid "status"
+msgstr "状态"
 
 msgid "threshold"
 msgstr "Próg"
@@ -1810,6 +1867,9 @@ msgstr "zakładka_trackerów"
 
 msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
+
+msgid "upload_rate"
+msgstr "Upload Rate"
 
 msgid "upload_speed"
 msgstr "Prędkość Wysyłania"
