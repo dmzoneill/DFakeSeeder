@@ -1,0 +1,1837 @@
+# Korean translation for DFakeSeeder
+# Copyright (C) 2024 DFakeSeeder Contributors
+# This file is distributed under the same license as the DFakeSeeder package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DFakeSeeder 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"POT-Creation-Date: 2025-09-18 17:51+0100\n"
+"PO-Revision-Date: 2024-09-18 18:30+0100\n"
+"Last-Translator: Claude <noreply@anthropic.com>\n"
+"Language-Team: Korean <ko@li.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "#"
+msgstr "#"
+
+msgid "(0 = unlimited)"
+msgstr "(0 = 무제한)"
+
+msgid "0 / 250"
+msgstr "0 / 250"
+
+msgid "127.0.0.1"
+msgstr "127.0.0.1"
+
+msgid ":"
+msgstr ":"
+
+msgid "<b>Advanced Extension Settings</b>"
+msgstr "<b>고급 확장 설정</b>"
+
+msgid "<b>Aggressive Profile Settings</b>"
+msgstr "<b>공격적 프로필 설정</b>"
+
+msgid "<b>Alternative Speed Limits</b>"
+msgstr "<b>대체 속도 제한</b>"
+
+msgid "<b>Application Behavior</b>"
+msgstr "<b>애플리케이션 동작</b>"
+
+msgid "<b>Authentication</b>"
+msgstr "<b>인증</b>"
+
+msgid "<b>Balanced Profile Settings</b>"
+msgstr "<b>균형 프로필 설정</b>"
+
+msgid "<b>Bootstrap Settings</b>"
+msgstr "<b>부트스트랩 설정</b>"
+
+msgid "<b>Client Behavior Engine</b>"
+msgstr "<b>클라이언트 동작 엔진</b>"
+
+msgid "<b>Client Identification</b>"
+msgstr "<b>클라이언트 식별</b>"
+
+msgid "<b>Configuration Management</b>"
+msgstr "<b>구성 관리</b>"
+
+msgid "<b>Connection Limits</b>"
+msgstr "<b>연결 제한</b>"
+
+msgid "<b>Connection Settings</b>"
+msgstr "<b>연결 설정</b>"
+
+msgid "<b>Conservative Profile Settings</b>"
+msgstr "<b>보수적 프로필 설정</b>"
+
+msgid "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT(분산 해시 테이블)</b>"
+
+msgid "<b>Encryption</b>"
+msgstr "<b>암호화</b>"
+
+msgid "<b>Expert Settings</b>"
+msgstr "<b>전문가 설정</b>"
+
+msgid "<b>Extension Protocol (BEP-010)</b>"
+msgstr "<b>확장 프로토콜 (BEP-010)</b>"
+
+msgid "<b>Global Speed Limits</b>"
+msgstr "<b>전역 속도 제한</b>"
+
+msgid "<b>Interface</b>"
+msgstr "<b>인터페이스</b>"
+
+msgid "<b>Keyboard Shortcuts</b>"
+msgstr "<b>키보드 단축키</b>"
+
+msgid "<b>Listening Port</b>"
+msgstr "<b>리스닝 포트</b>"
+
+msgid "<b>Logging</b>"
+msgstr "<b>로깅</b>"
+
+msgid "<b>Metadata Extension Settings</b>"
+msgstr "<b>메타데이터 확장 설정</b>"
+
+msgid "<b>Network Settings</b>"
+msgstr "<b>네트워크 설정</b>"
+
+msgid "<b>Node Configuration</b>"
+msgstr "<b>노드 구성</b>"
+
+msgid "<b>Peer Behavior Settings</b>"
+msgstr "<b>피어 동작 설정</b>"
+
+msgid "<b>Peer Exchange (PEX) Settings</b>"
+msgstr "<b>피어 교환(PEX) 설정</b>"
+
+msgid "<b>Peer Protocol Timeouts</b>"
+msgstr "<b>피어 프로토콜 타임아웃</b>"
+
+msgid "<b>Performance</b>"
+msgstr "<b>성능</b>"
+
+msgid "<b>Protocol Extensions</b>"
+msgstr "<b>프로토콜 확장</b>"
+
+msgid "<b>Protocol Features</b>"
+msgstr "<b>프로토콜 기능</b>"
+
+msgid "<b>Proxy Settings</b>"
+msgstr "<b>프록시 설정</b>"
+
+msgid "<b>Security Options</b>"
+msgstr "<b>보안 옵션</b>"
+
+msgid "<b>Seeder Protocol Settings</b>"
+msgstr "<b>시더 프로토콜 설정</b>"
+
+msgid "<b>Seeding Profiles</b>"
+msgstr "<b>시딩 프로필</b>"
+
+msgid "<b>Settings Search</b>"
+msgstr "<b>설정 검색</b>"
+
+msgid "<b>Speed Scheduler</b>"
+msgstr "<b>속도 스케줄러</b>"
+
+msgid "<b>Statistics and Security</b>"
+msgstr "<b>통계 및 보안</b>"
+
+msgid "<b>Swarm Intelligence</b>"
+msgstr "<b>스웜 인텔리전스</b>"
+
+msgid "<b>Timing Settings</b>"
+msgstr "<b>타이밍 설정</b>"
+
+msgid "<b>Tracker Announce Settings</b>"
+msgstr "<b>트래커 알림 설정</b>"
+
+msgid "<b>Traffic Pattern Settings</b>"
+msgstr "<b>트래픽 패턴 설정</b>"
+
+msgid "<b>Transport Protocol Settings</b>"
+msgstr "<b>전송 프로토콜 설정</b>"
+
+msgid "<b>Web Interface</b>"
+msgstr "<b>웹 인터페이스</b>"
+
+msgid "About"
+msgstr "정보"
+
+msgid "Active"
+msgstr "활성"
+
+msgid "Active Profile:"
+msgstr "활성 프로필:"
+
+msgid "Adaptation Rate:"
+msgstr "적응 속도:"
+
+msgid "Add"
+msgstr "추가"
+
+msgid "Add torrent"
+msgstr "토렌트 추가"
+
+msgid "Added"
+msgstr "추가됨"
+
+msgid "Advanced"
+msgstr "고급"
+
+msgid "Advanced settings reset to defaults"
+msgstr "고급 설정이 기본값으로 재설정됨"
+
+msgid "Aggressive"
+msgstr "공격적"
+
+msgid "Aggressive profile download speed"
+msgstr "공격적 프로필 다운로드 속도"
+
+msgid "Aggressive profile upload speed (0 = unlimited)"
+msgstr "공격적 프로필 업로드 속도(0 = 무제한)"
+
+msgid "Alt download limit (KB/s):"
+msgstr "대체 다운로드 제한 (KB/s):"
+
+msgid "Alt upload limit (KB/s):"
+msgstr "대체 업로드 제한 (KB/s):"
+
+msgid "Alternative download speed limit in KB/s"
+msgstr "KB/s 단위의 대체 다운로드 속도 제한"
+
+msgid "Alternative upload speed limit in KB/s"
+msgstr "KB/s 단위의 대체 업로드 속도 제한"
+
+msgid "Amount of RAM to use for disk caching"
+msgstr "디스크 캐싱에 사용할 RAM 용량"
+
+msgid "Announce Interval"
+msgstr "공지 간격"
+
+msgid "Announce interval (sec):"
+msgstr "알림 간격 (초):"
+
+msgid "Announcement Interval:"
+msgstr "발표 간격:"
+
+msgid "Arabic"
+msgstr "Arabic"
+
+msgid "Auto-bootstrap DHT"
+msgstr "DHT 자동 부트스트랩"
+
+msgid "Auto-generate node ID"
+msgstr "노드 ID 자동 생성"
+
+msgid "Auto-save settings"
+msgstr "설정 자동 저장"
+
+msgid "Auto-start disabled"
+msgstr "자동 시작 비활성화됨"
+
+msgid "Auto-start enabled"
+msgstr "자동 시작 활성화됨"
+
+msgid "Automatic logout after inactivity (5-1440 minutes)"
+msgstr "비활성 후 자동 로그아웃 (5-1440분)"
+
+msgid "Automatically bootstrap DHT using known nodes"
+msgstr "알려진 노드를 사용하여 DHT 자동 부트스트랩"
+
+msgid "Automatically configure router port forwarding using UPnP/NAT-PMP"
+msgstr "UPnP/NAT-PMP를 사용하여 라우터 포트 포워딩 자동 구성"
+
+msgid "Automatically generate a unique node ID"
+msgstr "고유한 노드 ID 자동 생성"
+
+msgid "Automatically save settings when changed"
+msgstr "변경 시 설정 자동 저장"
+
+msgid "Automatically switch to alternative speeds during specified hours"
+msgstr "지정된 시간 동안 대체 속도로 자동 전환"
+
+msgid "Availability"
+msgstr "가용성"
+
+msgid "Balanced"
+msgstr "균형"
+
+msgid "Balanced profile download speed"
+msgstr "균형 프로필 다운로드 속도"
+
+msgid "Balanced profile upload speed"
+msgstr "균형 프로필 업로드 속도"
+
+msgid "Behavior Variation:"
+msgstr "동작 변동:"
+
+msgid "Behavior analysis probability:"
+msgstr "행동 분석 확률:"
+
+msgid "Behavior randomization"
+msgstr "동작 무작위화"
+
+msgid "BiglyBT"
+msgstr "BiglyBT"
+
+msgid "Bind to localhost only"
+msgstr "로컬호스트에만 바인딩"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "BitTorrent settings reset to defaults"
+msgstr "BitTorrent 설정이 기본값으로 재설정됨"
+
+msgid "BitTorrent/7.10.5"
+msgstr "BitTorrent/7.10.5"
+
+msgid "Bootstrap Nodes (one per line, format: host:port):"
+msgstr "부트스트랩 노드(한 줄에 하나씩, 형식: 호스트:포트):"
+
+msgid "Bootstrap Timeout:"
+msgstr "부트스트랩 타임아웃:"
+
+msgid "Bottom"
+msgstr "맨 아래"
+
+msgid "Bucket Size:"
+msgstr "버킷 크기:"
+
+msgid "Burst Probability:"
+msgstr "버스트 확률:"
+
+msgid "CRITICAL"
+msgstr "치명적"
+
+msgid "Cancel"
+msgstr "취소"
+
+msgid "Chinese"
+msgstr "중국어"
+
+msgid "Choose a pre-configured seeding profile"
+msgstr "미리 구성된 시딩 프로필 선택"
+
+msgid "Choose the application theme"
+msgstr "애플리케이션 테마 선택"
+
+msgid "Choose the interface language"
+msgstr "인터페이스 언어 선택"
+
+msgid "Clear search"
+msgstr "검색 지우기"
+
+msgid "Client"
+msgstr "클라이언트"
+
+msgid "Client Switch Probability:"
+msgstr "클라이언트 전환 확률:"
+
+msgid "Comment"
+msgstr "댓글"
+
+msgid "Completed"
+msgstr "완료됨"
+
+msgid "Concurrent Queries:"
+msgstr "동시 쿼리:"
+
+msgid "Config export not yet implemented"
+msgstr "구성 내보내기가 아직 구현되지 않음"
+
+msgid "Config import not yet implemented"
+msgstr "구성 가져오기가 아직 구현되지 않음"
+
+msgid "Connected"
+msgstr "연결됨"
+
+msgid "Connected At"
+msgstr "연결 시간"
+
+msgid "Connected Peers / Total Peers"
+msgstr "연결된 피어 / 전체 피어"
+
+msgid "Connection"
+msgstr "연결"
+
+msgid "Connection Status"
+msgstr "연결 상태"
+
+msgid "Connection Timeout:"
+msgstr "연결 타임아웃:"
+
+msgid "Connection rotation percentage:"
+msgstr "연결 회전 백분율:"
+
+msgid "Connection settings reset to defaults"
+msgstr "연결 설정이 기본값으로 재설정됨"
+
+msgid "Connection timeout for extensions (seconds)"
+msgstr "확장의 연결 타임아웃(초)"
+
+msgid "Conservative"
+msgstr "보수적"
+
+msgid "Conservative profile download speed"
+msgstr "보수적 프로필 다운로드 속도"
+
+msgid "Conservative profile upload speed"
+msgstr "보수적 프로필 업로드 속도"
+
+msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
+msgstr "보수적: 낮은 속도, 적은 연결, 백그라운드 시딩에 이상적"
+
+msgid "Country"
+msgstr "국가"
+
+msgid "Created"
+msgstr "생성됨"
+
+msgid "Created By"
+msgstr "생성자"
+
+msgid "Ctrl+,"
+msgstr "Ctrl+,"
+
+msgid "Ctrl+F"
+msgstr "Ctrl+F"
+
+msgid "Ctrl+R"
+msgstr "Ctrl+R"
+
+msgid "Custom"
+msgstr "사용자 정의"
+
+msgid "Custom Agent:"
+msgstr "사용자 정의 에이전트:"
+
+msgid "Custom Node ID:"
+msgstr "사용자 정의 노드 ID:"
+
+msgid "Custom node ID (40 hex characters)"
+msgstr "사용자 정의 노드 ID(16진수 40자)"
+
+msgid "Custom user agent string"
+msgstr "사용자 정의 에이전트 문자열"
+
+msgid "D' Fake Seeder"
+msgstr "D' Fake Seeder"
+
+msgid "DEBUG"
+msgstr "디버그"
+
+msgid "DHT"
+msgstr "DHT"
+
+msgid "Dark"
+msgstr "어두움"
+
+msgid "Days:"
+msgstr "일수:"
+
+msgid "Deluge"
+msgstr "Deluge"
+
+msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
+msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
+
+msgid "Details"
+msgstr "세부사항"
+
+msgid "Disabled"
+msgstr "비활성화"
+
+msgid "Disconnected"
+msgstr "연결 끊김"
+
+msgid "Disk cache size (MB):"
+msgstr "디스크 캐시 크기 (MB):"
+
+msgid "Down"
+msgstr "아래로"
+
+msgid "Down Speed"
+msgstr "다운로드 속도"
+
+msgid "Download Rate"
+msgstr "다운로드 속도"
+
+msgid "Download Speed (KB/s):"
+msgstr "다운로드 속도 (KB/s):"
+
+msgid "Download Variance:"
+msgstr "다운로드 변동:"
+
+msgid "Download limit (KB/s):"
+msgstr "다운로드 제한 (KB/s):"
+
+msgid "Download speed variance for aggressive profile"
+msgstr "공격적 프로필의 다운로드 속도 변동"
+
+msgid "Download speed variance for balanced profile"
+msgstr "균형 프로필의 다운로드 속도 변동"
+
+msgid "Download speed variance for conservative profile"
+msgstr "보수적 프로필의 다운로드 속도 변동"
+
+msgid "Downloaded"
+msgstr "다운로드됨"
+
+msgid "Downloaded Session / Total"
+msgstr "다운로드된 세션 / 총합"
+
+msgid "Downloaded Speed"
+msgstr "다운로드 속도"
+
+msgid "Dropout probability:"
+msgstr "중단 확률:"
+
+msgid "Dutch"
+msgstr "Dutch"
+
+msgid "Dynamic profile switching"
+msgstr "동적 프로필 전환"
+
+msgid "ERROR"
+msgstr "오류"
+
+msgid "ETA"
+msgstr "남은 시간"
+
+msgid "Enable CSRF protection"
+msgstr "CSRF 보호 활성화"
+
+msgid "Enable Cross-Site Request Forgery protection"
+msgstr "크로스 사이트 요청 위조 보호 활성화"
+
+msgid "Enable DHT"
+msgstr "DHT 활성화"
+
+msgid "Enable DHT (Distributed Hash Table)"
+msgstr "DHT (분산 해시 테이블) 활성화"
+
+msgid "Enable DHT query rate limiting"
+msgstr "DHT 쿼리 속도 제한 활성화"
+
+msgid "Enable DHT statistics collection"
+msgstr "DHT 통계 수집 활성화"
+
+msgid "Enable Distributed Hash Table for trackerless torrents"
+msgstr "트래커 없는 토렌트를 위한 분산 해시 테이블 활성화"
+
+msgid "Enable Fast Extension (BEP-006) for improved performance"
+msgstr "성능 향상을 위한 고속 확장(BEP-006) 활성화"
+
+msgid "Enable LPD (Local Peer Discovery)"
+msgstr "LPD (로컬 피어 검색) 활성화"
+
+msgid "Enable Local Peer Discovery for finding peers on local network"
+msgstr "로컬 네트워크에서 피어를 찾기 위한 로컬 피어 발견 활성화"
+
+msgid "Enable Nagle algorithm"
+msgstr "Nagle 알고리즘 활성화"
+
+msgid "Enable Nagle algorithm for TCP"
+msgstr "TCP용 Nagle 알고리즘 활성화"
+
+msgid "Enable PEX (Peer Exchange)"
+msgstr "PEX (피어 교환) 활성화"
+
+msgid "Enable Peer Exchange for discovering new peers"
+msgstr "새로운 피어 발견을 위한 피어 교환 활성화"
+
+msgid "Enable Protocol Extensions"
+msgstr "프로토콜 확장 활성화"
+
+msgid "Enable TCP keepalive"
+msgstr "TCP keepalive 활성화"
+
+msgid "Enable UPnP/NAT-PMP port mapping"
+msgstr "UPnP/NAT-PMP 포트 매핑 활성화"
+
+msgid "Enable Web UI"
+msgstr "웹 UI 활성화"
+
+msgid "Enable alternative speed limits"
+msgstr "대체 속도 제한 활성화"
+
+msgid "Enable alternative speed limits (useful for limiting speeds during certain hours)"
+msgstr "대체 속도 제한 활성화 (특정 시간에 속도를 제한하는 데 유용)"
+
+msgid "Enable clickjacking protection"
+msgstr "클릭재킹 보호 활성화"
+
+msgid "Enable client behavior simulation"
+msgstr "클라이언트 동작 시뮬레이션 활성화"
+
+msgid "Enable client behavior simulation engine"
+msgstr "클라이언트 동작 시뮬레이션 엔진 활성화"
+
+msgid "Enable debug mode"
+msgstr "디버그 모드 활성화"
+
+msgid "Enable debug mode with extra logging and error details"
+msgstr "추가 로깅 및 오류 세부 사항과 함께 디버그 모드 활성화"
+
+msgid "Enable dynamic client profile switching"
+msgstr "동적 클라이언트 프로필 전환 활성화"
+
+msgid "Enable lt_donthave extension for piece availability"
+msgstr "조각 가용성을 위한 lt_donthave 확장 활성화"
+
+msgid "Enable metadata extension"
+msgstr "메타데이터 확장 활성화"
+
+msgid "Enable metadata extension features"
+msgstr "메타데이터 확장 기능 활성화"
+
+msgid "Enable or disable BitTorrent protocol extensions"
+msgstr "BitTorrent 프로토콜 확장 활성화/비활성화"
+
+msgid "Enable or disable DHT for trackerless torrent support"
+msgstr "트래커리스 토렌트 지원을 위한 DHT 활성화/비활성화"
+
+msgid "Enable proxy authentication"
+msgstr "프록시 인증 활성화"
+
+msgid "Enable random variations in client behavior"
+msgstr "클라이언트 동작의 무작위 변동 활성화"
+
+msgid "Enable rate limiting"
+msgstr "속도 제한 활성화"
+
+msgid "Enable realistic traffic variations"
+msgstr "현실적인 트래픽 변동 활성화"
+
+msgid "Enable secure HTTP headers"
+msgstr "보안 HTTP 헤더 활성화"
+
+msgid "Enable speed scheduler"
+msgstr "속도 스케줄러 활성화"
+
+msgid "Enable statistics"
+msgstr "통계 활성화"
+
+msgid "Enable swarm intelligence"
+msgstr "스웜 인텔리전스 활성화"
+
+msgid "Enable swarm intelligence for adaptive behavior"
+msgstr "적응적 동작을 위한 스웜 인텔리전스 활성화"
+
+msgid "Enable time-based traffic patterns (peak hours, night hours)"
+msgstr "시간 기반 트래픽 패턴 활성화(피크 시간, 야간 시간)"
+
+msgid "Enable ut_holepunch extension for NAT traversal"
+msgstr "NAT 통과를 위한 ut_holepunch 확장 활성화"
+
+msgid "Enable ut_metadata extension for metadata exchange"
+msgstr "메타데이터 교환을 위한 ut_metadata 확장 활성화"
+
+msgid "Enable ut_pex extension for peer exchange"
+msgstr "피어 교환을 위한 ut_pex 확장 활성화"
+
+msgid "Enable web-based remote control interface"
+msgstr "웹 기반 원격 제어 인터페이스 활성화"
+
+msgid "Enable µTP (Micro Transport Protocol)"
+msgstr "µTP(마이크로 전송 프로토콜) 활성화"
+
+msgid "Enabled"
+msgstr "활성화"
+
+msgid "Encryption:"
+msgstr "암호화:"
+
+msgid "End hour (24-hour format)"
+msgstr "종료 시간 (24시간 형식)"
+
+msgid "End minute"
+msgstr "종료 분"
+
+msgid "English"
+msgstr "영어"
+
+msgid "Error"
+msgstr "오류"
+
+msgid "Error changing language"
+msgstr "언어 변경 오류"
+
+msgid "Export"
+msgstr "내보내기"
+
+msgid "Export Settings"
+msgstr "설정 내보내기"
+
+msgid "Export current settings to a file"
+msgstr "현재 설정을 파일로 내보내기"
+
+msgid "Extension Timeout:"
+msgstr "확장 타임아웃:"
+
+msgid "Extension statistics update interval (seconds)"
+msgstr "확장 통계 업데이트 간격(초)"
+
+msgid "Failure Reason"
+msgstr "실패 원인"
+
+msgid "Fall back to TCP if µTP fails"
+msgstr "µTP 실패 시 TCP로 대체"
+
+msgid "Fast Extension (BEP-006)"
+msgstr "고속 확장 (BEP-006)"
+
+msgid "File"
+msgstr "파일"
+
+msgid "File Path"
+msgstr "파일 경로"
+
+msgid "File chooser not yet implemented"
+msgstr "파일 선택기가 아직 구현되지 않음"
+
+msgid "Files"
+msgstr "파일"
+
+msgid "Flags"
+msgstr "플래그"
+
+msgid "Follow System"
+msgstr "시스템 따름"
+
+msgid "Forced"
+msgstr "강제"
+
+msgid "French"
+msgstr "프랑스어"
+
+msgid "Fri"
+msgstr "금"
+
+msgid "Friday"
+msgstr "금요일"
+
+msgid "From:"
+msgstr "시작:"
+
+msgid "General"
+msgstr "일반"
+
+msgid "General settings reset to defaults"
+msgstr "일반 설정이 기본값으로 재설정됨"
+
+msgid "General timeout for extension operations (seconds)"
+msgstr "확장 작업의 일반 타임아웃(초)"
+
+msgid "Generate Secure Password"
+msgstr "보안 비밀번호 생성"
+
+msgid "Generate a random port number"
+msgstr "임의의 포트 번호 생성"
+
+msgid "Generate a random secure password"
+msgstr "임의의 보안 암호 생성"
+
+msgid "Generate synthetic metadata"
+msgstr "합성 메타데이터 생성"
+
+msgid "Generate synthetic metadata for simulation"
+msgstr "시뮬레이션을 위한 합성 메타데이터 생성"
+
+msgid "Generate synthetic peer data for PEX"
+msgstr "PEX를 위한 합성 피어 데이터 생성"
+
+msgid "Generate synthetic peers"
+msgstr "합성 피어 생성"
+
+msgid "German"
+msgstr "독일어"
+
+msgid "Github - D' Fake Seeder"
+msgstr "Github - D' Fake Seeder"
+
+msgid "Global download speed limit in KB/s (0 = unlimited)"
+msgstr "KB/s 단위의 전역 다운로드 속도 제한 (0 = 무제한)"
+
+msgid "Global upload speed limit in KB/s (0 = unlimited)"
+msgstr "KB/s 단위의 전역 업로드 속도 제한 (0 = 무제한)"
+
+msgid "HTTP"
+msgstr "HTTP"
+
+msgid "HTTP seeder timeout (seconds):"
+msgstr "HTTP 시더 타임아웃 (초):"
+
+msgid "Handshake"
+msgstr "핸드셰이크"
+
+msgid "Handshake timeout (seconds):"
+msgstr "핸드셰이크 타임아웃 (초):"
+
+msgid "Hide to system tray when window is minimized"
+msgstr "창이 최소화되면 시스템 트레이로 숨기기"
+
+msgid "Hindi"
+msgstr "Hindi"
+
+msgid "How often to announce to trackers (60-7200 seconds)"
+msgstr "트래커에 알림 빈도 (60-7200초)"
+
+msgid "How often to scrape tracker for swarm statistics"
+msgstr "스웜 통계를 위해 트래커를 스크래핑하는 빈도"
+
+msgid "How often to update the user interface"
+msgstr "사용자 인터페이스 업데이트 빈도"
+
+msgid "ID"
+msgstr "식별자"
+
+msgid "INFO"
+msgstr "정보"
+
+msgid "IP Address"
+msgstr "IP 주소"
+
+msgid "IP address to bind to (0.0.0.0 for all interfaces)"
+msgstr "바인딩할 IP 주소 (모든 인터페이스는 0.0.0.0)"
+
+msgid "Idle Probability:"
+msgstr "유휴 확률:"
+
+msgid "Import"
+msgstr "가져오기"
+
+msgid "Import Settings"
+msgstr "설정 가져오기"
+
+msgid "Import settings from a file"
+msgstr "파일에서 설정 가져오기"
+
+msgid "Inactive"
+msgstr "비활성"
+
+msgid "Incoming"
+msgstr "수신"
+
+msgid "Incoming Connections"
+msgstr "들어오는 연결"
+
+msgid "Incoming Peer Connections"
+msgstr "수신 피어 연결"
+
+msgid "Interested"
+msgstr "관심 있음"
+
+msgid "Interval between DHT announcements (seconds)"
+msgstr "DHT 발표 간격(초)"
+
+msgid "Interval between PEX message exchanges (seconds)"
+msgstr "PEX 메시지 교환 간격(초)"
+
+msgid "Interval for DHT statistics updates (seconds)"
+msgstr "DHT 통계 업데이트 간격(초)"
+
+msgid "Interval for contacting peers in seconds"
+msgstr "피어 연락 간격(초)"
+
+msgid "Interval for sending keep alive messages in seconds"
+msgstr "킵 얼라이브 메시지 전송 간격(초)"
+
+msgid "Italian"
+msgstr "이탈리아어"
+
+msgid "Japanese"
+msgstr "일본어"
+
+msgid "Keep Alive Interval:"
+msgstr "Keep Alive 간격:"
+
+msgid "Keep alive interval (seconds):"
+msgstr "킵 얼라이브 간격 (초):"
+
+msgid "Keep alive interval for connections (seconds)"
+msgstr "연결의 keep alive 간격(초)"
+
+msgid "Korean"
+msgstr "Korean"
+
+msgid "Label"
+msgstr "라벨"
+
+msgid "Language switched to"
+msgstr "언어가 변경됨:"
+
+msgid "Language:"
+msgstr "언어:"
+
+msgid "Last Announce"
+msgstr "마지막 알림"
+
+msgid "Last Notification"
+msgstr "마지막 알림"
+
+msgid "Leechers"
+msgstr "리처"
+
+msgid "Level of BitTorrent protocol compliance"
+msgstr "BitTorrent 프로토콜 준수 수준"
+
+msgid "Light"
+msgstr "밝음"
+
+msgid "Limit extension message rate"
+msgstr "확장 메시지 속도 제한"
+
+msgid "List of bootstrap nodes for DHT initialization"
+msgstr "DHT 초기화를 위한 부트스트랩 노드 목록"
+
+msgid "Log"
+msgstr "로그"
+
+msgid "Log Level:"
+msgstr "로그 레벨:"
+
+msgid "Log to file"
+msgstr "파일에 로그"
+
+msgid "Max Connections:"
+msgstr "최대 연결:"
+
+msgid "Max Dropped Peers:"
+msgstr "최대 중단된 피어:"
+
+msgid "Max Message Size:"
+msgstr "최대 메시지 크기:"
+
+msgid "Max Messages/Second:"
+msgstr "초당 최대 메시지:"
+
+msgid "Max Nodes:"
+msgstr "최대 노드:"
+
+msgid "Max Peers/Message:"
+msgstr "메시지당 최대 피어:"
+
+msgid "Max Queries/Second:"
+msgstr "초당 최대 쿼리:"
+
+msgid "Max global connections:"
+msgstr "최대 전역 연결수:"
+
+msgid "Max log file size (MB):"
+msgstr "최대 로그 파일 크기 (MB):"
+
+msgid "Max per torrent:"
+msgstr "토렌트당 최대 연결수:"
+
+msgid "Max upload slots:"
+msgstr "최대 업로드 슬롯수:"
+
+msgid "Maximum DHT queries per second"
+msgstr "초당 최대 DHT 쿼리 수"
+
+msgid "Maximum connections for aggressive profile"
+msgstr "공격적 프로필의 최대 연결 수"
+
+msgid "Maximum connections for balanced profile"
+msgstr "균형 프로필의 최대 연결 수"
+
+msgid "Maximum connections for conservative profile"
+msgstr "보수적 프로필의 최대 연결 수"
+
+msgid "Maximum dropped peers to track for PEX"
+msgstr "PEX를 위해 추적할 최대 중단된 피어 수"
+
+msgid "Maximum extension messages per second"
+msgstr "초당 최대 확장 메시지 수"
+
+msgid "Maximum number of DHT nodes to maintain"
+msgstr "유지할 DHT 노드의 최대 수"
+
+msgid "Maximum number of concurrent DHT queries"
+msgstr "동시 DHT 쿼리의 최대 수"
+
+msgid "Maximum number of connections per individual torrent"
+msgstr "개별 토렌트당 최대 연결 수"
+
+msgid "Maximum number of connections to all torrents"
+msgstr "모든 토렌트에 대한 최대 연결 수"
+
+msgid "Maximum number of nodes in the routing table"
+msgstr "라우팅 테이블의 최대 노드 수"
+
+msgid "Maximum number of nodes per bucket"
+msgstr "버킷당 최대 노드 수"
+
+msgid "Maximum number of simultaneous upload slots"
+msgstr "동시 업로드 슬롯의 최대 수"
+
+msgid "Maximum peers to include in a PEX message"
+msgstr "PEX 메시지에 포함할 최대 피어 수"
+
+msgid "Maximum port for seeder connections"
+msgstr "시더 연결의 최대 포트"
+
+msgid "Maximum size for extension messages (bytes)"
+msgstr "확장 메시지의 최대 크기(바이트)"
+
+msgid "Maximum size of log file before rotation"
+msgstr "회전 전 로그 파일의 최대 크기"
+
+msgid "Maximum transaction ID for tracker communication"
+msgstr "트래커 통신을 위한 최대 트랜잭션 ID"
+
+msgid "Message"
+msgstr "메시지"
+
+msgid "Message read timeout (seconds):"
+msgstr "메시지 읽기 타임아웃 (초):"
+
+msgid "Metadata Piece Size:"
+msgstr "메타데이터 조각 크기:"
+
+msgid "Metadata Timeout:"
+msgstr "메타데이터 타임아웃:"
+
+msgid "Min announce interval (sec):"
+msgstr "최소 알림 간격 (초):"
+
+msgid "Minimize to system tray"
+msgstr "시스템 트레이로 최소화"
+
+msgid "Minimum log level to record"
+msgstr "기록할 최소 로그 레벨"
+
+msgid "Minimum port for seeder connections"
+msgstr "시더 연결의 최소 포트"
+
+msgid "Minimum time between announces (10-3600 seconds)"
+msgstr "알림 간 최소 시간 (10-3600초)"
+
+msgid "Minimum transaction ID for tracker communication"
+msgstr "트래커 통신을 위한 최소 트랜잭션 ID"
+
+msgid "Mon"
+msgstr "월"
+
+msgid "Monday"
+msgstr "월요일"
+
+msgid "My IP address"
+msgstr "내 IP 주소"
+
+msgid "N/A"
+msgstr "해당 없음"
+
+msgid "Name"
+msgstr "이름"
+
+msgid "Network interface:"
+msgstr "네트워크 인터페이스:"
+
+msgid "Next Announce"
+msgstr "다음 알림"
+
+msgid "Next Update"
+msgstr "다음 업데이트"
+
+msgid "None"
+msgstr "없음"
+
+msgid "Number of peers to analyze for behavior patterns"
+msgstr "동작 패턴 분석을 위한 피어 수"
+
+msgid "Number of peers to request from tracker"
+msgstr "트래커에서 요청할 피어 수"
+
+msgid "Number of synthetic peers to generate"
+msgstr "생성할 합성 피어 수"
+
+msgid "Only allow connections from localhost (more secure)"
+msgstr "localhost에서만 연결 허용 (더 안전)"
+
+msgid "Open preferences"
+msgstr "환경설정 열기"
+
+msgid "Options"
+msgstr "옵션"
+
+msgid "Outgoing"
+msgstr "송신"
+
+msgid "Outgoing Connections"
+msgstr "나가는 연결"
+
+msgid "Outgoing Peer Connections"
+msgstr "송신 피어 연결"
+
+msgid "Overlay Notification"
+msgstr "오버레이 알림"
+
+msgid "PEX Interval:"
+msgstr "PEX 간격:"
+
+msgid "Password for web interface login"
+msgstr "웹 인터페이스 로그인용 암호"
+
+msgid "Password:"
+msgstr "비밀번호:"
+
+msgid "Path"
+msgstr "경로"
+
+msgid "Pause"
+msgstr "일시정지"
+
+msgid "Pause torrent"
+msgstr "토렌트 일시정지"
+
+msgid "Peer Analysis Depth:"
+msgstr "피어 분석 깊이:"
+
+msgid "Peer Choking"
+msgstr "피어 차단"
+
+msgid "Peer ID"
+msgstr "피어 ID"
+
+msgid "Peer ID Prefix:"
+msgstr "피어 ID 접두사:"
+
+msgid "Peer ID prefix to identify client type"
+msgstr "클라이언트 유형을 식별하는 피어 ID 접두사"
+
+msgid "Peer Protocol"
+msgstr "피어 프로토콜"
+
+msgid "Peer Protocol settings reset to defaults"
+msgstr "피어 프로토콜 설정이 기본값으로 재설정됨"
+
+msgid "Peer contact interval (seconds):"
+msgstr "피어 연락 간격 (초):"
+
+msgid "Peer idle chance:"
+msgstr "피어 유휴 확률:"
+
+msgid "Peer request count:"
+msgstr "피어 요청 수:"
+
+msgid "Peers"
+msgstr "피어"
+
+msgid "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr "회전할 연결의 백분율 (0.0 - 1.0)"
+
+msgid "Piece Length"
+msgstr "조각 길이"
+
+msgid "Pieces"
+msgstr "조각"
+
+msgid "Pieces Received"
+msgstr "수신된 조각"
+
+msgid "Polish"
+msgstr "Polish"
+
+msgid "Port"
+msgstr "포트"
+
+msgid "Port for incoming BitTorrent connections (1024-65535)"
+msgstr "수신 BitTorrent 연결용 포트 (1024-65535)"
+
+msgid "Port for web interface (1024-65535)"
+msgstr "웹 인터페이스용 포트 (1024-65535)"
+
+msgid "Port:"
+msgstr "포트:"
+
+msgid "Portuguese"
+msgstr "포르투갈어"
+
+msgid "Preferences"
+msgstr "환경설정"
+
+msgid "Prevent embedding in frames (X-Frame-Options)"
+msgstr "프레임 내 임베딩 방지 (X-Frame-Options)"
+
+msgid "Primary BitTorrent client to simulate"
+msgstr "시뮬레이션할 주요 BitTorrent 클라이언트"
+
+msgid "Primary Client:"
+msgstr "주요 클라이언트:"
+
+msgid "Priority"
+msgstr "우선순위"
+
+msgid "Priority Down"
+msgstr "우선순위 하향"
+
+msgid "Priority Up"
+msgstr "우선순위 상향"
+
+msgid "Private"
+msgstr "비공개"
+
+msgid "Probability of idle periods for aggressive profile"
+msgstr "공격적 프로필의 유휴 기간 확률"
+
+msgid "Probability of idle periods for balanced profile"
+msgstr "균형 프로필의 유휴 기간 확률"
+
+msgid "Probability of idle periods for conservative profile"
+msgstr "보수적 프로필의 유휴 기간 확률"
+
+msgid "Probability of peer behavior analysis (0.0 - 1.0)"
+msgstr "피어 행동 분석 확률 (0.0 - 1.0)"
+
+msgid "Probability of peer being idle (0.0 - 1.0)"
+msgstr "피어 유휴 상태 확률 (0.0 - 1.0)"
+
+msgid "Probability of peer dropping out (0.0 - 1.0)"
+msgstr "피어 중단 확률 (0.0 - 1.0)"
+
+msgid "Probability of peer status changes (0.0 - 1.0)"
+msgstr "피어 상태 변경 확률 (0.0 - 1.0)"
+
+msgid "Probability of seeder upload activity (0.0 - 1.0)"
+msgstr "시더 업로드 활동 확률 (0.0 - 1.0)"
+
+msgid "Probability of switching to a different client behavior"
+msgstr "다른 클라이언트 동작으로 전환할 확률"
+
+msgid "Probability of traffic bursts for aggressive profile"
+msgstr "공격적 프로필의 트래픽 버스트 확률"
+
+msgid "Probability of traffic bursts for balanced profile"
+msgstr "균형 프로필의 트래픽 버스트 확률"
+
+msgid "Probability of traffic bursts for conservative profile"
+msgstr "보수적 프로필의 트래픽 버스트 확률"
+
+msgid "Progress"
+msgstr "진행률"
+
+msgid "Progress distribution (almost):"
+msgstr "진행률 분포 (거의):"
+
+msgid "Progress distribution (middle):"
+msgstr "진행률 분포 (중간):"
+
+msgid "Progress distribution (start):"
+msgstr "진행률 분포 (시작):"
+
+msgid "Progress distribution for almost complete peers (0.0 - 1.0)"
+msgstr "거의 완료된 피어의 진행률 분포 (0.0 - 1.0)"
+
+msgid "Progress distribution for middle progress peers (0.0 - 1.0)"
+msgstr "중간 진행률 피어의 진행률 분포 (0.0 - 1.0)"
+
+msgid "Progress distribution for starting peers (0.0 - 1.0)"
+msgstr "시작 피어의 진행률 분포 (0.0 - 1.0)"
+
+msgid "Protocol Compliance:"
+msgstr "프로토콜 준수:"
+
+msgid "Protocol Extensions"
+msgstr "프로토콜 확장"
+
+msgid "Protocol encryption mode for peer communications"
+msgstr "피어 통신을 위한 프로토콜 암호화 모드"
+
+msgid "Proxy authentication password"
+msgstr "프록시 인증 암호"
+
+msgid "Proxy authentication username"
+msgstr "프록시 인증 사용자명"
+
+msgid "Proxy server hostname or IP address"
+msgstr "프록시 서버 호스트명 또는 IP 주소"
+
+msgid "Proxy server port number"
+msgstr "프록시 서버 포트 번호"
+
+msgid "Query Timeout:"
+msgstr "쿼리 타임아웃:"
+
+msgid "Queue"
+msgstr "대기열"
+
+msgid "Quit"
+msgstr "종료"
+
+msgid "Random"
+msgstr "무작위"
+
+msgid "Rate of adaptation to swarm behavior"
+msgstr "스웜 동작에 대한 적응 속도"
+
+msgid "Ratio"
+msgstr "비율"
+
+msgid "Realistic variations"
+msgstr "현실적 변동"
+
+msgid "Received"
+msgstr "수신됨"
+
+msgid "Relaxed"
+msgstr "완화됨"
+
+msgid "Remember window size and position"
+msgstr "창 크기와 위치 기억"
+
+msgid "Remember window size and position between sessions"
+msgstr "세션 간 창 크기와 위치 기억"
+
+msgid "Remove torrent"
+msgstr "토렌트 제거"
+
+msgid "Requests"
+msgstr "요청"
+
+msgid "Require authentication"
+msgstr "인증 필요"
+
+msgid "Require username and password for web access"
+msgstr "웹 액세스를 위한 사용자명과 암호 필요"
+
+msgid "Reset"
+msgstr "재설정"
+
+msgid "Reset all settings not yet implemented"
+msgstr "모든 설정 재설정이 아직 구현되지 않음"
+
+msgid "Reset all settings to default values"
+msgstr "모든 설정을 기본값으로 재설정"
+
+msgid "Reset to Defaults"
+msgstr "기본값으로 재설정"
+
+msgid "Reset to defaults"
+msgstr "기본값으로 재설정"
+
+msgid "Resume"
+msgstr "재개"
+
+msgid "Resume torrent"
+msgstr "토렌트 재개"
+
+msgid "Routing Table Size:"
+msgstr "라우팅 테이블 크기:"
+
+msgid "Russian"
+msgstr "러시아어"
+
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+msgid "Sat"
+msgstr "토"
+
+msgid "Saturday"
+msgstr "토요일"
+
+msgid "Save logs to file in addition to console"
+msgstr "콘솔 외에 파일에 로그 저장"
+
+msgid "Scrape interval (sec):"
+msgstr "스크래핑 간격 (초):"
+
+msgid "Search by torrent name or file path"
+msgstr "토렌트 이름 또는 파일 경로로 검색"
+
+msgid "Search for settings across all tabs"
+msgstr "모든 탭에서 설정 검색"
+
+msgid "Search for torrent"
+msgstr "토렌트 검색"
+
+msgid "Search settings"
+msgstr "설정 검색"
+
+msgid "Secure password generated"
+msgstr "보안 암호가 생성됨"
+
+msgid "Seeder port range (max):"
+msgstr "시더 포트 범위 (최대):"
+
+msgid "Seeder port range (min):"
+msgstr "시더 포트 범위 (최소):"
+
+msgid "Seeders"
+msgstr "시더"
+
+msgid "Seeds"
+msgstr "시드"
+
+msgid "Select proxy type for connections"
+msgstr "연결용 프록시 유형 선택"
+
+msgid "Select torrent"
+msgstr "토렌트 선택"
+
+msgid "Send security-related HTTP headers"
+msgstr "보안 관련 HTTP 헤더 전송"
+
+msgid "Sent"
+msgstr "전송됨"
+
+msgid "Server:"
+msgstr "서버:"
+
+msgid "Session timeout (min):"
+msgstr "세션 타임아웃 (분):"
+
+msgid "Shortcuts configuration not yet implemented"
+msgstr "단축키 구성이 아직 구현되지 않음"
+
+msgid "Show only selected torrent connections"
+msgstr "선택된 토렌트 연결만 표시"
+
+msgid "Simulation"
+msgstr "시뮬레이션"
+
+msgid "Size"
+msgstr "크기"
+
+msgid "Size of metadata pieces in bytes"
+msgstr "메타데이터 조각의 크기(바이트)"
+
+msgid "Small Torrent Limit"
+msgstr "작은 토렌트 제한"
+
+msgid "Spanish"
+msgstr "스페인어"
+
+msgid "Speed"
+msgstr "속도"
+
+msgid "Speed settings reset to defaults"
+msgstr "속도 설정이 기본값으로 재설정됨"
+
+msgid "Standard"
+msgstr "표준"
+
+msgid "Start DFakeSeeder automatically when the system boots"
+msgstr "시스템 부팅 시 DFakeSeeder 자동 시작"
+
+msgid "Start hour (24-hour format)"
+msgstr "시작 시간 (24시간 형식)"
+
+msgid "Start minimized"
+msgstr "최소화하여 시작"
+
+msgid "Start minimized disabled"
+msgstr "최소화 시작 비활성화됨"
+
+msgid "Start minimized enabled"
+msgstr "최소화 시작 활성화됨"
+
+msgid "Start minute"
+msgstr "시작 분"
+
+msgid "Start on system startup"
+msgstr "시스템 시작 시 실행"
+
+msgid "Start the application minimized to system tray"
+msgstr "애플리케이션을 시스템 트레이로 최소화하여 시작"
+
+msgid "Stats Update Interval:"
+msgstr "통계 업데이트 간격:"
+
+msgid "Status"
+msgstr "상태"
+
+msgid "Status change probability:"
+msgstr "상태 변경 확률:"
+
+msgid "Strict"
+msgstr "엄격"
+
+msgid "Sun"
+msgstr "일"
+
+msgid "Sunday"
+msgstr "일요일"
+
+msgid "Swedish"
+msgstr "Swedish"
+
+msgid "Synthetic Peer Count:"
+msgstr "합성 피어 수:"
+
+msgid "TCP fallback"
+msgstr "TCP 대체"
+
+msgid "TCP keepalive"
+msgstr "TCP keepalive"
+
+msgid "Theme:"
+msgstr "테마:"
+
+msgid "Threshold"
+msgstr "임계값"
+
+msgid "Thu"
+msgstr "목"
+
+msgid "Thursday"
+msgstr "목요일"
+
+msgid "Tier"
+msgstr "계층"
+
+msgid "Time-based patterns"
+msgstr "시간 기반 패턴"
+
+msgid "Timeout for DHT bootstrap operations (seconds)"
+msgstr "DHT 부트스트랩 작업 타임아웃(초)"
+
+msgid "Timeout for DHT queries (seconds)"
+msgstr "DHT 쿼리 타임아웃(초)"
+
+msgid "Timeout for HTTP seeder connections in seconds"
+msgstr "HTTP 시더 연결 타임아웃(초)"
+
+msgid "Timeout for UDP seeder connections in seconds"
+msgstr "UDP 시더 연결 타임아웃(초)"
+
+msgid "Timeout for metadata requests (seconds)"
+msgstr "메타데이터 요청 타임아웃(초)"
+
+msgid "Timeout for peer handshake in seconds"
+msgstr "피어 핸드셰이크 타임아웃(초)"
+
+msgid "Timeout for reading peer messages in seconds"
+msgstr "피어 메시지 읽기 타임아웃(초)"
+
+msgid "To:"
+msgstr "종료:"
+
+msgid "Top"
+msgstr "맨 위"
+
+msgid "Torrent"
+msgstr "토렌트"
+
+msgid "Torrent Files"
+msgstr "토렌트 파일"
+
+msgid "Torrents"
+msgstr "토렌트"
+
+msgid "Total Downloaded"
+msgstr "총 다운로드"
+
+msgid "Total Size"
+msgstr "전체 크기"
+
+msgid "Total Uploaded"
+msgstr "총 업로드"
+
+msgid "Track extension statistics"
+msgstr "확장 통계 추적"
+
+msgid "Track extension usage statistics"
+msgstr "확장 사용 통계 추적"
+
+msgid "Tracker"
+msgstr "트래커"
+
+msgid "Tracker URL"
+msgstr "트래커 URL"
+
+msgid "Trackers"
+msgstr "트래커"
+
+msgid "Traffic Profile:"
+msgstr "트래픽 프로필:"
+
+msgid "Traffic pattern profile for simulation"
+msgstr "시뮬레이션을 위한 트래픽 패턴 프로필"
+
+msgid "Transaction ID range (max):"
+msgstr "트랜잭션 ID 범위 (최대):"
+
+msgid "Transaction ID range (min):"
+msgstr "트랜잭션 ID 범위 (최소):"
+
+msgid "Transmission"
+msgstr "Transmission"
+
+msgid "Transmission/3.00"
+msgstr "Transmission/3.00"
+
+msgid "Tue"
+msgstr "화"
+
+msgid "Tuesday"
+msgstr "화요일"
+
+msgid "Type"
+msgstr "유형"
+
+msgid "Type:"
+msgstr "유형:"
+
+msgid "UDP seeder timeout (seconds):"
+msgstr "UDP 시더 타임아웃 (초):"
+
+msgid "UI Refresh Rate"
+msgstr "UI 새로 고침 비율"
+
+msgid "UI refresh rate (sec):"
+msgstr "UI 새로 고침 비율 (초):"
+
+msgid "URL"
+msgstr "주소"
+
+msgid "URL: http://localhost:8080"
+msgstr "주소: http://localhost:8080"
+
+msgid "Unknown"
+msgstr "알 수 없음"
+
+msgid "Up"
+msgstr "위로"
+
+msgid "Up Speed"
+msgstr "업로드 속도"
+
+msgid "Update Tracker"
+msgstr "트래커 업데이트"
+
+msgid "Upload Speed"
+msgstr "업로드 속도"
+
+msgid "Upload Speed (KB/s):"
+msgstr "업로드 속도 (KB/s):"
+
+msgid "Upload Variance:"
+msgstr "업로드 변동:"
+
+msgid "Upload activity probability:"
+msgstr "업로드 활동 확률:"
+
+msgid "Upload limit (KB/s):"
+msgstr "업로드 제한 (KB/s):"
+
+msgid "Upload speed variance for aggressive profile"
+msgstr "공격적 프로필의 업로드 속도 변동"
+
+msgid "Upload speed variance for balanced profile"
+msgstr "균형 프로필의 업로드 속도 변동"
+
+msgid "Upload speed variance for conservative profile"
+msgstr "보수적 프로필의 업로드 속도 변동"
+
+msgid "Uploaded"
+msgstr "업로드됨"
+
+msgid "Uploaded Session / Total"
+msgstr "업로드된 세션 / 총합"
+
+msgid "Uploading"
+msgstr "업로드 중"
+
+msgid "Use HTTPS (SSL/TLS)"
+msgstr "HTTPS (SSL/TLS) 사용"
+
+msgid "Use HTTPS for secure connections (requires SSL certificate)"
+msgstr "보안 연결을 위해 HTTPS 사용 (SSL 인증서 필요)"
+
+msgid "Use authentication"
+msgstr "인증 사용"
+
+msgid "User Agent:"
+msgstr "사용자 에이전트:"
+
+msgid "User agent string to identify the client to trackers"
+msgstr "트래커에 클라이언트를 식별하는 유저 에이전트 문자열"
+
+msgid "Username for web interface login"
+msgstr "웹 인터페이스 로그인용 사용자명"
+
+msgid "Username:"
+msgstr "사용자명:"
+
+msgid "Validate DHT security tokens"
+msgstr "DHT 보안 토큰 검증"
+
+msgid "Validate extension messages"
+msgstr "확장 메시지 검증"
+
+msgid "Validate extension messages for security"
+msgstr "보안을 위한 확장 메시지 검증"
+
+msgid "Validate security tokens"
+msgstr "보안 토큰 검증"
+
+msgid "Validate setting values and show warnings for invalid combinations"
+msgstr "설정 값 검증 및 잘못된 조합에 대한 경고 표시"
+
+msgid "Validate settings on change"
+msgstr "변경 시 설정 검증"
+
+msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr "클라이언트 동작의 변동(0.0 = 변동 없음, 1.0 = 최대 변동)"
+
+msgid "Vuze"
+msgstr "Vuze"
+
+msgid "Vuze/5.7.6.0"
+msgstr "Vuze/5.7.6.0"
+
+msgid "WARNING"
+msgstr "경고"
+
+msgid "Web UI"
+msgstr "웹 UI"
+
+msgid "Web UI settings reset to defaults"
+msgstr "웹 UI 설정이 기본값으로 재설정됨"
+
+msgid "Wed"
+msgstr "수"
+
+msgid "Wednesday"
+msgstr "수요일"
+
+msgid "active"
+msgstr "활성"
+
+msgid "admin"
+msgstr "admin"
+
+msgid "announce_interval"
+msgstr "공지 간격"
+
+msgid "bytes"
+msgstr "바이트"
+
+msgid "class_name"
+msgstr "클래스명"
+
+msgid "download_speed"
+msgstr "다운로드 속도"
+
+msgid "filepath"
+msgstr "파일 경로"
+
+msgid "files_tab"
+msgstr "파일 탭"
+
+msgid "id"
+msgstr "#"
+
+msgid "leechers"
+msgstr "리처"
+
+msgid "log_tab"
+msgstr "로그 탭"
+
+msgid "lt_donthave (Piece Availability)"
+msgstr "lt_donthave(조각 가용성)"
+
+msgid "name"
+msgstr "이름"
+
+msgid "next_update"
+msgstr "다음 업데이트"
+
+msgid "open-menu-symbolic"
+msgstr "open-menu-symbolic"
+
+msgid "options_tab"
+msgstr "옵션 탭"
+
+msgid "peers_tab"
+msgstr "피어 탭"
+
+msgid "progress"
+msgstr "진행률"
+
+msgid "qBittorrent"
+msgstr "qBittorrent"
+
+msgid "qBittorrent/4.3.1"
+msgstr "qBittorrent/4.3.1"
+
+msgid "rTorrent"
+msgstr "rTorrent"
+
+msgid "rTorrent/0.9.6"
+msgstr "rTorrent/0.9.6"
+
+msgid "seconds"
+msgstr "초"
+
+msgid "seeders"
+msgstr "시더"
+
+msgid "session_downloaded"
+msgstr "다운로드됨"
+
+msgid "session_uploaded"
+msgstr "업로드됨"
+
+msgid "small_torrent_limit"
+msgstr "작은 토렌트 제한"
+
+msgid "threshold"
+msgstr "임계값"
+
+msgid "total_downloaded"
+msgstr "총 다운로드"
+
+msgid "total_size"
+msgstr "크기"
+
+msgid "total_uploaded"
+msgstr "총 업로드"
+
+msgid "trackers_tab"
+msgstr "트래커 탭"
+
+msgid "uTorrent/3.5.5"
+msgstr "uTorrent/3.5.5"
+
+msgid "upload_speed"
+msgstr "업로드 속도"
+
+msgid "uploading"
+msgstr "업로드 중"
+
+msgid "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch(NAT 통과)"
+
+msgid "ut_metadata (Metadata Exchange)"
+msgstr "ut_metadata(메타데이터 교환)"
+
+msgid "ut_pex (Peer Exchange)"
+msgstr "ut_pex(피어 교환)"
+
+msgid "µTorrent"
+msgstr "µTorrent"
+
+msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
+msgstr "⚠️ 고급 설정 - 주의하여 수정하세요. 잘못된 값은 성능이나 안정성에 영향을 줄 수 있습니다."
+
+msgid "⚠️ Web UI allows remote control of the application. Use strong authentication."
+msgstr "⚠️ 웹 UI는 애플리케이션의 원격 제어를 허용합니다. 강력한 인증을 사용하세요."
+

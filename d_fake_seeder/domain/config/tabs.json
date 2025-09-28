@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Tab configuration for DFakeSeeder UI components",
+    "last_updated": "2024-09-28"
+  },
+  "settings_tabs": {
+    "enabled": true,
+    "order": [
+      "GeneralTab",
+      "ConnectionTab",
+      "PeerProtocolTab",
+      "SpeedTab",
+      "BitTorrentTab",
+      "DHTTab",
+      "ProtocolExtensionsTab",
+      "SimulationTab",
+      "WebUITab",
+      "AdvancedTab"
+    ],
+    "optional": [
+      "SimulationTab",
+      "WebUITab",
+      "ProtocolExtensionsTab",
+      "DHTTab"
+    ],
+    "required": [
+      "GeneralTab",
+      "ConnectionTab",
+      "AdvancedTab"
+    ]
+  },
+  "torrent_details_tabs": {
+    "enabled": true,
+    "order": [
+      "StatusTab",
+      "FilesTab",
+      "DetailsTab",
+      "OptionsTab",
+      "PeersTab",
+      "TrackersTab",
+      "LogTab"
+    ],
+    "essential": [
+      "StatusTab"
+    ],
+    "lazy_load": [
+      "FilesTab",
+      "DetailsTab",
+      "OptionsTab",
+      "PeersTab",
+      "TrackersTab",
+      "LogTab"
+    ],
+    "background_load": [
+      "LogTab"
+    ]
+  },
+  "tab_features": {
+    "lazy_loading": true,
+    "background_initialization": true,
+    "dynamic_tab_creation": false,
+    "tab_caching": true,
+    "essential_only_mode": false
+  },
+  "development": {
+    "enable_debug_tabs": false,
+    "enable_experimental_tabs": false,
+    "skip_tab_validation": false
+  }
+}

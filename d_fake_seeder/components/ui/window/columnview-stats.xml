@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkColumnView" id="states_columnview">
+    <property name="name">states_columnview</property>
+    <property name="can-focus">False</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <property name="reorderable">True</property>
+</object>

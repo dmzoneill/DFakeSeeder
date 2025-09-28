@@ -1,0 +1,1837 @@
+# Chinese translation for DFakeSeeder
+# Copyright (C) 2024 DFakeSeeder Contributors
+# This file is distributed under the same license as the DFakeSeeder package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DFakeSeeder 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"POT-Creation-Date: 2025-09-18 17:51+0100\n"
+"PO-Revision-Date: 2024-09-18 18:30+0100\n"
+"Last-Translator: Claude <noreply@anthropic.com>\n"
+"Language-Team: Chinese <zh@li.org>\n"
+"Language: zh\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "#"
+msgstr "#"
+
+msgid "(0 = unlimited)"
+msgstr "(0 = 无限制)"
+
+msgid "0 / 250"
+msgstr "0 / 250"
+
+msgid "127.0.0.1"
+msgstr "127.0.0.1"
+
+msgid ":"
+msgstr ":"
+
+msgid "<b>Advanced Extension Settings</b>"
+msgstr "<b>高级扩展设置</b>"
+
+msgid "<b>Aggressive Profile Settings</b>"
+msgstr "<b>激进配置文件设置</b>"
+
+msgid "<b>Alternative Speed Limits</b>"
+msgstr "<b>备用速度限制</b>"
+
+msgid "<b>Application Behavior</b>"
+msgstr "<b>应用程序行为</b>"
+
+msgid "<b>Authentication</b>"
+msgstr "<b>认证</b>"
+
+msgid "<b>Balanced Profile Settings</b>"
+msgstr "<b>平衡配置文件设置</b>"
+
+msgid "<b>Bootstrap Settings</b>"
+msgstr "<b>引导设置</b>"
+
+msgid "<b>Client Behavior Engine</b>"
+msgstr "<b>客户端行为引擎</b>"
+
+msgid "<b>Client Identification</b>"
+msgstr "<b>客户端识别</b>"
+
+msgid "<b>Configuration Management</b>"
+msgstr "<b>配置管理</b>"
+
+msgid "<b>Connection Limits</b>"
+msgstr "<b>连接限制</b>"
+
+msgid "<b>Connection Settings</b>"
+msgstr "<b>连接设置</b>"
+
+msgid "<b>Conservative Profile Settings</b>"
+msgstr "<b>保守配置文件设置</b>"
+
+msgid "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT（分布式哈希表）</b>"
+
+msgid "<b>Encryption</b>"
+msgstr "<b>加密</b>"
+
+msgid "<b>Expert Settings</b>"
+msgstr "<b>专家设置</b>"
+
+msgid "<b>Extension Protocol (BEP-010)</b>"
+msgstr "<b>扩展协议 (BEP-010)</b>"
+
+msgid "<b>Global Speed Limits</b>"
+msgstr "<b>全局速度限制</b>"
+
+msgid "<b>Interface</b>"
+msgstr "<b>界面</b>"
+
+msgid "<b>Keyboard Shortcuts</b>"
+msgstr "<b>键盘快捷键</b>"
+
+msgid "<b>Listening Port</b>"
+msgstr "<b>监听端口</b>"
+
+msgid "<b>Logging</b>"
+msgstr "<b>日志记录</b>"
+
+msgid "<b>Metadata Extension Settings</b>"
+msgstr "<b>元数据扩展设置</b>"
+
+msgid "<b>Network Settings</b>"
+msgstr "<b>网络设置</b>"
+
+msgid "<b>Node Configuration</b>"
+msgstr "<b>节点配置</b>"
+
+msgid "<b>Peer Behavior Settings</b>"
+msgstr "<b>节点行为设置</b>"
+
+msgid "<b>Peer Exchange (PEX) Settings</b>"
+msgstr "<b>节点交换 (PEX) 设置</b>"
+
+msgid "<b>Peer Protocol Timeouts</b>"
+msgstr "<b>节点协议超时</b>"
+
+msgid "<b>Performance</b>"
+msgstr "<b>性能</b>"
+
+msgid "<b>Protocol Extensions</b>"
+msgstr "<b>协议扩展</b>"
+
+msgid "<b>Protocol Features</b>"
+msgstr "<b>协议功能</b>"
+
+msgid "<b>Proxy Settings</b>"
+msgstr "<b>代理设置</b>"
+
+msgid "<b>Security Options</b>"
+msgstr "<b>安全选项</b>"
+
+msgid "<b>Seeder Protocol Settings</b>"
+msgstr "<b>做种协议设置</b>"
+
+msgid "<b>Seeding Profiles</b>"
+msgstr "<b>做种配置文件</b>"
+
+msgid "<b>Settings Search</b>"
+msgstr "<b>设置搜索</b>"
+
+msgid "<b>Speed Scheduler</b>"
+msgstr "<b>速度调度器</b>"
+
+msgid "<b>Statistics and Security</b>"
+msgstr "<b>统计和安全</b>"
+
+msgid "<b>Swarm Intelligence</b>"
+msgstr "<b>群体智能</b>"
+
+msgid "<b>Timing Settings</b>"
+msgstr "<b>时间设置</b>"
+
+msgid "<b>Tracker Announce Settings</b>"
+msgstr "<b>Tracker 通告设置</b>"
+
+msgid "<b>Traffic Pattern Settings</b>"
+msgstr "<b>流量模式设置</b>"
+
+msgid "<b>Transport Protocol Settings</b>"
+msgstr "<b>传输协议设置</b>"
+
+msgid "<b>Web Interface</b>"
+msgstr "<b>网页界面</b>"
+
+msgid "About"
+msgstr "关于"
+
+msgid "Active"
+msgstr "活跃"
+
+msgid "Active Profile:"
+msgstr "活动配置文件："
+
+msgid "Adaptation Rate:"
+msgstr "适应速率:"
+
+msgid "Add"
+msgstr "添加"
+
+msgid "Add torrent"
+msgstr "添加种子"
+
+msgid "Added"
+msgstr "添加时间"
+
+msgid "Advanced"
+msgstr "高级"
+
+msgid "Advanced settings reset to defaults"
+msgstr "高级设置已重置为默认值"
+
+msgid "Aggressive"
+msgstr "激进"
+
+msgid "Aggressive profile download speed"
+msgstr "激进配置文件下载速度"
+
+msgid "Aggressive profile upload speed (0 = unlimited)"
+msgstr "激进配置文件上传速度（0 = 无限制）"
+
+msgid "Alt download limit (KB/s):"
+msgstr "备用下载限制 (KB/s):"
+
+msgid "Alt upload limit (KB/s):"
+msgstr "备用上传限制 (KB/s):"
+
+msgid "Alternative download speed limit in KB/s"
+msgstr "备用下载速度限制 (KB/s)"
+
+msgid "Alternative upload speed limit in KB/s"
+msgstr "备用上传速度限制 (KB/s)"
+
+msgid "Amount of RAM to use for disk caching"
+msgstr "用于磁盘缓存的内存量"
+
+msgid "Announce Interval"
+msgstr "通告间隔"
+
+msgid "Announce interval (sec):"
+msgstr "通告间隔 (秒):"
+
+msgid "Announcement Interval:"
+msgstr "公告间隔:"
+
+msgid "Arabic"
+msgstr "Arabic"
+
+msgid "Auto-bootstrap DHT"
+msgstr "自动引导 DHT"
+
+msgid "Auto-generate node ID"
+msgstr "自动生成节点 ID"
+
+msgid "Auto-save settings"
+msgstr "自动保存设置"
+
+msgid "Auto-start disabled"
+msgstr "已禁用自动启动"
+
+msgid "Auto-start enabled"
+msgstr "已启用自动启动"
+
+msgid "Automatic logout after inactivity (5-1440 minutes)"
+msgstr "非活动状态后自动登出 (5-1440 分钟)"
+
+msgid "Automatically bootstrap DHT using known nodes"
+msgstr "使用已知节点自动引导 DHT"
+
+msgid "Automatically configure router port forwarding using UPnP/NAT-PMP"
+msgstr "使用 UPnP/NAT-PMP 自动配置路由器端口转发"
+
+msgid "Automatically generate a unique node ID"
+msgstr "自动生成唯一节点 ID"
+
+msgid "Automatically save settings when changed"
+msgstr "更改时自动保存设置"
+
+msgid "Automatically switch to alternative speeds during specified hours"
+msgstr "在指定时间内自动切换到备用速度"
+
+msgid "Availability"
+msgstr "可用性"
+
+msgid "Balanced"
+msgstr "平衡"
+
+msgid "Balanced profile download speed"
+msgstr "平衡配置文件下载速度"
+
+msgid "Balanced profile upload speed"
+msgstr "平衡配置文件上传速度"
+
+msgid "Behavior Variation:"
+msgstr "行为变化:"
+
+msgid "Behavior analysis probability:"
+msgstr "行为分析概率:"
+
+msgid "Behavior randomization"
+msgstr "行为随机化"
+
+msgid "BiglyBT"
+msgstr "BiglyBT"
+
+msgid "Bind to localhost only"
+msgstr "仅绑定到本地主机"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "BitTorrent settings reset to defaults"
+msgstr "BitTorrent 设置已重置为默认值"
+
+msgid "BitTorrent/7.10.5"
+msgstr "BitTorrent/7.10.5"
+
+msgid "Bootstrap Nodes (one per line, format: host:port):"
+msgstr "引导节点（每行一个，格式：主机:端口）:"
+
+msgid "Bootstrap Timeout:"
+msgstr "引导超时:"
+
+msgid "Bottom"
+msgstr "置底"
+
+msgid "Bucket Size:"
+msgstr "桶大小:"
+
+msgid "Burst Probability:"
+msgstr "突发概率:"
+
+msgid "CRITICAL"
+msgstr "严重"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Chinese"
+msgstr "中文"
+
+msgid "Choose a pre-configured seeding profile"
+msgstr "选择预配置的做种配置文件"
+
+msgid "Choose the application theme"
+msgstr "选择应用程序主题"
+
+msgid "Choose the interface language"
+msgstr "选择界面语言"
+
+msgid "Clear search"
+msgstr "清除搜索"
+
+msgid "Client"
+msgstr "客户端"
+
+msgid "Client Switch Probability:"
+msgstr "客户端切换概率:"
+
+msgid "Comment"
+msgstr "注释"
+
+msgid "Completed"
+msgstr "完成时间"
+
+msgid "Concurrent Queries:"
+msgstr "并发查询:"
+
+msgid "Config export not yet implemented"
+msgstr "配置导出尚未实现"
+
+msgid "Config import not yet implemented"
+msgstr "配置导入尚未实现"
+
+msgid "Connected"
+msgstr "已连接"
+
+msgid "Connected At"
+msgstr "连接时间"
+
+msgid "Connected Peers / Total Peers"
+msgstr "已连接节点 / 总节点"
+
+msgid "Connection"
+msgstr "连接"
+
+msgid "Connection Status"
+msgstr "连接状态"
+
+msgid "Connection Timeout:"
+msgstr "连接超时:"
+
+msgid "Connection rotation percentage:"
+msgstr "连接轮换百分比:"
+
+msgid "Connection settings reset to defaults"
+msgstr "连接设置已重置为默认值"
+
+msgid "Connection timeout for extensions (seconds)"
+msgstr "扩展连接超时（秒）"
+
+msgid "Conservative"
+msgstr "保守"
+
+msgid "Conservative profile download speed"
+msgstr "保守配置文件下载速度"
+
+msgid "Conservative profile upload speed"
+msgstr "保守配置文件上传速度"
+
+msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
+msgstr "保守模式：较低速度，较少连接，适合后台做种"
+
+msgid "Country"
+msgstr "国家"
+
+msgid "Created"
+msgstr "创建时间"
+
+msgid "Created By"
+msgstr "创建者"
+
+msgid "Ctrl+,"
+msgstr "Ctrl+,"
+
+msgid "Ctrl+F"
+msgstr "Ctrl+F"
+
+msgid "Ctrl+R"
+msgstr "Ctrl+R"
+
+msgid "Custom"
+msgstr "自定义"
+
+msgid "Custom Agent:"
+msgstr "自定义代理:"
+
+msgid "Custom Node ID:"
+msgstr "自定义节点 ID:"
+
+msgid "Custom node ID (40 hex characters)"
+msgstr "自定义节点 ID（40 个十六进制字符）"
+
+msgid "Custom user agent string"
+msgstr "自定义用户代理字符串"
+
+msgid "D' Fake Seeder"
+msgstr "D' Fake Seeder"
+
+msgid "DEBUG"
+msgstr "调试"
+
+msgid "DHT"
+msgstr "DHT"
+
+msgid "Dark"
+msgstr "深色"
+
+msgid "Days:"
+msgstr "天数:"
+
+msgid "Deluge"
+msgstr "Deluge"
+
+msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
+msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
+
+msgid "Details"
+msgstr "详细信息"
+
+msgid "Disabled"
+msgstr "已禁用"
+
+msgid "Disconnected"
+msgstr "已断开"
+
+msgid "Disk cache size (MB):"
+msgstr "磁盘缓存大小 (MB):"
+
+msgid "Down"
+msgstr "下移"
+
+msgid "Down Speed"
+msgstr "下载速度"
+
+msgid "Download Rate"
+msgstr "下载速率"
+
+msgid "Download Speed (KB/s):"
+msgstr "下载速度 (KB/s):"
+
+msgid "Download Variance:"
+msgstr "下载变化:"
+
+msgid "Download limit (KB/s):"
+msgstr "下载限制 (KB/s)："
+
+msgid "Download speed variance for aggressive profile"
+msgstr "激进配置文件的下载速度变化"
+
+msgid "Download speed variance for balanced profile"
+msgstr "平衡配置文件的下载速度变化"
+
+msgid "Download speed variance for conservative profile"
+msgstr "保守配置文件的下载速度变化"
+
+msgid "Downloaded"
+msgstr "已下载"
+
+msgid "Downloaded Session / Total"
+msgstr "已下载 会话 / 总计"
+
+msgid "Downloaded Speed"
+msgstr "下载速度"
+
+msgid "Dropout probability:"
+msgstr "退出概率:"
+
+msgid "Dutch"
+msgstr "Dutch"
+
+msgid "Dynamic profile switching"
+msgstr "动态配置文件切换"
+
+msgid "ERROR"
+msgstr "错误"
+
+msgid "ETA"
+msgstr "剩余时间"
+
+msgid "Enable CSRF protection"
+msgstr "启用 CSRF 保护"
+
+msgid "Enable Cross-Site Request Forgery protection"
+msgstr "启用跨站请求伪造保护"
+
+msgid "Enable DHT"
+msgstr "启用 DHT"
+
+msgid "Enable DHT (Distributed Hash Table)"
+msgstr "启用 DHT (分布式哈希表)"
+
+msgid "Enable DHT query rate limiting"
+msgstr "启用 DHT 查询速率限制"
+
+msgid "Enable DHT statistics collection"
+msgstr "启用 DHT 统计收集"
+
+msgid "Enable Distributed Hash Table for trackerless torrents"
+msgstr "为无 Tracker 种子启用分布式哈希表"
+
+msgid "Enable Fast Extension (BEP-006) for improved performance"
+msgstr "启用快速扩展 (BEP-006) 以提高性能"
+
+msgid "Enable LPD (Local Peer Discovery)"
+msgstr "启用 LPD (本地对等发现)"
+
+msgid "Enable Local Peer Discovery for finding peers on local network"
+msgstr "启用本地节点发现以在本地网络中查找节点"
+
+msgid "Enable Nagle algorithm"
+msgstr "启用 Nagle 算法"
+
+msgid "Enable Nagle algorithm for TCP"
+msgstr "为 TCP 启用 Nagle 算法"
+
+msgid "Enable PEX (Peer Exchange)"
+msgstr "启用 PEX (对等交换)"
+
+msgid "Enable Peer Exchange for discovering new peers"
+msgstr "启用节点交换以发现新节点"
+
+msgid "Enable Protocol Extensions"
+msgstr "启用协议扩展"
+
+msgid "Enable TCP keepalive"
+msgstr "启用 TCP 保活"
+
+msgid "Enable UPnP/NAT-PMP port mapping"
+msgstr "启用 UPnP/NAT-PMP 端口映射"
+
+msgid "Enable Web UI"
+msgstr "启用网页界面"
+
+msgid "Enable alternative speed limits"
+msgstr "启用备用速度限制"
+
+msgid "Enable alternative speed limits (useful for limiting speeds during certain hours)"
+msgstr "启用备用速度限制 (在特定时间限制速度很有用)"
+
+msgid "Enable clickjacking protection"
+msgstr "启用点击劫持保护"
+
+msgid "Enable client behavior simulation"
+msgstr "启用客户端行为模拟"
+
+msgid "Enable client behavior simulation engine"
+msgstr "启用客户端行为模拟引擎"
+
+msgid "Enable debug mode"
+msgstr "启用调试模式"
+
+msgid "Enable debug mode with extra logging and error details"
+msgstr "启用调试模式，包含额外日志和错误详情"
+
+msgid "Enable dynamic client profile switching"
+msgstr "启用动态客户端配置文件切换"
+
+msgid "Enable lt_donthave extension for piece availability"
+msgstr "启用 lt_donthave 扩展以获取片段可用性"
+
+msgid "Enable metadata extension"
+msgstr "启用元数据扩展"
+
+msgid "Enable metadata extension features"
+msgstr "启用元数据扩展功能"
+
+msgid "Enable or disable BitTorrent protocol extensions"
+msgstr "启用或禁用 BitTorrent 协议扩展"
+
+msgid "Enable or disable DHT for trackerless torrent support"
+msgstr "启用或禁用 DHT 以支持无追踪器种子"
+
+msgid "Enable proxy authentication"
+msgstr "启用代理认证"
+
+msgid "Enable random variations in client behavior"
+msgstr "启用客户端行为的随机变化"
+
+msgid "Enable rate limiting"
+msgstr "启用速率限制"
+
+msgid "Enable realistic traffic variations"
+msgstr "启用真实流量变化"
+
+msgid "Enable secure HTTP headers"
+msgstr "启用安全 HTTP 头"
+
+msgid "Enable speed scheduler"
+msgstr "启用速度调度器"
+
+msgid "Enable statistics"
+msgstr "启用统计"
+
+msgid "Enable swarm intelligence"
+msgstr "启用群体智能"
+
+msgid "Enable swarm intelligence for adaptive behavior"
+msgstr "启用群体智能以实现自适应行为"
+
+msgid "Enable time-based traffic patterns (peak hours, night hours)"
+msgstr "启用基于时间的流量模式（高峰时段、夜间时段）"
+
+msgid "Enable ut_holepunch extension for NAT traversal"
+msgstr "启用 ut_holepunch 扩展进行 NAT 穿越"
+
+msgid "Enable ut_metadata extension for metadata exchange"
+msgstr "启用 ut_metadata 扩展进行元数据交换"
+
+msgid "Enable ut_pex extension for peer exchange"
+msgstr "启用 ut_pex 扩展进行节点交换"
+
+msgid "Enable web-based remote control interface"
+msgstr "启用基于网页的远程控制界面"
+
+msgid "Enable µTP (Micro Transport Protocol)"
+msgstr "启用 µTP（微传输协议）"
+
+msgid "Enabled"
+msgstr "已启用"
+
+msgid "Encryption:"
+msgstr "加密："
+
+msgid "End hour (24-hour format)"
+msgstr "结束小时 (24 小时格式)"
+
+msgid "End minute"
+msgstr "结束分钟"
+
+msgid "English"
+msgstr "英语"
+
+msgid "Error"
+msgstr "错误"
+
+msgid "Error changing language"
+msgstr "更改语言时出错"
+
+msgid "Export"
+msgstr "导出"
+
+msgid "Export Settings"
+msgstr "导出设置"
+
+msgid "Export current settings to a file"
+msgstr "将当前设置导出到文件"
+
+msgid "Extension Timeout:"
+msgstr "扩展超时:"
+
+msgid "Extension statistics update interval (seconds)"
+msgstr "扩展统计更新间隔（秒）"
+
+msgid "Failure Reason"
+msgstr "失败原因"
+
+msgid "Fall back to TCP if µTP fails"
+msgstr "如果 µTP 失败则回退到 TCP"
+
+msgid "Fast Extension (BEP-006)"
+msgstr "快速扩展 (BEP-006)"
+
+msgid "File"
+msgstr "文件"
+
+msgid "File Path"
+msgstr "文件路径"
+
+msgid "File chooser not yet implemented"
+msgstr "文件选择器尚未实现"
+
+msgid "Files"
+msgstr "文件"
+
+msgid "Flags"
+msgstr "标志"
+
+msgid "Follow System"
+msgstr "跟随系统"
+
+msgid "Forced"
+msgstr "强制"
+
+msgid "French"
+msgstr "法语"
+
+msgid "Fri"
+msgstr "五"
+
+msgid "Friday"
+msgstr "星期五"
+
+msgid "From:"
+msgstr "从:"
+
+msgid "General"
+msgstr "常规"
+
+msgid "General settings reset to defaults"
+msgstr "常规设置已重置为默认值"
+
+msgid "General timeout for extension operations (seconds)"
+msgstr "扩展操作的通用超时（秒）"
+
+msgid "Generate Secure Password"
+msgstr "生成安全密码"
+
+msgid "Generate a random port number"
+msgstr "生成随机端口号"
+
+msgid "Generate a random secure password"
+msgstr "生成随机安全密码"
+
+msgid "Generate synthetic metadata"
+msgstr "生成合成元数据"
+
+msgid "Generate synthetic metadata for simulation"
+msgstr "为模拟生成合成元数据"
+
+msgid "Generate synthetic peer data for PEX"
+msgstr "为 PEX 生成合成节点数据"
+
+msgid "Generate synthetic peers"
+msgstr "生成合成节点"
+
+msgid "German"
+msgstr "德语"
+
+msgid "Github - D' Fake Seeder"
+msgstr "Github - D' Fake Seeder"
+
+msgid "Global download speed limit in KB/s (0 = unlimited)"
+msgstr "全局下载速度限制 (KB/s) (0 = 无限制)"
+
+msgid "Global upload speed limit in KB/s (0 = unlimited)"
+msgstr "全局上传速度限制 (KB/s) (0 = 无限制)"
+
+msgid "HTTP"
+msgstr "HTTP"
+
+msgid "HTTP seeder timeout (seconds):"
+msgstr "HTTP 做种超时 (秒):"
+
+msgid "Handshake"
+msgstr "握手"
+
+msgid "Handshake timeout (seconds):"
+msgstr "握手超时 (秒):"
+
+msgid "Hide to system tray when window is minimized"
+msgstr "窗口最小化时隐藏到系统托盘"
+
+msgid "Hindi"
+msgstr "Hindi"
+
+msgid "How often to announce to trackers (60-7200 seconds)"
+msgstr "向 Tracker 通告的频率 (60-7200 秒)"
+
+msgid "How often to scrape tracker for swarm statistics"
+msgstr "从 Tracker 获取群体统计信息的频率"
+
+msgid "How often to update the user interface"
+msgstr "更新用户界面的频率"
+
+msgid "ID"
+msgstr "标识符"
+
+msgid "INFO"
+msgstr "信息"
+
+msgid "IP Address"
+msgstr "IP地址"
+
+msgid "IP address to bind to (0.0.0.0 for all interfaces)"
+msgstr "绑定的 IP 地址 (0.0.0.0 表示所有接口)"
+
+msgid "Idle Probability:"
+msgstr "空闲概率:"
+
+msgid "Import"
+msgstr "导入"
+
+msgid "Import Settings"
+msgstr "导入设置"
+
+msgid "Import settings from a file"
+msgstr "从文件导入设置"
+
+msgid "Inactive"
+msgstr "非活跃"
+
+msgid "Incoming"
+msgstr "传入"
+
+msgid "Incoming Connections"
+msgstr "传入连接"
+
+msgid "Incoming Peer Connections"
+msgstr "传入节点连接"
+
+msgid "Interested"
+msgstr "感兴趣"
+
+msgid "Interval between DHT announcements (seconds)"
+msgstr "DHT 公告之间的间隔（秒）"
+
+msgid "Interval between PEX message exchanges (seconds)"
+msgstr "PEX 消息交换之间的间隔（秒）"
+
+msgid "Interval for DHT statistics updates (seconds)"
+msgstr "DHT 统计更新间隔（秒）"
+
+msgid "Interval for contacting peers in seconds"
+msgstr "联系节点的间隔 (秒)"
+
+msgid "Interval for sending keep alive messages in seconds"
+msgstr "发送保持活动消息的间隔 (秒)"
+
+msgid "Italian"
+msgstr "意大利语"
+
+msgid "Japanese"
+msgstr "日语"
+
+msgid "Keep Alive Interval:"
+msgstr "保活间隔:"
+
+msgid "Keep alive interval (seconds):"
+msgstr "保持活动间隔 (秒):"
+
+msgid "Keep alive interval for connections (seconds)"
+msgstr "连接保活间隔（秒）"
+
+msgid "Korean"
+msgstr "Korean"
+
+msgid "Label"
+msgstr "标签"
+
+msgid "Language switched to"
+msgstr "语言已切换为"
+
+msgid "Language:"
+msgstr "语言："
+
+msgid "Last Announce"
+msgstr "最后通告"
+
+msgid "Last Notification"
+msgstr "最新通知"
+
+msgid "Leechers"
+msgstr "下载者"
+
+msgid "Level of BitTorrent protocol compliance"
+msgstr "BitTorrent 协议合规级别"
+
+msgid "Light"
+msgstr "浅色"
+
+msgid "Limit extension message rate"
+msgstr "限制扩展消息速率"
+
+msgid "List of bootstrap nodes for DHT initialization"
+msgstr "DHT 初始化的引导节点列表"
+
+msgid "Log"
+msgstr "日志"
+
+msgid "Log Level:"
+msgstr "日志级别:"
+
+msgid "Log to file"
+msgstr "记录到文件"
+
+msgid "Max Connections:"
+msgstr "最大连接数:"
+
+msgid "Max Dropped Peers:"
+msgstr "最大丢弃节点数:"
+
+msgid "Max Message Size:"
+msgstr "最大消息大小:"
+
+msgid "Max Messages/Second:"
+msgstr "每秒最大消息数:"
+
+msgid "Max Nodes:"
+msgstr "最大节点数:"
+
+msgid "Max Peers/Message:"
+msgstr "每消息最大节点数:"
+
+msgid "Max Queries/Second:"
+msgstr "每秒最大查询数:"
+
+msgid "Max global connections:"
+msgstr "最大全局连接数："
+
+msgid "Max log file size (MB):"
+msgstr "最大日志文件大小 (MB):"
+
+msgid "Max per torrent:"
+msgstr "每个种子最大连接数："
+
+msgid "Max upload slots:"
+msgstr "最大上传槽位数："
+
+msgid "Maximum DHT queries per second"
+msgstr "每秒最大 DHT 查询数"
+
+msgid "Maximum connections for aggressive profile"
+msgstr "激进配置文件的最大连接数"
+
+msgid "Maximum connections for balanced profile"
+msgstr "平衡配置文件的最大连接数"
+
+msgid "Maximum connections for conservative profile"
+msgstr "保守配置文件的最大连接数"
+
+msgid "Maximum dropped peers to track for PEX"
+msgstr "PEX 跟踪的最大丢弃节点数"
+
+msgid "Maximum extension messages per second"
+msgstr "每秒最大扩展消息数"
+
+msgid "Maximum number of DHT nodes to maintain"
+msgstr "要维护的 DHT 节点最大数量"
+
+msgid "Maximum number of concurrent DHT queries"
+msgstr "并发 DHT 查询的最大数量"
+
+msgid "Maximum number of connections per individual torrent"
+msgstr "每个单独种子的最大连接数"
+
+msgid "Maximum number of connections to all torrents"
+msgstr "所有种子的最大连接数"
+
+msgid "Maximum number of nodes in the routing table"
+msgstr "路由表中的最大节点数"
+
+msgid "Maximum number of nodes per bucket"
+msgstr "每个桶的最大节点数"
+
+msgid "Maximum number of simultaneous upload slots"
+msgstr "最大同时上传槽位数"
+
+msgid "Maximum peers to include in a PEX message"
+msgstr "PEX 消息中包含的最大节点数"
+
+msgid "Maximum port for seeder connections"
+msgstr "做种连接的最大端口"
+
+msgid "Maximum size for extension messages (bytes)"
+msgstr "扩展消息的最大大小（字节）"
+
+msgid "Maximum size of log file before rotation"
+msgstr "轮换前日志文件的最大大小"
+
+msgid "Maximum transaction ID for tracker communication"
+msgstr "Tracker 通信的最大事务 ID"
+
+msgid "Message"
+msgstr "消息"
+
+msgid "Message read timeout (seconds):"
+msgstr "消息读取超时 (秒):"
+
+msgid "Metadata Piece Size:"
+msgstr "元数据片段大小:"
+
+msgid "Metadata Timeout:"
+msgstr "元数据超时:"
+
+msgid "Min announce interval (sec):"
+msgstr "最小通告间隔 (秒):"
+
+msgid "Minimize to system tray"
+msgstr "最小化到系统托盘"
+
+msgid "Minimum log level to record"
+msgstr "记录的最低日志级别"
+
+msgid "Minimum port for seeder connections"
+msgstr "做种连接的最小端口"
+
+msgid "Minimum time between announces (10-3600 seconds)"
+msgstr "通告之间的最短时间 (10-3600 秒)"
+
+msgid "Minimum transaction ID for tracker communication"
+msgstr "Tracker 通信的最小事务 ID"
+
+msgid "Mon"
+msgstr "一"
+
+msgid "Monday"
+msgstr "星期一"
+
+msgid "My IP address"
+msgstr "我的 IP 地址"
+
+msgid "N/A"
+msgstr "不适用"
+
+msgid "Name"
+msgstr "名称"
+
+msgid "Network interface:"
+msgstr "网络接口:"
+
+msgid "Next Announce"
+msgstr "下次通告"
+
+msgid "Next Update"
+msgstr "下次更新"
+
+msgid "None"
+msgstr "无"
+
+msgid "Number of peers to analyze for behavior patterns"
+msgstr "要分析行为模式的节点数量"
+
+msgid "Number of peers to request from tracker"
+msgstr "从 Tracker 请求的节点数量"
+
+msgid "Number of synthetic peers to generate"
+msgstr "要生成的合成节点数量"
+
+msgid "Only allow connections from localhost (more secure)"
+msgstr "仅允许来自本地主机的连接 (更安全)"
+
+msgid "Open preferences"
+msgstr "打开首选项"
+
+msgid "Options"
+msgstr "选项"
+
+msgid "Outgoing"
+msgstr "传出"
+
+msgid "Outgoing Connections"
+msgstr "传出连接"
+
+msgid "Outgoing Peer Connections"
+msgstr "传出节点连接"
+
+msgid "Overlay Notification"
+msgstr "覆盖通知"
+
+msgid "PEX Interval:"
+msgstr "PEX 间隔:"
+
+msgid "Password for web interface login"
+msgstr "网页界面登录密码"
+
+msgid "Password:"
+msgstr "密码："
+
+msgid "Path"
+msgstr "路径"
+
+msgid "Pause"
+msgstr "暂停"
+
+msgid "Pause torrent"
+msgstr "暂停种子"
+
+msgid "Peer Analysis Depth:"
+msgstr "节点分析深度:"
+
+msgid "Peer Choking"
+msgstr "节点阻塞"
+
+msgid "Peer ID"
+msgstr "节点ID"
+
+msgid "Peer ID Prefix:"
+msgstr "节点 ID 前缀:"
+
+msgid "Peer ID prefix to identify client type"
+msgstr "用于识别客户端类型的节点 ID 前缀"
+
+msgid "Peer Protocol"
+msgstr "对等协议"
+
+msgid "Peer Protocol settings reset to defaults"
+msgstr "节点协议设置已重置为默认值"
+
+msgid "Peer contact interval (seconds):"
+msgstr "节点联系间隔 (秒):"
+
+msgid "Peer idle chance:"
+msgstr "节点空闲机会:"
+
+msgid "Peer request count:"
+msgstr "节点请求计数:"
+
+msgid "Peers"
+msgstr "节点"
+
+msgid "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr "轮换连接的百分比 (0.0 - 1.0)"
+
+msgid "Piece Length"
+msgstr "分片长度"
+
+msgid "Pieces"
+msgstr "分片数"
+
+msgid "Pieces Received"
+msgstr "已接收分片"
+
+msgid "Polish"
+msgstr "Polish"
+
+msgid "Port"
+msgstr "端口"
+
+msgid "Port for incoming BitTorrent connections (1024-65535)"
+msgstr "传入 BitTorrent 连接的端口 (1024-65535)"
+
+msgid "Port for web interface (1024-65535)"
+msgstr "网页界面端口 (1024-65535)"
+
+msgid "Port:"
+msgstr "端口："
+
+msgid "Portuguese"
+msgstr "葡萄牙语"
+
+msgid "Preferences"
+msgstr "首选项"
+
+msgid "Prevent embedding in frames (X-Frame-Options)"
+msgstr "防止在框架中嵌入 (X-Frame-Options)"
+
+msgid "Primary BitTorrent client to simulate"
+msgstr "要模拟的主要 BitTorrent 客户端"
+
+msgid "Primary Client:"
+msgstr "主要客户端:"
+
+msgid "Priority"
+msgstr "优先级"
+
+msgid "Priority Down"
+msgstr "优先级下降"
+
+msgid "Priority Up"
+msgstr "优先级上升"
+
+msgid "Private"
+msgstr "私有"
+
+msgid "Probability of idle periods for aggressive profile"
+msgstr "激进配置文件的空闲期概率"
+
+msgid "Probability of idle periods for balanced profile"
+msgstr "平衡配置文件的空闲期概率"
+
+msgid "Probability of idle periods for conservative profile"
+msgstr "保守配置文件的空闲期概率"
+
+msgid "Probability of peer behavior analysis (0.0 - 1.0)"
+msgstr "节点行为分析概率 (0.0 - 1.0)"
+
+msgid "Probability of peer being idle (0.0 - 1.0)"
+msgstr "节点空闲概率 (0.0 - 1.0)"
+
+msgid "Probability of peer dropping out (0.0 - 1.0)"
+msgstr "节点退出概率 (0.0 - 1.0)"
+
+msgid "Probability of peer status changes (0.0 - 1.0)"
+msgstr "节点状态变化概率 (0.0 - 1.0)"
+
+msgid "Probability of seeder upload activity (0.0 - 1.0)"
+msgstr "做种者上传活动概率 (0.0 - 1.0)"
+
+msgid "Probability of switching to a different client behavior"
+msgstr "切换到不同客户端行为的概率"
+
+msgid "Probability of traffic bursts for aggressive profile"
+msgstr "激进配置文件的流量突发概率"
+
+msgid "Probability of traffic bursts for balanced profile"
+msgstr "平衡配置文件的流量突发概率"
+
+msgid "Probability of traffic bursts for conservative profile"
+msgstr "保守配置文件的流量突发概率"
+
+msgid "Progress"
+msgstr "进度"
+
+msgid "Progress distribution (almost):"
+msgstr "进度分布 (几乎):"
+
+msgid "Progress distribution (middle):"
+msgstr "进度分布 (中等):"
+
+msgid "Progress distribution (start):"
+msgstr "进度分布 (开始):"
+
+msgid "Progress distribution for almost complete peers (0.0 - 1.0)"
+msgstr "几乎完成节点的进度分布 (0.0 - 1.0)"
+
+msgid "Progress distribution for middle progress peers (0.0 - 1.0)"
+msgstr "中等进度节点的进度分布 (0.0 - 1.0)"
+
+msgid "Progress distribution for starting peers (0.0 - 1.0)"
+msgstr "起始节点的进度分布 (0.0 - 1.0)"
+
+msgid "Protocol Compliance:"
+msgstr "协议合规:"
+
+msgid "Protocol Extensions"
+msgstr "协议扩展"
+
+msgid "Protocol encryption mode for peer communications"
+msgstr "节点通信的协议加密模式"
+
+msgid "Proxy authentication password"
+msgstr "代理认证密码"
+
+msgid "Proxy authentication username"
+msgstr "代理认证用户名"
+
+msgid "Proxy server hostname or IP address"
+msgstr "代理服务器主机名或 IP 地址"
+
+msgid "Proxy server port number"
+msgstr "代理服务器端口号"
+
+msgid "Query Timeout:"
+msgstr "查询超时:"
+
+msgid "Queue"
+msgstr "队列"
+
+msgid "Quit"
+msgstr "退出"
+
+msgid "Random"
+msgstr "随机"
+
+msgid "Rate of adaptation to swarm behavior"
+msgstr "对群体行为的适应速率"
+
+msgid "Ratio"
+msgstr "分享率"
+
+msgid "Realistic variations"
+msgstr "真实变化"
+
+msgid "Received"
+msgstr "已接收"
+
+msgid "Relaxed"
+msgstr "宽松"
+
+msgid "Remember window size and position"
+msgstr "记住窗口大小和位置"
+
+msgid "Remember window size and position between sessions"
+msgstr "在会话之间记住窗口大小和位置"
+
+msgid "Remove torrent"
+msgstr "删除种子"
+
+msgid "Requests"
+msgstr "请求"
+
+msgid "Require authentication"
+msgstr "需要认证"
+
+msgid "Require username and password for web access"
+msgstr "网页访问需要用户名和密码"
+
+msgid "Reset"
+msgstr "重置"
+
+msgid "Reset all settings not yet implemented"
+msgstr "重置所有设置尚未实现"
+
+msgid "Reset all settings to default values"
+msgstr "将所有设置重置为默认值"
+
+msgid "Reset to Defaults"
+msgstr "重置为默认值"
+
+msgid "Reset to defaults"
+msgstr "重置为默认值"
+
+msgid "Resume"
+msgstr "恢复"
+
+msgid "Resume torrent"
+msgstr "恢复种子"
+
+msgid "Routing Table Size:"
+msgstr "路由表大小:"
+
+msgid "Russian"
+msgstr "俄语"
+
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+msgid "Sat"
+msgstr "六"
+
+msgid "Saturday"
+msgstr "星期六"
+
+msgid "Save logs to file in addition to console"
+msgstr "除控制台外还将日志保存到文件"
+
+msgid "Scrape interval (sec):"
+msgstr "抓取间隔 (秒):"
+
+msgid "Search by torrent name or file path"
+msgstr "按种子名称或文件路径搜索"
+
+msgid "Search for settings across all tabs"
+msgstr "在所有选项卡中搜索设置"
+
+msgid "Search for torrent"
+msgstr "搜索种子"
+
+msgid "Search settings"
+msgstr "搜索设置"
+
+msgid "Secure password generated"
+msgstr "已生成安全密码"
+
+msgid "Seeder port range (max):"
+msgstr "做种端口范围 (最大):"
+
+msgid "Seeder port range (min):"
+msgstr "做种端口范围 (最小):"
+
+msgid "Seeders"
+msgstr "做种者"
+
+msgid "Seeds"
+msgstr "种子"
+
+msgid "Select proxy type for connections"
+msgstr "选择连接的代理类型"
+
+msgid "Select torrent"
+msgstr "选择种子"
+
+msgid "Send security-related HTTP headers"
+msgstr "发送安全相关的 HTTP 头"
+
+msgid "Sent"
+msgstr "已发送"
+
+msgid "Server:"
+msgstr "服务器："
+
+msgid "Session timeout (min):"
+msgstr "会话超时 (分钟):"
+
+msgid "Shortcuts configuration not yet implemented"
+msgstr "快捷键配置尚未实现"
+
+msgid "Show only selected torrent connections"
+msgstr "仅显示选定种子的连接"
+
+msgid "Simulation"
+msgstr "模拟"
+
+msgid "Size"
+msgstr "大小"
+
+msgid "Size of metadata pieces in bytes"
+msgstr "元数据片段的大小（字节）"
+
+msgid "Small Torrent Limit"
+msgstr "小种子限制"
+
+msgid "Spanish"
+msgstr "西班牙语"
+
+msgid "Speed"
+msgstr "速度"
+
+msgid "Speed settings reset to defaults"
+msgstr "速度设置已重置为默认值"
+
+msgid "Standard"
+msgstr "标准"
+
+msgid "Start DFakeSeeder automatically when the system boots"
+msgstr "系统启动时自动启动 DFakeSeeder"
+
+msgid "Start hour (24-hour format)"
+msgstr "开始小时 (24 小时格式)"
+
+msgid "Start minimized"
+msgstr "启动时最小化"
+
+msgid "Start minimized disabled"
+msgstr "已禁用最小化启动"
+
+msgid "Start minimized enabled"
+msgstr "已启用最小化启动"
+
+msgid "Start minute"
+msgstr "开始分钟"
+
+msgid "Start on system startup"
+msgstr "开机自启动"
+
+msgid "Start the application minimized to system tray"
+msgstr "启动应用程序时最小化到系统托盘"
+
+msgid "Stats Update Interval:"
+msgstr "统计更新间隔:"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Status change probability:"
+msgstr "状态变化概率:"
+
+msgid "Strict"
+msgstr "严格"
+
+msgid "Sun"
+msgstr "日"
+
+msgid "Sunday"
+msgstr "星期日"
+
+msgid "Swedish"
+msgstr "Swedish"
+
+msgid "Synthetic Peer Count:"
+msgstr "合成节点数量:"
+
+msgid "TCP fallback"
+msgstr "TCP 回退"
+
+msgid "TCP keepalive"
+msgstr "TCP 保活"
+
+msgid "Theme:"
+msgstr "主题："
+
+msgid "Threshold"
+msgstr "阈值"
+
+msgid "Thu"
+msgstr "四"
+
+msgid "Thursday"
+msgstr "星期四"
+
+msgid "Tier"
+msgstr "层级"
+
+msgid "Time-based patterns"
+msgstr "基于时间的模式"
+
+msgid "Timeout for DHT bootstrap operations (seconds)"
+msgstr "DHT 引导操作超时（秒）"
+
+msgid "Timeout for DHT queries (seconds)"
+msgstr "DHT 查询超时（秒）"
+
+msgid "Timeout for HTTP seeder connections in seconds"
+msgstr "HTTP 做种连接超时 (秒)"
+
+msgid "Timeout for UDP seeder connections in seconds"
+msgstr "UDP 做种连接超时 (秒)"
+
+msgid "Timeout for metadata requests (seconds)"
+msgstr "元数据请求超时（秒）"
+
+msgid "Timeout for peer handshake in seconds"
+msgstr "节点握手超时 (秒)"
+
+msgid "Timeout for reading peer messages in seconds"
+msgstr "读取节点消息超时 (秒)"
+
+msgid "To:"
+msgstr "到:"
+
+msgid "Top"
+msgstr "置顶"
+
+msgid "Torrent"
+msgstr "种子"
+
+msgid "Torrent Files"
+msgstr "种子文件"
+
+msgid "Torrents"
+msgstr "种子"
+
+msgid "Total Downloaded"
+msgstr "总下载量"
+
+msgid "Total Size"
+msgstr "总大小"
+
+msgid "Total Uploaded"
+msgstr "总上传量"
+
+msgid "Track extension statistics"
+msgstr "跟踪扩展统计"
+
+msgid "Track extension usage statistics"
+msgstr "跟踪扩展使用统计"
+
+msgid "Tracker"
+msgstr "追踪器"
+
+msgid "Tracker URL"
+msgstr "Tracker 地址"
+
+msgid "Trackers"
+msgstr "Tracker"
+
+msgid "Traffic Profile:"
+msgstr "流量配置文件:"
+
+msgid "Traffic pattern profile for simulation"
+msgstr "用于模拟的流量模式配置文件"
+
+msgid "Transaction ID range (max):"
+msgstr "事务 ID 范围 (最大):"
+
+msgid "Transaction ID range (min):"
+msgstr "事务 ID 范围 (最小):"
+
+msgid "Transmission"
+msgstr "Transmission"
+
+msgid "Transmission/3.00"
+msgstr "Transmission/3.00"
+
+msgid "Tue"
+msgstr "二"
+
+msgid "Tuesday"
+msgstr "星期二"
+
+msgid "Type"
+msgstr "类型"
+
+msgid "Type:"
+msgstr "类型："
+
+msgid "UDP seeder timeout (seconds):"
+msgstr "UDP 做种超时 (秒):"
+
+msgid "UI Refresh Rate"
+msgstr "UI 刷新率"
+
+msgid "UI refresh rate (sec):"
+msgstr "UI 刷新率 (秒):"
+
+msgid "URL"
+msgstr "地址"
+
+msgid "URL: http://localhost:8080"
+msgstr "地址: http://localhost:8080"
+
+msgid "Unknown"
+msgstr "未知"
+
+msgid "Up"
+msgstr "上移"
+
+msgid "Up Speed"
+msgstr "上传速度"
+
+msgid "Update Tracker"
+msgstr "更新追踪器"
+
+msgid "Upload Speed"
+msgstr "上传速度"
+
+msgid "Upload Speed (KB/s):"
+msgstr "上传速度 (KB/s):"
+
+msgid "Upload Variance:"
+msgstr "上传变化:"
+
+msgid "Upload activity probability:"
+msgstr "上传活动概率:"
+
+msgid "Upload limit (KB/s):"
+msgstr "上传限制 (KB/s)："
+
+msgid "Upload speed variance for aggressive profile"
+msgstr "激进配置文件的上传速度变化"
+
+msgid "Upload speed variance for balanced profile"
+msgstr "平衡配置文件的上传速度变化"
+
+msgid "Upload speed variance for conservative profile"
+msgstr "保守配置文件的上传速度变化"
+
+msgid "Uploaded"
+msgstr "已上传"
+
+msgid "Uploaded Session / Total"
+msgstr "已上传 会话 / 总计"
+
+msgid "Uploading"
+msgstr "上传中"
+
+msgid "Use HTTPS (SSL/TLS)"
+msgstr "使用 HTTPS (SSL/TLS)"
+
+msgid "Use HTTPS for secure connections (requires SSL certificate)"
+msgstr "使用 HTTPS 进行安全连接 (需要 SSL 证书)"
+
+msgid "Use authentication"
+msgstr "使用认证"
+
+msgid "User Agent:"
+msgstr "用户代理："
+
+msgid "User agent string to identify the client to trackers"
+msgstr "用于向 Tracker 识别客户端的用户代理字符串"
+
+msgid "Username for web interface login"
+msgstr "网页界面登录用户名"
+
+msgid "Username:"
+msgstr "用户名："
+
+msgid "Validate DHT security tokens"
+msgstr "验证 DHT 安全令牌"
+
+msgid "Validate extension messages"
+msgstr "验证扩展消息"
+
+msgid "Validate extension messages for security"
+msgstr "验证扩展消息的安全性"
+
+msgid "Validate security tokens"
+msgstr "验证安全令牌"
+
+msgid "Validate setting values and show warnings for invalid combinations"
+msgstr "验证设置值并显示无效组合的警告"
+
+msgid "Validate settings on change"
+msgstr "更改时验证设置"
+
+msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr "客户端行为变化（0.0 = 无变化，1.0 = 最大变化）"
+
+msgid "Vuze"
+msgstr "Vuze"
+
+msgid "Vuze/5.7.6.0"
+msgstr "Vuze/5.7.6.0"
+
+msgid "WARNING"
+msgstr "警告"
+
+msgid "Web UI"
+msgstr "网页界面"
+
+msgid "Web UI settings reset to defaults"
+msgstr "Web UI 设置已重置为默认值"
+
+msgid "Wed"
+msgstr "三"
+
+msgid "Wednesday"
+msgstr "星期三"
+
+msgid "active"
+msgstr "活跃"
+
+msgid "admin"
+msgstr "admin"
+
+msgid "announce_interval"
+msgstr "通告间隔"
+
+msgid "bytes"
+msgstr "字节"
+
+msgid "class_name"
+msgstr "类名"
+
+msgid "download_speed"
+msgstr "下载速度"
+
+msgid "filepath"
+msgstr "文件路径"
+
+msgid "files_tab"
+msgstr "文件选项卡"
+
+msgid "id"
+msgstr "#"
+
+msgid "leechers"
+msgstr "下载者"
+
+msgid "log_tab"
+msgstr "日志选项卡"
+
+msgid "lt_donthave (Piece Availability)"
+msgstr "lt_donthave（片段可用性）"
+
+msgid "name"
+msgstr "名称"
+
+msgid "next_update"
+msgstr "下次更新"
+
+msgid "open-menu-symbolic"
+msgstr "open-menu-symbolic"
+
+msgid "options_tab"
+msgstr "选项选项卡"
+
+msgid "peers_tab"
+msgstr "对等选项卡"
+
+msgid "progress"
+msgstr "进度"
+
+msgid "qBittorrent"
+msgstr "qBittorrent"
+
+msgid "qBittorrent/4.3.1"
+msgstr "qBittorrent/4.3.1"
+
+msgid "rTorrent"
+msgstr "rTorrent"
+
+msgid "rTorrent/0.9.6"
+msgstr "rTorrent/0.9.6"
+
+msgid "seconds"
+msgstr "秒"
+
+msgid "seeders"
+msgstr "种子"
+
+msgid "session_downloaded"
+msgstr "已下载"
+
+msgid "session_uploaded"
+msgstr "已上传"
+
+msgid "small_torrent_limit"
+msgstr "小种子限制"
+
+msgid "threshold"
+msgstr "阈值"
+
+msgid "total_downloaded"
+msgstr "总下载量"
+
+msgid "total_size"
+msgstr "大小"
+
+msgid "total_uploaded"
+msgstr "总上传量"
+
+msgid "trackers_tab"
+msgstr "跟踪器选项卡"
+
+msgid "uTorrent/3.5.5"
+msgstr "uTorrent/3.5.5"
+
+msgid "upload_speed"
+msgstr "上传速度"
+
+msgid "uploading"
+msgstr "上传中"
+
+msgid "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch（NAT 穿越）"
+
+msgid "ut_metadata (Metadata Exchange)"
+msgstr "ut_metadata（元数据交换）"
+
+msgid "ut_pex (Peer Exchange)"
+msgstr "ut_pex（节点交换）"
+
+msgid "µTorrent"
+msgstr "µTorrent"
+
+msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
+msgstr "⚠️ 高级设置 - 请谨慎修改。错误的值可能影响性能或稳定性。"
+
+msgid "⚠️ Web UI allows remote control of the application. Use strong authentication."
+msgstr "⚠️ 网页界面允许远程控制应用程序。请使用强身份验证。"
+

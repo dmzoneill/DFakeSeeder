@@ -1,0 +1,923 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkScrolledWindow" id="settings_protocol_extensions_scroll">
+    <property name="hscrollbar-policy">never</property>
+    <property name="vscrollbar-policy">automatic</property>
+    <child>
+        <object class="GtkBox" id="settings_protocol_extensions_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">18</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+
+            <!-- Protocol Extensions Enable/Disable Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Protocol Extensions&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable Extensions -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="extensions_enabled_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable or disable BitTorrent protocol extensions</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable Protocol Extensions</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Extension Protocol (BEP-010) Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Extension Protocol (BEP-010)&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- ut_metadata -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="ut_metadata_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable ut_metadata extension for metadata exchange</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">ut_metadata (Metadata Exchange)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- ut_pex -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="ut_pex_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable ut_pex extension for peer exchange</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">ut_pex (Peer Exchange)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- lt_donthave -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="lt_donthave_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable lt_donthave extension for piece availability</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">lt_donthave (Piece Availability)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Fast Extension -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="fast_extension_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable Fast Extension (BEP-006) for improved performance</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Fast Extension (BEP-006)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- ut_holepunch -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="ut_holepunch_check">
+                                            <property name="active">False</property>
+                                            <property name="tooltip-text" translatable="yes">Enable ut_holepunch extension for NAT traversal</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">ut_holepunch (NAT Traversal)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Peer Exchange (PEX) Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Peer Exchange (PEX) Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- PEX interval -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">PEX Interval:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="pex_interval_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">30</property>
+                                                    <property name="upper">300</property>
+                                                    <property name="step-increment">5</property>
+                                                    <property name="page-increment">30</property>
+                                                    <property name="value">60</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Interval between PEX message exchanges (seconds)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">seconds</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Max peers per message -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Max Peers/Message:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="pex_max_peers_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">10</property>
+                                                    <property name="upper">200</property>
+                                                    <property name="step-increment">5</property>
+                                                    <property name="page-increment">25</property>
+                                                    <property name="value">50</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum peers to include in a PEX message</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Max dropped peers -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Max Dropped Peers:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="pex_max_dropped_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">5</property>
+                                                    <property name="upper">100</property>
+                                                    <property name="step-increment">5</property>
+                                                    <property name="page-increment">10</property>
+                                                    <property name="value">20</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum dropped peers to track for PEX</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Generate synthetic peers -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="pex_synthetic_peers_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Generate synthetic peer data for PEX</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Generate synthetic peers</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Synthetic peer count -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Synthetic Peer Count:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="pex_synthetic_count_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">5</property>
+                                                    <property name="upper">100</property>
+                                                    <property name="step-increment">5</property>
+                                                    <property name="page-increment">10</property>
+                                                    <property name="value">20</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Number of synthetic peers to generate</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Metadata Extension Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Metadata Extension Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable metadata extension -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="metadata_enabled_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable metadata extension features</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable metadata extension</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Metadata piece size -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Metadata Piece Size:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="metadata_piece_size_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1024</property>
+                                                    <property name="upper">65536</property>
+                                                    <property name="step-increment">1024</property>
+                                                    <property name="page-increment">4096</property>
+                                                    <property name="value">16384</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Size of metadata pieces in bytes</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">bytes</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Metadata timeout -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Metadata Timeout:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="metadata_timeout_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">10</property>
+                                                    <property name="upper">300</property>
+                                                    <property name="step-increment">10</property>
+                                                    <property name="page-increment">30</property>
+                                                    <property name="value">60</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Timeout for metadata requests (seconds)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">seconds</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Synthetic metadata -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="metadata_synthetic_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Generate synthetic metadata for simulation</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Generate synthetic metadata</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Transport Protocol Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Transport Protocol Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- µTP enabled -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="utp_enabled_check">
+                                            <property name="active">False</property>
+                                            <property name="tooltip-text" translatable="yes">Enable µTP (Micro Transport Protocol)</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable µTP (Micro Transport Protocol)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- TCP fallback -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="tcp_fallback_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Fall back to TCP if µTP fails</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">TCP fallback</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Connection timeout -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Connection Timeout:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="ext_connection_timeout_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">5</property>
+                                                    <property name="upper">120</property>
+                                                    <property name="step-increment">5</property>
+                                                    <property name="page-increment">15</property>
+                                                    <property name="value">30</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Connection timeout for extensions (seconds)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">seconds</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Keep alive interval -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Keep Alive Interval:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="ext_keep_alive_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">30</property>
+                                                    <property name="upper">600</property>
+                                                    <property name="step-increment">30</property>
+                                                    <property name="page-increment">60</property>
+                                                    <property name="value">120</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Keep alive interval for connections (seconds)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">seconds</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Nagle algorithm -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="nagle_algorithm_check">
+                                            <property name="active">False</property>
+                                            <property name="tooltip-text" translatable="yes">Enable Nagle algorithm for TCP</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable Nagle algorithm</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- TCP keepalive -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="tcp_keepalive_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Enable TCP keepalive</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">TCP keepalive</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Advanced Extension Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Advanced Extension Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Extension timeout -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Extension Timeout:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="extension_timeout_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">10</property>
+                                                    <property name="upper">300</property>
+                                                    <property name="step-increment">10</property>
+                                                    <property name="page-increment">30</property>
+                                                    <property name="value">30</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">General timeout for extension operations (seconds)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">seconds</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Max extension message size -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Max Message Size:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="max_extension_msg_size_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1024</property>
+                                                    <property name="upper">10485760</property>
+                                                    <property name="step-increment">4096</property>
+                                                    <property name="page-increment">65536</property>
+                                                    <property name="value">1048576</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum size for extension messages (bytes)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">bytes</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Track extension statistics -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="track_extension_stats_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Track extension usage statistics</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Track extension statistics</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Statistics update interval -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Stats Update Interval:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="ext_stats_interval_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">10</property>
+                                                    <property name="upper">600</property>
+                                                    <property name="step-increment">10</property>
+                                                    <property name="page-increment">60</property>
+                                                    <property name="value">60</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Extension statistics update interval (seconds)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">seconds</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Validate extensions -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="validate_extensions_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Validate extension messages for security</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Validate extension messages</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Limit extension messages -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkCheckButton" id="limit_extension_msgs_check">
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Limit extension message rate</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Limit extension message rate</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Max messages per second -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Max Messages/Second:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">18</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="max_ext_msgs_per_sec_spin">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1</property>
+                                                    <property name="upper">200</property>
+                                                    <property name="step-increment">5</property>
+                                                    <property name="page-increment">25</property>
+                                                    <property name="value">50</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum extension messages per second</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+    </child>
+</object>

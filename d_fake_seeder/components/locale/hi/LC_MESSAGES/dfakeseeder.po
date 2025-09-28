@@ -1,0 +1,1837 @@
+# Hindi translation for DFakeSeeder
+# Copyright (C) 2024 DFakeSeeder Contributors
+# This file is distributed under the same license as the DFakeSeeder package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DFakeSeeder 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"POT-Creation-Date: 2025-09-18 17:51+0100\n"
+"PO-Revision-Date: 2024-09-18 18:30+0100\n"
+"Last-Translator: Claude <noreply@anthropic.com>\n"
+"Language-Team: Hindi <hi@li.org>\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid "#"
+msgstr "#"
+
+msgid "(0 = unlimited)"
+msgstr "(0 = असीमित)"
+
+msgid "0 / 250"
+msgstr "0 / 250"
+
+msgid "127.0.0.1"
+msgstr "127.0.0.1"
+
+msgid ":"
+msgstr ":"
+
+msgid "<b>Advanced Extension Settings</b>"
+msgstr "<b>उन्नत एक्सटेंशन सेटिंग्स</b>"
+
+msgid "<b>Aggressive Profile Settings</b>"
+msgstr "<b>आक्रामक प्रोफाइल सेटिंग्स</b>"
+
+msgid "<b>Alternative Speed Limits</b>"
+msgstr "<b>वैकल्पिक गति सीमा</b>"
+
+msgid "<b>Application Behavior</b>"
+msgstr "<b>एप्लिकेशन व्यवहार</b>"
+
+msgid "<b>Authentication</b>"
+msgstr "<b>प्रमाणीकरण</b>"
+
+msgid "<b>Balanced Profile Settings</b>"
+msgstr "<b>संतुलित प्रोफाइल सेटिंग्स</b>"
+
+msgid "<b>Bootstrap Settings</b>"
+msgstr "<b>बूटस्ट्रैप सेटिंग्स</b>"
+
+msgid "<b>Client Behavior Engine</b>"
+msgstr "<b>क्लाइंट व्यवहार इंजन</b>"
+
+msgid "<b>Client Identification</b>"
+msgstr "<b>क्लाइंट पहचान</b>"
+
+msgid "<b>Configuration Management</b>"
+msgstr "<b>कॉन्फ़िगरेशन प्रबंधन</b>"
+
+msgid "<b>Connection Limits</b>"
+msgstr "<b>कनेक्शन सीमा</b>"
+
+msgid "<b>Connection Settings</b>"
+msgstr "<b>कनेक्शन सेटिंग्स</b>"
+
+msgid "<b>Conservative Profile Settings</b>"
+msgstr "<b>रूढ़िवादी प्रोफाइल सेटिंग्स</b>"
+
+msgid "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT (वितरित हैश टेबल)</b>"
+
+msgid "<b>Encryption</b>"
+msgstr "<b>एन्क्रिप्शन</b>"
+
+msgid "<b>Expert Settings</b>"
+msgstr "<b>विशेषज्ञ सेटिंग्स</b>"
+
+msgid "<b>Extension Protocol (BEP-010)</b>"
+msgstr "<b>एक्सटेंशन प्रोटोकॉल (BEP-010)</b>"
+
+msgid "<b>Global Speed Limits</b>"
+msgstr "<b>वैश्विक गति सीमा</b>"
+
+msgid "<b>Interface</b>"
+msgstr "<b>इंटरफेस</b>"
+
+msgid "<b>Keyboard Shortcuts</b>"
+msgstr "<b>कीबोर्ड शॉर्टकट</b>"
+
+msgid "<b>Listening Port</b>"
+msgstr "<b>सुनने का पोर्ट</b>"
+
+msgid "<b>Logging</b>"
+msgstr "<b>लॉगिंग</b>"
+
+msgid "<b>Metadata Extension Settings</b>"
+msgstr "<b>मेटाडेटा एक्सटेंशन सेटिंग्स</b>"
+
+msgid "<b>Network Settings</b>"
+msgstr "<b>नेटवर्क सेटिंग्स</b>"
+
+msgid "<b>Node Configuration</b>"
+msgstr "<b>नोड कॉन्फ़िगरेशन</b>"
+
+msgid "<b>Peer Behavior Settings</b>"
+msgstr "<b>पीयर व्यवहार सेटिंग्स</b>"
+
+msgid "<b>Peer Exchange (PEX) Settings</b>"
+msgstr "<b>पीयर एक्सचेंज (PEX) सेटिंग्स</b>"
+
+msgid "<b>Peer Protocol Timeouts</b>"
+msgstr "<b>पीयर प्रोटोकॉल टाइमआउट</b>"
+
+msgid "<b>Performance</b>"
+msgstr "<b>प्रदर्शन</b>"
+
+msgid "<b>Protocol Extensions</b>"
+msgstr "<b>प्रोटोकॉल एक्सटेंशन</b>"
+
+msgid "<b>Protocol Features</b>"
+msgstr "<b>प्रोटोकॉल सुविधाएं</b>"
+
+msgid "<b>Proxy Settings</b>"
+msgstr "<b>प्रॉक्सी सेटिंग्स</b>"
+
+msgid "<b>Security Options</b>"
+msgstr "<b>सुरक्षा विकल्प</b>"
+
+msgid "<b>Seeder Protocol Settings</b>"
+msgstr "<b>सीडर प्रोटोकॉल सेटिंग्स</b>"
+
+msgid "<b>Seeding Profiles</b>"
+msgstr "<b>सीडिंग प्रोफ़ाइल</b>"
+
+msgid "<b>Settings Search</b>"
+msgstr "<b>सेटिंग्स खोज</b>"
+
+msgid "<b>Speed Scheduler</b>"
+msgstr "<b>गति शेड्यूलर</b>"
+
+msgid "<b>Statistics and Security</b>"
+msgstr "<b>आंकड़े और सुरक्षा</b>"
+
+msgid "<b>Swarm Intelligence</b>"
+msgstr "<b>स्वार्म इंटेलिजेंस</b>"
+
+msgid "<b>Timing Settings</b>"
+msgstr "<b>टाइमिंग सेटिंग्स</b>"
+
+msgid "<b>Tracker Announce Settings</b>"
+msgstr "<b>ट्रैकर घोषणा सेटिंग्स</b>"
+
+msgid "<b>Traffic Pattern Settings</b>"
+msgstr "<b>ट्रैफिक पैटर्न सेटिंग्स</b>"
+
+msgid "<b>Transport Protocol Settings</b>"
+msgstr "<b>ट्रांसपोर्ट प्रोटोकॉल सेटिंग्स</b>"
+
+msgid "<b>Web Interface</b>"
+msgstr "<b>वेब इंटरफेस</b>"
+
+msgid "About"
+msgstr "के बारे में"
+
+msgid "Active"
+msgstr "सक्रिय"
+
+msgid "Active Profile:"
+msgstr "सक्रिय प्रोफाइल:"
+
+msgid "Adaptation Rate:"
+msgstr "अनुकूलन दर:"
+
+msgid "Add"
+msgstr "जोड़ें"
+
+msgid "Add torrent"
+msgstr "टॉरेंट जोड़ें"
+
+msgid "Added"
+msgstr "जोड़ा गया"
+
+msgid "Advanced"
+msgstr "उन्नत"
+
+msgid "Advanced settings reset to defaults"
+msgstr "उन्नत सेटिंग्स डिफ़ॉल्ट में रीसेट"
+
+msgid "Aggressive"
+msgstr "आक्रामक"
+
+msgid "Aggressive profile download speed"
+msgstr "आक्रामक प्रोफाइल डाउनलोड गति"
+
+msgid "Aggressive profile upload speed (0 = unlimited)"
+msgstr "आक्रामक प्रोफाइल अपलोड गति (0 = असीमित)"
+
+msgid "Alt download limit (KB/s):"
+msgstr "वैकल्पिक डाउनलोड सीमा (KB/s):"
+
+msgid "Alt upload limit (KB/s):"
+msgstr "वैकल्पिक अपलोड सीमा (KB/s):"
+
+msgid "Alternative download speed limit in KB/s"
+msgstr "KB/s में वैकल्पिक डाउनलोड गति सीमा"
+
+msgid "Alternative upload speed limit in KB/s"
+msgstr "KB/s में वैकल्पिक अपलोड गति सीमा"
+
+msgid "Amount of RAM to use for disk caching"
+msgstr "डिस्क कैशिंग के लिए उपयोग करने वाली RAM की मात्रा"
+
+msgid "Announce Interval"
+msgstr "घोषणा अंतराल"
+
+msgid "Announce interval (sec):"
+msgstr "घोषणा अंतराल (सेकंड):"
+
+msgid "Announcement Interval:"
+msgstr "घोषणा अंतराल:"
+
+msgid "Arabic"
+msgstr "Arabic"
+
+msgid "Auto-bootstrap DHT"
+msgstr "DHT को ऑटो-बूटस्ट्रैप करें"
+
+msgid "Auto-generate node ID"
+msgstr "नोड आईडी स्वतः उत्पन्न करें"
+
+msgid "Auto-save settings"
+msgstr "सेटिंग्स स्वतः सहेजें"
+
+msgid "Auto-start disabled"
+msgstr "ऑटो-स्टार्ट अक्षम"
+
+msgid "Auto-start enabled"
+msgstr "ऑटो-स्टार्ट सक्षम"
+
+msgid "Automatic logout after inactivity (5-1440 minutes)"
+msgstr "निष्क्रियता के बाद स्वचालित लॉगआउट (5-1440 मिनट)"
+
+msgid "Automatically bootstrap DHT using known nodes"
+msgstr "ज्ञात नोड्स का उपयोग करके DHT को स्वचालित रूप से बूटस्ट्रैप करें"
+
+msgid "Automatically configure router port forwarding using UPnP/NAT-PMP"
+msgstr "UPnP/NAT-PMP का उपयोग करके राउटर पोर्ट फॉरवर्डिंग स्वचालित रूप से कॉन्फ़िगर करें"
+
+msgid "Automatically generate a unique node ID"
+msgstr "स्वचालित रूप से एक यूनीक नोड ID जेनरेट करें"
+
+msgid "Automatically save settings when changed"
+msgstr "बदलने पर सेटिंग्स स्वचालित रूप से सहेजें"
+
+msgid "Automatically switch to alternative speeds during specified hours"
+msgstr "निर्दिष्ट घंटों के दौरान वैकल्पिक गति पर स्वचालित रूप से स्विच करें"
+
+msgid "Availability"
+msgstr "उपलब्धता"
+
+msgid "Balanced"
+msgstr "संतुलित"
+
+msgid "Balanced profile download speed"
+msgstr "संतुलित प्रोफाइल डाउनलोड गति"
+
+msgid "Balanced profile upload speed"
+msgstr "संतुलित प्रोफाइल अपलोड गति"
+
+msgid "Behavior Variation:"
+msgstr "व्यवहार विविधता:"
+
+msgid "Behavior analysis probability:"
+msgstr "व्यवहार विश्लेषण संभावना:"
+
+msgid "Behavior randomization"
+msgstr "व्यवहार यादृच्छिकरण"
+
+msgid "BiglyBT"
+msgstr "BiglyBT"
+
+msgid "Bind to localhost only"
+msgstr "केवल localhost से बाइंड करें"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "BitTorrent settings reset to defaults"
+msgstr "BitTorrent सेटिंग्स डिफ़ॉल्ट में रीसेट"
+
+msgid "BitTorrent/7.10.5"
+msgstr "BitTorrent/7.10.5"
+
+msgid "Bootstrap Nodes (one per line, format: host:port):"
+msgstr "बूटस्ट्रैप नोड्स (प्रति लाइन एक, फॉर्मेट: host:port):"
+
+msgid "Bootstrap Timeout:"
+msgstr "बूटस्ट्रैप टाइमआउट:"
+
+msgid "Bottom"
+msgstr "तल"
+
+msgid "Bucket Size:"
+msgstr "बकेट साइज़:"
+
+msgid "Burst Probability:"
+msgstr "बर्स्ट संभावना:"
+
+msgid "CRITICAL"
+msgstr "गंभीर"
+
+msgid "Cancel"
+msgstr "रद्द करें"
+
+msgid "Chinese"
+msgstr "चीनी"
+
+msgid "Choose a pre-configured seeding profile"
+msgstr "पूर्व-कॉन्फ़िगर किया गया सीडिंग प्रोफ़ाइल चुनें"
+
+msgid "Choose the application theme"
+msgstr "एप्लिकेशन थीम चुनें"
+
+msgid "Choose the interface language"
+msgstr "इंटरफेस भाषा चुनें"
+
+msgid "Clear search"
+msgstr "खोज साफ़ करें"
+
+msgid "Client"
+msgstr "क्लाइंट"
+
+msgid "Client Switch Probability:"
+msgstr "क्लाइंट स्विच संभावना:"
+
+msgid "Comment"
+msgstr "टिप्पणी"
+
+msgid "Completed"
+msgstr "पूर्ण"
+
+msgid "Concurrent Queries:"
+msgstr "समांतर क्वेरीज़:"
+
+msgid "Config export not yet implemented"
+msgstr "कॉन्फ़िग एक्सपोर्ट अभी तक लागू नहीं"
+
+msgid "Config import not yet implemented"
+msgstr "कॉन्फ़िग इंपोर्ट अभी तक लागू नहीं"
+
+msgid "Connected"
+msgstr "जुड़ा हुआ"
+
+msgid "Connected At"
+msgstr "पर जुड़ा"
+
+msgid "Connected Peers / Total Peers"
+msgstr "कनेक्टेड पीअर्स / कुल पीअर्स"
+
+msgid "Connection"
+msgstr "कनेक्शन"
+
+msgid "Connection Status"
+msgstr "कनेक्शन स्थिति"
+
+msgid "Connection Timeout:"
+msgstr "कनेक्शन टाइमआउट:"
+
+msgid "Connection rotation percentage:"
+msgstr "कनेक्शन रोटेशन प्रतिशत:"
+
+msgid "Connection settings reset to defaults"
+msgstr "कनेक्शन सेटिंग्स डिफ़ॉल्ट में रीसेट"
+
+msgid "Connection timeout for extensions (seconds)"
+msgstr "एक्सटेंशन के लिए कनेक्शन टाइमआउट (सेकंड)"
+
+msgid "Conservative"
+msgstr "रूढ़िवादी"
+
+msgid "Conservative profile download speed"
+msgstr "रूढ़िवादी प्रोफाइल डाउनलोड गति"
+
+msgid "Conservative profile upload speed"
+msgstr "रूढ़िवादी प्रोफाइल अपलोड गति"
+
+msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
+msgstr "रूढ़िवादी: कम गति, कम कनेक्शन, बैकग्राउंड सीडिंग के लिए आदर्श"
+
+msgid "Country"
+msgstr "देश"
+
+msgid "Created"
+msgstr "बनाया गया"
+
+msgid "Created By"
+msgstr "द्वारा बनाया गया"
+
+msgid "Ctrl+,"
+msgstr "Ctrl+,"
+
+msgid "Ctrl+F"
+msgstr "Ctrl+F"
+
+msgid "Ctrl+R"
+msgstr "Ctrl+R"
+
+msgid "Custom"
+msgstr "कस्टम"
+
+msgid "Custom Agent:"
+msgstr "कस्टम एजेंट:"
+
+msgid "Custom Node ID:"
+msgstr "कस्टम नोड ID:"
+
+msgid "Custom node ID (40 hex characters)"
+msgstr "कस्टम नोड ID (40 हेक्स कैरेक्टर)"
+
+msgid "Custom user agent string"
+msgstr "कस्टम उपयोगकर्ता एजेंट स्ट्रिंग"
+
+msgid "D' Fake Seeder"
+msgstr "D' Fake Seeder"
+
+msgid "DEBUG"
+msgstr "डिबग"
+
+msgid "DHT"
+msgstr "DHT"
+
+msgid "Dark"
+msgstr "डार्क"
+
+msgid "Days:"
+msgstr "दिन:"
+
+msgid "Deluge"
+msgstr "Deluge"
+
+msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
+msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
+
+msgid "Details"
+msgstr "विवरण"
+
+msgid "Disabled"
+msgstr "अक्षम"
+
+msgid "Disconnected"
+msgstr "डिस्कनेक्ट"
+
+msgid "Disk cache size (MB):"
+msgstr "डिस्क कैश आकार (MB):"
+
+msgid "Down"
+msgstr "नीचे"
+
+msgid "Down Speed"
+msgstr "डाउनलोड गति"
+
+msgid "Download Rate"
+msgstr "डाउनलोड दर"
+
+msgid "Download Speed (KB/s):"
+msgstr "डाउनलोड गति (KB/s):"
+
+msgid "Download Variance:"
+msgstr "डाउनलोड विचरण:"
+
+msgid "Download limit (KB/s):"
+msgstr "डाउनलोड सीमा (KB/s):"
+
+msgid "Download speed variance for aggressive profile"
+msgstr "आक्रामक प्रोफाइल के लिए डाउनलोड गति विचरण"
+
+msgid "Download speed variance for balanced profile"
+msgstr "संतुलित प्रोफाइल के लिए डाउनलोड गति विचरण"
+
+msgid "Download speed variance for conservative profile"
+msgstr "रूढ़िवादी प्रोफाइल के लिए डाउनलोड गति विचरण"
+
+msgid "Downloaded"
+msgstr "डाउनलोड किया गया"
+
+msgid "Downloaded Session / Total"
+msgstr "डाउनलोड किया गया सत्र / कुल"
+
+msgid "Downloaded Speed"
+msgstr "डाउनलोड गति"
+
+msgid "Dropout probability:"
+msgstr "ड्रॉपआउट संभावना:"
+
+msgid "Dutch"
+msgstr "Dutch"
+
+msgid "Dynamic profile switching"
+msgstr "गतिशील प्रोफाइल स्विचिंग"
+
+msgid "ERROR"
+msgstr "त्रुटि"
+
+msgid "ETA"
+msgstr "शेष समय"
+
+msgid "Enable CSRF protection"
+msgstr "CSRF सुरक्षा सक्षम करें"
+
+msgid "Enable Cross-Site Request Forgery protection"
+msgstr "क्रॉस-साइट रिक्वेस्ट फॉर्जरी सुरक्षा सक्षम करें"
+
+msgid "Enable DHT"
+msgstr "DHT सक्षम करें"
+
+msgid "Enable DHT (Distributed Hash Table)"
+msgstr "DHT (वितरित हैश तालिका) सक्षम करें"
+
+msgid "Enable DHT query rate limiting"
+msgstr "DHT क्वेरी दर सीमा सक्षम करें"
+
+msgid "Enable DHT statistics collection"
+msgstr "DHT आंकड़े संग्रह सक्षम करें"
+
+msgid "Enable Distributed Hash Table for trackerless torrents"
+msgstr "ट्रैकर रहित टॉरेंट के लिए वितरित हैश तालिका सक्षम करें"
+
+msgid "Enable Fast Extension (BEP-006) for improved performance"
+msgstr "बेहतर प्रदर्शन के लिए फास्ट एक्सटेंशन (BEP-006) सक्षम करें"
+
+msgid "Enable LPD (Local Peer Discovery)"
+msgstr "LPD (स्थानीय पीयर खोज) सक्षम करें"
+
+msgid "Enable Local Peer Discovery for finding peers on local network"
+msgstr "स्थानीय नेटवर्क पर पीअर्स खोजने के लिए स्थानीय पीयर खोज सक्षम करें"
+
+msgid "Enable Nagle algorithm"
+msgstr "Nagle एल्गोरिदम सक्षम करें"
+
+msgid "Enable Nagle algorithm for TCP"
+msgstr "TCP के लिए Nagle एल्गोरिदम सक्षम करें"
+
+msgid "Enable PEX (Peer Exchange)"
+msgstr "PEX (पीयर एक्सचेंज) सक्षम करें"
+
+msgid "Enable Peer Exchange for discovering new peers"
+msgstr "नए पीअर्स खोजने के लिए पीयर एक्सचेंज सक्षम करें"
+
+msgid "Enable Protocol Extensions"
+msgstr "प्रोटोकॉल एक्सटेंशन सक्षम करें"
+
+msgid "Enable TCP keepalive"
+msgstr "TCP keepalive सक्षम करें"
+
+msgid "Enable UPnP/NAT-PMP port mapping"
+msgstr "UPnP/NAT-PMP पोर्ट मैपिंग सक्षम करें"
+
+msgid "Enable Web UI"
+msgstr "वेब UI सक्षम करें"
+
+msgid "Enable alternative speed limits"
+msgstr "वैकल्पिक गति सीमा सक्षम करें"
+
+msgid "Enable alternative speed limits (useful for limiting speeds during certain hours)"
+msgstr "वैकल्पिक गति सीमा सक्षम करें (निश्चित घंटों के दौरान गति सीमित करने के लिए उपयोगी)"
+
+msgid "Enable clickjacking protection"
+msgstr "क्लिकजैकिंग सुरक्षा सक्षम करें"
+
+msgid "Enable client behavior simulation"
+msgstr "क्लाइंट व्यवहार सिमुलेशन सक्षम करें"
+
+msgid "Enable client behavior simulation engine"
+msgstr "क्लाइंट व्यवहार सिमुलेशन इंजन सक्षम करें"
+
+msgid "Enable debug mode"
+msgstr "डिबग मोड सक्षम करें"
+
+msgid "Enable debug mode with extra logging and error details"
+msgstr "अतिरिक्त लॉगिंग और त्रुटि विवरण के साथ डिबग मोड सक्षम करें"
+
+msgid "Enable dynamic client profile switching"
+msgstr "डायनामिक क्लाइंट प्रोफाइल स्विचिंग सक्षम करें"
+
+msgid "Enable lt_donthave extension for piece availability"
+msgstr "पीस उपलब्धता के लिए lt_donthave एक्सटेंशन सक्षम करें"
+
+msgid "Enable metadata extension"
+msgstr "मेटाडेटा एक्सटेंशन सक्षम करें"
+
+msgid "Enable metadata extension features"
+msgstr "मेटाडेटा एक्सटेंशन फीचर्स सक्षम करें"
+
+msgid "Enable or disable BitTorrent protocol extensions"
+msgstr "BitTorrent प्रोटोकॉल एक्सटेंशन सक्षम या अक्षम करें"
+
+msgid "Enable or disable DHT for trackerless torrent support"
+msgstr "ट्रैकरलेस टोरेंट समर्थन के लिए DHT सक्षम या अक्षम करें"
+
+msgid "Enable proxy authentication"
+msgstr "प्रॉक्सी प्रमाणीकरण सक्षम करें"
+
+msgid "Enable random variations in client behavior"
+msgstr "क्लाइंट व्यवहार में यादृच्छिक विविधताएं सक्षम करें"
+
+msgid "Enable rate limiting"
+msgstr "दर सीमा सक्षम करें"
+
+msgid "Enable realistic traffic variations"
+msgstr "वास्तविक ट्रैफिक भिन्नताएं सक्षम करें"
+
+msgid "Enable secure HTTP headers"
+msgstr "सुरक्षित HTTP हेडर सक्षम करें"
+
+msgid "Enable speed scheduler"
+msgstr "गति शेड्यूलर सक्षम करें"
+
+msgid "Enable statistics"
+msgstr "सांख्यिकी सक्षम करें"
+
+msgid "Enable swarm intelligence"
+msgstr "स्वार्म इंटेलिजेंस सक्षम करें"
+
+msgid "Enable swarm intelligence for adaptive behavior"
+msgstr "अनुकूली व्यवहार के लिए स्वार्म इंटेलिजेंस सक्षम करें"
+
+msgid "Enable time-based traffic patterns (peak hours, night hours)"
+msgstr "समय-आधारित ट्रैफिक पैटर्न सक्षम करें (पीक आवर्स, रात के घंटे)"
+
+msgid "Enable ut_holepunch extension for NAT traversal"
+msgstr "NAT ट्रैवर्सल के लिए ut_holepunch एक्सटेंशन सक्षम करें"
+
+msgid "Enable ut_metadata extension for metadata exchange"
+msgstr "मेटाडेटा एक्सचेंज के लिए ut_metadata एक्सटेंशन सक्षम करें"
+
+msgid "Enable ut_pex extension for peer exchange"
+msgstr "पीयर एक्सचेंज के लिए ut_pex एक्सटेंशन सक्षम करें"
+
+msgid "Enable web-based remote control interface"
+msgstr "वेब-आधारित रिमोट कंट्रोल इंटरफ़ेस सक्षम करें"
+
+msgid "Enable µTP (Micro Transport Protocol)"
+msgstr "µTP (माइक्रो ट्रांसपोर्ट प्रोटोकॉल) सक्षम करें"
+
+msgid "Enabled"
+msgstr "सक्षम"
+
+msgid "Encryption:"
+msgstr "एन्क्रिप्शन:"
+
+msgid "End hour (24-hour format)"
+msgstr "समाप्ति घंटा (24-घंटे प्रारूप)"
+
+msgid "End minute"
+msgstr "समाप्ति मिनट"
+
+msgid "English"
+msgstr "अंग्रेजी"
+
+msgid "Error"
+msgstr "त्रुटि"
+
+msgid "Error changing language"
+msgstr "भाषा बदलने में त्रुटि"
+
+msgid "Export"
+msgstr "निर्यात"
+
+msgid "Export Settings"
+msgstr "सेटिंग्स निर्यात करें"
+
+msgid "Export current settings to a file"
+msgstr "वर्तमान सेटिंग्स को फ़ाइल में निर्यात करें"
+
+msgid "Extension Timeout:"
+msgstr "एक्सटेंशन टाइमआउट:"
+
+msgid "Extension statistics update interval (seconds)"
+msgstr "एक्सटेंशन आंकड़े अपडेट अंतराल (सेकंड)"
+
+msgid "Failure Reason"
+msgstr "विफलता कारण"
+
+msgid "Fall back to TCP if µTP fails"
+msgstr "यदि µTP विफल हो जाए तो TCP पर वापस जाएं"
+
+msgid "Fast Extension (BEP-006)"
+msgstr "फास्ट एक्सटेंशन (BEP-006)"
+
+msgid "File"
+msgstr "फाइल"
+
+msgid "File Path"
+msgstr "फाइल पथ"
+
+msgid "File chooser not yet implemented"
+msgstr "फाइल चूज़र अभी तक लागू नहीं"
+
+msgid "Files"
+msgstr "फाइलें"
+
+msgid "Flags"
+msgstr "झंडे"
+
+msgid "Follow System"
+msgstr "सिस्टम का पालन करें"
+
+msgid "Forced"
+msgstr "जबरदस्त"
+
+msgid "French"
+msgstr "फ्रेंच"
+
+msgid "Fri"
+msgstr "शुक्र"
+
+msgid "Friday"
+msgstr "शुक्रवार"
+
+msgid "From:"
+msgstr "से:"
+
+msgid "General"
+msgstr "सामान्य"
+
+msgid "General settings reset to defaults"
+msgstr "सामान्य सेटिंग्स डिफ़ॉल्ट पर रीसेट"
+
+msgid "General timeout for extension operations (seconds)"
+msgstr "एक्सटेंशन ऑपरेशन के लिए सामान्य टाइमआउट (सेकंड)"
+
+msgid "Generate Secure Password"
+msgstr "सुरक्षित पासवर्ड बनाएं"
+
+msgid "Generate a random port number"
+msgstr "एक यादृच्छिक पोर्ट नंबर जेनरेट करें"
+
+msgid "Generate a random secure password"
+msgstr "एक यादृच्छिक सुरक्षित पासवर्ड जेनरेट करें"
+
+msgid "Generate synthetic metadata"
+msgstr "कृत्रिम मेटाडेटा उत्पन्न करें"
+
+msgid "Generate synthetic metadata for simulation"
+msgstr "सिमुलेशन के लिए सिंथेटिक मेटाडेटा जेनरेट करें"
+
+msgid "Generate synthetic peer data for PEX"
+msgstr "PEX के लिए सिंथेटिक पीयर डेटा जेनरेट करें"
+
+msgid "Generate synthetic peers"
+msgstr "कृत्रिम पीयर उत्पन्न करें"
+
+msgid "German"
+msgstr "जर्मन"
+
+msgid "Github - D' Fake Seeder"
+msgstr "Github - D' Fake Seeder"
+
+msgid "Global download speed limit in KB/s (0 = unlimited)"
+msgstr "KB/s में वैश्विक डाउनलोड गति सीमा (0 = असीमित)"
+
+msgid "Global upload speed limit in KB/s (0 = unlimited)"
+msgstr "KB/s में वैश्विक अपलोड गति सीमा (0 = असीमित)"
+
+msgid "HTTP"
+msgstr "HTTP"
+
+msgid "HTTP seeder timeout (seconds):"
+msgstr "HTTP सीडर टाइमआउट (सेकंड):"
+
+msgid "Handshake"
+msgstr "हैंडशेक"
+
+msgid "Handshake timeout (seconds):"
+msgstr "हैंडशेक टाइमआउट (सेकंड):"
+
+msgid "Hide to system tray when window is minimized"
+msgstr "विंडो छोटी करने पर सिस्टम ट्रे में छुपाएं"
+
+msgid "Hindi"
+msgstr "Hindi"
+
+msgid "How often to announce to trackers (60-7200 seconds)"
+msgstr "ट्रैकर्स को कितनी बार घोषणा करें (60-7200 सेकंड)"
+
+msgid "How often to scrape tracker for swarm statistics"
+msgstr "स्वार्म आंकड़ों के लिए ट्रैकर को कितनी बार स्क्रैप करें"
+
+msgid "How often to update the user interface"
+msgstr "यूज़र इंटरफ़ेस को कितनी बार अपडेट करें"
+
+msgid "ID"
+msgstr "आईडी"
+
+msgid "INFO"
+msgstr "जानकारी"
+
+msgid "IP Address"
+msgstr "IP पता"
+
+msgid "IP address to bind to (0.0.0.0 for all interfaces)"
+msgstr "बाइंड करने के लिए IP पता (सभी इंटरफ़ेस के लिए 0.0.0.0)"
+
+msgid "Idle Probability:"
+msgstr "निष्क्रिय संभावना:"
+
+msgid "Import"
+msgstr "आयात"
+
+msgid "Import Settings"
+msgstr "सेटिंग्स आयात करें"
+
+msgid "Import settings from a file"
+msgstr "फ़ाइल से सेटिंग्स आयात करें"
+
+msgid "Inactive"
+msgstr "निष्क्रिय"
+
+msgid "Incoming"
+msgstr "आने वाला"
+
+msgid "Incoming Connections"
+msgstr "आने वाले कनेक्शन"
+
+msgid "Incoming Peer Connections"
+msgstr "आने वाले पीयर कनेक्शन"
+
+msgid "Interested"
+msgstr "इच्छुक"
+
+msgid "Interval between DHT announcements (seconds)"
+msgstr "DHT घोषणाओं के बीच अंतराल (सेकंड)"
+
+msgid "Interval between PEX message exchanges (seconds)"
+msgstr "PEX मैसेज एक्सचेंज के बीच अंतराल (सेकंड)"
+
+msgid "Interval for DHT statistics updates (seconds)"
+msgstr "DHT आंकड़े अपडेट के लिए अंतराल (सेकंड)"
+
+msgid "Interval for contacting peers in seconds"
+msgstr "सेकंड में पीअर्स से संपर्क करने का अंतराल"
+
+msgid "Interval for sending keep alive messages in seconds"
+msgstr "सेकंड में कीप अलाइव संदेश भेजने का अंतराल"
+
+msgid "Italian"
+msgstr "इतालवी"
+
+msgid "Japanese"
+msgstr "जापानी"
+
+msgid "Keep Alive Interval:"
+msgstr "कीप अलाइव अंतराल:"
+
+msgid "Keep alive interval (seconds):"
+msgstr "कीप अलाइव अंतराल (सेकंड):"
+
+msgid "Keep alive interval for connections (seconds)"
+msgstr "कनेक्शन के लिए कीप अलाइव अंतराल (सेकंड)"
+
+msgid "Korean"
+msgstr "Korean"
+
+msgid "Label"
+msgstr "लेबल"
+
+msgid "Language switched to"
+msgstr "भाषा बदली गई"
+
+msgid "Language:"
+msgstr "भाषा:"
+
+msgid "Last Announce"
+msgstr "अंतिम घोषणा"
+
+msgid "Last Notification"
+msgstr "अंतिम सूचना"
+
+msgid "Leechers"
+msgstr "लीचर्स"
+
+msgid "Level of BitTorrent protocol compliance"
+msgstr "BitTorrent प्रोटोकॉल अनुपालन का स्तर"
+
+msgid "Light"
+msgstr "लाइट"
+
+msgid "Limit extension message rate"
+msgstr "एक्सटेंशन मैसेज दर सीमित करें"
+
+msgid "List of bootstrap nodes for DHT initialization"
+msgstr "DHT प्रारंभीकरण के लिए बूटस्ट्रैप नोड्स की सूची"
+
+msgid "Log"
+msgstr "लॉग"
+
+msgid "Log Level:"
+msgstr "लॉग स्तर:"
+
+msgid "Log to file"
+msgstr "फ़ाइल में लॉग करें"
+
+msgid "Max Connections:"
+msgstr "अधिकतम कनेक्शन:"
+
+msgid "Max Dropped Peers:"
+msgstr "अधिकतम छोड़े गए पीयर्स:"
+
+msgid "Max Message Size:"
+msgstr "अधिकतम मैसेज साइज़:"
+
+msgid "Max Messages/Second:"
+msgstr "अधिकतम मैसेज/सेकंड:"
+
+msgid "Max Nodes:"
+msgstr "अधिकतम नोड्स:"
+
+msgid "Max Peers/Message:"
+msgstr "अधिकतम पीयर्स/मैसेज:"
+
+msgid "Max Queries/Second:"
+msgstr "अधिकतम क्वेरीज़/सेकंड:"
+
+msgid "Max global connections:"
+msgstr "अधिकतम वैश्विक कनेक्शन:"
+
+msgid "Max log file size (MB):"
+msgstr "अधिकतम लॉग फ़ाइल आकार (MB):"
+
+msgid "Max per torrent:"
+msgstr "प्रति टोरेंट अधिकतम:"
+
+msgid "Max upload slots:"
+msgstr "अधिकतम अपलोड स्लॉट:"
+
+msgid "Maximum DHT queries per second"
+msgstr "प्रति सेकंड अधिकतम DHT क्वेरीज़"
+
+msgid "Maximum connections for aggressive profile"
+msgstr "आक्रामक प्रोफाइल के लिए अधिकतम कनेक्शन"
+
+msgid "Maximum connections for balanced profile"
+msgstr "संतुलित प्रोफाइल के लिए अधिकतम कनेक्शन"
+
+msgid "Maximum connections for conservative profile"
+msgstr "रूढ़िवादी प्रोफाइल के लिए अधिकतम कनेक्शन"
+
+msgid "Maximum dropped peers to track for PEX"
+msgstr "PEX के लिए ट्रैक करने वाले अधिकतम छोड़े गए पीयर्स"
+
+msgid "Maximum extension messages per second"
+msgstr "प्रति सेकंड अधिकतम एक्सटेंशन मैसेज"
+
+msgid "Maximum number of DHT nodes to maintain"
+msgstr "बनाए रखने के लिए DHT नोड्स की अधिकतम संख्या"
+
+msgid "Maximum number of concurrent DHT queries"
+msgstr "समांतर DHT क्वेरीज़ की अधिकतम संख्या"
+
+msgid "Maximum number of connections per individual torrent"
+msgstr "प्रत्येक व्यक्तिगत टॉरेंट के लिए अधिकतम कनेक्शन संख्या"
+
+msgid "Maximum number of connections to all torrents"
+msgstr "सभी टॉरेंट के लिए अधिकतम कनेक्शन संख्या"
+
+msgid "Maximum number of nodes in the routing table"
+msgstr "रूटिंग टेबल में नोड्स की अधिकतम संख्या"
+
+msgid "Maximum number of nodes per bucket"
+msgstr "प्रति बकेट नोड्स की अधिकतम संख्या"
+
+msgid "Maximum number of simultaneous upload slots"
+msgstr "समकालिक अपलोड स्लॉट की अधिकतम संख्या"
+
+msgid "Maximum peers to include in a PEX message"
+msgstr "PEX मैसेज में शामिल करने के लिए अधिकतम पीयर्स"
+
+msgid "Maximum port for seeder connections"
+msgstr "सीडर कनेक्शन के लिए अधिकतम पोर्ट"
+
+msgid "Maximum size for extension messages (bytes)"
+msgstr "एक्सटेंशन मैसेज के लिए अधिकतम साइज़ (बाइट्स)"
+
+msgid "Maximum size of log file before rotation"
+msgstr "रोटेशन से पहले लॉग फ़ाइल का अधिकतम आकार"
+
+msgid "Maximum transaction ID for tracker communication"
+msgstr "ट्रैकर संचार के लिए अधिकतम लेनदेन ID"
+
+msgid "Message"
+msgstr "संदेश"
+
+msgid "Message read timeout (seconds):"
+msgstr "संदेश पढ़ने का टाइमआउट (सेकंड):"
+
+msgid "Metadata Piece Size:"
+msgstr "मेटाडेटा पीस साइज़:"
+
+msgid "Metadata Timeout:"
+msgstr "मेटाडेटा टाइमआउट:"
+
+msgid "Min announce interval (sec):"
+msgstr "न्यूनतम घोषणा अंतराल (सेकंड):"
+
+msgid "Minimize to system tray"
+msgstr "सिस्टम ट्रे में छोटा करें"
+
+msgid "Minimum log level to record"
+msgstr "रिकॉर्ड करने के लिए न्यूनतम लॉग स्तर"
+
+msgid "Minimum port for seeder connections"
+msgstr "सीडर कनेक्शन के लिए न्यूनतम पोर्ट"
+
+msgid "Minimum time between announces (10-3600 seconds)"
+msgstr "घोषणाओं के बीच न्यूनतम समय (10-3600 सेकंड)"
+
+msgid "Minimum transaction ID for tracker communication"
+msgstr "ट्रैकर संचार के लिए न्यूनतम लेनदेन ID"
+
+msgid "Mon"
+msgstr "सोम"
+
+msgid "Monday"
+msgstr "सोमवार"
+
+msgid "My IP address"
+msgstr "मेरा IP पता"
+
+msgid "N/A"
+msgstr "लागू नहीं"
+
+msgid "Name"
+msgstr "नाम"
+
+msgid "Network interface:"
+msgstr "नेटवर्क इंटरफ़ेस:"
+
+msgid "Next Announce"
+msgstr "अगली घोषणा"
+
+msgid "Next Update"
+msgstr "अगला अपडेट"
+
+msgid "None"
+msgstr "कोई नहीं"
+
+msgid "Number of peers to analyze for behavior patterns"
+msgstr "व्यवहार पैटर्न के लिए विश्लेषण करने वाले पीयर्स की संख्या"
+
+msgid "Number of peers to request from tracker"
+msgstr "ट्रैकर से अनुरोध करने वाले पीअर्स की संख्या"
+
+msgid "Number of synthetic peers to generate"
+msgstr "जेनरेट करने के लिए सिंथेटिक पीयर्स की संख्या"
+
+msgid "Only allow connections from localhost (more secure)"
+msgstr "केवल localhost से कनेक्शन की अनुमति दें (अधिक सुरक्षित)"
+
+msgid "Open preferences"
+msgstr "प्राथमिकताएं खोलें"
+
+msgid "Options"
+msgstr "विकल्प"
+
+msgid "Outgoing"
+msgstr "बाहर जाने वाला"
+
+msgid "Outgoing Connections"
+msgstr "बाहर जाने वाले कनेक्शन"
+
+msgid "Outgoing Peer Connections"
+msgstr "बाहर जाने वाले पीयर कनेक्शन"
+
+msgid "Overlay Notification"
+msgstr "ओवरले नोटिफिकेशन"
+
+msgid "PEX Interval:"
+msgstr "PEX अंतराल:"
+
+msgid "Password for web interface login"
+msgstr "वेब इंटरफ़ेस लॉगिन के लिए पासवर्ड"
+
+msgid "Password:"
+msgstr "पासवर्ड:"
+
+msgid "Path"
+msgstr "पथ"
+
+msgid "Pause"
+msgstr "रोकें"
+
+msgid "Pause torrent"
+msgstr "टॉरेंट रोकें"
+
+msgid "Peer Analysis Depth:"
+msgstr "पीयर विश्लेषण गहराई:"
+
+msgid "Peer Choking"
+msgstr "पीयर चोकिंग"
+
+msgid "Peer ID"
+msgstr "पीयर आईडी"
+
+msgid "Peer ID Prefix:"
+msgstr "पीयर ID प्रीफ़िक्स:"
+
+msgid "Peer ID prefix to identify client type"
+msgstr "क्लाइंट प्रकार पहचानने के लिए पीयर ID प्रीफ़िक्स"
+
+msgid "Peer Protocol"
+msgstr "पीयर प्रोटोकॉल"
+
+msgid "Peer Protocol settings reset to defaults"
+msgstr "पीयर प्रोटोकॉल सेटिंग्स डिफ़ॉल्ट में रीसेट"
+
+msgid "Peer contact interval (seconds):"
+msgstr "पीयर संपर्क अंतराल (सेकंड):"
+
+msgid "Peer idle chance:"
+msgstr "पीयर निष्क्रिय संभावना:"
+
+msgid "Peer request count:"
+msgstr "पीयर अनुरोध गिनती:"
+
+msgid "Peers"
+msgstr "पीअर्स"
+
+msgid "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr "रोटेट करने वाले कनेक्शन का प्रतिशत (0.0 - 1.0)"
+
+msgid "Piece Length"
+msgstr "टुकड़े की लंबाई"
+
+msgid "Pieces"
+msgstr "टुकड़े"
+
+msgid "Pieces Received"
+msgstr "प्राप्त टुकड़े"
+
+msgid "Polish"
+msgstr "Polish"
+
+msgid "Port"
+msgstr "पोर्ट"
+
+msgid "Port for incoming BitTorrent connections (1024-65535)"
+msgstr "आने वाले BitTorrent कनेक्शन के लिए पोर्ट (1024-65535)"
+
+msgid "Port for web interface (1024-65535)"
+msgstr "वेब इंटरफ़ेस के लिए पोर्ट (1024-65535)"
+
+msgid "Port:"
+msgstr "पोर्ट:"
+
+msgid "Portuguese"
+msgstr "पुर्तगाली"
+
+msgid "Preferences"
+msgstr "प्राथमिकताएं"
+
+msgid "Prevent embedding in frames (X-Frame-Options)"
+msgstr "फ़्रेम में एम्बेडिंग रोकें (X-Frame-Options)"
+
+msgid "Primary BitTorrent client to simulate"
+msgstr "सिमुलेट करने के लिए प्राथमिक BitTorrent क्लाइंट"
+
+msgid "Primary Client:"
+msgstr "प्राथमिक क्लाइंट:"
+
+msgid "Priority"
+msgstr "प्राथमिकता"
+
+msgid "Priority Down"
+msgstr "प्राथमिकता नीचे"
+
+msgid "Priority Up"
+msgstr "प्राथमिकता ऊपर"
+
+msgid "Private"
+msgstr "निजी"
+
+msgid "Probability of idle periods for aggressive profile"
+msgstr "आक्रामक प्रोफाइल के लिए निष्क्रिय अवधि की संभावना"
+
+msgid "Probability of idle periods for balanced profile"
+msgstr "संतुलित प्रोफाइल के लिए निष्क्रिय अवधि की संभावना"
+
+msgid "Probability of idle periods for conservative profile"
+msgstr "रूढ़िवादी प्रोफाइल के लिए निष्क्रिय अवधि की संभावना"
+
+msgid "Probability of peer behavior analysis (0.0 - 1.0)"
+msgstr "पीयर व्यवहार विश्लेषण की संभावना (0.0 - 1.0)"
+
+msgid "Probability of peer being idle (0.0 - 1.0)"
+msgstr "पीयर निष्क्रिय होने की संभावना (0.0 - 1.0)"
+
+msgid "Probability of peer dropping out (0.0 - 1.0)"
+msgstr "पीयर छोड़ने की संभावना (0.0 - 1.0)"
+
+msgid "Probability of peer status changes (0.0 - 1.0)"
+msgstr "पीयर स्थिति बदलने की संभावना (0.0 - 1.0)"
+
+msgid "Probability of seeder upload activity (0.0 - 1.0)"
+msgstr "सीडर अपलोड गतिविधि की संभावना (0.0 - 1.0)"
+
+msgid "Probability of switching to a different client behavior"
+msgstr "अलग क्लाइंट व्यवहार पर स्विच करने की संभावना"
+
+msgid "Probability of traffic bursts for aggressive profile"
+msgstr "आक्रामक प्रोफाइल के लिए ट्रैफिक बर्स्ट की संभावना"
+
+msgid "Probability of traffic bursts for balanced profile"
+msgstr "संतुलित प्रोफाइल के लिए ट्रैफिक बर्स्ट की संभावना"
+
+msgid "Probability of traffic bursts for conservative profile"
+msgstr "रूढ़िवादी प्रोफाइल के लिए ट्रैफिक बर्स्ट की संभावना"
+
+msgid "Progress"
+msgstr "प्रगति"
+
+msgid "Progress distribution (almost):"
+msgstr "प्रगति वितरण (लगभग):"
+
+msgid "Progress distribution (middle):"
+msgstr "प्रगति वितरण (मध्य):"
+
+msgid "Progress distribution (start):"
+msgstr "प्रगति वितरण (शुरुआत):"
+
+msgid "Progress distribution for almost complete peers (0.0 - 1.0)"
+msgstr "लगभग पूर्ण पीअर्स के लिए प्रगति वितरण (0.0 - 1.0)"
+
+msgid "Progress distribution for middle progress peers (0.0 - 1.0)"
+msgstr "मध्यम प्रगति पीअर्स के लिए प्रगति वितरण (0.0 - 1.0)"
+
+msgid "Progress distribution for starting peers (0.0 - 1.0)"
+msgstr "शुरुआती पीअर्स के लिए प्रगति वितरण (0.0 - 1.0)"
+
+msgid "Protocol Compliance:"
+msgstr "प्रोटोकॉल अनुपालन:"
+
+msgid "Protocol Extensions"
+msgstr "प्रोटोकॉल एक्सटेंशन"
+
+msgid "Protocol encryption mode for peer communications"
+msgstr "पीयर संचार के लिए प्रोटोकॉल एन्क्रिप्शन मोड"
+
+msgid "Proxy authentication password"
+msgstr "प्रॉक्सी प्रमाणीकरण पासवर्ड"
+
+msgid "Proxy authentication username"
+msgstr "प्रॉक्सी प्रमाणीकरण उपयोगकर्ता नाम"
+
+msgid "Proxy server hostname or IP address"
+msgstr "प्रॉक्सी सर्वर होस्टनेम या IP पता"
+
+msgid "Proxy server port number"
+msgstr "प्रॉक्सी सर्वर पोर्ट नंबर"
+
+msgid "Query Timeout:"
+msgstr "क्वेरी टाइमआउट:"
+
+msgid "Queue"
+msgstr "कतार"
+
+msgid "Quit"
+msgstr "बाहर निकलें"
+
+msgid "Random"
+msgstr "यादृच्छिक"
+
+msgid "Rate of adaptation to swarm behavior"
+msgstr "स्वार्म व्यवहार के अनुकूलन की दर"
+
+msgid "Ratio"
+msgstr "अनुपात"
+
+msgid "Realistic variations"
+msgstr "वास्तविक विविधताएं"
+
+msgid "Received"
+msgstr "प्राप्त"
+
+msgid "Relaxed"
+msgstr "शिथिल"
+
+msgid "Remember window size and position"
+msgstr "विंडो का आकार और स्थिति याद रखें"
+
+msgid "Remember window size and position between sessions"
+msgstr "सत्रों के बीच विंडो आकार और स्थिति याद रखें"
+
+msgid "Remove torrent"
+msgstr "टॉरेंट हटाएं"
+
+msgid "Requests"
+msgstr "अनुरोध"
+
+msgid "Require authentication"
+msgstr "प्रमाणीकरण आवश्यक"
+
+msgid "Require username and password for web access"
+msgstr "वेब एक्सेस के लिए उपयोगकर्ता नाम और पासवर्ड आवश्यक"
+
+msgid "Reset"
+msgstr "रीसेट"
+
+msgid "Reset all settings not yet implemented"
+msgstr "सभी सेटिंग्स रीसेट अभी तक लागू नहीं"
+
+msgid "Reset all settings to default values"
+msgstr "सभी सेटिंग्स को डिफ़ॉल्ट वैल्यू पर रीसेट करें"
+
+msgid "Reset to Defaults"
+msgstr "डिफ़ॉल्ट पर रीसेट करें"
+
+msgid "Reset to defaults"
+msgstr "डिफ़ॉल्ट पर रीसेट करें"
+
+msgid "Resume"
+msgstr "जारी रखें"
+
+msgid "Resume torrent"
+msgstr "टॉरेंट फिर से शुरू करें"
+
+msgid "Routing Table Size:"
+msgstr "रूटिंग टेबल साइज़:"
+
+msgid "Russian"
+msgstr "रूसी"
+
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+msgid "Sat"
+msgstr "शनि"
+
+msgid "Saturday"
+msgstr "शनिवार"
+
+msgid "Save logs to file in addition to console"
+msgstr "कंसोल के अलावा फ़ाइल में लॉग सहेजें"
+
+msgid "Scrape interval (sec):"
+msgstr "स्क्रैप अंतराल (सेकंड):"
+
+msgid "Search by torrent name or file path"
+msgstr "टॉरेंट नाम या फ़ाइल पथ से खोजें"
+
+msgid "Search for settings across all tabs"
+msgstr "सभी टैब में सेटिंग्स खोजें"
+
+msgid "Search for torrent"
+msgstr "टॉरेंट खोजें"
+
+msgid "Search settings"
+msgstr "सेटिंग्स खोजें"
+
+msgid "Secure password generated"
+msgstr "सुरक्षित पासवर्ड बनाया गया"
+
+msgid "Seeder port range (max):"
+msgstr "सीडर पोर्ट रेंज (अधिकतम):"
+
+msgid "Seeder port range (min):"
+msgstr "सीडर पोर्ट रेंज (न्यूनतम):"
+
+msgid "Seeders"
+msgstr "सीडर्स"
+
+msgid "Seeds"
+msgstr "सीड्स"
+
+msgid "Select proxy type for connections"
+msgstr "कनेक्शन के लिए प्रॉक्सी प्रकार चुनें"
+
+msgid "Select torrent"
+msgstr "टॉरेंट चुनें"
+
+msgid "Send security-related HTTP headers"
+msgstr "सुरक्षा-संबंधी HTTP हेडर भेजें"
+
+msgid "Sent"
+msgstr "भेजा गया"
+
+msgid "Server:"
+msgstr "सर्वर:"
+
+msgid "Session timeout (min):"
+msgstr "सत्र टाइमआउट (मिनट):"
+
+msgid "Shortcuts configuration not yet implemented"
+msgstr "शॉर्टकट कॉन्फ़िगरेशन अभी तक लागू नहीं"
+
+msgid "Show only selected torrent connections"
+msgstr "केवल चयनित टॉरेंट कनेक्शन दिखाएं"
+
+msgid "Simulation"
+msgstr "सिमुलेशन"
+
+msgid "Size"
+msgstr "आकार"
+
+msgid "Size of metadata pieces in bytes"
+msgstr "मेटाडेटा टुकड़ों का साइज़ बाइट्स में"
+
+msgid "Small Torrent Limit"
+msgstr "छोटी टॉरेंट सीमा"
+
+msgid "Spanish"
+msgstr "स्पेनिश"
+
+msgid "Speed"
+msgstr "गति"
+
+msgid "Speed settings reset to defaults"
+msgstr "गति सेटिंग्स डिफ़ॉल्ट में रीसेट"
+
+msgid "Standard"
+msgstr "मानक"
+
+msgid "Start DFakeSeeder automatically when the system boots"
+msgstr "सिस्टम बूट होने पर DFakeSeeder स्वचालित रूप से शुरू करें"
+
+msgid "Start hour (24-hour format)"
+msgstr "शुरुआती घंटा (24-घंटे प्रारूप)"
+
+msgid "Start minimized"
+msgstr "छोटे आकार में शुरू करें"
+
+msgid "Start minimized disabled"
+msgstr "न्यूनतम में शुरू करना अक्षम"
+
+msgid "Start minimized enabled"
+msgstr "न्यूनतम में शुरू करना सक्षम"
+
+msgid "Start minute"
+msgstr "शुरुआती मिनट"
+
+msgid "Start on system startup"
+msgstr "सिस्टम स्टार्टअप पर शुरू करें"
+
+msgid "Start the application minimized to system tray"
+msgstr "एप्लिकेशन को सिस्टम ट्रे में छोटा करके शुरू करें"
+
+msgid "Stats Update Interval:"
+msgstr "आंकड़े अपडेट अंतराल:"
+
+msgid "Status"
+msgstr "स्थिति"
+
+msgid "Status change probability:"
+msgstr "स्थिति बदलने की संभावना:"
+
+msgid "Strict"
+msgstr "सख्त"
+
+msgid "Sun"
+msgstr "रवि"
+
+msgid "Sunday"
+msgstr "रविवार"
+
+msgid "Swedish"
+msgstr "Swedish"
+
+msgid "Synthetic Peer Count:"
+msgstr "सिंथेटिक पीयर काउंट:"
+
+msgid "TCP fallback"
+msgstr "TCP फॉलबैक"
+
+msgid "TCP keepalive"
+msgstr "TCP कीपअलाइव"
+
+msgid "Theme:"
+msgstr "थीम:"
+
+msgid "Threshold"
+msgstr "सीमा"
+
+msgid "Thu"
+msgstr "गुरु"
+
+msgid "Thursday"
+msgstr "गुरुवार"
+
+msgid "Tier"
+msgstr "स्तर"
+
+msgid "Time-based patterns"
+msgstr "समय आधारित पैटर्न"
+
+msgid "Timeout for DHT bootstrap operations (seconds)"
+msgstr "DHT बूटस्ट्रैप ऑपरेशन के लिए टाइमआउट (सेकंड)"
+
+msgid "Timeout for DHT queries (seconds)"
+msgstr "DHT क्वेरीज़ के लिए टाइमआउट (सेकंड)"
+
+msgid "Timeout for HTTP seeder connections in seconds"
+msgstr "सेकंड में HTTP सीडर कनेक्शन के लिए टाइमआउट"
+
+msgid "Timeout for UDP seeder connections in seconds"
+msgstr "सेकंड में UDP सीडर कनेक्शन के लिए टाइमआउट"
+
+msgid "Timeout for metadata requests (seconds)"
+msgstr "मेटाडेटा अनुरोधों के लिए टाइमआउट (सेकंड)"
+
+msgid "Timeout for peer handshake in seconds"
+msgstr "सेकंड में पीयर हैंडशेक के लिए टाइमआउट"
+
+msgid "Timeout for reading peer messages in seconds"
+msgstr "सेकंड में पीयर संदेश पढ़ने के लिए टाइमआउट"
+
+msgid "To:"
+msgstr "तक:"
+
+msgid "Top"
+msgstr "शीर्ष"
+
+msgid "Torrent"
+msgstr "टॉरेंट"
+
+msgid "Torrent Files"
+msgstr "टॉरेंट फाइलें"
+
+msgid "Torrents"
+msgstr "टॉरेंट्स"
+
+msgid "Total Downloaded"
+msgstr "कुल डाउनलोड"
+
+msgid "Total Size"
+msgstr "कुल आकार"
+
+msgid "Total Uploaded"
+msgstr "कुल अपलोड"
+
+msgid "Track extension statistics"
+msgstr "एक्सटेंशन सांख्यिकी ट्रैक करें"
+
+msgid "Track extension usage statistics"
+msgstr "एक्सटेंशन उपयोग आंकड़ों को ट्रैक करें"
+
+msgid "Tracker"
+msgstr "ट्रैकर"
+
+msgid "Tracker URL"
+msgstr "ट्रैकर URL"
+
+msgid "Trackers"
+msgstr "ट्रैकर्स"
+
+msgid "Traffic Profile:"
+msgstr "ट्रैफिक प्रोफाइल:"
+
+msgid "Traffic pattern profile for simulation"
+msgstr "सिमुलेशन के लिए ट्रैफिक पैटर्न प्रोफाइल"
+
+msgid "Transaction ID range (max):"
+msgstr "लेनदेन ID रेंज (अधिकतम):"
+
+msgid "Transaction ID range (min):"
+msgstr "लेनदेन ID रेंज (न्यूनतम):"
+
+msgid "Transmission"
+msgstr "Transmission"
+
+msgid "Transmission/3.00"
+msgstr "Transmission/3.00"
+
+msgid "Tue"
+msgstr "मंगल"
+
+msgid "Tuesday"
+msgstr "मंगलवार"
+
+msgid "Type"
+msgstr "प्रकार"
+
+msgid "Type:"
+msgstr "प्रकार:"
+
+msgid "UDP seeder timeout (seconds):"
+msgstr "UDP सीडर टाइमआउट (सेकंड):"
+
+msgid "UI Refresh Rate"
+msgstr "UI रिफ्रेश दर"
+
+msgid "UI refresh rate (sec):"
+msgstr "UI रिफ्रेश दर (सेकंड):"
+
+msgid "URL"
+msgstr "यूआरएल"
+
+msgid "URL: http://localhost:8080"
+msgstr "URL: http://localhost:8080"
+
+msgid "Unknown"
+msgstr "अज्ञात"
+
+msgid "Up"
+msgstr "ऊपर"
+
+msgid "Up Speed"
+msgstr "अपलोड गति"
+
+msgid "Update Tracker"
+msgstr "ट्रैकर अपडेट करें"
+
+msgid "Upload Speed"
+msgstr "अपलोड गति"
+
+msgid "Upload Speed (KB/s):"
+msgstr "अपलोड गति (KB/s):"
+
+msgid "Upload Variance:"
+msgstr "अपलोड विचरण:"
+
+msgid "Upload activity probability:"
+msgstr "अपलोड गतिविधि संभावना:"
+
+msgid "Upload limit (KB/s):"
+msgstr "अपलोड सीमा (KB/s):"
+
+msgid "Upload speed variance for aggressive profile"
+msgstr "आक्रामक प्रोफाइल के लिए अपलोड गति विचरण"
+
+msgid "Upload speed variance for balanced profile"
+msgstr "संतुलित प्रोफाइल के लिए अपलोड गति विचरण"
+
+msgid "Upload speed variance for conservative profile"
+msgstr "रूढ़िवादी प्रोफाइल के लिए अपलोड गति विचरण"
+
+msgid "Uploaded"
+msgstr "अपलोड किया गया"
+
+msgid "Uploaded Session / Total"
+msgstr "अपलोड किया गया सत्र / कुल"
+
+msgid "Uploading"
+msgstr "अपलोड कर रहा है"
+
+msgid "Use HTTPS (SSL/TLS)"
+msgstr "HTTPS (SSL/TLS) का उपयोग करें"
+
+msgid "Use HTTPS for secure connections (requires SSL certificate)"
+msgstr "सुरक्षित कनेक्शन के लिए HTTPS का उपयोग करें (SSL प्रमाणपत्र आवश्यक)"
+
+msgid "Use authentication"
+msgstr "प्रमाणीकरण का उपयोग करें"
+
+msgid "User Agent:"
+msgstr "उपयोगकर्ता एजेंट:"
+
+msgid "User agent string to identify the client to trackers"
+msgstr "ट्रैकर्स के लिए क्लाइंट पहचानने हेतु यूज़र एजेंट स्ट्रिंग"
+
+msgid "Username for web interface login"
+msgstr "वेब इंटरफ़ेस लॉगिन के लिए उपयोगकर्ता नाम"
+
+msgid "Username:"
+msgstr "उपयोगकर्ता नाम:"
+
+msgid "Validate DHT security tokens"
+msgstr "DHT सुरक्षा टोकन्स को वैलिडेट करें"
+
+msgid "Validate extension messages"
+msgstr "एक्सटेंशन संदेश सत्यापित करें"
+
+msgid "Validate extension messages for security"
+msgstr "सुरक्षा के लिए एक्सटेंशन मैसेज को वैलिडेट करें"
+
+msgid "Validate security tokens"
+msgstr "सुरक्षा टोकन सत्यापित करें"
+
+msgid "Validate setting values and show warnings for invalid combinations"
+msgstr "सेटिंग वैल्यू की पुष्टि करें और अमान्य संयोजनों के लिए चेतावनी दिखाएं"
+
+msgid "Validate settings on change"
+msgstr "बदलने पर सेटिंग्स की पुष्टि करें"
+
+msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr "क्लाइंट व्यवहार में विविधता (0.0 = कोई विविधता नहीं, 1.0 = अधिकतम विविधता)"
+
+msgid "Vuze"
+msgstr "Vuze"
+
+msgid "Vuze/5.7.6.0"
+msgstr "Vuze/5.7.6.0"
+
+msgid "WARNING"
+msgstr "चेतावनी"
+
+msgid "Web UI"
+msgstr "वेब UI"
+
+msgid "Web UI settings reset to defaults"
+msgstr "वेब UI सेटिंग्स डिफ़ॉल्ट में रीसेट"
+
+msgid "Wed"
+msgstr "बुध"
+
+msgid "Wednesday"
+msgstr "बुधवार"
+
+msgid "active"
+msgstr "सक्रिय"
+
+msgid "admin"
+msgstr "एडमिन"
+
+msgid "announce_interval"
+msgstr "घोषणा अंतराल"
+
+msgid "bytes"
+msgstr "बाइट्स"
+
+msgid "class_name"
+msgstr "क्लास_नाम"
+
+msgid "download_speed"
+msgstr "डाउनलोड गति"
+
+msgid "filepath"
+msgstr "फ़ाइल पथ"
+
+msgid "files_tab"
+msgstr "फाइल्स_टैब"
+
+msgid "id"
+msgstr "#"
+
+msgid "leechers"
+msgstr "लीचर"
+
+msgid "log_tab"
+msgstr "लॉग_टैब"
+
+msgid "lt_donthave (Piece Availability)"
+msgstr "lt_donthave (पीस उपलब्धता)"
+
+msgid "name"
+msgstr "नाम"
+
+msgid "next_update"
+msgstr "अगला अपडेट"
+
+msgid "open-menu-symbolic"
+msgstr "open-menu-symbolic"
+
+msgid "options_tab"
+msgstr "ऑप्शन्स_टैब"
+
+msgid "peers_tab"
+msgstr "पीयर्स_टैब"
+
+msgid "progress"
+msgstr "प्रगति"
+
+msgid "qBittorrent"
+msgstr "qBittorrent"
+
+msgid "qBittorrent/4.3.1"
+msgstr "qBittorrent/4.3.1"
+
+msgid "rTorrent"
+msgstr "rTorrent"
+
+msgid "rTorrent/0.9.6"
+msgstr "rTorrent/0.9.6"
+
+msgid "seconds"
+msgstr "सेकंड"
+
+msgid "seeders"
+msgstr "सीडर"
+
+msgid "session_downloaded"
+msgstr "डाउनलोड किया गया"
+
+msgid "session_uploaded"
+msgstr "अपलोड किया गया"
+
+msgid "small_torrent_limit"
+msgstr "छोटी टॉरेंट सीमा"
+
+msgid "threshold"
+msgstr "सीमा"
+
+msgid "total_downloaded"
+msgstr "कुल डाउनलोड"
+
+msgid "total_size"
+msgstr "आकार"
+
+msgid "total_uploaded"
+msgstr "कुल अपलोड"
+
+msgid "trackers_tab"
+msgstr "ट्रैकर्स_टैब"
+
+msgid "uTorrent/3.5.5"
+msgstr "uTorrent/3.5.5"
+
+msgid "upload_speed"
+msgstr "अपलोड गति"
+
+msgid "uploading"
+msgstr "अपलोड कर रहा है"
+
+msgid "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch (NAT ट्रैवर्सल)"
+
+msgid "ut_metadata (Metadata Exchange)"
+msgstr "ut_metadata (मेटाडेटा एक्सचेंज)"
+
+msgid "ut_pex (Peer Exchange)"
+msgstr "ut_pex (पीयर एक्सचेंज)"
+
+msgid "µTorrent"
+msgstr "µTorrent"
+
+msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
+msgstr "⚠️ उन्नत सेटिंग्स - सावधानी से संशोधित करें। गलत मूल्य प्रदर्शन या स्थिरता को प्रभावित कर सकते हैं।"
+
+msgid "⚠️ Web UI allows remote control of the application. Use strong authentication."
+msgstr "⚠️ वेब UI एप्लिकेशन के रिमोट कंट्रोल की अनुमति देता है। मजबूत प्रमाणीकरण का उपयोग करें।"
+

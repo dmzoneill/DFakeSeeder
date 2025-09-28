@@ -1,0 +1,1837 @@
+# Japanese translation for DFakeSeeder
+# Copyright (C) 2024 DFakeSeeder Contributors
+# This file is distributed under the same license as the DFakeSeeder package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DFakeSeeder 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"POT-Creation-Date: 2025-09-18 17:51+0100\n"
+"PO-Revision-Date: 2024-09-18 18:30+0100\n"
+"Last-Translator: Claude <noreply@anthropic.com>\n"
+"Language-Team: Japanese <ja@li.org>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "#"
+msgstr "#"
+
+msgid "(0 = unlimited)"
+msgstr "(0 = 無制限)"
+
+msgid "0 / 250"
+msgstr "0 / 250"
+
+msgid "127.0.0.1"
+msgstr "127.0.0.1"
+
+msgid ":"
+msgstr ":"
+
+msgid "<b>Advanced Extension Settings</b>"
+msgstr "<b>高度な拡張設定</b>"
+
+msgid "<b>Aggressive Profile Settings</b>"
+msgstr "<b>アグレッシブプロファイル設定</b>"
+
+msgid "<b>Alternative Speed Limits</b>"
+msgstr "<b>代替速度制限</b>"
+
+msgid "<b>Application Behavior</b>"
+msgstr "<b>アプリケーション動作</b>"
+
+msgid "<b>Authentication</b>"
+msgstr "<b>認証</b>"
+
+msgid "<b>Balanced Profile Settings</b>"
+msgstr "<b>バランスプロファイル設定</b>"
+
+msgid "<b>Bootstrap Settings</b>"
+msgstr "<b>ブートストラップ設定</b>"
+
+msgid "<b>Client Behavior Engine</b>"
+msgstr "<b>クライアント動作エンジン</b>"
+
+msgid "<b>Client Identification</b>"
+msgstr "<b>クライアント識別</b>"
+
+msgid "<b>Configuration Management</b>"
+msgstr "<b>設定管理</b>"
+
+msgid "<b>Connection Limits</b>"
+msgstr "<b>接続制限</b>"
+
+msgid "<b>Connection Settings</b>"
+msgstr "<b>接続設定</b>"
+
+msgid "<b>Conservative Profile Settings</b>"
+msgstr "<b>コンサバティブプロファイル設定</b>"
+
+msgid "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT（分散ハッシュテーブル）</b>"
+
+msgid "<b>Encryption</b>"
+msgstr "<b>暗号化</b>"
+
+msgid "<b>Expert Settings</b>"
+msgstr "<b>エキスパート設定</b>"
+
+msgid "<b>Extension Protocol (BEP-010)</b>"
+msgstr "<b>拡張プロトコル (BEP-010)</b>"
+
+msgid "<b>Global Speed Limits</b>"
+msgstr "<b>グローバル速度制限</b>"
+
+msgid "<b>Interface</b>"
+msgstr "<b>インターフェース</b>"
+
+msgid "<b>Keyboard Shortcuts</b>"
+msgstr "<b>キーボードショートカット</b>"
+
+msgid "<b>Listening Port</b>"
+msgstr "<b>リスニングポート</b>"
+
+msgid "<b>Logging</b>"
+msgstr "<b>ログ記録</b>"
+
+msgid "<b>Metadata Extension Settings</b>"
+msgstr "<b>メタデータ拡張設定</b>"
+
+msgid "<b>Network Settings</b>"
+msgstr "<b>ネットワーク設定</b>"
+
+msgid "<b>Node Configuration</b>"
+msgstr "<b>ノード設定</b>"
+
+msgid "<b>Peer Behavior Settings</b>"
+msgstr "<b>ピア動作設定</b>"
+
+msgid "<b>Peer Exchange (PEX) Settings</b>"
+msgstr "<b>ピア交換（PEX）設定</b>"
+
+msgid "<b>Peer Protocol Timeouts</b>"
+msgstr "<b>ピアプロトコルタイムアウト</b>"
+
+msgid "<b>Performance</b>"
+msgstr "<b>パフォーマンス</b>"
+
+msgid "<b>Protocol Extensions</b>"
+msgstr "<b>プロトコル拡張</b>"
+
+msgid "<b>Protocol Features</b>"
+msgstr "<b>プロトコル機能</b>"
+
+msgid "<b>Proxy Settings</b>"
+msgstr "<b>プロキシ設定</b>"
+
+msgid "<b>Security Options</b>"
+msgstr "<b>セキュリティオプション</b>"
+
+msgid "<b>Seeder Protocol Settings</b>"
+msgstr "<b>シーダープロトコル設定</b>"
+
+msgid "<b>Seeding Profiles</b>"
+msgstr "<b>シーディングプロファイル</b>"
+
+msgid "<b>Settings Search</b>"
+msgstr "<b>設定検索</b>"
+
+msgid "<b>Speed Scheduler</b>"
+msgstr "<b>速度スケジューラー</b>"
+
+msgid "<b>Statistics and Security</b>"
+msgstr "<b>統計とセキュリティ</b>"
+
+msgid "<b>Swarm Intelligence</b>"
+msgstr "<b>スウォームインテリジェンス</b>"
+
+msgid "<b>Timing Settings</b>"
+msgstr "<b>タイミング設定</b>"
+
+msgid "<b>Tracker Announce Settings</b>"
+msgstr "<b>トラッカーアナウンス設定</b>"
+
+msgid "<b>Traffic Pattern Settings</b>"
+msgstr "<b>トラフィックパターン設定</b>"
+
+msgid "<b>Transport Protocol Settings</b>"
+msgstr "<b>トランスポートプロトコル設定</b>"
+
+msgid "<b>Web Interface</b>"
+msgstr "<b>ウェブインターフェース</b>"
+
+msgid "About"
+msgstr "バージョン情報"
+
+msgid "Active"
+msgstr "アクティブ"
+
+msgid "Active Profile:"
+msgstr "アクティブプロファイル:"
+
+msgid "Adaptation Rate:"
+msgstr "適応速度:"
+
+msgid "Add"
+msgstr "追加"
+
+msgid "Add torrent"
+msgstr "トレント追加"
+
+msgid "Added"
+msgstr "追加日時"
+
+msgid "Advanced"
+msgstr "詳細設定"
+
+msgid "Advanced settings reset to defaults"
+msgstr "高度な設定をデフォルトにリセットしました"
+
+msgid "Aggressive"
+msgstr "アグレッシブ"
+
+msgid "Aggressive profile download speed"
+msgstr "アグレッシブプロファイルダウンロード速度"
+
+msgid "Aggressive profile upload speed (0 = unlimited)"
+msgstr "アグレッシブプロファイルアップロード速度（0=無制限）"
+
+msgid "Alt download limit (KB/s):"
+msgstr "代替ダウンロード制限 (KB/s):"
+
+msgid "Alt upload limit (KB/s):"
+msgstr "代替アップロード制限 (KB/s):"
+
+msgid "Alternative download speed limit in KB/s"
+msgstr "KB/sでの代替ダウンロード速度制限"
+
+msgid "Alternative upload speed limit in KB/s"
+msgstr "KB/sでの代替アップロード速度制限"
+
+msgid "Amount of RAM to use for disk caching"
+msgstr "ディスクキャッシュに使用するRAM容量"
+
+msgid "Announce Interval"
+msgstr "アナウンス間隔"
+
+msgid "Announce interval (sec):"
+msgstr "アナウンス間隔 (秒):"
+
+msgid "Announcement Interval:"
+msgstr "アナウンス間隔:"
+
+msgid "Arabic"
+msgstr "アラビア語"
+
+msgid "Auto-bootstrap DHT"
+msgstr "DHT自動ブートストラップ"
+
+msgid "Auto-generate node ID"
+msgstr "ノードIDを自動生成する"
+
+msgid "Auto-save settings"
+msgstr "設定を自動保存"
+
+msgid "Auto-start disabled"
+msgstr "自動開始が無効になりました"
+
+msgid "Auto-start enabled"
+msgstr "自動開始が有効になりました"
+
+msgid "Automatic logout after inactivity (5-1440 minutes)"
+msgstr "非アクティブ後の自動ログアウト (5-1440分)"
+
+msgid "Automatically bootstrap DHT using known nodes"
+msgstr "既知のノードを使用してDHTを自動ブートストラップ"
+
+msgid "Automatically configure router port forwarding using UPnP/NAT-PMP"
+msgstr "UPnP/NAT-PMPを使用してルーターのポート転送を自動設定"
+
+msgid "Automatically generate a unique node ID"
+msgstr "一意なノードIDを自動生成する"
+
+msgid "Automatically save settings when changed"
+msgstr "変更時に設定を自動保存"
+
+msgid "Automatically switch to alternative speeds during specified hours"
+msgstr "指定された時間中に代替速度に自動切り替え"
+
+msgid "Availability"
+msgstr "可用性"
+
+msgid "Balanced"
+msgstr "バランス"
+
+msgid "Balanced profile download speed"
+msgstr "バランスプロファイルダウンロード速度"
+
+msgid "Balanced profile upload speed"
+msgstr "バランスプロファイルアップロード速度"
+
+msgid "Behavior Variation:"
+msgstr "動作変動:"
+
+msgid "Behavior analysis probability:"
+msgstr "行動分析確率:"
+
+msgid "Behavior randomization"
+msgstr "動作のランダム化"
+
+msgid "BiglyBT"
+msgstr "BiglyBT"
+
+msgid "Bind to localhost only"
+msgstr "ローカルホストのみにバインド"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "BitTorrent settings reset to defaults"
+msgstr "BitTorrent設定をデフォルトにリセットしました"
+
+msgid "BitTorrent/7.10.5"
+msgstr "BitTorrent/7.10.5"
+
+msgid "Bootstrap Nodes (one per line, format: host:port):"
+msgstr "ブートストラップノード（1行につき1つ、形式: ホスト:ポート）:"
+
+msgid "Bootstrap Timeout:"
+msgstr "ブートストラップタイムアウト:"
+
+msgid "Bottom"
+msgstr "最下位"
+
+msgid "Bucket Size:"
+msgstr "バケットサイズ:"
+
+msgid "Burst Probability:"
+msgstr "バースト確率:"
+
+msgid "CRITICAL"
+msgstr "重要"
+
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgid "Chinese"
+msgstr "中国語"
+
+msgid "Choose a pre-configured seeding profile"
+msgstr "事前設定されたシーディングプロファイルを選択"
+
+msgid "Choose the application theme"
+msgstr "アプリケーションテーマを選択"
+
+msgid "Choose the interface language"
+msgstr "インターフェース言語を選択"
+
+msgid "Clear search"
+msgstr "検索クリア"
+
+msgid "Client"
+msgstr "クライアント"
+
+msgid "Client Switch Probability:"
+msgstr "クライアント切り替え確率:"
+
+msgid "Comment"
+msgstr "コメント"
+
+msgid "Completed"
+msgstr "完了日時"
+
+msgid "Concurrent Queries:"
+msgstr "同時クエリ数:"
+
+msgid "Config export not yet implemented"
+msgstr "設定のエクスポートはまだ実装されていません"
+
+msgid "Config import not yet implemented"
+msgstr "設定のインポートはまだ実装されていません"
+
+msgid "Connected"
+msgstr "接続済み"
+
+msgid "Connected At"
+msgstr "接続時刻"
+
+msgid "Connected Peers / Total Peers"
+msgstr "接続済みピア / 総ピア"
+
+msgid "Connection"
+msgstr "接続"
+
+msgid "Connection Status"
+msgstr "接続状態"
+
+msgid "Connection Timeout:"
+msgstr "接続タイムアウト:"
+
+msgid "Connection rotation percentage:"
+msgstr "接続ローテーション割合:"
+
+msgid "Connection settings reset to defaults"
+msgstr "接続設定をデフォルトにリセットしました"
+
+msgid "Connection timeout for extensions (seconds)"
+msgstr "拡張の接続タイムアウト（秒）"
+
+msgid "Conservative"
+msgstr "コンサバティブ"
+
+msgid "Conservative profile download speed"
+msgstr "コンサバティブプロファイルダウンロード速度"
+
+msgid "Conservative profile upload speed"
+msgstr "コンサバティブプロファイルアップロード速度"
+
+msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
+msgstr "コンサバティブ：低速度、少ない接続、バックグラウンドシードに最適"
+
+msgid "Country"
+msgstr "国"
+
+msgid "Created"
+msgstr "作成日時"
+
+msgid "Created By"
+msgstr "作成者"
+
+msgid "Ctrl+,"
+msgstr "Ctrl+,"
+
+msgid "Ctrl+F"
+msgstr "Ctrl+F"
+
+msgid "Ctrl+R"
+msgstr "Ctrl+R"
+
+msgid "Custom"
+msgstr "カスタム"
+
+msgid "Custom Agent:"
+msgstr "カスタムエージェント:"
+
+msgid "Custom Node ID:"
+msgstr "カスタムノードID:"
+
+msgid "Custom node ID (40 hex characters)"
+msgstr "カスタムノードID（16進40文字）"
+
+msgid "Custom user agent string"
+msgstr "カスタムユーザーエージェント文字列"
+
+msgid "D' Fake Seeder"
+msgstr "D' Fake Seeder"
+
+msgid "DEBUG"
+msgstr "デバッグ"
+
+msgid "DHT"
+msgstr "DHT"
+
+msgid "Dark"
+msgstr "ダーク"
+
+msgid "Days:"
+msgstr "日数:"
+
+msgid "Deluge"
+msgstr "Deluge"
+
+msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
+msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
+
+msgid "Details"
+msgstr "詳細"
+
+msgid "Disabled"
+msgstr "無効"
+
+msgid "Disconnected"
+msgstr "切断済み"
+
+msgid "Disk cache size (MB):"
+msgstr "ディスクキャッシュサイズ (MB):"
+
+msgid "Down"
+msgstr "下へ"
+
+msgid "Down Speed"
+msgstr "ダウン速度"
+
+msgid "Download Rate"
+msgstr "ダウンロード率"
+
+msgid "Download Speed (KB/s):"
+msgstr "ダウンロード速度 (KB/s):"
+
+msgid "Download Variance:"
+msgstr "ダウンロード変動:"
+
+msgid "Download limit (KB/s):"
+msgstr "ダウンロード制限 (KB/s):"
+
+msgid "Download speed variance for aggressive profile"
+msgstr "アグレッシブプロファイルのダウンロード速度変動"
+
+msgid "Download speed variance for balanced profile"
+msgstr "バランスプロファイルのダウンロード速度変動"
+
+msgid "Download speed variance for conservative profile"
+msgstr "コンサバティブプロファイルのダウンロード速度変動"
+
+msgid "Downloaded"
+msgstr "ダウンロード済み"
+
+msgid "Downloaded Session / Total"
+msgstr "ダウンロード済み セッション / 合計"
+
+msgid "Downloaded Speed"
+msgstr "ダウンロード速度"
+
+msgid "Dropout probability:"
+msgstr "ドロップアウト確率:"
+
+msgid "Dutch"
+msgstr "オランダ語"
+
+msgid "Dynamic profile switching"
+msgstr "動的プロファイル切り替え"
+
+msgid "ERROR"
+msgstr "エラー"
+
+msgid "ETA"
+msgstr "残り時間"
+
+msgid "Enable CSRF protection"
+msgstr "CSRF保護を有効にする"
+
+msgid "Enable Cross-Site Request Forgery protection"
+msgstr "クロスサイトリクエストフォージェリ保護を有効にする"
+
+msgid "Enable DHT"
+msgstr "DHTを有効にする"
+
+msgid "Enable DHT (Distributed Hash Table)"
+msgstr "DHT (分散ハッシュテーブル) を有効化"
+
+msgid "Enable DHT query rate limiting"
+msgstr "DHT クエリレート制限を有効にする"
+
+msgid "Enable DHT statistics collection"
+msgstr "DHT統計収集を有効にする"
+
+msgid "Enable Distributed Hash Table for trackerless torrents"
+msgstr "トラッカーレストレントのための分散ハッシュテーブルを有効にする"
+
+msgid "Enable Fast Extension (BEP-006) for improved performance"
+msgstr "パフォーマンス向上のため高速拡張(BEP-006)を有効にする"
+
+msgid "Enable LPD (Local Peer Discovery)"
+msgstr "LPD (ローカルピア検出) を有効化"
+
+msgid "Enable Local Peer Discovery for finding peers on local network"
+msgstr "ローカルネットワークでピアを見つけるためのローカルピア発見を有効にする"
+
+msgid "Enable Nagle algorithm"
+msgstr "Nagleアルゴリズムを有効にする"
+
+msgid "Enable Nagle algorithm for TCP"
+msgstr "TCP用Nagleアルゴリズムを有効にする"
+
+msgid "Enable PEX (Peer Exchange)"
+msgstr "PEX (ピア交換) を有効化"
+
+msgid "Enable Peer Exchange for discovering new peers"
+msgstr "新しいピアを発見するためのピア交換を有効にする"
+
+msgid "Enable Protocol Extensions"
+msgstr "プロトコル拡張を有効にする"
+
+msgid "Enable TCP keepalive"
+msgstr "TCP キープアライブを有効にする"
+
+msgid "Enable UPnP/NAT-PMP port mapping"
+msgstr "UPnP/NAT-PMP ポートマッピングを有効化"
+
+msgid "Enable Web UI"
+msgstr "ウェブ UI を有効化"
+
+msgid "Enable alternative speed limits"
+msgstr "代替速度制限を有効にする"
+
+msgid "Enable alternative speed limits (useful for limiting speeds during certain hours)"
+msgstr "代替速度制限を有効にする (特定の時間に速度を制限するのに便利)"
+
+msgid "Enable clickjacking protection"
+msgstr "クリックジャッキング保護を有効にする"
+
+msgid "Enable client behavior simulation"
+msgstr "クライアント動作シミュレーションを有効にする"
+
+msgid "Enable client behavior simulation engine"
+msgstr "クライアント動作シミュレーションエンジンを有効にする"
+
+msgid "Enable debug mode"
+msgstr "デバッグモードを有効にする"
+
+msgid "Enable debug mode with extra logging and error details"
+msgstr "追加ログとエラー詳細付きのデバッグモードを有効にする"
+
+msgid "Enable dynamic client profile switching"
+msgstr "動的クライアントプロファイル切り替えを有効にする"
+
+msgid "Enable lt_donthave extension for piece availability"
+msgstr "ピース可用性用lt_donthave拡張を有効にする"
+
+msgid "Enable metadata extension"
+msgstr "メタデータ拡張を有効にする"
+
+msgid "Enable metadata extension features"
+msgstr "メタデータ拡張機能を有効にする"
+
+msgid "Enable or disable BitTorrent protocol extensions"
+msgstr "BitTorrentプロトコル拡張を有効/無効にする"
+
+msgid "Enable or disable DHT for trackerless torrent support"
+msgstr "トラッカーレストレントサポート用DHTを有効/無効にする"
+
+msgid "Enable proxy authentication"
+msgstr "プロキシ認証を有効にする"
+
+msgid "Enable random variations in client behavior"
+msgstr "クライアント動作のランダムな変動を有効にする"
+
+msgid "Enable rate limiting"
+msgstr "レート制限を有効にする"
+
+msgid "Enable realistic traffic variations"
+msgstr "リアルなトラフィック変動を有効にする"
+
+msgid "Enable secure HTTP headers"
+msgstr "セキュアHTTPヘッダーを有効にする"
+
+msgid "Enable speed scheduler"
+msgstr "速度スケジューラーを有効にする"
+
+msgid "Enable statistics"
+msgstr "統計を有効にする"
+
+msgid "Enable swarm intelligence"
+msgstr "スウォームインテリジェンスを有効にする"
+
+msgid "Enable swarm intelligence for adaptive behavior"
+msgstr "適応動作のためスウォームインテリジェンスを有効にする"
+
+msgid "Enable time-based traffic patterns (peak hours, night hours)"
+msgstr "時間ベーストラフィックパターンを有効にする（ピーク時間、夜間）"
+
+msgid "Enable ut_holepunch extension for NAT traversal"
+msgstr "NAT トラバーサル用ut_holepunch拡張を有効にする"
+
+msgid "Enable ut_metadata extension for metadata exchange"
+msgstr "メタデータ交換用ut_metadata拡張を有効にする"
+
+msgid "Enable ut_pex extension for peer exchange"
+msgstr "ピア交換用ut_pex拡張を有効にする"
+
+msgid "Enable web-based remote control interface"
+msgstr "Webベースのリモートコントロールインターフェースを有効にする"
+
+msgid "Enable µTP (Micro Transport Protocol)"
+msgstr "µTP（マイクロトランスポートプロトコル）を有効にする"
+
+msgid "Enabled"
+msgstr "有効"
+
+msgid "Encryption:"
+msgstr "暗号化:"
+
+msgid "End hour (24-hour format)"
+msgstr "終了時刻 (24時間形式)"
+
+msgid "End minute"
+msgstr "終了分"
+
+msgid "English"
+msgstr "英語"
+
+msgid "Error"
+msgstr "エラー"
+
+msgid "Error changing language"
+msgstr "言語変更エラー"
+
+msgid "Export"
+msgstr "エクスポート"
+
+msgid "Export Settings"
+msgstr "設定をエクスポート"
+
+msgid "Export current settings to a file"
+msgstr "現在の設定をファイルにエクスポート"
+
+msgid "Extension Timeout:"
+msgstr "拡張タイムアウト:"
+
+msgid "Extension statistics update interval (seconds)"
+msgstr "拡張統計更新間隔（秒）"
+
+msgid "Failure Reason"
+msgstr "失敗理由"
+
+msgid "Fall back to TCP if µTP fails"
+msgstr "µTP が失敗した場合TCPにフォールバック"
+
+msgid "Fast Extension (BEP-006)"
+msgstr "高速拡張 (BEP-006)"
+
+msgid "File"
+msgstr "ファイル"
+
+msgid "File Path"
+msgstr "ファイルパス"
+
+msgid "File chooser not yet implemented"
+msgstr "ファイル選択はまだ実装されていません"
+
+msgid "Files"
+msgstr "ファイル"
+
+msgid "Flags"
+msgstr "フラグ"
+
+msgid "Follow System"
+msgstr "システムに従う"
+
+msgid "Forced"
+msgstr "強制"
+
+msgid "French"
+msgstr "フランス語"
+
+msgid "Fri"
+msgstr "金"
+
+msgid "Friday"
+msgstr "金曜日"
+
+msgid "From:"
+msgstr "開始:"
+
+msgid "General"
+msgstr "一般"
+
+msgid "General settings reset to defaults"
+msgstr "一般設定をデフォルトにリセットしました"
+
+msgid "General timeout for extension operations (seconds)"
+msgstr "拡張操作の一般タイムアウト（秒）"
+
+msgid "Generate Secure Password"
+msgstr "安全なパスワードを生成"
+
+msgid "Generate a random port number"
+msgstr "ランダムポート番号を生成"
+
+msgid "Generate a random secure password"
+msgstr "ランダムなセキュアパスワードを生成"
+
+msgid "Generate synthetic metadata"
+msgstr "合成メタデータを生成する"
+
+msgid "Generate synthetic metadata for simulation"
+msgstr "シミュレーション用合成メタデータを生成する"
+
+msgid "Generate synthetic peer data for PEX"
+msgstr "PEX用の合成ピアデータを生成する"
+
+msgid "Generate synthetic peers"
+msgstr "合成ピアを生成する"
+
+msgid "German"
+msgstr "ドイツ語"
+
+msgid "Github - D' Fake Seeder"
+msgstr "Github - D' Fake Seeder"
+
+msgid "Global download speed limit in KB/s (0 = unlimited)"
+msgstr "KB/sでの全体ダウンロード速度制限 (0 = 無制限)"
+
+msgid "Global upload speed limit in KB/s (0 = unlimited)"
+msgstr "KB/sでの全体アップロード速度制限 (0 = 無制限)"
+
+msgid "HTTP"
+msgstr "HTTP"
+
+msgid "HTTP seeder timeout (seconds):"
+msgstr "HTTPシーダータイムアウト (秒):"
+
+msgid "Handshake"
+msgstr "ハンドシェイク"
+
+msgid "Handshake timeout (seconds):"
+msgstr "ハンドシェイクタイムアウト (秒):"
+
+msgid "Hide to system tray when window is minimized"
+msgstr "ウィンドウが最小化されたときにシステムトレイに隠す"
+
+msgid "Hindi"
+msgstr "ヒンディー語"
+
+msgid "How often to announce to trackers (60-7200 seconds)"
+msgstr "トラッカーにアナウンスする頻度 (60-7200秒)"
+
+msgid "How often to scrape tracker for swarm statistics"
+msgstr "スウォーム統計のためにトラッカーをスクレイプする頻度"
+
+msgid "How often to update the user interface"
+msgstr "ユーザーインターフェースを更新する頻度"
+
+msgid "ID"
+msgstr "識別子"
+
+msgid "INFO"
+msgstr "情報"
+
+msgid "IP Address"
+msgstr "IPアドレス"
+
+msgid "IP address to bind to (0.0.0.0 for all interfaces)"
+msgstr "バインドするIPアドレス (全インターフェースの場合は0.0.0.0)"
+
+msgid "Idle Probability:"
+msgstr "アイドル確率:"
+
+msgid "Import"
+msgstr "インポート"
+
+msgid "Import Settings"
+msgstr "設定をインポート"
+
+msgid "Import settings from a file"
+msgstr "ファイルから設定をインポート"
+
+msgid "Inactive"
+msgstr "非アクティブ"
+
+msgid "Incoming"
+msgstr "受信"
+
+msgid "Incoming Connections"
+msgstr "着信接続"
+
+msgid "Incoming Peer Connections"
+msgstr "受信ピア接続"
+
+msgid "Interested"
+msgstr "関心あり"
+
+msgid "Interval between DHT announcements (seconds)"
+msgstr "DHTアナウンス間隔（秒）"
+
+msgid "Interval between PEX message exchanges (seconds)"
+msgstr "PEXメッセージ交換間隔（秒）"
+
+msgid "Interval for DHT statistics updates (seconds)"
+msgstr "DHT統計更新間隔（秒）"
+
+msgid "Interval for contacting peers in seconds"
+msgstr "ピアに連絡する間隔（秒）"
+
+msgid "Interval for sending keep alive messages in seconds"
+msgstr "キープアライブメッセージを送信する間隔（秒）"
+
+msgid "Italian"
+msgstr "イタリア語"
+
+msgid "Japanese"
+msgstr "日本語"
+
+msgid "Keep Alive Interval:"
+msgstr "キープアライブ間隔:"
+
+msgid "Keep alive interval (seconds):"
+msgstr "キープアライブ間隔 (秒):"
+
+msgid "Keep alive interval for connections (seconds)"
+msgstr "接続のキープアライブ間隔（秒）"
+
+msgid "Korean"
+msgstr "韓国語"
+
+msgid "Label"
+msgstr "ラベル"
+
+msgid "Language switched to"
+msgstr "言語を切り替えました："
+
+msgid "Language:"
+msgstr "言語:"
+
+msgid "Last Announce"
+msgstr "最終アナウンス"
+
+msgid "Last Notification"
+msgstr "最後の通知"
+
+msgid "Leechers"
+msgstr "リーチャー"
+
+msgid "Level of BitTorrent protocol compliance"
+msgstr "BitTorrentプロトコル準拠レベル"
+
+msgid "Light"
+msgstr "ライト"
+
+msgid "Limit extension message rate"
+msgstr "拡張メッセージレートを制限する"
+
+msgid "List of bootstrap nodes for DHT initialization"
+msgstr "DHT初期化用ブートストラップノードのリスト"
+
+msgid "Log"
+msgstr "ログ"
+
+msgid "Log Level:"
+msgstr "ログレベル:"
+
+msgid "Log to file"
+msgstr "ファイルにログ"
+
+msgid "Max Connections:"
+msgstr "最大接続数:"
+
+msgid "Max Dropped Peers:"
+msgstr "最大ドロップピア数:"
+
+msgid "Max Message Size:"
+msgstr "最大メッセージサイズ:"
+
+msgid "Max Messages/Second:"
+msgstr "1秒あたり最大メッセージ数:"
+
+msgid "Max Nodes:"
+msgstr "最大ノード数:"
+
+msgid "Max Peers/Message:"
+msgstr "メッセージあたり最大ピア数:"
+
+msgid "Max Queries/Second:"
+msgstr "1秒あたり最大クエリ数:"
+
+msgid "Max global connections:"
+msgstr "最大グローバル接続数:"
+
+msgid "Max log file size (MB):"
+msgstr "最大ログファイルサイズ (MB):"
+
+msgid "Max per torrent:"
+msgstr "トレント毎の最大接続数:"
+
+msgid "Max upload slots:"
+msgstr "最大アップロードスロット数:"
+
+msgid "Maximum DHT queries per second"
+msgstr "1秒あたりの最大DHT クエリ数"
+
+msgid "Maximum connections for aggressive profile"
+msgstr "アグレッシブプロファイルの最大接続数"
+
+msgid "Maximum connections for balanced profile"
+msgstr "バランスプロファイルの最大接続数"
+
+msgid "Maximum connections for conservative profile"
+msgstr "コンサバティブプロファイルの最大接続数"
+
+msgid "Maximum dropped peers to track for PEX"
+msgstr "PEX用追跡する最大ドロップピア数"
+
+msgid "Maximum extension messages per second"
+msgstr "1秒あたりの最大拡張メッセージ数"
+
+msgid "Maximum number of DHT nodes to maintain"
+msgstr "維持するDHTノードの最大数"
+
+msgid "Maximum number of concurrent DHT queries"
+msgstr "同時DHT クエリの最大数"
+
+msgid "Maximum number of connections per individual torrent"
+msgstr "個別トレントあたりの最大接続数"
+
+msgid "Maximum number of connections to all torrents"
+msgstr "全トレントへの最大接続数"
+
+msgid "Maximum number of nodes in the routing table"
+msgstr "ルーティングテーブルの最大ノード数"
+
+msgid "Maximum number of nodes per bucket"
+msgstr "バケットあたりの最大ノード数"
+
+msgid "Maximum number of simultaneous upload slots"
+msgstr "同時アップロードスロットの最大数"
+
+msgid "Maximum peers to include in a PEX message"
+msgstr "PEXメッセージに含める最大ピア数"
+
+msgid "Maximum port for seeder connections"
+msgstr "シーダー接続の最大ポート"
+
+msgid "Maximum size for extension messages (bytes)"
+msgstr "拡張メッセージの最大サイズ（バイト）"
+
+msgid "Maximum size of log file before rotation"
+msgstr "ローテーション前のログファイルの最大サイズ"
+
+msgid "Maximum transaction ID for tracker communication"
+msgstr "トラッカー通信の最大トランザクションID"
+
+msgid "Message"
+msgstr "メッセージ"
+
+msgid "Message read timeout (seconds):"
+msgstr "メッセージ読み取りタイムアウト (秒):"
+
+msgid "Metadata Piece Size:"
+msgstr "メタデータピースサイズ:"
+
+msgid "Metadata Timeout:"
+msgstr "メタデータタイムアウト:"
+
+msgid "Min announce interval (sec):"
+msgstr "最小アナウンス間隔 (秒):"
+
+msgid "Minimize to system tray"
+msgstr "システムトレイに最小化"
+
+msgid "Minimum log level to record"
+msgstr "記録する最小ログレベル"
+
+msgid "Minimum port for seeder connections"
+msgstr "シーダー接続の最小ポート"
+
+msgid "Minimum time between announces (10-3600 seconds)"
+msgstr "アナウンス間の最小時間 (10-3600秒)"
+
+msgid "Minimum transaction ID for tracker communication"
+msgstr "トラッカー通信の最小トランザクションID"
+
+msgid "Mon"
+msgstr "月"
+
+msgid "Monday"
+msgstr "月曜日"
+
+msgid "My IP address"
+msgstr "私のIPアドレス"
+
+msgid "N/A"
+msgstr "該当なし"
+
+msgid "Name"
+msgstr "名前"
+
+msgid "Network interface:"
+msgstr "ネットワークインターフェース:"
+
+msgid "Next Announce"
+msgstr "次回アナウンス"
+
+msgid "Next Update"
+msgstr "次回更新"
+
+msgid "None"
+msgstr "なし"
+
+msgid "Number of peers to analyze for behavior patterns"
+msgstr "動作パターン分析用ピア数"
+
+msgid "Number of peers to request from tracker"
+msgstr "トラッカーから要求するピア数"
+
+msgid "Number of synthetic peers to generate"
+msgstr "生成する合成ピア数"
+
+msgid "Only allow connections from localhost (more secure)"
+msgstr "localhostからの接続のみ許可 (より安全)"
+
+msgid "Open preferences"
+msgstr "環境設定を開く"
+
+msgid "Options"
+msgstr "オプション"
+
+msgid "Outgoing"
+msgstr "送信"
+
+msgid "Outgoing Connections"
+msgstr "発信接続"
+
+msgid "Outgoing Peer Connections"
+msgstr "送信ピア接続"
+
+msgid "Overlay Notification"
+msgstr "オーバーレイ通知"
+
+msgid "PEX Interval:"
+msgstr "PEX間隔:"
+
+msgid "Password for web interface login"
+msgstr "Webインターフェースログイン用パスワード"
+
+msgid "Password:"
+msgstr "パスワード:"
+
+msgid "Path"
+msgstr "パス"
+
+msgid "Pause"
+msgstr "一時停止"
+
+msgid "Pause torrent"
+msgstr "トレント一時停止"
+
+msgid "Peer Analysis Depth:"
+msgstr "ピア分析深度:"
+
+msgid "Peer Choking"
+msgstr "ピア接続制限"
+
+msgid "Peer ID"
+msgstr "ピアID"
+
+msgid "Peer ID Prefix:"
+msgstr "ピアIDプレフィックス:"
+
+msgid "Peer ID prefix to identify client type"
+msgstr "クライアントタイプを識別するピアIDプレフィックス"
+
+msgid "Peer Protocol"
+msgstr "ピアプロトコル"
+
+msgid "Peer Protocol settings reset to defaults"
+msgstr "ピアプロトコル設定をデフォルトにリセットしました"
+
+msgid "Peer contact interval (seconds):"
+msgstr "ピア連絡間隔 (秒):"
+
+msgid "Peer idle chance:"
+msgstr "ピアアイドル確率:"
+
+msgid "Peer request count:"
+msgstr "ピアリクエスト数:"
+
+msgid "Peers"
+msgstr "ピア"
+
+msgid "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr "ローテーションする接続の割合 (0.0 - 1.0)"
+
+msgid "Piece Length"
+msgstr "ピース長"
+
+msgid "Pieces"
+msgstr "ピース数"
+
+msgid "Pieces Received"
+msgstr "受信ピース数"
+
+msgid "Polish"
+msgstr "ポーランド語"
+
+msgid "Port"
+msgstr "ポート"
+
+msgid "Port for incoming BitTorrent connections (1024-65535)"
+msgstr "受信BitTorrent接続用ポート (1024-65535)"
+
+msgid "Port for web interface (1024-65535)"
+msgstr "Webインターフェース用ポート (1024-65535)"
+
+msgid "Port:"
+msgstr "ポート:"
+
+msgid "Portuguese"
+msgstr "ポルトガル語"
+
+msgid "Preferences"
+msgstr "環境設定"
+
+msgid "Prevent embedding in frames (X-Frame-Options)"
+msgstr "フレーム内埋め込みを防止 (X-Frame-Options)"
+
+msgid "Primary BitTorrent client to simulate"
+msgstr "シミュレートするプライマリBitTorrentクライアント"
+
+msgid "Primary Client:"
+msgstr "プライマリクライアント:"
+
+msgid "Priority"
+msgstr "優先度"
+
+msgid "Priority Down"
+msgstr "優先度下げる"
+
+msgid "Priority Up"
+msgstr "優先度上げる"
+
+msgid "Private"
+msgstr "プライベート"
+
+msgid "Probability of idle periods for aggressive profile"
+msgstr "アグレッシブプロファイルのアイドル期間確率"
+
+msgid "Probability of idle periods for balanced profile"
+msgstr "バランスプロファイルのアイドル期間確率"
+
+msgid "Probability of idle periods for conservative profile"
+msgstr "コンサバティブプロファイルのアイドル期間確率"
+
+msgid "Probability of peer behavior analysis (0.0 - 1.0)"
+msgstr "ピア行動分析の確率 (0.0 - 1.0)"
+
+msgid "Probability of peer being idle (0.0 - 1.0)"
+msgstr "ピアがアイドル状態である確率 (0.0 - 1.0)"
+
+msgid "Probability of peer dropping out (0.0 - 1.0)"
+msgstr "ピアがドロップアウトする確率 (0.0 - 1.0)"
+
+msgid "Probability of peer status changes (0.0 - 1.0)"
+msgstr "ピアステータス変更の確率 (0.0 - 1.0)"
+
+msgid "Probability of seeder upload activity (0.0 - 1.0)"
+msgstr "シーダーアップロード活動の確率 (0.0 - 1.0)"
+
+msgid "Probability of switching to a different client behavior"
+msgstr "異なるクライアント動作への切り替え確率"
+
+msgid "Probability of traffic bursts for aggressive profile"
+msgstr "アグレッシブプロファイルのトラフィックバースト確率"
+
+msgid "Probability of traffic bursts for balanced profile"
+msgstr "バランスプロファイルのトラフィックバースト確率"
+
+msgid "Probability of traffic bursts for conservative profile"
+msgstr "コンサバティブプロファイルのトラフィックバースト確率"
+
+msgid "Progress"
+msgstr "進行状況"
+
+msgid "Progress distribution (almost):"
+msgstr "進捗分布 (ほぼ完了):"
+
+msgid "Progress distribution (middle):"
+msgstr "進捗分布 (中間):"
+
+msgid "Progress distribution (start):"
+msgstr "進捗分布 (開始):"
+
+msgid "Progress distribution for almost complete peers (0.0 - 1.0)"
+msgstr "ほぼ完了ピアの進捗分布 (0.0 - 1.0)"
+
+msgid "Progress distribution for middle progress peers (0.0 - 1.0)"
+msgstr "中間進捗ピアの進捗分布 (0.0 - 1.0)"
+
+msgid "Progress distribution for starting peers (0.0 - 1.0)"
+msgstr "開始ピアの進捗分布 (0.0 - 1.0)"
+
+msgid "Protocol Compliance:"
+msgstr "プロトコル準拠:"
+
+msgid "Protocol Extensions"
+msgstr "プロトコル拡張"
+
+msgid "Protocol encryption mode for peer communications"
+msgstr "ピア通信のプロトコル暗号化モード"
+
+msgid "Proxy authentication password"
+msgstr "プロキシ認証パスワード"
+
+msgid "Proxy authentication username"
+msgstr "プロキシ認証ユーザー名"
+
+msgid "Proxy server hostname or IP address"
+msgstr "プロキシサーバーのホスト名またはIPアドレス"
+
+msgid "Proxy server port number"
+msgstr "プロキシサーバーのポート番号"
+
+msgid "Query Timeout:"
+msgstr "クエリタイムアウト:"
+
+msgid "Queue"
+msgstr "キュー"
+
+msgid "Quit"
+msgstr "終了"
+
+msgid "Random"
+msgstr "ランダム"
+
+msgid "Rate of adaptation to swarm behavior"
+msgstr "スウォーム動作への適応速度"
+
+msgid "Ratio"
+msgstr "レシオ"
+
+msgid "Realistic variations"
+msgstr "リアルな変動"
+
+msgid "Received"
+msgstr "受信済み"
+
+msgid "Relaxed"
+msgstr "リラックス"
+
+msgid "Remember window size and position"
+msgstr "ウィンドウサイズと位置を記憶"
+
+msgid "Remember window size and position between sessions"
+msgstr "セッション間でウィンドウサイズと位置を記憶"
+
+msgid "Remove torrent"
+msgstr "トレント削除"
+
+msgid "Requests"
+msgstr "リクエスト"
+
+msgid "Require authentication"
+msgstr "認証を要求"
+
+msgid "Require username and password for web access"
+msgstr "Webアクセスにユーザー名とパスワードを要求"
+
+msgid "Reset"
+msgstr "リセット"
+
+msgid "Reset all settings not yet implemented"
+msgstr "全設定のリセットはまだ実装されていません"
+
+msgid "Reset all settings to default values"
+msgstr "全設定をデフォルト値にリセット"
+
+msgid "Reset to Defaults"
+msgstr "デフォルトにリセット"
+
+msgid "Reset to defaults"
+msgstr "デフォルトにリセット"
+
+msgid "Resume"
+msgstr "再開"
+
+msgid "Resume torrent"
+msgstr "トレント再開"
+
+msgid "Routing Table Size:"
+msgstr "ルーティングテーブルサイズ:"
+
+msgid "Russian"
+msgstr "ロシア語"
+
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+msgid "Sat"
+msgstr "土"
+
+msgid "Saturday"
+msgstr "土曜日"
+
+msgid "Save logs to file in addition to console"
+msgstr "コンソールに加えてファイルにログを保存"
+
+msgid "Scrape interval (sec):"
+msgstr "スクレイプ間隔 (秒):"
+
+msgid "Search by torrent name or file path"
+msgstr "トレント名またはファイルパスで検索"
+
+msgid "Search for settings across all tabs"
+msgstr "全タブで設定を検索"
+
+msgid "Search for torrent"
+msgstr "トレント検索"
+
+msgid "Search settings"
+msgstr "設定を検索"
+
+msgid "Secure password generated"
+msgstr "安全なパスワードを生成しました"
+
+msgid "Seeder port range (max):"
+msgstr "シーダーポート範囲 (最大):"
+
+msgid "Seeder port range (min):"
+msgstr "シーダーポート範囲 (最小):"
+
+msgid "Seeders"
+msgstr "シーダー"
+
+msgid "Seeds"
+msgstr "シード"
+
+msgid "Select proxy type for connections"
+msgstr "接続用プロキシタイプを選択"
+
+msgid "Select torrent"
+msgstr "トレントを選択"
+
+msgid "Send security-related HTTP headers"
+msgstr "セキュリティ関連HTTPヘッダーを送信"
+
+msgid "Sent"
+msgstr "送信済み"
+
+msgid "Server:"
+msgstr "サーバー:"
+
+msgid "Session timeout (min):"
+msgstr "セッションタイムアウト (分):"
+
+msgid "Shortcuts configuration not yet implemented"
+msgstr "ショートカット設定はまだ実装されていません"
+
+msgid "Show only selected torrent connections"
+msgstr "選択されたトレント接続のみ表示"
+
+msgid "Simulation"
+msgstr "シミュレーション"
+
+msgid "Size"
+msgstr "サイズ"
+
+msgid "Size of metadata pieces in bytes"
+msgstr "メタデータピースのサイズ（バイト）"
+
+msgid "Small Torrent Limit"
+msgstr "小トレント制限"
+
+msgid "Spanish"
+msgstr "スペイン語"
+
+msgid "Speed"
+msgstr "速度"
+
+msgid "Speed settings reset to defaults"
+msgstr "速度設定をデフォルトにリセットしました"
+
+msgid "Standard"
+msgstr "標準"
+
+msgid "Start DFakeSeeder automatically when the system boots"
+msgstr "システム起動時にDFakeSeederを自動開始"
+
+msgid "Start hour (24-hour format)"
+msgstr "開始時刻 (24時間形式)"
+
+msgid "Start minimized"
+msgstr "最小化して起動"
+
+msgid "Start minimized disabled"
+msgstr "最小化開始が無効になりました"
+
+msgid "Start minimized enabled"
+msgstr "最小化開始が有効になりました"
+
+msgid "Start minute"
+msgstr "開始分"
+
+msgid "Start on system startup"
+msgstr "システム起動時に開始"
+
+msgid "Start the application minimized to system tray"
+msgstr "アプリケーションをシステムトレイに最小化して開始"
+
+msgid "Stats Update Interval:"
+msgstr "統計更新間隔:"
+
+msgid "Status"
+msgstr "ステータス"
+
+msgid "Status change probability:"
+msgstr "ステータス変更確率:"
+
+msgid "Strict"
+msgstr "厳格"
+
+msgid "Sun"
+msgstr "日"
+
+msgid "Sunday"
+msgstr "日曜日"
+
+msgid "Swedish"
+msgstr "スウェーデン語"
+
+msgid "Synthetic Peer Count:"
+msgstr "合成ピア数:"
+
+msgid "TCP fallback"
+msgstr "TCPフォールバック"
+
+msgid "TCP keepalive"
+msgstr "TCP キープアライブ"
+
+msgid "Theme:"
+msgstr "テーマ:"
+
+msgid "Threshold"
+msgstr "閾値"
+
+msgid "Thu"
+msgstr "木"
+
+msgid "Thursday"
+msgstr "木曜日"
+
+msgid "Tier"
+msgstr "階層"
+
+msgid "Time-based patterns"
+msgstr "時間ベースパターン"
+
+msgid "Timeout for DHT bootstrap operations (seconds)"
+msgstr "DHTブートストラップ操作のタイムアウト（秒）"
+
+msgid "Timeout for DHT queries (seconds)"
+msgstr "DHT クエリのタイムアウト（秒）"
+
+msgid "Timeout for HTTP seeder connections in seconds"
+msgstr "HTTPシーダー接続のタイムアウト（秒）"
+
+msgid "Timeout for UDP seeder connections in seconds"
+msgstr "UDPシーダー接続のタイムアウト（秒）"
+
+msgid "Timeout for metadata requests (seconds)"
+msgstr "メタデータリクエストのタイムアウト（秒）"
+
+msgid "Timeout for peer handshake in seconds"
+msgstr "ピアハンドシェイクのタイムアウト（秒）"
+
+msgid "Timeout for reading peer messages in seconds"
+msgstr "ピアメッセージ読み取りのタイムアウト（秒）"
+
+msgid "To:"
+msgstr "終了:"
+
+msgid "Top"
+msgstr "最上位"
+
+msgid "Torrent"
+msgstr "トレント"
+
+msgid "Torrent Files"
+msgstr "トレントファイル"
+
+msgid "Torrents"
+msgstr "トレント"
+
+msgid "Total Downloaded"
+msgstr "合計ダウンロード"
+
+msgid "Total Size"
+msgstr "合計サイズ"
+
+msgid "Total Uploaded"
+msgstr "合計アップロード"
+
+msgid "Track extension statistics"
+msgstr "拡張統計を追跡する"
+
+msgid "Track extension usage statistics"
+msgstr "拡張使用統計を追跡する"
+
+msgid "Tracker"
+msgstr "トラッカー"
+
+msgid "Tracker URL"
+msgstr "トラッカーURL"
+
+msgid "Trackers"
+msgstr "トラッカー"
+
+msgid "Traffic Profile:"
+msgstr "トラフィックプロファイル:"
+
+msgid "Traffic pattern profile for simulation"
+msgstr "シミュレーション用トラフィックパターンプロファイル"
+
+msgid "Transaction ID range (max):"
+msgstr "トランザクションID範囲 (最大):"
+
+msgid "Transaction ID range (min):"
+msgstr "トランザクションID範囲 (最小):"
+
+msgid "Transmission"
+msgstr "Transmission"
+
+msgid "Transmission/3.00"
+msgstr "Transmission/3.00"
+
+msgid "Tue"
+msgstr "火"
+
+msgid "Tuesday"
+msgstr "火曜日"
+
+msgid "Type"
+msgstr "タイプ"
+
+msgid "Type:"
+msgstr "タイプ:"
+
+msgid "UDP seeder timeout (seconds):"
+msgstr "UDPシーダータイムアウト (秒):"
+
+msgid "UI Refresh Rate"
+msgstr "UI更新レート"
+
+msgid "UI refresh rate (sec):"
+msgstr "UI更新レート (秒):"
+
+msgid "URL"
+msgstr "アドレス"
+
+msgid "URL: http://localhost:8080"
+msgstr "アドレス: http://localhost:8080"
+
+msgid "Unknown"
+msgstr "不明"
+
+msgid "Up"
+msgstr "上へ"
+
+msgid "Up Speed"
+msgstr "アップ速度"
+
+msgid "Update Tracker"
+msgstr "トラッカー更新"
+
+msgid "Upload Speed"
+msgstr "アップロード速度"
+
+msgid "Upload Speed (KB/s):"
+msgstr "アップロード速度 (KB/s):"
+
+msgid "Upload Variance:"
+msgstr "アップロード変動:"
+
+msgid "Upload activity probability:"
+msgstr "アップロード活動確率:"
+
+msgid "Upload limit (KB/s):"
+msgstr "アップロード制限 (KB/s):"
+
+msgid "Upload speed variance for aggressive profile"
+msgstr "アグレッシブプロファイルのアップロード速度変動"
+
+msgid "Upload speed variance for balanced profile"
+msgstr "バランスプロファイルのアップロード速度変動"
+
+msgid "Upload speed variance for conservative profile"
+msgstr "コンサバティブプロファイルのアップロード速度変動"
+
+msgid "Uploaded"
+msgstr "アップロード済み"
+
+msgid "Uploaded Session / Total"
+msgstr "アップロード済み セッション / 合計"
+
+msgid "Uploading"
+msgstr "アップロード中"
+
+msgid "Use HTTPS (SSL/TLS)"
+msgstr "HTTPS (SSL/TLS) を使用"
+
+msgid "Use HTTPS for secure connections (requires SSL certificate)"
+msgstr "セキュア接続にHTTPSを使用 (SSL証明書が必要)"
+
+msgid "Use authentication"
+msgstr "認証を使用"
+
+msgid "User Agent:"
+msgstr "ユーザーエージェント:"
+
+msgid "User agent string to identify the client to trackers"
+msgstr "トラッカーにクライアントを識別させるユーザーエージェント文字列"
+
+msgid "Username for web interface login"
+msgstr "Webインターフェースログイン用ユーザー名"
+
+msgid "Username:"
+msgstr "ユーザー名:"
+
+msgid "Validate DHT security tokens"
+msgstr "DHTセキュリティトークンを検証する"
+
+msgid "Validate extension messages"
+msgstr "拡張メッセージを検証する"
+
+msgid "Validate extension messages for security"
+msgstr "セキュリティのため拡張メッセージを検証する"
+
+msgid "Validate security tokens"
+msgstr "セキュリティトークンを検証する"
+
+msgid "Validate setting values and show warnings for invalid combinations"
+msgstr "設定値を検証し、無効な組み合わせの警告を表示"
+
+msgid "Validate settings on change"
+msgstr "変更時に設定を検証"
+
+msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr "クライアント動作の変動（0.0=変動なし、1.0=最大変動）"
+
+msgid "Vuze"
+msgstr "Vuze"
+
+msgid "Vuze/5.7.6.0"
+msgstr "Vuze/5.7.6.0"
+
+msgid "WARNING"
+msgstr "警告"
+
+msgid "Web UI"
+msgstr "ウェブ UI"
+
+msgid "Web UI settings reset to defaults"
+msgstr "Web UI設定をデフォルトにリセットしました"
+
+msgid "Wed"
+msgstr "水"
+
+msgid "Wednesday"
+msgstr "水曜日"
+
+msgid "active"
+msgstr "アクティブ"
+
+msgid "admin"
+msgstr "admin"
+
+msgid "announce_interval"
+msgstr "アナウンス間隔"
+
+msgid "bytes"
+msgstr "バイト"
+
+msgid "class_name"
+msgstr "クラス名"
+
+msgid "download_speed"
+msgstr "ダウンロード速度"
+
+msgid "filepath"
+msgstr "ファイルパス"
+
+msgid "files_tab"
+msgstr "ファイルタブ"
+
+msgid "id"
+msgstr "#"
+
+msgid "leechers"
+msgstr "リーチャー"
+
+msgid "log_tab"
+msgstr "ログタブ"
+
+msgid "lt_donthave (Piece Availability)"
+msgstr "lt_donthave（ピース可用性）"
+
+msgid "name"
+msgstr "名前"
+
+msgid "next_update"
+msgstr "次回更新"
+
+msgid "open-menu-symbolic"
+msgstr "open-menu-symbolic"
+
+msgid "options_tab"
+msgstr "オプションタブ"
+
+msgid "peers_tab"
+msgstr "ピアタブ"
+
+msgid "progress"
+msgstr "進行状況"
+
+msgid "qBittorrent"
+msgstr "qBittorrent"
+
+msgid "qBittorrent/4.3.1"
+msgstr "qBittorrent/4.3.1"
+
+msgid "rTorrent"
+msgstr "rTorrent"
+
+msgid "rTorrent/0.9.6"
+msgstr "rTorrent/0.9.6"
+
+msgid "seconds"
+msgstr "秒"
+
+msgid "seeders"
+msgstr "シーダー"
+
+msgid "session_downloaded"
+msgstr "ダウンロード済み"
+
+msgid "session_uploaded"
+msgstr "アップロード済み"
+
+msgid "small_torrent_limit"
+msgstr "小トレント制限"
+
+msgid "threshold"
+msgstr "閾値"
+
+msgid "total_downloaded"
+msgstr "合計ダウンロード"
+
+msgid "total_size"
+msgstr "サイズ"
+
+msgid "total_uploaded"
+msgstr "合計アップロード"
+
+msgid "trackers_tab"
+msgstr "トラッカータブ"
+
+msgid "uTorrent/3.5.5"
+msgstr "uTorrent/3.5.5"
+
+msgid "upload_speed"
+msgstr "アップロード速度"
+
+msgid "uploading"
+msgstr "アップロード中"
+
+msgid "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch（NAT トラバーサル）"
+
+msgid "ut_metadata (Metadata Exchange)"
+msgstr "ut_metadata（メタデータ交換）"
+
+msgid "ut_pex (Peer Exchange)"
+msgstr "ut_pex（ピア交換）"
+
+msgid "µTorrent"
+msgstr "µTorrent"
+
+msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
+msgstr "⚠️ 詳細設定 - 注意して変更してください。誤った値はパフォーマンスや安定性に影響する可能性があります。"
+
+msgid "⚠️ Web UI allows remote control of the application. Use strong authentication."
+msgstr "⚠️ Web UIはアプリケーションのリモート制御を可能にします。強力な認証を使用してください。"
+
