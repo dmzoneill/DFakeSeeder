@@ -162,19 +162,69 @@
     "seeding_profiles": {
       "conservative": {
         "upload_limit": 50,
+        "download_limit": 500,
         "max_connections": 100,
-        "announce_interval": 3600
+        "announce_interval": 3600,
+        "concurrent_uploads": 4,
+        "share_ratio_target": 1.5,
+        "idle_probability": 0.6,
+        "speed_variance": 0.3,
+        "burst_probability": 0.1,
+        "throttle_mode": "strict",
+        "dht_enabled": false,
+        "pex_enabled": false,
+        "client_behavior": "conservative",
+        "description": "Low bandwidth usage, privacy-focused seeding"
       },
       "balanced": {
         "upload_limit": 200,
+        "download_limit": 1000,
         "max_connections": 200,
-        "announce_interval": 1800
+        "announce_interval": 1800,
+        "concurrent_uploads": 8,
+        "share_ratio_target": 2.0,
+        "idle_probability": 0.3,
+        "speed_variance": 0.5,
+        "burst_probability": 0.3,
+        "throttle_mode": "adaptive",
+        "dht_enabled": true,
+        "pex_enabled": true,
+        "client_behavior": "balanced",
+        "description": "Balanced settings for general use"
       },
       "aggressive": {
         "upload_limit": 0,
+        "download_limit": 0,
         "max_connections": 500,
-        "announce_interval": 900
+        "announce_interval": 900,
+        "concurrent_uploads": 16,
+        "share_ratio_target": 3.0,
+        "idle_probability": 0.1,
+        "speed_variance": 0.8,
+        "burst_probability": 0.6,
+        "throttle_mode": "unrestricted",
+        "dht_enabled": true,
+        "pex_enabled": true,
+        "client_behavior": "aggressive",
+        "description": "Maximum performance and sharing"
       }
+    },
+    "custom_seeding_profile": {
+      "upload_limit": 200,
+      "download_limit": 1000,
+      "max_connections": 200,
+      "announce_interval": 1800,
+      "concurrent_uploads": 8,
+      "share_ratio_target": 2.0,
+      "idle_probability": 0.3,
+      "speed_variance": 0.5,
+      "burst_probability": 0.3,
+      "throttle_mode": "adaptive",
+      "dht_enabled": true,
+      "pex_enabled": true,
+      "client_behavior": "custom",
+      "description": "User-defined custom settings",
+      "base_template": "balanced"
     },
     "application": {
       "id": "ie.fio.dfakeseeder",
