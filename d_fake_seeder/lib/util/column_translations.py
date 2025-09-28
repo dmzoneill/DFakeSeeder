@@ -6,6 +6,8 @@ in the application. This system integrates with the existing TranslationManager 
 support runtime language switching for column headers.
 """
 
+from lib.logger import logger
+
 # Column translations should integrate with the main TranslationManager
 # Get translation function through the model's TranslationManager
 
@@ -32,11 +34,11 @@ class ColumnTranslations:
         Args:
             translate_func: The translation function from TranslationManager
         """
-        print(f"[ColumnTranslations] ===== register_translation_function() CALLED =====")
-        print(f"[ColumnTranslations] New translation function: {translate_func}")
-        print(f"[ColumnTranslations] Previous translation function: {cls._translation_function}")
+        logger.debug("Translation function registration called", "ColumnTranslations")
+        logger.debug(f"New translation function: {translate_func}", "ColumnTranslations")
+        logger.debug(f"Previous translation function: {cls._translation_function}", "ColumnTranslations")
         cls._translation_function = translate_func
-        print(f"[ColumnTranslations] Translation function registered successfully")
+        logger.debug("Translation function registered successfully", "ColumnTranslations")
 
     @classmethod
     def _get_translation_function(cls):

@@ -15,6 +15,7 @@ from .tab_mixins import PerformanceMixin, UIUtilityMixin
 gi.require_version("Gtk", "4.0")
 from gi.repository import GLib  # noqa: E402
 from gi.repository import Gtk  # noqa: E402
+from lib.logger import logger  # noqa: E402
 
 
 class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
@@ -181,9 +182,8 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             self._log_viewer.scroll_mark_onscreen(mark)
 
         except Exception as e:
-            # Use stderr to avoid log recursion since this is the log display component
-            import sys
-            print(f"LogTab: Error updating text buffer: {e}", file=sys.stderr)
+            # Use logger error to capture this properly
+            logger.error(f"Error updating text buffer: {e}", "LogTab", exc_info=True)
 
         return False  # Stop idle callback
 

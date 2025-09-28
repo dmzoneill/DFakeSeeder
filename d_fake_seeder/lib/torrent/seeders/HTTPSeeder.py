@@ -1,4 +1,3 @@
-import traceback
 from time import sleep
 
 import lib.torrent.bencoding as bencoding
@@ -42,9 +41,9 @@ class HTTPSeeder(BaseSeeder):
                     uploaded_bytes, downloaded_bytes, download_left, num_want=0
                 )
                 break
-            except BaseException:
+            except BaseException as e:
                 self.set_random_announce_url()
-                traceback.print_exc()
+                logger.error(f"HTTP seeder error: {e}", "HTTPSeeder", exc_info=True)
             finally:
                 self.tracker_semaphore.release()
             sleep(0.5)
