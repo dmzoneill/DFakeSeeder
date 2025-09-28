@@ -206,12 +206,14 @@ class File:
         if b"files" in self.torrent_header[b"info"]:
             for file_info in self.torrent_header[b"info"][b"files"]:
                 fullpath = "/".join([x.decode("utf-8") for x in file_info[b"path"]])
-                files.append((fullpath, helpers.sizeof_fmt(file_info[b"length"])))
+                # Return raw byte length for consistent formatting by UI components
+                files.append((fullpath, file_info[b"length"]))
         return files
 
     def get_single_file_info(self):
         if b"files" not in self.torrent_header[b"info"]:
-            return helpers.sizeof_fmt(self.torrent_header[b"info"][b"length"])
+            # Return raw byte length for consistent formatting by UI components
+            return self.torrent_header[b"info"][b"length"]
         return None
 
     def get_md5sum(self):
