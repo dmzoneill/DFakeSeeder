@@ -65,9 +65,7 @@ class Torrents(Component):
         rect.y = y
 
         ATTRIBUTES = Attributes
-        attributes = [
-            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
-        ]
+        attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
 
         menu = Gio.Menu.new()
 
@@ -103,9 +101,7 @@ class Torrents(Component):
                     None,
                     GLib.Variant.new_boolean(state),
                 )
-                self.stateful_actions[attribute].connect(
-                    "change-state", self.on_stateful_action_change_state
-                )
+                self.stateful_actions[attribute].connect("change-state", self.on_stateful_action_change_state)
 
                 self.action_group.add_action(self.stateful_actions[attribute])
 
@@ -125,17 +121,15 @@ class Torrents(Component):
         self.popover.popup()
 
     def on_stateful_action_change_state(self, action, value):
-        self.stateful_actions[
-            action.get_name()[len("toggle_") :]  # noqa: E203
-        ].set_state(GLib.Variant.new_boolean(value.get_boolean()))
+        self.stateful_actions[action.get_name()[len("toggle_") :]].set_state(  # noqa: E203
+            GLib.Variant.new_boolean(value.get_boolean())
+        )
 
         checked_items = []
         all_unchecked = True
 
         ATTRIBUTES = Attributes
-        attributes = [
-            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
-        ]
+        attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
 
         column_titles = [column if column != "#" else "id" for column in attributes]
 
@@ -156,17 +150,13 @@ class Torrents(Component):
 
     def update_columns(self):
         ATTRIBUTES = Attributes
-        attributes = [
-            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
-        ]
+        attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
 
         attributes.remove("id")
         attributes.insert(0, "id")
 
         # Parse self.settings.columns into a list of column names
-        visible_columns = (
-            self.settings.columns.split(",") if self.settings.columns.strip() else []
-        )
+        visible_columns = self.settings.columns.split(",") if self.settings.columns.strip() else []
 
         # If the list is empty, set all columns to visible
         if not visible_columns:
@@ -176,11 +166,7 @@ class Torrents(Component):
         for _, attribute in enumerate(attributes):
             column_title = "#" if attribute == "id" else attribute
             column = next(
-                (
-                    col
-                    for col in self.torrents_columnview.get_columns()
-                    if col.get_title() == column_title
-                ),
+                (col for col in self.torrents_columnview.get_columns() if col.get_title() == column_title),
                 None,
             )
 
@@ -197,14 +183,10 @@ class Torrents(Component):
                 column.set_factory(column_factory)
 
                 # Get the type of the attribute
-                attribute_type = Attributes.find_property(
-                    attribute
-                ).value_type.fundamental
+                attribute_type = Attributes.find_property(attribute).value_type.fundamental
 
                 # Create an expression for the attribute
-                attribute_expression = Gtk.PropertyExpression.new(
-                    Attributes, None, attribute
-                )
+                attribute_expression = Gtk.PropertyExpression.new(Attributes, None, attribute)
 
                 # Create a sorter based on the attribute type
                 if attribute_type == GObject.TYPE_STRING:

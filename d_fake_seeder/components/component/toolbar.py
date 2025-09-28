@@ -1,6 +1,7 @@
 import math
 import os
 import shutil
+import traceback
 
 import gi
 from components.component.component import Component
@@ -11,14 +12,12 @@ from lib.logger import logger
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
-
 from gi.repository import Gtk  # noqa
 
 
 class Toolbar(Component):
     def __init__(self, builder, model, app):
         super().__init__()
-
         with logger.performance.operation_context("toolbar_init", self.__class__.__name__):
             logger.debug("Toolbar.__init__ START", self.__class__.__name__)
             logger.info("Toolbar startup", self.__class__.__name__)
@@ -29,7 +28,6 @@ class Toolbar(Component):
             self.app = app
             self.settings_dialog = None  # Track existing settings dialog
             logger.debug("Basic attributes set successfully", self.__class__.__name__)
-
             # subscribe to settings changed
             with logger.performance.operation_context("settings_setup", self.__class__.__name__):
                 logger.debug("About to get AppSettings instance", self.__class__.__name__)
@@ -43,7 +41,6 @@ class Toolbar(Component):
                     logger.debug(f"ERROR getting AppSettings: {e}", self.__class__.__name__)
                     self.settings = None
                     logger.debug("Continuing without AppSettings connection", self.__class__.__name__)
-
             with logger.performance.operation_context("toolbar_buttons_setup", self.__class__.__name__):
                 logger.debug("About to get toolbar_add button", self.__class__.__name__)
                 self.toolbar_add_button = self.builder.get_object("toolbar_add")
@@ -51,27 +48,23 @@ class Toolbar(Component):
                 self.toolbar_add_button.connect("clicked", self.on_toolbar_add_clicked)
                 self.toolbar_add_button.add_css_class("flat")
                 logger.debug("toolbar_add button setup completed", self.__class__.__name__)
-
         logger.debug("About to get toolbar_remove button", "Toolbar")
         self.toolbar_remove_button = self.builder.get_object("toolbar_remove")
         logger.debug("Got toolbar_remove button successfully", "Toolbar")
         self.toolbar_remove_button.connect("clicked", self.on_toolbar_remove_clicked)
         self.toolbar_remove_button.add_css_class("flat")
         logger.debug("toolbar_remove button setup completed", "Toolbar")
-
         logger.debug("About to get toolbar_search button", "Toolbar")
         self.toolbar_search_button = self.builder.get_object("toolbar_search")
         logger.debug("Got toolbar_search button successfully", "Toolbar")
         self.toolbar_search_button.connect("clicked", self.on_toolbar_search_clicked)
         self.toolbar_search_button.add_css_class("flat")
         logger.debug("toolbar_search button setup completed", "Toolbar")
-
         logger.debug("About to get toolbar_search_entry", "Toolbar")
         self.toolbar_search_entry = self.builder.get_object("toolbar_search_entry")
         logger.debug("Got toolbar_search_entry successfully", "Toolbar")
         self.toolbar_search_entry.connect("changed", self.on_search_entry_changed)
         logger.debug("toolbar_search_entry connect completed", "Toolbar")
-
         # Create focus event controller for handling focus loss
         logger.debug("About to create focus controller", "Toolbar")
         from gi.repository import Gtk
@@ -81,45 +74,38 @@ class Toolbar(Component):
         self.toolbar_search_entry.add_controller(focus_controller)
         self.search_visible = False
         logger.debug("Focus controller setup completed", "Toolbar")
-
         logger.debug("About to get toolbar_pause button", "Toolbar")
         self.toolbar_pause_button = self.builder.get_object("toolbar_pause")
         logger.debug("Got toolbar_pause button successfully", "Toolbar")
         self.toolbar_pause_button.connect("clicked", self.on_toolbar_pause_clicked)
         self.toolbar_pause_button.add_css_class("flat")
         logger.debug("toolbar_pause button setup completed", "Toolbar")
-
         logger.debug("About to get toolbar_resume button", "Toolbar")
         self.toolbar_resume_button = self.builder.get_object("toolbar_resume")
         logger.debug("Got toolbar_resume button successfully", "Toolbar")
         self.toolbar_resume_button.connect("clicked", self.on_toolbar_resume_clicked)
         self.toolbar_resume_button.add_css_class("flat")
         logger.debug("toolbar_resume button setup completed", "Toolbar")
-
         logger.debug("About to get toolbar_up button", "Toolbar")
         self.toolbar_up_button = self.builder.get_object("toolbar_up")
         logger.debug("Got toolbar_up button successfully", "Toolbar")
         self.toolbar_up_button.connect("clicked", self.on_toolbar_up_clicked)
         self.toolbar_up_button.add_css_class("flat")
         logger.debug("toolbar_up button setup completed", "Toolbar")
-
         logger.debug("About to get toolbar_down button", "Toolbar")
         self.toolbar_down_button = self.builder.get_object("toolbar_down")
         logger.debug("Got toolbar_down button successfully", "Toolbar")
         self.toolbar_down_button.connect("clicked", self.on_toolbar_down_clicked)
         self.toolbar_down_button.add_css_class("flat")
         logger.debug("toolbar_down button setup completed", "Toolbar")
-
         logger.debug("About to get toolbar_settings button", "Toolbar")
         try:
             logger.debug("Calling self.builder.get_object('toolbar_settings')", "Toolbar")
             self.toolbar_settings_button = self.builder.get_object("toolbar_settings")
             logger.debug("get_object call completed successfully", "Toolbar")
-        except Exception as e:
+        except Exception:
             logger.debug("ERROR in get_object:", "Toolbar")
             logger.debug("Exception type:", "Toolbar")
-            import traceback
-
             logger.debug("Full traceback:", "Toolbar")
             self.toolbar_settings_button = None
         logger.debug("Got toolbar_settings button successfully", "Toolbar")
@@ -149,7 +135,6 @@ class Toolbar(Component):
                 "Settings button not found in UI",
                 extra={"class_name": self.__class__.__name__},
             )
-
         logger.debug("About to get toolbar_refresh_rate", "Toolbar")
         self.toolbar_refresh_rate = self.builder.get_object("toolbar_refresh_rate")
         logger.debug("Got toolbar_refresh_rate successfully", "Toolbar")
@@ -178,7 +163,7 @@ class Toolbar(Component):
             logger.debug("set_value completed, now connecting signal", "Toolbar")
             # Now connect the signal handler for future changes
             self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_changed)
-        except Exception as e:
+        except Exception:
             logger.debug("ERROR accessing tickspeed:", "Toolbar")
             logger.debug("Using default value of 9", "Toolbar")
             self.toolbar_refresh_rate.set_value(9)
@@ -214,7 +199,6 @@ class Toolbar(Component):
         selected = self.get_selected_torrent()
         if not selected:
             return
-
         logger.info(
             "Toolbar remove " + selected.filepath,
             extra={"class_name": self.__class__.__name__},
@@ -241,7 +225,6 @@ class Toolbar(Component):
         selected = self.get_selected_torrent()
         if not selected:
             return
-
         selected.active = False
         self.model.emit("data-changed", self.model, selected)
 
@@ -253,7 +236,6 @@ class Toolbar(Component):
         selected = self.get_selected_torrent()
         if not selected:
             return
-
         selected.active = True
         self.model.emit("data-changed", self.model, selected)
 
@@ -265,10 +247,8 @@ class Toolbar(Component):
         selected = self.get_selected_torrent()
         if not selected:
             return
-
         if not selected or selected.id == 1:
             return
-
         for torrent in self.model.torrent_list:
             if torrent.id == selected.id - 1:
                 torrent.id = selected.id
@@ -285,10 +265,8 @@ class Toolbar(Component):
         selected = self.get_selected_torrent()
         if not selected:
             return
-
         if not selected or selected.id == len(self.model.torrent_list):
             return
-
         for torrent in self.model.torrent_list:
             if torrent.id == selected.id + 1:
                 torrent.id = selected.id
@@ -328,8 +306,6 @@ class Toolbar(Component):
             logger.debug("EXCEPTION in on_toolbar_settings_clicked:", "Toolbar")
             logger.debug("Exception type:", "Toolbar")
             logger.error(f"ERROR in on_toolbar_settings_clicked: {e}", extra={"class_name": self.__class__.__name__})
-            import traceback
-
             logger.debug("Full traceback:", "Toolbar")
             logger.error(f"TRACEBACK: {traceback.format_exc()}", extra={"class_name": self.__class__.__name__})
 
@@ -342,7 +318,6 @@ class Toolbar(Component):
             logger.info(
                 f"Current settings_dialog: {self.settings_dialog}", extra={"class_name": self.__class__.__name__}
             )
-
             # Check if settings dialog already exists and is visible
             if self.settings_dialog and hasattr(self.settings_dialog, "window"):
                 try:
@@ -363,14 +338,12 @@ class Toolbar(Component):
                     logger.debug("Existing settings dialog invalid: , creating new one", "Toolbar")
                     logger.debug(f"Existing settings dialog invalid, creating new one: {e}")
                     self.settings_dialog = None
-
             logger.debug("About to import SettingsDialog", "Toolbar")
             logger.info("About to import SettingsDialog", extra={"class_name": self.__class__.__name__})
             from components.component.settings.settings_dialog import SettingsDialog
 
             logger.debug("SettingsDialog imported successfully", "Toolbar")
             logger.info("SettingsDialog imported successfully", extra={"class_name": self.__class__.__name__})
-
             # Get main window from app
             main_window = None
             logger.debug("Checking app: hasattr(self, 'app'):", "Toolbar")
@@ -380,7 +353,6 @@ class Toolbar(Component):
                 extra={"class_name": self.__class__.__name__},
             )
             logger.info(f"self.app: {self.app}", extra={"class_name": self.__class__.__name__})
-
             if hasattr(self, "app") and self.app:
                 logger.debug("Getting active window from app", "Toolbar")
                 logger.info("Getting active window from app", extra={"class_name": self.__class__.__name__})
@@ -396,7 +368,6 @@ class Toolbar(Component):
                     "No app or active window found",
                     extra={"class_name": self.__class__.__name__},
                 )
-
             # Create and show settings dialog
             logger.debug("Creating new settings dialog with params:", "Toolbar")
             logger.debug("main_window=", "Toolbar")
@@ -413,7 +384,6 @@ class Toolbar(Component):
             logger.info(
                 f"Settings dialog created: {self.settings_dialog}", extra={"class_name": self.__class__.__name__}
             )
-
             # Connect close signal to clean up reference
             logger.debug("Checking if settings dialog has window attribute", "Toolbar")
             logger.info(
@@ -427,7 +397,6 @@ class Toolbar(Component):
             else:
                 logger.debug("WARNING: Settings dialog has no window attribute", "Toolbar")
                 logger.warning("Settings dialog has no window attribute", extra={"class_name": self.__class__.__name__})
-
             logger.debug("About to call settings_dialog.show()", "Toolbar")
             logger.info(
                 "About to call settings_dialog.show()",
@@ -446,8 +415,6 @@ class Toolbar(Component):
                 f"FAILED to open settings dialog: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
-            import traceback
-
             logger.debug("Full exception traceback:", "Toolbar")
             logger.error(f"FULL TRACEBACK: {traceback.format_exc()}", extra={"class_name": self.__class__.__name__})
 
@@ -486,18 +453,14 @@ class Toolbar(Component):
             modal=True,
             action=Gtk.FileChooserAction.OPEN,
         )
-
         dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
         dialog.add_button(self._("Add"), Gtk.ResponseType.OK)
-
         filter_torrent = Gtk.FileFilter()
         filter_torrent.set_name(self._("Torrent Files"))
         filter_torrent.add_pattern("*.torrent")
         dialog.add_filter(filter_torrent)
-
         # Connect the "response" signal to the callback function
         dialog.connect("response", self.on_dialog_response)
-
         # Run the dialog
         dialog.show()
 
@@ -536,7 +499,6 @@ class Toolbar(Component):
         """Toggle the visibility of the search entry and handle focus"""
         self.search_visible = not self.search_visible
         self.toolbar_search_entry.set_visible(self.search_visible)
-
         if self.search_visible:
             # Grab focus when showing the search entry
             self.toolbar_search_entry.grab_focus()
@@ -553,7 +515,6 @@ class Toolbar(Component):
             f"Search text changed: '{search_text}'",
             extra={"class_name": self.__class__.__name__},
         )
-
         # Emit search signal to update torrent filtering
         if hasattr(self.model, "set_search_filter"):
             self.model.set_search_filter(search_text)

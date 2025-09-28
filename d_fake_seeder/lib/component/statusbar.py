@@ -57,9 +57,7 @@ class Statusbar(Component):
         total_sum = 0
 
         # Get the list of attributes for each entry in the torrent_list
-        attribute_list = [
-            getattr(entry, column_name) for entry in self.model.torrent_list
-        ]
+        attribute_list = [getattr(entry, column_name) for entry in self.model.torrent_list]
 
         # Sum the values based on the specified attribute
         total_sum = sum(attribute_list)
@@ -74,9 +72,7 @@ class Statusbar(Component):
         self.last_execution_time = current_time
 
         session_uploaded = self.sum_column_values("session_uploaded")
-        session_upload_speed = (session_uploaded - self.last_session_uploaded) / int(
-            self.settings.tickspeed
-        )
+        session_upload_speed = (session_uploaded - self.last_session_uploaded) / int(self.settings.tickspeed)
         self.last_session_uploaded = session_uploaded
 
         session_upload_speed = humanbytes(session_upload_speed)
@@ -86,9 +82,7 @@ class Statusbar(Component):
         total_uploaded = humanbytes(total_uploaded)
 
         session_downloaded = self.sum_column_values("session_downloaded")
-        session_downloaded_speed = (
-            session_downloaded - self.last_session_downloaded
-        ) / int(self.settings.tickspeed)
+        session_downloaded_speed = (session_downloaded - self.last_session_downloaded) / int(self.settings.tickspeed)
         self.last_session_downloaded = session_downloaded
 
         session_download_speed = humanbytes(session_downloaded_speed)
@@ -98,13 +92,9 @@ class Statusbar(Component):
         total_downloaded = humanbytes(total_downloaded)
 
         self.status_uploading.set_text(" " + session_upload_speed + " /s")
-        self.status_uploaded.set_text(
-            "  {} / {}".format(session_uploaded, total_uploaded)
-        )
+        self.status_uploaded.set_text("  {} / {}".format(session_uploaded, total_uploaded))
         self.status_downloading.set_text(" " + session_download_speed + " /s")
-        self.status_downloaded.set_text(
-            "  {} / {}".format(session_downloaded, total_downloaded)
-        )
+        self.status_downloaded.set_text("  {} / {}".format(session_downloaded, total_downloaded))
         self.status_ip.set_text("  " + self.get_ip())
 
     def handle_settings_changed(self, source, key, value):

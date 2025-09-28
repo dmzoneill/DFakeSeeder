@@ -39,32 +39,22 @@ def humanbytes(B):
     TB = float(KB**4)  # 1,099,511,627,776
 
     if B < KB:
-        return "{0} {1}".format(
-            int(B) if B.is_integer() else B, "B" if 0 == B > 1 else "B"
-        )
+        return "{0} {1}".format(int(B) if B.is_integer() else B, "B" if 0 == B > 1 else "B")
     elif KB <= B < MB:
         return "{0} KB".format(
-            int(B / KB)
-            if (B / KB).is_integer()
-            else "{0:.2f}".format(B / KB).rstrip("0").rstrip(".")
+            int(B / KB) if (B / KB).is_integer() else "{0:.2f}".format(B / KB).rstrip("0").rstrip(".")
         )
     elif MB <= B < GB:
         return "{0} MB".format(
-            int(B / MB)
-            if (B / MB).is_integer()
-            else "{0:.2f}".format(B / MB).rstrip("0").rstrip(".")
+            int(B / MB) if (B / MB).is_integer() else "{0:.2f}".format(B / MB).rstrip("0").rstrip(".")
         )
     elif GB <= B < TB:
         return "{0} GB".format(
-            int(B / GB)
-            if (B / GB).is_integer()
-            else "{0:.2f}".format(B / GB).rstrip("0").rstrip(".")
+            int(B / GB) if (B / GB).is_integer() else "{0:.2f}".format(B / GB).rstrip("0").rstrip(".")
         )
     elif TB <= B:
         return "{0} TB".format(
-            int(B / TB)
-            if (B / TB).is_integer()
-            else "{0:.2f}".format(B / TB).rstrip("0").rstrip(".")
+            int(B / TB) if (B / TB).is_integer() else "{0:.2f}".format(B / TB).rstrip("0").rstrip(".")
         )
 
 

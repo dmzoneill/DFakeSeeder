@@ -24,11 +24,7 @@ class File:
                     announce_list = self.torrent_header[b"announce-list"]
                     if isinstance(announce_list, list):
                         # Extract announce URLs from the announce-list
-                        announce_urls = [
-                            url.decode("utf-8")
-                            for sublist in announce_list
-                            for url in sublist
-                        ]
+                        announce_urls = [url.decode("utf-8") for sublist in announce_list for url in sublist]
                         self.announce_list = announce_urls
 
                 torrent_info = self.torrent_header[b"info"]

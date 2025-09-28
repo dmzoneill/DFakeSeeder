@@ -37,9 +37,7 @@ class HTTPSeeder(BaseSeeder):
         while True:
             try:
                 self.tracker_semaphore.acquire()
-                self.make_http_request(
-                    uploaded_bytes, downloaded_bytes, download_left, num_want=0
-                )
+                self.make_http_request(uploaded_bytes, downloaded_bytes, download_left, num_want=0)
                 break
             except BaseException as e:
                 self.set_random_announce_url()
@@ -73,9 +71,7 @@ class HTTPSeeder(BaseSeeder):
             http_params["event"] = "started"
 
         http_agent_headers = self.settings.http_headers
-        http_agent_headers["User-Agent"] = self.settings.agents[
-            self.settings.agent
-        ].split(",")[0]
+        http_agent_headers["User-Agent"] = self.settings.agents[self.settings.agent].split(",")[0]
 
         req = requests.get(
             self.tracker_url,

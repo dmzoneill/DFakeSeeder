@@ -225,9 +225,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             # Add primary announce URL
             if hasattr(torrent_file, "announce") and torrent_file.announce:
-                trackers.append(
-                    {"url": torrent_file.announce, "tier": 0, "type": "Primary"}
-                )
+                trackers.append({"url": torrent_file.announce, "tier": 0, "type": "Primary"})
                 self.logger.info(
                     f"📡 TRACKERS TAB: Found primary tracker: {torrent_file.announce}",
                     extra={"class_name": self.__class__.__name__},
@@ -247,9 +245,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                     if tracker_url == primary_url:
                         continue
 
-                    trackers.append(
-                        {"url": tracker_url, "tier": tier_index + 1, "type": "Backup"}
-                    )
+                    trackers.append({"url": tracker_url, "tier": tier_index + 1, "type": "Backup"})
 
                 self.logger.info(
                     f"📡 TRACKERS TAB: Found {len(torrent_file.announce_list)} backup trackers",
@@ -289,9 +285,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         try:
             # Get translation function from model
             translate_func = (
-                self.model.get_translate_func()
-                if hasattr(self.model, "get_translate_func")
-                else lambda x: x
+                self.model.get_translate_func() if hasattr(self.model, "get_translate_func") else lambda x: x
             )
 
             headers = [
@@ -361,9 +355,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if not self._trackers_grid_child:
                 self._trackers_grid_child = self._create_trackers_grid()
 
-            message_label = self.create_info_label(
-                "No trackers available for this torrent."
-            )
+            message_label = self.create_info_label("No trackers available for this torrent.")
             self.set_widget_margins(message_label, self.ui_margin_large)
 
             # Add message to the grid instead of directly to the tab

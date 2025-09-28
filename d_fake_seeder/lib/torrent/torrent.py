@@ -30,9 +30,7 @@ class Torrent(GObject.GObject):
 
     def __init__(self, filepath):
         super().__init__()
-        logger.info(
-            "Torrent instantiate", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Torrent instantiate", extra={"class_name": self.__class__.__name__})
 
         self.torrent_attributes = Attributes()
 
@@ -45,11 +43,7 @@ class Torrent(GObject.GObject):
         if self.file_path not in self.settings.torrents:
             self.settings.torrents[self.file_path] = {
                 "active": True,
-                "id": (
-                    len(self.settings.torrents) + 1
-                    if len(self.settings.torrents) > 0
-                    else 1
-                ),
+                "id": (len(self.settings.torrents) + 1 if len(self.settings.torrents) > 0 else 1),
                 "name": "",
                 "upload_speed": self.settings.upload_speed,
                 "download_speed": self.settings.download_speed,
@@ -71,9 +65,7 @@ class Torrent(GObject.GObject):
             self.settings.save_settings()
 
         ATTRIBUTES = Attributes
-        attributes = [
-            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
-        ]
+        attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
 
         self.torrent_file = File(self.file_path)
         self.seeder = Seeder(self.torrent_file)
@@ -207,9 +199,7 @@ class Torrent(GObject.GObject):
             self.next_update = self.announce_interval
             # announce
             download_left = (
-                self.total_size - self.total_downloaded
-                if self.total_size - self.total_downloaded > 0
-                else 0
+                self.total_size - self.total_downloaded if self.total_size - self.total_downloaded > 0 else 0
             )
             self.seeder.upload(
                 self.session_uploaded,
@@ -235,12 +225,8 @@ class Torrent(GObject.GObject):
         self.peers_worker.join()
 
         ATTRIBUTES = Attributes
-        attributes = [
-            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
-        ]
-        self.settings.torrents[self.file_path] = {
-            attr: getattr(self, attr) for attr in attributes
-        }
+        attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
+        self.settings.torrents[self.file_path] = {attr: getattr(self, attr) for attr in attributes}
 
     def get_seeder(self):
         # logger.info("Torrent get seeder",
@@ -277,9 +263,7 @@ class Torrent(GObject.GObject):
             try:
                 View.instance.notify("Starting fake seeder " + self.name)
                 self.torrent_worker_stop_event = threading.Event()
-                self.torrent_worker = threading.Thread(
-                    target=self.update_torrent_worker
-                )
+                self.torrent_worker = threading.Thread(target=self.update_torrent_worker)
                 self.torrent_worker.start()
 
                 # Start the thread to update the name
@@ -303,9 +287,7 @@ class Torrent(GObject.GObject):
             return getattr(self.torrent_attributes, attr)
         elif hasattr(self, attr):
             return getattr(self, attr)
-        raise AttributeError(
-            f"'{self.__class__.__name__}' object has no attribute '{attr}'"
-        )
+        raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{attr}'")
 
     def __setattr__(self, attr, value):
         if attr == "torrent_attributes":

@@ -87,9 +87,7 @@ class View:
 
         # Apply CSS to the window
         style_context = self.window.get_style_context()
-        style_context.add_provider(
-            css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        )
+        style_context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         # Create an action group
         self.action_group = Gio.SimpleActionGroup()
@@ -132,9 +130,7 @@ class View:
     def show_splash_image(self):
         # splash image
         self.splash_image = Gtk.Image()
-        self.splash_image.set_from_file(
-            os.environ.get("DFS_PATH") + "/images/dfakeseeder.png"
-        )
+        self.splash_image.set_from_file(os.environ.get("DFS_PATH") + "/images/dfakeseeder.png")
         # self.splash_image.set_no_show_all(False)
         self.splash_image.set_visible(True)
         self.splash_image.show()
@@ -150,16 +146,12 @@ class View:
         self.window.about.set_modal(self)
         self.window.about.set_program_name("D' Fake Seeder")
         self.window.about.set_authors([self.settings.author])
-        self.window.about.set_copyright(
-            self.settings.copyright.replace("{year}", str(datetime.now().year))
-        )
+        self.window.about.set_copyright(self.settings.copyright.replace("{year}", str(datetime.now().year)))
         self.window.about.set_license_type(Gtk.License.APACHE_2_0)
         self.window.about.set_website(self.settings.website)
         self.window.about.set_website_label("Github - D' Fake Seeder")
         self.window.about.set_version(self.settings.version)
-        file = Gio.File.new_for_path(
-            os.environ.get("DFS_PATH") + "/" + self.settings.logo
-        )
+        file = Gio.File.new_for_path(os.environ.get("DFS_PATH") + "/" + self.settings.logo)
         texture = Gdk.Texture.new_from_file(file)
         self.window.about.set_logo(texture)
         self.window.about.show()

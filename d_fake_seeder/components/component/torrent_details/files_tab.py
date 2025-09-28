@@ -5,10 +5,10 @@ Displays torrent file listing with file paths and sizes.
 """
 
 import gi
+from lib.util.constants import SIZE_UNITS_BASIC
 
 from .base_tab import BaseTorrentTab
 from .tab_mixins import DataUpdateMixin, UIUtilityMixin
-from lib.util.constants import SIZE_UNITS_BASIC
 
 gi.require_version("Gtk", "4.0")
 
@@ -256,9 +256,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             formatted_length = self._format_file_size(length)
 
             # Create the label pair for file path and size
-            self.create_label_pair(
-                fullpath, formatted_length, row, self._files_grid_child
-            )
+            self.create_label_pair(fullpath, formatted_length, row, self._files_grid_child)
 
         except Exception as e:
             self.logger.error(f"Error creating file row for {fullpath}: {e}")
