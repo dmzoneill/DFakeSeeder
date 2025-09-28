@@ -10,6 +10,7 @@ import gi
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 gi.require_version("GioUnix", "2.0")
+gi.require_version("Adw", "1")
 # Shutdown progress tracking (overlay removed, keeping behavior)
 from components.component.states import States  # noqa: E402
 from components.component.statusbar import Statusbar  # noqa: E402
@@ -19,7 +20,7 @@ from components.component.toolbar import Toolbar  # noqa: E402
 from components.component.torrent_details import TorrentDetailsNotebook  # noqa: E402
 from components.component.torrents import Torrents  # noqa: E402
 from domain.app_settings import AppSettings  # noqa: E402
-from gi.repository import Gdk  # noqa
+from gi.repository import Adw, Gdk  # noqa
 from gi.repository import Gio, GLib, Gtk  # noqa: E402
 
 # Translation function will be provided by model's TranslationManager
@@ -149,7 +150,7 @@ class View:
         # Get application settings
         app_settings = AppSettings.get_instance()
         app_title = app_settings.get("application", {}).get("title", self._("D' Fake Seeder"))
-        css_file = app_settings.get("application", {}).get("css_file", "ui/css/styles.css")
+        css_file = app_settings.get("application", {}).get("css_file", "ui/styles.css")
         self.window.set_title(app_title)
         self.window.set_application(self.app)
         # Load CSS stylesheet
@@ -160,6 +161,14 @@ class View:
         display = self.window.get_display()
         Gtk.StyleContext.add_provider_for_display(display, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         logger.debug(f"CSS loaded and applied globally: {css_file_path}")
+        # Store CSS provider for theme switching
+        self.css_provider = css_provider
+        self.display = display
+        # Apply initial theme
+        initial_theme = app_settings.get("theme", "system")
+        self.apply_theme(initial_theme)
+        # Connect to AppSettings changes for theme switching
+        app_settings.connect("attribute-changed", self.handle_app_settings_changed)
         # Create an action group
         self.action_group = Gio.SimpleActionGroup()
         # add hamburger menu
@@ -544,6 +553,88 @@ class View:
 
     def handle_settings_changed(self, _source, key, value):  # noqa: ARG002
         logger.debug(
-            f"Torrents view settings changed: {key} = {value}",
+            f"View settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},
         )
+
+        # Handle theme changes
+        if key == "theme":
+            logger.debug(f"Theme setting changed to: {value}", extra={"class_name": self.__class__.__name__})
+            self.apply_theme(value)
+
+    def handle_app_settings_changed(self, _source, key, value):  # noqa: ARG002
+        """Handle AppSettings changes."""
+        logger.debug(
+            f"AppSettings changed: {key} = {value}",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        # Handle theme changes
+        if key == "theme":
+            logger.debug(f"Theme setting changed to: {value}", extra={"class_name": self.__class__.__name__})
+            self.apply_theme(value)
+
+    def apply_theme(self, theme: str) -> None:
+        """
+        Apply the specified theme to the application.
+
+        Args:
+            theme: Theme name ("system", "light", "dark")
+        """
+        try:
+            logger.debug(f"Applying theme: {theme}", extra={"class_name": self.__class__.__name__})
+
+            # Get GTK settings for theme switching
+            gtk_settings = Gtk.Settings.get_default()
+
+            if theme == "system":
+                # Follow system theme preference by removing our override
+                gtk_settings.reset_property("gtk-application-prefer-dark-theme")
+                logger.debug("Theme set to follow system preference", extra={"class_name": self.__class__.__name__})
+            elif theme == "light":
+                # Force light theme
+                gtk_settings.set_property("gtk-application-prefer-dark-theme", False)
+                logger.debug("Theme set to light", extra={"class_name": self.__class__.__name__})
+            elif theme == "dark":
+                # Force dark theme
+                gtk_settings.set_property("gtk-application-prefer-dark-theme", True)
+                logger.debug("Theme set to dark", extra={"class_name": self.__class__.__name__})
+            else:
+                logger.warning(f"Unknown theme: {theme}, falling back to system",
+                             extra={"class_name": self.__class__.__name__})
+                gtk_settings.reset_property("gtk-application-prefer-dark-theme")
+
+            # Add CSS classes for additional theme control
+            if hasattr(self, 'window') and self.window:
+                style_context = self.window.get_style_context()
+                # Remove existing theme classes
+                style_context.remove_class("theme-light")
+                style_context.remove_class("theme-dark")
+
+                # Add appropriate theme class
+                if theme == "light":
+                    style_context.add_class("theme-light")
+                elif theme == "dark":
+                    style_context.add_class("theme-dark")
+
+                logger.debug(f"CSS theme class applied: theme-{theme}", extra={"class_name": self.__class__.__name__})
+
+            # Try Adwaita StyleManager as fallback if available
+            try:
+                theme_manager = Adw.StyleManager.get_default()
+                if theme == "system":
+                    theme_manager.set_color_scheme(Adw.ColorScheme.DEFAULT)
+                elif theme == "light":
+                    theme_manager.set_color_scheme(Adw.ColorScheme.FORCE_LIGHT)
+                elif theme == "dark":
+                    theme_manager.set_color_scheme(Adw.ColorScheme.FORCE_DARK)
+                logger.debug("Adwaita StyleManager also applied", extra={"class_name": self.__class__.__name__})
+            except Exception as adw_error:
+                logger.debug(f"Adwaita StyleManager not available: {adw_error}", extra={"class_name": self.__class__.__name__})
+
+            logger.info(f"Theme successfully applied: {theme}",
+                       extra={"class_name": self.__class__.__name__})
+
+        except Exception as e:
+            logger.error(f"Error applying theme {theme}: {e}",
+                        extra={"class_name": self.__class__.__name__})
