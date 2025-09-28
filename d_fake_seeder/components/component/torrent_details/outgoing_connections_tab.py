@@ -10,6 +10,7 @@ from domain.app_settings import AppSettings
 from domain.torrent.connection_manager import get_connection_manager
 from domain.torrent.model.connection_peer import ConnectionPeer
 from lib.logger import logger
+from lib.util.column_translation_mixin import ColumnTranslationMixin
 
 from ..component import Component
 
@@ -20,10 +21,13 @@ from gi.repository import Gio  # noqa: E402
 from gi.repository import GLib, GObject, Gtk  # noqa: E402
 
 
-class OutgoingConnectionsTab(Component):
+class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
     """Component for managing outgoing connections display"""
 
     def __init__(self, builder, model):
+        super().__init__()
+        ColumnTranslationMixin.__init__(self)
+
         logger.info(
             "OutgoingConnectionsTab view startup",
             extra={"class_name": self.__class__.__name__},
@@ -63,6 +67,20 @@ class OutgoingConnectionsTab(Component):
         if hasattr(self.model, "connect"):
             self.model.connect("selection-changed", self.on_selection_changed)
 
+        # Connect to language change signals for column translation
+        if self.model and hasattr(self.model, "connect"):
+            try:
+                self.model.connect("language-changed", self.on_language_changed)
+                logger.debug(
+                    "Connected to language-changed signal for column translation",
+                    extra={"class_name": self.__class__.__name__},
+                )
+            except Exception as e:
+                logger.debug(
+                    f"Could not connect to language-changed signal: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
     def on_connections_updated(self):
         """Called when the connection manager updates connections"""
         # Update the display by reapplying the filter
@@ -90,30 +108,30 @@ class OutgoingConnectionsTab(Component):
 
         self.outgoing_store = Gio.ListStore.new(ConnectionPeer)
 
-        # Get translation function from model
-        translate_func = self.model.get_translate_func() if hasattr(self.model, "get_translate_func") else lambda x: x
-
         # Define columns for outgoing connections
         columns = [
-            ("address", translate_func("IP Address")),
-            ("status", translate_func("Connection Status")),
-            ("client", translate_func("Client")),
-            ("connection_time", translate_func("Connected At")),
-            ("handshake_complete", translate_func("Handshake")),
-            ("am_interested", translate_func("Interested")),
-            ("peer_choking", translate_func("Peer Choking")),
-            ("bytes_downloaded", translate_func("Downloaded")),
-            ("download_rate", translate_func("Download Rate")),
-            ("requests_sent", translate_func("Requests")),
-            ("pieces_received", translate_func("Pieces Received")),
-            ("failure_reason", translate_func("Failure Reason")),
+            ("address", "IP Address"),
+            ("status", "Connection Status"),
+            ("client", "Client"),
+            ("connection_time", "Connected At"),
+            ("handshake_complete", "Handshake"),
+            ("am_interested", "Interested"),
+            ("peer_choking", "Peer Choking"),
+            ("bytes_downloaded", "Downloaded"),
+            ("download_rate", "Download Rate"),
+            ("requests_sent", "Requests"),
+            ("pieces_received", "Pieces Received"),
+            ("failure_reason", "Failure Reason"),
         ]
 
         for property_name, column_title in columns:
             factory = Gtk.SignalListItemFactory()
             factory.connect("setup", self.setup_cell, property_name)
             factory.connect("bind", self.bind_cell, property_name)
-            column = Gtk.ColumnViewColumn.new(column_title, factory)
+            column = Gtk.ColumnViewColumn.new(None, factory)
+
+            # Register column for translation instead of using hardcoded title
+            self.register_translatable_column(self.outgoing_columnview, column, property_name, "outgoing_connections")
 
             # Create sorter for the column
             if property_name in [
@@ -511,3 +529,20 @@ class OutgoingConnectionsTab(Component):
             "OutgoingConnections update view",
             extra={"class_name": self.__class__.__name__},
         )
+
+    def on_language_changed(self, source=None, new_language=None):
+        """Handle language change events for column translation."""
+        try:
+            logger.debug(
+                f"OutgoingConnections language changed to: {new_language}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+            # Refresh column translations
+            self.refresh_column_translations()
+
+        except Exception as e:
+            logger.error(
+                f"Error handling language change in OutgoingConnections: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
