@@ -405,7 +405,7 @@ class PeerDiscovery:
         """Send DHT message"""
         try:
             data = bencode.bencode(message)
-            await asyncio.get_event_loop().sock_sendto(self.socket, data, addr)
+            await asyncio.get_running_loop().sock_sendto(self.socket, data, addr)
         except Exception as e:
             logger.debug(f"Failed to send DHT message to {addr}: {e}", extra={"class_name": self.__class__.__name__})
 

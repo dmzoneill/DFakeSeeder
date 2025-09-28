@@ -177,7 +177,7 @@ class PeerProtocolManager:
             # Give it a brief moment, then force
             import time
 
-            time.sleep(0.5)
+            time.sleep(0.5)  # PyPy compatible: brief shutdown coordination delay
 
             # Log if we had to force shutdown
             if hasattr(self.connection_pool, "_shutdown") and not self.connection_pool._shutdown:

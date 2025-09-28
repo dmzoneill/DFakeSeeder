@@ -1,5 +1,6 @@
 import random
-import select
+
+# import select  # Replaced with socket timeout for PyPy compatibility
 import socket
 import struct
 
@@ -95,8 +96,8 @@ class UDPSeeder(BaseSeeder):
                 )
                 sock.send(announce_packet)
 
-                ready = select.select([sock], [], [], timeout)
-                if ready[0]:
+                # Use socket timeout instead of select for PyPy compatibility
+                try:
                     app_settings = AppSettings.get_instance()
                     buffer_size = app_settings.get("seeders", {}).get("udp_buffer_size_bytes", 2048)
                     response = sock.recv(buffer_size)
@@ -146,7 +147,7 @@ class UDPSeeder(BaseSeeder):
                         }
                         self.update_interval = self.info[b"interval"]
                     return True
-                else:
+                except socket.timeout:
                     # Timeout occurred
                     logger.error(
                         f"⏱️ UDP socket timeout ({timeout}s) - no response from tracker",

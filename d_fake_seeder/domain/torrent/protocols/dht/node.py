@@ -189,7 +189,7 @@ class DHTNode:
         while self.running:
             try:
                 # Receive DHT message
-                data, addr = await asyncio.get_event_loop().sock_recvfrom(self.socket, 1024)
+                data, addr = await asyncio.get_running_loop().sock_recvfrom(self.socket, 1024)
 
                 # Process message in background
                 asyncio.create_task(self._handle_message(data, addr))
@@ -260,7 +260,7 @@ class DHTNode:
             if not self.socket:
                 return
             data = bencode.bencode(message)
-            await asyncio.get_event_loop().sock_sendto(self.socket, data, addr)
+            await asyncio.get_running_loop().sock_sendto(self.socket, data, addr)
         except Exception as e:
             logger.debug(f"Failed to send DHT message to {addr}: {e}", extra={"class_name": self.__class__.__name__})
 

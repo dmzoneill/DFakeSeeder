@@ -97,12 +97,20 @@ class Torrent(GObject.GObject):
 
         # Start the thread to update the name
         self.torrent_worker_stop_event = threading.Event()
-        self.torrent_worker = threading.Thread(target=self.update_torrent_worker)
+        self.torrent_worker = threading.Thread(
+            target=self.update_torrent_worker,
+            name=f"TorrentWorker-{getattr(self, 'name', 'Unknown')}",
+            daemon=True,  # PyPy optimization: daemon threads for better cleanup
+        )
         self.torrent_worker.start()
 
-        # Start the thread to update the name
+        # Start peers worker thread
         self.peers_worker_stop_event = threading.Event()
-        self.peers_worker = threading.Thread(target=self.peers_worker_update)
+        self.peers_worker = threading.Thread(
+            target=self.peers_worker_update,
+            name=f"PeersWorker-{getattr(self, 'name', 'Unknown')}",
+            daemon=True,  # PyPy optimization: daemon threads for better cleanup
+        )
         self.peers_worker.start()
 
     def peers_worker_update(self):
@@ -148,12 +156,14 @@ class Torrent(GObject.GObject):
 
             while not self.torrent_worker_stop_event.is_set():
                 logger.debug(
-                    f"🔄 WORKER LOOP: {self.name} ticker={ticker:.2f}, tickspeed={self.settings.tickspeed}, active={self.active}",
+                    f"🔄 WORKER LOOP: {self.name} ticker={ticker:.2f}, tickspeed={self.settings.tickspeed}, "
+                    f"active={self.active}",
                     extra={"class_name": self.__class__.__name__},
                 )
                 if ticker >= self.settings.tickspeed and self.active:
                     logger.info(
-                        f"🔄 WORKER: Adding update callback to UI thread for {self.name} (ticker={ticker}, tickspeed={self.settings.tickspeed})",
+                        f"🔄 WORKER: Adding update callback to UI thread for {self.name} "
+                        f"(ticker={ticker}, tickspeed={self.settings.tickspeed})",
                         extra={"class_name": self.__class__.__name__},
                     )
                     GLib.idle_add(self.update_torrent_callback)
@@ -249,7 +259,9 @@ class Torrent(GObject.GObject):
             )
 
         logger.info(
-            f"🚀 EMITTING SIGNAL: {self.name} - progress={self.progress:.3f}, up_speed={self.session_uploaded}, down_speed={self.session_downloaded}, next_update={self.next_update}",
+            f"🚀 EMITTING SIGNAL: {self.name} - progress={self.progress:.3f}, "
+            f"up_speed={self.session_uploaded}, down_speed={self.session_downloaded}, "
+            f"next_update={self.next_update}",
             extra={"class_name": self.__class__.__name__},
         )
         self.emit("attribute-changed", None, None)
@@ -323,13 +335,21 @@ class Torrent(GObject.GObject):
             try:
                 View.instance.notify("Starting fake seeder " + self.name)
                 self.torrent_worker_stop_event = threading.Event()
-                self.torrent_worker = threading.Thread(target=self.update_torrent_worker)
+                self.torrent_worker = threading.Thread(
+                    target=self.update_torrent_worker,
+                    name=f"TorrentWorker-{self.name}",
+                    daemon=True,  # PyPy optimization: daemon threads for better cleanup
+                )
                 self.torrent_worker.start()
                 logger.info(f"⚡ STARTED UPDATE WORKER: {self.name}", extra={"class_name": self.__class__.__name__})
 
-                # Start the thread to update the name
+                # Start peers worker thread
                 self.peers_worker_stop_event = threading.Event()
-                self.peers_worker = threading.Thread(target=self.peers_worker_update)
+                self.peers_worker = threading.Thread(
+                    target=self.peers_worker_update,
+                    name=f"PeersWorker-{self.name}",
+                    daemon=True,  # PyPy optimization: daemon threads for better cleanup
+                )
                 self.peers_worker.start()
                 logger.info(f"⚡ STARTED PEERS WORKER: {self.name}", extra={"class_name": self.__class__.__name__})
             except Exception as e:

@@ -57,7 +57,7 @@ class PeerConnection:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.settimeout(timeout)
 
-            await asyncio.get_event_loop().run_in_executor(
+            await asyncio.get_running_loop().run_in_executor(
                 None, self.socket.connect, (self.peer_info.ip, self.peer_info.port)
             )
 
@@ -122,10 +122,10 @@ class PeerConnection:
             handshake = struct.pack("!B", pstrlen) + pstr + reserved + self.info_hash + self.our_peer_id
 
             # Send handshake
-            await asyncio.get_event_loop().run_in_executor(None, self.socket.send, handshake)
+            await asyncio.get_running_loop().run_in_executor(None, self.socket.send, handshake)
 
             # Receive handshake response
-            response = await asyncio.get_event_loop().run_in_executor(
+            response = await asyncio.get_running_loop().run_in_executor(
                 None, self.socket.recv, 68  # Handshake is always 68 bytes
             )
 
@@ -198,7 +198,7 @@ class PeerConnection:
             length = 1 + len(payload)  # 1 byte for message ID + payload
             message = struct.pack("!I", length) + struct.pack("!B", message_id) + payload
 
-            await asyncio.get_event_loop().run_in_executor(None, self.socket.send, message)
+            await asyncio.get_running_loop().run_in_executor(None, self.socket.send, message)
 
             self.last_message_time = time.time()
             return True
@@ -222,7 +222,7 @@ class PeerConnection:
             self.socket.settimeout(timeout)
 
             # Read message length (4 bytes)
-            length_data = await asyncio.get_event_loop().run_in_executor(None, self.socket.recv, 4)
+            length_data = await asyncio.get_running_loop().run_in_executor(None, self.socket.recv, 4)
 
             if len(length_data) != 4:
                 return None
@@ -234,7 +234,7 @@ class PeerConnection:
                 return (-1, b"")  # Special case for keep-alive
 
             # Read message ID and payload
-            message_data = await asyncio.get_event_loop().run_in_executor(None, self.socket.recv, length)
+            message_data = await asyncio.get_running_loop().run_in_executor(None, self.socket.recv, length)
 
             if len(message_data) != length:
                 return None
@@ -260,7 +260,7 @@ class PeerConnection:
         try:
             # Keep-alive is just a length of 0
             keep_alive = struct.pack("!I", 0)
-            await asyncio.get_event_loop().run_in_executor(None, self.socket.send, keep_alive)
+            await asyncio.get_running_loop().run_in_executor(None, self.socket.send, keep_alive)
             return True
         except Exception:
             return False

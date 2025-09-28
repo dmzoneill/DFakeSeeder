@@ -6,12 +6,7 @@ from domain.app_settings import AppSettings
 from domain.torrent.model.attributes import Attributes
 from lib.logger import logger
 from lib.util.column_translation_mixin import ColumnTranslationMixin
-from lib.util.helpers import (
-    add_kb,
-    add_percent,
-    convert_seconds_to_hours_mins_seconds,
-    humanbytes,
-)
+from lib.util.helpers import add_kb, add_percent, convert_seconds_to_hours_mins_seconds, humanbytes
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
@@ -410,7 +405,8 @@ class Torrents(Component, ColumnTranslationMixin):
     # Method to update the ColumnView with compatible attributes
     def update_view(self, model, torrent, updated_attributes):
         logger.info(
-            f"📺 VIEW RECEIVED SIGNAL: torrent={getattr(torrent, 'name', 'Unknown') if torrent else 'None'}, attributes={updated_attributes}",
+            f"📺 VIEW RECEIVED SIGNAL: torrent={getattr(torrent, 'name', 'Unknown') if torrent else 'None'}, "
+            f"attributes={updated_attributes}",
             extra={"class_name": self.__class__.__name__},
         )
         self.model = model
@@ -426,13 +422,13 @@ class Torrents(Component, ColumnTranslationMixin):
         current_model = self.torrents_columnview.get_model()
         if current_model is None:
             logger.info(
-                f"📺 VIEW: No current model, initializing with update_model()",
+                "📺 VIEW: No current model, initializing with update_model()",
                 extra={"class_name": self.__class__.__name__},
             )
             self.update_model()
         else:
             logger.info(
-                f"📺 VIEW: Column view has model, torrent update should be visible",
+                "📺 VIEW: Column view has model, torrent update should be visible",
                 extra={"class_name": self.__class__.__name__},
             )
 

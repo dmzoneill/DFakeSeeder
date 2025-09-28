@@ -1,5 +1,6 @@
 import random
-import select
+
+# import select  # Replaced with socket timeout for PyPy compatibility
 import socket
 import struct
 
@@ -62,8 +63,8 @@ class UDPSeeder(BaseSeeder):
                 )
                 sock.send(announce_packet)
 
-                ready = select.select([sock], [], [], timeout)
-                if ready[0]:
+                # Use socket timeout instead of select for PyPy compatibility
+                try:
                     response = sock.recv(2048)
                     peers, interval, leechers, seeders = self.process_announce_response(response)
                     if peers is not None:
@@ -75,7 +76,7 @@ class UDPSeeder(BaseSeeder):
                         }
                         self.update_interval = self.info[b"interval"]
                     return True
-                else:
+                except socket.timeout:
                     # Timeout occurred
                     self.set_random_announce_url()
                     logger.error("Socket operation timed out")

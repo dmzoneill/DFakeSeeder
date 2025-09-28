@@ -8,7 +8,7 @@ into different settings tab classes.
 import random
 import secrets
 import string
-from typing import Any, Callable, Dict, Optional, Protocol
+from typing import Any, Callable, Dict, List, Optional, Protocol
 
 import gi
 
@@ -339,27 +339,32 @@ class TranslationMixin:
     so this mixin provides methods to programmatically translate dropdown options.
     """
 
+    # Type annotations for expected attributes from the class this mixin is mixed into
+    logger: Any  # Expected to be provided by the class using this mixin
+    builder: Any  # Expected to be provided by the class using this mixin
+
     def __init__(self, *args, **kwargs):
         """Initialize the translation mixin."""
         super().__init__(*args, **kwargs)
         self._language_change_connected = False
 
-    def translate_dropdown_items(self, dropdown_id: str, items: list = None) -> None:
+    def translate_dropdown_items(self, dropdown_id: str, items: Optional[List[Any]] = None) -> None:
         """
         Translate and update dropdown items.
 
         Args:
             dropdown_id: ID of the dropdown widget
-            items: Optional list of strings to translate. If None, reads current items from dropdown
+            items: Optional list of strings to translate. If None, uses stored original items
         """
         try:
             # Skip language dropdown - it's managed separately
             if dropdown_id in ["settings_language", "language_dropdown"]:
-                logger.debug(f"Skipping translation for language dropdown: {dropdown_id}")
+                self.logger.debug(f"Skipping translation for language dropdown: {dropdown_id}")
                 return
 
             dropdown = self.get_widget(dropdown_id)  # type: ignore[attr-defined]
             if not dropdown:
+                self.logger.debug(f"Dropdown widget not found: {dropdown_id}")
                 return
 
             # Store current selection index to preserve it
@@ -372,12 +377,26 @@ class TranslationMixin:
                 else lambda x: x
             )
 
-            # If no items provided, extract current items from the dropdown
+            # Initialize original items cache if not exists
+            if not hasattr(self, "_original_dropdown_items"):
+                self._original_dropdown_items: Dict[str, List[Any]] = {}
+
+            # If no items provided, use cached original items or extract and cache them
             if items is None:
-                items = self._extract_dropdown_items(dropdown)
-                if not items:
-                    logger.debug(f"No items found in dropdown {dropdown_id}")
-                    return
+                if dropdown_id in self._original_dropdown_items:
+                    # Use cached original items
+                    items = self._original_dropdown_items[dropdown_id]
+                    self.logger.debug(f"Using cached original items for {dropdown_id}")
+                else:
+                    # Extract current items and cache them as original
+                    items = self._extract_dropdown_items(dropdown)
+                    if not items:
+                        self.logger.debug(f"No items found in dropdown {dropdown_id}")
+                        return
+
+                    # Cache these as the original items
+                    self._original_dropdown_items[dropdown_id] = items.copy()
+                    self.logger.debug(f"Cached original items for {dropdown_id}")
 
             # Translate all items
             translated_items = [translate_func(item) for item in items]
@@ -394,10 +413,10 @@ class TranslationMixin:
             if 0 <= current_selection < len(items):
                 dropdown.set_selected(current_selection)
 
-            logger.debug(f"Translated dropdown {dropdown_id} with {len(items)} items")
+            self.logger.debug(f"Successfully translated dropdown {dropdown_id} with {len(items)} items")
 
         except Exception as e:
-            logger.error(f"Error translating dropdown {dropdown_id}: {e}")
+            self.logger.error(f"Error translating dropdown {dropdown_id}: {e}", exc_info=True)
 
     def _extract_dropdown_items(self, dropdown) -> list:
         """
@@ -442,9 +461,11 @@ class TranslationMixin:
         Note: The language dropdown (settings_language) is excluded as it's managed
         dynamically by the GeneralTab._populate_language_dropdown() method.
         """
+        tab_name = getattr(self, "tab_name", "Unknown")
+
         # Only proceed if we have translation capability
         if not (hasattr(self, "model") and hasattr(self.model, "get_translate_func")):
-            logger.debug("No translation capability available")
+            self.logger.debug("No translation capability available")
             return
 
         # Discover all dropdown widgets dynamically
@@ -452,32 +473,36 @@ class TranslationMixin:
         dropdowns_translated = 0
 
         try:
+            cached_widgets = getattr(self, "_widgets", {})
+
             # Get all cached widgets and check for dropdowns
-            for widget_id, widget in getattr(self, "_widgets", {}).items():
+            for widget_id, widget in cached_widgets.items():
                 if widget and hasattr(widget, "__class__") and "DropDown" in str(widget.__class__):
                     dropdowns_found += 1
 
                     # Skip language dropdowns - they're managed separately
                     if widget_id in ["settings_language", "language_dropdown"]:
-                        logger.debug(f"Skipping special language dropdown: {widget_id}")
+                        self.logger.debug(f"Skipping special language dropdown: {widget_id}")
                         continue
 
                     # Translate this dropdown using its current items
                     try:
                         self.translate_dropdown_items(widget_id)
                         dropdowns_translated += 1
-                        logger.debug(f"Translated dropdown: {widget_id}")
+                        self.logger.debug(f"Translated dropdown: {widget_id}")
                     except Exception as e:
-                        logger.error(f"Failed to translate dropdown {widget_id}: {e}")
+                        self.logger.error(f"Failed to translate dropdown {widget_id}: {e}")
 
             # Also check for any dropdowns that might not be cached yet
             if hasattr(self, "builder") and self.builder:
                 self._discover_and_translate_uncached_dropdowns()
 
-            logger.info(f"Dropdown translation completed: {dropdowns_translated}/{dropdowns_found} translated")
+            self.logger.debug(
+                f"Dropdown translation completed for {tab_name}: {dropdowns_translated}/{dropdowns_found} translated"
+            )
 
         except Exception as e:
-            logger.error(f"Error during dropdown discovery and translation: {e}")
+            self.logger.error(f"Error during dropdown discovery and translation: {e}", exc_info=True)
 
         # Connect to language change signal if not already connected
         self._connect_language_change_signal()

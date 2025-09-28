@@ -20,13 +20,25 @@ class Listener:
         signal.signal(signal.SIGINT, self.quit)
 
     def handle_connection(self, client_socket):
-        while True:
-            data = client_socket.recv(1024)
-            if not data:
-                break
-            # Process the received data
-            # You can send responses back to the client if needed
-            logger.info("Expected input information for BitTorrent client connection")
+        try:
+            while True:
+                try:
+                    data = client_socket.recv(1024)
+                    if not data:
+                        break
+                    # Process the received data
+                    # You can send responses back to the client if needed
+                    logger.info("Expected input information for BitTorrent client connection")
+                except (socket.timeout, socket.error, OSError) as e:
+                    logger.debug(f"Socket error in handle_connection: {e}")
+                    break
+        except Exception as e:
+            logger.error(f"Unexpected error in handle_connection: {e}")
+        finally:
+            try:
+                client_socket.close()
+            except Exception:
+                pass
 
     def start_listening(self, port):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -36,9 +48,16 @@ class Listener:
 
         def listening_thread():
             while self.running:
-                client_socket, address = self.server_socket.accept()
-                self.handle_connection(client_socket)
-                client_socket.close()
+                try:
+                    client_socket, address = self.server_socket.accept()
+                    self.handle_connection(client_socket)
+                except (socket.error, OSError) as e:
+                    if self.running:  # Only log if we're supposed to be running
+                        logger.debug(f"Socket error in listening thread: {e}")
+                    break
+                except Exception as e:
+                    logger.error(f"Unexpected error in listening thread: {e}")
+                    break
 
         self.thread = threading.Thread(target=listening_thread)
         self.thread.start()
