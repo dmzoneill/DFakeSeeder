@@ -85,6 +85,10 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         start_minimized = self.get_widget("start_minimized")
         if start_minimized:
             start_minimized.connect("state-set", self.on_start_minimized_changed)
+        # Theme dropdown
+        theme_dropdown = self.get_widget("settings_theme")
+        if theme_dropdown:
+            theme_dropdown.connect("notify::selected", self.on_theme_changed)
         # Language dropdown - signal connection handled in _setup_language_dropdown()
         # to avoid dual connections and ensure proper disconnect/reconnect during population
 
@@ -99,6 +103,12 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             start_minimized = self.get_widget("start_minimized")
             if start_minimized:
                 start_minimized.set_active(getattr(self.app_settings, "start_minimized", False))
+            # Theme setting
+            theme_dropdown = self.get_widget("settings_theme")
+            if theme_dropdown:
+                current_theme = getattr(self.app_settings, "theme", "system")
+                theme_mapping = {"system": 0, "light": 1, "dark": 2}
+                theme_dropdown.set_selected(theme_mapping.get(current_theme, 0))
             self.logger.debug("General tab settings loaded")
         except Exception as e:
             self.logger.error(f"Error loading General tab settings: {e}")
@@ -120,6 +130,13 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             start_minimized = self.get_widget("start_minimized")
             if start_minimized:
                 settings["start_minimized"] = start_minimized.get_active()
+            # Theme setting
+            theme_dropdown = self.get_widget("settings_theme")
+            if theme_dropdown:
+                theme_values = ["system", "light", "dark"]
+                selected_index = theme_dropdown.get_selected()
+                if 0 <= selected_index < len(theme_values):
+                    settings["theme"] = theme_values[selected_index]
         except Exception as e:
             self.logger.error(f"Error collecting General tab settings: {e}")
         return settings
@@ -146,6 +163,27 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         except Exception as e:
             self.logger.error(f"Error changing start minimized setting: {e}")
 
+    def on_theme_changed(self, dropdown: Gtk.DropDown, param) -> None:
+        """Handle theme setting change."""
+        try:
+            theme_values = ["system", "light", "dark"]
+            selected_index = dropdown.get_selected()
+
+            if 0 <= selected_index < len(theme_values):
+                new_theme = theme_values[selected_index]
+                self.app_settings.set("theme", new_theme)
+                self.logger.debug(f"Theme changed to: {new_theme}")
+
+                # Apply theme immediately by emitting a signal
+                # The view should listen to app_settings changes and apply themes accordingly
+
+                # Show notification
+                theme_names = {"system": "Follow System", "light": "Light", "dark": "Dark"}
+                message = f"Theme changed to: {theme_names.get(new_theme, new_theme)}"
+                self.show_notification(message, "success")
+        except Exception as e:
+            self.logger.error(f"Error changing theme setting: {e}")
+
     def _reset_tab_defaults(self) -> None:
         """Reset General tab to default values."""
         try:
@@ -156,6 +194,10 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             start_minimized = self.get_widget("start_minimized")
             if start_minimized:
                 start_minimized.set_active(False)
+            # Reset theme to system default
+            theme_dropdown = self.get_widget("settings_theme")
+            if theme_dropdown:
+                theme_dropdown.set_selected(0)  # "system" is index 0
             self.show_notification("General settings reset to defaults", "success")
         except Exception as e:
             self.logger.error(f"Error resetting General tab to defaults: {e}")
