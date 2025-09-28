@@ -3,139 +3,168 @@
 
 # D' Fake Seeder
 
-- Developed on Fedora 40 - Implications for gobject versioning
-- This is a Python GTK4 app very much under active development
-- Supports multiple torrents
-- Supporter HTTp/UDP trackers
-- Based off of deluge, hense "D' Fake Seeder", but also a colloquialism for 'the'.
+A sophisticated Python GTK4 BitTorrent client that simulates seeding activity with advanced peer-to-peer networking capabilities, comprehensive settings management, and multi-language support.
+
+## Features
+
+### Core Functionality
+- **Multi-Torrent Support**: Handle multiple torrents simultaneously with individual configuration
+- **Protocol Support**: Full HTTP and UDP tracker compatibility with BitTorrent protocol (BEP-003)
+- **Peer-to-Peer Networking**: Advanced P2P implementation with incoming/outgoing connection management
+- **Real-time Monitoring**: Live connection tracking and performance metrics
+
+### Advanced Features
+- **PyPy Compatibility**: Optimized for both CPython and PyPy interpreters
+- **Type Safety**: Full MyPy type checking support with comprehensive type annotations
+- **Internationalization**: 15 languages supported with runtime language switching
+- **Desktop Integration**: XDG-compliant with proper icon themes and desktop files
+- **Settings Management**: Comprehensive configuration with validation and profiles
+
+### User Interface
+- **GTK4 Modern UI**: Clean, responsive interface with modular component architecture
+- **Multi-Tab Settings**: Organized configuration categories (General, Connection, Peer Protocol, Advanced)
+- **Real-time Translation**: Dynamic language changes without application restart
+- **Performance Tracking**: Built-in timing and performance monitoring
 
 ![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/images/screenshot.png)
 
-## How to run
-- Development or run locally
+## Installation & Usage
+
+### PyPI Installation (Recommended)
 ```bash
+# Install from PyPI
+pip install d-fake-seeder
+
+# Install desktop integration (optional)
+dfs-install-desktop
+
+# Run the application
+dfs                    # Short command
+dfakeseeder           # Full command
+```
+
+### Development Setup
+```bash
+# Setup pipenv environment
+make setup-venv
+
+# Run with debug output (pipenv)
+make run-debug-venv
+
+# Run with Docker
 make run-debug-docker
 ```
 
-- Pypi
+### Package Installations
+
+#### Debian/Ubuntu
 ```bash
-pip3 install dfakeseeder
-dfakeseeder
+curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep deb) -o dfakeseeder.deb
+sudo dpkg -i dfakeseeder.deb
+gtk-launch dfakeseeder
 ```
 
-- Docker build local
+#### RHEL/Fedora
 ```bash
+curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep rpm) -o dfakeseeder.rpm
+sudo rpm -i dfakeseeder.rpm
+gtk-launch dfakeseeder
+```
+
+#### Docker
+```bash
+# Local build
 make docker
-```
 
-- Docker hub / ghcr
-```bash
+# Docker Hub/GHCR
 xhost +local:
-
-docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it feeditout/dfakeseeder
-
 docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it ghcr.io/dmzoneill/dfakeseeder
 ```
 
-- Debian based deb package
+## Development
+
+### Code Quality
+- **PyPy Compatible**: Optimized for both CPython and PyPy interpreters
+- **Type Safe**: Full MyPy type checking with comprehensive annotations
+- **Code Quality**: Black, flake8, and isort formatting standards
+- **Testing**: Pytest framework with comprehensive test coverage
+
+### Build System
 ```bash
-curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep deb) -o dfakeseeder.deb
+# Setup development environment
+make setup-venv          # Create pipenv environment
+make required            # Install dependencies
 
-sudo dpkg -i dfakeseeder.deb
+# Code quality
+make lint                # Run black, flake8, isort
+make test-venv           # Run tests with pipenv
 
-gtk-launch /usr/share/applications/dfakeseeder.desktop
+# UI development
+make ui-build            # Compile UI from XML components
+make icons               # Install application icons
+
+# Package building
+make deb                 # Build Debian package
+make rpm                 # Build RPM package
+make flatpak            # Build Flatpak package
+make docker             # Build Docker image
 ```
 
-- Redhat based rpm package
+### Architecture
+- **MVC Pattern**: Clean separation with Model, View, Controller
+- **Component System**: Modular UI components with GTK4
+- **Signal-Based**: GObject signals for loose coupling
+- **Internationalization**: Runtime language switching with 15 languages
+- **Performance**: Automatic timing and performance tracking
+
+### Contributing
+- All pull requests welcome
+- Follow existing code style (black, flake8, isort)
+- Include tests for new functionality
+- Update documentation as needed
+
+
+## Configuration
+
+### File Locations
+- **User Config**: `~/.config/dfakeseeder/settings.json` (auto-created from defaults)
+- **Torrent Directory**: `~/.config/dfakeseeder/torrents/`
+- **Default Config**: `d_fake_seeder/config/default.json` (comprehensive defaults)
+
+### Settings Categories
+- **Application**: Auto-start, themes, language preferences
+- **Connection**: Network ports, proxy settings, connection limits
+- **Peer Protocol**: Timeout settings, keep-alive intervals
+- **BitTorrent**: DHT, PEX, announce intervals, user agents
+- **Advanced**: Logging, performance tuning, debug options
+
+### Desktop Integration
+After PyPI installation, run desktop integration:
 ```bash
-curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep rpm) -o dfakeseeder.rpm
+# Install desktop files and icons
+dfs-install-desktop
 
-sudo rpm -i dfakeseeder.deb
+# Launch via desktop environment
+gtk-launch dfakeseeder
+# Or search "D' Fake Seeder" in application menu
 
-gtk-launch /usr/share/applications/dfakeseeder.desktop
+# Uninstall desktop integration
+dfs-uninstall-desktop
 ```
 
-## Todo
-- loads of stuff, deb, rpms, pypi, docker build
-- need to fix requiremnts.txt/piplock and convert the solution to venv.
-- fix a chunk of small bugs and finish some of the toolbar and other options.
-- Udp
-- Better user feedback
-- All PR's welcome
+### Supported Languages
+English, Spanish, French, German, Italian, Portuguese, Russian, Chinese, Japanese, Korean, Arabic, Hindi, Dutch, Swedish, Polish
 
+### Example Configuration
+The application auto-creates `~/.config/dfakeseeder/settings.json` with comprehensive defaults including:
+- Speed limits and announce intervals
+- Peer connection settings
+- UI customization options
+- Client identification strings
+- Protocol timeouts and networking
+- Internationalization preferences
 
-## Typical setup
-
-The application copies a config file to
-```text
-~/.config/dfakeseeder/settings.json
-```
-It will looks something like this
-
-```text
-{
-  "upload_speed": 50,
-  "download_speed": 500,
-  "total_upload_speed": 50,
-  "total_download_speed": 500,
-  "announce_interval": 1800,
-  "torrents": {},
-  "http_headers": {
-    "Accept-Encoding": "gzip",
-    "User-Agent": "Deluge/2.0.3 libtorrent/2.0.5.0"
-  },
-  "agents": [
-    "Deluge/2.0.3 libtorrent/2.0.5.0,-DE2003-",
-    "qBittorrent/4.3.1,-qB4310-",
-    "Transmission/3.00,-TR3000-",
-    "uTorrent/3.5.5,-UT3550-",
-    "Vuze/5.7.6.0,-AZ5760-",
-    "BitTorrent/7.10.5,-BT7105-",
-    "rTorrent/0.9.6,-RT0960-"
-  ],
-  "agent": 0,
-  "proxies": {
-    "http": "",
-    "https": ""
-  },
-  "columns": "",
-  "concurrent_http_connections": 2,
-  "concurrent_peer_connections": 10,
-  "cellrenderers": {
-    "progress": "Gtk.ProgressBar"
-  },
-  "textrenderers": {
-    "total_uploaded": "humanbytes",
-    "total_downloaded": "humanbytes",
-    "session_uploaded": "humanbytes",
-    "session_downloaded": "humanbytes",
-    "total_size": "humanbytes",
-    "announce_interval": "convert_seconds_to_hours_mins_seconds",
-    "next_update": "convert_seconds_to_hours_mins_seconds",
-    "upload_speed": "add_kb",
-    "download_speed": "add_kb",
-    "threshold": "add_percent"
-  },
-  "threshold": 30,
-  "tickspeed": 9,
-  "editwidgets": {
-    "active": "Gtk.Switch",
-    "announce_interval": "Gtk.SpinButton",
-    "download_speed": "Gtk.SpinButton",
-    "next_update": "Gtk.SpinButton",
-    "session_downloaded": "Gtk.SpinButton",
-    "session_uploaded": "Gtk.SpinButton",
-    "small_torrent_limit": "Gtk.SpinButton",
-    "threshold": "Gtk.SpinButton",
-    "total_downloaded": "Gtk.SpinButton",
-    "total_uploaded": "Gtk.SpinButton",
-    "upload_speed": "Gtk.SpinButton"
-  },
-  "issues_page": "https://github.com/dmzoneill/DFakeSeeder/issues",
-  "website": "https://github.com/dmzoneill/DFakeSeeder/",
-  "author": "David O Neill",
-  "copyright": "Copyright {year}",
-  "version": "1.0",
-  "logo": "images/dfakeseeder.png"
-}
-```
+## Links
+- **GitHub**: https://github.com/dmzoneill/DFakeSeeder
+- **Issues**: https://github.com/dmzoneill/DFakeSeeder/issues
+- **PyPI**: https://pypi.org/project/d-fake-seeder/
