@@ -21,10 +21,13 @@ else:
     class Observer:
         def __init__(self):
             pass
+
         def schedule(self, *args, **kwargs):
             pass
+
         def start(self):
             pass
+
         def stop(self):
             pass
 

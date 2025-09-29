@@ -600,12 +600,13 @@ class View:
                 gtk_settings.set_property("gtk-application-prefer-dark-theme", True)
                 logger.debug("Theme set to dark", extra={"class_name": self.__class__.__name__})
             else:
-                logger.warning(f"Unknown theme: {theme}, falling back to system",
-                             extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    f"Unknown theme: {theme}, falling back to system", extra={"class_name": self.__class__.__name__}
+                )
                 gtk_settings.reset_property("gtk-application-prefer-dark-theme")
 
             # Add CSS classes for additional theme control
-            if hasattr(self, 'window') and self.window:
+            if hasattr(self, "window") and self.window:
                 style_context = self.window.get_style_context()
                 # Remove existing theme classes
                 style_context.remove_class("theme-light")
@@ -630,11 +631,11 @@ class View:
                     theme_manager.set_color_scheme(Adw.ColorScheme.FORCE_DARK)
                 logger.debug("Adwaita StyleManager also applied", extra={"class_name": self.__class__.__name__})
             except Exception as adw_error:
-                logger.debug(f"Adwaita StyleManager not available: {adw_error}", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    f"Adwaita StyleManager not available: {adw_error}", extra={"class_name": self.__class__.__name__}
+                )
 
-            logger.info(f"Theme successfully applied: {theme}",
-                       extra={"class_name": self.__class__.__name__})
+            logger.info(f"Theme successfully applied: {theme}", extra={"class_name": self.__class__.__name__})
 
         except Exception as e:
-            logger.error(f"Error applying theme {theme}: {e}",
-                        extra={"class_name": self.__class__.__name__})
+            logger.error(f"Error applying theme {theme}: {e}", extra={"class_name": self.__class__.__name__})

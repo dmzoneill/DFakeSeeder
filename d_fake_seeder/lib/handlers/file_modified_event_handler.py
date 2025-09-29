@@ -1,10 +1,12 @@
 try:
     from watchdog.events import FileSystemEventHandler
+
     WATCHDOG_AVAILABLE = True
 except ImportError:
     # Fallback if watchdog is not available
     class FileSystemEventHandler:
         pass
+
     WATCHDOG_AVAILABLE = False
 
 
