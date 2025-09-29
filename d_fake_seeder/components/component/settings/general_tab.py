@@ -219,7 +219,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                     "conservative": "Conservative",
                     "balanced": "Balanced",
                     "aggressive": "Aggressive",
-                    "custom": "Custom"
+                    "custom": "Custom",
                 }
                 display_name = profile_names.get(profile_name, profile_name.title())
                 message = f"Applied {display_name} profile: {profile_summary}"
