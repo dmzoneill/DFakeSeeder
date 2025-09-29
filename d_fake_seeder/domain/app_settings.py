@@ -11,9 +11,22 @@ gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 
 from gi.repository import GObject  # noqa: E402
-from lib.handlers.file_modified_event_handler import FileModifiedEventHandler  # noqa: E402
+from lib.handlers.file_modified_event_handler import FileModifiedEventHandler, WATCHDOG_AVAILABLE  # noqa: E402
 from lib.logger import logger  # noqa: E402
-from watchdog.observers import Observer  # noqa: E402
+
+if WATCHDOG_AVAILABLE:
+    from watchdog.observers import Observer  # noqa: E402
+else:
+    # Fallback if watchdog is not available
+    class Observer:
+        def __init__(self):
+            pass
+        def schedule(self, *args, **kwargs):
+            pass
+        def start(self):
+            pass
+        def stop(self):
+            pass
 
 
 class AppSettings(GObject.GObject):
