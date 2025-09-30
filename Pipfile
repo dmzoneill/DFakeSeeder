@@ -19,6 +19,10 @@ isort = "*"
 flake8 = "*"
 mypy = "*"
 types-requests = "*"
+vulture = "*"
+unimport = "*"
+autoflake = "*"
+pyflakes = "*"
 
 [requires]
 python_version = "3.11"

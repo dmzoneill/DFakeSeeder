@@ -655,7 +655,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         except Exception as e:
             self.logger.error(f"Error resetting Peer Protocol tab to defaults: {e}")
 
-    def handle_model_changed(self, source, data_obj, data_changed):
+    def handle_model_changed(self, source, data_obj, _data_changed):
         """Handle model change events."""
         self.logger.debug(
             "PeerProtocolTab model changed",
@@ -669,7 +669,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_settings_changed(self, source, data_obj, data_changed):
+    def handle_settings_changed(self, source, data_obj, _data_changed):
         """Handle settings change events."""
         self.logger.debug(
             "PeerProtocolTab settings changed",

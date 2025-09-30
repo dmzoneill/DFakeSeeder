@@ -260,7 +260,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         self._notification_overlay = overlay
         return overlay
 
-    def handle_model_changed(self, source, data_obj, data_changed):
+    def handle_model_changed(self, source, data_obj, _data_changed):
         """Handle model change events."""
         self.logger.debug(
             "GeneralTab model changed",
@@ -274,7 +274,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_settings_changed(self, source, data_obj, data_changed):
+    def handle_settings_changed(self, source, data_obj, _data_changed):
         """Handle settings change events."""
         self.logger.debug(
             "GeneralTab settings changed",
@@ -441,7 +441,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         except Exception as e:
             self.logger.error(f"Error populating language dropdown: {e}")
 
-    def on_language_changed(self, dropdown, param):
+    def on_language_changed(self, dropdown, _param):
         """Handle language dropdown selection change."""
         logger.debug("===== on_language_changed() CALLED =====", "GeneralTab")
         logger.debug("Dropdown:", "GeneralTab")

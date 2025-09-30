@@ -3,7 +3,7 @@ import time
 import requests
 from lib.component.component import Component
 from lib.logger import logger
-from lib.settings import Settings
+from domain.app_settings import AppSettings
 from lib.util.helpers import humanbytes
 
 
@@ -14,7 +14,7 @@ class Statusbar(Component):
         self.model = model
 
         # subscribe to settings changed
-        self.settings = Settings.get_instance()
+        self.settings = AppSettings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
 
         self.ip = "0.0.0.0"

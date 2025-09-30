@@ -758,81 +758,82 @@ class BaseSeeder:
 
         return peer_data
 
-    def update_peer_speeds(self):
-        """Update transfer speeds for existing peers to simulate activity"""
-        logger.debug(
-            f"🔄 Updating speeds for {len(self.peer_data)} peers",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-        for peer_address, peer_data in self.peer_data.items():
-            client_name = peer_data.get("client", "Unknown")
-            progress = peer_data.get("progress", 0.0)
-            is_seed = peer_data.get("seed", False)
-
-            # Get client behavior patterns from configured profiles
-            base_client = client_name.split()[0] if " " in client_name else client_name
-            behavior = self.client_speed_profiles.get(
-                base_client,
-                self.client_speed_profiles.get("default", {"max_down": 1024 * 1024, "max_up": 512 * 1024}),
-            )
-
-            # Update speeds with some randomness to simulate network fluctuations
-            if is_seed:
-                # Seeders only upload
-                current_up = peer_data.get("up_speed", 0.0)
-                # Fluctuate by ±30% or go idle (configurable % of the time)
-                if random.random() < self.peer_behavior_analysis_probability:
-                    new_up_speed = 0.0  # Go idle
-                else:
-                    fluctuation = random.uniform(0.7, 1.3)
-                    max_up = behavior["max_up"]
-                    new_up_speed = min(max_up, max(0, current_up * fluctuation))
-
-                peer_data["down_speed"] = 0.0
-                peer_data["up_speed"] = new_up_speed
-            else:
-                # Leechers can download and upload
-                current_down = peer_data.get("down_speed", 0.0)
-                current_up = peer_data.get("up_speed", 0.0)
-
-                # Configurable chance to be idle vs active
-                if random.random() < self.peer_status_change_probability:
-                    new_down_speed = 0.0
-                    new_up_speed = 0.0
-                else:
-                    # Adjust speeds based on progress
-                    if progress < 0.1:
-                        speed_factor = random.uniform(0.1, 0.4)
-                    elif progress < 0.5:
-                        speed_factor = random.uniform(0.5, 1.0)
-                    else:
-                        speed_factor = random.uniform(0.3, 0.8)
-
-                    fluctuation = random.uniform(0.6, 1.4)
-                    new_down_speed = min(
-                        behavior["max_down"] * speed_factor,
-                        max(0, current_down * fluctuation),
-                    )
-                    new_up_speed = min(
-                        behavior["max_up"] * speed_factor * 0.3,
-                        max(0, current_up * fluctuation),
-                    )
-
-                peer_data["down_speed"] = new_down_speed
-                peer_data["up_speed"] = new_up_speed
-
-                # Occasionally update progress for leechers (very slow progress)
-                if not is_seed and random.random() < self.peer_dropout_probability:
-                    progress_increment = random.uniform(0.001, 0.01)  # 0.1-1% progress
-                    new_progress = min(0.99, progress + progress_increment)
-                    peer_data["progress"] = new_progress
-
-                    # Check if became a seeder
-                    if new_progress >= 1.0:
-                        peer_data["progress"] = 1.0
-                        peer_data["seed"] = True
-                        peer_data["down_speed"] = 0.0
+    # TODO: UNUSED METHOD - Consider removing or integrating into active code path
+    # def update_peer_speeds(self):
+    #     """Update transfer speeds for existing peers to simulate activity"""
+    #     logger.debug(
+    #         f"🔄 Updating speeds for {len(self.peer_data)} peers",
+    #         extra={"class_name": self.__class__.__name__},
+    #     )
+    #
+    #     for peer_address, peer_data in self.peer_data.items():
+    #         client_name = peer_data.get("client", "Unknown")
+    #         progress = peer_data.get("progress", 0.0)
+    #         is_seed = peer_data.get("seed", False)
+    #
+    #         # Get client behavior patterns from configured profiles
+    #         base_client = client_name.split()[0] if " " in client_name else client_name
+    #         behavior = self.client_speed_profiles.get(
+    #             base_client,
+    #             self.client_speed_profiles.get("default", {"max_down": 1024 * 1024, "max_up": 512 * 1024}),
+    #         )
+    #
+    #         # Update speeds with some randomness to simulate network fluctuations
+    #         if is_seed:
+    #             # Seeders only upload
+    #             current_up = peer_data.get("up_speed", 0.0)
+    #             # Fluctuate by ±30% or go idle (configurable % of the time)
+    #             if random.random() < self.peer_behavior_analysis_probability:
+    #                 new_up_speed = 0.0  # Go idle
+    #             else:
+    #                 fluctuation = random.uniform(0.7, 1.3)
+    #                 max_up = behavior["max_up"]
+    #                 new_up_speed = min(max_up, max(0, current_up * fluctuation))
+    #
+    #             peer_data["down_speed"] = 0.0
+    #             peer_data["up_speed"] = new_up_speed
+    #         else:
+    #             # Leechers can download and upload
+    #             current_down = peer_data.get("down_speed", 0.0)
+    #             current_up = peer_data.get("up_speed", 0.0)
+    #
+    #             # Configurable chance to be idle vs active
+    #             if random.random() < self.peer_status_change_probability:
+    #                 new_down_speed = 0.0
+    #                 new_up_speed = 0.0
+    #             else:
+    #                 # Adjust speeds based on progress
+    #                 if progress < 0.1:
+    #                     speed_factor = random.uniform(0.1, 0.4)
+    #                 elif progress < 0.5:
+    #                     speed_factor = random.uniform(0.5, 1.0)
+    #                 else:
+    #                     speed_factor = random.uniform(0.3, 0.8)
+    #
+    #                 fluctuation = random.uniform(0.6, 1.4)
+    #                 new_down_speed = min(
+    #                     behavior["max_down"] * speed_factor,
+    #                     max(0, current_down * fluctuation),
+    #                 )
+    #                 new_up_speed = min(
+    #                     behavior["max_up"] * speed_factor * 0.3,
+    #                     max(0, current_up * fluctuation),
+    #                 )
+    #
+    #             peer_data["down_speed"] = new_down_speed
+    #             peer_data["up_speed"] = new_up_speed
+    #
+    #             # Occasionally update progress for leechers (very slow progress)
+    #             if not is_seed and random.random() < self.peer_dropout_probability:
+    #                 progress_increment = random.uniform(0.001, 0.01)  # 0.1-1% progress
+    #                 new_progress = min(0.99, progress + progress_increment)
+    #                 peer_data["progress"] = new_progress
+    #
+    #                 # Check if became a seeder
+    #                 if new_progress >= 1.0:
+    #                     peer_data["progress"] = 1.0
+    #                     peer_data["seed"] = True
+    #                     peer_data["down_speed"] = 0.0
 
     @property
     def clients(self):

@@ -561,7 +561,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if self._widgets.get(widget_name):
                 self._widgets[widget_name].set_sensitive(state)
 
-    def _on_primary_client_changed(self, combo_box, param):
+    def _on_primary_client_changed(self, combo_box, _param):
         """Handle primary client changes"""
         client = self._get_combo_active_text(combo_box)
         self.logger.debug(f"Primary client changed to: {client}", extra={"class_name": self.__class__.__name__})
@@ -576,7 +576,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         probability = spin_button.get_value()
         self.logger.debug(f"Switch client probability: {probability}", extra={"class_name": self.__class__.__name__})
 
-    def _on_traffic_profile_changed(self, combo_box, param):
+    def _on_traffic_profile_changed(self, combo_box, _param):
         """Handle traffic profile changes"""
         profile = self._get_combo_active_text(combo_box)
         self.logger.debug(f"Traffic profile changed to: {profile}", extra={"class_name": self.__class__.__name__})
@@ -615,7 +615,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         enabled = check_button.get_active()
         self.logger.debug(f"Client profile switching: {enabled}", extra={"class_name": self.__class__.__name__})
 
-    def _on_protocol_compliance_level_changed(self, combo_box, param):
+    def _on_protocol_compliance_level_changed(self, combo_box, _param):
         """Handle protocol compliance level changes"""
         level = self._get_combo_active_text(combo_box)
         self.logger.debug(f"Protocol compliance level: {level}", extra={"class_name": self.__class__.__name__})
@@ -753,7 +753,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         self._notification_overlay = overlay
         return overlay
 
-    def handle_model_changed(self, source, data_obj, data_changed):
+    def handle_model_changed(self, source, data_obj, _data_changed):
         """Handle model change events."""
         self.logger.debug(
             "SimulationTab model changed",
@@ -767,7 +767,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_settings_changed(self, source, data_obj, data_changed):
+    def handle_settings_changed(self, source, data_obj, _data_changed):
         """Handle settings change events."""
         self.logger.debug(
             "SimulationTab settings changed",

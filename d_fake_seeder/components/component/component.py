@@ -13,7 +13,7 @@ class Component:
         return str(from_value)
 
     @abstractmethod
-    def handle_model_changed(self, source, data_obj, data_changed):
+    def handle_model_changed(self, source, data_obj, _data_changed):
         logger.debug(
             "Component Model changed",
             extra={"class_name": self.__class__.__name__},
@@ -27,7 +27,7 @@ class Component:
         )
 
     @abstractmethod
-    def handle_settings_changed(self, source, data_obj, data_changed):
+    def handle_settings_changed(self, source, data_obj, _data_changed):
         logger.debug(
             "Component settings changed",
             extra={"class_name": self.__class__.__name__},

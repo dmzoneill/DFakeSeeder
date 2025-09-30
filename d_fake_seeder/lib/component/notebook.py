@@ -3,7 +3,7 @@ import logging
 import gi
 from lib.component.component import Component
 from lib.logger import logger
-from lib.settings import Settings
+from domain.app_settings import AppSettings
 from domain.torrent.model.attributes import Attributes
 from domain.torrent.model.torrent_peer import TorrentPeer
 
@@ -31,7 +31,7 @@ class Notebook(Component):
         self.init_peers_column_view()
 
         # subscribe to settings changed
-        self.settings = Settings.get_instance()
+        self.settings = AppSettings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
 
         # tab children
