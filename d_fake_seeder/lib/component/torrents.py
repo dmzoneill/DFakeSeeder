@@ -2,7 +2,7 @@ import gi
 from lib.component.component import Component
 from lib.logger import logger
 from lib.settings import Settings
-from lib.torrent.model.attributes import Attributes
+from domain.torrent.model.attributes import Attributes
 from lib.util.helpers import add_kb, add_percent, convert_seconds_to_hours_mins_seconds, humanbytes
 
 gi.require_version("Gdk", "4.0")
