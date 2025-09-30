@@ -144,13 +144,13 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
     def _get_tracker_data(self, attributes) -> list:
         """
-        Get tracker data from the torrent.
+        Get tracker data with live status from the torrent.
 
         Args:
             attributes: Attributes object from the torrent list
 
         Returns:
-            List of tracker dictionaries
+            List of tracker dictionaries with live status
         """
         try:
             self.logger.debug(
@@ -166,20 +166,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 )
                 return trackers
 
-            self.logger.debug(
-                f"🔍 TRACKERS TAB: Attributes object type: {type(attributes)}",
-                extra={"class_name": self.__class__.__name__},
-            )
-            self.logger.debug(
-                f"🔍 TRACKERS TAB: Attributes has get_torrent_file method: {hasattr(attributes, 'get_torrent_file')}",
-                extra={"class_name": self.__class__.__name__},
-            )
-
             # Get the actual Torrent object from the model using the attributes
-            self.logger.debug(
-                "🔍 TRACKERS TAB: Getting torrent object from model using attributes",
-                extra={"class_name": self.__class__.__name__},
-            )
             torrent = self.model.get_torrent_by_attributes(attributes)
             if not torrent:
                 self.logger.warning(
@@ -189,73 +176,87 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 return trackers
 
             self.logger.debug(
-                f"✅ TRACKERS TAB: Found torrent object: {type(torrent)}",
-                extra={"class_name": self.__class__.__name__},
-            )
-            self.logger.debug(
-                f"🔍 TRACKERS TAB: Torrent has get_torrent_file method: {hasattr(torrent, 'get_torrent_file')}",
-                extra={"class_name": self.__class__.__name__},
-            )
-
-            # Get torrent file and extract tracker information directly from the torrent
-            self.logger.debug(
-                "📁 TRACKERS TAB: Calling torrent.get_torrent_file()",
-                extra={"class_name": self.__class__.__name__},
-            )
-            torrent_file = torrent.get_torrent_file()
-            self.logger.info(
-                f"📁 TRACKERS TAB: Torrent file retrieved: {torrent_file} (type: {type(torrent_file)})",
-                extra={"class_name": self.__class__.__name__},
-            )
-            if not torrent_file:
-                self.logger.warning(
-                    f"🚨 TRACKERS TAB: No torrent file found for torrent {getattr(torrent, 'id', 'unknown')}",
-                    extra={"class_name": self.__class__.__name__},
-                )
-                return trackers
-
-            self.logger.debug(
-                f"📋 TRACKERS TAB: Torrent file has announce: {hasattr(torrent_file, 'announce')}",
-                extra={"class_name": self.__class__.__name__},
-            )
-            self.logger.debug(
-                f"📋 TRACKERS TAB: Torrent file has announce_list: {hasattr(torrent_file, 'announce_list')}",
+                f"✅ TRACKERS TAB: Found torrent object with live tracker methods: "
+                f"get_active_tracker_model={hasattr(torrent, 'get_active_tracker_model')}, "
+                f"get_all_tracker_models={hasattr(torrent, 'get_all_tracker_models')}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-            # Add primary announce URL
-            if hasattr(torrent_file, "announce") and torrent_file.announce:
-                trackers.append({"url": torrent_file.announce, "tier": 0, "type": "Primary"})
-                self.logger.info(
-                    f"📡 TRACKERS TAB: Found primary tracker: {torrent_file.announce}",
-                    extra={"class_name": self.__class__.__name__},
-                )
-
-            # Add backup trackers from announce-list
-            if hasattr(torrent_file, "announce_list") and torrent_file.announce_list:
-                # The announce_list is already flattened to a simple list of URLs
-                primary_url = getattr(torrent_file, "announce", None)
+            # Get live tracker models from torrent
+            if hasattr(torrent, "get_all_tracker_models"):
                 self.logger.debug(
-                    f"📡 TRACKERS TAB: Processing {len(torrent_file.announce_list)} backup trackers",
+                    "📡 TRACKERS TAB: Using live tracker models",
                     extra={"class_name": self.__class__.__name__},
                 )
+                tracker_models = torrent.get_all_tracker_models()
 
-                for tier_index, tracker_url in enumerate(torrent_file.announce_list):
-                    # Skip if already added as primary
-                    if tracker_url == primary_url:
-                        continue
-
-                    trackers.append({"url": tracker_url, "tier": tier_index + 1, "type": "Backup"})
+                for tracker_model in tracker_models:
+                    try:
+                        tracker_data = {
+                            "url": tracker_model.get_property("url"),
+                            "tier": tracker_model.get_property("tier"),
+                            "type": "Primary" if tracker_model.get_property("tier") == 0 else "Backup",
+                            "status": tracker_model.get_property("status"),
+                            "seeders": tracker_model.get_property("seeders"),
+                            "leechers": tracker_model.get_property("leechers"),
+                            "last_announce": tracker_model.get_property("last_announce"),
+                            "next_announce": tracker_model.get_property("next_announce"),
+                            "response_time": tracker_model.get_property("average_response_time"),
+                            "error_message": tracker_model.get_property("error_message"),
+                            "success_rate": tracker_model.success_rate,
+                            "health_status": "Healthy" if tracker_model.is_healthy else "Unhealthy",
+                            "status_summary": tracker_model.get_status_summary(),
+                            "timing_summary": tracker_model.get_timing_summary(),
+                        }
+                        trackers.append(tracker_data)
+                    except Exception as e:
+                        self.logger.debug(
+                            f"Error processing tracker model: {e}", extra={"class_name": self.__class__.__name__}
+                        )
 
                 self.logger.info(
-                    f"📡 TRACKERS TAB: Found {len(torrent_file.announce_list)} backup trackers",
+                    f"🎯 TRACKERS TAB: Retrieved {len(trackers)} live tracker models",
                     extra={"class_name": self.__class__.__name__},
                 )
+            else:
+                # Fallback to static tracker information
+                self.logger.debug(
+                    "📁 TRACKERS TAB: Fallback to static tracker data",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                torrent_file = torrent.get_torrent_file()
+                if torrent_file:
+                    # Add primary announce URL
+                    if hasattr(torrent_file, "announce") and torrent_file.announce:
+                        trackers.append(
+                            {
+                                "url": torrent_file.announce,
+                                "tier": 0,
+                                "type": "Primary",
+                                "status": "Unknown",
+                                "seeders": 0,
+                                "leechers": 0,
+                                "status_summary": "No live data available",
+                            }
+                        )
 
-            self.logger.info(
-                f"🎯 TRACKERS TAB: Final tracker list: {len(trackers)} trackers",
-                extra={"class_name": self.__class__.__name__},
-            )
+                    # Add backup trackers from announce-list
+                    if hasattr(torrent_file, "announce_list") and torrent_file.announce_list:
+                        primary_url = getattr(torrent_file, "announce", None)
+                        for tier_index, tracker_url in enumerate(torrent_file.announce_list):
+                            if tracker_url != primary_url:
+                                trackers.append(
+                                    {
+                                        "url": tracker_url,
+                                        "tier": tier_index + 1,
+                                        "type": "Backup",
+                                        "status": "Unknown",
+                                        "seeders": 0,
+                                        "leechers": 0,
+                                        "status_summary": "No live data available",
+                                    }
+                                )
+
             return trackers
 
         except Exception as e:
@@ -293,6 +294,9 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 translate_func("Tier"),
                 translate_func("URL"),
                 translate_func("Status"),
+                translate_func("Seeders"),
+                translate_func("Leechers"),
+                translate_func("Last Announce"),
             ]
 
             for col, header_text in enumerate(headers):
@@ -308,10 +312,10 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
     def _create_tracker_row(self, tracker: dict, row: int) -> None:
         """
-        Create a row for a tracker.
+        Create a row for a tracker with live status information.
 
         Args:
-            tracker: Tracker data dictionary
+            tracker: Tracker data dictionary with live status
             row: Row position in grid
         """
         try:
@@ -338,12 +342,47 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if self._trackers_grid_child is not None:
                 self._trackers_grid_child.attach(url_label, 2, row, 1, 1)
 
-            # Status column (placeholder for future tracker status)
-            status_label = Gtk.Label(label="Unknown")
+            # Status column with live data
+            status_text = tracker.get("status_summary", tracker.get("status", "Unknown"))
+            status_label = Gtk.Label(label=status_text)
             status_label.set_visible(True)
             status_label.set_halign(Gtk.Align.START)
+
+            # Add CSS class based on status for styling
+            status = tracker.get("status", "unknown")
+            if status == "working":
+                status_label.add_css_class("success")
+            elif status == "failed":
+                status_label.add_css_class("error")
+            elif status == "announcing":
+                status_label.add_css_class("warning")
+
             if self._trackers_grid_child is not None:
                 self._trackers_grid_child.attach(status_label, 3, row, 1, 1)
+
+            # Seeders column
+            seeders_text = str(tracker.get("seeders", 0)) if tracker.get("seeders", 0) > 0 else "-"
+            seeders_label = Gtk.Label(label=seeders_text)
+            seeders_label.set_visible(True)
+            seeders_label.set_halign(Gtk.Align.START)
+            if self._trackers_grid_child is not None:
+                self._trackers_grid_child.attach(seeders_label, 4, row, 1, 1)
+
+            # Leechers column
+            leechers_text = str(tracker.get("leechers", 0)) if tracker.get("leechers", 0) > 0 else "-"
+            leechers_label = Gtk.Label(label=leechers_text)
+            leechers_label.set_visible(True)
+            leechers_label.set_halign(Gtk.Align.START)
+            if self._trackers_grid_child is not None:
+                self._trackers_grid_child.attach(leechers_label, 5, row, 1, 1)
+
+            # Last Announce column
+            timing_text = tracker.get("timing_summary", "Never")
+            timing_label = Gtk.Label(label=timing_text)
+            timing_label.set_visible(True)
+            timing_label.set_halign(Gtk.Align.START)
+            if self._trackers_grid_child is not None:
+                self._trackers_grid_child.attach(timing_label, 6, row, 1, 1)
 
         except Exception as e:
             self.logger.error(f"Error creating tracker row: {e}")
@@ -360,7 +399,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             # Add message to the grid instead of directly to the tab
             if self._trackers_grid_child:
-                self._trackers_grid_child.attach(message_label, 0, 0, 2, 1)
+                self._trackers_grid_child.attach(message_label, 0, 0, 7, 1)  # Span all columns
 
             # Add the grid to the tab
             if self._trackers_tab and self._trackers_grid_child:
