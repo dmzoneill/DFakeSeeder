@@ -576,7 +576,7 @@ class View:
 
     def apply_theme(self, theme: str) -> None:
         """
-        Apply the specified theme to the application.
+        Apply the specified theme to the application using modern Adwaita StyleManager.
 
         Args:
             theme: Theme name ("system", "light", "dark")
@@ -584,26 +584,26 @@ class View:
         try:
             logger.debug(f"Applying theme: {theme}", extra={"class_name": self.__class__.__name__})
 
-            # Get GTK settings for theme switching
-            gtk_settings = Gtk.Settings.get_default()
+            # Use modern AdwStyleManager instead of deprecated GTK settings
+            style_manager = Adw.StyleManager.get_default()
 
             if theme == "system":
-                # Follow system theme preference by removing our override
-                gtk_settings.reset_property("gtk-application-prefer-dark-theme")
+                # Follow system theme preference
+                style_manager.set_color_scheme(Adw.ColorScheme.DEFAULT)
                 logger.debug("Theme set to follow system preference", extra={"class_name": self.__class__.__name__})
             elif theme == "light":
                 # Force light theme
-                gtk_settings.set_property("gtk-application-prefer-dark-theme", False)
+                style_manager.set_color_scheme(Adw.ColorScheme.FORCE_LIGHT)
                 logger.debug("Theme set to light", extra={"class_name": self.__class__.__name__})
             elif theme == "dark":
                 # Force dark theme
-                gtk_settings.set_property("gtk-application-prefer-dark-theme", True)
+                style_manager.set_color_scheme(Adw.ColorScheme.FORCE_DARK)
                 logger.debug("Theme set to dark", extra={"class_name": self.__class__.__name__})
             else:
                 logger.warning(
                     f"Unknown theme: {theme}, falling back to system", extra={"class_name": self.__class__.__name__}
                 )
-                gtk_settings.reset_property("gtk-application-prefer-dark-theme")
+                style_manager.set_color_scheme(Adw.ColorScheme.DEFAULT)
 
             # Add CSS classes for additional theme control
             if hasattr(self, "window") and self.window:

@@ -5,7 +5,7 @@ from threading import Lock
 from typing import Any
 
 from gi.repository import GObject
-from lib.handlers.FileModifiedEventHandler import FileModifiedEventHandler
+from lib.handlers.file_modified_event_handler import FileModifiedEventHandler
 from lib.logger import logger
 from watchdog.observers import Observer
 
