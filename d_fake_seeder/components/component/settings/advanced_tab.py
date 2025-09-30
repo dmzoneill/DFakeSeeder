@@ -472,7 +472,7 @@ class AdvancedTab(
         except Exception as e:
             self.logger.error(f"Error changing search threshold: {e}")
 
-    def on_log_level_changed(self, dropdown: Gtk.DropDown, param) -> None:
+    def on_log_level_changed(self, dropdown: Gtk.DropDown, _param) -> None:
         """Handle log level change."""
         try:
             level_mapping = {0: "DEBUG", 1: "INFO", 2: "WARNING", 3: "ERROR", 4: "CRITICAL"}
@@ -663,7 +663,7 @@ class AdvancedTab(
         except Exception as e:
             self.logger.error(f"Error resetting Advanced tab to defaults: {e}")
 
-    def handle_model_changed(self, source, data_obj, data_changed):
+    def handle_model_changed(self, source, data_obj, _data_changed):
         """Handle model change events."""
         self.logger.debug(
             "AdvancedTab model changed",
@@ -677,7 +677,7 @@ class AdvancedTab(
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_settings_changed(self, source, data_obj, data_changed):
+    def handle_settings_changed(self, source, data_obj, _data_changed):
         """Handle settings change events."""
         self.logger.debug(
             "AdvancedTab settings changed",

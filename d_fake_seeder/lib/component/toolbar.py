@@ -5,7 +5,7 @@ import shutil
 import gi
 from lib.component.component import Component
 from lib.logger import logger
-from lib.settings import Settings
+from domain.app_settings import AppSettings
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
@@ -21,7 +21,7 @@ class Toolbar(Component):
         self.app = app
 
         # subscribe to settings changed
-        self.settings = Settings.get_instance()
+        self.settings = AppSettings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
 
         self.toolbar_add_button = self.builder.get_object("toolbar_add")

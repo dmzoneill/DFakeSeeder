@@ -218,7 +218,7 @@ class View:
         self.overlay.add_overlay(self.splash_image)
         GLib.timeout_add_seconds(self.splash_display_duration, self.fade_out_image)
 
-    def show_about(self, action, param):
+    def show_about(self, action, _param):
         self.window.about = Gtk.AboutDialog()
         self.window.about.set_transient_for(self.window)
         self.window.about.set_modal(self)

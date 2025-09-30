@@ -1,7 +1,7 @@
 import gi
 from lib.component.component import Component
 from lib.logger import logger
-from lib.settings import Settings
+from domain.app_settings import AppSettings
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
@@ -15,7 +15,7 @@ class States(Component):
         self.model = model
 
         # Subscribe to settings changed
-        self.settings = Settings.get_instance()
+        self.settings = AppSettings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
 
         self.states_columnview = self.builder.get_object("states_columnview")

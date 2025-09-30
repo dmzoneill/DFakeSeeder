@@ -1,7 +1,7 @@
 import gi
 from lib.component.component import Component
 from lib.logger import logger
-from lib.settings import Settings
+from domain.app_settings import AppSettings
 from domain.torrent.model.attributes import Attributes
 from lib.util.helpers import add_kb, add_percent, convert_seconds_to_hours_mins_seconds, humanbytes
 
@@ -25,7 +25,7 @@ class Torrents(Component):
         self.window = self.builder.get_object("main_window")
 
         # subscribe to settings changed
-        self.settings = Settings.get_instance()
+        self.settings = AppSettings.get_instance()
         self.settings.connect("attribute-changed", self.handle_attribute_changed)
 
         self.torrents_columnview = self.builder.get_object("columnview1")

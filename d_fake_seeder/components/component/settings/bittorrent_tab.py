@@ -571,7 +571,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         except Exception as e:
             self.logger.error(f"Error resetting BitTorrent tab to defaults: {e}")
 
-    def handle_model_changed(self, source, data_obj, data_changed):
+    def handle_model_changed(self, source, data_obj, _data_changed):
         """Handle model change events."""
         self.logger.debug(
             "BitTorrentTab model changed",
@@ -585,7 +585,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_settings_changed(self, source, data_obj, data_changed):
+    def handle_settings_changed(self, source, data_obj, _data_changed):
         """Handle settings change events."""
         self.logger.debug(
             "BitTorrentTab settings changed",
