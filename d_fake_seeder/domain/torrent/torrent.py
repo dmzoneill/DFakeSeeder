@@ -6,6 +6,7 @@ import gi
 from domain.app_settings import AppSettings
 from domain.torrent.file import File
 from domain.torrent.model.attributes import Attributes
+from domain.torrent.model.tracker import Tracker
 from domain.torrent.seeder import Seeder
 from lib.logger import logger
 from view import View
@@ -388,3 +389,97 @@ class Torrent(GObject.GObject):
                 self.restart_worker(value)
         else:
             super().__setattr__(attr, value)
+
+    def get_active_tracker_model(self):
+        """Get tracker model from the currently active seeder"""
+        try:
+            if hasattr(self, "seeder") and self.seeder and hasattr(self.seeder, "seeder"):
+                active_seeder = self.seeder.seeder
+                if hasattr(active_seeder, "_get_tracker_model"):
+                    return active_seeder._get_tracker_model()
+            return None
+        except Exception as e:
+            logger.debug(f"Failed to get active tracker model: {e}", extra={"class_name": self.__class__.__name__})
+            return None
+
+    def get_all_tracker_models(self):
+        """Get tracker models for all trackers (primary and backup)"""
+        tracker_models = []
+
+        try:
+            # Get primary tracker model from active seeder
+            active_tracker = self.get_active_tracker_model()
+            if active_tracker:
+                tracker_models.append(active_tracker)
+
+            # Create models for backup trackers from announce-list
+            if hasattr(self, "torrent_file") and hasattr(self.torrent_file, "announce_list"):
+                current_url = active_tracker.get_property("url") if active_tracker else None
+
+                for tier, announce_url in enumerate(self.torrent_file.announce_list):
+                    # Skip if this is already the active tracker
+                    if announce_url != current_url:
+                        tracker_model = Tracker(url=announce_url, tier=tier + 1)
+                        tracker_models.append(tracker_model)
+
+        except Exception as e:
+            logger.debug(f"Failed to get all tracker models: {e}", extra={"class_name": self.__class__.__name__})
+
+        return tracker_models
+
+    def get_tracker_statistics(self):
+        """Get aggregated statistics from all tracker models"""
+        stats = {
+            "total_trackers": 0,
+            "working_trackers": 0,
+            "failed_trackers": 0,
+            "total_seeders": 0,
+            "total_leechers": 0,
+            "average_response_time": 0.0,
+            "last_announce": 0.0,
+        }
+
+        try:
+            tracker_models = self.get_all_tracker_models()
+            stats["total_trackers"] = len(tracker_models)
+
+            working_count = 0
+            failed_count = 0
+            total_seeders = 0
+            total_leechers = 0
+            response_times = []
+            last_announces = []
+
+            for tracker in tracker_models:
+                status = tracker.get_property("status")
+                if status == "working":
+                    working_count += 1
+                    total_seeders += tracker.get_property("seeders")
+                    total_leechers += tracker.get_property("leechers")
+
+                    response_time = tracker.get_property("average_response_time")
+                    if response_time > 0:
+                        response_times.append(response_time)
+
+                    last_announce = tracker.get_property("last_announce")
+                    if last_announce > 0:
+                        last_announces.append(last_announce)
+
+                elif status == "failed":
+                    failed_count += 1
+
+            stats["working_trackers"] = working_count
+            stats["failed_trackers"] = failed_count
+            stats["total_seeders"] = total_seeders
+            stats["total_leechers"] = total_leechers
+
+            if response_times:
+                stats["average_response_time"] = sum(response_times) / len(response_times)
+
+            if last_announces:
+                stats["last_announce"] = max(last_announces)
+
+        except Exception as e:
+            logger.debug(f"Failed to get tracker statistics: {e}", extra={"class_name": self.__class__.__name__})
+
+        return stats

@@ -7,7 +7,7 @@ including protocol-level quirks, timing patterns, and behavioral characteristics
 
 import random
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from domain.app_settings import AppSettings
 from lib.logger import logger
@@ -344,43 +344,44 @@ class ClientBehaviorEngine:
             )
             return default
 
-    def simulate_client_behavior(self, action: str, context: Optional[Dict] = None) -> Dict[str, Any]:
-        """
-        Simulate client-specific behavior for given action
-
-        Args:
-            action: Action to simulate (e.g., 'handshake', 'announce', 'piece_request')
-            context: Additional context information
-
-        Returns:
-            Dictionary with behavior simulation results
-        """
-        if not self.enabled:
-            return {"simulated": False}
-
-        try:
-            # Update client behavior if needed
-            self._maybe_update_behavior()
-
-            # Dispatch to specific behavior simulation
-            if action == "handshake":
-                return self._simulate_handshake(context or {})
-            elif action == "announce":
-                return self._simulate_announce(context or {})
-            elif action == "piece_request":
-                return self._simulate_piece_request(context or {})
-            elif action == "peer_exchange":
-                return self._simulate_peer_exchange(context or {})
-            elif action == "keep_alive":
-                return self._simulate_keep_alive(context or {})
-            else:
-                return self._simulate_generic_behavior(action, context or {})
-
-        except Exception as e:
-            logger.error(
-                f"Failed to simulate client behavior for {action}: {e}", extra={"class_name": self.__class__.__name__}
-            )
-            return {"simulated": False, "error": str(e)}
+    # TODO: UNUSED METHOD - Simulation engine not integrated
+    # def simulate_client_behavior(self, action: str, context: Optional[Dict] = None) -> Dict[str, Any]:
+    #     """
+    #     Simulate client-specific behavior for given action
+    #
+    #     Args:
+    #         action: Action to simulate (e.g., 'handshake', 'announce', 'piece_request')
+    #         context: Additional context information
+    #
+    #     Returns:
+    #         Dictionary with behavior simulation results
+    #     """
+    #     if not self.enabled:
+    #         return {"simulated": False}
+    #
+    #     try:
+    #         # Update client behavior if needed
+    #         self._maybe_update_behavior()
+    #
+    #         # Dispatch to specific behavior simulation
+    #         if action == "handshake":
+    #             return self._simulate_handshake(context or {})
+    #         elif action == "announce":
+    #             return self._simulate_announce(context or {})
+    #         elif action == "piece_request":
+    #             return self._simulate_piece_request(context or {})
+    #         elif action == "peer_exchange":
+    #             return self._simulate_peer_exchange(context or {})
+    #         elif action == "keep_alive":
+    #             return self._simulate_keep_alive(context or {})
+    #         else:
+    #             return self._simulate_generic_behavior(action, context or {})
+    #
+    #     except Exception as e:
+    #         logger.error(
+    #             f"Failed to simulate client behavior for {action}: {e}", extra={"class_name": self.__class__.__name__}
+    #         )
+    #         return {"simulated": False, "error": str(e)}
 
     def _simulate_handshake(self, context: Dict) -> Dict[str, Any]:
         """Simulate client-specific handshake behavior"""

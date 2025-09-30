@@ -1,9 +1,11 @@
 from time import sleep
+import time
 
 import domain.torrent.bencoding as bencoding
 import requests
 from domain.app_settings import AppSettings
 from domain.torrent.seeders.base_seeder import BaseSeeder
+from domain.torrent.model.tracker import Tracker
 from lib.logger import logger
 from view import View
 
@@ -38,11 +40,16 @@ class HTTPSeeder(BaseSeeder):
 
             View.instance.notify("load_peers " + self.tracker_url)
 
+            # Mark tracker as announcing
+            self._set_tracker_announcing()
+
             # Log torrent information
             logger.info(
                 f"🔗 Connecting to HTTP tracker: {self.tracker_url}",
                 extra={"class_name": self.__class__.__name__},
             )
+
+            request_start_time = time.time()
             logger.info(
                 f"📁 Torrent: {self.torrent.name} " f"(Hash: {self.torrent.file_hash.hex()[:16]}...)",
                 extra={"class_name": self.__class__.__name__},
@@ -65,6 +72,10 @@ class HTTPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
 
+            # Calculate response time
+            request_end_time = time.time()
+            response_time = request_end_time - request_start_time
+
             data = bencoding.decode(req.content)
             if data is not None:
                 self.info = data
@@ -79,6 +90,9 @@ class HTTPSeeder(BaseSeeder):
                     f"🔑 Response keys: {response_keys}",
                     extra={"class_name": self.__class__.__name__},
                 )
+
+                # Update tracker model with successful response
+                self._update_tracker_success(data, response_time)
 
                 # Log seeders/leechers info
                 if b"complete" in data:
@@ -147,6 +161,14 @@ class HTTPSeeder(BaseSeeder):
             self.get_tracker_semaphore().release()
             return False
         except Exception as e:
+            # Update tracker model with failure
+            if "request_start_time" in locals():
+                request_end_time = time.time()
+                response_time = request_end_time - request_start_time
+                self._update_tracker_failure(str(e), response_time)
+            else:
+                self._update_tracker_failure(str(e))
+
             self.set_random_announce_url()
             self.handle_exception(e, "Seeder unknown error in load_peers_http")
             return False
@@ -209,6 +231,9 @@ class HTTPSeeder(BaseSeeder):
                         extra={"class_name": self.__class__.__name__},
                     )
                     break
+
+                # Update tracker model with failure
+                self._update_tracker_failure(str(e))
 
                 logger.warning(
                     f"⚠️ Announce failed (attempt {retry_count}/{max_retries}): {str(e)}",
@@ -290,3 +315,47 @@ class HTTPSeeder(BaseSeeder):
         )
 
         return req
+
+    def _get_tracker_model(self) -> Tracker:
+        """Get or create tracker model for current tracker URL"""
+        if not hasattr(self, "_tracker_model") or self._tracker_model is None:
+            # Create tracker model with current URL and tier
+            self._tracker_model = Tracker(url=self.tracker_url, tier=0)
+        elif self._tracker_model.get_property("url") != self.tracker_url:
+            # URL changed, create new tracker model
+            self._tracker_model = Tracker(url=self.tracker_url, tier=0)
+        return self._tracker_model
+
+    def _set_tracker_announcing(self):
+        """Mark tracker as currently announcing"""
+        try:
+            tracker = self._get_tracker_model()
+            tracker.set_announcing()
+        except Exception as e:
+            logger.debug(f"Failed to set tracker announcing status: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _update_tracker_success(self, response_data: dict, response_time: float):
+        """Update tracker model with successful response"""
+        try:
+            tracker = self._get_tracker_model()
+
+            # Convert byte keys to string keys for tracker model
+            converted_data = {}
+            for key, value in response_data.items():
+                if isinstance(key, bytes):
+                    str_key = key.decode("utf-8")
+                else:
+                    str_key = key
+                converted_data[str_key] = value
+
+            tracker.update_announce_response(converted_data, response_time)
+        except Exception as e:
+            logger.debug(f"Failed to update tracker success: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _update_tracker_failure(self, error_message: str, response_time: float = None):
+        """Update tracker model with failed response"""
+        try:
+            tracker = self._get_tracker_model()
+            tracker.update_announce_failure(error_message, response_time)
+        except Exception as e:
+            logger.debug(f"Failed to update tracker failure: {e}", extra={"class_name": self.__class__.__name__})
