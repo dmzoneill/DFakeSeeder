@@ -280,18 +280,18 @@ class Torrent(GObject.GObject):
         if hasattr(self, "seeder") and self.seeder:
             self.seeder.request_shutdown()
 
-        # Stop worker threads
+        # Stop worker threads with aggressive timeout
         self.torrent_worker_stop_event.set()
-        self.torrent_worker.join(timeout=3.0)  # Add timeout
+        self.torrent_worker.join(timeout=0.5)  # Aggressive 0.5s timeout
 
         if self.torrent_worker.is_alive():
-            logger.warning(f"⚠️ Torrent worker thread for {self.name} still alive after timeout")
+            logger.warning(f"⚠️ Torrent worker thread for {self.name} still alive after timeout - forcing shutdown")
 
         self.peers_worker_stop_event.set()
-        self.peers_worker.join(timeout=3.0)  # Add timeout
+        self.peers_worker.join(timeout=0.5)  # Aggressive 0.5s timeout
 
         if self.peers_worker.is_alive():
-            logger.warning(f"⚠️ Peers worker thread for {self.name} still alive after timeout")
+            logger.warning(f"⚠️ Peers worker thread for {self.name} still alive after timeout - forcing shutdown")
 
         ATTRIBUTES = Attributes
         attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]

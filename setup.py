@@ -10,6 +10,7 @@ install_requires = ["requests"]
 entry_points = {
     "console_scripts": [
         "dfs = d_fake_seeder.dfakeseeder:app",
+        "dfs-tray = d_fake_seeder.dfakeseeder_tray:main",
     ]
 }
 

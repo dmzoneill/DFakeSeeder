@@ -9,7 +9,7 @@ from domain.app_settings import AppSettings  # noqa: E402
 from domain.torrent.model.attributes import Attributes  # noqa: E402
 from domain.torrent.model.torrentstate import TorrentState  # noqa: E402
 from domain.torrent.torrent import Torrent  # noqa: E402
-from domain.translation_manager import TranslationManager  # noqa: E402
+from domain.translation_manager import create_translation_manager  # noqa: E402
 from gi.repository import Gio  # noqa: E402
 from gi.repository import GObject, Gtk  # noqa: E402
 from lib.logger import logger  # noqa: E402
@@ -61,10 +61,9 @@ class Model(GObject.GObject):
         logger.debug("DEBUG: AppSettings signal connections completed", "Model")
         # Initialize translation manager
         logger.debug("About to create TranslationManager", "Model")
-        self.translation_manager = TranslationManager(
+        self.translation_manager = create_translation_manager(
             domain="dfakeseeder",
             localedir=os.path.join(os.environ.get("DFS_PATH", "."), "components", "locale"),
-            config_file=os.path.expanduser("~/.config/dfakeseeder/settings.json"),
             fallback_language="en",
         )
         logger.debug("TranslationManager created successfully", "Model")

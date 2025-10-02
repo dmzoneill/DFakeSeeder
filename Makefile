@@ -182,22 +182,57 @@ docker-hub: xhosts
 docker-ghcr: xhosts
 	docker run --rm --net=host --env="DISPLAY" --volume="\$$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it ghcr.io/dfakeseeder
 
-translatepy:
-	xgettext --verbose --language=Python --keyword=_ --output=d_fake_seeder/locale/dfakeseederpy.pot d_fake_seeder/dfakeseeder.py
-	#msginit --no-translator --output-file=d_fake_seeder/locale/en_US/LC_MESSAGES/en_USpy.po --input=d_fake_seeder/locale/dfakeseederpy.pot --locale=en_US
-	#msgfmt --output-file=d_fake_seeder/locale/en_US/LC_MESSAGES/dfakeseederpy.mo d_fake_seeder/locale/en_US/LC_MESSAGES/en_USpy.po
+# Translation management using tools/translation_build_manager.py
+translate-build:
+	echo "Building translations using translation manager..."
+	python3 tools/translation_build_manager.py --build
 
-translatexml:
-	xgettext --keyword=translatable --language=Glade --from-code=UTF-8 --output=d_fake_seeder/locale/dfakeseederxml.pot d_fake_seeder/ui/generated.xml
-	msginit --no-translator --output-file=d_fake_seeder/locale/en_US/LC_MESSAGES/en_USxml.po --input=d_fake_seeder/locale/dfakeseederxml.pot --locale=en_US
-	msgfmt --output-file=d_fake_seeder/locale/en_US/LC_MESSAGES/dfakeseederxml.mo d_fake_seeder/locale/en_US/LC_MESSAGES/en_USxml.po
+translate-extract:
+	echo "Extracting translatable strings..."
+	python3 tools/translation_build_manager.py --extract
 
-translate:
-	rm -rvf d_fake_seeder/locale/
-	mkdir -vp locale/en_US/LC_MESSAGES/
-	mkdir -vp d_fake_seeder/locale/en_US/LC_MESSAGES/
-	$(MAKE) translatepy
-	#$(MAKE) translatexml
+translate-clean:
+	echo "Cleaning translation files..."
+	python3 tools/translation_build_manager.py --clean
+
+# Tray application targets
+run-tray: ui-build
+	echo "Running tray application only..."
+	{ \
+		cd d_fake_seeder && \
+		LOG_LEVEL=INFO DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder_tray.py; \
+	}
+
+run-tray-debug: ui-build
+	echo "Running tray application with debug output..."
+	{ \
+		cd d_fake_seeder && \
+		LOG_LEVEL=DEBUG DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder_tray.py; \
+	}
+
+run-with-tray: ui-build
+	echo "Running main application with tray (backgrounded)..."
+	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
+	-ps aux | grep "dfakeseeder.py\|dfakeseeder_tray.py" | awk '{print $$2}' | xargs kill -9
+	{ \
+		cd d_fake_seeder && \
+		LOG_LEVEL=INFO DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder.py & \
+		sleep 3 && \
+		LOG_LEVEL=INFO DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder_tray.py; \
+	}
+	$(MAKE) clean_settings;
+
+run-debug-with-tray: ui-build
+	echo "Running main application with tray (debug mode)..."
+	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
+	-ps aux | grep "dfakeseeder.py\|dfakeseeder_tray.py" | awk '{print $$2}' | xargs kill -9
+	{ \
+		cd d_fake_seeder && \
+		LOG_LEVEL=DEBUG DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder.py & \
+		sleep 5 && \
+		LOG_LEVEL=DEBUG DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder_tray.py; \
+	}
+	$(MAKE) clean_settings;
 
 test:
 	DFS_PATH=$$(pwd)/d_fake_seeder cd d_fake_seeder/ && pytest -vvv .

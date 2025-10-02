@@ -31,7 +31,10 @@ from typing import Dict, List, Optional, Set, Tuple
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 try:
-    from d_fake_seeder.lib.util.language_config import get_config_metadata, get_supported_languages
+    from d_fake_seeder.lib.util.language_config import (
+        get_config_metadata,
+        get_supported_languages,
+    )
 
     LANGUAGES = get_supported_languages()
     print(f"Loaded {len(LANGUAGES)} languages from configuration file")

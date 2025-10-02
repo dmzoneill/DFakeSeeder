@@ -86,6 +86,29 @@ def install_desktop_file(package_dir, home_dir):
         return False
 
 
+def install_tray_desktop_file(package_dir, home_dir):
+    """Install tray autostart desktop file."""
+    tray_desktop_source = package_dir / "desktop" / "dfakeseeder-tray.desktop"
+    if not tray_desktop_source.exists():
+        logger.debug("Warning: Tray desktop file not found", "UnknownClass")
+        return False
+
+    autostart_dir = home_dir / ".config" / "autostart"
+    autostart_dir.mkdir(parents=True, exist_ok=True)
+    tray_desktop_target = autostart_dir / "dfakeseeder-tray.desktop"
+
+    try:
+        # Copy tray desktop file to autostart directory
+        shutil.copy2(tray_desktop_source, tray_desktop_target)
+        # Make executable
+        os.chmod(tray_desktop_target, 0o755)
+        logger.debug("✓ Installed tray autostart file", "UnknownClass")
+        return True
+    except Exception:
+        logger.debug("Warning: Could not install tray desktop file", "UnknownClass")
+        return False
+
+
 def update_caches(home_dir):
     """Update desktop and icon caches."""
     icon_dir = home_dir / ".local" / "share" / "icons" / "hicolor"
@@ -123,16 +146,22 @@ def install_desktop_integration():
         # Install components
         icons_installed = install_icons(package_dir, home_dir)
         desktop_installed = install_desktop_file(package_dir, home_dir)
-        if icons_installed or desktop_installed:
+        tray_installed = install_tray_desktop_file(package_dir, home_dir)
+
+        if icons_installed or desktop_installed or tray_installed:
             # Update caches
             update_caches(home_dir)
             logger.debug("\n✅ Desktop integration installed successfully!", "UnknownClass")
             logger.debug("\nThe application should now appear in your application menu", "UnknownClass")
             logger.debug("and show proper icons in the taskbar when launched.", "UnknownClass")
+            if tray_installed:
+                logger.debug("System tray will start automatically on login.", "UnknownClass")
             logger.debug("\nYou can launch it from:", "UnknownClass")
             logger.debug("  • Application menu (search for 'D' Fake Seeder')", "UnknownClass")
             logger.debug("  • Command line: dfs", "UnknownClass")
             logger.debug("  • Desktop launcher: gtk-launch dfakeseeder", "UnknownClass")
+            if tray_installed:
+                logger.debug("  • System tray (automatic)", "UnknownClass")
         else:
             logger.debug("\n❌ Could not install desktop integration files.", "UnknownClass")
             logger.debug("The application will still work from the command line with 'dfs'", "UnknownClass")
@@ -156,6 +185,16 @@ def uninstall_desktop_integration():
             removed_any = True
         except Exception:
             logger.debug("Warning: Could not remove desktop file: ...", "UnknownClass")
+
+    # Remove tray autostart file
+    tray_file = home_dir / ".config" / "autostart" / "dfakeseeder-tray.desktop"
+    if tray_file.exists():
+        try:
+            tray_file.unlink()
+            logger.debug("✓ Removed tray autostart file", "UnknownClass")
+            removed_any = True
+        except Exception:
+            logger.debug("Warning: Could not remove tray autostart file", "UnknownClass")
     # Remove icons
     icon_base = home_dir / ".local" / "share" / "icons" / "hicolor"
     sizes = DEFAULT_ICON_SIZES

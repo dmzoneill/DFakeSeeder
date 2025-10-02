@@ -117,20 +117,28 @@ class GlobalPeerManager:
         if shutdown_tracker:
             shutdown_tracker.mark_completed("network_connections", 1)
 
-        # Wait for worker thread to finish with shorter timeout
+        # Wait for worker thread to finish with aggressive timeout
         if self.worker_thread and self.worker_thread.is_alive():
-            join_timeout = min(self.manager_thread_join_timeout, 3.0)  # Max 3 seconds
+            join_timeout = 1.0  # Max 1 second for aggressive shutdown
+            logger.info(
+                f"⏱️ Waiting for worker thread to finish (timeout: {join_timeout}s)",
+                extra={"class_name": self.__class__.__name__},
+            )
             self.worker_thread.join(timeout=join_timeout)
 
             # Log if thread is still alive after timeout
             if self.worker_thread.is_alive():
                 logger.warning(
-                    "⚠️ GlobalPeerManager worker thread still alive after timeout",
+                    "⚠️ GlobalPeerManager worker thread still alive after timeout - forcing shutdown",
                     extra={"class_name": self.__class__.__name__},
                 )
                 if shutdown_tracker:
                     shutdown_tracker.mark_component_timeout("background_workers")
             else:
+                logger.info(
+                    "✅ Worker thread stopped cleanly",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 if shutdown_tracker:
                     shutdown_tracker.mark_completed("background_workers", 1)
         else:

@@ -20,8 +20,7 @@ from components.component.toolbar import Toolbar  # noqa: E402
 from components.component.torrent_details import TorrentDetailsNotebook  # noqa: E402
 from components.component.torrents import Torrents  # noqa: E402
 from domain.app_settings import AppSettings  # noqa: E402
-from gi.repository import Adw, Gdk  # noqa
-from gi.repository import Gio, GLib, Gtk  # noqa: E402
+from gi.repository import Adw, Gdk, Gio, GLib, Gtk  # noqa; noqa: E402
 
 # Translation function will be provided by model's TranslationManager
 from lib.logger import logger  # noqa: E402
@@ -370,10 +369,19 @@ class View:
         self.model.disconnect_by_func(self.notebook.get_outgoing_connections().update_view)
 
     # Event handler for clicking on quit
-    def on_quit_clicked(self, menu_item):
-        logger.info("View quit", extra={"class_name": self.__class__.__name__})
+    def on_quit_clicked(self, menu_item, fast_shutdown=False):
+        logger.info(
+            "🎯 ON_QUIT_CLICKED: Starting complete quit procedure", extra={"class_name": self.__class__.__name__}
+        )
+        logger.info("🔌 ON_QUIT_CLICKED: Removing signal connections", extra={"class_name": self.__class__.__name__})
         self.remove_signals()
-        self.quit()
+        logger.info(
+            "🎬 ON_QUIT_CLICKED: Signal removal complete, calling quit()", extra={"class_name": self.__class__.__name__}
+        )
+        self.quit(fast_shutdown=fast_shutdown)
+        logger.info(
+            "🏁 ON_QUIT_CLICKED: Complete quit procedure finished", extra={"class_name": self.__class__.__name__}
+        )
 
     # open github webpage
     def on_help_clicked(self, menu_item):
@@ -456,11 +464,32 @@ class View:
             )
 
     # Function to quit the application
-    def quit(self, widget=None, event=None):
-        logger.info("View quit", extra={"class_name": self.__class__.__name__})
+    def quit(self, widget=None, event=None, fast_shutdown=False):
+        logger.info(
+            f"🎬 VIEW QUIT START: view.quit() method called "
+            f"(widget={widget}, event={event}, fast_shutdown={fast_shutdown})",
+            extra={"class_name": self.__class__.__name__},
+        )
+        logger.info("🔧 VIEW QUIT: Initializing ShutdownProgressTracker", extra={"class_name": self.__class__.__name__})
         # Initialize shutdown progress tracking
         self.shutdown_tracker = ShutdownProgressTracker()
+
+        # Use shorter timeout for D-Bus triggered shutdowns
+        if fast_shutdown:
+            logger.info(
+                "⚡ VIEW QUIT: Using fast shutdown mode (2 second timeout)",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.shutdown_tracker.force_shutdown_timer = 2.0  # 2 seconds for fast quit
+        else:
+            logger.info(
+                "🐌 VIEW QUIT: Using normal shutdown mode (5 second timeout)",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.shutdown_tracker.force_shutdown_timer = 5.0  # 5 seconds for normal quit
+
         self.shutdown_tracker.start_shutdown()
+        logger.info("▶️ VIEW QUIT: ShutdownProgressTracker started", extra={"class_name": self.__class__.__name__})
         # Count components that need to be shut down
         model_torrent_count = 0
         peer_manager_count = 0
@@ -519,15 +548,55 @@ class View:
         self.settings.save_quit()
         # Step 4: Check if force shutdown is needed
         if self.shutdown_tracker and self.shutdown_tracker.is_force_shutdown_time():
-            logger.warning("Force shutdown timeout reached", extra={"class_name": self.__class__.__name__})
-            # Mark any remaining components as timed out
+            timeout_duration = self.shutdown_tracker.force_shutdown_timer
+            logger.warning(
+                f"⏰ FORCE SHUTDOWN: Timeout reached after {timeout_duration} seconds",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+            # Log which components are still pending
+            pending_components = []
             for component_type in self.shutdown_tracker.components:
-                if self.shutdown_tracker.components[component_type]["status"] not in ["complete", "timeout"]:
+                component_status = self.shutdown_tracker.components[component_type]["status"]
+                if component_status not in ["complete", "timeout"]:
+                    pending_components.append(f"{component_type}({component_status})")
                     self.shutdown_tracker.mark_component_timeout(component_type)
+
+            if pending_components:
+                logger.warning(
+                    f"🐌 FORCE SHUTDOWN: These components were still pending: {', '.join(pending_components)}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+            else:
+                logger.info(
+                    "✅ FORCE SHUTDOWN: All components completed, force shutdown was just a safety check",
+                    extra={"class_name": self.__class__.__name__},
+                )
         # Step 5: Shutdown tracking completed (overlay cleanup removed)
-        # Step 6: Destroy window
-        logger.info("Destroying window during quit", extra={"class_name": self.__class__.__name__})
+        # Step 6: Destroy window and quit application
+        logger.info("🏗️ VIEW QUIT: Destroying window during quit", extra={"class_name": self.__class__.__name__})
         self.window.destroy()
+
+        # Step 7: Quit the GTK application to fully terminate
+        if hasattr(self, "app") and self.app:
+            logger.info(
+                "🚪 VIEW QUIT: Calling app.quit() to terminate GTK application",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.app.quit()
+        else:
+            logger.warning(
+                "⚠️ VIEW QUIT: No app reference found, GTK loop may continue running",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+        logger.info(
+            "🏁 VIEW QUIT COMPLETE: view.quit() method finished successfully",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        # Return False to allow GTK to process the close-request signal normally
+        return False
 
     def on_language_changed(self, model, lang_code):
         """Handle language change notification from model"""

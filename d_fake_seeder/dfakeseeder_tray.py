@@ -1,0 +1,1006 @@
+#!/usr/bin/env python3
+"""
+DFakeSeeder System Tray Application
+
+Comprehensive system tray interface for DFakeSeeder with full feature support.
+Communicates with main application via D-Bus for settings management.
+"""
+
+import json
+import os
+import signal
+import sys
+from typing import Any, Dict, Optional
+
+import gi
+
+gi.require_version("Gdk", "3.0")
+gi.require_version("Gtk", "3.0")
+gi.require_version("AppIndicator3", "0.1")
+gi.require_version("Notify", "0.7")
+gi.require_version("Gio", "2.0")
+
+# isort: split
+# GTK3 translation manager must be imported before gi.repository to prevent version conflicts
+from domain.translation_manager.gtk3_implementation import (  # noqa: E402
+    TranslationManagerGTK3,
+)
+
+# isort: split
+# gi.repository imports after translation manager to maintain GTK version isolation
+from gi.repository import AppIndicator3, Gio, GLib, Gtk, Notify  # noqa: E402
+from lib.logger import logger  # noqa: E402
+
+
+class DBusClient:
+    """D-Bus client for communication with main DFakeSeeder application"""
+
+    SERVICE_NAME = "ie.fio.dfakeseeder"
+    OBJECT_PATH = "/ie/fio/dfakeseeder"
+    INTERFACE_NAME = "ie.fio.dfakeseeder.Settings"
+
+    def __init__(self):
+        self.connection = None
+        self.proxy = None
+        self.connected = False
+        self._connect()
+
+    def _connect(self) -> bool:
+        """Connect to D-Bus service and verify main app is actually running"""
+        try:
+            self.connection = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+            if not self.connection:
+                return False
+
+            # First check if the service is actually available on the bus
+            name_owner = self.connection.call_sync(
+                "org.freedesktop.DBus",
+                "/org/freedesktop/DBus",
+                "org.freedesktop.DBus",
+                "GetNameOwner",
+                GLib.Variant("(s)", (self.SERVICE_NAME,)),
+                None,
+                Gio.DBusCallFlags.NONE,
+                1000,  # 1 second timeout
+                None,
+            )
+
+            if not name_owner:
+                logger.info(
+                    "Main application service not available on D-Bus", extra={"class_name": self.__class__.__name__}
+                )
+                self.connected = False
+                return False
+
+            self.proxy = Gio.DBusProxy.new_sync(
+                self.connection,
+                Gio.DBusProxyFlags.NONE,
+                None,
+                self.SERVICE_NAME,
+                self.OBJECT_PATH,
+                self.INTERFACE_NAME,
+                None,
+            )
+
+            # Test the connection by trying to get settings
+            test_result = self.get_settings()
+            if test_result is not None:
+                self.connected = True
+                logger.info("Connected to D-Bus service", extra={"class_name": self.__class__.__name__})
+                return True
+            else:
+                self.connected = False
+                logger.warning("Service found but not responding", extra={"class_name": self.__class__.__name__})
+                return False
+
+        except Exception as e:
+            logger.info(
+                f"Main application not running (D-Bus connection failed): {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.connected = False
+            return False
+
+    def get_settings(self) -> Optional[str]:
+        """Get settings from main application"""
+        try:
+            if not self.connected:
+                return None
+
+            result = self.proxy.call_sync("GetSettings", None, Gio.DBusCallFlags.NONE, -1, None)
+            return result.unpack()[0] if result else None
+
+        except Exception as e:
+            logger.error(f"Failed to get settings: {e}", extra={"class_name": self.__class__.__name__})
+            return None
+
+    def update_settings(self, changes: Dict[str, Any]) -> bool:
+        """Update settings in main application"""
+        try:
+            if not self.connected:
+                return False
+
+            changes_json = json.dumps(changes)
+            result = self.proxy.call_sync(
+                "UpdateSettings", GLib.Variant("(s)", (changes_json,)), Gio.DBusCallFlags.NONE, -1, None
+            )
+            return result.unpack()[0] if result else False
+
+        except Exception as e:
+            logger.error(f"Failed to update settings: {e}", extra={"class_name": self.__class__.__name__})
+            return False
+
+    def subscribe(self, signal_name: str, callback):
+        """Subscribe to D-Bus signal"""
+        try:
+            if not self.connected:
+                return False
+
+            self.connection.signal_subscribe(
+                self.SERVICE_NAME,
+                self.INTERFACE_NAME,
+                signal_name,
+                self.OBJECT_PATH,
+                None,
+                Gio.DBusSignalFlags.NONE,
+                callback,
+                None,
+            )
+            return True
+
+        except Exception as e:
+            logger.error(
+                f"Failed to subscribe to signal {signal_name}: {e}", extra={"class_name": self.__class__.__name__}
+            )
+            return False
+
+    def ping(self) -> bool:
+        """Ping main application to check if it's alive"""
+        try:
+            if not self.connected:
+                return False
+
+            result = self.proxy.call_sync("Ping", None, Gio.DBusCallFlags.NONE, 1000, None)  # 1 second timeout
+            return result.unpack()[0] if result else False
+
+        except Exception as e:
+            logger.debug(f"Ping failed: {e}", extra={"class_name": self.__class__.__name__})
+            return False
+
+    def cleanup(self):
+        """Clean up D-Bus connection"""
+        self.connected = False
+        self.proxy = None
+        self.connection = None
+
+
+class TrayApplication:
+    """Main tray application with comprehensive menu system"""
+
+    def __init__(self):
+        logger.info("Initializing TrayApplication", extra={"class_name": self.__class__.__name__})
+
+        # Initialize components
+        self.indicator = None
+        self.menu = None
+        self.dbus_client = None
+        self.translation_manager = None
+        self._ = None
+        self.settings_cache = {}
+
+        # Menu item references for dynamic updates
+        self.menu_items = {}
+
+        # Connection state
+        self.connected = False
+        self.reconnect_timer = None
+        self.update_timer = None
+
+        # Setup signal handlers
+        signal.signal(signal.SIGINT, self._signal_handler)
+        signal.signal(signal.SIGTERM, self._signal_handler)
+
+        # Initialize notification system
+        Notify.init("DFakeSeeder")
+
+    def run(self):
+        """Start the tray application"""
+        logger.info("Starting tray application", extra={"class_name": self.__class__.__name__})
+
+        if not self._initialize():
+            logger.error("Failed to initialize tray application", extra={"class_name": self.__class__.__name__})
+            return False
+
+        try:
+            Gtk.main()
+        except KeyboardInterrupt:
+            logger.info("Tray application interrupted", extra={"class_name": self.__class__.__name__})
+        finally:
+            self.quit()
+
+        return True
+
+    def _initialize(self) -> bool:
+        """Initialize tray application components"""
+        try:
+            # Initialize translation manager
+            self._setup_translations()
+            logger.info("Translation manager initialized", extra={"class_name": self.__class__.__name__})
+
+            # Create system tray indicator
+            self._create_indicator()
+
+            # Initialize D-Bus connection
+            self._connect_to_dbus()
+
+            # Load initial settings
+            self._load_initial_settings()
+
+            # Create menu
+            self._create_menu()
+
+            # Set up D-Bus signal handlers
+            if self.connected:
+                self._setup_dbus_handlers()
+
+            # Start periodic updates
+            self._start_update_timer()
+
+            return True
+
+        except Exception as e:
+            logger.error(f"Failed to initialize tray application: {e}", extra={"class_name": self.__class__.__name__})
+            return False
+
+    def _setup_translations(self):
+        """Setup GTK3 TranslationManager for tray application"""
+        try:
+            # Create GTK3 translation manager
+            localedir = os.path.join(os.environ.get("DFS_PATH", "."), "components", "locale")
+            self.translation_manager = TranslationManagerGTK3(
+                domain="dfakeseeder",
+                localedir=localedir,
+                fallback_language="en",
+            )
+
+            # Setup automatic translations
+            self.translation_manager.setup_translations(auto_detect=True)
+            self._ = self.translation_manager.get_translate_func()
+
+            logger.info("GTK3 TranslationManager initialized for tray", extra={"class_name": self.__class__.__name__})
+        except Exception as e:
+            logger.warning(
+                f"Could not setup GTK3 TranslationManager: {e}", extra={"class_name": self.__class__.__name__}
+            )
+            self._ = lambda x: x  # Fallback function
+
+    def _switch_language(self, language_code: str):
+        """Switch to a different language using GTK3 TranslationManager"""
+        try:
+            if self.translation_manager:
+                actual_language = self.translation_manager.switch_language(language_code)
+                self._ = self.translation_manager.get_translate_func()
+                logger.info(
+                    f"Tray switched to language: {actual_language}", extra={"class_name": self.__class__.__name__}
+                )
+                return actual_language
+            else:
+                logger.warning(
+                    "TranslationManager not available for language switch",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                return "en"
+        except Exception as e:
+            logger.warning(
+                f"Could not switch to language {language_code}: {e}", extra={"class_name": self.__class__.__name__}
+            )
+            return "en"
+
+    def _create_indicator(self):
+        """Create AppIndicator3 system tray indicator"""
+        try:
+            self.indicator = AppIndicator3.Indicator.new(
+                "dfakeseeder-tray",
+                "dfakeseeder-idle",  # Default icon
+                AppIndicator3.IndicatorCategory.APPLICATION_STATUS,
+            )
+
+            self.indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
+            self.indicator.set_title("DFakeSeeder")
+            # Don't set label - we want only the icon to show
+
+            # Set icon using absolute path to dfakeseeder.png
+            dfs_path = os.environ.get("DFS_PATH", ".")
+            icon_path = os.path.join(dfs_path, "images", "dfakeseeder.png")
+
+            if os.path.exists(icon_path):
+                self.indicator.set_icon_full(icon_path, "DFakeSeeder")
+                logger.info(f"Using tray icon from: {icon_path}", extra={"class_name": self.__class__.__name__})
+            else:
+                # Try system icon theme as fallback
+                icon_theme = Gtk.IconTheme.get_default()
+                if icon_theme.has_icon("dfakeseeder"):
+                    self.indicator.set_icon("dfakeseeder")
+                    logger.info("Using system theme dfakeseeder icon", extra={"class_name": self.__class__.__name__})
+                else:
+                    # Final fallback to generic icon
+                    self.indicator.set_icon("application-default-icon")
+                    logger.warning(
+                        "Using fallback icon - dfakeseeder icon not found",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+
+            logger.info("System tray indicator created", extra={"class_name": self.__class__.__name__})
+
+        except Exception as e:
+            logger.error(f"Failed to create indicator: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _connect_to_dbus(self):
+        """Connect to D-Bus service with retry logic"""
+        try:
+            self.dbus_client = DBusClient()
+            self.connected = self.dbus_client.connected
+
+            if self.connected:
+                logger.info("Connected to main application via D-Bus", extra={"class_name": self.__class__.__name__})
+                self._update_indicator_status(True)
+            else:
+                logger.warning("Failed to connect to main application", extra={"class_name": self.__class__.__name__})
+                self._update_indicator_status(False)
+                self._start_reconnect_timer()
+
+        except Exception as e:
+            logger.error(f"D-Bus connection error: {e}", extra={"class_name": self.__class__.__name__})
+            self.connected = False
+            self._update_indicator_status(False)
+
+    def _start_reconnect_timer(self):
+        """Start reconnection timer"""
+        if self.reconnect_timer:
+            GLib.source_remove(self.reconnect_timer)
+
+        self.reconnect_timer = GLib.timeout_add_seconds(5, self._try_reconnect)
+
+    def _try_reconnect(self):
+        """Try to reconnect to D-Bus service"""
+        try:
+            if self.dbus_client and self.dbus_client.ping():
+                self.connected = True
+                self._update_indicator_status(True)
+                self._setup_dbus_handlers()
+                self._load_initial_settings()
+                # Recreate menu to remove launch option
+                self._create_menu()
+                logger.info("Reconnected to main application", extra={"class_name": self.__class__.__name__})
+                return False  # Stop timer
+
+            # Try reconnecting
+            self._connect_to_dbus()
+            return not self.connected  # Continue timer if still not connected
+
+        except Exception as e:
+            logger.error(f"Reconnection failed: {e}", extra={"class_name": self.__class__.__name__})
+            return True  # Continue timer
+
+    def _update_indicator_status(self, connected: bool):
+        """Update indicator icon based on connection status"""
+        try:
+            if self.indicator:
+                # Use the same dfakeseeder icon for all states (can be enhanced later with different state icons)
+                dfs_path = os.environ.get("DFS_PATH", ".")
+                icon_path = os.path.join(dfs_path, "images", "dfakeseeder.png")
+
+                if os.path.exists(icon_path):
+                    self.indicator.set_icon_full(icon_path, "DFakeSeeder")
+                else:
+                    # Fallback to theme icon
+                    icon_theme = Gtk.IconTheme.get_default()
+                    if icon_theme.has_icon("dfakeseeder"):
+                        self.indicator.set_icon("dfakeseeder")
+                    else:
+                        self.indicator.set_icon("application-default-icon")
+
+                # Update tooltip to reflect status
+                if connected:
+                    seeding_paused = self.settings_cache.get("seeding_paused", False)
+                    status_text = "DFakeSeeder - Paused" if seeding_paused else "DFakeSeeder - Active"
+                else:
+                    status_text = "DFakeSeeder - Disconnected"
+
+                self.indicator.set_title(status_text)
+
+        except Exception as e:
+            logger.error(f"Failed to update indicator status: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _load_initial_settings(self):
+        """Load initial settings cache from main app"""
+        try:
+            if self.dbus_client:
+                settings_json = self.dbus_client.get_settings()
+                if settings_json:
+                    self.settings_cache = json.loads(settings_json)
+                    logger.debug(
+                        f"Loaded {len(self.settings_cache)} settings", extra={"class_name": self.__class__.__name__}
+                    )
+        except Exception as e:
+            logger.error(f"Could not load initial settings: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _setup_dbus_handlers(self):
+        """Set up D-Bus signal handlers"""
+        try:
+            self.dbus_client.subscribe("SettingsChanged", self._on_settings_changed)
+            logger.info("D-Bus signal handlers set up", extra={"class_name": self.__class__.__name__})
+        except Exception as e:
+            logger.error(f"Could not set up D-Bus handlers: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _on_settings_changed(self, connection, sender, object_path, interface_name, signal_name, parameters, user_data):
+        """Handle settings changes from main app"""
+        try:
+            changes_json = parameters.unpack()[0] if parameters else "{}"
+            changes = json.loads(changes_json)
+
+            # Check for language changes first (before updating cache)
+            language_changed = False
+            if "language" in changes:
+                logger.info(
+                    f"Language change detected in tray: {changes['language']}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                language_changed = True
+                new_language = changes["language"]
+
+            # Update local cache
+            for key, value in changes.items():
+                self._update_cache_value(key, value)
+
+            # Handle language change
+            if language_changed:
+                self._handle_language_change(new_language)
+            else:
+                # Regular menu update
+                self._update_menu()
+
+            # Update indicator status
+            self._update_indicator_status(True)
+
+        except Exception as e:
+            logger.error(f"Error handling settings change: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _update_cache_value(self, key: str, value: Any):
+        """Update a value in the settings cache"""
+        if "." in key:
+            # Handle nested keys
+            keys = key.split(".")
+            current = self.settings_cache
+            for k in keys[:-1]:
+                current = current.setdefault(k, {})
+            current[keys[-1]] = value
+        else:
+            self.settings_cache[key] = value
+
+    def _handle_language_change(self, new_language: str):
+        """Handle language change by updating translations and recreating menu"""
+        try:
+            logger.info(
+                f"Tray handling language change to: {new_language}", extra={"class_name": self.__class__.__name__}
+            )
+
+            # Switch language using TranslationManager
+            if self.translation_manager:
+                actual_language = self._switch_language(new_language)
+                logger.info(
+                    f"Tray TranslationManager switched to: {actual_language}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+            else:
+                logger.warning(
+                    "TranslationManager not available for language change",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+            # Recreate entire menu with new translations
+            self._recreate_menu_with_translations()
+
+        except Exception as e:
+            logger.error(f"Error handling language change in tray: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _recreate_menu_with_translations(self):
+        """Recreate the entire menu with updated translations"""
+        try:
+            logger.debug("Recreating tray menu with new translations", extra={"class_name": self.__class__.__name__})
+
+            # Clear the existing menu
+            if self.menu:
+                # Remove all items
+                for child in self.menu.get_children():
+                    self.menu.remove(child)
+
+            # Recreate menu with new translations
+            self._create_menu()
+
+            logger.debug("Tray menu recreated with new translations", extra={"class_name": self.__class__.__name__})
+
+        except Exception as e:
+            logger.error(f"Error recreating tray menu: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _create_menu(self):
+        """Create tray context menu with localized strings (minimal when disconnected)"""
+        self.menu = Gtk.Menu()
+
+        # Get translation function
+        _ = self._ or (lambda x: x)
+
+        # Connection status
+        if self.connected:
+            status_item = Gtk.MenuItem(label=_("Connected to DFakeSeeder"))
+            status_item.set_sensitive(False)
+            self.menu.append(status_item)
+
+            # When connected, show all menu sections
+            # Separator
+            self.menu.append(Gtk.SeparatorMenuItem())
+
+            # Speed control section
+            self._create_speed_menu_section(_)
+
+            # Separator
+            self.menu.append(Gtk.SeparatorMenuItem())
+
+            # Seeding control section
+            self._create_seeding_menu_section(_)
+
+            # Separator
+            self.menu.append(Gtk.SeparatorMenuItem())
+
+            # Window management section
+            self._create_window_menu_section(_)
+
+            # Separator
+            self.menu.append(Gtk.SeparatorMenuItem())
+
+            # Language selection
+            self._create_language_menu_section(_)
+
+            # Separator
+            self.menu.append(Gtk.SeparatorMenuItem())
+
+            # Application actions (includes preferences, about, quit)
+            self._create_app_menu_section(_)
+        else:
+            # When disconnected, show minimal menu
+            status_item = Gtk.MenuItem(label=_("Disconnected from DFakeSeeder"))
+            status_item.set_sensitive(False)
+            self.menu.append(status_item)
+
+            # Separator
+            self.menu.append(Gtk.SeparatorMenuItem())
+
+            # Launch Main App option
+            launch_item = Gtk.MenuItem(label=_("Launch Main Application"))
+            launch_item.connect("activate", self._launch_main_app)
+            self.menu.append(launch_item)
+
+            # Separator
+            self.menu.append(Gtk.SeparatorMenuItem())
+
+            # Only show Quit option when disconnected
+            quit_item = Gtk.MenuItem(label=_("Quit DFakeSeeder"))
+            quit_item.connect("activate", self._on_quit_tray_only)
+            self.menu.append(quit_item)
+
+        # Show all menu items
+        self.menu.show_all()
+
+        # Register menu items for translation if TranslationManager supports it
+        if self.translation_manager and hasattr(self.translation_manager, "register_simple_text"):
+            logger.debug(
+                "Menu items could be registered for automatic translation",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+        # Set menu on indicator
+        if self.indicator:
+            self.indicator.set_menu(self.menu)
+
+    def _create_speed_menu_section(self, _):
+        """Create speed control menu section"""
+        # Speed control submenu
+        speed_item = Gtk.MenuItem(label=_("Speed Control"))
+        speed_submenu = Gtk.Menu()
+
+        # Normal/Alternative speed toggle
+        alt_speed_enabled = self.settings_cache.get("alternative_speed_enabled", False)
+        speed_toggle = Gtk.CheckMenuItem(label=_("Alternative Speed Limits"))
+        speed_toggle.set_active(alt_speed_enabled)
+        speed_toggle.connect("toggled", self._on_speed_toggle)
+        self.menu_items["speed_toggle"] = speed_toggle
+        speed_submenu.append(speed_toggle)
+
+        # Speed values display
+        if alt_speed_enabled:
+            up_speed = self.settings_cache.get("alternative_upload_speed", 25)
+            down_speed = self.settings_cache.get("alternative_download_speed", 100)
+        else:
+            up_speed = self.settings_cache.get("upload_speed", 50)
+            down_speed = self.settings_cache.get("download_speed", 500)
+
+        speed_info = Gtk.MenuItem(label=f"↑ {up_speed} KB/s  ↓ {down_speed} KB/s")
+        speed_info.set_sensitive(False)
+        self.menu_items["speed_info"] = speed_info
+        speed_submenu.append(speed_info)
+
+        speed_item.set_submenu(speed_submenu)
+        self.menu.append(speed_item)
+
+    def _create_seeding_menu_section(self, _):
+        """Create seeding control menu section"""
+        # Pause/Resume all seeding
+        seeding_paused = self.settings_cache.get("seeding_paused", False)
+        if seeding_paused:
+            pause_item = Gtk.MenuItem(label=_("Resume All Torrents"))
+        else:
+            pause_item = Gtk.MenuItem(label=_("Pause All Torrents"))
+        pause_item.connect("activate", self._on_pause_toggle)
+        self.menu_items["pause_toggle"] = pause_item
+        self.menu.append(pause_item)
+
+        # Seeding profile submenu
+        profile_item = Gtk.MenuItem(label=_("Seeding Profile"))
+        profile_submenu = Gtk.Menu()
+
+        current_profile = self.settings_cache.get("current_seeding_profile", "balanced")
+        profiles = [("conservative", _("Conservative")), ("balanced", _("Balanced")), ("aggressive", _("Aggressive"))]
+
+        profile_group = None
+        for profile_id, profile_name in profiles:
+            profile_radio = Gtk.RadioMenuItem(group=profile_group, label=profile_name)
+            if profile_group is None:
+                profile_group = profile_radio
+            profile_radio.set_active(profile_id == current_profile)
+            profile_radio.connect("toggled", self._on_profile_change, profile_id)
+            profile_submenu.append(profile_radio)
+
+        profile_item.set_submenu(profile_submenu)
+        self.menu.append(profile_item)
+
+    def _create_window_menu_section(self, _):
+        """Create window management menu section"""
+        # Show/Hide main window
+        window_visible = self.settings_cache.get("window_visible", True)
+        if window_visible:
+            window_item = Gtk.MenuItem(label=_("Hide Main Window"))
+        else:
+            window_item = Gtk.MenuItem(label=_("Show Main Window"))
+        window_item.connect("activate", self._on_window_toggle)
+        self.menu_items["window_toggle"] = window_item
+        self.menu.append(window_item)
+
+    def _create_language_menu_section(self, _):
+        """Create language selection menu section"""
+        lang_item = Gtk.MenuItem(label=_("Language"))
+        lang_submenu = Gtk.Menu()
+
+        current_language = self.settings_cache.get("language", "auto")
+
+        # Available languages (from gettext)
+        languages = [
+            ("auto", _("Auto Detect")),
+            ("en", "English"),
+            ("es", "Español"),
+            ("fr", "Français"),
+            ("de", "Deutsch"),
+            ("it", "Italiano"),
+            ("pt", "Português"),
+            ("ru", "Русский"),
+            ("zh", "中文"),
+            ("ja", "日本語"),
+            ("ko", "한국어"),
+            ("ar", "العربية"),
+            ("hi", "हिन्दी"),
+            ("nl", "Nederlands"),
+            ("sv", "Svenska"),
+            ("pl", "Polski"),
+        ]
+
+        lang_group = None
+        for lang_code, lang_name in languages:
+            lang_radio = Gtk.RadioMenuItem(group=lang_group, label=lang_name)
+            if lang_group is None:
+                lang_group = lang_radio
+            lang_radio.set_active(lang_code == current_language)
+            lang_radio.connect("toggled", self._on_language_change, lang_code)
+            lang_submenu.append(lang_radio)
+
+        lang_item.set_submenu(lang_submenu)
+        self.menu.append(lang_item)
+
+    def _create_app_menu_section(self, _):
+        """Create application actions menu section"""
+        # Preferences
+        prefs_item = Gtk.MenuItem(label=_("Preferences"))
+        prefs_item.connect("activate", self._on_show_preferences)
+        self.menu.append(prefs_item)
+
+        # About
+        about_item = Gtk.MenuItem(label=_("About"))
+        about_item.connect("activate", self._on_show_about)
+        self.menu.append(about_item)
+
+        # Separator
+        self.menu.append(Gtk.SeparatorMenuItem())
+
+        # Quit
+        quit_item = Gtk.MenuItem(label=_("Quit DFakeSeeder"))
+        quit_item.connect("activate", self._on_quit_application)
+        self.menu.append(quit_item)
+
+    def _update_menu(self):
+        """Update menu items based on current settings"""
+        try:
+            # Update speed toggle
+            if "speed_toggle" in self.menu_items:
+                alt_speed_enabled = self.settings_cache.get("alternative_speed_enabled", False)
+                self.menu_items["speed_toggle"].set_active(alt_speed_enabled)
+
+            # Update speed info
+            if "speed_info" in self.menu_items:
+                alt_speed_enabled = self.settings_cache.get("alternative_speed_enabled", False)
+                if alt_speed_enabled:
+                    up_speed = self.settings_cache.get("alternative_upload_speed", 25)
+                    down_speed = self.settings_cache.get("alternative_download_speed", 100)
+                else:
+                    up_speed = self.settings_cache.get("upload_speed", 50)
+                    down_speed = self.settings_cache.get("download_speed", 500)
+                self.menu_items["speed_info"].set_label(f"↑ {up_speed} KB/s  ↓ {down_speed} KB/s")
+
+            # Update pause toggle
+            if "pause_toggle" in self.menu_items:
+                _ = self._ or (lambda x: x)
+                seeding_paused = self.settings_cache.get("seeding_paused", False)
+                if seeding_paused:
+                    self.menu_items["pause_toggle"].set_label(_("Resume All Torrents"))
+                else:
+                    self.menu_items["pause_toggle"].set_label(_("Pause All Torrents"))
+
+            # Update window toggle
+            if "window_toggle" in self.menu_items:
+                _ = self._ or (lambda x: x)
+                window_visible = self.settings_cache.get("window_visible", True)
+                if window_visible:
+                    self.menu_items["window_toggle"].set_label(_("Hide Main Window"))
+                else:
+                    self.menu_items["window_toggle"].set_label(_("Show Main Window"))
+
+        except Exception as e:
+            logger.error(f"Error updating menu: {e}", extra={"class_name": self.__class__.__name__})
+
+    # Menu event handlers
+    def _on_speed_toggle(self, menu_item):
+        """Handle speed toggle"""
+        try:
+            enabled = menu_item.get_active()
+            changes = {"alternative_speed_enabled": enabled}
+            if self.dbus_client:
+                self.dbus_client.update_settings(changes)
+        except Exception as e:
+            logger.error(f"Error toggling speed: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _on_pause_toggle(self, menu_item):
+        """Handle pause/resume toggle"""
+        try:
+            current_paused = self.settings_cache.get("seeding_paused", False)
+            changes = {"seeding_paused": not current_paused}
+            if self.dbus_client:
+                self.dbus_client.update_settings(changes)
+        except Exception as e:
+            logger.error(f"Error toggling pause: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _on_profile_change(self, menu_item, profile_id):
+        """Handle seeding profile change"""
+        try:
+            if menu_item.get_active():
+                changes = {"current_seeding_profile": profile_id}
+                if self.dbus_client:
+                    self.dbus_client.update_settings(changes)
+        except Exception as e:
+            logger.error(f"Error changing profile: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _on_window_toggle(self, menu_item):
+        """Handle window visibility toggle"""
+        try:
+            current_visible = self.settings_cache.get("window_visible", True)
+            changes = {"window_visible": not current_visible}
+            if self.dbus_client:
+                self.dbus_client.update_settings(changes)
+        except Exception as e:
+            logger.error(f"Error toggling window: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _on_language_change(self, menu_item, language_code):
+        """Handle language change"""
+        try:
+            if menu_item.get_active():
+                changes = {"language": language_code}
+                if self.dbus_client:
+                    self.dbus_client.update_settings(changes)
+        except Exception as e:
+            logger.error(f"Error changing language: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _on_show_preferences(self, menu_item):
+        """Handle show preferences"""
+        try:
+            changes = {"show_preferences": True, "window_visible": True}
+            if self.dbus_client:
+                self.dbus_client.update_settings(changes)
+        except Exception as e:
+            logger.error(f"Error showing preferences: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _on_show_about(self, menu_item):
+        """Handle show about"""
+        try:
+            changes = {"show_about": True, "window_visible": True}
+            if self.dbus_client:
+                self.dbus_client.update_settings(changes)
+        except Exception as e:
+            logger.error(f"Error showing about: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _launch_main_app(self, menu_item):
+        """Launch the main DFakeSeeder application"""
+        try:
+            import subprocess
+
+            dfs_path = os.environ.get("DFS_PATH", ".")
+            main_app_script = os.path.join(dfs_path, "dfakeseeder.py")
+
+            if os.path.exists(main_app_script):
+                # Launch the main app in the background
+                subprocess.Popen(
+                    [sys.executable, main_app_script],
+                    cwd=dfs_path,
+                    env={**os.environ, "DFS_PATH": dfs_path, "LOG_LEVEL": "INFO"},
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                logger.info("Launched main DFakeSeeder application", extra={"class_name": self.__class__.__name__})
+
+                # Start trying to reconnect after a delay
+                GLib.timeout_add_seconds(2, self._try_reconnect_after_launch)
+            else:
+                logger.error(
+                    f"Main application script not found at: {main_app_script}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+        except Exception as e:
+            logger.error(f"Failed to launch main application: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _try_reconnect_after_launch(self):
+        """Try to reconnect after launching main app"""
+        try:
+            self._connect_to_dbus()
+            return False  # Don't repeat
+        except Exception as e:
+            logger.debug(f"Reconnection after launch failed: {e}", extra={"class_name": self.__class__.__name__})
+            return False
+
+    def _on_quit_application(self, menu_item):
+        """Handle quit application"""
+        try:
+            changes = {"application_quit_requested": True}
+            if self.dbus_client and self.connected:
+                logger.info(
+                    "🚀 TRAY QUIT: Sending quit signal to main application via D-Bus",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                try:
+                    result = self.dbus_client.update_settings(changes)
+                    logger.info(
+                        f"✅ TRAY QUIT: Quit signal sent successfully, result: {result}",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                except Exception as e:
+                    # Main app may disconnect immediately on quit, which is expected
+                    logger.info(
+                        f"Main app disconnected during quit (expected): {e}",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+
+                # Give main app time to shut down, then quit tray
+                GLib.timeout_add_seconds(2, self.quit)  # Increased to 2 seconds
+            else:
+                logger.warning(
+                    "No D-Bus connection to main app, quitting tray only", extra={"class_name": self.__class__.__name__}
+                )
+                # If not connected, just quit the tray
+                self.quit()
+        except Exception as e:
+            logger.error(f"Error quitting application: {e}", extra={"class_name": self.__class__.__name__})
+            # Fallback: quit tray anyway after a delay
+            GLib.timeout_add_seconds(1, self.quit)
+
+    def _on_quit_tray_only(self, menu_item):
+        """Handle quit tray only (when main app is not running)"""
+        try:
+            logger.info("Quitting tray application only", extra={"class_name": self.__class__.__name__})
+            # Just quit the tray - no need to communicate with main app since it's not running
+            self.quit()
+        except Exception as e:
+            logger.error(f"Error quitting tray: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _start_update_timer(self):
+        """Start periodic update timer"""
+        self.update_timer = GLib.timeout_add_seconds(10, self._periodic_update)
+
+    def _periodic_update(self):
+        """Periodic update function"""
+        try:
+            # Check connection health
+            if self.connected and self.dbus_client:
+                # Ping the main application to verify it's still alive
+                if not self.dbus_client.ping():
+                    logger.info(
+                        "Main application no longer responding, marking as disconnected",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                    self.connected = False
+                    self._update_indicator_status(False)
+                    # Recreate menu to show launch option
+                    self._create_menu()
+                    # Note: periodic update will handle reconnection, no need for separate timer
+            elif not self.connected:
+                # Try to reconnect if we're not connected (regardless of dbus_client state)
+                logger.debug(
+                    "Attempting to reconnect to main application", extra={"class_name": self.__class__.__name__}
+                )
+                # Try to establish new D-Bus connection
+                self._connect_to_dbus()
+                if self.connected:
+                    logger.info(
+                        "Main application is now available, reconnected", extra={"class_name": self.__class__.__name__}
+                    )
+                    self._update_indicator_status(True)
+                    self._setup_dbus_handlers()
+                    self._load_initial_settings()
+                    # Recreate menu to remove launch option
+                    self._create_menu()
+
+            return True  # Continue timer
+
+        except Exception as e:
+            logger.error(f"Error in periodic update: {e}", extra={"class_name": self.__class__.__name__})
+            return True
+
+    def quit(self):
+        """Quit the tray application"""
+        logger.info("Shutting down tray application", extra={"class_name": self.__class__.__name__})
+
+        # Stop timers
+        if self.reconnect_timer:
+            GLib.source_remove(self.reconnect_timer)
+        if self.update_timer:
+            GLib.source_remove(self.update_timer)
+
+        # Set indicator to passive
+        if self.indicator:
+            self.indicator.set_status(AppIndicator3.IndicatorStatus.PASSIVE)
+
+        # Cleanup D-Bus
+        if self.dbus_client:
+            self.dbus_client.cleanup()
+
+        # Quit GTK main loop
+        Gtk.main_quit()
+
+    def _signal_handler(self, signum, frame):
+        """Handle system signals"""
+        logger.info(f"Received signal {signum}", extra={"class_name": self.__class__.__name__})
+        GLib.idle_add(self.quit)
+
+
+def main():
+    """Main entry point for tray application"""
+    app = TrayApplication()
+    return app.run()
+
+
+if __name__ == "__main__":
+    sys.exit(0 if main() else 1)
