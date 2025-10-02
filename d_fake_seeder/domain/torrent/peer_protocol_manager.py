@@ -158,9 +158,13 @@ class PeerProtocolManager:
                 connection.close()
             self.active_connections.clear()
 
-        # Wait for manager thread with shorter timeout
+        # Wait for manager thread with aggressive timeout
         if self.manager_thread and self.manager_thread.is_alive():
-            join_timeout = min(self.manager_thread_join_timeout, 3.0)  # Max 3 seconds
+            join_timeout = 0.5  # Aggressive 0.5 second timeout
+            logger.info(
+                f"⏱️ Waiting for manager thread to finish (timeout: {join_timeout}s)",
+                extra={"class_name": self.__class__.__name__},
+            )
             self.manager_thread.join(timeout=join_timeout)
 
             # Force shutdown if still alive
@@ -170,14 +174,14 @@ class PeerProtocolManager:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-        # Shutdown thread pool with timeout
+        # Shutdown thread pool with aggressive timeout
         try:
             self.connection_pool.shutdown(wait=False)  # Don't wait indefinitely
 
-            # Give it a brief moment, then force
+            # Give it a minimal moment, then force
             import time
 
-            time.sleep(0.5)  # PyPy compatible: brief shutdown coordination delay
+            time.sleep(0.1)  # Minimal 0.1s shutdown coordination delay
 
             # Log if we had to force shutdown
             if hasattr(self.connection_pool, "_shutdown") and not self.connection_pool._shutdown:

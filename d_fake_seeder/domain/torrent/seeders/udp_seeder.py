@@ -1,13 +1,13 @@
 import random
-import time
 
 # import select  # Replaced with socket timeout for PyPy compatibility
 import socket
 import struct
+import time
 
 from domain.app_settings import AppSettings
-from domain.torrent.seeders.base_seeder import BaseSeeder
 from domain.torrent.model.tracker import Tracker
+from domain.torrent.seeders.base_seeder import BaseSeeder
 from lib.logger import logger
 
 

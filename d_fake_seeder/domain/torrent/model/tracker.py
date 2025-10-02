@@ -7,7 +7,7 @@ Integrates with the seeding system to provide live tracker monitoring.
 """
 
 import time
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
 
 from gi.repository import GObject
 from lib.logger import logger

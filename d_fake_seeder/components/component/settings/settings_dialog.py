@@ -14,7 +14,8 @@ from gi.repository import Gtk  # noqa
 from lib.logger import logger  # noqa
 
 # Import tab configuration system
-from lib.util.tab_config import get_config_metadata, get_settings_tab_classes  # noqa
+from lib.util.tab_config import get_config_metadata  # noqa
+from lib.util.tab_config import get_settings_tab_classes  # noqa: E402
 
 # Component inheritance removed - settings dialog should not be a general model observer
 from .advanced_tab import AdvancedTab  # noqa

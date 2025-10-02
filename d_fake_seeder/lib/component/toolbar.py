@@ -3,9 +3,9 @@ import os
 import shutil
 
 import gi
+from domain.app_settings import AppSettings
 from lib.component.component import Component
 from lib.logger import logger
-from domain.app_settings import AppSettings
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")

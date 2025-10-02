@@ -103,9 +103,20 @@ class PeerServer:
                 pass
         self.active_connections.clear()
 
-        # Wait for server thread
+        # Wait for server thread with aggressive timeout
         if self.server_thread and self.server_thread.is_alive():
-            self.server_thread.join(timeout=self.server_thread_join_timeout)
+            join_timeout = 1.0  # Aggressive 1 second timeout
+            logger.info(
+                f"⏱️ Waiting for server thread to finish (timeout: {join_timeout}s)",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.server_thread.join(timeout=join_timeout)
+
+            if self.server_thread.is_alive():
+                logger.warning(
+                    "⚠️ Peer server thread still alive after timeout - forcing shutdown",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
     def _run_server(self):
         """Run the async server in a thread"""

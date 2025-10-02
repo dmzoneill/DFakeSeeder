@@ -1,0 +1,20 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=DFakeSeeder Tray
+GenericName=BitTorrent Seeder Tray
+Comment=System tray interface for DFakeSeeder BitTorrent simulation
+Keywords=torrent;seeder;p2p;bittorrent;tray;
+Icon=dfakeseeder
+Exec=python3 -m d_fake_seeder.scripts.launch_tray
+Path=%h
+Terminal=false
+StartupNotify=true
+Categories=Network;FileTransfer;P2P;
+StartupWMClass=dfakeseeder-tray
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=10
+X-KDE-autostart-after=panel
+X-MATE-Autostart-enabled=true
+X-XFCE-Autostart-enabled=true

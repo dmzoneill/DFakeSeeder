@@ -1,9 +1,9 @@
 import time
 
 import requests
+from domain.app_settings import AppSettings
 from lib.component.component import Component
 from lib.logger import logger
-from domain.app_settings import AppSettings
 from lib.util.helpers import humanbytes
 
 

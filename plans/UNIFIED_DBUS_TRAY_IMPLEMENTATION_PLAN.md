@@ -64,57 +64,60 @@ Based on analysis and requirements clarification:
 
 #### 1.0 Component Analysis Summary
 
-**WindowManager**: 🔴 **Complete replacement required**
-- Current: External window manipulation using `wmctrl`/`xdotool` (422 lines)
+**WindowManager**: 🔴 **Complete implementation required**
+- Current: No window manager exists in cleaned codebase
 - Required: GTK4 native + AppSettings integration (~100 lines)
+- Target: `d_fake_seeder/lib/util/window_manager.py` (**NEW FILE**)
 
 **Controller**: 🟡 **Minor updates required**
-- Add WindowManager ownership and D-Bus integration
+- Current: Exists at `d_fake_seeder/controller.py` (75 lines, clean MVC structure)
+- Required: Add WindowManager ownership and D-Bus integration
 - Update settings change handlers
 
-**D-Bus**: 🔴 **Major updates required**
-- Rename `DBusSingleton` → `DBusUnifier`
-- Add complete AppSettings integration
+**D-Bus**: 🔴 **Complete implementation required**
+- Current: No D-Bus implementation exists in cleaned codebase
+- Required: Create `DBusUnifier` with AppSettings integration
+- Target: `d_fake_seeder/lib/util/dbus_unifier.py` (**NEW FILE**)
 - Add settings signal forwarding
 
-#### 1.0.1 Correct AppSettings Key Structure
+#### 1.0.1 Current AppSettings Structure Analysis
 
-**CRITICAL**: Use these exact existing keys (no new nested structures):
+**EXISTING KEYS** from `d_fake_seeder/config/default.json`:
 
 ```json
 {
   // Existing speed settings
-  "upload_speed": 50,                    // NOT speed_management.upload_limit_kbps
-  "download_speed": 500,                 // NOT speed_management.download_limit_kbps
-  "total_upload_speed": 50,
-  "total_download_speed": 500,
-  "alternative_speed_enabled": false,    // NOT speed_management.alternative_speed_enabled
-  "alternative_upload_speed": 25,
-  "alternative_download_speed": 100,
+  "upload_speed": 50,                    // Current: basic upload speed
+  "download_speed": 500,                 // Current: basic download speed
+  "total_upload_speed": 50,              // Global upload limit
+  "total_download_speed": 500,           // Global download limit
 
-  // Existing seeding control
-  "seeding_paused": false,               // NOT global_seeding.pause_all
-  "current_seeding_profile": "balanced", // NOT seeding_profiles.active_profile
+  // Need to ADD for tray functionality:
+  "alternative_speed_enabled": false,    // NEW - for speed switching
+  "alternative_upload_speed": 25,        // NEW - alternate speed mode
+  "alternative_download_speed": 100,     // NEW - alternate speed mode
 
-  // Existing window settings
-  "window_visible": true,                // NOT window_settings.window_visible
+  // Need to ADD for seeding control:
+  "seeding_paused": false,               // NEW - global pause control
+  "current_seeding_profile": "balanced", // NEW - seeding profile selection
+
+  // Need to ADD for window management:
+  "window_visible": true,                // NEW - window visibility control
   "window_width": 1024,                  // NOT window_settings.window_size[0]
   "window_height": 600,                  // NOT window_settings.window_size[1]
   "close_to_tray": true,
   "minimize_to_tray": true,
 
-  // Existing UI structure
-  "ui_settings": {                       // This nested structure exists
-    "show_preferences": false,
-    "show_about": false,
-    // Add new UI triggers here
-  },
+  // Need to ADD for UI triggers:
+  "show_preferences": false,             // NEW - UI action trigger
+  "show_about": false,                   // NEW - UI action trigger
+  // Note: No nested ui_settings structure exists in current config
 
-  // Existing app structure
-  "language": "auto",                    // Already exists
-  "active_torrents": [],                 // NOT torrent_stats.active_torrents
-  "torrent_controls": {},                // Existing structure
-  "application_quit_requested": false    // NOT application.quit_requested
+  // Need to ADD for internationalization:
+  "language": "auto",                    // NEW - language selection (managed by TranslationManager)
+
+  // Need to ADD for application control:
+  "application_quit_requested": false    // NEW - graceful shutdown trigger
 }
 ```
 
@@ -136,9 +139,10 @@ class DBusUnifier:
         self.app_settings = AppSettings.get_instance()
 
     def _handle_get_settings(self) -> str:
-        """Get complete AppSettings serialization"""
+        """Get complete AppSettings serialization from merged user+default settings"""
         try:
-            settings_dict = self.app_settings.get_all()
+            # Access merged user+default settings via _settings attribute
+            settings_dict = self.app_settings._settings
             return json.dumps(settings_dict, default=str)
         except Exception as e:
             logger.error(f"Failed to get settings: {e}")
@@ -166,7 +170,13 @@ class DBusUnifier:
 
             # Apply validated changes to AppSettings
             for path, value in applied_changes.items():
-                self.app_settings.set(path, value)  # Uses dot notation
+                if "." in path:
+                    # Handle nested settings using internal helper method
+                    self.app_settings._set_nested_value(self.app_settings._settings, path, value)
+                    self.app_settings.save_settings()  # Save and emit signals
+                else:
+                    # Handle top-level settings using public method
+                    self.app_settings.set(path, value)
 
             # AppSettings automatically emits signals, but we need to ensure
             # D-Bus signals are sent to tray applications
@@ -223,7 +233,8 @@ class DBusUnifier:
         """Setup forwarding of AppSettings signals to D-Bus signals"""
         try:
             # Connect to AppSettings signals to forward them over D-Bus
-            self.app_settings.connect("setting-changed", self._on_app_setting_changed)
+            # Use the new preferred signal name from AppSettings
+            self.app_settings.connect("settings-value-changed", self._on_app_setting_changed)
             logger.info("DBusUnifier connected to AppSettings signals")
         except Exception as e:
             logger.error(f"Failed to setup settings signal forwarding: {e}")
@@ -285,7 +296,8 @@ class DBusUnifier:
         """Setup forwarding of AppSettings signals to D-Bus signals"""
         try:
             # Connect to AppSettings signals to forward them over D-Bus
-            self.app_settings.connect("setting-changed", self._on_app_setting_changed)
+            # Use the new preferred signal name from AppSettings
+            self.app_settings.connect("settings-value-changed", self._on_app_setting_changed)
             logger.info("DBusUnifier connected to AppSettings signals")
         except Exception as e:
             logger.error(f"Failed to setup settings signal forwarding: {e}")
@@ -1761,7 +1773,7 @@ The tray application must respond to language changes from the main application 
 ### Implementation Details
 
 #### DBusUnifier Signal Forwarding
-- **Connects to AppSettings signals**: `app_settings.connect("setting-changed", self._on_app_setting_changed)`
+- **Connects to AppSettings signals**: `app_settings.connect("settings-value-changed", self._on_app_setting_changed)`
 - **Forwards to D-Bus**: Any AppSettings change becomes a D-Bus `SettingsChanged` signal
 - **Special language handling**: Logs language changes for debugging
 - **Automatic setup**: Controller calls `setup_settings_signal_forwarding()` during initialization
@@ -1958,12 +1970,22 @@ This unified plan eliminates conflicts between the separate documents and provid
 - ✅ `domain/app_settings.py` - **Correct import path**
 - ✅ `domain/translation_manager.py` - **Correct import path**
 
-#### **Files to Create:**
+#### **Files to Create (Based on Cleaned Codebase):**
 - ❌ `d_fake_seeder/lib/util/dbus_unifier.py` - **NEW FILE REQUIRED**
 - ❌ `d_fake_seeder/lib/util/window_manager.py` - **NEW FILE REQUIRED**
 - ❌ `d_fake_seeder/dfakeseeder_tray.py` - **NEW FILE REQUIRED**
 - ❌ `d_fake_seeder/scripts/launch_tray.py` - **NEW FILE REQUIRED** (directory also needs creation)
 - ❌ `d_fake_seeder/desktop/dfakeseeder-tray.desktop` - **NEW FILE REQUIRED** (directory also needs creation)
+
+#### **Existing Files to Modify:**
+- ✅ `d_fake_seeder/controller.py` - **EXISTS** (75 lines, clean MVC structure)
+  - Add WindowManager ownership and D-Bus integration
+- ✅ `d_fake_seeder/domain/app_settings.py` - **EXISTS** (comprehensive settings manager)
+  - Add new settings keys for tray functionality
+- ✅ `d_fake_seeder/config/default.json` - **EXISTS** (126 lines)
+  - Add tray-related default settings
+- ✅ `d_fake_seeder/domain/translation_manager.py` - **EXISTS** (complete i18n system)
+  - Reuse for tray application translations
 
 #### **Duplicate Files Removed:**
 - 🗑️ `d_fake_seeder/lib/view.py` - **REMOVED** (legacy, orphaned)
@@ -2042,6 +2064,75 @@ The unified plan now contains all essential details from the original 4 document
 - **Detailed implementation timelines** with weekly milestones
 - **Comprehensive code examples** using correct AppSettings keys
 - **Advanced features** including notifications, reconnection, and health monitoring
+
+---
+
+## 🔄 Plan Updates (September 2025)
+
+### Codebase Analysis Completed
+
+This plan has been updated to reflect the **cleaned codebase structure** after the comprehensive dead code removal and tracker integration work:
+
+#### ✅ **Existing Infrastructure Validated**
+- **Controller**: `d_fake_seeder/controller.py` (75 lines, clean MVC structure)
+- **AppSettings**: `d_fake_seeder/domain/app_settings.py` (comprehensive settings manager)
+- **TranslationManager**: `d_fake_seeder/domain/translation_manager.py` (complete i18n system)
+- **Configuration**: `d_fake_seeder/config/default.json` (126 settings keys)
+
+#### 🚧 **Implementation Gaps Identified**
+- **D-Bus Infrastructure**: No existing D-Bus implementation found
+- **Window Manager**: No existing window management code found
+- **Tray Application**: No tray implementation exists
+- **Desktop Integration**: Scripts and desktop files need creation
+
+#### 🎯 **Updated Implementation Strategy**
+1. **Phase 1**: Create core D-Bus and window management infrastructure
+2. **Phase 2**: Build tray application with translation support
+3. **Phase 3**: Add advanced features (notifications, autostart, etc.)
+
+#### 📁 **Corrected File Paths**
+- All file references updated to match actual codebase structure
+- Import paths validated against existing architecture
+- Settings keys aligned with current `default.json` structure
+- Translation integration leverages existing `TranslationManager`
+
+### Ready for Implementation
+
+The plan now provides accurate technical specifications based on the **actual cleaned codebase**, ensuring all implementation work will integrate seamlessly with the existing DFakeSeeder architecture.
+
+---
+
+## 🔧 AppSettings Integration Corrections (Latest Update)
+
+### Critical AppSettings Architecture Fixes
+
+After analyzing the actual `AppSettings` implementation, several key corrections were made:
+
+#### ✅ **Correct Settings Flow Understanding**
+- **User Settings**: Stored in `~/.config/dfakeseeder/settings.json` (only user modifications)
+- **Default Settings**: Remain in `d_fake_seeder/config/default.json` (shipped with app)
+- **Runtime Access**: AppSettings provides merged view via `_settings` attribute
+- **Automatic Fallback**: Missing user settings fall back to defaults seamlessly
+
+#### ✅ **Fixed D-Bus Integration Code**
+- **Settings Retrieval**: Use `app_settings._settings` for merged user+default data
+- **Settings Updates**: Handle nested keys with `_set_nested_value()` helper method
+- **Signal Connection**: Use correct signal name `"settings-value-changed"`
+- **Automatic Signals**: AppSettings emits signals automatically on changes
+
+#### ✅ **Corrected Settings Structure**
+- **No Nested UI Structure**: Removed incorrect `ui_settings` nested assumption
+- **No Language Key**: `language` setting needs to be added to config
+- **Flat Structure**: Most settings are top-level keys, not nested dictionaries
+- **Validation**: Only validate against actual existing structure
+
+#### 🎯 **Implementation Impact**
+- D-Bus tray system will work correctly with actual AppSettings behavior
+- Settings changes in tray will properly merge with defaults
+- No need to modify core AppSettings architecture
+- Clean integration with existing signal system
+
+This ensures the D-Bus tray implementation will work seamlessly with DFakeSeeder's robust settings management system.
 - **Translation workflow** integration with existing TranslationManager
 - **Cross-desktop compatibility** considerations and testing strategies
 

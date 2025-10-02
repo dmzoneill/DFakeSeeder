@@ -11,7 +11,10 @@ gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 
 from gi.repository import GObject  # noqa: E402
-from lib.handlers.file_modified_event_handler import FileModifiedEventHandler, WATCHDOG_AVAILABLE  # noqa: E402
+from lib.handlers.file_modified_event_handler import (  # noqa: E402
+    WATCHDOG_AVAILABLE,
+    FileModifiedEventHandler,
+)
 from lib.logger import logger  # noqa: E402
 
 if WATCHDOG_AVAILABLE:
@@ -220,10 +223,14 @@ class AppSettings(GObject.GObject):
         self.logger.info("Settings save", extra={"class_name": self.__class__.__name__})
         try:
             # Use lock to prevent concurrent save operations
+            self.logger.info("About to acquire settings lock", extra={"class_name": self.__class__.__name__})
             with AppSettings._lock:
+                self.logger.info("Settings lock acquired", extra={"class_name": self.__class__.__name__})
                 self._save_settings_unlocked()
+                self.logger.info("Settings saved to disk", extra={"class_name": self.__class__.__name__})
+            self.logger.info("Settings lock released", extra={"class_name": self.__class__.__name__})
         except Exception as e:
-            self.logger.error(f"Failed to save settings: {e}")
+            self.logger.error(f"Failed to save settings: {e}", exc_info=True)
 
     def _save_settings_unlocked(self):
         """Save current settings without acquiring lock (for internal use when lock already held)"""
@@ -281,32 +288,40 @@ class AppSettings(GObject.GObject):
         """Set a setting value and save immediately"""
         logger.debug("Setting method called", "AppSettings")
         logger.debug(f"Setting: {key} = {value}", "AppSettings")
+
+        # Determine if we need to emit signals (done outside the lock to avoid deadlock)
+        should_emit = False
         with AppSettings._lock:
             old_value = self._settings.get(key)
             logger.debug(f"Old value: {old_value}", "AppSettings")
             if old_value != value:
-                logger.debug("Value changed, updating and emitting signals", "AppSettings")
+                logger.debug("Value changed, updating and saving", "AppSettings")
                 self._settings[key] = value
                 # Update both storage systems directly to avoid recursion
                 super().__setattr__("settings", self._settings.copy())
                 logger.debug("About to save settings", "AppSettings")
                 self._save_settings_unlocked()
-                logger.debug("Settings saved, about to emit signals", "AppSettings")
-
-                # Emit new signals
-                logger.debug("Emitting 'settings-value-changed' signal", "AppSettings")
-                self.emit("settings-value-changed", key, value)
-                logger.debug("Emitting 'settings-attribute-changed' signal", "AppSettings")
-                self.emit("settings-attribute-changed", key, value)
-                # Legacy compatibility signals
-                logger.debug("Emitting 'setting-changed' signal", "AppSettings")
-                self.emit("setting-changed", key, value)
-                logger.debug("Emitting 'attribute-changed' signal", "AppSettings")
-                self.emit("attribute-changed", key, value)
-                logger.debug("All signals emitted successfully", "AppSettings")
-                self.logger.debug(f"Setting changed: {key} = {value}")
+                logger.debug("Settings saved", "AppSettings")
+                should_emit = True
             else:
                 logger.debug("Value unchanged, skipping update", "AppSettings")
+
+        # Emit signals AFTER releasing the lock to avoid re-entrancy deadlocks
+        if should_emit:
+            logger.debug("Lock released, emitting signals", "AppSettings")
+            # Emit new signals
+            logger.debug("Emitting 'settings-value-changed' signal", "AppSettings")
+            self.emit("settings-value-changed", key, value)
+            logger.debug("Emitting 'settings-attribute-changed' signal", "AppSettings")
+            self.emit("settings-attribute-changed", key, value)
+            # Legacy compatibility signals
+            logger.debug("Emitting 'setting-changed' signal", "AppSettings")
+            self.emit("setting-changed", key, value)
+            logger.debug("Emitting 'attribute-changed' signal", "AppSettings")
+            self.emit("attribute-changed", key, value)
+            logger.debug("All signals emitted successfully", "AppSettings")
+            self.logger.debug(f"Setting changed: {key} = {value}")
+
         logger.debug("Setting method completed", "AppSettings")
 
     def __getattr__(self, name):

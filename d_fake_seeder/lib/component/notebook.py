@@ -1,11 +1,11 @@
 import logging
 
 import gi
-from lib.component.component import Component
-from lib.logger import logger
 from domain.app_settings import AppSettings
 from domain.torrent.model.attributes import Attributes
 from domain.torrent.model.torrent_peer import TorrentPeer
+from lib.component.component import Component
+from lib.logger import logger
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")

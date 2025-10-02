@@ -1,11 +1,11 @@
-from time import sleep
 import time
+from time import sleep
 
 import domain.torrent.bencoding as bencoding
 import requests
 from domain.app_settings import AppSettings
-from domain.torrent.seeders.base_seeder import BaseSeeder
 from domain.torrent.model.tracker import Tracker
+from domain.torrent.seeders.base_seeder import BaseSeeder
 from lib.logger import logger
 from view import View
 
