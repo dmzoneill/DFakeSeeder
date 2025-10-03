@@ -641,7 +641,9 @@ class View:
                 logger.info("Calling toolbar.show_settings_dialog()", extra={"class_name": self.__class__.__name__})
                 GLib.idle_add(self.toolbar.show_settings_dialog)
             else:
-                logger.error("Toolbar not available, cannot show settings dialog", extra={"class_name": self.__class__.__name__})
+                logger.error(
+                    "Toolbar not available, cannot show settings dialog", extra={"class_name": self.__class__.__name__}
+                )
 
         # Handle show_about trigger from tray
         elif key == "show_about" and value:
