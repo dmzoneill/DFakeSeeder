@@ -70,7 +70,8 @@ class Model(GObject.GObject):
         # Setup automatic translation
         logger.debug("About to call setup_translations()", "Model")
         try:
-            logger.debug("setup_translations() returned:", "Model")
+            result = self.translation_manager.setup_translations(auto_detect=True)
+            logger.debug(f"setup_translations() returned: {result}", "Model")
         except Exception:
             logger.error("Exception in setup_translations()", "Model", exc_info=True)
         # Register translation function with ColumnTranslations to avoid expensive gc.get_objects() calls
