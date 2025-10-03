@@ -267,28 +267,19 @@ class TrayApplication:
     def _initialize(self) -> bool:
         """Initialize tray application components"""
         try:
-            # Initialize AppSettings singleton early to ensure settings file is loaded
-            # This must happen BEFORE translation setup so get_language() returns the correct value
-            from domain.app_settings import AppSettings
-
-            app_settings = AppSettings.get_instance()
-            logger.info(
-                f"AppSettings initialized with language: {app_settings.get_language()}",
-                extra={"class_name": self.__class__.__name__}
-            )
-
-            # Initialize D-Bus connection (for syncing with main app)
-            self._connect_to_dbus()
-
-            # Load initial settings from main app via D-Bus
-            self._load_initial_settings()
-
-            # Initialize translation manager (will now use correct language from AppSettings)
-            self._setup_translations()
-            logger.info("Translation manager initialized", extra={"class_name": self.__class__.__name__})
-
             # Create system tray indicator
             self._create_indicator()
+
+            # Initialize D-Bus connection
+            self._connect_to_dbus()
+
+            # Load initial settings from main app (not from file!)
+            self._load_initial_settings()
+
+            # Initialize translation manager with language from D-Bus settings
+            # Do NOT let it access AppSettings/file system - only use D-Bus cache
+            self._setup_translations()
+            logger.info("Translation manager initialized", extra={"class_name": self.__class__.__name__})
 
             # Create menu
             self._create_menu()
@@ -317,8 +308,31 @@ class TrayApplication:
                 fallback_language="en",
             )
 
-            # Setup automatic translations
-            self.translation_manager.setup_translations(auto_detect=True)
+            # Get language from D-Bus settings cache (NOT from AppSettings file!)
+            # This avoids race conditions with the main app
+            target_language = self.settings_cache.get("language", "auto")
+
+            # Handle "auto" by detecting system language
+            if target_language == "auto":
+                import locale
+
+                try:
+                    current_locale = locale.getlocale()[0]
+                    system_locale = current_locale if current_locale else locale.getdefaultlocale()[0]
+                    if system_locale:
+                        target_language = system_locale.split("_")[0].lower()
+                    else:
+                        target_language = "en"
+                except Exception:
+                    target_language = "en"
+
+            logger.info(
+                f"Tray using language from D-Bus cache: {target_language}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+            # Switch to the language from D-Bus settings (no auto-detect to avoid AppSettings)
+            self.translation_manager.switch_language(target_language)
             self._ = self.translation_manager.get_translate_func()
 
             logger.info("GTK3 TranslationManager initialized for tray", extra={"class_name": self.__class__.__name__})
