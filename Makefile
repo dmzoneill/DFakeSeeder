@@ -98,6 +98,8 @@ clean:
 	- sudo rm -rvf rpmbuild
 	- sudo rm -rvf *.deb
 	- sudo rm -rvf *.rpm
+	- sudo rm -rvf tools/translations/*.backup
+	- sudo rm -rvf tools/translations/*_fallbacks_to_translate.json
 	$(MAKE) lint
 
 valgrind: ui-build
