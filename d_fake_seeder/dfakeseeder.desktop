@@ -10,4 +10,4 @@ StartupNotify=true
 Terminal=false
 Categories=Network;P2P;Utility;
 Keywords=torrent;seeder;bittorrent;p2p;
-Path=/opt/dfakeseeder
+Path=/home/daoneill/src/DFakeSeeder/d_fake_seeder
