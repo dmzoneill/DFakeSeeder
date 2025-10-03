@@ -267,18 +267,28 @@ class TrayApplication:
     def _initialize(self) -> bool:
         """Initialize tray application components"""
         try:
-            # Initialize translation manager
+            # Initialize AppSettings singleton early to ensure settings file is loaded
+            # This must happen BEFORE translation setup so get_language() returns the correct value
+            from domain.app_settings import AppSettings
+
+            app_settings = AppSettings.get_instance()
+            logger.info(
+                f"AppSettings initialized with language: {app_settings.get_language()}",
+                extra={"class_name": self.__class__.__name__}
+            )
+
+            # Initialize D-Bus connection (for syncing with main app)
+            self._connect_to_dbus()
+
+            # Load initial settings from main app via D-Bus
+            self._load_initial_settings()
+
+            # Initialize translation manager (will now use correct language from AppSettings)
             self._setup_translations()
             logger.info("Translation manager initialized", extra={"class_name": self.__class__.__name__})
 
             # Create system tray indicator
             self._create_indicator()
-
-            # Initialize D-Bus connection
-            self._connect_to_dbus()
-
-            # Load initial settings
-            self._load_initial_settings()
 
             # Create menu
             self._create_menu()
