@@ -322,7 +322,9 @@ class DBusUnifier:
             logger.debug("Setting window_visible=True", extra={"class_name": self.__class__.__name__})
             self.app_settings.set("window_visible", True)
 
-            # Then trigger preferences dialog
+            # Force preferences dialog trigger by setting to False first, then True
+            # This ensures the value changes and signals are emitted even if it was already True
+            self.app_settings.set("show_preferences", False)
             logger.debug("Setting show_preferences=True", extra={"class_name": self.__class__.__name__})
             self.app_settings.set("show_preferences", True)
 
@@ -330,7 +332,7 @@ class DBusUnifier:
             current_value = self.app_settings.get("show_preferences")
             logger.info(
                 f"Preferences dialog triggered via D-Bus (current value: {current_value})",
-                extra={"class_name": self.__class__.__name__}
+                extra={"class_name": self.__class__.__name__},
             )
             return True
 
@@ -354,7 +356,9 @@ class DBusUnifier:
             logger.debug("Setting window_visible=True", extra={"class_name": self.__class__.__name__})
             self.app_settings.set("window_visible", True)
 
-            # Then trigger about dialog
+            # Force about dialog trigger by setting to False first, then True
+            # This ensures the value changes and signals are emitted even if it was already True
+            self.app_settings.set("show_about", False)
             logger.debug("Setting show_about=True", extra={"class_name": self.__class__.__name__})
             self.app_settings.set("show_about", True)
 
@@ -362,7 +366,7 @@ class DBusUnifier:
             current_value = self.app_settings.get("show_about")
             logger.info(
                 f"About dialog triggered via D-Bus (current value: {current_value})",
-                extra={"class_name": self.__class__.__name__}
+                extra={"class_name": self.__class__.__name__},
             )
             return True
 
