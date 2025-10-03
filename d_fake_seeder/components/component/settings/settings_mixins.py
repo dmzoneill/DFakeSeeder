@@ -71,7 +71,7 @@ class NotificationMixin:
             notification_label.show()
 
             # Auto-hide after timeout
-            GLib.timeout_add(timeout, lambda: self._hide_notification(notification_label))
+            GLib.timeout_add(timeout, lambda: (self._hide_notification(notification_label), False)[1])
 
             logger.debug(f"Notification shown: {message} ({notification_type})")
 

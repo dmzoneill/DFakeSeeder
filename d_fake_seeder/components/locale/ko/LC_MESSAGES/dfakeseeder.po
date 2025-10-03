@@ -206,6 +206,9 @@ msgstr "대체 다운로드 제한 (KB/s):"
 msgid "Alt upload limit (KB/s):"
 msgstr "대체 업로드 제한 (KB/s):"
 
+msgid "Alternative Speed Limits"
+msgstr "대체 속도 제한"
+
 msgid "Alternative download speed limit in KB/s"
 msgstr "KB/s 단위의 대체 다운로드 속도 제한"
 
@@ -226,6 +229,9 @@ msgstr "발표 간격:"
 
 msgid "Arabic"
 msgstr "아랍어"
+
+msgid "Auto Detect"
+msgstr "자동 감지"
 
 msgid "Auto-bootstrap DHT"
 msgstr "DHT 자동 부트스트랩"
@@ -280,6 +286,9 @@ msgstr "행동 분석 확률:"
 
 msgid "Behavior randomization"
 msgstr "동작 무작위화"
+
+msgid "Bengali"
+msgstr "벵골어"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
@@ -362,6 +371,9 @@ msgstr "연결 시간"
 msgid "Connected Peers / Total Peers"
 msgstr "연결된 피어 / 전체 피어"
 
+msgid "Connected to DFakeSeeder"
+msgstr "DFakeSeeder에 연결됨"
+
 msgid "Connection"
 msgstr "연결"
 
@@ -431,6 +443,9 @@ msgstr "D' Fake Seeder"
 msgid "DEBUG"
 msgstr "디버그"
 
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
 msgid "DHT"
 msgstr "DHT"
 
@@ -454,6 +469,9 @@ msgstr "비활성화"
 
 msgid "Disconnected"
 msgstr "연결 끊김"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Disconnected from DFakeSeeder"
 
 msgid "Disk cache size (MB):"
 msgstr "디스크 캐시 크기 (MB):"
@@ -683,6 +701,9 @@ msgstr "확장 타임아웃:"
 msgid "Extension statistics update interval (seconds)"
 msgstr "확장 통계 업데이트 간격(초)"
 
+msgid "Failed to apply seeding profile"
+msgstr "시드 프로필 적용 실패"
+
 msgid "Failure Reason"
 msgstr "실패 원인"
 
@@ -690,7 +711,7 @@ msgid "Fall back to TCP if µTP fails"
 msgstr "µTP 실패 시 TCP로 대체"
 
 msgid "Fallback configuration"
-msgstr "Fallback configuration"
+msgstr "대체 구성"
 
 msgid "Fast Extension (BEP-006)"
 msgstr "고속 확장 (BEP-006)"
@@ -738,7 +759,7 @@ msgid "General timeout for extension operations (seconds)"
 msgstr "확장 작업의 일반 타임아웃(초)"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "일반 탭"
 
 msgid "Generate Secure Password"
 msgstr "보안 비밀번호 생성"
@@ -785,11 +806,14 @@ msgstr "핸드셰이크"
 msgid "Handshake timeout (seconds):"
 msgstr "핸드셰이크 타임아웃 (초):"
 
+msgid "Hide Main Window"
+msgstr "메인 창 숨기기"
+
 msgid "Hide to system tray when window is minimized"
 msgstr "창이 최소화되면 시스템 트레이로 숨기기"
 
 msgid "Hindi"
-msgstr "Hindi"
+msgstr "힌디어"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "트래커에 알림 빈도 (60-7200초)"
@@ -836,6 +860,9 @@ msgstr "들어오는 연결"
 msgid "Incoming Peer Connections"
 msgstr "수신 피어 연결"
 
+msgid "Indonesian"
+msgstr "인도네시아어"
+
 msgid "Interested"
 msgstr "관심 있음"
 
@@ -853,6 +880,9 @@ msgstr "피어 연락 간격(초)"
 
 msgid "Interval for sending keep alive messages in seconds"
 msgstr "킵 얼라이브 메시지 전송 간격(초)"
+
+msgid "Irish"
+msgstr "아일랜드어"
 
 msgid "Italian"
 msgstr "이탈리아어"
@@ -875,6 +905,9 @@ msgstr "한국어"
 msgid "Label"
 msgstr "라벨"
 
+msgid "Language"
+msgstr "언어"
+
 msgid "Language switched to"
 msgstr "언어가 변경됨:"
 
@@ -886,6 +919,9 @@ msgstr "마지막 알림"
 
 msgid "Last Notification"
 msgstr "마지막 알림"
+
+msgid "Launch Main Application"
+msgstr "메인 애플리케이션 실행"
 
 msgid "Leechers"
 msgstr "리처"
@@ -1053,7 +1089,7 @@ msgid "Next Update"
 msgstr "다음 업데이트"
 
 msgid "No editable options available for this torrent."
-msgstr "No editable options available for this torrent."
+msgstr "이 토렌트에 사용할 수 있는 편집 가능한 옵션이 없습니다."
 
 msgid "None"
 msgstr "없음"
@@ -1103,6 +1139,9 @@ msgstr "경로"
 msgid "Pause"
 msgstr "일시정지"
 
+msgid "Pause All Torrents"
+msgstr "모든 토렌트 일시정지"
+
 msgid "Pause torrent"
 msgstr "토렌트 일시정지"
 
@@ -1142,6 +1181,9 @@ msgstr "피어"
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
 msgstr "회전할 연결의 백분율 (0.0 - 1.0)"
 
+msgid "Persian"
+msgstr "페르시아어"
+
 msgid "Piece Length"
 msgstr "조각 길이"
 
@@ -1170,10 +1212,10 @@ msgid "Portuguese"
 msgstr "포르투갈어"
 
 msgid "Preference 1:"
-msgstr "Preference 1:"
+msgstr "설정 1:"
 
 msgid "Preference 2:"
-msgstr "Preference 2:"
+msgstr "설정 2:"
 
 msgid "Preferences"
 msgstr "환경설정"
@@ -1286,6 +1328,9 @@ msgstr "대기열"
 msgid "Quit"
 msgstr "종료"
 
+msgid "Quit DFakeSeeder"
+msgstr "DFakeSeeder 종료"
+
 msgid "Random"
 msgstr "무작위"
 
@@ -1340,6 +1385,9 @@ msgstr "기본값으로 재설정"
 msgid "Resume"
 msgstr "재개"
 
+msgid "Resume All Torrents"
+msgstr "모든 토렌트 재개"
+
 msgid "Resume torrent"
 msgstr "토렌트 재개"
 
@@ -1391,6 +1439,9 @@ msgstr "시더 포트 범위 (최소):"
 msgid "Seeders"
 msgstr "시더"
 
+msgid "Seeding Profile"
+msgstr "시드 프로필"
+
 msgid "Seeds"
 msgstr "시드"
 
@@ -1421,6 +1472,9 @@ msgstr "세션 타임아웃 (분):"
 msgid "Shortcuts configuration not yet implemented"
 msgstr "단축키 구성이 아직 구현되지 않음"
 
+msgid "Show Main Window"
+msgstr "메인 창 표시"
+
 msgid "Show only selected torrent connections"
 msgstr "선택된 토렌트 연결만 표시"
 
@@ -1441,6 +1495,9 @@ msgstr "스페인어"
 
 msgid "Speed"
 msgstr "속도"
+
+msgid "Speed Control"
+msgstr "속도 제어"
 
 msgid "Speed settings reset to defaults"
 msgstr "속도 설정이 기본값으로 재설정됨"
@@ -1595,6 +1652,12 @@ msgstr "트랜잭션 ID 범위 (최소):"
 msgid "TranslationManager"
 msgstr "TranslationManager"
 
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
 msgid "Transmission"
 msgstr "Transmission"
 
@@ -1606,6 +1669,9 @@ msgstr "화"
 
 msgid "Tuesday"
 msgstr "화요일"
+
+msgid "Turkish"
+msgstr "터키어"
 
 msgid "Type"
 msgstr "유형"
@@ -1623,7 +1689,7 @@ msgid "UI refresh rate (sec):"
 msgstr "UI 새로 고침 비율 (초):"
 
 msgid "URL"
-msgstr "주소"
+msgstr "URL"
 
 msgid "URL: http://localhost:8080"
 msgstr "주소: http://localhost:8080"
@@ -1715,6 +1781,9 @@ msgstr "변경 시 설정 검증"
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
 msgstr "클라이언트 동작의 변동(0.0 = 변동 없음, 1.0 = 최대 변동)"
 
+msgid "Vietnamese"
+msgstr "베트남어"
+
 msgid "Vuze"
 msgstr "Vuze"
 
@@ -1743,7 +1812,7 @@ msgid "address"
 msgstr "地址"
 
 msgid "admin"
-msgstr "admin"
+msgstr "관리자"
 
 msgid "am_choking"
 msgstr "차단 중"
@@ -1887,7 +1956,7 @@ msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
 
 msgid "upload_rate"
-msgstr "Upload Rate"
+msgstr "업로드 속도"
 
 msgid "upload_speed"
 msgstr "업로드 속도"

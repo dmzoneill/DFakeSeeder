@@ -318,11 +318,20 @@ class DBusUnifier:
         try:
             logger.info("ShowPreferences D-Bus method called", extra={"class_name": self.__class__.__name__})
 
-            # Set both flags to show window and open preferences
+            # Set window visible first
+            logger.debug("Setting window_visible=True", extra={"class_name": self.__class__.__name__})
             self.app_settings.set("window_visible", True)
+
+            # Then trigger preferences dialog
+            logger.debug("Setting show_preferences=True", extra={"class_name": self.__class__.__name__})
             self.app_settings.set("show_preferences", True)
 
-            logger.info("Preferences dialog triggered via D-Bus", extra={"class_name": self.__class__.__name__})
+            # Verify the value was set
+            current_value = self.app_settings.get("show_preferences")
+            logger.info(
+                f"Preferences dialog triggered via D-Bus (current value: {current_value})",
+                extra={"class_name": self.__class__.__name__}
+            )
             return True
 
         except Exception as e:
@@ -341,15 +350,26 @@ class DBusUnifier:
         try:
             logger.info("ShowAbout D-Bus method called", extra={"class_name": self.__class__.__name__})
 
-            # Set both flags to show window and open about dialog
+            # Set window visible first
+            logger.debug("Setting window_visible=True", extra={"class_name": self.__class__.__name__})
             self.app_settings.set("window_visible", True)
+
+            # Then trigger about dialog
+            logger.debug("Setting show_about=True", extra={"class_name": self.__class__.__name__})
             self.app_settings.set("show_about", True)
 
-            logger.info("About dialog triggered via D-Bus", extra={"class_name": self.__class__.__name__})
+            # Verify the value was set
+            current_value = self.app_settings.get("show_about")
+            logger.info(
+                f"About dialog triggered via D-Bus (current value: {current_value})",
+                extra={"class_name": self.__class__.__name__}
+            )
             return True
 
         except Exception as e:
-            logger.error(f"Failed to show about dialog: {e}", extra={"class_name": self.__class__.__name__}, exc_info=True)
+            logger.error(
+                f"Failed to show about dialog: {e}", extra={"class_name": self.__class__.__name__}, exc_info=True
+            )
             return False
 
     def _validate_setting_value(self, path: str, value: Any) -> bool:

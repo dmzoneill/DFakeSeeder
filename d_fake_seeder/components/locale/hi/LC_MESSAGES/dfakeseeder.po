@@ -206,6 +206,9 @@ msgstr "वैकल्पिक डाउनलोड सीमा (KB/s):"
 msgid "Alt upload limit (KB/s):"
 msgstr "वैकल्पिक अपलोड सीमा (KB/s):"
 
+msgid "Alternative Speed Limits"
+msgstr "वैकल्पिक गति सीमाएं"
+
 msgid "Alternative download speed limit in KB/s"
 msgstr "KB/s में वैकल्पिक डाउनलोड गति सीमा"
 
@@ -225,7 +228,10 @@ msgid "Announcement Interval:"
 msgstr "घोषणा अंतराल:"
 
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "अरबी"
+
+msgid "Auto Detect"
+msgstr "स्वचालित पहचान"
 
 msgid "Auto-bootstrap DHT"
 msgstr "DHT को ऑटो-बूटस्ट्रैप करें"
@@ -280,6 +286,9 @@ msgstr "व्यवहार विश्लेषण संभावना:"
 
 msgid "Behavior randomization"
 msgstr "व्यवहार यादृच्छिकरण"
+
+msgid "Bengali"
+msgstr "बंगाली"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
@@ -362,6 +371,9 @@ msgstr "पर जुड़ा"
 msgid "Connected Peers / Total Peers"
 msgstr "कनेक्टेड पीअर्स / कुल पीअर्स"
 
+msgid "Connected to DFakeSeeder"
+msgstr "DFakeSeeder से जुड़ा"
+
 msgid "Connection"
 msgstr "कनेक्शन"
 
@@ -431,6 +443,9 @@ msgstr "D' Fake Seeder"
 msgid "DEBUG"
 msgstr "डिबग"
 
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
 msgid "DHT"
 msgstr "DHT"
 
@@ -454,6 +469,9 @@ msgstr "अक्षम"
 
 msgid "Disconnected"
 msgstr "डिस्कनेक्ट"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "DFakeSeeder से डिस्कनेक्ट"
 
 msgid "Disk cache size (MB):"
 msgstr "डिस्क कैश आकार (MB):"
@@ -498,7 +516,7 @@ msgid "Dropout probability:"
 msgstr "ड्रॉपआउट संभावना:"
 
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "डच"
 
 msgid "Dynamic profile switching"
 msgstr "गतिशील प्रोफाइल स्विचिंग"
@@ -683,6 +701,9 @@ msgstr "एक्सटेंशन टाइमआउट:"
 msgid "Extension statistics update interval (seconds)"
 msgstr "एक्सटेंशन आंकड़े अपडेट अंतराल (सेकंड)"
 
+msgid "Failed to apply seeding profile"
+msgstr "सीडिंग प्रोफाइल लागू नहीं हो सका"
+
 msgid "Failure Reason"
 msgstr "विफलता कारण"
 
@@ -690,13 +711,13 @@ msgid "Fall back to TCP if µTP fails"
 msgstr "यदि µTP विफल हो जाए तो TCP पर वापस जाएं"
 
 msgid "Fallback configuration"
-msgstr "Fallback configuration"
+msgstr "फॉलबैक कॉन्फ़िगरेशन"
 
 msgid "Fast Extension (BEP-006)"
 msgstr "फास्ट एक्सटेंशन (BEP-006)"
 
 msgid "File"
-msgstr "फाइल"
+msgstr "फ़ाइल"
 
 msgid "File Path"
 msgstr "फाइल पथ"
@@ -785,11 +806,14 @@ msgstr "हैंडशेक"
 msgid "Handshake timeout (seconds):"
 msgstr "हैंडशेक टाइमआउट (सेकंड):"
 
+msgid "Hide Main Window"
+msgstr "मुख्य विंडो छुपाएं"
+
 msgid "Hide to system tray when window is minimized"
 msgstr "विंडो छोटी करने पर सिस्टम ट्रे में छुपाएं"
 
 msgid "Hindi"
-msgstr "Hindi"
+msgstr "हिंदी"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "ट्रैकर्स को कितनी बार घोषणा करें (60-7200 सेकंड)"
@@ -836,6 +860,9 @@ msgstr "आने वाले कनेक्शन"
 msgid "Incoming Peer Connections"
 msgstr "आने वाले पीयर कनेक्शन"
 
+msgid "Indonesian"
+msgstr "इंडोनेशियाई"
+
 msgid "Interested"
 msgstr "इच्छुक"
 
@@ -854,6 +881,9 @@ msgstr "सेकंड में पीअर्स से संपर्क �
 msgid "Interval for sending keep alive messages in seconds"
 msgstr "सेकंड में कीप अलाइव संदेश भेजने का अंतराल"
 
+msgid "Irish"
+msgstr "आयरिश"
+
 msgid "Italian"
 msgstr "इतालवी"
 
@@ -870,10 +900,13 @@ msgid "Keep alive interval for connections (seconds)"
 msgstr "कनेक्शन के लिए कीप अलाइव अंतराल (सेकंड)"
 
 msgid "Korean"
-msgstr "Korean"
+msgstr "कोरियाई"
 
 msgid "Label"
 msgstr "लेबल"
+
+msgid "Language"
+msgstr "भाषा"
 
 msgid "Language switched to"
 msgstr "भाषा बदली गई"
@@ -886,6 +919,9 @@ msgstr "अंतिम घोषणा"
 
 msgid "Last Notification"
 msgstr "अंतिम सूचना"
+
+msgid "Launch Main Application"
+msgstr "मुख्य एप्लिकेशन लॉन्च करें"
 
 msgid "Leechers"
 msgstr "लीचर्स"
@@ -1053,7 +1089,7 @@ msgid "Next Update"
 msgstr "अगला अपडेट"
 
 msgid "No editable options available for this torrent."
-msgstr "No editable options available for this torrent."
+msgstr "इस टॉरेंट के लिए कोई संपादन योग्य विकल्प उपलब्ध नहीं।"
 
 msgid "None"
 msgstr "कोई नहीं"
@@ -1103,6 +1139,9 @@ msgstr "पथ"
 msgid "Pause"
 msgstr "रोकें"
 
+msgid "Pause All Torrents"
+msgstr "सभी टॉरेंट रोकें"
+
 msgid "Pause torrent"
 msgstr "टॉरेंट रोकें"
 
@@ -1137,10 +1176,13 @@ msgid "Peer request count:"
 msgstr "पीयर अनुरोध गिनती:"
 
 msgid "Peers"
-msgstr "पीअर्स"
+msgstr "पीयर्स"
 
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
 msgstr "रोटेट करने वाले कनेक्शन का प्रतिशत (0.0 - 1.0)"
+
+msgid "Persian"
+msgstr "फ़ारसी"
 
 msgid "Piece Length"
 msgstr "टुकड़े की लंबाई"
@@ -1152,7 +1194,7 @@ msgid "Pieces Received"
 msgstr "प्राप्त टुकड़े"
 
 msgid "Polish"
-msgstr "Polish"
+msgstr "पोलिश"
 
 msgid "Port"
 msgstr "पोर्ट"
@@ -1170,10 +1212,10 @@ msgid "Portuguese"
 msgstr "पुर्तगाली"
 
 msgid "Preference 1:"
-msgstr "Preference 1:"
+msgstr "प्राथमिकता 1:"
 
 msgid "Preference 2:"
-msgstr "Preference 2:"
+msgstr "प्राथमिकता 2:"
 
 msgid "Preferences"
 msgstr "प्राथमिकताएं"
@@ -1286,6 +1328,9 @@ msgstr "कतार"
 msgid "Quit"
 msgstr "बाहर निकलें"
 
+msgid "Quit DFakeSeeder"
+msgstr "DFakeSeeder बंद करें"
+
 msgid "Random"
 msgstr "यादृच्छिक"
 
@@ -1340,6 +1385,9 @@ msgstr "डिफ़ॉल्ट पर रीसेट करें"
 msgid "Resume"
 msgstr "जारी रखें"
 
+msgid "Resume All Torrents"
+msgstr "सभी टॉरेंट फिर से शुरू करें"
+
 msgid "Resume torrent"
 msgstr "टॉरेंट फिर से शुरू करें"
 
@@ -1391,6 +1439,9 @@ msgstr "सीडर पोर्ट रेंज (न्यूनतम):"
 msgid "Seeders"
 msgstr "सीडर्स"
 
+msgid "Seeding Profile"
+msgstr "सीडिंग प्रोफाइल"
+
 msgid "Seeds"
 msgstr "सीड्स"
 
@@ -1410,16 +1461,19 @@ msgid "Server:"
 msgstr "सर्वर:"
 
 msgid "Session Downloaded"
-msgstr "会话下载"
+msgstr "सत्र डाउनलोड"
 
 msgid "Session Uploaded"
-msgstr "会话上传"
+msgstr "सत्र अपलोड"
 
 msgid "Session timeout (min):"
 msgstr "सत्र टाइमआउट (मिनट):"
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "शॉर्टकट कॉन्फ़िगरेशन अभी तक लागू नहीं"
+
+msgid "Show Main Window"
+msgstr "मुख्य विंडो दिखाएं"
 
 msgid "Show only selected torrent connections"
 msgstr "केवल चयनित टॉरेंट कनेक्शन दिखाएं"
@@ -1441,6 +1495,9 @@ msgstr "स्पेनिश"
 
 msgid "Speed"
 msgstr "गति"
+
+msgid "Speed Control"
+msgstr "गति नियंत्रण"
 
 msgid "Speed settings reset to defaults"
 msgstr "गति सेटिंग्स डिफ़ॉल्ट में रीसेट"
@@ -1491,7 +1548,7 @@ msgid "Sunday"
 msgstr "रविवार"
 
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "स्वीडिश"
 
 msgid "Synthetic Peer Count:"
 msgstr "सिंथेटिक पीयर काउंट:"
@@ -1548,7 +1605,7 @@ msgid "Top"
 msgstr "शीर्ष"
 
 msgid "Torrent"
-msgstr "टॉरेंट"
+msgstr "टोरेंट"
 
 msgid "Torrent Files"
 msgstr "टॉरेंट फाइलें"
@@ -1595,6 +1652,12 @@ msgstr "लेनदेन ID रेंज (न्यूनतम):"
 msgid "TranslationManager"
 msgstr "TranslationManager"
 
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
 msgid "Transmission"
 msgstr "Transmission"
 
@@ -1606,6 +1669,9 @@ msgstr "मंगल"
 
 msgid "Tuesday"
 msgstr "मंगलवार"
+
+msgid "Turkish"
+msgstr "तुर्की"
 
 msgid "Type"
 msgstr "प्रकार"
@@ -1623,7 +1689,7 @@ msgid "UI refresh rate (sec):"
 msgstr "UI रिफ्रेश दर (सेकंड):"
 
 msgid "URL"
-msgstr "यूआरएल"
+msgstr "URL"
 
 msgid "URL: http://localhost:8080"
 msgstr "URL: http://localhost:8080"
@@ -1715,6 +1781,9 @@ msgstr "बदलने पर सेटिंग्स की पुष्ट�
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
 msgstr "क्लाइंट व्यवहार में विविधता (0.0 = कोई विविधता नहीं, 1.0 = अधिकतम विविधता)"
 
+msgid "Vietnamese"
+msgstr "वियतनामी"
+
 msgid "Vuze"
 msgstr "Vuze"
 
@@ -1740,7 +1809,7 @@ msgid "active"
 msgstr "सक्रिय"
 
 msgid "address"
-msgstr "地址"
+msgstr "पता"
 
 msgid "admin"
 msgstr "एडमिन"
@@ -1758,19 +1827,19 @@ msgid "bytes"
 msgstr "बाइट्स"
 
 msgid "bytes_downloaded"
-msgstr "字节已下载"
+msgstr "बाइट डाउनलोड"
 
 msgid "bytes_uploaded"
-msgstr "字节已上传"
+msgstr "बाइट अपलोड"
 
 msgid "class_name"
 msgstr "क्लास_नाम"
 
 msgid "client"
-msgstr "客户端"
+msgstr "क्लाइंट"
 
 msgid "connection_time"
-msgstr "连接时间"
+msgstr "कनेक्शन समय"
 
 msgid "download_rate"
 msgstr "डाउनलोड दर"
@@ -1794,7 +1863,7 @@ msgid "id"
 msgstr "#"
 
 msgid "leechers"
-msgstr "लीचर"
+msgstr "लीचर्स"
 
 msgid "log_tab"
 msgstr "लॉग_टैब"
@@ -1854,7 +1923,7 @@ msgid "seconds"
 msgstr "सेकंड"
 
 msgid "seeders"
-msgstr "सीडर"
+msgstr "सीडर्स"
 
 msgid "session_downloaded"
 msgstr "डाउनलोड किया गया"
@@ -1866,7 +1935,7 @@ msgid "small_torrent_limit"
 msgstr "छोटी टॉरेंट सीमा"
 
 msgid "status"
-msgstr "状态"
+msgstr "स्थिति"
 
 msgid "threshold"
 msgstr "सीमा"
@@ -1887,7 +1956,7 @@ msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
 
 msgid "upload_rate"
-msgstr "Upload Rate"
+msgstr "अपलोड दर"
 
 msgid "upload_speed"
 msgstr "अपलोड गति"

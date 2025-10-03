@@ -206,6 +206,9 @@ msgstr "Альт. лимит загрузки (КБ/с):"
 msgid "Alt upload limit (KB/s):"
 msgstr "Альт. лимит отдачи (КБ/с):"
 
+msgid "Alternative Speed Limits"
+msgstr "Альтернативные Ограничения Скорости"
+
 msgid "Alternative download speed limit in KB/s"
 msgstr "Альтернативный лимит скорости загрузки в КБ/с"
 
@@ -226,6 +229,9 @@ msgstr "Интервал объявлений:"
 
 msgid "Arabic"
 msgstr "Арабский"
+
+msgid "Auto Detect"
+msgstr "Автоопределение"
 
 msgid "Auto-bootstrap DHT"
 msgstr "Авто-bootstrap DHT"
@@ -280,6 +286,9 @@ msgstr "Вероятность анализа поведения:"
 
 msgid "Behavior randomization"
 msgstr "Рандомизация поведения"
+
+msgid "Bengali"
+msgstr "Бенгальский"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
@@ -362,6 +371,9 @@ msgstr "Подключён в"
 msgid "Connected Peers / Total Peers"
 msgstr "Подключённые пиры / Всего пиров"
 
+msgid "Connected to DFakeSeeder"
+msgstr "Подключено к DFakeSeeder"
+
 msgid "Connection"
 msgstr "Соединение"
 
@@ -431,6 +443,9 @@ msgstr "D' Fake Seeder"
 msgid "DEBUG"
 msgstr "ОТЛАДКА"
 
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
 msgid "DHT"
 msgstr "DHT"
 
@@ -454,6 +469,9 @@ msgstr "Отключено"
 
 msgid "Disconnected"
 msgstr "Отключен"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Отключено от DFakeSeeder"
 
 msgid "Disk cache size (MB):"
 msgstr "Размер кэша диска (МБ):"
@@ -683,6 +701,9 @@ msgstr "Таймаут расширения:"
 msgid "Extension statistics update interval (seconds)"
 msgstr "Интервал обновления статистики расширений (секунды)"
 
+msgid "Failed to apply seeding profile"
+msgstr "Не удалось применить профиль раздачи"
+
 msgid "Failure Reason"
 msgstr "Причина ошибки"
 
@@ -690,7 +711,7 @@ msgid "Fall back to TCP if µTP fails"
 msgstr "Переключаться на TCP если µTP не работает"
 
 msgid "Fallback configuration"
-msgstr "Fallback configuration"
+msgstr "Резервная конфигурация"
 
 msgid "Fast Extension (BEP-006)"
 msgstr "Быстрое расширение (BEP-006)"
@@ -738,7 +759,7 @@ msgid "General timeout for extension operations (seconds)"
 msgstr "Общий таймаут для операций расширений (секунды)"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "ОбщаяВкладка"
 
 msgid "Generate Secure Password"
 msgstr "Создать безопасный пароль"
@@ -785,11 +806,14 @@ msgstr "Рукопожатие"
 msgid "Handshake timeout (seconds):"
 msgstr "Таймаут рукопожатия (секунды):"
 
+msgid "Hide Main Window"
+msgstr "Скрыть Главное Окно"
+
 msgid "Hide to system tray when window is minimized"
 msgstr "Скрывать в системный трей при сворачивании окна"
 
 msgid "Hindi"
-msgstr "Hindi"
+msgstr "Хинди"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "Как часто анонсировать трекерам (60-7200 секунд)"
@@ -836,6 +860,9 @@ msgstr "Входящие соединения"
 msgid "Incoming Peer Connections"
 msgstr "Входящие соединения с пирами"
 
+msgid "Indonesian"
+msgstr "Индонезийский"
+
 msgid "Interested"
 msgstr "Заинтересован"
 
@@ -853,6 +880,9 @@ msgstr "Интервал для связи с пирами в секундах"
 
 msgid "Interval for sending keep alive messages in seconds"
 msgstr "Интервал для отправки keep-alive сообщений в секундах"
+
+msgid "Irish"
+msgstr "Ирландский"
 
 msgid "Italian"
 msgstr "Итальянский"
@@ -875,6 +905,9 @@ msgstr "Корейский"
 msgid "Label"
 msgstr "Метка"
 
+msgid "Language"
+msgstr "Язык"
+
 msgid "Language switched to"
 msgstr "Язык переключен на"
 
@@ -887,8 +920,11 @@ msgstr "Последнее объявление"
 msgid "Last Notification"
 msgstr "Последнее уведомление"
 
+msgid "Launch Main Application"
+msgstr "Запустить Основное Приложение"
+
 msgid "Leechers"
-msgstr "Личи"
+msgstr "Личеры"
 
 msgid "Level of BitTorrent protocol compliance"
 msgstr "Уровень соответствия протоколу BitTorrent"
@@ -1053,7 +1089,7 @@ msgid "Next Update"
 msgstr "Следующее Обновление"
 
 msgid "No editable options available for this torrent."
-msgstr "No editable options available for this torrent."
+msgstr "Нет редактируемых опций для этого торрента."
 
 msgid "None"
 msgstr "Нет"
@@ -1074,7 +1110,7 @@ msgid "Open preferences"
 msgstr "Открыть настройки"
 
 msgid "Options"
-msgstr "Опции"
+msgstr "Параметры"
 
 msgid "Outgoing"
 msgstr "Исходящие"
@@ -1102,6 +1138,9 @@ msgstr "Путь"
 
 msgid "Pause"
 msgstr "Пауза"
+
+msgid "Pause All Torrents"
+msgstr "Приостановить Все Торренты"
 
 msgid "Pause torrent"
 msgstr "Приостановить торрент"
@@ -1142,6 +1181,9 @@ msgstr "Пиры"
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
 msgstr "Процент соединений для ротации (0.0 - 1.0)"
 
+msgid "Persian"
+msgstr "Персидский"
+
 msgid "Piece Length"
 msgstr "Длина части"
 
@@ -1170,10 +1212,10 @@ msgid "Portuguese"
 msgstr "Португальский"
 
 msgid "Preference 1:"
-msgstr "Preference 1:"
+msgstr "Предпочтение 1:"
 
 msgid "Preference 2:"
-msgstr "Preference 2:"
+msgstr "Предпочтение 2:"
 
 msgid "Preferences"
 msgstr "Настройки"
@@ -1286,6 +1328,9 @@ msgstr "Очередь"
 msgid "Quit"
 msgstr "Выйти"
 
+msgid "Quit DFakeSeeder"
+msgstr "Выйти из DFakeSeeder"
+
 msgid "Random"
 msgstr "Случайный"
 
@@ -1293,7 +1338,7 @@ msgid "Rate of adaptation to swarm behavior"
 msgstr "Скорость адаптации к поведению роя"
 
 msgid "Ratio"
-msgstr "Рейтинг"
+msgstr "Соотношение"
 
 msgid "Realistic variations"
 msgstr "Реалистичные вариации"
@@ -1339,6 +1384,9 @@ msgstr "Сброс к умолчанию"
 
 msgid "Resume"
 msgstr "Возобновить"
+
+msgid "Resume All Torrents"
+msgstr "Возобновить Все Торренты"
 
 msgid "Resume torrent"
 msgstr "Возобновить торрент"
@@ -1389,7 +1437,10 @@ msgid "Seeder port range (min):"
 msgstr "Диапазон портов сидера (мин.):"
 
 msgid "Seeders"
-msgstr "Сиды"
+msgstr "Сидеры"
+
+msgid "Seeding Profile"
+msgstr "Профиль Раздачи"
 
 msgid "Seeds"
 msgstr "Сиды"
@@ -1421,6 +1472,9 @@ msgstr "Таймаут сессии (мин):"
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Настройка горячих клавиш еще не реализована"
 
+msgid "Show Main Window"
+msgstr "Показать Главное Окно"
+
 msgid "Show only selected torrent connections"
 msgstr "Показывать только соединения выбранного торрента"
 
@@ -1441,6 +1495,9 @@ msgstr "Испанский"
 
 msgid "Speed"
 msgstr "Скорость"
+
+msgid "Speed Control"
+msgstr "Контроль Скорости"
 
 msgid "Speed settings reset to defaults"
 msgstr "Настройки скорости сброшены по умолчанию"
@@ -1595,6 +1652,12 @@ msgstr "Диапазон ID транзакций (мин.):"
 msgid "TranslationManager"
 msgstr "TranslationManager"
 
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
 msgid "Transmission"
 msgstr "Transmission"
 
@@ -1606,6 +1669,9 @@ msgstr "Вт"
 
 msgid "Tuesday"
 msgstr "Вторник"
+
+msgid "Turkish"
+msgstr "Турецкий"
 
 msgid "Type"
 msgstr "Тип"
@@ -1623,7 +1689,7 @@ msgid "UI refresh rate (sec):"
 msgstr "Частота обновления UI (сек):"
 
 msgid "URL"
-msgstr "Ссылка"
+msgstr "URL"
 
 msgid "URL: http://localhost:8080"
 msgstr "Ссылка: http://localhost:8080"
@@ -1715,6 +1781,9 @@ msgstr "Проверять настройки при изменении"
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
 msgstr "Вариация в поведении клиента (0.0 = без вариации, 1.0 = максимальная вариация)"
 
+msgid "Vietnamese"
+msgstr "Вьетнамский"
+
 msgid "Vuze"
 msgstr "Vuze"
 
@@ -1743,7 +1812,7 @@ msgid "address"
 msgstr "Адрес"
 
 msgid "admin"
-msgstr "admin"
+msgstr "администратор"
 
 msgid "am_choking"
 msgstr "Я блокирую"

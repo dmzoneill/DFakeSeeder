@@ -206,6 +206,9 @@ msgstr "Alt Download-Limit (KB/s):"
 msgid "Alt upload limit (KB/s):"
 msgstr "Alt Upload-Limit (KB/s):"
 
+msgid "Alternative Speed Limits"
+msgstr "Alternative Geschwindigkeitsbegrenzungen"
+
 msgid "Alternative download speed limit in KB/s"
 msgstr "Alternatives Download-Geschwindigkeitslimit in KB/s"
 
@@ -226,6 +229,9 @@ msgstr "Ankündigungs-Intervall:"
 
 msgid "Arabic"
 msgstr "Arabisch"
+
+msgid "Auto Detect"
+msgstr "Automatisch Erkennen"
 
 msgid "Auto-bootstrap DHT"
 msgstr "DHT automatisch bootstrappen"
@@ -280,6 +286,9 @@ msgstr "Verhaltensanalyse-Wahrscheinlichkeit:"
 
 msgid "Behavior randomization"
 msgstr "Verhaltens-Randomisierung"
+
+msgid "Bengali"
+msgstr "Bengalisch"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
@@ -362,6 +371,9 @@ msgstr "Verbunden um"
 msgid "Connected Peers / Total Peers"
 msgstr "Verbundene Peers / Gesamte Peers"
 
+msgid "Connected to DFakeSeeder"
+msgstr "Mit DFakeSeeder Verbunden"
+
 msgid "Connection"
 msgstr "Verbindung"
 
@@ -431,6 +443,9 @@ msgstr "D' Fake Seeder"
 msgid "DEBUG"
 msgstr "DEBUGGEN"
 
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
 msgid "DHT"
 msgstr "DHT"
 
@@ -454,6 +469,9 @@ msgstr "Deaktiviert"
 
 msgid "Disconnected"
 msgstr "Getrennt"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Von DFakeSeeder Getrennt"
 
 msgid "Disk cache size (MB):"
 msgstr "Festplatten-Cache-Größe (MB):"
@@ -683,6 +701,9 @@ msgstr "Erweiterungs-Timeout:"
 msgid "Extension statistics update interval (seconds)"
 msgstr "Aktualisierungs-Intervall für Erweiterungs-Statistiken (Sekunden)"
 
+msgid "Failed to apply seeding profile"
+msgstr "Fehler beim Anwenden des Seeding-Profils"
+
 msgid "Failure Reason"
 msgstr "Fehlergrund"
 
@@ -690,7 +711,7 @@ msgid "Fall back to TCP if µTP fails"
 msgstr "Auf TCP zurückfallen wenn µTP fehlschlägt"
 
 msgid "Fallback configuration"
-msgstr "Fallback configuration"
+msgstr "Ersatzkonfiguration"
 
 msgid "Fast Extension (BEP-006)"
 msgstr "Schnelle Erweiterung (BEP-006)"
@@ -738,7 +759,7 @@ msgid "General timeout for extension operations (seconds)"
 msgstr "Allgemeiner Timeout für Erweiterungs-Operationen (Sekunden)"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "AllgemeinTab"
 
 msgid "Generate Secure Password"
 msgstr "Sicheres Passwort generieren"
@@ -784,6 +805,9 @@ msgstr "Handschlag"
 
 msgid "Handshake timeout (seconds):"
 msgstr "Handshake-Timeout (Sekunden):"
+
+msgid "Hide Main Window"
+msgstr "Hauptfenster Ausblenden"
 
 msgid "Hide to system tray when window is minimized"
 msgstr "In Systemleiste ausblenden wenn Fenster minimiert"
@@ -836,6 +860,9 @@ msgstr "Eingehende Verbindungen"
 msgid "Incoming Peer Connections"
 msgstr "Eingehende Peer-Verbindungen"
 
+msgid "Indonesian"
+msgstr "Indonesisch"
+
 msgid "Interested"
 msgstr "Interessiert"
 
@@ -853,6 +880,9 @@ msgstr "Intervall für Peer-Kontakt in Sekunden"
 
 msgid "Interval for sending keep alive messages in seconds"
 msgstr "Intervall für Keep-Alive-Nachrichten in Sekunden"
+
+msgid "Irish"
+msgstr "Irisch"
 
 msgid "Italian"
 msgstr "Italienisch"
@@ -873,7 +903,10 @@ msgid "Korean"
 msgstr "Koreanisch"
 
 msgid "Label"
-msgstr "Bezeichnung"
+msgstr "Beschriftung"
+
+msgid "Language"
+msgstr "Sprache"
 
 msgid "Language switched to"
 msgstr "Sprache gewechselt zu"
@@ -886,6 +919,9 @@ msgstr "Letzte Ankündigung"
 
 msgid "Last Notification"
 msgstr "Letzte Benachrichtigung"
+
+msgid "Launch Main Application"
+msgstr "Hauptanwendung Starten"
 
 msgid "Leechers"
 msgstr "Leecher"
@@ -1053,7 +1089,7 @@ msgid "Next Update"
 msgstr "Nächstes Update"
 
 msgid "No editable options available for this torrent."
-msgstr "No editable options available for this torrent."
+msgstr "Keine bearbeitbaren Optionen für diesen Torrent verfügbar."
 
 msgid "None"
 msgstr "Keine"
@@ -1103,6 +1139,9 @@ msgstr "Pfad"
 msgid "Pause"
 msgstr "Pausieren"
 
+msgid "Pause All Torrents"
+msgstr "Alle Torrents Pausieren"
+
 msgid "Pause torrent"
 msgstr "Torrent pausieren"
 
@@ -1137,10 +1176,13 @@ msgid "Peer request count:"
 msgstr "Peer-Anfrage-Anzahl:"
 
 msgid "Peers"
-msgstr "Gleichgestellte"
+msgstr "Peers"
 
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
 msgstr "Prozentsatz rotierender Verbindungen (0.0 - 1.0)"
+
+msgid "Persian"
+msgstr "Persisch"
 
 msgid "Piece Length"
 msgstr "Stücklänge"
@@ -1155,7 +1197,7 @@ msgid "Polish"
 msgstr "Polnisch"
 
 msgid "Port"
-msgstr "Anschluss"
+msgstr "Port"
 
 msgid "Port for incoming BitTorrent connections (1024-65535)"
 msgstr "Port für eingehende BitTorrent-Verbindungen (1024-65535)"
@@ -1170,10 +1212,10 @@ msgid "Portuguese"
 msgstr "Portugiesisch"
 
 msgid "Preference 1:"
-msgstr "Preference 1:"
+msgstr "Einstellung 1:"
 
 msgid "Preference 2:"
-msgstr "Preference 2:"
+msgstr "Einstellung 2:"
 
 msgid "Preferences"
 msgstr "Einstellungen"
@@ -1286,6 +1328,9 @@ msgstr "Warteschlange"
 msgid "Quit"
 msgstr "Beenden"
 
+msgid "Quit DFakeSeeder"
+msgstr "DFakeSeeder Beenden"
+
 msgid "Random"
 msgstr "Zufällig"
 
@@ -1340,6 +1385,9 @@ msgstr "Auf Standard zurücksetzen"
 msgid "Resume"
 msgstr "Fortsetzen"
 
+msgid "Resume All Torrents"
+msgstr "Alle Torrents Fortsetzen"
+
 msgid "Resume torrent"
 msgstr "Torrent fortsetzen"
 
@@ -1391,6 +1439,9 @@ msgstr "Seeder-Port-Bereich (min):"
 msgid "Seeders"
 msgstr "Seeder"
 
+msgid "Seeding Profile"
+msgstr "Seeding-Profil"
+
 msgid "Seeds"
 msgstr "Seeds"
 
@@ -1421,6 +1472,9 @@ msgstr "Sitzungs-Timeout (Min):"
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Tastenkürzel-Konfiguration noch nicht implementiert"
 
+msgid "Show Main Window"
+msgstr "Hauptfenster Anzeigen"
+
 msgid "Show only selected torrent connections"
 msgstr "Nur ausgewählte Torrent-Verbindungen anzeigen"
 
@@ -1441,6 +1495,9 @@ msgstr "Spanisch"
 
 msgid "Speed"
 msgstr "Geschwindigkeit"
+
+msgid "Speed Control"
+msgstr "Geschwindigkeitskontrolle"
 
 msgid "Speed settings reset to defaults"
 msgstr "Geschwindigkeits-Einstellungen auf Standard zurückgesetzt"
@@ -1476,7 +1533,7 @@ msgid "Stats Update Interval:"
 msgstr "Statistik-Aktualisierungs-Intervall:"
 
 msgid "Status"
-msgstr "Zustand"
+msgstr "Status"
 
 msgid "Status change probability:"
 msgstr "Statusänderungs-Wahrscheinlichkeit:"
@@ -1595,6 +1652,12 @@ msgstr "Transaktions-ID-Bereich (min):"
 msgid "TranslationManager"
 msgstr "TranslationManager"
 
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
 msgid "Transmission"
 msgstr "Transmission"
 
@@ -1606,6 +1669,9 @@ msgstr "Di"
 
 msgid "Tuesday"
 msgstr "Dienstag"
+
+msgid "Turkish"
+msgstr "Türkisch"
 
 msgid "Type"
 msgstr "Typ"
@@ -1715,6 +1781,9 @@ msgstr "Einstellungen bei Änderung validieren"
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
 msgstr "Variation im Client-Verhalten (0.0 = keine Variation, 1.0 = maximale Variation)"
 
+msgid "Vietnamese"
+msgstr "Vietnamesisch"
+
 msgid "Vuze"
 msgstr "Vuze"
 
@@ -1743,7 +1812,7 @@ msgid "address"
 msgstr "Adresse"
 
 msgid "admin"
-msgstr "admin"
+msgstr "Administrator"
 
 msgid "am_choking"
 msgstr "Ich Blockiere"

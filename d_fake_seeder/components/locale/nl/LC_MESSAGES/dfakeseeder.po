@@ -206,6 +206,9 @@ msgstr "Alt. downloadlimiet (KB/s):"
 msgid "Alt upload limit (KB/s):"
 msgstr "Alt. uploadlimiet (KB/s):"
 
+msgid "Alternative Speed Limits"
+msgstr "Alternatieve Snelheidslimieten"
+
 msgid "Alternative download speed limit in KB/s"
 msgstr "Alternatieve downloadsnelheidslimiet in KB/s"
 
@@ -225,7 +228,10 @@ msgid "Announcement Interval:"
 msgstr "Aankondiging Interval:"
 
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "Arabisch"
+
+msgid "Auto Detect"
+msgstr "Automatisch Detecteren"
 
 msgid "Auto-bootstrap DHT"
 msgstr "DHT auto-bootstrap"
@@ -281,6 +287,9 @@ msgstr "Gedragsanalyse waarschijnlijkheid:"
 msgid "Behavior randomization"
 msgstr "Gedrag randomisatie"
 
+msgid "Bengali"
+msgstr "Bengaals"
+
 msgid "BiglyBT"
 msgstr "BiglyBT"
 
@@ -333,7 +342,7 @@ msgid "Clear search"
 msgstr "Zoekopdracht wissen"
 
 msgid "Client"
-msgstr "Client"
+msgstr "Cliënt"
 
 msgid "Client Switch Probability:"
 msgstr "Client Wissel Kans:"
@@ -361,6 +370,9 @@ msgstr "Verbonden op"
 
 msgid "Connected Peers / Total Peers"
 msgstr "Verbonden Peers / Totaal Peers"
+
+msgid "Connected to DFakeSeeder"
+msgstr "Verbonden met DFakeSeeder"
 
 msgid "Connection"
 msgstr "Verbinding"
@@ -431,6 +443,9 @@ msgstr "D' Fake Seeder"
 msgid "DEBUG"
 msgstr "DEBUGGEN"
 
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
 msgid "DHT"
 msgstr "DHT"
 
@@ -454,6 +469,9 @@ msgstr "Uitgeschakeld"
 
 msgid "Disconnected"
 msgstr "Verbroken"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Verbinding verbroken met DFakeSeeder"
 
 msgid "Disk cache size (MB):"
 msgstr "Schijfcache grootte (MB):"
@@ -498,7 +516,7 @@ msgid "Dropout probability:"
 msgstr "Uitvalwaarschijnlijkheid:"
 
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "Nederlands"
 
 msgid "Dynamic profile switching"
 msgstr "Dynamisch profiel wisselen"
@@ -683,6 +701,9 @@ msgstr "Extensie Time-out:"
 msgid "Extension statistics update interval (seconds)"
 msgstr "Extensie statistieken update interval (seconden)"
 
+msgid "Failed to apply seeding profile"
+msgstr "Kon seedprofiel niet toepassen"
+
 msgid "Failure Reason"
 msgstr "Faalreden"
 
@@ -690,7 +711,7 @@ msgid "Fall back to TCP if µTP fails"
 msgstr "Terugvallen op TCP als µTP faalt"
 
 msgid "Fallback configuration"
-msgstr "Fallback configuration"
+msgstr "Terugvalconfiguratie"
 
 msgid "Fast Extension (BEP-006)"
 msgstr "Snelle Extensie (BEP-006)"
@@ -738,7 +759,7 @@ msgid "General timeout for extension operations (seconds)"
 msgstr "Algemene time-out voor extensie operaties (seconden)"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "AlgemeenTab"
 
 msgid "Generate Secure Password"
 msgstr "Veilig wachtwoord genereren"
@@ -784,6 +805,9 @@ msgstr "Handdruk"
 
 msgid "Handshake timeout (seconds):"
 msgstr "Handshake timeout (seconden):"
+
+msgid "Hide Main Window"
+msgstr "Verberg Hoofdvenster"
 
 msgid "Hide to system tray when window is minimized"
 msgstr "Verbergen in systeemvak wanneer venster geminimaliseerd is"
@@ -836,6 +860,9 @@ msgstr "Inkomende Verbindingen"
 msgid "Incoming Peer Connections"
 msgstr "Inkomende Peer Verbindingen"
 
+msgid "Indonesian"
+msgstr "Indonesisch"
+
 msgid "Interested"
 msgstr "Geïnteresseerd"
 
@@ -854,6 +881,9 @@ msgstr "Interval voor contact met peers in seconden"
 msgid "Interval for sending keep alive messages in seconds"
 msgstr "Interval voor verzenden keep alive berichten in seconden"
 
+msgid "Irish"
+msgstr "Iers"
+
 msgid "Italian"
 msgstr "Italiaans"
 
@@ -861,7 +891,7 @@ msgid "Japanese"
 msgstr "Japans"
 
 msgid "Keep Alive Interval:"
-msgstr "Keep Alive Interval:"
+msgstr "Keep Alive-interval:"
 
 msgid "Keep alive interval (seconds):"
 msgstr "Keep alive interval (seconden):"
@@ -870,10 +900,13 @@ msgid "Keep alive interval for connections (seconds)"
 msgstr "Keep alive interval voor verbindingen (seconden)"
 
 msgid "Korean"
-msgstr "Korean"
+msgstr "Koreaans"
 
 msgid "Label"
 msgstr "Label"
+
+msgid "Language"
+msgstr "Taal"
 
 msgid "Language switched to"
 msgstr "Taal gewijzigd naar"
@@ -886,6 +919,9 @@ msgstr "Laatste aankondiging"
 
 msgid "Last Notification"
 msgstr "Laatste Notificatie"
+
+msgid "Launch Main Application"
+msgstr "Start Hoofdapplicatie"
 
 msgid "Leechers"
 msgstr "Leechers"
@@ -924,7 +960,7 @@ msgid "Max Messages/Second:"
 msgstr "Max Berichten/Seconde:"
 
 msgid "Max Nodes:"
-msgstr "Max Nodes:"
+msgstr "Max Knooppunten:"
 
 msgid "Max Peers/Message:"
 msgstr "Max Peers/Bericht:"
@@ -1053,7 +1089,7 @@ msgid "Next Update"
 msgstr "Volgende Update"
 
 msgid "No editable options available for this torrent."
-msgstr "No editable options available for this torrent."
+msgstr "Geen bewerkbare opties beschikbaar voor deze torrent."
 
 msgid "None"
 msgstr "Geen"
@@ -1103,6 +1139,9 @@ msgstr "Pad"
 msgid "Pause"
 msgstr "Pauzeren"
 
+msgid "Pause All Torrents"
+msgstr "Pauzeer Alle Torrents"
+
 msgid "Pause torrent"
 msgstr "Torrent pauzeren"
 
@@ -1142,6 +1181,9 @@ msgstr "Peers"
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
 msgstr "Percentage verbindingen om te roteren (0.0 - 1.0)"
 
+msgid "Persian"
+msgstr "Perzisch"
+
 msgid "Piece Length"
 msgstr "Stuklengte"
 
@@ -1152,7 +1194,7 @@ msgid "Pieces Received"
 msgstr "Stukken ontvangen"
 
 msgid "Polish"
-msgstr "Polish"
+msgstr "Pools"
 
 msgid "Port"
 msgstr "Poort"
@@ -1170,10 +1212,10 @@ msgid "Portuguese"
 msgstr "Portugees"
 
 msgid "Preference 1:"
-msgstr "Preference 1:"
+msgstr "Voorkeur 1:"
 
 msgid "Preference 2:"
-msgstr "Preference 2:"
+msgstr "Voorkeur 2:"
 
 msgid "Preferences"
 msgstr "Voorkeuren"
@@ -1286,6 +1328,9 @@ msgstr "Wachtrij"
 msgid "Quit"
 msgstr "Afsluiten"
 
+msgid "Quit DFakeSeeder"
+msgstr "Sluit DFakeSeeder"
+
 msgid "Random"
 msgstr "Willekeurig"
 
@@ -1340,6 +1385,9 @@ msgstr "Herstellen naar standaard"
 msgid "Resume"
 msgstr "Hervatten"
 
+msgid "Resume All Torrents"
+msgstr "Hervat Alle Torrents"
+
 msgid "Resume torrent"
 msgstr "Torrent hervatten"
 
@@ -1391,6 +1439,9 @@ msgstr "Seeder poortbereik (min):"
 msgid "Seeders"
 msgstr "Seeders"
 
+msgid "Seeding Profile"
+msgstr "Seedprofiel"
+
 msgid "Seeds"
 msgstr "Seeds"
 
@@ -1410,16 +1461,19 @@ msgid "Server:"
 msgstr "Server:"
 
 msgid "Session Downloaded"
-msgstr "会话下载"
+msgstr "Sessie Gedownload"
 
 msgid "Session Uploaded"
-msgstr "会话上传"
+msgstr "Sessie Geüpload"
 
 msgid "Session timeout (min):"
 msgstr "Sessie timeout (min):"
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Snelkoppeling configuratie nog niet geïmplementeerd"
+
+msgid "Show Main Window"
+msgstr "Toon Hoofdvenster"
 
 msgid "Show only selected torrent connections"
 msgstr "Alleen geselecteerde torrent verbindingen tonen"
@@ -1441,6 +1495,9 @@ msgstr "Spaans"
 
 msgid "Speed"
 msgstr "Snelheid"
+
+msgid "Speed Control"
+msgstr "Snelheidscontrole"
 
 msgid "Speed settings reset to defaults"
 msgstr "Snelheid instellingen gereset naar standaard"
@@ -1491,7 +1548,7 @@ msgid "Sunday"
 msgstr "Zondag"
 
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "Zweeds"
 
 msgid "Synthetic Peer Count:"
 msgstr "Synthetische Peer Aantal:"
@@ -1595,6 +1652,12 @@ msgstr "Transactie ID bereik (min):"
 msgid "TranslationManager"
 msgstr "TranslationManager"
 
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
 msgid "Transmission"
 msgstr "Transmission"
 
@@ -1606,6 +1669,9 @@ msgstr "Di"
 
 msgid "Tuesday"
 msgstr "Dinsdag"
+
+msgid "Turkish"
+msgstr "Turks"
 
 msgid "Type"
 msgstr "Type"
@@ -1715,6 +1781,9 @@ msgstr "Instellingen valideren bij wijziging"
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
 msgstr "Variatie in client gedrag (0.0 = geen variatie, 1.0 = maximale variatie)"
 
+msgid "Vietnamese"
+msgstr "Vietnamees"
+
 msgid "Vuze"
 msgstr "Vuze"
 
@@ -1737,13 +1806,13 @@ msgid "Wednesday"
 msgstr "Woensdag"
 
 msgid "active"
-msgstr "Actief"
+msgstr "actief"
 
 msgid "address"
-msgstr "地址"
+msgstr "adres"
 
 msgid "admin"
-msgstr "admin"
+msgstr "beheerder"
 
 msgid "am_choking"
 msgstr "Ik blokkeer"
@@ -1758,19 +1827,19 @@ msgid "bytes"
 msgstr "bytes"
 
 msgid "bytes_downloaded"
-msgstr "字节已下载"
+msgstr "bytes gedownload"
 
 msgid "bytes_uploaded"
-msgstr "字节已上传"
+msgstr "bytes geüpload"
 
 msgid "class_name"
 msgstr "klassenaam"
 
 msgid "client"
-msgstr "客户端"
+msgstr "client"
 
 msgid "connection_time"
-msgstr "连接时间"
+msgstr "verbindingstijd"
 
 msgid "download_rate"
 msgstr "Downloadsnelheid"
@@ -1866,7 +1935,7 @@ msgid "small_torrent_limit"
 msgstr "Klein Torrent Limiet"
 
 msgid "status"
-msgstr "状态"
+msgstr "status"
 
 msgid "threshold"
 msgstr "Drempel"
@@ -1887,7 +1956,7 @@ msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
 
 msgid "upload_rate"
-msgstr "Upload Rate"
+msgstr "uploadsnelheid"
 
 msgid "upload_speed"
 msgstr "Uploadsnelheid"

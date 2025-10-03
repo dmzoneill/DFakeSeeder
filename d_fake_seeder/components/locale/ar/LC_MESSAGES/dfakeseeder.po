@@ -206,6 +206,9 @@ msgstr "حد التنزيل البديل (كيلوبايت/ثانية):"
 msgid "Alt upload limit (KB/s):"
 msgstr "حد الرفع البديل (كيلوبايت/ثانية):"
 
+msgid "Alternative Speed Limits"
+msgstr "حدود السرعة البديلة"
+
 msgid "Alternative download speed limit in KB/s"
 msgstr "حد سرعة التنزيل البديل بالكيلوبايت/ثانية"
 
@@ -225,7 +228,10 @@ msgid "Announcement Interval:"
 msgstr "فترة الإعلان:"
 
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "العربية"
+
+msgid "Auto Detect"
+msgstr "الكشف التلقائي"
 
 msgid "Auto-bootstrap DHT"
 msgstr "تمهيد DHT تلقائياً"
@@ -280,6 +286,9 @@ msgstr "احتمالية تحليل السلوك:"
 
 msgid "Behavior randomization"
 msgstr "عشوائية السلوك"
+
+msgid "Bengali"
+msgstr "البنغالية"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
@@ -362,6 +371,9 @@ msgstr "متصل في"
 msgid "Connected Peers / Total Peers"
 msgstr "الأقران المتصلون / إجمالي الأقران"
 
+msgid "Connected to DFakeSeeder"
+msgstr "متصل بـ DFakeSeeder"
+
 msgid "Connection"
 msgstr "الاتصال"
 
@@ -431,6 +443,9 @@ msgstr "D' Fake Seeder"
 msgid "DEBUG"
 msgstr "تصحيح"
 
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
 msgid "DHT"
 msgstr "DHT"
 
@@ -454,6 +469,9 @@ msgstr "معطل"
 
 msgid "Disconnected"
 msgstr "منقطع"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Disconnected from DFakeSeeder"
 
 msgid "Disk cache size (MB):"
 msgstr "حجم ذاكرة التخزين المؤقت (ميجابايت):"
@@ -498,7 +516,7 @@ msgid "Dropout probability:"
 msgstr "احتمالية الانقطاع:"
 
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "الهولندية"
 
 msgid "Dynamic profile switching"
 msgstr "تبديل الملف الشخصي الديناميكي"
@@ -683,6 +701,9 @@ msgstr "انتهاء مهلة التمديد:"
 msgid "Extension statistics update interval (seconds)"
 msgstr "فترة تحديث إحصائيات التمديد (ثواني)"
 
+msgid "Failed to apply seeding profile"
+msgstr "فشل تطبيق ملف تعريف البذر"
+
 msgid "Failure Reason"
 msgstr "سبب الفشل"
 
@@ -690,7 +711,7 @@ msgid "Fall back to TCP if µTP fails"
 msgstr "الرجوع إلى TCP إذا فشل µTP"
 
 msgid "Fallback configuration"
-msgstr "Fallback configuration"
+msgstr "التكوين الاحتياطي"
 
 msgid "Fast Extension (BEP-006)"
 msgstr "التمديد السريع (BEP-006)"
@@ -738,7 +759,7 @@ msgid "General timeout for extension operations (seconds)"
 msgstr "انتهاء المهلة العام لعمليات التمديد (ثواني)"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "التبويب العام"
 
 msgid "Generate Secure Password"
 msgstr "إنشاء كلمة مرور آمنة"
@@ -785,11 +806,14 @@ msgstr "المصافحة"
 msgid "Handshake timeout (seconds):"
 msgstr "انتهاء مهلة المصافحة (ثواني):"
 
+msgid "Hide Main Window"
+msgstr "إخفاء النافذة الرئيسية"
+
 msgid "Hide to system tray when window is minimized"
 msgstr "إخفاء إلى شريط النظام عند تصغير النافذة"
 
 msgid "Hindi"
-msgstr "Hindi"
+msgstr "الهندية"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "كم مرة للإعلان للمتتبعات (60-7200 ثانية)"
@@ -836,6 +860,9 @@ msgstr "الاتصالات الواردة"
 msgid "Incoming Peer Connections"
 msgstr "اتصالات الأقران الواردة"
 
+msgid "Indonesian"
+msgstr "الإندونيسية"
+
 msgid "Interested"
 msgstr "مهتم"
 
@@ -854,6 +881,9 @@ msgstr "فترة الاتصال بالأقران بالثواني"
 msgid "Interval for sending keep alive messages in seconds"
 msgstr "فترة إرسال رسائل الإبقاء على قيد الحياة بالثواني"
 
+msgid "Irish"
+msgstr "الأيرلندية"
+
 msgid "Italian"
 msgstr "الإيطالية"
 
@@ -870,10 +900,13 @@ msgid "Keep alive interval for connections (seconds)"
 msgstr "فترة الإبقاء على قيد الحياة للاتصالات (ثواني)"
 
 msgid "Korean"
-msgstr "Korean"
+msgstr "الكورية"
 
 msgid "Label"
-msgstr "التسمية"
+msgstr "العنوان"
+
+msgid "Language"
+msgstr "اللغة"
 
 msgid "Language switched to"
 msgstr "تم تغيير اللغة إلى"
@@ -887,8 +920,11 @@ msgstr "آخر إعلان"
 msgid "Last Notification"
 msgstr "آخر إشعار"
 
+msgid "Launch Main Application"
+msgstr "تشغيل التطبيق الرئيسي"
+
 msgid "Leechers"
-msgstr "المتحملون"
+msgstr "المستفيدون"
 
 msgid "Level of BitTorrent protocol compliance"
 msgstr "مستوى الامتثال لبروتوكول BitTorrent"
@@ -999,7 +1035,7 @@ msgid "Maximum transaction ID for tracker communication"
 msgstr "الحد الأقصى لمعرف المعاملة لاتصال المتتبع"
 
 msgid "Message"
-msgstr "الرسالة"
+msgstr "رسالة"
 
 msgid "Message read timeout (seconds):"
 msgstr "انتهاء مهلة قراءة الرسالة (ثواني):"
@@ -1053,7 +1089,7 @@ msgid "Next Update"
 msgstr "التحديث التالي"
 
 msgid "No editable options available for this torrent."
-msgstr "No editable options available for this torrent."
+msgstr "لا توجد خيارات قابلة للتحرير متاحة لهذا التورنت."
 
 msgid "None"
 msgstr "لا شيء"
@@ -1103,6 +1139,9 @@ msgstr "المسار"
 msgid "Pause"
 msgstr "إيقاف مؤقت"
 
+msgid "Pause All Torrents"
+msgstr "إيقاف جميع التورنتات مؤقتًا"
+
 msgid "Pause torrent"
 msgstr "إيقاف التورنت مؤقتاً"
 
@@ -1137,10 +1176,13 @@ msgid "Peer request count:"
 msgstr "عدد طلبات الأقران:"
 
 msgid "Peers"
-msgstr "الأقران"
+msgstr "النظراء"
 
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
 msgstr "نسبة الاتصالات للتدوير (0.0 - 1.0)"
+
+msgid "Persian"
+msgstr "الفارسية"
 
 msgid "Piece Length"
 msgstr "طول القطعة"
@@ -1152,10 +1194,10 @@ msgid "Pieces Received"
 msgstr "القطع المستلمة"
 
 msgid "Polish"
-msgstr "Polish"
+msgstr "البولندية"
 
 msgid "Port"
-msgstr "المنفذ"
+msgstr "منفذ"
 
 msgid "Port for incoming BitTorrent connections (1024-65535)"
 msgstr "المنفذ لاتصالات BitTorrent الواردة (1024-65535)"
@@ -1170,10 +1212,10 @@ msgid "Portuguese"
 msgstr "البرتغالية"
 
 msgid "Preference 1:"
-msgstr "Preference 1:"
+msgstr "التفضيل 1:"
 
 msgid "Preference 2:"
-msgstr "Preference 2:"
+msgstr "التفضيل 2:"
 
 msgid "Preferences"
 msgstr "التفضيلات"
@@ -1286,6 +1328,9 @@ msgstr "الطابور"
 msgid "Quit"
 msgstr "خروج"
 
+msgid "Quit DFakeSeeder"
+msgstr "إنهاء DFakeSeeder"
+
 msgid "Random"
 msgstr "عشوائي"
 
@@ -1340,6 +1385,9 @@ msgstr "إعادة تعيين للافتراضية"
 msgid "Resume"
 msgstr "استئناف"
 
+msgid "Resume All Torrents"
+msgstr "استئناف جميع التورنتات"
+
 msgid "Resume torrent"
 msgstr "استئناف التورنت"
 
@@ -1391,6 +1439,9 @@ msgstr "نطاق منفذ المشارك (الحد الأدنى):"
 msgid "Seeders"
 msgstr "المشاركون"
 
+msgid "Seeding Profile"
+msgstr "ملف تعريف البذر"
+
 msgid "Seeds"
 msgstr "البذور"
 
@@ -1421,6 +1472,9 @@ msgstr "انتهاء مهلة الجلسة (دقيقة):"
 msgid "Shortcuts configuration not yet implemented"
 msgstr "تكوين الاختصارات غير مُطبَّق بعد"
 
+msgid "Show Main Window"
+msgstr "عرض النافذة الرئيسية"
+
 msgid "Show only selected torrent connections"
 msgstr "إظهار اتصالات التورنت المحدد فقط"
 
@@ -1441,6 +1495,9 @@ msgstr "الإسبانية"
 
 msgid "Speed"
 msgstr "السرعة"
+
+msgid "Speed Control"
+msgstr "التحكم في السرعة"
 
 msgid "Speed settings reset to defaults"
 msgstr "إعادة تعيين إعدادات السرعة للافتراضية"
@@ -1491,7 +1548,7 @@ msgid "Sunday"
 msgstr "الأحد"
 
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "السويدية"
 
 msgid "Synthetic Peer Count:"
 msgstr "عدد الأقران الاصطناعيين:"
@@ -1548,13 +1605,13 @@ msgid "Top"
 msgstr "الأعلى"
 
 msgid "Torrent"
-msgstr "التورنت"
+msgstr "تورنت"
 
 msgid "Torrent Files"
 msgstr "ملفات التورنت"
 
 msgid "Torrents"
-msgstr "التورنت"
+msgstr "تورنتات"
 
 msgid "Total Downloaded"
 msgstr "إجمالي التحميل"
@@ -1572,7 +1629,7 @@ msgid "Track extension usage statistics"
 msgstr "تتبع إحصائيات استخدام التمديد"
 
 msgid "Tracker"
-msgstr "المتتبع"
+msgstr "متتبع"
 
 msgid "Tracker URL"
 msgstr "رابط المتتبع"
@@ -1595,6 +1652,12 @@ msgstr "نطاق معرف المعاملة (الحد الأدنى):"
 msgid "TranslationManager"
 msgstr "TranslationManager"
 
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
 msgid "Transmission"
 msgstr "Transmission"
 
@@ -1606,6 +1669,9 @@ msgstr "ثلاثاء"
 
 msgid "Tuesday"
 msgstr "الثلاثاء"
+
+msgid "Turkish"
+msgstr "التركية"
 
 msgid "Type"
 msgstr "النوع"
@@ -1623,7 +1689,7 @@ msgid "UI refresh rate (sec):"
 msgstr "معدل تحديث الواجهة (ثانية):"
 
 msgid "URL"
-msgstr "الرابط"
+msgstr "URL"
 
 msgid "URL: http://localhost:8080"
 msgstr "الرابط: http://localhost:8080"
@@ -1715,6 +1781,9 @@ msgstr "التحقق من الإعدادات عند التغيير"
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
 msgstr "التنوع في سلوك العميل (0.0 = لا تنوع، 1.0 = الحد الأقصى للتنوع)"
 
+msgid "Vietnamese"
+msgstr "الفيتنامية"
+
 msgid "Vuze"
 msgstr "Vuze"
 
@@ -1743,7 +1812,7 @@ msgid "address"
 msgstr "地址"
 
 msgid "admin"
-msgstr "مدير"
+msgstr "مسؤول"
 
 msgid "am_choking"
 msgstr "أخنق"
@@ -1755,7 +1824,7 @@ msgid "announce_interval"
 msgstr "فترة الإعلان"
 
 msgid "bytes"
-msgstr "بايت"
+msgstr "بايتات"
 
 msgid "bytes_downloaded"
 msgstr "字节已下载"
@@ -1794,7 +1863,7 @@ msgid "id"
 msgstr "#"
 
 msgid "leechers"
-msgstr "المحملون"
+msgstr "المستفيدون"
 
 msgid "log_tab"
 msgstr "تبويب_السجل"
@@ -1887,7 +1956,7 @@ msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
 
 msgid "upload_rate"
-msgstr "Upload Rate"
+msgstr "معدل الرفع"
 
 msgid "upload_speed"
 msgstr "سرعة الرفع"

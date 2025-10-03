@@ -206,6 +206,9 @@ msgstr "Alt. nedladdningsgräns (KB/s):"
 msgid "Alt upload limit (KB/s):"
 msgstr "Alt. uppladdningsgräns (KB/s):"
 
+msgid "Alternative Speed Limits"
+msgstr "Alternativa Hastighetsgränser"
+
 msgid "Alternative download speed limit in KB/s"
 msgstr "Alternativ nedladdningshastighetsgräns i KB/s"
 
@@ -225,10 +228,13 @@ msgid "Announcement Interval:"
 msgstr "Meddelningsintervall:"
 
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "Arabiska"
+
+msgid "Auto Detect"
+msgstr "Automatisk Detektering"
 
 msgid "Auto-bootstrap DHT"
-msgstr "Auto-bootstrap DHT"
+msgstr "Automatisk DHT-bootstrap"
 
 msgid "Auto-generate node ID"
 msgstr "Auto-generera nod-ID"
@@ -280,6 +286,9 @@ msgstr "Beteendeanalyse sannolikhet:"
 
 msgid "Behavior randomization"
 msgstr "Beteenderandomisering"
+
+msgid "Bengali"
+msgstr "Bengali"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
@@ -362,6 +371,9 @@ msgstr "Ansluten vid"
 msgid "Connected Peers / Total Peers"
 msgstr "Anslutna Peers / Totalt Peers"
 
+msgid "Connected to DFakeSeeder"
+msgstr "Ansluten till DFakeSeeder"
+
 msgid "Connection"
 msgstr "Anslutning"
 
@@ -431,6 +443,9 @@ msgstr "D' Fake Seeder"
 msgid "DEBUG"
 msgstr "FELSÖK"
 
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
 msgid "DHT"
 msgstr "DHT"
 
@@ -454,6 +469,9 @@ msgstr "Avaktiverad"
 
 msgid "Disconnected"
 msgstr "Frånkopplad"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Frånkopplad från DFakeSeeder"
 
 msgid "Disk cache size (MB):"
 msgstr "Diskcache storlek (MB):"
@@ -498,7 +516,7 @@ msgid "Dropout probability:"
 msgstr "Utfallssannolikhet:"
 
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "Nederländska"
 
 msgid "Dynamic profile switching"
 msgstr "Dynamisk profilväxling"
@@ -683,6 +701,9 @@ msgstr "Tilläggstimeout:"
 msgid "Extension statistics update interval (seconds)"
 msgstr "Statistikuppdateringsintervall för tillägg (sekunder)"
 
+msgid "Failed to apply seeding profile"
+msgstr "Kunde inte tillämpa seedingprofil"
+
 msgid "Failure Reason"
 msgstr "Felorsak"
 
@@ -690,7 +711,7 @@ msgid "Fall back to TCP if µTP fails"
 msgstr "Falla tillbaka till TCP om µTP misslyckas"
 
 msgid "Fallback configuration"
-msgstr "Fallback configuration"
+msgstr "Reservkonfiguration"
 
 msgid "Fast Extension (BEP-006)"
 msgstr "Snabbtillägg (BEP-006)"
@@ -785,6 +806,9 @@ msgstr "Handskakning"
 msgid "Handshake timeout (seconds):"
 msgstr "Handskaknings timeout (sekunder):"
 
+msgid "Hide Main Window"
+msgstr "Dölj Huvudfönster"
+
 msgid "Hide to system tray when window is minimized"
 msgstr "Dölj i systemfältet när fönstret minimeras"
 
@@ -836,6 +860,9 @@ msgstr "Inkommande anslutningar"
 msgid "Incoming Peer Connections"
 msgstr "Inkommande Peer-anslutningar"
 
+msgid "Indonesian"
+msgstr "Indonesiska"
+
 msgid "Interested"
 msgstr "Intresserad"
 
@@ -854,6 +881,9 @@ msgstr "Intervall för att kontakta peers i sekunder"
 msgid "Interval for sending keep alive messages in seconds"
 msgstr "Intervall för att skicka keep alive-meddelanden i sekunder"
 
+msgid "Irish"
+msgstr "Irländska"
+
 msgid "Italian"
 msgstr "Italienska"
 
@@ -870,10 +900,13 @@ msgid "Keep alive interval for connections (seconds)"
 msgstr "Keep alive-intervall för anslutningar (sekunder)"
 
 msgid "Korean"
-msgstr "Korean"
+msgstr "Koreanska"
 
 msgid "Label"
 msgstr "Etikett"
+
+msgid "Language"
+msgstr "Språk"
 
 msgid "Language switched to"
 msgstr "Språk bytt till"
@@ -887,8 +920,11 @@ msgstr "Senaste annonsering"
 msgid "Last Notification"
 msgstr "Senaste Meddelande"
 
+msgid "Launch Main Application"
+msgstr "Starta Huvudapplikation"
+
 msgid "Leechers"
-msgstr "Leechere"
+msgstr "Leechers"
 
 msgid "Level of BitTorrent protocol compliance"
 msgstr "Nivå av BitTorrent-protokollefterlevnad"
@@ -939,7 +975,7 @@ msgid "Max log file size (MB):"
 msgstr "Max loggfilsstorlek (MB):"
 
 msgid "Max per torrent:"
-msgstr "Max per torrent:"
+msgstr "Max. per torrent:"
 
 msgid "Max upload slots:"
 msgstr "Max uppladdningsplatser:"
@@ -1053,7 +1089,7 @@ msgid "Next Update"
 msgstr "Nästa Uppdatering"
 
 msgid "No editable options available for this torrent."
-msgstr "No editable options available for this torrent."
+msgstr "Inga redigerbara alternativ tillgängliga för denna torrent."
 
 msgid "None"
 msgstr "Ingen"
@@ -1103,6 +1139,9 @@ msgstr "Sökväg"
 msgid "Pause"
 msgstr "Pausa"
 
+msgid "Pause All Torrents"
+msgstr "Pausa Alla Torrenter"
+
 msgid "Pause torrent"
 msgstr "Pausa torrent"
 
@@ -1137,10 +1176,13 @@ msgid "Peer request count:"
 msgstr "Peer begärandeantal:"
 
 msgid "Peers"
-msgstr "Kamrater"
+msgstr "Peers"
 
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
 msgstr "Procent av anslutningar att rotera (0.0 - 1.0)"
+
+msgid "Persian"
+msgstr "Persiska"
 
 msgid "Piece Length"
 msgstr "Styckeslängd"
@@ -1152,10 +1194,10 @@ msgid "Pieces Received"
 msgstr "Mottagna delar"
 
 msgid "Polish"
-msgstr "Polish"
+msgstr "Polska"
 
 msgid "Port"
-msgstr "Hamn"
+msgstr "Port"
 
 msgid "Port for incoming BitTorrent connections (1024-65535)"
 msgstr "Port för inkommande BitTorrent-anslutningar (1024-65535)"
@@ -1170,10 +1212,10 @@ msgid "Portuguese"
 msgstr "Portugisiska"
 
 msgid "Preference 1:"
-msgstr "Preference 1:"
+msgstr "Inställning 1:"
 
 msgid "Preference 2:"
-msgstr "Preference 2:"
+msgstr "Inställning 2:"
 
 msgid "Preferences"
 msgstr "Inställningar"
@@ -1286,6 +1328,9 @@ msgstr "Kö"
 msgid "Quit"
 msgstr "Avsluta"
 
+msgid "Quit DFakeSeeder"
+msgstr "Avsluta DFakeSeeder"
+
 msgid "Random"
 msgstr "Slumpmässig"
 
@@ -1340,6 +1385,9 @@ msgstr "Återställ till standard"
 msgid "Resume"
 msgstr "Återuppta"
 
+msgid "Resume All Torrents"
+msgstr "Återuppta Alla Torrenter"
+
 msgid "Resume torrent"
 msgstr "Återuppta torrent"
 
@@ -1389,7 +1437,10 @@ msgid "Seeder port range (min):"
 msgstr "Seeder portområde (min):"
 
 msgid "Seeders"
-msgstr "Seedrar"
+msgstr "Seeders"
+
+msgid "Seeding Profile"
+msgstr "Seedingprofil"
 
 msgid "Seeds"
 msgstr "Frön"
@@ -1410,16 +1461,19 @@ msgid "Server:"
 msgstr "Server:"
 
 msgid "Session Downloaded"
-msgstr "会话下载"
+msgstr "Session Nedladdat"
 
 msgid "Session Uploaded"
-msgstr "会话上传"
+msgstr "Session Uppladdat"
 
 msgid "Session timeout (min):"
 msgstr "Sessions timeout (min):"
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Genvägarskonfiguration ännu inte implementerad"
+
+msgid "Show Main Window"
+msgstr "Visa Huvudfönster"
 
 msgid "Show only selected torrent connections"
 msgstr "Visa endast valda torrent-anslutningar"
@@ -1441,6 +1495,9 @@ msgstr "Spanska"
 
 msgid "Speed"
 msgstr "Hastighet"
+
+msgid "Speed Control"
+msgstr "Hastighetskontroll"
 
 msgid "Speed settings reset to defaults"
 msgstr "Hastighetsinställningar återställda till standard"
@@ -1476,7 +1533,7 @@ msgid "Stats Update Interval:"
 msgstr "Statistikuppdateringsintervall:"
 
 msgid "Status"
-msgstr "Tillstånd"
+msgstr "Status"
 
 msgid "Status change probability:"
 msgstr "Statusändringssannolikhet:"
@@ -1491,7 +1548,7 @@ msgid "Sunday"
 msgstr "Söndag"
 
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "Svenska"
 
 msgid "Synthetic Peer Count:"
 msgstr "Syntetisk peer-antal:"
@@ -1595,6 +1652,12 @@ msgstr "Transaktions-ID-område (min):"
 msgid "TranslationManager"
 msgstr "TranslationManager"
 
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
 msgid "Transmission"
 msgstr "Transmission"
 
@@ -1606,6 +1669,9 @@ msgstr "Tis"
 
 msgid "Tuesday"
 msgstr "Tisdag"
+
+msgid "Turkish"
+msgstr "Turkiska"
 
 msgid "Type"
 msgstr "Typ"
@@ -1623,7 +1689,7 @@ msgid "UI refresh rate (sec):"
 msgstr "UI uppdateringsfrekvens (sek):"
 
 msgid "URL"
-msgstr "Adress"
+msgstr "URL"
 
 msgid "URL: http://localhost:8080"
 msgstr "Adress: http://localhost:8080"
@@ -1715,6 +1781,9 @@ msgstr "Validera inställningar vid ändring"
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
 msgstr "Variation i klientbeteende (0.0 = ingen variation, 1.0 = maximal variation)"
 
+msgid "Vietnamese"
+msgstr "Vietnamesiska"
+
 msgid "Vuze"
 msgstr "Vuze"
 
@@ -1737,13 +1806,13 @@ msgid "Wednesday"
 msgstr "Onsdag"
 
 msgid "active"
-msgstr "Aktiv"
+msgstr "aktiv"
 
 msgid "address"
-msgstr "地址"
+msgstr "adress"
 
 msgid "admin"
-msgstr "admin"
+msgstr "administratör"
 
 msgid "am_choking"
 msgstr "Jag stryper"
@@ -1758,19 +1827,19 @@ msgid "bytes"
 msgstr "bytes"
 
 msgid "bytes_downloaded"
-msgstr "字节已下载"
+msgstr "bytes nedladdade"
 
 msgid "bytes_uploaded"
-msgstr "字节已上传"
+msgstr "bytes uppladdade"
 
 msgid "class_name"
 msgstr "klassnamn"
 
 msgid "client"
-msgstr "客户端"
+msgstr "klient"
 
 msgid "connection_time"
-msgstr "连接时间"
+msgstr "anslutningstid"
 
 msgid "download_rate"
 msgstr "Nedladdningshastighet"
@@ -1866,7 +1935,7 @@ msgid "small_torrent_limit"
 msgstr "Liten Torrent Gräns"
 
 msgid "status"
-msgstr "状态"
+msgstr "status"
 
 msgid "threshold"
 msgstr "Tröskel"
@@ -1887,7 +1956,7 @@ msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
 
 msgid "upload_rate"
-msgstr "Upload Rate"
+msgstr "uppladdningshastighet"
 
 msgid "upload_speed"
 msgstr "Uppladdningshastighet"

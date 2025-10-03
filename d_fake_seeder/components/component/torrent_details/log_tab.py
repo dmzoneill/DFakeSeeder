@@ -140,7 +140,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
                 self._log_message_queue.clear()
 
                 # Single UI update for all messages
-                GLib.idle_add(lambda: self._update_text_buffer(combined_msg))
+                GLib.idle_add(lambda: (self._update_text_buffer(combined_msg), False)[1])
 
         except Exception as e:
             self.logger.error(f"Error flushing log messages: {e}")

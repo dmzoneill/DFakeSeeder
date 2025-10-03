@@ -206,6 +206,9 @@ msgstr "Alt. limit pobierania (KB/s):"
 msgid "Alt upload limit (KB/s):"
 msgstr "Alt. limit wysyłania (KB/s):"
 
+msgid "Alternative Speed Limits"
+msgstr "Alternatywne Limity Prędkości"
+
 msgid "Alternative download speed limit in KB/s"
 msgstr "Alternatywny limit prędkości pobierania w KB/s"
 
@@ -225,10 +228,13 @@ msgid "Announcement Interval:"
 msgstr "Interwał ogłoszeń:"
 
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "Arabski"
+
+msgid "Auto Detect"
+msgstr "Automatyczne Wykrywanie"
 
 msgid "Auto-bootstrap DHT"
-msgstr "Auto-bootstrap DHT"
+msgstr "Automatyczny bootstrap DHT"
 
 msgid "Auto-generate node ID"
 msgstr "Automatyczne generowanie ID węzła"
@@ -280,6 +286,9 @@ msgstr "Prawdopodobieństwo analizy zachowania:"
 
 msgid "Behavior randomization"
 msgstr "Randomizacja zachowania"
+
+msgid "Bengali"
+msgstr "Bengalski"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
@@ -362,6 +371,9 @@ msgstr "Połączono o"
 msgid "Connected Peers / Total Peers"
 msgstr "Połączeni peerzy / Łącznie peerów"
 
+msgid "Connected to DFakeSeeder"
+msgstr "Połączono z DFakeSeeder"
+
 msgid "Connection"
 msgstr "Połączenie"
 
@@ -431,6 +443,9 @@ msgstr "D' Fake Seeder"
 msgid "DEBUG"
 msgstr "DEBUGOWANIE"
 
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
 msgid "DHT"
 msgstr "DHT"
 
@@ -454,6 +469,9 @@ msgstr "Wyłączony"
 
 msgid "Disconnected"
 msgstr "Rozłączony"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Rozłączono z DFakeSeeder"
 
 msgid "Disk cache size (MB):"
 msgstr "Rozmiar cache dysku (MB):"
@@ -498,7 +516,7 @@ msgid "Dropout probability:"
 msgstr "Prawdopodobieństwo odpadnięcia:"
 
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "Holenderski"
 
 msgid "Dynamic profile switching"
 msgstr "Dynamiczne przełączanie profili"
@@ -683,6 +701,9 @@ msgstr "Timeout rozszerzenia:"
 msgid "Extension statistics update interval (seconds)"
 msgstr "Interwał aktualizacji statystyk rozszerzeń (sekundy)"
 
+msgid "Failed to apply seeding profile"
+msgstr "Nie udało się zastosować profilu seedowania"
+
 msgid "Failure Reason"
 msgstr "Przyczyna niepowodzenia"
 
@@ -690,7 +711,7 @@ msgid "Fall back to TCP if µTP fails"
 msgstr "Przejdź na TCP jeśli µTP zawiedzie"
 
 msgid "Fallback configuration"
-msgstr "Fallback configuration"
+msgstr "Konfiguracja rezerwowa"
 
 msgid "Fast Extension (BEP-006)"
 msgstr "Szybkie rozszerzenie (BEP-006)"
@@ -785,6 +806,9 @@ msgstr "Uścisk dłoni"
 msgid "Handshake timeout (seconds):"
 msgstr "Timeout handshake (sekundy):"
 
+msgid "Hide Main Window"
+msgstr "Ukryj Główne Okno"
+
 msgid "Hide to system tray when window is minimized"
 msgstr "Ukryj w zasobniku systemowym gdy okno jest zminimalizowane"
 
@@ -836,6 +860,9 @@ msgstr "Połączenia przychodzące"
 msgid "Incoming Peer Connections"
 msgstr "Przychodzące połączenia peerów"
 
+msgid "Indonesian"
+msgstr "Indonezyjski"
+
 msgid "Interested"
 msgstr "Zainteresowany"
 
@@ -854,6 +881,9 @@ msgstr "Interwał kontaktowania się z peerami w sekundach"
 msgid "Interval for sending keep alive messages in seconds"
 msgstr "Interwał wysyłania wiadomości keep alive w sekundach"
 
+msgid "Irish"
+msgstr "Irlandzki"
+
 msgid "Italian"
 msgstr "Włoski"
 
@@ -870,10 +900,13 @@ msgid "Keep alive interval for connections (seconds)"
 msgstr "Interwał keep alive dla połączeń (sekundy)"
 
 msgid "Korean"
-msgstr "Korean"
+msgstr "Koreański"
 
 msgid "Label"
 msgstr "Etykieta"
+
+msgid "Language"
+msgstr "Język"
 
 msgid "Language switched to"
 msgstr "Język zmieniony na"
@@ -887,8 +920,11 @@ msgstr "Ostatnie ogłoszenie"
 msgid "Last Notification"
 msgstr "Ostatnie powiadomienie"
 
+msgid "Launch Main Application"
+msgstr "Uruchom Główną Aplikację"
+
 msgid "Leechers"
-msgstr "Pobierający"
+msgstr "Leecherzy"
 
 msgid "Level of BitTorrent protocol compliance"
 msgstr "Poziom zgodności z protokołem BitTorrent"
@@ -1053,7 +1089,7 @@ msgid "Next Update"
 msgstr "Następna Aktualizacja"
 
 msgid "No editable options available for this torrent."
-msgstr "No editable options available for this torrent."
+msgstr "Brak edytowalnych opcji dla tego torrenta."
 
 msgid "None"
 msgstr "Brak"
@@ -1103,6 +1139,9 @@ msgstr "Ścieżka"
 msgid "Pause"
 msgstr "Wstrzymaj"
 
+msgid "Pause All Torrents"
+msgstr "Wstrzymaj Wszystkie Torrenty"
+
 msgid "Pause torrent"
 msgstr "Wstrzymaj torrent"
 
@@ -1142,6 +1181,9 @@ msgstr "Peery"
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
 msgstr "Procent połączeń do rotacji (0.0 - 1.0)"
 
+msgid "Persian"
+msgstr "Perski"
+
 msgid "Piece Length"
 msgstr "Długość kawałka"
 
@@ -1152,10 +1194,10 @@ msgid "Pieces Received"
 msgstr "Otrzymane kawałki"
 
 msgid "Polish"
-msgstr "Polish"
+msgstr "Polski"
 
 msgid "Port"
-msgstr "Port TCP/UDP"
+msgstr "Port"
 
 msgid "Port for incoming BitTorrent connections (1024-65535)"
 msgstr "Port dla przychodzących połączeń BitTorrent (1024-65535)"
@@ -1170,10 +1212,10 @@ msgid "Portuguese"
 msgstr "Portugalski"
 
 msgid "Preference 1:"
-msgstr "Preference 1:"
+msgstr "Preferencja 1:"
 
 msgid "Preference 2:"
-msgstr "Preference 2:"
+msgstr "Preferencja 2:"
 
 msgid "Preferences"
 msgstr "Preferencje"
@@ -1286,6 +1328,9 @@ msgstr "Kolejka"
 msgid "Quit"
 msgstr "Zakończ"
 
+msgid "Quit DFakeSeeder"
+msgstr "Zakończ DFakeSeeder"
+
 msgid "Random"
 msgstr "Losowy"
 
@@ -1340,6 +1385,9 @@ msgstr "Resetuj do domyślnych"
 msgid "Resume"
 msgstr "Wznów"
 
+msgid "Resume All Torrents"
+msgstr "Wznów Wszystkie Torrenty"
+
 msgid "Resume torrent"
 msgstr "Wznów torrent"
 
@@ -1389,7 +1437,10 @@ msgid "Seeder port range (min):"
 msgstr "Zakres portów seedera (min):"
 
 msgid "Seeders"
-msgstr "Rozdający"
+msgstr "Seederzy"
+
+msgid "Seeding Profile"
+msgstr "Profil Seedowania"
 
 msgid "Seeds"
 msgstr "Seedy"
@@ -1410,16 +1461,19 @@ msgid "Server:"
 msgstr "Serwer:"
 
 msgid "Session Downloaded"
-msgstr "会话下载"
+msgstr "Sesja Pobrane"
 
 msgid "Session Uploaded"
-msgstr "会话上传"
+msgstr "Sesja Wysłane"
 
 msgid "Session timeout (min):"
 msgstr "Timeout sesji (min):"
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Konfiguracja skrótów jeszcze nie zaimplementowana"
+
+msgid "Show Main Window"
+msgstr "Pokaż Główne Okno"
 
 msgid "Show only selected torrent connections"
 msgstr "Pokaż tylko połączenia wybranego torrenta"
@@ -1441,6 +1495,9 @@ msgstr "Hiszpański"
 
 msgid "Speed"
 msgstr "Prędkość"
+
+msgid "Speed Control"
+msgstr "Kontrola Prędkości"
 
 msgid "Speed settings reset to defaults"
 msgstr "Ustawienia prędkości przywrócone do domyślnych"
@@ -1476,7 +1533,7 @@ msgid "Stats Update Interval:"
 msgstr "Interwał aktualizacji statystyk:"
 
 msgid "Status"
-msgstr "Stan"
+msgstr "Status"
 
 msgid "Status change probability:"
 msgstr "Prawdopodobieństwo zmiany statusu:"
@@ -1491,7 +1548,7 @@ msgid "Sunday"
 msgstr "Niedziela"
 
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "Szwedzki"
 
 msgid "Synthetic Peer Count:"
 msgstr "Liczba syntetycznych peerów:"
@@ -1595,6 +1652,12 @@ msgstr "Zakres ID transakcji (min):"
 msgid "TranslationManager"
 msgstr "TranslationManager"
 
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
 msgid "Transmission"
 msgstr "Transmission"
 
@@ -1606,6 +1669,9 @@ msgstr "Wt"
 
 msgid "Tuesday"
 msgstr "Wtorek"
+
+msgid "Turkish"
+msgstr "Turecki"
 
 msgid "Type"
 msgstr "Typ"
@@ -1623,7 +1689,7 @@ msgid "UI refresh rate (sec):"
 msgstr "Częstotliwość odświeżania UI (sek):"
 
 msgid "URL"
-msgstr "Adres URL"
+msgstr "URL"
 
 msgid "URL: http://localhost:8080"
 msgstr "Adres URL: http://localhost:8080"
@@ -1715,6 +1781,9 @@ msgstr "Weryfikuj ustawienia przy zmianie"
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
 msgstr "Wariacja w zachowaniu klienta (0.0 = brak wariacji, 1.0 = maksymalna wariacja)"
 
+msgid "Vietnamese"
+msgstr "Wietnamski"
+
 msgid "Vuze"
 msgstr "Vuze"
 
@@ -1737,13 +1806,13 @@ msgid "Wednesday"
 msgstr "Środa"
 
 msgid "active"
-msgstr "Aktywny"
+msgstr "aktywny"
 
 msgid "address"
-msgstr "地址"
+msgstr "adres"
 
 msgid "admin"
-msgstr "admin"
+msgstr "administrator"
 
 msgid "am_choking"
 msgstr "Blokuję"
@@ -1758,19 +1827,19 @@ msgid "bytes"
 msgstr "bajty"
 
 msgid "bytes_downloaded"
-msgstr "字节已下载"
+msgstr "bajty pobrane"
 
 msgid "bytes_uploaded"
-msgstr "字节已上传"
+msgstr "bajty wysłane"
 
 msgid "class_name"
 msgstr "nazwa_klasy"
 
 msgid "client"
-msgstr "客户端"
+msgstr "klient"
 
 msgid "connection_time"
-msgstr "连接时间"
+msgstr "czas połączenia"
 
 msgid "download_rate"
 msgstr "Prędkość pobierania"
@@ -1866,7 +1935,7 @@ msgid "small_torrent_limit"
 msgstr "Limit Małego Torrenta"
 
 msgid "status"
-msgstr "状态"
+msgstr "status"
 
 msgid "threshold"
 msgstr "Próg"
@@ -1887,7 +1956,7 @@ msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
 
 msgid "upload_rate"
-msgstr "Upload Rate"
+msgstr "prędkość wysyłania"
 
 msgid "upload_speed"
 msgstr "Prędkość Wysyłania"

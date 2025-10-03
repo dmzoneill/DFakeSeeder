@@ -206,6 +206,9 @@ msgstr "备用下载限制 (KB/s):"
 msgid "Alt upload limit (KB/s):"
 msgstr "备用上传限制 (KB/s):"
 
+msgid "Alternative Speed Limits"
+msgstr "备用速度限制"
+
 msgid "Alternative download speed limit in KB/s"
 msgstr "备用下载速度限制 (KB/s)"
 
@@ -226,6 +229,9 @@ msgstr "公告间隔:"
 
 msgid "Arabic"
 msgstr "阿拉伯语"
+
+msgid "Auto Detect"
+msgstr "自动检测"
 
 msgid "Auto-bootstrap DHT"
 msgstr "自动引导 DHT"
@@ -280,6 +286,9 @@ msgstr "行为分析概率:"
 
 msgid "Behavior randomization"
 msgstr "行为随机化"
+
+msgid "Bengali"
+msgstr "孟加拉语"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
@@ -362,6 +371,9 @@ msgstr "连接时间"
 msgid "Connected Peers / Total Peers"
 msgstr "已连接节点 / 总节点"
 
+msgid "Connected to DFakeSeeder"
+msgstr "已连接到DFakeSeeder"
+
 msgid "Connection"
 msgstr "连接"
 
@@ -431,6 +443,9 @@ msgstr "D' Fake Seeder"
 msgid "DEBUG"
 msgstr "调试"
 
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
 msgid "DHT"
 msgstr "DHT"
 
@@ -454,6 +469,9 @@ msgstr "已禁用"
 
 msgid "Disconnected"
 msgstr "已断开"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Disconnected from DFakeSeeder"
 
 msgid "Disk cache size (MB):"
 msgstr "磁盘缓存大小 (MB):"
@@ -683,6 +701,9 @@ msgstr "扩展超时:"
 msgid "Extension statistics update interval (seconds)"
 msgstr "扩展统计更新间隔（秒）"
 
+msgid "Failed to apply seeding profile"
+msgstr "无法应用做种配置"
+
 msgid "Failure Reason"
 msgstr "失败原因"
 
@@ -690,7 +711,7 @@ msgid "Fall back to TCP if µTP fails"
 msgstr "如果 µTP 失败则回退到 TCP"
 
 msgid "Fallback configuration"
-msgstr "Fallback configuration"
+msgstr "备用配置"
 
 msgid "Fast Extension (BEP-006)"
 msgstr "快速扩展 (BEP-006)"
@@ -738,7 +759,7 @@ msgid "General timeout for extension operations (seconds)"
 msgstr "扩展操作的通用超时（秒）"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "常规选项卡"
 
 msgid "Generate Secure Password"
 msgstr "生成安全密码"
@@ -785,11 +806,14 @@ msgstr "握手"
 msgid "Handshake timeout (seconds):"
 msgstr "握手超时 (秒):"
 
+msgid "Hide Main Window"
+msgstr "隐藏主窗口"
+
 msgid "Hide to system tray when window is minimized"
 msgstr "窗口最小化时隐藏到系统托盘"
 
 msgid "Hindi"
-msgstr "Hindi"
+msgstr "印地语"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "向 Tracker 通告的频率 (60-7200 秒)"
@@ -836,6 +860,9 @@ msgstr "传入连接"
 msgid "Incoming Peer Connections"
 msgstr "传入节点连接"
 
+msgid "Indonesian"
+msgstr "印度尼西亚语"
+
 msgid "Interested"
 msgstr "感兴趣"
 
@@ -853,6 +880,9 @@ msgstr "联系节点的间隔 (秒)"
 
 msgid "Interval for sending keep alive messages in seconds"
 msgstr "发送保持活动消息的间隔 (秒)"
+
+msgid "Irish"
+msgstr "爱尔兰语"
 
 msgid "Italian"
 msgstr "意大利语"
@@ -875,6 +905,9 @@ msgstr "韩语"
 msgid "Label"
 msgstr "标签"
 
+msgid "Language"
+msgstr "语言"
+
 msgid "Language switched to"
 msgstr "语言已切换为"
 
@@ -886,6 +919,9 @@ msgstr "最后通告"
 
 msgid "Last Notification"
 msgstr "最新通知"
+
+msgid "Launch Main Application"
+msgstr "启动主应用程序"
 
 msgid "Leechers"
 msgstr "下载者"
@@ -1053,7 +1089,7 @@ msgid "Next Update"
 msgstr "下次更新"
 
 msgid "No editable options available for this torrent."
-msgstr "No editable options available for this torrent."
+msgstr "此种子没有可编辑的选项。"
 
 msgid "None"
 msgstr "无"
@@ -1103,6 +1139,9 @@ msgstr "路径"
 msgid "Pause"
 msgstr "暂停"
 
+msgid "Pause All Torrents"
+msgstr "暂停所有种子"
+
 msgid "Pause torrent"
 msgstr "暂停种子"
 
@@ -1142,6 +1181,9 @@ msgstr "节点"
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
 msgstr "轮换连接的百分比 (0.0 - 1.0)"
 
+msgid "Persian"
+msgstr "波斯语"
+
 msgid "Piece Length"
 msgstr "分片长度"
 
@@ -1170,10 +1212,10 @@ msgid "Portuguese"
 msgstr "葡萄牙语"
 
 msgid "Preference 1:"
-msgstr "Preference 1:"
+msgstr "偏好 1:"
 
 msgid "Preference 2:"
-msgstr "Preference 2:"
+msgstr "偏好 2:"
 
 msgid "Preferences"
 msgstr "首选项"
@@ -1286,6 +1328,9 @@ msgstr "队列"
 msgid "Quit"
 msgstr "退出"
 
+msgid "Quit DFakeSeeder"
+msgstr "退出 DFakeSeeder"
+
 msgid "Random"
 msgstr "随机"
 
@@ -1340,6 +1385,9 @@ msgstr "重置为默认值"
 msgid "Resume"
 msgstr "恢复"
 
+msgid "Resume All Torrents"
+msgstr "恢复所有种子"
+
 msgid "Resume torrent"
 msgstr "恢复种子"
 
@@ -1391,6 +1439,9 @@ msgstr "做种端口范围 (最小):"
 msgid "Seeders"
 msgstr "做种者"
 
+msgid "Seeding Profile"
+msgstr "做种配置"
+
 msgid "Seeds"
 msgstr "种子"
 
@@ -1421,6 +1472,9 @@ msgstr "会话超时 (分钟):"
 msgid "Shortcuts configuration not yet implemented"
 msgstr "快捷键配置尚未实现"
 
+msgid "Show Main Window"
+msgstr "显示主窗口"
+
 msgid "Show only selected torrent connections"
 msgstr "仅显示选定种子的连接"
 
@@ -1441,6 +1495,9 @@ msgstr "西班牙语"
 
 msgid "Speed"
 msgstr "速度"
+
+msgid "Speed Control"
+msgstr "速度控制"
 
 msgid "Speed settings reset to defaults"
 msgstr "速度设置已重置为默认值"
@@ -1572,7 +1629,7 @@ msgid "Track extension usage statistics"
 msgstr "跟踪扩展使用统计"
 
 msgid "Tracker"
-msgstr "追踪器"
+msgstr "跟踪器"
 
 msgid "Tracker URL"
 msgstr "Tracker 地址"
@@ -1595,6 +1652,12 @@ msgstr "事务 ID 范围 (最小):"
 msgid "TranslationManager"
 msgstr "TranslationManager"
 
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
 msgid "Transmission"
 msgstr "Transmission"
 
@@ -1606,6 +1669,9 @@ msgstr "二"
 
 msgid "Tuesday"
 msgstr "星期二"
+
+msgid "Turkish"
+msgstr "土耳其语"
 
 msgid "Type"
 msgstr "类型"
@@ -1623,7 +1689,7 @@ msgid "UI refresh rate (sec):"
 msgstr "UI 刷新率 (秒):"
 
 msgid "URL"
-msgstr "地址"
+msgstr "URL"
 
 msgid "URL: http://localhost:8080"
 msgstr "地址: http://localhost:8080"
@@ -1715,6 +1781,9 @@ msgstr "更改时验证设置"
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
 msgstr "客户端行为变化（0.0 = 无变化，1.0 = 最大变化）"
 
+msgid "Vietnamese"
+msgstr "越南语"
+
 msgid "Vuze"
 msgstr "Vuze"
 
@@ -1743,7 +1812,7 @@ msgid "address"
 msgstr "地址"
 
 msgid "admin"
-msgstr "admin"
+msgstr "管理员"
 
 msgid "am_choking"
 msgstr "我在阻塞"
@@ -1854,7 +1923,7 @@ msgid "seconds"
 msgstr "秒"
 
 msgid "seeders"
-msgstr "种子"
+msgstr "做种者"
 
 msgid "session_downloaded"
 msgstr "已下载"
@@ -1887,7 +1956,7 @@ msgid "uTorrent/3.5.5"
 msgstr "uTorrent/3.5.5"
 
 msgid "upload_rate"
-msgstr "Upload Rate"
+msgstr "上传速率"
 
 msgid "upload_speed"
 msgstr "上传速度"
