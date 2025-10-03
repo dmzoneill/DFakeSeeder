@@ -1,0 +1,1984 @@
+# Vietnamese translation for DFakeSeeder
+# Copyright (C) 2024 DFakeSeeder Contributors
+# This file is distributed under the same license as the DFakeSeeder package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DFakeSeeder 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"POT-Creation-Date: 2025-09-18 17:51+0100\n"
+"PO-Revision-Date: 2024-09-18 18:30+0100\n"
+"Last-Translator: Claude <noreply@anthropic.com>\n"
+"Language-Team: Vietnamese <vi@li.org>\n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "#"
+msgstr "#"
+
+msgid "(0 = unlimited)"
+msgstr "(0 = không giới hạn)"
+
+msgid "0 / 250"
+msgstr "0 / 250"
+
+msgid "127.0.0.1"
+msgstr "127.0.0.1"
+
+msgid ":"
+msgstr ":"
+
+msgid "<b>Advanced Extension Settings</b>"
+msgstr "<b>Cài đặt Tiện ích Nâng cao</b>"
+
+msgid "<b>Aggressive Profile Settings</b>"
+msgstr "<b>Cài đặt Hồ sơ Tích cực</b>"
+
+msgid "<b>Alternative Speed Limits</b>"
+msgstr "<b>Giới hạn Tốc độ Thay thế</b>"
+
+msgid "<b>Application Behavior</b>"
+msgstr "<b>Hành vi Ứng dụng</b>"
+
+msgid "<b>Authentication</b>"
+msgstr "<b>Xác thực</b>"
+
+msgid "<b>Balanced Profile Settings</b>"
+msgstr "<b>Cài đặt Hồ sơ Cân bằng</b>"
+
+msgid "<b>Bootstrap Settings</b>"
+msgstr "<b>Cài đặt Khởi động</b>"
+
+msgid "<b>Client Behavior Engine</b>"
+msgstr "<b>Bộ máy Hành vi Máy khách</b>"
+
+msgid "<b>Client Identification</b>"
+msgstr "<b>Nhận dạng Máy khách</b>"
+
+msgid "<b>Configuration Management</b>"
+msgstr "<b>Quản lý Cấu hình</b>"
+
+msgid "<b>Connection Limits</b>"
+msgstr "<b>Giới hạn Kết nối</b>"
+
+msgid "<b>Connection Settings</b>"
+msgstr "<b>Cài đặt Kết nối</b>"
+
+msgid "<b>Conservative Profile Settings</b>"
+msgstr "<b>Cài đặt Hồ sơ Bảo thủ</b>"
+
+msgid "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT (Distributed Hash Table)</b>"
+
+msgid "<b>Encryption</b>"
+msgstr "<b>Mã hóa</b>"
+
+msgid "<b>Expert Settings</b>"
+msgstr "<b>Cài đặt Chuyên gia</b>"
+
+msgid "<b>Extension Protocol (BEP-010)</b>"
+msgstr "<b>Giao thức Tiện ích (BEP-010)</b>"
+
+msgid "<b>Global Speed Limits</b>"
+msgstr "<b>Giới hạn Tốc độ Toàn cục</b>"
+
+msgid "<b>Interface</b>"
+msgstr "<b>Giao diện</b>"
+
+msgid "<b>Keyboard Shortcuts</b>"
+msgstr "<b>Phím tắt</b>"
+
+msgid "<b>Listening Port</b>"
+msgstr "<b>Cổng Lắng nghe</b>"
+
+msgid "<b>Logging</b>"
+msgstr "<b>Ghi nhật ký</b>"
+
+msgid "<b>Metadata Extension Settings</b>"
+msgstr "<b>Cài đặt Tiện ích Siêu dữ liệu</b>"
+
+msgid "<b>Network Settings</b>"
+msgstr "<b>Cài đặt Mạng</b>"
+
+msgid "<b>Node Configuration</b>"
+msgstr "<b>Cấu hình Nút</b>"
+
+msgid "<b>Peer Behavior Settings</b>"
+msgstr "<b>Cài đặt Hành vi Ngang hàng</b>"
+
+msgid "<b>Peer Exchange (PEX) Settings</b>"
+msgstr "<b>Cài đặt Trao đổi Ngang hàng (PEX)</b>"
+
+msgid "<b>Peer Protocol Timeouts</b>"
+msgstr "<b>Hết thời gian Giao thức Ngang hàng</b>"
+
+msgid "<b>Performance</b>"
+msgstr "<b>Hiệu suất</b>"
+
+msgid "<b>Protocol Extensions</b>"
+msgstr "<b>Tiện ích Giao thức</b>"
+
+msgid "<b>Protocol Features</b>"
+msgstr "<b>Tính năng Giao thức</b>"
+
+msgid "<b>Proxy Settings</b>"
+msgstr "<b>Cài đặt Proxy</b>"
+
+msgid "<b>Security Options</b>"
+msgstr "<b>Tùy chọn Bảo mật</b>"
+
+msgid "<b>Seeder Protocol Settings</b>"
+msgstr "<b>Cài đặt Giao thức Seeder</b>"
+
+msgid "<b>Seeding Profiles</b>"
+msgstr "<b>Hồ sơ Seeding</b>"
+
+msgid "<b>Settings Search</b>"
+msgstr "<b>Tìm kiếm Cài đặt</b>"
+
+msgid "<b>Speed Scheduler</b>"
+msgstr "<b>Lập lịch Tốc độ</b>"
+
+msgid "<b>Statistics and Security</b>"
+msgstr "<b>Thống kê và Bảo mật</b>"
+
+msgid "<b>Swarm Intelligence</b>"
+msgstr "<b>Trí tuệ Bầy đàn</b>"
+
+msgid "<b>Timing Settings</b>"
+msgstr "<b>Cài đặt Thời gian</b>"
+
+msgid "<b>Tracker Announce Settings</b>"
+msgstr "<b>Cài đặt Thông báo Tracker</b>"
+
+msgid "<b>Traffic Pattern Settings</b>"
+msgstr "<b>Cài đặt Mẫu Lưu lượng</b>"
+
+msgid "<b>Transport Protocol Settings</b>"
+msgstr "<b>Cài đặt Giao thức Vận chuyển</b>"
+
+msgid "<b>Web Interface</b>"
+msgstr "<b>Giao diện Web</b>"
+
+msgid "About"
+msgstr "Giới thiệu"
+
+msgid "Active"
+msgstr "Hoạt động"
+
+msgid "Active Profile:"
+msgstr "Hồ sơ Hoạt động:"
+
+msgid "Adaptation Rate:"
+msgstr "Tốc độ Thích ứng:"
+
+msgid "Add"
+msgstr "Thêm"
+
+msgid "Add torrent"
+msgstr "Thêm torrent"
+
+msgid "Added"
+msgstr "Đã thêm"
+
+msgid "Advanced"
+msgstr "Nâng cao"
+
+msgid "Advanced settings reset to defaults"
+msgstr "Cài đặt nâng cao đã đặt lại về mặc định"
+
+msgid "Aggressive"
+msgstr "Tích cực"
+
+msgid "Aggressive profile download speed"
+msgstr "Tốc độ tải xuống hồ sơ tích cực"
+
+msgid "Aggressive profile upload speed (0 = unlimited)"
+msgstr "Tốc độ tải lên hồ sơ tích cực (0 = không giới hạn)"
+
+msgid "Alt download limit (KB/s):"
+msgstr "Giới hạn tải xuống thay thế (KB/s):"
+
+msgid "Alt upload limit (KB/s):"
+msgstr "Giới hạn tải lên thay thế (KB/s):"
+
+msgid "Alternative Speed Limits"
+msgstr "Giới hạn Tốc độ Thay thế"
+
+msgid "Alternative download speed limit in KB/s"
+msgstr "Giới hạn tốc độ tải xuống thay thế tính bằng KB/s"
+
+msgid "Alternative upload speed limit in KB/s"
+msgstr "Giới hạn tốc độ tải lên thay thế tính bằng KB/s"
+
+msgid "Amount of RAM to use for disk caching"
+msgstr "Lượng RAM sử dụng cho bộ nhớ đệm đĩa"
+
+msgid "Announce Interval"
+msgstr "Khoảng thời gian Thông báo"
+
+msgid "Announce interval (sec):"
+msgstr "Khoảng thời gian thông báo (giây):"
+
+msgid "Announcement Interval:"
+msgstr "Khoảng thời gian Thông báo:"
+
+msgid "Arabic"
+msgstr "Tiếng Ả Rập"
+
+msgid "Auto Detect"
+msgstr "Tự động Phát hiện"
+
+msgid "Auto-bootstrap DHT"
+msgstr "Tự động khởi động DHT"
+
+msgid "Auto-generate node ID"
+msgstr "Tự động tạo ID nút"
+
+msgid "Auto-save settings"
+msgstr "Tự động lưu cài đặt"
+
+msgid "Auto-start disabled"
+msgstr "Tự động khởi động đã tắt"
+
+msgid "Auto-start enabled"
+msgstr "Tự động khởi động đã bật"
+
+msgid "Automatic logout after inactivity (5-1440 minutes)"
+msgstr "Tự động đăng xuất sau khi không hoạt động (5-1440 phút)"
+
+msgid "Automatically bootstrap DHT using known nodes"
+msgstr "Tự động khởi động DHT bằng các nút đã biết"
+
+msgid "Automatically configure router port forwarding using UPnP/NAT-PMP"
+msgstr "Tự động cấu hình chuyển tiếp cổng bộ định tuyến bằng UPnP/NAT-PMP"
+
+msgid "Automatically generate a unique node ID"
+msgstr "Tự động tạo ID nút duy nhất"
+
+msgid "Automatically save settings when changed"
+msgstr "Tự động lưu cài đặt khi thay đổi"
+
+msgid "Automatically switch to alternative speeds during specified hours"
+msgstr "Tự động chuyển sang tốc độ thay thế trong giờ được chỉ định"
+
+msgid "Availability"
+msgstr "Sẵn có"
+
+msgid "Balanced"
+msgstr "Cân bằng"
+
+msgid "Balanced profile download speed"
+msgstr "Tốc độ tải xuống hồ sơ cân bằng"
+
+msgid "Balanced profile upload speed"
+msgstr "Tốc độ tải lên hồ sơ cân bằng"
+
+msgid "Behavior Variation:"
+msgstr "Biến thể Hành vi:"
+
+msgid "Behavior analysis probability:"
+msgstr "Xác suất phân tích hành vi:"
+
+msgid "Behavior randomization"
+msgstr "Ngẫu nhiên hóa hành vi"
+
+msgid "Bengali"
+msgstr "Tiếng Bengal"
+
+msgid "BiglyBT"
+msgstr "BiglyBT"
+
+msgid "Bind to localhost only"
+msgstr "Chỉ liên kết với localhost"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "BitTorrent settings reset to defaults"
+msgstr "Cài đặt BitTorrent đã đặt lại về mặc định"
+
+msgid "BitTorrent/7.10.5"
+msgstr "BitTorrent/7.10.5"
+
+msgid "Bootstrap Nodes (one per line, format: host:port):"
+msgstr "Nút khởi động (một nút mỗi dòng, định dạng: host:port):"
+
+msgid "Bootstrap Timeout:"
+msgstr "Hết thời gian Khởi động:"
+
+msgid "Bottom"
+msgstr "Dưới cùng"
+
+msgid "Bucket Size:"
+msgstr "Kích thước Bucket:"
+
+msgid "Burst Probability:"
+msgstr "Xác suất Burst:"
+
+msgid "CRITICAL"
+msgstr "NGHIÊM TRỌNG"
+
+msgid "Cancel"
+msgstr "Hủy"
+
+msgid "Chinese"
+msgstr "Tiếng Trung"
+
+msgid "Choose a pre-configured seeding profile"
+msgstr "Chọn hồ sơ seeding được cấu hình sẵn"
+
+msgid "Choose the application theme"
+msgstr "Chọn chủ đề ứng dụng"
+
+msgid "Choose the interface language"
+msgstr "Chọn ngôn ngữ giao diện"
+
+msgid "Clear search"
+msgstr "Xóa tìm kiếm"
+
+msgid "Client"
+msgstr "Máy khách"
+
+msgid "Client Switch Probability:"
+msgstr "Xác suất Chuyển đổi Máy khách:"
+
+msgid "Comment"
+msgstr "Bình luận"
+
+msgid "Completed"
+msgstr "Hoàn thành"
+
+msgid "Concurrent Queries:"
+msgstr "Truy vấn Đồng thời:"
+
+msgid "Config export not yet implemented"
+msgstr "Xuất cấu hình chưa được triển khai"
+
+msgid "Config import not yet implemented"
+msgstr "Nhập cấu hình chưa được triển khai"
+
+msgid "Connected"
+msgstr "Đã kết nối"
+
+msgid "Connected At"
+msgstr "Kết nối lúc"
+
+msgid "Connected Peers / Total Peers"
+msgstr "Ngang hàng đã kết nối / Tổng số ngang hàng"
+
+msgid "Connected to DFakeSeeder"
+msgstr "Đã kết nối với DFakeSeeder"
+
+msgid "Connection"
+msgstr "Kết nối"
+
+msgid "Connection Status"
+msgstr "Trạng thái Kết nối"
+
+msgid "Connection Timeout:"
+msgstr "Hết thời gian Kết nối:"
+
+msgid "Connection rotation percentage:"
+msgstr "Phần trăm luân chuyển kết nối:"
+
+msgid "Connection settings reset to defaults"
+msgstr "Cài đặt kết nối đã đặt lại về mặc định"
+
+msgid "Connection timeout for extensions (seconds)"
+msgstr "Hết thời gian kết nối cho tiện ích (giây)"
+
+msgid "Conservative"
+msgstr "Bảo thủ"
+
+msgid "Conservative profile download speed"
+msgstr "Tốc độ tải xuống hồ sơ bảo thủ"
+
+msgid "Conservative profile upload speed"
+msgstr "Tốc độ tải lên hồ sơ bảo thủ"
+
+msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
+msgstr "Bảo thủ: Tốc độ thấp hơn, ít kết nối hơn, lý tưởng cho seeding nền"
+
+msgid "Country"
+msgstr "Quốc gia"
+
+msgid "Created"
+msgstr "Đã tạo"
+
+msgid "Created By"
+msgstr "Tạo bởi"
+
+msgid "Ctrl+,"
+msgstr "Ctrl+,"
+
+msgid "Ctrl+F"
+msgstr "Ctrl+F"
+
+msgid "Ctrl+R"
+msgstr "Ctrl+R"
+
+msgid "Custom"
+msgstr "Tùy chỉnh"
+
+msgid "Custom Agent:"
+msgstr "Đại diện Tùy chỉnh:"
+
+msgid "Custom Node ID:"
+msgstr "ID Nút Tùy chỉnh:"
+
+msgid "Custom node ID (40 hex characters)"
+msgstr "ID nút tùy chỉnh (40 ký tự hex)"
+
+msgid "Custom user agent string"
+msgstr "Chuỗi user agent tùy chỉnh"
+
+msgid "D' Fake Seeder"
+msgstr "D' Fake Seeder"
+
+msgid "DEBUG"
+msgstr "GỠ LỖI"
+
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
+msgid "DHT"
+msgstr "DHT"
+
+msgid "Dark"
+msgstr "Tối"
+
+msgid "Days:"
+msgstr "Ngày:"
+
+msgid "Deluge"
+msgstr "Deluge"
+
+msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
+msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
+
+msgid "Details"
+msgstr "Chi tiết"
+
+msgid "Disabled"
+msgstr "Đã tắt"
+
+msgid "Disconnected"
+msgstr "Đã ngắt kết nối"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Đã ngắt kết nối khỏi DFakeSeeder"
+
+msgid "Disk cache size (MB):"
+msgstr "Kích thước bộ nhớ đệm đĩa (MB):"
+
+msgid "Down"
+msgstr "Xuống"
+
+msgid "Down Speed"
+msgstr "Tốc độ Tải xuống"
+
+msgid "Download Rate"
+msgstr "Tốc độ Tải xuống"
+
+msgid "Download Speed (KB/s):"
+msgstr "Tốc độ Tải xuống (KB/s):"
+
+msgid "Download Variance:"
+msgstr "Phương sai Tải xuống:"
+
+msgid "Download limit (KB/s):"
+msgstr "Giới hạn tải xuống (KB/s):"
+
+msgid "Download speed variance for aggressive profile"
+msgstr "Phương sai tốc độ tải xuống cho hồ sơ tích cực"
+
+msgid "Download speed variance for balanced profile"
+msgstr "Phương sai tốc độ tải xuống cho hồ sơ cân bằng"
+
+msgid "Download speed variance for conservative profile"
+msgstr "Phương sai tốc độ tải xuống cho hồ sơ bảo thủ"
+
+msgid "Downloaded"
+msgstr "Đã tải xuống"
+
+msgid "Downloaded Session / Total"
+msgstr "Phiên Đã tải xuống / Tổng"
+
+msgid "Downloaded Speed"
+msgstr "Tốc độ Tải xuống"
+
+msgid "Dropout probability:"
+msgstr "Xác suất bỏ cuộc:"
+
+msgid "Dutch"
+msgstr "Tiếng Hà Lan"
+
+msgid "Dynamic profile switching"
+msgstr "Chuyển đổi hồ sơ động"
+
+msgid "ERROR"
+msgstr "LỖI"
+
+msgid "ETA"
+msgstr "Thời gian còn lại"
+
+msgid "Enable CSRF protection"
+msgstr "Bật bảo vệ CSRF"
+
+msgid "Enable Cross-Site Request Forgery protection"
+msgstr "Bật bảo vệ Cross-Site Request Forgery"
+
+msgid "Enable DHT"
+msgstr "Bật DHT"
+
+msgid "Enable DHT (Distributed Hash Table)"
+msgstr "Bật DHT (Distributed Hash Table)"
+
+msgid "Enable DHT query rate limiting"
+msgstr "Bật giới hạn tốc độ truy vấn DHT"
+
+msgid "Enable DHT statistics collection"
+msgstr "Bật thu thập thống kê DHT"
+
+msgid "Enable Distributed Hash Table for trackerless torrents"
+msgstr "Bật Distributed Hash Table cho torrent không tracker"
+
+msgid "Enable Fast Extension (BEP-006) for improved performance"
+msgstr "Bật Tiện ích Nhanh (BEP-006) để cải thiện hiệu suất"
+
+msgid "Enable LPD (Local Peer Discovery)"
+msgstr "Bật LPD (Local Peer Discovery)"
+
+msgid "Enable Local Peer Discovery for finding peers on local network"
+msgstr "Bật Local Peer Discovery để tìm ngang hàng trên mạng cục bộ"
+
+msgid "Enable Nagle algorithm"
+msgstr "Bật thuật toán Nagle"
+
+msgid "Enable Nagle algorithm for TCP"
+msgstr "Bật thuật toán Nagle cho TCP"
+
+msgid "Enable PEX (Peer Exchange)"
+msgstr "Bật PEX (Peer Exchange)"
+
+msgid "Enable Peer Exchange for discovering new peers"
+msgstr "Bật Peer Exchange để khám phá ngang hàng mới"
+
+msgid "Enable Protocol Extensions"
+msgstr "Bật Tiện ích Giao thức"
+
+msgid "Enable TCP keepalive"
+msgstr "Bật TCP keepalive"
+
+msgid "Enable UPnP/NAT-PMP port mapping"
+msgstr "Bật ánh xạ cổng UPnP/NAT-PMP"
+
+msgid "Enable Web UI"
+msgstr "Bật Giao diện Web"
+
+msgid "Enable alternative speed limits"
+msgstr "Bật giới hạn tốc độ thay thế"
+
+msgid "Enable alternative speed limits (useful for limiting speeds during certain hours)"
+msgstr "Bật giới hạn tốc độ thay thế (hữu ích để giới hạn tốc độ trong một số giờ nhất định)"
+
+msgid "Enable clickjacking protection"
+msgstr "Bật bảo vệ clickjacking"
+
+msgid "Enable client behavior simulation"
+msgstr "Bật mô phỏng hành vi máy khách"
+
+msgid "Enable client behavior simulation engine"
+msgstr "Bật bộ máy mô phỏng hành vi máy khách"
+
+msgid "Enable debug mode"
+msgstr "Bật chế độ gỡ lỗi"
+
+msgid "Enable debug mode with extra logging and error details"
+msgstr "Bật chế độ gỡ lỗi với ghi nhật ký bổ sung và chi tiết lỗi"
+
+msgid "Enable dynamic client profile switching"
+msgstr "Bật chuyển đổi hồ sơ máy khách động"
+
+msgid "Enable lt_donthave extension for piece availability"
+msgstr "Bật tiện ích lt_donthave cho tính khả dụng mảnh"
+
+msgid "Enable metadata extension"
+msgstr "Bật tiện ích siêu dữ liệu"
+
+msgid "Enable metadata extension features"
+msgstr "Bật tính năng tiện ích siêu dữ liệu"
+
+msgid "Enable or disable BitTorrent protocol extensions"
+msgstr "Bật hoặc tắt tiện ích giao thức BitTorrent"
+
+msgid "Enable or disable DHT for trackerless torrent support"
+msgstr "Bật hoặc tắt DHT để hỗ trợ torrent không tracker"
+
+msgid "Enable proxy authentication"
+msgstr "Bật xác thực proxy"
+
+msgid "Enable random variations in client behavior"
+msgstr "Bật biến thể ngẫu nhiên trong hành vi máy khách"
+
+msgid "Enable rate limiting"
+msgstr "Bật giới hạn tốc độ"
+
+msgid "Enable realistic traffic variations"
+msgstr "Bật biến thể lưu lượng thực tế"
+
+msgid "Enable secure HTTP headers"
+msgstr "Bật tiêu đề HTTP an toàn"
+
+msgid "Enable speed scheduler"
+msgstr "Bật lập lịch tốc độ"
+
+msgid "Enable statistics"
+msgstr "Bật thống kê"
+
+msgid "Enable swarm intelligence"
+msgstr "Bật trí tuệ bầy đàn"
+
+msgid "Enable swarm intelligence for adaptive behavior"
+msgstr "Bật trí tuệ bầy đàn cho hành vi thích ứng"
+
+msgid "Enable time-based traffic patterns (peak hours, night hours)"
+msgstr "Bật mẫu lưu lượng dựa trên thời gian (giờ cao điểm, giờ đêm)"
+
+msgid "Enable ut_holepunch extension for NAT traversal"
+msgstr "Bật tiện ích ut_holepunch cho NAT traversal"
+
+msgid "Enable ut_metadata extension for metadata exchange"
+msgstr "Bật tiện ích ut_metadata cho trao đổi siêu dữ liệu"
+
+msgid "Enable ut_pex extension for peer exchange"
+msgstr "Bật tiện ích ut_pex cho trao đổi ngang hàng"
+
+msgid "Enable web-based remote control interface"
+msgstr "Bật giao diện điều khiển từ xa dựa trên web"
+
+msgid "Enable µTP (Micro Transport Protocol)"
+msgstr "Bật µTP (Micro Transport Protocol)"
+
+msgid "Enabled"
+msgstr "Đã bật"
+
+msgid "Encryption:"
+msgstr "Mã hóa:"
+
+msgid "End hour (24-hour format)"
+msgstr "Giờ kết thúc (định dạng 24 giờ)"
+
+msgid "End minute"
+msgstr "Phút kết thúc"
+
+msgid "English"
+msgstr "Tiếng Anh"
+
+msgid "Error"
+msgstr "Lỗi"
+
+msgid "Error changing language"
+msgstr "Lỗi khi thay đổi ngôn ngữ"
+
+msgid "Export"
+msgstr "Xuất"
+
+msgid "Export Settings"
+msgstr "Xuất Cài đặt"
+
+msgid "Export current settings to a file"
+msgstr "Xuất cài đặt hiện tại ra tệp"
+
+msgid "Extension Timeout:"
+msgstr "Hết thời gian Tiện ích:"
+
+msgid "Extension statistics update interval (seconds)"
+msgstr "Khoảng thời gian cập nhật thống kê tiện ích (giây)"
+
+msgid "Failed to apply seeding profile"
+msgstr "Không áp dụng được hồ sơ seeding"
+
+msgid "Failure Reason"
+msgstr "Lý do Thất bại"
+
+msgid "Fall back to TCP if µTP fails"
+msgstr "Quay lại TCP nếu µTP thất bại"
+
+msgid "Fallback configuration"
+msgstr "Cấu hình dự phòng"
+
+msgid "Fast Extension (BEP-006)"
+msgstr "Tiện ích Nhanh (BEP-006)"
+
+msgid "File"
+msgstr "Tệp"
+
+msgid "File Path"
+msgstr "Đường dẫn Tệp"
+
+msgid "File chooser not yet implemented"
+msgstr "Trình chọn tệp chưa được triển khai"
+
+msgid "Files"
+msgstr "Tệp"
+
+msgid "Flags"
+msgstr "Cờ"
+
+msgid "Follow System"
+msgstr "Theo Hệ thống"
+
+msgid "Forced"
+msgstr "Bắt buộc"
+
+msgid "French"
+msgstr "Tiếng Pháp"
+
+msgid "Fri"
+msgstr "T6"
+
+msgid "Friday"
+msgstr "Thứ Sáu"
+
+msgid "From:"
+msgstr "Từ:"
+
+msgid "General"
+msgstr "Chung"
+
+msgid "General settings reset to defaults"
+msgstr "Cài đặt chung đã đặt lại về mặc định"
+
+msgid "General timeout for extension operations (seconds)"
+msgstr "Hết thời gian chung cho thao tác tiện ích (giây)"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
+
+msgid "Generate Secure Password"
+msgstr "Tạo Mật khẩu An toàn"
+
+msgid "Generate a random port number"
+msgstr "Tạo số cổng ngẫu nhiên"
+
+msgid "Generate a random secure password"
+msgstr "Tạo mật khẩu an toàn ngẫu nhiên"
+
+msgid "Generate synthetic metadata"
+msgstr "Tạo siêu dữ liệu tổng hợp"
+
+msgid "Generate synthetic metadata for simulation"
+msgstr "Tạo siêu dữ liệu tổng hợp cho mô phỏng"
+
+msgid "Generate synthetic peer data for PEX"
+msgstr "Tạo dữ liệu ngang hàng tổng hợp cho PEX"
+
+msgid "Generate synthetic peers"
+msgstr "Tạo ngang hàng tổng hợp"
+
+msgid "German"
+msgstr "Tiếng Đức"
+
+msgid "Github - D' Fake Seeder"
+msgstr "Github - D' Fake Seeder"
+
+msgid "Global download speed limit in KB/s (0 = unlimited)"
+msgstr "Giới hạn tốc độ tải xuống toàn cục tính bằng KB/s (0 = không giới hạn)"
+
+msgid "Global upload speed limit in KB/s (0 = unlimited)"
+msgstr "Giới hạn tốc độ tải lên toàn cục tính bằng KB/s (0 = không giới hạn)"
+
+msgid "HTTP"
+msgstr "HTTP"
+
+msgid "HTTP seeder timeout (seconds):"
+msgstr "Hết thời gian seeder HTTP (giây):"
+
+msgid "Handshake"
+msgstr "Bắt tay"
+
+msgid "Handshake timeout (seconds):"
+msgstr "Hết thời gian bắt tay (giây):"
+
+msgid "Hide Main Window"
+msgstr "Ẩn Cửa sổ Chính"
+
+msgid "Hide to system tray when window is minimized"
+msgstr "Ẩn vào khay hệ thống khi cửa sổ được thu nhỏ"
+
+msgid "Hindi"
+msgstr "Tiếng Hindi"
+
+msgid "How often to announce to trackers (60-7200 seconds)"
+msgstr "Tần suất thông báo cho tracker (60-7200 giây)"
+
+msgid "How often to scrape tracker for swarm statistics"
+msgstr "Tần suất lấy dữ liệu tracker để có thống kê bầy đàn"
+
+msgid "How often to update the user interface"
+msgstr "Tần suất cập nhật giao diện người dùng"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "INFO"
+msgstr "THÔNG TIN"
+
+msgid "IP Address"
+msgstr "Địa chỉ IP"
+
+msgid "IP address to bind to (0.0.0.0 for all interfaces)"
+msgstr "Địa chỉ IP để liên kết (0.0.0.0 cho tất cả giao diện)"
+
+msgid "Idle Probability:"
+msgstr "Xác suất Nhàn rỗi:"
+
+msgid "Import"
+msgstr "Nhập"
+
+msgid "Import Settings"
+msgstr "Nhập Cài đặt"
+
+msgid "Import settings from a file"
+msgstr "Nhập cài đặt từ tệp"
+
+msgid "Inactive"
+msgstr "Không hoạt động"
+
+msgid "Incoming"
+msgstr "Đến"
+
+msgid "Incoming Connections"
+msgstr "Kết nối Đến"
+
+msgid "Incoming Peer Connections"
+msgstr "Kết nối Ngang hàng Đến"
+
+msgid "Indonesian"
+msgstr "Tiếng Indonesia"
+
+msgid "Interested"
+msgstr "Quan tâm"
+
+msgid "Interval between DHT announcements (seconds)"
+msgstr "Khoảng thời gian giữa các thông báo DHT (giây)"
+
+msgid "Interval between PEX message exchanges (seconds)"
+msgstr "Khoảng thời gian giữa các trao đổi thông điệp PEX (giây)"
+
+msgid "Interval for DHT statistics updates (seconds)"
+msgstr "Khoảng thời gian cập nhật thống kê DHT (giây)"
+
+msgid "Interval for contacting peers in seconds"
+msgstr "Khoảng thời gian liên hệ ngang hàng tính bằng giây"
+
+msgid "Interval for sending keep alive messages in seconds"
+msgstr "Khoảng thời gian gửi thông điệp keep alive tính bằng giây"
+
+msgid "Irish"
+msgstr "Tiếng Ireland"
+
+msgid "Italian"
+msgstr "Tiếng Ý"
+
+msgid "Japanese"
+msgstr "Tiếng Nhật"
+
+msgid "Keep Alive Interval:"
+msgstr "Khoảng thời gian Keep Alive:"
+
+msgid "Keep alive interval (seconds):"
+msgstr "Khoảng thời gian keep alive (giây):"
+
+msgid "Keep alive interval for connections (seconds)"
+msgstr "Khoảng thời gian keep alive cho kết nối (giây)"
+
+msgid "Korean"
+msgstr "Tiếng Hàn"
+
+msgid "Label"
+msgstr "Nhãn"
+
+msgid "Language"
+msgstr "Ngôn ngữ"
+
+msgid "Language switched to"
+msgstr "Ngôn ngữ đã chuyển sang"
+
+msgid "Language:"
+msgstr "Ngôn ngữ:"
+
+msgid "Last Announce"
+msgstr "Thông báo Cuối cùng"
+
+msgid "Last Notification"
+msgstr "Thông báo Cuối cùng"
+
+msgid "Launch Main Application"
+msgstr "Khởi động Ứng dụng Chính"
+
+msgid "Leechers"
+msgstr "Leecher"
+
+msgid "Level of BitTorrent protocol compliance"
+msgstr "Mức độ tuân thủ giao thức BitTorrent"
+
+msgid "Light"
+msgstr "Sáng"
+
+msgid "Limit extension message rate"
+msgstr "Giới hạn tốc độ thông điệp tiện ích"
+
+msgid "List of bootstrap nodes for DHT initialization"
+msgstr "Danh sách nút khởi động để khởi tạo DHT"
+
+msgid "Log"
+msgstr "Nhật ký"
+
+msgid "Log Level:"
+msgstr "Mức Nhật ký:"
+
+msgid "Log to file"
+msgstr "Ghi vào tệp"
+
+msgid "Max Connections:"
+msgstr "Kết nối Tối đa:"
+
+msgid "Max Dropped Peers:"
+msgstr "Ngang hàng Bỏ Tối đa:"
+
+msgid "Max Message Size:"
+msgstr "Kích thước Thông điệp Tối đa:"
+
+msgid "Max Messages/Second:"
+msgstr "Thông điệp Tối đa/Giây:"
+
+msgid "Max Nodes:"
+msgstr "Nút Tối đa:"
+
+msgid "Max Peers/Message:"
+msgstr "Ngang hàng Tối đa/Thông điệp:"
+
+msgid "Max Queries/Second:"
+msgstr "Truy vấn Tối đa/Giây:"
+
+msgid "Max global connections:"
+msgstr "Kết nối toàn cục tối đa:"
+
+msgid "Max log file size (MB):"
+msgstr "Kích thước tệp nhật ký tối đa (MB):"
+
+msgid "Max per torrent:"
+msgstr "Tối đa mỗi torrent:"
+
+msgid "Max upload slots:"
+msgstr "Khe tải lên tối đa:"
+
+msgid "Maximum DHT queries per second"
+msgstr "Truy vấn DHT tối đa mỗi giây"
+
+msgid "Maximum connections for aggressive profile"
+msgstr "Kết nối tối đa cho hồ sơ tích cực"
+
+msgid "Maximum connections for balanced profile"
+msgstr "Kết nối tối đa cho hồ sơ cân bằng"
+
+msgid "Maximum connections for conservative profile"
+msgstr "Kết nối tối đa cho hồ sơ bảo thủ"
+
+msgid "Maximum dropped peers to track for PEX"
+msgstr "Ngang hàng bỏ tối đa để theo dõi cho PEX"
+
+msgid "Maximum extension messages per second"
+msgstr "Thông điệp tiện ích tối đa mỗi giây"
+
+msgid "Maximum number of DHT nodes to maintain"
+msgstr "Số lượng nút DHT tối đa để duy trì"
+
+msgid "Maximum number of concurrent DHT queries"
+msgstr "Số lượng truy vấn DHT đồng thời tối đa"
+
+msgid "Maximum number of connections per individual torrent"
+msgstr "Số lượng kết nối tối đa cho mỗi torrent"
+
+msgid "Maximum number of connections to all torrents"
+msgstr "Số lượng kết nối tối đa cho tất cả torrent"
+
+msgid "Maximum number of nodes in the routing table"
+msgstr "Số lượng nút tối đa trong bảng định tuyến"
+
+msgid "Maximum number of nodes per bucket"
+msgstr "Số lượng nút tối đa mỗi bucket"
+
+msgid "Maximum number of simultaneous upload slots"
+msgstr "Số lượng khe tải lên đồng thời tối đa"
+
+msgid "Maximum peers to include in a PEX message"
+msgstr "Ngang hàng tối đa để đưa vào thông điệp PEX"
+
+msgid "Maximum port for seeder connections"
+msgstr "Cổng tối đa cho kết nối seeder"
+
+msgid "Maximum size for extension messages (bytes)"
+msgstr "Kích thước tối đa cho thông điệp tiện ích (byte)"
+
+msgid "Maximum size of log file before rotation"
+msgstr "Kích thước tối đa của tệp nhật ký trước khi xoay"
+
+msgid "Maximum transaction ID for tracker communication"
+msgstr "ID giao dịch tối đa cho giao tiếp tracker"
+
+msgid "Message"
+msgstr "Thông điệp"
+
+msgid "Message read timeout (seconds):"
+msgstr "Hết thời gian đọc thông điệp (giây):"
+
+msgid "Metadata Piece Size:"
+msgstr "Kích thước Mảnh Siêu dữ liệu:"
+
+msgid "Metadata Timeout:"
+msgstr "Hết thời gian Siêu dữ liệu:"
+
+msgid "Min announce interval (sec):"
+msgstr "Khoảng thời gian thông báo tối thiểu (giây):"
+
+msgid "Minimize to system tray"
+msgstr "Thu nhỏ vào khay hệ thống"
+
+msgid "Minimum log level to record"
+msgstr "Mức nhật ký tối thiểu để ghi"
+
+msgid "Minimum port for seeder connections"
+msgstr "Cổng tối thiểu cho kết nối seeder"
+
+msgid "Minimum time between announces (10-3600 seconds)"
+msgstr "Thời gian tối thiểu giữa các thông báo (10-3600 giây)"
+
+msgid "Minimum transaction ID for tracker communication"
+msgstr "ID giao dịch tối thiểu cho giao tiếp tracker"
+
+msgid "Mon"
+msgstr "T2"
+
+msgid "Monday"
+msgstr "Thứ Hai"
+
+msgid "My IP address"
+msgstr "Địa chỉ IP của tôi"
+
+msgid "N/A"
+msgstr "K/C"
+
+msgid "Name"
+msgstr "Tên"
+
+msgid "Network interface:"
+msgstr "Giao diện mạng:"
+
+msgid "Next Announce"
+msgstr "Thông báo Tiếp theo"
+
+msgid "Next Update"
+msgstr "Cập nhật Tiếp theo"
+
+msgid "No editable options available for this torrent."
+msgstr "Không có tùy chọn có thể chỉnh sửa cho torrent này."
+
+msgid "None"
+msgstr "Không có"
+
+msgid "Number of peers to analyze for behavior patterns"
+msgstr "Số lượng ngang hàng để phân tích mẫu hành vi"
+
+msgid "Number of peers to request from tracker"
+msgstr "Số lượng ngang hàng để yêu cầu từ tracker"
+
+msgid "Number of synthetic peers to generate"
+msgstr "Số lượng ngang hàng tổng hợp để tạo"
+
+msgid "Only allow connections from localhost (more secure)"
+msgstr "Chỉ cho phép kết nối từ localhost (an toàn hơn)"
+
+msgid "Open preferences"
+msgstr "Mở tùy chọn"
+
+msgid "Options"
+msgstr "Tùy chọn"
+
+msgid "Outgoing"
+msgstr "Đi"
+
+msgid "Outgoing Connections"
+msgstr "Kết nối Đi"
+
+msgid "Outgoing Peer Connections"
+msgstr "Kết nối Ngang hàng Đi"
+
+msgid "Overlay Notification"
+msgstr "Thông báo Overlay"
+
+msgid "PEX Interval:"
+msgstr "Khoảng thời gian PEX:"
+
+msgid "Password for web interface login"
+msgstr "Mật khẩu đăng nhập giao diện web"
+
+msgid "Password:"
+msgstr "Mật khẩu:"
+
+msgid "Path"
+msgstr "Đường dẫn"
+
+msgid "Pause"
+msgstr "Tạm dừng"
+
+msgid "Pause All Torrents"
+msgstr "Tạm dừng Tất cả Torrent"
+
+msgid "Pause torrent"
+msgstr "Tạm dừng torrent"
+
+msgid "Peer Analysis Depth:"
+msgstr "Độ sâu Phân tích Ngang hàng:"
+
+msgid "Peer Choking"
+msgstr "Ngang hàng Choking"
+
+msgid "Peer ID"
+msgstr "ID Ngang hàng"
+
+msgid "Peer ID Prefix:"
+msgstr "Tiền tố ID Ngang hàng:"
+
+msgid "Peer ID prefix to identify client type"
+msgstr "Tiền tố ID ngang hàng để xác định loại máy khách"
+
+msgid "Peer Protocol"
+msgstr "Giao thức Ngang hàng"
+
+msgid "Peer Protocol settings reset to defaults"
+msgstr "Cài đặt Giao thức Ngang hàng đã đặt lại về mặc định"
+
+msgid "Peer contact interval (seconds):"
+msgstr "Khoảng thời gian liên hệ ngang hàng (giây):"
+
+msgid "Peer idle chance:"
+msgstr "Cơ hội nhàn rỗi ngang hàng:"
+
+msgid "Peer request count:"
+msgstr "Số lượng yêu cầu ngang hàng:"
+
+msgid "Peers"
+msgstr "Ngang hàng"
+
+msgid "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr "Phần trăm kết nối để luân chuyển (0.0 - 1.0)"
+
+msgid "Persian"
+msgstr "Tiếng Ba Tư"
+
+msgid "Piece Length"
+msgstr "Độ dài Mảnh"
+
+msgid "Pieces"
+msgstr "Mảnh"
+
+msgid "Pieces Received"
+msgstr "Mảnh Đã nhận"
+
+msgid "Polish"
+msgstr "Tiếng Ba Lan"
+
+msgid "Port"
+msgstr "Cổng"
+
+msgid "Port for incoming BitTorrent connections (1024-65535)"
+msgstr "Cổng cho kết nối BitTorrent đến (1024-65535)"
+
+msgid "Port for web interface (1024-65535)"
+msgstr "Cổng cho giao diện web (1024-65535)"
+
+msgid "Port:"
+msgstr "Cổng:"
+
+msgid "Portuguese"
+msgstr "Tiếng Bồ Đào Nha"
+
+msgid "Preference 1:"
+msgstr "Tùy chọn 1:"
+
+msgid "Preference 2:"
+msgstr "Tùy chọn 2:"
+
+msgid "Preferences"
+msgstr "Tùy chọn"
+
+msgid "Prevent embedding in frames (X-Frame-Options)"
+msgstr "Ngăn nhúng trong khung (X-Frame-Options)"
+
+msgid "Primary BitTorrent client to simulate"
+msgstr "Máy khách BitTorrent chính để mô phỏng"
+
+msgid "Primary Client:"
+msgstr "Máy khách Chính:"
+
+msgid "Priority"
+msgstr "Ưu tiên"
+
+msgid "Priority Down"
+msgstr "Ưu tiên Xuống"
+
+msgid "Priority Up"
+msgstr "Ưu tiên Lên"
+
+msgid "Private"
+msgstr "Riêng tư"
+
+msgid "Probability of idle periods for aggressive profile"
+msgstr "Xác suất thời gian nhàn rỗi cho hồ sơ tích cực"
+
+msgid "Probability of idle periods for balanced profile"
+msgstr "Xác suất thời gian nhàn rỗi cho hồ sơ cân bằng"
+
+msgid "Probability of idle periods for conservative profile"
+msgstr "Xác suất thời gian nhàn rỗi cho hồ sơ bảo thủ"
+
+msgid "Probability of peer behavior analysis (0.0 - 1.0)"
+msgstr "Xác suất phân tích hành vi ngang hàng (0.0 - 1.0)"
+
+msgid "Probability of peer being idle (0.0 - 1.0)"
+msgstr "Xác suất ngang hàng nhàn rỗi (0.0 - 1.0)"
+
+msgid "Probability of peer dropping out (0.0 - 1.0)"
+msgstr "Xác suất ngang hàng bỏ cuộc (0.0 - 1.0)"
+
+msgid "Probability of peer status changes (0.0 - 1.0)"
+msgstr "Xác suất thay đổi trạng thái ngang hàng (0.0 - 1.0)"
+
+msgid "Probability of seeder upload activity (0.0 - 1.0)"
+msgstr "Xác suất hoạt động tải lên của seeder (0.0 - 1.0)"
+
+msgid "Probability of switching to a different client behavior"
+msgstr "Xác suất chuyển sang hành vi máy khách khác"
+
+msgid "Probability of traffic bursts for aggressive profile"
+msgstr "Xác suất burst lưu lượng cho hồ sơ tích cực"
+
+msgid "Probability of traffic bursts for balanced profile"
+msgstr "Xác suất burst lưu lượng cho hồ sơ cân bằng"
+
+msgid "Probability of traffic bursts for conservative profile"
+msgstr "Xác suất burst lưu lượng cho hồ sơ bảo thủ"
+
+msgid "Progress"
+msgstr "Tiến độ"
+
+msgid "Progress distribution (almost):"
+msgstr "Phân phối tiến độ (gần):"
+
+msgid "Progress distribution (middle):"
+msgstr "Phân phối tiến độ (giữa):"
+
+msgid "Progress distribution (start):"
+msgstr "Phân phối tiến độ (bắt đầu):"
+
+msgid "Progress distribution for almost complete peers (0.0 - 1.0)"
+msgstr "Phân phối tiến độ cho ngang hàng gần hoàn thành (0.0 - 1.0)"
+
+msgid "Progress distribution for middle progress peers (0.0 - 1.0)"
+msgstr "Phân phối tiến độ cho ngang hàng tiến độ giữa (0.0 - 1.0)"
+
+msgid "Progress distribution for starting peers (0.0 - 1.0)"
+msgstr "Phân phối tiến độ cho ngang hàng mới bắt đầu (0.0 - 1.0)"
+
+msgid "Protocol Compliance:"
+msgstr "Tuân thủ Giao thức:"
+
+msgid "Protocol Extensions"
+msgstr "Tiện ích Giao thức"
+
+msgid "Protocol encryption mode for peer communications"
+msgstr "Chế độ mã hóa giao thức cho giao tiếp ngang hàng"
+
+msgid "Proxy authentication password"
+msgstr "Mật khẩu xác thực proxy"
+
+msgid "Proxy authentication username"
+msgstr "Tên người dùng xác thực proxy"
+
+msgid "Proxy server hostname or IP address"
+msgstr "Tên máy chủ hoặc địa chỉ IP của máy chủ proxy"
+
+msgid "Proxy server port number"
+msgstr "Số cổng máy chủ proxy"
+
+msgid "Query Timeout:"
+msgstr "Hết thời gian Truy vấn:"
+
+msgid "Queue"
+msgstr "Hàng đợi"
+
+msgid "Quit"
+msgstr "Thoát"
+
+msgid "Quit DFakeSeeder"
+msgstr "Thoát DFakeSeeder"
+
+msgid "Random"
+msgstr "Ngẫu nhiên"
+
+msgid "Rate of adaptation to swarm behavior"
+msgstr "Tốc độ thích ứng với hành vi bầy đàn"
+
+msgid "Ratio"
+msgstr "Tỷ lệ"
+
+msgid "Realistic variations"
+msgstr "Biến thể thực tế"
+
+msgid "Received"
+msgstr "Đã nhận"
+
+msgid "Relaxed"
+msgstr "Thoải mái"
+
+msgid "Remember window size and position"
+msgstr "Ghi nhớ kích thước và vị trí cửa sổ"
+
+msgid "Remember window size and position between sessions"
+msgstr "Ghi nhớ kích thước và vị trí cửa sổ giữa các phiên"
+
+msgid "Remove torrent"
+msgstr "Xóa torrent"
+
+msgid "Requests"
+msgstr "Yêu cầu"
+
+msgid "Require authentication"
+msgstr "Yêu cầu xác thực"
+
+msgid "Require username and password for web access"
+msgstr "Yêu cầu tên người dùng và mật khẩu để truy cập web"
+
+msgid "Reset"
+msgstr "Đặt lại"
+
+msgid "Reset all settings not yet implemented"
+msgstr "Đặt lại tất cả cài đặt chưa được triển khai"
+
+msgid "Reset all settings to default values"
+msgstr "Đặt lại tất cả cài đặt về giá trị mặc định"
+
+msgid "Reset to Defaults"
+msgstr "Đặt lại về Mặc định"
+
+msgid "Reset to defaults"
+msgstr "Đặt lại về mặc định"
+
+msgid "Resume"
+msgstr "Tiếp tục"
+
+msgid "Resume All Torrents"
+msgstr "Tiếp tục Tất cả Torrent"
+
+msgid "Resume torrent"
+msgstr "Tiếp tục torrent"
+
+msgid "Routing Table Size:"
+msgstr "Kích thước Bảng Định tuyến:"
+
+msgid "Russian"
+msgstr "Tiếng Nga"
+
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+msgid "Sat"
+msgstr "T7"
+
+msgid "Saturday"
+msgstr "Thứ Bảy"
+
+msgid "Save logs to file in addition to console"
+msgstr "Lưu nhật ký vào tệp ngoài console"
+
+msgid "Scrape interval (sec):"
+msgstr "Khoảng thời gian scrape (giây):"
+
+msgid "Search by torrent name or file path"
+msgstr "Tìm kiếm theo tên torrent hoặc đường dẫn tệp"
+
+msgid "Search for settings across all tabs"
+msgstr "Tìm kiếm cài đặt trên tất cả các tab"
+
+msgid "Search for torrent"
+msgstr "Tìm kiếm torrent"
+
+msgid "Search settings"
+msgstr "Tìm kiếm cài đặt"
+
+msgid "Secure password generated"
+msgstr "Mật khẩu an toàn đã được tạo"
+
+msgid "Seeder port range (max):"
+msgstr "Phạm vi cổng seeder (tối đa):"
+
+msgid "Seeder port range (min):"
+msgstr "Phạm vi cổng seeder (tối thiểu):"
+
+msgid "Seeders"
+msgstr "Seeder"
+
+msgid "Seeding Profile"
+msgstr "Hồ sơ Seeding"
+
+msgid "Seeds"
+msgstr "Seed"
+
+msgid "Select proxy type for connections"
+msgstr "Chọn loại proxy cho kết nối"
+
+msgid "Select torrent"
+msgstr "Chọn torrent"
+
+msgid "Send security-related HTTP headers"
+msgstr "Gửi tiêu đề HTTP liên quan đến bảo mật"
+
+msgid "Sent"
+msgstr "Đã gửi"
+
+msgid "Server:"
+msgstr "Máy chủ:"
+
+msgid "Session Downloaded"
+msgstr "Phiên Đã tải xuống"
+
+msgid "Session Uploaded"
+msgstr "Phiên Đã tải lên"
+
+msgid "Session timeout (min):"
+msgstr "Hết thời gian phiên (phút):"
+
+msgid "Shortcuts configuration not yet implemented"
+msgstr "Cấu hình phím tắt chưa được triển khai"
+
+msgid "Show Main Window"
+msgstr "Hiển thị Cửa sổ Chính"
+
+msgid "Show only selected torrent connections"
+msgstr "Chỉ hiển thị kết nối torrent đã chọn"
+
+msgid "Simulation"
+msgstr "Mô phỏng"
+
+msgid "Size"
+msgstr "Kích thước"
+
+msgid "Size of metadata pieces in bytes"
+msgstr "Kích thước mảnh siêu dữ liệu tính bằng byte"
+
+msgid "Small Torrent Limit"
+msgstr "Giới hạn Torrent Nhỏ"
+
+msgid "Spanish"
+msgstr "Tiếng Tây Ban Nha"
+
+msgid "Speed"
+msgstr "Tốc độ"
+
+msgid "Speed Control"
+msgstr "Điều khiển Tốc độ"
+
+msgid "Speed settings reset to defaults"
+msgstr "Cài đặt tốc độ đã đặt lại về mặc định"
+
+msgid "Standard"
+msgstr "Tiêu chuẩn"
+
+msgid "Start DFakeSeeder automatically when the system boots"
+msgstr "Tự động khởi động DFakeSeeder khi hệ thống khởi động"
+
+msgid "Start hour (24-hour format)"
+msgstr "Giờ bắt đầu (định dạng 24 giờ)"
+
+msgid "Start minimized"
+msgstr "Bắt đầu thu nhỏ"
+
+msgid "Start minimized disabled"
+msgstr "Bắt đầu thu nhỏ đã tắt"
+
+msgid "Start minimized enabled"
+msgstr "Bắt đầu thu nhỏ đã bật"
+
+msgid "Start minute"
+msgstr "Phút bắt đầu"
+
+msgid "Start on system startup"
+msgstr "Bắt đầu khi khởi động hệ thống"
+
+msgid "Start the application minimized to system tray"
+msgstr "Bắt đầu ứng dụng thu nhỏ vào khay hệ thống"
+
+msgid "Stats Update Interval:"
+msgstr "Khoảng thời gian Cập nhật Thống kê:"
+
+msgid "Status"
+msgstr "Trạng thái"
+
+msgid "Status change probability:"
+msgstr "Xác suất thay đổi trạng thái:"
+
+msgid "Strict"
+msgstr "Nghiêm ngặt"
+
+msgid "Sun"
+msgstr "CN"
+
+msgid "Sunday"
+msgstr "Chủ Nhật"
+
+msgid "Swedish"
+msgstr "Tiếng Thụy Điển"
+
+msgid "Synthetic Peer Count:"
+msgstr "Số lượng Ngang hàng Tổng hợp:"
+
+msgid "TCP fallback"
+msgstr "TCP dự phòng"
+
+msgid "TCP keepalive"
+msgstr "TCP keepalive"
+
+msgid "Theme:"
+msgstr "Chủ đề:"
+
+msgid "Threshold"
+msgstr "Ngưỡng"
+
+msgid "Thu"
+msgstr "T5"
+
+msgid "Thursday"
+msgstr "Thứ Năm"
+
+msgid "Tier"
+msgstr "Cấp"
+
+msgid "Time-based patterns"
+msgstr "Mẫu dựa trên thời gian"
+
+msgid "Timeout for DHT bootstrap operations (seconds)"
+msgstr "Hết thời gian cho thao tác khởi động DHT (giây)"
+
+msgid "Timeout for DHT queries (seconds)"
+msgstr "Hết thời gian cho truy vấn DHT (giây)"
+
+msgid "Timeout for HTTP seeder connections in seconds"
+msgstr "Hết thời gian cho kết nối seeder HTTP tính bằng giây"
+
+msgid "Timeout for UDP seeder connections in seconds"
+msgstr "Hết thời gian cho kết nối seeder UDP tính bằng giây"
+
+msgid "Timeout for metadata requests (seconds)"
+msgstr "Hết thời gian cho yêu cầu siêu dữ liệu (giây)"
+
+msgid "Timeout for peer handshake in seconds"
+msgstr "Hết thời gian cho bắt tay ngang hàng tính bằng giây"
+
+msgid "Timeout for reading peer messages in seconds"
+msgstr "Hết thời gian cho đọc thông điệp ngang hàng tính bằng giây"
+
+msgid "To:"
+msgstr "Đến:"
+
+msgid "Top"
+msgstr "Trên cùng"
+
+msgid "Torrent"
+msgstr "Torrent"
+
+msgid "Torrent Files"
+msgstr "Tệp Torrent"
+
+msgid "Torrents"
+msgstr "Torrent"
+
+msgid "Total Downloaded"
+msgstr "Tổng Đã tải xuống"
+
+msgid "Total Size"
+msgstr "Kích thước Tổng"
+
+msgid "Total Uploaded"
+msgstr "Tổng Đã tải lên"
+
+msgid "Track extension statistics"
+msgstr "Theo dõi thống kê tiện ích"
+
+msgid "Track extension usage statistics"
+msgstr "Theo dõi thống kê sử dụng tiện ích"
+
+msgid "Tracker"
+msgstr "Tracker"
+
+msgid "Tracker URL"
+msgstr "URL Tracker"
+
+msgid "Trackers"
+msgstr "Tracker"
+
+msgid "Traffic Profile:"
+msgstr "Hồ sơ Lưu lượng:"
+
+msgid "Traffic pattern profile for simulation"
+msgstr "Hồ sơ mẫu lưu lượng cho mô phỏng"
+
+msgid "Transaction ID range (max):"
+msgstr "Phạm vi ID giao dịch (tối đa):"
+
+msgid "Transaction ID range (min):"
+msgstr "Phạm vi ID giao dịch (tối thiểu):"
+
+msgid "TranslationManager"
+msgstr "TranslationManager"
+
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
+msgid "Transmission"
+msgstr "Transmission"
+
+msgid "Transmission/3.00"
+msgstr "Transmission/3.00"
+
+msgid "Tue"
+msgstr "T3"
+
+msgid "Tuesday"
+msgstr "Thứ Ba"
+
+msgid "Turkish"
+msgstr "Tiếng Thổ Nhĩ Kỳ"
+
+msgid "Type"
+msgstr "Loại"
+
+msgid "Type:"
+msgstr "Loại:"
+
+msgid "UDP seeder timeout (seconds):"
+msgstr "Hết thời gian seeder UDP (giây):"
+
+msgid "UI Refresh Rate"
+msgstr "Tốc độ Làm mới Giao diện"
+
+msgid "UI refresh rate (sec):"
+msgstr "Tốc độ làm mới giao diện (giây):"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "URL: http://localhost:8080"
+msgstr "URL: http://localhost:8080"
+
+msgid "Unknown"
+msgstr "Không rõ"
+
+msgid "Up"
+msgstr "Lên"
+
+msgid "Up Speed"
+msgstr "Tốc độ Tải lên"
+
+msgid "Update Tracker"
+msgstr "Cập nhật Tracker"
+
+msgid "Upload Speed"
+msgstr "Tốc độ Tải lên"
+
+msgid "Upload Speed (KB/s):"
+msgstr "Tốc độ Tải lên (KB/s):"
+
+msgid "Upload Variance:"
+msgstr "Phương sai Tải lên:"
+
+msgid "Upload activity probability:"
+msgstr "Xác suất hoạt động tải lên:"
+
+msgid "Upload limit (KB/s):"
+msgstr "Giới hạn tải lên (KB/s):"
+
+msgid "Upload speed variance for aggressive profile"
+msgstr "Phương sai tốc độ tải lên cho hồ sơ tích cực"
+
+msgid "Upload speed variance for balanced profile"
+msgstr "Phương sai tốc độ tải lên cho hồ sơ cân bằng"
+
+msgid "Upload speed variance for conservative profile"
+msgstr "Phương sai tốc độ tải lên cho hồ sơ bảo thủ"
+
+msgid "Uploaded"
+msgstr "Đã tải lên"
+
+msgid "Uploaded Session / Total"
+msgstr "Phiên Đã tải lên / Tổng"
+
+msgid "Uploading"
+msgstr "Đang tải lên"
+
+msgid "Use HTTPS (SSL/TLS)"
+msgstr "Sử dụng HTTPS (SSL/TLS)"
+
+msgid "Use HTTPS for secure connections (requires SSL certificate)"
+msgstr "Sử dụng HTTPS cho kết nối an toàn (yêu cầu chứng chỉ SSL)"
+
+msgid "Use authentication"
+msgstr "Sử dụng xác thực"
+
+msgid "User Agent:"
+msgstr "User Agent:"
+
+msgid "User agent string to identify the client to trackers"
+msgstr "Chuỗi user agent để xác định máy khách với tracker"
+
+msgid "Username for web interface login"
+msgstr "Tên người dùng đăng nhập giao diện web"
+
+msgid "Username:"
+msgstr "Tên người dùng:"
+
+msgid "Validate DHT security tokens"
+msgstr "Xác thực mã thông báo bảo mật DHT"
+
+msgid "Validate extension messages"
+msgstr "Xác thực thông điệp tiện ích"
+
+msgid "Validate extension messages for security"
+msgstr "Xác thực thông điệp tiện ích để bảo mật"
+
+msgid "Validate security tokens"
+msgstr "Xác thực mã thông báo bảo mật"
+
+msgid "Validate setting values and show warnings for invalid combinations"
+msgstr "Xác thực giá trị cài đặt và hiển thị cảnh báo cho tổ hợp không hợp lệ"
+
+msgid "Validate settings on change"
+msgstr "Xác thực cài đặt khi thay đổi"
+
+msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr "Biến thể trong hành vi máy khách (0.0 = không biến thể, 1.0 = biến thể tối đa)"
+
+msgid "Vietnamese"
+msgstr "Tiếng Việt"
+
+msgid "Vuze"
+msgstr "Vuze"
+
+msgid "Vuze/5.7.6.0"
+msgstr "Vuze/5.7.6.0"
+
+msgid "WARNING"
+msgstr "CẢNH BÁO"
+
+msgid "Web UI"
+msgstr "Giao diện Web"
+
+msgid "Web UI settings reset to defaults"
+msgstr "Cài đặt Giao diện Web đã đặt lại về mặc định"
+
+msgid "Wed"
+msgstr "T4"
+
+msgid "Wednesday"
+msgstr "Thứ Tư"
+
+msgid "active"
+msgstr "Hoạt động"
+
+msgid "address"
+msgstr "Địa chỉ"
+
+msgid "admin"
+msgstr "admin"
+
+msgid "am_choking"
+msgstr "Tôi đang Choking"
+
+msgid "am_interested"
+msgstr "Tôi Quan tâm"
+
+msgid "announce_interval"
+msgstr "Khoảng thời gian Thông báo"
+
+msgid "bytes"
+msgstr "byte"
+
+msgid "bytes_downloaded"
+msgstr "Byte Đã tải xuống"
+
+msgid "bytes_uploaded"
+msgstr "Byte Đã tải lên"
+
+msgid "class_name"
+msgstr "Tên Lớp"
+
+msgid "client"
+msgstr "Máy khách"
+
+msgid "connection_time"
+msgstr "Thời gian Kết nối"
+
+msgid "download_rate"
+msgstr "Tốc độ Tải xuống"
+
+msgid "download_speed"
+msgstr "Tốc độ Tải xuống"
+
+msgid "failure_reason"
+msgstr "Lý do Thất bại"
+
+msgid "filepath"
+msgstr "Đường dẫn Tệp"
+
+msgid "files_tab"
+msgstr "Tệp"
+
+msgid "handshake_complete"
+msgstr "Bắt tay Hoàn thành"
+
+msgid "id"
+msgstr "#"
+
+msgid "leechers"
+msgstr "Leecher"
+
+msgid "log_tab"
+msgstr "Nhật ký"
+
+msgid "lt_donthave (Piece Availability)"
+msgstr "lt_donthave (Tính khả dụng Mảnh)"
+
+msgid "name"
+msgstr "Tên"
+
+msgid "next_update"
+msgstr "Cập nhật Tiếp theo"
+
+msgid "open-menu-symbolic"
+msgstr "open-menu-symbolic"
+
+msgid "options_tab"
+msgstr "Tùy chọn"
+
+msgid "peer_choking"
+msgstr "Ngang hàng Choking"
+
+msgid "peer_interested"
+msgstr "Ngang hàng Quan tâm"
+
+msgid "peers_tab"
+msgstr "Ngang hàng"
+
+msgid "pieces_received"
+msgstr "Mảnh Đã nhận"
+
+msgid "pieces_sent"
+msgstr "Mảnh Đã gửi"
+
+msgid "progress"
+msgstr "Tiến độ"
+
+msgid "qBittorrent"
+msgstr "qBittorrent"
+
+msgid "qBittorrent/4.3.1"
+msgstr "qBittorrent/4.3.1"
+
+msgid "rTorrent"
+msgstr "rTorrent"
+
+msgid "rTorrent/0.9.6"
+msgstr "rTorrent/0.9.6"
+
+msgid "requests_received"
+msgstr "Yêu cầu Đã nhận"
+
+msgid "requests_sent"
+msgstr "Yêu cầu Đã gửi"
+
+msgid "seconds"
+msgstr "giây"
+
+msgid "seeders"
+msgstr "Seed"
+
+msgid "session_downloaded"
+msgstr "Phiên Đã tải xuống"
+
+msgid "session_uploaded"
+msgstr "Phiên Đã tải lên"
+
+msgid "small_torrent_limit"
+msgstr "Giới hạn Torrent Nhỏ"
+
+msgid "status"
+msgstr "Trạng thái"
+
+msgid "threshold"
+msgstr "Ngưỡng"
+
+msgid "total_downloaded"
+msgstr "Tổng Đã tải xuống"
+
+msgid "total_size"
+msgstr "Kích thước Tổng"
+
+msgid "total_uploaded"
+msgstr "Tổng Đã tải lên"
+
+msgid "trackers_tab"
+msgstr "Tracker"
+
+msgid "uTorrent/3.5.5"
+msgstr "uTorrent/3.5.5"
+
+msgid "upload_rate"
+msgstr "Tốc độ Tải lên"
+
+msgid "upload_speed"
+msgstr "Tốc độ Tải lên"
+
+msgid "uploading"
+msgstr "Đang tải lên"
+
+msgid "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch (NAT Traversal)"
+
+msgid "ut_metadata (Metadata Exchange)"
+msgstr "ut_metadata (Trao đổi Siêu dữ liệu)"
+
+msgid "ut_pex (Peer Exchange)"
+msgstr "ut_pex (Trao đổi Ngang hàng)"
+
+msgid "µTorrent"
+msgstr "µTorrent"
+
+msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
+msgstr "⚠️ Cài đặt nâng cao - chỉnh sửa cẩn thận. Giá trị không chính xác có thể ảnh hưởng đến hiệu suất hoặc độ ổn định."
+
+msgid "⚠️ Web UI allows remote control of the application. Use strong authentication."
+msgstr "⚠️ Giao diện Web cho phép điều khiển từ xa ứng dụng. Sử dụng xác thực mạnh."
+

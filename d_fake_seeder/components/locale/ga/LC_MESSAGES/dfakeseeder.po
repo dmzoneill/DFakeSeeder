@@ -1,0 +1,1984 @@
+# Irish translation for DFakeSeeder
+# Copyright (C) 2024 DFakeSeeder Contributors
+# This file is distributed under the same license as the DFakeSeeder package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DFakeSeeder 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"POT-Creation-Date: 2025-09-18 17:51+0100\n"
+"PO-Revision-Date: 2024-09-18 18:30+0100\n"
+"Last-Translator: Claude <noreply@anthropic.com>\n"
+"Language-Team: Irish <ga@li.org>\n"
+"Language: ga\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && n<=6 ? 2 : n>=7 && n<=10 ? 3 : 4;\n"
+
+msgid "#"
+msgstr "#"
+
+msgid "(0 = unlimited)"
+msgstr "(0 = neamhtheoranta)"
+
+msgid "0 / 250"
+msgstr "0 / 250"
+
+msgid "127.0.0.1"
+msgstr "127.0.0.1"
+
+msgid ":"
+msgstr ":"
+
+msgid "<b>Advanced Extension Settings</b>"
+msgstr "<b>Socruithe Breiseáin Chun Cinn</b>"
+
+msgid "<b>Aggressive Profile Settings</b>"
+msgstr "<b>Socruithe Próifíl Ionsaitheach</b>"
+
+msgid "<b>Alternative Speed Limits</b>"
+msgstr "<b>Teorainneacha Luais Malartacha</b>"
+
+msgid "<b>Application Behavior</b>"
+msgstr "<b>Iompar an Fheidhmchláir</b>"
+
+msgid "<b>Authentication</b>"
+msgstr "<b>Fíordheimhniú</b>"
+
+msgid "<b>Balanced Profile Settings</b>"
+msgstr "<b>Socruithe Próifíl Chothromaithe</b>"
+
+msgid "<b>Bootstrap Settings</b>"
+msgstr "<b>Socruithe Tosaithe</b>"
+
+msgid "<b>Client Behavior Engine</b>"
+msgstr "<b>Inneall Iompar Cliant</b>"
+
+msgid "<b>Client Identification</b>"
+msgstr "<b>Aitheantas Cliant</b>"
+
+msgid "<b>Configuration Management</b>"
+msgstr "<b>Bainistíocht Cumraíochta</b>"
+
+msgid "<b>Connection Limits</b>"
+msgstr "<b>Teorainneacha Ceangail</b>"
+
+msgid "<b>Connection Settings</b>"
+msgstr "<b>Socruithe Ceangail</b>"
+
+msgid "<b>Conservative Profile Settings</b>"
+msgstr "<b>Socruithe Próifíl Choimeádach</b>"
+
+msgid "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT (Tábla Haiseála Dáilte)</b>"
+
+msgid "<b>Encryption</b>"
+msgstr "<b>Criptiú</b>"
+
+msgid "<b>Expert Settings</b>"
+msgstr "<b>Socruithe Saineolaithe</b>"
+
+msgid "<b>Extension Protocol (BEP-010)</b>"
+msgstr "<b>Prótacal Breiseán (BEP-010)</b>"
+
+msgid "<b>Global Speed Limits</b>"
+msgstr "<b>Teorainneacha Luais Domhanda</b>"
+
+msgid "<b>Interface</b>"
+msgstr "<b>Comhéadan</b>"
+
+msgid "<b>Keyboard Shortcuts</b>"
+msgstr "<b>Aicearraí Méarchláir</b>"
+
+msgid "<b>Listening Port</b>"
+msgstr "<b>Port Éisteachta</b>"
+
+msgid "<b>Logging</b>"
+msgstr "<b>Logáil</b>"
+
+msgid "<b>Metadata Extension Settings</b>"
+msgstr "<b>Socruithe Breiseán Meiteashonraí</b>"
+
+msgid "<b>Network Settings</b>"
+msgstr "<b>Socruithe Líonra</b>"
+
+msgid "<b>Node Configuration</b>"
+msgstr "<b>Cumraíocht Nóid</b>"
+
+msgid "<b>Peer Behavior Settings</b>"
+msgstr "<b>Socruithe Iompar Piaraí</b>"
+
+msgid "<b>Peer Exchange (PEX) Settings</b>"
+msgstr "<b>Socruithe Malartú Piaraí (PEX)</b>"
+
+msgid "<b>Peer Protocol Timeouts</b>"
+msgstr "<b>Amanna Ceangail Prótacail Piaraí</b>"
+
+msgid "<b>Performance</b>"
+msgstr "<b>Feidhmíocht</b>"
+
+msgid "<b>Protocol Extensions</b>"
+msgstr "<b>Breiseáin Phrótacail</b>"
+
+msgid "<b>Protocol Features</b>"
+msgstr "<b>Gnéithe Prótacail</b>"
+
+msgid "<b>Proxy Settings</b>"
+msgstr "<b>Socruithe Seachfhreastalaí</b>"
+
+msgid "<b>Security Options</b>"
+msgstr "<b>Roghanna Slándála</b>"
+
+msgid "<b>Seeder Protocol Settings</b>"
+msgstr "<b>Socruithe Prótacail Síolóra</b>"
+
+msgid "<b>Seeding Profiles</b>"
+msgstr "<b>Próifílí Síolacháin</b>"
+
+msgid "<b>Settings Search</b>"
+msgstr "<b>Cuardach Socruithe</b>"
+
+msgid "<b>Speed Scheduler</b>"
+msgstr "<b>Sceidealóir Luais</b>"
+
+msgid "<b>Statistics and Security</b>"
+msgstr "<b>Staitisticí agus Slándáil</b>"
+
+msgid "<b>Swarm Intelligence</b>"
+msgstr "<b>Faisnéis Saithe</b>"
+
+msgid "<b>Timing Settings</b>"
+msgstr "<b>Socruithe Ama</b>"
+
+msgid "<b>Tracker Announce Settings</b>"
+msgstr "<b>Socruithe Fógra Lorgaire</b>"
+
+msgid "<b>Traffic Pattern Settings</b>"
+msgstr "<b>Socruithe Patrún Tráchta</b>"
+
+msgid "<b>Transport Protocol Settings</b>"
+msgstr "<b>Socruithe Prótacail Iompair</b>"
+
+msgid "<b>Web Interface</b>"
+msgstr "<b>Comhéadan Gréasáin</b>"
+
+msgid "About"
+msgstr "Maidir le"
+
+msgid "Active"
+msgstr "Gníomhach"
+
+msgid "Active Profile:"
+msgstr "Próifíl Ghníomhach:"
+
+msgid "Adaptation Rate:"
+msgstr "Ráta Oiriúnaithe:"
+
+msgid "Add"
+msgstr "Cuir leis"
+
+msgid "Add torrent"
+msgstr "Cuir torrent leis"
+
+msgid "Added"
+msgstr "Curtha leis"
+
+msgid "Advanced"
+msgstr "Ardleibhéal"
+
+msgid "Advanced settings reset to defaults"
+msgstr "Socruithe ardleibhéil athshocraíodh go réamhshocruithe"
+
+msgid "Aggressive"
+msgstr "Ionsaitheach"
+
+msgid "Aggressive profile download speed"
+msgstr "Luas íoslódála próifíl ionsaitheach"
+
+msgid "Aggressive profile upload speed (0 = unlimited)"
+msgstr "Luas uaslódála próifíl ionsaitheach (0 = neamhtheoranta)"
+
+msgid "Alt download limit (KB/s):"
+msgstr "Teorainn íoslódála malartach (KB/s):"
+
+msgid "Alt upload limit (KB/s):"
+msgstr "Teorainn uaslódála malartach (KB/s):"
+
+msgid "Alternative Speed Limits"
+msgstr "Teorainneacha Luais Malartacha"
+
+msgid "Alternative download speed limit in KB/s"
+msgstr "Teorainn luais íoslódála malartach i KB/s"
+
+msgid "Alternative upload speed limit in KB/s"
+msgstr "Teorainn luais uaslódála malartach i KB/s"
+
+msgid "Amount of RAM to use for disk caching"
+msgstr "Méid RAM le húsáid do thaiscadh diosca"
+
+msgid "Announce Interval"
+msgstr "Eatramh Fógra"
+
+msgid "Announce interval (sec):"
+msgstr "Eatramh fógra (soic):"
+
+msgid "Announcement Interval:"
+msgstr "Eatramh Fógra:"
+
+msgid "Arabic"
+msgstr "Araibis"
+
+msgid "Auto Detect"
+msgstr "Brath Uathoibríoch"
+
+msgid "Auto-bootstrap DHT"
+msgstr "DHT tosú uathoibríoch"
+
+msgid "Auto-generate node ID"
+msgstr "Gin ID nóid go huathoibríoch"
+
+msgid "Auto-save settings"
+msgstr "Sábháil socruithe go huathoibríoch"
+
+msgid "Auto-start disabled"
+msgstr "Tosú uathoibríoch díchumasaithe"
+
+msgid "Auto-start enabled"
+msgstr "Tosú uathoibríoch cumasaithe"
+
+msgid "Automatic logout after inactivity (5-1440 minutes)"
+msgstr "Logáil amach uathoibríoch tar éis easpa gníomhaíochta (5-1440 nóiméad)"
+
+msgid "Automatically bootstrap DHT using known nodes"
+msgstr "Tosú DHT go huathoibríoch ag úsáid nóid aitheanta"
+
+msgid "Automatically configure router port forwarding using UPnP/NAT-PMP"
+msgstr "Cumraigh port-sheolú an ródaire go huathoibríoch ag úsáid UPnP/NAT-PMP"
+
+msgid "Automatically generate a unique node ID"
+msgstr "Gin ID nóid uathúil go huathoibríoch"
+
+msgid "Automatically save settings when changed"
+msgstr "Sábháil socruithe go huathoibríoch nuair a athraítear iad"
+
+msgid "Automatically switch to alternative speeds during specified hours"
+msgstr "Athraigh go luasanna malartacha go huathoibríoch le linn uaireanta sonraithe"
+
+msgid "Availability"
+msgstr "Infhaighteacht"
+
+msgid "Balanced"
+msgstr "Cothromaithe"
+
+msgid "Balanced profile download speed"
+msgstr "Luas íoslódála próifíl chothromaithe"
+
+msgid "Balanced profile upload speed"
+msgstr "Luas uaslódála próifíl chothromaithe"
+
+msgid "Behavior Variation:"
+msgstr "Éagsúlacht Iompair:"
+
+msgid "Behavior analysis probability:"
+msgstr "Dóchúlacht anailíse iompair:"
+
+msgid "Behavior randomization"
+msgstr "Randamú iompair"
+
+msgid "Bengali"
+msgstr "Beangáilis"
+
+msgid "BiglyBT"
+msgstr "BiglyBT"
+
+msgid "Bind to localhost only"
+msgstr "Ceangail le localhost amháin"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "BitTorrent settings reset to defaults"
+msgstr "Socruithe BitTorrent athshocraíodh go réamhshocruithe"
+
+msgid "BitTorrent/7.10.5"
+msgstr "BitTorrent/7.10.5"
+
+msgid "Bootstrap Nodes (one per line, format: host:port):"
+msgstr "Nóid Tosaithe (ceann amháin in aghaidh na líne, formáid: óstach:port):"
+
+msgid "Bootstrap Timeout:"
+msgstr "Teorainn Ama Tosaithe:"
+
+msgid "Bottom"
+msgstr "Bun"
+
+msgid "Bucket Size:"
+msgstr "Méid Buicéid:"
+
+msgid "Burst Probability:"
+msgstr "Dóchúlacht Ráige:"
+
+msgid "CRITICAL"
+msgstr "RÍTHÁBHACHTACH"
+
+msgid "Cancel"
+msgstr "Cealaigh"
+
+msgid "Chinese"
+msgstr "Sínis"
+
+msgid "Choose a pre-configured seeding profile"
+msgstr "Roghnaigh próifíl síolacháin réamhchumraithe"
+
+msgid "Choose the application theme"
+msgstr "Roghnaigh téama an fheidhmchláir"
+
+msgid "Choose the interface language"
+msgstr "Roghnaigh teanga an chomhéadain"
+
+msgid "Clear search"
+msgstr "Glan cuardach"
+
+msgid "Client"
+msgstr "Cliant"
+
+msgid "Client Switch Probability:"
+msgstr "Dóchúlacht Athrú Cliant:"
+
+msgid "Comment"
+msgstr "Nóta"
+
+msgid "Completed"
+msgstr "Críochnaithe"
+
+msgid "Concurrent Queries:"
+msgstr "Ceisteanna Comhuaineacha:"
+
+msgid "Config export not yet implemented"
+msgstr "Easpórtáil cumraíochta gan cur i bhfeidhm fós"
+
+msgid "Config import not yet implemented"
+msgstr "Iompórtáil cumraíochta gan cur i bhfeidhm fós"
+
+msgid "Connected"
+msgstr "Ceangailte"
+
+msgid "Connected At"
+msgstr "Ceangailte Ag"
+
+msgid "Connected Peers / Total Peers"
+msgstr "Piaraí Ceangailte / Piaraí Iomlána"
+
+msgid "Connected to DFakeSeeder"
+msgstr "Ceangailte le DFakeSeeder"
+
+msgid "Connection"
+msgstr "Ceangal"
+
+msgid "Connection Status"
+msgstr "Stádas Ceangail"
+
+msgid "Connection Timeout:"
+msgstr "Teorainn Ama Ceangail:"
+
+msgid "Connection rotation percentage:"
+msgstr "Céatadán rothlú ceangail:"
+
+msgid "Connection settings reset to defaults"
+msgstr "Socruithe ceangail athshocraíodh go réamhshocruithe"
+
+msgid "Connection timeout for extensions (seconds)"
+msgstr "Teorainn ama ceangail do bhreiseáin (soicindí)"
+
+msgid "Conservative"
+msgstr "Coimeádach"
+
+msgid "Conservative profile download speed"
+msgstr "Luas íoslódála próifíl choimeádach"
+
+msgid "Conservative profile upload speed"
+msgstr "Luas uaslódála próifíl choimeádach"
+
+msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
+msgstr "Coimeádach: Luasanna níos ísle, níos lú ceangail, oiriúnach do shíolachán cúlra"
+
+msgid "Country"
+msgstr "Tír"
+
+msgid "Created"
+msgstr "Cruthaithe"
+
+msgid "Created By"
+msgstr "Cruthaithe Ag"
+
+msgid "Ctrl+,"
+msgstr "Ctrl+,"
+
+msgid "Ctrl+F"
+msgstr "Ctrl+F"
+
+msgid "Ctrl+R"
+msgstr "Ctrl+R"
+
+msgid "Custom"
+msgstr "Saincheaptha"
+
+msgid "Custom Agent:"
+msgstr "Gníomhaire Saincheaptha:"
+
+msgid "Custom Node ID:"
+msgstr "ID Nóid Saincheaptha:"
+
+msgid "Custom node ID (40 hex characters)"
+msgstr "ID nóid saincheaptha (40 carachtar heics)"
+
+msgid "Custom user agent string"
+msgstr "Teaghrán gníomhaire úsáideora saincheaptha"
+
+msgid "D' Fake Seeder"
+msgstr "D' Fake Seeder"
+
+msgid "DEBUG"
+msgstr "DÍFHABHTÚ"
+
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
+msgid "DHT"
+msgstr "DHT"
+
+msgid "Dark"
+msgstr "Dorcha"
+
+msgid "Days:"
+msgstr "Laethanta:"
+
+msgid "Deluge"
+msgstr "Deluge"
+
+msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
+msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
+
+msgid "Details"
+msgstr "Sonraí"
+
+msgid "Disabled"
+msgstr "Díchumasaithe"
+
+msgid "Disconnected"
+msgstr "Dícheangailte"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Dícheangailte ó DFakeSeeder"
+
+msgid "Disk cache size (MB):"
+msgstr "Méid taisce diosca (MB):"
+
+msgid "Down"
+msgstr "Síos"
+
+msgid "Down Speed"
+msgstr "Luas Síos"
+
+msgid "Download Rate"
+msgstr "Ráta Íoslódála"
+
+msgid "Download Speed (KB/s):"
+msgstr "Luas Íoslódála (KB/s):"
+
+msgid "Download Variance:"
+msgstr "Athraitheas Íoslódála:"
+
+msgid "Download limit (KB/s):"
+msgstr "Teorainn íoslódála (KB/s):"
+
+msgid "Download speed variance for aggressive profile"
+msgstr "Athraitheas luais íoslódála do phróifíl ionsaitheach"
+
+msgid "Download speed variance for balanced profile"
+msgstr "Athraitheas luais íoslódála do phróifíl chothromaithe"
+
+msgid "Download speed variance for conservative profile"
+msgstr "Athraitheas luais íoslódála do phróifíl choimeádach"
+
+msgid "Downloaded"
+msgstr "Íoslódáilte"
+
+msgid "Downloaded Session / Total"
+msgstr "Seisiún Íoslódáilte / Iomlán"
+
+msgid "Downloaded Speed"
+msgstr "Luas Íoslódála"
+
+msgid "Dropout probability:"
+msgstr "Dóchúlacht titim amach:"
+
+msgid "Dutch"
+msgstr "Ollainnis"
+
+msgid "Dynamic profile switching"
+msgstr "Athrú próifíl dinimiciúil"
+
+msgid "ERROR"
+msgstr "EARRÁID"
+
+msgid "ETA"
+msgstr "Am Measta"
+
+msgid "Enable CSRF protection"
+msgstr "Cumasaigh cosaint CSRF"
+
+msgid "Enable Cross-Site Request Forgery protection"
+msgstr "Cumasaigh cosaint Cross-Site Request Forgery"
+
+msgid "Enable DHT"
+msgstr "Cumasaigh DHT"
+
+msgid "Enable DHT (Distributed Hash Table)"
+msgstr "Cumasaigh DHT (Tábla Haiseála Dáilte)"
+
+msgid "Enable DHT query rate limiting"
+msgstr "Cumasaigh teorannú ráta ceiste DHT"
+
+msgid "Enable DHT statistics collection"
+msgstr "Cumasaigh bailiú staitisticí DHT"
+
+msgid "Enable Distributed Hash Table for trackerless torrents"
+msgstr "Cumasaigh Tábla Haiseála Dáilte do torrents gan lorgaire"
+
+msgid "Enable Fast Extension (BEP-006) for improved performance"
+msgstr "Cumasaigh Breiseán Tapa (BEP-006) le haghaidh feidhmíocht fheabhsaithe"
+
+msgid "Enable LPD (Local Peer Discovery)"
+msgstr "Cumasaigh LPD (Fionnachtain Piaraí Áitiúil)"
+
+msgid "Enable Local Peer Discovery for finding peers on local network"
+msgstr "Cumasaigh Fionnachtain Piaraí Áitiúil chun piaraí a aimsiú ar líonra áitiúil"
+
+msgid "Enable Nagle algorithm"
+msgstr "Cumasaigh algartam Nagle"
+
+msgid "Enable Nagle algorithm for TCP"
+msgstr "Cumasaigh algartam Nagle do TCP"
+
+msgid "Enable PEX (Peer Exchange)"
+msgstr "Cumasaigh PEX (Malartú Piaraí)"
+
+msgid "Enable Peer Exchange for discovering new peers"
+msgstr "Cumasaigh Malartú Piaraí chun piaraí nua a fháil"
+
+msgid "Enable Protocol Extensions"
+msgstr "Cumasaigh Breiseáin Phrótacail"
+
+msgid "Enable TCP keepalive"
+msgstr "Cumasaigh TCP keepalive"
+
+msgid "Enable UPnP/NAT-PMP port mapping"
+msgstr "Cumasaigh mapáil port UPnP/NAT-PMP"
+
+msgid "Enable Web UI"
+msgstr "Cumasaigh Comhéadan Gréasáin"
+
+msgid "Enable alternative speed limits"
+msgstr "Cumasaigh teorainneacha luais malartacha"
+
+msgid "Enable alternative speed limits (useful for limiting speeds during certain hours)"
+msgstr "Cumasaigh teorainneacha luais malartacha (úsáideach chun luasanna a theorannú le linn uaireanta áirithe)"
+
+msgid "Enable clickjacking protection"
+msgstr "Cumasaigh cosaint clickjacking"
+
+msgid "Enable client behavior simulation"
+msgstr "Cumasaigh insamhladh iompair cliant"
+
+msgid "Enable client behavior simulation engine"
+msgstr "Cumasaigh inneall insamhlú iompair cliant"
+
+msgid "Enable debug mode"
+msgstr "Cumasaigh mód dífhabhtaithe"
+
+msgid "Enable debug mode with extra logging and error details"
+msgstr "Cumasaigh mód dífhabhtaithe le logáil bhreise agus sonraí earráide"
+
+msgid "Enable dynamic client profile switching"
+msgstr "Cumasaigh athrú próifíl cliant dinimiciúil"
+
+msgid "Enable lt_donthave extension for piece availability"
+msgstr "Cumasaigh breiseán lt_donthave le haghaidh infhaighteacht píosaí"
+
+msgid "Enable metadata extension"
+msgstr "Cumasaigh breiseán meiteashonraí"
+
+msgid "Enable metadata extension features"
+msgstr "Cumasaigh gnéithe breiseán meiteashonraí"
+
+msgid "Enable or disable BitTorrent protocol extensions"
+msgstr "Cumasaigh nó díchumasaigh breiseáin phrótacail BitTorrent"
+
+msgid "Enable or disable DHT for trackerless torrent support"
+msgstr "Cumasaigh nó díchumasaigh DHT le haghaidh tacaíocht torrent gan lorgaire"
+
+msgid "Enable proxy authentication"
+msgstr "Cumasaigh fíordheimhniú seachfhreastalaí"
+
+msgid "Enable random variations in client behavior"
+msgstr "Cumasaigh athruithe randamacha in iompar an chliaint"
+
+msgid "Enable rate limiting"
+msgstr "Cumasaigh teorannú ráta"
+
+msgid "Enable realistic traffic variations"
+msgstr "Cumasaigh athruithe tráchta réadúil"
+
+msgid "Enable secure HTTP headers"
+msgstr "Cumasaigh ceanntásca HTTP slána"
+
+msgid "Enable speed scheduler"
+msgstr "Cumasaigh sceidealóir luais"
+
+msgid "Enable statistics"
+msgstr "Cumasaigh staitisticí"
+
+msgid "Enable swarm intelligence"
+msgstr "Cumasaigh faisnéis saithe"
+
+msgid "Enable swarm intelligence for adaptive behavior"
+msgstr "Cumasaigh faisnéis saithe le haghaidh iompar oiriúnach"
+
+msgid "Enable time-based traffic patterns (peak hours, night hours)"
+msgstr "Cumasaigh patrúin tráchta bunaithe ar am (uaireanta buaice, uaireanta oíche)"
+
+msgid "Enable ut_holepunch extension for NAT traversal"
+msgstr "Cumasaigh breiseán ut_holepunch le haghaidh trasnú NAT"
+
+msgid "Enable ut_metadata extension for metadata exchange"
+msgstr "Cumasaigh breiseán ut_metadata le haghaidh malartú meiteashonraí"
+
+msgid "Enable ut_pex extension for peer exchange"
+msgstr "Cumasaigh breiseán ut_pex le haghaidh malartú piaraí"
+
+msgid "Enable web-based remote control interface"
+msgstr "Cumasaigh comhéadan cianchúram gréasánbhunaithe"
+
+msgid "Enable µTP (Micro Transport Protocol)"
+msgstr "Cumasaigh µTP (Mion-Phrótacal Iompair)"
+
+msgid "Enabled"
+msgstr "Cumasaithe"
+
+msgid "Encryption:"
+msgstr "Criptiú:"
+
+msgid "End hour (24-hour format)"
+msgstr "Uair dheiridh (formáid 24 uair)"
+
+msgid "End minute"
+msgstr "Nóiméad deiridh"
+
+msgid "English"
+msgstr "Béarla"
+
+msgid "Error"
+msgstr "Earráid"
+
+msgid "Error changing language"
+msgstr "Earráid ag athrú teanga"
+
+msgid "Export"
+msgstr "Easpórtáil"
+
+msgid "Export Settings"
+msgstr "Easpórtáil Socruithe"
+
+msgid "Export current settings to a file"
+msgstr "Easpórtáil socruithe reatha chuig comhad"
+
+msgid "Extension Timeout:"
+msgstr "Teorainn Ama Breiseáin:"
+
+msgid "Extension statistics update interval (seconds)"
+msgstr "Eatramh nuashonraithe staitisticí breiseáin (soicindí)"
+
+msgid "Failed to apply seeding profile"
+msgstr "Theip ar chur i bhfeidhm próifíl síolacháin"
+
+msgid "Failure Reason"
+msgstr "Cúis Teipe"
+
+msgid "Fall back to TCP if µTP fails"
+msgstr "Fill ar ais go TCP má theipeann ar µTP"
+
+msgid "Fallback configuration"
+msgstr "Cumraíocht chúltaca"
+
+msgid "Fast Extension (BEP-006)"
+msgstr "Breiseán Tapa (BEP-006)"
+
+msgid "File"
+msgstr "Comhad"
+
+msgid "File Path"
+msgstr "Conair Chomhaid"
+
+msgid "File chooser not yet implemented"
+msgstr "Roghnóir comhaid gan cur i bhfeidhm fós"
+
+msgid "Files"
+msgstr "Comhaid"
+
+msgid "Flags"
+msgstr "Bratacha"
+
+msgid "Follow System"
+msgstr "Lean an Córas"
+
+msgid "Forced"
+msgstr "Éigeanáilte"
+
+msgid "French"
+msgstr "Fraincis"
+
+msgid "Fri"
+msgstr "Aoi"
+
+msgid "Friday"
+msgstr "Aoine"
+
+msgid "From:"
+msgstr "Ó:"
+
+msgid "General"
+msgstr "Ginearálta"
+
+msgid "General settings reset to defaults"
+msgstr "Socruithe ginearálta athshocraíodh go réamhshocruithe"
+
+msgid "General timeout for extension operations (seconds)"
+msgstr "Teorainn ama ginearálta d'oibríochtaí breiseán (soicindí)"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
+
+msgid "Generate Secure Password"
+msgstr "Gin Pasfhocal Slán"
+
+msgid "Generate a random port number"
+msgstr "Gin uimhir phoirt randamach"
+
+msgid "Generate a random secure password"
+msgstr "Gin pasfhocal slán randamach"
+
+msgid "Generate synthetic metadata"
+msgstr "Gin meiteashonraí sintéiseacha"
+
+msgid "Generate synthetic metadata for simulation"
+msgstr "Gin meiteashonraí sintéiseacha le haghaidh insamhladh"
+
+msgid "Generate synthetic peer data for PEX"
+msgstr "Gin sonraí piaraí sintéiseacha le haghaidh PEX"
+
+msgid "Generate synthetic peers"
+msgstr "Gin piaraí sintéiseacha"
+
+msgid "German"
+msgstr "Gearmáinis"
+
+msgid "Github - D' Fake Seeder"
+msgstr "Github - D' Fake Seeder"
+
+msgid "Global download speed limit in KB/s (0 = unlimited)"
+msgstr "Teorainn luais íoslódála domhanda i KB/s (0 = neamhtheoranta)"
+
+msgid "Global upload speed limit in KB/s (0 = unlimited)"
+msgstr "Teorainn luais uaslódála domhanda i KB/s (0 = neamhtheoranta)"
+
+msgid "HTTP"
+msgstr "HTTP"
+
+msgid "HTTP seeder timeout (seconds):"
+msgstr "Teorainn ama síolóra HTTP (soicindí):"
+
+msgid "Handshake"
+msgstr "Croitheadh Láimhe"
+
+msgid "Handshake timeout (seconds):"
+msgstr "Teorainn ama croitheadh láimhe (soicindí):"
+
+msgid "Hide Main Window"
+msgstr "Folaigh Príomhfhuinneog"
+
+msgid "Hide to system tray when window is minimized"
+msgstr "Folaigh go tráidire an chórais nuair a íoslaghdaítear an fhuinneog"
+
+msgid "Hindi"
+msgstr "Hiondúis"
+
+msgid "How often to announce to trackers (60-7200 seconds)"
+msgstr "Cé chomh minic le fógairt do lorgairí (60-7200 soicind)"
+
+msgid "How often to scrape tracker for swarm statistics"
+msgstr "Cé chomh minic le scrabadh lorgaire le haghaidh staitisticí saithe"
+
+msgid "How often to update the user interface"
+msgstr "Cé chomh minic le nuashonrú an chomhéadain úsáideora"
+
+msgid "ID"
+msgstr "Aitheantas"
+
+msgid "INFO"
+msgstr "EOLAS"
+
+msgid "IP Address"
+msgstr "Seoladh IP"
+
+msgid "IP address to bind to (0.0.0.0 for all interfaces)"
+msgstr "Seoladh IP le ceangal leis (0.0.0.0 do gach comhéadan)"
+
+msgid "Idle Probability:"
+msgstr "Dóchúlacht Díomhaoin:"
+
+msgid "Import"
+msgstr "Iompórtáil"
+
+msgid "Import Settings"
+msgstr "Iompórtáil Socruithe"
+
+msgid "Import settings from a file"
+msgstr "Iompórtáil socruithe ó chomhad"
+
+msgid "Inactive"
+msgstr "Neamhghníomhach"
+
+msgid "Incoming"
+msgstr "Ag Teacht Isteach"
+
+msgid "Incoming Connections"
+msgstr "Ceangail Isteach"
+
+msgid "Incoming Peer Connections"
+msgstr "Ceangail Piaraí Isteach"
+
+msgid "Indonesian"
+msgstr "Ind onéisis"
+
+msgid "Interested"
+msgstr "Suimiúil"
+
+msgid "Interval between DHT announcements (seconds)"
+msgstr "Eatramh idir fógraí DHT (soicindí)"
+
+msgid "Interval between PEX message exchanges (seconds)"
+msgstr "Eatramh idir malartuithe teachtaireachta PEX (soicindí)"
+
+msgid "Interval for DHT statistics updates (seconds)"
+msgstr "Eatramh le haghaidh nuashonruithe staitisticí DHT (soicindí)"
+
+msgid "Interval for contacting peers in seconds"
+msgstr "Eatramh chun teagmháil a dhéanamh le piaraí i soicindí"
+
+msgid "Interval for sending keep alive messages in seconds"
+msgstr "Eatramh chun teachtaireachtaí 'coinnigh beo' a sheoladh i soicindí"
+
+msgid "Irish"
+msgstr "Gaeilge"
+
+msgid "Italian"
+msgstr "Iodáilis"
+
+msgid "Japanese"
+msgstr "Seapáinis"
+
+msgid "Keep Alive Interval:"
+msgstr "Eatramh Coinnigh Beo:"
+
+msgid "Keep alive interval (seconds):"
+msgstr "Eatramh coinnigh beo (soicindí):"
+
+msgid "Keep alive interval for connections (seconds)"
+msgstr "Eatramh coinnigh beo do cheangail (soicindí)"
+
+msgid "Korean"
+msgstr "Cóiréis"
+
+msgid "Label"
+msgstr "Lipéad"
+
+msgid "Language"
+msgstr "Teanga"
+
+msgid "Language switched to"
+msgstr "Teanga athraithe go"
+
+msgid "Language:"
+msgstr "Teanga:"
+
+msgid "Last Announce"
+msgstr "Fógra Deireanach"
+
+msgid "Last Notification"
+msgstr "Fógra Deireanach"
+
+msgid "Launch Main Application"
+msgstr "Tosaigh Príomhfheidhmchlár"
+
+msgid "Leechers"
+msgstr "Leechers"
+
+msgid "Level of BitTorrent protocol compliance"
+msgstr "Leibhéal comhlíonta prótacail BitTorrent"
+
+msgid "Light"
+msgstr "Éadrom"
+
+msgid "Limit extension message rate"
+msgstr "Teorannaigh ráta teachtaireachta breiseáin"
+
+msgid "List of bootstrap nodes for DHT initialization"
+msgstr "Liosta de nóid tosaithe le haghaidh túsú DHT"
+
+msgid "Log"
+msgstr "Loga"
+
+msgid "Log Level:"
+msgstr "Leibhéal Loga:"
+
+msgid "Log to file"
+msgstr "Logáil chuig comhad"
+
+msgid "Max Connections:"
+msgstr "Uasmhéid Ceangail:"
+
+msgid "Max Dropped Peers:"
+msgstr "Uasmhéid Piaraí Titithe:"
+
+msgid "Max Message Size:"
+msgstr "Uasmhéid Teachtaireachta:"
+
+msgid "Max Messages/Second:"
+msgstr "Uasmhéid Teachtaireachtaí/Soicind:"
+
+msgid "Max Nodes:"
+msgstr "Uasmhéid Nóid:"
+
+msgid "Max Peers/Message:"
+msgstr "Uasmhéid Piaraí/Teachtaireacht:"
+
+msgid "Max Queries/Second:"
+msgstr "Uasmhéid Ceisteanna/Soicind:"
+
+msgid "Max global connections:"
+msgstr "Uasmhéid ceangail dhomhanda:"
+
+msgid "Max log file size (MB):"
+msgstr "Uasmhéid comhaid loga (MB):"
+
+msgid "Max per torrent:"
+msgstr "Uasmhéid in aghaidh an torrent:"
+
+msgid "Max upload slots:"
+msgstr "Uasmhéid sliotáin uaslódála:"
+
+msgid "Maximum DHT queries per second"
+msgstr "Uasmhéid ceisteanna DHT in aghaidh an tsoicind"
+
+msgid "Maximum connections for aggressive profile"
+msgstr "Uasmhéid ceangail do phróifíl ionsaitheach"
+
+msgid "Maximum connections for balanced profile"
+msgstr "Uasmhéid ceangail do phróifíl chothromaithe"
+
+msgid "Maximum connections for conservative profile"
+msgstr "Uasmhéid ceangail do phróifíl choimeádach"
+
+msgid "Maximum dropped peers to track for PEX"
+msgstr "Uasmhéid piaraí titithe le rianú le haghaidh PEX"
+
+msgid "Maximum extension messages per second"
+msgstr "Uasmhéid teachtaireachtaí breiseáin in aghaidh an tsoicind"
+
+msgid "Maximum number of DHT nodes to maintain"
+msgstr "Uaslíon de nóid DHT le cothabháil"
+
+msgid "Maximum number of concurrent DHT queries"
+msgstr "Uaslíon de cheisteanna DHT comhuaineacha"
+
+msgid "Maximum number of connections per individual torrent"
+msgstr "Uaslíon de cheangail in aghaidh an torrent aonair"
+
+msgid "Maximum number of connections to all torrents"
+msgstr "Uaslíon de cheangail do gach torrent"
+
+msgid "Maximum number of nodes in the routing table"
+msgstr "Uaslíon de nóid sa tábla ródaithe"
+
+msgid "Maximum number of nodes per bucket"
+msgstr "Uaslíon de nóid in aghaidh an bhuicéid"
+
+msgid "Maximum number of simultaneous upload slots"
+msgstr "Uaslíon de shliotáin uaslódála comhuaineacha"
+
+msgid "Maximum peers to include in a PEX message"
+msgstr "Uasmhéid piaraí le cur i dteachtaireacht PEX"
+
+msgid "Maximum port for seeder connections"
+msgstr "Uasphort do cheangail síolóra"
+
+msgid "Maximum size for extension messages (bytes)"
+msgstr "Uasmhéid do theachtaireachtaí breiseáin (bearta)"
+
+msgid "Maximum size of log file before rotation"
+msgstr "Uasmhéid comhaid loga roimh rothlú"
+
+msgid "Maximum transaction ID for tracker communication"
+msgstr "Uasmhéid ID idirbhirt le haghaidh cumarsáid lorgaire"
+
+msgid "Message"
+msgstr "Teachtaireacht"
+
+msgid "Message read timeout (seconds):"
+msgstr "Teorainn ama léite teachtaireachta (soicindí):"
+
+msgid "Metadata Piece Size:"
+msgstr "Méid Píosa Meiteashonraí:"
+
+msgid "Metadata Timeout:"
+msgstr "Teorainn Ama Meiteashonraí:"
+
+msgid "Min announce interval (sec):"
+msgstr "Íoseatramh fógra (soic):"
+
+msgid "Minimize to system tray"
+msgstr "Íoslaghdaigh go tráidire an chórais"
+
+msgid "Minimum log level to record"
+msgstr "Íoslíon leibhéal loga le taifeadadh"
+
+msgid "Minimum port for seeder connections"
+msgstr "Íosphort do cheangail síolóra"
+
+msgid "Minimum time between announces (10-3600 seconds)"
+msgstr "Íosam idir fógraí (10-3600 soicind)"
+
+msgid "Minimum transaction ID for tracker communication"
+msgstr "Íosmhéid ID idirbhirt le haghaidh cumarsáid lorgaire"
+
+msgid "Mon"
+msgstr "Luan"
+
+msgid "Monday"
+msgstr "Luan"
+
+msgid "My IP address"
+msgstr "Mo sheoladh IP"
+
+msgid "N/A"
+msgstr "N/B"
+
+msgid "Name"
+msgstr "Ainm"
+
+msgid "Network interface:"
+msgstr "Comhéadan líonra:"
+
+msgid "Next Announce"
+msgstr "Fógra Eile"
+
+msgid "Next Update"
+msgstr "Nuashonrú Eile"
+
+msgid "No editable options available for this torrent."
+msgstr "Níl roghanna ineagarthóireachta ar fáil don torrent seo."
+
+msgid "None"
+msgstr "Dada"
+
+msgid "Number of peers to analyze for behavior patterns"
+msgstr "Líon na bpiaraí le hanailísiú le haghaidh patrúin iompair"
+
+msgid "Number of peers to request from tracker"
+msgstr "Líon na bpiaraí le hiarraidh ón lorgaire"
+
+msgid "Number of synthetic peers to generate"
+msgstr "Líon na bpiaraí sintéiseacha le giniúint"
+
+msgid "Only allow connections from localhost (more secure)"
+msgstr "Ceadaigh ceangail ó localhost amháin (níos sábháilte)"
+
+msgid "Open preferences"
+msgstr "Oscail sainroghanna"
+
+msgid "Options"
+msgstr "Roghanna"
+
+msgid "Outgoing"
+msgstr "Ag Dul Amach"
+
+msgid "Outgoing Connections"
+msgstr "Ceangail Amach"
+
+msgid "Outgoing Peer Connections"
+msgstr "Ceangail Piaraí Amach"
+
+msgid "Overlay Notification"
+msgstr "Fógra Forleagain"
+
+msgid "PEX Interval:"
+msgstr "Eatramh PEX:"
+
+msgid "Password for web interface login"
+msgstr "Pasfhocal le haghaidh logáil isteach comhéadan gréasáin"
+
+msgid "Password:"
+msgstr "Pasfhocal:"
+
+msgid "Path"
+msgstr "Conair"
+
+msgid "Pause"
+msgstr "Cuir ar Sos"
+
+msgid "Pause All Torrents"
+msgstr "Cuir Gach Torrent ar Sos"
+
+msgid "Pause torrent"
+msgstr "Cuir torrent ar sos"
+
+msgid "Peer Analysis Depth:"
+msgstr "Doimhneacht Anailíse Piaraí:"
+
+msgid "Peer Choking"
+msgstr "Tachtadh Piara"
+
+msgid "Peer ID"
+msgstr "Aitheantas Piara"
+
+msgid "Peer ID Prefix:"
+msgstr "Réimír ID Piara:"
+
+msgid "Peer ID prefix to identify client type"
+msgstr "Réimír ID piara chun cineál cliant a aithint"
+
+msgid "Peer Protocol"
+msgstr "Prótacal Piaraí"
+
+msgid "Peer Protocol settings reset to defaults"
+msgstr "Socruithe Prótacal Piaraí athshocraíodh go réamhshocruithe"
+
+msgid "Peer contact interval (seconds):"
+msgstr "Eatramh teagmhála piaraí (soicindí):"
+
+msgid "Peer idle chance:"
+msgstr "Seans díomhaoin piara:"
+
+msgid "Peer request count:"
+msgstr "Líon iarratas piara:"
+
+msgid "Peers"
+msgstr "Piaraí"
+
+msgid "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr "Céatadán de cheangail le rothlú (0.0 - 1.0)"
+
+msgid "Persian"
+msgstr "Peirsis"
+
+msgid "Piece Length"
+msgstr "Fad Píosa"
+
+msgid "Pieces"
+msgstr "Píosaí"
+
+msgid "Pieces Received"
+msgstr "Píosaí Faighte"
+
+msgid "Polish"
+msgstr "Polainnis"
+
+msgid "Port"
+msgstr "Port"
+
+msgid "Port for incoming BitTorrent connections (1024-65535)"
+msgstr "Port do cheangail isteach BitTorrent (1024-65535)"
+
+msgid "Port for web interface (1024-65535)"
+msgstr "Port do chomhéadan gréasáin (1024-65535)"
+
+msgid "Port:"
+msgstr "Port:"
+
+msgid "Portuguese"
+msgstr "Portaingéilis"
+
+msgid "Preference 1:"
+msgstr "Sainrogha 1:"
+
+msgid "Preference 2:"
+msgstr "Sainrogha 2:"
+
+msgid "Preferences"
+msgstr "Sainroghanna"
+
+msgid "Prevent embedding in frames (X-Frame-Options)"
+msgstr "Cosc ​​ar leabú i bhfrámaí (X-Frame-Options)"
+
+msgid "Primary BitTorrent client to simulate"
+msgstr "Príomhchliant BitTorrent le hinsamhladh"
+
+msgid "Primary Client:"
+msgstr "Príomhchliant:"
+
+msgid "Priority"
+msgstr "Tosaíocht"
+
+msgid "Priority Down"
+msgstr "Tosaíocht Síos"
+
+msgid "Priority Up"
+msgstr "Tosaíocht Suas"
+
+msgid "Private"
+msgstr "Príobháideach"
+
+msgid "Probability of idle periods for aggressive profile"
+msgstr "Dóchúlacht tréimhsí díomhaoin do phróifíl ionsaitheach"
+
+msgid "Probability of idle periods for balanced profile"
+msgstr "Dóchúlacht tréimhsí díomhaoin do phróifíl chothromaithe"
+
+msgid "Probability of idle periods for conservative profile"
+msgstr "Dóchúlacht tréimhsí díomhaoin do phróifíl choimeádach"
+
+msgid "Probability of peer behavior analysis (0.0 - 1.0)"
+msgstr "Dóchúlacht anailíse iompair piaraí (0.0 - 1.0)"
+
+msgid "Probability of peer being idle (0.0 - 1.0)"
+msgstr "Dóchúlacht piara a bheith díomhaoin (0.0 - 1.0)"
+
+msgid "Probability of peer dropping out (0.0 - 1.0)"
+msgstr "Dóchúlacht piara ag titim amach (0.0 - 1.0)"
+
+msgid "Probability of peer status changes (0.0 - 1.0)"
+msgstr "Dóchúlacht athruithe ar stádas piaraí (0.0 - 1.0)"
+
+msgid "Probability of seeder upload activity (0.0 - 1.0)"
+msgstr "Dóchúlacht gníomhaíocht uaslódála síolóra (0.0 - 1.0)"
+
+msgid "Probability of switching to a different client behavior"
+msgstr "Dóchúlacht athrú go hiompar cliant difriúil"
+
+msgid "Probability of traffic bursts for aggressive profile"
+msgstr "Dóchúlacht ráigeanna tráchta do phróifíl ionsaitheach"
+
+msgid "Probability of traffic bursts for balanced profile"
+msgstr "Dóchúlacht ráigeanna tráchta do phróifíl chothromaithe"
+
+msgid "Probability of traffic bursts for conservative profile"
+msgstr "Dóchúlacht ráigeanna tráchta do phróifíl choimeádach"
+
+msgid "Progress"
+msgstr "Dul Chun Cinn"
+
+msgid "Progress distribution (almost):"
+msgstr "Dáileadh dul chun cinn (beagnach):"
+
+msgid "Progress distribution (middle):"
+msgstr "Dáileadh dul chun cinn (lár):"
+
+msgid "Progress distribution (start):"
+msgstr "Dáileadh dul chun cinn (tús):"
+
+msgid "Progress distribution for almost complete peers (0.0 - 1.0)"
+msgstr "Dáileadh dul chun cinn do phiaraí beagnach críochnaithe (0.0 - 1.0)"
+
+msgid "Progress distribution for middle progress peers (0.0 - 1.0)"
+msgstr "Dáileadh dul chun cinn do phiaraí lár dul chun cinn (0.0 - 1.0)"
+
+msgid "Progress distribution for starting peers (0.0 - 1.0)"
+msgstr "Dáileadh dul chun cinn do phiaraí ag tosú (0.0 - 1.0)"
+
+msgid "Protocol Compliance:"
+msgstr "Comhlíonadh Prótacail:"
+
+msgid "Protocol Extensions"
+msgstr "Breiseáin Phrótacail"
+
+msgid "Protocol encryption mode for peer communications"
+msgstr "Mód criptithe prótacail le haghaidh cumarsáide piaraí"
+
+msgid "Proxy authentication password"
+msgstr "Pasfhocal fíordheimhnithe seachfhreastalaí"
+
+msgid "Proxy authentication username"
+msgstr "Ainm úsáideora fíordheimhnithe seachfhreastalaí"
+
+msgid "Proxy server hostname or IP address"
+msgstr "Óstainm seachfhreastalaí nó seoladh IP"
+
+msgid "Proxy server port number"
+msgstr "Uimhir phoirt seachfhreastalaí"
+
+msgid "Query Timeout:"
+msgstr "Teorainn Ama Ceiste:"
+
+msgid "Queue"
+msgstr "Ciú"
+
+msgid "Quit"
+msgstr "Scoir"
+
+msgid "Quit DFakeSeeder"
+msgstr "Scoir DFakeSeeder"
+
+msgid "Random"
+msgstr "Randamach"
+
+msgid "Rate of adaptation to swarm behavior"
+msgstr "Ráta oiriúnaithe d'iompar saithe"
+
+msgid "Ratio"
+msgstr "Cóimheas"
+
+msgid "Realistic variations"
+msgstr "Athruithe réadúil"
+
+msgid "Received"
+msgstr "Faighte"
+
+msgid "Relaxed"
+msgstr "Suaimhneach"
+
+msgid "Remember window size and position"
+msgstr "Cuimhnigh méid agus ionad na fuinneoige"
+
+msgid "Remember window size and position between sessions"
+msgstr "Cuimhnigh méid agus ionad na fuinneoige idir seisiúin"
+
+msgid "Remove torrent"
+msgstr "Bain torrent"
+
+msgid "Requests"
+msgstr "Iarratais"
+
+msgid "Require authentication"
+msgstr "Fíordheimhniú de dhíth"
+
+msgid "Require username and password for web access"
+msgstr "Ainm úsáideora agus pasfhocal de dhíth le haghaidh rochtain ghréasáin"
+
+msgid "Reset"
+msgstr "Athshocraigh"
+
+msgid "Reset all settings not yet implemented"
+msgstr "Athshocraigh gach socrú gan cur i bhfeidhm fós"
+
+msgid "Reset all settings to default values"
+msgstr "Athshocraigh gach socrú go luachanna réamhshocraithe"
+
+msgid "Reset to Defaults"
+msgstr "Athshocraigh go Réamhshocruithe"
+
+msgid "Reset to defaults"
+msgstr "Athshocraigh go réamhshocruithe"
+
+msgid "Resume"
+msgstr "Lean ar aghaidh"
+
+msgid "Resume All Torrents"
+msgstr "Lean Gach Torrent ar Aghaidh"
+
+msgid "Resume torrent"
+msgstr "Lean torrent ar aghaidh"
+
+msgid "Routing Table Size:"
+msgstr "Méid Tábla Ródaithe:"
+
+msgid "Russian"
+msgstr "Rúisis"
+
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+msgid "Sat"
+msgstr "Sath"
+
+msgid "Saturday"
+msgstr "Satharn"
+
+msgid "Save logs to file in addition to console"
+msgstr "Sábháil logaí chuig comhad chomh maith leis an gconsól"
+
+msgid "Scrape interval (sec):"
+msgstr "Eatramh scrabtha (soic):"
+
+msgid "Search by torrent name or file path"
+msgstr "Cuardaigh de réir ainm torrent nó conair chomhaid"
+
+msgid "Search for settings across all tabs"
+msgstr "Cuardaigh socruithe ar fud gach cluaisín"
+
+msgid "Search for torrent"
+msgstr "Cuardaigh torrent"
+
+msgid "Search settings"
+msgstr "Cuardaigh socruithe"
+
+msgid "Secure password generated"
+msgstr "Pasfhocal slán ginte"
+
+msgid "Seeder port range (max):"
+msgstr "Raon port síolóra (uas):"
+
+msgid "Seeder port range (min):"
+msgstr "Raon port síolóra (íos):"
+
+msgid "Seeders"
+msgstr "Seeders"
+
+msgid "Seeding Profile"
+msgstr "Próifíl Síolacháin"
+
+msgid "Seeds"
+msgstr "Síolta"
+
+msgid "Select proxy type for connections"
+msgstr "Roghnaigh cineál seachfhreastalaí le haghaidh ceangail"
+
+msgid "Select torrent"
+msgstr "Roghnaigh torrent"
+
+msgid "Send security-related HTTP headers"
+msgstr "Seol ceanntásca HTTP a bhaineann le slándáil"
+
+msgid "Sent"
+msgstr "Seolta"
+
+msgid "Server:"
+msgstr "Freastalaí:"
+
+msgid "Session Downloaded"
+msgstr "Seisiún Íoslódáilte"
+
+msgid "Session Uploaded"
+msgstr "Seisiún Uaslódáilte"
+
+msgid "Session timeout (min):"
+msgstr "Teorainn ama seisiúin (nóim):"
+
+msgid "Shortcuts configuration not yet implemented"
+msgstr "Cumraíocht aicearraí gan cur i bhfeidhm fós"
+
+msgid "Show Main Window"
+msgstr "Taispeáin Príomhfhuinneog"
+
+msgid "Show only selected torrent connections"
+msgstr "Taispeáin ceangail torrent roghnaithe amháin"
+
+msgid "Simulation"
+msgstr "Insamhladh"
+
+msgid "Size"
+msgstr "Méid"
+
+msgid "Size of metadata pieces in bytes"
+msgstr "Méid píosaí meiteashonraí i mbearta"
+
+msgid "Small Torrent Limit"
+msgstr "Teorainn Torrent Beag"
+
+msgid "Spanish"
+msgstr "Spáinnis"
+
+msgid "Speed"
+msgstr "Luas"
+
+msgid "Speed Control"
+msgstr "Rialú Luais"
+
+msgid "Speed settings reset to defaults"
+msgstr "Socruithe luais athshocraíodh go réamhshocruithe"
+
+msgid "Standard"
+msgstr "Caighdeánach"
+
+msgid "Start DFakeSeeder automatically when the system boots"
+msgstr "Tosaigh DFakeSeeder go huathoibríoch nuair a thosaíonn an córas"
+
+msgid "Start hour (24-hour format)"
+msgstr "Uair thosaigh (formáid 24 uair)"
+
+msgid "Start minimized"
+msgstr "Tosaigh íoslaghdaithe"
+
+msgid "Start minimized disabled"
+msgstr "Tosú íoslaghdaithe díchumasaithe"
+
+msgid "Start minimized enabled"
+msgstr "Tosú íoslaghdaithe cumasaithe"
+
+msgid "Start minute"
+msgstr "Nóiméad tosaigh"
+
+msgid "Start on system startup"
+msgstr "Tosaigh ag tosú an chórais"
+
+msgid "Start the application minimized to system tray"
+msgstr "Tosaigh an feidhmchlár íoslaghdaithe go tráidire an chórais"
+
+msgid "Stats Update Interval:"
+msgstr "Eatramh Nuashonraithe Staitisticí:"
+
+msgid "Status"
+msgstr "Stádas"
+
+msgid "Status change probability:"
+msgstr "Dóchúlacht athrú stádais:"
+
+msgid "Strict"
+msgstr "Dian"
+
+msgid "Sun"
+msgstr "Domh"
+
+msgid "Sunday"
+msgstr "Domhnach"
+
+msgid "Swedish"
+msgstr "Sualainnis"
+
+msgid "Synthetic Peer Count:"
+msgstr "Líon Piaraí Sintéiseacha:"
+
+msgid "TCP fallback"
+msgstr "Cúltaca TCP"
+
+msgid "TCP keepalive"
+msgstr "TCP coinnigh beo"
+
+msgid "Theme:"
+msgstr "Téama:"
+
+msgid "Threshold"
+msgstr "Tairseach"
+
+msgid "Thu"
+msgstr "Déar"
+
+msgid "Thursday"
+msgstr "Déardaoin"
+
+msgid "Tier"
+msgstr "Leibhéal"
+
+msgid "Time-based patterns"
+msgstr "Patrúin bhunaithe ar am"
+
+msgid "Timeout for DHT bootstrap operations (seconds)"
+msgstr "Teorainn ama d'oibríochtaí tosaithe DHT (soicindí)"
+
+msgid "Timeout for DHT queries (seconds)"
+msgstr "Teorainn ama do cheisteanna DHT (soicindí)"
+
+msgid "Timeout for HTTP seeder connections in seconds"
+msgstr "Teorainn ama do cheangail síolóra HTTP i soicindí"
+
+msgid "Timeout for UDP seeder connections in seconds"
+msgstr "Teorainn ama do cheangail síolóra UDP i soicindí"
+
+msgid "Timeout for metadata requests (seconds)"
+msgstr "Teorainn ama d'iarratais meiteashonraí (soicindí)"
+
+msgid "Timeout for peer handshake in seconds"
+msgstr "Teorainn ama do chroitheadh ​​láimhe piaraí i soicindí"
+
+msgid "Timeout for reading peer messages in seconds"
+msgstr "Teorainn ama chun teachtaireachtaí piaraí a léamh i soicindí"
+
+msgid "To:"
+msgstr "Go:"
+
+msgid "Top"
+msgstr "Barr"
+
+msgid "Torrent"
+msgstr "Torrent"
+
+msgid "Torrent Files"
+msgstr "Comhaid Torrent"
+
+msgid "Torrents"
+msgstr "Torrents"
+
+msgid "Total Downloaded"
+msgstr "Iomlán Íoslódáilte"
+
+msgid "Total Size"
+msgstr "Méid Iomlán"
+
+msgid "Total Uploaded"
+msgstr "Iomlán Uaslódáilte"
+
+msgid "Track extension statistics"
+msgstr "Rianú staitisticí breiseáin"
+
+msgid "Track extension usage statistics"
+msgstr "Rianú staitisticí úsáide breiseáin"
+
+msgid "Tracker"
+msgstr "Lorgaire"
+
+msgid "Tracker URL"
+msgstr "URL Lorgaire"
+
+msgid "Trackers"
+msgstr "Lorgairí"
+
+msgid "Traffic Profile:"
+msgstr "Próifíl Tráchta:"
+
+msgid "Traffic pattern profile for simulation"
+msgstr "Próifíl patrúin tráchta le haghaidh insamhladh"
+
+msgid "Transaction ID range (max):"
+msgstr "Raon ID idirbhirt (uas):"
+
+msgid "Transaction ID range (min):"
+msgstr "Raon ID idirbhirt (íos):"
+
+msgid "TranslationManager"
+msgstr "TranslationManager"
+
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
+msgid "Transmission"
+msgstr "Transmission"
+
+msgid "Transmission/3.00"
+msgstr "Transmission/3.00"
+
+msgid "Tue"
+msgstr "Máirt"
+
+msgid "Tuesday"
+msgstr "Máirt"
+
+msgid "Turkish"
+msgstr "Tuircis"
+
+msgid "Type"
+msgstr "Cineál"
+
+msgid "Type:"
+msgstr "Cineál:"
+
+msgid "UDP seeder timeout (seconds):"
+msgstr "Teorainn ama síolóra UDP (soicindí):"
+
+msgid "UI Refresh Rate"
+msgstr "Ráta Athnuachana Comhéadain"
+
+msgid "UI refresh rate (sec):"
+msgstr "Ráta athnuachana comhéadain (soic):"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "URL: http://localhost:8080"
+msgstr "URL: http://localhost:8080"
+
+msgid "Unknown"
+msgstr "Anaithnid"
+
+msgid "Up"
+msgstr "Suas"
+
+msgid "Up Speed"
+msgstr "Luas Suas"
+
+msgid "Update Tracker"
+msgstr "Nuashonraigh Lorgaire"
+
+msgid "Upload Speed"
+msgstr "Luas Uaslódála"
+
+msgid "Upload Speed (KB/s):"
+msgstr "Luas Uaslódála (KB/s):"
+
+msgid "Upload Variance:"
+msgstr "Athraitheas Uaslódála:"
+
+msgid "Upload activity probability:"
+msgstr "Dóchúlacht gníomhaíochta uaslódála:"
+
+msgid "Upload limit (KB/s):"
+msgstr "Teorainn uaslódála (KB/s):"
+
+msgid "Upload speed variance for aggressive profile"
+msgstr "Athraitheas luais uaslódála do phróifíl ionsaitheach"
+
+msgid "Upload speed variance for balanced profile"
+msgstr "Athraitheas luais uaslódála do phróifíl chothromaithe"
+
+msgid "Upload speed variance for conservative profile"
+msgstr "Athraitheas luais uaslódála do phróifíl choimeádach"
+
+msgid "Uploaded"
+msgstr "Uaslódáilte"
+
+msgid "Uploaded Session / Total"
+msgstr "Seisiún Uaslódáilte / Iomlán"
+
+msgid "Uploading"
+msgstr "Ag Uaslódáil"
+
+msgid "Use HTTPS (SSL/TLS)"
+msgstr "Úsáid HTTPS (SSL/TLS)"
+
+msgid "Use HTTPS for secure connections (requires SSL certificate)"
+msgstr "Úsáid HTTPS le haghaidh ceangail shlána (teastaíonn teastas SSL)"
+
+msgid "Use authentication"
+msgstr "Úsáid fíordheimhniú"
+
+msgid "User Agent:"
+msgstr "Gníomhaire Úsáideora:"
+
+msgid "User agent string to identify the client to trackers"
+msgstr "Teaghrán gníomhaire úsáideora chun an cliant a aithint do lorgairí"
+
+msgid "Username for web interface login"
+msgstr "Ainm úsáideora le haghaidh logáil isteach comhéadan gréasáin"
+
+msgid "Username:"
+msgstr "Ainm úsáideora:"
+
+msgid "Validate DHT security tokens"
+msgstr "Bailíochtaigh comharthaí slándála DHT"
+
+msgid "Validate extension messages"
+msgstr "Bailíochtaigh teachtaireachtaí breiseáin"
+
+msgid "Validate extension messages for security"
+msgstr "Bailíochtaigh teachtaireachtaí breiseáin le haghaidh slándála"
+
+msgid "Validate security tokens"
+msgstr "Bailíochtaigh comharthaí slándála"
+
+msgid "Validate setting values and show warnings for invalid combinations"
+msgstr "Bailíochtaigh luachanna socraithe agus taispeáin rabhaidh le haghaidh teaglamaí neamhbhailí"
+
+msgid "Validate settings on change"
+msgstr "Bailíochtaigh socruithe ar athrú"
+
+msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr "Athraitheas in iompar an chliaint (0.0 = gan athraitheas, 1.0 = uasathraitheas)"
+
+msgid "Vietnamese"
+msgstr "Vítneaimis"
+
+msgid "Vuze"
+msgstr "Vuze"
+
+msgid "Vuze/5.7.6.0"
+msgstr "Vuze/5.7.6.0"
+
+msgid "WARNING"
+msgstr "RABHADH"
+
+msgid "Web UI"
+msgstr "Comhéadan Gréasáin"
+
+msgid "Web UI settings reset to defaults"
+msgstr "Socruithe Comhéadan Gréasáin athshocraíodh go réamhshocruithe"
+
+msgid "Wed"
+msgstr "Céad"
+
+msgid "Wednesday"
+msgstr "Céadaoin"
+
+msgid "active"
+msgstr "gníomhach"
+
+msgid "address"
+msgstr "seoladh"
+
+msgid "admin"
+msgstr "riarthóir"
+
+msgid "am_choking"
+msgstr "Táim ag tachtadh"
+
+msgid "am_interested"
+msgstr "Tá suim agam"
+
+msgid "announce_interval"
+msgstr "Eatramh Fógra"
+
+msgid "bytes"
+msgstr "bearta"
+
+msgid "bytes_downloaded"
+msgstr "bearta íoslódáilte"
+
+msgid "bytes_uploaded"
+msgstr "bearta uaslódáilte"
+
+msgid "class_name"
+msgstr "ainm_aicme"
+
+msgid "client"
+msgstr "cliant"
+
+msgid "connection_time"
+msgstr "am ceangail"
+
+msgid "download_rate"
+msgstr "Ráta Íoslódála"
+
+msgid "download_speed"
+msgstr "Luas Íoslódála"
+
+msgid "failure_reason"
+msgstr "Cúis Teipe"
+
+msgid "filepath"
+msgstr "Conair Chomhaid"
+
+msgid "files_tab"
+msgstr "cluaisín_comhaid"
+
+msgid "handshake_complete"
+msgstr "Croitheadh ​​láimhe críochnaithe"
+
+msgid "id"
+msgstr "#"
+
+msgid "leechers"
+msgstr "Leechers"
+
+msgid "log_tab"
+msgstr "cluaisín_loga"
+
+msgid "lt_donthave (Piece Availability)"
+msgstr "lt_donthave (Infhaighteacht Píosaí)"
+
+msgid "name"
+msgstr "Ainm"
+
+msgid "next_update"
+msgstr "Nuashonrú Eile"
+
+msgid "open-menu-symbolic"
+msgstr "open-menu-symbolic"
+
+msgid "options_tab"
+msgstr "cluaisín_roghanna"
+
+msgid "peer_choking"
+msgstr "Piara ag tachtadh"
+
+msgid "peer_interested"
+msgstr "Piara suimiúil"
+
+msgid "peers_tab"
+msgstr "cluaisín_piaraí"
+
+msgid "pieces_received"
+msgstr "Píosaí faighte"
+
+msgid "pieces_sent"
+msgstr "Píosaí seolta"
+
+msgid "progress"
+msgstr "Dul chun cinn"
+
+msgid "qBittorrent"
+msgstr "qBittorrent"
+
+msgid "qBittorrent/4.3.1"
+msgstr "qBittorrent/4.3.1"
+
+msgid "rTorrent"
+msgstr "rTorrent"
+
+msgid "rTorrent/0.9.6"
+msgstr "rTorrent/0.9.6"
+
+msgid "requests_received"
+msgstr "Iarratais faighte"
+
+msgid "requests_sent"
+msgstr "Iarratais seolta"
+
+msgid "seconds"
+msgstr "soicindí"
+
+msgid "seeders"
+msgstr "Seeders"
+
+msgid "session_downloaded"
+msgstr "Íoslódáilte"
+
+msgid "session_uploaded"
+msgstr "Uaslódáilte"
+
+msgid "small_torrent_limit"
+msgstr "Teorainn Torrent Beag"
+
+msgid "status"
+msgstr "stádas"
+
+msgid "threshold"
+msgstr "Tairseach"
+
+msgid "total_downloaded"
+msgstr "Iomlán Íoslódáilte"
+
+msgid "total_size"
+msgstr "Méid"
+
+msgid "total_uploaded"
+msgstr "Iomlán Uaslódáilte"
+
+msgid "trackers_tab"
+msgstr "cluaisín_lorgairí"
+
+msgid "uTorrent/3.5.5"
+msgstr "uTorrent/3.5.5"
+
+msgid "upload_rate"
+msgstr "ráta uaslódála"
+
+msgid "upload_speed"
+msgstr "Luas Uaslódála"
+
+msgid "uploading"
+msgstr "Ag Uaslódáil"
+
+msgid "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch (Trasnú NAT)"
+
+msgid "ut_metadata (Metadata Exchange)"
+msgstr "ut_metadata (Malartú Meiteashonraí)"
+
+msgid "ut_pex (Peer Exchange)"
+msgstr "ut_pex (Malartú Piaraí)"
+
+msgid "µTorrent"
+msgstr "µTorrent"
+
+msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
+msgstr "⚠️ Socruithe ardleibhéil - athraigh le hairdeall. D'fhéadfadh luachanna mícheart difear a dhéanamh d'fheidhmíocht nó do chobhsaíocht."
+
+msgid "⚠️ Web UI allows remote control of the application. Use strong authentication."
+msgstr "⚠️ Ceadaíonn Comhéadan Gréasáin cianchúram an fheidhmchláir. Úsáid fíordheimhniú láidir."
+
