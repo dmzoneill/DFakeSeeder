@@ -4,7 +4,6 @@ Handles general application settings like auto-start, minimized start,
 language selection, and other basic preferences.
 """
 
-import os
 from typing import Any, Dict
 
 import gi
@@ -13,7 +12,10 @@ from lib.logger import logger
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa: E402
 from lib.seeding_profile_manager import SeedingProfileManager  # noqa: E402
-from lib.util.language_config import get_language_display_names  # noqa: E402
+from lib.util.language_config import (  # noqa: E402
+    get_language_display_names,
+    get_supported_language_codes,
+)
 from view import View  # noqa
 
 from .base_tab import BaseSettingsTab  # noqa
@@ -334,61 +336,49 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
     def _populate_language_dropdown(self):
         """Populate language dropdown with supported languages when model is available."""
         logger.debug("===== _populate_language_dropdown() CALLED =====", "GeneralTab")
-        logger.debug("_initializing flag at start:", "GeneralTab")
         self.logger.debug("_populate_language_dropdown called")
+
         if not hasattr(self, "model") or not self.model:
             self.logger.debug("Model not available, skipping language dropdown population")
             return
+
         language_dropdown = self.get_widget("language_dropdown")
         if not language_dropdown:
             self.logger.debug("Language dropdown widget not found")
             return
+
         try:
-            # Get supported languages from locale directory
-            locale_dir = os.path.join(os.environ.get("DFS_PATH", "."), "components", "locale")
-            if not os.path.exists(locale_dir):
-                self.logger.error(f"Locale directory not found: {locale_dir}")
+            # Get supported languages from centralized config
+            supported_languages = get_supported_language_codes()
+
+            if not supported_languages:
+                self.logger.error("No supported languages found in configuration")
                 self.logger.warning("Language dropdown will be disabled")
                 language_dropdown.set_sensitive(False)
                 return
-            # Scan locale directory for available languages
-            supported_languages = []
-            for item in os.listdir(locale_dir):
-                lang_dir = os.path.join(locale_dir, item)
-                mo_file = os.path.join(lang_dir, "LC_MESSAGES", "dfakeseeder.mo")
-                if os.path.isdir(lang_dir) and os.path.exists(mo_file):
-                    supported_languages.append(item)
-            if not supported_languages:
-                self.logger.error(f"No translation files found in locale directory: {locale_dir}")
-                self.logger.warning("Language dropdown will show default language only")
-                # Fall back to English as default
-                supported_languages = ["en"]
-            # Sort languages for consistent display
-            supported_languages.sort()
+
             # Get current language from settings
             current_language = self.app_settings.get_language()
-            self.logger.debug(f"Found {len(supported_languages)} languages in locale directory: {supported_languages}")
+            self.logger.debug(f"Found {len(supported_languages)} languages: {supported_languages}")
             self.logger.debug(f"Current language: {current_language}")
+
             # Clear existing items
             self.language_list.splice(0, self.language_list.get_n_items(), [])
             self.language_codes.clear()
-            # Get translation function (currently unused but may be needed for future enhancement)
-            # Language display names - get from settings configuration
+
+            # Get language display names (native names for better UX)
             # This ensures users can always identify their own language regardless of current UI language
-            language_names = getattr(self.app_settings, "language_display_names", {})
-            # Fallback to external config if config doesn't have them
-            if not language_names:
-                self.logger.warning("language_display_names not found in settings, using external language config")
-                try:
-                    language_names = get_language_display_names()
-                    self.logger.info(f"Loaded {len(language_names)} language names from external config")
-                except Exception as e:
-                    self.logger.error(f"Failed to load external language config: {e}")
-                    # Final fallback to minimal set
-                    language_names = {"en": "English", "es": "Español", "fr": "Français"}
+            try:
+                language_names = get_language_display_names(use_native_names=True)
+                self.logger.info(f"Loaded {len(language_names)} language names from config")
+            except Exception as e:
+                self.logger.error(f"Failed to load language display names: {e}", exc_info=True)
+                # Fallback: use uppercase language codes
+                language_names = {code: code.upper() for code in supported_languages}
+
             # Add supported languages to dropdown
             selected_index = 0
-            for i, lang_code in enumerate(sorted(supported_languages)):
+            for i, lang_code in enumerate(supported_languages):
                 display_name = language_names.get(lang_code, lang_code.upper())
                 self.language_list.append(display_name)
                 self.language_codes.append(lang_code)
