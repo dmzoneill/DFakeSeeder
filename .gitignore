@@ -8,6 +8,8 @@ __pycache__/
 *.pytest**
 *.pytest_cache**
 dist/**
+build/**
+*.egg-info/
 
 # Visual Studio Code
 .vscode/
@@ -19,8 +21,13 @@ dist/**
 *.tmp
 *.swp
 
-# build dirs / files
+# Build dirs / files
 *.deb
+*.rpm
 debbuild/**
 rpmbuild/**
 snippets/**
+
+# Translation build artifacts
+tools/translations/*.backup
+tools/translations/*_fallbacks_to_translate.json
