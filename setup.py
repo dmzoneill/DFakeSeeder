@@ -28,6 +28,7 @@ package_data = {
         "locale/**/*",
         "domain/config/*",
         "*.desktop",
+        "*.desktop.template",
     ]
 }
 

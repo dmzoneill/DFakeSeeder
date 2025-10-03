@@ -50,23 +50,39 @@ def install_icons(package_dir, home_dir):
 
 def install_desktop_file(package_dir, home_dir):
     """Install desktop file to user applications directory."""
+    # Try template file first (for PyPI installations), then fall back to dev desktop file
+    desktop_template = package_dir / "dfakeseeder.desktop.template"
     desktop_source = package_dir / "dfakeseeder.desktop"
-    if not desktop_source.exists():
-        logger.debug("Warning: Desktop file not found at ...", "UnknownClass")
+
+    # Prefer template if it exists (PyPI installation)
+    if desktop_template.exists():
+        source_file = desktop_template
+    elif desktop_source.exists():
+        source_file = desktop_source
+    else:
+        logger.debug("Warning: No desktop file found", "UnknownClass")
         return False
+
     desktop_dir = home_dir / ".local" / "share" / "applications"
     desktop_dir.mkdir(parents=True, exist_ok=True)
     desktop_target = desktop_dir / "dfakeseeder.desktop"
+
     try:
-        # Read and modify desktop file to use correct paths
-        with open(desktop_source, "r") as f:
+        # Read desktop file
+        with open(source_file, "r") as f:
             content = f.read()
-        # Update Exec path to use the console script
-        content = content.replace(
-            'Exec=env LOG_LEVEL=DEBUG bash -c "cd /home/daoneill/src/DFakeSeeder/'
-            'd_fake_seeder && pipenv run python3 dfakeseeder.py"',
-            "Exec=dfs",
-        )
+
+        # If using the dev desktop file, update paths
+        if source_file == desktop_source:
+            # Replace dev-specific Exec with console script
+            content = content.replace(
+                'Exec=env LOG_LEVEL=DEBUG /usr/bin/python3 dfakeseeder.py',
+                "Exec=dfs",
+            )
+            # Remove dev-specific Path
+            lines = content.split("\n")
+            content = "\n".join([line for line in lines if not line.startswith("Path=")])
+
         # Ensure icon name is correct
         if "Icon=" in content:
             lines = content.split("\n")
@@ -75,8 +91,11 @@ def install_desktop_file(package_dir, home_dir):
                     lines[i] = "Icon=dfakeseeder"
                     break
             content = "\n".join(lines)
+
+        # Write to target
         with open(desktop_target, "w") as f:
             f.write(content)
+
         # Make desktop file executable
         os.chmod(desktop_target, 0o755)
         logger.debug("✓ Installed desktop file: ...", "UnknownClass")
