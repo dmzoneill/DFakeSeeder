@@ -856,16 +856,14 @@ class TrayApplication:
         """Handle show preferences"""
         try:
             if not self.dbus_client or not self.dbus_client.connected:
-                logger.warning("D-Bus not connected, cannot show preferences", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "D-Bus not connected, cannot show preferences", extra={"class_name": self.__class__.__name__}
+                )
                 return
 
             # Call the dedicated ShowPreferences D-Bus method
             result = self.dbus_client.proxy.call_sync(
-                "ShowPreferences",
-                None,
-                Gio.DBusCallFlags.NONE,
-                5000,  # 5 second timeout
-                None
+                "ShowPreferences", None, Gio.DBusCallFlags.NONE, 5000, None  # 5 second timeout
             )
 
             if result and result.unpack()[0]:
@@ -880,16 +878,14 @@ class TrayApplication:
         """Handle show about"""
         try:
             if not self.dbus_client or not self.dbus_client.connected:
-                logger.warning("D-Bus not connected, cannot show about dialog", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "D-Bus not connected, cannot show about dialog", extra={"class_name": self.__class__.__name__}
+                )
                 return
 
             # Call the dedicated ShowAbout D-Bus method
             result = self.dbus_client.proxy.call_sync(
-                "ShowAbout",
-                None,
-                Gio.DBusCallFlags.NONE,
-                5000,  # 5 second timeout
-                None
+                "ShowAbout", None, Gio.DBusCallFlags.NONE, 5000, None  # 5 second timeout
             )
 
             if result and result.unpack()[0]:

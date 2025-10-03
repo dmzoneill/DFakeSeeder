@@ -206,6 +206,9 @@ msgstr "Limite download alt. (KB/s):"
 msgid "Alt upload limit (KB/s):"
 msgstr "Limite upload alt. (KB/s):"
 
+msgid "Alternative Speed Limits"
+msgstr "Limites de Velocidade Alternativos"
+
 msgid "Alternative download speed limit in KB/s"
 msgstr "Limite velocidade download alternativo em KB/s"
 
@@ -227,8 +230,11 @@ msgstr "Intervalo de Anúncio:"
 msgid "Arabic"
 msgstr "Árabe"
 
+msgid "Auto Detect"
+msgstr "Detectar Automaticamente"
+
 msgid "Auto-bootstrap DHT"
-msgstr "Auto-bootstrap DHT"
+msgstr "Inicialização automática DHT"
 
 msgid "Auto-generate node ID"
 msgstr "Auto-gerar ID do nó"
@@ -280,6 +286,9 @@ msgstr "Probabilidade análise comportamento:"
 
 msgid "Behavior randomization"
 msgstr "Randomização de comportamento"
+
+msgid "Bengali"
+msgstr "Bengali"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
@@ -362,6 +371,9 @@ msgstr "Conectado em"
 msgid "Connected Peers / Total Peers"
 msgstr "Peers Conectados / Total Peers"
 
+msgid "Connected to DFakeSeeder"
+msgstr "Conectado ao DFakeSeeder"
+
 msgid "Connection"
 msgstr "Conexão"
 
@@ -431,6 +443,9 @@ msgstr "D' Fake Seeder"
 msgid "DEBUG"
 msgstr "DEPURAÇÃO"
 
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
 msgid "DHT"
 msgstr "DHT"
 
@@ -454,6 +469,9 @@ msgstr "Desabilitado"
 
 msgid "Disconnected"
 msgstr "Desconectado"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Desconectado do DFakeSeeder"
 
 msgid "Disk cache size (MB):"
 msgstr "Tamanho cache disco (MB):"
@@ -683,6 +701,9 @@ msgstr "Timeout de Extensão:"
 msgid "Extension statistics update interval (seconds)"
 msgstr "Intervalo de atualização de estatísticas de extensão (segundos)"
 
+msgid "Failed to apply seeding profile"
+msgstr "Falha ao aplicar perfil de semeadura"
+
 msgid "Failure Reason"
 msgstr "Motivo Falha"
 
@@ -690,7 +711,7 @@ msgid "Fall back to TCP if µTP fails"
 msgstr "Voltar para TCP se µTP falhar"
 
 msgid "Fallback configuration"
-msgstr "Fallback configuration"
+msgstr "Configuração de reserva"
 
 msgid "Fast Extension (BEP-006)"
 msgstr "Extensão Rápida (BEP-006)"
@@ -738,7 +759,7 @@ msgid "General timeout for extension operations (seconds)"
 msgstr "Timeout geral para operações de extensão (segundos)"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "AbaGeral"
 
 msgid "Generate Secure Password"
 msgstr "Gerar Senha Segura"
@@ -784,6 +805,9 @@ msgstr "Aperto de Mão"
 
 msgid "Handshake timeout (seconds):"
 msgstr "Timeout handshake (segundos):"
+
+msgid "Hide Main Window"
+msgstr "Ocultar Janela Principal"
 
 msgid "Hide to system tray when window is minimized"
 msgstr "Ocultar na bandeja sistema quando janela minimizada"
@@ -836,6 +860,9 @@ msgstr "Conexões de Entrada"
 msgid "Incoming Peer Connections"
 msgstr "Conexões Peers Entrada"
 
+msgid "Indonesian"
+msgstr "Indonésio"
+
 msgid "Interested"
 msgstr "Interessado"
 
@@ -853,6 +880,9 @@ msgstr "Intervalo contato peers em segundos"
 
 msgid "Interval for sending keep alive messages in seconds"
 msgstr "Intervalo envio mensagens keep alive em segundos"
+
+msgid "Irish"
+msgstr "Irlandês"
 
 msgid "Italian"
 msgstr "Italiano"
@@ -875,6 +905,9 @@ msgstr "Coreano"
 msgid "Label"
 msgstr "Etiqueta"
 
+msgid "Language"
+msgstr "Idioma"
+
 msgid "Language switched to"
 msgstr "Idioma alterado para"
 
@@ -886,6 +919,9 @@ msgstr "Último anúncio"
 
 msgid "Last Notification"
 msgstr "Última Notificação"
+
+msgid "Launch Main Application"
+msgstr "Iniciar Aplicação Principal"
 
 msgid "Leechers"
 msgstr "Baixadores"
@@ -1053,7 +1089,7 @@ msgid "Next Update"
 msgstr "Próxima Atualização"
 
 msgid "No editable options available for this torrent."
-msgstr "No editable options available for this torrent."
+msgstr "Nenhuma opção editável disponível para este torrent."
 
 msgid "None"
 msgstr "Nenhum"
@@ -1103,6 +1139,9 @@ msgstr "Caminho"
 msgid "Pause"
 msgstr "Pausar"
 
+msgid "Pause All Torrents"
+msgstr "Pausar Todos os Torrents"
+
 msgid "Pause torrent"
 msgstr "Pausar torrent"
 
@@ -1142,6 +1181,9 @@ msgstr "Pares"
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
 msgstr "Percentagem conexões rodar (0.0 - 1.0)"
 
+msgid "Persian"
+msgstr "Persa"
+
 msgid "Piece Length"
 msgstr "Comprimento da peça"
 
@@ -1170,10 +1212,10 @@ msgid "Portuguese"
 msgstr "Português"
 
 msgid "Preference 1:"
-msgstr "Preference 1:"
+msgstr "Preferência 1:"
 
 msgid "Preference 2:"
-msgstr "Preference 2:"
+msgstr "Preferência 2:"
 
 msgid "Preferences"
 msgstr "Preferências"
@@ -1286,6 +1328,9 @@ msgstr "Fila"
 msgid "Quit"
 msgstr "Sair"
 
+msgid "Quit DFakeSeeder"
+msgstr "Sair do DFakeSeeder"
+
 msgid "Random"
 msgstr "Aleatório"
 
@@ -1340,6 +1385,9 @@ msgstr "Redefinir para padrões"
 msgid "Resume"
 msgstr "Retomar"
 
+msgid "Resume All Torrents"
+msgstr "Retomar Todos os Torrents"
+
 msgid "Resume torrent"
 msgstr "Retomar torrent"
 
@@ -1391,6 +1439,9 @@ msgstr "Faixa porta seeder (mín):"
 msgid "Seeders"
 msgstr "Semeadores"
 
+msgid "Seeding Profile"
+msgstr "Perfil de Semeadura"
+
 msgid "Seeds"
 msgstr "Sementes"
 
@@ -1421,6 +1472,9 @@ msgstr "Timeout sessão (min):"
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Configuração de atalhos ainda não implementada"
 
+msgid "Show Main Window"
+msgstr "Mostrar Janela Principal"
+
 msgid "Show only selected torrent connections"
 msgstr "Mostrar apenas conexões torrent selecionado"
 
@@ -1441,6 +1495,9 @@ msgstr "Espanhol"
 
 msgid "Speed"
 msgstr "Velocidade"
+
+msgid "Speed Control"
+msgstr "Controle de Velocidade"
 
 msgid "Speed settings reset to defaults"
 msgstr "Configurações de velocidade redefinidas para padrões"
@@ -1595,6 +1652,12 @@ msgstr "Faixa ID transação (mín):"
 msgid "TranslationManager"
 msgstr "TranslationManager"
 
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
 msgid "Transmission"
 msgstr "Transmission"
 
@@ -1606,6 +1669,9 @@ msgstr "Ter"
 
 msgid "Tuesday"
 msgstr "Terça-feira"
+
+msgid "Turkish"
+msgstr "Turco"
 
 msgid "Type"
 msgstr "Tipo"
@@ -1714,6 +1780,9 @@ msgstr "Validar configurações na mudança"
 
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
 msgstr "Variação no comportamento do cliente (0.0 = sem variação, 1.0 = variação máxima)"
+
+msgid "Vietnamese"
+msgstr "Vietnamita"
 
 msgid "Vuze"
 msgstr "Vuze"
@@ -1866,7 +1935,7 @@ msgid "small_torrent_limit"
 msgstr "Limite de Torrent Pequeno"
 
 msgid "status"
-msgstr "Status"
+msgstr "Estado"
 
 msgid "threshold"
 msgstr "Limite"

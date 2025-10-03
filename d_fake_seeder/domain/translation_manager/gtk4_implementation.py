@@ -289,25 +289,16 @@ class TranslationManagerGTK4(TranslationManagerBase):
 
     def get_language_name(self, language_code: str) -> str:
         """Get the display name for a language code"""
-        # Simple mapping - could be expanded with proper locale data
-        language_names = {
-            "en": "English",
-            "es": "Español",
-            "fr": "Français",
-            "de": "Deutsch",
-            "it": "Italiano",
-            "pt": "Português",
-            "ru": "Русский",
-            "zh": "中文",
-            "ja": "日本語",
-            "ko": "한국어",
-            "ar": "العربية",
-            "hi": "हिन्दी",
-            "nl": "Nederlands",
-            "sv": "Svenska",
-            "pl": "Polski",
-        }
-        return language_names.get(language_code, language_code.upper())
+        # Load language names dynamically from configuration
+        try:
+            from lib.util.language_config import get_language_display_names
+
+            language_names = get_language_display_names()
+            return language_names.get(language_code, language_code.upper())
+        except Exception as e:
+            logger.debug(f"Could not load language names from config: {e}", "TranslationManagerGTK4")
+            # Ultimate fallback: uppercase language code
+            return language_code.upper()
 
     def set_default_language(self, language_code: str) -> None:
         """Set the default fallback language"""

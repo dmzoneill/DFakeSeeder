@@ -206,6 +206,9 @@ msgstr "Alt download limit (KB/s):"
 msgid "Alt upload limit (KB/s):"
 msgstr "Alt upload limit (KB/s):"
 
+msgid "Alternative Speed Limits"
+msgstr "Alternative Speed Limits"
+
 msgid "Alternative download speed limit in KB/s"
 msgstr "Alternative download speed limit in KB/s"
 
@@ -226,6 +229,9 @@ msgstr "Announcement Interval:"
 
 msgid "Arabic"
 msgstr "Arabic"
+
+msgid "Auto Detect"
+msgstr "Auto Detect"
 
 msgid "Auto-bootstrap DHT"
 msgstr "Auto-bootstrap DHT"
@@ -280,6 +286,9 @@ msgstr "Behavior analysis probability:"
 
 msgid "Behavior randomization"
 msgstr "Behavior randomization"
+
+msgid "Bengali"
+msgstr "Bengali"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
@@ -362,6 +371,9 @@ msgstr "Connected At"
 msgid "Connected Peers / Total Peers"
 msgstr "Connected Peers / Total Peers"
 
+msgid "Connected to DFakeSeeder"
+msgstr "Connected to DFakeSeeder"
+
 msgid "Connection"
 msgstr "Connection"
 
@@ -431,6 +443,9 @@ msgstr "D' Fake Seeder"
 msgid "DEBUG"
 msgstr "DEBUG"
 
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
 msgid "DHT"
 msgstr "DHT"
 
@@ -454,6 +469,9 @@ msgstr "Disabled"
 
 msgid "Disconnected"
 msgstr "Disconnected"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Disconnected from DFakeSeeder"
 
 msgid "Disk cache size (MB):"
 msgstr "Disk cache size (MB):"
@@ -683,6 +701,9 @@ msgstr "Extension Timeout:"
 msgid "Extension statistics update interval (seconds)"
 msgstr "Extension statistics update interval (seconds)"
 
+msgid "Failed to apply seeding profile"
+msgstr "Failed to apply seeding profile"
+
 msgid "Failure Reason"
 msgstr "Failure Reason"
 
@@ -785,6 +806,9 @@ msgstr "Handshake"
 msgid "Handshake timeout (seconds):"
 msgstr "Handshake timeout (seconds):"
 
+msgid "Hide Main Window"
+msgstr "Hide Main Window"
+
 msgid "Hide to system tray when window is minimized"
 msgstr "Hide to system tray when window is minimized"
 
@@ -836,6 +860,9 @@ msgstr "Incoming Connections"
 msgid "Incoming Peer Connections"
 msgstr "Incoming Peer Connections"
 
+msgid "Indonesian"
+msgstr "Indonesian"
+
 msgid "Interested"
 msgstr "Interested"
 
@@ -853,6 +880,9 @@ msgstr "Interval for contacting peers in seconds"
 
 msgid "Interval for sending keep alive messages in seconds"
 msgstr "Interval for sending keep alive messages in seconds"
+
+msgid "Irish"
+msgstr "Irish"
 
 msgid "Italian"
 msgstr "Italian"
@@ -875,6 +905,9 @@ msgstr "Korean"
 msgid "Label"
 msgstr "Label"
 
+msgid "Language"
+msgstr "Language"
+
 msgid "Language switched to"
 msgstr "Language switched to"
 
@@ -886,6 +919,9 @@ msgstr "Last Announce"
 
 msgid "Last Notification"
 msgstr "Last Notification"
+
+msgid "Launch Main Application"
+msgstr "Launch Main Application"
 
 msgid "Leechers"
 msgstr "Leechers"
@@ -1103,6 +1139,9 @@ msgstr "Path"
 msgid "Pause"
 msgstr "Pause"
 
+msgid "Pause All Torrents"
+msgstr "Pause All Torrents"
+
 msgid "Pause torrent"
 msgstr "Pause torrent"
 
@@ -1141,6 +1180,9 @@ msgstr "Peers"
 
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
 msgstr "Percentage of connections to rotate (0.0 - 1.0)"
+
+msgid "Persian"
+msgstr "Persian"
 
 msgid "Piece Length"
 msgstr "Piece Length"
@@ -1286,6 +1328,9 @@ msgstr "Queue"
 msgid "Quit"
 msgstr "Quit"
 
+msgid "Quit DFakeSeeder"
+msgstr "Quit DFakeSeeder"
+
 msgid "Random"
 msgstr "Random"
 
@@ -1340,6 +1385,9 @@ msgstr "Reset to defaults"
 msgid "Resume"
 msgstr "Resume"
 
+msgid "Resume All Torrents"
+msgstr "Resume All Torrents"
+
 msgid "Resume torrent"
 msgstr "Resume torrent"
 
@@ -1391,6 +1439,9 @@ msgstr "Seeder port range (min):"
 msgid "Seeders"
 msgstr "Seeders"
 
+msgid "Seeding Profile"
+msgstr "Seeding Profile"
+
 msgid "Seeds"
 msgstr "Seeds"
 
@@ -1421,6 +1472,9 @@ msgstr "Session timeout (min):"
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Shortcuts configuration not yet implemented"
 
+msgid "Show Main Window"
+msgstr "Show Main Window"
+
 msgid "Show only selected torrent connections"
 msgstr "Show only selected torrent connections"
 
@@ -1441,6 +1495,9 @@ msgstr "Spanish"
 
 msgid "Speed"
 msgstr "Speed"
+
+msgid "Speed Control"
+msgstr "Speed Control"
 
 msgid "Speed settings reset to defaults"
 msgstr "Speed settings reset to defaults"
@@ -1595,6 +1652,12 @@ msgstr "Transaction ID range (min):"
 msgid "TranslationManager"
 msgstr "TranslationManager"
 
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
 msgid "Transmission"
 msgstr "Transmission"
 
@@ -1606,6 +1669,9 @@ msgstr "Tue"
 
 msgid "Tuesday"
 msgstr "Tuesday"
+
+msgid "Turkish"
+msgstr "Turkish"
 
 msgid "Type"
 msgstr "Type"
@@ -1714,6 +1780,9 @@ msgstr "Validate settings on change"
 
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
 msgstr "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+
+msgid "Vietnamese"
+msgstr "Vietnamese"
 
 msgid "Vuze"
 msgstr "Vuze"

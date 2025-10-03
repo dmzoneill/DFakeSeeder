@@ -631,6 +631,27 @@ class View:
             logger.debug(f"Theme setting changed to: {value}", extra={"class_name": self.__class__.__name__})
             self.apply_theme(value)
 
+        # Handle show_preferences trigger from tray
+        elif key == "show_preferences" and value:
+            logger.info("📋 Showing preferences from D-Bus/tray", extra={"class_name": self.__class__.__name__})
+            # Reset the flag immediately
+            self.settings.set("show_preferences", False)
+            # Show the preferences dialog
+            if hasattr(self, "toolbar") and self.toolbar:
+                logger.info("Calling toolbar.show_settings_dialog()", extra={"class_name": self.__class__.__name__})
+                GLib.idle_add(self.toolbar.show_settings_dialog)
+            else:
+                logger.error("Toolbar not available, cannot show settings dialog", extra={"class_name": self.__class__.__name__})
+
+        # Handle show_about trigger from tray
+        elif key == "show_about" and value:
+            logger.info("ℹ️  Showing about dialog from D-Bus/tray", extra={"class_name": self.__class__.__name__})
+            # Reset the flag immediately
+            self.settings.set("show_about", False)
+            # Show the about dialog
+            logger.info("Calling show_about()", extra={"class_name": self.__class__.__name__})
+            GLib.idle_add(self.show_about, None, None)
+
     def handle_app_settings_changed(self, _source, key, value):  # noqa: ARG002
         """Handle AppSettings changes."""
         logger.debug(

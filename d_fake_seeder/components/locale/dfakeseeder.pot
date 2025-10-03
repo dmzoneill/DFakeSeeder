@@ -206,6 +206,9 @@ msgstr ""
 msgid "Alt upload limit (KB/s):"
 msgstr ""
 
+msgid "Alternative Speed Limits"
+msgstr ""
+
 msgid "Alternative download speed limit in KB/s"
 msgstr ""
 
@@ -225,6 +228,9 @@ msgid "Announcement Interval:"
 msgstr ""
 
 msgid "Arabic"
+msgstr ""
+
+msgid "Auto Detect"
 msgstr ""
 
 msgid "Auto-bootstrap DHT"
@@ -279,6 +285,9 @@ msgid "Behavior analysis probability:"
 msgstr ""
 
 msgid "Behavior randomization"
+msgstr ""
+
+msgid "Bengali"
 msgstr ""
 
 msgid "BiglyBT"
@@ -362,6 +371,9 @@ msgstr ""
 msgid "Connected Peers / Total Peers"
 msgstr ""
 
+msgid "Connected to DFakeSeeder"
+msgstr ""
+
 msgid "Connection"
 msgstr ""
 
@@ -431,6 +443,9 @@ msgstr ""
 msgid "DEBUG"
 msgstr ""
 
+msgid "DFakeSeeder"
+msgstr ""
+
 msgid "DHT"
 msgstr ""
 
@@ -453,6 +468,9 @@ msgid "Disabled"
 msgstr ""
 
 msgid "Disconnected"
+msgstr ""
+
+msgid "Disconnected from DFakeSeeder"
 msgstr ""
 
 msgid "Disk cache size (MB):"
@@ -683,6 +701,9 @@ msgstr ""
 msgid "Extension statistics update interval (seconds)"
 msgstr ""
 
+msgid "Failed to apply seeding profile"
+msgstr ""
+
 msgid "Failure Reason"
 msgstr ""
 
@@ -785,6 +806,9 @@ msgstr ""
 msgid "Handshake timeout (seconds):"
 msgstr ""
 
+msgid "Hide Main Window"
+msgstr ""
+
 msgid "Hide to system tray when window is minimized"
 msgstr ""
 
@@ -836,6 +860,9 @@ msgstr ""
 msgid "Incoming Peer Connections"
 msgstr ""
 
+msgid "Indonesian"
+msgstr ""
+
 msgid "Interested"
 msgstr ""
 
@@ -852,6 +879,9 @@ msgid "Interval for contacting peers in seconds"
 msgstr ""
 
 msgid "Interval for sending keep alive messages in seconds"
+msgstr ""
+
+msgid "Irish"
 msgstr ""
 
 msgid "Italian"
@@ -875,6 +905,9 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
+msgid "Language"
+msgstr ""
+
 msgid "Language switched to"
 msgstr ""
 
@@ -885,6 +918,9 @@ msgid "Last Announce"
 msgstr ""
 
 msgid "Last Notification"
+msgstr ""
+
+msgid "Launch Main Application"
 msgstr ""
 
 msgid "Leechers"
@@ -1103,6 +1139,9 @@ msgstr ""
 msgid "Pause"
 msgstr ""
 
+msgid "Pause All Torrents"
+msgstr ""
+
 msgid "Pause torrent"
 msgstr ""
 
@@ -1140,6 +1179,9 @@ msgid "Peers"
 msgstr ""
 
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr ""
+
+msgid "Persian"
 msgstr ""
 
 msgid "Piece Length"
@@ -1286,6 +1328,9 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
+msgid "Quit DFakeSeeder"
+msgstr ""
+
 msgid "Random"
 msgstr ""
 
@@ -1340,6 +1385,9 @@ msgstr ""
 msgid "Resume"
 msgstr ""
 
+msgid "Resume All Torrents"
+msgstr ""
+
 msgid "Resume torrent"
 msgstr ""
 
@@ -1391,6 +1439,9 @@ msgstr ""
 msgid "Seeders"
 msgstr ""
 
+msgid "Seeding Profile"
+msgstr ""
+
 msgid "Seeds"
 msgstr ""
 
@@ -1421,6 +1472,9 @@ msgstr ""
 msgid "Shortcuts configuration not yet implemented"
 msgstr ""
 
+msgid "Show Main Window"
+msgstr ""
+
 msgid "Show only selected torrent connections"
 msgstr ""
 
@@ -1440,6 +1494,9 @@ msgid "Spanish"
 msgstr ""
 
 msgid "Speed"
+msgstr ""
+
+msgid "Speed Control"
 msgstr ""
 
 msgid "Speed settings reset to defaults"
@@ -1595,6 +1652,12 @@ msgstr ""
 msgid "TranslationManager"
 msgstr ""
 
+msgid "TranslationManagerGTK3"
+msgstr ""
+
+msgid "TranslationManagerGTK4"
+msgstr ""
+
 msgid "Transmission"
 msgstr ""
 
@@ -1605,6 +1668,9 @@ msgid "Tue"
 msgstr ""
 
 msgid "Tuesday"
+msgstr ""
+
+msgid "Turkish"
 msgstr ""
 
 msgid "Type"
@@ -1713,6 +1779,9 @@ msgid "Validate settings on change"
 msgstr ""
 
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr ""
+
+msgid "Vietnamese"
 msgstr ""
 
 msgid "Vuze"

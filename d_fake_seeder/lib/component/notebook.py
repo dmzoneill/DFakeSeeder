@@ -60,7 +60,7 @@ class Notebook(Component):
     def setup_log_viewer_handler(self):
         def update_textview(record):
             msg = f"{record.levelname}: {record.getMessage()}\n"
-            GLib.idle_add(lambda: self.update_text_buffer(self.log_viewer, msg))
+            GLib.idle_add(lambda: (self.update_text_buffer(self.log_viewer, msg), False)[1])
 
         handler = logging.StreamHandler()
         handler.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
