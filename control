@@ -1,5 +1,22 @@
 Package: dfakeseeder
 Version: 0.0.43
-Architecture: amd64
-Maintainer: D <dmz.oneill@gmail.com>
-Description: D' Fake Seeder
+Architecture: all
+Maintainer: David O Neill <dmz.oneill@gmail.com>
+Depends: python3 (>= 3.11), gir1.2-gtk-4.0, python3-gi, python3-requests
+Recommends: gir1.2-appindicator3-0.1, gir1.2-notify-0.7
+Section: net
+Priority: optional
+Homepage: https://github.com/dmzoneill/DFakeSeeder
+Description: BitTorrent seeding simulator for testing and development
+ D' Fake Seeder is a BitTorrent seeding simulator designed for testing and
+ development purposes. It simulates torrent seeding activity with support for
+ both HTTP and UDP tracker protocols, comprehensive peer-to-peer networking,
+ and full internationalization (i18n) support for 21 languages.
+ .
+ Features:
+  * HTTP and UDP tracker protocol support
+  * Comprehensive peer-to-peer networking
+  * System tray integration
+  * Multi-language support (21 languages)
+  * GTK4 user interface
+  * D-Bus integration for IPC

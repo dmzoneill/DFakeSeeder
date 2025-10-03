@@ -151,21 +151,39 @@ deb: clean
 	cp -r d_fake_seeder/images ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/lib ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/ui ./debbuild/opt/dfakeseeder
+	cp -r d_fake_seeder/locale ./debbuild/opt/dfakeseeder
+	cp -r d_fake_seeder/domain ./debbuild/opt/dfakeseeder
+	cp -r d_fake_seeder/components ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/dfakeseeder.py ./debbuild/opt/dfakeseeder
-	sed 's#dfakeseeder.py#/opt/dfakeseeder/dfakeseeder.py#g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
+	cp -r d_fake_seeder/dfakeseeder_tray.py ./debbuild/opt/dfakeseeder
+	sed 's#Exec=env LOG_LEVEL=DEBUG /usr/bin/python3 dfakeseeder.py#Exec=/usr/bin/python3 /opt/dfakeseeder/dfakeseeder.py#g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
+	sed 's#Path=.*##g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
 	touch ./debbuild/DEBIAN/postinst
 
-	echo "#!/bin/bash -x" >> ./debbuild/DEBIAN/postinst
+	echo "#!/bin/bash" >> ./debbuild/DEBIAN/postinst
+	echo "# Install icons to user directories" >> ./debbuild/DEBIAN/postinst
 	echo "for X in 16 32 48 64 96 128 192 256; do " >> ./debbuild/DEBIAN/postinst
-	echo "mkdir -vp \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
-	echo "mkdir -vp \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
-	echo "cp -f /opt/dfakeseeder/d_fake_seeder/images/dfakeseeder.png \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps/ " >> ./debbuild/DEBIAN/postinst
-	echo "cp -f /opt/dfakeseeder/d_fake_seeder/images/dfakeseeder.png \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps/ " >> ./debbuild/DEBIAN/postinst
+	echo "  mkdir -vp \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
+	echo "  mkdir -vp \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
+	echo "  cp -f /opt/dfakeseeder/images/dfakeseeder.png \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "  cp -f /opt/dfakeseeder/images/dfakeseeder.png \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
 	echo "done " >> ./debbuild/DEBIAN/postinst
-	echo "cd \$$HOME/.local/share/icons/ && \\" >> ./debbuild/DEBIAN/postinst
-	echo "gtk-update-icon-cache -t -f hicolor; \\" >> ./debbuild/DEBIAN/postinst
-	echo "cd \$$HOME/.icons/ && \\" >> ./debbuild/DEBIAN/postinst
-	echo "gtk-update-icon-cache -t -f hicolor; " >> ./debbuild/DEBIAN/postinst
+	echo "" >> ./debbuild/DEBIAN/postinst
+	echo "# Update icon caches" >> ./debbuild/DEBIAN/postinst
+	echo "if [ -d \$$HOME/.local/share/icons/hicolor ]; then" >> ./debbuild/DEBIAN/postinst
+	echo "  cd \$$HOME/.local/share/icons/ && gtk-update-icon-cache -t -f hicolor 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "fi" >> ./debbuild/DEBIAN/postinst
+	echo "if [ -d \$$HOME/.icons/hicolor ]; then" >> ./debbuild/DEBIAN/postinst
+	echo "  cd \$$HOME/.icons/ && gtk-update-icon-cache -t -f hicolor 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "fi" >> ./debbuild/DEBIAN/postinst
+	echo "" >> ./debbuild/DEBIAN/postinst
+	echo "# Update desktop database" >> ./debbuild/DEBIAN/postinst
+	echo "update-desktop-database \$$HOME/.local/share/applications/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "" >> ./debbuild/DEBIAN/postinst
+	echo "# Clear GNOME Shell cache for immediate recognition" >> ./debbuild/DEBIAN/postinst
+	echo "rm -rf \$$HOME/.cache/gnome-shell/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "" >> ./debbuild/DEBIAN/postinst
+	echo "echo 'Desktop integration installed. GNOME users: Press Alt+F2, type r, and press Enter to restart GNOME Shell.'" >> ./debbuild/DEBIAN/postinst
 	chmod 755 ./debbuild/DEBIAN/postinst
 
 	sudo chown -R root:root debbuild
