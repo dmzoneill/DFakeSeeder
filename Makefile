@@ -47,6 +47,8 @@ clean_settings:
 
 run: ui-build
 	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
+	-rm -rf ~/.cache/gnome-shell/
+	-update-desktop-database ~/.local/share/applications/ 2>/dev/null
 	-ps aux | grep "dfakeseeder.py" | awk '{print $$2}' | xargs kill -9
 	echo "Running program..."
 	{ \
@@ -57,6 +59,8 @@ run: ui-build
 
 run-debug: ui-build
 	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
+	-rm -rf ~/.cache/gnome-shell/
+	-update-desktop-database ~/.local/share/applications/ 2>/dev/null
 	-ps aux | grep "dfakeseeder.py" | awk '{print $$2}' | xargs kill -9
 	echo "Running program..."
 	{ \

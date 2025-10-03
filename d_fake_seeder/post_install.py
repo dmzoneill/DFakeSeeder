@@ -113,6 +113,16 @@ def update_caches(home_dir):
     """Update desktop and icon caches."""
     icon_dir = home_dir / ".local" / "share" / "icons" / "hicolor"
     desktop_dir = home_dir / ".local" / "share" / "applications"
+    gnome_cache_dir = home_dir / ".cache" / "gnome-shell"
+
+    # Clear GNOME Shell cache to ensure desktop file changes are picked up
+    if gnome_cache_dir.exists():
+        try:
+            shutil.rmtree(gnome_cache_dir)
+            logger.debug("✓ Cleared GNOME Shell cache", "UnknownClass")
+        except Exception:
+            logger.debug("Info: Could not clear GNOME Shell cache (this is optional)", "UnknownClass")
+
     # Update icon cache
     try:
         subprocess.run(["gtk-update-icon-cache", str(icon_dir)], check=False, capture_output=True)
@@ -156,6 +166,12 @@ def install_desktop_integration():
             logger.debug("and show proper icons in the taskbar when launched.", "UnknownClass")
             if tray_installed:
                 logger.debug("System tray will start automatically on login.", "UnknownClass")
+
+            # GNOME Shell refresh instructions
+            logger.debug("\n⚠️  GNOME Shell users: To ensure changes take effect immediately:", "UnknownClass")
+            logger.debug("  • Press Alt+F2, type 'r', and press Enter to restart GNOME Shell", "UnknownClass")
+            logger.debug("  • Or log out and log back in", "UnknownClass")
+
             logger.debug("\nYou can launch it from:", "UnknownClass")
             logger.debug("  • Application menu (search for 'D' Fake Seeder')", "UnknownClass")
             logger.debug("  • Command line: dfs", "UnknownClass")
