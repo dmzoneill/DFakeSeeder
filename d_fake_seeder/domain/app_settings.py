@@ -204,6 +204,11 @@ class AppSettings(GObject.GObject):
                 self._settings = merged_settings
                 self.settings = merged_settings.copy()
                 self._last_modified = modified
+                self.logger.info(
+                    f"Loaded settings - language from file: {user_settings.get('language', 'NOT SET')},"
+                    f" merged language: {merged_settings.get('language', 'NOT SET')}",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 self.logger.debug(f"Loaded and merged settings, total: {len(self.settings)}")
         except FileNotFoundError:
             # If the file doesn't exist, start with defaults and create the file
@@ -517,9 +522,17 @@ class AppSettings(GObject.GObject):
 
         # Get the configured language from settings
         configured_lang = self.get("language", "auto")
+        self.logger.info(
+            f"get_language() - configured_lang from settings: {configured_lang}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
         # If it's a specific language (not "auto"), use it directly
         if configured_lang != "auto":
+            self.logger.info(
+                f"get_language() - returning configured language: {configured_lang}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return configured_lang
 
         # "auto" means detect system language
