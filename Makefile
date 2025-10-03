@@ -268,3 +268,28 @@ test-docker:
 
 flatpak: clean
 	flatpak-builder build-dir ie.fio.dfakeseeder manifest.json
+
+# PyPI publishing targets
+pypi-build: clean
+	python3 setup.py sdist bdist_wheel
+	@echo "✅ PyPI package built successfully!"
+	@echo "📦 Distribution files in dist/"
+	@ls -lh dist/
+
+pypi-test-upload: pypi-build
+	@echo "📤 Uploading to TestPyPI..."
+	python3 -m twine upload --repository testpypi dist/*
+	@echo "✅ Uploaded to TestPyPI: https://test.pypi.org/project/d-fake-seeder/"
+
+pypi-upload: pypi-build
+	@echo "⚠️  WARNING: This will upload to production PyPI!"
+	@echo "Press Ctrl+C to cancel, or Enter to continue..."
+	@read confirm
+	@echo "📤 Uploading to PyPI..."
+	python3 -m twine upload dist/*
+	@echo "✅ Uploaded to PyPI: https://pypi.org/project/d-fake-seeder/"
+
+pypi-check:
+	@echo "🔍 Checking PyPI package..."
+	python3 -m twine check dist/*
+	@echo "✅ Package check complete!"
