@@ -13,7 +13,7 @@ watchdog = "*"
 
 [dev-packages]
 pytest = "==7.3.2"
-setuptools = "==67.7.2"
+setuptools = "==78.1.1"
 black = "*"
 isort = "*"
 flake8 = "*"
