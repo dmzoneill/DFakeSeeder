@@ -30,6 +30,10 @@ from domain.translation_manager.gtk3_implementation import (  # noqa: E402
 # gi.repository imports after translation manager to maintain GTK version isolation
 from gi.repository import AppIndicator3, Gio, GLib, Gtk, Notify  # noqa: E402
 from lib.logger import logger  # noqa: E402
+from lib.util.language_config import (  # noqa: E402
+    get_language_display_names,
+    get_supported_language_codes,
+)
 
 
 class DBusClient:
@@ -53,20 +57,26 @@ class DBusClient:
                 return False
 
             # First check if the service is actually available on the bus
-            name_owner = self.connection.call_sync(
-                "org.freedesktop.DBus",
-                "/org/freedesktop/DBus",
-                "org.freedesktop.DBus",
-                "GetNameOwner",
-                GLib.Variant("(s)", (self.SERVICE_NAME,)),
-                None,
-                Gio.DBusCallFlags.NONE,
-                1000,  # 1 second timeout
-                None,
-            )
+            try:
+                name_owner = self.connection.call_sync(
+                    "org.freedesktop.DBus",
+                    "/org/freedesktop/DBus",
+                    "org.freedesktop.DBus",
+                    "GetNameOwner",
+                    GLib.Variant("(s)", (self.SERVICE_NAME,)),
+                    None,
+                    Gio.DBusCallFlags.NONE,
+                    1000,  # 1 second timeout
+                    None,
+                )
+            except Exception as e:
+                # Service not found - this is normal when main app isn't running
+                logger.debug(f"Service not available on D-Bus: {e}", extra={"class_name": self.__class__.__name__})
+                self.connected = False
+                return False
 
             if not name_owner:
-                logger.info(
+                logger.debug(
                     "Main application service not available on D-Bus", extra={"class_name": self.__class__.__name__}
                 )
                 self.connected = False
@@ -82,15 +92,28 @@ class DBusClient:
                 None,
             )
 
-            # Test the connection by trying to get settings
-            test_result = self.get_settings()
-            if test_result is not None:
-                self.connected = True
-                logger.info("Connected to D-Bus service", extra={"class_name": self.__class__.__name__})
-                return True
-            else:
+            # Test the connection by calling GetSettings directly
+            # (don't use self.get_settings which checks self.connected)
+            logger.debug(
+                "Testing D-Bus connection with GetSettings call", extra={"class_name": self.__class__.__name__}
+            )
+            try:
+                test_result = self.proxy.call_sync(
+                    "GetSettings", None, Gio.DBusCallFlags.NONE, 5000, None
+                )  # 5 second timeout
+                if test_result:
+                    self.connected = True
+                    logger.info("Connected to D-Bus service", extra={"class_name": self.__class__.__name__})
+                    return True
+                else:
+                    self.connected = False
+                    logger.warning(
+                        "Service found but GetSettings returned None", extra={"class_name": self.__class__.__name__}
+                    )
+                    return False
+            except Exception as e:
                 self.connected = False
-                logger.warning("Service found but not responding", extra={"class_name": self.__class__.__name__})
+                logger.warning(f"Service found but not responding: {e}", extra={"class_name": self.__class__.__name__})
                 return False
 
         except Exception as e:
@@ -105,13 +128,25 @@ class DBusClient:
         """Get settings from main application"""
         try:
             if not self.connected:
+                logger.debug("get_settings called but not connected", extra={"class_name": self.__class__.__name__})
                 return None
 
-            result = self.proxy.call_sync("GetSettings", None, Gio.DBusCallFlags.NONE, -1, None)
-            return result.unpack()[0] if result else None
+            logger.debug("Calling GetSettings via D-Bus proxy", extra={"class_name": self.__class__.__name__})
+            result = self.proxy.call_sync("GetSettings", None, Gio.DBusCallFlags.NONE, 5000, None)  # 5 second timeout
+            logger.debug(f"GetSettings result type: {type(result)}", extra={"class_name": self.__class__.__name__})
+
+            if result:
+                unpacked = result.unpack()[0]
+                logger.debug(
+                    f"GetSettings returned {len(unpacked)} bytes", extra={"class_name": self.__class__.__name__}
+                )
+                return unpacked
+            else:
+                logger.warning("GetSettings returned None result", extra={"class_name": self.__class__.__name__})
+                return None
 
         except Exception as e:
-            logger.error(f"Failed to get settings: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(f"Failed to get settings: {e}", extra={"class_name": self.__class__.__name__}, exc_info=True)
             return None
 
     def update_settings(self, changes: Dict[str, Any]) -> bool:
@@ -167,6 +202,15 @@ class DBusClient:
             logger.debug(f"Ping failed: {e}", extra={"class_name": self.__class__.__name__})
             return False
 
+    def reconnect(self) -> bool:
+        """Attempt to reconnect to D-Bus service"""
+        logger.debug("Attempting to reconnect to D-Bus", extra={"class_name": self.__class__.__name__})
+        # Clean up old connection state
+        self.connected = False
+        self.proxy = None
+        # Try to connect again
+        return self._connect()
+
     def cleanup(self):
         """Clean up D-Bus connection"""
         self.connected = False
@@ -193,8 +237,8 @@ class TrayApplication:
 
         # Connection state
         self.connected = False
-        self.reconnect_timer = None
         self.update_timer = None
+        self.dbus_handlers_setup = False
 
         # Setup signal handlers
         signal.signal(signal.SIGINT, self._signal_handler)
@@ -336,7 +380,7 @@ class TrayApplication:
             logger.error(f"Failed to create indicator: {e}", extra={"class_name": self.__class__.__name__})
 
     def _connect_to_dbus(self):
-        """Connect to D-Bus service with retry logic"""
+        """Connect to D-Bus service (reconnection handled by periodic update)"""
         try:
             self.dbus_client = DBusClient()
             self.connected = self.dbus_client.connected
@@ -345,42 +389,14 @@ class TrayApplication:
                 logger.info("Connected to main application via D-Bus", extra={"class_name": self.__class__.__name__})
                 self._update_indicator_status(True)
             else:
-                logger.warning("Failed to connect to main application", extra={"class_name": self.__class__.__name__})
+                logger.debug("Failed to connect to main application", extra={"class_name": self.__class__.__name__})
                 self._update_indicator_status(False)
-                self._start_reconnect_timer()
+                # Note: Reconnection is handled by _periodic_update, no need for separate timer
 
         except Exception as e:
             logger.error(f"D-Bus connection error: {e}", extra={"class_name": self.__class__.__name__})
             self.connected = False
             self._update_indicator_status(False)
-
-    def _start_reconnect_timer(self):
-        """Start reconnection timer"""
-        if self.reconnect_timer:
-            GLib.source_remove(self.reconnect_timer)
-
-        self.reconnect_timer = GLib.timeout_add_seconds(5, self._try_reconnect)
-
-    def _try_reconnect(self):
-        """Try to reconnect to D-Bus service"""
-        try:
-            if self.dbus_client and self.dbus_client.ping():
-                self.connected = True
-                self._update_indicator_status(True)
-                self._setup_dbus_handlers()
-                self._load_initial_settings()
-                # Recreate menu to remove launch option
-                self._create_menu()
-                logger.info("Reconnected to main application", extra={"class_name": self.__class__.__name__})
-                return False  # Stop timer
-
-            # Try reconnecting
-            self._connect_to_dbus()
-            return not self.connected  # Continue timer if still not connected
-
-        except Exception as e:
-            logger.error(f"Reconnection failed: {e}", extra={"class_name": self.__class__.__name__})
-            return True  # Continue timer
 
     def _update_indicator_status(self, connected: bool):
         """Update indicator icon based on connection status"""
@@ -426,10 +442,15 @@ class TrayApplication:
             logger.error(f"Could not load initial settings: {e}", extra={"class_name": self.__class__.__name__})
 
     def _setup_dbus_handlers(self):
-        """Set up D-Bus signal handlers"""
+        """Set up D-Bus signal handlers (only once to avoid duplicate subscriptions)"""
         try:
-            self.dbus_client.subscribe("SettingsChanged", self._on_settings_changed)
-            logger.info("D-Bus signal handlers set up", extra={"class_name": self.__class__.__name__})
+            # Only subscribe once to avoid duplicate signal handlers
+            if not self.dbus_handlers_setup:
+                self.dbus_client.subscribe("SettingsChanged", self._on_settings_changed)
+                self.dbus_handlers_setup = True
+                logger.info("D-Bus signal handlers set up", extra={"class_name": self.__class__.__name__})
+            else:
+                logger.debug("D-Bus handlers already set up, skipping", extra={"class_name": self.__class__.__name__})
         except Exception as e:
             logger.error(f"Could not set up D-Bus handlers: {e}", extra={"class_name": self.__class__.__name__})
 
@@ -682,25 +703,31 @@ class TrayApplication:
 
         current_language = self.settings_cache.get("language", "auto")
 
-        # Available languages (from gettext)
-        languages = [
-            ("auto", _("Auto Detect")),
-            ("en", "English"),
-            ("es", "Español"),
-            ("fr", "Français"),
-            ("de", "Deutsch"),
-            ("it", "Italiano"),
-            ("pt", "Português"),
-            ("ru", "Русский"),
-            ("zh", "中文"),
-            ("ja", "日本語"),
-            ("ko", "한국어"),
-            ("ar", "العربية"),
-            ("hi", "हिन्दी"),
-            ("nl", "Nederlands"),
-            ("sv", "Svenska"),
-            ("pl", "Polski"),
-        ]
+        # Get available languages from centralized config
+        try:
+            language_codes = get_supported_language_codes()
+            language_names = get_language_display_names(use_native_names=True)
+
+            # Build language list with auto-detect option first
+            languages = [("auto", _("Auto Detect"))]
+            for lang_code in language_codes:
+                lang_name = language_names.get(lang_code, lang_code.upper())
+                languages.append((lang_code, lang_name))
+
+            logger.debug(
+                f"Loaded {len(languages)} languages for tray menu", extra={"class_name": self.__class__.__name__}
+            )
+        except Exception as e:
+            logger.error(
+                f"Error loading language config, using minimal fallback: {e}",
+                extra={"class_name": self.__class__.__name__},
+                exc_info=True,
+            )
+            # Minimal fallback if config loading fails
+            languages = [
+                ("auto", _("Auto Detect")),
+                ("en", "English"),
+            ]
 
         lang_group = None
         for lang_code, lang_name in languages:
@@ -947,13 +974,19 @@ class TrayApplication:
                     self._create_menu()
                     # Note: periodic update will handle reconnection, no need for separate timer
             elif not self.connected:
-                # Try to reconnect if we're not connected (regardless of dbus_client state)
+                # Try to reconnect if we're not connected
                 logger.debug(
                     "Attempting to reconnect to main application", extra={"class_name": self.__class__.__name__}
                 )
-                # Try to establish new D-Bus connection
-                self._connect_to_dbus()
-                if self.connected:
+                # Try to reconnect using existing client or create new one
+                if self.dbus_client:
+                    reconnected = self.dbus_client.reconnect()
+                    self.connected = self.dbus_client.connected
+                else:
+                    self._connect_to_dbus()
+                    reconnected = self.connected
+
+                if reconnected and self.connected:
                     logger.info(
                         "Main application is now available, reconnected", extra={"class_name": self.__class__.__name__}
                     )
@@ -974,8 +1007,6 @@ class TrayApplication:
         logger.info("Shutting down tray application", extra={"class_name": self.__class__.__name__})
 
         # Stop timers
-        if self.reconnect_timer:
-            GLib.source_remove(self.reconnect_timer)
         if self.update_timer:
             GLib.source_remove(self.update_timer)
 
