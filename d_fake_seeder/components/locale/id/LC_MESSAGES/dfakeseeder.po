@@ -1,0 +1,1984 @@
+# Indonesian translation for DFakeSeeder
+# Copyright (C) 2024 DFakeSeeder Contributors
+# This file is distributed under the same license as the DFakeSeeder package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DFakeSeeder 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"POT-Creation-Date: 2025-09-18 17:51+0100\n"
+"PO-Revision-Date: 2024-09-18 18:30+0100\n"
+"Last-Translator: Claude <noreply@anthropic.com>\n"
+"Language-Team: Indonesian <id@li.org>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "#"
+msgstr "#"
+
+msgid "(0 = unlimited)"
+msgstr "(0 = tidak terbatas)"
+
+msgid "0 / 250"
+msgstr "0 / 250"
+
+msgid "127.0.0.1"
+msgstr "127.0.0.1"
+
+msgid ":"
+msgstr ":"
+
+msgid "<b>Advanced Extension Settings</b>"
+msgstr "<b>Pengaturan Ekstensi Lanjutan</b>"
+
+msgid "<b>Aggressive Profile Settings</b>"
+msgstr "<b>Pengaturan Profil Agresif</b>"
+
+msgid "<b>Alternative Speed Limits</b>"
+msgstr "<b>Batas Kecepatan Alternatif</b>"
+
+msgid "<b>Application Behavior</b>"
+msgstr "<b>Perilaku Aplikasi</b>"
+
+msgid "<b>Authentication</b>"
+msgstr "<b>Autentikasi</b>"
+
+msgid "<b>Balanced Profile Settings</b>"
+msgstr "<b>Pengaturan Profil Seimbang</b>"
+
+msgid "<b>Bootstrap Settings</b>"
+msgstr "<b>Pengaturan Bootstrap</b>"
+
+msgid "<b>Client Behavior Engine</b>"
+msgstr "<b>Mesin Perilaku Klien</b>"
+
+msgid "<b>Client Identification</b>"
+msgstr "<b>Identifikasi Klien</b>"
+
+msgid "<b>Configuration Management</b>"
+msgstr "<b>Manajemen Konfigurasi</b>"
+
+msgid "<b>Connection Limits</b>"
+msgstr "<b>Batas Koneksi</b>"
+
+msgid "<b>Connection Settings</b>"
+msgstr "<b>Pengaturan Koneksi</b>"
+
+msgid "<b>Conservative Profile Settings</b>"
+msgstr "<b>Pengaturan Profil Konservatif</b>"
+
+msgid "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT (Distributed Hash Table)</b>"
+
+msgid "<b>Encryption</b>"
+msgstr "<b>Enkripsi</b>"
+
+msgid "<b>Expert Settings</b>"
+msgstr "<b>Pengaturan Ahli</b>"
+
+msgid "<b>Extension Protocol (BEP-010)</b>"
+msgstr "<b>Protokol Ekstensi (BEP-010)</b>"
+
+msgid "<b>Global Speed Limits</b>"
+msgstr "<b>Batas Kecepatan Global</b>"
+
+msgid "<b>Interface</b>"
+msgstr "<b>Antarmuka</b>"
+
+msgid "<b>Keyboard Shortcuts</b>"
+msgstr "<b>Pintasan Keyboard</b>"
+
+msgid "<b>Listening Port</b>"
+msgstr "<b>Port Pendengar</b>"
+
+msgid "<b>Logging</b>"
+msgstr "<b>Pencatatan</b>"
+
+msgid "<b>Metadata Extension Settings</b>"
+msgstr "<b>Pengaturan Ekstensi Metadata</b>"
+
+msgid "<b>Network Settings</b>"
+msgstr "<b>Pengaturan Jaringan</b>"
+
+msgid "<b>Node Configuration</b>"
+msgstr "<b>Konfigurasi Node</b>"
+
+msgid "<b>Peer Behavior Settings</b>"
+msgstr "<b>Pengaturan Perilaku Peer</b>"
+
+msgid "<b>Peer Exchange (PEX) Settings</b>"
+msgstr "<b>Pengaturan Pertukaran Peer (PEX)</b>"
+
+msgid "<b>Peer Protocol Timeouts</b>"
+msgstr "<b>Batas Waktu Protokol Peer</b>"
+
+msgid "<b>Performance</b>"
+msgstr "<b>Kinerja</b>"
+
+msgid "<b>Protocol Extensions</b>"
+msgstr "<b>Ekstensi Protokol</b>"
+
+msgid "<b>Protocol Features</b>"
+msgstr "<b>Fitur Protokol</b>"
+
+msgid "<b>Proxy Settings</b>"
+msgstr "<b>Pengaturan Proxy</b>"
+
+msgid "<b>Security Options</b>"
+msgstr "<b>Opsi Keamanan</b>"
+
+msgid "<b>Seeder Protocol Settings</b>"
+msgstr "<b>Pengaturan Protokol Seeder</b>"
+
+msgid "<b>Seeding Profiles</b>"
+msgstr "<b>Profil Seeding</b>"
+
+msgid "<b>Settings Search</b>"
+msgstr "<b>Pencarian Pengaturan</b>"
+
+msgid "<b>Speed Scheduler</b>"
+msgstr "<b>Penjadwal Kecepatan</b>"
+
+msgid "<b>Statistics and Security</b>"
+msgstr "<b>Statistik dan Keamanan</b>"
+
+msgid "<b>Swarm Intelligence</b>"
+msgstr "<b>Kecerdasan Swarm</b>"
+
+msgid "<b>Timing Settings</b>"
+msgstr "<b>Pengaturan Waktu</b>"
+
+msgid "<b>Tracker Announce Settings</b>"
+msgstr "<b>Pengaturan Pengumuman Tracker</b>"
+
+msgid "<b>Traffic Pattern Settings</b>"
+msgstr "<b>Pengaturan Pola Lalu Lintas</b>"
+
+msgid "<b>Transport Protocol Settings</b>"
+msgstr "<b>Pengaturan Protokol Transportasi</b>"
+
+msgid "<b>Web Interface</b>"
+msgstr "<b>Antarmuka Web</b>"
+
+msgid "About"
+msgstr "Tentang"
+
+msgid "Active"
+msgstr "Aktif"
+
+msgid "Active Profile:"
+msgstr "Profil Aktif:"
+
+msgid "Adaptation Rate:"
+msgstr "Tingkat Adaptasi:"
+
+msgid "Add"
+msgstr "Tambah"
+
+msgid "Add torrent"
+msgstr "Tambah torrent"
+
+msgid "Added"
+msgstr "Ditambahkan"
+
+msgid "Advanced"
+msgstr "Lanjutan"
+
+msgid "Advanced settings reset to defaults"
+msgstr "Pengaturan lanjutan direset ke default"
+
+msgid "Aggressive"
+msgstr "Agresif"
+
+msgid "Aggressive profile download speed"
+msgstr "Kecepatan unduh profil agresif"
+
+msgid "Aggressive profile upload speed (0 = unlimited)"
+msgstr "Kecepatan unggah profil agresif (0 = tidak terbatas)"
+
+msgid "Alt download limit (KB/s):"
+msgstr "Batas unduh alt (KB/s):"
+
+msgid "Alt upload limit (KB/s):"
+msgstr "Batas unggah alt (KB/s):"
+
+msgid "Alternative Speed Limits"
+msgstr "Batas Kecepatan Alternatif"
+
+msgid "Alternative download speed limit in KB/s"
+msgstr "Batas kecepatan unduh alternatif dalam KB/s"
+
+msgid "Alternative upload speed limit in KB/s"
+msgstr "Batas kecepatan unggah alternatif dalam KB/s"
+
+msgid "Amount of RAM to use for disk caching"
+msgstr "Jumlah RAM untuk caching disk"
+
+msgid "Announce Interval"
+msgstr "Interval Pengumuman"
+
+msgid "Announce interval (sec):"
+msgstr "Interval pengumuman (dtk):"
+
+msgid "Announcement Interval:"
+msgstr "Interval Pengumuman:"
+
+msgid "Arabic"
+msgstr "Arab"
+
+msgid "Auto Detect"
+msgstr "Deteksi Otomatis"
+
+msgid "Auto-bootstrap DHT"
+msgstr "Bootstrap DHT otomatis"
+
+msgid "Auto-generate node ID"
+msgstr "Buat ID node otomatis"
+
+msgid "Auto-save settings"
+msgstr "Simpan pengaturan otomatis"
+
+msgid "Auto-start disabled"
+msgstr "Mulai otomatis dinonaktifkan"
+
+msgid "Auto-start enabled"
+msgstr "Mulai otomatis diaktifkan"
+
+msgid "Automatic logout after inactivity (5-1440 minutes)"
+msgstr "Logout otomatis setelah tidak aktif (5-1440 menit)"
+
+msgid "Automatically bootstrap DHT using known nodes"
+msgstr "Bootstrap DHT otomatis menggunakan node yang dikenal"
+
+msgid "Automatically configure router port forwarding using UPnP/NAT-PMP"
+msgstr "Konfigurasi port forwarding router otomatis menggunakan UPnP/NAT-PMP"
+
+msgid "Automatically generate a unique node ID"
+msgstr "Buat ID node unik otomatis"
+
+msgid "Automatically save settings when changed"
+msgstr "Simpan pengaturan otomatis saat diubah"
+
+msgid "Automatically switch to alternative speeds during specified hours"
+msgstr "Beralih ke kecepatan alternatif otomatis selama jam yang ditentukan"
+
+msgid "Availability"
+msgstr "Ketersediaan"
+
+msgid "Balanced"
+msgstr "Seimbang"
+
+msgid "Balanced profile download speed"
+msgstr "Kecepatan unduh profil seimbang"
+
+msgid "Balanced profile upload speed"
+msgstr "Kecepatan unggah profil seimbang"
+
+msgid "Behavior Variation:"
+msgstr "Variasi Perilaku:"
+
+msgid "Behavior analysis probability:"
+msgstr "Probabilitas analisis perilaku:"
+
+msgid "Behavior randomization"
+msgstr "Randomisasi perilaku"
+
+msgid "Bengali"
+msgstr "Bengali"
+
+msgid "BiglyBT"
+msgstr "BiglyBT"
+
+msgid "Bind to localhost only"
+msgstr "Bind hanya ke localhost"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "BitTorrent settings reset to defaults"
+msgstr "Pengaturan BitTorrent direset ke default"
+
+msgid "BitTorrent/7.10.5"
+msgstr "BitTorrent/7.10.5"
+
+msgid "Bootstrap Nodes (one per line, format: host:port):"
+msgstr "Node Bootstrap (satu per baris, format: host:port):"
+
+msgid "Bootstrap Timeout:"
+msgstr "Batas Waktu Bootstrap:"
+
+msgid "Bottom"
+msgstr "Bawah"
+
+msgid "Bucket Size:"
+msgstr "Ukuran Bucket:"
+
+msgid "Burst Probability:"
+msgstr "Probabilitas Burst:"
+
+msgid "CRITICAL"
+msgstr "KRITIS"
+
+msgid "Cancel"
+msgstr "Batal"
+
+msgid "Chinese"
+msgstr "Cina"
+
+msgid "Choose a pre-configured seeding profile"
+msgstr "Pilih profil seeding yang telah dikonfigurasi"
+
+msgid "Choose the application theme"
+msgstr "Pilih tema aplikasi"
+
+msgid "Choose the interface language"
+msgstr "Pilih bahasa antarmuka"
+
+msgid "Clear search"
+msgstr "Hapus pencarian"
+
+msgid "Client"
+msgstr "Klien"
+
+msgid "Client Switch Probability:"
+msgstr "Probabilitas Perpindahan Klien:"
+
+msgid "Comment"
+msgstr "Komentar"
+
+msgid "Completed"
+msgstr "Selesai"
+
+msgid "Concurrent Queries:"
+msgstr "Query Bersamaan:"
+
+msgid "Config export not yet implemented"
+msgstr "Ekspor konfigurasi belum diimplementasikan"
+
+msgid "Config import not yet implemented"
+msgstr "Impor konfigurasi belum diimplementasikan"
+
+msgid "Connected"
+msgstr "Terhubung"
+
+msgid "Connected At"
+msgstr "Terhubung Pada"
+
+msgid "Connected Peers / Total Peers"
+msgstr "Peer Terhubung / Total Peer"
+
+msgid "Connected to DFakeSeeder"
+msgstr "Terhubung ke DFakeSeeder"
+
+msgid "Connection"
+msgstr "Koneksi"
+
+msgid "Connection Status"
+msgstr "Status Koneksi"
+
+msgid "Connection Timeout:"
+msgstr "Batas Waktu Koneksi:"
+
+msgid "Connection rotation percentage:"
+msgstr "Persentase rotasi koneksi:"
+
+msgid "Connection settings reset to defaults"
+msgstr "Pengaturan koneksi direset ke default"
+
+msgid "Connection timeout for extensions (seconds)"
+msgstr "Batas waktu koneksi untuk ekstensi (detik)"
+
+msgid "Conservative"
+msgstr "Konservatif"
+
+msgid "Conservative profile download speed"
+msgstr "Kecepatan unduh profil konservatif"
+
+msgid "Conservative profile upload speed"
+msgstr "Kecepatan unggah profil konservatif"
+
+msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
+msgstr "Konservatif: Kecepatan lebih rendah, koneksi lebih sedikit, ideal untuk seeding latar belakang"
+
+msgid "Country"
+msgstr "Negara"
+
+msgid "Created"
+msgstr "Dibuat"
+
+msgid "Created By"
+msgstr "Dibuat Oleh"
+
+msgid "Ctrl+,"
+msgstr "Ctrl+,"
+
+msgid "Ctrl+F"
+msgstr "Ctrl+F"
+
+msgid "Ctrl+R"
+msgstr "Ctrl+R"
+
+msgid "Custom"
+msgstr "Kustom"
+
+msgid "Custom Agent:"
+msgstr "Agen Kustom:"
+
+msgid "Custom Node ID:"
+msgstr "ID Node Kustom:"
+
+msgid "Custom node ID (40 hex characters)"
+msgstr "ID node kustom (40 karakter heks)"
+
+msgid "Custom user agent string"
+msgstr "String user agent kustom"
+
+msgid "D' Fake Seeder"
+msgstr "D' Fake Seeder"
+
+msgid "DEBUG"
+msgstr "DEBUG"
+
+msgid "DFakeSeeder"
+msgstr "DFakeSeeder"
+
+msgid "DHT"
+msgstr "DHT"
+
+msgid "Dark"
+msgstr "Gelap"
+
+msgid "Days:"
+msgstr "Hari:"
+
+msgid "Deluge"
+msgstr "Deluge"
+
+msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
+msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
+
+msgid "Details"
+msgstr "Detail"
+
+msgid "Disabled"
+msgstr "Dinonaktifkan"
+
+msgid "Disconnected"
+msgstr "Terputus"
+
+msgid "Disconnected from DFakeSeeder"
+msgstr "Terputus dari DFakeSeeder"
+
+msgid "Disk cache size (MB):"
+msgstr "Ukuran cache disk (MB):"
+
+msgid "Down"
+msgstr "Turun"
+
+msgid "Down Speed"
+msgstr "Kecepatan Unduh"
+
+msgid "Download Rate"
+msgstr "Tingkat Unduh"
+
+msgid "Download Speed (KB/s):"
+msgstr "Kecepatan Unduh (KB/s):"
+
+msgid "Download Variance:"
+msgstr "Variansi Unduh:"
+
+msgid "Download limit (KB/s):"
+msgstr "Batas unduh (KB/s):"
+
+msgid "Download speed variance for aggressive profile"
+msgstr "Variansi kecepatan unduh untuk profil agresif"
+
+msgid "Download speed variance for balanced profile"
+msgstr "Variansi kecepatan unduh untuk profil seimbang"
+
+msgid "Download speed variance for conservative profile"
+msgstr "Variansi kecepatan unduh untuk profil konservatif"
+
+msgid "Downloaded"
+msgstr "Diunduh"
+
+msgid "Downloaded Session / Total"
+msgstr "Sesi Diunduh / Total"
+
+msgid "Downloaded Speed"
+msgstr "Kecepatan Unduh"
+
+msgid "Dropout probability:"
+msgstr "Probabilitas dropout:"
+
+msgid "Dutch"
+msgstr "Belanda"
+
+msgid "Dynamic profile switching"
+msgstr "Perpindahan profil dinamis"
+
+msgid "ERROR"
+msgstr "KESALAHAN"
+
+msgid "ETA"
+msgstr "Waktu Tersisa"
+
+msgid "Enable CSRF protection"
+msgstr "Aktifkan perlindungan CSRF"
+
+msgid "Enable Cross-Site Request Forgery protection"
+msgstr "Aktifkan perlindungan Cross-Site Request Forgery"
+
+msgid "Enable DHT"
+msgstr "Aktifkan DHT"
+
+msgid "Enable DHT (Distributed Hash Table)"
+msgstr "Aktifkan DHT (Distributed Hash Table)"
+
+msgid "Enable DHT query rate limiting"
+msgstr "Aktifkan pembatasan tingkat query DHT"
+
+msgid "Enable DHT statistics collection"
+msgstr "Aktifkan pengumpulan statistik DHT"
+
+msgid "Enable Distributed Hash Table for trackerless torrents"
+msgstr "Aktifkan Distributed Hash Table untuk torrent tanpa tracker"
+
+msgid "Enable Fast Extension (BEP-006) for improved performance"
+msgstr "Aktifkan Ekstensi Cepat (BEP-006) untuk kinerja yang lebih baik"
+
+msgid "Enable LPD (Local Peer Discovery)"
+msgstr "Aktifkan LPD (Local Peer Discovery)"
+
+msgid "Enable Local Peer Discovery for finding peers on local network"
+msgstr "Aktifkan Local Peer Discovery untuk menemukan peer di jaringan lokal"
+
+msgid "Enable Nagle algorithm"
+msgstr "Aktifkan algoritma Nagle"
+
+msgid "Enable Nagle algorithm for TCP"
+msgstr "Aktifkan algoritma Nagle untuk TCP"
+
+msgid "Enable PEX (Peer Exchange)"
+msgstr "Aktifkan PEX (Peer Exchange)"
+
+msgid "Enable Peer Exchange for discovering new peers"
+msgstr "Aktifkan Peer Exchange untuk menemukan peer baru"
+
+msgid "Enable Protocol Extensions"
+msgstr "Aktifkan Ekstensi Protokol"
+
+msgid "Enable TCP keepalive"
+msgstr "Aktifkan TCP keepalive"
+
+msgid "Enable UPnP/NAT-PMP port mapping"
+msgstr "Aktifkan pemetaan port UPnP/NAT-PMP"
+
+msgid "Enable Web UI"
+msgstr "Aktifkan UI Web"
+
+msgid "Enable alternative speed limits"
+msgstr "Aktifkan batas kecepatan alternatif"
+
+msgid "Enable alternative speed limits (useful for limiting speeds during certain hours)"
+msgstr "Aktifkan batas kecepatan alternatif (berguna untuk membatasi kecepatan selama jam tertentu)"
+
+msgid "Enable clickjacking protection"
+msgstr "Aktifkan perlindungan clickjacking"
+
+msgid "Enable client behavior simulation"
+msgstr "Aktifkan simulasi perilaku klien"
+
+msgid "Enable client behavior simulation engine"
+msgstr "Aktifkan mesin simulasi perilaku klien"
+
+msgid "Enable debug mode"
+msgstr "Aktifkan mode debug"
+
+msgid "Enable debug mode with extra logging and error details"
+msgstr "Aktifkan mode debug dengan pencatatan ekstra dan detail kesalahan"
+
+msgid "Enable dynamic client profile switching"
+msgstr "Aktifkan perpindahan profil klien dinamis"
+
+msgid "Enable lt_donthave extension for piece availability"
+msgstr "Aktifkan ekstensi lt_donthave untuk ketersediaan piece"
+
+msgid "Enable metadata extension"
+msgstr "Aktifkan ekstensi metadata"
+
+msgid "Enable metadata extension features"
+msgstr "Aktifkan fitur ekstensi metadata"
+
+msgid "Enable or disable BitTorrent protocol extensions"
+msgstr "Aktifkan atau nonaktifkan ekstensi protokol BitTorrent"
+
+msgid "Enable or disable DHT for trackerless torrent support"
+msgstr "Aktifkan atau nonaktifkan DHT untuk dukungan torrent tanpa tracker"
+
+msgid "Enable proxy authentication"
+msgstr "Aktifkan autentikasi proxy"
+
+msgid "Enable random variations in client behavior"
+msgstr "Aktifkan variasi acak dalam perilaku klien"
+
+msgid "Enable rate limiting"
+msgstr "Aktifkan pembatasan tingkat"
+
+msgid "Enable realistic traffic variations"
+msgstr "Aktifkan variasi lalu lintas realistis"
+
+msgid "Enable secure HTTP headers"
+msgstr "Aktifkan header HTTP yang aman"
+
+msgid "Enable speed scheduler"
+msgstr "Aktifkan penjadwal kecepatan"
+
+msgid "Enable statistics"
+msgstr "Aktifkan statistik"
+
+msgid "Enable swarm intelligence"
+msgstr "Aktifkan kecerdasan swarm"
+
+msgid "Enable swarm intelligence for adaptive behavior"
+msgstr "Aktifkan kecerdasan swarm untuk perilaku adaptif"
+
+msgid "Enable time-based traffic patterns (peak hours, night hours)"
+msgstr "Aktifkan pola lalu lintas berbasis waktu (jam sibuk, jam malam)"
+
+msgid "Enable ut_holepunch extension for NAT traversal"
+msgstr "Aktifkan ekstensi ut_holepunch untuk traversal NAT"
+
+msgid "Enable ut_metadata extension for metadata exchange"
+msgstr "Aktifkan ekstensi ut_metadata untuk pertukaran metadata"
+
+msgid "Enable ut_pex extension for peer exchange"
+msgstr "Aktifkan ekstensi ut_pex untuk pertukaran peer"
+
+msgid "Enable web-based remote control interface"
+msgstr "Aktifkan antarmuka kontrol jarak jauh berbasis web"
+
+msgid "Enable µTP (Micro Transport Protocol)"
+msgstr "Aktifkan µTP (Micro Transport Protocol)"
+
+msgid "Enabled"
+msgstr "Diaktifkan"
+
+msgid "Encryption:"
+msgstr "Enkripsi:"
+
+msgid "End hour (24-hour format)"
+msgstr "Jam akhir (format 24 jam)"
+
+msgid "End minute"
+msgstr "Menit akhir"
+
+msgid "English"
+msgstr "Inggris"
+
+msgid "Error"
+msgstr "Kesalahan"
+
+msgid "Error changing language"
+msgstr "Kesalahan mengubah bahasa"
+
+msgid "Export"
+msgstr "Ekspor"
+
+msgid "Export Settings"
+msgstr "Ekspor Pengaturan"
+
+msgid "Export current settings to a file"
+msgstr "Ekspor pengaturan saat ini ke file"
+
+msgid "Extension Timeout:"
+msgstr "Batas Waktu Ekstensi:"
+
+msgid "Extension statistics update interval (seconds)"
+msgstr "Interval pembaruan statistik ekstensi (detik)"
+
+msgid "Failed to apply seeding profile"
+msgstr "Gagal menerapkan profil seeding"
+
+msgid "Failure Reason"
+msgstr "Alasan Kegagalan"
+
+msgid "Fall back to TCP if µTP fails"
+msgstr "Kembali ke TCP jika µTP gagal"
+
+msgid "Fallback configuration"
+msgstr "Konfigurasi fallback"
+
+msgid "Fast Extension (BEP-006)"
+msgstr "Ekstensi Cepat (BEP-006)"
+
+msgid "File"
+msgstr "File"
+
+msgid "File Path"
+msgstr "Path File"
+
+msgid "File chooser not yet implemented"
+msgstr "Pemilih file belum diimplementasikan"
+
+msgid "Files"
+msgstr "File"
+
+msgid "Flags"
+msgstr "Flag"
+
+msgid "Follow System"
+msgstr "Ikuti Sistem"
+
+msgid "Forced"
+msgstr "Dipaksakan"
+
+msgid "French"
+msgstr "Prancis"
+
+msgid "Fri"
+msgstr "Jum"
+
+msgid "Friday"
+msgstr "Jumat"
+
+msgid "From:"
+msgstr "Dari:"
+
+msgid "General"
+msgstr "Umum"
+
+msgid "General settings reset to defaults"
+msgstr "Pengaturan umum direset ke default"
+
+msgid "General timeout for extension operations (seconds)"
+msgstr "Batas waktu umum untuk operasi ekstensi (detik)"
+
+msgid "GeneralTab"
+msgstr "GeneralTab"
+
+msgid "Generate Secure Password"
+msgstr "Buat Kata Sandi Aman"
+
+msgid "Generate a random port number"
+msgstr "Buat nomor port acak"
+
+msgid "Generate a random secure password"
+msgstr "Buat kata sandi aman acak"
+
+msgid "Generate synthetic metadata"
+msgstr "Buat metadata sintetis"
+
+msgid "Generate synthetic metadata for simulation"
+msgstr "Buat metadata sintetis untuk simulasi"
+
+msgid "Generate synthetic peer data for PEX"
+msgstr "Buat data peer sintetis untuk PEX"
+
+msgid "Generate synthetic peers"
+msgstr "Buat peer sintetis"
+
+msgid "German"
+msgstr "Jerman"
+
+msgid "Github - D' Fake Seeder"
+msgstr "Github - D' Fake Seeder"
+
+msgid "Global download speed limit in KB/s (0 = unlimited)"
+msgstr "Batas kecepatan unduh global dalam KB/s (0 = tidak terbatas)"
+
+msgid "Global upload speed limit in KB/s (0 = unlimited)"
+msgstr "Batas kecepatan unggah global dalam KB/s (0 = tidak terbatas)"
+
+msgid "HTTP"
+msgstr "HTTP"
+
+msgid "HTTP seeder timeout (seconds):"
+msgstr "Batas waktu seeder HTTP (detik):"
+
+msgid "Handshake"
+msgstr "Jabat Tangan"
+
+msgid "Handshake timeout (seconds):"
+msgstr "Batas waktu jabat tangan (detik):"
+
+msgid "Hide Main Window"
+msgstr "Sembunyikan Jendela Utama"
+
+msgid "Hide to system tray when window is minimized"
+msgstr "Sembunyikan ke system tray saat jendela diminimalkan"
+
+msgid "Hindi"
+msgstr "Hindi"
+
+msgid "How often to announce to trackers (60-7200 seconds)"
+msgstr "Seberapa sering mengumumkan ke tracker (60-7200 detik)"
+
+msgid "How often to scrape tracker for swarm statistics"
+msgstr "Seberapa sering scrape tracker untuk statistik swarm"
+
+msgid "How often to update the user interface"
+msgstr "Seberapa sering memperbarui antarmuka pengguna"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "INFO"
+msgstr "INFO"
+
+msgid "IP Address"
+msgstr "Alamat IP"
+
+msgid "IP address to bind to (0.0.0.0 for all interfaces)"
+msgstr "Alamat IP untuk bind (0.0.0.0 untuk semua antarmuka)"
+
+msgid "Idle Probability:"
+msgstr "Probabilitas Idle:"
+
+msgid "Import"
+msgstr "Impor"
+
+msgid "Import Settings"
+msgstr "Impor Pengaturan"
+
+msgid "Import settings from a file"
+msgstr "Impor pengaturan dari file"
+
+msgid "Inactive"
+msgstr "Tidak Aktif"
+
+msgid "Incoming"
+msgstr "Masuk"
+
+msgid "Incoming Connections"
+msgstr "Koneksi Masuk"
+
+msgid "Incoming Peer Connections"
+msgstr "Koneksi Peer Masuk"
+
+msgid "Indonesian"
+msgstr "Indonesia"
+
+msgid "Interested"
+msgstr "Tertarik"
+
+msgid "Interval between DHT announcements (seconds)"
+msgstr "Interval antara pengumuman DHT (detik)"
+
+msgid "Interval between PEX message exchanges (seconds)"
+msgstr "Interval antara pertukaran pesan PEX (detik)"
+
+msgid "Interval for DHT statistics updates (seconds)"
+msgstr "Interval untuk pembaruan statistik DHT (detik)"
+
+msgid "Interval for contacting peers in seconds"
+msgstr "Interval untuk menghubungi peer dalam detik"
+
+msgid "Interval for sending keep alive messages in seconds"
+msgstr "Interval untuk mengirim pesan keep alive dalam detik"
+
+msgid "Irish"
+msgstr "Irlandia"
+
+msgid "Italian"
+msgstr "Italia"
+
+msgid "Japanese"
+msgstr "Jepang"
+
+msgid "Keep Alive Interval:"
+msgstr "Interval Keep Alive:"
+
+msgid "Keep alive interval (seconds):"
+msgstr "Interval keep alive (detik):"
+
+msgid "Keep alive interval for connections (seconds)"
+msgstr "Interval keep alive untuk koneksi (detik)"
+
+msgid "Korean"
+msgstr "Korea"
+
+msgid "Label"
+msgstr "Label"
+
+msgid "Language"
+msgstr "Bahasa"
+
+msgid "Language switched to"
+msgstr "Bahasa diubah ke"
+
+msgid "Language:"
+msgstr "Bahasa:"
+
+msgid "Last Announce"
+msgstr "Pengumuman Terakhir"
+
+msgid "Last Notification"
+msgstr "Notifikasi Terakhir"
+
+msgid "Launch Main Application"
+msgstr "Luncurkan Aplikasi Utama"
+
+msgid "Leechers"
+msgstr "Leecher"
+
+msgid "Level of BitTorrent protocol compliance"
+msgstr "Tingkat kepatuhan protokol BitTorrent"
+
+msgid "Light"
+msgstr "Terang"
+
+msgid "Limit extension message rate"
+msgstr "Batasi tingkat pesan ekstensi"
+
+msgid "List of bootstrap nodes for DHT initialization"
+msgstr "Daftar node bootstrap untuk inisialisasi DHT"
+
+msgid "Log"
+msgstr "Log"
+
+msgid "Log Level:"
+msgstr "Tingkat Log:"
+
+msgid "Log to file"
+msgstr "Log ke file"
+
+msgid "Max Connections:"
+msgstr "Koneksi Maks:"
+
+msgid "Max Dropped Peers:"
+msgstr "Peer Terputus Maks:"
+
+msgid "Max Message Size:"
+msgstr "Ukuran Pesan Maks:"
+
+msgid "Max Messages/Second:"
+msgstr "Pesan Maks/Detik:"
+
+msgid "Max Nodes:"
+msgstr "Node Maks:"
+
+msgid "Max Peers/Message:"
+msgstr "Peer Maks/Pesan:"
+
+msgid "Max Queries/Second:"
+msgstr "Query Maks/Detik:"
+
+msgid "Max global connections:"
+msgstr "Koneksi global maks:"
+
+msgid "Max log file size (MB):"
+msgstr "Ukuran file log maks (MB):"
+
+msgid "Max per torrent:"
+msgstr "Maks per torrent:"
+
+msgid "Max upload slots:"
+msgstr "Slot unggah maks:"
+
+msgid "Maximum DHT queries per second"
+msgstr "Query DHT maksimum per detik"
+
+msgid "Maximum connections for aggressive profile"
+msgstr "Koneksi maksimum untuk profil agresif"
+
+msgid "Maximum connections for balanced profile"
+msgstr "Koneksi maksimum untuk profil seimbang"
+
+msgid "Maximum connections for conservative profile"
+msgstr "Koneksi maksimum untuk profil konservatif"
+
+msgid "Maximum dropped peers to track for PEX"
+msgstr "Peer terputus maksimum untuk dilacak untuk PEX"
+
+msgid "Maximum extension messages per second"
+msgstr "Pesan ekstensi maksimum per detik"
+
+msgid "Maximum number of DHT nodes to maintain"
+msgstr "Jumlah maksimum node DHT untuk dipelihara"
+
+msgid "Maximum number of concurrent DHT queries"
+msgstr "Jumlah maksimum query DHT bersamaan"
+
+msgid "Maximum number of connections per individual torrent"
+msgstr "Jumlah maksimum koneksi per torrent individual"
+
+msgid "Maximum number of connections to all torrents"
+msgstr "Jumlah maksimum koneksi ke semua torrent"
+
+msgid "Maximum number of nodes in the routing table"
+msgstr "Jumlah maksimum node dalam tabel routing"
+
+msgid "Maximum number of nodes per bucket"
+msgstr "Jumlah maksimum node per bucket"
+
+msgid "Maximum number of simultaneous upload slots"
+msgstr "Jumlah maksimum slot unggah bersamaan"
+
+msgid "Maximum peers to include in a PEX message"
+msgstr "Peer maksimum untuk disertakan dalam pesan PEX"
+
+msgid "Maximum port for seeder connections"
+msgstr "Port maksimum untuk koneksi seeder"
+
+msgid "Maximum size for extension messages (bytes)"
+msgstr "Ukuran maksimum untuk pesan ekstensi (byte)"
+
+msgid "Maximum size of log file before rotation"
+msgstr "Ukuran maksimum file log sebelum rotasi"
+
+msgid "Maximum transaction ID for tracker communication"
+msgstr "ID transaksi maksimum untuk komunikasi tracker"
+
+msgid "Message"
+msgstr "Pesan"
+
+msgid "Message read timeout (seconds):"
+msgstr "Batas waktu baca pesan (detik):"
+
+msgid "Metadata Piece Size:"
+msgstr "Ukuran Piece Metadata:"
+
+msgid "Metadata Timeout:"
+msgstr "Batas Waktu Metadata:"
+
+msgid "Min announce interval (sec):"
+msgstr "Interval pengumuman min (dtk):"
+
+msgid "Minimize to system tray"
+msgstr "Minimalkan ke system tray"
+
+msgid "Minimum log level to record"
+msgstr "Tingkat log minimum untuk direkam"
+
+msgid "Minimum port for seeder connections"
+msgstr "Port minimum untuk koneksi seeder"
+
+msgid "Minimum time between announces (10-3600 seconds)"
+msgstr "Waktu minimum antara pengumuman (10-3600 detik)"
+
+msgid "Minimum transaction ID for tracker communication"
+msgstr "ID transaksi minimum untuk komunikasi tracker"
+
+msgid "Mon"
+msgstr "Sen"
+
+msgid "Monday"
+msgstr "Senin"
+
+msgid "My IP address"
+msgstr "Alamat IP saya"
+
+msgid "N/A"
+msgstr "T/A"
+
+msgid "Name"
+msgstr "Nama"
+
+msgid "Network interface:"
+msgstr "Antarmuka jaringan:"
+
+msgid "Next Announce"
+msgstr "Pengumuman Berikutnya"
+
+msgid "Next Update"
+msgstr "Pembaruan Berikutnya"
+
+msgid "No editable options available for this torrent."
+msgstr "Tidak ada opsi yang dapat diedit untuk torrent ini."
+
+msgid "None"
+msgstr "Tidak Ada"
+
+msgid "Number of peers to analyze for behavior patterns"
+msgstr "Jumlah peer untuk dianalisis pola perilaku"
+
+msgid "Number of peers to request from tracker"
+msgstr "Jumlah peer untuk diminta dari tracker"
+
+msgid "Number of synthetic peers to generate"
+msgstr "Jumlah peer sintetis untuk dibuat"
+
+msgid "Only allow connections from localhost (more secure)"
+msgstr "Hanya izinkan koneksi dari localhost (lebih aman)"
+
+msgid "Open preferences"
+msgstr "Buka preferensi"
+
+msgid "Options"
+msgstr "Opsi"
+
+msgid "Outgoing"
+msgstr "Keluar"
+
+msgid "Outgoing Connections"
+msgstr "Koneksi Keluar"
+
+msgid "Outgoing Peer Connections"
+msgstr "Koneksi Peer Keluar"
+
+msgid "Overlay Notification"
+msgstr "Notifikasi Overlay"
+
+msgid "PEX Interval:"
+msgstr "Interval PEX:"
+
+msgid "Password for web interface login"
+msgstr "Kata sandi untuk login antarmuka web"
+
+msgid "Password:"
+msgstr "Kata Sandi:"
+
+msgid "Path"
+msgstr "Path"
+
+msgid "Pause"
+msgstr "Jeda"
+
+msgid "Pause All Torrents"
+msgstr "Jeda Semua Torrent"
+
+msgid "Pause torrent"
+msgstr "Jeda torrent"
+
+msgid "Peer Analysis Depth:"
+msgstr "Kedalaman Analisis Peer:"
+
+msgid "Peer Choking"
+msgstr "Peer Choking"
+
+msgid "Peer ID"
+msgstr "ID Peer"
+
+msgid "Peer ID Prefix:"
+msgstr "Prefiks ID Peer:"
+
+msgid "Peer ID prefix to identify client type"
+msgstr "Prefiks ID peer untuk mengidentifikasi tipe klien"
+
+msgid "Peer Protocol"
+msgstr "Protokol Peer"
+
+msgid "Peer Protocol settings reset to defaults"
+msgstr "Pengaturan Protokol Peer direset ke default"
+
+msgid "Peer contact interval (seconds):"
+msgstr "Interval kontak peer (detik):"
+
+msgid "Peer idle chance:"
+msgstr "Kemungkinan peer idle:"
+
+msgid "Peer request count:"
+msgstr "Jumlah permintaan peer:"
+
+msgid "Peers"
+msgstr "Peer"
+
+msgid "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr "Persentase koneksi untuk dirotasi (0.0 - 1.0)"
+
+msgid "Persian"
+msgstr "Persia"
+
+msgid "Piece Length"
+msgstr "Panjang Piece"
+
+msgid "Pieces"
+msgstr "Piece"
+
+msgid "Pieces Received"
+msgstr "Piece Diterima"
+
+msgid "Polish"
+msgstr "Polandia"
+
+msgid "Port"
+msgstr "Port"
+
+msgid "Port for incoming BitTorrent connections (1024-65535)"
+msgstr "Port untuk koneksi BitTorrent masuk (1024-65535)"
+
+msgid "Port for web interface (1024-65535)"
+msgstr "Port untuk antarmuka web (1024-65535)"
+
+msgid "Port:"
+msgstr "Port:"
+
+msgid "Portuguese"
+msgstr "Portugis"
+
+msgid "Preference 1:"
+msgstr "Preferensi 1:"
+
+msgid "Preference 2:"
+msgstr "Preferensi 2:"
+
+msgid "Preferences"
+msgstr "Preferensi"
+
+msgid "Prevent embedding in frames (X-Frame-Options)"
+msgstr "Cegah penyematan dalam frame (X-Frame-Options)"
+
+msgid "Primary BitTorrent client to simulate"
+msgstr "Klien BitTorrent utama untuk disimulasikan"
+
+msgid "Primary Client:"
+msgstr "Klien Utama:"
+
+msgid "Priority"
+msgstr "Prioritas"
+
+msgid "Priority Down"
+msgstr "Prioritas Turun"
+
+msgid "Priority Up"
+msgstr "Prioritas Naik"
+
+msgid "Private"
+msgstr "Pribadi"
+
+msgid "Probability of idle periods for aggressive profile"
+msgstr "Probabilitas periode idle untuk profil agresif"
+
+msgid "Probability of idle periods for balanced profile"
+msgstr "Probabilitas periode idle untuk profil seimbang"
+
+msgid "Probability of idle periods for conservative profile"
+msgstr "Probabilitas periode idle untuk profil konservatif"
+
+msgid "Probability of peer behavior analysis (0.0 - 1.0)"
+msgstr "Probabilitas analisis perilaku peer (0.0 - 1.0)"
+
+msgid "Probability of peer being idle (0.0 - 1.0)"
+msgstr "Probabilitas peer idle (0.0 - 1.0)"
+
+msgid "Probability of peer dropping out (0.0 - 1.0)"
+msgstr "Probabilitas peer keluar (0.0 - 1.0)"
+
+msgid "Probability of peer status changes (0.0 - 1.0)"
+msgstr "Probabilitas perubahan status peer (0.0 - 1.0)"
+
+msgid "Probability of seeder upload activity (0.0 - 1.0)"
+msgstr "Probabilitas aktivitas unggah seeder (0.0 - 1.0)"
+
+msgid "Probability of switching to a different client behavior"
+msgstr "Probabilitas beralih ke perilaku klien berbeda"
+
+msgid "Probability of traffic bursts for aggressive profile"
+msgstr "Probabilitas burst lalu lintas untuk profil agresif"
+
+msgid "Probability of traffic bursts for balanced profile"
+msgstr "Probabilitas burst lalu lintas untuk profil seimbang"
+
+msgid "Probability of traffic bursts for conservative profile"
+msgstr "Probabilitas burst lalu lintas untuk profil konservatif"
+
+msgid "Progress"
+msgstr "Progres"
+
+msgid "Progress distribution (almost):"
+msgstr "Distribusi progres (hampir):"
+
+msgid "Progress distribution (middle):"
+msgstr "Distribusi progres (tengah):"
+
+msgid "Progress distribution (start):"
+msgstr "Distribusi progres (mulai):"
+
+msgid "Progress distribution for almost complete peers (0.0 - 1.0)"
+msgstr "Distribusi progres untuk peer hampir selesai (0.0 - 1.0)"
+
+msgid "Progress distribution for middle progress peers (0.0 - 1.0)"
+msgstr "Distribusi progres untuk peer progres tengah (0.0 - 1.0)"
+
+msgid "Progress distribution for starting peers (0.0 - 1.0)"
+msgstr "Distribusi progres untuk peer yang memulai (0.0 - 1.0)"
+
+msgid "Protocol Compliance:"
+msgstr "Kepatuhan Protokol:"
+
+msgid "Protocol Extensions"
+msgstr "Ekstensi Protokol"
+
+msgid "Protocol encryption mode for peer communications"
+msgstr "Mode enkripsi protokol untuk komunikasi peer"
+
+msgid "Proxy authentication password"
+msgstr "Kata sandi autentikasi proxy"
+
+msgid "Proxy authentication username"
+msgstr "Nama pengguna autentikasi proxy"
+
+msgid "Proxy server hostname or IP address"
+msgstr "Hostname atau alamat IP server proxy"
+
+msgid "Proxy server port number"
+msgstr "Nomor port server proxy"
+
+msgid "Query Timeout:"
+msgstr "Batas Waktu Query:"
+
+msgid "Queue"
+msgstr "Antrian"
+
+msgid "Quit"
+msgstr "Keluar"
+
+msgid "Quit DFakeSeeder"
+msgstr "Keluar DFakeSeeder"
+
+msgid "Random"
+msgstr "Acak"
+
+msgid "Rate of adaptation to swarm behavior"
+msgstr "Tingkat adaptasi terhadap perilaku swarm"
+
+msgid "Ratio"
+msgstr "Rasio"
+
+msgid "Realistic variations"
+msgstr "Variasi realistis"
+
+msgid "Received"
+msgstr "Diterima"
+
+msgid "Relaxed"
+msgstr "Santai"
+
+msgid "Remember window size and position"
+msgstr "Ingat ukuran dan posisi jendela"
+
+msgid "Remember window size and position between sessions"
+msgstr "Ingat ukuran dan posisi jendela antar sesi"
+
+msgid "Remove torrent"
+msgstr "Hapus torrent"
+
+msgid "Requests"
+msgstr "Permintaan"
+
+msgid "Require authentication"
+msgstr "Memerlukan autentikasi"
+
+msgid "Require username and password for web access"
+msgstr "Memerlukan nama pengguna dan kata sandi untuk akses web"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Reset all settings not yet implemented"
+msgstr "Reset semua pengaturan belum diimplementasikan"
+
+msgid "Reset all settings to default values"
+msgstr "Reset semua pengaturan ke nilai default"
+
+msgid "Reset to Defaults"
+msgstr "Reset ke Default"
+
+msgid "Reset to defaults"
+msgstr "Reset ke default"
+
+msgid "Resume"
+msgstr "Lanjutkan"
+
+msgid "Resume All Torrents"
+msgstr "Lanjutkan Semua Torrent"
+
+msgid "Resume torrent"
+msgstr "Lanjutkan torrent"
+
+msgid "Routing Table Size:"
+msgstr "Ukuran Tabel Routing:"
+
+msgid "Russian"
+msgstr "Rusia"
+
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+msgid "Sat"
+msgstr "Sab"
+
+msgid "Saturday"
+msgstr "Sabtu"
+
+msgid "Save logs to file in addition to console"
+msgstr "Simpan log ke file selain ke konsol"
+
+msgid "Scrape interval (sec):"
+msgstr "Interval scrape (dtk):"
+
+msgid "Search by torrent name or file path"
+msgstr "Cari berdasarkan nama torrent atau path file"
+
+msgid "Search for settings across all tabs"
+msgstr "Cari pengaturan di semua tab"
+
+msgid "Search for torrent"
+msgstr "Cari torrent"
+
+msgid "Search settings"
+msgstr "Cari pengaturan"
+
+msgid "Secure password generated"
+msgstr "Kata sandi aman dibuat"
+
+msgid "Seeder port range (max):"
+msgstr "Rentang port seeder (maks):"
+
+msgid "Seeder port range (min):"
+msgstr "Rentang port seeder (min):"
+
+msgid "Seeders"
+msgstr "Seeder"
+
+msgid "Seeding Profile"
+msgstr "Profil Seeding"
+
+msgid "Seeds"
+msgstr "Seed"
+
+msgid "Select proxy type for connections"
+msgstr "Pilih tipe proxy untuk koneksi"
+
+msgid "Select torrent"
+msgstr "Pilih torrent"
+
+msgid "Send security-related HTTP headers"
+msgstr "Kirim header HTTP terkait keamanan"
+
+msgid "Sent"
+msgstr "Dikirim"
+
+msgid "Server:"
+msgstr "Server:"
+
+msgid "Session Downloaded"
+msgstr "Sesi Diunduh"
+
+msgid "Session Uploaded"
+msgstr "Sesi Diunggah"
+
+msgid "Session timeout (min):"
+msgstr "Batas waktu sesi (mnt):"
+
+msgid "Shortcuts configuration not yet implemented"
+msgstr "Konfigurasi pintasan belum diimplementasikan"
+
+msgid "Show Main Window"
+msgstr "Tampilkan Jendela Utama"
+
+msgid "Show only selected torrent connections"
+msgstr "Tampilkan hanya koneksi torrent yang dipilih"
+
+msgid "Simulation"
+msgstr "Simulasi"
+
+msgid "Size"
+msgstr "Ukuran"
+
+msgid "Size of metadata pieces in bytes"
+msgstr "Ukuran piece metadata dalam byte"
+
+msgid "Small Torrent Limit"
+msgstr "Batas Torrent Kecil"
+
+msgid "Spanish"
+msgstr "Spanyol"
+
+msgid "Speed"
+msgstr "Kecepatan"
+
+msgid "Speed Control"
+msgstr "Kontrol Kecepatan"
+
+msgid "Speed settings reset to defaults"
+msgstr "Pengaturan kecepatan direset ke default"
+
+msgid "Standard"
+msgstr "Standar"
+
+msgid "Start DFakeSeeder automatically when the system boots"
+msgstr "Mulai DFakeSeeder otomatis saat sistem boot"
+
+msgid "Start hour (24-hour format)"
+msgstr "Jam mulai (format 24 jam)"
+
+msgid "Start minimized"
+msgstr "Mulai diminimalkan"
+
+msgid "Start minimized disabled"
+msgstr "Mulai diminimalkan dinonaktifkan"
+
+msgid "Start minimized enabled"
+msgstr "Mulai diminimalkan diaktifkan"
+
+msgid "Start minute"
+msgstr "Menit mulai"
+
+msgid "Start on system startup"
+msgstr "Mulai saat sistem startup"
+
+msgid "Start the application minimized to system tray"
+msgstr "Mulai aplikasi diminimalkan ke system tray"
+
+msgid "Stats Update Interval:"
+msgstr "Interval Pembaruan Statistik:"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Status change probability:"
+msgstr "Probabilitas perubahan status:"
+
+msgid "Strict"
+msgstr "Ketat"
+
+msgid "Sun"
+msgstr "Min"
+
+msgid "Sunday"
+msgstr "Minggu"
+
+msgid "Swedish"
+msgstr "Swedia"
+
+msgid "Synthetic Peer Count:"
+msgstr "Jumlah Peer Sintetis:"
+
+msgid "TCP fallback"
+msgstr "Fallback TCP"
+
+msgid "TCP keepalive"
+msgstr "TCP keepalive"
+
+msgid "Theme:"
+msgstr "Tema:"
+
+msgid "Threshold"
+msgstr "Ambang Batas"
+
+msgid "Thu"
+msgstr "Kam"
+
+msgid "Thursday"
+msgstr "Kamis"
+
+msgid "Tier"
+msgstr "Tingkat"
+
+msgid "Time-based patterns"
+msgstr "Pola berbasis waktu"
+
+msgid "Timeout for DHT bootstrap operations (seconds)"
+msgstr "Batas waktu untuk operasi bootstrap DHT (detik)"
+
+msgid "Timeout for DHT queries (seconds)"
+msgstr "Batas waktu untuk query DHT (detik)"
+
+msgid "Timeout for HTTP seeder connections in seconds"
+msgstr "Batas waktu untuk koneksi seeder HTTP dalam detik"
+
+msgid "Timeout for UDP seeder connections in seconds"
+msgstr "Batas waktu untuk koneksi seeder UDP dalam detik"
+
+msgid "Timeout for metadata requests (seconds)"
+msgstr "Batas waktu untuk permintaan metadata (detik)"
+
+msgid "Timeout for peer handshake in seconds"
+msgstr "Batas waktu untuk jabat tangan peer dalam detik"
+
+msgid "Timeout for reading peer messages in seconds"
+msgstr "Batas waktu untuk membaca pesan peer dalam detik"
+
+msgid "To:"
+msgstr "Ke:"
+
+msgid "Top"
+msgstr "Atas"
+
+msgid "Torrent"
+msgstr "Torrent"
+
+msgid "Torrent Files"
+msgstr "File Torrent"
+
+msgid "Torrents"
+msgstr "Torrent"
+
+msgid "Total Downloaded"
+msgstr "Total Diunduh"
+
+msgid "Total Size"
+msgstr "Ukuran Total"
+
+msgid "Total Uploaded"
+msgstr "Total Diunggah"
+
+msgid "Track extension statistics"
+msgstr "Lacak statistik ekstensi"
+
+msgid "Track extension usage statistics"
+msgstr "Lacak statistik penggunaan ekstensi"
+
+msgid "Tracker"
+msgstr "Tracker"
+
+msgid "Tracker URL"
+msgstr "URL Tracker"
+
+msgid "Trackers"
+msgstr "Tracker"
+
+msgid "Traffic Profile:"
+msgstr "Profil Lalu Lintas:"
+
+msgid "Traffic pattern profile for simulation"
+msgstr "Profil pola lalu lintas untuk simulasi"
+
+msgid "Transaction ID range (max):"
+msgstr "Rentang ID transaksi (maks):"
+
+msgid "Transaction ID range (min):"
+msgstr "Rentang ID transaksi (min):"
+
+msgid "TranslationManager"
+msgstr "TranslationManager"
+
+msgid "TranslationManagerGTK3"
+msgstr "TranslationManagerGTK3"
+
+msgid "TranslationManagerGTK4"
+msgstr "TranslationManagerGTK4"
+
+msgid "Transmission"
+msgstr "Transmission"
+
+msgid "Transmission/3.00"
+msgstr "Transmission/3.00"
+
+msgid "Tue"
+msgstr "Sel"
+
+msgid "Tuesday"
+msgstr "Selasa"
+
+msgid "Turkish"
+msgstr "Turki"
+
+msgid "Type"
+msgstr "Tipe"
+
+msgid "Type:"
+msgstr "Tipe:"
+
+msgid "UDP seeder timeout (seconds):"
+msgstr "Batas waktu seeder UDP (detik):"
+
+msgid "UI Refresh Rate"
+msgstr "Tingkat Penyegaran UI"
+
+msgid "UI refresh rate (sec):"
+msgstr "Tingkat penyegaran UI (dtk):"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "URL: http://localhost:8080"
+msgstr "URL: http://localhost:8080"
+
+msgid "Unknown"
+msgstr "Tidak Dikenal"
+
+msgid "Up"
+msgstr "Naik"
+
+msgid "Up Speed"
+msgstr "Kecepatan Unggah"
+
+msgid "Update Tracker"
+msgstr "Perbarui Tracker"
+
+msgid "Upload Speed"
+msgstr "Kecepatan Unggah"
+
+msgid "Upload Speed (KB/s):"
+msgstr "Kecepatan Unggah (KB/s):"
+
+msgid "Upload Variance:"
+msgstr "Variansi Unggah:"
+
+msgid "Upload activity probability:"
+msgstr "Probabilitas aktivitas unggah:"
+
+msgid "Upload limit (KB/s):"
+msgstr "Batas unggah (KB/s):"
+
+msgid "Upload speed variance for aggressive profile"
+msgstr "Variansi kecepatan unggah untuk profil agresif"
+
+msgid "Upload speed variance for balanced profile"
+msgstr "Variansi kecepatan unggah untuk profil seimbang"
+
+msgid "Upload speed variance for conservative profile"
+msgstr "Variansi kecepatan unggah untuk profil konservatif"
+
+msgid "Uploaded"
+msgstr "Diunggah"
+
+msgid "Uploaded Session / Total"
+msgstr "Sesi Diunggah / Total"
+
+msgid "Uploading"
+msgstr "Mengunggah"
+
+msgid "Use HTTPS (SSL/TLS)"
+msgstr "Gunakan HTTPS (SSL/TLS)"
+
+msgid "Use HTTPS for secure connections (requires SSL certificate)"
+msgstr "Gunakan HTTPS untuk koneksi aman (memerlukan sertifikat SSL)"
+
+msgid "Use authentication"
+msgstr "Gunakan autentikasi"
+
+msgid "User Agent:"
+msgstr "User Agent:"
+
+msgid "User agent string to identify the client to trackers"
+msgstr "String user agent untuk mengidentifikasi klien ke tracker"
+
+msgid "Username for web interface login"
+msgstr "Nama pengguna untuk login antarmuka web"
+
+msgid "Username:"
+msgstr "Nama Pengguna:"
+
+msgid "Validate DHT security tokens"
+msgstr "Validasi token keamanan DHT"
+
+msgid "Validate extension messages"
+msgstr "Validasi pesan ekstensi"
+
+msgid "Validate extension messages for security"
+msgstr "Validasi pesan ekstensi untuk keamanan"
+
+msgid "Validate security tokens"
+msgstr "Validasi token keamanan"
+
+msgid "Validate setting values and show warnings for invalid combinations"
+msgstr "Validasi nilai pengaturan dan tampilkan peringatan untuk kombinasi yang tidak valid"
+
+msgid "Validate settings on change"
+msgstr "Validasi pengaturan saat diubah"
+
+msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr "Variasi dalam perilaku klien (0.0 = tanpa variasi, 1.0 = variasi maksimum)"
+
+msgid "Vietnamese"
+msgstr "Vietnam"
+
+msgid "Vuze"
+msgstr "Vuze"
+
+msgid "Vuze/5.7.6.0"
+msgstr "Vuze/5.7.6.0"
+
+msgid "WARNING"
+msgstr "PERINGATAN"
+
+msgid "Web UI"
+msgstr "UI Web"
+
+msgid "Web UI settings reset to defaults"
+msgstr "Pengaturan UI Web direset ke default"
+
+msgid "Wed"
+msgstr "Rab"
+
+msgid "Wednesday"
+msgstr "Rabu"
+
+msgid "active"
+msgstr "Aktif"
+
+msgid "address"
+msgstr "Alamat"
+
+msgid "admin"
+msgstr "admin"
+
+msgid "am_choking"
+msgstr "Saya Choking"
+
+msgid "am_interested"
+msgstr "Saya Tertarik"
+
+msgid "announce_interval"
+msgstr "Interval Pengumuman"
+
+msgid "bytes"
+msgstr "byte"
+
+msgid "bytes_downloaded"
+msgstr "Byte Diunduh"
+
+msgid "bytes_uploaded"
+msgstr "Byte Diunggah"
+
+msgid "class_name"
+msgstr "Nama Kelas"
+
+msgid "client"
+msgstr "Klien"
+
+msgid "connection_time"
+msgstr "Waktu Koneksi"
+
+msgid "download_rate"
+msgstr "Tingkat Unduh"
+
+msgid "download_speed"
+msgstr "Kecepatan Unduh"
+
+msgid "failure_reason"
+msgstr "Alasan Kegagalan"
+
+msgid "filepath"
+msgstr "Path File"
+
+msgid "files_tab"
+msgstr "File"
+
+msgid "handshake_complete"
+msgstr "Jabat Tangan Selesai"
+
+msgid "id"
+msgstr "#"
+
+msgid "leechers"
+msgstr "Leecher"
+
+msgid "log_tab"
+msgstr "Log"
+
+msgid "lt_donthave (Piece Availability)"
+msgstr "lt_donthave (Ketersediaan Piece)"
+
+msgid "name"
+msgstr "Nama"
+
+msgid "next_update"
+msgstr "Pembaruan Berikutnya"
+
+msgid "open-menu-symbolic"
+msgstr "open-menu-symbolic"
+
+msgid "options_tab"
+msgstr "Opsi"
+
+msgid "peer_choking"
+msgstr "Peer Choking"
+
+msgid "peer_interested"
+msgstr "Peer Tertarik"
+
+msgid "peers_tab"
+msgstr "Peer"
+
+msgid "pieces_received"
+msgstr "Piece Diterima"
+
+msgid "pieces_sent"
+msgstr "Piece Dikirim"
+
+msgid "progress"
+msgstr "Progres"
+
+msgid "qBittorrent"
+msgstr "qBittorrent"
+
+msgid "qBittorrent/4.3.1"
+msgstr "qBittorrent/4.3.1"
+
+msgid "rTorrent"
+msgstr "rTorrent"
+
+msgid "rTorrent/0.9.6"
+msgstr "rTorrent/0.9.6"
+
+msgid "requests_received"
+msgstr "Permintaan Diterima"
+
+msgid "requests_sent"
+msgstr "Permintaan Dikirim"
+
+msgid "seconds"
+msgstr "detik"
+
+msgid "seeders"
+msgstr "Seed"
+
+msgid "session_downloaded"
+msgstr "Sesi Diunduh"
+
+msgid "session_uploaded"
+msgstr "Sesi Diunggah"
+
+msgid "small_torrent_limit"
+msgstr "Batas Torrent Kecil"
+
+msgid "status"
+msgstr "Status"
+
+msgid "threshold"
+msgstr "Ambang Batas"
+
+msgid "total_downloaded"
+msgstr "Total Diunduh"
+
+msgid "total_size"
+msgstr "Ukuran Total"
+
+msgid "total_uploaded"
+msgstr "Total Diunggah"
+
+msgid "trackers_tab"
+msgstr "Tracker"
+
+msgid "uTorrent/3.5.5"
+msgstr "uTorrent/3.5.5"
+
+msgid "upload_rate"
+msgstr "Tingkat Unggah"
+
+msgid "upload_speed"
+msgstr "Kecepatan Unggah"
+
+msgid "uploading"
+msgstr "Mengunggah"
+
+msgid "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch (Traversal NAT)"
+
+msgid "ut_metadata (Metadata Exchange)"
+msgstr "ut_metadata (Pertukaran Metadata)"
+
+msgid "ut_pex (Peer Exchange)"
+msgstr "ut_pex (Pertukaran Peer)"
+
+msgid "µTorrent"
+msgstr "µTorrent"
+
+msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
+msgstr "⚠️ Pengaturan lanjutan - ubah dengan hati-hati. Nilai yang salah dapat memengaruhi kinerja atau stabilitas."
+
+msgid "⚠️ Web UI allows remote control of the application. Use strong authentication."
+msgstr "⚠️ UI Web memungkinkan kontrol jarak jauh aplikasi. Gunakan autentikasi yang kuat."
+
