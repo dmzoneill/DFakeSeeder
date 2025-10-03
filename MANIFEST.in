@@ -12,6 +12,7 @@ recursive-include d_fake_seeder/domain/config *
 
 # Include desktop files
 include d_fake_seeder/*.desktop
+include d_fake_seeder/*.desktop.template
 
 # Exclude Python bytecode and cache
 global-exclude __pycache__

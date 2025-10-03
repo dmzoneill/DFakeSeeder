@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=D' Fake Seeder
+Comment=BitTorrent seeding simulator for testing and development
+Exec=dfs
+Icon=dfakeseeder
+StartupWMClass=ie.fio.dfakeseeder
+StartupNotify=true
+Terminal=false
+Categories=Network;P2P;Utility;
+Keywords=torrent;seeder;bittorrent;p2p;
