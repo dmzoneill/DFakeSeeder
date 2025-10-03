@@ -45,6 +45,14 @@ class DBusUnifier:
                 <arg type="b" name="success" direction="out"/>
             </method>
 
+            <!-- UI control methods -->
+            <method name="ShowPreferences">
+                <arg type="b" name="success" direction="out"/>
+            </method>
+            <method name="ShowAbout">
+                <arg type="b" name="success" direction="out"/>
+            </method>
+
             <!-- Health monitoring methods -->
             <method name="Ping">
                 <arg type="b" name="alive" direction="out"/>
@@ -140,9 +148,7 @@ class DBusUnifier:
         """Handle incoming D-Bus method calls"""
         try:
             self._message_count += 1
-            # Use INFO level to ensure we see this log
-            logger.info(f"🔔 D-Bus method call received: {method_name}", extra={"class_name": self.__class__.__name__})
-            print(f"DEBUG: D-Bus method call: {method_name}")  # Emergency debugging
+            logger.debug(f"D-Bus method call received: {method_name}", extra={"class_name": self.__class__.__name__})
 
             if method_name == "GetSettings":
                 result = self._handle_get_settings()
@@ -153,7 +159,8 @@ class DBusUnifier:
                 # Return success immediately to avoid blocking the D-Bus caller
                 invocation.return_value(GLib.Variant("(b)", (True,)))
                 # Process settings update asynchronously to allow D-Bus response to complete first
-                GLib.idle_add(lambda: self._handle_update_settings(changes_json))
+                # IMPORTANT: Must explicitly return False, not use 'or False' since function returns True
+                GLib.idle_add(lambda: (self._handle_update_settings(changes_json), False)[1])
 
             elif method_name == "Ping":
                 result = self._handle_ping()
@@ -166,6 +173,14 @@ class DBusUnifier:
             elif method_name == "GetDebugInfo":
                 result = self._handle_get_debug_info()
                 invocation.return_value(GLib.Variant("(s)", (result,)))
+
+            elif method_name == "ShowPreferences":
+                result = self._handle_show_preferences()
+                invocation.return_value(GLib.Variant("(b)", (result,)))
+
+            elif method_name == "ShowAbout":
+                result = self._handle_show_about()
+                invocation.return_value(GLib.Variant("(b)", (result,)))
 
             else:
                 invocation.return_error_literal(
@@ -239,10 +254,9 @@ class DBusUnifier:
                     # Handle top-level settings using public method
                     self.app_settings.set(path, value)
 
-            # AppSettings automatically emits signals, but we need to ensure
-            # D-Bus signals are sent to tray applications
-            logger.info("Emitting D-Bus signal", extra={"class_name": self.__class__.__name__})
-            self._emit_settings_changed_signal(applied_changes)
+            # NOTE: D-Bus signals are automatically sent by _on_app_setting_changed()
+            # which is connected to AppSettings signals. No need to emit manually here
+            # to avoid duplicate signal emissions.
 
             logger.info(
                 f"✅ Updated {len(applied_changes)} settings via D-Bus - COMPLETE",
@@ -293,6 +307,50 @@ class DBusUnifier:
         except Exception as e:
             logger.error(f"Failed to get debug info: {e}", extra={"class_name": self.__class__.__name__})
             return "{}"
+
+    def _handle_show_preferences(self) -> bool:
+        """
+        Show preferences dialog by setting show_preferences flag.
+
+        This triggers the View's settings change handler which opens the dialog.
+        Also ensures main window is visible.
+        """
+        try:
+            logger.info("ShowPreferences D-Bus method called", extra={"class_name": self.__class__.__name__})
+
+            # Set both flags to show window and open preferences
+            self.app_settings.set("window_visible", True)
+            self.app_settings.set("show_preferences", True)
+
+            logger.info("Preferences dialog triggered via D-Bus", extra={"class_name": self.__class__.__name__})
+            return True
+
+        except Exception as e:
+            logger.error(
+                f"Failed to show preferences: {e}", extra={"class_name": self.__class__.__name__}, exc_info=True
+            )
+            return False
+
+    def _handle_show_about(self) -> bool:
+        """
+        Show about dialog by setting show_about flag.
+
+        This triggers the View's settings change handler which opens the dialog.
+        Also ensures main window is visible.
+        """
+        try:
+            logger.info("ShowAbout D-Bus method called", extra={"class_name": self.__class__.__name__})
+
+            # Set both flags to show window and open about dialog
+            self.app_settings.set("window_visible", True)
+            self.app_settings.set("show_about", True)
+
+            logger.info("About dialog triggered via D-Bus", extra={"class_name": self.__class__.__name__})
+            return True
+
+        except Exception as e:
+            logger.error(f"Failed to show about dialog: {e}", extra={"class_name": self.__class__.__name__}, exc_info=True)
+            return False
 
     def _validate_setting_value(self, path: str, value: Any) -> bool:
         """Validate setting value before applying"""

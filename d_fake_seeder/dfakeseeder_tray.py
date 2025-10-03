@@ -855,18 +855,48 @@ class TrayApplication:
     def _on_show_preferences(self, menu_item):
         """Handle show preferences"""
         try:
-            changes = {"show_preferences": True, "window_visible": True}
-            if self.dbus_client:
-                self.dbus_client.update_settings(changes)
+            if not self.dbus_client or not self.dbus_client.connected:
+                logger.warning("D-Bus not connected, cannot show preferences", extra={"class_name": self.__class__.__name__})
+                return
+
+            # Call the dedicated ShowPreferences D-Bus method
+            result = self.dbus_client.proxy.call_sync(
+                "ShowPreferences",
+                None,
+                Gio.DBusCallFlags.NONE,
+                5000,  # 5 second timeout
+                None
+            )
+
+            if result and result.unpack()[0]:
+                logger.info("Preferences dialog opened successfully", extra={"class_name": self.__class__.__name__})
+            else:
+                logger.warning("Failed to open preferences dialog", extra={"class_name": self.__class__.__name__})
+
         except Exception as e:
             logger.error(f"Error showing preferences: {e}", extra={"class_name": self.__class__.__name__})
 
     def _on_show_about(self, menu_item):
         """Handle show about"""
         try:
-            changes = {"show_about": True, "window_visible": True}
-            if self.dbus_client:
-                self.dbus_client.update_settings(changes)
+            if not self.dbus_client or not self.dbus_client.connected:
+                logger.warning("D-Bus not connected, cannot show about dialog", extra={"class_name": self.__class__.__name__})
+                return
+
+            # Call the dedicated ShowAbout D-Bus method
+            result = self.dbus_client.proxy.call_sync(
+                "ShowAbout",
+                None,
+                Gio.DBusCallFlags.NONE,
+                5000,  # 5 second timeout
+                None
+            )
+
+            if result and result.unpack()[0]:
+                logger.info("About dialog opened successfully", extra={"class_name": self.__class__.__name__})
+            else:
+                logger.warning("Failed to open about dialog", extra={"class_name": self.__class__.__name__})
+
         except Exception as e:
             logger.error(f"Error showing about: {e}", extra={"class_name": self.__class__.__name__})
 
