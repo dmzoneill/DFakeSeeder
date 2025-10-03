@@ -96,6 +96,8 @@ clean:
 	- sudo rm -rvf log.log
 	- sudo rm -rvf d_fake_seeder/log.log
 	- sudo rm -rvf dist
+	- sudo rm -rvf build
+	- sudo rm -rvf *.egg-info
 	- sudo rm -rvf .pytest_cache
 	- sudo find . -type d -iname __pycache__ -exec rm -rf {} \;
 	- sudo rm -rvf debbuild
