@@ -18,7 +18,7 @@ WORKDIR /app
 
 # Change ownership of directories
 RUN chown -R ${USER_NAME}:${USER_NAME} /app
-COPY requirements.txt /app/
+COPY Pipfile Pipfile.lock /app/
 
 # Create necessary directories and set permissions
 RUN mkdir -vp /run/user/${USER_ID}/at-spi /home/${USER_NAME}/.cache /home/${USER_NAME}/.config
@@ -31,8 +31,9 @@ USER ${USER_NAME}
 ENV XDG_RUNTIME_DIR=/run/user/${USER_ID}
 ENV LIBGL_ALWAYS_SOFTWARE=1
 
-# Install Python dependencies
-RUN pip3 install -r requirements.txt --no-warn-script-location
+# Install pipenv and dependencies
+RUN pip3 install pipenv --no-warn-script-location
+RUN cd /app && pipenv install --system --deploy
 
 USER 0
 

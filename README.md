@@ -14,11 +14,11 @@ A sophisticated Python GTK4 BitTorrent client that simulates seeding activity wi
 - **Real-time Monitoring**: Live connection tracking and performance metrics
 
 ### Advanced Features
-- **PyPy Compatibility**: Optimized for both CPython and PyPy interpreters
-- **Type Safety**: Full MyPy type checking support with comprehensive type annotations
-- **Internationalization**: 15 languages supported with runtime language switching
-- **Desktop Integration**: XDG-compliant with proper icon themes and desktop files
-- **Settings Management**: Comprehensive configuration with validation and profiles
+- **System Tray Integration**: Full tray application with D-Bus IPC for seamless desktop integration
+- **Internationalization**: 21 languages supported with runtime language switching
+- **Desktop Integration**: XDG-compliant with proper icon themes, desktop files, and GNOME Shell support
+- **Settings Management**: Comprehensive configuration with validation, profiles, and D-Bus sync
+- **Performance Tracking**: Built-in automatic timing and performance monitoring
 
 ### User Interface
 - **GTK4 Modern UI**: Clean, responsive interface with modular component architecture
@@ -32,15 +32,30 @@ A sophisticated Python GTK4 BitTorrent client that simulates seeding activity wi
 
 ### PyPI Installation (Recommended)
 ```bash
+# Install system dependencies first
+# Fedora/RHEL
+sudo dnf install gtk4 python3-gobject
+
+# Debian/Ubuntu
+sudo apt install gir1.2-gtk-4.0 python3-gi
+
 # Install from PyPI
 pip install d-fake-seeder
 
-# Install desktop integration (optional)
+# Install desktop integration (icons, desktop file, tray autostart)
 dfs-install-desktop
+
+# GNOME Shell users: Restart GNOME Shell for immediate recognition
+# Press Alt+F2, type 'r', and press Enter
 
 # Run the application
 dfs                    # Short command
 dfakeseeder           # Full command
+dfs-tray              # Tray application only
+
+# Launch from application menu
+gtk-launch dfakeseeder
+# Or search "D' Fake Seeder" in application menu
 ```
 
 ### Development Setup
@@ -59,15 +74,27 @@ make run-debug-docker
 
 #### Debian/Ubuntu
 ```bash
+# Download and install
 curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep deb) -o dfakeseeder.deb
 sudo dpkg -i dfakeseeder.deb
+
+# Desktop integration is automatic (icons, desktop file, cache updates)
+# GNOME Shell users: Press Alt+F2, type 'r', and press Enter to restart GNOME Shell
+
+# Launch
 gtk-launch dfakeseeder
 ```
 
 #### RHEL/Fedora
 ```bash
+# Download and install
 curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep rpm) -o dfakeseeder.rpm
 sudo rpm -i dfakeseeder.rpm
+
+# Desktop integration is automatic (icons, desktop file, cache updates)
+# GNOME Shell users: Press Alt+F2, type 'r', and press Enter to restart GNOME Shell
+
+# Launch
 gtk-launch dfakeseeder
 ```
 
@@ -84,10 +111,10 @@ docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xa
 ## Development
 
 ### Code Quality
-- **PyPy Compatible**: Optimized for both CPython and PyPy interpreters
-- **Type Safe**: Full MyPy type checking with comprehensive annotations
-- **Code Quality**: Black, flake8, and isort formatting standards
+- **Code Quality**: Black, flake8, and isort formatting standards (max-line-length: 120)
 - **Testing**: Pytest framework with comprehensive test coverage
+- **Performance**: Automatic timing and structured logging throughout
+- **Dependency Management**: Pipfile/Pipfile.lock (primary), setup.py for PyPI publishing
 
 ### Build System
 ```bash
@@ -104,18 +131,25 @@ make ui-build            # Compile UI from XML components
 make icons               # Install application icons
 
 # Package building
-make deb                 # Build Debian package
-make rpm                 # Build RPM package
-make flatpak            # Build Flatpak package
-make docker             # Build Docker image
+make deb                 # Build Debian package (full desktop integration)
+make rpm                 # Build RPM package (full desktop integration)
+make flatpak             # Build Flatpak package
+make docker              # Build Docker image
+
+# PyPI publishing
+make pypi-build          # Build source distribution and wheel
+make pypi-check          # Validate package quality
+make pypi-test-upload    # Upload to TestPyPI
+make pypi-upload         # Upload to production PyPI
 ```
 
 ### Architecture
 - **MVC Pattern**: Clean separation with Model, View, Controller
 - **Component System**: Modular UI components with GTK4
 - **Signal-Based**: GObject signals for loose coupling
-- **Internationalization**: Runtime language switching with 15 languages
-- **Performance**: Automatic timing and performance tracking
+- **D-Bus IPC**: Main app and tray communicate via D-Bus for seamless integration
+- **Internationalization**: Runtime language switching with 21 languages
+- **Performance**: Automatic timing and structured logging with class context
 
 ### Contributing
 - All pull requests welcome
@@ -141,8 +175,17 @@ make docker             # Build Docker image
 ### Desktop Integration
 After PyPI installation, run desktop integration:
 ```bash
-# Install desktop files and icons
+# Install desktop files, icons, and tray autostart
 dfs-install-desktop
+
+# This installs:
+# - Application icons (multiple sizes) to ~/.local/share/icons/
+# - Desktop launcher to ~/.local/share/applications/
+# - Updates icon and desktop caches
+# - Clears GNOME Shell cache for immediate recognition
+
+# GNOME Shell users: Restart GNOME Shell
+# Press Alt+F2, type 'r', and press Enter
 
 # Launch via desktop environment
 gtk-launch dfakeseeder
@@ -152,8 +195,10 @@ gtk-launch dfakeseeder
 dfs-uninstall-desktop
 ```
 
-### Supported Languages
-English, Spanish, French, German, Italian, Portuguese, Russian, Chinese, Japanese, Korean, Arabic, Hindi, Dutch, Swedish, Polish
+### Supported Languages (21)
+English, Spanish, French, German, Italian, Portuguese, Russian, Chinese, Japanese, Korean, Arabic, Hindi, Dutch, Swedish, Polish, Bengali, Persian, Irish, Indonesian, Turkish, Vietnamese
+
+Runtime language switching without application restart.
 
 ### Example Configuration
 The application auto-creates `~/.config/dfakeseeder/settings.json` with comprehensive defaults including:
