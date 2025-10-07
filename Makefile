@@ -4,15 +4,9 @@ package_version := $(shell cat control | grep Version | sed 's/Version: //')
 DEB_FILENAME := $(deb_package_name)_$(package_version).deb
 RPM_FILENAME := $(rpm_package_name)-$(package_version)
 
-required:
-ifdef CI
-	pip3 install -r requirements.txt
-else
-	pip3 install -r requirements.txt --break-system-packages
-endif
 
 
-clearlog: required
+clearlog:
 	truncate -s 0 d_fake_seeder/log.log
 
 lint: clearlog
