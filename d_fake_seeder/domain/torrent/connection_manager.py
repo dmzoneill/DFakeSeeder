@@ -24,15 +24,13 @@ class ConnectionManager:
         self.all_incoming_connections: Dict[str, ConnectionPeer] = {}
         self.all_outgoing_connections: Dict[str, ConnectionPeer] = {}
 
-        # Connection timers for cleanup
-        self.incoming_removal_timers: Dict[str, int] = {}
-        self.outgoing_removal_timers: Dict[str, int] = {}
-        self.incoming_display_timers: Dict[str, float] = {}
-        self.outgoing_display_timers: Dict[str, float] = {}
-
         # Track when connections failed for timeout exclusion
         self.incoming_failed_times: Dict[str, float] = {}
         self.outgoing_failed_times: Dict[str, float] = {}
+
+        # Track when connections were added for display time calculation
+        self.incoming_display_timers: Dict[str, float] = {}
+        self.outgoing_display_timers: Dict[str, float] = {}
 
         # Connection display settings (based on tickspeed)
         self.failed_connection_display_cycles = 1  # Show failed connections for 1 cycle
@@ -47,6 +45,11 @@ class ConnectionManager:
         connection_manager_config = getattr(self.settings, "connection_manager", {})
         self.callback_throttle_delay = connection_manager_config.get("callback_throttle_delay_seconds", 1.0)
         self.pending_callback_timer = None
+
+        # Single periodic cleanup timer instead of per-connection timers (O(1) instead of O(n))
+        self.cleanup_timer_id = None
+        self.cleanup_interval_seconds = connection_manager_config.get("cleanup_interval_seconds", 2)
+        self._start_cleanup_timer()
 
     def get_failed_connection_display_time(self) -> float:
         """Get failed connection display time based on current tickspeed"""
@@ -99,6 +102,55 @@ class ConnectionManager:
         self.pending_callback_timer = None
         return False  # Don't repeat the timeout
 
+    def _start_cleanup_timer(self):
+        """Start the single periodic cleanup timer"""
+        if self.cleanup_timer_id is None:
+            self.cleanup_timer_id = GLib.timeout_add_seconds(self.cleanup_interval_seconds, self._periodic_cleanup)
+            logger.debug("Started periodic connection cleanup timer")
+
+    def _stop_cleanup_timer(self):
+        """Stop the periodic cleanup timer"""
+        if self.cleanup_timer_id is not None:
+            GLib.source_remove(self.cleanup_timer_id)
+            self.cleanup_timer_id = None
+            logger.debug("Stopped periodic connection cleanup timer")
+
+    def _periodic_cleanup(self):
+        """Periodic cleanup of expired failed connections (single timer for all connections)"""
+        current_time = time.time()
+        failed_display_time = self.get_failed_connection_display_time()
+
+        # Cleanup expired incoming connections
+        incoming_to_remove = []
+        for connection_key, conn in self.all_incoming_connections.items():
+            if hasattr(conn, "status") and conn.status == "failed":
+                failed_time = self.incoming_failed_times.get(connection_key, current_time)
+                if current_time - failed_time >= failed_display_time:
+                    incoming_to_remove.append(connection_key)
+
+        for connection_key in incoming_to_remove:
+            self._remove_incoming_connection_by_key(connection_key)
+
+        # Cleanup expired outgoing connections
+        outgoing_to_remove = []
+        for connection_key, conn in self.all_outgoing_connections.items():
+            if hasattr(conn, "status") and conn.status == "failed":
+                failed_time = self.outgoing_failed_times.get(connection_key, current_time)
+                if current_time - failed_time >= failed_display_time:
+                    outgoing_to_remove.append(connection_key)
+
+        for connection_key in outgoing_to_remove:
+            self._remove_outgoing_connection_by_key(connection_key)
+
+        # Log if we cleaned up any connections
+        if incoming_to_remove or outgoing_to_remove:
+            logger.debug(
+                f"Periodic cleanup removed {len(incoming_to_remove)} incoming "
+                f"and {len(outgoing_to_remove)} outgoing expired connections"
+            )
+
+        return True  # Continue timer
+
     # Incoming connection management
     def add_incoming_connection(self, address: str, port: int, **kwargs) -> str:
         """Add a new incoming connection"""
@@ -134,11 +186,9 @@ class ConnectionManager:
                 if hasattr(connection_peer, key):
                     setattr(connection_peer, key, value)
 
-            # Schedule removal if connection failed
+            # Track when this connection failed (periodic cleanup will handle removal)
             if connection_peer.status == "failed":
-                # Track when this connection failed for timeout exclusion
                 self.incoming_failed_times[connection_key] = time.time()
-                self._schedule_incoming_removal(connection_key)
 
             self.notify_update_callbacks()
 
@@ -147,27 +197,10 @@ class ConnectionManager:
         connection_key = f"{address}:{port}"
         self._remove_incoming_connection_by_key(connection_key)
 
-    def _schedule_incoming_removal(self, connection_key: str):
-        """Schedule removal of a failed incoming connection after display time"""
-        if connection_key in self.incoming_removal_timers:
-            GLib.source_remove(self.incoming_removal_timers[connection_key])
-
-        def remove_connection():
-            self._remove_incoming_connection_by_key(connection_key)
-            return False
-
-        timer_id = GLib.timeout_add_seconds(int(self.get_failed_connection_display_time()), remove_connection)
-        self.incoming_removal_timers[connection_key] = timer_id
-
     def _remove_incoming_connection_by_key(self, connection_key: str):
         """Remove an incoming connection by key"""
         if connection_key not in self.all_incoming_connections:
             return
-
-        # Cancel removal timer
-        if connection_key in self.incoming_removal_timers:
-            GLib.source_remove(self.incoming_removal_timers[connection_key])
-            del self.incoming_removal_timers[connection_key]
 
         # Remove from storage
         del self.all_incoming_connections[connection_key]
@@ -218,11 +251,9 @@ class ConnectionManager:
                 if hasattr(connection_peer, key):
                     setattr(connection_peer, key, value)
 
-            # Schedule removal if connection failed
+            # Track when this connection failed (periodic cleanup will handle removal)
             if connection_peer.status == "failed":
-                # Track when this connection failed for timeout exclusion
                 self.outgoing_failed_times[connection_key] = time.time()
-                self._schedule_outgoing_removal(connection_key)
 
             self.notify_update_callbacks()
 
@@ -231,27 +262,10 @@ class ConnectionManager:
         connection_key = f"{address}:{port}"
         self._remove_outgoing_connection_by_key(connection_key)
 
-    def _schedule_outgoing_removal(self, connection_key: str):
-        """Schedule removal of a failed outgoing connection after display time"""
-        if connection_key in self.outgoing_removal_timers:
-            GLib.source_remove(self.outgoing_removal_timers[connection_key])
-
-        def remove_connection():
-            self._remove_outgoing_connection_by_key(connection_key)
-            return False
-
-        timer_id = GLib.timeout_add_seconds(int(self.get_failed_connection_display_time()), remove_connection)
-        self.outgoing_removal_timers[connection_key] = timer_id
-
     def _remove_outgoing_connection_by_key(self, connection_key: str):
         """Remove an outgoing connection by key"""
         if connection_key not in self.all_outgoing_connections:
             return
-
-        # Cancel removal timer
-        if connection_key in self.outgoing_removal_timers:
-            GLib.source_remove(self.outgoing_removal_timers[connection_key])
-            del self.outgoing_removal_timers[connection_key]
 
         # Remove from storage
         del self.all_outgoing_connections[connection_key]
@@ -393,25 +407,23 @@ class ConnectionManager:
         return self.all_outgoing_connections.copy()
 
     def clear_all_connections(self):
-        """Clear all connections and timers"""
-        # Cancel all timers
-        for timer_id in self.incoming_removal_timers.values():
-            GLib.source_remove(timer_id)
-        for timer_id in self.outgoing_removal_timers.values():
-            GLib.source_remove(timer_id)
+        """Clear all connections and stop cleanup timer"""
+        # Stop the cleanup timer
+        self._stop_cleanup_timer()
 
         # Clear all data
         self.all_incoming_connections.clear()
         self.all_outgoing_connections.clear()
-        self.incoming_removal_timers.clear()
-        self.outgoing_removal_timers.clear()
         self.incoming_display_timers.clear()
         self.outgoing_display_timers.clear()
         self.incoming_failed_times.clear()
         self.outgoing_failed_times.clear()
 
-        logger.debug("Cleared all connections")
+        logger.debug("Cleared all connections and stopped cleanup timer")
         self.notify_update_callbacks()
+
+        # Restart the cleanup timer for future connections
+        self._start_cleanup_timer()
 
     def get_max_connections(self) -> Tuple[int, int, int]:
         """Get maximum connection limits (incoming, outgoing, total)"""
