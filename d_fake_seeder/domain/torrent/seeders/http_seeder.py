@@ -150,7 +150,9 @@ class HTTPSeeder(BaseSeeder):
                         extra={"class_name": self.__class__.__name__},
                     )
 
-                self.update_interval = self.info[b"interval"]
+                # Apply jitter to announce interval to prevent request storms
+                base_interval = self.info[b"interval"]
+                self.update_interval = self._apply_announce_jitter(base_interval)
                 self.get_tracker_semaphore().release()
                 return True
 
