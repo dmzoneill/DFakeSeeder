@@ -76,6 +76,12 @@ class Torrents(Component, ColumnTranslationMixin):
         logger.debug("update_columns() completed (took {(columns_end - columns_start)*1000:.1f}ms)", "Torrents")
         logger.debug("Torrents.__init__() TOTAL TIME: ms", "Torrents")
 
+    def _(self, text):
+        """Get translation function from model's TranslationManager"""
+        if hasattr(self, "model") and self.model and hasattr(self.model, "translation_manager"):
+            return self.model.translation_manager.translate_func(text)
+        return text  # Fallback if model not set yet
+
     def main_menu(self, gesture, n_press, x, y):
         rect = self.torrents_columnview.get_allocation()
         rect.width = 0
@@ -87,15 +93,15 @@ class Torrents(Component, ColumnTranslationMixin):
         menu = Gio.Menu.new()
         # Create submenus
         queue_submenu = Gio.Menu()
-        queue_submenu.append("Top", "app.queue_top")
-        queue_submenu.append("Up", "app.queue_up")
-        queue_submenu.append("Down", "app.queue_down")
-        queue_submenu.append("Bottom", "app.queue_bottom")
+        queue_submenu.append(self._("Top"), "app.queue_top")
+        queue_submenu.append(self._("Up"), "app.queue_up")
+        queue_submenu.append(self._("Down"), "app.queue_down")
+        queue_submenu.append(self._("Bottom"), "app.queue_bottom")
         # Add menu items and submenus to the main menu
-        menu.append("Pause", "app.pause")
-        menu.append("Resume", "app.resume")
-        menu.append("Update Tracker", "app.update_tracker")
-        menu.append_submenu("Queue", queue_submenu)
+        menu.append(self._("Pause"), "app.pause")
+        menu.append(self._("Resume"), "app.resume")
+        menu.append(self._("Update Tracker"), "app.update_tracker")
+        menu.append_submenu(self._("Queue"), queue_submenu)
         columns_menu = Gio.Menu.new()
         # Check if the attribute is a visible column in the columnview
         visible_columns = [
@@ -123,7 +129,7 @@ class Torrents(Component, ColumnTranslationMixin):
             toggle_item = Gio.MenuItem.new(label=translated_name)
             toggle_item.set_detailed_action(f"app.toggle_{attribute}")
             columns_menu.append_item(toggle_item)
-        menu.append_submenu("Columns", columns_menu)
+        menu.append_submenu(self._("Columns"), columns_menu)
         self.popover = Gtk.PopoverMenu().new_from_model(menu)
         self.popover.set_parent(self.torrents_columnview)
         self.popover.set_has_arrow(False)
