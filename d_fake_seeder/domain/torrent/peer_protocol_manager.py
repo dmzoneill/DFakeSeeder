@@ -10,13 +10,13 @@ import asyncio
 import struct
 import threading
 import time
-from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, List, Optional
 
 from domain.app_settings import AppSettings
 from domain.torrent.bittorrent_message import BitTorrentMessage
 from domain.torrent.peer_connection import PeerConnection
 from domain.torrent.peer_info import PeerInfo
+from domain.torrent.shared_async_executor import SharedAsyncExecutor
 from lib.logger import logger
 
 
@@ -52,16 +52,19 @@ class PeerProtocolManager:
         # Connection management
         self.peers: Dict[str, PeerInfo] = {}  # ip:port -> PeerInfo
         self.active_connections: Dict[str, PeerConnection] = {}
-        self.connection_pool = ThreadPoolExecutor(max_workers=max_connections)
+
+        # Use shared async executor instead of per-instance thread pool
+        self.executor = SharedAsyncExecutor.get_instance()
+        self.manager_id = f"{info_hash.hex()[:16]}"  # Unique ID for task tracking
+        self.manager_task: Optional[asyncio.Task] = None
 
         # Rate limiting - prevent excessive peer communication (use config values)
         self.peer_contact_history: Dict[str, float] = {}  # ip:port -> last_contact_time
         self.min_contact_interval = peer_protocol.get("contact_interval_seconds", 300.0)
         self.startup_grace_period = peer_protocol.get("startup_grace_period_seconds", 60.0)
 
-        # Threading
+        # State management (no dedicated thread - using shared executor)
         self.running = False
-        self.manager_thread: Optional[threading.Thread] = None
         self.lock = threading.Lock()
         self.startup_time = time.time()
 
@@ -127,73 +130,54 @@ class PeerProtocolManager:
                 )
 
     def start(self):
-        """Start the peer protocol manager"""
+        """Start the peer protocol manager using shared executor"""
         if self.running:
             return
 
         self.running = True
-        self.manager_thread = threading.Thread(target=self._run_manager_loop, daemon=True)
-        self.manager_thread.start()
+
+        # Submit async loop to shared executor
+        self.manager_task = self.executor.submit_coroutine(self._async_manager_loop(), manager_id=self.manager_id)
+
+        if self.manager_task is None:
+            logger.error(
+                f"❌ Failed to submit task to SharedAsyncExecutor for {self.manager_id}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.running = False
+            return
 
         logger.info(
-            f"🚀 Started PeerProtocolManager for torrent " f"(max_connections: {self.max_connections})",
+            f"🚀 Started PeerProtocolManager via SharedAsyncExecutor "
+            f"(manager_id: {self.manager_id}, max_connections: {self.max_connections})",
             extra={"class_name": self.__class__.__name__},
         )
 
     def stop(self):
-        """Stop the peer protocol manager with forced shutdown if needed"""
+        """Stop the peer protocol manager"""
         if not self.running:
             return
 
         logger.info(
-            "🛑 Stopping PeerProtocolManager",
+            f"🛑 Stopping PeerProtocolManager (manager_id: {self.manager_id})",
             extra={"class_name": self.__class__.__name__},
         )
 
         self.running = False
 
-        # Close all active connections first
+        # Cancel all tasks for this manager via shared executor
+        self.executor.cancel_manager_tasks(self.manager_id)
+
+        # Close all active connections
         with self.lock:
             for connection in self.active_connections.values():
                 connection.close()
             self.active_connections.clear()
 
-        # Wait for manager thread with aggressive timeout
-        if self.manager_thread and self.manager_thread.is_alive():
-            join_timeout = 0.5  # Aggressive 0.5 second timeout
-            logger.info(
-                f"⏱️ Waiting for manager thread to finish (timeout: {join_timeout}s)",
-                extra={"class_name": self.__class__.__name__},
-            )
-            self.manager_thread.join(timeout=join_timeout)
-
-            # Force shutdown if still alive
-            if self.manager_thread.is_alive():
-                logger.warning(
-                    "⚠️ PeerProtocolManager thread still alive after timeout, forcing shutdown",
-                    extra={"class_name": self.__class__.__name__},
-                )
-
-        # Shutdown thread pool with aggressive timeout
-        try:
-            self.connection_pool.shutdown(wait=False)  # Don't wait indefinitely
-
-            # Give it a minimal moment, then force
-            import time
-
-            time.sleep(0.1)  # Minimal 0.1s shutdown coordination delay
-
-            # Log if we had to force shutdown
-            if hasattr(self.connection_pool, "_shutdown") and not self.connection_pool._shutdown:
-                logger.warning(
-                    "⚠️ ThreadPoolExecutor required forced shutdown", extra={"class_name": self.__class__.__name__}
-                )
-        except Exception as e:
-            logger.debug(f"Error during thread pool shutdown: {e}", extra={"class_name": self.__class__.__name__})
-
-    def _run_manager_loop(self):
-        """Main manager loop - runs in separate thread"""
-        asyncio.new_event_loop().run_until_complete(self._async_manager_loop())
+        logger.info(
+            f"✅ PeerProtocolManager stopped (manager_id: {self.manager_id})",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     async def _async_manager_loop(self):
         """Async manager loop with proper cancellation"""

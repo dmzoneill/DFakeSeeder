@@ -13,6 +13,7 @@ from typing import Dict, List
 from domain.app_settings import AppSettings
 from domain.torrent.peer_protocol_manager import PeerProtocolManager
 from domain.torrent.peer_server import PeerServer
+from domain.torrent.shared_async_executor import SharedAsyncExecutor
 from lib.logger import logger
 
 
@@ -42,6 +43,9 @@ class GlobalPeerManager:
         port = getattr(self.settings, "listening_port", 6881)
         max_connections = getattr(self.settings, "max_incoming_connections", 200)
         self.peer_server = PeerServer(port=port, max_connections=max_connections)
+
+        # Shared async executor for all peer protocol managers
+        self.executor = SharedAsyncExecutor.get_instance()
 
         # Global peer statistics
         self.global_peer_stats = {
@@ -85,6 +89,14 @@ class GlobalPeerManager:
 
         with self.lock:
             self.running = True
+
+            # Start shared async executor first
+            self.executor.start()
+            logger.info(
+                "🚀 SharedAsyncExecutor started",
+                extra={"class_name": self.__class__.__name__},
+            )
+
             self.worker_thread = threading.Thread(target=self._worker_loop, daemon=True)
             self.worker_thread.start()
 
@@ -127,6 +139,12 @@ class GlobalPeerManager:
         self.peer_server.stop()
         if shutdown_tracker:
             shutdown_tracker.mark_completed("network_connections", 1)
+
+        # Stop shared async executor
+        logger.info("Stopping SharedAsyncExecutor", extra={"class_name": self.__class__.__name__})
+        self.executor.stop()
+        if shutdown_tracker:
+            shutdown_tracker.mark_completed("async_executor", 1)
 
         # Wait for worker thread to finish with aggressive timeout
         if self.worker_thread and self.worker_thread.is_alive():
