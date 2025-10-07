@@ -23,6 +23,7 @@ class GlobalPeerManager:
         self.running = False
         self.worker_thread = None
         self.lock = threading.Lock()
+        self.shutdown_event = threading.Event()  # Event-based shutdown for smart sleep
 
         # Get settings instance
         self.settings = AppSettings.get_instance()
@@ -95,6 +96,9 @@ class GlobalPeerManager:
                 return
 
             self.running = False
+
+            # Signal shutdown event for immediate worker thread wake
+            self.shutdown_event.set()
 
             # Stop all peer managers
             peer_manager_count = len(self.peer_managers)
@@ -344,7 +348,7 @@ class GlobalPeerManager:
             extra={"class_name": self.__class__.__name__},
         )
 
-        while self.running:
+        while not self.shutdown_event.is_set():
             try:
                 current_time = time.time()
 
@@ -358,15 +362,24 @@ class GlobalPeerManager:
                     self._update_global_stats()
                     self.last_stats_update = current_time
 
-                # Sleep to avoid busy waiting
-                time.sleep(self.manager_sleep_interval)
+                # Calculate intelligent sleep interval - wait until next event
+                next_peer_update = self.last_peer_update + self.peer_update_interval
+                next_stats_update = self.last_stats_update + self.stats_update_interval
+                next_event_time = min(next_peer_update, next_stats_update)
+                sleep_time = max(self.manager_sleep_interval, next_event_time - time.time())
+
+                # Use event-based sleep for immediate wake on shutdown
+                if self.shutdown_event.wait(timeout=sleep_time):
+                    break  # Shutdown event was set
 
             except Exception as e:
                 logger.error(
                     f"Error in global peer manager worker: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                time.sleep(self.manager_error_sleep_interval)  # Back off on error
+                # Back off on error with event-based sleep
+                if self.shutdown_event.wait(timeout=self.manager_error_sleep_interval):
+                    break
 
         logger.info(
             "🛑 Global peer manager worker loop stopped",
