@@ -35,7 +35,9 @@ class DHTSeeder(BaseSeeder):
         # DHT-specific configuration
         dht_config = getattr(self.settings, "protocols", {}).get("dht", {})
         self.dht_enabled = dht_config.get("enabled", True)
-        self.announce_interval = dht_config.get("announcement_interval", 1800)
+        base_interval = dht_config.get("announcement_interval", 1800)
+        # Apply jitter to announce interval to prevent request storms
+        self.announce_interval = self._apply_announce_jitter(base_interval)
 
         logger.info(
             "DHT Seeder initialized",
@@ -230,7 +232,8 @@ class DHTSeeder(BaseSeeder):
                     # Stop if DHT was disabled
                     asyncio.create_task(self.stop())
             elif key == "protocols.dht.announcement_interval":
-                self.announce_interval = value
+                # Apply jitter to new interval to prevent request storms
+                self.announce_interval = self._apply_announce_jitter(value)
 
     # Implement required BaseSeeder methods for compatibility
     def request_status(self):

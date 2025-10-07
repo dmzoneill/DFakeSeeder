@@ -87,6 +87,30 @@ class BaseSeeder:
 
         return converted_profiles
 
+    def _apply_announce_jitter(self, interval: float) -> float:
+        """
+        Apply random jitter to announce interval to prevent request storms.
+
+        Adds ±10% randomization to the interval to stagger announces across torrents.
+        This prevents all torrents from announcing simultaneously and overwhelming trackers.
+
+        Args:
+            interval: Base announce interval in seconds
+
+        Returns:
+            Interval with random jitter applied
+        """
+        jitter_percent = 0.1  # ±10% jitter
+        jitter = interval * jitter_percent * (random.random() * 2 - 1)  # Random value between -10% and +10%
+        jittered_interval = interval + jitter
+
+        logger.debug(
+            f"Applied jitter to interval: {interval:.1f}s -> {jittered_interval:.1f}s (jitter: {jitter:+.1f}s)",
+            self.__class__.__name__,
+        )
+
+        return jittered_interval
+
     def set_random_announce_url(self):
         if hasattr(self.torrent, "announce_list") and self.torrent.announce_list:
             same_schema_urls = [
