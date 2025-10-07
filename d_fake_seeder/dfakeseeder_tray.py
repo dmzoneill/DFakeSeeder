@@ -240,6 +240,10 @@ class TrayApplication:
         self.update_timer = None
         self.dbus_handlers_setup = False
 
+        # Menu caching to avoid full rebuilds
+        self.menu_structure_cached = False
+        self.last_connection_state = None
+
         # Setup signal handlers
         signal.signal(signal.SIGINT, self._signal_handler)
         signal.signal(signal.SIGTERM, self._signal_handler)
@@ -554,6 +558,9 @@ class TrayApplication:
         try:
             logger.debug("Recreating tray menu with new translations", extra={"class_name": self.__class__.__name__})
 
+            # Invalidate menu cache to force full rebuild with new translations
+            self.menu_structure_cached = False
+
             # Clear the existing menu
             if self.menu:
                 # Remove all items
@@ -570,6 +577,26 @@ class TrayApplication:
 
     def _create_menu(self):
         """Create tray context menu with localized strings (minimal when disconnected)"""
+        # Check if full rebuild is needed based on connection state change
+        connection_state_changed = self.last_connection_state != self.connected
+
+        # Only rebuild menu structure if connection state changed or not yet cached
+        if not self.menu_structure_cached or connection_state_changed:
+            logger.debug(
+                f"Full menu rebuild (cached={self.menu_structure_cached}, "
+                f"state_changed={connection_state_changed})",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self._rebuild_menu_structure()
+            self.menu_structure_cached = True
+            self.last_connection_state = self.connected
+        else:
+            # Menu structure is cached, just update dynamic values
+            logger.debug("Using cached menu, updating dynamic values only", extra={"class_name": self.__class__.__name__})
+            self._update_menu()
+
+    def _rebuild_menu_structure(self):
+        """Rebuild the complete menu structure (expensive operation)"""
         self.menu = Gtk.Menu()
 
         # Get translation function
@@ -1020,7 +1047,8 @@ class TrayApplication:
                     )
                     self.connected = False
                     self._update_indicator_status(False)
-                    # Recreate menu to show launch option
+                    # Invalidate cache and recreate menu to show launch option
+                    self.menu_structure_cached = False
                     self._create_menu()
                     # Note: periodic update will handle reconnection, no need for separate timer
             elif not self.connected:
@@ -1043,7 +1071,8 @@ class TrayApplication:
                     self._update_indicator_status(True)
                     self._setup_dbus_handlers()
                     self._load_initial_settings()
-                    # Recreate menu to remove launch option
+                    # Invalidate cache and recreate menu to remove launch option
+                    self.menu_structure_cached = False
                     self._create_menu()
 
             return True  # Continue timer
