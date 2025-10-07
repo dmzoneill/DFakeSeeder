@@ -1,6 +1,7 @@
 import gi
 from domain.app_settings import AppSettings
 from domain.torrent.model.attributes import Attributes
+from domain.translation_manager import create_translation_manager
 from lib.component.component import Component
 from lib.logger import logger
 from lib.util.helpers import (
@@ -32,6 +33,10 @@ class Torrents(Component):
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
         self.settings.connect("attribute-changed", self.handle_attribute_changed)
+
+        # Initialize translation manager
+        self.translation_manager = create_translation_manager()
+        self._ = self.translation_manager.get_translate_func()
 
         self.torrents_columnview = self.builder.get_object("columnview1")
 
@@ -71,16 +76,16 @@ class Torrents(Component):
 
         # Create submenus
         queue_submenu = Gio.Menu()
-        queue_submenu.append("Top", "app.queue_top")
-        queue_submenu.append("Up", "app.queue_up")
-        queue_submenu.append("Down", "app.queue_down")
-        queue_submenu.append("Bottom", "app.queue_bottom")
+        queue_submenu.append(self._("Top"), "app.queue_top")
+        queue_submenu.append(self._("Up"), "app.queue_up")
+        queue_submenu.append(self._("Down"), "app.queue_down")
+        queue_submenu.append(self._("Bottom"), "app.queue_bottom")
 
         # Add menu items and submenus to the main menu
-        menu.append("Pause", "app.pause")
-        menu.append("Resume", "app.resume")
-        menu.append("Update Tracker", "app.update_tracker")
-        menu.append_submenu("Queue", queue_submenu)
+        menu.append(self._("Pause"), "app.pause")
+        menu.append(self._("Resume"), "app.resume")
+        menu.append(self._("Update Tracker"), "app.update_tracker")
+        menu.append_submenu(self._("Queue"), queue_submenu)
 
         columns_menu = Gio.Menu.new()
 
@@ -111,7 +116,7 @@ class Torrents(Component):
             toggle_item.set_detailed_action(f"app.toggle_{attribute}")
             columns_menu.append_item(toggle_item)
 
-        menu.append_submenu("Columns", columns_menu)
+        menu.append_submenu(self._("Columns"), columns_menu)
 
         self.popover = Gtk.PopoverMenu().new_from_model(menu)
         self.popover.set_parent(self.torrents_columnview)
