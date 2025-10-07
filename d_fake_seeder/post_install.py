@@ -76,7 +76,7 @@ def install_desktop_file(package_dir, home_dir):
         if source_file == desktop_source:
             # Replace dev-specific Exec with console script
             content = content.replace(
-                'Exec=env LOG_LEVEL=DEBUG /usr/bin/python3 dfakeseeder.py',
+                "Exec=env LOG_LEVEL=DEBUG /usr/bin/python3 dfakeseeder.py",
                 "Exec=dfs",
             )
             # Remove dev-specific Path
