@@ -72,6 +72,9 @@ class Torrents(Component):
         ATTRIBUTES = Attributes
         attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
 
+        # Refresh translation function to get current language
+        self._ = self.translation_manager.get_translate_func()
+
         menu = Gio.Menu.new()
 
         # Create submenus
