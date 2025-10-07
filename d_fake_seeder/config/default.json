@@ -77,5 +77,32 @@
     "author": "David O Neill",
     "copyright": "Copyright {year}",
     "version": "1.0",
-    "logo": "images/dfakeseeder.png"
+    "logo": "images/dfakeseeder.png",
+    "peer_protocol": {
+      "peer_update_interval_seconds": 30.0,
+      "stats_update_interval_seconds": 5.0,
+      "handshake_timeout_seconds": 30.0,
+      "message_read_timeout_seconds": 60.0,
+      "keep_alive_interval_seconds": 120.0,
+      "contact_interval_seconds": 300.0
+    },
+    "connection_manager": {
+      "callback_throttle_delay_seconds": 1.0,
+      "cleanup_interval_seconds": 2
+    },
+    "ui_settings": {
+      "async_sleep_interval_seconds": 1.0,
+      "error_sleep_interval_seconds": 5.0,
+      "manager_thread_join_timeout_seconds": 5.0,
+      "splash_display_duration_seconds": 2,
+      "notification_timeout_min_ms": 2000,
+      "seeder_retry_interval_divisor": 2
+    },
+    "seeders": {
+      "port_range_min": 1025,
+      "port_range_max": 65000,
+      "udp_timeout_seconds": 5,
+      "http_timeout_seconds": 10,
+      "peer_request_count": 200
+    }
   }
