@@ -13,11 +13,8 @@ gi.require_version("Gtk", "4.0")
 
 from .base_tab import BaseSettingsTab  # noqa: E402
 from .settings_mixins import NotificationMixin  # noqa: E402
-from .settings_mixins import (  # noqa: E402
-    TranslationMixin,
-    UtilityMixin,
-    ValidationMixin,
-)
+from .settings_mixins import (TranslationMixin, UtilityMixin,  # noqa: E402
+                              ValidationMixin)
 
 
 class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
