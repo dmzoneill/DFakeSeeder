@@ -33,10 +33,14 @@ Usage Examples:
 """
 
 from .base import TranslationManagerBase
-from .factory import (create_gtk3_translation_manager,
-                      create_gtk4_translation_manager,
-                      create_translation_manager, detect_gtk_version,
-                      get_available_gtk_versions, validate_gtk_environment)
+from .factory import (
+    create_gtk3_translation_manager,
+    create_gtk4_translation_manager,
+    create_translation_manager,
+    detect_gtk_version,
+    get_available_gtk_versions,
+    validate_gtk_environment,
+)
 
 # Export the main factory function and utilities
 __all__ = [

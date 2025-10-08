@@ -13,7 +13,7 @@ gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa: E402
 from lib.seeding_profile_manager import SeedingProfileManager  # noqa: E402
 from lib.util.language_config import get_language_display_names  # noqa: E402
-from lib.util.language_config import get_supported_language_codes
+from lib.util.language_config import get_supported_language_codes  # noqa: E402
 from view import View  # noqa
 
 from .base_tab import BaseSettingsTab  # noqa

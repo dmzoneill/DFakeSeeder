@@ -2,6 +2,7 @@ import os
 
 from domain.app_settings import AppSettings
 from domain.torrent.global_peer_manager import GlobalPeerManager
+
 # from domain.torrent.listener import Listener
 from lib.logger import logger
 from lib.util.dbus_unifier import DBusUnifier

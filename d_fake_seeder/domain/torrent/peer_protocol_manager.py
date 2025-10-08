@@ -18,8 +18,7 @@ from domain.torrent.peer_connection import PeerConnection
 from domain.torrent.peer_info import PeerInfo
 from domain.torrent.shared_async_executor import SharedAsyncExecutor
 from lib.logger import logger
-from lib.util.constants import (AsyncConstants, BitTorrentProtocolConstants,
-                                ConnectionConstants, TimeoutConstants)
+from lib.util.constants import AsyncConstants, BitTorrentProtocolConstants, ConnectionConstants, TimeoutConstants
 
 
 class PeerProtocolManager:

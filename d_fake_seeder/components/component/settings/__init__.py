@@ -6,10 +6,12 @@ into focused, single-responsibility classes for better maintainability.
 """
 
 from .advanced_tab import AdvancedTab
+
 # Base classes
 from .base_tab import BaseSettingsTab
 from .bittorrent_tab import BitTorrentTab
 from .connection_tab import ConnectionTab
+
 # Tab-specific components
 from .general_tab import GeneralTab
 from .peer_protocol_tab import PeerProtocolTab
