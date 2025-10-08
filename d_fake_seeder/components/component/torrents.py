@@ -138,26 +138,44 @@ class Torrents(Component, ColumnTranslationMixin):
         self.popover.popup()
 
     def on_stateful_action_change_state(self, action, value):
-        self.stateful_actions[action.get_name()[len("toggle_") :]].set_state(  # noqa: E203
-            GLib.Variant.new_boolean(value.get_boolean())
-        )
-        checked_items = []
-        all_unchecked = True
-        ATTRIBUTES = Attributes
-        attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
-        column_titles = [column if column != "#" else "id" for column in attributes]
-        for title in column_titles:
-            for k, v in self.stateful_actions.items():
-                if k == title and v.get_state().get_boolean():
-                    checked_items.append(title)
-                    all_unchecked = False
-                    break
-        if all_unchecked or len(checked_items) == len(attributes):
-            self.settings.columns = ""
-        else:
-            checked_items.sort(key=lambda x: column_titles.index(x))
-            self.settings.columns = ",".join(checked_items)
-        self.update_columns()
+        # Prevent re-entry if this handler is triggered by settings changes
+        if hasattr(self, "_updating_columns") and self._updating_columns:
+            return
+
+        try:
+            self._updating_columns = True
+
+            self.stateful_actions[action.get_name()[len("toggle_") :]].set_state(  # noqa: E203
+                GLib.Variant.new_boolean(value.get_boolean())
+            )
+            checked_items = []
+            all_unchecked = True
+            ATTRIBUTES = Attributes
+            attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
+            column_titles = [column if column != "#" else "id" for column in attributes]
+            for title in column_titles:
+                for k, v in self.stateful_actions.items():
+                    if k == title and v.get_state().get_boolean():
+                        checked_items.append(title)
+                        all_unchecked = False
+                        break
+            if all_unchecked or len(checked_items) == len(attributes):
+                self.settings.columns = ""
+            else:
+                checked_items.sort(key=lambda x: column_titles.index(x))
+                self.settings.columns = ",".join(checked_items)
+
+            # Update column visibility directly without rebuilding - fixes hang issue
+            # The hang was caused by calling update_columns() which queries get_columns()
+            # while columns are potentially being modified by background tasks
+            visible_set = set(checked_items) if checked_items else set(attributes)
+            for column in self.torrents_columnview.get_columns():
+                title = column.get_title()
+                # Handle special case where "#" is used for "id" column
+                column_id = "id" if title == "#" else title
+                column.set_visible(column_id in visible_set or not checked_items)
+        finally:
+            self._updating_columns = False
 
     def update_columns(self):
         logger.debug("update_columns() started", "Torrents")
