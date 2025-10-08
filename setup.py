@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 # Read dependencies from Pipfile
 # For PyPI publishing, we specify the core dependencies explicitly

@@ -202,7 +202,7 @@ class TrayApplication:
 
             # Set icon using absolute path to dfakeseeder.png
             dfs_path = os.environ.get("DFS_PATH", ".")
-            icon_path = os.path.join(dfs_path, "images", "dfakeseeder.png")
+            icon_path = os.path.join(dfs_path, "components", "images", "dfakeseeder.png")
 
             if os.path.exists(icon_path):
                 self.indicator.set_icon_full(icon_path, "DFakeSeeder")
@@ -251,7 +251,7 @@ class TrayApplication:
             if self.indicator:
                 # Use the same dfakeseeder icon for all states (can be enhanced later with different state icons)
                 dfs_path = os.environ.get("DFS_PATH", ".")
-                icon_path = os.path.join(dfs_path, "images", "dfakeseeder.png")
+                icon_path = os.path.join(dfs_path, "components", "images", "dfakeseeder.png")
 
                 if os.path.exists(icon_path):
                     self.indicator.set_icon_full(icon_path, "DFakeSeeder")
