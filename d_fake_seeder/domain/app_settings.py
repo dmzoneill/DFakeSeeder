@@ -383,6 +383,10 @@ class AppSettings(GObject.GObject):
 
         self.logger.debug("Settings __setattr__", extra={"class_name": self.__class__.__name__})
 
+        # Determine what to emit BEFORE acquiring lock
+        should_emit = False
+        should_save = False
+
         # Acquire the lock before modifying the settings
         with AppSettings._lock:
             if name == "_settings":
@@ -401,18 +405,27 @@ class AppSettings(GObject.GObject):
                     current[nested_attribute[-1]] = value
                     # Also update the flat settings dict directly to avoid recursion
                     super().__setattr__("settings", self._settings.copy())
+                    should_emit = True
+                    should_save = True
                 else:
-                    # Set the setting value and emit signals
+                    # Set the setting value
                     self._settings[name] = value
                     # Update settings dict directly to avoid recursion
                     super().__setattr__("settings", self._settings.copy())
-                    # Emit new signals
-                    self.emit("settings-attribute-changed", name, value)
-                    self.emit("settings-value-changed", name, value)
-                    # Legacy compatibility signals
-                    self.emit("attribute-changed", name, value)
-                    self.emit("setting-changed", name, value)
-                    self.save_settings()
+                    should_emit = True
+                    should_save = True
+
+            # Save settings WHILE HOLDING LOCK (prevents re-entry)
+            if should_save:
+                self._save_settings_unlocked()
+
+        # Emit signals AFTER releasing the lock to avoid deadlock
+        if should_emit:
+            self.emit("settings-attribute-changed", name, value)
+            self.emit("settings-value-changed", name, value)
+            # Legacy compatibility signals
+            self.emit("attribute-changed", name, value)
+            self.emit("setting-changed", name, value)
 
     def get_all(self):
         """Get all settings as a dict"""
