@@ -22,6 +22,7 @@ if "gi.repository.Gtk" not in sys.modules:
 
 # GTK3 imports - Gio imported for interface compatibility with GTK4 version
 from gi.repository import Gtk  # noqa: E402,F401
+
 # Import logger first
 from lib.logger import logger  # noqa: E402
 

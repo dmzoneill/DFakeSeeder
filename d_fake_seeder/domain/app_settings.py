@@ -11,8 +11,7 @@ gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 
 from gi.repository import GObject  # noqa: E402
-from lib.handlers.file_modified_event_handler import (  # noqa: E402
-    WATCHDOG_AVAILABLE, FileModifiedEventHandler)
+from lib.handlers.file_modified_event_handler import WATCHDOG_AVAILABLE, FileModifiedEventHandler  # noqa: E402
 from lib.logger import logger  # noqa: E402
 from lib.util.constants import NetworkConstants  # noqa: E402
 

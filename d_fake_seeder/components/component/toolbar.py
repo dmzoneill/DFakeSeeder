@@ -6,6 +6,7 @@ import traceback
 import gi
 from components.component.component import Component
 from domain.app_settings import AppSettings
+
 # Translation function will be provided by model's TranslationManager
 from lib.logger import logger
 
@@ -357,8 +358,7 @@ class Toolbar(Component):
                     self.settings_dialog = None
             logger.debug("About to import SettingsDialog", "Toolbar")
             logger.info("About to import SettingsDialog", extra={"class_name": self.__class__.__name__})
-            from components.component.settings.settings_dialog import \
-                SettingsDialog
+            from components.component.settings.settings_dialog import SettingsDialog
 
             logger.debug("SettingsDialog imported successfully", "Toolbar")
             logger.info("SettingsDialog imported successfully", extra={"class_name": self.__class__.__name__})
@@ -554,8 +554,7 @@ class Toolbar(Component):
     @staticmethod
     def levenshtein_distance(s1, s2):
         """Calculate Levenshtein distance between two strings"""
-        from lib.util.helpers import \
-            levenshtein_distance as util_levenshtein_distance
+        from lib.util.helpers import levenshtein_distance as util_levenshtein_distance
 
         return util_levenshtein_distance(s1, s2)
 

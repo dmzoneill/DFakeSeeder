@@ -7,8 +7,7 @@ from urllib.parse import urlparse
 import lib.util.helpers as helpers
 from domain.app_settings import AppSettings
 from lib.logger import logger
-from lib.util.constants import (BitTorrentProtocolConstants,
-                                CalculationConstants, NetworkConstants)
+from lib.util.constants import BitTorrentProtocolConstants, CalculationConstants, NetworkConstants
 
 
 class BaseSeeder:
