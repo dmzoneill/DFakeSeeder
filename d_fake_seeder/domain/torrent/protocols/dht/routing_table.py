@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from typing import Dict, List, Optional
 
 from lib.logger import logger
+from lib.util.constants import DHTConstants
 
 
 @dataclass
@@ -246,7 +247,7 @@ class RoutingTable:
             if node:
                 node.mark_bad()
                 # Remove if too many failures
-                if node.fail_count >= 5:
+                if node.fail_count >= DHTConstants.MAX_FAIL_COUNT:
                     self.buckets[bucket_index].remove_node(node_id)
 
     def cleanup_stale_nodes(self, max_age: int = 3600):

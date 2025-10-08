@@ -15,6 +15,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 from domain.app_settings import AppSettings
 from lib.logger import logger
+from lib.util.constants import DHTConstants
 
 from .peer_discovery import PeerDiscovery
 from .routing_table import RoutingTable
@@ -74,7 +75,7 @@ class DHTNode:
 
     def _generate_node_id(self) -> bytes:
         """Generate a random 20-byte node ID"""
-        return hashlib.sha1(str(random.getrandbits(160)).encode()).digest()
+        return hashlib.sha1(str(random.getrandbits(DHTConstants.NODE_ID_BITS)).encode()).digest()
 
     async def start(self):
         """Start the DHT node"""
@@ -273,7 +274,7 @@ class DHTNode:
                 # Resolve hostname and ping
                 addr = (socket.gethostbyname(host), port)
                 await self._send_ping(addr)
-                await asyncio.sleep(1)  # Rate limiting
+                await asyncio.sleep(DHTConstants.RATE_LIMIT_DELAY_SECONDS)  # Rate limiting
             except Exception as e:
                 logger.debug(f"Bootstrap failed for {host}:{port}: {e}", extra={"class_name": self.__class__.__name__})
 
@@ -314,7 +315,11 @@ class DHTNode:
         current_time = time.time()
 
         # Clean up old tokens (expire after 10 minutes)
-        expired_tokens = [ip for ip, (token, timestamp) in self.token_storage.items() if current_time - timestamp > 600]
+        expired_tokens = [
+            ip
+            for ip, (token, timestamp) in self.token_storage.items()
+            if current_time - timestamp > DHTConstants.TOKEN_EXPIRY_SECONDS
+        ]
         for ip in expired_tokens:
             del self.token_storage[ip]
 
@@ -374,7 +379,7 @@ class DHTNode:
     def _add_node_to_routing_table(self, node_id: bytes, addr: Tuple[str, int]):
         """Add node to routing table"""
         # Simplified routing table - just store recent nodes
-        if self.routing_table.get_node_count() < 100:  # Limit size
+        if self.routing_table.get_node_count() < DHTConstants.ROUTING_TABLE_SIZE_LIMIT:  # Limit size
             self.routing_table.add_node(node_id, addr[0], addr[1])
 
     async def _send_find_node_response(self, message: dict, transaction_id: bytes, addr: Tuple[str, int]):

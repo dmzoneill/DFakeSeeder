@@ -11,6 +11,7 @@ from typing import Set
 
 from domain.app_settings import AppSettings
 from lib.logger import logger
+from lib.util.constants import BitTorrentProtocolConstants
 
 
 class DontHaveExtension:
@@ -63,7 +64,7 @@ class DontHaveExtension:
         Args:
             payload: Message payload containing piece index
         """
-        if len(payload) < 4:
+        if len(payload) < BitTorrentProtocolConstants.DONTHAVE_PAYLOAD_SIZE:
             logger.warning("Invalid DONT_HAVE message length", extra={"class_name": self.__class__.__name__})
             return
 
@@ -193,7 +194,9 @@ class DontHaveExtension:
                 if self.simulate_donthave_behavior:
                     import random
 
-                    if random.random() < 0.05:  # 5% chance piece becomes unavailable
+                    if (
+                        random.random() < BitTorrentProtocolConstants.PIECE_UNAVAILABLE_PROBABILITY
+                    ):  # 5% chance piece becomes unavailable
                         unavailable_pieces.add(piece_index)
                         self.send_donthave(piece_index)
 

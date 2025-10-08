@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 import lib.util.helpers as helpers
 from domain.app_settings import AppSettings
 from lib.logger import logger
+from lib.util.constants import BitTorrentProtocolConstants, CalculationConstants, NetworkConstants
 
 
 class BaseSeeder:
@@ -35,8 +36,8 @@ class BaseSeeder:
 
         # Use configured port range
         seeders_config = getattr(self.settings, "seeders", {})
-        port_min = seeders_config.get("port_range_min", 1025)
-        port_max = seeders_config.get("port_range_max", 65000)
+        port_min = seeders_config.get("port_range_min", NetworkConstants.PORT_RANGE_MIN)
+        port_max = seeders_config.get("port_range_max", NetworkConstants.PORT_RANGE_MAX)
         self.port = random.randint(port_min, port_max)
         self.info = {}
         self.active = False
@@ -80,8 +81,10 @@ class BaseSeeder:
         converted_profiles = {}
         for client_name, profile in profiles_config.items():
             converted_profiles[client_name] = {
-                "max_down": profile.get("max_down_kbps", 1024) * 1024,  # Convert KB/s to bytes/s
-                "max_up": profile.get("max_up_kbps", 512) * 1024,  # Convert KB/s to bytes/s
+                "max_down": profile.get("max_down_kbps", CalculationConstants.BYTES_PER_KB)
+                * CalculationConstants.KB_TO_BYTES_MULTIPLIER,  # Convert KB/s to bytes/s
+                "max_up": profile.get("max_up_kbps", 512)
+                * CalculationConstants.KB_TO_BYTES_MULTIPLIER,  # Convert KB/s to bytes/s
                 "seed_ratio": profile.get("seed_ratio", 0.25),  # Keep as-is
             }
 
@@ -100,8 +103,15 @@ class BaseSeeder:
         Returns:
             Interval with random jitter applied
         """
-        jitter_percent = 0.1  # ±10% jitter
-        jitter = interval * jitter_percent * (random.random() * 2 - 1)  # Random value between -10% and +10%
+        jitter_percent = CalculationConstants.ANNOUNCE_JITTER_PERCENT  # ±10% jitter
+        jitter = (
+            interval
+            * jitter_percent
+            * (
+                random.random() * CalculationConstants.JITTER_RANGE_MULTIPLIER
+                + CalculationConstants.JITTER_OFFSET_ADJUSTMENT
+            )
+        )  # Random value between -10% and +10%
         jittered_interval = interval + jitter
 
         logger.debug(
@@ -374,7 +384,11 @@ class BaseSeeder:
         # Try to extract readable ASCII for unknown clients
         readable_part = ""
         for char in peer_id[:8]:
-            if 32 <= ord(char) <= 126:  # Printable ASCII
+            if (
+                BitTorrentProtocolConstants.PRINTABLE_ASCII_MIN
+                <= ord(char)
+                <= BitTorrentProtocolConstants.PRINTABLE_ASCII_MAX
+            ):  # Printable ASCII
                 readable_part += char
             else:
                 readable_part += "?"

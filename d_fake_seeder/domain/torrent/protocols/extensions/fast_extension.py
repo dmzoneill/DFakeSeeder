@@ -12,6 +12,7 @@ from typing import Set
 
 from domain.app_settings import AppSettings
 from lib.logger import logger
+from lib.util.constants import BitTorrentProtocolConstants
 
 
 class FastExtension:
@@ -47,8 +48,8 @@ class FastExtension:
 
         # For fake seeding
         self.simulate_fast_behavior = True
-        self.max_allowed_fast = 10  # Maximum allowed fast pieces
-        self.max_suggest_pieces = 5  # Maximum pieces to suggest
+        self.max_allowed_fast = BitTorrentProtocolConstants.MAX_ALLOWED_FAST_PIECES  # Maximum allowed fast pieces
+        self.max_suggest_pieces = BitTorrentProtocolConstants.MAX_SUGGEST_PIECES  # Maximum pieces to suggest
 
         logger.debug(
             "Fast Extension initialized",

@@ -12,6 +12,8 @@ import gi
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa: E402
 
+from lib.util.constants import NetworkConstants  # noqa: E402
+
 from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import NotificationMixin  # noqa: E402
 from .settings_mixins import TranslationMixin  # noqa: E402
@@ -114,7 +116,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Listening port
             listening_port = self.get_widget("listening_port")
             if listening_port:
-                port = connection_settings.get("listening_port", 6881)
+                port = connection_settings.get("listening_port", NetworkConstants.DEFAULT_PORT)
                 listening_port.set_value(port)
 
             # UPnP setting
@@ -411,7 +413,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Reset to default connection values
             listening_port = self.get_widget("listening_port")
             if listening_port:
-                listening_port.set_value(6881)
+                listening_port.set_value(NetworkConstants.DEFAULT_PORT)
 
             upnp_enabled = self.get_widget("upnp_enabled")
             if upnp_enabled:

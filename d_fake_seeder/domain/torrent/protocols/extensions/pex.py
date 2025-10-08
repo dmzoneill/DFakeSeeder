@@ -13,6 +13,7 @@ from typing import List, Set, Tuple
 
 from domain.app_settings import AppSettings
 from lib.logger import logger
+from lib.util.constants import PeerExchangeConstants
 
 try:
     import bencode
@@ -309,9 +310,18 @@ class PeerExchangeExtension:
                 # Use common ISP IP ranges
                 first_octet = random.choice(
                     [
-                        random.randint(1, 126),  # Class A (avoid 127.x.x.x)
-                        random.randint(128, 191),  # Class B
-                        random.randint(192, 223),  # Class C (avoid 192.168.x.x)
+                        random.randint(
+                            PeerExchangeConstants.CLASS_A_FIRST_OCTET_MIN,
+                            PeerExchangeConstants.CLASS_A_FIRST_OCTET_MAX,
+                        ),  # Class A (avoid 127.x.x.x)
+                        random.randint(
+                            PeerExchangeConstants.CLASS_B_FIRST_OCTET_MIN,
+                            PeerExchangeConstants.CLASS_B_FIRST_OCTET_MAX,
+                        ),  # Class B
+                        random.randint(
+                            PeerExchangeConstants.CLASS_C_FIRST_OCTET_MIN,
+                            PeerExchangeConstants.CLASS_C_FIRST_OCTET_MAX,
+                        ),  # Class C (avoid 192.168.x.x)
                     ]
                 )
 
@@ -329,13 +339,17 @@ class PeerExchangeExtension:
                 # Generate realistic port (common BitTorrent ports)
                 port = random.choice(
                     [
-                        random.randint(6881, 6889),  # Traditional BT ports
-                        random.randint(49152, 65535),  # Dynamic/ephemeral ports
+                        random.randint(
+                            PeerExchangeConstants.WELL_KNOWN_PORT_MIN, PeerExchangeConstants.WELL_KNOWN_PORT_MAX
+                        ),  # Traditional BT ports
+                        random.randint(
+                            PeerExchangeConstants.EPHEMERAL_PORT_MIN, PeerExchangeConstants.EPHEMERAL_PORT_MAX
+                        ),  # Dynamic/ephemeral ports
                     ]
                 )
 
                 # Random flags (encryption support, etc.)
-                flags = random.randint(0, 3)
+                flags = random.randint(PeerExchangeConstants.FLAGS_MIN, PeerExchangeConstants.FLAGS_MAX)
 
                 self.add_peer(ip, port, flags)
 

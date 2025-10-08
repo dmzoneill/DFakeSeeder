@@ -20,6 +20,7 @@ from typing import Dict, Optional, Set
 
 from domain.app_settings import AppSettings
 from lib.logger import logger
+from lib.util.constants import AsyncConstants
 
 
 class SharedAsyncExecutor:
@@ -103,7 +104,7 @@ class SharedAsyncExecutor:
             self.loop_thread.start()
 
             # Wait for event loop to be ready
-            max_wait = 2.0  # 2 second timeout
+            max_wait = AsyncConstants.EXECUTOR_SHUTDOWN_TIMEOUT  # 2 second timeout
             start_time = time.time()
             while self.event_loop is None and time.time() - start_time < max_wait:
                 time.sleep(0.01)

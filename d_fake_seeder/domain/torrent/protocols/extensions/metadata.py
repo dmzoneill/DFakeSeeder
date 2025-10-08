@@ -11,6 +11,7 @@ from typing import Dict, Optional
 
 from domain.app_settings import AppSettings
 from lib.logger import logger
+from lib.util.constants import BitTorrentProtocolConstants
 from lib.util.constants import ProtocolConstants
 
 try:
@@ -321,7 +322,7 @@ class MetadataExtension:
                 b"name": b"fake_file.txt",
                 b"length": 1024 * 1024,  # 1MB file
                 b"piece length": 32768,  # 32KB pieces
-                b"pieces": b"\x00" * 20 * 32,  # 32 fake piece hashes
+                b"pieces": b"\x00" * 20 * BitTorrentProtocolConstants.FAKE_METADATA_PIECE_COUNT,  # 32 fake piece hashes
             }
 
             metadata_dict = {
