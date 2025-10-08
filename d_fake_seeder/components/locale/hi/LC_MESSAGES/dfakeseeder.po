@@ -347,6 +347,9 @@ msgstr "क्लाइंट"
 msgid "Client Switch Probability:"
 msgstr "क्लाइंट स्विच संभावना:"
 
+msgid "Columns"
+msgstr "Columns"
+
 msgid "Comment"
 msgstr "टिप्पणी"
 

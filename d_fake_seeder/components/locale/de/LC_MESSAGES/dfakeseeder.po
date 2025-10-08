@@ -347,6 +347,9 @@ msgstr "Klient"
 msgid "Client Switch Probability:"
 msgstr "Client-Wechsel-Wahrscheinlichkeit:"
 
+msgid "Columns"
+msgstr "Columns"
+
 msgid "Comment"
 msgstr "Kommentar"
 

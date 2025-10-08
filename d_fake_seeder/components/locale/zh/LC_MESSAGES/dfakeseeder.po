@@ -347,6 +347,9 @@ msgstr "客户端"
 msgid "Client Switch Probability:"
 msgstr "客户端切换概率:"
 
+msgid "Columns"
+msgstr "Columns"
+
 msgid "Comment"
 msgstr "注释"
 
