@@ -9,13 +9,10 @@ import gi
 from components.component.component import Component
 from domain.app_settings import AppSettings
 from lib.logger import logger
-
 # Import tab configuration system
-from lib.util.tab_config import (
-    get_essential_tab_classes,
-    get_lazy_load_tab_classes,
-    get_torrent_details_tab_classes,
-)
+from lib.util.tab_config import (get_essential_tab_classes,
+                                 get_lazy_load_tab_classes,
+                                 get_torrent_details_tab_classes)
 
 from .details_tab import DetailsTab
 from .files_tab import FilesTab
@@ -24,7 +21,6 @@ from .log_tab import LogTab
 from .options_tab import OptionsTab
 from .outgoing_connections_tab import OutgoingConnectionsTab
 from .peers_tab import PeersTab
-
 # Import all tab classes
 from .status_tab import StatusTab
 from .trackers_tab import TrackersTab

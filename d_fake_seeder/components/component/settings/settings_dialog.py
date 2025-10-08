@@ -12,7 +12,6 @@ gi.require_version("Gtk", "4.0")
 from domain.app_settings import AppSettings  # noqa
 from gi.repository import Gtk  # noqa
 from lib.logger import logger  # noqa
-
 # Import tab configuration system
 from lib.util.tab_config import get_config_metadata  # noqa
 from lib.util.tab_config import get_settings_tab_classes  # noqa: E402
@@ -22,7 +21,6 @@ from .advanced_tab import AdvancedTab  # noqa
 from .bittorrent_tab import BitTorrentTab  # noqa
 from .connection_tab import ConnectionTab  # noqa
 from .dht_tab import DHTTab  # noqa
-
 # Import all tab classes  # noqa
 from .general_tab import GeneralTab  # noqa
 from .peer_protocol_tab import PeerProtocolTab  # noqa

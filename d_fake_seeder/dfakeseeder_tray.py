@@ -22,19 +22,16 @@ gi.require_version("Gio", "2.0")
 
 # isort: split
 # GTK3 translation manager must be imported before gi.repository to prevent version conflicts
-from domain.translation_manager.gtk3_implementation import (  # noqa: E402
-    TranslationManagerGTK3,
-)
+from domain.translation_manager.gtk3_implementation import \
+    TranslationManagerGTK3  # noqa: E402
 
 # isort: split
 # gi.repository imports after translation manager to maintain GTK version isolation
 from gi.repository import AppIndicator3, Gio, GLib, Gtk, Notify  # noqa: E402
 from lib.dbus_client import DBusClient  # noqa: E402
 from lib.logger import logger  # noqa: E402
-from lib.util.language_config import (  # noqa: E402
-    get_language_display_names,
-    get_supported_language_codes,
-)
+from lib.util.language_config import get_language_display_names  # noqa: E402
+from lib.util.language_config import get_supported_language_codes
 
 
 class TrayApplication:

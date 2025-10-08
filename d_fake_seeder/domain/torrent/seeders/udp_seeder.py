@@ -1,5 +1,4 @@
 import random
-
 # import select  # Replaced with socket timeout for PyPy compatibility
 import socket
 import struct
@@ -9,7 +8,8 @@ from domain.app_settings import AppSettings
 from domain.torrent.model.tracker import Tracker
 from domain.torrent.seeders.base_seeder import BaseSeeder
 from lib.logger import logger
-from lib.util.constants import NetworkConstants, TimeoutConstants, UDPTrackerConstants
+from lib.util.constants import (NetworkConstants, TimeoutConstants,
+                                UDPTrackerConstants)
 
 
 class UDPSeeder(BaseSeeder):

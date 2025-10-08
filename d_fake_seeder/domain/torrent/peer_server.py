@@ -13,7 +13,9 @@ from typing import Dict, Optional, Set
 from domain.app_settings import AppSettings
 from domain.torrent.bittorrent_message import BitTorrentMessage
 from lib.logger import logger
-from lib.util.constants import BitTorrentProtocolConstants, ConnectionConstants, NetworkConstants, TimeoutConstants
+from lib.util.constants import (BitTorrentProtocolConstants,
+                                ConnectionConstants, NetworkConstants,
+                                TimeoutConstants)
 
 
 class PeerServer:

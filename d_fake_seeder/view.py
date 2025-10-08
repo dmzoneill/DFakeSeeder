@@ -15,13 +15,12 @@ gi.require_version("Adw", "1")
 from components.component.states import States  # noqa: E402
 from components.component.statusbar import Statusbar  # noqa: E402
 from components.component.toolbar import Toolbar  # noqa: E402
-
 # Importing necessary libraries
-from components.component.torrent_details import TorrentDetailsNotebook  # noqa: E402
+from components.component.torrent_details import \
+    TorrentDetailsNotebook  # noqa: E402
 from components.component.torrents import Torrents  # noqa: E402
 from domain.app_settings import AppSettings  # noqa: E402
 from gi.repository import Adw, Gdk, Gio, GLib, Gtk  # noqa; noqa: E402
-
 # Translation function will be provided by model's TranslationManager
 from lib.logger import logger  # noqa: E402
 from lib.util.shutdown_progress import ShutdownProgressTracker  # noqa: E402

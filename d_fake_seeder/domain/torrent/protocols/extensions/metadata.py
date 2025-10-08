@@ -11,8 +11,7 @@ from typing import Dict, Optional
 
 from domain.app_settings import AppSettings
 from lib.logger import logger
-from lib.util.constants import BitTorrentProtocolConstants
-from lib.util.constants import ProtocolConstants
+from lib.util.constants import BitTorrentProtocolConstants, ProtocolConstants
 
 try:
     import bencode
