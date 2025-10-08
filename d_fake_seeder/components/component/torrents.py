@@ -36,7 +36,8 @@ class Torrents(Component, ColumnTranslationMixin):
         self.window = self.builder.get_object("main_window")
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
-        self.settings.connect("attribute-changed", self.handle_attribute_changed)
+        # Store handler ID so we can block it during column toggling to prevent deadlock
+        self._attribute_handler_id = self.settings.connect("attribute-changed", self.handle_attribute_changed)
         # Load UI margin and spacing settings
         ui_settings = getattr(self.settings, "ui_settings", {})
         self.ui_margin_small = ui_settings.get("ui_margin_small", 1)
@@ -103,16 +104,28 @@ class Torrents(Component, ColumnTranslationMixin):
         menu.append(self._("Update Tracker"), "app.update_tracker")
         menu.append_submenu(self._("Queue"), queue_submenu)
         columns_menu = Gio.Menu.new()
-        # Check if the attribute is a visible column in the columnview
-        visible_columns = [
-            "id" if column.get_title() == "#" else column.get_title()
-            for column in self.torrents_columnview.get_columns()
-            if column.get_visible()
-        ]
-        # Create a stateful action for each attribute
+        # Build a mapping from column objects to their attribute names (not translated titles!)
+        # Use the tracking dict we maintain for translations
+        column_to_attr = {}
+        if self.torrents_columnview in self._translatable_columns:
+            for col, prop_name, col_type in self._translatable_columns[self.torrents_columnview]:
+                column_to_attr[col] = prop_name
+
+        # Get list of visible column attribute names
+        visible_column_attrs = set()
+        for column in self.torrents_columnview.get_columns():
+            if column.get_visible():
+                # Use our tracking dict to get the attribute name
+                attr_name = column_to_attr.get(column, None)
+                if attr_name:
+                    visible_column_attrs.add(attr_name)
+
+        # Create or update stateful actions for each attribute
         for attribute in attributes:
+            # Check if this attribute's column is visible
+            state = attribute in visible_column_attrs
             if attribute not in self.stateful_actions.keys():
-                state = attribute in visible_columns
+                # Create new action
                 self.stateful_actions[attribute] = Gio.SimpleAction.new_stateful(
                     f"toggle_{attribute}",
                     None,
@@ -120,6 +133,9 @@ class Torrents(Component, ColumnTranslationMixin):
                 )
                 self.stateful_actions[attribute].connect("change-state", self.on_stateful_action_change_state)
                 self.action_group.add_action(self.stateful_actions[attribute])
+            else:
+                # Update existing action state to match current column visibility
+                self.stateful_actions[attribute].set_state(GLib.Variant.new_boolean(state))
         # Iterate over attributes and add toggle items for each one
         for attribute in attributes:
             # Use translated column name for menu items
@@ -138,44 +154,157 @@ class Torrents(Component, ColumnTranslationMixin):
         self.popover.popup()
 
     def on_stateful_action_change_state(self, action, value):
+        logger.info("🔵 COLUMN TOGGLE: START", extra={"class_name": self.__class__.__name__})
+
         # Prevent re-entry if this handler is triggered by settings changes
         if hasattr(self, "_updating_columns") and self._updating_columns:
+            logger.info("🔵 COLUMN TOGGLE: RE-ENTRY DETECTED, SKIPPING", extra={"class_name": self.__class__.__name__})
             return
 
         try:
             self._updating_columns = True
+            logger.info("🔵 COLUMN TOGGLE: Set _updating_columns flag", extra={"class_name": self.__class__.__name__})
 
+            logger.info(
+                f"🔵 COLUMN TOGGLE: Action={action.get_name()}, Value={value.get_boolean()}",
+                extra={"class_name": self.__class__.__name__},
+            )
             self.stateful_actions[action.get_name()[len("toggle_") :]].set_state(  # noqa: E203
                 GLib.Variant.new_boolean(value.get_boolean())
             )
+            logger.info("🔵 COLUMN TOGGLE: Action state updated", extra={"class_name": self.__class__.__name__})
+
             checked_items = []
             all_unchecked = True
             ATTRIBUTES = Attributes
             attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
             column_titles = [column if column != "#" else "id" for column in attributes]
+            logger.info(
+                f"🔵 COLUMN TOGGLE: Total attributes={len(attributes)}", extra={"class_name": self.__class__.__name__}
+            )
+
             for title in column_titles:
                 for k, v in self.stateful_actions.items():
                     if k == title and v.get_state().get_boolean():
                         checked_items.append(title)
                         all_unchecked = False
                         break
-            if all_unchecked or len(checked_items) == len(attributes):
-                self.settings.columns = ""
-            else:
-                checked_items.sort(key=lambda x: column_titles.index(x))
-                self.settings.columns = ",".join(checked_items)
+            logger.info(
+                f"🔵 COLUMN TOGGLE: Checked items={checked_items}", extra={"class_name": self.__class__.__name__}
+            )
 
-            # Update column visibility directly without rebuilding - fixes hang issue
-            # The hang was caused by calling update_columns() which queries get_columns()
-            # while columns are potentially being modified by background tasks
+            # Update column visibility FIRST, before saving to settings
+            # This prevents the settings save from triggering signals that query the ColumnView
+            # while we're still in the middle of processing the menu action
             visible_set = set(checked_items) if checked_items else set(attributes)
-            for column in self.torrents_columnview.get_columns():
-                title = column.get_title()
-                # Handle special case where "#" is used for "id" column
-                column_id = "id" if title == "#" else title
+            logger.info(f"🔵 COLUMN TOGGLE: Visible set={visible_set}", extra={"class_name": self.__class__.__name__})
+
+            # If all unchecked, update all stateful actions to checked (since all columns will be visible)
+            if all_unchecked:
+                logger.info(
+                    "🔵 COLUMN TOGGLE: All unchecked, setting all actions to True",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                for title in column_titles:
+                    if title in self.stateful_actions:
+                        self.stateful_actions[title].set_state(GLib.Variant.new_boolean(True))
+
+            # Build reverse mapping: column object -> property_name (attribute)
+            logger.info("🔵 COLUMN TOGGLE: Building column mapping...", extra={"class_name": self.__class__.__name__})
+            column_to_attr = {}
+            if self.torrents_columnview in self._translatable_columns:
+                for col, prop_name, col_type in self._translatable_columns[self.torrents_columnview]:
+                    column_to_attr[col] = prop_name
+            logger.info(
+                f"🔵 COLUMN TOGGLE: Column mapping built, {len(column_to_attr)} columns",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+            logger.info(
+                "🔵 COLUMN TOGGLE: About to call get_columns()...", extra={"class_name": self.__class__.__name__}
+            )
+            columns = self.torrents_columnview.get_columns()
+            logger.info(
+                f"🔵 COLUMN TOGGLE: get_columns() returned {len(columns)} columns",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+            for idx, column in enumerate(columns):
+                logger.info(
+                    f"🔵 COLUMN TOGGLE: Processing column {idx}...", extra={"class_name": self.__class__.__name__}
+                )
+                # Get the attribute name from our tracking dict (not the translated title!)
+                column_id = column_to_attr.get(column, None)
+                if column_id is None:
+                    logger.info(
+                        f"🔵 COLUMN TOGGLE: Column {idx} not in mapping, getting title...",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                    # Fallback: try to extract from title if not registered
+                    title = column.get_title()
+                    logger.info(
+                        f"🔵 COLUMN TOGGLE: Column {idx} title={title}", extra={"class_name": self.__class__.__name__}
+                    )
+                    column_id = "id" if title == "#" else title
+                logger.info(
+                    f"🔵 COLUMN TOGGLE: Column {idx} id={column_id}, setting visibility...",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 column.set_visible(column_id in visible_set or not checked_items)
+                logger.info(
+                    f"🔵 COLUMN TOGGLE: Column {idx} visibility set", extra={"class_name": self.__class__.__name__}
+                )
+
+            logger.info(
+                "🔵 COLUMN TOGGLE: All column visibility updated", extra={"class_name": self.__class__.__name__}
+            )
+
+            # Now save to settings AFTER column visibility is updated
+            # CRITICAL: Block the attribute-changed signal handler to prevent re-entry
+            # The signal handler calls get_sorter() which can deadlock during menu processing
+            logger.info(
+                "🔵 COLUMN TOGGLE: About to block signal handler...", extra={"class_name": self.__class__.__name__}
+            )
+            if hasattr(self, "_attribute_handler_id"):
+                self.settings.handler_block(self._attribute_handler_id)
+                logger.info("🔵 COLUMN TOGGLE: Signal handler blocked", extra={"class_name": self.__class__.__name__})
+            else:
+                logger.warning(
+                    "🔵 COLUMN TOGGLE: No _attribute_handler_id found!", extra={"class_name": self.__class__.__name__}
+                )
+
+            try:
+                logger.info(
+                    "🔵 COLUMN TOGGLE: About to save settings...", extra={"class_name": self.__class__.__name__}
+                )
+                if all_unchecked or len(checked_items) == len(attributes):
+                    logger.info("🔵 COLUMN TOGGLE: Saving empty columns", extra={"class_name": self.__class__.__name__})
+                    self.settings.columns = ""
+                else:
+                    checked_items.sort(key=lambda x: column_titles.index(x))
+                    columns_str = ",".join(checked_items)
+                    logger.info(
+                        f"🔵 COLUMN TOGGLE: Saving columns={columns_str}", extra={"class_name": self.__class__.__name__}
+                    )
+                    self.settings.columns = columns_str
+                logger.info("🔵 COLUMN TOGGLE: Settings saved", extra={"class_name": self.__class__.__name__})
+            finally:
+                # Unblock the handler
+                logger.info(
+                    "🔵 COLUMN TOGGLE: About to unblock signal handler...",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                if hasattr(self, "_attribute_handler_id"):
+                    self.settings.handler_unblock(self._attribute_handler_id)
+                    logger.info(
+                        "🔵 COLUMN TOGGLE: Signal handler unblocked", extra={"class_name": self.__class__.__name__}
+                    )
         finally:
+            logger.info(
+                "🔵 COLUMN TOGGLE: Clearing _updating_columns flag", extra={"class_name": self.__class__.__name__}
+            )
             self._updating_columns = False
+            logger.info("🔵 COLUMN TOGGLE: COMPLETE", extra={"class_name": self.__class__.__name__})
 
     def update_columns(self):
         logger.debug("update_columns() started", "Torrents")
@@ -514,12 +643,29 @@ class Torrents(Component, ColumnTranslationMixin):
         sorter.changed(0)
 
     def handle_attribute_changed(self, source, key, value):
-        logger.debug(
-            "Attribute changed",
+        logger.info(
+            f"🔴 ATTRIBUTE CHANGED: key={key}, value={value}",
             extra={"class_name": self.__class__.__name__},
         )
+
+        # Skip if we're in the middle of a column toggle operation
+        if hasattr(self, "_updating_columns") and self._updating_columns:
+            logger.info(
+                "🔴 ATTRIBUTE CHANGED: Skipping due to _updating_columns flag",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return
+
+        logger.info(
+            "🔴 ATTRIBUTE CHANGED: About to call get_sorter()...", extra={"class_name": self.__class__.__name__}
+        )
         sorter = Gtk.ColumnView.get_sorter(self.torrents_columnview)
+        logger.info(
+            "🔴 ATTRIBUTE CHANGED: get_sorter() returned, calling changed(0)...",
+            extra={"class_name": self.__class__.__name__},
+        )
         sorter.changed(0)
+        logger.info("🔴 ATTRIBUTE CHANGED: COMPLETE", extra={"class_name": self.__class__.__name__})
 
     def on_key_pressed(self, controller, keyval, keycode, state):
         """Handle keyboard events for navigation"""
