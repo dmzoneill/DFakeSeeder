@@ -18,6 +18,7 @@ from domain.torrent.peer_connection import PeerConnection
 from domain.torrent.peer_info import PeerInfo
 from domain.torrent.shared_async_executor import SharedAsyncExecutor
 from lib.logger import logger
+from lib.util.constants import AsyncConstants, BitTorrentProtocolConstants, ConnectionConstants, TimeoutConstants
 
 
 class PeerProtocolManager:
@@ -27,7 +28,7 @@ class PeerProtocolManager:
         self,
         info_hash: bytes,
         our_peer_id: bytes,
-        max_connections: int = 50,
+        max_connections: int = ConnectionConstants.DEFAULT_MAX_PEER_CONNECTIONS,
         connection_callback=None,
     ):
         self.info_hash = info_hash
@@ -196,45 +197,55 @@ class PeerProtocolManager:
                         break
 
                     # Manage connections with cancellation checks and timeout
-                    await asyncio.wait_for(self._manage_connections(current_time), timeout=1.0)
+                    await asyncio.wait_for(
+                        self._manage_connections(current_time), timeout=AsyncConstants.MANAGE_CONNECTIONS_TIMEOUT
+                    )
 
                     if not self.running:
                         break
 
                     # Send keep-alive messages with timeout
-                    await asyncio.wait_for(self._send_keep_alives(current_time), timeout=1.0)
+                    await asyncio.wait_for(
+                        self._send_keep_alives(current_time), timeout=AsyncConstants.SEND_KEEP_ALIVES_TIMEOUT
+                    )
 
                     if not self.running:
                         break
 
                     # Poll peer status with timeout
-                    await asyncio.wait_for(self._poll_peer_status(), timeout=0.5)
+                    await asyncio.wait_for(self._poll_peer_status(), timeout=AsyncConstants.POLL_PEER_STATUS_TIMEOUT)
 
                     if not self.running:
                         break
 
                     # Exchange metadata with timeout
-                    await asyncio.wait_for(self._exchange_metadata(current_time), timeout=1.0)
+                    await asyncio.wait_for(
+                        self._exchange_metadata(current_time), timeout=AsyncConstants.EXCHANGE_METADATA_TIMEOUT
+                    )
 
                     if not self.running:
                         break
 
                     # Rotate connections with timeout
-                    await asyncio.wait_for(self._rotate_connections(current_time), timeout=1.0)
+                    await asyncio.wait_for(
+                        self._rotate_connections(current_time), timeout=AsyncConstants.ROTATE_CONNECTIONS_TIMEOUT
+                    )
 
                     if not self.running:
                         break
 
                     # Clean up connections with timeout
-                    await asyncio.wait_for(self._cleanup_connections(current_time), timeout=1.0)
+                    await asyncio.wait_for(
+                        self._cleanup_connections(current_time), timeout=AsyncConstants.CLEANUP_CONNECTIONS_TIMEOUT
+                    )
 
                     # Use shorter sleep with cancellation checks
                     sleep_duration = self.async_sleep_interval
-                    sleep_chunks = max(1, int(sleep_duration / 0.1))  # Sleep in 0.1 second chunks
+                    sleep_chunks = max(1, int(sleep_duration / TimeoutConstants.PEER_MANAGER_SLEEP_CHUNK))
                     for _ in range(sleep_chunks):
                         if not self.running:
                             return
-                        await asyncio.sleep(0.1)
+                        await asyncio.sleep(TimeoutConstants.PEER_MANAGER_SLEEP_CHUNK)
 
                 except asyncio.TimeoutError:
                     # Timeout is expected during shutdown
@@ -251,11 +262,13 @@ class PeerProtocolManager:
                     if not self.running:
                         break
                     # Shorter error sleep with cancellation check
-                    error_sleep_chunks = max(1, int(self.error_sleep_interval / 0.1))
+                    error_sleep_chunks = max(
+                        1, int(self.error_sleep_interval / TimeoutConstants.PEER_MANAGER_SLEEP_CHUNK)
+                    )
                     for _ in range(error_sleep_chunks):
                         if not self.running:
                             return
-                        await asyncio.sleep(0.1)
+                        await asyncio.sleep(TimeoutConstants.PEER_MANAGER_SLEEP_CHUNK)
 
         except asyncio.CancelledError:
             logger.info("🛑 PeerProtocolManager async loop cancelled", extra={"class_name": self.__class__.__name__})
@@ -369,8 +382,8 @@ class PeerProtocolManager:
 
         elif message_id == BitTorrentMessage.HAVE:
             # Peer has a new piece
-            if len(payload) >= 4:
-                piece_index = struct.unpack("!I", payload[:4])[0]
+            if len(payload) >= BitTorrentProtocolConstants.HAVE_PAYLOAD_SIZE:
+                piece_index = struct.unpack("!I", payload[: BitTorrentProtocolConstants.HAVE_PAYLOAD_SIZE])[0]
                 logger.debug(f"📦 Peer {address} has piece {piece_index}")
 
         elif message_id == BitTorrentMessage.CHOKE:
@@ -451,7 +464,9 @@ class PeerProtocolManager:
                 # These are legitimate BitTorrent protocol messages
 
                 # Send bitfield message (what pieces we "have")
-                bitfield = b"\x00" * 32  # Fake bitfield - all zeros (we have no pieces)
+                bitfield = (
+                    b"\x00" * BitTorrentProtocolConstants.FAKE_BITFIELD_SIZE_BYTES
+                )  # Fake bitfield - all zeros (we have no pieces)
                 await connection.send_message(BitTorrentMessage.BITFIELD, bitfield)
 
                 # Send have messages occasionally (claiming to have pieces)

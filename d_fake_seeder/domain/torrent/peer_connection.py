@@ -14,6 +14,7 @@ from typing import Optional, Tuple
 from domain.app_settings import AppSettings
 from domain.torrent.peer_info import PeerInfo
 from lib.logger import logger
+from lib.util.constants import BitTorrentProtocolConstants
 
 
 class PeerConnection:
@@ -115,9 +116,9 @@ class PeerConnection:
         try:
             # BitTorrent handshake format:
             # <pstrlen><pstr><reserved><info_hash><peer_id>
-            pstr = b"BitTorrent protocol"
-            pstrlen = len(pstr)
-            reserved = b"\\x00" * 8  # 8 zero bytes
+            pstr = BitTorrentProtocolConstants.PROTOCOL_NAME
+            pstrlen = BitTorrentProtocolConstants.PROTOCOL_NAME_LENGTH
+            reserved = BitTorrentProtocolConstants.RESERVED_BYTES
 
             handshake = struct.pack("!B", pstrlen) + pstr + reserved + self.info_hash + self.our_peer_id
 
@@ -126,10 +127,10 @@ class PeerConnection:
 
             # Receive handshake response
             response = await asyncio.get_running_loop().run_in_executor(
-                None, self.socket.recv, 68  # Handshake is always 68 bytes
+                None, self.socket.recv, BitTorrentProtocolConstants.HANDSHAKE_LENGTH
             )
 
-            if len(response) != 68:
+            if len(response) != BitTorrentProtocolConstants.HANDSHAKE_LENGTH:
                 logger.debug(
                     f"❌ Invalid handshake response length from {self.peer_info.ip}",
                     extra={"class_name": self.__class__.__name__},
@@ -149,15 +150,20 @@ class PeerConnection:
                 return False
 
             # Extract info hash
-            info_hash_start = 1 + response_pstrlen + 8
-            info_hash_end = info_hash_start + 20
+            info_hash_start = 1 + response_pstrlen + BitTorrentProtocolConstants.RESERVED_BYTES_LENGTH
+            info_hash_end = info_hash_start + BitTorrentProtocolConstants.INFOHASH_LENGTH
             response_info_hash = response[info_hash_start:info_hash_end]
             if response_info_hash != self.info_hash:
                 return False
 
             # Extract peer ID
-            peer_id_start = 1 + response_pstrlen + 8 + 20
-            peer_id_end = peer_id_start + 20
+            peer_id_start = (
+                1
+                + response_pstrlen
+                + BitTorrentProtocolConstants.RESERVED_BYTES_LENGTH
+                + BitTorrentProtocolConstants.INFOHASH_LENGTH
+            )
+            peer_id_end = peer_id_start + BitTorrentProtocolConstants.PEER_ID_LENGTH
             peer_id = response[peer_id_start:peer_id_end]
             self.peer_info.peer_id = peer_id
 
@@ -222,15 +228,17 @@ class PeerConnection:
             self.socket.settimeout(timeout)
 
             # Read message length (4 bytes)
-            length_data = await asyncio.get_running_loop().run_in_executor(None, self.socket.recv, 4)
+            length_data = await asyncio.get_running_loop().run_in_executor(
+                None, self.socket.recv, BitTorrentProtocolConstants.MESSAGE_LENGTH_HEADER_BYTES
+            )
 
-            if len(length_data) != 4:
+            if len(length_data) != BitTorrentProtocolConstants.MESSAGE_LENGTH_HEADER_BYTES:
                 return None
 
             length = struct.unpack("!I", length_data)[0]
 
             # Handle keep-alive message (length = 0)
-            if length == 0:
+            if length == BitTorrentProtocolConstants.KEEPALIVE_MESSAGE_LENGTH:
                 return (-1, b"")  # Special case for keep-alive
 
             # Read message ID and payload
@@ -240,7 +248,11 @@ class PeerConnection:
                 return None
 
             message_id = message_data[0]
-            payload = message_data[1:] if length > 1 else b""
+            payload = (
+                message_data[BitTorrentProtocolConstants.MESSAGE_PAYLOAD_START_OFFSET :]
+                if length > BitTorrentProtocolConstants.MESSAGE_ID_LENGTH_BYTES
+                else b""
+            )
 
             self.last_message_time = time.time()
             return (message_id, payload)
@@ -259,7 +271,7 @@ class PeerConnection:
 
         try:
             # Keep-alive is just a length of 0
-            keep_alive = struct.pack("!I", 0)
+            keep_alive = struct.pack("!I", BitTorrentProtocolConstants.KEEPALIVE_MESSAGE_LENGTH)
             await asyncio.get_running_loop().run_in_executor(None, self.socket.send, keep_alive)
             return True
         except Exception:

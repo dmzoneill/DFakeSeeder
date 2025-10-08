@@ -13,12 +13,17 @@ from typing import Dict, Optional, Set
 from domain.app_settings import AppSettings
 from domain.torrent.bittorrent_message import BitTorrentMessage
 from lib.logger import logger
+from lib.util.constants import BitTorrentProtocolConstants, ConnectionConstants, NetworkConstants, TimeoutConstants
 
 
 class PeerServer:
     """Server to accept incoming BitTorrent peer connections"""
 
-    def __init__(self, port: int = 6881, max_connections: int = 50):
+    def __init__(
+        self,
+        port: int = NetworkConstants.DEFAULT_PORT,
+        max_connections: int = ConnectionConstants.DEFAULT_MAX_INCOMING_CONNECTIONS,
+    ):
         self.port = port
         self.max_connections = max_connections
         self.running = False
@@ -105,7 +110,7 @@ class PeerServer:
 
         # Wait for server thread with aggressive timeout
         if self.server_thread and self.server_thread.is_alive():
-            join_timeout = 1.0  # Aggressive 1 second timeout
+            join_timeout = TimeoutConstants.SERVER_THREAD_SHUTDOWN
             logger.info(
                 f"⏱️ Waiting for server thread to finish (timeout: {join_timeout}s)",
                 extra={"class_name": self.__class__.__name__},
@@ -210,16 +215,25 @@ class PeerServer:
 
         # Wait for handshake
         try:
-            handshake_data = await asyncio.wait_for(reader.read(68), timeout=self.handshake_timeout)
-            if len(handshake_data) < 68:
+            handshake_data = await asyncio.wait_for(
+                reader.read(BitTorrentProtocolConstants.HANDSHAKE_LENGTH), timeout=self.handshake_timeout
+            )
+            if len(handshake_data) < BitTorrentProtocolConstants.HANDSHAKE_LENGTH:
                 return
 
             # Parse handshake
-            if handshake_data[0] != 19 or handshake_data[1:20] != b"BitTorrent protocol":
+            if (
+                handshake_data[0] != BitTorrentProtocolConstants.PROTOCOL_NAME_LENGTH
+                or handshake_data[1:20] != BitTorrentProtocolConstants.PROTOCOL_NAME
+            ):
                 logger.debug(f"❌ Invalid handshake from {client_key}")
                 return
 
-            info_hash = handshake_data[28:48]
+            info_hash_start = (
+                1 + BitTorrentProtocolConstants.PROTOCOL_NAME_LENGTH + BitTorrentProtocolConstants.RESERVED_BYTES_LENGTH
+            )
+            info_hash_end = info_hash_start + BitTorrentProtocolConstants.INFOHASH_LENGTH
+            info_hash = handshake_data[info_hash_start:info_hash_end]
 
             # Check if we know this torrent
             if info_hash not in self.known_info_hashes:
@@ -246,10 +260,13 @@ class PeerServer:
                 )
 
             # Send handshake response
-            our_peer_id = b"-FS0001-" + b"1234567890ab"  # Fake Seeder v0.0.01
+            our_peer_id = (
+                BitTorrentProtocolConstants.FAKE_SEEDER_PEER_ID_PREFIX + b"1234567890ab"
+            )  # Fake Seeder v0.0.01
             handshake_response = (
-                b"\x13BitTorrent protocol"  # Protocol string
-                + b"\x00" * 8  # Reserved bytes
+                struct.pack("!B", BitTorrentProtocolConstants.PROTOCOL_NAME_LENGTH)  # Protocol name length
+                + BitTorrentProtocolConstants.PROTOCOL_NAME  # Protocol string
+                + BitTorrentProtocolConstants.RESERVED_BYTES  # Reserved bytes
                 + info_hash  # Info hash
                 + our_peer_id  # Our peer ID
             )
@@ -303,7 +320,7 @@ class PeerServer:
                 message_length = struct.unpack(">I", length_data)[0]
 
                 # Keep-alive message
-                if message_length == 0:
+                if message_length == BitTorrentProtocolConstants.KEEPALIVE_MESSAGE_LENGTH:
                     logger.debug(f"💓 Keep-alive from {client_key}")
                     continue
 
@@ -313,7 +330,11 @@ class PeerServer:
                     break
 
                 message_type = message_data[0]
-                payload = message_data[1:] if len(message_data) > 1 else b""
+                payload = (
+                    message_data[BitTorrentProtocolConstants.MESSAGE_PAYLOAD_START_OFFSET :]
+                    if len(message_data) > BitTorrentProtocolConstants.MESSAGE_ID_LENGTH_BYTES
+                    else b""
+                )
 
                 await self._handle_message(writer, client_key, message_type, payload)
 
@@ -343,7 +364,7 @@ class PeerServer:
             await writer.drain()
 
         elif message_type == BitTorrentMessage.REQUEST:
-            if len(payload) >= 12:
+            if len(payload) >= BitTorrentProtocolConstants.REQUEST_PAYLOAD_SIZE:
                 piece_index = struct.unpack(">I", payload[0:4])[0]
                 offset = struct.unpack(">I", payload[4:8])[0]
                 length = struct.unpack(">I", payload[8:12])[0]
@@ -356,7 +377,7 @@ class PeerServer:
                 await self._send_fake_piece(writer, piece_index, offset, length)
 
         elif message_type == BitTorrentMessage.HAVE:
-            if len(payload) >= 4:
+            if len(payload) >= BitTorrentProtocolConstants.HAVE_PAYLOAD_SIZE:
                 piece_index = struct.unpack(">I", payload[0:4])[0]
                 logger.debug(f"📦 Peer {client_key} has piece {piece_index}")
 
@@ -376,7 +397,7 @@ class PeerServer:
         fake_data = self.fake_piece_data[:length]
 
         # Send piece message
-        message_header = struct.pack(">I", 9 + length)  # Length
+        message_header = struct.pack(">I", BitTorrentProtocolConstants.PIECE_MESSAGE_HEADER_SIZE + length)  # Length
         message_type = bytes([BitTorrentMessage.PIECE])  # Type
         piece_header = struct.pack(">II", piece_index, offset)  # Piece index + offset
 

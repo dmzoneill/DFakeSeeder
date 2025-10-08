@@ -7,6 +7,7 @@ from domain.app_settings import AppSettings
 from domain.torrent.model.tracker import Tracker
 from domain.torrent.seeders.base_seeder import BaseSeeder
 from lib.logger import logger
+from lib.util.constants import RetryConstants, TimeoutConstants
 from view import View
 
 
@@ -189,13 +190,13 @@ class HTTPSeeder(BaseSeeder):
             extra={"class_name": self.__class__.__name__},
         )
 
-        max_retries = 3  # Limit retries to prevent infinite loops
+        max_retries = RetryConstants.HTTP_ANNOUNCE_MAX_RETRIES
         retry_count = 0
 
         while retry_count < max_retries and not self.shutdown_requested:
             try:
                 # Use timeout for semaphore acquisition
-                if not self.get_tracker_semaphore().acquire(timeout=2.0):
+                if not self.get_tracker_semaphore().acquire(timeout=TimeoutConstants.TRACKER_SEMAPHORE_ANNOUNCE):
                     logger.warning(
                         "⏱️ Timeout acquiring tracker semaphore",
                         extra={"class_name": self.__class__.__name__},
@@ -249,7 +250,7 @@ class HTTPSeeder(BaseSeeder):
                         extra={"class_name": self.__class__.__name__},
                     )
                     # Limit sleep time and check for shutdown
-                    sleep_time = min(self.retry_sleep_interval, 1.0)
+                    sleep_time = min(self.retry_sleep_interval, TimeoutConstants.HTTP_RETRY_MAX_SLEEP)
                     sleep(sleep_time)
             finally:
                 try:
