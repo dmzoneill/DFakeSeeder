@@ -16,6 +16,7 @@ from lib.handlers.file_modified_event_handler import (  # noqa: E402
     FileModifiedEventHandler,
 )
 from lib.logger import logger  # noqa: E402
+from lib.util.constants import NetworkConstants  # noqa: E402
 
 if WATCHDOG_AVAILABLE:
     from watchdog.observers import Observer  # noqa: E402
@@ -561,7 +562,7 @@ class AppSettings(GObject.GObject):
     # Connection settings
     @property
     def listening_port(self):
-        return self.get("listening_port", 6881)
+        return self.get("listening_port", NetworkConstants.DEFAULT_PORT)
 
     @listening_port.setter
     def listening_port(self, value):

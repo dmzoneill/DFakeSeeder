@@ -11,6 +11,7 @@ from typing import Dict, Optional
 
 from domain.app_settings import AppSettings
 from lib.logger import logger
+from lib.util.constants import ProtocolConstants
 
 try:
     import bencode
@@ -41,7 +42,7 @@ class MetadataExtension:
         # Metadata state
         self.metadata: Optional[bytes] = None
         self.metadata_size = 0
-        self.piece_size = 16384  # 16KB pieces
+        self.piece_size = ProtocolConstants.PIECE_SIZE_DEFAULT
         self.pieces_count = 0
         self.received_pieces: Dict[int, bytes] = {}
         self.requested_pieces: set = set()
