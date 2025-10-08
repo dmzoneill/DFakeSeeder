@@ -12,6 +12,7 @@ from domain.app_settings import AppSettings
 from domain.torrent.model.connection_peer import ConnectionPeer
 from gi.repository import GLib
 from lib.logger import logger
+from lib.util.constants import ConnectionConstants
 
 
 class ConnectionManager:
@@ -33,9 +34,13 @@ class ConnectionManager:
         self.outgoing_display_timers: Dict[str, float] = {}
 
         # Connection display settings (based on tickspeed)
-        self.failed_connection_display_cycles = 1  # Show failed connections for 1 cycle
-        self.minimum_display_cycles = 1  # Minimum cycles to show any connection
-        self.failed_connection_timeout_cycles = 3  # Exclude failed connections after 3 cycles
+        self.failed_connection_display_cycles = (
+            ConnectionConstants.FAILED_CONNECTION_DISPLAY_CYCLES
+        )  # Show failed connections for 1 cycle
+        self.minimum_display_cycles = ConnectionConstants.MIN_DISPLAY_CYCLES  # Minimum cycles to show any connection
+        self.failed_connection_timeout_cycles = (
+            ConnectionConstants.TIMEOUT_CYCLES
+        )  # Exclude failed connections after 3 cycles
 
         # Callbacks for UI updates
         self.update_callbacks: List[callable] = []
@@ -48,7 +53,9 @@ class ConnectionManager:
 
         # Single periodic cleanup timer instead of per-connection timers (O(1) instead of O(n))
         self.cleanup_timer_id = None
-        self.cleanup_interval_seconds = connection_manager_config.get("cleanup_interval_seconds", 2)
+        self.cleanup_interval_seconds = connection_manager_config.get(
+            "cleanup_interval_seconds", ConnectionConstants.CLEANUP_INTERVAL_SECONDS
+        )
         self._start_cleanup_timer()
 
     def get_failed_connection_display_time(self) -> float:
@@ -427,8 +434,8 @@ class ConnectionManager:
 
     def get_max_connections(self) -> Tuple[int, int, int]:
         """Get maximum connection limits (incoming, outgoing, total)"""
-        max_incoming = getattr(self.settings, "max_incoming_connections", 200)
-        max_outgoing = getattr(self.settings, "max_outgoing_connections", 50)
+        max_incoming = getattr(self.settings, "max_incoming_connections", ConnectionConstants.MAX_INCOMING_CONNECTIONS)
+        max_outgoing = getattr(self.settings, "max_outgoing_connections", ConnectionConstants.MAX_OUTGOING_CONNECTIONS)
         max_total = max_incoming + max_outgoing
         return max_incoming, max_outgoing, max_total
 

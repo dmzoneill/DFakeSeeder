@@ -13,6 +13,7 @@ from typing import Dict, List, Optional, Set, Tuple
 
 from domain.app_settings import AppSettings
 from lib.logger import logger
+from lib.util.constants import DHTConstants
 
 from .routing_table import NodeContact, RoutingTable
 
@@ -169,10 +170,10 @@ class PeerDiscovery:
         self.peer_storage[info_hash].add(peer_info)
 
         # Limit storage size
-        if len(self.peer_storage[info_hash]) > 200:
+        if len(self.peer_storage[info_hash]) > DHTConstants.MAX_PEERS_PER_INFOHASH:
             # Remove oldest peers
             sorted_peers = sorted(self.peer_storage[info_hash], key=lambda p: p.discovered_at)
-            self.peer_storage[info_hash] = set(sorted_peers[-200:])
+            self.peer_storage[info_hash] = set(sorted_peers[-DHTConstants.MAX_PEERS_PER_INFOHASH :])
 
         logger.debug(
             f"Stored peer {ip}:{port} for {info_hash.hex()[:16]}", extra={"class_name": self.__class__.__name__}
@@ -304,7 +305,7 @@ class PeerDiscovery:
             await self._send_dht_message(message, (node_contact.ip, node_contact.port))
 
             # Wait for response (with timeout)
-            response = await self._wait_for_response(transaction_id, timeout=10)
+            response = await self._wait_for_response(transaction_id, timeout=DHTConstants.RESPONSE_TIMEOUT_SECONDS)
 
             if response:
                 return self._parse_get_peers_response(response)
@@ -341,7 +342,7 @@ class PeerDiscovery:
 
                 await self._send_dht_message(message, (node_contact.ip, node_contact.port))
 
-                response = await self._wait_for_response(transaction_id, timeout=5)
+                response = await self._wait_for_response(transaction_id, timeout=DHTConstants.RESPONSE_SHORT_TIMEOUT)
                 if response and b"r" in response and b"token" in response[b"r"]:
                     tokens[node_contact] = response[b"r"][b"token"]
 
@@ -368,7 +369,7 @@ class PeerDiscovery:
             await self._send_dht_message(message, (node_contact.ip, node_contact.port))
 
             # Wait for response
-            response = await self._wait_for_response(transaction_id, timeout=5)
+            response = await self._wait_for_response(transaction_id, timeout=DHTConstants.RESPONSE_SHORT_TIMEOUT)
             return response is not None
 
         except Exception as e:

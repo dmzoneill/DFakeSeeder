@@ -11,6 +11,7 @@ from typing import Any, Dict, List
 
 from domain.app_settings import AppSettings
 from lib.logger import logger
+from lib.util.constants import BitTorrentProtocolConstants
 
 
 class ClientBehaviorEngine:
@@ -491,15 +492,15 @@ class ClientBehaviorEngine:
 
             # Set extension protocol bit if supported
             if "ut_metadata" in extensions or "ut_pex" in extensions:
-                reserved[5] |= 0x10  # Extension protocol bit
+                reserved[5] |= BitTorrentProtocolConstants.EXTENSION_PROTOCOL_BIT  # Extension protocol bit
 
             # Set DHT bit if supported
             if self.get_behavior_parameter("dht_participation", False):
-                reserved[7] |= 0x01  # DHT bit
+                reserved[7] |= BitTorrentProtocolConstants.DHT_BIT  # DHT bit
 
             # Set fast extension bit if supported
             if self.get_behavior_parameter("fast_extension", False):
-                reserved[7] |= 0x04  # Fast extension bit
+                reserved[7] |= BitTorrentProtocolConstants.FAST_EXTENSION_BIT  # Fast extension bit
 
         return bytes(reserved)
 

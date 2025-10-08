@@ -9,6 +9,7 @@ from domain.torrent.model.attributes import Attributes
 from domain.torrent.model.tracker import Tracker
 from domain.torrent.seeder import Seeder
 from lib.logger import logger
+from lib.util.constants import CalculationConstants, TimeoutConstants
 from view import View
 
 gi.require_version("Gdk", "4.0")
@@ -132,7 +133,7 @@ class Torrent(GObject.GObject):
                 fetched = self.seeder.load_peers()
                 if fetched is False:
                     logger.debug(
-                        "Seeder failed to load peers, retrying in 3 seconds",
+                        f"Seeder failed to load peers, retrying in {TimeoutConstants.TORRENT_PEER_RETRY} seconds",
                         extra={"class_name": self.__class__.__name__},
                     )
                     time.sleep(int(self.seeder_retry_interval))
@@ -214,18 +215,24 @@ class Torrent(GObject.GObject):
                 self.uploading = True
 
         if self.uploading:
-            upload_factor = int(random.uniform(self.speed_variation_min, self.speed_variation_max) * 1000)
-            next_speed = self.upload_speed * 1024 * upload_factor
+            upload_factor = int(
+                random.uniform(self.speed_variation_min, self.speed_variation_max)
+                * CalculationConstants.SPEED_CALCULATION_DIVISOR
+            )
+            next_speed = self.upload_speed * CalculationConstants.BYTES_PER_KB * upload_factor
             next_speed *= update_internal
-            next_speed /= 1000
+            next_speed /= CalculationConstants.SPEED_CALCULATION_DIVISOR
             self.session_uploaded += int(next_speed)
             self.total_uploaded += self.session_uploaded
 
         if self.progress < 1.0:
-            download_factor = int(random.uniform(self.speed_variation_min, self.speed_variation_max) * 1000)
-            next_speed = self.download_speed * 1024 * download_factor
+            download_factor = int(
+                random.uniform(self.speed_variation_min, self.speed_variation_max)
+                * CalculationConstants.SPEED_CALCULATION_DIVISOR
+            )
+            next_speed = self.download_speed * CalculationConstants.BYTES_PER_KB * download_factor
             next_speed *= update_internal
-            next_speed /= 1000
+            next_speed /= CalculationConstants.SPEED_CALCULATION_DIVISOR
             self.session_downloaded += int(next_speed)
             self.total_downloaded += int(next_speed)
 
@@ -282,13 +289,13 @@ class Torrent(GObject.GObject):
 
         # Stop worker threads with aggressive timeout
         self.torrent_worker_stop_event.set()
-        self.torrent_worker.join(timeout=0.5)  # Aggressive 0.5s timeout
+        self.torrent_worker.join(timeout=TimeoutConstants.WORKER_SHUTDOWN)
 
         if self.torrent_worker.is_alive():
             logger.warning(f"⚠️ Torrent worker thread for {self.name} still alive after timeout - forcing shutdown")
 
         self.peers_worker_stop_event.set()
-        self.peers_worker.join(timeout=0.5)  # Aggressive 0.5s timeout
+        self.peers_worker.join(timeout=TimeoutConstants.WORKER_SHUTDOWN)
 
         if self.peers_worker.is_alive():
             logger.warning(f"⚠️ Peers worker thread for {self.name} still alive after timeout - forcing shutdown")
