@@ -20,8 +20,8 @@ icons: lint
 		for X in 16 32 48 64 96 128 192 256; do \
 			mkdir -vp $(HOME)/.icons/hicolor/$${X}x$${X}/apps; \
 			mkdir -vp $(HOME)/.local/share/icons/hicolor/$${X}x$${X}/apps; \
-			cp -f $$(pwd)/d_fake_seeder/images/dfakeseeder.png $(HOME)/.local/share/icons/hicolor/$${X}x$${X}/apps/; \
-			cp -f $$(pwd)/d_fake_seeder/images/dfakeseeder.png $(HOME)/.icons/hicolor/$${X}x$${X}/apps/; \
+			cp -f $$(pwd)/d_fake_seeder/components/images/dfakeseeder.png $(HOME)/.local/share/icons/hicolor/$${X}x$${X}/apps/; \
+			cp -f $$(pwd)/d_fake_seeder/components/images/dfakeseeder.png $(HOME)/.icons/hicolor/$${X}x$${X}/apps/; \
 		done; \
 	}
 	{ \
@@ -33,8 +33,8 @@ icons: lint
 
 ui-build: icons
 	echo "Building UI..."
-	xmllint --xinclude d_fake_seeder/ui/ui.xml > d_fake_seeder/ui/generated.xml
-	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/ui/generated.xml
+	xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml
+	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml
 
 clean_settings:
 	jq '.torrents = {}' ~/.config/dfakeseeder/settings.json > temp.json && mv temp.json ~/.config/dfakeseeder/settings.json
@@ -116,17 +116,17 @@ xprod-wmclass:
 	xprop WM_CLASS
 
 rpm: clean
-    
+
 	- sudo dnf install -y rpm-build rpmlint python3-setuptools python3-setuptools
 	rm -rvf ./rpmbuild
 	mkdir -p ./rpmbuild/BUILD ./rpmbuild/BUILDROOT ./rpmbuild/RPMS ./rpmbuild/SOURCES ./rpmbuild/SPECS ./rpmbuild/SRPMS
 	cp -r dfakeseeder.spec ./rpmbuild/SPECS/
-	cp -r d_fake_seeder/images ./rpmbuild/SOURCE/
+	cp -r d_fake_seeder/components ./rpmbuild/SOURCE/
+	cp -r d_fake_seeder/domain ./rpmbuild/SOURCE/
 	cp -r d_fake_seeder/lib ./rpmbuild/SOURCE/
-	cp -r d_fake_seeder/ui ./rpmbuild/SOURCE/
 	cp -r d_fake_seeder/dfakeseeder.py ./rpmbuild/SOURCE/
 	cp -r d_fake_seeder/dfakeseeder.desktop ./rpmbuild/SOURCE/
-	tar -czvf rpmbuild/SOURCES/$(RPM_FILENAME).tar.gz d_fake_seeder/ 
+	tar -czvf rpmbuild/SOURCES/$(RPM_FILENAME).tar.gz d_fake_seeder/
 	rpmbuild --define "_topdir `pwd`/rpmbuild" -v -ba ./rpmbuild/SPECS/dfakeseeder.spec
 
 rpm-install: rpm
@@ -142,9 +142,7 @@ deb: clean
 	mkdir -vp ./debbuild/usr/share/applications/
 	cp -r d_fake_seeder/dfakeseeder.desktop ./debbuild/usr/share/applications/
 	cp -r d_fake_seeder/config ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/images ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/lib ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/ui ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/locale ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/domain ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/components ./debbuild/opt/dfakeseeder
@@ -159,8 +157,8 @@ deb: clean
 	echo "for X in 16 32 48 64 96 128 192 256; do " >> ./debbuild/DEBIAN/postinst
 	echo "  mkdir -vp \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
 	echo "  mkdir -vp \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
-	echo "  cp -f /opt/dfakeseeder/images/dfakeseeder.png \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "  cp -f /opt/dfakeseeder/images/dfakeseeder.png \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "  cp -f /opt/dfakeseeder/components/images/dfakeseeder.png \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "  cp -f /opt/dfakeseeder/components/images/dfakeseeder.png \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
 	echo "done " >> ./debbuild/DEBIAN/postinst
 	echo "" >> ./debbuild/DEBIAN/postinst
 	echo "# Update icon caches" >> ./debbuild/DEBIAN/postinst
