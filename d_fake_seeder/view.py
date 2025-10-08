@@ -207,7 +207,7 @@ class View:
     def show_splash_image(self):
         # splash image
         self.splash_image = Gtk.Image()
-        self.splash_image.set_from_file(os.environ.get("DFS_PATH") + "/images/dfakeseeder.png")
+        self.splash_image.set_from_file(os.environ.get("DFS_PATH") + "/components/images/dfakeseeder.png")
         # self.splash_image.set_no_show_all(False)
         self.splash_image.set_visible(True)
         self.splash_image.show()
