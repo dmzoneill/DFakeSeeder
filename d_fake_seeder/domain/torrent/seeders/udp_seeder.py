@@ -9,6 +9,7 @@ from domain.app_settings import AppSettings
 from domain.torrent.model.tracker import Tracker
 from domain.torrent.seeders.base_seeder import BaseSeeder
 from lib.logger import logger
+from lib.util.constants import NetworkConstants, TimeoutConstants, UDPTrackerConstants
 
 
 class UDPSeeder(BaseSeeder):
@@ -32,7 +33,7 @@ class UDPSeeder(BaseSeeder):
             0,
             random.getrandbits(32),
             -1,
-            6881,
+            NetworkConstants.DEFAULT_PORT,
         )
         return packet
 
@@ -40,11 +41,11 @@ class UDPSeeder(BaseSeeder):
         peers = []
         action, transaction_id, interval, leechers, seeders = struct.unpack_from("!IIIII", response, offset=0)
         offset = 20
-        while offset + 6 <= len(response):
+        while offset + UDPTrackerConstants.IPV4_WITH_PORT_LENGTH <= len(response):
             ip, port = struct.unpack_from("!IH", response, offset=offset)
             ip = socket.inet_ntoa(struct.pack("!I", ip))
             peers.append((ip, port))
-            offset += 6
+            offset += UDPTrackerConstants.IPV4_WITH_PORT_LENGTH
         return peers, interval, leechers, seeders
 
     def handle_announce(self, packet_data, timeout, log_msg):
@@ -82,7 +83,7 @@ class UDPSeeder(BaseSeeder):
                     extra={"class_name": self.__class__.__name__},
                 )
 
-                connection_id = 0x41727101980
+                connection_id = UDPTrackerConstants.MAGIC_CONNECTION_ID
                 transaction_id = self.generate_transaction_id()
                 logger.info(
                     f"🔢 Transaction ID: {transaction_id}, " f"Connection ID: {hex(connection_id)}",
@@ -105,7 +106,9 @@ class UDPSeeder(BaseSeeder):
                 # Use socket timeout instead of select for PyPy compatibility
                 try:
                     app_settings = AppSettings.get_instance()
-                    buffer_size = app_settings.get("seeders", {}).get("udp_buffer_size_bytes", 2048)
+                    buffer_size = app_settings.get("seeders", {}).get(
+                        "udp_buffer_size_bytes", UDPTrackerConstants.DEFAULT_BUFFER_SIZE
+                    )
                     response = sock.recv(buffer_size)
                     logger.info(
                         f"📨 Received UDP response ({len(response)} bytes)",
@@ -139,14 +142,14 @@ class UDPSeeder(BaseSeeder):
                     )
 
                     # Log individual peer details
-                    for i, (ip, port) in enumerate(peers[:5]):  # Log first 5 peers
+                    for i, (ip, port) in enumerate(peers[: UDPTrackerConstants.PEER_LOG_LIMIT]):
                         logger.info(
                             f"👥 Peer {i+1}: {ip}:{port}",
                             extra={"class_name": self.__class__.__name__},
                         )
-                    if len(peers) > 5:
+                    if len(peers) > UDPTrackerConstants.PEER_LOG_LIMIT:
                         logger.info(
-                            f"👥 ... and {len(peers)-5} more peers",
+                            f"👥 ... and {len(peers)-UDPTrackerConstants.PEER_LOG_LIMIT} more peers",
                             extra={"class_name": self.__class__.__name__},
                         )
 
@@ -209,7 +212,7 @@ class UDPSeeder(BaseSeeder):
             return False
 
         # Use timeout for semaphore acquisition
-        if not self.get_tracker_semaphore().acquire(timeout=3.0):
+        if not self.get_tracker_semaphore().acquire(timeout=TimeoutConstants.TRACKER_SEMAPHORE_UDP):
             logger.warning(
                 "⏱️ Timeout acquiring tracker semaphore for UDP load_peers",
                 extra={"class_name": self.__class__.__name__},
