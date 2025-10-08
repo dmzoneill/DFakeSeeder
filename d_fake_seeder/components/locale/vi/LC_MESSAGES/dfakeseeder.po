@@ -347,6 +347,9 @@ msgstr "Máy khách"
 msgid "Client Switch Probability:"
 msgstr "Xác suất Chuyển đổi Máy khách:"
 
+msgid "Columns"
+msgstr "Columns"
+
 msgid "Comment"
 msgstr "Bình luận"
 

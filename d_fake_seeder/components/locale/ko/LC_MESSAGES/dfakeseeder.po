@@ -347,6 +347,9 @@ msgstr "클라이언트"
 msgid "Client Switch Probability:"
 msgstr "클라이언트 전환 확률:"
 
+msgid "Columns"
+msgstr "Columns"
+
 msgid "Comment"
 msgstr "댓글"
 
