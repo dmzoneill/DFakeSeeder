@@ -15,6 +15,7 @@ from domain.torrent.peer_protocol_manager import PeerProtocolManager
 from domain.torrent.peer_server import PeerServer
 from domain.torrent.shared_async_executor import SharedAsyncExecutor
 from lib.logger import logger
+from lib.util.constants import NetworkConstants
 
 
 class GlobalPeerManager:
@@ -40,7 +41,7 @@ class GlobalPeerManager:
         self.peer_managers: Dict[str, PeerProtocolManager] = {}  # info_hash -> manager
 
         # Peer server for incoming connections - use configured values
-        port = getattr(self.settings, "listening_port", 6881)
+        port = getattr(self.settings, "listening_port", NetworkConstants.DEFAULT_PORT)
         max_connections = getattr(self.settings, "max_incoming_connections", 200)
         self.peer_server = PeerServer(port=port, max_connections=max_connections)
 
