@@ -277,6 +277,115 @@ class PeerExchangeConstants:
     FLAGS_MAX = 3
 
 
+class UTPConstants:
+    """µTP (Micro Transport Protocol) constants (BEP-029)."""
+
+    # Packet structure
+    HEADER_SIZE = 20  # µTP header is 20 bytes
+    MAX_PACKET_SIZE = 1500  # Standard MTU size
+    MAX_PAYLOAD_SIZE = MAX_PACKET_SIZE - HEADER_SIZE
+
+    # Window sizes (bytes)
+    DEFAULT_WINDOW_SIZE = 1048576  # 1MB
+    MIN_WINDOW_SIZE = 65536  # 64KB
+    MAX_WINDOW_SIZE = 4194304  # 4MB
+    WINDOW_INCREASE_STEP = 3000  # Bytes to increase window per RTT
+    WINDOW_DECREASE_STEP = 1500  # Bytes to decrease window on congestion
+
+    # Timeouts and delays (milliseconds)
+    INITIAL_TIMEOUT_MS = 1000  # 1 second initial timeout
+    MIN_TIMEOUT_MS = 500  # 500ms minimum timeout
+    MAX_TIMEOUT_MS = 60000  # 60 seconds maximum timeout
+    TARGET_DELAY_MS = 100  # Target queuing delay for LEDBAT
+
+    # Connection limits
+    DEFAULT_MAX_CONNECTIONS = 100
+    MAX_SEQUENCE_NUMBER = 65536  # 16-bit sequence number wraps at this value
+    MAX_RANDOM_SEQUENCE = 65535  # Maximum value for random sequence number
+
+    # RTT calculation
+    RTT_SMOOTHING_FACTOR = 0.875  # Exponential moving average for RTT (7/8)
+    RTT_SAMPLE_WEIGHT = 0.125  # Weight for new RTT sample (1/8)
+    RTT_VARIANCE_SMOOTHING = 0.75  # Smoothing factor for variance (3/4)
+    RTT_VARIANCE_WEIGHT = 0.25  # Weight for new variance sample (1/4)
+    RTT_TIMEOUT_MULTIPLIER = 4  # Multiply variance by this for timeout calculation
+
+    # Timestamp conversion
+    MICROSECONDS_PER_SECOND = 1000000
+    MILLISECONDS_PER_SECOND = 1000
+
+    # Packet type masks
+    PACKET_TYPE_MASK = 0x0F  # Lower 4 bits for packet type
+    VERSION_MASK = 0x0F  # Lower 4 bits for version
+    VERSION_SHIFT = 4  # Shift for version in first byte
+    VERSION_TYPE_MASK = 0xFFFFFFFF  # Mask for 32-bit timestamp
+
+    # Packet types (defined in UTPPacketType enum)
+    # ST_DATA = 0, ST_FIN = 1, ST_STATE = 2, ST_RESET = 3, ST_SYN = 4
+
+
+class MultiTrackerConstants:
+    """Multi-Tracker protocol constants (BEP-012)."""
+
+    # Tracker health and failover
+    MAX_CONSECUTIVE_FAILURES = 5  # Disable tracker after this many failures
+    BACKOFF_BASE_SECONDS = 60  # Base seconds for exponential backoff
+    BACKOFF_EXPONENT_BASE = 2  # Exponential base for backoff calculation
+    MAX_BACKOFF_SECONDS = 3600  # Maximum backoff time (1 hour)
+
+    # Tracker statistics
+    RESPONSE_TIME_SMOOTHING = 0.8  # Smoothing factor for average response time
+    RESPONSE_TIME_WEIGHT = 0.2  # Weight for new response time sample
+
+
+class SwarmIntelligenceConstants:
+    """Swarm Intelligence system constants."""
+
+    # Swarm health thresholds
+    SEED_RATIO_LOW_THRESHOLD = 0.05  # Too few seeds
+    SEED_RATIO_HIGH_THRESHOLD = 0.5  # Too many seeds (oversaturated)
+    SEED_RATIO_OPTIMAL_MIN = 0.1  # Optimal minimum seed ratio
+    SEED_RATIO_OPTIMAL_MAX = 0.3  # Optimal maximum seed ratio
+
+    # Peer count thresholds
+    PEER_COUNT_VERY_LOW = 5  # Very unhealthy swarm
+    PEER_COUNT_OPTIMAL_MIN = 20  # Minimum optimal peer count
+    PEER_COUNT_OPTIMAL_MAX = 200  # Maximum optimal peer count
+    PEER_COUNT_VERY_HIGH = 500  # Very large swarm
+
+    # Health scoring
+    HEALTH_SCORE_MIN = 0.0  # Minimum health score
+    HEALTH_SCORE_MAX = 1.0  # Maximum health score
+    HEALTH_SCORE_THRESHOLD = 0.5  # Threshold for "healthy" swarm
+
+    # Health score multipliers
+    SCORE_VERY_LOW_SEEDS = 0.3  # Score multiplier for very low seed ratio
+    SCORE_HIGH_SEEDS = 0.7  # Score multiplier for oversaturated seeds
+    SCORE_VERY_FEW_PEERS = 0.4  # Score multiplier for very few peers
+    SCORE_MANY_PEERS = 0.8  # Score multiplier for very large swarm
+    SCORE_STALLED_PEERS = 0.6  # Score multiplier for many stalled peers
+
+    # Upload speed thresholds
+    STALLED_SPEED_THRESHOLD = 1024  # Below this is considered stalled (1 KB/s)
+    STALLED_RATIO_THRESHOLD = 0.5  # Ratio of stalled peers that affects score
+
+    # Behavior adjustment multipliers
+    BOOST_UPLOAD_MULTIPLIER = 1.5  # Increase upload for unhealthy swarms
+    BOOST_CONNECTION_MULTIPLIER = 1.3  # Increase connections for unhealthy swarms
+    BOOST_ANNOUNCE_MULTIPLIER = 0.8  # Announce more frequently (lower interval)
+
+    REDUCE_UPLOAD_MULTIPLIER = 0.7  # Reduce upload for oversaturated swarms
+    REDUCE_CONNECTION_MULTIPLIER = 0.8  # Reduce connections for oversaturated swarms
+    REDUCE_ANNOUNCE_MULTIPLIER = 1.2  # Announce less frequently (higher interval)
+
+    PAUSE_UPLOAD_MULTIPLIER = 0.3  # Minimal upload when paused
+    PAUSE_CONNECTION_MULTIPLIER = 0.5  # Minimal connections when paused
+    PAUSE_ANNOUNCE_MULTIPLIER = 2.0  # Much less frequent announces when paused
+
+    # Piece selection
+    ENDGAME_COMPLETION_THRESHOLD = 0.95  # Enter endgame mode at 95% complete
+
+
 class CalculationConstants:
     """Constants used in calculations and conversions."""
 

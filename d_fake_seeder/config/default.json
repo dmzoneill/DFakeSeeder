@@ -98,6 +98,55 @@
         "max_workers": 100,
         "task_timeout_seconds": 30.0,
         "shutdown_timeout_seconds": 5.0,
-        "stats_enabled": true,
+        "stats_enabled": true
     },
+    "protocols": {
+        "dht": {
+            "enabled": true,
+            "node_id": "auto_generate",
+            "routing_table_size": 160,
+            "announcement_interval": 1800
+        },
+        "extensions": {
+            "ut_metadata": true,
+            "ut_pex": true,
+            "lt_donthave": true,
+            "fast_extension": true
+        },
+        "transport": {
+            "utp": {
+                "enabled": true,
+                "max_connections": 100,
+                "max_window_size": 4194304,
+                "min_window_size": 65536,
+                "target_delay_ms": 100
+            },
+            "tcp_fallback": true,
+            "connection_timeout": 30
+        },
+        "multi_tracker": {
+            "enabled": true,
+            "failover_enabled": true,
+            "announce_to_all_tiers": false,
+            "announce_to_all_in_tier": false
+        }
+    },
+    "simulation": {
+        "client_behavior_engine": {
+            "enabled": true,
+            "primary_client": "qBittorrent",
+            "behavior_variation": 0.3,
+            "switch_client_probability": 0.05
+        },
+        "traffic_patterns": {
+            "profile": "balanced",
+            "realistic_variations": true,
+            "time_based_patterns": true
+        },
+        "swarm_intelligence": {
+            "enabled": true,
+            "adaptation_rate": 0.5,
+            "peer_analysis_depth": 10
+        }
+    }
 }
