@@ -148,5 +148,12 @@
             "adaptation_rate": 0.5,
             "peer_analysis_depth": 10
         }
+    },
+    "watch_folder": {
+        "enabled": false,
+        "path": "",
+        "scan_interval_seconds": 10,
+        "auto_start_torrents": true,
+        "delete_added_torrents": false
     }
 }
