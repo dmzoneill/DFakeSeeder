@@ -11,9 +11,9 @@ gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 
 from gi.repository import GObject  # noqa: E402
-from lib.handlers.file_modified_event_handler import WATCHDOG_AVAILABLE, FileModifiedEventHandler  # noqa: E402
-from lib.logger import logger  # noqa: E402
-from lib.util.constants import NetworkConstants  # noqa: E402
+from d_fake_seeder.lib.handlers.file_modified_event_handler import WATCHDOG_AVAILABLE, FileModifiedEventHandler  # noqa: E402
+from d_fake_seeder.lib.logger import logger  # noqa: E402
+from d_fake_seeder.lib.util.constants import NetworkConstants  # noqa: E402
 
 if WATCHDOG_AVAILABLE:
     from watchdog.observers import Observer  # noqa: E402
@@ -128,7 +128,7 @@ class AppSettings(GObject.GObject):
         """Get logger instance with lazy import to avoid circular dependency"""
         if AppSettings._logger is None:
             try:
-                from lib.logger import logger
+                from d_fake_seeder.lib.logger import logger
 
                 AppSettings._logger = logger
             except ImportError:
@@ -451,7 +451,7 @@ class AppSettings(GObject.GObject):
         """Get singleton instance (Settings API compatibility)"""
         # Note: Can't use self.logger here since this is a class method
         try:
-            from lib.logger import logger
+            from d_fake_seeder.lib.logger import logger
 
             logger.info("AppSettings get instance", extra={"class_name": "AppSettings"})
         except ImportError:

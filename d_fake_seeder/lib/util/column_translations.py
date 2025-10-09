@@ -6,7 +6,7 @@ in the application. This system integrates with the existing TranslationManager 
 support runtime language switching for column headers.
 """
 
-from lib.logger import logger
+from d_fake_seeder.lib.logger import logger
 
 # Column translations should integrate with the main TranslationManager
 # Get translation function through the model's TranslationManager
