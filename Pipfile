@@ -10,6 +10,9 @@ urllib3 = "==1.26.18"
 systemd-python = "*"
 pygobject = "*"
 watchdog = "*"
+pytest-cov = "*"
+pytest-timeout = "*"
+pytest-randomly = "*"
 
 [dev-packages]
 pytest = "==7.3.2"
