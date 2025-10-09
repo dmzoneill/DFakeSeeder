@@ -338,10 +338,18 @@ d_fake_seeder/                 # Main package (47 Python files, 78 total files)
 │   ├── ar/LC_MESSAGES/      # Arabic translations
 │   └── [11 more languages]  # Complete i18n infrastructure
 ├── plans/                   # Development planning documents
-│   ├── LOCALIZATION_PLAN.md # Localization implementation roadmap
-│   ├── LOCALIZATION.md      # Localization system documentation
+│   ├── LOCALIZATION_PLAN.md # Localization implementation roadmap (in completed/)
 │   ├── PROTOCOL_INTEGRATION_PLAN.md # BitTorrent protocol enhancement roadmap
-│   └── FEATURE_COMPARISON.md # Feature comparison documentation
+│   ├── CODE_ANALYSIS_AND_REFACTORING_PLAN.md # Code quality and refactoring plan
+│   ├── DEVELOPMENT_ROADMAP.md # Overall project development roadmap
+│   ├── SEEDING_PROFILES_PLAN.md # Seeding profiles implementation plan
+│   └── completed/           # Completed implementation plans
+├── docs/                    # Technical documentation
+│   ├── LOCALIZATION.md      # Localization system documentation
+│   ├── CONFIGURATION.md     # Configuration system documentation
+│   ├── FEATURE_COMPARISON.md # Feature comparison and analysis
+│   ├── PACKAGING.md         # Packaging documentation
+│   └── PERFORMANCE_AUDIT_2025-10-05.md # Performance audit report
 └── tools/                   # Development helper scripts
     ├── translation_build_manager.py # Advanced translation build system ✅
     └── translations/         # Translation utilities and assets
@@ -541,10 +549,13 @@ This section documents major features that have been fully implemented and are c
 **Status: COMPLETE** - Comprehensive planning documentation established
 
 #### Planning Documentation:
-- **LOCALIZATION_PLAN.md**: Detailed implementation roadmap (now mostly complete)
-- **LOCALIZATION.md**: Comprehensive system documentation
-- **FEATURE_COMPARISON.md**: Industry analysis and feature recommendations
-- **PROTOCOL_INTEGRATION_PLAN.md**: Advanced BitTorrent protocol enhancement roadmap
+- **plans/LOCALIZATION_PLAN.md**: Detailed implementation roadmap (moved to plans/completed/)
+- **docs/LOCALIZATION.md**: Comprehensive system documentation
+- **docs/FEATURE_COMPARISON.md**: Industry analysis and feature recommendations
+- **plans/PROTOCOL_INTEGRATION_PLAN.md**: Advanced BitTorrent protocol enhancement roadmap
+- **docs/CONFIGURATION.md**: Configuration system documentation
+- **docs/PACKAGING.md**: Packaging and distribution documentation
+- **docs/PERFORMANCE_AUDIT_2025-10-05.md**: Performance analysis and optimization recommendations
 
 #### Planning Achievements:
 - **Foundation Analysis**: Complete assessment of existing capabilities
