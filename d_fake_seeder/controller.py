@@ -2,6 +2,7 @@ import os
 
 from domain.app_settings import AppSettings
 from domain.torrent.global_peer_manager import GlobalPeerManager
+from lib.handlers.torrent_folder_watcher import TorrentFolderWatcher
 
 # from domain.torrent.listener import Listener
 from lib.logger import logger
@@ -25,6 +26,9 @@ class Controller:
 
         # Initialize window manager with main window
         self.window_manager = None  # Will be set after view initialization
+
+        # Initialize torrent folder watcher (pass global_peer_manager for P2P integration)
+        self.torrent_watcher = TorrentFolderWatcher(model, self.settings, self.global_peer_manager)
 
         # Initialize D-Bus service for tray communication
         self.dbus = None
@@ -77,6 +81,9 @@ class Controller:
         for torrent in self.model.get_torrents():
             self.global_peer_manager.add_torrent(torrent)
 
+        # Start watching folder for new torrents
+        self.torrent_watcher.start()
+
     def stop(self, shutdown_tracker=None):
         """Stop the controller and cleanup all background processes"""
         logger.info("Controller stopping", extra={"class_name": self.__class__.__name__})
@@ -90,6 +97,10 @@ class Controller:
                 shutdown_tracker.mark_completed("peer_managers", 0)
                 shutdown_tracker.mark_completed("background_workers", 0)
                 shutdown_tracker.mark_completed("network_connections", 0)
+
+        # Stop torrent folder watcher
+        if hasattr(self, "torrent_watcher") and self.torrent_watcher:
+            self.torrent_watcher.stop()
 
         logger.info("🔧 About to cleanup window manager", extra={"class_name": self.__class__.__name__})
         # Cleanup window manager
@@ -110,6 +121,13 @@ class Controller:
             f"Controller settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},
         )
+
+        # Handle watch folder settings changes
+        if key.startswith("watch_folder"):
+            if hasattr(self, "torrent_watcher"):
+                # Restart watcher when settings change
+                self.torrent_watcher.stop()
+                self.torrent_watcher.start()
 
         # Handle window management settings changes
         if self.window_manager and key in ["window_visible", "close_to_tray", "minimize_to_tray"]:
