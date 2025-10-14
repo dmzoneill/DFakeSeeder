@@ -1,5 +1,5 @@
 Name: DFakeSeeder
-Version:    0.0.44
+Version:    0.0.45
 Release:    1%{?dist}
 Summary:    BitTorrent seeding simulator for testing and development
 
