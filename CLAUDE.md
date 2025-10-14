@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 DFakeSeeder is a Python GTK4 desktop application that simulates torrent seeding activity. It's built using the Model-View-Controller (MVC) architecture pattern and supports both HTTP and UDP tracker protocols with advanced peer-to-peer networking capabilities and comprehensive settings management.
 
+### About the Name
+
+The name "D' Fake Seeder" is a playful nod to the Irish English accent. In Irish pronunciation, the "th" sound in "the" is often rendered as a hard "d" sound - so "the" becomes "de" or "d'". This linguistic quirk gives us "D' Fake Seeder" instead of "The Fake Seeder", celebrating the project's Irish heritage while describing exactly what it does: simulates (fakes) torrent seeding activity.
+
 ## Development Commands
 
 ### Running the Application

@@ -1,9 +1,13 @@
 <!-- markdownlint-disable MD041 -->
-![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/images/dfakeseeder.png)
+![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/components/images/dfakeseeder.png)
 
 # D' Fake Seeder
 
 A sophisticated Python GTK4 BitTorrent client that simulates seeding activity with advanced peer-to-peer networking capabilities, comprehensive settings management, and multi-language support.
+
+## About the Name
+
+The name "D' Fake Seeder" is a playful nod to the Irish English accent. In Irish pronunciation, the "th" sound in "the" is often rendered as a hard "d" sound - so "the" becomes "de" or "d'". This linguistic quirk gives us "D' Fake Seeder" instead of "The Fake Seeder", celebrating the project's Irish heritage while describing exactly what it does: simulates (fakes) torrent seeding activity.
 
 ## Features
 

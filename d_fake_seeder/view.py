@@ -231,6 +231,17 @@ class View:
         self.window.about.set_website(self.settings.website)
         self.window.about.set_website_label(self._("Github - D' Fake Seeder"))
         self.window.about.set_version(self.settings.version)
+
+        # Add information about the name origin
+        about_name_text = self._(
+            "The name \"D' Fake Seeder\" is a playful nod to the Irish English accent. "
+            "In Irish pronunciation, the \"th\" sound in \"the\" is often rendered as a hard \"d\" sound - "
+            "so \"the\" becomes \"de\" or \"d'\". This linguistic quirk gives us \"D' Fake Seeder\" "
+            "instead of \"The Fake Seeder\", celebrating the project's Irish heritage while describing "
+            "exactly what it does: simulates (fakes) torrent seeding activity."
+        )
+        self.window.about.set_comments(about_name_text)
+
         file = Gio.File.new_for_path(os.environ.get("DFS_PATH") + "/" + self.settings.logo)
         texture = Gdk.Texture.new_from_file(file)
         self.window.about.set_logo(texture)
