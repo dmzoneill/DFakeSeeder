@@ -69,6 +69,13 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             "auto_start": self.builder.get_object("settings_auto_start"),
             "start_minimized": self.builder.get_object("settings_start_minimized"),
             "language_dropdown": self.builder.get_object("settings_language"),
+            # Watch folder widgets
+            "watch_folder_enabled": self.builder.get_object("settings_watch_folder_enabled"),
+            "watch_folder_path": self.builder.get_object("settings_watch_folder_path"),
+            "watch_folder_browse": self.builder.get_object("settings_watch_folder_browse"),
+            "watch_folder_scan_interval": self.builder.get_object("settings_watch_folder_scan_interval"),
+            "watch_folder_auto_start": self.builder.get_object("settings_watch_folder_auto_start"),
+            "watch_folder_delete_added": self.builder.get_object("settings_watch_folder_delete_added"),
         }
         logger.debug("Widget lookup results:", "GeneralTab")
         for name, widget in widget_objects.items():
@@ -97,6 +104,25 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         profile_dropdown = self.get_widget("settings_seeding_profile")
         if profile_dropdown:
             profile_dropdown.connect("notify::selected", self.on_seeding_profile_changed)
+        # Watch folder widgets
+        watch_folder_enabled = self.get_widget("watch_folder_enabled")
+        if watch_folder_enabled:
+            watch_folder_enabled.connect("state-set", self.on_watch_folder_enabled_changed)
+        watch_folder_path = self.get_widget("watch_folder_path")
+        if watch_folder_path:
+            watch_folder_path.connect("changed", self.on_watch_folder_path_changed)
+        watch_folder_browse = self.get_widget("watch_folder_browse")
+        if watch_folder_browse:
+            watch_folder_browse.connect("clicked", self.on_watch_folder_browse_clicked)
+        watch_folder_scan_interval = self.get_widget("watch_folder_scan_interval")
+        if watch_folder_scan_interval:
+            watch_folder_scan_interval.connect("value-changed", self.on_watch_folder_scan_interval_changed)
+        watch_folder_auto_start = self.get_widget("watch_folder_auto_start")
+        if watch_folder_auto_start:
+            watch_folder_auto_start.connect("state-set", self.on_watch_folder_auto_start_changed)
+        watch_folder_delete_added = self.get_widget("watch_folder_delete_added")
+        if watch_folder_delete_added:
+            watch_folder_delete_added.connect("state-set", self.on_watch_folder_delete_added_changed)
         # Language dropdown - signal connection handled in _setup_language_dropdown()
         # to avoid dual connections and ensure proper disconnect/reconnect during population
 
@@ -123,6 +149,25 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 current_profile = self.profile_manager.get_current_profile()
                 profile_index = self.profile_manager.get_profile_dropdown_index(current_profile)
                 profile_dropdown.set_selected(profile_index)
+
+            # Watch folder settings
+            watch_folder_config = getattr(self.app_settings, "watch_folder", {})
+            watch_folder_enabled = self.get_widget("watch_folder_enabled")
+            if watch_folder_enabled:
+                watch_folder_enabled.set_active(watch_folder_config.get("enabled", False))
+            watch_folder_path = self.get_widget("watch_folder_path")
+            if watch_folder_path:
+                watch_folder_path.set_text(watch_folder_config.get("path", ""))
+            watch_folder_scan_interval = self.get_widget("watch_folder_scan_interval")
+            if watch_folder_scan_interval:
+                watch_folder_scan_interval.set_value(watch_folder_config.get("scan_interval_seconds", 10))
+            watch_folder_auto_start = self.get_widget("watch_folder_auto_start")
+            if watch_folder_auto_start:
+                watch_folder_auto_start.set_active(watch_folder_config.get("auto_start_torrents", True))
+            watch_folder_delete_added = self.get_widget("watch_folder_delete_added")
+            if watch_folder_delete_added:
+                watch_folder_delete_added.set_active(watch_folder_config.get("delete_added_torrents", False))
+
             self.logger.debug("General tab settings loaded")
         except Exception as e:
             self.logger.error(f"Error loading General tab settings: {e}")
@@ -157,6 +202,26 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 selected_index = profile_dropdown.get_selected()
                 profile_name = self.profile_manager.get_profile_from_dropdown_index(selected_index)
                 settings["seeding_profile"] = profile_name
+
+            # Watch folder settings
+            watch_folder_settings = {}
+            watch_folder_enabled = self.get_widget("watch_folder_enabled")
+            if watch_folder_enabled:
+                watch_folder_settings["enabled"] = watch_folder_enabled.get_active()
+            watch_folder_path = self.get_widget("watch_folder_path")
+            if watch_folder_path:
+                watch_folder_settings["path"] = watch_folder_path.get_text()
+            watch_folder_scan_interval = self.get_widget("watch_folder_scan_interval")
+            if watch_folder_scan_interval:
+                watch_folder_settings["scan_interval_seconds"] = int(watch_folder_scan_interval.get_value())
+            watch_folder_auto_start = self.get_widget("watch_folder_auto_start")
+            if watch_folder_auto_start:
+                watch_folder_settings["auto_start_torrents"] = watch_folder_auto_start.get_active()
+            watch_folder_delete_added = self.get_widget("watch_folder_delete_added")
+            if watch_folder_delete_added:
+                watch_folder_settings["delete_added_torrents"] = watch_folder_delete_added.get_active()
+            if watch_folder_settings:
+                settings["watch_folder"] = watch_folder_settings
         except Exception as e:
             self.logger.error(f"Error collecting General tab settings: {e}")
         return settings
@@ -557,3 +622,95 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
     # REMOVED: on_model_language_changed() - settings dialog should not listen to model language changes
     # This was causing infinite loops. Settings dialog handles its own translation directly.
+
+    # Watch folder signal handlers
+    def on_watch_folder_enabled_changed(self, switch: Gtk.Switch, state: bool) -> None:
+        """Handle watch folder enabled setting change."""
+        try:
+            self.app_settings.set("watch_folder.enabled", state)
+            self.logger.debug(f"Watch folder enabled changed to: {state}")
+            message = "Watch folder enabled" if state else "Watch folder disabled"
+            self.show_notification(message, "success")
+        except Exception as e:
+            self.logger.error(f"Error changing watch folder enabled setting: {e}")
+
+    def on_watch_folder_path_changed(self, entry: Gtk.Entry) -> None:
+        """Handle watch folder path setting change."""
+        try:
+            path = entry.get_text()
+            self.app_settings.set("watch_folder.path", path)
+            self.logger.debug(f"Watch folder path changed to: {path}")
+        except Exception as e:
+            self.logger.error(f"Error changing watch folder path setting: {e}")
+
+    def on_watch_folder_browse_clicked(self, button: Gtk.Button) -> None:
+        """Handle browse button click to select watch folder."""
+        try:
+            # Create file chooser dialog for folder selection
+            dialog = Gtk.FileDialog()
+            dialog.set_title("Select Watch Folder")
+
+            # Set initial folder if path exists
+            path_entry = self.get_widget("watch_folder_path")
+            if path_entry and path_entry.get_text():
+                import os
+                from gi.repository import Gio
+
+                initial_path = path_entry.get_text()
+                if os.path.exists(initial_path):
+                    initial_file = Gio.File.new_for_path(initial_path)
+                    dialog.set_initial_folder(initial_file)
+
+            # Show dialog and handle response
+            def on_folder_selected(dialog, result):
+                try:
+                    folder = dialog.select_folder_finish(result)
+                    if folder:
+                        folder_path = folder.get_path()
+                        if path_entry:
+                            path_entry.set_text(folder_path)
+                            self.app_settings.set("watch_folder.path", folder_path)
+                            self.logger.debug(f"Watch folder path selected: {folder_path}")
+                            self.show_notification(f"Watch folder set to: {folder_path}", "success")
+                except Exception as e:
+                    self.logger.error(f"Error selecting folder: {e}")
+
+            # Get parent window for dialog
+            parent_window = self.get_widget("settings_theme")  # Get any widget
+            if parent_window:
+                parent_window = parent_window.get_root()  # Get window from widget
+
+            dialog.select_folder(parent_window, None, on_folder_selected)
+
+        except Exception as e:
+            self.logger.error(f"Error showing folder chooser dialog: {e}")
+            self.show_notification("Error opening folder browser", "error")
+
+    def on_watch_folder_scan_interval_changed(self, spin_button: Gtk.SpinButton) -> None:
+        """Handle watch folder scan interval setting change."""
+        try:
+            interval = int(spin_button.get_value())
+            self.app_settings.set("watch_folder.scan_interval_seconds", interval)
+            self.logger.debug(f"Watch folder scan interval changed to: {interval}")
+        except Exception as e:
+            self.logger.error(f"Error changing watch folder scan interval setting: {e}")
+
+    def on_watch_folder_auto_start_changed(self, switch: Gtk.Switch, state: bool) -> None:
+        """Handle watch folder auto-start setting change."""
+        try:
+            self.app_settings.set("watch_folder.auto_start_torrents", state)
+            self.logger.debug(f"Watch folder auto-start changed to: {state}")
+            message = "Auto-start torrents enabled" if state else "Auto-start torrents disabled"
+            self.show_notification(message, "success")
+        except Exception as e:
+            self.logger.error(f"Error changing watch folder auto-start setting: {e}")
+
+    def on_watch_folder_delete_added_changed(self, switch: Gtk.Switch, state: bool) -> None:
+        """Handle watch folder delete added torrents setting change."""
+        try:
+            self.app_settings.set("watch_folder.delete_added_torrents", state)
+            self.logger.debug(f"Watch folder delete added changed to: {state}")
+            message = "Delete added torrents enabled" if state else "Delete added torrents disabled"
+            self.show_notification(message, "success")
+        except Exception as e:
+            self.logger.error(f"Error changing watch folder delete added setting: {e}")
