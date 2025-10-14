@@ -78,9 +78,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             "watch_folder_auto_start": self.builder.get_object("settings_watch_folder_auto_start"),
             "watch_folder_delete_added": self.builder.get_object("settings_watch_folder_delete_added"),
         }
-        logger.debug("Widget lookup results:", "GeneralTab")
-        for name, widget in widget_objects.items():
-            logger.debug(f"- {name}: {widget} (type: {type(widget).__name__ if widget else 'None'})", "GeneralTab")
+        logger.debug("Widget lookup completed", "GeneralTab")
         self._widgets.update(widget_objects)
         # Initialize language dropdown if available
         logger.debug("About to call _setup_language_dropdown()...", "GeneralTab")
@@ -130,7 +128,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
     def _load_settings(self) -> None:
         """Load current settings into General tab widgets."""
         try:
-            self.logger.debug("===== _load_settings() STARTED =====", "GeneralTab")
+            self.logger.debug("Loading General tab settings", "GeneralTab")
 
             # Auto-start setting
             auto_start = self.get_widget("auto_start")
@@ -154,56 +152,29 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 profile_dropdown.set_selected(profile_index)
 
             # Watch folder settings
-            self.logger.debug("Loading watch folder settings...", "GeneralTab")
             watch_folder_config = getattr(self.app_settings, "watch_folder", {})
-            self.logger.debug(f"Watch folder config from app_settings: {watch_folder_config}", "GeneralTab")
 
             watch_folder_enabled = self.get_widget("watch_folder_enabled")
-            self.logger.debug(f"Watch folder enabled widget: {watch_folder_enabled}", "GeneralTab")
             if watch_folder_enabled:
-                enabled_value = watch_folder_config.get("enabled", False)
-                self.logger.debug(f"Setting watch_folder_enabled to: {enabled_value}", "GeneralTab")
-                watch_folder_enabled.set_active(enabled_value)
-            else:
-                self.logger.warning("watch_folder_enabled widget is None!", "GeneralTab")
+                watch_folder_enabled.set_active(watch_folder_config.get("enabled", False))
 
             watch_folder_path = self.get_widget("watch_folder_path")
-            self.logger.debug(f"Watch folder path widget: {watch_folder_path}", "GeneralTab")
             if watch_folder_path:
-                path_value = watch_folder_config.get("path", "")
-                self.logger.debug(f"Setting watch_folder_path to: {path_value}", "GeneralTab")
-                watch_folder_path.set_text(path_value)
-            else:
-                self.logger.warning("watch_folder_path widget is None!", "GeneralTab")
+                watch_folder_path.set_text(watch_folder_config.get("path", ""))
 
             watch_folder_scan_interval = self.get_widget("watch_folder_scan_interval")
-            self.logger.debug(f"Watch folder scan interval widget: {watch_folder_scan_interval}", "GeneralTab")
             if watch_folder_scan_interval:
-                interval_value = watch_folder_config.get("scan_interval_seconds", 10)
-                self.logger.debug(f"Setting watch_folder_scan_interval to: {interval_value}", "GeneralTab")
-                watch_folder_scan_interval.set_value(interval_value)
-            else:
-                self.logger.warning("watch_folder_scan_interval widget is None!", "GeneralTab")
+                watch_folder_scan_interval.set_value(watch_folder_config.get("scan_interval_seconds", 10))
 
             watch_folder_auto_start = self.get_widget("watch_folder_auto_start")
-            self.logger.debug(f"Watch folder auto start widget: {watch_folder_auto_start}", "GeneralTab")
             if watch_folder_auto_start:
-                auto_start_value = watch_folder_config.get("auto_start_torrents", True)
-                self.logger.debug(f"Setting watch_folder_auto_start to: {auto_start_value}", "GeneralTab")
-                watch_folder_auto_start.set_active(auto_start_value)
-            else:
-                self.logger.warning("watch_folder_auto_start widget is None!", "GeneralTab")
+                watch_folder_auto_start.set_active(watch_folder_config.get("auto_start_torrents", True))
 
             watch_folder_delete_added = self.get_widget("watch_folder_delete_added")
-            self.logger.debug(f"Watch folder delete added widget: {watch_folder_delete_added}", "GeneralTab")
             if watch_folder_delete_added:
-                delete_value = watch_folder_config.get("delete_added_torrents", False)
-                self.logger.debug(f"Setting watch_folder_delete_added to: {delete_value}", "GeneralTab")
-                watch_folder_delete_added.set_active(delete_value)
-            else:
-                self.logger.warning("watch_folder_delete_added widget is None!", "GeneralTab")
+                watch_folder_delete_added.set_active(watch_folder_config.get("delete_added_torrents", False))
 
-            self.logger.debug("===== _load_settings() COMPLETED =====", "GeneralTab")
+            self.logger.debug("General tab settings loaded successfully", "GeneralTab")
         except Exception as e:
             self.logger.error(f"Error loading General tab settings: {e}", exc_info=True)
 
