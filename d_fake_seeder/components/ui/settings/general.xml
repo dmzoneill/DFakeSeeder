@@ -96,6 +96,173 @@
                 </object>
             </child>
 
+            <!-- Watch Folder Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Watch Folder&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable watch folder -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_watch_folder_enabled">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Automatically monitor a folder for new torrent files</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable watch folder</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Watch folder path -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Folder path:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">6</property>
+                                            <property name="hexpand">True</property>
+                                            <child>
+                                                <object class="GtkEntry" id="settings_watch_folder_path">
+                                                    <property name="tooltip-text" translatable="yes">Path to the folder to watch for torrent files</property>
+                                                    <property name="hexpand">True</property>
+                                                    <property name="placeholder-text" translatable="yes">Choose a folder to watch...</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkButton" id="settings_watch_folder_browse">
+                                                    <property name="icon-name">folder-open-symbolic</property>
+                                                    <property name="tooltip-text" translatable="yes">Browse for folder</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Scan interval -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Scan interval:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">6</property>
+                                            <property name="hexpand">True</property>
+                                            <child>
+                                                <object class="GtkSpinButton" id="settings_watch_folder_scan_interval">
+                                                    <property name="adjustment">
+                                                        <object class="GtkAdjustment">
+                                                            <property name="lower">1</property>
+                                                            <property name="upper">300</property>
+                                                            <property name="step-increment">1</property>
+                                                            <property name="page-increment">10</property>
+                                                            <property name="value">10</property>
+                                                        </object>
+                                                    </property>
+                                                    <property name="tooltip-text" translatable="yes">How often to check for new torrent files (in seconds)</property>
+                                                    <property name="digits">0</property>
+                                                    <property name="numeric">True</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                    <property name="label" translatable="yes">seconds</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="valign">center</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Auto-start torrents -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_watch_folder_auto_start">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Automatically start torrents when added from watch folder</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Auto-start added torrents</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Delete added torrents -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_watch_folder_delete_added">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Delete torrent files after they are successfully added</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Delete added torrent files</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
             <!-- Interface Group -->
             <child>
                 <object class="GtkBox">
