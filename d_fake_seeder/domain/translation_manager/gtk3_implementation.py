@@ -24,7 +24,7 @@ if "gi.repository.Gtk" not in sys.modules:
 from gi.repository import Gtk  # noqa: E402,F401
 
 # Import logger first
-from lib.logger import logger  # noqa: E402
+from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 try:
     from gi.repository import Gio  # noqa: E402

@@ -17,6 +17,11 @@ from .base_tab import BaseSettingsTab  # noqa: E402
 class ProtocolExtensionsTab(BaseSettingsTab):
     """Protocol Extensions configuration tab"""
 
+    @property
+    def tab_name(self) -> str:
+        """Return the name of this tab."""
+        return "Protocol Extensions"
+
     def _init_widgets(self):
         """Initialize Protocol Extensions widgets"""
         # Extension Protocol (BEP-010) Settings
@@ -148,6 +153,54 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             self._widgets["max_msgs_per_second"].connect("value-changed", self._on_max_msgs_per_second_changed)
 
         self.logger.debug("Protocol Extensions tab signals connected", extra={"class_name": self.__class__.__name__})
+
+    def _load_settings(self) -> None:
+        """Load Protocol Extensions settings from configuration (implements abstract method)."""
+        self.load_settings()
+
+    def _setup_dependencies(self) -> None:
+        """Set up dependencies between UI elements (implements abstract method)."""
+        # No complex dependencies in this tab
+        pass
+
+    def _collect_settings(self) -> Dict[str, Any]:
+        """Collect current settings from UI widgets (implements abstract method)."""
+        # Return empty dict - save_settings() method handles the actual saving
+        return {}
+
+    def update_view(self, model, torrent, attribute):
+        """Update view based on model changes."""
+        self.logger.debug(
+            "Protocol Extensions tab update view",
+            extra={"class_name": self.__class__.__name__},
+        )
+        # Store model reference for translation access
+        self.model = model
+
+        # Translate dropdown items now that we have the model
+        # But prevent TranslationMixin from connecting to language-changed signal to avoid loops
+        self._language_change_connected = True  # Block TranslationMixin from connecting
+
+    def handle_model_changed(self, source, data_obj, _data_changed):
+        """Handle model change events."""
+        self.logger.debug(
+            "Protocol Extensions tab model changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def handle_attribute_changed(self, source, key, value):
+        """Handle attribute change events."""
+        self.logger.debug(
+            "Protocol Extensions tab attribute changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def handle_settings_changed(self, source, data_obj, _data_changed):
+        """Handle settings change events."""
+        self.logger.debug(
+            "Protocol Extensions tab settings changed",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def load_settings(self):
         """Load Protocol Extensions settings from configuration"""

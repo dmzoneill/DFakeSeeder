@@ -17,6 +17,11 @@ from .base_tab import BaseSettingsTab  # noqa: E402
 class DHTTab(BaseSettingsTab):
     """DHT configuration tab"""
 
+    @property
+    def tab_name(self) -> str:
+        """Return the name of this tab for identification."""
+        return "DHT"
+
     def _init_widgets(self):
         """Initialize DHT-specific widgets"""
         # DHT Enable/Disable
@@ -111,7 +116,7 @@ class DHTTab(BaseSettingsTab):
 
         self.logger.debug("DHT tab signals connected", extra={"class_name": self.__class__.__name__})
 
-    def load_settings(self):
+    def _load_settings(self):
         """Load DHT settings from configuration"""
         try:
             dht_config = getattr(self.app_settings, "protocols", {}).get("dht", {})
@@ -190,8 +195,8 @@ class DHTTab(BaseSettingsTab):
         except Exception as e:
             self.logger.error(f"Failed to load DHT settings: {e}", extra={"class_name": self.__class__.__name__})
 
-    def save_settings(self):
-        """Save DHT settings to configuration"""
+    def _collect_settings(self) -> Dict[str, Any]:
+        """Collect current DHT settings from UI widgets"""
         try:
             # Get current protocols config
             protocols_config = getattr(self.app_settings, "protocols", {})
@@ -265,14 +270,54 @@ class DHTTab(BaseSettingsTab):
 
             # Save back to settings
             protocols_config["dht"] = dht_config
-            self.app_settings.set("protocols", protocols_config)
 
-            self.logger.debug("DHT settings saved successfully", extra={"class_name": self.__class__.__name__})
+            self.logger.debug("DHT settings collected successfully", extra={"class_name": self.__class__.__name__})
+
+            return {"protocols": protocols_config}
 
         except Exception as e:
-            self.logger.error(f"Failed to save DHT settings: {e}", extra={"class_name": self.__class__.__name__})
+            self.logger.error(f"Failed to collect DHT settings: {e}", extra={"class_name": self.__class__.__name__})
+            return {}
 
-    def validate_settings(self) -> Dict[str, Any]:
+    def _setup_dependencies(self):
+        """Set up dependencies between UI elements"""
+        # Initial dependency state based on current settings
+        try:
+            if self._widgets.get("dht_enabled"):
+                state = self._widgets["dht_enabled"].get_state()
+                sensitive_widgets = [
+                    "node_id_auto",
+                    "node_id_custom",
+                    "routing_table_size",
+                    "announcement_interval",
+                    "bootstrap_nodes",
+                    "auto_bootstrap",
+                ]
+                for widget_name in sensitive_widgets:
+                    if self._widgets.get(widget_name):
+                        self._widgets[widget_name].set_sensitive(state)
+
+            # Node ID custom field sensitivity
+            if self._widgets.get("node_id_auto") and self._widgets.get("node_id_custom"):
+                auto_enabled = self._widgets["node_id_auto"].get_active()
+                self._widgets["node_id_custom"].set_sensitive(not auto_enabled)
+
+            # Stats interval sensitivity
+            if self._widgets.get("enable_stats") and self._widgets.get("stats_interval"):
+                stats_enabled = self._widgets["enable_stats"].get_active()
+                self._widgets["stats_interval"].set_sensitive(stats_enabled)
+
+            # Rate limit max queries sensitivity
+            if self._widgets.get("rate_limit_enabled") and self._widgets.get("max_queries_per_second"):
+                rate_limit_enabled = self._widgets["rate_limit_enabled"].get_active()
+                self._widgets["max_queries_per_second"].set_sensitive(rate_limit_enabled)
+
+            self.logger.debug("DHT tab dependencies set up", extra={"class_name": self.__class__.__name__})
+
+        except Exception as e:
+            self.logger.error(f"Failed to set up DHT dependencies: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _validate_tab_settings(self) -> Dict[str, Any]:
         """Validate DHT settings"""
         validation_result: Dict[str, Any] = {"valid": True, "errors": [], "warnings": []}
 

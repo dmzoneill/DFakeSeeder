@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Type
 
-from lib.logger import logger
+from d_fake_seeder.lib.logger import logger
 
 
 def get_tabs_config_path() -> Path:

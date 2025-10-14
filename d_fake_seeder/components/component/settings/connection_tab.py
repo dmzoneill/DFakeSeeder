@@ -11,7 +11,8 @@ import gi
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa: E402
-from lib.util.constants import NetworkConstants  # noqa: E402
+
+from d_fake_seeder.lib.util.constants import NetworkConstants  # noqa: E402
 
 from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import NotificationMixin  # noqa: E402

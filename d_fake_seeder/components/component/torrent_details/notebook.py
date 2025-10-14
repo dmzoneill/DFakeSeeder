@@ -6,12 +6,17 @@ Coordinates all torrent details tabs and provides the main interface.
 from typing import Any, List, Optional
 
 import gi
-from components.component.component import Component
-from domain.app_settings import AppSettings
-from lib.logger import logger
+
+from d_fake_seeder.components.component.base_component import Component
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
 
 # Import tab configuration system
-from lib.util.tab_config import get_essential_tab_classes, get_lazy_load_tab_classes, get_torrent_details_tab_classes
+from d_fake_seeder.lib.util.tab_config import (
+    get_essential_tab_classes,
+    get_lazy_load_tab_classes,
+    get_torrent_details_tab_classes,
+)
 
 from .details_tab import DetailsTab
 from .files_tab import FilesTab

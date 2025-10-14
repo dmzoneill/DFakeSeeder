@@ -1,9 +1,9 @@
 import hashlib
 from datetime import datetime
 
-import domain.torrent.bencoding as bencoding
-import lib.util.helpers as helpers
-from lib.logger import logger
+import d_fake_seeder.domain.torrent.bencoding as bencoding
+import d_fake_seeder.lib.util.helpers as helpers
+from d_fake_seeder.lib.logger import logger
 
 
 class File:
@@ -65,9 +65,13 @@ class File:
         result = "Announce: %s\n" % announce
 
         if b"creation date" in self.torrent_header:
-            creation_date = self.torrent_header[b"creation date"]
-            creation_date = datetime.fromtimestamp(creation_date)
-            result += "Date: %s\n" % creation_date.strftime("%Y/%m/%d %H:%M:%S")
+            try:
+                creation_date = self.torrent_header[b"creation date"]
+                creation_date = datetime.fromtimestamp(creation_date)
+                result += "Date: %s\n" % creation_date.strftime("%Y/%m/%d %H:%M:%S")
+            except (TypeError, ValueError, OSError):
+                # Invalid creation date, skip it
+                pass
 
         if b"created by" in self.torrent_header:
             created_by = self.torrent_header[b"created by"].decode("utf-8")
@@ -109,9 +113,13 @@ class File:
 
     def get_creation_date(self):
         if b"creation date" in self.torrent_header:
-            creation_date = self.torrent_header[b"creation date"]
-            creation_date = datetime.fromtimestamp(creation_date)
-            return creation_date.strftime("%Y/%m/%d %H:%M:%S")
+            try:
+                creation_date = self.torrent_header[b"creation date"]
+                creation_date = datetime.fromtimestamp(creation_date)
+                return creation_date.strftime("%Y/%m/%d %H:%M:%S")
+            except (TypeError, ValueError, OSError):
+                # Invalid creation date (wrong type, out of range, etc.)
+                return None
         return None
 
     def get_created_by(self):

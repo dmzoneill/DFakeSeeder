@@ -12,9 +12,12 @@ import gi
 gi.require_version("Gtk", "4.0")
 
 from .base_tab import BaseSettingsTab  # noqa: E402
+from .settings_mixins import NotificationMixin  # noqa: E402
+from .settings_mixins import TranslationMixin  # noqa: E402
+from .settings_mixins import ValidationMixin  # noqa: E402
 
 
-class MultiTrackerTab(BaseSettingsTab):
+class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin):
     """Multi-Tracker (BEP-012) configuration tab"""
 
     @property
@@ -305,17 +308,20 @@ class MultiTrackerTab(BaseSettingsTab):
 
         try:
             # Validate max consecutive failures
-            if self._widgets["max_consecutive_failures"]:
-                failures = self._widgets["max_consecutive_failures"].get_value()
+            max_failures_widget = self._widgets.get("max_consecutive_failures")
+            if max_failures_widget:
+                failures = max_failures_widget.get_value()
                 if failures < 1:
                     errors["max_consecutive_failures"] = "Must allow at least 1 failure before disabling tracker"
                 elif failures > 20:
                     errors["max_consecutive_failures"] = "Warning: Very high failure threshold may delay failover"
 
             # Validate backoff settings
-            if self._widgets["backoff_base_seconds"] and self._widgets["max_backoff_seconds"]:
-                base = self._widgets["backoff_base_seconds"].get_value()
-                max_backoff = self._widgets["max_backoff_seconds"].get_value()
+            backoff_base_widget = self._widgets.get("backoff_base_seconds")
+            max_backoff_widget = self._widgets.get("max_backoff_seconds")
+            if backoff_base_widget and max_backoff_widget:
+                base = backoff_base_widget.get_value()
+                max_backoff = max_backoff_widget.get_value()
 
                 if base >= max_backoff:
                     errors["backoff_base_seconds"] = "Base backoff must be less than maximum backoff"
@@ -324,23 +330,27 @@ class MultiTrackerTab(BaseSettingsTab):
                     errors["backoff_base_seconds"] = "Warning: Very low backoff may cause excessive retry attempts"
 
             # Validate response time smoothing
-            if self._widgets["response_time_smoothing"]:
-                smoothing = self._widgets["response_time_smoothing"].get_value()
+            smoothing_widget = self._widgets.get("response_time_smoothing")
+            if smoothing_widget:
+                smoothing = smoothing_widget.get_value()
                 if smoothing < 0.0 or smoothing > 1.0:
                     errors["response_time_smoothing"] = "Smoothing factor must be between 0.0 and 1.0"
 
             # Validate rotation interval
-            if self._widgets["rotation_interval_seconds"]:
-                interval = self._widgets["rotation_interval_seconds"].get_value()
+            rotation_widget = self._widgets.get("rotation_interval_seconds")
+            if rotation_widget:
+                interval = rotation_widget.get_value()
                 if interval < 60:
                     errors["rotation_interval_seconds"] = "Warning: Very short rotation interval may cause instability"
 
             # Check for conflicting settings
+            announce_all_tiers_widget = self._widgets.get("announce_to_all_tiers")
+            failover_widget = self._widgets.get("failover_enabled")
             if (
-                self._widgets["announce_to_all_tiers"]
-                and self._widgets["announce_to_all_tiers"].get_active()
-                and self._widgets["failover_enabled"]
-                and self._widgets["failover_enabled"].get_active()
+                announce_all_tiers_widget
+                and announce_all_tiers_widget.get_active()
+                and failover_widget
+                and failover_widget.get_active()
             ):
                 errors["announce_to_all_tiers"] = "Info: Announcing to all tiers makes failover less relevant"
 
@@ -496,3 +506,38 @@ class MultiTrackerTab(BaseSettingsTab):
         """Handle log tier changes toggle"""
         enabled = check_button.get_active()
         self.logger.debug(f"Log tier changes: {enabled}", extra={"class_name": self.__class__.__name__})
+
+    def handle_model_changed(self, source, data_obj, _data_changed):
+        """Handle model change events."""
+        self.logger.debug(
+            "MultiTrackerTab model changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def handle_attribute_changed(self, source, key, value):
+        """Handle attribute change events."""
+        self.logger.debug(
+            "MultiTrackerTab attribute changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def handle_settings_changed(self, source, data_obj, _data_changed):
+        """Handle settings change events."""
+        self.logger.debug(
+            "MultiTrackerTab settings changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def update_view(self, model, torrent, attribute):
+        """Update view based on model changes."""
+        self.logger.debug(
+            "MultiTrackerTab update view",
+            extra={"class_name": self.__class__.__name__},
+        )
+        # Store model reference for translation access
+        self.model = model
+
+        # Translate dropdown items now that we have the model
+        # But prevent TranslationMixin from connecting to language-changed signal to avoid loops
+        self._language_change_connected = True  # Block TranslationMixin from connecting
+        self.translate_common_dropdowns()

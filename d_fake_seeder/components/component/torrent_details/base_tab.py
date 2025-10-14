@@ -8,11 +8,12 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
 
 import gi
-from domain.app_settings import AppSettings
-from lib.logger import logger
 
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk  # noqa
+from gi.repository import Gtk  # noqa: E402
+
+from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
+from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 
 class BaseTorrentTab(ABC):
@@ -82,7 +83,7 @@ class BaseTorrentTab(ABC):
     def _setup_ui_styling(self) -> None:
         """Set up consistent UI styling for the tab."""
         try:
-            self._tab_widget = self.builder.get_object(self.tab_widget_id)
+            self._tab_widget = self.get_widget(self.tab_widget_id)
             if self._tab_widget:
                 self._tab_widget.set_visible(True)
                 self._tab_widget.set_margin_top(self.ui_margin_large)

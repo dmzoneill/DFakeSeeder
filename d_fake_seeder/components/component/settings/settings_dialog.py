@@ -9,13 +9,14 @@ from typing import Any, Dict, List
 import gi
 
 gi.require_version("Gtk", "4.0")
-from domain.app_settings import AppSettings  # noqa
 from gi.repository import Gtk  # noqa
-from lib.logger import logger  # noqa
+
+from d_fake_seeder.domain.app_settings import AppSettings  # noqa
+from d_fake_seeder.lib.logger import logger  # noqa
 
 # Import tab configuration system
-from lib.util.tab_config import get_config_metadata  # noqa
-from lib.util.tab_config import get_settings_tab_classes  # noqa: E402
+from d_fake_seeder.lib.util.tab_config import get_config_metadata  # noqa
+from d_fake_seeder.lib.util.tab_config import get_settings_tab_classes  # noqa: E402
 
 # Component inheritance removed - settings dialog should not be a general model observer
 from .advanced_tab import AdvancedTab  # noqa

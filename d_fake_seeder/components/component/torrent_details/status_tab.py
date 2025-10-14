@@ -5,7 +5,8 @@ Displays torrent attributes and status information in a grid layout.
 """
 
 import gi
-from domain.torrent.model.attributes import Attributes
+
+from d_fake_seeder.domain.torrent.model.attributes import Attributes
 
 from .base_tab import BaseTorrentTab
 from .tab_mixins import DataUpdateMixin, UIUtilityMixin

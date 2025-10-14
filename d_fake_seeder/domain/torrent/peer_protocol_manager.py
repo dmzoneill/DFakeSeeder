@@ -12,13 +12,18 @@ import threading
 import time
 from typing import Dict, List, Optional
 
-from domain.app_settings import AppSettings
-from domain.torrent.bittorrent_message import BitTorrentMessage
-from domain.torrent.peer_connection import PeerConnection
-from domain.torrent.peer_info import PeerInfo
-from domain.torrent.shared_async_executor import SharedAsyncExecutor
-from lib.logger import logger
-from lib.util.constants import AsyncConstants, BitTorrentProtocolConstants, ConnectionConstants, TimeoutConstants
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.bittorrent_message import BitTorrentMessage
+from d_fake_seeder.domain.torrent.peer_connection import PeerConnection
+from d_fake_seeder.domain.torrent.peer_info import PeerInfo
+from d_fake_seeder.domain.torrent.shared_async_executor import SharedAsyncExecutor
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import (
+    AsyncConstants,
+    BitTorrentProtocolConstants,
+    ConnectionConstants,
+    TimeoutConstants,
+)
 
 
 class PeerProtocolManager:

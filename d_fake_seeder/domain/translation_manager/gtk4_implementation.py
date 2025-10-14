@@ -20,7 +20,8 @@ if "gi.repository.Gtk" not in sys.modules:
     gi.require_version("Gtk", "4.0")  # noqa: E402
 
 from gi.repository import Gio, Gtk  # noqa: E402
-from lib.logger import logger  # noqa: E402
+
+from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 from .base import TranslationManagerBase  # noqa: E402
 

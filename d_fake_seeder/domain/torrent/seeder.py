@@ -4,11 +4,16 @@ RFC: https://wiki.theory.org/index.php/BitTorrentSpecification
 
 from urllib.parse import urlparse
 
-from domain.app_settings import AppSettings
-from domain.torrent.seeders.http_seeder import HTTPSeeder
-from domain.torrent.seeders.udp_seeder import UDPSeeder
-from gi.repository import GLib
-from lib.logger import logger
+import gi
+
+gi.require_version("GLib", "2.0")
+
+from gi.repository import GLib  # noqa: E402
+
+from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
+from d_fake_seeder.domain.torrent.seeders.http_seeder import HTTPSeeder  # noqa: E402
+from d_fake_seeder.domain.torrent.seeders.udp_seeder import UDPSeeder  # noqa: E402
+from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 
 class Seeder:

@@ -13,9 +13,9 @@ import struct
 import time
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-from domain.app_settings import AppSettings
-from lib.logger import logger
-from lib.util.constants import DHTConstants
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import DHTConstants
 
 from .peer_discovery import PeerDiscovery
 from .routing_table import RoutingTable
@@ -23,7 +23,7 @@ from .routing_table import RoutingTable
 try:
     import bencode
 except ImportError:
-    from domain.torrent.bencoding import bencode
+    from d_fake_seeder.domain.torrent.bencoding import bencode
 
 
 class DHTNode:

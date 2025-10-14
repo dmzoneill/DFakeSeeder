@@ -7,8 +7,9 @@ Displays torrent peer information in a column view with sorting capabilities.
 from typing import Any, Dict, List
 
 import gi
-from domain.torrent.model.torrent_peer import TorrentPeer
-from lib.util.column_translation_mixin import ColumnTranslationMixin
+
+from d_fake_seeder.domain.torrent.model.torrent_peer import TorrentPeer
+from d_fake_seeder.lib.util.column_translation_mixin import ColumnTranslationMixin
 
 from .base_tab import BaseTorrentTab
 from .tab_mixins import DataUpdateMixin, PerformanceMixin, UIUtilityMixin

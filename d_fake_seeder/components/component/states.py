@@ -1,8 +1,9 @@
 import gi
-from components.component.component import Component
-from domain.app_settings import AppSettings
-from lib.logger import logger
-from lib.util.column_translation_mixin import ColumnTranslationMixin
+
+from d_fake_seeder.components.component.base_component import Component
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.column_translation_mixin import ColumnTranslationMixin
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")

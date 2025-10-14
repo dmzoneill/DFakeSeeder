@@ -10,9 +10,9 @@ import hashlib
 import time
 from typing import Optional
 
-from domain.torrent.protocols.dht.node import DHTNode
-from domain.torrent.seeders.base_seeder import BaseSeeder
-from lib.logger import logger
+from d_fake_seeder.domain.torrent.protocols.dht.node import DHTNode
+from d_fake_seeder.domain.torrent.seeders.base_seeder import BaseSeeder
+from d_fake_seeder.lib.logger import logger
 
 
 class DHTSeeder(BaseSeeder):

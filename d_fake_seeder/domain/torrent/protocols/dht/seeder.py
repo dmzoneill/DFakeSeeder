@@ -8,8 +8,8 @@ Provides DHT-based peer discovery and announcement for torrents.
 import time
 from typing import Dict, List, Tuple
 
-from domain.app_settings import AppSettings
-from lib.logger import logger
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
 
 from .node import DHTNode
 

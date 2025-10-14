@@ -9,9 +9,9 @@ import random
 import time
 from typing import Any, Dict, List
 
-from domain.app_settings import AppSettings
-from lib.logger import logger
-from lib.util.constants import BitTorrentProtocolConstants
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import BitTorrentProtocolConstants
 
 
 class ClientBehaviorEngine:
@@ -301,8 +301,12 @@ class ClientBehaviorEngine:
             if base_value is None:
                 return default
 
-            # Apply variation for numeric values
-            if isinstance(base_value, (int, float)) and self.behavior_variation > 0:
+            # Apply variation for numeric values (but not booleans)
+            if (
+                isinstance(base_value, (int, float))
+                and not isinstance(base_value, bool)
+                and self.behavior_variation > 0
+            ):
                 variation = base_value * self.behavior_variation * (random.random() - 0.5) * 2
                 return max(0, base_value + variation)
 
@@ -506,7 +510,11 @@ class ClientBehaviorEngine:
 
     def _generate_generic_peer_id(self) -> str:
         """Generate generic peer ID"""
-        return "-DF1000-" + "".join(random.choices("0123456789ABCDEF", k=12))
+        try:
+            return "-DF1000-" + "".join(random.choices("0123456789ABCDEF", k=12))
+        except Exception:
+            # Ultimate fallback - use fixed suffix if random fails
+            return "-DF1000-000000000000"
 
     def get_statistics(self) -> Dict[str, Any]:
         """

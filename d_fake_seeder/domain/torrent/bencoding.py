@@ -1,6 +1,20 @@
 """Helper methods to encode and decode Bencoding data."""
 
 
+class bencode:
+    """Bencodepy-compatible interface wrapper."""
+
+    @staticmethod
+    def bdecode(data):
+        """Decode bencode data (bencodepy-compatible name)."""
+        return decode(data)
+
+    @staticmethod
+    def bencode(data):
+        """Encode data to bencode (bencodepy-compatible name)."""
+        return encode(data)
+
+
 def _decode(raw_buffer, elements, index=0):
     if len(raw_buffer) == 0:
         return None

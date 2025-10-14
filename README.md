@@ -26,7 +26,7 @@ A sophisticated Python GTK4 BitTorrent client that simulates seeding activity wi
 - **Real-time Translation**: Dynamic language changes without application restart
 - **Performance Tracking**: Built-in timing and performance monitoring
 
-![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/images/screenshot.png)
+![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/components/images/screenshot.png)
 
 ## Installation & Usage
 

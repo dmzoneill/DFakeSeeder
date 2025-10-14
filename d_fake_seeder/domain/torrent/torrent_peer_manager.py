@@ -9,9 +9,9 @@ import threading
 import time
 from typing import Dict, List, Optional
 
-from domain.app_settings import AppSettings
-from domain.torrent.peer_protocol_manager import PeerProtocolManager
-from lib.logger import logger
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.peer_protocol_manager import PeerProtocolManager
+from d_fake_seeder.lib.logger import logger
 
 
 class TorrentPeerManager:

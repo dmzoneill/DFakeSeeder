@@ -1,0 +1,148 @@
+Loading .env environment variables...
+============================= test session starts ==============================
+platform linux -- Python 3.13.7, pytest-7.3.2, pluggy-1.6.0
+Using --randomly-seed=3378339464
+rootdir: /home/daoneill/src/DFakeSeeder
+configfile: pytest.ini
+plugins: asyncio-0.23.8, randomly-4.0.1, timeout-2.4.0, mock-3.15.1, forked-1.6.0, cov-7.0.0, xdist-3.8.0
+asyncio: mode=Mode.AUTO
+collected 3693 items
+
+tests/unit/domain/torrent/protocols/tracker/test_multi_tracker.py ...... [  0%]
+....................................................                     [  1%]
+tests/unit/domain/torrent/test_peer_protocol_manager.py ................ [  2%]
+.....................................................                    [  3%]
+tests/unit/components/component/test_component.py ........               [  3%]
+tests/unit/lib/util/test_constants.py .................................. [  4%]
+.........                                                                [  4%]
+tests/unit/components/component/torrent_details/test_log_tab.py ........ [  5%]
+........                                                                 [  5%]
+tests/unit/test_dfakeseeder_tray.py ...                                  [  5%]
+tests/unit/lib/test_dbus_client.py ..................................... [  6%]
+......                                                                   [  6%]
+tests/unit/domain/torrent/test_peer_info.py ...........................  [  7%]
+tests/unit/domain/torrent/seeders/test_dht_seeder.py ................... [  7%]
+...............................                                          [  8%]
+tests/unit/components/component/torrent_details/test_base_tab.py ....... [  8%]
+.....                                                                    [  8%]
+tests/unit/domain/torrent/protocols/dht/test_dht_seeder.py ............. [  9%]
+..............................                                           [ 10%]
+tests/unit/lib/util/test_tab_config.py ................................. [ 10%]
+.                                                                        [ 10%]
+tests/unit/lib/util/test_shutdown_progress.py .......................... [ 11%]
+...................................................................      [ 13%]
+tests/unit/domain/translation_manager/test_base.py ..................... [ 14%]
+..................................                                       [ 15%]
+tests/unit/components/component/settings/test_settings_dialog.py ....... [ 15%]
+...........                                                              [ 15%]
+tests/unit/domain/translation_manager/test_factory.py .................. [ 15%]
+..........................Traceback (most recent call last):
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1169, in __call__
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1173, in _mock_call
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1228, in _execute_mock_call
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/bin/pytest", line 8, in <module>
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/config/__init__.py", line 189, in console_main
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/config/__init__.py", line 174, in main
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/config/__init__.py", line 1061, in _ensure_unconfigure
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 167, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/faulthandler.py", line 34, in pytest_unconfigure
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1169, in __call__
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1173, in _mock_call
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1228, in _execute_mock_call
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/config/__init__.py", line 166, in main
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 167, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/main.py", line 316, in pytest_cmdline_main
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/main.py", line 304, in wrap_session
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 167, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 53, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_result.py", line 103, in get_result
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 38, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 47, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 73, in _warn_teardown_exception
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1169, in __call__
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1173, in _mock_call
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1228, in _execute_mock_call
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 43, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/terminal.py", line 812, in pytest_sessionfinish
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_result.py", line 103, in get_result
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 38, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 107, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 34, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/warnings.py", line 135, in pytest_sessionfinish
+  File "/usr/lib64/python3.13/contextlib.py", line 141, in __enter__
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/warnings.py", line 52, in catch_warnings_for_item
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/config/__init__.py", line 1762, in apply_warning_filters
+  File "/usr/lib64/python3.13/warnings.py", line 157, in filterwarnings
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1169, in __call__
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1173, in _mock_call
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1228, in _execute_mock_call
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/main.py", line 289, in wrap_session
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/config/__init__.py", line 1107, in notify_exception
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/_code/code.py", line 653, in getrepr
+  File "/usr/lib64/python3.13/traceback.py", line 154, in format_exception
+  File "/usr/lib64/python3.13/traceback.py", line 1052, in __init__
+  File "/usr/lib64/python3.13/traceback.py", line 495, in _extract_from_extended_frame_gen
+  File "/usr/lib64/python3.13/linecache.py", line 90, in checkcache
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1169, in __call__
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1173, in _mock_call
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1228, in _execute_mock_call
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/main.py", line 269, in wrap_session
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/main.py", line 323, in _main
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 167, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 53, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_result.py", line 103, in get_result
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 38, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pytest_cov/plugin.py", line 345, in pytest_runtestloop
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/main.py", line 348, in pytest_runtestloop
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 167, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 53, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_result.py", line 103, in get_result
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 38, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 53, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_result.py", line 103, in get_result
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 38, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 53, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_result.py", line 103, in get_result
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 38, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 53, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_result.py", line 103, in get_result
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 38, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 139, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 53, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_result.py", line 103, in get_result
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 38, in run_old_style_hookwrapper
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/runner.py", line 114, in pytest_runtest_protocol
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/runner.py", line 133, in runtestprotocol
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/runner.py", line 223, in call_and_report
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/nodes.py", line 267, in ihook
+  File "/home/daoneill/.local/share/virtualenvs/DFakeSeeder-VQhgPNV_-python3/lib/python3.13/site-packages/_pytest/main.py", line 550, in gethookproxy
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1169, in __call__
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1173, in _mock_call
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1228, in _execute_mock_call
+  File "/home/daoneill/src/DFakeSeeder/d_fake_seeder/domain/translation_manager/factory.py", line 281, in validate_gtk_environment
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1169, in __call__
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1173, in _mock_call
+  File "/usr/lib64/python3.13/unittest/mock.py", line 1228, in _execute_mock_call
+Exception: Test error

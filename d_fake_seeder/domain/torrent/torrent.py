@@ -3,14 +3,15 @@ import threading
 import time
 
 import gi
-from domain.app_settings import AppSettings
-from domain.torrent.file import File
-from domain.torrent.model.attributes import Attributes
-from domain.torrent.model.tracker import Tracker
-from domain.torrent.seeder import Seeder
-from lib.logger import logger
-from lib.util.constants import CalculationConstants, TimeoutConstants
-from view import View
+
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.file import File
+from d_fake_seeder.domain.torrent.model.attributes import Attributes
+from d_fake_seeder.domain.torrent.model.tracker import Tracker
+from d_fake_seeder.domain.torrent.seeder import Seeder
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import CalculationConstants, TimeoutConstants
+from d_fake_seeder.view import View
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
@@ -281,7 +282,9 @@ class Torrent(GObject.GObject):
             "Torrent Stopping fake seeder: " + self.name,
             extra={"class_name": self.__class__.__name__},
         )
-        View.instance.notify("Stopping fake seeder " + self.name)
+        # Only notify if view instance still exists (may be None during shutdown)
+        if View.instance is not None:
+            View.instance.notify("Stopping fake seeder " + self.name)
 
         # Request graceful shutdown of seeder first
         if hasattr(self, "seeder") and self.seeder:
@@ -326,7 +329,9 @@ class Torrent(GObject.GObject):
             extra={"class_name": self.__class__.__name__},
         )
         try:
-            View.instance.notify("Stopping fake seeder " + self.name)
+            # Only notify if view instance still exists (may be None during shutdown)
+            if View.instance is not None:
+                View.instance.notify("Stopping fake seeder " + self.name)
             self.torrent_worker_stop_event.set()
             self.torrent_worker.join()
 
@@ -341,7 +346,9 @@ class Torrent(GObject.GObject):
 
         if state:
             try:
-                View.instance.notify("Starting fake seeder " + self.name)
+                # Only notify if view instance still exists (may be None during shutdown)
+                if View.instance is not None:
+                    View.instance.notify("Starting fake seeder " + self.name)
                 self.torrent_worker_stop_event = threading.Event()
                 self.torrent_worker = threading.Thread(
                     target=self.update_torrent_worker,

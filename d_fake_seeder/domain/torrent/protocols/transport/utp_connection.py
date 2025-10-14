@@ -12,9 +12,9 @@ import time
 from enum import IntEnum
 from typing import Dict, Tuple
 
-from domain.app_settings import AppSettings
-from lib.logger import logger
-from lib.util.constants import UTPConstants
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import UTPConstants
 
 
 class UTPPacketType(IntEnum):
@@ -250,6 +250,7 @@ class UTPConnection:
                 self.bytes_sent += len(packet)
         except Exception as e:
             logger.error(f"Failed to send µTP packet: {e}", extra={"class_name": self.__class__.__name__})
+            raise
 
     def _create_packet(self, packet_type: UTPPacketType, payload: bytes) -> bytes:
         """
@@ -278,7 +279,7 @@ class UTPConnection:
         timestamp_diff_us = 0
 
         header = struct.pack(
-            ">BBHIIIHHH",
+            ">BBHIIIHH",
             (version << 4) | packet_type,
             extension,
             self.connection_id,
@@ -305,7 +306,7 @@ class UTPConnection:
             wnd_size,
             seq_nr,
             ack_nr,
-        ) = struct.unpack(">BBHIIIHHH", packet[: UTPConstants.HEADER_SIZE])
+        ) = struct.unpack(">BBHIIIHH", packet[: UTPConstants.HEADER_SIZE])
 
         version = (version_type >> UTPConstants.VERSION_SHIFT) & UTPConstants.VERSION_MASK
         packet_type = version_type & UTPConstants.PACKET_TYPE_MASK
