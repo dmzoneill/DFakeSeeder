@@ -93,6 +93,9 @@ ui-build: icons
 	@echo "Building UI..."
 	xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml
 	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml
+	@echo "Building settings UI..."
+	xmllint --xinclude d_fake_seeder/components/ui/settings.xml > d_fake_seeder/components/ui/generated/settings_generated.xml
+	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/settings_generated.xml
 	@echo "✅ UI built successfully!"
 
 # ============================================================================
