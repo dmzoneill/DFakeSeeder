@@ -1,14 +1,15 @@
 import time
 from time import sleep
 
-import domain.torrent.bencoding as bencoding
 import requests
-from domain.app_settings import AppSettings
-from domain.torrent.model.tracker import Tracker
-from domain.torrent.seeders.base_seeder import BaseSeeder
-from lib.logger import logger
-from lib.util.constants import RetryConstants, TimeoutConstants
-from view import View
+
+import d_fake_seeder.domain.torrent.bencoding as bencoding
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.model.tracker import Tracker
+from d_fake_seeder.domain.torrent.seeders.base_seeder import BaseSeeder
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import RetryConstants, TimeoutConstants
+from d_fake_seeder.view import View
 
 
 class HTTPSeeder(BaseSeeder):
@@ -39,7 +40,9 @@ class HTTPSeeder(BaseSeeder):
                 )
                 return False
 
-            View.instance.notify("load_peers " + self.tracker_url)
+            # Only notify if view instance still exists (may be None during shutdown)
+            if View.instance is not None:
+                View.instance.notify("load_peers " + self.tracker_url)
 
             # Mark tracker as announcing
             self._set_tracker_announcing()

@@ -1,12 +1,13 @@
 import time
 
 import gi
-from components.component.component import Component
-from domain.app_settings import AppSettings
-from domain.torrent.model.attributes import Attributes
-from lib.logger import logger
-from lib.util.column_translation_mixin import ColumnTranslationMixin
-from lib.util.helpers import add_kb, add_percent, convert_seconds_to_hours_mins_seconds, humanbytes
+
+from d_fake_seeder.components.component.base_component import Component
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.model.attributes import Attributes
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.column_translation_mixin import ColumnTranslationMixin
+from d_fake_seeder.lib.util.helpers import add_kb, add_percent, convert_seconds_to_hours_mins_seconds, humanbytes
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")

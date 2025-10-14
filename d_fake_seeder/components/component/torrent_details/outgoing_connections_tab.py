@@ -6,13 +6,14 @@ about peers that we've initiated connections to.
 """
 
 import gi
-from domain.app_settings import AppSettings
-from domain.torrent.connection_manager import get_connection_manager
-from domain.torrent.model.connection_peer import ConnectionPeer
-from lib.logger import logger
-from lib.util.column_translation_mixin import ColumnTranslationMixin
 
-from ..component import Component
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.connection_manager import get_connection_manager
+from d_fake_seeder.domain.torrent.model.connection_peer import ConnectionPeer
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.column_translation_mixin import ColumnTranslationMixin
+
+from ..base_component import Component
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("GioUnix", "2.0")

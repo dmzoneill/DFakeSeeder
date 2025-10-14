@@ -10,9 +10,9 @@ import random
 import time
 from typing import Dict, List, Optional, Tuple
 
-from domain.app_settings import AppSettings
-from lib.logger import logger
-from lib.util.constants import MultiTrackerConstants
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import MultiTrackerConstants
 
 
 class TrackerTier:
@@ -241,7 +241,7 @@ class MultiTrackerManager:
                     self.tiers.append(tier)
 
             # Additional fallback: check for tracker URLs in torrent object
-            if not self.tiers and hasattr(self.torrent, "tracker_url"):
+            if not self.tiers and hasattr(self.torrent, "tracker_url") and self.torrent.tracker_url:
                 tier = TrackerTier([self.torrent.tracker_url], 0)
                 self.tiers.append(tier)
 

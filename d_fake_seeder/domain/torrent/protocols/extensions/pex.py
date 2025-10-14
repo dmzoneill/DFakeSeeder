@@ -11,14 +11,14 @@ import struct
 import time
 from typing import List, Set, Tuple
 
-from domain.app_settings import AppSettings
-from lib.logger import logger
-from lib.util.constants import PeerExchangeConstants
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import PeerExchangeConstants
 
 try:
-    import bencode
+    import bencodepy as bencode
 except ImportError:
-    from domain.torrent.bencoding import bencode
+    from d_fake_seeder.domain.torrent.bencoding import bencode
 
 
 class PeerExchangeExtension:

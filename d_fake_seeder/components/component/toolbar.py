@@ -4,11 +4,12 @@ import shutil
 import traceback
 
 import gi
-from components.component.component import Component
-from domain.app_settings import AppSettings
+
+from d_fake_seeder.components.component.base_component import Component
+from d_fake_seeder.domain.app_settings import AppSettings
 
 # Translation function will be provided by model's TranslationManager
-from lib.logger import logger
+from d_fake_seeder.lib.logger import logger
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")

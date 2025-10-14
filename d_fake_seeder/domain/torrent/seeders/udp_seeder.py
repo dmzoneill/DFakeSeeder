@@ -5,11 +5,11 @@ import socket
 import struct
 import time
 
-from domain.app_settings import AppSettings
-from domain.torrent.model.tracker import Tracker
-from domain.torrent.seeders.base_seeder import BaseSeeder
-from lib.logger import logger
-from lib.util.constants import NetworkConstants, TimeoutConstants, UDPTrackerConstants
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.model.tracker import Tracker
+from d_fake_seeder.domain.torrent.seeders.base_seeder import BaseSeeder
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import NetworkConstants, TimeoutConstants, UDPTrackerConstants
 
 
 class UDPSeeder(BaseSeeder):

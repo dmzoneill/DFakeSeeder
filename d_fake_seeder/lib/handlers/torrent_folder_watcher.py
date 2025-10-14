@@ -8,7 +8,7 @@ import os
 import shutil
 import time
 
-from lib.logger import logger
+from d_fake_seeder.lib.logger import logger
 
 try:
     from watchdog.events import FileSystemEventHandler

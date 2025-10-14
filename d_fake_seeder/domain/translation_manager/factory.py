@@ -9,7 +9,7 @@ implementation based on GTK version requirements and auto-detection.
 import sys
 from typing import Optional, Set
 
-from lib.logger import logger
+from d_fake_seeder.lib.logger import logger
 
 from .base import TranslationManagerBase
 
@@ -277,6 +277,11 @@ def validate_gtk_environment(gtk_version: str) -> bool:
     Returns:
         True if GTK version is available and working
     """
+    # Validate version is supported before attempting to load GTK
+    if gtk_version not in ["3", "4"]:
+        logger.debug(f"Invalid GTK version: {gtk_version}. Must be '3' or '4'.", "TranslationManagerFactory")
+        return False
+
     try:
         import gi
 

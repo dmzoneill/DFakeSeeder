@@ -15,8 +15,9 @@ import gi
 gi.require_version("Gtk", "4.0")
 from gi.repository import GLib  # noqa: E402
 from gi.repository import Gtk  # noqa: E402
-from lib.logger import logger  # noqa: E402
-from lib.util.constants import SIZE_UNITS_BASIC  # noqa: E402
+
+from d_fake_seeder.lib.logger import logger  # noqa: E402
+from d_fake_seeder.lib.util.constants import SIZE_UNITS_BASIC  # noqa: E402
 
 
 class WidgetProviderProtocol(Protocol):

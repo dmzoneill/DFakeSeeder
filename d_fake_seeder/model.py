@@ -5,15 +5,16 @@ import gi  # noqa
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("GioUnix", "2.0")
-from domain.app_settings import AppSettings  # noqa: E402
-from domain.torrent.model.attributes import Attributes  # noqa: E402
-from domain.torrent.model.torrentstate import TorrentState  # noqa: E402
-from domain.torrent.torrent import Torrent  # noqa: E402
-from domain.translation_manager import create_translation_manager  # noqa: E402
 from gi.repository import Gio  # noqa: E402
 from gi.repository import GObject, Gtk  # noqa: E402
-from lib.logger import logger  # noqa: E402
-from lib.util.column_translations import ColumnTranslations  # noqa: E402
+
+from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
+from d_fake_seeder.domain.torrent.model.attributes import Attributes  # noqa: E402
+from d_fake_seeder.domain.torrent.model.torrentstate import TorrentState  # noqa: E402
+from d_fake_seeder.domain.torrent.torrent import Torrent  # noqa: E402
+from d_fake_seeder.domain.translation_manager import create_translation_manager  # noqa: E402
+from d_fake_seeder.lib.logger import logger  # noqa: E402
+from d_fake_seeder.lib.util.column_translations import ColumnTranslations  # noqa: E402
 
 
 # Class for handling Torrent data
@@ -319,10 +320,9 @@ class Model(GObject.GObject):
             # Get torrent attributes
             name = getattr(item, "name", "") or ""
             filepath = getattr(item, "filepath", "") or ""
-            # Use fuzzy matching from utilities
-            from lib.util.helpers import fuzzy_match
-
-            return fuzzy_match(self.search_filter, name) or fuzzy_match(self.search_filter, filepath)
+            # Use simple case-insensitive substring matching
+            search_lower = self.search_filter.lower()
+            return search_lower in name.lower() or search_lower in filepath.lower()
 
         # Create filter and filter model
         self.filter = Gtk.Filter()
@@ -350,16 +350,16 @@ class Model(GObject.GObject):
             return
         # Create a new ListStore for filtered results
         self.filtered_torrent_list_attributes = Gio.ListStore.new(Attributes)
-        # Use fuzzy matching from utilities
-        from lib.util.helpers import fuzzy_match
+        # Use simple case-insensitive substring matching
+        search_lower = self.search_filter.lower()
 
         # Filter torrents based on search criteria
         for i in range(self.torrent_list_attributes.get_n_items()):
             item = self.torrent_list_attributes.get_item(i)
             name = getattr(item, "name", "") or ""
             filepath = getattr(item, "filepath", "") or ""
-            # Check if torrent matches search filter
-            if fuzzy_match(self.search_filter, name) or fuzzy_match(self.search_filter, filepath):
+            # Check if torrent matches search filter using case-insensitive substring matching
+            if search_lower in name.lower() or search_lower in filepath.lower():
                 self.filtered_torrent_list_attributes.append(item)
         logger.debug(
             f"Filtered {self.torrent_list_attributes.get_n_items()} torrents to "

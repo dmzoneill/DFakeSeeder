@@ -10,11 +10,12 @@ from typing import Any, Dict
 import gi
 
 gi.require_version("Gtk", "4.0")
-from domain.app_settings import AppSettings  # noqa
 from gi.repository import Gtk  # noqa
-from lib.logger import logger  # noqa
 
-from ..component import Component  # noqa
+from d_fake_seeder.domain.app_settings import AppSettings  # noqa
+from d_fake_seeder.lib.logger import logger  # noqa
+
+from ..base_component import Component  # noqa
 
 
 class BaseSettingsTab(Component):

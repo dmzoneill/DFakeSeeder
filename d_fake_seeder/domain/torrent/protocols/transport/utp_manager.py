@@ -8,9 +8,9 @@ import asyncio
 import socket
 from typing import Dict, Optional, Tuple
 
-from domain.app_settings import AppSettings
-from lib.logger import logger
-from lib.util.constants import UTPConstants
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import UTPConstants
 
 from .utp_connection import UTPConnection
 

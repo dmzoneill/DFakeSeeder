@@ -10,8 +10,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-from lib.logger import logger
-from lib.util.constants import DEFAULT_ICON_SIZES
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import DEFAULT_ICON_SIZES
 
 
 def get_package_dir():

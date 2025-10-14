@@ -8,7 +8,8 @@ into different torrent details tab classes.
 from typing import Any, Callable, Optional
 
 import gi
-from lib.logger import logger
+
+from d_fake_seeder.lib.logger import logger
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import GLib  # noqa: E402

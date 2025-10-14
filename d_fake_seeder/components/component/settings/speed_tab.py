@@ -6,7 +6,8 @@ Handles upload/download limits, alternative speeds, and scheduler configuration.
 from typing import Any, Dict
 
 import gi
-from lib.logger import logger
+
+from d_fake_seeder.lib.logger import logger
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa: E402

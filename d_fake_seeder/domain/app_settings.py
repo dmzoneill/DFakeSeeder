@@ -11,7 +11,11 @@ gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 
 from gi.repository import GObject  # noqa: E402
-from d_fake_seeder.lib.handlers.file_modified_event_handler import WATCHDOG_AVAILABLE, FileModifiedEventHandler  # noqa: E402
+
+from d_fake_seeder.lib.handlers.file_modified_event_handler import (  # noqa: E402
+    WATCHDOG_AVAILABLE,
+    FileModifiedEventHandler,
+)
 from d_fake_seeder.lib.logger import logger  # noqa: E402
 from d_fake_seeder.lib.util.constants import NetworkConstants  # noqa: E402
 
@@ -76,8 +80,23 @@ class AppSettings(GObject.GObject):
         return cls._instance
 
     def __init__(self, file_path=None):
-        if hasattr(self, "_initialized"):
-            return
+        # Check if already initialized AND file_path matches
+        # This allows re-initialization when file_path changes (e.g., in tests)
+        if hasattr(self, "_initialized") and hasattr(self, "_file_path"):
+            # If file_path is changing, we need to reinitialize
+            if file_path is not None and str(file_path) != str(self._file_path):
+                # Stop existing observer before reinitializing
+                if hasattr(self, "_observer") and self._observer:
+                    try:
+                        self._observer.stop()
+                        self._observer.join(timeout=1.0)
+                    except Exception:
+                        pass
+                # Clear initialization flag to allow reinitialization
+                delattr(self, "_initialized")
+            elif file_path is None or str(file_path) == str(self._file_path):
+                # Same file path or no file path specified, skip reinitialization
+                return
 
         # GObject.__init__ already called in __new__
         self._initialized = True
@@ -144,8 +163,8 @@ class AppSettings(GObject.GObject):
             with open(self.default_config_file, "r") as f:
                 self._defaults = json.load(f)
             self.logger.info(f"Loaded {len(self._defaults)} default settings from {self.default_config_file}")
-        except FileNotFoundError:
-            self.logger.warning(f"Default settings file not found: {self.default_config_file}")
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            self.logger.warning(f"Could not load default settings file ({e}), using hardcoded defaults")
             self._defaults = {
                 "upload_speed": 50,
                 "download_speed": 500,
@@ -218,6 +237,11 @@ class AppSettings(GObject.GObject):
                 with open(self._file_path, "w") as f:
                     json.dump(self._settings, f, indent=4)
                 self.logger.info("Created new settings file with defaults")
+        except json.JSONDecodeError as e:
+            # Handle corrupt/truncated JSON files
+            self.logger.warning(f"Settings file contains invalid JSON, using defaults: {e}")
+            self._settings = self._defaults.copy()
+            self.settings = self._defaults.copy()
         except Exception as e:
             self.logger.error(f"Error loading settings: {e}")
 
@@ -433,7 +457,7 @@ class AppSettings(GObject.GObject):
         try:
             with open(self.default_config_file, "r") as f:
                 defaults = json.load(f)
-                self.settings = defaults.copy()
+                self._settings = defaults.copy()
                 self.save_settings()
                 self.logger.info("Settings reset to defaults")
                 # Emit signals for each changed setting
@@ -443,6 +467,11 @@ class AppSettings(GObject.GObject):
                     self.emit("settings-attribute-changed", key, value)
                     # Legacy compatibility signal
                     self.emit("setting-changed", key, value)
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            self.logger.warning(f"Could not load default config file, using current defaults ({e})")
+            # Use already loaded defaults
+            self._settings = self._defaults.copy()
+            self.save_settings()
         except Exception as e:
             self.logger.error(f"Failed to reset settings: {e}")
 

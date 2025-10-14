@@ -11,19 +11,19 @@ import time
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Set, Tuple
 
-from domain.app_settings import AppSettings
-from lib.logger import logger
-from lib.util.constants import DHTConstants
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import DHTConstants
 
 from .routing_table import NodeContact, RoutingTable
 
 try:
     import bencode
 except ImportError:
-    from domain.torrent.bencoding import bencode
+    from d_fake_seeder.domain.torrent import bencoding as bencode
 
 
-@dataclass
+@dataclass(frozen=True)
 class PeerInfo:
     """Peer information from DHT"""
 

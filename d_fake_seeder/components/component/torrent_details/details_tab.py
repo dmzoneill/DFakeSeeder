@@ -5,7 +5,8 @@ Displays key torrent information like name, ID, file path, size, and progress.
 """
 
 import gi
-from lib.util.constants import SIZE_UNITS_BASIC
+
+from d_fake_seeder.lib.util.constants import SIZE_UNITS_BASIC
 
 from .base_tab import BaseTorrentTab
 from .tab_mixins import DataUpdateMixin, UIUtilityMixin

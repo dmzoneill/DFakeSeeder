@@ -4,10 +4,10 @@ import threading
 from typing import Any, Dict
 from urllib.parse import urlparse
 
-import lib.util.helpers as helpers
-from domain.app_settings import AppSettings
-from lib.logger import logger
-from lib.util.constants import BitTorrentProtocolConstants, CalculationConstants, NetworkConstants
+import d_fake_seeder.lib.util.helpers as helpers
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import BitTorrentProtocolConstants, CalculationConstants, NetworkConstants
 
 
 class BaseSeeder:

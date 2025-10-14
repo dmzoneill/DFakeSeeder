@@ -13,10 +13,10 @@ from gi.repository import Gtk  # noqa: E402
 
 from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import NotificationMixin  # noqa: E402
-from .settings_mixins import UtilityMixin, ValidationMixin  # noqa: E402
+from .settings_mixins import TranslationMixin, UtilityMixin, ValidationMixin  # noqa: E402
 
 
-class WebUITab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin):
+class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
     """
     Web UI settings tab component.
 
@@ -548,3 +548,10 @@ class WebUITab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             "WebUITab update view",
             extra={"class_name": self.__class__.__name__},
         )
+        # Store model reference for translation access
+        self.model = model
+
+        # Translate dropdown items now that we have the model
+        # But prevent TranslationMixin from connecting to language-changed signal to avoid loops
+        self._language_change_connected = True  # Block TranslationMixin from connecting
+        self.translate_common_dropdowns()

@@ -13,7 +13,7 @@ Profiles supported:
 
 from typing import Any, Dict
 
-from lib.logger import logger
+from d_fake_seeder.lib.logger import logger
 
 
 class SeedingProfileManager:

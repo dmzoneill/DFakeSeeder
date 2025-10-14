@@ -8,11 +8,16 @@ Provides shared logic for connection counting, filtering, and lifetime managemen
 import time
 from typing import Dict, List, Tuple
 
-from domain.app_settings import AppSettings
-from domain.torrent.model.connection_peer import ConnectionPeer
-from gi.repository import GLib
-from lib.logger import logger
-from lib.util.constants import ConnectionConstants
+import gi
+
+gi.require_version("GLib", "2.0")
+
+from gi.repository import GLib  # noqa: E402
+
+from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
+from d_fake_seeder.domain.torrent.model.connection_peer import ConnectionPeer  # noqa: E402
+from d_fake_seeder.lib.logger import logger  # noqa: E402
+from d_fake_seeder.lib.util.constants import ConnectionConstants  # noqa: E402
 
 
 class ConnectionManager:

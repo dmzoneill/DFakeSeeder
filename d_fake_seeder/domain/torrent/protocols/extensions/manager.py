@@ -8,14 +8,14 @@ Coordinates between different extension implementations.
 import struct
 from typing import Any, Dict
 
-from domain.app_settings import AppSettings
-from domain.torrent.bittorrent_message import BitTorrentMessage
-from lib.logger import logger
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.bittorrent_message import BitTorrentMessage
+from d_fake_seeder.lib.logger import logger
 
 try:
-    import bencode
+    import bencodepy as bencode
 except ImportError:
-    from domain.torrent.bencoding import bencode
+    from d_fake_seeder.domain.torrent.bencoding import bencode
 
 
 class ExtensionManager:

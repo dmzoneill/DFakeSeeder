@@ -8,7 +8,7 @@ of various component shutdowns (torrents, peer managers, threads, etc.).
 import time
 from typing import Callable, Dict, List
 
-from lib.logger import logger
+from d_fake_seeder.lib.logger import logger
 
 
 class ShutdownProgressTracker:

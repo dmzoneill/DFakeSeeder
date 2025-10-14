@@ -6,9 +6,9 @@ This mixin integrates with the existing TranslationManager to support runtime
 language switching for column headers.
 """
 
-from domain.app_settings import AppSettings
-from lib.logger import logger
-from lib.util.column_translations import ColumnTranslations
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.column_translations import ColumnTranslations
 
 
 class ColumnTranslationMixin:

@@ -10,12 +10,12 @@ import threading
 import time
 from typing import Dict, List
 
-from domain.app_settings import AppSettings
-from domain.torrent.peer_protocol_manager import PeerProtocolManager
-from domain.torrent.peer_server import PeerServer
-from domain.torrent.shared_async_executor import SharedAsyncExecutor
-from lib.logger import logger
-from lib.util.constants import NetworkConstants
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.peer_protocol_manager import PeerProtocolManager
+from d_fake_seeder.domain.torrent.peer_server import PeerServer
+from d_fake_seeder.domain.torrent.shared_async_executor import SharedAsyncExecutor
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import NetworkConstants
 
 
 class GlobalPeerManager:

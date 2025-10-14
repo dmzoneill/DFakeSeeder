@@ -11,10 +11,10 @@ import struct
 import time
 from typing import Optional, Tuple
 
-from domain.app_settings import AppSettings
-from domain.torrent.peer_info import PeerInfo
-from lib.logger import logger
-from lib.util.constants import BitTorrentProtocolConstants
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.peer_info import PeerInfo
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import BitTorrentProtocolConstants
 
 
 class PeerConnection:
@@ -239,6 +239,7 @@ class PeerConnection:
 
             # Handle keep-alive message (length = 0)
             if length == BitTorrentProtocolConstants.KEEPALIVE_MESSAGE_LENGTH:
+                self.last_message_time = time.time()
                 return (-1, b"")  # Special case for keep-alive
 
             # Read message ID and payload

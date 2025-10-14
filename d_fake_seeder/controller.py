@@ -1,13 +1,13 @@
 import os
 
-from domain.app_settings import AppSettings
-from domain.torrent.global_peer_manager import GlobalPeerManager
-from lib.handlers.torrent_folder_watcher import TorrentFolderWatcher
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.global_peer_manager import GlobalPeerManager
+from d_fake_seeder.lib.handlers.torrent_folder_watcher import TorrentFolderWatcher
 
 # from domain.torrent.listener import Listener
-from lib.logger import logger
-from lib.util.dbus_unifier import DBusUnifier
-from lib.util.window_manager import WindowManager
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.dbus_unifier import DBusUnifier
+from d_fake_seeder.lib.util.window_manager import WindowManager
 
 
 # Cont roller

@@ -1,0 +1,22 @@
+[run]
+# Measure coverage in forked subprocesses
+concurrency = multiprocessing
+parallel = true
+source = d_fake_seeder
+
+# Exclude GTK3 code that cannot be tested in GTK4 environment
+omit =
+    */dfakeseeder_tray.py
+    */domain/translation_manager/gtk3_implementation.py
+
+[report]
+# Combine coverage from all processes
+precision = 2
+skip_covered = false
+skip_empty = true
+
+[paths]
+# Map paths for coverage combination
+source =
+    d_fake_seeder/
+    */d_fake_seeder/

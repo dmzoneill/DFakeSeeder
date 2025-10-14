@@ -13,9 +13,10 @@ import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Gdk", "4.0")
 
-from domain.app_settings import AppSettings  # noqa: E402
 from gi.repository import Gdk, Gtk  # noqa: E402
-from lib.logger import logger  # noqa: E402
+
+from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
+from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 
 class WindowManager:
@@ -38,18 +39,16 @@ class WindowManager:
         self.window = window
         self.app_settings = AppSettings.get_instance()
 
-        # Window state tracking
+        # Window state tracking - initialize with defaults
         self._last_position = (0, 0)
         self._last_size = (1024, 600)
         self._is_maximized = False
         self._is_minimized = False
 
-        # Setup window event handlers if window is provided
+        # Setup window event handlers and load state if window is provided
         if self.window:
             self._setup_window_handlers()
-
-        # Load saved window state
-        self._load_window_state()
+            self._load_window_state()
 
     def set_window(self, window: Gtk.Window):
         """
@@ -100,10 +99,8 @@ class WindowManager:
             # Apply saved state if window is available
             if self.window:
                 self.window.set_default_size(width, height)
-                if visible:
-                    self.show()
-                else:
-                    self.hide()
+                # Set visibility directly without calling show()/hide() to avoid side effects during init
+                self.window.set_visible(visible)
 
             logger.debug(
                 f"Loaded window state: size={self._last_size}, pos={self._last_position}, visible={visible}",

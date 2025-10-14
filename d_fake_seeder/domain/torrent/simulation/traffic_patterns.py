@@ -10,8 +10,8 @@ import random
 import time
 from typing import Any, Dict, Generator, List, Optional, Tuple
 
-from domain.app_settings import AppSettings
-from lib.logger import logger
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.logger import logger
 
 
 class TrafficPatternSimulator:
@@ -30,7 +30,8 @@ class TrafficPatternSimulator:
         simulation_config = getattr(self.settings, "simulation", {})
         self.traffic_config = simulation_config.get("traffic_patterns", {})
 
-        self.profile_name = self.traffic_config.get("profile", seeding_profile)
+        # Use the provided seeding_profile parameter directly
+        self.profile_name = seeding_profile
         self.realistic_variations = self.traffic_config.get("realistic_variations", True)
         self.time_based_patterns = self.traffic_config.get("time_based_patterns", True)
 

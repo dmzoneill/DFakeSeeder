@@ -9,8 +9,13 @@ Integrates with the seeding system to provide live tracker monitoring.
 import time
 from typing import Any, Dict, Optional
 
-from gi.repository import GObject
-from lib.logger import logger
+import gi
+
+gi.require_version("GObject", "2.0")
+
+from gi.repository import GObject  # noqa: E402
+
+from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 
 class Tracker(GObject.Object):

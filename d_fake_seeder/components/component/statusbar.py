@@ -1,11 +1,12 @@
 import time
 
 import requests
-from components.component.component import Component
-from domain.app_settings import AppSettings
-from domain.torrent.connection_manager import get_connection_manager
-from lib.logger import logger
-from lib.util.format_helpers import format_number, format_size
+
+from d_fake_seeder.components.component.base_component import Component
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.connection_manager import get_connection_manager
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.format_helpers import format_number, format_size
 
 
 class Statusbar(Component):

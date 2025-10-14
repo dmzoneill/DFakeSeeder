@@ -15,7 +15,8 @@ from .tab_mixins import PerformanceMixin, UIUtilityMixin
 gi.require_version("Gtk", "4.0")
 from gi.repository import GLib  # noqa: E402
 from gi.repository import Gtk  # noqa: E402
-from lib.logger import logger  # noqa: E402
+
+from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 
 class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
@@ -98,8 +99,6 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             self._log_handler.emit = update_textview  # type: ignore[method-assign]
 
             # Add handler to the main logger
-            from lib.logger import logger
-
             logger.addHandler(self._log_handler)
 
             self.logger.info("Log viewer handler set up successfully")
@@ -287,8 +286,6 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
         try:
             # Remove log handler
             if self._log_handler:
-                from lib.logger import logger
-
                 logger.removeHandler(self._log_handler)
                 self._log_handler = None
 

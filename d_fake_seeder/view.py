@@ -11,20 +11,21 @@ gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 gi.require_version("GioUnix", "2.0")
 gi.require_version("Adw", "1")
+from gi.repository import Adw, Gdk, Gio, GLib, Gtk  # noqa
+
 # Shutdown progress tracking (overlay removed, keeping behavior)
-from components.component.states import States  # noqa: E402
-from components.component.statusbar import Statusbar  # noqa: E402
-from components.component.toolbar import Toolbar  # noqa: E402
+from d_fake_seeder.components.component.states import States  # noqa: E402
+from d_fake_seeder.components.component.statusbar import Statusbar  # noqa: E402
+from d_fake_seeder.components.component.toolbar import Toolbar  # noqa: E402
 
 # Importing necessary libraries
-from components.component.torrent_details import TorrentDetailsNotebook  # noqa: E402
-from components.component.torrents import Torrents  # noqa: E402
-from domain.app_settings import AppSettings  # noqa: E402
-from gi.repository import Adw, Gdk, Gio, GLib, Gtk  # noqa; noqa: E402
+from d_fake_seeder.components.component.torrent_details import TorrentDetailsNotebook  # noqa: E402
+from d_fake_seeder.components.component.torrents import Torrents  # noqa: E402
+from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
 
 # Translation function will be provided by model's TranslationManager
-from lib.logger import logger  # noqa: E402
-from lib.util.shutdown_progress import ShutdownProgressTracker  # noqa: E402
+from d_fake_seeder.lib.logger import logger  # noqa: E402
+from d_fake_seeder.lib.util.shutdown_progress import ShutdownProgressTracker  # noqa: E402
 
 
 # View class for Torrent Application

@@ -7,14 +7,15 @@ language selection, and other basic preferences.
 from typing import Any, Dict
 
 import gi
-from lib.logger import logger
+
+from d_fake_seeder.lib.logger import logger
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa: E402
-from lib.seeding_profile_manager import SeedingProfileManager  # noqa: E402
-from lib.util.language_config import get_language_display_names  # noqa: E402
-from lib.util.language_config import get_supported_language_codes  # noqa: E402
-from view import View  # noqa
+
+from d_fake_seeder.lib.seeding_profile_manager import SeedingProfileManager  # noqa: E402
+from d_fake_seeder.lib.util.language_config import get_language_display_names  # noqa: E402
+from d_fake_seeder.lib.util.language_config import get_supported_language_codes  # noqa: E402
 
 from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import NotificationMixin  # noqa: E402

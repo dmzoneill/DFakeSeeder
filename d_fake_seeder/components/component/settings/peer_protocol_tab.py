@@ -682,3 +682,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
             "PeerProtocolTab update view",
             extra={"class_name": self.__class__.__name__},
         )
+        # Store model reference
+        self.model = model
+        # Set initialization flag to prevent triggering language changes during setup
+        self._language_change_connected = True

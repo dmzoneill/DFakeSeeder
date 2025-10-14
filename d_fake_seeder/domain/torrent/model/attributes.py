@@ -1,6 +1,10 @@
 import uuid
 
-from gi.repository import GObject
+import gi
+
+gi.require_version("GObject", "2.0")
+
+from gi.repository import GObject  # noqa: E402
 
 
 class Attributes(GObject.Object):

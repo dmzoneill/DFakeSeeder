@@ -14,9 +14,10 @@ import gi
 
 gi.require_version("Gio", "2.0")
 
-from domain.app_settings import AppSettings  # noqa: E402
 from gi.repository import Gio, GLib  # noqa: E402
-from lib.logger import logger  # noqa: E402
+
+from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
+from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 
 class DBusUnifier:
@@ -199,6 +200,9 @@ class DBusUnifier:
         try:
             # Access merged user+default settings via _settings attribute
             settings_dict = self.app_settings._settings
+            # Handle None case explicitly
+            if settings_dict is None:
+                return "{}"
             return json.dumps(settings_dict, default=str)
         except Exception as e:
             logger.error(f"Failed to get settings: {e}", extra={"class_name": self.__class__.__name__})

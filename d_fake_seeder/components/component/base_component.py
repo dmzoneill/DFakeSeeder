@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from lib.logger import logger
+from d_fake_seeder.lib.logger import logger
 
 
 class Component:

@@ -7,7 +7,7 @@ configuration that should be done before GTK initialization.
 
 import os
 
-from lib.logger import logger
+from d_fake_seeder.lib.logger import logger
 
 
 class AppInitializationHelper:

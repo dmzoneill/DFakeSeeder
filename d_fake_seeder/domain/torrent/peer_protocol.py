@@ -10,10 +10,10 @@ References:
 """
 
 # Import all components from separate files
-from domain.torrent.bittorrent_message import BitTorrentMessage
-from domain.torrent.peer_connection import PeerConnection
-from domain.torrent.peer_info import PeerInfo
-from domain.torrent.peer_protocol_manager import PeerProtocolManager
+from d_fake_seeder.domain.torrent.bittorrent_message import BitTorrentMessage
+from d_fake_seeder.domain.torrent.peer_connection import PeerConnection
+from d_fake_seeder.domain.torrent.peer_info import PeerInfo
+from d_fake_seeder.domain.torrent.peer_protocol_manager import PeerProtocolManager
 
 # Export all classes for backward compatibility
 __all__ = [

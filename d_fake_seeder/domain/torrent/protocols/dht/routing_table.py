@@ -9,8 +9,8 @@ import time
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
-from lib.logger import logger
-from lib.util.constants import DHTConstants
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import DHTConstants
 
 
 @dataclass
