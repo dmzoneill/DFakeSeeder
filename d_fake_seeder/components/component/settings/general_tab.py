@@ -654,6 +654,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             path_entry = self.get_widget("watch_folder_path")
             if path_entry and path_entry.get_text():
                 import os
+
                 from gi.repository import Gio
 
                 initial_path = path_entry.get_text()
