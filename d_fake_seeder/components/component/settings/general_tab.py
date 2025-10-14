@@ -629,10 +629,25 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         try:
             self.app_settings.set("watch_folder.enabled", state)
             self.logger.debug(f"Watch folder enabled changed to: {state}")
-            message = "Watch folder enabled" if state else "Watch folder disabled"
+
+            # Get current path to provide helpful feedback
+            watch_folder_config = getattr(self.app_settings, "watch_folder", {})
+            watch_path = watch_folder_config.get("path", "")
+
+            if state:
+                if watch_path:
+                    message = f"Watch folder enabled: monitoring {watch_path}"
+                else:
+                    message = "Watch folder enabled (set a path to start monitoring)"
+                    self.show_notification(message, "warning")
+                    return
+            else:
+                message = "Watch folder disabled"
+
             self.show_notification(message, "success")
         except Exception as e:
             self.logger.error(f"Error changing watch folder enabled setting: {e}")
+            self.show_notification("Error enabling watch folder", "error")
 
     def on_watch_folder_path_changed(self, entry: Gtk.Entry) -> None:
         """Handle watch folder path setting change."""
