@@ -234,10 +234,10 @@ class View:
 
         # Add information about the name origin
         about_name_text = self._(
-            "The name \"D' Fake Seeder\" is a playful nod to the Irish English accent. "
-            "In Irish pronunciation, the \"th\" sound in \"the\" is often rendered as a hard \"d\" sound - "
-            "so \"the\" becomes \"de\" or \"d'\". This linguistic quirk gives us \"D' Fake Seeder\" "
-            "instead of \"The Fake Seeder\", celebrating the project's Irish heritage while describing "
+            'The name "D\' Fake Seeder" is a playful nod to the Irish English accent. '
+            'In Irish pronunciation, the "th" sound in "the" is often rendered as a hard "d" sound - '
+            'so "the" becomes "de" or "d\'". This linguistic quirk gives us "D\' Fake Seeder" '
+            'instead of "The Fake Seeder", celebrating the project\'s Irish heritage while describing '
             "exactly what it does: simulates (fakes) torrent seeding activity."
         )
         self.window.about.set_comments(about_name_text)
