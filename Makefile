@@ -165,15 +165,13 @@ run-debug-docker: ui-build
 run-tray: ui-build
 	@echo "Running tray application only..."
 	{ \
-		cd d_fake_seeder && \
-		LOG_LEVEL=INFO DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder_tray.py; \
+		LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) /usr/bin/python3 d_fake_seeder/dfakeseeder_tray.py; \
 	}
 
 run-tray-debug: ui-build
 	@echo "Running tray application with debug output..."
 	{ \
-		cd d_fake_seeder && \
-		LOG_LEVEL=DEBUG DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder_tray.py; \
+		LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) /usr/bin/python3 d_fake_seeder/dfakeseeder_tray.py; \
 	}
 
 run-with-tray: ui-build
@@ -181,10 +179,9 @@ run-with-tray: ui-build
 	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
 	-ps aux | grep "dfakeseeder.py\|dfakeseeder_tray.py" | awk '{print $$2}' | xargs kill -9 2>/dev/null
 	{ \
-		cd d_fake_seeder && \
-		LOG_LEVEL=INFO DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder.py & \
+		LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) /usr/bin/python3 d_fake_seeder/dfakeseeder.py & \
 		sleep 3 && \
-		LOG_LEVEL=INFO DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder_tray.py; \
+		LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) /usr/bin/python3 d_fake_seeder/dfakeseeder_tray.py; \
 	}
 	@$(MAKE) clean_settings
 
@@ -193,10 +190,9 @@ run-debug-with-tray: ui-build
 	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
 	-ps aux | grep "dfakeseeder.py\|dfakeseeder_tray.py" | awk '{print $$2}' | xargs kill -9 2>/dev/null
 	{ \
-		cd d_fake_seeder && \
-		LOG_LEVEL=DEBUG DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder.py & \
+		LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) /usr/bin/python3 d_fake_seeder/dfakeseeder.py & \
 		sleep 5 && \
-		LOG_LEVEL=DEBUG DFS_PATH=$$(pwd) /usr/bin/python3 dfakeseeder_tray.py; \
+		LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) /usr/bin/python3 d_fake_seeder/dfakeseeder_tray.py; \
 	}
 	@$(MAKE) clean_settings
 
