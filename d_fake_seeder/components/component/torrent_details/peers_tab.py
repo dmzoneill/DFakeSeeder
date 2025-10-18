@@ -77,11 +77,15 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
                 self.logger.error("Peers column view not found")
                 return
 
+            self.logger.debug(f"Peers column view widget: {self._peers_columnview}")
+
             # Create list store for peer data
             self._peers_store = Gio.ListStore.new(TorrentPeer)
+            self.logger.debug(f"Created peers store: {self._peers_store}")
 
             # Get TorrentPeer properties for columns
             properties = [prop.name for prop in TorrentPeer.list_properties()]
+            self.logger.info(f"Creating {len(properties)} peer columns: {properties}")
 
             # Create columns for each property
             for property_name in properties:
@@ -93,8 +97,10 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
             self._selection = Gtk.SingleSelection.new(self._sort_model)
             self._peers_columnview.set_model(self._selection)
 
+            self.logger.info(f"Peers column view initialized successfully with {len(properties)} columns")
+
         except Exception as e:
-            self.logger.error(f"Error initializing peers column view: {e}")
+            self.logger.error(f"Error initializing peers column view: {e}", exc_info=True)
 
     def on_language_changed(self, source=None, new_language=None):
         """Handle language change events for column translation."""
@@ -124,6 +130,10 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
             # Create column
             column = Gtk.ColumnViewColumn.new(None, factory)
 
+            # Set column properties for visibility
+            column.set_expand(True)
+            column.set_resizable(True)
+
             # Register column for translation instead of setting title directly
             self.register_translatable_column(self._peers_columnview, column, property_name, "peer")
 
@@ -136,6 +146,7 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
             # Add column to view
             if self._peers_columnview is not None:
                 self._peers_columnview.append_column(column)
+                self.logger.debug(f"Added peer column: {property_name}")
 
         except Exception as e:
             self.logger.error(f"Error creating peer column {property_name}: {e}")
@@ -176,6 +187,7 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
         try:
             if self._peers_store:
                 self._peers_store.remove_all()
+                self.logger.debug(f"Cleared peers store (now has {self._peers_store.get_n_items()} items)")
 
         except Exception as e:
             self.logger.error(f"Error clearing peers tab content: {e}")
@@ -188,22 +200,28 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
             torrent: Torrent object to display
         """
         try:
+            torrent_id = torrent.id if torrent else "None"
             self.logger.info(
-                f"Updating peers tab for torrent {torrent.id}", extra={"class_name": self.__class__.__name__}
+                f"Updating peers tab for torrent {torrent_id}", extra={"class_name": self.__class__.__name__}
             )
 
             if not torrent:
+                self.logger.debug("No torrent provided, clearing content")
                 self.clear_content()
                 return
 
             # Collect peer data from all sources
             peer_data = self._collect_peer_data(torrent)
+            self.logger.info(f"Collected {len(peer_data)} peers for torrent {torrent_id}")
 
             # Update peers store with new data
             self._update_peers_store(peer_data)
 
+            final_count = self._peers_store.get_n_items() if self._peers_store else 0
+            self.logger.info(f"Peers tab updated: {final_count} peers now in store")
+
         except Exception as e:
-            self.logger.error(f"Error updating peers tab content: {e}")
+            self.logger.error(f"Error updating peers tab content: {e}", exc_info=True)
 
     def _collect_peer_data(self, torrent) -> list:
         """
