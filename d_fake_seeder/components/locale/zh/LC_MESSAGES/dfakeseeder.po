@@ -533,6 +533,9 @@ msgstr "下移"
 msgid "Down Speed"
 msgstr "下载速度"
 
+msgid "Download Limit"
+msgstr "下载限制"
+
 msgid "Download Rate"
 msgstr "下载速率"
 
@@ -1187,6 +1190,9 @@ msgstr "下次通告"
 msgid "Next Update"
 msgstr "下次更新"
 
+msgid "No"
+msgstr "否"
+
 msgid "No editable options available for this torrent."
 msgstr "此种子没有可编辑的选项。"
 
@@ -1610,6 +1616,9 @@ msgstr "发送安全相关的 HTTP 头"
 msgid "Sent"
 msgstr "已发送"
 
+msgid "Sequential Download"
+msgstr "顺序下载"
+
 msgid "Server:"
 msgstr "服务器："
 
@@ -1732,6 +1741,9 @@ msgstr "日"
 
 msgid "Sunday"
 msgstr "星期日"
+
+msgid "Super Seeding"
+msgstr "超级做种"
 
 msgid "Swedish"
 msgstr "瑞典语"
@@ -1901,6 +1913,9 @@ msgstr "上传速度"
 msgid "Update Tracker"
 msgstr "更新追踪器"
 
+msgid "Upload Limit"
+msgstr "上传限制"
+
 msgid "Upload Speed"
 msgstr "上传速度"
 
@@ -2003,6 +2018,9 @@ msgstr "三"
 msgid "Wednesday"
 msgstr "星期三"
 
+msgid "Yes"
+msgstr "是"
+
 msgid "active"
 msgstr "活跃"
 
@@ -2074,6 +2092,9 @@ msgstr "名称"
 
 msgid "next_update"
 msgstr "下次更新"
+
+msgid "normal"
+msgstr "正常"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"

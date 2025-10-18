@@ -79,6 +79,14 @@ class Torrent(GObject.GObject):
                 "filepath": self.file_path,
                 "small_torrent_limit": 0,
                 "total_size": 0,
+                # New attributes for enhanced context menu functionality
+                "label": "",
+                "priority": "normal",
+                "upload_limit": 0,
+                "download_limit": 0,
+                "super_seeding": False,
+                "sequential_download": False,
+                "force_start": False,
             }
             self.settings.save_settings()
 
@@ -88,12 +96,23 @@ class Torrent(GObject.GObject):
         self.torrent_file = File(self.file_path)
         self.seeder = Seeder(self.torrent_file)
 
+        # Load attributes from settings with fallback to default values
         for attr in attributes:
-            setattr(
-                self.torrent_attributes,
-                attr,
-                self.settings.torrents[self.file_path][attr],
-            )
+            # Use .get() with default values for backward compatibility
+            default_value = None
+            if attr == "label":
+                default_value = ""
+            elif attr == "priority":
+                default_value = "normal"
+            elif attr in ("upload_limit", "download_limit"):
+                default_value = 0
+            elif attr in ("super_seeding", "sequential_download", "force_start"):
+                default_value = False
+
+            # Get value from settings, or use default if key doesn't exist
+            value = self.settings.torrents[self.file_path].get(attr, default_value)
+            if value is not None:
+                setattr(self.torrent_attributes, attr, value)
 
         self.session_uploaded = 0
         self.session_downloaded = 0
@@ -157,7 +176,8 @@ class Torrent(GObject.GObject):
         try:
             ticker = 0.0
 
-            while not self.torrent_worker_stop_event.is_set():
+            # Use Event.wait() instead of time.sleep() for instant shutdown response
+            while not self.torrent_worker_stop_event.wait(timeout=self.worker_sleep_interval):
                 logger.debug(
                     f"🔄 WORKER LOOP: {self.name} ticker={ticker:.2f}, tickspeed={self.settings.tickspeed}, "
                     f"active={self.active}",
@@ -173,7 +193,6 @@ class Torrent(GObject.GObject):
                 if ticker >= self.settings.tickspeed:
                     ticker = 0.0
                 ticker += self.worker_sleep_interval
-                time.sleep(self.worker_sleep_interval)
 
         except Exception as e:
             logger.error(
@@ -322,6 +341,98 @@ class Torrent(GObject.GObject):
             "Torrent settings changed",
             extra={"class_name": self.__class__.__name__},
         )
+
+    def _perform_tracker_update(self):
+        """Perform the actual tracker update - called in background thread"""
+        try:
+            # First, load peers to refresh peer list
+            logger.info(
+                f"📥 Loading peers for {self.name}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            peers_loaded = self.seeder.load_peers()
+
+            if peers_loaded:
+                logger.info(
+                    f"✅ Peers loaded successfully for {self.name}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+            else:
+                logger.warning(
+                    f"⚠️ Failed to load peers for {self.name}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+            # Calculate current stats for announce
+            download_left = (
+                self.total_size - self.total_downloaded if self.total_size - self.total_downloaded > 0 else 0
+            )
+
+            # Announce to tracker with current stats
+            logger.info(
+                f"📤 Announcing to tracker for {self.name}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.seeder.upload(
+                self.session_uploaded,
+                self.session_downloaded,
+                download_left,
+            )
+
+            # Reset the timer to 1800 seconds (using GLib.idle_add for thread safety)
+            GLib.idle_add(self._complete_tracker_update)
+
+        except Exception as e:
+            logger.error(
+                f"❌ Error during force tracker update for {self.name}: {e}",
+                extra={"class_name": self.__class__.__name__},
+                exc_info=True,
+            )
+            # Update status bar with error message
+            if View.instance is not None:
+                GLib.idle_add(self._notify_tracker_update_failed)
+
+    def _complete_tracker_update(self):
+        """Complete tracker update in UI thread - resets timer and updates UI"""
+        self.next_update = 1800
+        logger.info(
+            f"⏰ Timer reset to 1800 seconds for {self.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        # Emit signal to update UI
+        self.emit("attribute-changed", None, None)
+
+        # Update status bar with completion message
+        if View.instance is not None:
+            View.instance.notify(f"Tracker updated for {self.name}")
+
+        return False  # Don't repeat
+
+    def _notify_tracker_update_failed(self):
+        """Notify user of tracker update failure"""
+        if View.instance is not None:
+            View.instance.notify(f"Failed to update tracker for {self.name}")
+        return False  # Don't repeat
+
+    def force_tracker_update(self):
+        """Force an immediate tracker update (called from UI context menu)"""
+        logger.info(
+            f"🔄 FORCE TRACKER UPDATE: Manually triggered for {self.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        # Only notify if view instance still exists
+        if View.instance is not None:
+            View.instance.notify(f"Updating tracker for {self.name}")
+
+        # Start the update in a background thread
+        update_thread = threading.Thread(
+            target=self._perform_tracker_update,
+            name=f"ForceTrackerUpdate-{self.name}",
+            daemon=True,
+        )
+        update_thread.start()
 
     def restart_worker(self, state):
         logger.info(

@@ -477,6 +477,11 @@ class View:
 
     # Function to quit the application
     def quit(self, widget=None, event=None, fast_shutdown=False):
+        # Track total shutdown time for performance monitoring
+        import time
+
+        shutdown_start_time = time.time()
+
         logger.info(
             f"🎬 VIEW QUIT START: view.quit() method called "
             f"(widget={widget}, event={event}, fast_shutdown={fast_shutdown})",
@@ -485,6 +490,7 @@ class View:
         logger.info("🔧 VIEW QUIT: Initializing ShutdownProgressTracker", extra={"class_name": self.__class__.__name__})
         # Initialize shutdown progress tracking
         self.shutdown_tracker = ShutdownProgressTracker()
+        phase_times = {}  # Track time spent in each shutdown phase
 
         # Use shorter timeout for D-Bus triggered shutdowns
         if fast_shutdown:
@@ -528,6 +534,7 @@ class View:
         self.shutdown_tracker.register_component("network_connections", network_connection_count)
         # Shutdown progress tracking continues in background (overlay removed)
         # Step 1: Stop model first (stops individual torrents and their seeders)
+        step_start = time.time()
         if hasattr(self, "model") and self.model:
             logger.info("Stopping model during quit", extra={"class_name": self.__class__.__name__})
             self.shutdown_tracker.start_component_shutdown("model_torrents")
@@ -539,7 +546,10 @@ class View:
                 self.model.stop()
                 # Mark all model torrents as completed if no callback support
                 self.shutdown_tracker.mark_completed("model_torrents", model_torrent_count)
+        phase_times["model_stop"] = time.time() - step_start
+
         # Step 2: Stop the controller (stops global peer manager)
+        step_start = time.time()
         if hasattr(self, "app") and self.app and hasattr(self.app, "controller"):
             logger.info("Stopping controller during quit", extra={"class_name": self.__class__.__name__})
             self.shutdown_tracker.start_component_shutdown("peer_managers")
@@ -555,9 +565,13 @@ class View:
                 self.shutdown_tracker.mark_completed("peer_managers", peer_manager_count)
                 self.shutdown_tracker.mark_completed("background_workers", background_worker_count)
                 self.shutdown_tracker.mark_completed("network_connections", network_connection_count)
+        phase_times["controller_stop"] = time.time() - step_start
+
         # Step 3: Save settings
+        step_start = time.time()
         logger.info("Saving settings during quit", extra={"class_name": self.__class__.__name__})
         self.settings.save_quit()
+        phase_times["settings_save"] = time.time() - step_start
         # Step 4: Check if force shutdown is needed
         if self.shutdown_tracker and self.shutdown_tracker.is_force_shutdown_time():
             timeout_duration = self.shutdown_tracker.force_shutdown_timer
@@ -602,8 +616,17 @@ class View:
                 extra={"class_name": self.__class__.__name__},
             )
 
+        # Log shutdown performance summary
+        total_shutdown_time = time.time() - shutdown_start_time
         logger.info(
-            "🏁 VIEW QUIT COMPLETE: view.quit() method finished successfully",
+            f"🏁 VIEW QUIT COMPLETE: Shutdown finished in {total_shutdown_time:.2f}s",
+            extra={"class_name": self.__class__.__name__},
+        )
+        logger.info(
+            f"📊 SHUTDOWN PHASE BREAKDOWN: "
+            f"model={phase_times.get('model_stop', 0):.2f}s, "
+            f"controller={phase_times.get('controller_stop', 0):.2f}s, "
+            f"settings={phase_times.get('settings_save', 0):.2f}s",
             extra={"class_name": self.__class__.__name__},
         )
 

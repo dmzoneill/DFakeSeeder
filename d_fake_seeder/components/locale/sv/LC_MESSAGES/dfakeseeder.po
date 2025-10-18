@@ -533,6 +533,9 @@ msgstr "Ner"
 msgid "Down Speed"
 msgstr "Ner-hastighet"
 
+msgid "Download Limit"
+msgstr "Nedladdningsgräns"
+
 msgid "Download Rate"
 msgstr "Nedladdningshastighet"
 
@@ -1187,6 +1190,9 @@ msgstr "Nästa annonsering"
 msgid "Next Update"
 msgstr "Nästa Uppdatering"
 
+msgid "No"
+msgstr "Nej"
+
 msgid "No editable options available for this torrent."
 msgstr "Inga redigerbara alternativ tillgängliga för denna torrent."
 
@@ -1610,6 +1616,9 @@ msgstr "Skicka säkerhetsrelaterade HTTP-headers"
 msgid "Sent"
 msgstr "Skickat"
 
+msgid "Sequential Download"
+msgstr "Sekventiell Nedladdning"
+
 msgid "Server:"
 msgstr "Server:"
 
@@ -1732,6 +1741,9 @@ msgstr "Sön"
 
 msgid "Sunday"
 msgstr "Söndag"
+
+msgid "Super Seeding"
+msgstr "Super-Deling"
 
 msgid "Swedish"
 msgstr "Svenska"
@@ -1901,6 +1913,9 @@ msgstr "Upp-hastighet"
 msgid "Update Tracker"
 msgstr "Uppdatera tracker"
 
+msgid "Upload Limit"
+msgstr "Uppladdningsgräns"
+
 msgid "Upload Speed"
 msgstr "Uppladdningshastighet"
 
@@ -2003,6 +2018,9 @@ msgstr "Ons"
 msgid "Wednesday"
 msgstr "Onsdag"
 
+msgid "Yes"
+msgstr "Ja"
+
 msgid "active"
 msgstr "aktiv"
 
@@ -2074,6 +2092,9 @@ msgstr "Namn"
 
 msgid "next_update"
 msgstr "Nästa Uppdatering"
+
+msgid "normal"
+msgstr "normal"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"

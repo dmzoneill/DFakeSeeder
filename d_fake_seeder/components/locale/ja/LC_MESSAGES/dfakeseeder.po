@@ -533,6 +533,9 @@ msgstr "下へ"
 msgid "Down Speed"
 msgstr "ダウン速度"
 
+msgid "Download Limit"
+msgstr "ダウンロード制限"
+
 msgid "Download Rate"
 msgstr "ダウンロード速度"
 
@@ -1187,6 +1190,9 @@ msgstr "次回アナウンス"
 msgid "Next Update"
 msgstr "次回更新"
 
+msgid "No"
+msgstr "いいえ"
+
 msgid "No editable options available for this torrent."
 msgstr "このトレントには編集可能なオプションがありません。"
 
@@ -1610,6 +1616,9 @@ msgstr "セキュリティ関連HTTPヘッダーを送信"
 msgid "Sent"
 msgstr "送信済み"
 
+msgid "Sequential Download"
+msgstr "順次ダウンロード"
+
 msgid "Server:"
 msgstr "サーバー:"
 
@@ -1732,6 +1741,9 @@ msgstr "日"
 
 msgid "Sunday"
 msgstr "日曜日"
+
+msgid "Super Seeding"
+msgstr "スーパーシード"
 
 msgid "Swedish"
 msgstr "スウェーデン語"
@@ -1901,6 +1913,9 @@ msgstr "アップ速度"
 msgid "Update Tracker"
 msgstr "トラッカー更新"
 
+msgid "Upload Limit"
+msgstr "アップロード制限"
+
 msgid "Upload Speed"
 msgstr "アップロード速度"
 
@@ -2003,6 +2018,9 @@ msgstr "水"
 msgid "Wednesday"
 msgstr "水曜日"
 
+msgid "Yes"
+msgstr "はい"
+
 msgid "active"
 msgstr "アクティブ"
 
@@ -2074,6 +2092,9 @@ msgstr "名前"
 
 msgid "next_update"
 msgstr "次回更新"
+
+msgid "normal"
+msgstr "通常"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"

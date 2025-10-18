@@ -533,6 +533,9 @@ msgstr "Turun"
 msgid "Down Speed"
 msgstr "Kecepatan Unduh"
 
+msgid "Download Limit"
+msgstr "Batas Unduh"
+
 msgid "Download Rate"
 msgstr "Tingkat Unduh"
 
@@ -1187,6 +1190,9 @@ msgstr "Pengumuman Berikutnya"
 msgid "Next Update"
 msgstr "Pembaruan Berikutnya"
 
+msgid "No"
+msgstr "Tidak"
+
 msgid "No editable options available for this torrent."
 msgstr "Tidak ada opsi yang dapat diedit untuk torrent ini."
 
@@ -1610,6 +1616,9 @@ msgstr "Kirim header HTTP terkait keamanan"
 msgid "Sent"
 msgstr "Dikirim"
 
+msgid "Sequential Download"
+msgstr "Unduhan Berurutan"
+
 msgid "Server:"
 msgstr "Server:"
 
@@ -1732,6 +1741,9 @@ msgstr "Min"
 
 msgid "Sunday"
 msgstr "Minggu"
+
+msgid "Super Seeding"
+msgstr "Super Seeding"
 
 msgid "Swedish"
 msgstr "Swedia"
@@ -1901,6 +1913,9 @@ msgstr "Kecepatan Unggah"
 msgid "Update Tracker"
 msgstr "Perbarui Tracker"
 
+msgid "Upload Limit"
+msgstr "Batas Unggah"
+
 msgid "Upload Speed"
 msgstr "Kecepatan Unggah"
 
@@ -2003,6 +2018,9 @@ msgstr "Rab"
 msgid "Wednesday"
 msgstr "Rabu"
 
+msgid "Yes"
+msgstr "Ya"
+
 msgid "active"
 msgstr "Aktif"
 
@@ -2074,6 +2092,9 @@ msgstr "Nama"
 
 msgid "next_update"
 msgstr "Pembaruan Berikutnya"
+
+msgid "normal"
+msgstr "normal"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"

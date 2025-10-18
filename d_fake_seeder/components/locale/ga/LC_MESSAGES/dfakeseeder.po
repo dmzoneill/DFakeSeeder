@@ -533,6 +533,9 @@ msgstr "Síos"
 msgid "Down Speed"
 msgstr "Luas Síos"
 
+msgid "Download Limit"
+msgstr "Teorainn Íoslódála"
+
 msgid "Download Rate"
 msgstr "Ráta Íoslódála"
 
@@ -1187,6 +1190,9 @@ msgstr "Fógra Eile"
 msgid "Next Update"
 msgstr "Nuashonrú Eile"
 
+msgid "No"
+msgstr "Níl"
+
 msgid "No editable options available for this torrent."
 msgstr "Níl roghanna ineagarthóireachta ar fáil don torrent seo."
 
@@ -1610,6 +1616,9 @@ msgstr "Seol ceanntásca HTTP a bhaineann le slándáil"
 msgid "Sent"
 msgstr "Seolta"
 
+msgid "Sequential Download"
+msgstr "Íoslódáil Seichimh"
+
 msgid "Server:"
 msgstr "Freastalaí:"
 
@@ -1732,6 +1741,9 @@ msgstr "Domh"
 
 msgid "Sunday"
 msgstr "Domhnach"
+
+msgid "Super Seeding"
+msgstr "Mór-Síolú"
 
 msgid "Swedish"
 msgstr "Sualainnis"
@@ -1901,6 +1913,9 @@ msgstr "Luas Suas"
 msgid "Update Tracker"
 msgstr "Nuashonraigh Lorgaire"
 
+msgid "Upload Limit"
+msgstr "Teorainn Uaslódála"
+
 msgid "Upload Speed"
 msgstr "Luas Uaslódála"
 
@@ -2003,6 +2018,9 @@ msgstr "Céad"
 msgid "Wednesday"
 msgstr "Céadaoin"
 
+msgid "Yes"
+msgstr "Tá"
+
 msgid "active"
 msgstr "gníomhach"
 
@@ -2074,6 +2092,9 @@ msgstr "Ainm"
 
 msgid "next_update"
 msgstr "Nuashonrú Eile"
+
+msgid "normal"
+msgstr "gnáth"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"

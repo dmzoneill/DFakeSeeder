@@ -533,6 +533,9 @@ msgstr "پایین"
 msgid "Down Speed"
 msgstr "سرعت دانلود"
 
+msgid "Download Limit"
+msgstr "محدودیت دانلود"
+
 msgid "Download Rate"
 msgstr "نرخ دانلود"
 
@@ -1187,6 +1190,9 @@ msgstr "اعلام بعدی"
 msgid "Next Update"
 msgstr "به‌روزرسانی بعدی"
 
+msgid "No"
+msgstr "خیر"
+
 msgid "No editable options available for this torrent."
 msgstr "هیچ گزینه قابل ویرایشی برای این تورنت در دسترس نیست."
 
@@ -1610,6 +1616,9 @@ msgstr "Send security-related HTTP headers"
 msgid "Sent"
 msgstr "ارسال شد"
 
+msgid "Sequential Download"
+msgstr "دانلود ترتیبی"
+
 msgid "Server:"
 msgstr "سرور:"
 
@@ -1732,6 +1741,9 @@ msgstr "یکشنبه"
 
 msgid "Sunday"
 msgstr "یکشنبه"
+
+msgid "Super Seeding"
+msgstr "اشتراک‌گذاری فوق"
 
 msgid "Swedish"
 msgstr "سوئدی"
@@ -1901,6 +1913,9 @@ msgstr "سرعت آپلود"
 msgid "Update Tracker"
 msgstr "به‌روزرسانی ردیاب"
 
+msgid "Upload Limit"
+msgstr "محدودیت آپلود"
+
 msgid "Upload Speed"
 msgstr "سرعت آپلود"
 
@@ -2003,6 +2018,9 @@ msgstr "چهارشنبه"
 msgid "Wednesday"
 msgstr "چهارشنبه"
 
+msgid "Yes"
+msgstr "بله"
+
 msgid "active"
 msgstr "active"
 
@@ -2074,6 +2092,9 @@ msgstr "name"
 
 msgid "next_update"
 msgstr "next_update"
+
+msgid "normal"
+msgstr "عادی"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"
