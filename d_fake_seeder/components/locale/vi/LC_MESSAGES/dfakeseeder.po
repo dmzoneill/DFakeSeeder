@@ -533,6 +533,9 @@ msgstr "Xuống"
 msgid "Down Speed"
 msgstr "Tốc độ Tải xuống"
 
+msgid "Download Limit"
+msgstr "Giới Hạn Tải Xuống"
+
 msgid "Download Rate"
 msgstr "Tốc độ Tải xuống"
 
@@ -1187,6 +1190,9 @@ msgstr "Thông báo Tiếp theo"
 msgid "Next Update"
 msgstr "Cập nhật Tiếp theo"
 
+msgid "No"
+msgstr "Không"
+
 msgid "No editable options available for this torrent."
 msgstr "Không có tùy chọn có thể chỉnh sửa cho torrent này."
 
@@ -1610,6 +1616,9 @@ msgstr "Gửi tiêu đề HTTP liên quan đến bảo mật"
 msgid "Sent"
 msgstr "Đã gửi"
 
+msgid "Sequential Download"
+msgstr "Tải Xuống Tuần Tự"
+
 msgid "Server:"
 msgstr "Máy chủ:"
 
@@ -1732,6 +1741,9 @@ msgstr "CN"
 
 msgid "Sunday"
 msgstr "Chủ Nhật"
+
+msgid "Super Seeding"
+msgstr "Siêu Seeding"
 
 msgid "Swedish"
 msgstr "Tiếng Thụy Điển"
@@ -1901,6 +1913,9 @@ msgstr "Tốc độ Tải lên"
 msgid "Update Tracker"
 msgstr "Cập nhật Tracker"
 
+msgid "Upload Limit"
+msgstr "Giới Hạn Tải Lên"
+
 msgid "Upload Speed"
 msgstr "Tốc độ Tải lên"
 
@@ -2003,6 +2018,9 @@ msgstr "T4"
 msgid "Wednesday"
 msgstr "Thứ Tư"
 
+msgid "Yes"
+msgstr "Có"
+
 msgid "active"
 msgstr "Hoạt động"
 
@@ -2074,6 +2092,9 @@ msgstr "Tên"
 
 msgid "next_update"
 msgstr "Cập nhật Tiếp theo"
+
+msgid "normal"
+msgstr "bình thường"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"

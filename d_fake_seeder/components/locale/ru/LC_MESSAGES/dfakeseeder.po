@@ -533,6 +533,9 @@ msgstr "Ниже"
 msgid "Down Speed"
 msgstr "Скор. загрузки"
 
+msgid "Download Limit"
+msgstr "Лимит Загрузки"
+
 msgid "Download Rate"
 msgstr "Скорость загрузки"
 
@@ -1187,6 +1190,9 @@ msgstr "Следующее объявление"
 msgid "Next Update"
 msgstr "Следующее Обновление"
 
+msgid "No"
+msgstr "Нет"
+
 msgid "No editable options available for this torrent."
 msgstr "Нет редактируемых опций для этого торрента."
 
@@ -1610,6 +1616,9 @@ msgstr "Отправлять HTTP-заголовки безопасности"
 msgid "Sent"
 msgstr "Отправлено"
 
+msgid "Sequential Download"
+msgstr "Последовательная Загрузка"
+
 msgid "Server:"
 msgstr "Сервер:"
 
@@ -1732,6 +1741,9 @@ msgstr "Вс"
 
 msgid "Sunday"
 msgstr "Воскресенье"
+
+msgid "Super Seeding"
+msgstr "Супер-Раздача"
 
 msgid "Swedish"
 msgstr "Шведский"
@@ -1901,6 +1913,9 @@ msgstr "Скор. отдачи"
 msgid "Update Tracker"
 msgstr "Обновить трекер"
 
+msgid "Upload Limit"
+msgstr "Лимит Отдачи"
+
 msgid "Upload Speed"
 msgstr "Скорость отдачи"
 
@@ -2003,6 +2018,9 @@ msgstr "Ср"
 msgid "Wednesday"
 msgstr "Среда"
 
+msgid "Yes"
+msgstr "Да"
+
 msgid "active"
 msgstr "Активный"
 
@@ -2074,6 +2092,9 @@ msgstr "Имя"
 
 msgid "next_update"
 msgstr "Следующее Обновление"
+
+msgid "normal"
+msgstr "обычный"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"

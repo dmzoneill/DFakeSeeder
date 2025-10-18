@@ -533,6 +533,9 @@ msgstr "Omlaag"
 msgid "Down Speed"
 msgstr "Download Snelheid"
 
+msgid "Download Limit"
+msgstr "Downloadlimiet"
+
 msgid "Download Rate"
 msgstr "Downloadsnelheid"
 
@@ -1187,6 +1190,9 @@ msgstr "Volgende aankondiging"
 msgid "Next Update"
 msgstr "Volgende Update"
 
+msgid "No"
+msgstr "Nee"
+
 msgid "No editable options available for this torrent."
 msgstr "Geen bewerkbare opties beschikbaar voor deze torrent."
 
@@ -1610,6 +1616,9 @@ msgstr "Beveiligingsgerelateerde HTTP headers verzenden"
 msgid "Sent"
 msgstr "Verzonden"
 
+msgid "Sequential Download"
+msgstr "Sequentiële Download"
+
 msgid "Server:"
 msgstr "Server:"
 
@@ -1732,6 +1741,9 @@ msgstr "Zo"
 
 msgid "Sunday"
 msgstr "Zondag"
+
+msgid "Super Seeding"
+msgstr "Super Seeding"
 
 msgid "Swedish"
 msgstr "Zweeds"
@@ -1901,6 +1913,9 @@ msgstr "Upload Snelheid"
 msgid "Update Tracker"
 msgstr "Tracker Bijwerken"
 
+msgid "Upload Limit"
+msgstr "Uploadlimiet"
+
 msgid "Upload Speed"
 msgstr "Upload Snelheid"
 
@@ -2003,6 +2018,9 @@ msgstr "Wo"
 msgid "Wednesday"
 msgstr "Woensdag"
 
+msgid "Yes"
+msgstr "Ja"
+
 msgid "active"
 msgstr "actief"
 
@@ -2074,6 +2092,9 @@ msgstr "Naam"
 
 msgid "next_update"
 msgstr "Volgende Update"
+
+msgid "normal"
+msgstr "normaal"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"

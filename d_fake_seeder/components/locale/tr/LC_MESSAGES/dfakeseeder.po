@@ -533,6 +533,9 @@ msgstr "Aşağı"
 msgid "Down Speed"
 msgstr "İndirme Hızı"
 
+msgid "Download Limit"
+msgstr "İndirme Sınırı"
+
 msgid "Download Rate"
 msgstr "İndirme Oranı"
 
@@ -1187,6 +1190,9 @@ msgstr "Sonraki Duyuru"
 msgid "Next Update"
 msgstr "Sonraki Güncelleme"
 
+msgid "No"
+msgstr "Hayır"
+
 msgid "No editable options available for this torrent."
 msgstr "Bu torrent için düzenlenebilir seçenek yok."
 
@@ -1610,6 +1616,9 @@ msgstr "Güvenlikle ilgili HTTP başlıkları gönder"
 msgid "Sent"
 msgstr "Gönderildi"
 
+msgid "Sequential Download"
+msgstr "Sıralı İndirme"
+
 msgid "Server:"
 msgstr "Sunucu:"
 
@@ -1732,6 +1741,9 @@ msgstr "Paz"
 
 msgid "Sunday"
 msgstr "Pazar"
+
+msgid "Super Seeding"
+msgstr "Süper Paylaşım"
 
 msgid "Swedish"
 msgstr "İsveççe"
@@ -1901,6 +1913,9 @@ msgstr "Yükleme Hızı"
 msgid "Update Tracker"
 msgstr "İzleyiciyi Güncelle"
 
+msgid "Upload Limit"
+msgstr "Yükleme Sınırı"
+
 msgid "Upload Speed"
 msgstr "Yükleme Hızı"
 
@@ -2003,6 +2018,9 @@ msgstr "Çar"
 msgid "Wednesday"
 msgstr "Çarşamba"
 
+msgid "Yes"
+msgstr "Evet"
+
 msgid "active"
 msgstr "Aktif"
 
@@ -2074,6 +2092,9 @@ msgstr "Ad"
 
 msgid "next_update"
 msgstr "next_update"
+
+msgid "normal"
+msgstr "normal"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"

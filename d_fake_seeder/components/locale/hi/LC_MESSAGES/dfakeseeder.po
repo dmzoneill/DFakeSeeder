@@ -533,6 +533,9 @@ msgstr "नीचे"
 msgid "Down Speed"
 msgstr "डाउनलोड गति"
 
+msgid "Download Limit"
+msgstr "डाउनलोड सीमा"
+
 msgid "Download Rate"
 msgstr "डाउनलोड दर"
 
@@ -1187,6 +1190,9 @@ msgstr "अगली घोषणा"
 msgid "Next Update"
 msgstr "अगला अपडेट"
 
+msgid "No"
+msgstr "नहीं"
+
 msgid "No editable options available for this torrent."
 msgstr "इस टॉरेंट के लिए कोई संपादन योग्य विकल्प उपलब्ध नहीं।"
 
@@ -1610,6 +1616,9 @@ msgstr "सुरक्षा-संबंधी HTTP हेडर भेजे�
 msgid "Sent"
 msgstr "भेजा गया"
 
+msgid "Sequential Download"
+msgstr "अनुक्रमिक डाउनलोड"
+
 msgid "Server:"
 msgstr "सर्वर:"
 
@@ -1732,6 +1741,9 @@ msgstr "रवि"
 
 msgid "Sunday"
 msgstr "रविवार"
+
+msgid "Super Seeding"
+msgstr "सुपर सीडिंग"
 
 msgid "Swedish"
 msgstr "स्वीडिश"
@@ -1901,6 +1913,9 @@ msgstr "अपलोड गति"
 msgid "Update Tracker"
 msgstr "ट्रैकर अपडेट करें"
 
+msgid "Upload Limit"
+msgstr "अपलोड सीमा"
+
 msgid "Upload Speed"
 msgstr "अपलोड गति"
 
@@ -2003,6 +2018,9 @@ msgstr "बुध"
 msgid "Wednesday"
 msgstr "बुधवार"
 
+msgid "Yes"
+msgstr "हाँ"
+
 msgid "active"
 msgstr "सक्रिय"
 
@@ -2074,6 +2092,9 @@ msgstr "नाम"
 
 msgid "next_update"
 msgstr "अगला अपडेट"
+
+msgid "normal"
+msgstr "सामान्य"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"

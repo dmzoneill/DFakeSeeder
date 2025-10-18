@@ -203,10 +203,11 @@ class UDPTrackerConstants:
 class TimeoutConstants:
     """Centralized timeout values for various operations (seconds)."""
 
-    # Thread shutdown timeouts
-    WORKER_SHUTDOWN = 0.5
-    SERVER_THREAD_SHUTDOWN = 1.0
-    MANAGER_THREAD_JOIN = 5.0
+    # Thread shutdown timeouts - OPTIMIZED FOR FAST SHUTDOWN
+    WORKER_SHUTDOWN = 0.2  # Reduced from 0.5 for faster per-thread response
+    SERVER_THREAD_SHUTDOWN = 0.5  # Reduced from 1.0 for faster server shutdown
+    MANAGER_THREAD_JOIN = 1.0  # Reduced from 5.0 for faster manager shutdown
+    AGGREGATE_SHUTDOWN_BUDGET = 2.0  # Total time budget for parallel shutdown
 
     # Tracker operation timeouts
     TRACKER_SEMAPHORE_LOAD = 5.0

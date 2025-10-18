@@ -533,6 +533,9 @@ msgstr "Runter"
 msgid "Down Speed"
 msgstr "Download-Geschw."
 
+msgid "Download Limit"
+msgstr "Download-Limit"
+
 msgid "Download Rate"
 msgstr "Download-Rate"
 
@@ -1187,6 +1190,9 @@ msgstr "Nächste Ankündigung"
 msgid "Next Update"
 msgstr "Nächstes Update"
 
+msgid "No"
+msgstr "Nein"
+
 msgid "No editable options available for this torrent."
 msgstr "Keine bearbeitbaren Optionen für diesen Torrent verfügbar."
 
@@ -1610,6 +1616,9 @@ msgstr "Sicherheitsbezogene HTTP-Header senden"
 msgid "Sent"
 msgstr "Gesendet"
 
+msgid "Sequential Download"
+msgstr "Sequentieller Download"
+
 msgid "Server:"
 msgstr "Server:"
 
@@ -1732,6 +1741,9 @@ msgstr "So"
 
 msgid "Sunday"
 msgstr "Sonntag"
+
+msgid "Super Seeding"
+msgstr "Super-Seeding"
 
 msgid "Swedish"
 msgstr "Schwedisch"
@@ -1901,6 +1913,9 @@ msgstr "Upload-Geschw."
 msgid "Update Tracker"
 msgstr "Tracker aktualisieren"
 
+msgid "Upload Limit"
+msgstr "Upload-Limit"
+
 msgid "Upload Speed"
 msgstr "Upload-Geschwindigkeit"
 
@@ -2003,6 +2018,9 @@ msgstr "Mi"
 msgid "Wednesday"
 msgstr "Mittwoch"
 
+msgid "Yes"
+msgstr "Ja"
+
 msgid "active"
 msgstr "Aktiv"
 
@@ -2074,6 +2092,9 @@ msgstr "Name"
 
 msgid "next_update"
 msgstr "Nächstes Update"
+
+msgid "normal"
+msgstr "normal"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"

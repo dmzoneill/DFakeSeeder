@@ -177,17 +177,87 @@ class Model(GObject.GObject):
         return list_store
 
     def stop(self, shutdown_tracker=None):
-        # Stopping all torrents before quitting
+        # Stopping all torrents before quitting - PARALLEL SHUTDOWN
+        import time
+
         logger.info(
-            f"Stopping {len(self.torrent_list)} torrents",
+            f"🚀 Starting parallel shutdown of {len(self.torrent_list)} torrents",
             extra={"class_name": self.__class__.__name__},
         )
+
+        shutdown_start = time.time()
+
+        # PHASE 1: Signal all torrents to stop (non-blocking)
+        logger.info("📡 Phase 1: Signaling all torrents to stop", extra={"class_name": self.__class__.__name__})
         for torrent in self.torrent_list:
-            torrent.stop()
+            # Signal worker threads to stop
+            if hasattr(torrent, "torrent_worker_stop_event"):
+                torrent.torrent_worker_stop_event.set()
+            if hasattr(torrent, "peers_worker_stop_event"):
+                torrent.peers_worker_stop_event.set()
+            # Request seeder shutdown
+            if hasattr(torrent, "seeder") and torrent.seeder:
+                torrent.seeder.request_shutdown()
+
+        logger.info("✅ Phase 1 complete: All stop signals sent", extra={"class_name": self.__class__.__name__})
+
+        # PHASE 2: Join all threads with aggregate timeout budget
+        max_wait_total = 2.0  # Total time budget for all torrents
+        max_wait_per_thread = 0.2  # Max time per individual thread
+
+        logger.info(
+            f"⏱️ Phase 2: Joining threads (budget: {max_wait_total}s total, {max_wait_per_thread}s per thread)",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        phase2_start = time.time()
+        threads_joined = 0
+        threads_timeout = 0
+
+        for torrent in self.torrent_list:
+            # Calculate remaining time in budget
+            elapsed = time.time() - phase2_start
+            remaining = max(0.05, max_wait_total - elapsed)  # Minimum 50ms per thread
+
+            # Join torrent worker thread
+            if hasattr(torrent, "torrent_worker") and torrent.torrent_worker and torrent.torrent_worker.is_alive():
+                timeout = min(max_wait_per_thread, remaining)
+                torrent.torrent_worker.join(timeout=timeout)
+                if torrent.torrent_worker.is_alive():
+                    threads_timeout += 1
+                    logger.debug(
+                        f"⚠️ Torrent worker for {torrent.name} still alive after {timeout:.2f}s",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                else:
+                    threads_joined += 1
+
+            # Join peers worker thread
+            elapsed = time.time() - phase2_start
+            remaining = max(0.05, max_wait_total - elapsed)
+
+            if hasattr(torrent, "peers_worker") and torrent.peers_worker and torrent.peers_worker.is_alive():
+                timeout = min(max_wait_per_thread, remaining)
+                torrent.peers_worker.join(timeout=timeout)
+                if torrent.peers_worker.is_alive():
+                    threads_timeout += 1
+                    logger.debug(
+                        f"⚠️ Peers worker for {torrent.name} still alive after {timeout:.2f}s",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                else:
+                    threads_joined += 1
+
             # Update progress tracker if provided
             if shutdown_tracker:
                 shutdown_tracker.mark_completed("model_torrents", 1)
-        logger.info("All model torrents stopped", extra={"class_name": self.__class__.__name__})
+
+        shutdown_elapsed = time.time() - shutdown_start
+        logger.info(
+            f"✅ Parallel torrent shutdown complete in {shutdown_elapsed:.2f}s "
+            f"(joined: {threads_joined}, timeout: {threads_timeout})",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore_item(self, index):

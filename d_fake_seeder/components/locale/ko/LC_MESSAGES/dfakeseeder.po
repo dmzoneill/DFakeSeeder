@@ -533,6 +533,9 @@ msgstr "아래로"
 msgid "Down Speed"
 msgstr "다운로드 속도"
 
+msgid "Download Limit"
+msgstr "다운로드 제한"
+
 msgid "Download Rate"
 msgstr "다운로드 속도"
 
@@ -1187,6 +1190,9 @@ msgstr "다음 알림"
 msgid "Next Update"
 msgstr "다음 업데이트"
 
+msgid "No"
+msgstr "아니오"
+
 msgid "No editable options available for this torrent."
 msgstr "이 토렌트에 사용할 수 있는 편집 가능한 옵션이 없습니다."
 
@@ -1610,6 +1616,9 @@ msgstr "보안 관련 HTTP 헤더 전송"
 msgid "Sent"
 msgstr "전송됨"
 
+msgid "Sequential Download"
+msgstr "순차 다운로드"
+
 msgid "Server:"
 msgstr "서버:"
 
@@ -1732,6 +1741,9 @@ msgstr "일"
 
 msgid "Sunday"
 msgstr "일요일"
+
+msgid "Super Seeding"
+msgstr "슈퍼 시딩"
 
 msgid "Swedish"
 msgstr "스웨덴어"
@@ -1901,6 +1913,9 @@ msgstr "업로드 속도"
 msgid "Update Tracker"
 msgstr "트래커 업데이트"
 
+msgid "Upload Limit"
+msgstr "업로드 제한"
+
 msgid "Upload Speed"
 msgstr "업로드 속도"
 
@@ -2003,6 +2018,9 @@ msgstr "수"
 msgid "Wednesday"
 msgstr "수요일"
 
+msgid "Yes"
+msgstr "예"
+
 msgid "active"
 msgstr "활성"
 
@@ -2074,6 +2092,9 @@ msgstr "이름"
 
 msgid "next_update"
 msgstr "다음 업데이트"
+
+msgid "normal"
+msgstr "일반"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"

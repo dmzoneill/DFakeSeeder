@@ -533,6 +533,9 @@ msgstr "أسفل"
 msgid "Down Speed"
 msgstr "سرعة التحميل"
 
+msgid "Download Limit"
+msgstr "حد التنزيل"
+
 msgid "Download Rate"
 msgstr "معدل التنزيل"
 
@@ -1187,6 +1190,9 @@ msgstr "الإعلان التالي"
 msgid "Next Update"
 msgstr "التحديث التالي"
 
+msgid "No"
+msgstr "لا"
+
 msgid "No editable options available for this torrent."
 msgstr "لا توجد خيارات قابلة للتحرير متاحة لهذا التورنت."
 
@@ -1610,6 +1616,9 @@ msgstr "إرسال رؤوس HTTP المتعلقة بالأمان"
 msgid "Sent"
 msgstr "تم الإرسال"
 
+msgid "Sequential Download"
+msgstr "التنزيل المتسلسل"
+
 msgid "Server:"
 msgstr "الخادم:"
 
@@ -1732,6 +1741,9 @@ msgstr "أحد"
 
 msgid "Sunday"
 msgstr "الأحد"
+
+msgid "Super Seeding"
+msgstr "البذر الفائق"
 
 msgid "Swedish"
 msgstr "السويدية"
@@ -1901,6 +1913,9 @@ msgstr "سرعة الرفع"
 msgid "Update Tracker"
 msgstr "تحديث المتتبع"
 
+msgid "Upload Limit"
+msgstr "حد الرفع"
+
 msgid "Upload Speed"
 msgstr "سرعة الرفع"
 
@@ -2003,6 +2018,9 @@ msgstr "أربعاء"
 msgid "Wednesday"
 msgstr "الأربعاء"
 
+msgid "Yes"
+msgstr "نعم"
+
 msgid "active"
 msgstr "نشط"
 
@@ -2074,6 +2092,9 @@ msgstr "الاسم"
 
 msgid "next_update"
 msgstr "التحديث التالي"
+
+msgid "normal"
+msgstr "عادي"
 
 msgid "open-menu-symbolic"
 msgstr "open-menu-symbolic"
