@@ -259,6 +259,10 @@ class SettingsDialog:
         logger.debug("===== show() method called =====", "SettingsDialog")
         logger.debug("self.window:", "SettingsDialog")
         try:
+            # Reload settings from app_settings before showing the dialog
+            logger.debug("Reloading settings for all tabs", "SettingsDialog")
+            self.reload_all_tab_settings()
+
             logger.debug("About to call self.window.present()", "SettingsDialog")
             self.window.present()
             logger.debug("self.window.present() completed successfully", "SettingsDialog")
@@ -477,6 +481,22 @@ class SettingsDialog:
         except Exception as e:
             logger.error(f"Error exporting settings: {e}")
             return {}
+
+    def reload_all_tab_settings(self) -> bool:
+        """Reload settings from app_settings for all tabs."""
+        try:
+            success = True
+            for tab in self.tabs:
+                try:
+                    # Reload settings for each tab
+                    tab._load_settings()
+                except Exception as e:
+                    logger.error(f"Error reloading settings for {tab.tab_name} tab: {e}", exc_info=True)
+                    success = False
+            return success
+        except Exception as e:
+            logger.error(f"Error reloading tab settings: {e}", exc_info=True)
+            return False
 
     def import_settings(self, settings: Dict[str, Any]) -> bool:
         """Import settings to all relevant tabs."""

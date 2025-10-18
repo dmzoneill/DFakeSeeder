@@ -308,7 +308,12 @@ class AppSettings(GObject.GObject):
         self.save_settings()
 
     def get(self, key, default=None):
-        """Get a setting value"""
+        """Get a setting value (supports dot notation for nested values)"""
+        # Try nested access first for dot notation keys (e.g., "watch_folder.enabled")
+        value = self._get_nested_value(self._settings, key)
+        if value is not None:
+            return value
+        # Fallback to direct key access for backward compatibility
         return self._settings.get(key, default)
 
     def set(self, key, value):
@@ -319,11 +324,13 @@ class AppSettings(GObject.GObject):
         # Determine if we need to emit signals (done outside the lock to avoid deadlock)
         should_emit = False
         with AppSettings._lock:
-            old_value = self._settings.get(key)
+            # Get old value using nested access for dot notation keys
+            old_value = self._get_nested_value(self._settings, key)
             logger.debug(f"Old value: {old_value}", "AppSettings")
             if old_value != value:
                 logger.debug("Value changed, updating and saving", "AppSettings")
-                self._settings[key] = value
+                # Use nested setter to properly handle dot notation (e.g., "watch_folder.enabled")
+                self._set_nested_value(self._settings, key, value)
                 # Update both storage systems directly to avoid recursion
                 super().__setattr__("settings", self._settings.copy())
                 logger.debug("About to save settings", "AppSettings")
