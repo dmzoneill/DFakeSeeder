@@ -127,17 +127,21 @@ class ColumnTranslations:
         """
         _ = cls._get_translation_function()
         return {
-            "ip": _("IP Address"),
-            "port": _("Port"),
+            # TorrentPeer model properties
+            "address": _("Address"),
             "client": _("Client"),
             "country": _("Country"),
-            "flags": _("Flags"),
             "progress": _("Progress"),
             "down_speed": _("Down Speed"),
             "up_speed": _("Up Speed"),
+            "seed": _("Seed"),
+            "peer_id": _("Peer ID"),
+            # Legacy/additional properties
+            "ip": _("IP Address"),
+            "port": _("Port"),
+            "flags": _("Flags"),
             "downloaded": _("Downloaded"),
             "uploaded": _("Uploaded"),
-            "peer_id": _("Peer ID"),
             "connection_time": _("Connected"),
         }
 
@@ -240,14 +244,20 @@ class ColumnTranslations:
 
         mapping = translation_map.get(column_type, {})
 
-        # If we have a specific mapping, use it
-        if property_name in mapping:
+        # GObject properties use hyphens, but our mapping uses underscores
+        # Try both the original property_name and the underscore version
+        property_name_underscore = property_name.replace("-", "_")
+
+        # If we have a specific mapping, use it (try underscore version first)
+        if property_name_underscore in mapping:
+            return mapping[property_name_underscore]
+        elif property_name in mapping:
             return mapping[property_name]
 
         # Try to translate the property name directly (with underscores)
         _ = ColumnTranslations._get_translation_function()
-        translated = _(property_name)
+        translated = _(property_name_underscore)
 
         # If translation function returned the same string, it means no translation exists
         # Return the property name as-is without modification
-        return translated if translated != property_name else property_name
+        return translated if translated != property_name_underscore else property_name
