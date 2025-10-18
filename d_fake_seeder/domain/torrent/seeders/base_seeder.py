@@ -45,6 +45,9 @@ class BaseSeeder:
         # Shutdown flag for graceful termination
         self.shutdown_requested = False
 
+        # Track if this is the first announce (for event=started)
+        self.first_announce = True
+
         # Load configurable probability values
         ui_settings = getattr(self.settings, "ui_settings", {})
         self.seeder_upload_activity_probability = ui_settings.get("seeder_upload_activity_probability", 0.3)

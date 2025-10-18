@@ -118,8 +118,7 @@ class DuplicateFilter(logging.Filter):
                 if count > 1:
                     duration = last_time - first_time
                     record.msg = (
-                        f"{record.getMessage()} "
-                        f"(previous message repeated {count} times over {duration:.1f}s)"
+                        f"{record.getMessage()} " f"(previous message repeated {count} times over {duration:.1f}s)"
                     )
 
                 # Reset counter for this message
