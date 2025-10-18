@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <object class="GtkScrolledWindow">
     <property name="visible">True</property>
-    <property name="can-focus">False</property>
+    <property name="can-focus">True</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <child>
         <object class="GtkColumnView" id="peers_columnview">
             <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
+            <property name="can-focus">True</property>
+            <property name="show-row-separators">True</property>
+            <property name="show-column-separators">True</property>
         </object>
     </child>
 </object>
