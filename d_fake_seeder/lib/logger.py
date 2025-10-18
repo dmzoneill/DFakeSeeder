@@ -28,6 +28,109 @@ class TimingFilter(logging.Filter):
         return True
 
 
+class DuplicateFilter(logging.Filter):
+    """
+    Filter that suppresses duplicate log messages within a time window.
+
+    Combines time-based rate limiting with count-based suppression:
+    - Suppresses duplicate messages within a configurable time window
+    - Counts how many times a message was suppressed
+    - Logs summary when suppression window expires
+    - Optionally flushes suppressed counts periodically
+    """
+
+    def __init__(self, time_window=5.0, flush_interval=30.0):
+        """
+        Initialize the duplicate filter.
+
+        Args:
+            time_window: Seconds within which to suppress duplicate messages
+            flush_interval: Seconds between periodic flushes of suppressed counts
+        """
+        super().__init__()
+        self.time_window = time_window
+        self.flush_interval = flush_interval
+        self.last_messages = {}  # message_key -> (count, first_time, last_time, record)
+        self.last_flush = time.time()
+
+    def _get_message_key(self, record):
+        """Create a unique key for this log message."""
+        # Use levelname, module, line number, and message content as key
+        # This allows same message from different locations to be logged separately
+        return (record.levelname, record.name, record.lineno, record.getMessage())
+
+    def _should_flush(self):
+        """Check if it's time to flush suppressed message counts."""
+        current_time = time.time()
+        if current_time - self.last_flush >= self.flush_interval:
+            self.last_flush = current_time
+            return True
+        return False
+
+    def _flush_suppressed_counts(self):
+        """Log summary of all suppressed messages."""
+        current_time = time.time()
+        to_remove = []
+
+        for message_key, (count, first_time, last_time, saved_record) in self.last_messages.items():
+            if count > 1:
+                # Create a summary record
+                duration = current_time - first_time
+                saved_record.msg = (
+                    f"{saved_record.getMessage()} "
+                    f"(repeated {count} times over {duration:.1f}s, last seen {current_time - last_time:.1f}s ago)"
+                )
+                # Log the summary (bypass this filter by creating new record)
+                saved_record.levelname = "INFO"
+
+            # Mark old entries for removal
+            if current_time - last_time > self.time_window * 2:
+                to_remove.append(message_key)
+
+        # Clean up old entries
+        for key in to_remove:
+            del self.last_messages[key]
+
+    def filter(self, record):
+        """
+        Filter duplicate messages.
+
+        Returns:
+            True if message should be logged, False if suppressed
+        """
+        # Periodic flush check
+        if self._should_flush():
+            self._flush_suppressed_counts()
+
+        message_key = self._get_message_key(record)
+        current_time = time.time()
+
+        if message_key in self.last_messages:
+            count, first_time, last_time, _ = self.last_messages[message_key]
+
+            # Check if still within suppression window
+            if current_time - last_time < self.time_window:
+                # Update count and suppress this message
+                self.last_messages[message_key] = (count + 1, first_time, current_time, record)
+                return False
+            else:
+                # Time window expired, log summary of suppressed messages
+                if count > 1:
+                    duration = last_time - first_time
+                    record.msg = (
+                        f"{record.getMessage()} "
+                        f"(previous message repeated {count} times over {duration:.1f}s)"
+                    )
+
+                # Reset counter for this message
+                self.last_messages[message_key] = (1, current_time, current_time, record)
+                return True
+        else:
+            # First occurrence of this message
+            self.last_messages[message_key] = (1, current_time, current_time, record)
+            return True
+
+
 class PerformanceLogger:
     """Enhanced logger with performance tracking and timing capabilities."""
 
@@ -152,6 +255,9 @@ def get_logger_settings():
             "to_file": app_settings.get("log_to_file", False),
             "to_systemd": app_settings.get("log_to_systemd", True),
             "to_console": app_settings.get("log_to_console", False),
+            "suppress_duplicates": app_settings.get("log_suppress_duplicates", True),
+            "duplicate_time_window": app_settings.get("log_duplicate_time_window", 5.0),
+            "duplicate_flush_interval": app_settings.get("log_duplicate_flush_interval", 30.0),
         }
     except (ImportError, Exception):
         # Fallback to hardcoded defaults if AppSettings not available
@@ -164,6 +270,9 @@ def get_logger_settings():
             "to_file": False,
             "to_systemd": True,
             "to_console": False,
+            "suppress_duplicates": True,
+            "duplicate_time_window": 5.0,
+            "duplicate_flush_interval": 30.0,
         }
 
 
@@ -225,6 +334,14 @@ def setup_logger():
     # Add filters for enhanced functionality
     logger_instance.addFilter(ClassNameFilter())
     logger_instance.addFilter(TimingFilter())
+
+    # Add duplicate filter if enabled
+    if settings.get("suppress_duplicates", True):
+        duplicate_filter = DuplicateFilter(
+            time_window=settings.get("duplicate_time_window", 5.0),
+            flush_interval=settings.get("duplicate_flush_interval", 30.0),
+        )
+        logger_instance.addFilter(duplicate_filter)
 
     # Create enhanced logger wrapper with performance tracking
     class EnhancedLogger:
