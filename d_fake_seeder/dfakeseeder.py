@@ -6,15 +6,15 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("GioUnix", "2.0")
 
 import typer  # noqa: E402
-from controller import Controller  # noqa: E402
 from gi.repository import Gio  # noqa
 from gi.repository import Gtk  # noqa: E402
-from model import Model  # noqa: E402
-from view import View  # noqa: E402
 
+from d_fake_seeder.controller import Controller  # noqa: E402
 from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
 from d_fake_seeder.lib.logger import logger  # noqa: E402
 from d_fake_seeder.lib.util.app_initialization import AppInitializationHelper  # noqa: E402
+from d_fake_seeder.model import Model  # noqa: E402
+from d_fake_seeder.view import View  # noqa: E402
 
 # Import the Model, View, and Controller classes from their respective modules
 

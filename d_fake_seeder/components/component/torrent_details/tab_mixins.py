@@ -78,7 +78,11 @@ class DataUpdateMixin:
             if value is None:
                 return "N/A"
             elif isinstance(value, bool):
-                return "Yes" if value else "No"
+                # Get translation function from model if available
+                translate_func = (
+                    self.model.get_translate_func() if hasattr(self, "model") and hasattr(self.model, "get_translate_func") else lambda x: x
+                )
+                return translate_func("Yes") if value else translate_func("No")
             elif isinstance(value, (int, float)):
                 return str(value)
             else:

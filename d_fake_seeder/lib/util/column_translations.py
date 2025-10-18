@@ -76,6 +76,10 @@ class ColumnTranslations:
             "small_torrent_limit": _("small_torrent_limit"),
             "uploading": _("uploading"),
             "active": _("active"),
+            "download_limit": _("Download Limit"),
+            "upload_limit": _("Upload Limit"),
+            "sequential_download": _("Sequential Download"),
+            "super_seeding": _("Super Seeding"),
             # Legacy/computed columns (may exist in UI)
             "size": _("Size"),  # fallback for total_size
             "downloaded": _("Downloaded"),  # fallback for session_downloaded

@@ -328,6 +328,10 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 "priority": translate_func("Priority"),
                 "status": translate_func("Status"),
                 "tracker": translate_func("Tracker"),
+                "download_limit": translate_func("Download Limit"),
+                "upload_limit": translate_func("Upload Limit"),
+                "sequential_download": translate_func("Sequential Download"),
+                "super_seeding": translate_func("Super Seeding"),
             }
 
             # Use mapped display name or fallback to translated attribute name

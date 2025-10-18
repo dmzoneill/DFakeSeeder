@@ -69,7 +69,7 @@
     "author": "David O Neill",
     "copyright": "Copyright {year}",
     "version": "1.0",
-    "logo": "images/dfakeseeder.png",
+    "logo": "components/images/dfakeseeder.png",
     "peer_protocol": {
         "peer_update_interval_seconds": 30.0,
         "stats_update_interval_seconds": 5.0,

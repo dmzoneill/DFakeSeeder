@@ -7,13 +7,13 @@ from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.model.attributes import Attributes
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.column_translation_mixin import ColumnTranslationMixin
+from d_fake_seeder.lib.util.column_translations import ColumnTranslations
 from d_fake_seeder.lib.util.helpers import add_kb, add_percent, convert_seconds_to_hours_mins_seconds, humanbytes
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 gi.require_version("GioUnix", "2.0")
-from gi.repository import Gio  # noqa: E402
-from gi.repository import GLib, GObject, Gtk  # noqa: E402
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk  # noqa: E402
 
 
 class Torrents(Component, ColumnTranslationMixin):
@@ -88,17 +88,97 @@ class Torrents(Component, ColumnTranslationMixin):
         ATTRIBUTES = Attributes
         attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
         menu = Gio.Menu.new()
-        # Create submenus
+
+        # Get the currently selected torrent to determine state
+        selected_item = self.selection.get_selected_item() if hasattr(self, "selection") else None
+        is_active = getattr(selected_item, "active", True) if selected_item else True
+        progress = getattr(selected_item, "progress", 0.0) if selected_item else 0.0
+        super_seeding = getattr(selected_item, "super_seeding", False) if selected_item else False
+        sequential = getattr(selected_item, "sequential_download", False) if selected_item else False
+
+        # === BASIC ACTIONS ===
+        # Pause/Resume
+        if is_active:
+            menu.append(self._("Pause"), "app.pause")
+        else:
+            menu.append(self._("Resume"), "app.resume")
+
+        # Force Start
+        menu.append(self._("Force Start"), "app.force_start")
+
+        menu.append(self._("Update Tracker"), "app.update_tracker")
+        menu.append(self._("Force Recheck"), "app.force_recheck")
+
+        # === CONTEXT-AWARE ACTIONS ===
+        if progress < 1.0:
+            menu.append(self._("Force Complete"), "app.force_complete")
+        if progress == 0.0:
+            menu.append(self._("Set Random Progress"), "app.set_random_progress")
+
+        # === COPY SUBMENU ===
+        copy_submenu = Gio.Menu()
+        copy_submenu.append(self._("Copy Name"), "app.copy_name")
+        copy_submenu.append(self._("Copy Info Hash"), "app.copy_hash")
+        copy_submenu.append(self._("Copy Magnet Link"), "app.copy_magnet")
+        copy_submenu.append(self._("Copy Tracker URL"), "app.copy_tracker")
+        menu.append_submenu(self._("Copy"), copy_submenu)
+
+        # === PRIORITY SUBMENU ===
+        priority_submenu = Gio.Menu()
+        priority_submenu.append(self._("High Priority"), "app.priority_high")
+        priority_submenu.append(self._("Normal Priority"), "app.priority_normal")
+        priority_submenu.append(self._("Low Priority"), "app.priority_low")
+        menu.append_submenu(self._("Priority"), priority_submenu)
+
+        # === SPEED LIMITS SUBMENU ===
+        speed_submenu = Gio.Menu()
+        speed_submenu.append(self._("Set Upload Limit..."), "app.set_upload_limit")
+        speed_submenu.append(self._("Set Download Limit..."), "app.set_download_limit")
+        speed_submenu.append(self._("Reset to Global Limits"), "app.reset_limits")
+        menu.append_submenu(self._("Speed Limits"), speed_submenu)
+
+        # === TRACKER MANAGEMENT SUBMENU ===
+        tracker_submenu = Gio.Menu()
+        tracker_submenu.append(self._("Add Tracker..."), "app.add_tracker")
+        tracker_submenu.append(self._("Edit Tracker..."), "app.edit_tracker")
+        tracker_submenu.append(self._("Remove Tracker..."), "app.remove_tracker")
+        menu.append_submenu(self._("Trackers"), tracker_submenu)
+
+        # === QUEUE SUBMENU ===
         queue_submenu = Gio.Menu()
         queue_submenu.append(self._("Top"), "app.queue_top")
         queue_submenu.append(self._("Up"), "app.queue_up")
         queue_submenu.append(self._("Down"), "app.queue_down")
         queue_submenu.append(self._("Bottom"), "app.queue_bottom")
-        # Add menu items and submenus to the main menu
-        menu.append(self._("Pause"), "app.pause")
-        menu.append(self._("Resume"), "app.resume")
-        menu.append(self._("Update Tracker"), "app.update_tracker")
         menu.append_submenu(self._("Queue"), queue_submenu)
+
+        # === ADVANCED OPTIONS ===
+        menu.append(self._("Rename..."), "app.rename_torrent")
+        menu.append(self._("Set Label..."), "app.set_label")
+        menu.append(self._("Set Location..."), "app.set_location")
+
+        # Toggle options
+        if super_seeding:
+            menu.append(self._("Disable Super Seeding"), "app.toggle_super_seed")
+        else:
+            menu.append(self._("Enable Super Seeding"), "app.toggle_super_seed")
+
+        if sequential:
+            menu.append(self._("Disable Sequential Download"), "app.toggle_sequential")
+        else:
+            menu.append(self._("Enable Sequential Download"), "app.toggle_sequential")
+
+        # === SEPARATOR ===
+        menu.append(self._("Properties"), "app.show_properties")
+
+        # === REMOVAL OPTIONS ===
+        remove_submenu = Gio.Menu()
+        remove_submenu.append(self._("Remove Torrent"), "app.remove_torrent")
+        remove_submenu.append(self._("Remove Torrent and Data"), "app.remove_torrent_and_data")
+        menu.append_submenu(self._("Remove"), remove_submenu)
+
+        # Register all actions
+        self._register_menu_actions()
         columns_menu = Gio.Menu.new()
         # Build a mapping from column objects to their attribute names (not translated titles!)
         # Use the tracking dict we maintain for translations
@@ -135,8 +215,6 @@ class Torrents(Component, ColumnTranslationMixin):
         # Iterate over attributes and add toggle items for each one
         for attribute in attributes:
             # Use translated column name for menu items
-            from lib.util.column_translations import ColumnTranslations
-
             translated_name = ColumnTranslations.get_column_title("torrent", attribute)
             toggle_item = Gio.MenuItem.new(label=translated_name)
             toggle_item.set_detailed_action(f"app.toggle_{attribute}")
@@ -665,8 +743,6 @@ class Torrents(Component, ColumnTranslationMixin):
 
     def on_key_pressed(self, controller, keyval, keycode, state):
         """Handle keyboard events for navigation"""
-        from gi.repository import Gdk
-
         # Get current selection
         current_position = self.selection.get_selected()
         total_items = self.sort_model.get_n_items()
@@ -692,6 +768,764 @@ class Torrents(Component, ColumnTranslationMixin):
             return True  # Event handled
         # Let other keys pass through
         return False
+
+    def _register_menu_actions(self):
+        """Register all context menu actions if they don't exist"""
+        actions = {
+            # Basic actions
+            "pause": self.on_pause,
+            "resume": self.on_resume,
+            "force_start": self.on_force_start,
+            "update_tracker": self.on_update_tracker,
+            "force_recheck": self.on_force_recheck,
+            "force_complete": self.on_force_complete,
+            "set_random_progress": self.on_set_random_progress,
+            # Copy actions
+            "copy_name": self.on_copy_name,
+            "copy_hash": self.on_copy_hash,
+            "copy_magnet": self.on_copy_magnet,
+            "copy_tracker": self.on_copy_tracker,
+            # Priority actions
+            "priority_high": self.on_priority_high,
+            "priority_normal": self.on_priority_normal,
+            "priority_low": self.on_priority_low,
+            # Speed limit actions
+            "set_upload_limit": self.on_set_upload_limit,
+            "set_download_limit": self.on_set_download_limit,
+            "reset_limits": self.on_reset_limits,
+            # Tracker management
+            "add_tracker": self.on_add_tracker,
+            "edit_tracker": self.on_edit_tracker,
+            "remove_tracker": self.on_remove_tracker,
+            # Queue actions
+            "queue_top": self.on_queue_top,
+            "queue_up": self.on_queue_up,
+            "queue_down": self.on_queue_down,
+            "queue_bottom": self.on_queue_bottom,
+            # Advanced options
+            "rename_torrent": self.on_rename_torrent,
+            "set_label": self.on_set_label,
+            "set_location": self.on_set_location,
+            "toggle_super_seed": self.on_toggle_super_seed,
+            "toggle_sequential": self.on_toggle_sequential,
+            "show_properties": self.on_show_properties,
+            # Remove actions
+            "remove_torrent": self.on_remove_torrent,
+            "remove_torrent_and_data": self.on_remove_torrent_and_data,
+        }
+
+        for action_name, handler in actions.items():
+            if not self.action_group.has_action(action_name):
+                action = Gio.SimpleAction.new(action_name, None)
+                action.connect("activate", handler)
+                self.action_group.add_action(action)
+
+    def _get_selected_torrent(self):
+        """Helper method to get the currently selected torrent object"""
+        if not hasattr(self, "selection") or self.selection is None:
+            return None, None
+
+        selected_item = self.selection.get_selected_item()
+        if selected_item is None:
+            return None, None
+
+        # Find the torrent object in the model's torrent list
+        if hasattr(self.model, "torrent_list"):
+            for torrent in self.model.torrent_list:
+                if hasattr(torrent, "torrent_attributes") and torrent.torrent_attributes == selected_item:
+                    return torrent, selected_item
+
+        return None, selected_item
+
+    # ===== BASIC ACTIONS =====
+
+    def on_pause(self, action, parameter):
+        """Handle pause action from context menu"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            logger.warning("No torrent selected for pause", extra={"class_name": self.__class__.__name__})
+            return
+
+        torrent_name = getattr(selected_item, "name", "Unknown")
+        logger.info(f"Pausing torrent: {torrent_name}", extra={"class_name": self.__class__.__name__})
+        torrent.active = False
+
+    def on_resume(self, action, parameter):
+        """Handle resume action from context menu"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            logger.warning("No torrent selected for resume", extra={"class_name": self.__class__.__name__})
+            return
+
+        torrent_name = getattr(selected_item, "name", "Unknown")
+        logger.info(f"Resuming torrent: {torrent_name}", extra={"class_name": self.__class__.__name__})
+        torrent.active = True
+
+    def on_force_start(self, action, parameter):
+        """Force start a torrent, ignoring queue limits"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        logger.info(f"Force starting torrent: {torrent.name}", extra={"class_name": self.__class__.__name__})
+        torrent.force_start = True
+        torrent.active = True
+
+    def on_force_recheck(self, action, parameter):
+        """Simulate a recheck of torrent data"""
+        import random
+
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        logger.info(f"Force rechecking torrent: {torrent.name}", extra={"class_name": self.__class__.__name__})
+        # Simulate recheck by randomly adjusting progress slightly
+        old_progress = torrent.progress
+        variation = random.uniform(-0.05, 0.05)  # ±5% variation
+        new_progress = max(0.0, min(1.0, old_progress + variation))
+        torrent.progress = new_progress
+
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"Recheck completed for {torrent.name}: {new_progress*100:.1f}%")
+
+    def on_force_complete(self, action, parameter):
+        """Force torrent to 100% completion"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        logger.info(f"Force completing torrent: {torrent.name}", extra={"class_name": self.__class__.__name__})
+        torrent.progress = 1.0
+        torrent.total_downloaded = torrent.total_size
+
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"{torrent.name} set to 100% complete")
+
+    def on_set_random_progress(self, action, parameter):
+        """Set torrent to a random realistic progress percentage"""
+        import random
+
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        # Generate realistic random progress (more weight towards higher percentages)
+        rand = random.random()
+        if rand < 0.3:
+            progress = random.uniform(0.1, 0.5)
+        elif rand < 0.7:
+            progress = random.uniform(0.5, 0.9)
+        else:
+            progress = random.uniform(0.9, 0.99)
+
+        logger.info(
+            f"Setting random progress for {torrent.name}: {progress*100:.1f}%",
+            extra={"class_name": self.__class__.__name__},
+        )
+        torrent.progress = progress
+        torrent.total_downloaded = int(torrent.total_size * progress)
+
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"{torrent.name} progress set to {progress*100:.1f}%")
+
+    def on_update_tracker(self, action, parameter):
+        """Handle update tracker action from context menu"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            logger.warning("No torrent selected for update tracker", extra={"class_name": self.__class__.__name__})
+            return
+
+        logger.info(f"Updating tracker for torrent: {torrent.name}", extra={"class_name": self.__class__.__name__})
+        torrent.force_tracker_update()
+
+    # ===== COPY ACTIONS =====
+
+    def on_copy_name(self, action, parameter):
+        """Copy torrent name to clipboard"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        clipboard = Gdk.Display.get_default().get_clipboard()
+        clipboard.set(torrent.name)
+        logger.info(f"Copied name to clipboard: {torrent.name}", extra={"class_name": self.__class__.__name__})
+
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"Copied name: {torrent.name}")
+
+    def on_copy_hash(self, action, parameter):
+        """Copy torrent info hash to clipboard"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        if hasattr(torrent, "torrent_file") and hasattr(torrent.torrent_file, "file_hash"):
+            info_hash = torrent.torrent_file.file_hash.hex()
+            clipboard = Gdk.Display.get_default().get_clipboard()
+            clipboard.set(info_hash)
+            logger.info(f"Copied info hash to clipboard: {info_hash}", extra={"class_name": self.__class__.__name__})
+
+            from d_fake_seeder.view import View
+
+            if View.instance:
+                View.instance.notify(f"Copied info hash: {info_hash[:16]}...")
+        else:
+            logger.warning("Torrent file hash not available", extra={"class_name": self.__class__.__name__})
+
+    def on_copy_magnet(self, action, parameter):
+        """Copy magnet link to clipboard"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        if hasattr(torrent, "torrent_file") and hasattr(torrent.torrent_file, "file_hash"):
+            info_hash = torrent.torrent_file.file_hash.hex()
+            tracker_url = getattr(torrent.torrent_file, "announce", "")
+            magnet_link = f"magnet:?xt=urn:btih:{info_hash}&dn={torrent.name}"
+            if tracker_url:
+                magnet_link += f"&tr={tracker_url}"
+
+            clipboard = Gdk.Display.get_default().get_clipboard()
+            clipboard.set(magnet_link)
+            logger.info("Copied magnet link to clipboard", extra={"class_name": self.__class__.__name__})
+
+            from d_fake_seeder.view import View
+
+            if View.instance:
+                View.instance.notify(f"Copied magnet link for {torrent.name}")
+        else:
+            logger.warning("Torrent info not available for magnet link", extra={"class_name": self.__class__.__name__})
+
+    def on_copy_tracker(self, action, parameter):
+        """Copy tracker URL to clipboard"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        if hasattr(torrent, "torrent_file") and hasattr(torrent.torrent_file, "announce"):
+            tracker_url = torrent.torrent_file.announce
+            clipboard = Gdk.Display.get_default().get_clipboard()
+            clipboard.set(tracker_url)
+            logger.info(
+                f"Copied tracker URL to clipboard: {tracker_url}", extra={"class_name": self.__class__.__name__}
+            )
+
+            from d_fake_seeder.view import View
+
+            if View.instance:
+                View.instance.notify("Copied tracker URL")
+        else:
+            logger.warning("Tracker URL not available", extra={"class_name": self.__class__.__name__})
+
+    # ===== PRIORITY ACTIONS =====
+
+    def on_priority_high(self, action, parameter):
+        """Set torrent priority to high"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        logger.info(f"Setting high priority for {torrent.name}", extra={"class_name": self.__class__.__name__})
+        torrent.priority = "high"
+        # Increase speeds for high priority
+        torrent.upload_speed = int(torrent.upload_speed * 1.5)
+        torrent.download_speed = int(torrent.download_speed * 1.5)
+
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"{torrent.name} set to high priority")
+
+    def on_priority_normal(self, action, parameter):
+        """Set torrent priority to normal"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        logger.info(f"Setting normal priority for {torrent.name}", extra={"class_name": self.__class__.__name__})
+        torrent.priority = "normal"
+        # Reset to configured speeds
+        torrent.upload_speed = self.settings.upload_speed
+        torrent.download_speed = self.settings.download_speed
+
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"{torrent.name} set to normal priority")
+
+    def on_priority_low(self, action, parameter):
+        """Set torrent priority to low"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        logger.info(f"Setting low priority for {torrent.name}", extra={"class_name": self.__class__.__name__})
+        torrent.priority = "low"
+        # Decrease speeds for low priority
+        torrent.upload_speed = max(1, int(torrent.upload_speed * 0.5))
+        torrent.download_speed = max(1, int(torrent.download_speed * 0.5))
+
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"{torrent.name} set to low priority")
+
+    # ===== SPEED LIMIT ACTIONS =====
+
+    def on_set_upload_limit(self, action, parameter):
+        """Show dialog to set upload limit"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        dialog = Gtk.Dialog(title=self._("Set Upload Limit"), transient_for=self.window, modal=True)
+        dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
+        dialog.add_button(self._("OK"), Gtk.ResponseType.OK)
+
+        content_area = dialog.get_content_area()
+        label = Gtk.Label(label=self._("Upload limit (KB/s, 0 = unlimited):"))
+        entry = Gtk.Entry()
+        entry.set_text(str(torrent.upload_limit))
+        content_area.append(label)
+        content_area.append(entry)
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            try:
+                limit = int(entry.get_text())
+                torrent.upload_limit = limit
+                logger.info(
+                    f"Set upload limit for {torrent.name}: {limit} KB/s", extra={"class_name": self.__class__.__name__}
+                )
+                from d_fake_seeder.view import View
+
+                if View.instance:
+                    View.instance.notify(f"Upload limit set to {limit} KB/s" if limit > 0 else "Upload limit removed")
+            except ValueError:
+                logger.warning("Invalid upload limit entered", extra={"class_name": self.__class__.__name__})
+
+        dialog.destroy()
+
+    def on_set_download_limit(self, action, parameter):
+        """Show dialog to set download limit"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        dialog = Gtk.Dialog(title=self._("Set Download Limit"), transient_for=self.window, modal=True)
+        dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
+        dialog.add_button(self._("OK"), Gtk.ResponseType.OK)
+
+        content_area = dialog.get_content_area()
+        label = Gtk.Label(label=self._("Download limit (KB/s, 0 = unlimited):"))
+        entry = Gtk.Entry()
+        entry.set_text(str(torrent.download_limit))
+        content_area.append(label)
+        content_area.append(entry)
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            try:
+                limit = int(entry.get_text())
+                torrent.download_limit = limit
+                logger.info(
+                    f"Set download limit for {torrent.name}: {limit} KB/s",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                from d_fake_seeder.view import View
+
+                if View.instance:
+                    View.instance.notify(
+                        f"Download limit set to {limit} KB/s" if limit > 0 else "Download limit removed"
+                    )
+            except ValueError:
+                logger.warning("Invalid download limit entered", extra={"class_name": self.__class__.__name__})
+
+        dialog.destroy()
+
+    def on_reset_limits(self, action, parameter):
+        """Reset torrent to use global speed limits"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        logger.info(
+            f"Resetting speed limits to global for {torrent.name}", extra={"class_name": self.__class__.__name__}
+        )
+        torrent.upload_limit = 0
+        torrent.download_limit = 0
+        torrent.upload_speed = self.settings.upload_speed
+        torrent.download_speed = self.settings.download_speed
+
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"Using global speed limits for {torrent.name}")
+
+    # ===== TRACKER MANAGEMENT =====
+
+    def on_add_tracker(self, action, parameter):
+        """Add a new tracker URL"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        dialog = Gtk.Dialog(title=self._("Add Tracker"), transient_for=self.window, modal=True)
+        dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
+        dialog.add_button(self._("Add"), Gtk.ResponseType.OK)
+
+        content_area = dialog.get_content_area()
+        label = Gtk.Label(label=self._("Tracker URL:"))
+        entry = Gtk.Entry()
+        content_area.append(label)
+        content_area.append(entry)
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            tracker_url = entry.get_text()
+            if tracker_url and hasattr(torrent, "torrent_file"):
+                if not hasattr(torrent.torrent_file, "announce_list"):
+                    torrent.torrent_file.announce_list = []
+                torrent.torrent_file.announce_list.append(tracker_url)
+                logger.info(
+                    f"Added tracker {tracker_url} to {torrent.name}", extra={"class_name": self.__class__.__name__}
+                )
+                from d_fake_seeder.view import View
+
+                if View.instance:
+                    View.instance.notify(f"Tracker added to {torrent.name}")
+
+        dialog.destroy()
+
+    def on_edit_tracker(self, action, parameter):
+        """Edit primary tracker URL"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        current_tracker = getattr(torrent.torrent_file, "announce", "") if hasattr(torrent, "torrent_file") else ""
+
+        dialog = Gtk.Dialog(title=self._("Edit Tracker"), transient_for=self.window, modal=True)
+        dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
+        dialog.add_button(self._("Save"), Gtk.ResponseType.OK)
+
+        content_area = dialog.get_content_area()
+        label = Gtk.Label(label=self._("Tracker URL:"))
+        entry = Gtk.Entry()
+        entry.set_text(current_tracker)
+        content_area.append(label)
+        content_area.append(entry)
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            new_tracker = entry.get_text()
+            if new_tracker and hasattr(torrent, "torrent_file"):
+                torrent.torrent_file.announce = new_tracker
+                logger.info(
+                    f"Updated tracker for {torrent.name}: {new_tracker}", extra={"class_name": self.__class__.__name__}
+                )
+                from d_fake_seeder.view import View
+
+                if View.instance:
+                    View.instance.notify(f"Tracker updated for {torrent.name}")
+
+        dialog.destroy()
+
+    def on_remove_tracker(self, action, parameter):
+        """Remove a tracker (placeholder - would show list to choose from)"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        logger.info(f"Remove tracker requested for {torrent.name}", extra={"class_name": self.__class__.__name__})
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify("Tracker removal not yet implemented")
+
+    # ===== QUEUE ACTIONS =====
+
+    def on_queue_top(self, action, parameter):
+        """Move torrent to top of queue"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        logger.info(f"Moving {torrent.name} to top of queue", extra={"class_name": self.__class__.__name__})
+        # Set ID to 1 and shift others down
+        if hasattr(self.model, "torrent_list"):
+            for t in self.model.torrent_list:
+                if t.id >= 1:
+                    t.id += 1
+            torrent.id = 1
+
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"{torrent.name} moved to top")
+
+    def on_queue_up(self, action, parameter):
+        """Move torrent up in queue"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None or torrent.id <= 1:
+            return
+
+        logger.info(f"Moving {torrent.name} up in queue", extra={"class_name": self.__class__.__name__})
+        # Swap with previous torrent
+        if hasattr(self.model, "torrent_list"):
+            for t in self.model.torrent_list:
+                if t.id == torrent.id - 1:
+                    t.id += 1
+                    torrent.id -= 1
+                    break
+
+    def on_queue_down(self, action, parameter):
+        """Move torrent down in queue"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        logger.info(f"Moving {torrent.name} down in queue", extra={"class_name": self.__class__.__name__})
+        # Swap with next torrent
+        if hasattr(self.model, "torrent_list"):
+            for t in self.model.torrent_list:
+                if t.id == torrent.id + 1:
+                    t.id -= 1
+                    torrent.id += 1
+                    break
+
+    def on_queue_bottom(self, action, parameter):
+        """Move torrent to bottom of queue"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        logger.info(f"Moving {torrent.name} to bottom of queue", extra={"class_name": self.__class__.__name__})
+        # Set ID to max + 1
+        if hasattr(self.model, "torrent_list"):
+            max_id = max(t.id for t in self.model.torrent_list)
+            torrent.id = max_id + 1
+
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"{torrent.name} moved to bottom")
+
+    # ===== ADVANCED OPTIONS =====
+
+    def on_rename_torrent(self, action, parameter):
+        """Rename the torrent"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        dialog = Gtk.Dialog(title=self._("Rename Torrent"), transient_for=self.window, modal=True)
+        dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
+        dialog.add_button(self._("Rename"), Gtk.ResponseType.OK)
+
+        content_area = dialog.get_content_area()
+        label = Gtk.Label(label=self._("New name:"))
+        entry = Gtk.Entry()
+        entry.set_text(torrent.name)
+        content_area.append(label)
+        content_area.append(entry)
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            new_name = entry.get_text()
+            if new_name:
+                old_name = torrent.name
+                torrent.name = new_name
+                logger.info(
+                    f"Renamed torrent from {old_name} to {new_name}", extra={"class_name": self.__class__.__name__}
+                )
+                from d_fake_seeder.view import View
+
+                if View.instance:
+                    View.instance.notify(f"Renamed to: {new_name}")
+
+        dialog.destroy()
+
+    def on_set_label(self, action, parameter):
+        """Set a label/category for the torrent"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        dialog = Gtk.Dialog(title=self._("Set Label"), transient_for=self.window, modal=True)
+        dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
+        dialog.add_button(self._("Set"), Gtk.ResponseType.OK)
+
+        content_area = dialog.get_content_area()
+        label_widget = Gtk.Label(label=self._("Label:"))
+        entry = Gtk.Entry()
+        entry.set_text(torrent.label if hasattr(torrent, "label") else "")
+        content_area.append(label_widget)
+        content_area.append(entry)
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            label = entry.get_text()
+            torrent.label = label
+            logger.info(f"Set label for {torrent.name}: {label}", extra={"class_name": self.__class__.__name__})
+            from d_fake_seeder.view import View
+
+            if View.instance:
+                View.instance.notify(f"Label set: {label}" if label else "Label cleared")
+
+        dialog.destroy()
+
+    def on_set_location(self, action, parameter):
+        """Set download location for the torrent"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        dialog = Gtk.FileChooserDialog(
+            title=self._("Set Location"), transient_for=self.window, action=Gtk.FileChooserAction.SELECT_FOLDER
+        )
+        dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
+        dialog.add_button(self._("Select"), Gtk.ResponseType.OK)
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            location = dialog.get_file().get_path()
+            logger.info(f"Set location for {torrent.name}: {location}", extra={"class_name": self.__class__.__name__})
+            from d_fake_seeder.view import View
+
+            if View.instance:
+                View.instance.notify(f"Location set to: {location}")
+
+        dialog.destroy()
+
+    def on_toggle_super_seed(self, action, parameter):
+        """Toggle super seeding mode"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        torrent.super_seeding = not torrent.super_seeding
+        logger.info(
+            f"Super seeding {'enabled' if torrent.super_seeding else 'disabled'} for {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"Super seeding {'enabled' if torrent.super_seeding else 'disabled'}")
+
+    def on_toggle_sequential(self, action, parameter):
+        """Toggle sequential download mode"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        torrent.sequential_download = not torrent.sequential_download
+        logger.info(
+            f"Sequential download {'enabled' if torrent.sequential_download else 'disabled'} for {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"Sequential download {'enabled' if torrent.sequential_download else 'disabled'}")
+
+    def on_show_properties(self, action, parameter):
+        """Show torrent properties dialog"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        # For now, just log and notify - full properties dialog would be more complex
+        logger.info(f"Showing properties for {torrent.name}", extra={"class_name": self.__class__.__name__})
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(f"Properties: {torrent.name} - Full dialog not yet implemented")
+
+    # ===== REMOVE ACTIONS =====
+
+    def on_remove_torrent(self, action, parameter):
+        """Remove torrent from list (keep file)"""
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        # Show confirmation dialog
+        dialog = Gtk.MessageDialog(
+            transient_for=self.window,
+            modal=True,
+            message_type=Gtk.MessageType.WARNING,
+            buttons=Gtk.ButtonsType.YES_NO,
+            text=self._("Remove Torrent?"),
+        )
+        dialog.format_secondary_text(f"{self._('Remove')} {torrent.name}?\n{self._('The .torrent file will be kept.')}")
+
+        response = dialog.run()
+        dialog.destroy()
+
+        if response == Gtk.ResponseType.YES:
+            logger.info(f"Removing torrent: {torrent.name}", extra={"class_name": self.__class__.__name__})
+            if hasattr(self.model, "remove_torrent"):
+                self.model.remove_torrent(torrent)
+
+            from d_fake_seeder.view import View
+
+            if View.instance:
+                View.instance.notify(f"Removed: {torrent.name}")
+
+    def on_remove_torrent_and_data(self, action, parameter):
+        """Remove torrent and delete .torrent file"""
+        import os
+
+        torrent, selected_item = self._get_selected_torrent()
+        if torrent is None:
+            return
+
+        # Show confirmation dialog
+        dialog = Gtk.MessageDialog(
+            transient_for=self.window,
+            modal=True,
+            message_type=Gtk.MessageType.WARNING,
+            buttons=Gtk.ButtonsType.YES_NO,
+            text=self._("Remove Torrent and Data?"),
+        )
+        dialog.format_secondary_text(
+            f"{self._('Remove')} {torrent.name}?\n{self._('The .torrent file will be DELETED.')}"
+        )
+
+        response = dialog.run()
+        dialog.destroy()
+
+        if response == Gtk.ResponseType.YES:
+            logger.info(f"Removing torrent and data: {torrent.name}", extra={"class_name": self.__class__.__name__})
+
+            # Delete .torrent file
+            if hasattr(torrent, "file_path") and os.path.exists(torrent.file_path):
+                try:
+                    os.remove(torrent.file_path)
+                    logger.info(f"Deleted file: {torrent.file_path}", extra={"class_name": self.__class__.__name__})
+                except Exception as e:
+                    logger.error(f"Failed to delete file: {e}", extra={"class_name": self.__class__.__name__})
+
+            if hasattr(self.model, "remove_torrent"):
+                self.model.remove_torrent(torrent)
+
+            from d_fake_seeder.view import View
+
+            if View.instance:
+                View.instance.notify(f"Removed: {torrent.name} (file deleted)")
 
     def model_selection_changed(self, source, model, torrent):
         logger.debug(
