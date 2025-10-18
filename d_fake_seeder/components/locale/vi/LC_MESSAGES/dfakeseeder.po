@@ -72,7 +72,7 @@ msgid "<b>Conservative Profile Settings</b>"
 msgstr "<b>Cài đặt Hồ sơ Bảo thủ</b>"
 
 msgid "<b>DHT (Distributed Hash Table)</b>"
-msgstr "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT (Bảng Băm Phân Tán)</b>"
 
 msgid "<b>Encryption</b>"
 msgstr "<b>Mã hóa</b>"
@@ -161,6 +161,9 @@ msgstr "<b>Cài đặt Mẫu Lưu lượng</b>"
 msgid "<b>Transport Protocol Settings</b>"
 msgstr "<b>Cài đặt Giao thức Vận chuyển</b>"
 
+msgid "<b>Watch Folder</b>"
+msgstr "<b>Thư mục theo dõi</b>"
+
 msgid "<b>Web Interface</b>"
 msgstr "<b>Giao diện Web</b>"
 
@@ -178,6 +181,12 @@ msgstr "Tốc độ Thích ứng:"
 
 msgid "Add"
 msgstr "Thêm"
+
+msgid "Add Tracker"
+msgstr "Thêm Tracker"
+
+msgid "Add Tracker..."
+msgstr "Thêm Tracker..."
 
 msgid "Add torrent"
 msgstr "Thêm torrent"
@@ -242,6 +251,9 @@ msgstr "Tự động tạo ID nút"
 msgid "Auto-save settings"
 msgstr "Tự động lưu cài đặt"
 
+msgid "Auto-start added torrents"
+msgstr "Tự động khởi động torrent đã thêm"
+
 msgid "Auto-start disabled"
 msgstr "Tự động khởi động đã tắt"
 
@@ -260,8 +272,14 @@ msgstr "Tự động cấu hình chuyển tiếp cổng bộ định tuyến b�
 msgid "Automatically generate a unique node ID"
 msgstr "Tự động tạo ID nút duy nhất"
 
+msgid "Automatically monitor a folder for new torrent files"
+msgstr "Tự động theo dõi thư mục để tìm tệp torrent mới"
+
 msgid "Automatically save settings when changed"
 msgstr "Tự động lưu cài đặt khi thay đổi"
+
+msgid "Automatically start torrents when added from watch folder"
+msgstr "Tự động khởi động torrent khi thêm từ thư mục theo dõi"
 
 msgid "Automatically switch to alternative speeds during specified hours"
 msgstr "Tự động chuyển sang tốc độ thay thế trong giờ được chỉ định"
@@ -314,6 +332,9 @@ msgstr "Hết thời gian Khởi động:"
 msgid "Bottom"
 msgstr "Dưới cùng"
 
+msgid "Browse for folder"
+msgstr "Duyệt tìm thư mục"
+
 msgid "Bucket Size:"
 msgstr "Kích thước Bucket:"
 
@@ -348,7 +369,7 @@ msgid "Client Switch Probability:"
 msgstr "Xác suất Chuyển đổi Máy khách:"
 
 msgid "Columns"
-msgstr "Columns"
+msgstr "Cột"
 
 msgid "Comment"
 msgstr "Bình luận"
@@ -407,6 +428,21 @@ msgstr "Tốc độ tải lên hồ sơ bảo thủ"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "Bảo thủ: Tốc độ thấp hơn, ít kết nối hơn, lý tưởng cho seeding nền"
 
+msgid "Copy"
+msgstr "Sao chép"
+
+msgid "Copy Info Hash"
+msgstr "Sao chép mã băm thông tin"
+
+msgid "Copy Magnet Link"
+msgstr "Sao chép liên kết Magnet"
+
+msgid "Copy Name"
+msgstr "Sao chép tên"
+
+msgid "Copy Tracker URL"
+msgstr "Sao chép URL Tracker"
+
 msgid "Country"
 msgstr "Quốc gia"
 
@@ -458,6 +494,12 @@ msgstr "Tối"
 msgid "Days:"
 msgstr "Ngày:"
 
+msgid "Delete added torrent files"
+msgstr "Xóa tệp torrent đã thêm"
+
+msgid "Delete torrent files after they are successfully added"
+msgstr "Xóa tệp torrent sau khi chúng được thêm thành công"
+
 msgid "Deluge"
 msgstr "Deluge"
 
@@ -466,6 +508,12 @@ msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
 msgid "Details"
 msgstr "Chi tiết"
+
+msgid "Disable Sequential Download"
+msgstr "Tắt tải xuống tuần tự"
+
+msgid "Disable Super Seeding"
+msgstr "Tắt Super Seeding"
 
 msgid "Disabled"
 msgstr "Đã tắt"
@@ -496,6 +544,9 @@ msgstr "Phương sai Tải xuống:"
 
 msgid "Download limit (KB/s):"
 msgstr "Giới hạn tải xuống (KB/s):"
+
+msgid "Download limit (KB/s, 0 = unlimited):"
+msgstr "Giới hạn tải xuống (KB/s, 0 = không giới hạn):"
 
 msgid "Download speed variance for aggressive profile"
 msgstr "Phương sai tốc độ tải xuống cho hồ sơ tích cực"
@@ -529,6 +580,12 @@ msgstr "LỖI"
 
 msgid "ETA"
 msgstr "Thời gian còn lại"
+
+msgid "Edit Tracker"
+msgstr "Chỉnh sửa Tracker"
+
+msgid "Edit Tracker..."
+msgstr "Chỉnh sửa Tracker..."
 
 msgid "Enable CSRF protection"
 msgstr "Bật bảo vệ CSRF"
@@ -574,6 +631,12 @@ msgstr "Bật Peer Exchange để khám phá ngang hàng mới"
 
 msgid "Enable Protocol Extensions"
 msgstr "Bật Tiện ích Giao thức"
+
+msgid "Enable Sequential Download"
+msgstr "Bật tải xuống tuần tự"
+
+msgid "Enable Super Seeding"
+msgstr "Bật Super Seeding"
 
 msgid "Enable TCP keepalive"
 msgstr "Bật TCP keepalive"
@@ -662,6 +725,9 @@ msgstr "Bật tiện ích ut_metadata cho trao đổi siêu dữ liệu"
 msgid "Enable ut_pex extension for peer exchange"
 msgstr "Bật tiện ích ut_pex cho trao đổi ngang hàng"
 
+msgid "Enable watch folder"
+msgstr "Bật thư mục theo dõi"
+
 msgid "Enable web-based remote control interface"
 msgstr "Bật giao diện điều khiển từ xa dựa trên web"
 
@@ -734,8 +800,20 @@ msgstr "Tệp"
 msgid "Flags"
 msgstr "Cờ"
 
+msgid "Folder path:"
+msgstr "Đường dẫn thư mục:"
+
 msgid "Follow System"
 msgstr "Theo Hệ thống"
+
+msgid "Force Complete"
+msgstr "Hoàn thành bắt buộc"
+
+msgid "Force Recheck"
+msgstr "Kiểm tra lại bắt buộc"
+
+msgid "Force Start"
+msgstr "Bắt đầu bắt buộc"
 
 msgid "Forced"
 msgstr "Bắt buộc"
@@ -762,7 +840,7 @@ msgid "General timeout for extension operations (seconds)"
 msgstr "Hết thời gian chung cho thao tác tiện ích (giây)"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "Tab Chung"
 
 msgid "Generate Secure Password"
 msgstr "Tạo Mật khẩu An toàn"
@@ -815,11 +893,17 @@ msgstr "Ẩn Cửa sổ Chính"
 msgid "Hide to system tray when window is minimized"
 msgstr "Ẩn vào khay hệ thống khi cửa sổ được thu nhỏ"
 
+msgid "High Priority"
+msgstr "Ưu tiên cao"
+
 msgid "Hindi"
 msgstr "Tiếng Hindi"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "Tần suất thông báo cho tracker (60-7200 giây)"
+
+msgid "How often to check for new torrent files (in seconds)"
+msgstr "Tần suất kiểm tra tệp torrent mới (tính bằng giây)"
 
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "Tần suất lấy dữ liệu tracker để có thống kê bầy đàn"
@@ -908,6 +992,9 @@ msgstr "Tiếng Hàn"
 msgid "Label"
 msgstr "Nhãn"
 
+msgid "Label:"
+msgstr "Nhãn:"
+
 msgid "Language"
 msgstr "Ngôn ngữ"
 
@@ -949,6 +1036,9 @@ msgstr "Mức Nhật ký:"
 
 msgid "Log to file"
 msgstr "Ghi vào tệp"
+
+msgid "Low Priority"
+msgstr "Ưu tiên thấp"
 
 msgid "Max Connections:"
 msgstr "Kết nối Tối đa:"
@@ -1073,6 +1163,9 @@ msgstr "T2"
 msgid "Monday"
 msgstr "Thứ Hai"
 
+msgid "Multi-Tracker"
+msgstr "Đa Tracker"
+
 msgid "My IP address"
 msgstr "Địa chỉ IP của tôi"
 
@@ -1084,6 +1177,9 @@ msgstr "Tên"
 
 msgid "Network interface:"
 msgstr "Giao diện mạng:"
+
+msgid "New name:"
+msgstr "Tên mới:"
 
 msgid "Next Announce"
 msgstr "Thông báo Tiếp theo"
@@ -1097,6 +1193,9 @@ msgstr "Không có tùy chọn có thể chỉnh sửa cho torrent này."
 msgid "None"
 msgstr "Không có"
 
+msgid "Normal Priority"
+msgstr "Ưu tiên bình thường"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Số lượng ngang hàng để phân tích mẫu hành vi"
 
@@ -1105,6 +1204,9 @@ msgstr "Số lượng ngang hàng để yêu cầu từ tracker"
 
 msgid "Number of synthetic peers to generate"
 msgstr "Số lượng ngang hàng tổng hợp để tạo"
+
+msgid "OK"
+msgstr "OK"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "Chỉ cho phép kết nối từ localhost (an toàn hơn)"
@@ -1138,6 +1240,9 @@ msgstr "Mật khẩu:"
 
 msgid "Path"
 msgstr "Đường dẫn"
+
+msgid "Path to the folder to watch for torrent files"
+msgstr "Đường dẫn đến thư mục theo dõi tệp torrent"
 
 msgid "Pause"
 msgstr "Tạm dừng"
@@ -1301,6 +1406,9 @@ msgstr "Phân phối tiến độ cho ngang hàng tiến độ giữa (0.0 - 1.0
 msgid "Progress distribution for starting peers (0.0 - 1.0)"
 msgstr "Phân phối tiến độ cho ngang hàng mới bắt đầu (0.0 - 1.0)"
 
+msgid "Properties"
+msgstr "Thuộc tính"
+
 msgid "Protocol Compliance:"
 msgstr "Tuân thủ Giao thức:"
 
@@ -1358,8 +1466,35 @@ msgstr "Ghi nhớ kích thước và vị trí cửa sổ"
 msgid "Remember window size and position between sessions"
 msgstr "Ghi nhớ kích thước và vị trí cửa sổ giữa các phiên"
 
+msgid "Remove"
+msgstr "Xóa"
+
+msgid "Remove Torrent"
+msgstr "Xóa Torrent"
+
+msgid "Remove Torrent and Data"
+msgstr "Xóa Torrent và dữ liệu"
+
+msgid "Remove Torrent and Data?"
+msgstr "Xóa Torrent và dữ liệu?"
+
+msgid "Remove Torrent?"
+msgstr "Xóa Torrent?"
+
+msgid "Remove Tracker..."
+msgstr "Xóa Tracker..."
+
 msgid "Remove torrent"
 msgstr "Xóa torrent"
+
+msgid "Rename"
+msgstr "Đổi tên"
+
+msgid "Rename Torrent"
+msgstr "Đổi tên Torrent"
+
+msgid "Rename..."
+msgstr "Đổi tên..."
 
 msgid "Requests"
 msgstr "Yêu cầu"
@@ -1381,6 +1516,9 @@ msgstr "Đặt lại tất cả cài đặt về giá trị mặc định"
 
 msgid "Reset to Defaults"
 msgstr "Đặt lại về Mặc định"
+
+msgid "Reset to Global Limits"
+msgstr "Đặt lại về giới hạn toàn cục"
 
 msgid "Reset to defaults"
 msgstr "Đặt lại về mặc định"
@@ -1412,8 +1550,14 @@ msgstr "T7"
 msgid "Saturday"
 msgstr "Thứ Bảy"
 
+msgid "Save"
+msgstr "Lưu"
+
 msgid "Save logs to file in addition to console"
 msgstr "Lưu nhật ký vào tệp ngoài console"
+
+msgid "Scan interval:"
+msgstr "Khoảng thời gian quét:"
 
 msgid "Scrape interval (sec):"
 msgstr "Khoảng thời gian scrape (giây):"
@@ -1448,6 +1592,12 @@ msgstr "Hồ sơ Seeding"
 msgid "Seeds"
 msgstr "Seed"
 
+msgid "Select"
+msgstr "Chọn"
+
+msgid "Select Watch Folder"
+msgstr "Chọn thư mục theo dõi"
+
 msgid "Select proxy type for connections"
 msgstr "Chọn loại proxy cho kết nối"
 
@@ -1471,6 +1621,36 @@ msgstr "Phiên Đã tải lên"
 
 msgid "Session timeout (min):"
 msgstr "Hết thời gian phiên (phút):"
+
+msgid "Set"
+msgstr "Đặt"
+
+msgid "Set Download Limit"
+msgstr "Đặt giới hạn tải xuống"
+
+msgid "Set Download Limit..."
+msgstr "Đặt giới hạn tải xuống..."
+
+msgid "Set Label"
+msgstr "Đặt nhãn"
+
+msgid "Set Label..."
+msgstr "Đặt nhãn..."
+
+msgid "Set Location"
+msgstr "Đặt vị trí"
+
+msgid "Set Location..."
+msgstr "Đặt vị trí..."
+
+msgid "Set Random Progress"
+msgstr "Đặt tiến độ ngẫu nhiên"
+
+msgid "Set Upload Limit"
+msgstr "Đặt giới hạn tải lên"
+
+msgid "Set Upload Limit..."
+msgstr "Đặt giới hạn tải lên..."
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Cấu hình phím tắt chưa được triển khai"
@@ -1501,6 +1681,9 @@ msgstr "Tốc độ"
 
 msgid "Speed Control"
 msgstr "Điều khiển Tốc độ"
+
+msgid "Speed Limits"
+msgstr "Giới hạn tốc độ"
 
 msgid "Speed settings reset to defaults"
 msgstr "Cài đặt tốc độ đã đặt lại về mặc định"
@@ -1560,7 +1743,13 @@ msgid "TCP fallback"
 msgstr "TCP dự phòng"
 
 msgid "TCP keepalive"
-msgstr "TCP keepalive"
+msgstr "Giữ kết nối TCP"
+
+msgid "The .torrent file will be DELETED."
+msgstr "Tệp .torrent sẽ bị XÓA."
+
+msgid "The .torrent file will be kept."
+msgstr "Tệp .torrent sẽ được giữ lại."
 
 msgid "Theme:"
 msgstr "Chủ đề:"
@@ -1636,6 +1825,9 @@ msgstr "Tracker"
 
 msgid "Tracker URL"
 msgstr "URL Tracker"
+
+msgid "Tracker URL:"
+msgstr "URL Tracker:"
 
 msgid "Trackers"
 msgstr "Tracker"
@@ -1724,6 +1916,9 @@ msgstr "Xác suất hoạt động tải lên:"
 msgid "Upload limit (KB/s):"
 msgstr "Giới hạn tải lên (KB/s):"
 
+msgid "Upload limit (KB/s, 0 = unlimited):"
+msgstr "Giới hạn tải lên (KB/s, 0 = không giới hạn):"
+
 msgid "Upload speed variance for aggressive profile"
 msgstr "Phương sai tốc độ tải lên cho hồ sơ tích cực"
 
@@ -1752,7 +1947,7 @@ msgid "Use authentication"
 msgstr "Sử dụng xác thực"
 
 msgid "User Agent:"
-msgstr "User Agent:"
+msgstr "Tác nhân người dùng:"
 
 msgid "User agent string to identify the client to trackers"
 msgstr "Chuỗi user agent để xác định máy khách với tracker"
@@ -1968,7 +2163,7 @@ msgid "uploading"
 msgstr "Đang tải lên"
 
 msgid "ut_holepunch (NAT Traversal)"
-msgstr "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch (Vượt NAT)"
 
 msgid "ut_metadata (Metadata Exchange)"
 msgstr "ut_metadata (Trao đổi Siêu dữ liệu)"

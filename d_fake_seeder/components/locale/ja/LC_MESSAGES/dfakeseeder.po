@@ -161,6 +161,9 @@ msgstr "<b>トラフィックパターン設定</b>"
 msgid "<b>Transport Protocol Settings</b>"
 msgstr "<b>トランスポートプロトコル設定</b>"
 
+msgid "<b>Watch Folder</b>"
+msgstr "<b>監視フォルダ</b>"
+
 msgid "<b>Web Interface</b>"
 msgstr "<b>ウェブインターフェース</b>"
 
@@ -178,6 +181,12 @@ msgstr "適応速度:"
 
 msgid "Add"
 msgstr "追加"
+
+msgid "Add Tracker"
+msgstr "トラッカーを追加"
+
+msgid "Add Tracker..."
+msgstr "トラッカーを追加..."
 
 msgid "Add torrent"
 msgstr "トレント追加"
@@ -242,6 +251,9 @@ msgstr "ノードIDを自動生成する"
 msgid "Auto-save settings"
 msgstr "設定を自動保存"
 
+msgid "Auto-start added torrents"
+msgstr "追加されたトレントを自動開始"
+
 msgid "Auto-start disabled"
 msgstr "自動開始が無効になりました"
 
@@ -260,8 +272,14 @@ msgstr "UPnP/NAT-PMPを使用してルーターのポート転送を自動設定
 msgid "Automatically generate a unique node ID"
 msgstr "一意なノードIDを自動生成する"
 
+msgid "Automatically monitor a folder for new torrent files"
+msgstr "新しいトレントファイルのフォルダを自動的に監視"
+
 msgid "Automatically save settings when changed"
 msgstr "変更時に設定を自動保存"
+
+msgid "Automatically start torrents when added from watch folder"
+msgstr "監視フォルダから追加されたトレントを自動的に開始"
 
 msgid "Automatically switch to alternative speeds during specified hours"
 msgstr "指定された時間中に代替速度に自動切り替え"
@@ -314,6 +332,9 @@ msgstr "ブートストラップタイムアウト:"
 msgid "Bottom"
 msgstr "最下位"
 
+msgid "Browse for folder"
+msgstr "フォルダを参照"
+
 msgid "Bucket Size:"
 msgstr "バケットサイズ:"
 
@@ -348,7 +369,7 @@ msgid "Client Switch Probability:"
 msgstr "クライアント切り替え確率:"
 
 msgid "Columns"
-msgstr "Columns"
+msgstr "列"
 
 msgid "Comment"
 msgstr "コメント"
@@ -407,6 +428,21 @@ msgstr "コンサバティブプロファイルアップロード速度"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "コンサバティブ：低速度、少ない接続、バックグラウンドシードに最適"
 
+msgid "Copy"
+msgstr "コピー"
+
+msgid "Copy Info Hash"
+msgstr "情報ハッシュをコピー"
+
+msgid "Copy Magnet Link"
+msgstr "マグネットリンクをコピー"
+
+msgid "Copy Name"
+msgstr "名前をコピー"
+
+msgid "Copy Tracker URL"
+msgstr "トラッカーURLをコピー"
+
 msgid "Country"
 msgstr "国"
 
@@ -458,6 +494,12 @@ msgstr "ダーク"
 msgid "Days:"
 msgstr "日数:"
 
+msgid "Delete added torrent files"
+msgstr "追加されたトレントファイルを削除"
+
+msgid "Delete torrent files after they are successfully added"
+msgstr "正常に追加された後、トレントファイルを削除"
+
 msgid "Deluge"
 msgstr "Deluge"
 
@@ -467,6 +509,12 @@ msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgid "Details"
 msgstr "詳細"
 
+msgid "Disable Sequential Download"
+msgstr "順次ダウンロードを無効にする"
+
+msgid "Disable Super Seeding"
+msgstr "スーパーシードを無効にする"
+
 msgid "Disabled"
 msgstr "無効"
 
@@ -474,7 +522,7 @@ msgid "Disconnected"
 msgstr "切断済み"
 
 msgid "Disconnected from DFakeSeeder"
-msgstr "Disconnected from DFakeSeeder"
+msgstr "DFakeSeederから切断されました"
 
 msgid "Disk cache size (MB):"
 msgstr "ディスクキャッシュサイズ (MB):"
@@ -496,6 +544,9 @@ msgstr "ダウンロード変動:"
 
 msgid "Download limit (KB/s):"
 msgstr "ダウンロード制限 (KB/s):"
+
+msgid "Download limit (KB/s, 0 = unlimited):"
+msgstr "ダウンロード制限 (KB/s, 0 = 無制限):"
 
 msgid "Download speed variance for aggressive profile"
 msgstr "アグレッシブプロファイルのダウンロード速度変動"
@@ -529,6 +580,12 @@ msgstr "エラー"
 
 msgid "ETA"
 msgstr "残り時間"
+
+msgid "Edit Tracker"
+msgstr "トラッカーを編集"
+
+msgid "Edit Tracker..."
+msgstr "トラッカーを編集..."
 
 msgid "Enable CSRF protection"
 msgstr "CSRF保護を有効にする"
@@ -574,6 +631,12 @@ msgstr "新しいピアを発見するためのピア交換を有効にする"
 
 msgid "Enable Protocol Extensions"
 msgstr "プロトコル拡張を有効にする"
+
+msgid "Enable Sequential Download"
+msgstr "順次ダウンロードを有効にする"
+
+msgid "Enable Super Seeding"
+msgstr "スーパーシードを有効にする"
 
 msgid "Enable TCP keepalive"
 msgstr "TCP キープアライブを有効にする"
@@ -662,6 +725,9 @@ msgstr "メタデータ交換用ut_metadata拡張を有効にする"
 msgid "Enable ut_pex extension for peer exchange"
 msgstr "ピア交換用ut_pex拡張を有効にする"
 
+msgid "Enable watch folder"
+msgstr "監視フォルダを有効にする"
+
 msgid "Enable web-based remote control interface"
 msgstr "Webベースのリモートコントロールインターフェースを有効にする"
 
@@ -734,8 +800,20 @@ msgstr "ファイル"
 msgid "Flags"
 msgstr "フラグ"
 
+msgid "Folder path:"
+msgstr "フォルダパス:"
+
 msgid "Follow System"
 msgstr "システムに従う"
+
+msgid "Force Complete"
+msgstr "強制完了"
+
+msgid "Force Recheck"
+msgstr "強制再チェック"
+
+msgid "Force Start"
+msgstr "強制開始"
 
 msgid "Forced"
 msgstr "強制"
@@ -815,11 +893,17 @@ msgstr "メインウィンドウを非表示"
 msgid "Hide to system tray when window is minimized"
 msgstr "ウィンドウが最小化されたときにシステムトレイに隠す"
 
+msgid "High Priority"
+msgstr "高優先度"
+
 msgid "Hindi"
 msgstr "ヒンディー語"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "トラッカーにアナウンスする頻度 (60-7200秒)"
+
+msgid "How often to check for new torrent files (in seconds)"
+msgstr "新しいトレントファイルをチェックする頻度（秒）"
 
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "スウォーム統計のためにトラッカーをスクレイプする頻度"
@@ -908,6 +992,9 @@ msgstr "韓国語"
 msgid "Label"
 msgstr "ラベル"
 
+msgid "Label:"
+msgstr "ラベル:"
+
 msgid "Language"
 msgstr "言語"
 
@@ -949,6 +1036,9 @@ msgstr "ログレベル:"
 
 msgid "Log to file"
 msgstr "ファイルにログ"
+
+msgid "Low Priority"
+msgstr "低優先度"
 
 msgid "Max Connections:"
 msgstr "最大接続数:"
@@ -1073,6 +1163,9 @@ msgstr "月"
 msgid "Monday"
 msgstr "月曜日"
 
+msgid "Multi-Tracker"
+msgstr "マルチトラッカー"
+
 msgid "My IP address"
 msgstr "私のIPアドレス"
 
@@ -1084,6 +1177,9 @@ msgstr "名前"
 
 msgid "Network interface:"
 msgstr "ネットワークインターフェース:"
+
+msgid "New name:"
+msgstr "新しい名前:"
 
 msgid "Next Announce"
 msgstr "次回アナウンス"
@@ -1097,6 +1193,9 @@ msgstr "このトレントには編集可能なオプションがありません
 msgid "None"
 msgstr "なし"
 
+msgid "Normal Priority"
+msgstr "通常優先度"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "動作パターン分析用ピア数"
 
@@ -1105,6 +1204,9 @@ msgstr "トラッカーから要求するピア数"
 
 msgid "Number of synthetic peers to generate"
 msgstr "生成する合成ピア数"
+
+msgid "OK"
+msgstr "OK"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "localhostからの接続のみ許可 (より安全)"
@@ -1138,6 +1240,9 @@ msgstr "パスワード:"
 
 msgid "Path"
 msgstr "パス"
+
+msgid "Path to the folder to watch for torrent files"
+msgstr "トレントファイルを監視するフォルダへのパス"
 
 msgid "Pause"
 msgstr "一時停止"
@@ -1301,6 +1406,9 @@ msgstr "中間進捗ピアの進捗分布 (0.0 - 1.0)"
 msgid "Progress distribution for starting peers (0.0 - 1.0)"
 msgstr "開始ピアの進捗分布 (0.0 - 1.0)"
 
+msgid "Properties"
+msgstr "プロパティ"
+
 msgid "Protocol Compliance:"
 msgstr "プロトコル準拠:"
 
@@ -1358,8 +1466,35 @@ msgstr "ウィンドウサイズと位置を記憶"
 msgid "Remember window size and position between sessions"
 msgstr "セッション間でウィンドウサイズと位置を記憶"
 
+msgid "Remove"
+msgstr "削除"
+
+msgid "Remove Torrent"
+msgstr "トレントを削除"
+
+msgid "Remove Torrent and Data"
+msgstr "トレントとデータを削除"
+
+msgid "Remove Torrent and Data?"
+msgstr "トレントとデータを削除しますか？"
+
+msgid "Remove Torrent?"
+msgstr "トレントを削除しますか？"
+
+msgid "Remove Tracker..."
+msgstr "トラッカーを削除..."
+
 msgid "Remove torrent"
 msgstr "トレント削除"
+
+msgid "Rename"
+msgstr "名前変更"
+
+msgid "Rename Torrent"
+msgstr "トレントの名前変更"
+
+msgid "Rename..."
+msgstr "名前変更..."
 
 msgid "Requests"
 msgstr "リクエスト"
@@ -1381,6 +1516,9 @@ msgstr "全設定をデフォルト値にリセット"
 
 msgid "Reset to Defaults"
 msgstr "デフォルトにリセット"
+
+msgid "Reset to Global Limits"
+msgstr "グローバル制限にリセット"
 
 msgid "Reset to defaults"
 msgstr "デフォルトにリセット"
@@ -1412,8 +1550,14 @@ msgstr "土"
 msgid "Saturday"
 msgstr "土曜日"
 
+msgid "Save"
+msgstr "保存"
+
 msgid "Save logs to file in addition to console"
 msgstr "コンソールに加えてファイルにログを保存"
+
+msgid "Scan interval:"
+msgstr "スキャン間隔:"
 
 msgid "Scrape interval (sec):"
 msgstr "スクレイプ間隔 (秒):"
@@ -1448,6 +1592,12 @@ msgstr "シードプロファイル"
 msgid "Seeds"
 msgstr "シード"
 
+msgid "Select"
+msgstr "選択"
+
+msgid "Select Watch Folder"
+msgstr "監視フォルダを選択"
+
 msgid "Select proxy type for connections"
 msgstr "接続用プロキシタイプを選択"
 
@@ -1471,6 +1621,36 @@ msgstr "セッションアップロード"
 
 msgid "Session timeout (min):"
 msgstr "セッションタイムアウト (分):"
+
+msgid "Set"
+msgstr "設定"
+
+msgid "Set Download Limit"
+msgstr "ダウンロード制限を設定"
+
+msgid "Set Download Limit..."
+msgstr "ダウンロード制限を設定..."
+
+msgid "Set Label"
+msgstr "ラベルを設定"
+
+msgid "Set Label..."
+msgstr "ラベルを設定..."
+
+msgid "Set Location"
+msgstr "場所を設定"
+
+msgid "Set Location..."
+msgstr "場所を設定..."
+
+msgid "Set Random Progress"
+msgstr "ランダム進行状況を設定"
+
+msgid "Set Upload Limit"
+msgstr "アップロード制限を設定"
+
+msgid "Set Upload Limit..."
+msgstr "アップロード制限を設定..."
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "ショートカット設定はまだ実装されていません"
@@ -1501,6 +1681,9 @@ msgstr "速度"
 
 msgid "Speed Control"
 msgstr "速度制御"
+
+msgid "Speed Limits"
+msgstr "速度制限"
 
 msgid "Speed settings reset to defaults"
 msgstr "速度設定をデフォルトにリセットしました"
@@ -1561,6 +1744,12 @@ msgstr "TCPフォールバック"
 
 msgid "TCP keepalive"
 msgstr "TCP キープアライブ"
+
+msgid "The .torrent file will be DELETED."
+msgstr ".torrentファイルは削除されます。"
+
+msgid "The .torrent file will be kept."
+msgstr ".torrentファイルは保持されます。"
 
 msgid "Theme:"
 msgstr "テーマ:"
@@ -1636,6 +1825,9 @@ msgstr "トラッカー"
 
 msgid "Tracker URL"
 msgstr "トラッカーURL"
+
+msgid "Tracker URL:"
+msgstr "トラッカーURL:"
 
 msgid "Trackers"
 msgstr "トラッカー"
@@ -1723,6 +1915,9 @@ msgstr "アップロード活動確率:"
 
 msgid "Upload limit (KB/s):"
 msgstr "アップロード制限 (KB/s):"
+
+msgid "Upload limit (KB/s, 0 = unlimited):"
+msgstr "アップロード制限 (KB/s, 0 = 無制限):"
 
 msgid "Upload speed variance for aggressive profile"
 msgstr "アグレッシブプロファイルのアップロード速度変動"

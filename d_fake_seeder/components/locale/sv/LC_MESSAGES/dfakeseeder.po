@@ -161,6 +161,9 @@ msgstr "<b>Trafikmönsterinställningar</b>"
 msgid "<b>Transport Protocol Settings</b>"
 msgstr "<b>Transportprotokollinställningar</b>"
 
+msgid "<b>Watch Folder</b>"
+msgstr "<b>Bevakad mapp</b>"
+
 msgid "<b>Web Interface</b>"
 msgstr "<b>Webbgränssnitt</b>"
 
@@ -178,6 +181,12 @@ msgstr "Anpassningshastighet:"
 
 msgid "Add"
 msgstr "Lägg till"
+
+msgid "Add Tracker"
+msgstr "Lägg till spårare"
+
+msgid "Add Tracker..."
+msgstr "Lägg till spårare..."
 
 msgid "Add torrent"
 msgstr "Lägg till torrent"
@@ -242,6 +251,9 @@ msgstr "Auto-generera nod-ID"
 msgid "Auto-save settings"
 msgstr "Spara inställningar automatiskt"
 
+msgid "Auto-start added torrents"
+msgstr "Starta automatiskt tillagda torrenter"
+
 msgid "Auto-start disabled"
 msgstr "Autostart inaktiverad"
 
@@ -260,8 +272,14 @@ msgstr "Konfigurera router portvidarebefordran automatiskt med UPnP/NAT-PMP"
 msgid "Automatically generate a unique node ID"
 msgstr "Generera automatiskt ett unikt nod-ID"
 
+msgid "Automatically monitor a folder for new torrent files"
+msgstr "Övervaka automatiskt en mapp för nya torrentfiler"
+
 msgid "Automatically save settings when changed"
 msgstr "Spara inställningar automatiskt vid ändring"
+
+msgid "Automatically start torrents when added from watch folder"
+msgstr "Starta automatiskt torrenter när de läggs till från bevakad mapp"
 
 msgid "Automatically switch to alternative speeds during specified hours"
 msgstr "Växla automatiskt till alternativa hastigheter under angivna timmar"
@@ -314,6 +332,9 @@ msgstr "Bootstrap-timeout:"
 msgid "Bottom"
 msgstr "Botten"
 
+msgid "Browse for folder"
+msgstr "Bläddra efter mapp"
+
 msgid "Bucket Size:"
 msgstr "Bucketstorlek:"
 
@@ -348,7 +369,7 @@ msgid "Client Switch Probability:"
 msgstr "Klientbytessannolikhet:"
 
 msgid "Columns"
-msgstr "Columns"
+msgstr "Kolumner"
 
 msgid "Comment"
 msgstr "Kommentar"
@@ -407,6 +428,21 @@ msgstr "Konservativ profil uppladdningshastighet"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "Konservativ: Lägre hastigheter, färre anslutningar, idealisk för bakgrundsseedning"
 
+msgid "Copy"
+msgstr "Kopiera"
+
+msgid "Copy Info Hash"
+msgstr "Kopiera Info Hash"
+
+msgid "Copy Magnet Link"
+msgstr "Kopiera magnetlänk"
+
+msgid "Copy Name"
+msgstr "Kopiera namn"
+
+msgid "Copy Tracker URL"
+msgstr "Kopiera spårar-URL"
+
 msgid "Country"
 msgstr "Land"
 
@@ -458,6 +494,12 @@ msgstr "Mörk"
 msgid "Days:"
 msgstr "Dagar:"
 
+msgid "Delete added torrent files"
+msgstr "Ta bort tillagda torrentfiler"
+
+msgid "Delete torrent files after they are successfully added"
+msgstr "Ta bort torrentfiler efter att de har lagts till"
+
 msgid "Deluge"
 msgstr "Deluge"
 
@@ -466,6 +508,12 @@ msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
 msgid "Details"
 msgstr "Detaljer"
+
+msgid "Disable Sequential Download"
+msgstr "Inaktivera sekventiell nedladdning"
+
+msgid "Disable Super Seeding"
+msgstr "Inaktivera super-seeding"
 
 msgid "Disabled"
 msgstr "Avaktiverad"
@@ -496,6 +544,9 @@ msgstr "Nedladdningsvariation:"
 
 msgid "Download limit (KB/s):"
 msgstr "Nedladdningsgräns (KB/s):"
+
+msgid "Download limit (KB/s, 0 = unlimited):"
+msgstr "Nedladdningsgräns (KB/s, 0 = obegränsad):"
 
 msgid "Download speed variance for aggressive profile"
 msgstr "Nedladdningshastighetsvariation för aggressiv profil"
@@ -529,6 +580,12 @@ msgstr "FEL"
 
 msgid "ETA"
 msgstr "Återstående tid"
+
+msgid "Edit Tracker"
+msgstr "Redigera spårare"
+
+msgid "Edit Tracker..."
+msgstr "Redigera spårare..."
 
 msgid "Enable CSRF protection"
 msgstr "Aktivera CSRF-skydd"
@@ -574,6 +631,12 @@ msgstr "Aktivera Peer Exchange för att upptäcka nya peers"
 
 msgid "Enable Protocol Extensions"
 msgstr "Aktivera protokolltillägg"
+
+msgid "Enable Sequential Download"
+msgstr "Aktivera sekventiell nedladdning"
+
+msgid "Enable Super Seeding"
+msgstr "Aktivera super-seeding"
 
 msgid "Enable TCP keepalive"
 msgstr "Aktivera TCP keepalive"
@@ -662,6 +725,9 @@ msgstr "Aktivera ut_metadata-tillägg för metadatautbyte"
 msgid "Enable ut_pex extension for peer exchange"
 msgstr "Aktivera ut_pex-tillägg för peer-utbyte"
 
+msgid "Enable watch folder"
+msgstr "Aktivera bevakad mapp"
+
 msgid "Enable web-based remote control interface"
 msgstr "Aktivera webbaserat fjärrkontrollgränssnitt"
 
@@ -734,8 +800,20 @@ msgstr "Filer"
 msgid "Flags"
 msgstr "Flaggor"
 
+msgid "Folder path:"
+msgstr "Mappsökväg:"
+
 msgid "Follow System"
 msgstr "Följ System"
+
+msgid "Force Complete"
+msgstr "Tvångsavsluta"
+
+msgid "Force Recheck"
+msgstr "Tvångskontrollera"
+
+msgid "Force Start"
+msgstr "Tvångsstarta"
 
 msgid "Forced"
 msgstr "Tvingad"
@@ -762,7 +840,7 @@ msgid "General timeout for extension operations (seconds)"
 msgstr "Allmän timeout för tilläggsoperationer (sekunder)"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "Allmän Flik"
 
 msgid "Generate Secure Password"
 msgstr "Generera säkert lösenord"
@@ -815,11 +893,17 @@ msgstr "Dölj Huvudfönster"
 msgid "Hide to system tray when window is minimized"
 msgstr "Dölj i systemfältet när fönstret minimeras"
 
+msgid "High Priority"
+msgstr "Hög prioritet"
+
 msgid "Hindi"
 msgstr "Hindi"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "Hur ofta annonsera till spårare (60-7200 sekunder)"
+
+msgid "How often to check for new torrent files (in seconds)"
+msgstr "Hur ofta nya torrentfiler ska kontrolleras (i sekunder)"
 
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "Hur ofta skrapa spårare för svärmsstatistik"
@@ -908,6 +992,9 @@ msgstr "Koreanska"
 msgid "Label"
 msgstr "Etikett"
 
+msgid "Label:"
+msgstr "Etikett:"
+
 msgid "Language"
 msgstr "Språk"
 
@@ -949,6 +1036,9 @@ msgstr "Loggnivå:"
 
 msgid "Log to file"
 msgstr "Logga till fil"
+
+msgid "Low Priority"
+msgstr "Låg prioritet"
 
 msgid "Max Connections:"
 msgstr "Max anslutningar:"
@@ -1073,6 +1163,9 @@ msgstr "Mån"
 msgid "Monday"
 msgstr "Måndag"
 
+msgid "Multi-Tracker"
+msgstr "Multi-spårare"
+
 msgid "My IP address"
 msgstr "Min IP-adress"
 
@@ -1084,6 +1177,9 @@ msgstr "Namn"
 
 msgid "Network interface:"
 msgstr "Nätverksgränssnitt:"
+
+msgid "New name:"
+msgstr "Nytt namn:"
 
 msgid "Next Announce"
 msgstr "Nästa annonsering"
@@ -1097,6 +1193,9 @@ msgstr "Inga redigerbara alternativ tillgängliga för denna torrent."
 msgid "None"
 msgstr "Ingen"
 
+msgid "Normal Priority"
+msgstr "Normal prioritet"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Antal peers att analysera för beteendemönster"
 
@@ -1105,6 +1204,9 @@ msgstr "Antal peers att begära från spårare"
 
 msgid "Number of synthetic peers to generate"
 msgstr "Antal syntetiska peers att generera"
+
+msgid "OK"
+msgstr "OK"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "Tillåt endast anslutningar från localhost (säkrare)"
@@ -1138,6 +1240,9 @@ msgstr "Lösenord:"
 
 msgid "Path"
 msgstr "Sökväg"
+
+msgid "Path to the folder to watch for torrent files"
+msgstr "Sökväg till mappen som ska övervakas för torrentfiler"
 
 msgid "Pause"
 msgstr "Pausa"
@@ -1179,7 +1284,7 @@ msgid "Peer request count:"
 msgstr "Peer begärandeantal:"
 
 msgid "Peers"
-msgstr "Peers"
+msgstr "Kamrater"
 
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
 msgstr "Procent av anslutningar att rotera (0.0 - 1.0)"
@@ -1301,6 +1406,9 @@ msgstr "Förloppsfördelning för medelförlopps-peers (0.0 - 1.0)"
 msgid "Progress distribution for starting peers (0.0 - 1.0)"
 msgstr "Förloppsfördelning för startande peers (0.0 - 1.0)"
 
+msgid "Properties"
+msgstr "Egenskaper"
+
 msgid "Protocol Compliance:"
 msgstr "Protokollefterlevnad:"
 
@@ -1358,8 +1466,35 @@ msgstr "Kom ihåg fönsterstorlek och position"
 msgid "Remember window size and position between sessions"
 msgstr "Kom ihåg fönsterstorlek och position mellan sessioner"
 
+msgid "Remove"
+msgstr "Ta bort"
+
+msgid "Remove Torrent"
+msgstr "Ta bort torrent"
+
+msgid "Remove Torrent and Data"
+msgstr "Ta bort torrent och data"
+
+msgid "Remove Torrent and Data?"
+msgstr "Ta bort torrent och data?"
+
+msgid "Remove Torrent?"
+msgstr "Ta bort torrent?"
+
+msgid "Remove Tracker..."
+msgstr "Ta bort spårare..."
+
 msgid "Remove torrent"
 msgstr "Ta bort torrent"
+
+msgid "Rename"
+msgstr "Byt namn"
+
+msgid "Rename Torrent"
+msgstr "Byt namn på torrent"
+
+msgid "Rename..."
+msgstr "Byt namn..."
 
 msgid "Requests"
 msgstr "Förfrågningar"
@@ -1381,6 +1516,9 @@ msgstr "Återställ alla inställningar till standardvärden"
 
 msgid "Reset to Defaults"
 msgstr "Återställ till Standard"
+
+msgid "Reset to Global Limits"
+msgstr "Återställ till globala gränser"
 
 msgid "Reset to defaults"
 msgstr "Återställ till standard"
@@ -1412,8 +1550,14 @@ msgstr "Lör"
 msgid "Saturday"
 msgstr "Lördag"
 
+msgid "Save"
+msgstr "Spara"
+
 msgid "Save logs to file in addition to console"
 msgstr "Spara loggar till fil utöver konsol"
+
+msgid "Scan interval:"
+msgstr "Skanningsintervall:"
 
 msgid "Scrape interval (sec):"
 msgstr "Skrapintervall (sek):"
@@ -1448,6 +1592,12 @@ msgstr "Seedingprofil"
 msgid "Seeds"
 msgstr "Frön"
 
+msgid "Select"
+msgstr "Välj"
+
+msgid "Select Watch Folder"
+msgstr "Välj bevakad mapp"
+
 msgid "Select proxy type for connections"
 msgstr "Välj proxy-typ för anslutningar"
 
@@ -1471,6 +1621,36 @@ msgstr "Session Uppladdat"
 
 msgid "Session timeout (min):"
 msgstr "Sessions timeout (min):"
+
+msgid "Set"
+msgstr "Ange"
+
+msgid "Set Download Limit"
+msgstr "Ange nedladdningsgräns"
+
+msgid "Set Download Limit..."
+msgstr "Ange nedladdningsgräns..."
+
+msgid "Set Label"
+msgstr "Ange etikett"
+
+msgid "Set Label..."
+msgstr "Ange etikett..."
+
+msgid "Set Location"
+msgstr "Ange plats"
+
+msgid "Set Location..."
+msgstr "Ange plats..."
+
+msgid "Set Random Progress"
+msgstr "Ange slumpmässig förlopp"
+
+msgid "Set Upload Limit"
+msgstr "Ange uppladdningsgräns"
+
+msgid "Set Upload Limit..."
+msgstr "Ange uppladdningsgräns..."
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Genvägarskonfiguration ännu inte implementerad"
@@ -1501,6 +1681,9 @@ msgstr "Hastighet"
 
 msgid "Speed Control"
 msgstr "Hastighetskontroll"
+
+msgid "Speed Limits"
+msgstr "Hastighetsgränser"
 
 msgid "Speed settings reset to defaults"
 msgstr "Hastighetsinställningar återställda till standard"
@@ -1561,6 +1744,12 @@ msgstr "TCP-reserv"
 
 msgid "TCP keepalive"
 msgstr "TCP keepalive"
+
+msgid "The .torrent file will be DELETED."
+msgstr ".torrent-filen kommer att RADERAS."
+
+msgid "The .torrent file will be kept."
+msgstr ".torrent-filen kommer att behållas."
 
 msgid "Theme:"
 msgstr "Tema:"
@@ -1636,6 +1825,9 @@ msgstr "Spårare"
 
 msgid "Tracker URL"
 msgstr "Tracker-URL"
+
+msgid "Tracker URL:"
+msgstr "Spårar-URL:"
 
 msgid "Trackers"
 msgstr "Spårare"
@@ -1723,6 +1915,9 @@ msgstr "Uppladdningsaktivitetssannolikhet:"
 
 msgid "Upload limit (KB/s):"
 msgstr "Uppladdningsgräns (KB/s):"
+
+msgid "Upload limit (KB/s, 0 = unlimited):"
+msgstr "Uppladdningsgräns (KB/s, 0 = obegränsad):"
 
 msgid "Upload speed variance for aggressive profile"
 msgstr "Uppladdningshastighetsvariation för aggressiv profil"

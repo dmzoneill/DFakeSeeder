@@ -161,6 +161,9 @@ msgstr "<b>Verkeerspatroon Instellingen</b>"
 msgid "<b>Transport Protocol Settings</b>"
 msgstr "<b>Transport Protocol Instellingen</b>"
 
+msgid "<b>Watch Folder</b>"
+msgstr "<b>Controlemap</b>"
+
 msgid "<b>Web Interface</b>"
 msgstr "<b>Webinterface</b>"
 
@@ -178,6 +181,12 @@ msgstr "Aanpassingssnelheid:"
 
 msgid "Add"
 msgstr "Toevoegen"
+
+msgid "Add Tracker"
+msgstr "Tracker toevoegen"
+
+msgid "Add Tracker..."
+msgstr "Tracker toevoegen..."
 
 msgid "Add torrent"
 msgstr "Torrent toevoegen"
@@ -242,6 +251,9 @@ msgstr "Node ID automatisch genereren"
 msgid "Auto-save settings"
 msgstr "Instellingen automatisch opslaan"
 
+msgid "Auto-start added torrents"
+msgstr "Toegevoegde torrents automatisch starten"
+
 msgid "Auto-start disabled"
 msgstr "Autostart uitgeschakeld"
 
@@ -260,8 +272,14 @@ msgstr "Automatisch router poort doorsturen configureren met UPnP/NAT-PMP"
 msgid "Automatically generate a unique node ID"
 msgstr "Automatisch een unieke node ID genereren"
 
+msgid "Automatically monitor a folder for new torrent files"
+msgstr "Een map automatisch controleren op nieuwe torrentbestanden"
+
 msgid "Automatically save settings when changed"
 msgstr "Instellingen automatisch opslaan bij wijziging"
+
+msgid "Automatically start torrents when added from watch folder"
+msgstr "Torrents automatisch starten wanneer ze worden toegevoegd vanuit de controlemap"
 
 msgid "Automatically switch to alternative speeds during specified hours"
 msgstr "Automatisch overschakelen naar alternatieve snelheden tijdens opgegeven uren"
@@ -313,6 +331,9 @@ msgstr "Bootstrap Time-out:"
 
 msgid "Bottom"
 msgstr "Onderaan"
+
+msgid "Browse for folder"
+msgstr "Bladeren naar map"
 
 msgid "Bucket Size:"
 msgstr "Bucket Grootte:"
@@ -407,6 +428,21 @@ msgstr "Conservatief profiel upload snelheid"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "Conservatief: Lagere snelheden, minder verbindingen, ideaal voor achtergrond seeding"
 
+msgid "Copy"
+msgstr "Kopiëren"
+
+msgid "Copy Info Hash"
+msgstr "Info-hash kopiëren"
+
+msgid "Copy Magnet Link"
+msgstr "Magneetlink kopiëren"
+
+msgid "Copy Name"
+msgstr "Naam kopiëren"
+
+msgid "Copy Tracker URL"
+msgstr "Tracker-URL kopiëren"
+
 msgid "Country"
 msgstr "Land"
 
@@ -458,6 +494,12 @@ msgstr "Donker"
 msgid "Days:"
 msgstr "Dagen:"
 
+msgid "Delete added torrent files"
+msgstr "Toegevoegde torrentbestanden verwijderen"
+
+msgid "Delete torrent files after they are successfully added"
+msgstr "Torrentbestanden verwijderen nadat ze succesvol zijn toegevoegd"
+
 msgid "Deluge"
 msgstr "Deluge"
 
@@ -466,6 +508,12 @@ msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
 msgid "Details"
 msgstr "Gegevens"
+
+msgid "Disable Sequential Download"
+msgstr "Sequentiële download uitschakelen"
+
+msgid "Disable Super Seeding"
+msgstr "Super Seeding uitschakelen"
 
 msgid "Disabled"
 msgstr "Uitgeschakeld"
@@ -496,6 +544,9 @@ msgstr "Download Variatie:"
 
 msgid "Download limit (KB/s):"
 msgstr "Download limiet (KB/s):"
+
+msgid "Download limit (KB/s, 0 = unlimited):"
+msgstr "Downloadlimiet (KB/s, 0 = onbeperkt):"
 
 msgid "Download speed variance for aggressive profile"
 msgstr "Download snelheid variatie voor agressief profiel"
@@ -529,6 +580,12 @@ msgstr "FOUT"
 
 msgid "ETA"
 msgstr "Resterende Tijd"
+
+msgid "Edit Tracker"
+msgstr "Tracker bewerken"
+
+msgid "Edit Tracker..."
+msgstr "Tracker bewerken..."
 
 msgid "Enable CSRF protection"
 msgstr "CSRF bescherming inschakelen"
@@ -574,6 +631,12 @@ msgstr "Peer Exchange inschakelen voor het ontdekken van nieuwe peers"
 
 msgid "Enable Protocol Extensions"
 msgstr "Protocol Uitbreidingen Inschakelen"
+
+msgid "Enable Sequential Download"
+msgstr "Sequentiële download inschakelen"
+
+msgid "Enable Super Seeding"
+msgstr "Super Seeding inschakelen"
 
 msgid "Enable TCP keepalive"
 msgstr "TCP keepalive inschakelen"
@@ -662,6 +725,9 @@ msgstr "ut_metadata extensie inschakelen voor metadata uitwisseling"
 msgid "Enable ut_pex extension for peer exchange"
 msgstr "ut_pex extensie inschakelen voor peer uitwisseling"
 
+msgid "Enable watch folder"
+msgstr "Controlemap inschakelen"
+
 msgid "Enable web-based remote control interface"
 msgstr "Web-gebaseerde afstandsbediening interface inschakelen"
 
@@ -734,8 +800,20 @@ msgstr "Bestanden"
 msgid "Flags"
 msgstr "Vlaggen"
 
+msgid "Folder path:"
+msgstr "Mappad:"
+
 msgid "Follow System"
 msgstr "Systeem Volgen"
+
+msgid "Force Complete"
+msgstr "Voltooiing forceren"
+
+msgid "Force Recheck"
+msgstr "Hercontrole forceren"
+
+msgid "Force Start"
+msgstr "Start forceren"
 
 msgid "Forced"
 msgstr "Geforceerd"
@@ -815,11 +893,17 @@ msgstr "Verberg Hoofdvenster"
 msgid "Hide to system tray when window is minimized"
 msgstr "Verbergen in systeemvak wanneer venster geminimaliseerd is"
 
+msgid "High Priority"
+msgstr "Hoge prioriteit"
+
 msgid "Hindi"
 msgstr "Hindi"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "Hoe vaak aankondigen bij trackers (60-7200 seconden)"
+
+msgid "How often to check for new torrent files (in seconds)"
+msgstr "Hoe vaak controleren op nieuwe torrentbestanden (in seconden)"
 
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "Hoe vaak tracker scrapen voor zwerm statistieken"
@@ -908,6 +992,9 @@ msgstr "Koreaans"
 msgid "Label"
 msgstr "Label"
 
+msgid "Label:"
+msgstr "Label:"
+
 msgid "Language"
 msgstr "Taal"
 
@@ -949,6 +1036,9 @@ msgstr "Log Niveau:"
 
 msgid "Log to file"
 msgstr "Naar bestand loggen"
+
+msgid "Low Priority"
+msgstr "Lage prioriteit"
 
 msgid "Max Connections:"
 msgstr "Max Verbindingen:"
@@ -1073,6 +1163,9 @@ msgstr "Ma"
 msgid "Monday"
 msgstr "Maandag"
 
+msgid "Multi-Tracker"
+msgstr "Multi-Tracker"
+
 msgid "My IP address"
 msgstr "Mijn IP-adres"
 
@@ -1084,6 +1177,9 @@ msgstr "Naam"
 
 msgid "Network interface:"
 msgstr "Netwerkinterface:"
+
+msgid "New name:"
+msgstr "Nieuwe naam:"
 
 msgid "Next Announce"
 msgstr "Volgende aankondiging"
@@ -1097,6 +1193,9 @@ msgstr "Geen bewerkbare opties beschikbaar voor deze torrent."
 msgid "None"
 msgstr "Geen"
 
+msgid "Normal Priority"
+msgstr "Normale prioriteit"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Aantal peers om te analyseren voor gedragspatronen"
 
@@ -1105,6 +1204,9 @@ msgstr "Aantal peers om aan te vragen bij tracker"
 
 msgid "Number of synthetic peers to generate"
 msgstr "Aantal synthetische peers om te genereren"
+
+msgid "OK"
+msgstr "OK"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "Alleen verbindingen van localhost toestaan (veiliger)"
@@ -1128,7 +1230,7 @@ msgid "Overlay Notification"
 msgstr "Overlay Notificatie"
 
 msgid "PEX Interval:"
-msgstr "PEX Interval:"
+msgstr "PEX-interval:"
 
 msgid "Password for web interface login"
 msgstr "Wachtwoord voor web interface login"
@@ -1138,6 +1240,9 @@ msgstr "Wachtwoord:"
 
 msgid "Path"
 msgstr "Pad"
+
+msgid "Path to the folder to watch for torrent files"
+msgstr "Pad naar de map om te controleren op torrentbestanden"
 
 msgid "Pause"
 msgstr "Pauzeren"
@@ -1155,7 +1260,7 @@ msgid "Peer Choking"
 msgstr "Peer Blokkering"
 
 msgid "Peer ID"
-msgstr "Peer ID"
+msgstr "Peer-ID"
 
 msgid "Peer ID Prefix:"
 msgstr "Peer ID Voorvoegsel:"
@@ -1301,6 +1406,9 @@ msgstr "Voortgangsverdeling voor gemiddelde voortgang peers (0.0 - 1.0)"
 msgid "Progress distribution for starting peers (0.0 - 1.0)"
 msgstr "Voortgangsverdeling voor startende peers (0.0 - 1.0)"
 
+msgid "Properties"
+msgstr "Eigenschappen"
+
 msgid "Protocol Compliance:"
 msgstr "Protocol Naleving:"
 
@@ -1358,8 +1466,35 @@ msgstr "Venstergrootte en positie onthouden"
 msgid "Remember window size and position between sessions"
 msgstr "Venstergrootte en positie tussen sessies onthouden"
 
+msgid "Remove"
+msgstr "Verwijderen"
+
+msgid "Remove Torrent"
+msgstr "Torrent verwijderen"
+
+msgid "Remove Torrent and Data"
+msgstr "Torrent en gegevens verwijderen"
+
+msgid "Remove Torrent and Data?"
+msgstr "Torrent en gegevens verwijderen?"
+
+msgid "Remove Torrent?"
+msgstr "Torrent verwijderen?"
+
+msgid "Remove Tracker..."
+msgstr "Tracker verwijderen..."
+
 msgid "Remove torrent"
 msgstr "Torrent verwijderen"
+
+msgid "Rename"
+msgstr "Hernoemen"
+
+msgid "Rename Torrent"
+msgstr "Torrent hernoemen"
+
+msgid "Rename..."
+msgstr "Hernoemen..."
 
 msgid "Requests"
 msgstr "Verzoeken"
@@ -1381,6 +1516,9 @@ msgstr "Alle instellingen herstellen naar standaardwaarden"
 
 msgid "Reset to Defaults"
 msgstr "Herstellen naar Standaard"
+
+msgid "Reset to Global Limits"
+msgstr "Terugzetten naar globale limieten"
 
 msgid "Reset to defaults"
 msgstr "Herstellen naar standaard"
@@ -1412,8 +1550,14 @@ msgstr "Za"
 msgid "Saturday"
 msgstr "Zaterdag"
 
+msgid "Save"
+msgstr "Opslaan"
+
 msgid "Save logs to file in addition to console"
 msgstr "Logs opslaan naar bestand naast console"
+
+msgid "Scan interval:"
+msgstr "Scan-interval:"
 
 msgid "Scrape interval (sec):"
 msgstr "Scrape-interval (sec):"
@@ -1448,6 +1592,12 @@ msgstr "Seedprofiel"
 msgid "Seeds"
 msgstr "Seeds"
 
+msgid "Select"
+msgstr "Selecteren"
+
+msgid "Select Watch Folder"
+msgstr "Controlemap selecteren"
+
 msgid "Select proxy type for connections"
 msgstr "Selecteer proxy type voor verbindingen"
 
@@ -1471,6 +1621,36 @@ msgstr "Sessie Geüpload"
 
 msgid "Session timeout (min):"
 msgstr "Sessie timeout (min):"
+
+msgid "Set"
+msgstr "Instellen"
+
+msgid "Set Download Limit"
+msgstr "Downloadlimiet instellen"
+
+msgid "Set Download Limit..."
+msgstr "Downloadlimiet instellen..."
+
+msgid "Set Label"
+msgstr "Label instellen"
+
+msgid "Set Label..."
+msgstr "Label instellen..."
+
+msgid "Set Location"
+msgstr "Locatie instellen"
+
+msgid "Set Location..."
+msgstr "Locatie instellen..."
+
+msgid "Set Random Progress"
+msgstr "Willekeurige voortgang instellen"
+
+msgid "Set Upload Limit"
+msgstr "Uploadlimiet instellen"
+
+msgid "Set Upload Limit..."
+msgstr "Uploadlimiet instellen..."
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Snelkoppeling configuratie nog niet geïmplementeerd"
@@ -1501,6 +1681,9 @@ msgstr "Snelheid"
 
 msgid "Speed Control"
 msgstr "Snelheidscontrole"
+
+msgid "Speed Limits"
+msgstr "Snelheidslimieten"
 
 msgid "Speed settings reset to defaults"
 msgstr "Snelheid instellingen gereset naar standaard"
@@ -1561,6 +1744,12 @@ msgstr "TCP terugval"
 
 msgid "TCP keepalive"
 msgstr "TCP keepalive"
+
+msgid "The .torrent file will be DELETED."
+msgstr "Het .torrent-bestand wordt VERWIJDERD."
+
+msgid "The .torrent file will be kept."
+msgstr "Het .torrent-bestand wordt bewaard."
 
 msgid "Theme:"
 msgstr "Thema:"
@@ -1637,6 +1826,9 @@ msgstr "Tracker"
 msgid "Tracker URL"
 msgstr "Tracker-URL"
 
+msgid "Tracker URL:"
+msgstr "Tracker-URL:"
+
 msgid "Trackers"
 msgstr "Spoorzoeker"
 
@@ -1653,13 +1845,13 @@ msgid "Transaction ID range (min):"
 msgstr "Transactie ID bereik (min):"
 
 msgid "TranslationManager"
-msgstr "TranslationManager"
+msgstr "Vertaalmanager"
 
 msgid "TranslationManagerGTK3"
-msgstr "TranslationManagerGTK3"
+msgstr "Vertaalmanager GTK3"
 
 msgid "TranslationManagerGTK4"
-msgstr "TranslationManagerGTK4"
+msgstr "Vertaalmanager GTK4"
 
 msgid "Transmission"
 msgstr "Transmission"
@@ -1723,6 +1915,9 @@ msgstr "Upload activiteitswaarschijnlijkheid:"
 
 msgid "Upload limit (KB/s):"
 msgstr "Upload limiet (KB/s):"
+
+msgid "Upload limit (KB/s, 0 = unlimited):"
+msgstr "Uploadlimiet (KB/s, 0 = onbeperkt):"
 
 msgid "Upload speed variance for aggressive profile"
 msgstr "Upload snelheid variatie voor agressief profiel"
