@@ -194,6 +194,9 @@ msgstr ""
 msgid "Added"
 msgstr ""
 
+msgid "Address"
+msgstr ""
+
 msgid "Advanced"
 msgstr ""
 
@@ -222,6 +225,12 @@ msgid "Alternative download speed limit in KB/s"
 msgstr ""
 
 msgid "Alternative upload speed limit in KB/s"
+msgstr ""
+
+msgid "Am Choking"
+msgstr ""
+
+msgid "Am Interested"
 msgstr ""
 
 msgid "Amount of RAM to use for disk caching"
@@ -341,6 +350,12 @@ msgstr ""
 msgid "Burst Probability:"
 msgstr ""
 
+msgid "Bytes Downloaded"
+msgstr ""
+
+msgid "Bytes Uploaded"
+msgstr ""
+
 msgid "CRITICAL"
 msgstr ""
 
@@ -402,6 +417,9 @@ msgid "Connection"
 msgstr ""
 
 msgid "Connection Status"
+msgstr ""
+
+msgid "Connection Time"
 msgstr ""
 
 msgid "Connection Timeout:"
@@ -537,6 +555,9 @@ msgid "Download Limit"
 msgstr ""
 
 msgid "Download Rate"
+msgstr ""
+
+msgid "Download Speed"
 msgstr ""
 
 msgid "Download Speed (KB/s):"
@@ -885,6 +906,9 @@ msgid "HTTP seeder timeout (seconds):"
 msgstr ""
 
 msgid "Handshake"
+msgstr ""
+
+msgid "Handshake Complete"
 msgstr ""
 
 msgid "Handshake timeout (seconds):"
@@ -1274,6 +1298,9 @@ msgstr ""
 msgid "Peer ID prefix to identify client type"
 msgstr ""
 
+msgid "Peer Interested"
+msgstr ""
+
 msgid "Peer Protocol"
 msgstr ""
 
@@ -1305,6 +1332,9 @@ msgid "Pieces"
 msgstr ""
 
 msgid "Pieces Received"
+msgstr ""
+
+msgid "Pieces Sent"
 msgstr ""
 
 msgid "Polish"
@@ -1503,6 +1533,12 @@ msgid "Rename..."
 msgstr ""
 
 msgid "Requests"
+msgstr ""
+
+msgid "Requests Received"
+msgstr ""
+
+msgid "Requests Sent"
 msgstr ""
 
 msgid "Require authentication"
@@ -1914,6 +1950,9 @@ msgid "Update Tracker"
 msgstr ""
 
 msgid "Upload Limit"
+msgstr ""
+
+msgid "Upload Rate"
 msgstr ""
 
 msgid "Upload Speed"

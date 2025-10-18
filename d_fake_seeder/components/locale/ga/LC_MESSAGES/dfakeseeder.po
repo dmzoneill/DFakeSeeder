@@ -194,6 +194,9 @@ msgstr "Cuir torrent leis"
 msgid "Added"
 msgstr "Curtha leis"
 
+msgid "Address"
+msgstr "seoladh"
+
 msgid "Advanced"
 msgstr "Ardleibhéal"
 
@@ -223,6 +226,12 @@ msgstr "Teorainn luais íoslódála malartach i KB/s"
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "Teorainn luais uaslódála malartach i KB/s"
+
+msgid "Am Choking"
+msgstr "Táim ag tachtadh"
+
+msgid "Am Interested"
+msgstr "Tá suim agam"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "Méid RAM le húsáid do thaiscadh diosca"
@@ -341,6 +350,12 @@ msgstr "Méid Buicéid:"
 msgid "Burst Probability:"
 msgstr "Dóchúlacht Ráige:"
 
+msgid "Bytes Downloaded"
+msgstr "bearta íoslódáilte"
+
+msgid "Bytes Uploaded"
+msgstr "bearta uaslódáilte"
+
 msgid "CRITICAL"
 msgstr "RÍTHÁBHACHTACH"
 
@@ -403,6 +418,9 @@ msgstr "Ceangal"
 
 msgid "Connection Status"
 msgstr "Stádas Ceangail"
+
+msgid "Connection Time"
+msgstr "am ceangail"
 
 msgid "Connection Timeout:"
 msgstr "Teorainn Ama Ceangail:"
@@ -538,6 +556,9 @@ msgstr "Teorainn Íoslódála"
 
 msgid "Download Rate"
 msgstr "Ráta Íoslódála"
+
+msgid "Download Speed"
+msgstr "Luas Íoslódála"
 
 msgid "Download Speed (KB/s):"
 msgstr "Luas Íoslódála (KB/s):"
@@ -886,6 +907,9 @@ msgstr "Teorainn ama síolóra HTTP (soicindí):"
 
 msgid "Handshake"
 msgstr "Croitheadh Láimhe"
+
+msgid "Handshake Complete"
+msgstr "Croitheadh ​​láimhe críochnaithe"
 
 msgid "Handshake timeout (seconds):"
 msgstr "Teorainn ama croitheadh láimhe (soicindí):"
@@ -1274,6 +1298,9 @@ msgstr "Réimír ID Piara:"
 msgid "Peer ID prefix to identify client type"
 msgstr "Réimír ID piara chun cineál cliant a aithint"
 
+msgid "Peer Interested"
+msgstr "Piara suimiúil"
+
 msgid "Peer Protocol"
 msgstr "Prótacal Piaraí"
 
@@ -1306,6 +1333,9 @@ msgstr "Píosaí"
 
 msgid "Pieces Received"
 msgstr "Píosaí Faighte"
+
+msgid "Pieces Sent"
+msgstr "Píosaí seolta"
 
 msgid "Polish"
 msgstr "Polainnis"
@@ -1504,6 +1534,12 @@ msgstr "Athainmnigh..."
 
 msgid "Requests"
 msgstr "Iarratais"
+
+msgid "Requests Received"
+msgstr "Iarratais faighte"
+
+msgid "Requests Sent"
+msgstr "Iarratais seolta"
 
 msgid "Require authentication"
 msgstr "Fíordheimhniú de dhíth"
@@ -1915,6 +1951,9 @@ msgstr "Nuashonraigh Lorgaire"
 
 msgid "Upload Limit"
 msgstr "Teorainn Uaslódála"
+
+msgid "Upload Rate"
+msgstr "ráta uaslódála"
 
 msgid "Upload Speed"
 msgstr "Luas Uaslódála"

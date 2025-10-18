@@ -194,6 +194,9 @@ msgstr "إضافة تورنت"
 msgid "Added"
 msgstr "تم الإضافة"
 
+msgid "Address"
+msgstr "العنوان"
+
 msgid "Advanced"
 msgstr "متقدم"
 
@@ -223,6 +226,12 @@ msgstr "حد سرعة التنزيل البديل بالكيلوبايت/ثان�
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "حد سرعة الرفع البديل بالكيلوبايت/ثانية"
+
+msgid "Am Choking"
+msgstr "أخنق"
+
+msgid "Am Interested"
+msgstr "أنا مهتم"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "مقدار ذاكرة الوصول العشوائي للتخزين المؤقت"
@@ -341,6 +350,12 @@ msgstr "حجم الدلو:"
 msgid "Burst Probability:"
 msgstr "احتمالية الاندفاع:"
 
+msgid "Bytes Downloaded"
+msgstr "بايتات تم تنزيلها"
+
+msgid "Bytes Uploaded"
+msgstr "بايتات تم رفعها"
+
 msgid "CRITICAL"
 msgstr "حرج"
 
@@ -403,6 +418,9 @@ msgstr "الاتصال"
 
 msgid "Connection Status"
 msgstr "حالة الاتصال"
+
+msgid "Connection Time"
+msgstr "وقت الاتصال"
 
 msgid "Connection Timeout:"
 msgstr "انتهاء مهلة الاتصال:"
@@ -538,6 +556,9 @@ msgstr "حد التنزيل"
 
 msgid "Download Rate"
 msgstr "معدل التنزيل"
+
+msgid "Download Speed"
+msgstr "سرعة التحميل"
 
 msgid "Download Speed (KB/s):"
 msgstr "سرعة التحميل (KB/s):"
@@ -886,6 +907,9 @@ msgstr "انتهاء مهلة مشارك HTTP (ثواني):"
 
 msgid "Handshake"
 msgstr "المصافحة"
+
+msgid "Handshake Complete"
+msgstr "اكتملت المصافحة"
 
 msgid "Handshake timeout (seconds):"
 msgstr "انتهاء مهلة المصافحة (ثواني):"
@@ -1274,6 +1298,9 @@ msgstr "بادئة معرف الأقران:"
 msgid "Peer ID prefix to identify client type"
 msgstr "بادئة معرف الأقران لتحديد نوع العميل"
 
+msgid "Peer Interested"
+msgstr "النظير مهتم"
+
 msgid "Peer Protocol"
 msgstr "بروتوكول الأقران"
 
@@ -1306,6 +1333,9 @@ msgstr "القطع"
 
 msgid "Pieces Received"
 msgstr "القطع المستلمة"
+
+msgid "Pieces Sent"
+msgstr "القطع المرسلة"
 
 msgid "Polish"
 msgstr "البولندية"
@@ -1504,6 +1534,12 @@ msgstr "إعادة تسمية..."
 
 msgid "Requests"
 msgstr "الطلبات"
+
+msgid "Requests Received"
+msgstr "الطلبات المستلمة"
+
+msgid "Requests Sent"
+msgstr "الطلبات المرسلة"
 
 msgid "Require authentication"
 msgstr "طلب المصادقة"
@@ -1915,6 +1951,9 @@ msgstr "تحديث المتتبع"
 
 msgid "Upload Limit"
 msgstr "حد الرفع"
+
+msgid "Upload Rate"
+msgstr "معدل الرفع"
 
 msgid "Upload Speed"
 msgstr "سرعة الرفع"

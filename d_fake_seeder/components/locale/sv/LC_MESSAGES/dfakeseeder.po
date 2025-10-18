@@ -194,6 +194,9 @@ msgstr "Lägg till torrent"
 msgid "Added"
 msgstr "Tillagd"
 
+msgid "Address"
+msgstr "adress"
+
 msgid "Advanced"
 msgstr "Avancerat"
 
@@ -223,6 +226,12 @@ msgstr "Alternativ nedladdningshastighetsgräns i KB/s"
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "Alternativ uppladdningshastighetsgräns i KB/s"
+
+msgid "Am Choking"
+msgstr "Jag stryper"
+
+msgid "Am Interested"
+msgstr "Jag är intresserad"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "Mängd RAM att använda för diskcache"
@@ -341,6 +350,12 @@ msgstr "Bucketstorlek:"
 msgid "Burst Probability:"
 msgstr "Skursannolikhet:"
 
+msgid "Bytes Downloaded"
+msgstr "bytes nedladdade"
+
+msgid "Bytes Uploaded"
+msgstr "bytes uppladdade"
+
 msgid "CRITICAL"
 msgstr "KRITISK"
 
@@ -403,6 +418,9 @@ msgstr "Anslutning"
 
 msgid "Connection Status"
 msgstr "Anslutningsstatus"
+
+msgid "Connection Time"
+msgstr "anslutningstid"
 
 msgid "Connection Timeout:"
 msgstr "Anslutningstimeout:"
@@ -537,6 +555,9 @@ msgid "Download Limit"
 msgstr "Nedladdningsgräns"
 
 msgid "Download Rate"
+msgstr "Nedladdningshastighet"
+
+msgid "Download Speed"
 msgstr "Nedladdningshastighet"
 
 msgid "Download Speed (KB/s):"
@@ -886,6 +907,9 @@ msgstr "HTTP seeder timeout (sekunder):"
 
 msgid "Handshake"
 msgstr "Handskakning"
+
+msgid "Handshake Complete"
+msgstr "Handskakning slutförd"
 
 msgid "Handshake timeout (seconds):"
 msgstr "Handskaknings timeout (sekunder):"
@@ -1274,6 +1298,9 @@ msgstr "Peer ID-prefix:"
 msgid "Peer ID prefix to identify client type"
 msgstr "Peer ID-prefix för att identifiera klienttyp"
 
+msgid "Peer Interested"
+msgstr "Peer intresserad"
+
 msgid "Peer Protocol"
 msgstr "Peer-protokoll"
 
@@ -1306,6 +1333,9 @@ msgstr "Stycken"
 
 msgid "Pieces Received"
 msgstr "Mottagna delar"
+
+msgid "Pieces Sent"
+msgstr "Skickade delar"
 
 msgid "Polish"
 msgstr "Polska"
@@ -1504,6 +1534,12 @@ msgstr "Byt namn..."
 
 msgid "Requests"
 msgstr "Förfrågningar"
+
+msgid "Requests Received"
+msgstr "Mottagna förfrågningar"
+
+msgid "Requests Sent"
+msgstr "Skickade förfrågningar"
 
 msgid "Require authentication"
 msgstr "Kräv autentisering"
@@ -1915,6 +1951,9 @@ msgstr "Uppdatera tracker"
 
 msgid "Upload Limit"
 msgstr "Uppladdningsgräns"
+
+msgid "Upload Rate"
+msgstr "uppladdningshastighet"
 
 msgid "Upload Speed"
 msgstr "Uppladdningshastighet"

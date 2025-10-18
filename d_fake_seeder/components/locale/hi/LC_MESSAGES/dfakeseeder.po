@@ -194,6 +194,9 @@ msgstr "टॉरेंट जोड़ें"
 msgid "Added"
 msgstr "जोड़ा गया"
 
+msgid "Address"
+msgstr "पता"
+
 msgid "Advanced"
 msgstr "उन्नत"
 
@@ -223,6 +226,12 @@ msgstr "KB/s में वैकल्पिक डाउनलोड गति 
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "KB/s में वैकल्पिक अपलोड गति सीमा"
+
+msgid "Am Choking"
+msgstr "मैं चोक कर रहा हूँ"
+
+msgid "Am Interested"
+msgstr "मैं रुचि रखता हूँ"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "डिस्क कैशिंग के लिए उपयोग करने वाली RAM की मात्रा"
@@ -341,6 +350,12 @@ msgstr "बकेट साइज़:"
 msgid "Burst Probability:"
 msgstr "बर्स्ट संभावना:"
 
+msgid "Bytes Downloaded"
+msgstr "बाइट डाउनलोड"
+
+msgid "Bytes Uploaded"
+msgstr "बाइट अपलोड"
+
 msgid "CRITICAL"
 msgstr "गंभीर"
 
@@ -403,6 +418,9 @@ msgstr "कनेक्शन"
 
 msgid "Connection Status"
 msgstr "कनेक्शन स्थिति"
+
+msgid "Connection Time"
+msgstr "कनेक्शन समय"
 
 msgid "Connection Timeout:"
 msgstr "कनेक्शन टाइमआउट:"
@@ -538,6 +556,9 @@ msgstr "डाउनलोड सीमा"
 
 msgid "Download Rate"
 msgstr "डाउनलोड दर"
+
+msgid "Download Speed"
+msgstr "डाउनलोड गति"
 
 msgid "Download Speed (KB/s):"
 msgstr "डाउनलोड गति (KB/s):"
@@ -886,6 +907,9 @@ msgstr "HTTP सीडर टाइमआउट (सेकंड):"
 
 msgid "Handshake"
 msgstr "हैंडशेक"
+
+msgid "Handshake Complete"
+msgstr "हैंडशेक पूरा"
 
 msgid "Handshake timeout (seconds):"
 msgstr "हैंडशेक टाइमआउट (सेकंड):"
@@ -1274,6 +1298,9 @@ msgstr "पीयर ID प्रीफ़िक्स:"
 msgid "Peer ID prefix to identify client type"
 msgstr "क्लाइंट प्रकार पहचानने के लिए पीयर ID प्रीफ़िक्स"
 
+msgid "Peer Interested"
+msgstr "पीयर रुचि रखता है"
+
 msgid "Peer Protocol"
 msgstr "पीयर प्रोटोकॉल"
 
@@ -1306,6 +1333,9 @@ msgstr "टुकड़े"
 
 msgid "Pieces Received"
 msgstr "प्राप्त टुकड़े"
+
+msgid "Pieces Sent"
+msgstr "भेजे गए टुकड़े"
 
 msgid "Polish"
 msgstr "पोलिश"
@@ -1504,6 +1534,12 @@ msgstr "नाम बदलें..."
 
 msgid "Requests"
 msgstr "अनुरोध"
+
+msgid "Requests Received"
+msgstr "प्राप्त अनुरोध"
+
+msgid "Requests Sent"
+msgstr "भेजे गए अनुरोध"
 
 msgid "Require authentication"
 msgstr "प्रमाणीकरण आवश्यक"
@@ -1915,6 +1951,9 @@ msgstr "ट्रैकर अपडेट करें"
 
 msgid "Upload Limit"
 msgstr "अपलोड सीमा"
+
+msgid "Upload Rate"
+msgstr "अपलोड दर"
 
 msgid "Upload Speed"
 msgstr "अपलोड गति"

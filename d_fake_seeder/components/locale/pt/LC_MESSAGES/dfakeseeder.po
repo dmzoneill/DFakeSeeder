@@ -194,6 +194,9 @@ msgstr "Adicionar torrent"
 msgid "Added"
 msgstr "Adicionado"
 
+msgid "Address"
+msgstr "Endereço"
+
 msgid "Advanced"
 msgstr "Avançado"
 
@@ -223,6 +226,12 @@ msgstr "Limite velocidade download alternativo em KB/s"
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "Limite velocidade upload alternativo em KB/s"
+
+msgid "Am Choking"
+msgstr "Estou Bloqueando"
+
+msgid "Am Interested"
+msgstr "Estou Interessado"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "Quantidade RAM para cache disco"
@@ -341,6 +350,12 @@ msgstr "Tamanho do Bucket:"
 msgid "Burst Probability:"
 msgstr "Probabilidade de Rajada:"
 
+msgid "Bytes Downloaded"
+msgstr "Bytes Baixados"
+
+msgid "Bytes Uploaded"
+msgstr "Bytes Enviados"
+
 msgid "CRITICAL"
 msgstr "CRÍTICO"
 
@@ -403,6 +418,9 @@ msgstr "Conexão"
 
 msgid "Connection Status"
 msgstr "Status da conexão"
+
+msgid "Connection Time"
+msgstr "Tempo de Conexão"
 
 msgid "Connection Timeout:"
 msgstr "Timeout de Conexão:"
@@ -538,6 +556,9 @@ msgstr "Limite de Download"
 
 msgid "Download Rate"
 msgstr "Taxa Download"
+
+msgid "Download Speed"
+msgstr "Velocidade de Download"
 
 msgid "Download Speed (KB/s):"
 msgstr "Velocidade de Download (KB/s):"
@@ -886,6 +907,9 @@ msgstr "Timeout seeder HTTP (segundos):"
 
 msgid "Handshake"
 msgstr "Aperto de Mão"
+
+msgid "Handshake Complete"
+msgstr "Handshake Completo"
 
 msgid "Handshake timeout (seconds):"
 msgstr "Timeout handshake (segundos):"
@@ -1274,6 +1298,9 @@ msgstr "Prefixo ID Peer:"
 msgid "Peer ID prefix to identify client type"
 msgstr "Prefixo ID peer para identificar tipo cliente"
 
+msgid "Peer Interested"
+msgstr "Peer Interessado"
+
 msgid "Peer Protocol"
 msgstr "Protocolo Peer"
 
@@ -1306,6 +1333,9 @@ msgstr "Peças"
 
 msgid "Pieces Received"
 msgstr "Peças Recebidas"
+
+msgid "Pieces Sent"
+msgstr "Partes Enviadas"
 
 msgid "Polish"
 msgstr "Polonês"
@@ -1504,6 +1534,12 @@ msgstr "Renomear..."
 
 msgid "Requests"
 msgstr "Solicitações"
+
+msgid "Requests Received"
+msgstr "Solicitações Recebidas"
+
+msgid "Requests Sent"
+msgstr "Solicitações Enviadas"
 
 msgid "Require authentication"
 msgstr "Exigir autenticação"
@@ -1915,6 +1951,9 @@ msgstr "Atualizar Rastreador"
 
 msgid "Upload Limit"
 msgstr "Limite de Upload"
+
+msgid "Upload Rate"
+msgstr "Taxa de Upload"
 
 msgid "Upload Speed"
 msgstr "Velocidade Upload"

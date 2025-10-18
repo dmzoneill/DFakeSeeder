@@ -194,6 +194,9 @@ msgstr "افزودن تورنت"
 msgid "Added"
 msgstr "افزوده شد"
 
+msgid "Address"
+msgstr "address"
+
 msgid "Advanced"
 msgstr "پیشرفته"
 
@@ -223,6 +226,12 @@ msgstr "محدودیت سرعت دانلود جایگزین به کیلوبای�
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "محدودیت سرعت آپلود جایگزین به کیلوبایت بر ثانیه"
+
+msgid "Am Choking"
+msgstr "am_choking"
+
+msgid "Am Interested"
+msgstr "am_interested"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "مقدار RAM برای استفاده در کش دیسک"
@@ -341,6 +350,12 @@ msgstr "اندازه سطل:"
 msgid "Burst Probability:"
 msgstr "احتمال انفجار:"
 
+msgid "Bytes Downloaded"
+msgstr "bytes_downloaded"
+
+msgid "Bytes Uploaded"
+msgstr "bytes_uploaded"
+
 msgid "CRITICAL"
 msgstr "بحرانی"
 
@@ -403,6 +418,9 @@ msgstr "اتصال"
 
 msgid "Connection Status"
 msgstr "وضعیت اتصال"
+
+msgid "Connection Time"
+msgstr "connection_time"
 
 msgid "Connection Timeout:"
 msgstr "زمان انقضای اتصال:"
@@ -538,6 +556,9 @@ msgstr "محدودیت دانلود"
 
 msgid "Download Rate"
 msgstr "نرخ دانلود"
+
+msgid "Download Speed"
+msgstr "download_speed"
 
 msgid "Download Speed (KB/s):"
 msgstr "سرعت دانلود (کیلوبایت/ثانیه):"
@@ -886,6 +907,9 @@ msgstr "زمان انقضای اشتراک‌گذار HTTP (ثانیه):"
 
 msgid "Handshake"
 msgstr "دست‌دهی"
+
+msgid "Handshake Complete"
+msgstr "handshake_complete"
 
 msgid "Handshake timeout (seconds):"
 msgstr "زمان انقضای دست‌دهی (ثانیه):"
@@ -1274,6 +1298,9 @@ msgstr "پیشوند شناسه همتا:"
 msgid "Peer ID prefix to identify client type"
 msgstr "پیشوند شناسه همتا برای شناسایی نوع مشتری"
 
+msgid "Peer Interested"
+msgstr "peer_interested"
+
 msgid "Peer Protocol"
 msgstr "پروتکل همتا"
 
@@ -1306,6 +1333,9 @@ msgstr "قطعات"
 
 msgid "Pieces Received"
 msgstr "قطعات دریافت‌شده"
+
+msgid "Pieces Sent"
+msgstr "pieces_sent"
 
 msgid "Polish"
 msgstr "لهستانی"
@@ -1504,6 +1534,12 @@ msgstr "تغییر نام..."
 
 msgid "Requests"
 msgstr "درخواست‌ها"
+
+msgid "Requests Received"
+msgstr "requests_received"
+
+msgid "Requests Sent"
+msgstr "requests_sent"
 
 msgid "Require authentication"
 msgstr "نیاز به احراز هویت"
@@ -1915,6 +1951,9 @@ msgstr "به‌روزرسانی ردیاب"
 
 msgid "Upload Limit"
 msgstr "محدودیت آپلود"
+
+msgid "Upload Rate"
+msgstr "upload_rate"
 
 msgid "Upload Speed"
 msgstr "سرعت آپلود"

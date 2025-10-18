@@ -194,6 +194,9 @@ msgstr "Thêm torrent"
 msgid "Added"
 msgstr "Đã thêm"
 
+msgid "Address"
+msgstr "Địa chỉ"
+
 msgid "Advanced"
 msgstr "Nâng cao"
 
@@ -223,6 +226,12 @@ msgstr "Giới hạn tốc độ tải xuống thay thế tính bằng KB/s"
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "Giới hạn tốc độ tải lên thay thế tính bằng KB/s"
+
+msgid "Am Choking"
+msgstr "Tôi đang Choking"
+
+msgid "Am Interested"
+msgstr "Tôi Quan tâm"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "Lượng RAM sử dụng cho bộ nhớ đệm đĩa"
@@ -341,6 +350,12 @@ msgstr "Kích thước Bucket:"
 msgid "Burst Probability:"
 msgstr "Xác suất Burst:"
 
+msgid "Bytes Downloaded"
+msgstr "Byte Đã tải xuống"
+
+msgid "Bytes Uploaded"
+msgstr "Byte Đã tải lên"
+
 msgid "CRITICAL"
 msgstr "NGHIÊM TRỌNG"
 
@@ -403,6 +418,9 @@ msgstr "Kết nối"
 
 msgid "Connection Status"
 msgstr "Trạng thái Kết nối"
+
+msgid "Connection Time"
+msgstr "Thời gian Kết nối"
 
 msgid "Connection Timeout:"
 msgstr "Hết thời gian Kết nối:"
@@ -537,6 +555,9 @@ msgid "Download Limit"
 msgstr "Giới Hạn Tải Xuống"
 
 msgid "Download Rate"
+msgstr "Tốc độ Tải xuống"
+
+msgid "Download Speed"
 msgstr "Tốc độ Tải xuống"
 
 msgid "Download Speed (KB/s):"
@@ -886,6 +907,9 @@ msgstr "Hết thời gian seeder HTTP (giây):"
 
 msgid "Handshake"
 msgstr "Bắt tay"
+
+msgid "Handshake Complete"
+msgstr "Bắt tay Hoàn thành"
 
 msgid "Handshake timeout (seconds):"
 msgstr "Hết thời gian bắt tay (giây):"
@@ -1274,6 +1298,9 @@ msgstr "Tiền tố ID Ngang hàng:"
 msgid "Peer ID prefix to identify client type"
 msgstr "Tiền tố ID ngang hàng để xác định loại máy khách"
 
+msgid "Peer Interested"
+msgstr "Ngang hàng Quan tâm"
+
 msgid "Peer Protocol"
 msgstr "Giao thức Ngang hàng"
 
@@ -1306,6 +1333,9 @@ msgstr "Mảnh"
 
 msgid "Pieces Received"
 msgstr "Mảnh Đã nhận"
+
+msgid "Pieces Sent"
+msgstr "Mảnh Đã gửi"
 
 msgid "Polish"
 msgstr "Tiếng Ba Lan"
@@ -1504,6 +1534,12 @@ msgstr "Đổi tên..."
 
 msgid "Requests"
 msgstr "Yêu cầu"
+
+msgid "Requests Received"
+msgstr "Yêu cầu Đã nhận"
+
+msgid "Requests Sent"
+msgstr "Yêu cầu Đã gửi"
 
 msgid "Require authentication"
 msgstr "Yêu cầu xác thực"
@@ -1915,6 +1951,9 @@ msgstr "Cập nhật Tracker"
 
 msgid "Upload Limit"
 msgstr "Giới Hạn Tải Lên"
+
+msgid "Upload Rate"
+msgstr "Tốc độ Tải lên"
 
 msgid "Upload Speed"
 msgstr "Tốc độ Tải lên"

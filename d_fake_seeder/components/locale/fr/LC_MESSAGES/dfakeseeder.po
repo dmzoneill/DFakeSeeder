@@ -194,6 +194,9 @@ msgstr "Ajouter torrent"
 msgid "Added"
 msgstr "Ajouté"
 
+msgid "Address"
+msgstr "Adresse"
+
 msgid "Advanced"
 msgstr "Avancé"
 
@@ -223,6 +226,12 @@ msgstr "Limite vitesse téléchargement alternatif en KB/s"
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "Limite vitesse envoi alternatif en KB/s"
+
+msgid "Am Choking"
+msgstr "Je Bloque"
+
+msgid "Am Interested"
+msgstr "Je Suis Intéressé"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "Quantité RAM pour cache disque"
@@ -341,6 +350,12 @@ msgstr "Taille de seau :"
 msgid "Burst Probability:"
 msgstr "Probabilité de rafale :"
 
+msgid "Bytes Downloaded"
+msgstr "Octets Téléchargés"
+
+msgid "Bytes Uploaded"
+msgstr "Octets Envoyés"
+
 msgid "CRITICAL"
 msgstr "CRITIQUE"
 
@@ -403,6 +418,9 @@ msgstr "Connexion"
 
 msgid "Connection Status"
 msgstr "État de connexion"
+
+msgid "Connection Time"
+msgstr "Temps de Connexion"
 
 msgid "Connection Timeout:"
 msgstr "Délai d'expiration de connexion :"
@@ -538,6 +556,9 @@ msgstr "Limite de Téléchargement"
 
 msgid "Download Rate"
 msgstr "Taux de téléchargement"
+
+msgid "Download Speed"
+msgstr "Vitesse de Téléchargement"
 
 msgid "Download Speed (KB/s):"
 msgstr "Vitesse de téléchargement (Ko/s) :"
@@ -886,6 +907,9 @@ msgstr "Timeout seeder HTTP (secondes):"
 
 msgid "Handshake"
 msgstr "Poignée de main"
+
+msgid "Handshake Complete"
+msgstr "Poignée de Main Complète"
 
 msgid "Handshake timeout (seconds):"
 msgstr "Timeout handshake (secondes):"
@@ -1274,6 +1298,9 @@ msgstr "Préfixe ID Pair:"
 msgid "Peer ID prefix to identify client type"
 msgstr "Préfixe ID pair pour identifier type client"
 
+msgid "Peer Interested"
+msgstr "Pair Intéressé"
+
 msgid "Peer Protocol"
 msgstr "Protocole de Pairs"
 
@@ -1306,6 +1333,9 @@ msgstr "Pièces"
 
 msgid "Pieces Received"
 msgstr "Pièces reçues"
+
+msgid "Pieces Sent"
+msgstr "Pièces Envoyées"
 
 msgid "Polish"
 msgstr "Polonais"
@@ -1504,6 +1534,12 @@ msgstr "Renommer..."
 
 msgid "Requests"
 msgstr "Requêtes"
+
+msgid "Requests Received"
+msgstr "Demandes Reçues"
+
+msgid "Requests Sent"
+msgstr "Demandes Envoyées"
 
 msgid "Require authentication"
 msgstr "Exiger authentification"
@@ -1915,6 +1951,9 @@ msgstr "Mettre à jour Tracker"
 
 msgid "Upload Limit"
 msgstr "Limite d'Envoi"
+
+msgid "Upload Rate"
+msgstr "Vitesse d'Envoi"
 
 msgid "Upload Speed"
 msgstr "Vitesse Envoi"

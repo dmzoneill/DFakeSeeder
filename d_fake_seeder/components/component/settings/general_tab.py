@@ -32,6 +32,10 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
     - Basic UI preferences
     """
 
+    # Original English dropdown items (used as translation keys)
+    THEME_ITEMS = ["Follow System", "Light", "Dark"]
+    PROFILE_ITEMS = ["Conservative", "Balanced", "Aggressive", "Custom"]
+
     def __init__(self, builder: Gtk.Builder, app_settings, app=None):
         """Initialize the General tab."""
         self.app = app
@@ -370,10 +374,11 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         logger.debug("Settings dialog will handle its own translation directly", "GeneralTab")
         # Note: Language dropdown population postponed to avoid initialization loops
         # self._populate_language_dropdown() will be called when needed
-        # Translate dropdown items now that we have the model
+        # Translate dropdown items now that we have the model using original English items
         # But prevent TranslationMixin from connecting to language-changed signal to avoid loops
         self._language_change_connected = True  # Block TranslationMixin from connecting
-        self.translate_common_dropdowns()
+        self.translate_dropdown_items("settings_theme", self.THEME_ITEMS)
+        self.translate_dropdown_items("settings_seeding_profile", self.PROFILE_ITEMS)
 
     def _setup_language_dropdown(self):
         """Setup the language dropdown with supported languages."""
@@ -600,8 +605,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         try:
             self.logger.info(f"_handle_settings_translation() called with language: {new_language}")
 
-            # First, handle GeneralTab's own dropdowns
-            self.translate_common_dropdowns()
+            # First, handle GeneralTab's own dropdowns using original English items
+            self.translate_dropdown_items("settings_theme", self.THEME_ITEMS)
+            self.translate_dropdown_items("settings_seeding_profile", self.PROFILE_ITEMS)
 
             # Then handle other tabs
             if hasattr(self, "settings_dialog") and hasattr(self.settings_dialog, "tabs"):
