@@ -29,9 +29,14 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
 
     def __init__(self, builder: Gtk.Builder, model):
         """Initialize the peers tab."""
-        super().__init__(builder, model)
+        # Initialize mixins BEFORE calling super().__init__() because
+        # BaseTorrentTab.__init__() calls _init_widgets() which needs
+        # ColumnTranslationMixin._translatable_columns to exist
         PerformanceMixin.__init__(self)
         ColumnTranslationMixin.__init__(self)
+
+        super().__init__(builder, model)
+
         self._global_peer_manager = None
         self._incoming_connections = None
         self._outgoing_connections = None
