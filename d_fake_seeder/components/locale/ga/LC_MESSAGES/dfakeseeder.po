@@ -161,6 +161,9 @@ msgstr "<b>Socruithe Patrún Tráchta</b>"
 msgid "<b>Transport Protocol Settings</b>"
 msgstr "<b>Socruithe Prótacail Iompair</b>"
 
+msgid "<b>Watch Folder</b>"
+msgstr "<b>Fillteán Faire</b>"
+
 msgid "<b>Web Interface</b>"
 msgstr "<b>Comhéadan Gréasáin</b>"
 
@@ -178,6 +181,12 @@ msgstr "Ráta Oiriúnaithe:"
 
 msgid "Add"
 msgstr "Cuir leis"
+
+msgid "Add Tracker"
+msgstr "Cuir Lorgaire Leis"
+
+msgid "Add Tracker..."
+msgstr "Cuir Lorgaire Leis..."
 
 msgid "Add torrent"
 msgstr "Cuir torrent leis"
@@ -242,6 +251,9 @@ msgstr "Gin ID nóid go huathoibríoch"
 msgid "Auto-save settings"
 msgstr "Sábháil socruithe go huathoibríoch"
 
+msgid "Auto-start added torrents"
+msgstr "Tosaigh torrentanna curtha leis go huathoibríoch"
+
 msgid "Auto-start disabled"
 msgstr "Tosú uathoibríoch díchumasaithe"
 
@@ -260,8 +272,14 @@ msgstr "Cumraigh port-sheolú an ródaire go huathoibríoch ag úsáid UPnP/NAT-
 msgid "Automatically generate a unique node ID"
 msgstr "Gin ID nóid uathúil go huathoibríoch"
 
+msgid "Automatically monitor a folder for new torrent files"
+msgstr "Déan monatóireacht ar fhillteán go huathoibríoch le haghaidh comhaid torrent nua"
+
 msgid "Automatically save settings when changed"
 msgstr "Sábháil socruithe go huathoibríoch nuair a athraítear iad"
+
+msgid "Automatically start torrents when added from watch folder"
+msgstr "Tosaigh torrentanna go huathoibríoch nuair a chuirtear iad ón bhfillteán faire"
 
 msgid "Automatically switch to alternative speeds during specified hours"
 msgstr "Athraigh go luasanna malartacha go huathoibríoch le linn uaireanta sonraithe"
@@ -314,6 +332,9 @@ msgstr "Teorainn Ama Tosaithe:"
 msgid "Bottom"
 msgstr "Bun"
 
+msgid "Browse for folder"
+msgstr "Brabhsáil chun fillteán"
+
 msgid "Bucket Size:"
 msgstr "Méid Buicéid:"
 
@@ -348,7 +369,7 @@ msgid "Client Switch Probability:"
 msgstr "Dóchúlacht Athrú Cliant:"
 
 msgid "Columns"
-msgstr "Columns"
+msgstr "Colúin"
 
 msgid "Comment"
 msgstr "Nóta"
@@ -407,6 +428,21 @@ msgstr "Luas uaslódála próifíl choimeádach"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "Coimeádach: Luasanna níos ísle, níos lú ceangail, oiriúnach do shíolachán cúlra"
 
+msgid "Copy"
+msgstr "Cóipeáil"
+
+msgid "Copy Info Hash"
+msgstr "Cóipeáil Hais Eolais"
+
+msgid "Copy Magnet Link"
+msgstr "Cóipeáil Nasc Maighnéadach"
+
+msgid "Copy Name"
+msgstr "Cóipeáil Ainm"
+
+msgid "Copy Tracker URL"
+msgstr "Cóipeáil URL Lorgaire"
+
 msgid "Country"
 msgstr "Tír"
 
@@ -458,6 +494,12 @@ msgstr "Dorcha"
 msgid "Days:"
 msgstr "Laethanta:"
 
+msgid "Delete added torrent files"
+msgstr "Scrios comhaid torrent curtha leis"
+
+msgid "Delete torrent files after they are successfully added"
+msgstr "Scrios comhaid torrent tar éis iad a chur leis go rathúil"
+
 msgid "Deluge"
 msgstr "Deluge"
 
@@ -466,6 +508,12 @@ msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
 msgid "Details"
 msgstr "Sonraí"
+
+msgid "Disable Sequential Download"
+msgstr "Díchumasaigh Íoslódáil Shrathach"
+
+msgid "Disable Super Seeding"
+msgstr "Díchumasaigh Sár-Shíolú"
 
 msgid "Disabled"
 msgstr "Díchumasaithe"
@@ -496,6 +544,9 @@ msgstr "Athraitheas Íoslódála:"
 
 msgid "Download limit (KB/s):"
 msgstr "Teorainn íoslódála (KB/s):"
+
+msgid "Download limit (KB/s, 0 = unlimited):"
+msgstr "Download limit (KB/s, 0 = unlimited):"
 
 msgid "Download speed variance for aggressive profile"
 msgstr "Athraitheas luais íoslódála do phróifíl ionsaitheach"
@@ -529,6 +580,12 @@ msgstr "EARRÁID"
 
 msgid "ETA"
 msgstr "Am Measta"
+
+msgid "Edit Tracker"
+msgstr "Cuir Lorgaire in Eagar"
+
+msgid "Edit Tracker..."
+msgstr "Cuir Lorgaire in Eagar..."
 
 msgid "Enable CSRF protection"
 msgstr "Cumasaigh cosaint CSRF"
@@ -574,6 +631,12 @@ msgstr "Cumasaigh Malartú Piaraí chun piaraí nua a fháil"
 
 msgid "Enable Protocol Extensions"
 msgstr "Cumasaigh Breiseáin Phrótacail"
+
+msgid "Enable Sequential Download"
+msgstr "Cumasaigh Íoslódáil Shrathach"
+
+msgid "Enable Super Seeding"
+msgstr "Cumasaigh Sár-Shíolú"
 
 msgid "Enable TCP keepalive"
 msgstr "Cumasaigh TCP keepalive"
@@ -662,6 +725,9 @@ msgstr "Cumasaigh breiseán ut_metadata le haghaidh malartú meiteashonraí"
 msgid "Enable ut_pex extension for peer exchange"
 msgstr "Cumasaigh breiseán ut_pex le haghaidh malartú piaraí"
 
+msgid "Enable watch folder"
+msgstr "Cumasaigh fillteán faire"
+
 msgid "Enable web-based remote control interface"
 msgstr "Cumasaigh comhéadan cianchúram gréasánbhunaithe"
 
@@ -734,8 +800,20 @@ msgstr "Comhaid"
 msgid "Flags"
 msgstr "Bratacha"
 
+msgid "Folder path:"
+msgstr "Conair fillteáin:"
+
 msgid "Follow System"
 msgstr "Lean an Córas"
+
+msgid "Force Complete"
+msgstr "Fórsáil Críochnaithe"
+
+msgid "Force Recheck"
+msgstr "Fórsáil Athsheiceáil"
+
+msgid "Force Start"
+msgstr "Fórsáil Tosú"
 
 msgid "Forced"
 msgstr "Éigeanáilte"
@@ -762,7 +840,7 @@ msgid "General timeout for extension operations (seconds)"
 msgstr "Teorainn ama ginearálta d'oibríochtaí breiseán (soicindí)"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "Cluaisín Ginearálta"
 
 msgid "Generate Secure Password"
 msgstr "Gin Pasfhocal Slán"
@@ -815,11 +893,17 @@ msgstr "Folaigh Príomhfhuinneog"
 msgid "Hide to system tray when window is minimized"
 msgstr "Folaigh go tráidire an chórais nuair a íoslaghdaítear an fhuinneog"
 
+msgid "High Priority"
+msgstr "Tosaíocht Ard"
+
 msgid "Hindi"
 msgstr "Hiondúis"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "Cé chomh minic le fógairt do lorgairí (60-7200 soicind)"
+
+msgid "How often to check for new torrent files (in seconds)"
+msgstr "Cé chomh minic a sheiceáiltear comhaid torrent nua (i soicindí)"
 
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "Cé chomh minic le scrabadh lorgaire le haghaidh staitisticí saithe"
@@ -908,6 +992,9 @@ msgstr "Cóiréis"
 msgid "Label"
 msgstr "Lipéad"
 
+msgid "Label:"
+msgstr "Lipéad:"
+
 msgid "Language"
 msgstr "Teanga"
 
@@ -949,6 +1036,9 @@ msgstr "Leibhéal Loga:"
 
 msgid "Log to file"
 msgstr "Logáil chuig comhad"
+
+msgid "Low Priority"
+msgstr "Tosaíocht Íseal"
 
 msgid "Max Connections:"
 msgstr "Uasmhéid Ceangail:"
@@ -1073,6 +1163,9 @@ msgstr "Luan"
 msgid "Monday"
 msgstr "Luan"
 
+msgid "Multi-Tracker"
+msgstr "Il-Lorgaire"
+
 msgid "My IP address"
 msgstr "Mo sheoladh IP"
 
@@ -1084,6 +1177,9 @@ msgstr "Ainm"
 
 msgid "Network interface:"
 msgstr "Comhéadan líonra:"
+
+msgid "New name:"
+msgstr "Ainm nua:"
 
 msgid "Next Announce"
 msgstr "Fógra Eile"
@@ -1097,6 +1193,9 @@ msgstr "Níl roghanna ineagarthóireachta ar fáil don torrent seo."
 msgid "None"
 msgstr "Dada"
 
+msgid "Normal Priority"
+msgstr "Gnáth-Thosaíocht"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Líon na bpiaraí le hanailísiú le haghaidh patrúin iompair"
 
@@ -1105,6 +1204,9 @@ msgstr "Líon na bpiaraí le hiarraidh ón lorgaire"
 
 msgid "Number of synthetic peers to generate"
 msgstr "Líon na bpiaraí sintéiseacha le giniúint"
+
+msgid "OK"
+msgstr "OK"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "Ceadaigh ceangail ó localhost amháin (níos sábháilte)"
@@ -1138,6 +1240,9 @@ msgstr "Pasfhocal:"
 
 msgid "Path"
 msgstr "Conair"
+
+msgid "Path to the folder to watch for torrent files"
+msgstr "Conair chuig an bhfillteán chun faire ar chomhaid torrent"
 
 msgid "Pause"
 msgstr "Cuir ar Sos"
@@ -1301,6 +1406,9 @@ msgstr "Dáileadh dul chun cinn do phiaraí lár dul chun cinn (0.0 - 1.0)"
 msgid "Progress distribution for starting peers (0.0 - 1.0)"
 msgstr "Dáileadh dul chun cinn do phiaraí ag tosú (0.0 - 1.0)"
 
+msgid "Properties"
+msgstr "Airíonna"
+
 msgid "Protocol Compliance:"
 msgstr "Comhlíonadh Prótacail:"
 
@@ -1358,8 +1466,35 @@ msgstr "Cuimhnigh méid agus ionad na fuinneoige"
 msgid "Remember window size and position between sessions"
 msgstr "Cuimhnigh méid agus ionad na fuinneoige idir seisiúin"
 
+msgid "Remove"
+msgstr "Bain"
+
+msgid "Remove Torrent"
+msgstr "Bain Torrent"
+
+msgid "Remove Torrent and Data"
+msgstr "Bain Torrent agus Sonraí"
+
+msgid "Remove Torrent and Data?"
+msgstr "Bain Torrent agus Sonraí?"
+
+msgid "Remove Torrent?"
+msgstr "Bain Torrent?"
+
+msgid "Remove Tracker..."
+msgstr "Bain Lorgaire..."
+
 msgid "Remove torrent"
 msgstr "Bain torrent"
+
+msgid "Rename"
+msgstr "Athainmnigh"
+
+msgid "Rename Torrent"
+msgstr "Athainmnigh Torrent"
+
+msgid "Rename..."
+msgstr "Athainmnigh..."
 
 msgid "Requests"
 msgstr "Iarratais"
@@ -1381,6 +1516,9 @@ msgstr "Athshocraigh gach socrú go luachanna réamhshocraithe"
 
 msgid "Reset to Defaults"
 msgstr "Athshocraigh go Réamhshocruithe"
+
+msgid "Reset to Global Limits"
+msgstr "Reset to Global Limits"
 
 msgid "Reset to defaults"
 msgstr "Athshocraigh go réamhshocruithe"
@@ -1412,8 +1550,14 @@ msgstr "Sath"
 msgid "Saturday"
 msgstr "Satharn"
 
+msgid "Save"
+msgstr "Save"
+
 msgid "Save logs to file in addition to console"
 msgstr "Sábháil logaí chuig comhad chomh maith leis an gconsól"
+
+msgid "Scan interval:"
+msgstr "Eatramh scanadh:"
 
 msgid "Scrape interval (sec):"
 msgstr "Eatramh scrabtha (soic):"
@@ -1448,6 +1592,12 @@ msgstr "Próifíl Síolacháin"
 msgid "Seeds"
 msgstr "Síolta"
 
+msgid "Select"
+msgstr "Select"
+
+msgid "Select Watch Folder"
+msgstr "Roghnaigh Fillteán Faire"
+
 msgid "Select proxy type for connections"
 msgstr "Roghnaigh cineál seachfhreastalaí le haghaidh ceangail"
 
@@ -1471,6 +1621,36 @@ msgstr "Seisiún Uaslódáilte"
 
 msgid "Session timeout (min):"
 msgstr "Teorainn ama seisiúin (nóim):"
+
+msgid "Set"
+msgstr "Set"
+
+msgid "Set Download Limit"
+msgstr "Socraigh Teorainn Íoslódála"
+
+msgid "Set Download Limit..."
+msgstr "Socraigh Teorainn Íoslódála..."
+
+msgid "Set Label"
+msgstr "Socraigh Lipéad"
+
+msgid "Set Label..."
+msgstr "Socraigh Lipéad..."
+
+msgid "Set Location"
+msgstr "Socraigh Suíomh"
+
+msgid "Set Location..."
+msgstr "Socraigh Suíomh..."
+
+msgid "Set Random Progress"
+msgstr "Socraigh Dul Chun Cinn Randamach"
+
+msgid "Set Upload Limit"
+msgstr "Socraigh Teorainn Uaslódála"
+
+msgid "Set Upload Limit..."
+msgstr "Socraigh Teorainn Uaslódála..."
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Cumraíocht aicearraí gan cur i bhfeidhm fós"
@@ -1501,6 +1681,9 @@ msgstr "Luas"
 
 msgid "Speed Control"
 msgstr "Rialú Luais"
+
+msgid "Speed Limits"
+msgstr "Teorainneacha Luais"
 
 msgid "Speed settings reset to defaults"
 msgstr "Socruithe luais athshocraíodh go réamhshocruithe"
@@ -1561,6 +1744,12 @@ msgstr "Cúltaca TCP"
 
 msgid "TCP keepalive"
 msgstr "TCP coinnigh beo"
+
+msgid "The .torrent file will be DELETED."
+msgstr "Scriosfar an comhad .torrent."
+
+msgid "The .torrent file will be kept."
+msgstr "Coimeádfar an comhad .torrent."
 
 msgid "Theme:"
 msgstr "Téama:"
@@ -1637,6 +1826,9 @@ msgstr "Lorgaire"
 msgid "Tracker URL"
 msgstr "URL Lorgaire"
 
+msgid "Tracker URL:"
+msgstr "URL Lorgaire:"
+
 msgid "Trackers"
 msgstr "Lorgairí"
 
@@ -1653,13 +1845,13 @@ msgid "Transaction ID range (min):"
 msgstr "Raon ID idirbhirt (íos):"
 
 msgid "TranslationManager"
-msgstr "TranslationManager"
+msgstr "Bainisteoir Aistriúcháin"
 
 msgid "TranslationManagerGTK3"
-msgstr "TranslationManagerGTK3"
+msgstr "Bainisteoir Aistriúcháin GTK3"
 
 msgid "TranslationManagerGTK4"
-msgstr "TranslationManagerGTK4"
+msgstr "Bainisteoir Aistriúcháin GTK4"
 
 msgid "Transmission"
 msgstr "Transmission"
@@ -1723,6 +1915,9 @@ msgstr "Dóchúlacht gníomhaíochta uaslódála:"
 
 msgid "Upload limit (KB/s):"
 msgstr "Teorainn uaslódála (KB/s):"
+
+msgid "Upload limit (KB/s, 0 = unlimited):"
+msgstr "Upload limit (KB/s, 0 = unlimited):"
 
 msgid "Upload speed variance for aggressive profile"
 msgstr "Athraitheas luais uaslódála do phróifíl ionsaitheach"

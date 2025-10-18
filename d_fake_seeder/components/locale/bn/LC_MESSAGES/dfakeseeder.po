@@ -24,7 +24,7 @@ msgid "(0 = unlimited)"
 msgstr "(0 = সীমাহীন)"
 
 msgid "0 / 250"
-msgstr "0 / 250"
+msgstr "০ / ২৫০"
 
 msgid "127.0.0.1"
 msgstr "127.0.0.1"
@@ -33,136 +33,139 @@ msgid ":"
 msgstr ":"
 
 msgid "<b>Advanced Extension Settings</b>"
-msgstr "<b>Advanced Extension Settings</b>"
+msgstr "<b>উন্নত এক্সটেনশন সেটিংস</b>"
 
 msgid "<b>Aggressive Profile Settings</b>"
-msgstr "<b>Aggressive Profile Settings</b>"
+msgstr "<b>আক্রমণাত্মক প্রোফাইল সেটিংস</b>"
 
 msgid "<b>Alternative Speed Limits</b>"
-msgstr "<b>Alternative Speed Limits</b>"
+msgstr "<b>বিকল্প গতির সীমা</b>"
 
 msgid "<b>Application Behavior</b>"
-msgstr "<b>Application Behavior</b>"
+msgstr "<b>অ্যাপ্লিকেশন আচরণ</b>"
 
 msgid "<b>Authentication</b>"
-msgstr "<b>Authentication</b>"
+msgstr "<b>প্রমাণীকরণ</b>"
 
 msgid "<b>Balanced Profile Settings</b>"
-msgstr "<b>Balanced Profile Settings</b>"
+msgstr "<b>সুষম প্রোফাইল সেটিংস</b>"
 
 msgid "<b>Bootstrap Settings</b>"
-msgstr "<b>Bootstrap Settings</b>"
+msgstr "<b>বুটস্ট্র্যাপ সেটিংস</b>"
 
 msgid "<b>Client Behavior Engine</b>"
-msgstr "<b>Client Behavior Engine</b>"
+msgstr "<b>ক্লায়েন্ট আচরণ ইঞ্জিন</b>"
 
 msgid "<b>Client Identification</b>"
-msgstr "<b>Client Identification</b>"
+msgstr "<b>ক্লায়েন্ট সনাক্তকরণ</b>"
 
 msgid "<b>Configuration Management</b>"
-msgstr "<b>Configuration Management</b>"
+msgstr "<b>কনফিগারেশন ব্যবস্থাপনা</b>"
 
 msgid "<b>Connection Limits</b>"
-msgstr "<b>Connection Limits</b>"
+msgstr "<b>সংযোগ সীমা</b>"
 
 msgid "<b>Connection Settings</b>"
-msgstr "<b>Connection Settings</b>"
+msgstr "<b>সংযোগ সেটিংস</b>"
 
 msgid "<b>Conservative Profile Settings</b>"
-msgstr "<b>Conservative Profile Settings</b>"
+msgstr "<b>রক্ষণশীল প্রোফাইল সেটিংস</b>"
 
 msgid "<b>DHT (Distributed Hash Table)</b>"
-msgstr "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT (বিতরণকৃত হ্যাশ টেবিল)</b>"
 
 msgid "<b>Encryption</b>"
-msgstr "<b>Encryption</b>"
+msgstr "<b>এনক্রিপশন</b>"
 
 msgid "<b>Expert Settings</b>"
-msgstr "<b>Expert Settings</b>"
+msgstr "<b>বিশেষজ্ঞ সেটিংস</b>"
 
 msgid "<b>Extension Protocol (BEP-010)</b>"
-msgstr "<b>Extension Protocol (BEP-010)</b>"
+msgstr "<b>এক্সটেনশন প্রোটোকল (BEP-010)</b>"
 
 msgid "<b>Global Speed Limits</b>"
-msgstr "<b>Global Speed Limits</b>"
+msgstr "<b>বৈশ্বিক গতির সীমা</b>"
 
 msgid "<b>Interface</b>"
-msgstr "<b>Interface</b>"
+msgstr "<b>ইন্টারফেস</b>"
 
 msgid "<b>Keyboard Shortcuts</b>"
-msgstr "<b>Keyboard Shortcuts</b>"
+msgstr "<b>কীবোর্ড শর্টকাট</b>"
 
 msgid "<b>Listening Port</b>"
-msgstr "<b>Listening Port</b>"
+msgstr "<b>শ্রবণ পোর্ট</b>"
 
 msgid "<b>Logging</b>"
-msgstr "<b>Logging</b>"
+msgstr "<b>লগিং</b>"
 
 msgid "<b>Metadata Extension Settings</b>"
-msgstr "<b>Metadata Extension Settings</b>"
+msgstr "<b>মেটাডেটা এক্সটেনশন সেটিংস</b>"
 
 msgid "<b>Network Settings</b>"
-msgstr "<b>Network Settings</b>"
+msgstr "<b>নেটওয়ার্ক সেটিংস</b>"
 
 msgid "<b>Node Configuration</b>"
-msgstr "<b>Node Configuration</b>"
+msgstr "<b>নোড কনফিগারেশন</b>"
 
 msgid "<b>Peer Behavior Settings</b>"
-msgstr "<b>Peer Behavior Settings</b>"
+msgstr "<b>পিয়ার আচরণ সেটিংস</b>"
 
 msgid "<b>Peer Exchange (PEX) Settings</b>"
-msgstr "<b>Peer Exchange (PEX) Settings</b>"
+msgstr "<b>পিয়ার এক্সচেঞ্জ (PEX) সেটিংস</b>"
 
 msgid "<b>Peer Protocol Timeouts</b>"
-msgstr "<b>Peer Protocol Timeouts</b>"
+msgstr "<b>পিয়ার প্রোটোকল টাইমআউট</b>"
 
 msgid "<b>Performance</b>"
-msgstr "<b>Performance</b>"
+msgstr "<b>কর্মক্ষমতা</b>"
 
 msgid "<b>Protocol Extensions</b>"
-msgstr "<b>Protocol Extensions</b>"
+msgstr "<b>প্রোটোকল এক্সটেনশন</b>"
 
 msgid "<b>Protocol Features</b>"
-msgstr "<b>Protocol Features</b>"
+msgstr "<b>প্রোটোকল বৈশিষ্ট্য</b>"
 
 msgid "<b>Proxy Settings</b>"
-msgstr "<b>Proxy Settings</b>"
+msgstr "<b>প্রক্সি সেটিংস</b>"
 
 msgid "<b>Security Options</b>"
-msgstr "<b>Security Options</b>"
+msgstr "<b>নিরাপত্তা বিকল্প</b>"
 
 msgid "<b>Seeder Protocol Settings</b>"
-msgstr "<b>Seeder Protocol Settings</b>"
+msgstr "<b>সিডার প্রোটোকল সেটিংস</b>"
 
 msgid "<b>Seeding Profiles</b>"
-msgstr "<b>Seeding Profiles</b>"
+msgstr "<b>সিডিং প্রোফাইল</b>"
 
 msgid "<b>Settings Search</b>"
-msgstr "<b>Settings Search</b>"
+msgstr "<b>সেটিংস অনুসন্ধান</b>"
 
 msgid "<b>Speed Scheduler</b>"
-msgstr "<b>Speed Scheduler</b>"
+msgstr "<b>গতি সময়সূচী</b>"
 
 msgid "<b>Statistics and Security</b>"
-msgstr "<b>Statistics and Security</b>"
+msgstr "<b>পরিসংখ্যান এবং নিরাপত্তা</b>"
 
 msgid "<b>Swarm Intelligence</b>"
-msgstr "<b>Swarm Intelligence</b>"
+msgstr "<b>সোয়ার্ম ইন্টেলিজেন্স</b>"
 
 msgid "<b>Timing Settings</b>"
-msgstr "<b>Timing Settings</b>"
+msgstr "<b>সময় সেটিংস</b>"
 
 msgid "<b>Tracker Announce Settings</b>"
-msgstr "<b>Tracker Announce Settings</b>"
+msgstr "<b>ট্র্যাকার ঘোষণা সেটিংস</b>"
 
 msgid "<b>Traffic Pattern Settings</b>"
-msgstr "<b>Traffic Pattern Settings</b>"
+msgstr "<b>ট্রাফিক প্যাটার্ন সেটিংস</b>"
 
 msgid "<b>Transport Protocol Settings</b>"
-msgstr "<b>Transport Protocol Settings</b>"
+msgstr "<b>ট্রান্সপোর্ট প্রোটোকল সেটিংস</b>"
+
+msgid "<b>Watch Folder</b>"
+msgstr "<b>ফোল্ডার নজরদারি</b>"
 
 msgid "<b>Web Interface</b>"
-msgstr "<b>Web Interface</b>"
+msgstr "<b>ওয়েব ইন্টারফেস</b>"
 
 msgid "About"
 msgstr "সম্পর্কে"
@@ -171,121 +174,136 @@ msgid "Active"
 msgstr "সক্রিয়"
 
 msgid "Active Profile:"
-msgstr "Active Profile:"
+msgstr "সক্রিয় প্রোফাইল:"
 
 msgid "Adaptation Rate:"
-msgstr "Adaptation Rate:"
+msgstr "অভিযোজন হার:"
 
 msgid "Add"
 msgstr "যোগ করুন"
 
+msgid "Add Tracker"
+msgstr "ট্র্যাকার যোগ করুন"
+
+msgid "Add Tracker..."
+msgstr "ট্র্যাকার যোগ করুন..."
+
 msgid "Add torrent"
-msgstr "Add torrent"
+msgstr "টরেন্ট যোগ করুন"
 
 msgid "Added"
-msgstr "Added"
+msgstr "যোগ করা হয়েছে"
 
 msgid "Advanced"
 msgstr "উন্নত"
 
 msgid "Advanced settings reset to defaults"
-msgstr "Advanced settings reset to defaults"
+msgstr "উন্নত সেটিংস ডিফল্টে রিসেট করা হয়েছে"
 
 msgid "Aggressive"
-msgstr "Aggressive"
+msgstr "আক্রমণাত্মক"
 
 msgid "Aggressive profile download speed"
-msgstr "Aggressive profile download speed"
+msgstr "আক্রমণাত্মক প্রোফাইল ডাউনলোড গতি"
 
 msgid "Aggressive profile upload speed (0 = unlimited)"
-msgstr "Aggressive profile upload speed (0 = unlimited)"
+msgstr "আক্রমণাত্মক প্রোফাইল আপলোড গতি (০ = সীমাহীন)"
 
 msgid "Alt download limit (KB/s):"
-msgstr "Alt download limit (KB/s):"
+msgstr "বিকল্প ডাউনলোড সীমা (KB/s):"
 
 msgid "Alt upload limit (KB/s):"
-msgstr "Alt upload limit (KB/s):"
+msgstr "বিকল্প আপলোড সীমা (KB/s):"
 
 msgid "Alternative Speed Limits"
-msgstr "Alternative Speed Limits"
+msgstr "বিকল্প গতির সীমা"
 
 msgid "Alternative download speed limit in KB/s"
-msgstr "Alternative download speed limit in KB/s"
+msgstr "KB/s-এ বিকল্প ডাউনলোড গতি সীমা"
 
 msgid "Alternative upload speed limit in KB/s"
-msgstr "Alternative upload speed limit in KB/s"
+msgstr "KB/s-এ বিকল্প আপলোড গতি সীমা"
 
 msgid "Amount of RAM to use for disk caching"
-msgstr "Amount of RAM to use for disk caching"
+msgstr "ডিস্ক ক্যাশিংয়ের জন্য ব্যবহার করার RAM পরিমাণ"
 
 msgid "Announce Interval"
-msgstr "Announce Interval"
+msgstr "ঘোষণা ব্যবধান"
 
 msgid "Announce interval (sec):"
-msgstr "Announce interval (sec):"
+msgstr "ঘোষণা ব্যবধান (সেকেন্ড):"
 
 msgid "Announcement Interval:"
-msgstr "Announcement Interval:"
+msgstr "ঘোষণা ব্যবধান:"
 
 msgid "Arabic"
-msgstr "Arabic"
+msgstr "আরবি"
 
 msgid "Auto Detect"
-msgstr "Auto Detect"
+msgstr "স্বয়ংক্রিয় সনাক্ত"
 
 msgid "Auto-bootstrap DHT"
-msgstr "Auto-bootstrap DHT"
+msgstr "স্বয়ংক্রিয় বুটস্ট্র্যাপ DHT"
 
 msgid "Auto-generate node ID"
-msgstr "Auto-generate node ID"
+msgstr "স্বয়ংক্রিয় নোড আইডি তৈরি করুন"
 
 msgid "Auto-save settings"
-msgstr "Auto-save settings"
+msgstr "স্বয়ংক্রিয় সেটিংস সংরক্ষণ"
+
+msgid "Auto-start added torrents"
+msgstr "যোগ করা টরেন্ট স্বয়ংক্রিয়ভাবে শুরু করুন"
 
 msgid "Auto-start disabled"
-msgstr "Auto-start disabled"
+msgstr "স্বয়ংক্রিয় শুরু নিষ্ক্রিয়"
 
 msgid "Auto-start enabled"
-msgstr "Auto-start enabled"
+msgstr "স্বয়ংক্রিয় শুরু সক্ষম"
 
 msgid "Automatic logout after inactivity (5-1440 minutes)"
-msgstr "Automatic logout after inactivity (5-1440 minutes)"
+msgstr "নিষ্ক্রিয়তার পরে স্বয়ংক্রিয় লগআউট (৫-১৪৪০ মিনিট)"
 
 msgid "Automatically bootstrap DHT using known nodes"
-msgstr "Automatically bootstrap DHT using known nodes"
+msgstr "পরিচিত নোড ব্যবহার করে স্বয়ংক্রিয়ভাবে DHT বুটস্ট্র্যাপ করুন"
 
 msgid "Automatically configure router port forwarding using UPnP/NAT-PMP"
-msgstr "Automatically configure router port forwarding using UPnP/NAT-PMP"
+msgstr "UPnP/NAT-PMP ব্যবহার করে স্বয়ংক্রিয়ভাবে রাউটার পোর্ট ফরওয়ার্ডিং কনফিগার করুন"
 
 msgid "Automatically generate a unique node ID"
-msgstr "Automatically generate a unique node ID"
+msgstr "স্বয়ংক্রিয়ভাবে একটি অনন্য নোড আইডি তৈরি করুন"
+
+msgid "Automatically monitor a folder for new torrent files"
+msgstr "নতুন টরেন্ট ফাইলের জন্য স্বয়ংক্রিয়ভাবে একটি ফোল্ডার নিরীক্ষণ করুন"
 
 msgid "Automatically save settings when changed"
-msgstr "Automatically save settings when changed"
+msgstr "পরিবর্তিত হলে স্বয়ংক্রিয়ভাবে সেটিংস সংরক্ষণ করুন"
+
+msgid "Automatically start torrents when added from watch folder"
+msgstr "নজরদারি ফোল্ডার থেকে যোগ করা হলে স্বয়ংক্রিয়ভাবে টরেন্ট শুরু করুন"
 
 msgid "Automatically switch to alternative speeds during specified hours"
-msgstr "Automatically switch to alternative speeds during specified hours"
+msgstr "নির্দিষ্ট সময়ে স্বয়ংক্রিয়ভাবে বিকল্প গতিতে পরিবর্তন করুন"
 
 msgid "Availability"
-msgstr "Availability"
+msgstr "প্রাপ্যতা"
 
 msgid "Balanced"
-msgstr "Balanced"
+msgstr "সুষম"
 
 msgid "Balanced profile download speed"
-msgstr "Balanced profile download speed"
+msgstr "সুষম প্রোফাইল ডাউনলোড গতি"
 
 msgid "Balanced profile upload speed"
-msgstr "Balanced profile upload speed"
+msgstr "সুষম প্রোফাইল আপলোড গতি"
 
 msgid "Behavior Variation:"
-msgstr "Behavior Variation:"
+msgstr "আচরণ পরিবর্তন:"
 
 msgid "Behavior analysis probability:"
-msgstr "Behavior analysis probability:"
+msgstr "আচরণ বিশ্লেষণ সম্ভাবনা:"
 
 msgid "Behavior randomization"
-msgstr "Behavior randomization"
+msgstr "আচরণ এলোমেলোকরণ"
 
 msgid "Bengali"
 msgstr "বাংলা"
@@ -294,127 +312,145 @@ msgid "BiglyBT"
 msgstr "BiglyBT"
 
 msgid "Bind to localhost only"
-msgstr "Bind to localhost only"
+msgstr "শুধুমাত্র localhost-এ আবদ্ধ করুন"
 
 msgid "BitTorrent"
 msgstr "BitTorrent"
 
 msgid "BitTorrent settings reset to defaults"
-msgstr "BitTorrent settings reset to defaults"
+msgstr "BitTorrent সেটিংস ডিফল্টে রিসেট করা হয়েছে"
 
 msgid "BitTorrent/7.10.5"
 msgstr "BitTorrent/7.10.5"
 
 msgid "Bootstrap Nodes (one per line, format: host:port):"
-msgstr "Bootstrap Nodes (one per line, format: host:port):"
+msgstr "বুটস্ট্র্যাপ নোড (প্রতি লাইনে একটি, ফর্ম্যাট: host:port):"
 
 msgid "Bootstrap Timeout:"
-msgstr "Bootstrap Timeout:"
+msgstr "বুটস্ট্র্যাপ টাইমআউট:"
 
 msgid "Bottom"
-msgstr "Bottom"
+msgstr "নিচে"
+
+msgid "Browse for folder"
+msgstr "ফোল্ডার ব্রাউজ করুন"
 
 msgid "Bucket Size:"
-msgstr "Bucket Size:"
+msgstr "বাকেট আকার:"
 
 msgid "Burst Probability:"
-msgstr "Burst Probability:"
+msgstr "বার্স্ট সম্ভাবনা:"
 
 msgid "CRITICAL"
-msgstr "CRITICAL"
+msgstr "ক্রিটিক্যাল"
 
 msgid "Cancel"
 msgstr "বাতিল"
 
 msgid "Chinese"
-msgstr "Chinese"
+msgstr "চীনা"
 
 msgid "Choose a pre-configured seeding profile"
-msgstr "Choose a pre-configured seeding profile"
+msgstr "একটি পূর্ব-কনফিগার করা সিডিং প্রোফাইল চয়ন করুন"
 
 msgid "Choose the application theme"
-msgstr "Choose the application theme"
+msgstr "অ্যাপ্লিকেশন থিম চয়ন করুন"
 
 msgid "Choose the interface language"
-msgstr "Choose the interface language"
+msgstr "ইন্টারফেস ভাষা চয়ন করুন"
 
 msgid "Clear search"
-msgstr "Clear search"
+msgstr "অনুসন্ধান সাফ করুন"
 
 msgid "Client"
 msgstr "ক্লায়েন্ট"
 
 msgid "Client Switch Probability:"
-msgstr "Client Switch Probability:"
+msgstr "ক্লায়েন্ট পরিবর্তন সম্ভাবনা:"
 
 msgid "Columns"
-msgstr "Columns"
+msgstr "কলাম"
 
 msgid "Comment"
-msgstr "Comment"
+msgstr "মন্তব্য"
 
 msgid "Completed"
-msgstr "Completed"
+msgstr "সম্পন্ন"
 
 msgid "Concurrent Queries:"
-msgstr "Concurrent Queries:"
+msgstr "সমসাময়িক ক্যোয়েরি:"
 
 msgid "Config export not yet implemented"
-msgstr "Config export not yet implemented"
+msgstr "কনফিগ রপ্তানি এখনও বাস্তবায়িত হয়নি"
 
 msgid "Config import not yet implemented"
-msgstr "Config import not yet implemented"
+msgstr "কনফিগ আমদানি এখনও বাস্তবায়িত হয়নি"
 
 msgid "Connected"
 msgstr "সংযুক্ত"
 
 msgid "Connected At"
-msgstr "Connected At"
+msgstr "সংযুক্ত সময়"
 
 msgid "Connected Peers / Total Peers"
-msgstr "Connected Peers / Total Peers"
+msgstr "সংযুক্ত পিয়ার / মোট পিয়ার"
 
 msgid "Connected to DFakeSeeder"
-msgstr "Connected to DFakeSeeder"
+msgstr "DFakeSeeder-এ সংযুক্ত"
 
 msgid "Connection"
 msgstr "সংযোগ"
 
 msgid "Connection Status"
-msgstr "Connection Status"
+msgstr "সংযোগ স্ট্যাটাস"
 
 msgid "Connection Timeout:"
-msgstr "Connection Timeout:"
+msgstr "সংযোগ টাইমআউট:"
 
 msgid "Connection rotation percentage:"
-msgstr "Connection rotation percentage:"
+msgstr "সংযোগ ঘূর্ণন শতাংশ:"
 
 msgid "Connection settings reset to defaults"
-msgstr "Connection settings reset to defaults"
+msgstr "সংযোগ সেটিংস ডিফল্টে রিসেট করা হয়েছে"
 
 msgid "Connection timeout for extensions (seconds)"
-msgstr "Connection timeout for extensions (seconds)"
+msgstr "এক্সটেনশনের জন্য সংযোগ টাইমআউট (সেকেন্ড)"
 
 msgid "Conservative"
-msgstr "Conservative"
+msgstr "রক্ষণশীল"
 
 msgid "Conservative profile download speed"
-msgstr "Conservative profile download speed"
+msgstr "রক্ষণশীল প্রোফাইল ডাউনলোড গতি"
 
 msgid "Conservative profile upload speed"
-msgstr "Conservative profile upload speed"
+msgstr "রক্ষণশীল প্রোফাইল আপলোড গতি"
 
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
-msgstr "Conservative: Lower speeds, fewer connections, ideal for background seeding"
+msgstr "রক্ষণশীল: কম গতি, কম সংযোগ, পটভূমি সিডিংয়ের জন্য আদর্শ"
+
+msgid "Copy"
+msgstr "কপি করুন"
+
+msgid "Copy Info Hash"
+msgstr "ইনফো হ্যাশ কপি করুন"
+
+msgid "Copy Magnet Link"
+msgstr "ম্যাগনেট লিঙ্ক কপি করুন"
+
+msgid "Copy Name"
+msgstr "নাম কপি করুন"
+
+msgid "Copy Tracker URL"
+msgstr "ট্র্যাকার URL কপি করুন"
 
 msgid "Country"
-msgstr "Country"
+msgstr "দেশ"
 
 msgid "Created"
-msgstr "Created"
+msgstr "তৈরি"
 
 msgid "Created By"
-msgstr "Created By"
+msgstr "তৈরিকারী"
 
 msgid "Ctrl+,"
 msgstr "Ctrl+,"
@@ -426,25 +462,25 @@ msgid "Ctrl+R"
 msgstr "Ctrl+R"
 
 msgid "Custom"
-msgstr "Custom"
+msgstr "কাস্টম"
 
 msgid "Custom Agent:"
-msgstr "Custom Agent:"
+msgstr "কাস্টম এজেন্ট:"
 
 msgid "Custom Node ID:"
-msgstr "Custom Node ID:"
+msgstr "কাস্টম নোড আইডি:"
 
 msgid "Custom node ID (40 hex characters)"
-msgstr "Custom node ID (40 hex characters)"
+msgstr "কাস্টম নোড আইডি (৪০ হেক্স অক্ষর)"
 
 msgid "Custom user agent string"
-msgstr "Custom user agent string"
+msgstr "কাস্টম ইউজার এজেন্ট স্ট্রিং"
 
 msgid "D' Fake Seeder"
 msgstr "D' Fake Seeder"
 
 msgid "DEBUG"
-msgstr "DEBUG"
+msgstr "ডিবাগ"
 
 msgid "DFakeSeeder"
 msgstr "DFakeSeeder"
@@ -456,7 +492,13 @@ msgid "Dark"
 msgstr "অন্ধকার"
 
 msgid "Days:"
-msgstr "Days:"
+msgstr "দিন:"
+
+msgid "Delete added torrent files"
+msgstr "যোগ করা টরেন্ট ফাইল মুছুন"
+
+msgid "Delete torrent files after they are successfully added"
+msgstr "সফলভাবে যোগ করার পরে টরেন্ট ফাইল মুছুন"
 
 msgid "Deluge"
 msgstr "Deluge"
@@ -467,80 +509,95 @@ msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgid "Details"
 msgstr "বিস্তারিত"
 
+msgid "Disable Sequential Download"
+msgstr "ক্রমিক ডাউনলোড নিষ্ক্রিয় করুন"
+
+msgid "Disable Super Seeding"
+msgstr "সুপার সিডিং নিষ্ক্রিয় করুন"
+
 msgid "Disabled"
 msgstr "নিষ্ক্রিয়"
 
 msgid "Disconnected"
-msgstr "Disconnected"
+msgstr "সংযোগ বিচ্ছিন্ন"
 
 msgid "Disconnected from DFakeSeeder"
-msgstr "Disconnected from DFakeSeeder"
+msgstr "DFakeSeeder থেকে সংযোগ বিচ্ছিন্ন"
 
 msgid "Disk cache size (MB):"
-msgstr "Disk cache size (MB):"
+msgstr "ডিস্ক ক্যাশ আকার (MB):"
 
 msgid "Down"
-msgstr "Down"
+msgstr "নিচে"
 
 msgid "Down Speed"
-msgstr "Down Speed"
+msgstr "ডাউন গতি"
 
 msgid "Download Rate"
-msgstr "Download Rate"
+msgstr "ডাউনলোড রেট"
 
 msgid "Download Speed (KB/s):"
-msgstr "Download Speed (KB/s):"
+msgstr "ডাউনলোড গতি (KB/s):"
 
 msgid "Download Variance:"
-msgstr "Download Variance:"
+msgstr "ডাউনলোড ভ্যারিয়েন্স:"
 
 msgid "Download limit (KB/s):"
-msgstr "Download limit (KB/s):"
+msgstr "ডাউনলোড সীমা (KB/s):"
+
+msgid "Download limit (KB/s, 0 = unlimited):"
+msgstr "ডাউনলোড সীমা (KB/s, ০ = সীমাহীন):"
 
 msgid "Download speed variance for aggressive profile"
-msgstr "Download speed variance for aggressive profile"
+msgstr "আক্রমণাত্মক প্রোফাইলের জন্য ডাউনলোড গতি ভ্যারিয়েন্স"
 
 msgid "Download speed variance for balanced profile"
-msgstr "Download speed variance for balanced profile"
+msgstr "সুষম প্রোফাইলের জন্য ডাউনলোড গতি ভ্যারিয়েন্স"
 
 msgid "Download speed variance for conservative profile"
-msgstr "Download speed variance for conservative profile"
+msgstr "রক্ষণশীল প্রোফাইলের জন্য ডাউনলোড গতি ভ্যারিয়েন্স"
 
 msgid "Downloaded"
-msgstr "Downloaded"
+msgstr "ডাউনলোড করা হয়েছে"
 
 msgid "Downloaded Session / Total"
-msgstr "Downloaded Session / Total"
+msgstr "ডাউনলোড করা সেশন / মোট"
 
 msgid "Downloaded Speed"
-msgstr "Downloaded Speed"
+msgstr "ডাউনলোড গতি"
 
 msgid "Dropout probability:"
-msgstr "Dropout probability:"
+msgstr "ড্রপআউট সম্ভাবনা:"
 
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "ডাচ"
 
 msgid "Dynamic profile switching"
-msgstr "Dynamic profile switching"
+msgstr "গতিশীল প্রোফাইল পরিবর্তন"
 
 msgid "ERROR"
-msgstr "ERROR"
+msgstr "ত্রুটি"
 
 msgid "ETA"
 msgstr "ETA"
 
+msgid "Edit Tracker"
+msgstr "ট্র্যাকার সম্পাদনা করুন"
+
+msgid "Edit Tracker..."
+msgstr "ট্র্যাকার সম্পাদনা করুন..."
+
 msgid "Enable CSRF protection"
-msgstr "Enable CSRF protection"
+msgstr "CSRF সুরক্ষা সক্ষম করুন"
 
 msgid "Enable Cross-Site Request Forgery protection"
-msgstr "Enable Cross-Site Request Forgery protection"
+msgstr "ক্রস-সাইট রিকোয়েস্ট জালিয়াতি সুরক্ষা সক্ষম করুন"
 
 msgid "Enable DHT"
-msgstr "Enable DHT"
+msgstr "DHT সক্ষম করুন"
 
 msgid "Enable DHT (Distributed Hash Table)"
-msgstr "Enable DHT (Distributed Hash Table)"
+msgstr "DHT সক্ষম করুন (বিতরণকৃত হ্যাশ টেবিল)"
 
 msgid "Enable DHT query rate limiting"
 msgstr "Enable DHT query rate limiting"
@@ -549,100 +606,106 @@ msgid "Enable DHT statistics collection"
 msgstr "Enable DHT statistics collection"
 
 msgid "Enable Distributed Hash Table for trackerless torrents"
-msgstr "Enable Distributed Hash Table for trackerless torrents"
+msgstr "ট্র্যাকারহীন টরেন্টের জন্য বিতরণকৃত হ্যাশ টেবিল সক্ষম করুন"
 
 msgid "Enable Fast Extension (BEP-006) for improved performance"
-msgstr "Enable Fast Extension (BEP-006) for improved performance"
+msgstr "উন্নত কর্মক্ষমতার জন্য দ্রুত এক্সটেনশন সক্ষম করুন (BEP-006)"
 
 msgid "Enable LPD (Local Peer Discovery)"
-msgstr "Enable LPD (Local Peer Discovery)"
+msgstr "LPD সক্ষম করুন (স্থানীয় পিয়ার আবিষ্কার)"
 
 msgid "Enable Local Peer Discovery for finding peers on local network"
-msgstr "Enable Local Peer Discovery for finding peers on local network"
+msgstr "স্থানীয় নেটওয়ার্কে পিয়ার খুঁজতে স্থানীয় পিয়ার আবিষ্কার সক্ষম করুন"
 
 msgid "Enable Nagle algorithm"
-msgstr "Enable Nagle algorithm"
+msgstr "Nagle অ্যালগরিদম সক্ষম করুন"
 
 msgid "Enable Nagle algorithm for TCP"
-msgstr "Enable Nagle algorithm for TCP"
+msgstr "TCP-এর জন্য Nagle অ্যালগরিদম সক্ষম করুন"
 
 msgid "Enable PEX (Peer Exchange)"
-msgstr "Enable PEX (Peer Exchange)"
+msgstr "PEX সক্ষম করুন (পিয়ার এক্সচেঞ্জ)"
 
 msgid "Enable Peer Exchange for discovering new peers"
-msgstr "Enable Peer Exchange for discovering new peers"
+msgstr "নতুন পিয়ার আবিষ্কারের জন্য পিয়ার এক্সচেঞ্জ সক্ষম করুন"
 
 msgid "Enable Protocol Extensions"
-msgstr "Enable Protocol Extensions"
+msgstr "প্রোটোকল এক্সটেনশন সক্ষম করুন"
+
+msgid "Enable Sequential Download"
+msgstr "ক্রমিক ডাউনলোড সক্ষম করুন"
+
+msgid "Enable Super Seeding"
+msgstr "সুপার সিডিং সক্ষম করুন"
 
 msgid "Enable TCP keepalive"
-msgstr "Enable TCP keepalive"
+msgstr "TCP কিপঅ্যালাইভ সক্ষম করুন"
 
 msgid "Enable UPnP/NAT-PMP port mapping"
-msgstr "Enable UPnP/NAT-PMP port mapping"
+msgstr "UPnP/NAT-PMP পোর্ট ম্যাপিং সক্ষম করুন"
 
 msgid "Enable Web UI"
-msgstr "Enable Web UI"
+msgstr "ওয়েব UI সক্ষম করুন"
 
 msgid "Enable alternative speed limits"
-msgstr "Enable alternative speed limits"
+msgstr "বিকল্প গতি সীমা সক্ষম করুন"
 
 msgid "Enable alternative speed limits (useful for limiting speeds during certain hours)"
-msgstr "Enable alternative speed limits (useful for limiting speeds during certain hours)"
+msgstr "বিকল্প গতি সীমা সক্ষম করুন (নির্দিষ্ট সময়ে গতি সীমিত করার জন্য উপযোগী)"
 
 msgid "Enable clickjacking protection"
-msgstr "Enable clickjacking protection"
+msgstr "ক্লিকজ্যাকিং সুরক্ষা সক্ষম করুন"
 
 msgid "Enable client behavior simulation"
-msgstr "Enable client behavior simulation"
+msgstr "ক্লায়েন্ট আচরণ সিমুলেশন সক্ষম করুন"
 
 msgid "Enable client behavior simulation engine"
-msgstr "Enable client behavior simulation engine"
+msgstr "ক্লায়েন্ট আচরণ সিমুলেশন ইঞ্জিন সক্ষম করুন"
 
 msgid "Enable debug mode"
-msgstr "Enable debug mode"
+msgstr "ডিবাগ মোড সক্ষম করুন"
 
 msgid "Enable debug mode with extra logging and error details"
-msgstr "Enable debug mode with extra logging and error details"
+msgstr "অতিরিক্ত লগিং এবং ত্রুটি বিবরণ সহ ডিবাগ মোড সক্ষম করুন"
 
 msgid "Enable dynamic client profile switching"
-msgstr "Enable dynamic client profile switching"
+msgstr "গতিশীল ক্লায়েন্ট প্রোফাইল পরিবর্তন সক্ষম করুন"
 
 msgid "Enable lt_donthave extension for piece availability"
-msgstr "Enable lt_donthave extension for piece availability"
+msgstr "পিস প্রাপ্যতার জন্য lt_donthave এক্সটেনশন সক্ষম করুন"
 
 msgid "Enable metadata extension"
-msgstr "Enable metadata extension"
+msgstr "মেটাডেটা এক্সটেনশন সক্ষম করুন"
 
 msgid "Enable metadata extension features"
-msgstr "Enable metadata extension features"
+msgstr "মেটাডেটা এক্সটেনশন বৈশিষ্ট্য সক্ষম করুন"
 
 msgid "Enable or disable BitTorrent protocol extensions"
-msgstr "Enable or disable BitTorrent protocol extensions"
+msgstr "BitTorrent প্রোটোকল এক্সটেনশন সক্ষম বা নিষ্ক্রিয় করুন"
 
 msgid "Enable or disable DHT for trackerless torrent support"
-msgstr "Enable or disable DHT for trackerless torrent support"
+msgstr "ট্র্যাকারহীন টরেন্ট সমর্থনের জন্য DHT সক্ষম বা নিষ্ক্রিয় করুন"
 
 msgid "Enable proxy authentication"
-msgstr "Enable proxy authentication"
+msgstr "প্রক্সি প্রমাণীকরণ সক্ষম করুন"
 
 msgid "Enable random variations in client behavior"
-msgstr "Enable random variations in client behavior"
+msgstr "ক্লায়েন্ট আচরণে এলোমেলো পরিবর্তন সক্ষম করুন"
 
 msgid "Enable rate limiting"
-msgstr "Enable rate limiting"
+msgstr "রেট সীমাবদ্ধতা সক্ষম করুন"
 
 msgid "Enable realistic traffic variations"
-msgstr "Enable realistic traffic variations"
+msgstr "বাস্তবসম্মত ট্রাফিক পরিবর্তন সক্ষম করুন"
 
 msgid "Enable secure HTTP headers"
-msgstr "Enable secure HTTP headers"
+msgstr "সুরক্ষিত HTTP হেডার সক্ষম করুন"
 
 msgid "Enable speed scheduler"
-msgstr "Enable speed scheduler"
+msgstr "গতি সময়সূচী সক্ষম করুন"
 
 msgid "Enable statistics"
-msgstr "Enable statistics"
+msgstr "পরিসংখ্যান সক্ষম করুন"
 
 msgid "Enable swarm intelligence"
 msgstr "Enable swarm intelligence"
@@ -651,34 +714,37 @@ msgid "Enable swarm intelligence for adaptive behavior"
 msgstr "Enable swarm intelligence for adaptive behavior"
 
 msgid "Enable time-based traffic patterns (peak hours, night hours)"
-msgstr "Enable time-based traffic patterns (peak hours, night hours)"
+msgstr "সময়-ভিত্তিক ট্রাফিক প্যাটার্ন সক্ষম করুন (পিক ঘন্টা, রাতের ঘন্টা)"
 
 msgid "Enable ut_holepunch extension for NAT traversal"
-msgstr "Enable ut_holepunch extension for NAT traversal"
+msgstr "NAT অতিক্রমের জন্য ut_holepunch এক্সটেনশন সক্ষম করুন"
 
 msgid "Enable ut_metadata extension for metadata exchange"
-msgstr "Enable ut_metadata extension for metadata exchange"
+msgstr "মেটাডেটা বিনিময়ের জন্য ut_metadata এক্সটেনশন সক্ষম করুন"
 
 msgid "Enable ut_pex extension for peer exchange"
-msgstr "Enable ut_pex extension for peer exchange"
+msgstr "পিয়ার বিনিময়ের জন্য ut_pex এক্সটেনশন সক্ষম করুন"
+
+msgid "Enable watch folder"
+msgstr "ফোল্ডার নজরদারি সক্ষম করুন"
 
 msgid "Enable web-based remote control interface"
-msgstr "Enable web-based remote control interface"
+msgstr "ওয়েব-ভিত্তিক দূরবর্তী নিয়ন্ত্রণ ইন্টারফেস সক্ষম করুন"
 
 msgid "Enable µTP (Micro Transport Protocol)"
-msgstr "Enable µTP (Micro Transport Protocol)"
+msgstr "µTP সক্ষম করুন (মাইক্রো ট্রান্সপোর্ট প্রোটোকল)"
 
 msgid "Enabled"
 msgstr "সক্রিয়"
 
 msgid "Encryption:"
-msgstr "Encryption:"
+msgstr "এনক্রিপশন:"
 
 msgid "End hour (24-hour format)"
-msgstr "End hour (24-hour format)"
+msgstr "শেষ ঘন্টা (২৪-ঘন্টা ফর্ম্যাট)"
 
 msgid "End minute"
-msgstr "End minute"
+msgstr "শেষ মিনিট"
 
 msgid "English"
 msgstr "ইংরেজি"
@@ -687,718 +753,790 @@ msgid "Error"
 msgstr "ত্রুটি"
 
 msgid "Error changing language"
-msgstr "Error changing language"
+msgstr "ভাষা পরিবর্তনে ত্রুটি"
 
 msgid "Export"
 msgstr "রপ্তানি"
 
 msgid "Export Settings"
-msgstr "Export Settings"
+msgstr "সেটিংস রপ্তানি করুন"
 
 msgid "Export current settings to a file"
-msgstr "Export current settings to a file"
+msgstr "বর্তমান সেটিংস একটি ফাইলে রপ্তানি করুন"
 
 msgid "Extension Timeout:"
-msgstr "Extension Timeout:"
+msgstr "এক্সটেনশন টাইমআউট:"
 
 msgid "Extension statistics update interval (seconds)"
-msgstr "Extension statistics update interval (seconds)"
+msgstr "এক্সটেনশন পরিসংখ্যান আপডেট ব্যবধান (সেকেন্ড)"
 
 msgid "Failed to apply seeding profile"
-msgstr "Failed to apply seeding profile"
+msgstr "সিডিং প্রোফাইল প্রয়োগ করতে ব্যর্থ"
 
 msgid "Failure Reason"
-msgstr "Failure Reason"
+msgstr "ব্যর্থতার কারণ"
 
 msgid "Fall back to TCP if µTP fails"
-msgstr "Fall back to TCP if µTP fails"
+msgstr "µTP ব্যর্থ হলে TCP-তে ফিরে যান"
 
 msgid "Fallback configuration"
-msgstr "Fallback configuration"
+msgstr "ফলব্যাক কনফিগারেশন"
 
 msgid "Fast Extension (BEP-006)"
-msgstr "Fast Extension (BEP-006)"
+msgstr "দ্রুত এক্সটেনশন (BEP-006)"
 
 msgid "File"
 msgstr "ফাইল"
 
 msgid "File Path"
-msgstr "File Path"
+msgstr "ফাইল পথ"
 
 msgid "File chooser not yet implemented"
-msgstr "File chooser not yet implemented"
+msgstr "ফাইল চয়নকারী এখনও বাস্তবায়িত হয়নি"
 
 msgid "Files"
-msgstr "Files"
+msgstr "ফাইল"
 
 msgid "Flags"
-msgstr "Flags"
+msgstr "পতাকা"
+
+msgid "Folder path:"
+msgstr "ফোল্ডার পথ:"
 
 msgid "Follow System"
-msgstr "Follow System"
+msgstr "সিস্টেম অনুসরণ করুন"
+
+msgid "Force Complete"
+msgstr "জোরপূর্বক সম্পূর্ণ করুন"
+
+msgid "Force Recheck"
+msgstr "জোরপূর্বক পুনঃপরীক্ষা করুন"
+
+msgid "Force Start"
+msgstr "জোরপূর্বক শুরু করুন"
 
 msgid "Forced"
-msgstr "Forced"
+msgstr "জোরপূর্বক"
 
 msgid "French"
-msgstr "French"
+msgstr "ফরাসি"
 
 msgid "Fri"
-msgstr "Fri"
+msgstr "শুক্র"
 
 msgid "Friday"
-msgstr "Friday"
+msgstr "শুক্রবার"
 
 msgid "From:"
-msgstr "From:"
+msgstr "থেকে:"
 
 msgid "General"
 msgstr "সাধারণ"
 
 msgid "General settings reset to defaults"
-msgstr "General settings reset to defaults"
+msgstr "সাধারণ সেটিংস ডিফল্টে রিসেট করা হয়েছে"
 
 msgid "General timeout for extension operations (seconds)"
-msgstr "General timeout for extension operations (seconds)"
+msgstr "এক্সটেনশন অপারেশনের জন্য সাধারণ টাইমআউট (সেকেন্ড)"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "সাধারণ ট্যাব"
 
 msgid "Generate Secure Password"
-msgstr "Generate Secure Password"
+msgstr "সুরক্ষিত পাসওয়ার্ড তৈরি করুন"
 
 msgid "Generate a random port number"
-msgstr "Generate a random port number"
+msgstr "একটি এলোমেলো পোর্ট নম্বর তৈরি করুন"
 
 msgid "Generate a random secure password"
-msgstr "Generate a random secure password"
+msgstr "একটি এলোমেলো সুরক্ষিত পাসওয়ার্ড তৈরি করুন"
 
 msgid "Generate synthetic metadata"
-msgstr "Generate synthetic metadata"
+msgstr "সিনথেটিক মেটাডেটা তৈরি করুন"
 
 msgid "Generate synthetic metadata for simulation"
-msgstr "Generate synthetic metadata for simulation"
+msgstr "সিমুলেশনের জন্য সিনথেটিক মেটাডেটা তৈরি করুন"
 
 msgid "Generate synthetic peer data for PEX"
-msgstr "Generate synthetic peer data for PEX"
+msgstr "PEX-এর জন্য সিনথেটিক পিয়ার ডেটা তৈরি করুন"
 
 msgid "Generate synthetic peers"
-msgstr "Generate synthetic peers"
+msgstr "সিনথেটিক পিয়ার তৈরি করুন"
 
 msgid "German"
-msgstr "German"
+msgstr "জার্মান"
 
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
 
 msgid "Global download speed limit in KB/s (0 = unlimited)"
-msgstr "Global download speed limit in KB/s (0 = unlimited)"
+msgstr "KB/s-এ বৈশ্বিক ডাউনলোড গতি সীমা (০ = সীমাহীন)"
 
 msgid "Global upload speed limit in KB/s (0 = unlimited)"
-msgstr "Global upload speed limit in KB/s (0 = unlimited)"
+msgstr "KB/s-এ বৈশ্বিক আপলোড গতি সীমা (০ = সীমাহীন)"
 
 msgid "HTTP"
 msgstr "HTTP"
 
 msgid "HTTP seeder timeout (seconds):"
-msgstr "HTTP seeder timeout (seconds):"
+msgstr "HTTP সিডার টাইমআউট (সেকেন্ড):"
 
 msgid "Handshake"
-msgstr "Handshake"
+msgstr "হ্যান্ডশেক"
 
 msgid "Handshake timeout (seconds):"
-msgstr "Handshake timeout (seconds):"
+msgstr "হ্যান্ডশেক টাইমআউট (সেকেন্ড):"
 
 msgid "Hide Main Window"
-msgstr "Hide Main Window"
+msgstr "প্রধান উইন্ডো লুকান"
 
 msgid "Hide to system tray when window is minimized"
-msgstr "Hide to system tray when window is minimized"
+msgstr "উইন্ডো ছোট করা হলে সিস্টেম ট্রেতে লুকান"
+
+msgid "High Priority"
+msgstr "উচ্চ অগ্রাধিকার"
 
 msgid "Hindi"
-msgstr "Hindi"
+msgstr "হিন্দি"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
-msgstr "How often to announce to trackers (60-7200 seconds)"
+msgstr "ট্র্যাকারে কত ঘন ঘন ঘোষণা করবেন (৬০-৭২০০ সেকেন্ড)"
+
+msgid "How often to check for new torrent files (in seconds)"
+msgstr "নতুন টরেন্ট ফাইলের জন্য কত ঘন ঘন পরীক্ষা করবেন (সেকেন্ডে)"
 
 msgid "How often to scrape tracker for swarm statistics"
-msgstr "How often to scrape tracker for swarm statistics"
+msgstr "সোয়ার্ম পরিসংখ্যানের জন্য ট্র্যাকার স্ক্র্যাপ করার ফ্রিকোয়েন্সি"
 
 msgid "How often to update the user interface"
-msgstr "How often to update the user interface"
+msgstr "ইউজার ইন্টারফেস আপডেট করার ফ্রিকোয়েন্সি"
 
 msgid "ID"
-msgstr "ID"
+msgstr "আইডি"
 
 msgid "INFO"
-msgstr "INFO"
+msgstr "তথ্য"
 
 msgid "IP Address"
-msgstr "IP Address"
+msgstr "IP ঠিকানা"
 
 msgid "IP address to bind to (0.0.0.0 for all interfaces)"
-msgstr "IP address to bind to (0.0.0.0 for all interfaces)"
+msgstr "আবদ্ধ করার জন্য IP ঠিকানা (সমস্ত ইন্টারফেসের জন্য 0.0.0.0)"
 
 msgid "Idle Probability:"
-msgstr "Idle Probability:"
+msgstr "নিষ্ক্রিয় সম্ভাবনা:"
 
 msgid "Import"
 msgstr "আমদানি"
 
 msgid "Import Settings"
-msgstr "Import Settings"
+msgstr "সেটিংস আমদানি করুন"
 
 msgid "Import settings from a file"
-msgstr "Import settings from a file"
+msgstr "একটি ফাইল থেকে সেটিংস আমদানি করুন"
 
 msgid "Inactive"
-msgstr "Inactive"
+msgstr "নিষ্ক্রিয়"
 
 msgid "Incoming"
-msgstr "Incoming"
+msgstr "আগত"
 
 msgid "Incoming Connections"
-msgstr "Incoming Connections"
+msgstr "আগত সংযোগ"
 
 msgid "Incoming Peer Connections"
-msgstr "Incoming Peer Connections"
+msgstr "আগত পিয়ার সংযোগ"
 
 msgid "Indonesian"
-msgstr "Indonesian"
+msgstr "ইন্দোনেশীয়"
 
 msgid "Interested"
-msgstr "Interested"
+msgstr "আগ্রহী"
 
 msgid "Interval between DHT announcements (seconds)"
-msgstr "Interval between DHT announcements (seconds)"
+msgstr "DHT ঘোষণার মধ্যে ব্যবধান (সেকেন্ড)"
 
 msgid "Interval between PEX message exchanges (seconds)"
-msgstr "Interval between PEX message exchanges (seconds)"
+msgstr "PEX বার্তা বিনিময়ের মধ্যে ব্যবধান (সেকেন্ড)"
 
 msgid "Interval for DHT statistics updates (seconds)"
-msgstr "Interval for DHT statistics updates (seconds)"
+msgstr "DHT পরিসংখ্যান আপডেটের জন্য ব্যবধান (সেকেন্ড)"
 
 msgid "Interval for contacting peers in seconds"
-msgstr "Interval for contacting peers in seconds"
+msgstr "সেকেন্ডে পিয়ারের সাথে যোগাযোগের জন্য ব্যবধান"
 
 msgid "Interval for sending keep alive messages in seconds"
-msgstr "Interval for sending keep alive messages in seconds"
+msgstr "সেকেন্ডে জীবিত রাখার বার্তা পাঠানোর জন্য ব্যবধান"
 
 msgid "Irish"
-msgstr "Irish"
+msgstr "আইরিশ"
 
 msgid "Italian"
-msgstr "Italian"
+msgstr "ইতালীয়"
 
 msgid "Japanese"
-msgstr "Japanese"
+msgstr "জাপানি"
 
 msgid "Keep Alive Interval:"
-msgstr "Keep Alive Interval:"
+msgstr "জীবিত রাখার ব্যবধান:"
 
 msgid "Keep alive interval (seconds):"
-msgstr "Keep alive interval (seconds):"
+msgstr "জীবিত রাখার ব্যবধান (সেকেন্ড):"
 
 msgid "Keep alive interval for connections (seconds)"
-msgstr "Keep alive interval for connections (seconds)"
+msgstr "সংযোগের জন্য জীবিত রাখার ব্যবধান (সেকেন্ড)"
 
 msgid "Korean"
-msgstr "Korean"
+msgstr "কোরিয়ান"
 
 msgid "Label"
-msgstr "Label"
+msgstr "লেবেল"
+
+msgid "Label:"
+msgstr "লেবেল:"
 
 msgid "Language"
 msgstr "ভাষা"
 
 msgid "Language switched to"
-msgstr "Language switched to"
+msgstr "ভাষা পরিবর্তন করা হয়েছে"
 
 msgid "Language:"
-msgstr "Language:"
+msgstr "ভাষা:"
 
 msgid "Last Announce"
-msgstr "Last Announce"
+msgstr "শেষ ঘোষণা"
 
 msgid "Last Notification"
-msgstr "Last Notification"
+msgstr "শেষ বিজ্ঞপ্তি"
 
 msgid "Launch Main Application"
-msgstr "Launch Main Application"
+msgstr "প্রধান অ্যাপ্লিকেশন চালু করুন"
 
 msgid "Leechers"
-msgstr "Leechers"
+msgstr "লিচার"
 
 msgid "Level of BitTorrent protocol compliance"
-msgstr "Level of BitTorrent protocol compliance"
+msgstr "BitTorrent প্রোটোকল সম্মতির স্তর"
 
 msgid "Light"
 msgstr "আলো"
 
 msgid "Limit extension message rate"
-msgstr "Limit extension message rate"
+msgstr "এক্সটেনশন বার্তা রেট সীমিত করুন"
 
 msgid "List of bootstrap nodes for DHT initialization"
-msgstr "List of bootstrap nodes for DHT initialization"
+msgstr "DHT ইনিশিয়ালাইজেশনের জন্য বুটস্ট্র্যাপ নোডের তালিকা"
 
 msgid "Log"
-msgstr "Log"
+msgstr "লগ"
 
 msgid "Log Level:"
-msgstr "Log Level:"
+msgstr "লগ স্তর:"
 
 msgid "Log to file"
-msgstr "Log to file"
+msgstr "ফাইলে লগ করুন"
+
+msgid "Low Priority"
+msgstr "নিম্ন অগ্রাধিকার"
 
 msgid "Max Connections:"
-msgstr "Max Connections:"
+msgstr "সর্বোচ্চ সংযোগ:"
 
 msgid "Max Dropped Peers:"
-msgstr "Max Dropped Peers:"
+msgstr "সর্বোচ্চ বাদ পড়া পিয়ার:"
 
 msgid "Max Message Size:"
-msgstr "Max Message Size:"
+msgstr "সর্বোচ্চ বার্তা আকার:"
 
 msgid "Max Messages/Second:"
-msgstr "Max Messages/Second:"
+msgstr "সর্বোচ্চ বার্তা/সেকেন্ড:"
 
 msgid "Max Nodes:"
-msgstr "Max Nodes:"
+msgstr "সর্বোচ্চ নোড:"
 
 msgid "Max Peers/Message:"
-msgstr "Max Peers/Message:"
+msgstr "সর্বোচ্চ পিয়ার/বার্তা:"
 
 msgid "Max Queries/Second:"
-msgstr "Max Queries/Second:"
+msgstr "সর্বোচ্চ ক্যোয়েরি/সেকেন্ড:"
 
 msgid "Max global connections:"
-msgstr "Max global connections:"
+msgstr "সর্বোচ্চ গ্লোবাল সংযোগ:"
 
 msgid "Max log file size (MB):"
-msgstr "Max log file size (MB):"
+msgstr "সর্বোচ্চ লগ ফাইল আকার (MB):"
 
 msgid "Max per torrent:"
-msgstr "Max per torrent:"
+msgstr "প্রতি টরেন্ট সর্বোচ্চ:"
 
 msgid "Max upload slots:"
-msgstr "Max upload slots:"
+msgstr "সর্বোচ্চ আপলোড স্লট:"
 
 msgid "Maximum DHT queries per second"
-msgstr "Maximum DHT queries per second"
+msgstr "প্রতি সেকেন্ডে সর্বোচ্চ DHT ক্যোয়েরি"
 
 msgid "Maximum connections for aggressive profile"
-msgstr "Maximum connections for aggressive profile"
+msgstr "আক্রমণাত্মক প্রোফাইলের জন্য সর্বোচ্চ সংযোগ"
 
 msgid "Maximum connections for balanced profile"
-msgstr "Maximum connections for balanced profile"
+msgstr "সুষম প্রোফাইলের জন্য সর্বোচ্চ সংযোগ"
 
 msgid "Maximum connections for conservative profile"
-msgstr "Maximum connections for conservative profile"
+msgstr "রক্ষণশীল প্রোফাইলের জন্য সর্বোচ্চ সংযোগ"
 
 msgid "Maximum dropped peers to track for PEX"
-msgstr "Maximum dropped peers to track for PEX"
+msgstr "PEX-এর জন্য ট্র্যাক করার জন্য সর্বোচ্চ বাদ পড়া পিয়ার"
 
 msgid "Maximum extension messages per second"
-msgstr "Maximum extension messages per second"
+msgstr "প্রতি সেকেন্ডে সর্বোচ্চ এক্সটেনশন বার্তা"
 
 msgid "Maximum number of DHT nodes to maintain"
-msgstr "Maximum number of DHT nodes to maintain"
+msgstr "রক্ষণাবেক্ষণের জন্য সর্বোচ্চ DHT নোড সংখ্যা"
 
 msgid "Maximum number of concurrent DHT queries"
-msgstr "Maximum number of concurrent DHT queries"
+msgstr "সমসাময়িক DHT ক্যোয়েরির সর্বোচ্চ সংখ্যা"
 
 msgid "Maximum number of connections per individual torrent"
-msgstr "Maximum number of connections per individual torrent"
+msgstr "প্রতিটি পৃথক টরেন্টের জন্য সর্বোচ্চ সংযোগ সংখ্যা"
 
 msgid "Maximum number of connections to all torrents"
-msgstr "Maximum number of connections to all torrents"
+msgstr "সমস্ত টরেন্টে সর্বোচ্চ সংযোগ সংখ্যা"
 
 msgid "Maximum number of nodes in the routing table"
-msgstr "Maximum number of nodes in the routing table"
+msgstr "রাউটিং টেবিলে সর্বোচ্চ নোড সংখ্যা"
 
 msgid "Maximum number of nodes per bucket"
-msgstr "Maximum number of nodes per bucket"
+msgstr "প্রতি বাকেটে সর্বোচ্চ নোড সংখ্যা"
 
 msgid "Maximum number of simultaneous upload slots"
-msgstr "Maximum number of simultaneous upload slots"
+msgstr "সমসাময়িক আপলোড স্লটের সর্বোচ্চ সংখ্যা"
 
 msgid "Maximum peers to include in a PEX message"
-msgstr "Maximum peers to include in a PEX message"
+msgstr "PEX বার্তায় অন্তর্ভুক্ত করার জন্য সর্বোচ্চ পিয়ার"
 
 msgid "Maximum port for seeder connections"
-msgstr "Maximum port for seeder connections"
+msgstr "সিডার সংযোগের জন্য সর্বোচ্চ পোর্ট"
 
 msgid "Maximum size for extension messages (bytes)"
-msgstr "Maximum size for extension messages (bytes)"
+msgstr "এক্সটেনশন বার্তার জন্য সর্বোচ্চ আকার (বাইট)"
 
 msgid "Maximum size of log file before rotation"
-msgstr "Maximum size of log file before rotation"
+msgstr "ঘূর্ণনের আগে লগ ফাইলের সর্বোচ্চ আকার"
 
 msgid "Maximum transaction ID for tracker communication"
-msgstr "Maximum transaction ID for tracker communication"
+msgstr "ট্র্যাকার যোগাযোগের জন্য সর্বোচ্চ লেনদেন আইডি"
 
 msgid "Message"
-msgstr "Message"
+msgstr "বার্তা"
 
 msgid "Message read timeout (seconds):"
-msgstr "Message read timeout (seconds):"
+msgstr "বার্তা পড়ার টাইমআউট (সেকেন্ড):"
 
 msgid "Metadata Piece Size:"
-msgstr "Metadata Piece Size:"
+msgstr "মেটাডেটা পিস আকার:"
 
 msgid "Metadata Timeout:"
-msgstr "Metadata Timeout:"
+msgstr "মেটাডেটা টাইমআউট:"
 
 msgid "Min announce interval (sec):"
-msgstr "Min announce interval (sec):"
+msgstr "ন্যূনতম ঘোষণা ব্যবধান (সেকেন্ড):"
 
 msgid "Minimize to system tray"
-msgstr "Minimize to system tray"
+msgstr "সিস্টেম ট্রেতে ছোট করুন"
 
 msgid "Minimum log level to record"
-msgstr "Minimum log level to record"
+msgstr "রেকর্ড করার জন্য ন্যূনতম লগ স্তর"
 
 msgid "Minimum port for seeder connections"
-msgstr "Minimum port for seeder connections"
+msgstr "সিডার সংযোগের জন্য ন্যূনতম পোর্ট"
 
 msgid "Minimum time between announces (10-3600 seconds)"
-msgstr "Minimum time between announces (10-3600 seconds)"
+msgstr "ঘোষণার মধ্যে ন্যূনতম সময় (১০-৩৬০০ সেকেন্ড)"
 
 msgid "Minimum transaction ID for tracker communication"
-msgstr "Minimum transaction ID for tracker communication"
+msgstr "ট্র্যাকার যোগাযোগের জন্য ন্যূনতম লেনদেন আইডি"
 
 msgid "Mon"
-msgstr "Mon"
+msgstr "সোম"
 
 msgid "Monday"
-msgstr "Monday"
+msgstr "সোমবার"
+
+msgid "Multi-Tracker"
+msgstr "মাল্টি-ট্র্যাকার"
 
 msgid "My IP address"
-msgstr "My IP address"
+msgstr "আমার IP ঠিকানা"
 
 msgid "N/A"
-msgstr "N/A"
+msgstr "প্রযোজ্য নয়"
 
 msgid "Name"
 msgstr "নাম"
 
 msgid "Network interface:"
-msgstr "Network interface:"
+msgstr "নেটওয়ার্ক ইন্টারফেস:"
+
+msgid "New name:"
+msgstr "নতুন নাম:"
 
 msgid "Next Announce"
-msgstr "Next Announce"
+msgstr "পরবর্তী ঘোষণা"
 
 msgid "Next Update"
-msgstr "Next Update"
+msgstr "পরবর্তী আপডেট"
 
 msgid "No editable options available for this torrent."
-msgstr "No editable options available for this torrent."
+msgstr "এই টরেন্টের জন্য কোন সম্পাদনাযোগ্য বিকল্প উপলব্ধ নেই।"
 
 msgid "None"
-msgstr "None"
+msgstr "কিছুই নয়"
+
+msgid "Normal Priority"
+msgstr "স্বাভাবিক অগ্রাধিকার"
 
 msgid "Number of peers to analyze for behavior patterns"
-msgstr "Number of peers to analyze for behavior patterns"
+msgstr "আচরণ প্যাটার্ন বিশ্লেষণের জন্য পিয়ার সংখ্যা"
 
 msgid "Number of peers to request from tracker"
-msgstr "Number of peers to request from tracker"
+msgstr "ট্র্যাকার থেকে অনুরোধ করার জন্য পিয়ার সংখ্যা"
 
 msgid "Number of synthetic peers to generate"
-msgstr "Number of synthetic peers to generate"
+msgstr "তৈরি করার জন্য সিনথেটিক পিয়ার সংখ্যা"
+
+msgid "OK"
+msgstr "ঠিক আছে"
 
 msgid "Only allow connections from localhost (more secure)"
-msgstr "Only allow connections from localhost (more secure)"
+msgstr "শুধুমাত্র localhost থেকে সংযোগের অনুমতি দিন (আরও সুরক্ষিত)"
 
 msgid "Open preferences"
-msgstr "Open preferences"
+msgstr "পছন্দ খুলুন"
 
 msgid "Options"
-msgstr "Options"
+msgstr "বিকল্প"
 
 msgid "Outgoing"
-msgstr "Outgoing"
+msgstr "বহির্গামী"
 
 msgid "Outgoing Connections"
-msgstr "Outgoing Connections"
+msgstr "বহির্গামী সংযোগ"
 
 msgid "Outgoing Peer Connections"
-msgstr "Outgoing Peer Connections"
+msgstr "বহির্গামী পিয়ার সংযোগ"
 
 msgid "Overlay Notification"
-msgstr "Overlay Notification"
+msgstr "ওভারলে বিজ্ঞপ্তি"
 
 msgid "PEX Interval:"
-msgstr "PEX Interval:"
+msgstr "PEX ব্যবধান:"
 
 msgid "Password for web interface login"
-msgstr "Password for web interface login"
+msgstr "ওয়েব ইন্টারফেস লগইনের জন্য পাসওয়ার্ড"
 
 msgid "Password:"
-msgstr "Password:"
+msgstr "পাসওয়ার্ড:"
 
 msgid "Path"
-msgstr "Path"
+msgstr "পথ"
+
+msgid "Path to the folder to watch for torrent files"
+msgstr "টরেন্ট ফাইলের জন্য নজরদারির ফোল্ডারের পথ"
 
 msgid "Pause"
 msgstr "বিরতি"
 
 msgid "Pause All Torrents"
-msgstr "Pause All Torrents"
+msgstr "সমস্ত টরেন্ট বিরতি দিন"
 
 msgid "Pause torrent"
-msgstr "Pause torrent"
+msgstr "টরেন্ট বিরতি দিন"
 
 msgid "Peer Analysis Depth:"
-msgstr "Peer Analysis Depth:"
+msgstr "পিয়ার বিশ্লেষণ গভীরতা:"
 
 msgid "Peer Choking"
-msgstr "Peer Choking"
+msgstr "পিয়ার চকিং"
 
 msgid "Peer ID"
-msgstr "Peer ID"
+msgstr "পিয়ার আইডি"
 
 msgid "Peer ID Prefix:"
-msgstr "Peer ID Prefix:"
+msgstr "পিয়ার আইডি উপসর্গ:"
 
 msgid "Peer ID prefix to identify client type"
-msgstr "Peer ID prefix to identify client type"
+msgstr "ক্লায়েন্ট প্রকার সনাক্ত করতে পিয়ার আইডি উপসর্গ"
 
 msgid "Peer Protocol"
-msgstr "Peer Protocol"
+msgstr "পিয়ার প্রোটোকল"
 
 msgid "Peer Protocol settings reset to defaults"
-msgstr "Peer Protocol settings reset to defaults"
+msgstr "পিয়ার প্রোটোকল সেটিংস ডিফল্টে রিসেট করা হয়েছে"
 
 msgid "Peer contact interval (seconds):"
-msgstr "Peer contact interval (seconds):"
+msgstr "পিয়ার যোগাযোগ ব্যবধান (সেকেন্ড):"
 
 msgid "Peer idle chance:"
-msgstr "Peer idle chance:"
+msgstr "পিয়ার নিষ্ক্রিয় সম্ভাবনা:"
 
 msgid "Peer request count:"
-msgstr "Peer request count:"
+msgstr "পিয়ার অনুরোধ সংখ্যা:"
 
 msgid "Peers"
 msgstr "পিয়ার"
 
 msgid "Percentage of connections to rotate (0.0 - 1.0)"
-msgstr "Percentage of connections to rotate (0.0 - 1.0)"
+msgstr "ঘূর্ণন করার জন্য সংযোগের শতাংশ (০.০ - ১.০)"
 
 msgid "Persian"
-msgstr "Persian"
+msgstr "ফার্সি"
 
 msgid "Piece Length"
-msgstr "Piece Length"
+msgstr "পিস দৈর্ঘ্য"
 
 msgid "Pieces"
-msgstr "Pieces"
+msgstr "পিস"
 
 msgid "Pieces Received"
-msgstr "Pieces Received"
+msgstr "প্রাপ্ত পিস"
 
 msgid "Polish"
-msgstr "Polish"
+msgstr "পোলিশ"
 
 msgid "Port"
 msgstr "পোর্ট"
 
 msgid "Port for incoming BitTorrent connections (1024-65535)"
-msgstr "Port for incoming BitTorrent connections (1024-65535)"
+msgstr "আগত BitTorrent সংযোগের জন্য পোর্ট (১০২৪-৬৫৫৩৫)"
 
 msgid "Port for web interface (1024-65535)"
-msgstr "Port for web interface (1024-65535)"
+msgstr "ওয়েব ইন্টারফেসের জন্য পোর্ট (১০২৪-৬৫৫৩৫)"
 
 msgid "Port:"
-msgstr "Port:"
+msgstr "পোর্ট:"
 
 msgid "Portuguese"
-msgstr "Portuguese"
+msgstr "পর্তুগিজ"
 
 msgid "Preference 1:"
-msgstr "Preference 1:"
+msgstr "পছন্দ ১:"
 
 msgid "Preference 2:"
-msgstr "Preference 2:"
+msgstr "পছন্দ ২:"
 
 msgid "Preferences"
-msgstr "Preferences"
+msgstr "পছন্দ"
 
 msgid "Prevent embedding in frames (X-Frame-Options)"
-msgstr "Prevent embedding in frames (X-Frame-Options)"
+msgstr "ফ্রেমে এম্বেড করা প্রতিরোধ করুন (X-Frame-Options)"
 
 msgid "Primary BitTorrent client to simulate"
-msgstr "Primary BitTorrent client to simulate"
+msgstr "সিমুলেট করার জন্য প্রাথমিক BitTorrent ক্লায়েন্ট"
 
 msgid "Primary Client:"
-msgstr "Primary Client:"
+msgstr "প্রাথমিক ক্লায়েন্ট:"
 
 msgid "Priority"
 msgstr "অগ্রাধিকার"
 
 msgid "Priority Down"
-msgstr "Priority Down"
+msgstr "অগ্রাধিকার হ্রাস"
 
 msgid "Priority Up"
-msgstr "Priority Up"
+msgstr "অগ্রাধিকার বৃদ্ধি"
 
 msgid "Private"
-msgstr "Private"
+msgstr "ব্যক্তিগত"
 
 msgid "Probability of idle periods for aggressive profile"
-msgstr "Probability of idle periods for aggressive profile"
+msgstr "আক্রমণাত্মক প্রোফাইলের জন্য নিষ্ক্রিয় সময়ের সম্ভাবনা"
 
 msgid "Probability of idle periods for balanced profile"
-msgstr "Probability of idle periods for balanced profile"
+msgstr "সুষম প্রোফাইলের জন্য নিষ্ক্রিয় সময়ের সম্ভাবনা"
 
 msgid "Probability of idle periods for conservative profile"
-msgstr "Probability of idle periods for conservative profile"
+msgstr "রক্ষণশীল প্রোফাইলের জন্য নিষ্ক্রিয় সময়ের সম্ভাবনা"
 
 msgid "Probability of peer behavior analysis (0.0 - 1.0)"
-msgstr "Probability of peer behavior analysis (0.0 - 1.0)"
+msgstr "পিয়ার আচরণ বিশ্লেষণের সম্ভাবনা (০.০ - ১.০)"
 
 msgid "Probability of peer being idle (0.0 - 1.0)"
-msgstr "Probability of peer being idle (0.0 - 1.0)"
+msgstr "পিয়ার নিষ্ক্রিয় থাকার সম্ভাবনা (০.০ - ১.০)"
 
 msgid "Probability of peer dropping out (0.0 - 1.0)"
-msgstr "Probability of peer dropping out (0.0 - 1.0)"
+msgstr "পিয়ার বাদ পড়ার সম্ভাবনা (০.০ - ১.০)"
 
 msgid "Probability of peer status changes (0.0 - 1.0)"
-msgstr "Probability of peer status changes (0.0 - 1.0)"
+msgstr "পিয়ার স্ট্যাটাস পরিবর্তনের সম্ভাবনা (০.০ - ১.০)"
 
 msgid "Probability of seeder upload activity (0.0 - 1.0)"
-msgstr "Probability of seeder upload activity (0.0 - 1.0)"
+msgstr "সিডার আপলোড কার্যকলাপের সম্ভাবনা (০.০ - ১.০)"
 
 msgid "Probability of switching to a different client behavior"
-msgstr "Probability of switching to a different client behavior"
+msgstr "বিভিন্ন ক্লায়েন্ট আচরণে পরিবর্তনের সম্ভাবনা"
 
 msgid "Probability of traffic bursts for aggressive profile"
-msgstr "Probability of traffic bursts for aggressive profile"
+msgstr "আক্রমণাত্মক প্রোফাইলের জন্য ট্রাফিক বার্স্টের সম্ভাবনা"
 
 msgid "Probability of traffic bursts for balanced profile"
-msgstr "Probability of traffic bursts for balanced profile"
+msgstr "সুষম প্রোফাইলের জন্য ট্রাফিক বার্স্টের সম্ভাবনা"
 
 msgid "Probability of traffic bursts for conservative profile"
-msgstr "Probability of traffic bursts for conservative profile"
+msgstr "রক্ষণশীল প্রোফাইলের জন্য ট্রাফিক বার্স্টের সম্ভাবনা"
 
 msgid "Progress"
 msgstr "অগ্রগতি"
 
 msgid "Progress distribution (almost):"
-msgstr "Progress distribution (almost):"
+msgstr "অগ্রগতি বিতরণ (প্রায়):"
 
 msgid "Progress distribution (middle):"
-msgstr "Progress distribution (middle):"
+msgstr "অগ্রগতি বিতরণ (মধ্যম):"
 
 msgid "Progress distribution (start):"
-msgstr "Progress distribution (start):"
+msgstr "অগ্রগতি বিতরণ (শুরু):"
 
 msgid "Progress distribution for almost complete peers (0.0 - 1.0)"
-msgstr "Progress distribution for almost complete peers (0.0 - 1.0)"
+msgstr "প্রায় সম্পূর্ণ পিয়ারের জন্য অগ্রগতি বিতরণ (০.০ - ১.০)"
 
 msgid "Progress distribution for middle progress peers (0.0 - 1.0)"
-msgstr "Progress distribution for middle progress peers (0.0 - 1.0)"
+msgstr "মধ্যম অগ্রগতি পিয়ারের জন্য অগ্রগতি বিতরণ (০.০ - ১.০)"
 
 msgid "Progress distribution for starting peers (0.0 - 1.0)"
-msgstr "Progress distribution for starting peers (0.0 - 1.0)"
+msgstr "শুরু করা পিয়ারের জন্য অগ্রগতি বিতরণ (০.০ - ১.০)"
+
+msgid "Properties"
+msgstr "বৈশিষ্ট্য"
 
 msgid "Protocol Compliance:"
-msgstr "Protocol Compliance:"
+msgstr "প্রোটোকল সম্মতি:"
 
 msgid "Protocol Extensions"
-msgstr "Protocol Extensions"
+msgstr "প্রোটোকল এক্সটেনশন"
 
 msgid "Protocol encryption mode for peer communications"
-msgstr "Protocol encryption mode for peer communications"
+msgstr "পিয়ার যোগাযোগের জন্য প্রোটোকল এনক্রিপশন মোড"
 
 msgid "Proxy authentication password"
-msgstr "Proxy authentication password"
+msgstr "প্রক্সি প্রমাণীকরণ পাসওয়ার্ড"
 
 msgid "Proxy authentication username"
-msgstr "Proxy authentication username"
+msgstr "প্রক্সি প্রমাণীকরণ ব্যবহারকারীর নাম"
 
 msgid "Proxy server hostname or IP address"
-msgstr "Proxy server hostname or IP address"
+msgstr "প্রক্সি সার্ভার হোস্টনেম বা IP ঠিকানা"
 
 msgid "Proxy server port number"
-msgstr "Proxy server port number"
+msgstr "প্রক্সি সার্ভার পোর্ট নম্বর"
 
 msgid "Query Timeout:"
-msgstr "Query Timeout:"
+msgstr "ক্যোয়েরি টাইমআউট:"
 
 msgid "Queue"
-msgstr "Queue"
+msgstr "সারি"
 
 msgid "Quit"
 msgstr "প্রস্থান"
 
 msgid "Quit DFakeSeeder"
-msgstr "Quit DFakeSeeder"
+msgstr "DFakeSeeder থেকে প্রস্থান করুন"
 
 msgid "Random"
-msgstr "Random"
+msgstr "এলোমেলো"
 
 msgid "Rate of adaptation to swarm behavior"
-msgstr "Rate of adaptation to swarm behavior"
+msgstr "সোয়ার্ম আচরণে অভিযোজনের হার"
 
 msgid "Ratio"
-msgstr "Ratio"
+msgstr "অনুপাত"
 
 msgid "Realistic variations"
-msgstr "Realistic variations"
+msgstr "বাস্তবসম্মত পরিবর্তন"
 
 msgid "Received"
-msgstr "Received"
+msgstr "প্রাপ্ত"
 
 msgid "Relaxed"
-msgstr "Relaxed"
+msgstr "শিথিল"
 
 msgid "Remember window size and position"
-msgstr "Remember window size and position"
+msgstr "উইন্ডো আকার এবং অবস্থান মনে রাখুন"
 
 msgid "Remember window size and position between sessions"
-msgstr "Remember window size and position between sessions"
+msgstr "সেশনের মধ্যে উইন্ডো আকার এবং অবস্থান মনে রাখুন"
+
+msgid "Remove"
+msgstr "সরান"
+
+msgid "Remove Torrent"
+msgstr "টরেন্ট সরান"
+
+msgid "Remove Torrent and Data"
+msgstr "টরেন্ট এবং ডেটা সরান"
+
+msgid "Remove Torrent and Data?"
+msgstr "টরেন্ট এবং ডেটা সরাবেন?"
+
+msgid "Remove Torrent?"
+msgstr "টরেন্ট সরাবেন?"
+
+msgid "Remove Tracker..."
+msgstr "ট্র্যাকার সরান..."
 
 msgid "Remove torrent"
-msgstr "Remove torrent"
+msgstr "টরেন্ট সরান"
+
+msgid "Rename"
+msgstr "নাম পরিবর্তন করুন"
+
+msgid "Rename Torrent"
+msgstr "টরেন্ট নাম পরিবর্তন করুন"
+
+msgid "Rename..."
+msgstr "নাম পরিবর্তন করুন..."
 
 msgid "Requests"
-msgstr "Requests"
+msgstr "অনুরোধ"
 
 msgid "Require authentication"
-msgstr "Require authentication"
+msgstr "প্রমাণীকরণ প্রয়োজন"
 
 msgid "Require username and password for web access"
-msgstr "Require username and password for web access"
+msgstr "ওয়েব অ্যাক্সেসের জন্য ব্যবহারকারীর নাম এবং পাসওয়ার্ড প্রয়োজন"
 
 msgid "Reset"
 msgstr "পুনরায় সেট"
 
 msgid "Reset all settings not yet implemented"
-msgstr "Reset all settings not yet implemented"
+msgstr "সমস্ত সেটিংস রিসেট এখনও বাস্তবায়িত হয়নি"
 
 msgid "Reset all settings to default values"
-msgstr "Reset all settings to default values"
+msgstr "সমস্ত সেটিংস ডিফল্ট মানতে রিসেট করুন"
 
 msgid "Reset to Defaults"
-msgstr "Reset to Defaults"
+msgstr "ডিফল্টে রিসেট করুন"
+
+msgid "Reset to Global Limits"
+msgstr "গ্লোবাল সীমায় রিসেট করুন"
 
 msgid "Reset to defaults"
-msgstr "Reset to defaults"
+msgstr "ডিফল্টে রিসেট করুন"
 
 msgid "Resume"
 msgstr "পুনরায় শুরু"
 
 msgid "Resume All Torrents"
-msgstr "Resume All Torrents"
+msgstr "সমস্ত টরেন্ট পুনরায় শুরু করুন"
 
 msgid "Resume torrent"
-msgstr "Resume torrent"
+msgstr "টরেন্ট পুনরায় শুরু করুন"
 
 msgid "Routing Table Size:"
-msgstr "Routing Table Size:"
+msgstr "রাউটিং টেবিল আকার:"
 
 msgid "Russian"
-msgstr "Russian"
+msgstr "রুশ"
 
 msgid "SOCKS4"
 msgstr "SOCKS4"
@@ -1407,94 +1545,136 @@ msgid "SOCKS5"
 msgstr "SOCKS5"
 
 msgid "Sat"
-msgstr "Sat"
+msgstr "শনি"
 
 msgid "Saturday"
-msgstr "Saturday"
+msgstr "শনিবার"
+
+msgid "Save"
+msgstr "সংরক্ষণ করুন"
 
 msgid "Save logs to file in addition to console"
-msgstr "Save logs to file in addition to console"
+msgstr "কনসোল ছাড়াও ফাইলে লগ সংরক্ষণ করুন"
+
+msgid "Scan interval:"
+msgstr "স্ক্যান ব্যবধান:"
 
 msgid "Scrape interval (sec):"
-msgstr "Scrape interval (sec):"
+msgstr "স্ক্র্যাপ ব্যবধান (সেকেন্ড):"
 
 msgid "Search by torrent name or file path"
-msgstr "Search by torrent name or file path"
+msgstr "টরেন্ট নাম বা ফাইল পথ দ্বারা অনুসন্ধান করুন"
 
 msgid "Search for settings across all tabs"
-msgstr "Search for settings across all tabs"
+msgstr "সমস্ত ট্যাব জুড়ে সেটিংস অনুসন্ধান করুন"
 
 msgid "Search for torrent"
-msgstr "Search for torrent"
+msgstr "টরেন্ট অনুসন্ধান করুন"
 
 msgid "Search settings"
-msgstr "Search settings"
+msgstr "সেটিংস অনুসন্ধান করুন"
 
 msgid "Secure password generated"
-msgstr "Secure password generated"
+msgstr "সুরক্ষিত পাসওয়ার্ড তৈরি হয়েছে"
 
 msgid "Seeder port range (max):"
-msgstr "Seeder port range (max):"
+msgstr "সিডার পোর্ট রেঞ্জ (সর্বোচ্চ):"
 
 msgid "Seeder port range (min):"
-msgstr "Seeder port range (min):"
+msgstr "সিডার পোর্ট রেঞ্জ (ন্যূনতম):"
 
 msgid "Seeders"
-msgstr "Seeders"
+msgstr "সিডার"
 
 msgid "Seeding Profile"
-msgstr "Seeding Profile"
+msgstr "সিডিং প্রোফাইল"
 
 msgid "Seeds"
-msgstr "Seeds"
+msgstr "সিড"
+
+msgid "Select"
+msgstr "নির্বাচন করুন"
+
+msgid "Select Watch Folder"
+msgstr "নজরদারি ফোল্ডার নির্বাচন করুন"
 
 msgid "Select proxy type for connections"
-msgstr "Select proxy type for connections"
+msgstr "সংযোগের জন্য প্রক্সি প্রকার নির্বাচন করুন"
 
 msgid "Select torrent"
-msgstr "Select torrent"
+msgstr "টরেন্ট নির্বাচন করুন"
 
 msgid "Send security-related HTTP headers"
 msgstr "Send security-related HTTP headers"
 
 msgid "Sent"
-msgstr "Sent"
+msgstr "পাঠানো হয়েছে"
 
 msgid "Server:"
-msgstr "Server:"
+msgstr "সার্ভার:"
 
 msgid "Session Downloaded"
-msgstr "Session Downloaded"
+msgstr "সেশন ডাউনলোড"
 
 msgid "Session Uploaded"
-msgstr "Session Uploaded"
+msgstr "সেশন আপলোড"
 
 msgid "Session timeout (min):"
-msgstr "Session timeout (min):"
+msgstr "সেশন টাইমআউট (মিনিট):"
+
+msgid "Set"
+msgstr "সেট করুন"
+
+msgid "Set Download Limit"
+msgstr "ডাউনলোড সীমা সেট করুন"
+
+msgid "Set Download Limit..."
+msgstr "ডাউনলোড সীমা সেট করুন..."
+
+msgid "Set Label"
+msgstr "লেবেল সেট করুন"
+
+msgid "Set Label..."
+msgstr "লেবেল সেট করুন..."
+
+msgid "Set Location"
+msgstr "অবস্থান সেট করুন"
+
+msgid "Set Location..."
+msgstr "অবস্থান সেট করুন..."
+
+msgid "Set Random Progress"
+msgstr "র্যান্ডম অগ্রগতি সেট করুন"
+
+msgid "Set Upload Limit"
+msgstr "আপলোড সীমা সেট করুন"
+
+msgid "Set Upload Limit..."
+msgstr "আপলোড সীমা সেট করুন..."
 
 msgid "Shortcuts configuration not yet implemented"
-msgstr "Shortcuts configuration not yet implemented"
+msgstr "শর্টকাট কনফিগারেশন এখনও বাস্তবায়িত হয়নি"
 
 msgid "Show Main Window"
-msgstr "Show Main Window"
+msgstr "প্রধান উইন্ডো দেখান"
 
 msgid "Show only selected torrent connections"
-msgstr "Show only selected torrent connections"
+msgstr "শুধুমাত্র নির্বাচিত টরেন্ট সংযোগ দেখান"
 
 msgid "Simulation"
-msgstr "Simulation"
+msgstr "সিমুলেশন"
 
 msgid "Size"
 msgstr "আকার"
 
 msgid "Size of metadata pieces in bytes"
-msgstr "Size of metadata pieces in bytes"
+msgstr "বাইটে মেটাডেটা পিসের আকার"
 
 msgid "Small Torrent Limit"
-msgstr "Small Torrent Limit"
+msgstr "ছোট টরেন্ট সীমা"
 
 msgid "Spanish"
-msgstr "Spanish"
+msgstr "স্প্যানিশ"
 
 msgid "Speed"
 msgstr "গতি"
@@ -1502,164 +1682,176 @@ msgstr "গতি"
 msgid "Speed Control"
 msgstr "গতি নিয়ন্ত্রণ"
 
+msgid "Speed Limits"
+msgstr "গতির সীমা"
+
 msgid "Speed settings reset to defaults"
-msgstr "Speed settings reset to defaults"
+msgstr "গতি সেটিংস ডিফল্টে রিসেট করা হয়েছে"
 
 msgid "Standard"
-msgstr "Standard"
+msgstr "মান"
 
 msgid "Start DFakeSeeder automatically when the system boots"
-msgstr "Start DFakeSeeder automatically when the system boots"
+msgstr "সিস্টেম বুট হলে স্বয়ংক্রিয়ভাবে DFakeSeeder শুরু করুন"
 
 msgid "Start hour (24-hour format)"
-msgstr "Start hour (24-hour format)"
+msgstr "শুরুর ঘন্টা (২৪-ঘন্টা ফর্ম্যাট)"
 
 msgid "Start minimized"
-msgstr "Start minimized"
+msgstr "ছোট করে শুরু করুন"
 
 msgid "Start minimized disabled"
-msgstr "Start minimized disabled"
+msgstr "ছোট করে শুরু নিষ্ক্রিয়"
 
 msgid "Start minimized enabled"
-msgstr "Start minimized enabled"
+msgstr "ছোট করে শুরু সক্ষম"
 
 msgid "Start minute"
-msgstr "Start minute"
+msgstr "শুরুর মিনিট"
 
 msgid "Start on system startup"
-msgstr "Start on system startup"
+msgstr "সিস্টেম স্টার্টআপে শুরু করুন"
 
 msgid "Start the application minimized to system tray"
-msgstr "Start the application minimized to system tray"
+msgstr "সিস্টেম ট্রেতে ছোট করে অ্যাপ্লিকেশন শুরু করুন"
 
 msgid "Stats Update Interval:"
-msgstr "Stats Update Interval:"
+msgstr "পরিসংখ্যান আপডেট ব্যবধান:"
 
 msgid "Status"
 msgstr "স্থিতি"
 
 msgid "Status change probability:"
-msgstr "Status change probability:"
+msgstr "স্থিতি পরিবর্তন সম্ভাবনা:"
 
 msgid "Strict"
-msgstr "Strict"
+msgstr "কঠোর"
 
 msgid "Sun"
-msgstr "Sun"
+msgstr "রবি"
 
 msgid "Sunday"
-msgstr "Sunday"
+msgstr "রবিবার"
 
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "সুইডিশ"
 
 msgid "Synthetic Peer Count:"
-msgstr "Synthetic Peer Count:"
+msgstr "সিনথেটিক পিয়ার সংখ্যা:"
 
 msgid "TCP fallback"
-msgstr "TCP fallback"
+msgstr "TCP ফলব্যাক"
 
 msgid "TCP keepalive"
-msgstr "TCP keepalive"
+msgstr "TCP কিপঅ্যালাইভ"
+
+msgid "The .torrent file will be DELETED."
+msgstr ".torrent ফাইলটি মুছে ফেলা হবে।"
+
+msgid "The .torrent file will be kept."
+msgstr ".torrent ফাইলটি রাখা হবে।"
 
 msgid "Theme:"
-msgstr "Theme:"
+msgstr "থিম:"
 
 msgid "Threshold"
-msgstr "Threshold"
+msgstr "থ্রেশহোল্ড"
 
 msgid "Thu"
-msgstr "Thu"
+msgstr "বৃহস্পতি"
 
 msgid "Thursday"
-msgstr "Thursday"
+msgstr "বৃহস্পতিবার"
 
 msgid "Tier"
-msgstr "Tier"
+msgstr "টিয়ার"
 
 msgid "Time-based patterns"
-msgstr "Time-based patterns"
+msgstr "সময়-ভিত্তিক প্যাটার্ন"
 
 msgid "Timeout for DHT bootstrap operations (seconds)"
-msgstr "Timeout for DHT bootstrap operations (seconds)"
+msgstr "DHT বুটস্ট্র্যাপ অপারেশনের জন্য টাইমআউট (সেকেন্ড)"
 
 msgid "Timeout for DHT queries (seconds)"
-msgstr "Timeout for DHT queries (seconds)"
+msgstr "DHT ক্যোয়েরির জন্য টাইমআউট (সেকেন্ড)"
 
 msgid "Timeout for HTTP seeder connections in seconds"
-msgstr "Timeout for HTTP seeder connections in seconds"
+msgstr "সেকেন্ডে HTTP সিডার সংযোগের জন্য টাইমআউট"
 
 msgid "Timeout for UDP seeder connections in seconds"
-msgstr "Timeout for UDP seeder connections in seconds"
+msgstr "সেকেন্ডে UDP সিডার সংযোগের জন্য টাইমআউট"
 
 msgid "Timeout for metadata requests (seconds)"
-msgstr "Timeout for metadata requests (seconds)"
+msgstr "মেটাডেটা অনুরোধের জন্য টাইমআউট (সেকেন্ড)"
 
 msgid "Timeout for peer handshake in seconds"
-msgstr "Timeout for peer handshake in seconds"
+msgstr "সেকেন্ডে পিয়ার হ্যান্ডশেকের জন্য টাইমআউট"
 
 msgid "Timeout for reading peer messages in seconds"
-msgstr "Timeout for reading peer messages in seconds"
+msgstr "সেকেন্ডে পিয়ার বার্তা পড়ার জন্য টাইমআউট"
 
 msgid "To:"
-msgstr "To:"
+msgstr "পর্যন্ত:"
 
 msgid "Top"
-msgstr "Top"
+msgstr "উপরে"
 
 msgid "Torrent"
 msgstr "টরেন্ট"
 
 msgid "Torrent Files"
-msgstr "Torrent Files"
+msgstr "টরেন্ট ফাইল"
 
 msgid "Torrents"
-msgstr "Torrents"
+msgstr "টরেন্ট"
 
 msgid "Total Downloaded"
-msgstr "Total Downloaded"
+msgstr "মোট ডাউনলোড"
 
 msgid "Total Size"
-msgstr "Total Size"
+msgstr "মোট আকার"
 
 msgid "Total Uploaded"
-msgstr "Total Uploaded"
+msgstr "মোট আপলোড"
 
 msgid "Track extension statistics"
-msgstr "Track extension statistics"
+msgstr "এক্সটেনশন পরিসংখ্যান ট্র্যাক করুন"
 
 msgid "Track extension usage statistics"
-msgstr "Track extension usage statistics"
+msgstr "এক্সটেনশন ব্যবহার পরিসংখ্যান ট্র্যাক করুন"
 
 msgid "Tracker"
-msgstr "Tracker"
+msgstr "ট্র্যাকার"
 
 msgid "Tracker URL"
-msgstr "Tracker URL"
+msgstr "ট্র্যাকার URL"
+
+msgid "Tracker URL:"
+msgstr "ট্র্যাকার URL:"
 
 msgid "Trackers"
-msgstr "Trackers"
+msgstr "ট্র্যাকার"
 
 msgid "Traffic Profile:"
-msgstr "Traffic Profile:"
+msgstr "ট্রাফিক প্রোফাইল:"
 
 msgid "Traffic pattern profile for simulation"
-msgstr "Traffic pattern profile for simulation"
+msgstr "সিমুলেশনের জন্য ট্রাফিক প্যাটার্ন প্রোফাইল"
 
 msgid "Transaction ID range (max):"
-msgstr "Transaction ID range (max):"
+msgstr "লেনদেন আইডি রেঞ্জ (সর্বোচ্চ):"
 
 msgid "Transaction ID range (min):"
-msgstr "Transaction ID range (min):"
+msgstr "লেনদেন আইডি রেঞ্জ (ন্যূনতম):"
 
 msgid "TranslationManager"
-msgstr "TranslationManager"
+msgstr "অনুবাদ ব্যবস্থাপক"
 
 msgid "TranslationManagerGTK3"
-msgstr "TranslationManagerGTK3"
+msgstr "অনুবাদ ব্যবস্থাপক GTK3"
 
 msgid "TranslationManagerGTK4"
-msgstr "TranslationManagerGTK4"
+msgstr "অনুবাদ ব্যবস্থাপক GTK4"
 
 msgid "Transmission"
 msgstr "Transmission"
@@ -1668,28 +1860,28 @@ msgid "Transmission/3.00"
 msgstr "Transmission/3.00"
 
 msgid "Tue"
-msgstr "Tue"
+msgstr "মঙ্গল"
 
 msgid "Tuesday"
-msgstr "Tuesday"
+msgstr "মঙ্গলবার"
 
 msgid "Turkish"
-msgstr "Turkish"
+msgstr "তুর্কি"
 
 msgid "Type"
-msgstr "Type"
+msgstr "প্রকার"
 
 msgid "Type:"
-msgstr "Type:"
+msgstr "প্রকার:"
 
 msgid "UDP seeder timeout (seconds):"
-msgstr "UDP seeder timeout (seconds):"
+msgstr "UDP সিডার টাইমআউট (সেকেন্ড):"
 
 msgid "UI Refresh Rate"
-msgstr "UI Refresh Rate"
+msgstr "UI রিফ্রেশ রেট"
 
 msgid "UI refresh rate (sec):"
-msgstr "UI refresh rate (sec):"
+msgstr "UI রিফ্রেশ রেট (সেকেন্ড):"
 
 msgid "URL"
 msgstr "URL"
@@ -1698,94 +1890,97 @@ msgid "URL: http://localhost:8080"
 msgstr "URL: http://localhost:8080"
 
 msgid "Unknown"
-msgstr "Unknown"
+msgstr "অজানা"
 
 msgid "Up"
-msgstr "Up"
+msgstr "উপরে"
 
 msgid "Up Speed"
-msgstr "Up Speed"
+msgstr "আপ গতি"
 
 msgid "Update Tracker"
-msgstr "Update Tracker"
+msgstr "ট্র্যাকার আপডেট করুন"
 
 msgid "Upload Speed"
 msgstr "আপলোড গতি"
 
 msgid "Upload Speed (KB/s):"
-msgstr "Upload Speed (KB/s):"
+msgstr "আপলোড গতি (KB/s):"
 
 msgid "Upload Variance:"
-msgstr "Upload Variance:"
+msgstr "আপলোড ভ্যারিয়েন্স:"
 
 msgid "Upload activity probability:"
-msgstr "Upload activity probability:"
+msgstr "আপলোড কার্যকলাপ সম্ভাবনা:"
 
 msgid "Upload limit (KB/s):"
-msgstr "Upload limit (KB/s):"
+msgstr "আপলোড সীমা (KB/s):"
+
+msgid "Upload limit (KB/s, 0 = unlimited):"
+msgstr "আপলোড সীমা (KB/s, ০ = সীমাহীন):"
 
 msgid "Upload speed variance for aggressive profile"
-msgstr "Upload speed variance for aggressive profile"
+msgstr "আক্রমণাত্মক প্রোফাইলের জন্য আপলোড গতি ভ্যারিয়েন্স"
 
 msgid "Upload speed variance for balanced profile"
-msgstr "Upload speed variance for balanced profile"
+msgstr "সুষম প্রোফাইলের জন্য আপলোড গতি ভ্যারিয়েন্স"
 
 msgid "Upload speed variance for conservative profile"
-msgstr "Upload speed variance for conservative profile"
+msgstr "রক্ষণশীল প্রোফাইলের জন্য আপলোড গতি ভ্যারিয়েন্স"
 
 msgid "Uploaded"
-msgstr "Uploaded"
+msgstr "আপলোড করা হয়েছে"
 
 msgid "Uploaded Session / Total"
-msgstr "Uploaded Session / Total"
+msgstr "আপলোড করা সেশন / মোট"
 
 msgid "Uploading"
-msgstr "Uploading"
+msgstr "আপলোড করা হচ্ছে"
 
 msgid "Use HTTPS (SSL/TLS)"
-msgstr "Use HTTPS (SSL/TLS)"
+msgstr "HTTPS ব্যবহার করুন (SSL/TLS)"
 
 msgid "Use HTTPS for secure connections (requires SSL certificate)"
-msgstr "Use HTTPS for secure connections (requires SSL certificate)"
+msgstr "সুরক্ষিত সংযোগের জন্য HTTPS ব্যবহার করুন (SSL শংসাপত্র প্রয়োজন)"
 
 msgid "Use authentication"
-msgstr "Use authentication"
+msgstr "প্রমাণীকরণ ব্যবহার করুন"
 
 msgid "User Agent:"
-msgstr "User Agent:"
+msgstr "ইউজার এজেন্ট:"
 
 msgid "User agent string to identify the client to trackers"
-msgstr "User agent string to identify the client to trackers"
+msgstr "ট্র্যাকারে ক্লায়েন্ট সনাক্ত করতে ইউজার এজেন্ট স্ট্রিং"
 
 msgid "Username for web interface login"
-msgstr "Username for web interface login"
+msgstr "ওয়েব ইন্টারফেস লগইনের জন্য ব্যবহারকারীর নাম"
 
 msgid "Username:"
-msgstr "Username:"
+msgstr "ব্যবহারকারীর নাম:"
 
 msgid "Validate DHT security tokens"
-msgstr "Validate DHT security tokens"
+msgstr "DHT নিরাপত্তা টোকেন যাচাই করুন"
 
 msgid "Validate extension messages"
-msgstr "Validate extension messages"
+msgstr "এক্সটেনশন বার্তা যাচাই করুন"
 
 msgid "Validate extension messages for security"
-msgstr "Validate extension messages for security"
+msgstr "নিরাপত্তার জন্য এক্সটেনশন বার্তা যাচাই করুন"
 
 msgid "Validate security tokens"
-msgstr "Validate security tokens"
+msgstr "নিরাপত্তা টোকেন যাচাই করুন"
 
 msgid "Validate setting values and show warnings for invalid combinations"
-msgstr "Validate setting values and show warnings for invalid combinations"
+msgstr "সেটিং মান যাচাই করুন এবং অবৈধ সমন্বয়ের জন্য সতর্কতা দেখান"
 
 msgid "Validate settings on change"
-msgstr "Validate settings on change"
+msgstr "পরিবর্তনে সেটিংস যাচাই করুন"
 
 msgid "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
-msgstr "Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)"
+msgstr "ক্লায়েন্ট আচরণে পরিবর্তন (০.০ = কোন পরিবর্তন নেই, ১.০ = সর্বোচ্চ পরিবর্তন)"
 
 msgid "Vietnamese"
-msgstr "Vietnamese"
+msgstr "ভিয়েতনামী"
 
 msgid "Vuze"
 msgstr "Vuze"
@@ -1794,19 +1989,19 @@ msgid "Vuze/5.7.6.0"
 msgstr "Vuze/5.7.6.0"
 
 msgid "WARNING"
-msgstr "WARNING"
+msgstr "সতর্কতা"
 
 msgid "Web UI"
-msgstr "Web UI"
+msgstr "ওয়েব UI"
 
 msgid "Web UI settings reset to defaults"
-msgstr "Web UI settings reset to defaults"
+msgstr "ওয়েব UI সেটিংস ডিফল্টে রিসেট করা হয়েছে"
 
 msgid "Wed"
-msgstr "Wed"
+msgstr "বুধ"
 
 msgid "Wednesday"
-msgstr "Wednesday"
+msgstr "বুধবার"
 
 msgid "active"
 msgstr "active"
@@ -1872,7 +2067,7 @@ msgid "log_tab"
 msgstr "log_tab"
 
 msgid "lt_donthave (Piece Availability)"
-msgstr "lt_donthave (Piece Availability)"
+msgstr "lt_donthave (অংশ প্রাপ্যতা)"
 
 msgid "name"
 msgstr "name"
@@ -1923,7 +2118,7 @@ msgid "requests_sent"
 msgstr "requests_sent"
 
 msgid "seconds"
-msgstr "seconds"
+msgstr "সেকেন্ড"
 
 msgid "seeders"
 msgstr "seeders"
@@ -1968,20 +2163,20 @@ msgid "uploading"
 msgstr "uploading"
 
 msgid "ut_holepunch (NAT Traversal)"
-msgstr "ut_holepunch (NAT Traversal)"
+msgstr "ut_holepunch (NAT অতিক্রম)"
 
 msgid "ut_metadata (Metadata Exchange)"
-msgstr "ut_metadata (Metadata Exchange)"
+msgstr "ut_metadata (মেটাডেটা বিনিময়)"
 
 msgid "ut_pex (Peer Exchange)"
-msgstr "ut_pex (Peer Exchange)"
+msgstr "ut_pex (পিয়ার বিনিময়)"
 
 msgid "µTorrent"
 msgstr "µTorrent"
 
 msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
-msgstr "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
+msgstr "⚠️ উন্নত সেটিংস - সতর্কতার সাথে পরিবর্তন করুন। ভুল মান কর্মক্ষমতা বা স্থিতিশীলতা প্রভাবিত করতে পারে।"
 
 msgid "⚠️ Web UI allows remote control of the application. Use strong authentication."
-msgstr "⚠️ Web UI allows remote control of the application. Use strong authentication."
+msgstr "⚠️ ওয়েব UI অ্যাপ্লিকেশনের দূরবর্তী নিয়ন্ত্রণের অনুমতি দেয়। শক্তিশালী প্রমাণীকরণ ব্যবহার করুন।"
 

@@ -24,7 +24,7 @@ msgid "(0 = unlimited)"
 msgstr "(0 = غير محدود)"
 
 msgid "0 / 250"
-msgstr "0 / 250"
+msgstr "٠ / ٢٥٠"
 
 msgid "127.0.0.1"
 msgstr "127.0.0.1"
@@ -161,6 +161,9 @@ msgstr "<b>إعدادات نمط حركة المرور</b>"
 msgid "<b>Transport Protocol Settings</b>"
 msgstr "<b>إعدادات بروتوكول النقل</b>"
 
+msgid "<b>Watch Folder</b>"
+msgstr "<b>مجلد المراقبة</b>"
+
 msgid "<b>Web Interface</b>"
 msgstr "<b>واجهة الويب</b>"
 
@@ -178,6 +181,12 @@ msgstr "معدل التكيف:"
 
 msgid "Add"
 msgstr "إضافة"
+
+msgid "Add Tracker"
+msgstr "إضافة متتبع"
+
+msgid "Add Tracker..."
+msgstr "إضافة متتبع..."
 
 msgid "Add torrent"
 msgstr "إضافة تورنت"
@@ -242,6 +251,9 @@ msgstr "توليد معرف العقدة تلقائياً"
 msgid "Auto-save settings"
 msgstr "حفظ الإعدادات تلقائياً"
 
+msgid "Auto-start added torrents"
+msgstr "بدء تلقائي للتورنتات المضافة"
+
 msgid "Auto-start disabled"
 msgstr "تم تعطيل البدء التلقائي"
 
@@ -260,8 +272,14 @@ msgstr "تكوين إعادة توجيه منفذ الموجه تلقائياً 
 msgid "Automatically generate a unique node ID"
 msgstr "إنشاء معرف عقدة فريد تلقائياً"
 
+msgid "Automatically monitor a folder for new torrent files"
+msgstr "مراقبة مجلد تلقائيًا للبحث عن ملفات تورنت جديدة"
+
 msgid "Automatically save settings when changed"
 msgstr "حفظ الإعدادات تلقائياً عند التغيير"
+
+msgid "Automatically start torrents when added from watch folder"
+msgstr "بدء تلقائي للتورنتات عند إضافتها من مجلد المراقبة"
 
 msgid "Automatically switch to alternative speeds during specified hours"
 msgstr "التبديل تلقائياً للسرعات البديلة خلال الساعات المحددة"
@@ -314,6 +332,9 @@ msgstr "انتهاء مهلة التمهيد:"
 msgid "Bottom"
 msgstr "الأسفل"
 
+msgid "Browse for folder"
+msgstr "استعراض المجلد"
+
 msgid "Bucket Size:"
 msgstr "حجم الدلو:"
 
@@ -348,7 +369,7 @@ msgid "Client Switch Probability:"
 msgstr "احتمالية تبديل العميل:"
 
 msgid "Columns"
-msgstr "Columns"
+msgstr "الأعمدة"
 
 msgid "Comment"
 msgstr "تعليق"
@@ -407,6 +428,21 @@ msgstr "سرعة رفع الملف المحافظ"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "محافظ: سرعات أقل، اتصالات أقل، مثالي للمشاركة في الخلفية"
 
+msgid "Copy"
+msgstr "نسخ"
+
+msgid "Copy Info Hash"
+msgstr "نسخ معرّف المعلومات"
+
+msgid "Copy Magnet Link"
+msgstr "نسخ رابط المغناطيس"
+
+msgid "Copy Name"
+msgstr "نسخ الاسم"
+
+msgid "Copy Tracker URL"
+msgstr "نسخ رابط المتتبع"
+
 msgid "Country"
 msgstr "البلد"
 
@@ -458,6 +494,12 @@ msgstr "داكن"
 msgid "Days:"
 msgstr "الأيام:"
 
+msgid "Delete added torrent files"
+msgstr "حذف ملفات التورنت المضافة"
+
+msgid "Delete torrent files after they are successfully added"
+msgstr "حذف ملفات التورنت بعد إضافتها بنجاح"
+
 msgid "Deluge"
 msgstr "Deluge"
 
@@ -467,6 +509,12 @@ msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgid "Details"
 msgstr "التفاصيل"
 
+msgid "Disable Sequential Download"
+msgstr "تعطيل التنزيل المتسلسل"
+
+msgid "Disable Super Seeding"
+msgstr "تعطيل البذر الفائق"
+
 msgid "Disabled"
 msgstr "معطل"
 
@@ -474,7 +522,7 @@ msgid "Disconnected"
 msgstr "منقطع"
 
 msgid "Disconnected from DFakeSeeder"
-msgstr "Disconnected from DFakeSeeder"
+msgstr "تم قطع الاتصال من DFakeSeeder"
 
 msgid "Disk cache size (MB):"
 msgstr "حجم ذاكرة التخزين المؤقت (ميجابايت):"
@@ -496,6 +544,9 @@ msgstr "تباين التنزيل:"
 
 msgid "Download limit (KB/s):"
 msgstr "حد التنزيل (كيلوبايت/ثانية):"
+
+msgid "Download limit (KB/s, 0 = unlimited):"
+msgstr "حد التنزيل (كيلوبايت/ثانية، ٠ = غير محدود):"
 
 msgid "Download speed variance for aggressive profile"
 msgstr "تباين سرعة التنزيل للملف العدواني"
@@ -529,6 +580,12 @@ msgstr "خطأ"
 
 msgid "ETA"
 msgstr "الوقت المتبقي"
+
+msgid "Edit Tracker"
+msgstr "تحرير متتبع"
+
+msgid "Edit Tracker..."
+msgstr "تحرير متتبع..."
 
 msgid "Enable CSRF protection"
 msgstr "تمكين حماية CSRF"
@@ -574,6 +631,12 @@ msgstr "تمكين تبادل الأقران لاكتشاف أقران جدد"
 
 msgid "Enable Protocol Extensions"
 msgstr "تمكين امتدادات البروتوكول"
+
+msgid "Enable Sequential Download"
+msgstr "تفعيل التنزيل المتسلسل"
+
+msgid "Enable Super Seeding"
+msgstr "تفعيل البذر الفائق"
 
 msgid "Enable TCP keepalive"
 msgstr "تمكين TCP keepalive"
@@ -662,6 +725,9 @@ msgstr "تمكين امتداد ut_metadata لتبادل البيانات الو
 msgid "Enable ut_pex extension for peer exchange"
 msgstr "تمكين امتداد ut_pex لتبادل الأقران"
 
+msgid "Enable watch folder"
+msgstr "تفعيل مجلد المراقبة"
+
 msgid "Enable web-based remote control interface"
 msgstr "تمكين واجهة التحكم عن بُعد عبر الويب"
 
@@ -734,8 +800,20 @@ msgstr "الملفات"
 msgid "Flags"
 msgstr "الأعلام"
 
+msgid "Folder path:"
+msgstr "مسار المجلد:"
+
 msgid "Follow System"
 msgstr "اتباع النظام"
+
+msgid "Force Complete"
+msgstr "فرض الإكمال"
+
+msgid "Force Recheck"
+msgstr "فرض إعادة الفحص"
+
+msgid "Force Start"
+msgstr "فرض البدء"
 
 msgid "Forced"
 msgstr "مُجبَر"
@@ -815,11 +893,17 @@ msgstr "إخفاء النافذة الرئيسية"
 msgid "Hide to system tray when window is minimized"
 msgstr "إخفاء إلى شريط النظام عند تصغير النافذة"
 
+msgid "High Priority"
+msgstr "أولوية عالية"
+
 msgid "Hindi"
 msgstr "الهندية"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "كم مرة للإعلان للمتتبعات (60-7200 ثانية)"
+
+msgid "How often to check for new torrent files (in seconds)"
+msgstr "عدد مرات التحقق من ملفات التورنت الجديدة (بالثواني)"
 
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "كم مرة لاستخراج إحصائيات السرب من المتتبع"
@@ -908,6 +992,9 @@ msgstr "الكورية"
 msgid "Label"
 msgstr "العنوان"
 
+msgid "Label:"
+msgstr "التسمية:"
+
 msgid "Language"
 msgstr "اللغة"
 
@@ -949,6 +1036,9 @@ msgstr "مستوى السجل:"
 
 msgid "Log to file"
 msgstr "تسجيل في ملف"
+
+msgid "Low Priority"
+msgstr "أولوية منخفضة"
 
 msgid "Max Connections:"
 msgstr "أقصى عدد اتصالات:"
@@ -1073,6 +1163,9 @@ msgstr "اثنين"
 msgid "Monday"
 msgstr "الاثنين"
 
+msgid "Multi-Tracker"
+msgstr "متعدد المتتبعات"
+
 msgid "My IP address"
 msgstr "عنوان IP الخاص بي"
 
@@ -1084,6 +1177,9 @@ msgstr "الاسم"
 
 msgid "Network interface:"
 msgstr "واجهة الشبكة:"
+
+msgid "New name:"
+msgstr "الاسم الجديد:"
 
 msgid "Next Announce"
 msgstr "الإعلان التالي"
@@ -1097,6 +1193,9 @@ msgstr "لا توجد خيارات قابلة للتحرير متاحة لهذا
 msgid "None"
 msgstr "لا شيء"
 
+msgid "Normal Priority"
+msgstr "أولوية عادية"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "عدد الأقران للتحليل لأنماط السلوك"
 
@@ -1105,6 +1204,9 @@ msgstr "عدد الأقران للطلب من المتتبع"
 
 msgid "Number of synthetic peers to generate"
 msgstr "عدد الأقران الاصطناعيين لإنشائهم"
+
+msgid "OK"
+msgstr "موافق"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "السماح بالاتصالات من المضيف المحلي فقط (أكثر أماناً)"
@@ -1138,6 +1240,9 @@ msgstr "كلمة المرور:"
 
 msgid "Path"
 msgstr "المسار"
+
+msgid "Path to the folder to watch for torrent files"
+msgstr "مسار المجلد لمراقبة ملفات التورنت"
 
 msgid "Pause"
 msgstr "إيقاف مؤقت"
@@ -1301,6 +1406,9 @@ msgstr "توزيع التقدم للأقران متوسطي التقدم (0.0 - 
 msgid "Progress distribution for starting peers (0.0 - 1.0)"
 msgstr "توزيع التقدم للأقران المبتدئين (0.0 - 1.0)"
 
+msgid "Properties"
+msgstr "الخصائص"
+
 msgid "Protocol Compliance:"
 msgstr "الامتثال للبروتوكول:"
 
@@ -1358,8 +1466,35 @@ msgstr "تذكر حجم النافذة وموقعها"
 msgid "Remember window size and position between sessions"
 msgstr "تذكر حجم النافذة وموقعها بين الجلسات"
 
+msgid "Remove"
+msgstr "إزالة"
+
+msgid "Remove Torrent"
+msgstr "إزالة التورنت"
+
+msgid "Remove Torrent and Data"
+msgstr "إزالة التورنت والبيانات"
+
+msgid "Remove Torrent and Data?"
+msgstr "إزالة التورنت والبيانات؟"
+
+msgid "Remove Torrent?"
+msgstr "إزالة التورنت؟"
+
+msgid "Remove Tracker..."
+msgstr "إزالة متتبع..."
+
 msgid "Remove torrent"
 msgstr "إزالة التورنت"
+
+msgid "Rename"
+msgstr "إعادة تسمية"
+
+msgid "Rename Torrent"
+msgstr "إعادة تسمية التورنت"
+
+msgid "Rename..."
+msgstr "إعادة تسمية..."
 
 msgid "Requests"
 msgstr "الطلبات"
@@ -1381,6 +1516,9 @@ msgstr "إعادة تعيين جميع الإعدادات للقيم الافت�
 
 msgid "Reset to Defaults"
 msgstr "إعادة تعيين للافتراضية"
+
+msgid "Reset to Global Limits"
+msgstr "إعادة تعيين إلى الحدود العامة"
 
 msgid "Reset to defaults"
 msgstr "إعادة تعيين للافتراضية"
@@ -1412,8 +1550,14 @@ msgstr "سبت"
 msgid "Saturday"
 msgstr "السبت"
 
+msgid "Save"
+msgstr "حفظ"
+
 msgid "Save logs to file in addition to console"
 msgstr "حفظ السجلات في ملف بالإضافة لوحة التحكم"
+
+msgid "Scan interval:"
+msgstr "فترة المسح:"
 
 msgid "Scrape interval (sec):"
 msgstr "فترة الاستخراج (ثانية):"
@@ -1448,6 +1592,12 @@ msgstr "ملف تعريف البذر"
 msgid "Seeds"
 msgstr "البذور"
 
+msgid "Select"
+msgstr "اختيار"
+
+msgid "Select Watch Folder"
+msgstr "اختيار مجلد المراقبة"
+
 msgid "Select proxy type for connections"
 msgstr "اختر نوع البروكسي للاتصالات"
 
@@ -1464,13 +1614,43 @@ msgid "Server:"
 msgstr "الخادم:"
 
 msgid "Session Downloaded"
-msgstr "会话下载"
+msgstr "الجلسة التي تم تنزيلها"
 
 msgid "Session Uploaded"
-msgstr "会话上传"
+msgstr "الجلسة التي تم رفعها"
 
 msgid "Session timeout (min):"
 msgstr "انتهاء مهلة الجلسة (دقيقة):"
+
+msgid "Set"
+msgstr "تعيين"
+
+msgid "Set Download Limit"
+msgstr "تعيين حد التنزيل"
+
+msgid "Set Download Limit..."
+msgstr "تعيين حد التنزيل..."
+
+msgid "Set Label"
+msgstr "تعيين التسمية"
+
+msgid "Set Label..."
+msgstr "تعيين تسمية..."
+
+msgid "Set Location"
+msgstr "تعيين الموقع"
+
+msgid "Set Location..."
+msgstr "تعيين الموقع..."
+
+msgid "Set Random Progress"
+msgstr "تعيين تقدم عشوائي"
+
+msgid "Set Upload Limit"
+msgstr "تعيين حد الرفع"
+
+msgid "Set Upload Limit..."
+msgstr "تعيين حد الرفع..."
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "تكوين الاختصارات غير مُطبَّق بعد"
@@ -1501,6 +1681,9 @@ msgstr "السرعة"
 
 msgid "Speed Control"
 msgstr "التحكم في السرعة"
+
+msgid "Speed Limits"
+msgstr "حدود السرعة"
 
 msgid "Speed settings reset to defaults"
 msgstr "إعادة تعيين إعدادات السرعة للافتراضية"
@@ -1561,6 +1744,12 @@ msgstr "TCP احتياطي"
 
 msgid "TCP keepalive"
 msgstr "إبقاء TCP على قيد الحياة"
+
+msgid "The .torrent file will be DELETED."
+msgstr "سيتم حذف ملف .torrent."
+
+msgid "The .torrent file will be kept."
+msgstr "سيتم الاحتفاظ بملف .torrent."
 
 msgid "Theme:"
 msgstr "المظهر:"
@@ -1636,6 +1825,9 @@ msgstr "متتبع"
 
 msgid "Tracker URL"
 msgstr "رابط المتتبع"
+
+msgid "Tracker URL:"
+msgstr "رابط المتتبع:"
 
 msgid "Trackers"
 msgstr "المتتبعات"
@@ -1723,6 +1915,9 @@ msgstr "احتمالية نشاط الرفع:"
 
 msgid "Upload limit (KB/s):"
 msgstr "حد الرفع (كيلوبايت/ثانية):"
+
+msgid "Upload limit (KB/s, 0 = unlimited):"
+msgstr "حد الرفع (كيلوبايت/ثانية، ٠ = غير محدود):"
 
 msgid "Upload speed variance for aggressive profile"
 msgstr "تباين سرعة الرفع للملف العدواني"
@@ -1812,7 +2007,7 @@ msgid "active"
 msgstr "نشط"
 
 msgid "address"
-msgstr "地址"
+msgstr "العنوان"
 
 msgid "admin"
 msgstr "مسؤول"
@@ -1830,19 +2025,19 @@ msgid "bytes"
 msgstr "بايتات"
 
 msgid "bytes_downloaded"
-msgstr "字节已下载"
+msgstr "بايتات تم تنزيلها"
 
 msgid "bytes_uploaded"
-msgstr "字节已上传"
+msgstr "بايتات تم رفعها"
 
 msgid "class_name"
 msgstr "اسم_الفئة"
 
 msgid "client"
-msgstr "客户端"
+msgstr "العميل"
 
 msgid "connection_time"
-msgstr "连接时间"
+msgstr "وقت الاتصال"
 
 msgid "download_rate"
 msgstr "معدل التنزيل"
@@ -1938,7 +2133,7 @@ msgid "small_torrent_limit"
 msgstr "حد التورنت الصغير"
 
 msgid "status"
-msgstr "状态"
+msgstr "الحالة"
 
 msgid "threshold"
 msgstr "العتبة"

@@ -161,6 +161,9 @@ msgstr "<b>ट्रैफिक पैटर्न सेटिंग्स</b>
 msgid "<b>Transport Protocol Settings</b>"
 msgstr "<b>ट्रांसपोर्ट प्रोटोकॉल सेटिंग्स</b>"
 
+msgid "<b>Watch Folder</b>"
+msgstr "<b>वॉच फ़ोल्डर</b>"
+
 msgid "<b>Web Interface</b>"
 msgstr "<b>वेब इंटरफेस</b>"
 
@@ -178,6 +181,12 @@ msgstr "अनुकूलन दर:"
 
 msgid "Add"
 msgstr "जोड़ें"
+
+msgid "Add Tracker"
+msgstr "ट्रैकर जोड़ें"
+
+msgid "Add Tracker..."
+msgstr "ट्रैकर जोड़ें..."
 
 msgid "Add torrent"
 msgstr "टॉरेंट जोड़ें"
@@ -242,6 +251,9 @@ msgstr "नोड आईडी स्वतः उत्पन्न करे�
 msgid "Auto-save settings"
 msgstr "सेटिंग्स स्वतः सहेजें"
 
+msgid "Auto-start added torrents"
+msgstr "जोड़े गए टोरेंट स्वतः प्रारंभ करें"
+
 msgid "Auto-start disabled"
 msgstr "ऑटो-स्टार्ट अक्षम"
 
@@ -260,8 +272,14 @@ msgstr "UPnP/NAT-PMP का उपयोग करके राउटर पो�
 msgid "Automatically generate a unique node ID"
 msgstr "स्वचालित रूप से एक यूनीक नोड ID जेनरेट करें"
 
+msgid "Automatically monitor a folder for new torrent files"
+msgstr "नई टोरेंट फ़ाइलों के लिए स्वचालित रूप से फ़ोल्डर की निगरानी करें"
+
 msgid "Automatically save settings when changed"
 msgstr "बदलने पर सेटिंग्स स्वचालित रूप से सहेजें"
+
+msgid "Automatically start torrents when added from watch folder"
+msgstr "वॉच फ़ोल्डर से जोड़े जाने पर टोरेंट स्वचालित रूप से प्रारंभ करें"
 
 msgid "Automatically switch to alternative speeds during specified hours"
 msgstr "निर्दिष्ट घंटों के दौरान वैकल्पिक गति पर स्वचालित रूप से स्विच करें"
@@ -314,6 +332,9 @@ msgstr "बूटस्ट्रैप टाइमआउट:"
 msgid "Bottom"
 msgstr "तल"
 
+msgid "Browse for folder"
+msgstr "फ़ोल्डर ब्राउज़ करें"
+
 msgid "Bucket Size:"
 msgstr "बकेट साइज़:"
 
@@ -348,7 +369,7 @@ msgid "Client Switch Probability:"
 msgstr "क्लाइंट स्विच संभावना:"
 
 msgid "Columns"
-msgstr "Columns"
+msgstr "स्तंभ"
 
 msgid "Comment"
 msgstr "टिप्पणी"
@@ -407,6 +428,21 @@ msgstr "रूढ़िवादी प्रोफाइल अपलोड ग
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "रूढ़िवादी: कम गति, कम कनेक्शन, बैकग्राउंड सीडिंग के लिए आदर्श"
 
+msgid "Copy"
+msgstr "कॉपी करें"
+
+msgid "Copy Info Hash"
+msgstr "इन्फो हैश कॉपी करें"
+
+msgid "Copy Magnet Link"
+msgstr "मैग्नेट लिंक कॉपी करें"
+
+msgid "Copy Name"
+msgstr "नाम कॉपी करें"
+
+msgid "Copy Tracker URL"
+msgstr "ट्रैकर URL कॉपी करें"
+
 msgid "Country"
 msgstr "देश"
 
@@ -458,6 +494,12 @@ msgstr "डार्क"
 msgid "Days:"
 msgstr "दिन:"
 
+msgid "Delete added torrent files"
+msgstr "जोड़ी गई टोरेंट फ़ाइलें हटाएँ"
+
+msgid "Delete torrent files after they are successfully added"
+msgstr "सफलतापूर्वक जोड़ने के बाद टोरेंट फ़ाइलें हटाएँ"
+
 msgid "Deluge"
 msgstr "Deluge"
 
@@ -466,6 +508,12 @@ msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
 msgid "Details"
 msgstr "विवरण"
+
+msgid "Disable Sequential Download"
+msgstr "क्रमिक डाउनलोड अक्षम करें"
+
+msgid "Disable Super Seeding"
+msgstr "सुपर सीडिंग अक्षम करें"
 
 msgid "Disabled"
 msgstr "अक्षम"
@@ -496,6 +544,9 @@ msgstr "डाउनलोड विचरण:"
 
 msgid "Download limit (KB/s):"
 msgstr "डाउनलोड सीमा (KB/s):"
+
+msgid "Download limit (KB/s, 0 = unlimited):"
+msgstr "डाउनलोड सीमा (KB/s, 0 = असीमित):"
 
 msgid "Download speed variance for aggressive profile"
 msgstr "आक्रामक प्रोफाइल के लिए डाउनलोड गति विचरण"
@@ -529,6 +580,12 @@ msgstr "त्रुटि"
 
 msgid "ETA"
 msgstr "शेष समय"
+
+msgid "Edit Tracker"
+msgstr "ट्रैकर संपादित करें"
+
+msgid "Edit Tracker..."
+msgstr "ट्रैकर संपादित करें..."
 
 msgid "Enable CSRF protection"
 msgstr "CSRF सुरक्षा सक्षम करें"
@@ -574,6 +631,12 @@ msgstr "नए पीअर्स खोजने के लिए पीयर 
 
 msgid "Enable Protocol Extensions"
 msgstr "प्रोटोकॉल एक्सटेंशन सक्षम करें"
+
+msgid "Enable Sequential Download"
+msgstr "क्रमिक डाउनलोड सक्षम करें"
+
+msgid "Enable Super Seeding"
+msgstr "सुपर सीडिंग सक्षम करें"
 
 msgid "Enable TCP keepalive"
 msgstr "TCP keepalive सक्षम करें"
@@ -662,6 +725,9 @@ msgstr "मेटाडेटा एक्सचेंज के लिए ut_me
 msgid "Enable ut_pex extension for peer exchange"
 msgstr "पीयर एक्सचेंज के लिए ut_pex एक्सटेंशन सक्षम करें"
 
+msgid "Enable watch folder"
+msgstr "वॉच फ़ोल्डर सक्षम करें"
+
 msgid "Enable web-based remote control interface"
 msgstr "वेब-आधारित रिमोट कंट्रोल इंटरफ़ेस सक्षम करें"
 
@@ -734,8 +800,20 @@ msgstr "फाइलें"
 msgid "Flags"
 msgstr "झंडे"
 
+msgid "Folder path:"
+msgstr "फ़ोल्डर पथ:"
+
 msgid "Follow System"
 msgstr "सिस्टम का पालन करें"
+
+msgid "Force Complete"
+msgstr "बलपूर्वक पूर्ण करें"
+
+msgid "Force Recheck"
+msgstr "बलपूर्वक पुनः जाँच करें"
+
+msgid "Force Start"
+msgstr "बलपूर्वक प्रारंभ करें"
 
 msgid "Forced"
 msgstr "जबरदस्त"
@@ -762,7 +840,7 @@ msgid "General timeout for extension operations (seconds)"
 msgstr "एक्सटेंशन ऑपरेशन के लिए सामान्य टाइमआउट (सेकंड)"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "सामान्य टैब"
 
 msgid "Generate Secure Password"
 msgstr "सुरक्षित पासवर्ड बनाएं"
@@ -815,11 +893,17 @@ msgstr "मुख्य विंडो छुपाएं"
 msgid "Hide to system tray when window is minimized"
 msgstr "विंडो छोटी करने पर सिस्टम ट्रे में छुपाएं"
 
+msgid "High Priority"
+msgstr "उच्च प्राथमिकता"
+
 msgid "Hindi"
 msgstr "हिंदी"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "ट्रैकर्स को कितनी बार घोषणा करें (60-7200 सेकंड)"
+
+msgid "How often to check for new torrent files (in seconds)"
+msgstr "नई टोरेंट फ़ाइलों की जाँच कितनी बार करें (सेकंड में)"
 
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "स्वार्म आंकड़ों के लिए ट्रैकर को कितनी बार स्क्रैप करें"
@@ -908,6 +992,9 @@ msgstr "कोरियाई"
 msgid "Label"
 msgstr "लेबल"
 
+msgid "Label:"
+msgstr "लेबल:"
+
 msgid "Language"
 msgstr "भाषा"
 
@@ -949,6 +1036,9 @@ msgstr "लॉग स्तर:"
 
 msgid "Log to file"
 msgstr "फ़ाइल में लॉग करें"
+
+msgid "Low Priority"
+msgstr "निम्न प्राथमिकता"
 
 msgid "Max Connections:"
 msgstr "अधिकतम कनेक्शन:"
@@ -1073,6 +1163,9 @@ msgstr "सोम"
 msgid "Monday"
 msgstr "सोमवार"
 
+msgid "Multi-Tracker"
+msgstr "मल्टी-ट्रैकर"
+
 msgid "My IP address"
 msgstr "मेरा IP पता"
 
@@ -1084,6 +1177,9 @@ msgstr "नाम"
 
 msgid "Network interface:"
 msgstr "नेटवर्क इंटरफ़ेस:"
+
+msgid "New name:"
+msgstr "नया नाम:"
 
 msgid "Next Announce"
 msgstr "अगली घोषणा"
@@ -1097,6 +1193,9 @@ msgstr "इस टॉरेंट के लिए कोई संपादन 
 msgid "None"
 msgstr "कोई नहीं"
 
+msgid "Normal Priority"
+msgstr "सामान्य प्राथमिकता"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "व्यवहार पैटर्न के लिए विश्लेषण करने वाले पीयर्स की संख्या"
 
@@ -1105,6 +1204,9 @@ msgstr "ट्रैकर से अनुरोध करने वाले �
 
 msgid "Number of synthetic peers to generate"
 msgstr "जेनरेट करने के लिए सिंथेटिक पीयर्स की संख्या"
+
+msgid "OK"
+msgstr "ठीक है"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "केवल localhost से कनेक्शन की अनुमति दें (अधिक सुरक्षित)"
@@ -1138,6 +1240,9 @@ msgstr "पासवर्ड:"
 
 msgid "Path"
 msgstr "पथ"
+
+msgid "Path to the folder to watch for torrent files"
+msgstr "टोरेंट फ़ाइलों के लिए देखने हेतु फ़ोल्डर का पथ"
 
 msgid "Pause"
 msgstr "रोकें"
@@ -1301,6 +1406,9 @@ msgstr "मध्यम प्रगति पीअर्स के लिए �
 msgid "Progress distribution for starting peers (0.0 - 1.0)"
 msgstr "शुरुआती पीअर्स के लिए प्रगति वितरण (0.0 - 1.0)"
 
+msgid "Properties"
+msgstr "गुण"
+
 msgid "Protocol Compliance:"
 msgstr "प्रोटोकॉल अनुपालन:"
 
@@ -1358,8 +1466,35 @@ msgstr "विंडो का आकार और स्थिति याद 
 msgid "Remember window size and position between sessions"
 msgstr "सत्रों के बीच विंडो आकार और स्थिति याद रखें"
 
+msgid "Remove"
+msgstr "हटाएँ"
+
+msgid "Remove Torrent"
+msgstr "टोरेंट हटाएँ"
+
+msgid "Remove Torrent and Data"
+msgstr "टोरेंट और डेटा हटाएँ"
+
+msgid "Remove Torrent and Data?"
+msgstr "टोरेंट और डेटा हटाएँ?"
+
+msgid "Remove Torrent?"
+msgstr "टोरेंट हटाएँ?"
+
+msgid "Remove Tracker..."
+msgstr "ट्रैकर हटाएँ..."
+
 msgid "Remove torrent"
 msgstr "टॉरेंट हटाएं"
+
+msgid "Rename"
+msgstr "नाम बदलें"
+
+msgid "Rename Torrent"
+msgstr "टोरेंट का नाम बदलें"
+
+msgid "Rename..."
+msgstr "नाम बदलें..."
 
 msgid "Requests"
 msgstr "अनुरोध"
@@ -1381,6 +1516,9 @@ msgstr "सभी सेटिंग्स को डिफ़ॉल्ट व�
 
 msgid "Reset to Defaults"
 msgstr "डिफ़ॉल्ट पर रीसेट करें"
+
+msgid "Reset to Global Limits"
+msgstr "वैश्विक सीमा पर रीसेट करें"
 
 msgid "Reset to defaults"
 msgstr "डिफ़ॉल्ट पर रीसेट करें"
@@ -1412,8 +1550,14 @@ msgstr "शनि"
 msgid "Saturday"
 msgstr "शनिवार"
 
+msgid "Save"
+msgstr "सहेजें"
+
 msgid "Save logs to file in addition to console"
 msgstr "कंसोल के अलावा फ़ाइल में लॉग सहेजें"
+
+msgid "Scan interval:"
+msgstr "स्कैन अंतराल:"
 
 msgid "Scrape interval (sec):"
 msgstr "स्क्रैप अंतराल (सेकंड):"
@@ -1448,6 +1592,12 @@ msgstr "सीडिंग प्रोफाइल"
 msgid "Seeds"
 msgstr "सीड्स"
 
+msgid "Select"
+msgstr "चुनें"
+
+msgid "Select Watch Folder"
+msgstr "वॉच फ़ोल्डर चुनें"
+
 msgid "Select proxy type for connections"
 msgstr "कनेक्शन के लिए प्रॉक्सी प्रकार चुनें"
 
@@ -1471,6 +1621,36 @@ msgstr "सत्र अपलोड"
 
 msgid "Session timeout (min):"
 msgstr "सत्र टाइमआउट (मिनट):"
+
+msgid "Set"
+msgstr "सेट करें"
+
+msgid "Set Download Limit"
+msgstr "डाउनलोड सीमा सेट करें"
+
+msgid "Set Download Limit..."
+msgstr "डाउनलोड सीमा सेट करें..."
+
+msgid "Set Label"
+msgstr "लेबल सेट करें"
+
+msgid "Set Label..."
+msgstr "लेबल सेट करें..."
+
+msgid "Set Location"
+msgstr "स्थान सेट करें"
+
+msgid "Set Location..."
+msgstr "स्थान सेट करें..."
+
+msgid "Set Random Progress"
+msgstr "यादृच्छिक प्रगति सेट करें"
+
+msgid "Set Upload Limit"
+msgstr "अपलोड सीमा सेट करें"
+
+msgid "Set Upload Limit..."
+msgstr "अपलोड सीमा सेट करें..."
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "शॉर्टकट कॉन्फ़िगरेशन अभी तक लागू नहीं"
@@ -1501,6 +1681,9 @@ msgstr "गति"
 
 msgid "Speed Control"
 msgstr "गति नियंत्रण"
+
+msgid "Speed Limits"
+msgstr "गति सीमाएँ"
 
 msgid "Speed settings reset to defaults"
 msgstr "गति सेटिंग्स डिफ़ॉल्ट में रीसेट"
@@ -1561,6 +1744,12 @@ msgstr "TCP फॉलबैक"
 
 msgid "TCP keepalive"
 msgstr "TCP कीपअलाइव"
+
+msgid "The .torrent file will be DELETED."
+msgstr ".torrent फ़ाइल हटा दी जाएगी।"
+
+msgid "The .torrent file will be kept."
+msgstr ".torrent फ़ाइल सुरक्षित रखी जाएगी।"
 
 msgid "Theme:"
 msgstr "थीम:"
@@ -1636,6 +1825,9 @@ msgstr "ट्रैकर"
 
 msgid "Tracker URL"
 msgstr "ट्रैकर URL"
+
+msgid "Tracker URL:"
+msgstr "ट्रैकर URL:"
 
 msgid "Trackers"
 msgstr "ट्रैकर्स"
@@ -1723,6 +1915,9 @@ msgstr "अपलोड गतिविधि संभावना:"
 
 msgid "Upload limit (KB/s):"
 msgstr "अपलोड सीमा (KB/s):"
+
+msgid "Upload limit (KB/s, 0 = unlimited):"
+msgstr "अपलोड सीमा (KB/s, 0 = असीमित):"
 
 msgid "Upload speed variance for aggressive profile"
 msgstr "आक्रामक प्रोफाइल के लिए अपलोड गति विचरण"

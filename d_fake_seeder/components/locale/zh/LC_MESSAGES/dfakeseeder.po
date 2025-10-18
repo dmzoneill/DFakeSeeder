@@ -161,6 +161,9 @@ msgstr "<b>流量模式设置</b>"
 msgid "<b>Transport Protocol Settings</b>"
 msgstr "<b>传输协议设置</b>"
 
+msgid "<b>Watch Folder</b>"
+msgstr "<b>监视文件夹</b>"
+
 msgid "<b>Web Interface</b>"
 msgstr "<b>网页界面</b>"
 
@@ -178,6 +181,12 @@ msgstr "适应速率:"
 
 msgid "Add"
 msgstr "添加"
+
+msgid "Add Tracker"
+msgstr "添加 Tracker"
+
+msgid "Add Tracker..."
+msgstr "添加 Tracker..."
 
 msgid "Add torrent"
 msgstr "添加种子"
@@ -242,6 +251,9 @@ msgstr "自动生成节点 ID"
 msgid "Auto-save settings"
 msgstr "自动保存设置"
 
+msgid "Auto-start added torrents"
+msgstr "自动启动添加的种子"
+
 msgid "Auto-start disabled"
 msgstr "已禁用自动启动"
 
@@ -260,8 +272,14 @@ msgstr "使用 UPnP/NAT-PMP 自动配置路由器端口转发"
 msgid "Automatically generate a unique node ID"
 msgstr "自动生成唯一节点 ID"
 
+msgid "Automatically monitor a folder for new torrent files"
+msgstr "自动监视文件夹中的新种子文件"
+
 msgid "Automatically save settings when changed"
 msgstr "更改时自动保存设置"
+
+msgid "Automatically start torrents when added from watch folder"
+msgstr "从监视文件夹添加时自动启动种子"
 
 msgid "Automatically switch to alternative speeds during specified hours"
 msgstr "在指定时间内自动切换到备用速度"
@@ -314,6 +332,9 @@ msgstr "引导超时:"
 msgid "Bottom"
 msgstr "置底"
 
+msgid "Browse for folder"
+msgstr "浏览文件夹"
+
 msgid "Bucket Size:"
 msgstr "桶大小:"
 
@@ -348,7 +369,7 @@ msgid "Client Switch Probability:"
 msgstr "客户端切换概率:"
 
 msgid "Columns"
-msgstr "Columns"
+msgstr "列"
 
 msgid "Comment"
 msgstr "注释"
@@ -407,6 +428,21 @@ msgstr "保守配置文件上传速度"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "保守模式：较低速度，较少连接，适合后台做种"
 
+msgid "Copy"
+msgstr "复制"
+
+msgid "Copy Info Hash"
+msgstr "复制信息哈希"
+
+msgid "Copy Magnet Link"
+msgstr "复制磁力链接"
+
+msgid "Copy Name"
+msgstr "复制名称"
+
+msgid "Copy Tracker URL"
+msgstr "复制 Tracker 地址"
+
 msgid "Country"
 msgstr "国家"
 
@@ -458,6 +494,12 @@ msgstr "深色"
 msgid "Days:"
 msgstr "天数:"
 
+msgid "Delete added torrent files"
+msgstr "删除已添加的种子文件"
+
+msgid "Delete torrent files after they are successfully added"
+msgstr "成功添加后删除种子文件"
+
 msgid "Deluge"
 msgstr "Deluge"
 
@@ -467,6 +509,12 @@ msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgid "Details"
 msgstr "详细信息"
 
+msgid "Disable Sequential Download"
+msgstr "禁用顺序下载"
+
+msgid "Disable Super Seeding"
+msgstr "禁用超级做种"
+
 msgid "Disabled"
 msgstr "已禁用"
 
@@ -474,7 +522,7 @@ msgid "Disconnected"
 msgstr "已断开"
 
 msgid "Disconnected from DFakeSeeder"
-msgstr "Disconnected from DFakeSeeder"
+msgstr "已从DFakeSeeder断开连接"
 
 msgid "Disk cache size (MB):"
 msgstr "磁盘缓存大小 (MB):"
@@ -496,6 +544,9 @@ msgstr "下载变化:"
 
 msgid "Download limit (KB/s):"
 msgstr "下载限制 (KB/s)："
+
+msgid "Download limit (KB/s, 0 = unlimited):"
+msgstr "下载限制 (KB/s, 0 = 无限制):"
 
 msgid "Download speed variance for aggressive profile"
 msgstr "激进配置文件的下载速度变化"
@@ -529,6 +580,12 @@ msgstr "错误"
 
 msgid "ETA"
 msgstr "剩余时间"
+
+msgid "Edit Tracker"
+msgstr "编辑 Tracker"
+
+msgid "Edit Tracker..."
+msgstr "编辑 Tracker..."
 
 msgid "Enable CSRF protection"
 msgstr "启用 CSRF 保护"
@@ -574,6 +631,12 @@ msgstr "启用节点交换以发现新节点"
 
 msgid "Enable Protocol Extensions"
 msgstr "启用协议扩展"
+
+msgid "Enable Sequential Download"
+msgstr "启用顺序下载"
+
+msgid "Enable Super Seeding"
+msgstr "启用超级做种"
 
 msgid "Enable TCP keepalive"
 msgstr "启用 TCP 保活"
@@ -662,6 +725,9 @@ msgstr "启用 ut_metadata 扩展进行元数据交换"
 msgid "Enable ut_pex extension for peer exchange"
 msgstr "启用 ut_pex 扩展进行节点交换"
 
+msgid "Enable watch folder"
+msgstr "启用监视文件夹"
+
 msgid "Enable web-based remote control interface"
 msgstr "启用基于网页的远程控制界面"
 
@@ -734,8 +800,20 @@ msgstr "文件"
 msgid "Flags"
 msgstr "标志"
 
+msgid "Folder path:"
+msgstr "文件夹路径:"
+
 msgid "Follow System"
 msgstr "跟随系统"
+
+msgid "Force Complete"
+msgstr "强制完成"
+
+msgid "Force Recheck"
+msgstr "强制重新检查"
+
+msgid "Force Start"
+msgstr "强制开始"
 
 msgid "Forced"
 msgstr "强制"
@@ -815,11 +893,17 @@ msgstr "隐藏主窗口"
 msgid "Hide to system tray when window is minimized"
 msgstr "窗口最小化时隐藏到系统托盘"
 
+msgid "High Priority"
+msgstr "高优先级"
+
 msgid "Hindi"
 msgstr "印地语"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "向 Tracker 通告的频率 (60-7200 秒)"
+
+msgid "How often to check for new torrent files (in seconds)"
+msgstr "检查新种子文件的频率（秒）"
 
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "从 Tracker 获取群体统计信息的频率"
@@ -908,6 +992,9 @@ msgstr "韩语"
 msgid "Label"
 msgstr "标签"
 
+msgid "Label:"
+msgstr "标签:"
+
 msgid "Language"
 msgstr "语言"
 
@@ -949,6 +1036,9 @@ msgstr "日志级别:"
 
 msgid "Log to file"
 msgstr "记录到文件"
+
+msgid "Low Priority"
+msgstr "低优先级"
 
 msgid "Max Connections:"
 msgstr "最大连接数:"
@@ -1073,6 +1163,9 @@ msgstr "一"
 msgid "Monday"
 msgstr "星期一"
 
+msgid "Multi-Tracker"
+msgstr "多Tracker"
+
 msgid "My IP address"
 msgstr "我的 IP 地址"
 
@@ -1084,6 +1177,9 @@ msgstr "名称"
 
 msgid "Network interface:"
 msgstr "网络接口:"
+
+msgid "New name:"
+msgstr "新名称:"
 
 msgid "Next Announce"
 msgstr "下次通告"
@@ -1097,6 +1193,9 @@ msgstr "此种子没有可编辑的选项。"
 msgid "None"
 msgstr "无"
 
+msgid "Normal Priority"
+msgstr "普通优先级"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "要分析行为模式的节点数量"
 
@@ -1105,6 +1204,9 @@ msgstr "从 Tracker 请求的节点数量"
 
 msgid "Number of synthetic peers to generate"
 msgstr "要生成的合成节点数量"
+
+msgid "OK"
+msgstr "确定"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "仅允许来自本地主机的连接 (更安全)"
@@ -1138,6 +1240,9 @@ msgstr "密码："
 
 msgid "Path"
 msgstr "路径"
+
+msgid "Path to the folder to watch for torrent files"
+msgstr "监视种子文件的文件夹路径"
 
 msgid "Pause"
 msgstr "暂停"
@@ -1236,10 +1341,10 @@ msgid "Priority"
 msgstr "优先级"
 
 msgid "Priority Down"
-msgstr "优先级下降"
+msgstr "降低优先级"
 
 msgid "Priority Up"
-msgstr "优先级上升"
+msgstr "提高优先级"
 
 msgid "Private"
 msgstr "私有"
@@ -1301,6 +1406,9 @@ msgstr "中等进度节点的进度分布 (0.0 - 1.0)"
 msgid "Progress distribution for starting peers (0.0 - 1.0)"
 msgstr "起始节点的进度分布 (0.0 - 1.0)"
 
+msgid "Properties"
+msgstr "属性"
+
 msgid "Protocol Compliance:"
 msgstr "协议合规:"
 
@@ -1358,8 +1466,35 @@ msgstr "记住窗口大小和位置"
 msgid "Remember window size and position between sessions"
 msgstr "在会话之间记住窗口大小和位置"
 
+msgid "Remove"
+msgstr "删除"
+
+msgid "Remove Torrent"
+msgstr "删除种子"
+
+msgid "Remove Torrent and Data"
+msgstr "删除种子和数据"
+
+msgid "Remove Torrent and Data?"
+msgstr "删除种子和数据？"
+
+msgid "Remove Torrent?"
+msgstr "删除种子？"
+
+msgid "Remove Tracker..."
+msgstr "删除 Tracker..."
+
 msgid "Remove torrent"
 msgstr "删除种子"
+
+msgid "Rename"
+msgstr "重命名"
+
+msgid "Rename Torrent"
+msgstr "重命名种子"
+
+msgid "Rename..."
+msgstr "重命名..."
 
 msgid "Requests"
 msgstr "请求"
@@ -1381,6 +1516,9 @@ msgstr "将所有设置重置为默认值"
 
 msgid "Reset to Defaults"
 msgstr "重置为默认值"
+
+msgid "Reset to Global Limits"
+msgstr "重置为全局限制"
 
 msgid "Reset to defaults"
 msgstr "重置为默认值"
@@ -1412,8 +1550,14 @@ msgstr "六"
 msgid "Saturday"
 msgstr "星期六"
 
+msgid "Save"
+msgstr "保存"
+
 msgid "Save logs to file in addition to console"
 msgstr "除控制台外还将日志保存到文件"
+
+msgid "Scan interval:"
+msgstr "扫描间隔:"
 
 msgid "Scrape interval (sec):"
 msgstr "抓取间隔 (秒):"
@@ -1448,6 +1592,12 @@ msgstr "做种配置"
 msgid "Seeds"
 msgstr "种子"
 
+msgid "Select"
+msgstr "选择"
+
+msgid "Select Watch Folder"
+msgstr "选择监视文件夹"
+
 msgid "Select proxy type for connections"
 msgstr "选择连接的代理类型"
 
@@ -1471,6 +1621,36 @@ msgstr "会话上传"
 
 msgid "Session timeout (min):"
 msgstr "会话超时 (分钟):"
+
+msgid "Set"
+msgstr "设置"
+
+msgid "Set Download Limit"
+msgstr "设置下载限制"
+
+msgid "Set Download Limit..."
+msgstr "设置下载限制..."
+
+msgid "Set Label"
+msgstr "设置标签"
+
+msgid "Set Label..."
+msgstr "设置标签..."
+
+msgid "Set Location"
+msgstr "设置位置"
+
+msgid "Set Location..."
+msgstr "设置位置..."
+
+msgid "Set Random Progress"
+msgstr "设置随机进度"
+
+msgid "Set Upload Limit"
+msgstr "设置上传限制"
+
+msgid "Set Upload Limit..."
+msgstr "设置上传限制..."
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "快捷键配置尚未实现"
@@ -1501,6 +1681,9 @@ msgstr "速度"
 
 msgid "Speed Control"
 msgstr "速度控制"
+
+msgid "Speed Limits"
+msgstr "速度限制"
 
 msgid "Speed settings reset to defaults"
 msgstr "速度设置已重置为默认值"
@@ -1561,6 +1744,12 @@ msgstr "TCP 回退"
 
 msgid "TCP keepalive"
 msgstr "TCP 保活"
+
+msgid "The .torrent file will be DELETED."
+msgstr ".torrent 文件将被删除。"
+
+msgid "The .torrent file will be kept."
+msgstr ".torrent 文件将被保留。"
 
 msgid "Theme:"
 msgstr "主题："
@@ -1637,6 +1826,9 @@ msgstr "跟踪器"
 msgid "Tracker URL"
 msgstr "Tracker 地址"
 
+msgid "Tracker URL:"
+msgstr "Tracker 地址:"
+
 msgid "Trackers"
 msgstr "Tracker"
 
@@ -1653,13 +1845,13 @@ msgid "Transaction ID range (min):"
 msgstr "事务 ID 范围 (最小):"
 
 msgid "TranslationManager"
-msgstr "TranslationManager"
+msgstr "翻译管理器"
 
 msgid "TranslationManagerGTK3"
-msgstr "TranslationManagerGTK3"
+msgstr "翻译管理器GTK3"
 
 msgid "TranslationManagerGTK4"
-msgstr "TranslationManagerGTK4"
+msgstr "翻译管理器GTK4"
 
 msgid "Transmission"
 msgstr "Transmission"
@@ -1723,6 +1915,9 @@ msgstr "上传活动概率:"
 
 msgid "Upload limit (KB/s):"
 msgstr "上传限制 (KB/s)："
+
+msgid "Upload limit (KB/s, 0 = unlimited):"
+msgstr "上传限制 (KB/s, 0 = 无限制):"
 
 msgid "Upload speed variance for aggressive profile"
 msgstr "激进配置文件的上传速度变化"

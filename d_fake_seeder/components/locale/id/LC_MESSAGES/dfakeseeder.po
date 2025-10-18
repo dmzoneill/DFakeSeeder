@@ -72,7 +72,7 @@ msgid "<b>Conservative Profile Settings</b>"
 msgstr "<b>Pengaturan Profil Konservatif</b>"
 
 msgid "<b>DHT (Distributed Hash Table)</b>"
-msgstr "<b>DHT (Distributed Hash Table)</b>"
+msgstr "<b>DHT (Tabel Hash Terdistribusi)</b>"
 
 msgid "<b>Encryption</b>"
 msgstr "<b>Enkripsi</b>"
@@ -161,6 +161,9 @@ msgstr "<b>Pengaturan Pola Lalu Lintas</b>"
 msgid "<b>Transport Protocol Settings</b>"
 msgstr "<b>Pengaturan Protokol Transportasi</b>"
 
+msgid "<b>Watch Folder</b>"
+msgstr "<b>Pantau Folder</b>"
+
 msgid "<b>Web Interface</b>"
 msgstr "<b>Antarmuka Web</b>"
 
@@ -178,6 +181,12 @@ msgstr "Tingkat Adaptasi:"
 
 msgid "Add"
 msgstr "Tambah"
+
+msgid "Add Tracker"
+msgstr "Tambah Pelacak"
+
+msgid "Add Tracker..."
+msgstr "Tambah Pelacak..."
 
 msgid "Add torrent"
 msgstr "Tambah torrent"
@@ -242,6 +251,9 @@ msgstr "Buat ID node otomatis"
 msgid "Auto-save settings"
 msgstr "Simpan pengaturan otomatis"
 
+msgid "Auto-start added torrents"
+msgstr "Mulai otomatis torrent yang ditambahkan"
+
 msgid "Auto-start disabled"
 msgstr "Mulai otomatis dinonaktifkan"
 
@@ -260,8 +272,14 @@ msgstr "Konfigurasi port forwarding router otomatis menggunakan UPnP/NAT-PMP"
 msgid "Automatically generate a unique node ID"
 msgstr "Buat ID node unik otomatis"
 
+msgid "Automatically monitor a folder for new torrent files"
+msgstr "Pantau folder secara otomatis untuk file torrent baru"
+
 msgid "Automatically save settings when changed"
 msgstr "Simpan pengaturan otomatis saat diubah"
+
+msgid "Automatically start torrents when added from watch folder"
+msgstr "Mulai torrent secara otomatis saat ditambahkan dari folder pantauan"
 
 msgid "Automatically switch to alternative speeds during specified hours"
 msgstr "Beralih ke kecepatan alternatif otomatis selama jam yang ditentukan"
@@ -314,6 +332,9 @@ msgstr "Batas Waktu Bootstrap:"
 msgid "Bottom"
 msgstr "Bawah"
 
+msgid "Browse for folder"
+msgstr "Telusuri folder"
+
 msgid "Bucket Size:"
 msgstr "Ukuran Bucket:"
 
@@ -348,7 +369,7 @@ msgid "Client Switch Probability:"
 msgstr "Probabilitas Perpindahan Klien:"
 
 msgid "Columns"
-msgstr "Columns"
+msgstr "Kolom"
 
 msgid "Comment"
 msgstr "Komentar"
@@ -407,6 +428,21 @@ msgstr "Kecepatan unggah profil konservatif"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "Konservatif: Kecepatan lebih rendah, koneksi lebih sedikit, ideal untuk seeding latar belakang"
 
+msgid "Copy"
+msgstr "Salin"
+
+msgid "Copy Info Hash"
+msgstr "Salin Info Hash"
+
+msgid "Copy Magnet Link"
+msgstr "Salin Tautan Magnet"
+
+msgid "Copy Name"
+msgstr "Salin Nama"
+
+msgid "Copy Tracker URL"
+msgstr "Salin URL Pelacak"
+
 msgid "Country"
 msgstr "Negara"
 
@@ -458,6 +494,12 @@ msgstr "Gelap"
 msgid "Days:"
 msgstr "Hari:"
 
+msgid "Delete added torrent files"
+msgstr "Hapus file torrent yang ditambahkan"
+
+msgid "Delete torrent files after they are successfully added"
+msgstr "Hapus file torrent setelah berhasil ditambahkan"
+
 msgid "Deluge"
 msgstr "Deluge"
 
@@ -466,6 +508,12 @@ msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
 msgid "Details"
 msgstr "Detail"
+
+msgid "Disable Sequential Download"
+msgstr "Nonaktifkan Unduhan Berurutan"
+
+msgid "Disable Super Seeding"
+msgstr "Nonaktifkan Super Seeding"
 
 msgid "Disabled"
 msgstr "Dinonaktifkan"
@@ -496,6 +544,9 @@ msgstr "Variansi Unduh:"
 
 msgid "Download limit (KB/s):"
 msgstr "Batas unduh (KB/s):"
+
+msgid "Download limit (KB/s, 0 = unlimited):"
+msgstr "Batas unduh (KB/s, 0 = tak terbatas):"
 
 msgid "Download speed variance for aggressive profile"
 msgstr "Variansi kecepatan unduh untuk profil agresif"
@@ -529,6 +580,12 @@ msgstr "KESALAHAN"
 
 msgid "ETA"
 msgstr "Waktu Tersisa"
+
+msgid "Edit Tracker"
+msgstr "Edit Pelacak"
+
+msgid "Edit Tracker..."
+msgstr "Edit Pelacak..."
 
 msgid "Enable CSRF protection"
 msgstr "Aktifkan perlindungan CSRF"
@@ -574,6 +631,12 @@ msgstr "Aktifkan Peer Exchange untuk menemukan peer baru"
 
 msgid "Enable Protocol Extensions"
 msgstr "Aktifkan Ekstensi Protokol"
+
+msgid "Enable Sequential Download"
+msgstr "Aktifkan Unduhan Berurutan"
+
+msgid "Enable Super Seeding"
+msgstr "Aktifkan Super Seeding"
 
 msgid "Enable TCP keepalive"
 msgstr "Aktifkan TCP keepalive"
@@ -662,6 +725,9 @@ msgstr "Aktifkan ekstensi ut_metadata untuk pertukaran metadata"
 msgid "Enable ut_pex extension for peer exchange"
 msgstr "Aktifkan ekstensi ut_pex untuk pertukaran peer"
 
+msgid "Enable watch folder"
+msgstr "Aktifkan folder pantauan"
+
 msgid "Enable web-based remote control interface"
 msgstr "Aktifkan antarmuka kontrol jarak jauh berbasis web"
 
@@ -720,7 +786,7 @@ msgid "Fast Extension (BEP-006)"
 msgstr "Ekstensi Cepat (BEP-006)"
 
 msgid "File"
-msgstr "File"
+msgstr "Berkas"
 
 msgid "File Path"
 msgstr "Path File"
@@ -734,8 +800,20 @@ msgstr "File"
 msgid "Flags"
 msgstr "Flag"
 
+msgid "Folder path:"
+msgstr "Jalur folder:"
+
 msgid "Follow System"
 msgstr "Ikuti Sistem"
+
+msgid "Force Complete"
+msgstr "Paksa Selesai"
+
+msgid "Force Recheck"
+msgstr "Paksa Periksa Ulang"
+
+msgid "Force Start"
+msgstr "Paksa Mulai"
 
 msgid "Forced"
 msgstr "Dipaksakan"
@@ -762,7 +840,7 @@ msgid "General timeout for extension operations (seconds)"
 msgstr "Batas waktu umum untuk operasi ekstensi (detik)"
 
 msgid "GeneralTab"
-msgstr "GeneralTab"
+msgstr "Tab Umum"
 
 msgid "Generate Secure Password"
 msgstr "Buat Kata Sandi Aman"
@@ -815,11 +893,17 @@ msgstr "Sembunyikan Jendela Utama"
 msgid "Hide to system tray when window is minimized"
 msgstr "Sembunyikan ke system tray saat jendela diminimalkan"
 
+msgid "High Priority"
+msgstr "Prioritas Tinggi"
+
 msgid "Hindi"
 msgstr "Hindi"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "Seberapa sering mengumumkan ke tracker (60-7200 detik)"
+
+msgid "How often to check for new torrent files (in seconds)"
+msgstr "Seberapa sering memeriksa file torrent baru (dalam detik)"
 
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "Seberapa sering scrape tracker untuk statistik swarm"
@@ -908,6 +992,9 @@ msgstr "Korea"
 msgid "Label"
 msgstr "Label"
 
+msgid "Label:"
+msgstr "Label:"
+
 msgid "Language"
 msgstr "Bahasa"
 
@@ -949,6 +1036,9 @@ msgstr "Tingkat Log:"
 
 msgid "Log to file"
 msgstr "Log ke file"
+
+msgid "Low Priority"
+msgstr "Prioritas Rendah"
 
 msgid "Max Connections:"
 msgstr "Koneksi Maks:"
@@ -1073,6 +1163,9 @@ msgstr "Sen"
 msgid "Monday"
 msgstr "Senin"
 
+msgid "Multi-Tracker"
+msgstr "Multi-Pelacak"
+
 msgid "My IP address"
 msgstr "Alamat IP saya"
 
@@ -1084,6 +1177,9 @@ msgstr "Nama"
 
 msgid "Network interface:"
 msgstr "Antarmuka jaringan:"
+
+msgid "New name:"
+msgstr "Nama baru:"
 
 msgid "Next Announce"
 msgstr "Pengumuman Berikutnya"
@@ -1097,6 +1193,9 @@ msgstr "Tidak ada opsi yang dapat diedit untuk torrent ini."
 msgid "None"
 msgstr "Tidak Ada"
 
+msgid "Normal Priority"
+msgstr "Prioritas Normal"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Jumlah peer untuk dianalisis pola perilaku"
 
@@ -1105,6 +1204,9 @@ msgstr "Jumlah peer untuk diminta dari tracker"
 
 msgid "Number of synthetic peers to generate"
 msgstr "Jumlah peer sintetis untuk dibuat"
+
+msgid "OK"
+msgstr "OK"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "Hanya izinkan koneksi dari localhost (lebih aman)"
@@ -1137,7 +1239,10 @@ msgid "Password:"
 msgstr "Kata Sandi:"
 
 msgid "Path"
-msgstr "Path"
+msgstr "Jalur"
+
+msgid "Path to the folder to watch for torrent files"
+msgstr "Jalur ke folder untuk memantau file torrent"
 
 msgid "Pause"
 msgstr "Jeda"
@@ -1301,6 +1406,9 @@ msgstr "Distribusi progres untuk peer progres tengah (0.0 - 1.0)"
 msgid "Progress distribution for starting peers (0.0 - 1.0)"
 msgstr "Distribusi progres untuk peer yang memulai (0.0 - 1.0)"
 
+msgid "Properties"
+msgstr "Properti"
+
 msgid "Protocol Compliance:"
 msgstr "Kepatuhan Protokol:"
 
@@ -1358,8 +1466,35 @@ msgstr "Ingat ukuran dan posisi jendela"
 msgid "Remember window size and position between sessions"
 msgstr "Ingat ukuran dan posisi jendela antar sesi"
 
+msgid "Remove"
+msgstr "Hapus"
+
+msgid "Remove Torrent"
+msgstr "Hapus Torrent"
+
+msgid "Remove Torrent and Data"
+msgstr "Hapus Torrent dan Data"
+
+msgid "Remove Torrent and Data?"
+msgstr "Hapus Torrent dan Data?"
+
+msgid "Remove Torrent?"
+msgstr "Hapus Torrent?"
+
+msgid "Remove Tracker..."
+msgstr "Hapus Pelacak..."
+
 msgid "Remove torrent"
 msgstr "Hapus torrent"
+
+msgid "Rename"
+msgstr "Ubah Nama"
+
+msgid "Rename Torrent"
+msgstr "Ubah Nama Torrent"
+
+msgid "Rename..."
+msgstr "Ubah Nama..."
 
 msgid "Requests"
 msgstr "Permintaan"
@@ -1371,7 +1506,7 @@ msgid "Require username and password for web access"
 msgstr "Memerlukan nama pengguna dan kata sandi untuk akses web"
 
 msgid "Reset"
-msgstr "Reset"
+msgstr "Setel Ulang"
 
 msgid "Reset all settings not yet implemented"
 msgstr "Reset semua pengaturan belum diimplementasikan"
@@ -1381,6 +1516,9 @@ msgstr "Reset semua pengaturan ke nilai default"
 
 msgid "Reset to Defaults"
 msgstr "Reset ke Default"
+
+msgid "Reset to Global Limits"
+msgstr "Setel Ulang ke Batas Global"
 
 msgid "Reset to defaults"
 msgstr "Reset ke default"
@@ -1412,8 +1550,14 @@ msgstr "Sab"
 msgid "Saturday"
 msgstr "Sabtu"
 
+msgid "Save"
+msgstr "Simpan"
+
 msgid "Save logs to file in addition to console"
 msgstr "Simpan log ke file selain ke konsol"
+
+msgid "Scan interval:"
+msgstr "Interval pemindaian:"
 
 msgid "Scrape interval (sec):"
 msgstr "Interval scrape (dtk):"
@@ -1448,6 +1592,12 @@ msgstr "Profil Seeding"
 msgid "Seeds"
 msgstr "Seed"
 
+msgid "Select"
+msgstr "Pilih"
+
+msgid "Select Watch Folder"
+msgstr "Pilih Folder Pantauan"
+
 msgid "Select proxy type for connections"
 msgstr "Pilih tipe proxy untuk koneksi"
 
@@ -1471,6 +1621,36 @@ msgstr "Sesi Diunggah"
 
 msgid "Session timeout (min):"
 msgstr "Batas waktu sesi (mnt):"
+
+msgid "Set"
+msgstr "Atur"
+
+msgid "Set Download Limit"
+msgstr "Atur Batas Unduh"
+
+msgid "Set Download Limit..."
+msgstr "Atur Batas Unduh..."
+
+msgid "Set Label"
+msgstr "Atur Label"
+
+msgid "Set Label..."
+msgstr "Atur Label..."
+
+msgid "Set Location"
+msgstr "Atur Lokasi"
+
+msgid "Set Location..."
+msgstr "Atur Lokasi..."
+
+msgid "Set Random Progress"
+msgstr "Atur Progres Acak"
+
+msgid "Set Upload Limit"
+msgstr "Atur Batas Unggah"
+
+msgid "Set Upload Limit..."
+msgstr "Atur Batas Unggah..."
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Konfigurasi pintasan belum diimplementasikan"
@@ -1501,6 +1681,9 @@ msgstr "Kecepatan"
 
 msgid "Speed Control"
 msgstr "Kontrol Kecepatan"
+
+msgid "Speed Limits"
+msgstr "Batas Kecepatan"
 
 msgid "Speed settings reset to defaults"
 msgstr "Pengaturan kecepatan direset ke default"
@@ -1561,6 +1744,12 @@ msgstr "Fallback TCP"
 
 msgid "TCP keepalive"
 msgstr "TCP keepalive"
+
+msgid "The .torrent file will be DELETED."
+msgstr "File .torrent akan DIHAPUS."
+
+msgid "The .torrent file will be kept."
+msgstr "File .torrent akan disimpan."
 
 msgid "Theme:"
 msgstr "Tema:"
@@ -1637,6 +1826,9 @@ msgstr "Tracker"
 msgid "Tracker URL"
 msgstr "URL Tracker"
 
+msgid "Tracker URL:"
+msgstr "URL Pelacak:"
+
 msgid "Trackers"
 msgstr "Tracker"
 
@@ -1653,13 +1845,13 @@ msgid "Transaction ID range (min):"
 msgstr "Rentang ID transaksi (min):"
 
 msgid "TranslationManager"
-msgstr "TranslationManager"
+msgstr "Manajer Terjemahan"
 
 msgid "TranslationManagerGTK3"
-msgstr "TranslationManagerGTK3"
+msgstr "Manajer Terjemahan GTK3"
 
 msgid "TranslationManagerGTK4"
-msgstr "TranslationManagerGTK4"
+msgstr "Manajer Terjemahan GTK4"
 
 msgid "Transmission"
 msgstr "Transmission"
@@ -1723,6 +1915,9 @@ msgstr "Probabilitas aktivitas unggah:"
 
 msgid "Upload limit (KB/s):"
 msgstr "Batas unggah (KB/s):"
+
+msgid "Upload limit (KB/s, 0 = unlimited):"
+msgstr "Batas unggah (KB/s, 0 = tak terbatas):"
 
 msgid "Upload speed variance for aggressive profile"
 msgstr "Variansi kecepatan unggah untuk profil agresif"
@@ -1869,7 +2064,7 @@ msgid "leechers"
 msgstr "Leecher"
 
 msgid "log_tab"
-msgstr "Log"
+msgstr "Tab Log"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (Ketersediaan Piece)"

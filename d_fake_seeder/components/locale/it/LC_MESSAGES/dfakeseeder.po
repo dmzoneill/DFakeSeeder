@@ -161,6 +161,9 @@ msgstr "<b>Impostazioni Pattern Traffico</b>"
 msgid "<b>Transport Protocol Settings</b>"
 msgstr "<b>Impostazioni Protocollo Trasporto</b>"
 
+msgid "<b>Watch Folder</b>"
+msgstr "<b>Cartella Monitorata</b>"
+
 msgid "<b>Web Interface</b>"
 msgstr "<b>Interfaccia Web</b>"
 
@@ -178,6 +181,12 @@ msgstr "Tasso di adattamento:"
 
 msgid "Add"
 msgstr "Aggiungi"
+
+msgid "Add Tracker"
+msgstr "Aggiungi Tracker"
+
+msgid "Add Tracker..."
+msgstr "Aggiungi Tracker..."
 
 msgid "Add torrent"
 msgstr "Aggiungi torrent"
@@ -242,6 +251,9 @@ msgstr "Genera automaticamente ID nodo"
 msgid "Auto-save settings"
 msgstr "Salvataggio automatico impostazioni"
 
+msgid "Auto-start added torrents"
+msgstr "Avvio automatico dei torrent aggiunti"
+
 msgid "Auto-start disabled"
 msgstr "Avvio automatico disabilitato"
 
@@ -260,8 +272,14 @@ msgstr "Configura automaticamente port forwarding router usando UPnP/NAT-PMP"
 msgid "Automatically generate a unique node ID"
 msgstr "Genera automaticamente un ID nodo unico"
 
+msgid "Automatically monitor a folder for new torrent files"
+msgstr "Monitora automaticamente una cartella per nuovi file torrent"
+
 msgid "Automatically save settings when changed"
 msgstr "Salva automaticamente impostazioni quando cambiate"
+
+msgid "Automatically start torrents when added from watch folder"
+msgstr "Avvia automaticamente i torrent aggiunti dalla cartella monitorata"
 
 msgid "Automatically switch to alternative speeds during specified hours"
 msgstr "Passa automaticamente a velocità alternative durante ore specificate"
@@ -314,6 +332,9 @@ msgstr "Timeout bootstrap:"
 msgid "Bottom"
 msgstr "Fondo"
 
+msgid "Browse for folder"
+msgstr "Sfoglia cartella"
+
 msgid "Bucket Size:"
 msgstr "Dimensione bucket:"
 
@@ -348,7 +369,7 @@ msgid "Client Switch Probability:"
 msgstr "Probabilità cambio client:"
 
 msgid "Columns"
-msgstr "Columns"
+msgstr "Colonne"
 
 msgid "Comment"
 msgstr "Commento"
@@ -407,6 +428,21 @@ msgstr "Velocità upload profilo conservativo"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "Conservativo: Velocità ridotte, meno connessioni, ideale per seeding in background"
 
+msgid "Copy"
+msgstr "Copia"
+
+msgid "Copy Info Hash"
+msgstr "Copia Hash Info"
+
+msgid "Copy Magnet Link"
+msgstr "Copia Link Magnet"
+
+msgid "Copy Name"
+msgstr "Copia Nome"
+
+msgid "Copy Tracker URL"
+msgstr "Copia URL Tracker"
+
 msgid "Country"
 msgstr "Paese"
 
@@ -458,6 +494,12 @@ msgstr "Scuro"
 msgid "Days:"
 msgstr "Giorni:"
 
+msgid "Delete added torrent files"
+msgstr "Elimina file torrent aggiunti"
+
+msgid "Delete torrent files after they are successfully added"
+msgstr "Elimina i file torrent dopo l'aggiunta riuscita"
+
 msgid "Deluge"
 msgstr "Deluge"
 
@@ -466,6 +508,12 @@ msgstr "Deluge versione 2.0.3 con libtorrent 2.0.5.0"
 
 msgid "Details"
 msgstr "Dettagli"
+
+msgid "Disable Sequential Download"
+msgstr "Disattiva Download Sequenziale"
+
+msgid "Disable Super Seeding"
+msgstr "Disattiva Super Seeding"
 
 msgid "Disabled"
 msgstr "Disabilitato"
@@ -496,6 +544,9 @@ msgstr "Varianza download:"
 
 msgid "Download limit (KB/s):"
 msgstr "Limite download (KB/s):"
+
+msgid "Download limit (KB/s, 0 = unlimited):"
+msgstr "Limite download (KB/s, 0 = illimitato):"
 
 msgid "Download speed variance for aggressive profile"
 msgstr "Varianza velocità download per profilo aggressivo"
@@ -529,6 +580,12 @@ msgstr "ERRORE"
 
 msgid "ETA"
 msgstr "Tempo Rimasto"
+
+msgid "Edit Tracker"
+msgstr "Modifica Tracker"
+
+msgid "Edit Tracker..."
+msgstr "Modifica Tracker..."
 
 msgid "Enable CSRF protection"
 msgstr "Abilita protezione CSRF"
@@ -574,6 +631,12 @@ msgstr "Abilita Scambio Peer per scoprire nuovi peer"
 
 msgid "Enable Protocol Extensions"
 msgstr "Abilita Estensioni Protocollo"
+
+msgid "Enable Sequential Download"
+msgstr "Attiva Download Sequenziale"
+
+msgid "Enable Super Seeding"
+msgstr "Attiva Super Seeding"
 
 msgid "Enable TCP keepalive"
 msgstr "Abilita TCP keepalive"
@@ -662,6 +725,9 @@ msgstr "Abilita estensione ut_metadata per scambio metadati"
 msgid "Enable ut_pex extension for peer exchange"
 msgstr "Abilita estensione ut_pex per scambio peer"
 
+msgid "Enable watch folder"
+msgstr "Attiva cartella monitorata"
+
 msgid "Enable web-based remote control interface"
 msgstr "Abilita interfaccia controllo remoto basata web"
 
@@ -734,8 +800,20 @@ msgstr "File"
 msgid "Flags"
 msgstr "Bandiere"
 
+msgid "Folder path:"
+msgstr "Percorso cartella:"
+
 msgid "Follow System"
 msgstr "Segui Sistema"
+
+msgid "Force Complete"
+msgstr "Forza Completamento"
+
+msgid "Force Recheck"
+msgstr "Forza Riverifica"
+
+msgid "Force Start"
+msgstr "Forza Avvio"
 
 msgid "Forced"
 msgstr "Forzato"
@@ -815,11 +893,17 @@ msgstr "Nascondi Finestra Principale"
 msgid "Hide to system tray when window is minimized"
 msgstr "Nascondi nel vassoio sistema quando finestra minimizzata"
 
+msgid "High Priority"
+msgstr "Priorità Alta"
+
 msgid "Hindi"
 msgstr "Hindi"
 
 msgid "How often to announce to trackers (60-7200 seconds)"
 msgstr "Frequenza annunci ai tracker (60-7200 secondi)"
+
+msgid "How often to check for new torrent files (in seconds)"
+msgstr "Frequenza di controllo per nuovi file torrent (in secondi)"
 
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "Frequenza interrogazione tracker per statistiche sciame"
@@ -908,6 +992,9 @@ msgstr "Coreano"
 msgid "Label"
 msgstr "Etichetta"
 
+msgid "Label:"
+msgstr "Etichetta:"
+
 msgid "Language"
 msgstr "Lingua"
 
@@ -949,6 +1036,9 @@ msgstr "Livello Log:"
 
 msgid "Log to file"
 msgstr "Log su file"
+
+msgid "Low Priority"
+msgstr "Priorità Bassa"
 
 msgid "Max Connections:"
 msgstr "Max connessioni:"
@@ -1073,6 +1163,9 @@ msgstr "Lun"
 msgid "Monday"
 msgstr "Lunedì"
 
+msgid "Multi-Tracker"
+msgstr "Multi-Tracker"
+
 msgid "My IP address"
 msgstr "Il mio indirizzo IP"
 
@@ -1084,6 +1177,9 @@ msgstr "Nome"
 
 msgid "Network interface:"
 msgstr "Interfaccia rete:"
+
+msgid "New name:"
+msgstr "Nuovo nome:"
 
 msgid "Next Announce"
 msgstr "Prossimo annuncio"
@@ -1097,6 +1193,9 @@ msgstr "Nessuna opzione modificabile disponibile per questo torrent."
 msgid "None"
 msgstr "Nessuno"
 
+msgid "Normal Priority"
+msgstr "Priorità Normale"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Numero di peer da analizzare per pattern comportamentali"
 
@@ -1105,6 +1204,9 @@ msgstr "Numero peer da richiedere al tracker"
 
 msgid "Number of synthetic peers to generate"
 msgstr "Numero di peer sintetici da generare"
+
+msgid "OK"
+msgstr "OK"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "Consenti solo connessioni da localhost (più sicuro)"
@@ -1138,6 +1240,9 @@ msgstr "Password:"
 
 msgid "Path"
 msgstr "Percorso"
+
+msgid "Path to the folder to watch for torrent files"
+msgstr "Percorso della cartella da monitorare per i file torrent"
 
 msgid "Pause"
 msgstr "Pausa"
@@ -1301,6 +1406,9 @@ msgstr "Distribuzione progresso peer a metà (0.0 - 1.0)"
 msgid "Progress distribution for starting peers (0.0 - 1.0)"
 msgstr "Distribuzione progresso peer iniziali (0.0 - 1.0)"
 
+msgid "Properties"
+msgstr "Proprietà"
+
 msgid "Protocol Compliance:"
 msgstr "Conformità protocollo:"
 
@@ -1358,8 +1466,35 @@ msgstr "Ricorda dimensione e posizione finestra"
 msgid "Remember window size and position between sessions"
 msgstr "Ricorda dimensione e posizione finestra tra sessioni"
 
+msgid "Remove"
+msgstr "Rimuovi"
+
+msgid "Remove Torrent"
+msgstr "Rimuovi Torrent"
+
+msgid "Remove Torrent and Data"
+msgstr "Rimuovi Torrent e Dati"
+
+msgid "Remove Torrent and Data?"
+msgstr "Rimuovere Torrent e Dati?"
+
+msgid "Remove Torrent?"
+msgstr "Rimuovere Torrent?"
+
+msgid "Remove Tracker..."
+msgstr "Rimuovi Tracker..."
+
 msgid "Remove torrent"
 msgstr "Rimuovi torrent"
+
+msgid "Rename"
+msgstr "Rinomina"
+
+msgid "Rename Torrent"
+msgstr "Rinomina Torrent"
+
+msgid "Rename..."
+msgstr "Rinomina..."
 
 msgid "Requests"
 msgstr "Richieste"
@@ -1381,6 +1516,9 @@ msgstr "Ripristina tutte impostazioni ai valori predefiniti"
 
 msgid "Reset to Defaults"
 msgstr "Ripristina Predefinite"
+
+msgid "Reset to Global Limits"
+msgstr "Ripristina Limiti Globali"
 
 msgid "Reset to defaults"
 msgstr "Ripristina ai valori predefiniti"
@@ -1412,8 +1550,14 @@ msgstr "Sab"
 msgid "Saturday"
 msgstr "Sabato"
 
+msgid "Save"
+msgstr "Salva"
+
 msgid "Save logs to file in addition to console"
 msgstr "Salva log su file oltre che su console"
+
+msgid "Scan interval:"
+msgstr "Intervallo di scansione:"
 
 msgid "Scrape interval (sec):"
 msgstr "Intervallo interrogazione (sec):"
@@ -1448,6 +1592,12 @@ msgstr "Profilo di Seeding"
 msgid "Seeds"
 msgstr "Seed"
 
+msgid "Select"
+msgstr "Seleziona"
+
+msgid "Select Watch Folder"
+msgstr "Seleziona Cartella Monitorata"
+
 msgid "Select proxy type for connections"
 msgstr "Seleziona tipo proxy per connessioni"
 
@@ -1471,6 +1621,36 @@ msgstr "Sessione Caricata"
 
 msgid "Session timeout (min):"
 msgstr "Timeout sessione (min):"
+
+msgid "Set"
+msgstr "Imposta"
+
+msgid "Set Download Limit"
+msgstr "Imposta Limite Download"
+
+msgid "Set Download Limit..."
+msgstr "Imposta Limite Download..."
+
+msgid "Set Label"
+msgstr "Imposta Etichetta"
+
+msgid "Set Label..."
+msgstr "Imposta Etichetta..."
+
+msgid "Set Location"
+msgstr "Imposta Posizione"
+
+msgid "Set Location..."
+msgstr "Imposta Posizione..."
+
+msgid "Set Random Progress"
+msgstr "Imposta Progresso Casuale"
+
+msgid "Set Upload Limit"
+msgstr "Imposta Limite Upload"
+
+msgid "Set Upload Limit..."
+msgstr "Imposta Limite Upload..."
 
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Configurazione scorciatoie non ancora implementata"
@@ -1501,6 +1681,9 @@ msgstr "Velocità"
 
 msgid "Speed Control"
 msgstr "Controllo Velocità"
+
+msgid "Speed Limits"
+msgstr "Limiti di Velocità"
 
 msgid "Speed settings reset to defaults"
 msgstr "Impostazioni velocità ripristinate ai valori predefiniti"
@@ -1560,7 +1743,13 @@ msgid "TCP fallback"
 msgstr "Fallback TCP"
 
 msgid "TCP keepalive"
-msgstr "TCP keepalive"
+msgstr "Mantenimento connessione TCP"
+
+msgid "The .torrent file will be DELETED."
+msgstr "Il file .torrent sarà ELIMINATO."
+
+msgid "The .torrent file will be kept."
+msgstr "Il file .torrent sarà conservato."
 
 msgid "Theme:"
 msgstr "Tema:"
@@ -1637,6 +1826,9 @@ msgstr "Tracker"
 msgid "Tracker URL"
 msgstr "URL Tracker"
 
+msgid "Tracker URL:"
+msgstr "URL Tracker:"
+
 msgid "Trackers"
 msgstr "Tracker"
 
@@ -1653,13 +1845,13 @@ msgid "Transaction ID range (min):"
 msgstr "Range ID transazione (min):"
 
 msgid "TranslationManager"
-msgstr "TranslationManager"
+msgstr "GestoreTraduzioni"
 
 msgid "TranslationManagerGTK3"
-msgstr "TranslationManagerGTK3"
+msgstr "GestoreTraduzioniGTK3"
 
 msgid "TranslationManagerGTK4"
-msgstr "TranslationManagerGTK4"
+msgstr "GestoreTraduzioniGTK4"
 
 msgid "Transmission"
 msgstr "Transmission"
@@ -1723,6 +1915,9 @@ msgstr "Probabilità attività upload:"
 
 msgid "Upload limit (KB/s):"
 msgstr "Limite upload (KB/s):"
+
+msgid "Upload limit (KB/s, 0 = unlimited):"
+msgstr "Limite upload (KB/s, 0 = illimitato):"
 
 msgid "Upload speed variance for aggressive profile"
 msgstr "Varianza velocità upload per profilo aggressivo"
