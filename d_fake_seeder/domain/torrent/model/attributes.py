@@ -31,6 +31,15 @@ class Attributes(GObject.Object):
     upload_speed = GObject.Property(type=GObject.TYPE_LONG, default=30)
     uploading = GObject.Property(type=GObject.TYPE_BOOLEAN, default=False)
 
+    # New attributes for enhanced functionality
+    label = GObject.Property(type=GObject.TYPE_STRING, default="")
+    priority = GObject.Property(type=GObject.TYPE_STRING, default="normal")  # low, normal, high
+    upload_limit = GObject.Property(type=GObject.TYPE_LONG, default=0)  # 0 = unlimited (uses global)
+    download_limit = GObject.Property(type=GObject.TYPE_LONG, default=0)  # 0 = unlimited (uses global)
+    super_seeding = GObject.Property(type=GObject.TYPE_BOOLEAN, default=False)
+    sequential_download = GObject.Property(type=GObject.TYPE_BOOLEAN, default=False)
+    force_start = GObject.Property(type=GObject.TYPE_BOOLEAN, default=False)
+
     def __init__(self):
         super().__init__()
         self.uuid = str(uuid.uuid4())
