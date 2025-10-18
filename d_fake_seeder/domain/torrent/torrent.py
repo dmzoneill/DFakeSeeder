@@ -1,6 +1,5 @@
 import random
 import threading
-import time
 
 import gi
 
@@ -57,6 +56,10 @@ class Torrent(GObject.GObject):
         self.speed_calculation_multiplier = ui_settings.get("speed_calculation_multiplier", 1000)
 
         self.file_path = filepath
+
+        # Track additional background threads for cleanup
+        self.tracker_update_threads = []  # Track force tracker update threads
+        self.is_stopping = False  # Flag to prevent new threads during shutdown
 
         if self.file_path not in self.settings.torrents:
             self.settings.torrents[self.file_path] = {
@@ -146,6 +149,14 @@ class Torrent(GObject.GObject):
             count = self.seeder_retry_count
 
             while fetched is False and count != 0:
+                # Check for shutdown request before each iteration
+                if self.peers_worker_stop_event.is_set():
+                    logger.info(
+                        f"🛑 PEERS WORKER SHUTDOWN: {self.name} - stop event received",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                    break
+
                 logger.debug(
                     "Requesting seeder information",
                     extra={"class_name": self.__class__.__name__},
@@ -156,7 +167,13 @@ class Torrent(GObject.GObject):
                         f"Seeder failed to load peers, retrying in {TimeoutConstants.TORRENT_PEER_RETRY} seconds",
                         extra={"class_name": self.__class__.__name__},
                     )
-                    time.sleep(int(self.seeder_retry_interval))
+                    # Use Event.wait() instead of time.sleep() for instant shutdown response
+                    if self.peers_worker_stop_event.wait(timeout=int(self.seeder_retry_interval)):
+                        logger.info(
+                            f"🛑 PEERS WORKER SHUTDOWN: {self.name} - stop event received during retry sleep",
+                            extra={"class_name": self.__class__.__name__},
+                        )
+                        break
                     count -= 1
                     if count == 0:
                         self.active = False
@@ -296,6 +313,10 @@ class Torrent(GObject.GObject):
 
     def stop(self):
         logger.info("Torrent stop", extra={"class_name": self.__class__.__name__})
+
+        # Set stopping flag to prevent new threads
+        self.is_stopping = True
+
         # Stop the name update thread
         logger.info(
             "Torrent Stopping fake seeder: " + self.name,
@@ -321,6 +342,18 @@ class Torrent(GObject.GObject):
 
         if self.peers_worker.is_alive():
             logger.warning(f"⚠️ Peers worker thread for {self.name} still alive after timeout - forcing shutdown")
+
+        # Join any outstanding tracker update threads
+        if hasattr(self, "tracker_update_threads") and self.tracker_update_threads:
+            logger.debug(
+                f"🧹 Joining {len(self.tracker_update_threads)} tracker update threads for {self.name}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            for thread in self.tracker_update_threads:
+                if thread.is_alive():
+                    thread.join(timeout=0.1)  # Very short timeout - these should finish quickly
+            # Clear the list
+            self.tracker_update_threads.clear()
 
         ATTRIBUTES = Attributes
         attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
@@ -417,6 +450,14 @@ class Torrent(GObject.GObject):
 
     def force_tracker_update(self):
         """Force an immediate tracker update (called from UI context menu)"""
+        # Don't create new threads during shutdown
+        if self.is_stopping:
+            logger.debug(
+                f"🚫 FORCE TRACKER UPDATE: Skipping during shutdown for {self.name}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return
+
         logger.info(
             f"🔄 FORCE TRACKER UPDATE: Manually triggered for {self.name}",
             extra={"class_name": self.__class__.__name__},
@@ -426,13 +467,19 @@ class Torrent(GObject.GObject):
         if View.instance is not None:
             View.instance.notify(f"Updating tracker for {self.name}")
 
-        # Start the update in a background thread
+        # Start the update in a background thread and track it
         update_thread = threading.Thread(
             target=self._perform_tracker_update,
             name=f"ForceTrackerUpdate-{self.name}",
             daemon=True,
         )
         update_thread.start()
+
+        # Track thread for cleanup
+        self.tracker_update_threads.append(update_thread)
+
+        # Clean up finished threads from the list
+        self.tracker_update_threads = [t for t in self.tracker_update_threads if t.is_alive()]
 
     def restart_worker(self, state):
         logger.info(

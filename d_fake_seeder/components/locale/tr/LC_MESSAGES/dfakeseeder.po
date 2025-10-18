@@ -194,6 +194,9 @@ msgstr "Torrent ekle"
 msgid "Added"
 msgstr "Eklendi"
 
+msgid "Address"
+msgstr "address"
+
 msgid "Advanced"
 msgstr "Gelişmiş"
 
@@ -223,6 +226,12 @@ msgstr "KB/s cinsinden alternatif indirme hız limiti"
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "KB/s cinsinden alternatif yükleme hız limiti"
+
+msgid "Am Choking"
+msgstr "am_choking"
+
+msgid "Am Interested"
+msgstr "am_interested"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "Disk önbelleğe alma için kullanılacak RAM miktarı"
@@ -341,6 +350,12 @@ msgstr "Kova Boyutu:"
 msgid "Burst Probability:"
 msgstr "Patlama Olasılığı:"
 
+msgid "Bytes Downloaded"
+msgstr "bytes_downloaded"
+
+msgid "Bytes Uploaded"
+msgstr "bytes_uploaded"
+
 msgid "CRITICAL"
 msgstr "KRİTİK"
 
@@ -403,6 +418,9 @@ msgstr "Bağlantı"
 
 msgid "Connection Status"
 msgstr "Bağlantı Durumu"
+
+msgid "Connection Time"
+msgstr "connection_time"
 
 msgid "Connection Timeout:"
 msgstr "Bağlantı Zaman Aşımı:"
@@ -538,6 +556,9 @@ msgstr "İndirme Sınırı"
 
 msgid "Download Rate"
 msgstr "İndirme Oranı"
+
+msgid "Download Speed"
+msgstr "download_speed"
 
 msgid "Download Speed (KB/s):"
 msgstr "İndirme Hızı (KB/s):"
@@ -886,6 +907,9 @@ msgstr "HTTP paylaşımcı zaman aşımı (saniye):"
 
 msgid "Handshake"
 msgstr "El Sıkışma"
+
+msgid "Handshake Complete"
+msgstr "handshake_complete"
 
 msgid "Handshake timeout (seconds):"
 msgstr "El sıkışma zaman aşımı (saniye):"
@@ -1274,6 +1298,9 @@ msgstr "Eş Kimlik Öneki:"
 msgid "Peer ID prefix to identify client type"
 msgstr "İstemci türünü belirlemek için eş kimlik öneki"
 
+msgid "Peer Interested"
+msgstr "peer_interested"
+
 msgid "Peer Protocol"
 msgstr "Eş Protokolü"
 
@@ -1306,6 +1333,9 @@ msgstr "Parçalar"
 
 msgid "Pieces Received"
 msgstr "Alınan Parçalar"
+
+msgid "Pieces Sent"
+msgstr "pieces_sent"
 
 msgid "Polish"
 msgstr "Lehçe"
@@ -1504,6 +1534,12 @@ msgstr "Yeniden Adlandır..."
 
 msgid "Requests"
 msgstr "İstekler"
+
+msgid "Requests Received"
+msgstr "requests_received"
+
+msgid "Requests Sent"
+msgstr "requests_sent"
 
 msgid "Require authentication"
 msgstr "Kimlik doğrulama gerektir"
@@ -1915,6 +1951,9 @@ msgstr "İzleyiciyi Güncelle"
 
 msgid "Upload Limit"
 msgstr "Yükleme Sınırı"
+
+msgid "Upload Rate"
+msgstr "upload_rate"
 
 msgid "Upload Speed"
 msgstr "Yükleme Hızı"

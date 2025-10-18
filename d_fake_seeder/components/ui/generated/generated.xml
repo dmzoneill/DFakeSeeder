@@ -567,7 +567,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="file">components/images/seeding16.png</property>
+                <property name="icon-name">go-up-symbolic</property>
               </object>
             </child>
             <child>
@@ -589,7 +589,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="file">components/images/downloading16.png</property>
+                <property name="icon-name">go-down-symbolic</property>
               </object>
             </child>
             <child>
@@ -611,7 +611,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="file">components/images/seeding16.png</property>
+                <property name="icon-name">go-up-symbolic</property>
               </object>
             </child>
             <child>
@@ -633,7 +633,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="file">components/images/downloading16.png</property>
+                <property name="icon-name">go-down-symbolic</property>
               </object>
             </child>
             <child>
@@ -677,7 +677,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="icon-name">gtk-missing-image</property>
+                <property name="icon-name">network-server-symbolic</property>
               </object>
             </child>
             <child>

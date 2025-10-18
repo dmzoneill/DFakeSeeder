@@ -147,6 +147,13 @@ class GlobalPeerManager:
         if shutdown_tracker:
             shutdown_tracker.mark_completed("async_executor", 1)
 
+        # Stop ConnectionManager (stop all GLib timers)
+        logger.info("Stopping ConnectionManager", extra={"class_name": self.__class__.__name__})
+        from d_fake_seeder.domain.torrent.connection_manager import get_connection_manager
+
+        connection_manager = get_connection_manager()
+        connection_manager.shutdown()
+
         # Wait for worker thread to finish with aggressive timeout
         if self.worker_thread and self.worker_thread.is_alive():
             join_timeout = 1.0  # Max 1 second for aggressive shutdown

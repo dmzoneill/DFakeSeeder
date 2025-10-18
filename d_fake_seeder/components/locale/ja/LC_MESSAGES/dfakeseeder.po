@@ -194,6 +194,9 @@ msgstr "トレント追加"
 msgid "Added"
 msgstr "追加日時"
 
+msgid "Address"
+msgstr "地址"
+
 msgid "Advanced"
 msgstr "詳細設定"
 
@@ -223,6 +226,12 @@ msgstr "KB/sでの代替ダウンロード速度制限"
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "KB/sでの代替アップロード速度制限"
+
+msgid "Am Choking"
+msgstr "チョーク中"
+
+msgid "Am Interested"
+msgstr "関心あり"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "ディスクキャッシュに使用するRAM容量"
@@ -341,6 +350,12 @@ msgstr "バケットサイズ:"
 msgid "Burst Probability:"
 msgstr "バースト確率:"
 
+msgid "Bytes Downloaded"
+msgstr "字节已下载"
+
+msgid "Bytes Uploaded"
+msgstr "字节已上传"
+
 msgid "CRITICAL"
 msgstr "重要"
 
@@ -403,6 +418,9 @@ msgstr "接続"
 
 msgid "Connection Status"
 msgstr "接続状態"
+
+msgid "Connection Time"
+msgstr "连接时间"
 
 msgid "Connection Timeout:"
 msgstr "接続タイムアウト:"
@@ -537,6 +555,9 @@ msgid "Download Limit"
 msgstr "ダウンロード制限"
 
 msgid "Download Rate"
+msgstr "ダウンロード速度"
+
+msgid "Download Speed"
 msgstr "ダウンロード速度"
 
 msgid "Download Speed (KB/s):"
@@ -886,6 +907,9 @@ msgstr "HTTPシーダータイムアウト (秒):"
 
 msgid "Handshake"
 msgstr "ハンドシェイク"
+
+msgid "Handshake Complete"
+msgstr "ハンドシェイク完了"
 
 msgid "Handshake timeout (seconds):"
 msgstr "ハンドシェイクタイムアウト (秒):"
@@ -1274,6 +1298,9 @@ msgstr "ピアIDプレフィックス:"
 msgid "Peer ID prefix to identify client type"
 msgstr "クライアントタイプを識別するピアIDプレフィックス"
 
+msgid "Peer Interested"
+msgstr "ピア関心あり"
+
 msgid "Peer Protocol"
 msgstr "ピアプロトコル"
 
@@ -1306,6 +1333,9 @@ msgstr "ピース数"
 
 msgid "Pieces Received"
 msgstr "受信ピース"
+
+msgid "Pieces Sent"
+msgstr "送信ピース"
 
 msgid "Polish"
 msgstr "ポーランド語"
@@ -1504,6 +1534,12 @@ msgstr "名前変更..."
 
 msgid "Requests"
 msgstr "リクエスト"
+
+msgid "Requests Received"
+msgstr "受信リクエスト"
+
+msgid "Requests Sent"
+msgstr "送信リクエスト"
 
 msgid "Require authentication"
 msgstr "認証を要求"
@@ -1915,6 +1951,9 @@ msgstr "トラッカー更新"
 
 msgid "Upload Limit"
 msgstr "アップロード制限"
+
+msgid "Upload Rate"
+msgstr "アップロード速度"
 
 msgid "Upload Speed"
 msgstr "アップロード速度"

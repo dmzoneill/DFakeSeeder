@@ -437,6 +437,28 @@ class ConnectionManager:
         # Restart the cleanup timer for future connections
         self._start_cleanup_timer()
 
+    def shutdown(self):
+        """Shutdown the connection manager - stop all timers permanently"""
+        logger.info("ConnectionManager shutting down", extra={"class_name": self.__class__.__name__})
+
+        # Stop the cleanup timer permanently (don't restart)
+        self._stop_cleanup_timer()
+
+        # Stop any pending callback timers
+        if hasattr(self, "pending_callback_timer") and self.pending_callback_timer is not None:
+            GLib.source_remove(self.pending_callback_timer)
+            self.pending_callback_timer = None
+
+        # Clear all data
+        self.all_incoming_connections.clear()
+        self.all_outgoing_connections.clear()
+        self.incoming_display_timers.clear()
+        self.outgoing_display_timers.clear()
+        self.incoming_failed_times.clear()
+        self.outgoing_failed_times.clear()
+
+        logger.info("ConnectionManager shutdown complete", extra={"class_name": self.__class__.__name__})
+
     def get_max_connections(self) -> Tuple[int, int, int]:
         """Get maximum connection limits (incoming, outgoing, total)"""
         max_incoming = getattr(self.settings, "max_incoming_connections", ConnectionConstants.MAX_INCOMING_CONNECTIONS)

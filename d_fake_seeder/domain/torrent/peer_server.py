@@ -105,7 +105,21 @@ class PeerServer:
 
         self.running = False
 
-        # Close all connections
+        # Close the asyncio server to stop accepting new connections
+        if self.server:
+            try:
+                self.server.close()
+                logger.info(
+                    "🚪 Peer server closed (no longer accepting connections)",
+                    extra={"class_name": self.__class__.__name__},
+                )
+            except Exception as e:
+                logger.warning(
+                    f"⚠️ Error closing peer server: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+        # Close all active connections
         for writer in self.active_connections.values():
             try:
                 writer.close()

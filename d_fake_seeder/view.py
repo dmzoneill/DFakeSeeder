@@ -176,7 +176,8 @@ class View:
         self.window.set_titlebar(self.header)
         # Create a new "Action"
         action = Gio.SimpleAction.new("quit", None)
-        action.connect("activate", self.quit)
+        # Use lambda to properly handle the action signal (action, parameter) -> quit()
+        action.connect("activate", lambda action, param: self.quit())
         self.action_group.add_action(action)
         # Create standard menu with translatable structure
         self.main_menu_items = [{"action": "win.about", "key": "About"}, {"action": "win.quit", "key": "Quit"}]
@@ -380,20 +381,13 @@ class View:
         self.model.disconnect_by_func(self.notebook.get_incoming_connections().update_view)
         self.model.disconnect_by_func(self.notebook.get_outgoing_connections().update_view)
 
-    # Event handler for clicking on quit
+    # Event handler for clicking on quit - delegates to consolidated quit procedure
     def on_quit_clicked(self, menu_item, fast_shutdown=False):
+        """Handle quit menu click - delegates to consolidated quit procedure"""
         logger.info(
-            "🎯 ON_QUIT_CLICKED: Starting complete quit procedure", extra={"class_name": self.__class__.__name__}
-        )
-        logger.info("🔌 ON_QUIT_CLICKED: Removing signal connections", extra={"class_name": self.__class__.__name__})
-        self.remove_signals()
-        logger.info(
-            "🎬 ON_QUIT_CLICKED: Signal removal complete, calling quit()", extra={"class_name": self.__class__.__name__}
+            "🎯 QUIT MENU: Quit menu clicked, delegating to quit()", extra={"class_name": self.__class__.__name__}
         )
         self.quit(fast_shutdown=fast_shutdown)
-        logger.info(
-            "🏁 ON_QUIT_CLICKED: Complete quit procedure finished", extra={"class_name": self.__class__.__name__}
-        )
 
     # open github webpage
     def on_help_clicked(self, menu_item):
@@ -475,162 +469,244 @@ class View:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    # Function to quit the application
+    def _cleanup_timers(self):
+        """Cleanup all GLib timers and timeout sources"""
+        logger.debug("🧹 Cleaning up GLib timers", extra={"class_name": self.__class__.__name__})
+
+        # Clean up notification timeout
+        if hasattr(self, "timeout_source") and self.timeout_source:
+            try:
+                if not self.timeout_source.is_destroyed():
+                    self.timeout_source.destroy()
+                self.timeout_source = None
+                self.timeout_id = 0
+            except Exception as e:
+                logger.debug(f"Error cleaning up timeout_source: {e}", extra={"class_name": self.__class__.__name__})
+
+        # Clean up any splash image timers by hiding splash
+        if hasattr(self, "splash_image") and self.splash_image:
+            try:
+                self.splash_image.hide()
+                self.splash_image.unparent()
+                self.splash_image = None
+            except Exception as e:
+                logger.debug(f"Error cleaning up splash_image: {e}", extra={"class_name": self.__class__.__name__})
+
+        # Clean up connection tab timers (incoming connections tab has removal_timers)
+        try:
+            if hasattr(self, "notebook") and self.notebook:
+                incoming_tab = self.notebook.get_incoming_connections()
+                if incoming_tab and hasattr(incoming_tab, "removal_timers"):
+                    timer_count = len(incoming_tab.removal_timers)
+                    if timer_count > 0:
+                        logger.debug(
+                            f"🧹 Removing {timer_count} connection removal timers",
+                            extra={"class_name": self.__class__.__name__},
+                        )
+                        from gi.repository import GLib
+
+                        for timer_id in incoming_tab.removal_timers.values():
+                            try:
+                                GLib.source_remove(timer_id)
+                            except Exception:
+                                pass  # Timer may have already fired
+                        incoming_tab.removal_timers.clear()
+        except Exception as e:
+            logger.debug(f"Error cleaning up connection timers: {e}", extra={"class_name": self.__class__.__name__})
+
+        logger.debug("✅ GLib timer cleanup complete", extra={"class_name": self.__class__.__name__})
+
+    # Function to quit the application with consolidated shutdown procedure
     def quit(self, widget=None, event=None, fast_shutdown=False):
-        # Track total shutdown time for performance monitoring
+        """
+        Consolidated shutdown procedure for all application resources.
+
+        Shutdown order (optimized for speed and reliability):
+        1. Cleanup UI timers (instant)
+        2. Remove signal connections (instant)
+        3. Stop model torrents in parallel (fast)
+        4. Stop controller & network resources (parallel where possible)
+        5. Save settings (fast)
+        6. Cleanup UI and destroy window
+        7. Force exit with watchdog
+        """
+        import os
         import time
 
+        # CRITICAL: Detect recursive/hanging shutdown attempts
+        if hasattr(self, "_quit_in_progress"):
+            logger.error(
+                "⚠️⚠️⚠️ RECURSIVE QUIT DETECTED - IMMEDIATE FORCE EXIT",
+                extra={"class_name": self.__class__.__name__},
+            )
+            os._exit(0)
+
+        self._quit_in_progress = True
         shutdown_start_time = time.time()
 
         logger.info(
-            f"🎬 VIEW QUIT START: view.quit() method called "
+            f"🎬 SHUTDOWN START: Consolidated quit procedure "
             f"(widget={widget}, event={event}, fast_shutdown={fast_shutdown})",
             extra={"class_name": self.__class__.__name__},
         )
-        logger.info("🔧 VIEW QUIT: Initializing ShutdownProgressTracker", extra={"class_name": self.__class__.__name__})
-        # Initialize shutdown progress tracking
-        self.shutdown_tracker = ShutdownProgressTracker()
-        phase_times = {}  # Track time spent in each shutdown phase
 
-        # Use shorter timeout for D-Bus triggered shutdowns
+        # ========== START WATCHDOGS IMMEDIATELY (BEFORE ANY CLEANUP) ==========
+        import threading
+
+        def ultra_aggressive_watchdog():
+            time.sleep(0.1)  # 100ms - kill if ANYTHING blocks
+            logger.error(
+                "⚠️⚠️⚠️ ULTRA WATCHDOG: Shutdown blocked for 100ms - FORCE KILLING NOW",
+                extra={"class_name": self.__class__.__name__},
+            )
+            os._exit(0)
+
+        def backup_watchdog():
+            time.sleep(0.25)  # 250ms backup
+            logger.warning("⚠️ BACKUP WATCHDOG: Force exit", extra={"class_name": self.__class__.__name__})
+            os._exit(0)
+
+        # Start watchdogs BEFORE any cleanup operations
+        ultra_wd = threading.Thread(target=ultra_aggressive_watchdog, daemon=True, name="UltraWatchdog")
+        ultra_wd.start()
+
+        backup_wd = threading.Thread(target=backup_watchdog, daemon=True, name="BackupWatchdog")
+        backup_wd.start()
+
+        logger.info("⏰ Watchdogs active: 100ms + 250ms force-kill", extra={"class_name": self.__class__.__name__})
+
+        # Initialize shutdown tracking
+        self.shutdown_tracker = ShutdownProgressTracker()
+        phase_times = {}
+
+        # Configure shutdown timeout
         if fast_shutdown:
-            logger.info(
-                "⚡ VIEW QUIT: Using fast shutdown mode (2 second timeout)",
-                extra={"class_name": self.__class__.__name__},
-            )
-            self.shutdown_tracker.force_shutdown_timer = 2.0  # 2 seconds for fast quit
+            logger.info("⚡ Using FAST shutdown mode (1s timeout)", extra={"class_name": self.__class__.__name__})
+            self.shutdown_tracker.force_shutdown_timer = 1.0
         else:
-            logger.info(
-                "🐌 VIEW QUIT: Using normal shutdown mode (5 second timeout)",
-                extra={"class_name": self.__class__.__name__},
-            )
-            self.shutdown_tracker.force_shutdown_timer = 5.0  # 5 seconds for normal quit
+            logger.info("🐌 Using NORMAL shutdown mode (2s timeout)", extra={"class_name": self.__class__.__name__})
+            self.shutdown_tracker.force_shutdown_timer = 2.0
 
         self.shutdown_tracker.start_shutdown()
-        logger.info("▶️ VIEW QUIT: ShutdownProgressTracker started", extra={"class_name": self.__class__.__name__})
-        # Count components that need to be shut down
-        model_torrent_count = 0
-        peer_manager_count = 0
-        background_worker_count = 0
-        network_connection_count = 0
-        # Count model torrents
-        if hasattr(self, "model") and self.model and hasattr(self.model, "torrent_list"):
-            model_torrent_count = len(self.model.torrent_list)
-        # Count peer managers and connections from controller
-        if hasattr(self, "app") and self.app and hasattr(self.app, "controller"):
-            controller = self.app.controller
-            if hasattr(controller, "global_peer_manager") and controller.global_peer_manager:
-                # Count active torrent peer managers
-                peer_manager_count = len(getattr(controller.global_peer_manager, "torrent_managers", {}))
-                # Count active network connections
-                if hasattr(controller.global_peer_manager, "peer_server"):
-                    network_connection_count += 1
-                # Count background worker threads
-                background_worker_count = 1  # Global peer manager main thread
-        # Register components with tracker
+
+        # ========== PHASE 0: IMMEDIATE UI CLEANUP (< 10ms) ==========
+        step_start = time.time()
+        logger.info("🧹 PHASE 0: Cleaning up UI timers", extra={"class_name": self.__class__.__name__})
+        self._cleanup_timers()
+        phase_times["ui_cleanup"] = time.time() - step_start
+
+        # ========== PHASE 1: REMOVE SIGNAL CONNECTIONS (< 10ms) ==========
+        step_start = time.time()
+        logger.info("🔌 PHASE 1: Removing signal connections", extra={"class_name": self.__class__.__name__})
+        try:
+            self.remove_signals()
+        except Exception as e:
+            logger.warning(f"Error removing signals: {e}", extra={"class_name": self.__class__.__name__})
+        phase_times["signal_removal"] = time.time() - step_start
+
+        # Count components for tracking
+        model_torrent_count = len(self.model.torrent_list) if hasattr(self, "model") and self.model else 0
+
+        # Register components
         self.shutdown_tracker.register_component("model_torrents", model_torrent_count)
-        self.shutdown_tracker.register_component("peer_managers", peer_manager_count)
-        self.shutdown_tracker.register_component("background_workers", background_worker_count)
-        self.shutdown_tracker.register_component("network_connections", network_connection_count)
-        # Shutdown progress tracking continues in background (overlay removed)
-        # Step 1: Stop model first (stops individual torrents and their seeders)
+        self.shutdown_tracker.register_component("peer_managers", 1)
+        self.shutdown_tracker.register_component("background_workers", 1)
+        self.shutdown_tracker.register_component("network_connections", 1)
+
+        # ========== PHASE 2: STOP MODEL (PARALLEL TORRENT SHUTDOWN) ==========
         step_start = time.time()
         if hasattr(self, "model") and self.model:
-            logger.info("Stopping model during quit", extra={"class_name": self.__class__.__name__})
+            logger.info(
+                f"🛑 PHASE 2: Stopping {model_torrent_count} torrents (parallel)",
+                extra={"class_name": self.__class__.__name__},
+            )
             self.shutdown_tracker.start_component_shutdown("model_torrents")
-            # Pass shutdown tracker to model for progress callbacks
             try:
                 self.model.stop(shutdown_tracker=self.shutdown_tracker)
-            except TypeError:
-                # Fallback for older stop() method without shutdown_tracker parameter
-                self.model.stop()
-                # Mark all model torrents as completed if no callback support
+            except Exception as e:
+                logger.warning(f"Error stopping model: {e}", extra={"class_name": self.__class__.__name__})
                 self.shutdown_tracker.mark_completed("model_torrents", model_torrent_count)
         phase_times["model_stop"] = time.time() - step_start
 
-        # Step 2: Stop the controller (stops global peer manager)
+        # ========== PHASE 3: STOP CONTROLLER & NETWORK ==========
         step_start = time.time()
         if hasattr(self, "app") and self.app and hasattr(self.app, "controller"):
-            logger.info("Stopping controller during quit", extra={"class_name": self.__class__.__name__})
+            logger.info(
+                "🌐 PHASE 3: Stopping controller & network resources", extra={"class_name": self.__class__.__name__}
+            )
             self.shutdown_tracker.start_component_shutdown("peer_managers")
             self.shutdown_tracker.start_component_shutdown("background_workers")
             self.shutdown_tracker.start_component_shutdown("network_connections")
-            # Pass shutdown tracker to controller for progress callbacks
             try:
                 self.app.controller.stop(shutdown_tracker=self.shutdown_tracker)
-            except TypeError:
-                # Fallback for older stop() method without shutdown_tracker parameter
-                self.app.controller.stop()
-                # Mark components as completed if no callback support
-                self.shutdown_tracker.mark_completed("peer_managers", peer_manager_count)
-                self.shutdown_tracker.mark_completed("background_workers", background_worker_count)
-                self.shutdown_tracker.mark_completed("network_connections", network_connection_count)
+            except Exception as e:
+                logger.warning(f"Error stopping controller: {e}", extra={"class_name": self.__class__.__name__})
+                self.shutdown_tracker.mark_completed("peer_managers", 1)
+                self.shutdown_tracker.mark_completed("background_workers", 1)
+                self.shutdown_tracker.mark_completed("network_connections", 1)
         phase_times["controller_stop"] = time.time() - step_start
 
-        # Step 3: Save settings
+        # ========== PHASE 4: SAVE SETTINGS ==========
         step_start = time.time()
-        logger.info("Saving settings during quit", extra={"class_name": self.__class__.__name__})
-        self.settings.save_quit()
+        logger.info("💾 PHASE 4: Saving settings", extra={"class_name": self.__class__.__name__})
+        try:
+            self.settings.save_quit()
+        except Exception as e:
+            logger.warning(f"Error saving settings: {e}", extra={"class_name": self.__class__.__name__})
         phase_times["settings_save"] = time.time() - step_start
-        # Step 4: Check if force shutdown is needed
-        if self.shutdown_tracker and self.shutdown_tracker.is_force_shutdown_time():
+
+        # ========== PHASE 5: CHECK TIMEOUT & LOG STATUS ==========
+        if self.shutdown_tracker.is_force_shutdown_time():
             timeout_duration = self.shutdown_tracker.force_shutdown_timer
             logger.warning(
-                f"⏰ FORCE SHUTDOWN: Timeout reached after {timeout_duration} seconds",
+                f"⏰ TIMEOUT: Shutdown exceeded {timeout_duration}s limit",
                 extra={"class_name": self.__class__.__name__},
             )
 
-            # Log which components are still pending
             pending_components = []
             for component_type in self.shutdown_tracker.components:
-                component_status = self.shutdown_tracker.components[component_type]["status"]
-                if component_status not in ["complete", "timeout"]:
-                    pending_components.append(f"{component_type}({component_status})")
+                status = self.shutdown_tracker.components[component_type]["status"]
+                if status not in ["complete", "timeout"]:
+                    pending_components.append(f"{component_type}({status})")
                     self.shutdown_tracker.mark_component_timeout(component_type)
 
             if pending_components:
                 logger.warning(
-                    f"🐌 FORCE SHUTDOWN: These components were still pending: {', '.join(pending_components)}",
+                    f"⚠️ Still pending: {', '.join(pending_components)}",
                     extra={"class_name": self.__class__.__name__},
                 )
-            else:
-                logger.info(
-                    "✅ FORCE SHUTDOWN: All components completed, force shutdown was just a safety check",
-                    extra={"class_name": self.__class__.__name__},
-                )
-        # Step 5: Shutdown tracking completed (overlay cleanup removed)
-        # Step 6: Destroy window and quit application
-        logger.info("🏗️ VIEW QUIT: Destroying window during quit", extra={"class_name": self.__class__.__name__})
-        self.window.destroy()
 
-        # Step 7: Quit the GTK application to fully terminate
-        if hasattr(self, "app") and self.app:
-            logger.info(
-                "🚪 VIEW QUIT: Calling app.quit() to terminate GTK application",
-                extra={"class_name": self.__class__.__name__},
-            )
-            self.app.quit()
-        else:
-            logger.warning(
-                "⚠️ VIEW QUIT: No app reference found, GTK loop may continue running",
-                extra={"class_name": self.__class__.__name__},
-            )
+        # ========== PHASE 6: DESTROY WINDOW ==========
+        logger.info("🏗️ PHASE 6: Destroying window", extra={"class_name": self.__class__.__name__})
+        try:
+            self.window.destroy()
+        except Exception as e:
+            logger.warning(f"Error destroying window: {e}", extra={"class_name": self.__class__.__name__})
 
-        # Log shutdown performance summary
+        # ========== FINAL: LOG SUMMARY & FORCE EXIT ==========
         total_shutdown_time = time.time() - shutdown_start_time
         logger.info(
-            f"🏁 VIEW QUIT COMPLETE: Shutdown finished in {total_shutdown_time:.2f}s",
-            extra={"class_name": self.__class__.__name__},
-        )
-        logger.info(
-            f"📊 SHUTDOWN PHASE BREAKDOWN: "
-            f"model={phase_times.get('model_stop', 0):.2f}s, "
-            f"controller={phase_times.get('controller_stop', 0):.2f}s, "
-            f"settings={phase_times.get('settings_save', 0):.2f}s",
+            f"🏁 SHUTDOWN COMPLETE in {total_shutdown_time:.3f}s | "
+            f"UI:{phase_times.get('ui_cleanup', 0):.3f}s "
+            f"Signals:{phase_times.get('signal_removal', 0):.3f}s "
+            f"Model:{phase_times.get('model_stop', 0):.3f}s "
+            f"Controller:{phase_times.get('controller_stop', 0):.3f}s "
+            f"Settings:{phase_times.get('settings_save', 0):.3f}s",
             extra={"class_name": self.__class__.__name__},
         )
 
-        # Return False to allow GTK to process the close-request signal normally
+        # Try graceful GTK quit (watchdogs already running from start of function)
+        if hasattr(self, "app") and self.app:
+            logger.info("🚪 Calling app.quit()", extra={"class_name": self.__class__.__name__})
+            try:
+                self.app.quit()
+            except Exception as e:
+                logger.warning(f"app.quit() failed: {e} - forcing exit", extra={"class_name": self.__class__.__name__})
+                os._exit(0)
+        else:
+            logger.warning("⚠️ No app ref - forcing exit", extra={"class_name": self.__class__.__name__})
+            os._exit(0)
+
         return False
 
     def on_language_changed(self, model, lang_code):

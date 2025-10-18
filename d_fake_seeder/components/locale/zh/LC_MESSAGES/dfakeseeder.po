@@ -194,6 +194,9 @@ msgstr "添加种子"
 msgid "Added"
 msgstr "添加时间"
 
+msgid "Address"
+msgstr "地址"
+
 msgid "Advanced"
 msgstr "高级"
 
@@ -223,6 +226,12 @@ msgstr "备用下载速度限制 (KB/s)"
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "备用上传速度限制 (KB/s)"
+
+msgid "Am Choking"
+msgstr "我在阻塞"
+
+msgid "Am Interested"
+msgstr "我感兴趣"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "用于磁盘缓存的内存量"
@@ -341,6 +350,12 @@ msgstr "桶大小:"
 msgid "Burst Probability:"
 msgstr "突发概率:"
 
+msgid "Bytes Downloaded"
+msgstr "字节已下载"
+
+msgid "Bytes Uploaded"
+msgstr "字节已上传"
+
 msgid "CRITICAL"
 msgstr "严重"
 
@@ -403,6 +418,9 @@ msgstr "连接"
 
 msgid "Connection Status"
 msgstr "连接状态"
+
+msgid "Connection Time"
+msgstr "连接时间"
 
 msgid "Connection Timeout:"
 msgstr "连接超时:"
@@ -538,6 +556,9 @@ msgstr "下载限制"
 
 msgid "Download Rate"
 msgstr "下载速率"
+
+msgid "Download Speed"
+msgstr "下载速度"
 
 msgid "Download Speed (KB/s):"
 msgstr "下载速度 (KB/s):"
@@ -886,6 +907,9 @@ msgstr "HTTP 做种超时 (秒):"
 
 msgid "Handshake"
 msgstr "握手"
+
+msgid "Handshake Complete"
+msgstr "握手完成"
 
 msgid "Handshake timeout (seconds):"
 msgstr "握手超时 (秒):"
@@ -1274,6 +1298,9 @@ msgstr "节点 ID 前缀:"
 msgid "Peer ID prefix to identify client type"
 msgstr "用于识别客户端类型的节点 ID 前缀"
 
+msgid "Peer Interested"
+msgstr "对等点感兴趣"
+
 msgid "Peer Protocol"
 msgstr "对等协议"
 
@@ -1306,6 +1333,9 @@ msgstr "分片数"
 
 msgid "Pieces Received"
 msgstr "已接收分片"
+
+msgid "Pieces Sent"
+msgstr "已发送片段"
 
 msgid "Polish"
 msgstr "波兰语"
@@ -1504,6 +1534,12 @@ msgstr "重命名..."
 
 msgid "Requests"
 msgstr "请求"
+
+msgid "Requests Received"
+msgstr "已接收请求"
+
+msgid "Requests Sent"
+msgstr "已发送请求"
 
 msgid "Require authentication"
 msgstr "需要认证"
@@ -1915,6 +1951,9 @@ msgstr "更新追踪器"
 
 msgid "Upload Limit"
 msgstr "上传限制"
+
+msgid "Upload Rate"
+msgstr "上传速率"
 
 msgid "Upload Speed"
 msgstr "上传速度"

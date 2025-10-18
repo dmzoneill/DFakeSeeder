@@ -194,6 +194,9 @@ msgstr "টরেন্ট যোগ করুন"
 msgid "Added"
 msgstr "যোগ করা হয়েছে"
 
+msgid "Address"
+msgstr "address"
+
 msgid "Advanced"
 msgstr "উন্নত"
 
@@ -223,6 +226,12 @@ msgstr "KB/s-এ বিকল্প ডাউনলোড গতি সীমা
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "KB/s-এ বিকল্প আপলোড গতি সীমা"
+
+msgid "Am Choking"
+msgstr "am_choking"
+
+msgid "Am Interested"
+msgstr "am_interested"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "ডিস্ক ক্যাশিংয়ের জন্য ব্যবহার করার RAM পরিমাণ"
@@ -341,6 +350,12 @@ msgstr "বাকেট আকার:"
 msgid "Burst Probability:"
 msgstr "বার্স্ট সম্ভাবনা:"
 
+msgid "Bytes Downloaded"
+msgstr "bytes_downloaded"
+
+msgid "Bytes Uploaded"
+msgstr "bytes_uploaded"
+
 msgid "CRITICAL"
 msgstr "ক্রিটিক্যাল"
 
@@ -403,6 +418,9 @@ msgstr "সংযোগ"
 
 msgid "Connection Status"
 msgstr "সংযোগ স্ট্যাটাস"
+
+msgid "Connection Time"
+msgstr "connection_time"
 
 msgid "Connection Timeout:"
 msgstr "সংযোগ টাইমআউট:"
@@ -538,6 +556,9 @@ msgstr "ডাউনলোড সীমা"
 
 msgid "Download Rate"
 msgstr "ডাউনলোড রেট"
+
+msgid "Download Speed"
+msgstr "download_speed"
 
 msgid "Download Speed (KB/s):"
 msgstr "ডাউনলোড গতি (KB/s):"
@@ -886,6 +907,9 @@ msgstr "HTTP সিডার টাইমআউট (সেকেন্ড):"
 
 msgid "Handshake"
 msgstr "হ্যান্ডশেক"
+
+msgid "Handshake Complete"
+msgstr "handshake_complete"
 
 msgid "Handshake timeout (seconds):"
 msgstr "হ্যান্ডশেক টাইমআউট (সেকেন্ড):"
@@ -1274,6 +1298,9 @@ msgstr "পিয়ার আইডি উপসর্গ:"
 msgid "Peer ID prefix to identify client type"
 msgstr "ক্লায়েন্ট প্রকার সনাক্ত করতে পিয়ার আইডি উপসর্গ"
 
+msgid "Peer Interested"
+msgstr "peer_interested"
+
 msgid "Peer Protocol"
 msgstr "পিয়ার প্রোটোকল"
 
@@ -1306,6 +1333,9 @@ msgstr "পিস"
 
 msgid "Pieces Received"
 msgstr "প্রাপ্ত পিস"
+
+msgid "Pieces Sent"
+msgstr "pieces_sent"
 
 msgid "Polish"
 msgstr "পোলিশ"
@@ -1504,6 +1534,12 @@ msgstr "নাম পরিবর্তন করুন..."
 
 msgid "Requests"
 msgstr "অনুরোধ"
+
+msgid "Requests Received"
+msgstr "requests_received"
+
+msgid "Requests Sent"
+msgstr "requests_sent"
 
 msgid "Require authentication"
 msgstr "প্রমাণীকরণ প্রয়োজন"
@@ -1915,6 +1951,9 @@ msgstr "ট্র্যাকার আপডেট করুন"
 
 msgid "Upload Limit"
 msgstr "আপলোড সীমা"
+
+msgid "Upload Rate"
+msgstr "upload_rate"
 
 msgid "Upload Speed"
 msgstr "আপলোড গতি"

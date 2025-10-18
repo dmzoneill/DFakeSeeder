@@ -194,6 +194,9 @@ msgstr "토렌트 추가"
 msgid "Added"
 msgstr "추가됨"
 
+msgid "Address"
+msgstr "地址"
+
 msgid "Advanced"
 msgstr "고급"
 
@@ -223,6 +226,12 @@ msgstr "KB/s 단위의 대체 다운로드 속도 제한"
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "KB/s 단위의 대체 업로드 속도 제한"
+
+msgid "Am Choking"
+msgstr "차단 중"
+
+msgid "Am Interested"
+msgstr "관심 있음"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "디스크 캐싱에 사용할 RAM 용량"
@@ -341,6 +350,12 @@ msgstr "버킷 크기:"
 msgid "Burst Probability:"
 msgstr "버스트 확률:"
 
+msgid "Bytes Downloaded"
+msgstr "字节已下载"
+
+msgid "Bytes Uploaded"
+msgstr "字节已上传"
+
 msgid "CRITICAL"
 msgstr "치명적"
 
@@ -403,6 +418,9 @@ msgstr "연결"
 
 msgid "Connection Status"
 msgstr "연결 상태"
+
+msgid "Connection Time"
+msgstr "连接时间"
 
 msgid "Connection Timeout:"
 msgstr "연결 타임아웃:"
@@ -537,6 +555,9 @@ msgid "Download Limit"
 msgstr "다운로드 제한"
 
 msgid "Download Rate"
+msgstr "다운로드 속도"
+
+msgid "Download Speed"
 msgstr "다운로드 속도"
 
 msgid "Download Speed (KB/s):"
@@ -886,6 +907,9 @@ msgstr "HTTP 시더 타임아웃 (초):"
 
 msgid "Handshake"
 msgstr "핸드셰이크"
+
+msgid "Handshake Complete"
+msgstr "핸드셰이크 완료"
 
 msgid "Handshake timeout (seconds):"
 msgstr "핸드셰이크 타임아웃 (초):"
@@ -1274,6 +1298,9 @@ msgstr "피어 ID 접두사:"
 msgid "Peer ID prefix to identify client type"
 msgstr "클라이언트 유형을 식별하는 피어 ID 접두사"
 
+msgid "Peer Interested"
+msgstr "피어 관심 있음"
+
 msgid "Peer Protocol"
 msgstr "피어 프로토콜"
 
@@ -1306,6 +1333,9 @@ msgstr "조각"
 
 msgid "Pieces Received"
 msgstr "수신된 조각"
+
+msgid "Pieces Sent"
+msgstr "전송된 조각"
 
 msgid "Polish"
 msgstr "폴란드어"
@@ -1504,6 +1534,12 @@ msgstr "이름 바꾸기..."
 
 msgid "Requests"
 msgstr "요청"
+
+msgid "Requests Received"
+msgstr "수신된 요청"
+
+msgid "Requests Sent"
+msgstr "전송된 요청"
 
 msgid "Require authentication"
 msgstr "인증 필요"
@@ -1915,6 +1951,9 @@ msgstr "트래커 업데이트"
 
 msgid "Upload Limit"
 msgstr "업로드 제한"
+
+msgid "Upload Rate"
+msgstr "업로드 속도"
 
 msgid "Upload Speed"
 msgstr "업로드 속도"

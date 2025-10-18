@@ -194,6 +194,9 @@ msgstr "Torrent toevoegen"
 msgid "Added"
 msgstr "Toegevoegd"
 
+msgid "Address"
+msgstr "adres"
+
 msgid "Advanced"
 msgstr "Geavanceerd"
 
@@ -223,6 +226,12 @@ msgstr "Alternatieve downloadsnelheidslimiet in KB/s"
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "Alternatieve uploadsnelheidslimiet in KB/s"
+
+msgid "Am Choking"
+msgstr "Ik blokkeer"
+
+msgid "Am Interested"
+msgstr "Ik ben geïnteresseerd"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "Hoeveelheid RAM voor schijfcaching"
@@ -341,6 +350,12 @@ msgstr "Bucket Grootte:"
 msgid "Burst Probability:"
 msgstr "Uitbarsting Kans:"
 
+msgid "Bytes Downloaded"
+msgstr "bytes gedownload"
+
+msgid "Bytes Uploaded"
+msgstr "bytes geüpload"
+
 msgid "CRITICAL"
 msgstr "KRITIEK"
 
@@ -403,6 +418,9 @@ msgstr "Verbinding"
 
 msgid "Connection Status"
 msgstr "Verbindingsstatus"
+
+msgid "Connection Time"
+msgstr "verbindingstijd"
 
 msgid "Connection Timeout:"
 msgstr "Verbinding Time-out:"
@@ -537,6 +555,9 @@ msgid "Download Limit"
 msgstr "Downloadlimiet"
 
 msgid "Download Rate"
+msgstr "Downloadsnelheid"
+
+msgid "Download Speed"
 msgstr "Downloadsnelheid"
 
 msgid "Download Speed (KB/s):"
@@ -886,6 +907,9 @@ msgstr "HTTP seeder timeout (seconden):"
 
 msgid "Handshake"
 msgstr "Handdruk"
+
+msgid "Handshake Complete"
+msgstr "Handdruk voltooid"
 
 msgid "Handshake timeout (seconds):"
 msgstr "Handshake timeout (seconden):"
@@ -1274,6 +1298,9 @@ msgstr "Peer ID Voorvoegsel:"
 msgid "Peer ID prefix to identify client type"
 msgstr "Peer ID voorvoegsel om clienttype te identificeren"
 
+msgid "Peer Interested"
+msgstr "Peer geïnteresseerd"
+
 msgid "Peer Protocol"
 msgstr "Peer-protocol"
 
@@ -1306,6 +1333,9 @@ msgstr "Stukken"
 
 msgid "Pieces Received"
 msgstr "Stukken ontvangen"
+
+msgid "Pieces Sent"
+msgstr "Verzonden stukken"
 
 msgid "Polish"
 msgstr "Pools"
@@ -1504,6 +1534,12 @@ msgstr "Hernoemen..."
 
 msgid "Requests"
 msgstr "Verzoeken"
+
+msgid "Requests Received"
+msgstr "Ontvangen verzoeken"
+
+msgid "Requests Sent"
+msgstr "Verzonden verzoeken"
 
 msgid "Require authentication"
 msgstr "Authenticatie vereisen"
@@ -1915,6 +1951,9 @@ msgstr "Tracker Bijwerken"
 
 msgid "Upload Limit"
 msgstr "Uploadlimiet"
+
+msgid "Upload Rate"
+msgstr "uploadsnelheid"
 
 msgid "Upload Speed"
 msgstr "Upload Snelheid"

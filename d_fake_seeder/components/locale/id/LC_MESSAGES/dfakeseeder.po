@@ -194,6 +194,9 @@ msgstr "Tambah torrent"
 msgid "Added"
 msgstr "Ditambahkan"
 
+msgid "Address"
+msgstr "Alamat"
+
 msgid "Advanced"
 msgstr "Lanjutan"
 
@@ -223,6 +226,12 @@ msgstr "Batas kecepatan unduh alternatif dalam KB/s"
 
 msgid "Alternative upload speed limit in KB/s"
 msgstr "Batas kecepatan unggah alternatif dalam KB/s"
+
+msgid "Am Choking"
+msgstr "Saya Choking"
+
+msgid "Am Interested"
+msgstr "Saya Tertarik"
 
 msgid "Amount of RAM to use for disk caching"
 msgstr "Jumlah RAM untuk caching disk"
@@ -341,6 +350,12 @@ msgstr "Ukuran Bucket:"
 msgid "Burst Probability:"
 msgstr "Probabilitas Burst:"
 
+msgid "Bytes Downloaded"
+msgstr "Byte Diunduh"
+
+msgid "Bytes Uploaded"
+msgstr "Byte Diunggah"
+
 msgid "CRITICAL"
 msgstr "KRITIS"
 
@@ -403,6 +418,9 @@ msgstr "Koneksi"
 
 msgid "Connection Status"
 msgstr "Status Koneksi"
+
+msgid "Connection Time"
+msgstr "Waktu Koneksi"
 
 msgid "Connection Timeout:"
 msgstr "Batas Waktu Koneksi:"
@@ -538,6 +556,9 @@ msgstr "Batas Unduh"
 
 msgid "Download Rate"
 msgstr "Tingkat Unduh"
+
+msgid "Download Speed"
+msgstr "Kecepatan Unduh"
 
 msgid "Download Speed (KB/s):"
 msgstr "Kecepatan Unduh (KB/s):"
@@ -886,6 +907,9 @@ msgstr "Batas waktu seeder HTTP (detik):"
 
 msgid "Handshake"
 msgstr "Jabat Tangan"
+
+msgid "Handshake Complete"
+msgstr "Jabat Tangan Selesai"
 
 msgid "Handshake timeout (seconds):"
 msgstr "Batas waktu jabat tangan (detik):"
@@ -1274,6 +1298,9 @@ msgstr "Prefiks ID Peer:"
 msgid "Peer ID prefix to identify client type"
 msgstr "Prefiks ID peer untuk mengidentifikasi tipe klien"
 
+msgid "Peer Interested"
+msgstr "Peer Tertarik"
+
 msgid "Peer Protocol"
 msgstr "Protokol Peer"
 
@@ -1306,6 +1333,9 @@ msgstr "Piece"
 
 msgid "Pieces Received"
 msgstr "Piece Diterima"
+
+msgid "Pieces Sent"
+msgstr "Piece Dikirim"
 
 msgid "Polish"
 msgstr "Polandia"
@@ -1504,6 +1534,12 @@ msgstr "Ubah Nama..."
 
 msgid "Requests"
 msgstr "Permintaan"
+
+msgid "Requests Received"
+msgstr "Permintaan Diterima"
+
+msgid "Requests Sent"
+msgstr "Permintaan Dikirim"
 
 msgid "Require authentication"
 msgstr "Memerlukan autentikasi"
@@ -1915,6 +1951,9 @@ msgstr "Perbarui Tracker"
 
 msgid "Upload Limit"
 msgstr "Batas Unggah"
+
+msgid "Upload Rate"
+msgstr "Tingkat Unggah"
 
 msgid "Upload Speed"
 msgstr "Kecepatan Unggah"
