@@ -44,7 +44,7 @@ entry_points = {
 
 setup_kwargs = {
     "name": "d-fake-seeder",
-    "version": "0.0.45",
+    "version": "0.0.46",
     "description": "BitTorrent seeding simulator for testing and development",
     "long_description": long_description,
     "long_description_content_type": "text/markdown",
