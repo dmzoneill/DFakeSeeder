@@ -66,6 +66,18 @@ class HTTPSeeder(BaseSeeder):
 
             req = self.make_http_request(download_left=self.torrent.total_size)
 
+            # Log the actual HTTP request URL
+            logger.info(
+                f"🌐 FULL REQUEST URL: {req.url}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+            # Log equivalent curl command for manual testing
+            logger.info(
+                f"🔧 CURL COMMAND: curl -v '{req.url}'",
+                extra={"class_name": self.__class__.__name__},
+            )
+
             # Log HTTP response details
             logger.info(
                 f"📡 HTTP Response: {req.status_code} ({req.reason})",
@@ -73,6 +85,12 @@ class HTTPSeeder(BaseSeeder):
             )
             logger.info(
                 f"📊 Response size: {len(req.content)} bytes",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+            # Log raw response content for debugging
+            logger.debug(
+                f"📄 Raw response (first 500 bytes): {req.content[:500]}",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -92,6 +110,12 @@ class HTTPSeeder(BaseSeeder):
                 response_keys = [k.decode() if isinstance(k, bytes) else k for k in data.keys()]
                 logger.info(
                     f"🔑 Response keys: {response_keys}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+                # Log complete decoded response for debugging
+                logger.info(
+                    f"📦 FULL TRACKER RESPONSE DATA: {data}",
                     extra={"class_name": self.__class__.__name__},
                 )
 
@@ -291,8 +315,13 @@ class HTTPSeeder(BaseSeeder):
             "no_peer_id": 0,  # Request peer IDs for client identification
         }
 
-        if download_left == 0:
+        # Send event=started on first announce, event=completed when download finishes
+        if self.first_announce:
             http_params["event"] = "started"
+            self.first_announce = False
+        elif download_left == 0 and uploaded_bytes == 0 and downloaded_bytes == 0:
+            # This is the completion event (first time we have 0 left)
+            http_params["event"] = "completed"
 
         http_agent_headers = self.settings.http_headers
         http_agent_headers["User-Agent"] = self.settings.agents[self.settings.agent].split(",")[0]

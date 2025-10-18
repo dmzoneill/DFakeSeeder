@@ -16,23 +16,36 @@ class UDPSeeder(BaseSeeder):
     def __init__(self, torrent):
         super().__init__(torrent)
 
-    def build_announce_packet(self, connection_id, transaction_id, info_hash, peer_id):
+    def build_announce_packet(
+        self, connection_id, transaction_id, info_hash, peer_id, uploaded=0, downloaded=0, left=0
+    ):
         info_hash = (info_hash + b"\x00" * 20)[:20]
         peer_id = (peer_id + b"\x00" * 20)[:20]
+
+        # Determine event: 0=none, 1=completed, 2=started, 3=stopped
+        # Send event=2 (started) on first announce
+        if self.first_announce:
+            event = 2  # started
+            self.first_announce = False
+        elif left == 0 and uploaded == 0 and downloaded == 0:
+            event = 1  # completed
+        else:
+            event = 0  # none (regular update)
+
         packet = struct.pack(
             "!QII20s20sQQQIIIiH",
             connection_id,
-            1,
+            1,  # action: announce
             transaction_id,
             info_hash,
             peer_id,
-            0,
-            0,
-            0,
-            0,
-            0,
-            random.getrandbits(32),
-            -1,
+            downloaded,
+            left,
+            uploaded,
+            event,
+            0,  # IP address (0 = default)
+            random.getrandbits(32),  # key
+            -1,  # num_want (-1 = default)
             NetworkConstants.DEFAULT_PORT,
         )
         return packet
@@ -220,8 +233,9 @@ class UDPSeeder(BaseSeeder):
             return False
 
         try:
+            # Send initial announce with download_left = total_size
             result = self.handle_announce(
-                packet_data=(),
+                packet_data=(0, 0, self.torrent.total_size),  # uploaded=0, downloaded=0, left=total_size
                 timeout=getattr(self.settings, "seeders", {}).get("udp_load_timeout_seconds", 5),
                 log_msg="Seeder load peers",
             )
