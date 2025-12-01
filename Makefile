@@ -66,6 +66,49 @@ lint: clearlog
 	find . -iname "*.py" -exec isort --profile=black --df {} \;
 	@echo "✅ Linting complete!"
 
+# Run GitHub Super-Linter locally
+super-lint:
+	@echo "Running GitHub Super-Linter..."
+	@docker run --rm \
+		-e RUN_LOCAL=true \
+		-e DEFAULT_BRANCH=main \
+		-e VALIDATE_ALL_CODEBASE=true \
+		-e VALIDATE_PYTHON_BLACK=true \
+		-e VALIDATE_PYTHON_FLAKE8=true \
+		-e VALIDATE_PYTHON_ISORT=true \
+		-e VALIDATE_BASH=true \
+		-e VALIDATE_BASH_EXEC=true \
+		-e VALIDATE_DOCKERFILE_HADOLINT=true \
+		-e VALIDATE_MARKDOWN=true \
+		-e VALIDATE_YAML=true \
+		-e VALIDATE_JSON=true \
+		-e VALIDATE_XML=true \
+		-e PYTHON_BLACK_CONFIG_FILE=.python-black \
+		-e PYTHON_FLAKE8_CONFIG_FILE=.flake8 \
+		-e PYTHON_ISORT_CONFIG_FILE=.isort.cfg \
+		-e FILTER_REGEX_EXCLUDE=".*/(rpmbuild|debbuild|dist|build|\.venv|\.eggs|__pycache__|\.pytest_cache)/.*" \
+		-v $(PWD):/tmp/lint \
+		ghcr.io/super-linter/super-linter:latest
+	@echo "✅ Super-linter complete!"
+
+# Run Super-Linter with slim image (faster, fewer linters)
+super-lint-slim:
+	@echo "Running GitHub Super-Linter (slim)..."
+	@docker run --rm \
+		-e RUN_LOCAL=true \
+		-e DEFAULT_BRANCH=main \
+		-e VALIDATE_ALL_CODEBASE=true \
+		-e VALIDATE_PYTHON_BLACK=true \
+		-e VALIDATE_PYTHON_FLAKE8=true \
+		-e VALIDATE_PYTHON_ISORT=true \
+		-e VALIDATE_BASH=true \
+		-e VALIDATE_MARKDOWN=true \
+		-e VALIDATE_YAML=true \
+		-e FILTER_REGEX_EXCLUDE=".*/(rpmbuild|debbuild|dist|build|\.venv|\.eggs|__pycache__|\.pytest_cache)/.*" \
+		-v $(PWD):/tmp/lint \
+		ghcr.io/super-linter/super-linter:slim-latest
+	@echo "✅ Super-linter (slim) complete!"
+
 # ============================================================================
 # UI Building and Icons
 # ============================================================================
@@ -690,7 +733,9 @@ help:
 	@echo "  run-tray-debug      - Run tray application with Pipenv and debug"
 	@echo "  run-with-tray       - Run main app with tray using Pipenv"
 	@echo "  run-debug-with-tray - Run main app with tray (debug) using Pipenv"
-	@echo "  lint                - Run code formatters and linters"
+	@echo "  lint                - Run code formatters and linters (black, flake8, isort)"
+	@echo "  super-lint          - Run GitHub Super-Linter locally (comprehensive)"
+	@echo "  super-lint-slim     - Run Super-Linter slim version (faster)"
 	@echo "  ui-build            - Build UI from XML templates"
 	@echo "  icons               - Install application icons"
 	@echo ""
