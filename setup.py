@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+import sys
+
 from setuptools import find_packages, setup
 from setuptools.command.install import install
-import sys
 
 # Read dependencies from Pipfile
 # For PyPI publishing, we specify the core dependencies explicitly
@@ -84,6 +85,7 @@ class PostInstallCommand(install):
                 print("\n\nYou can run setup later with: dfs-setup\n")
         else:
             print("Run 'dfs-setup' to complete the installation.\n")
+
 
 setup_kwargs = {
     "name": "d-fake-seeder",

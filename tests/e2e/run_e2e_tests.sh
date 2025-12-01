@@ -57,7 +57,7 @@ cleanup() {
     log_info "Cleaning up..."
 
     # Stop any running containers
-    $CONTAINER_ENGINE ps -a | grep dfakeseeder-e2e | awk '{print $1}' | xargs -r $CONTAINER_ENGINE rm -f || true
+    $CONTAINER_ENGINE ps -a | grep dfakeseeder-e2e | awk '{print $1}' | xargs -r "$CONTAINER_ENGINE" rm -f || true
 
     # Remove test artifacts if requested
     if [ "${CLEANUP_ARTIFACTS:-false}" = "true" ]; then

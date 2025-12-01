@@ -1,7 +1,7 @@
 #!/bin/bash
 # Launch D' Fake Seeder with system tray
 
-cd /home/daoneill/src/DFakeSeeder
+cd /home/daoneill/src/DFakeSeeder || exit
 
 # Launch main application in background
 env LOG_LEVEL=DEBUG PYTHONPATH=/home/daoneill/src/DFakeSeeder pipenv run python3 d_fake_seeder/dfakeseeder.py &
