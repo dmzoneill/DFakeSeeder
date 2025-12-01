@@ -1,8 +1,10 @@
 try:
+    # fmt: off
     from watchdog.events import FileSystemEventHandler
 
     WATCHDOG_AVAILABLE = True
 except ImportError:
+    # fmt: on
     # Fallback if watchdog is not available
     class FileSystemEventHandler:
         pass

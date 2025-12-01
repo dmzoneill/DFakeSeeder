@@ -5,6 +5,7 @@ Provides configuration interface for BitTorrent protocol extensions including
 Extension Protocol (BEP-010), Peer Exchange (PEX), Metadata Exchange, and other extensions.
 """
 
+# fmt: off
 from typing import Any, Dict
 
 import gi
@@ -12,6 +13,8 @@ import gi
 gi.require_version("Gtk", "4.0")
 
 from .base_tab import BaseSettingsTab  # noqa: E402
+
+# fmt: on
 
 
 class ProtocolExtensionsTab(BaseSettingsTab):
@@ -66,7 +69,10 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         self._widgets["limit_extension_msgs"] = self.builder.get_object("limit_extension_msgs_check")
         self._widgets["max_msgs_per_second"] = self.builder.get_object("max_ext_msgs_per_sec_spin")
 
-        self.logger.debug("Protocol Extensions tab widgets initialized", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            "Protocol Extensions tab widgets initialized",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _connect_signals(self):
         """Connect Protocol Extensions signals"""
@@ -75,7 +81,13 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             self._widgets["extensions_enabled"].connect("state-set", self._on_extensions_enabled_changed)
 
         # Individual Extension Toggles
-        extension_toggles = ["ut_metadata", "ut_pex", "lt_donthave", "fast_extension", "ut_holepunch"]
+        extension_toggles = [
+            "ut_metadata",
+            "ut_pex",
+            "lt_donthave",
+            "fast_extension",
+            "ut_holepunch",
+        ]
         for toggle in extension_toggles:
             if self._widgets[toggle]:
                 self._widgets[toggle].connect("toggled", getattr(self, f"_on_{toggle}_toggled"))
@@ -152,7 +164,10 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         if self._widgets["max_msgs_per_second"]:
             self._widgets["max_msgs_per_second"].connect("value-changed", self._on_max_msgs_per_second_changed)
 
-        self.logger.debug("Protocol Extensions tab signals connected", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            "Protocol Extensions tab signals connected",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _load_settings(self) -> None:
         """Load Protocol Extensions settings from configuration (implements abstract method)."""
@@ -309,12 +324,14 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 self._widgets["max_msgs_per_second"].set_value(extended_config.get("max_msgs_per_second", 50))
 
             self.logger.debug(
-                "Protocol Extensions settings loaded successfully", extra={"class_name": self.__class__.__name__}
+                "Protocol Extensions settings loaded successfully",
+                extra={"class_name": self.__class__.__name__},
             )
 
         except Exception as e:
             self.logger.error(
-                f"Failed to load Protocol Extensions settings: {e}", extra={"class_name": self.__class__.__name__}
+                f"Failed to load Protocol Extensions settings: {e}",
+                extra={"class_name": self.__class__.__name__},
             )
 
     def save_settings(self):
@@ -420,17 +437,27 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             self.app_settings.set("protocols", protocols_config)
 
             self.logger.debug(
-                "Protocol Extensions settings saved successfully", extra={"class_name": self.__class__.__name__}
+                "Protocol Extensions settings saved successfully",
+                extra={"class_name": self.__class__.__name__},
             )
+
+            # Return the settings dict (required by base class)
+            return {"protocols": protocols_config}
 
         except Exception as e:
             self.logger.error(
-                f"Failed to save Protocol Extensions settings: {e}", extra={"class_name": self.__class__.__name__}
+                f"Failed to save Protocol Extensions settings: {e}",
+                extra={"class_name": self.__class__.__name__},
             )
+            return {}
 
     def validate_settings(self) -> Dict[str, Any]:
         """Validate Protocol Extensions settings"""
-        validation_result: Dict[str, Any] = {"valid": True, "errors": [], "warnings": []}
+        validation_result: Dict[str, Any] = {
+            "valid": True,
+            "errors": [],
+            "warnings": [],
+        }
 
         try:
             # Validate PEX interval
@@ -486,7 +513,8 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             validation_result["errors"].append(f"Validation error: {str(e)}")
             validation_result["valid"] = False
             self.logger.error(
-                f"Protocol Extensions settings validation failed: {e}", extra={"class_name": self.__class__.__name__}
+                f"Protocol Extensions settings validation failed: {e}",
+                extra={"class_name": self.__class__.__name__},
             )
 
         return validation_result
@@ -494,7 +522,10 @@ class ProtocolExtensionsTab(BaseSettingsTab):
     # Signal handlers
     def _on_extensions_enabled_changed(self, switch, state):
         """Handle overall extensions enable/disable"""
-        self.logger.debug(f"Extensions enabled changed: {state}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Extensions enabled changed: {state}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
         # Enable/disable all extension-related widgets
         extension_widgets = [
@@ -516,7 +547,11 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         """Handle ut_metadata toggle"""
         enabled = check_button.get_active()
         # Enable/disable metadata-related widgets
-        metadata_widgets = ["metadata_piece_size", "metadata_timeout", "metadata_synthetic"]
+        metadata_widgets = [
+            "metadata_piece_size",
+            "metadata_timeout",
+            "metadata_synthetic",
+        ]
         for widget_name in metadata_widgets:
             if self._widgets.get(widget_name):
                 self._widgets[widget_name].set_sensitive(enabled)
@@ -526,7 +561,13 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         """Handle ut_pex toggle"""
         enabled = check_button.get_active()
         # Enable/disable PEX-related widgets
-        pex_widgets = ["pex_interval", "pex_max_peers", "pex_max_dropped", "pex_synthetic_peers", "pex_synthetic_count"]
+        pex_widgets = [
+            "pex_interval",
+            "pex_max_peers",
+            "pex_max_dropped",
+            "pex_synthetic_peers",
+            "pex_synthetic_count",
+        ]
         for widget_name in pex_widgets:
             if self._widgets.get(widget_name):
                 self._widgets[widget_name].set_sensitive(enabled)
@@ -560,39 +601,60 @@ class ProtocolExtensionsTab(BaseSettingsTab):
     def _on_pex_max_dropped_changed(self, spin_button):
         """Handle PEX max dropped changes"""
         max_dropped = spin_button.get_value()
-        self.logger.debug(f"PEX max dropped: {max_dropped}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"PEX max dropped: {max_dropped}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_pex_synthetic_peers_toggled(self, check_button):
         """Handle PEX synthetic peers toggle"""
         enabled = check_button.get_active()
         if self._widgets["pex_synthetic_count"]:
             self._widgets["pex_synthetic_count"].set_sensitive(enabled)
-        self.logger.debug(f"PEX synthetic peers: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"PEX synthetic peers: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_pex_synthetic_count_changed(self, spin_button):
         """Handle PEX synthetic count changes"""
         count = spin_button.get_value()
-        self.logger.debug(f"PEX synthetic count: {count}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"PEX synthetic count: {count}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_metadata_enabled_toggled(self, check_button):
         """Handle metadata enabled toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Metadata enabled: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Metadata enabled: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_metadata_piece_size_changed(self, spin_button):
         """Handle metadata piece size changes"""
         size = spin_button.get_value()
-        self.logger.debug(f"Metadata piece size: {size}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Metadata piece size: {size}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_metadata_timeout_changed(self, spin_button):
         """Handle metadata timeout changes"""
         timeout = spin_button.get_value()
-        self.logger.debug(f"Metadata timeout: {timeout}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Metadata timeout: {timeout}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_metadata_synthetic_toggled(self, check_button):
         """Handle metadata synthetic toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Metadata synthetic: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Metadata synthetic: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_utp_enabled_toggled(self, check_button):
         """Handle µTP enabled toggle"""
@@ -607,12 +669,18 @@ class ProtocolExtensionsTab(BaseSettingsTab):
     def _on_connection_timeout_changed(self, spin_button):
         """Handle connection timeout changes"""
         timeout = spin_button.get_value()
-        self.logger.debug(f"Connection timeout: {timeout}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Connection timeout: {timeout}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_keep_alive_interval_changed(self, spin_button):
         """Handle keep alive interval changes"""
         interval = spin_button.get_value()
-        self.logger.debug(f"Keep alive interval: {interval}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Keep alive interval: {interval}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_nagle_algorithm_toggled(self, check_button):
         """Handle Nagle algorithm toggle"""
@@ -627,38 +695,59 @@ class ProtocolExtensionsTab(BaseSettingsTab):
     def _on_extension_timeout_changed(self, spin_button):
         """Handle extension timeout changes"""
         timeout = spin_button.get_value()
-        self.logger.debug(f"Extension timeout: {timeout}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Extension timeout: {timeout}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_max_extension_msg_size_changed(self, spin_button):
         """Handle max extension message size changes"""
         size = spin_button.get_value()
-        self.logger.debug(f"Max extension message size: {size}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Max extension message size: {size}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_track_extension_stats_toggled(self, check_button):
         """Handle track extension stats toggle"""
         enabled = check_button.get_active()
         if self._widgets["stats_update_interval"]:
             self._widgets["stats_update_interval"].set_sensitive(enabled)
-        self.logger.debug(f"Track extension stats: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Track extension stats: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_stats_update_interval_changed(self, spin_button):
         """Handle stats update interval changes"""
         interval = spin_button.get_value()
-        self.logger.debug(f"Stats update interval: {interval}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Stats update interval: {interval}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_validate_extensions_toggled(self, check_button):
         """Handle validate extensions toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Validate extensions: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Validate extensions: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_limit_extension_msgs_toggled(self, check_button):
         """Handle limit extension messages toggle"""
         enabled = check_button.get_active()
         if self._widgets["max_msgs_per_second"]:
             self._widgets["max_msgs_per_second"].set_sensitive(enabled)
-        self.logger.debug(f"Limit extension messages: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Limit extension messages: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_max_msgs_per_second_changed(self, spin_button):
         """Handle max messages per second changes"""
         max_msgs = spin_button.get_value()
-        self.logger.debug(f"Max messages per second: {max_msgs}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Max messages per second: {max_msgs}",
+            extra={"class_name": self.__class__.__name__},
+        )

@@ -4,6 +4,7 @@ Torrent Watch Folder Handler
 Monitors a specified folder for new torrent files and automatically adds them to DFakeSeeder.
 """
 
+# fmt: off
 import os
 import shutil
 import time
@@ -24,6 +25,8 @@ except ImportError:
         pass
 
     WATCHDOG_AVAILABLE = False
+
+# fmt: on
 
 
 class TorrentFolderWatcher:
@@ -46,7 +49,10 @@ class TorrentFolderWatcher:
         self.watch_path = None
         self.is_running = False
 
-        logger.info("TorrentFolderWatcher initialized", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "TorrentFolderWatcher initialized",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def start(self):
         """Start watching the configured folder"""
@@ -63,7 +69,10 @@ class TorrentFolderWatcher:
         watch_path = watch_config.get("path", "")
 
         if not enabled:
-            logger.debug("Watch folder is disabled in settings", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "Watch folder is disabled in settings",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
         if not watch_path:
@@ -100,7 +109,7 @@ class TorrentFolderWatcher:
             self.observer.start()
             self.is_running = True
 
-            logger.info(
+            logger.debug(
                 f"Started watching folder for torrents: {self.watch_path}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -125,7 +134,10 @@ class TorrentFolderWatcher:
                 self.observer.stop()
                 self.observer.join(timeout=5.0)
                 self.is_running = False
-                logger.info("Stopped watching torrent folder", extra={"class_name": self.__class__.__name__})
+                logger.info(
+                    "Stopped watching torrent folder",
+                    extra={"class_name": self.__class__.__name__},
+                )
             except Exception as e:
                 logger.error(
                     f"Error stopping watch folder: {e}",

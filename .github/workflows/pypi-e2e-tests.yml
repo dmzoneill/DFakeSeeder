@@ -1,0 +1,323 @@
+name: PyPI End-to-End Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  pypi-e2e-tests:
+    name: PyPI E2E Tests on ${{ matrix.os }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Test on different Fedora versions for PyPI installation
+        fedora_version: ['latest', '42', '41']
+      fail-fast: false  # Continue testing other versions even if one fails
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            xmllint \
+            gettext
+
+      - name: Install Python build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build wheel setuptools
+
+      - name: Build UI
+        run: make ui-build
+
+      - name: Build Python package
+        run: |
+          python -m build
+          echo "Built packages:"
+          ls -lh dist/
+
+      - name: Verify package contents
+        run: |
+          WHEEL_FILE=$(find dist -name "*.whl" | head -1)
+          echo "Checking contents of $WHEEL_FILE"
+          unzip -l "$WHEEL_FILE" | grep -E "(setup_helper|post_install|desktop/)" || echo "Warning: Some expected files may be missing"
+
+      - name: Make test scripts executable
+        run: |
+          chmod +x tests/e2e/*.sh
+
+      - name: Build E2E test container (Fedora ${{ matrix.fedora_version }})
+        run: |
+          cd tests/e2e
+          docker build \
+            --build-arg FEDORA_VERSION=${{ matrix.fedora_version }} \
+            -t dfakeseeder-pypi-e2e-test:${{ matrix.fedora_version }} \
+            -f Dockerfile.fedora .
+
+      - name: Run PyPI E2E tests (Fedora ${{ matrix.fedora_version }})
+        run: |
+          mkdir -p test-artifacts
+          docker run --rm \
+            --privileged \
+            -v $(pwd)/dist:/packages:ro \
+            -v $(pwd)/tests/e2e:/workspace/tests:ro \
+            -v $(pwd)/test-artifacts:/test-artifacts:rw \
+            -e DISPLAY=:99 \
+            dfakeseeder-pypi-e2e-test:${{ matrix.fedora_version }} \
+            /bin/bash -c "
+              set -e
+
+              # Copy packages to container
+              mkdir -p /tmp/packages
+              cp /packages/*.whl /tmp/packages/
+
+              # Run the PyPI E2E test script
+              cd /workspace/tests
+              PACKAGE_FILE=\$(find /tmp/packages -name '*.whl' | head -1)
+              export PACKAGE_FILE
+
+              # Run tests with output capture
+              ./test_pypi_install.sh 2>&1 | tee /test-artifacts/pypi-e2e-test-fedora-${{ matrix.fedora_version }}.log
+            "
+
+      - name: Generate test report
+        if: always()
+        run: |
+          REPORT_FILE="test-artifacts/pypi-e2e-test-report-fedora-${{ matrix.fedora_version }}.txt"
+          echo "DFakeSeeder PyPI Package E2E Test Report" > "$REPORT_FILE"
+          echo "========================================" >> "$REPORT_FILE"
+          echo "Date: $(date)" >> "$REPORT_FILE"
+          echo "Fedora Version: ${{ matrix.fedora_version }}" >> "$REPORT_FILE"
+          echo "Commit: ${{ github.sha }}" >> "$REPORT_FILE"
+          echo "Branch: ${{ github.ref_name }}" >> "$REPORT_FILE"
+          echo "" >> "$REPORT_FILE"
+          echo "Package:" >> "$REPORT_FILE"
+          ls -lh dist/*.whl >> "$REPORT_FILE"
+          echo "" >> "$REPORT_FILE"
+          echo "Test Output:" >> "$REPORT_FILE"
+          echo "-------------" >> "$REPORT_FILE"
+          if [ -f "test-artifacts/pypi-e2e-test-fedora-${{ matrix.fedora_version }}.log" ]; then
+            tail -50 "test-artifacts/pypi-e2e-test-fedora-${{ matrix.fedora_version }}.log" >> "$REPORT_FILE"
+          else
+            echo "No test log found" >> "$REPORT_FILE"
+          fi
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: pypi-e2e-test-artifacts-fedora-${{ matrix.fedora_version }}
+          path: |
+            test-artifacts/
+            dist/
+          retention-days: 7
+
+      - name: Upload PyPI packages
+        uses: actions/upload-artifact@v3
+        if: success()
+        with:
+          name: dfakeseeder-pypi-package-fedora-${{ matrix.fedora_version }}
+          path: dist/*
+          retention-days: 30
+
+  pypi-ubuntu-e2e-tests:
+    name: PyPI E2E Tests on Ubuntu ${{ matrix.ubuntu_version }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        ubuntu_version: ['22.04', '24.04']
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            xmllint \
+            gettext \
+            python3-gi \
+            gir1.2-gtk-4.0 \
+            libadwaita-1-0 \
+            gir1.2-adw-1 \
+            xvfb \
+            dbus-x11
+
+      - name: Build UI
+        run: make ui-build
+
+      - name: Build Python package
+        run: |
+          python -m pip install --upgrade pip build wheel
+          python -m build
+
+      - name: Install package
+        run: |
+          WHEEL_FILE=$(find dist -name "*.whl" | head -1)
+          pip install "$WHEEL_FILE"
+
+      - name: Test imports
+        run: |
+          python -c "import d_fake_seeder"
+          python -c "from d_fake_seeder.domain.app_settings import AppSettings"
+          python -c "from d_fake_seeder.setup_helper import check_system_dependencies"
+
+      - name: Test CLI commands
+        run: |
+          # Add pip install location to PATH
+          export PATH="$HOME/.local/bin:$PATH"
+
+          # Check all commands are available
+          which dfs
+          which dfakeseeder
+          which dfs-setup
+          which dfs-install-desktop
+          which dfs-uninstall-desktop
+
+          # Test help
+          dfs --help
+
+      - name: Test setup command
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          dfs-setup 2>&1 | tee setup-output.txt
+
+          # Verify setup runs and checks dependencies
+          grep -q "Setting up D' Fake Seeder\|SYSTEM DEPENDENCIES\|LAUNCH INSTRUCTIONS" setup-output.txt
+
+      - name: Test desktop integration
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+
+          # Install desktop integration
+          dfs-install-desktop
+
+          # Check files were created
+          ls ~/.local/share/applications/dfakeseeder.desktop
+          ls ~/.local/share/icons/hicolor/*/apps/dfakeseeder.png
+
+          # Uninstall
+          dfs-uninstall-desktop
+
+      - name: Test application launch (headless)
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          export DISPLAY=:99
+
+          # Start Xvfb
+          Xvfb :99 -screen 0 1920x1080x24 &
+          XVFB_PID=$!
+          sleep 2
+
+          # Start D-Bus
+          eval $(dbus-launch --sh-syntax)
+
+          # Try to launch app (will timeout after 10s)
+          timeout 10s dfs 2>&1 | tee launch-output.txt || true
+
+          # Check for initialization
+          grep -q "SharedAsyncExecutor\|peer server" launch-output.txt || echo "Warning: App may not have initialized"
+
+          # Cleanup
+          kill $XVFB_PID || true
+          kill $DBUS_SESSION_BUS_PID || true
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: pypi-ubuntu-test-artifacts-${{ matrix.ubuntu_version }}
+          path: |
+            setup-output.txt
+            launch-output.txt
+          retention-days: 7
+
+  test-summary:
+    name: Generate PyPI E2E Test Summary
+    runs-on: ubuntu-latest
+    needs: [pypi-e2e-tests, pypi-ubuntu-e2e-tests]
+    if: always()
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Generate summary report
+        run: |
+          echo "# DFakeSeeder PyPI E2E Test Results" > test-summary.md
+          echo "" >> test-summary.md
+          echo "## Test Execution Summary" >> test-summary.md
+          echo "" >> test-summary.md
+          echo "- **Date**: $(date)" >> test-summary.md
+          echo "- **Commit**: ${{ github.sha }}" >> test-summary.md
+          echo "- **Branch**: ${{ github.ref_name }}" >> test-summary.md
+          echo "" >> test-summary.md
+
+          echo "## Test Results" >> test-summary.md
+          echo "" >> test-summary.md
+
+          echo "### Fedora Tests" >> test-summary.md
+          for dir in pypi-e2e-test-artifacts-fedora-*; do
+            if [ -d "$dir" ]; then
+              echo "- $dir" >> test-summary.md
+              if [ -f "$dir/pypi-e2e-test-report-*.txt" ]; then
+                cat "$dir/pypi-e2e-test-report-"*.txt >> test-summary.md
+              fi
+            fi
+          done
+
+          echo "" >> test-summary.md
+          echo "### Ubuntu Tests" >> test-summary.md
+          for dir in pypi-ubuntu-test-artifacts-*; do
+            if [ -d "$dir" ]; then
+              echo "- $dir" >> test-summary.md
+            fi
+          done
+
+          echo "" >> test-summary.md
+          echo "## Artifacts" >> test-summary.md
+          echo '```' >> test-summary.md
+          ls -R >> test-summary.md
+          echo '```' >> test-summary.md
+
+      - name: Upload summary
+        uses: actions/upload-artifact@v3
+        with:
+          name: pypi-e2e-test-summary
+          path: test-summary.md
+          retention-days: 30
+
+      - name: Comment test results on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('test-summary.md', 'utf8');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });

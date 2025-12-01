@@ -1,3 +1,4 @@
+# fmt: off
 import time
 
 import gi
@@ -8,12 +9,19 @@ from d_fake_seeder.domain.torrent.model.attributes import Attributes
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.column_translation_mixin import ColumnTranslationMixin
 from d_fake_seeder.lib.util.column_translations import ColumnTranslations
-from d_fake_seeder.lib.util.helpers import add_kb, add_percent, convert_seconds_to_hours_mins_seconds, humanbytes
+from d_fake_seeder.lib.util.helpers import (
+    add_kb,
+    add_percent,
+    convert_seconds_to_hours_mins_seconds,
+    humanbytes,
+)
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 gi.require_version("GioUnix", "2.0")
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk  # noqa: E402
+
+# fmt: on
 
 
 class Torrents(Component, ColumnTranslationMixin):
@@ -21,19 +29,23 @@ class Torrents(Component, ColumnTranslationMixin):
         logger.debug("Torrents.__init__() started", "Torrents")
         super().__init__()
         ColumnTranslationMixin.__init__(self)
-        logger.info(
+        logger.debug(
             "Torrents view startup",
             extra={"class_name": self.__class__.__name__},
         )
         self.builder = builder
         self.model = model
         self.store = Gio.ListStore.new(Attributes)
+        self.track_store(self.store)  # Track for automatic cleanup
         # window
         self.window = self.builder.get_object("main_window")
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
         # Store handler ID so we can block it during column toggling to prevent deadlock
-        self._attribute_handler_id = self.settings.connect("attribute-changed", self.handle_attribute_changed)
+        self.track_signal(
+            self.settings,
+            self.settings.connect("attribute-changed", self.handle_attribute_changed),
+        )
         # Load UI margin and spacing settings
         ui_settings = getattr(self.settings, "ui_settings", {})
         self.ui_margin_small = ui_settings.get("ui_margin_small", 1)
@@ -43,7 +55,7 @@ class Torrents(Component, ColumnTranslationMixin):
         # Create a gesture recognizer
         gesture_start = time.time()
         gesture = Gtk.GestureClick.new()
-        gesture.connect("released", self.main_menu)
+        self.track_signal(gesture, gesture.connect("released", self.main_menu))
         gesture.set_button(3)
         # Create an action group
         self.action_group = Gio.SimpleActionGroup()
@@ -54,7 +66,8 @@ class Torrents(Component, ColumnTranslationMixin):
         self.torrents_columnview.add_controller(gesture)
         gesture_end = time.time()
         logger.debug(
-            f"Gesture and action setup completed (took {(gesture_end - gesture_start)*1000:.1f}ms)", "Torrents"
+            f"Gesture and action setup completed (took {(gesture_end - gesture_start)*1000:.1f}ms)",
+            "Torrents",
         )
         # ordering, sorting etc
         self.torrents_columnview.set_reorderable(True)
@@ -65,12 +78,18 @@ class Torrents(Component, ColumnTranslationMixin):
         self.torrents_columnview.set_focusable(True)
         # Add keyboard event controller for arrow key navigation
         self.keyboard_controller = Gtk.EventControllerKey.new()
-        self.keyboard_controller.connect("key-pressed", self.on_key_pressed)
+        self.track_signal(
+            self.keyboard_controller,
+            self.keyboard_controller.connect("key-pressed", self.on_key_pressed),
+        )
         self.torrents_columnview.add_controller(self.keyboard_controller)
         logger.debug("UI setup completed (took ms)", "Torrents")
         logger.debug("About to call update_columns()", "Torrents")
         self.update_columns()
-        logger.debug("update_columns() completed (took {(columns_end - columns_start)*1000:.1f}ms)", "Torrents")
+        logger.debug(
+            "update_columns() completed (took {(columns_end - columns_start)*1000:.1f}ms)",
+            "Torrents",
+        )
         logger.debug("Torrents.__init__() TOTAL TIME: ms", "Torrents")
 
     def _(self, text):
@@ -228,33 +247,43 @@ class Torrents(Component, ColumnTranslationMixin):
         self.popover.popup()
 
     def on_stateful_action_change_state(self, action, value):
-        logger.info("🔵 COLUMN TOGGLE: START", extra={"class_name": self.__class__.__name__})
+        logger.debug("🔵 COLUMN TOGGLE: START", extra={"class_name": self.__class__.__name__})
 
         # Prevent re-entry if this handler is triggered by settings changes
         if hasattr(self, "_updating_columns") and self._updating_columns:
-            logger.info("🔵 COLUMN TOGGLE: RE-ENTRY DETECTED, SKIPPING", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "🔵 COLUMN TOGGLE: RE-ENTRY DETECTED, SKIPPING",
+                extra={"class_name": self.__class__.__name__},
+            )
             return
 
         try:
             self._updating_columns = True
-            logger.info("🔵 COLUMN TOGGLE: Set _updating_columns flag", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "🔵 COLUMN TOGGLE: Set _updating_columns flag",
+                extra={"class_name": self.__class__.__name__},
+            )
 
-            logger.info(
+            logger.debug(
                 f"🔵 COLUMN TOGGLE: Action={action.get_name()}, Value={value.get_boolean()}",
                 extra={"class_name": self.__class__.__name__},
             )
             self.stateful_actions[action.get_name()[len("toggle_") :]].set_state(  # noqa: E203
                 GLib.Variant.new_boolean(value.get_boolean())
             )
-            logger.info("🔵 COLUMN TOGGLE: Action state updated", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "🔵 COLUMN TOGGLE: Action state updated",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             checked_items = []
             all_unchecked = True
             ATTRIBUTES = Attributes
             attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
             column_titles = [column if column != "#" else "id" for column in attributes]
-            logger.info(
-                f"🔵 COLUMN TOGGLE: Total attributes={len(attributes)}", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                f"🔵 COLUMN TOGGLE: Total attributes={len(attributes)}",
+                extra={"class_name": self.__class__.__name__},
             )
 
             for title in column_titles:
@@ -263,19 +292,23 @@ class Torrents(Component, ColumnTranslationMixin):
                         checked_items.append(title)
                         all_unchecked = False
                         break
-            logger.info(
-                f"🔵 COLUMN TOGGLE: Checked items={checked_items}", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                f"🔵 COLUMN TOGGLE: Checked items={checked_items}",
+                extra={"class_name": self.__class__.__name__},
             )
 
             # Update column visibility FIRST, before saving to settings
             # This prevents the settings save from triggering signals that query the ColumnView
             # while we're still in the middle of processing the menu action
             visible_set = set(checked_items) if checked_items else set(attributes)
-            logger.info(f"🔵 COLUMN TOGGLE: Visible set={visible_set}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"🔵 COLUMN TOGGLE: Visible set={visible_set}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             # If all unchecked, update all stateful actions to checked (since all columns will be visible)
             if all_unchecked:
-                logger.info(
+                logger.debug(
                     "🔵 COLUMN TOGGLE: All unchecked, setting all actions to True",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -284,101 +317,127 @@ class Torrents(Component, ColumnTranslationMixin):
                         self.stateful_actions[title].set_state(GLib.Variant.new_boolean(True))
 
             # Build reverse mapping: column object -> property_name (attribute)
-            logger.info("🔵 COLUMN TOGGLE: Building column mapping...", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "🔵 COLUMN TOGGLE: Building column mapping...",
+                extra={"class_name": self.__class__.__name__},
+            )
             column_to_attr = {}
             if self.torrents_columnview in self._translatable_columns:
                 for col, prop_name, col_type in self._translatable_columns[self.torrents_columnview]:
                     column_to_attr[col] = prop_name
-            logger.info(
+            logger.debug(
                 f"🔵 COLUMN TOGGLE: Column mapping built, {len(column_to_attr)} columns",
                 extra={"class_name": self.__class__.__name__},
             )
 
-            logger.info(
-                "🔵 COLUMN TOGGLE: About to call get_columns()...", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                "🔵 COLUMN TOGGLE: About to call get_columns()...",
+                extra={"class_name": self.__class__.__name__},
             )
             columns = self.torrents_columnview.get_columns()
-            logger.info(
+            logger.debug(
                 f"🔵 COLUMN TOGGLE: get_columns() returned {len(columns)} columns",
                 extra={"class_name": self.__class__.__name__},
             )
 
             for idx, column in enumerate(columns):
-                logger.info(
-                    f"🔵 COLUMN TOGGLE: Processing column {idx}...", extra={"class_name": self.__class__.__name__}
+                logger.debug(
+                    f"🔵 COLUMN TOGGLE: Processing column {idx}...",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 # Get the attribute name from our tracking dict (not the translated title!)
                 column_id = column_to_attr.get(column, None)
                 if column_id is None:
-                    logger.info(
+                    logger.debug(
                         f"🔵 COLUMN TOGGLE: Column {idx} not in mapping, getting title...",
                         extra={"class_name": self.__class__.__name__},
                     )
                     # Fallback: try to extract from title if not registered
                     title = column.get_title()
-                    logger.info(
-                        f"🔵 COLUMN TOGGLE: Column {idx} title={title}", extra={"class_name": self.__class__.__name__}
+                    logger.debug(
+                        f"🔵 COLUMN TOGGLE: Column {idx} title={title}",
+                        extra={"class_name": self.__class__.__name__},
                     )
                     column_id = "id" if title == "#" else title
-                logger.info(
+                logger.debug(
                     f"🔵 COLUMN TOGGLE: Column {idx} id={column_id}, setting visibility...",
                     extra={"class_name": self.__class__.__name__},
                 )
                 column.set_visible(column_id in visible_set or not checked_items)
-                logger.info(
-                    f"🔵 COLUMN TOGGLE: Column {idx} visibility set", extra={"class_name": self.__class__.__name__}
+                logger.debug(
+                    f"🔵 COLUMN TOGGLE: Column {idx} visibility set",
+                    extra={"class_name": self.__class__.__name__},
                 )
 
-            logger.info(
-                "🔵 COLUMN TOGGLE: All column visibility updated", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                "🔵 COLUMN TOGGLE: All column visibility updated",
+                extra={"class_name": self.__class__.__name__},
             )
 
             # Now save to settings AFTER column visibility is updated
             # CRITICAL: Block the attribute-changed signal handler to prevent re-entry
             # The signal handler calls get_sorter() which can deadlock during menu processing
-            logger.info(
-                "🔵 COLUMN TOGGLE: About to block signal handler...", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                "🔵 COLUMN TOGGLE: About to block signal handler...",
+                extra={"class_name": self.__class__.__name__},
             )
             if hasattr(self, "_attribute_handler_id"):
                 self.settings.handler_block(self._attribute_handler_id)
-                logger.info("🔵 COLUMN TOGGLE: Signal handler blocked", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    "🔵 COLUMN TOGGLE: Signal handler blocked",
+                    extra={"class_name": self.__class__.__name__},
+                )
             else:
                 logger.warning(
-                    "🔵 COLUMN TOGGLE: No _attribute_handler_id found!", extra={"class_name": self.__class__.__name__}
+                    "🔵 COLUMN TOGGLE: No _attribute_handler_id found!",
+                    extra={"class_name": self.__class__.__name__},
                 )
 
             try:
-                logger.info(
-                    "🔵 COLUMN TOGGLE: About to save settings...", extra={"class_name": self.__class__.__name__}
+                logger.debug(
+                    "🔵 COLUMN TOGGLE: About to save settings...",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 if all_unchecked or len(checked_items) == len(attributes):
-                    logger.info("🔵 COLUMN TOGGLE: Saving empty columns", extra={"class_name": self.__class__.__name__})
+                    logger.debug(
+                        "🔵 COLUMN TOGGLE: Saving empty columns",
+                        extra={"class_name": self.__class__.__name__},
+                    )
                     self.settings.columns = ""
                 else:
                     checked_items.sort(key=lambda x: column_titles.index(x))
                     columns_str = ",".join(checked_items)
-                    logger.info(
-                        f"🔵 COLUMN TOGGLE: Saving columns={columns_str}", extra={"class_name": self.__class__.__name__}
+                    logger.debug(
+                        f"🔵 COLUMN TOGGLE: Saving columns={columns_str}",
+                        extra={"class_name": self.__class__.__name__},
                     )
                     self.settings.columns = columns_str
-                logger.info("🔵 COLUMN TOGGLE: Settings saved", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    "🔵 COLUMN TOGGLE: Settings saved",
+                    extra={"class_name": self.__class__.__name__},
+                )
             finally:
                 # Unblock the handler
-                logger.info(
+                logger.debug(
                     "🔵 COLUMN TOGGLE: About to unblock signal handler...",
                     extra={"class_name": self.__class__.__name__},
                 )
                 if hasattr(self, "_attribute_handler_id"):
                     self.settings.handler_unblock(self._attribute_handler_id)
-                    logger.info(
-                        "🔵 COLUMN TOGGLE: Signal handler unblocked", extra={"class_name": self.__class__.__name__}
+                    logger.debug(
+                        "🔵 COLUMN TOGGLE: Signal handler unblocked",
+                        extra={"class_name": self.__class__.__name__},
                     )
         finally:
-            logger.info(
-                "🔵 COLUMN TOGGLE: Clearing _updating_columns flag", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                "🔵 COLUMN TOGGLE: Clearing _updating_columns flag",
+                extra={"class_name": self.__class__.__name__},
             )
             self._updating_columns = False
-            logger.info("🔵 COLUMN TOGGLE: COMPLETE", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "🔵 COLUMN TOGGLE: COMPLETE",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def update_columns(self):
         logger.debug("update_columns() started", "Torrents")
@@ -395,8 +454,14 @@ class Torrents(Component, ColumnTranslationMixin):
             logger.debug("Step 1 - Column creation: ms", "Torrents")
             # Step 2: Factory setup
             column_factory = Gtk.SignalListItemFactory()
-            column_factory.connect("setup", self.setup_column_factory, "id")
-            column_factory.connect("bind", self.bind_column_factory, "id")
+            self.track_signal(
+                column_factory,
+                column_factory.connect("setup", self.setup_column_factory, "id"),
+            )
+            self.track_signal(
+                column_factory,
+                column_factory.connect("bind", self.bind_column_factory, "id"),
+            )
             id_column.set_factory(column_factory)
             logger.debug("Step 2 - Factory setup: ms", "Torrents")
             # Step 3: Sorter setup
@@ -412,8 +477,14 @@ class Torrents(Component, ColumnTranslationMixin):
             logger.debug("Step 4 - Append column: ms", "Torrents")
             # Step 5: Register for translation
             self.register_translatable_column(self.torrents_columnview, id_column, "id", "torrent")
-            logger.debug("Step 5 - Translation registration: {(step5_end - step5_start)*1000:.1f}ms", "Torrents")
-        logger.debug("Minimal column setup completed (took {(minimal_end - minimal_start)*1000:.1f}ms)", "Torrents")
+            logger.debug(
+                "Step 5 - Translation registration: {(step5_end - step5_start)*1000:.1f}ms",
+                "Torrents",
+            )
+        logger.debug(
+            "Minimal column setup completed (took {(minimal_end - minimal_start)*1000:.1f}ms)",
+            "Torrents",
+        )
 
         # Schedule full column creation in background using GLib.idle_add
         def create_remaining_columns():
@@ -449,8 +520,14 @@ class Torrents(Component, ColumnTranslationMixin):
                     column.set_resizable(True)
                     # Factory setup
                     column_factory = Gtk.SignalListItemFactory()
-                    column_factory.connect("setup", self.setup_column_factory, attribute)
-                    column_factory.connect("bind", self.bind_column_factory, attribute)
+                    self.track_signal(
+                        column_factory,
+                        column_factory.connect("setup", self.setup_column_factory, attribute),
+                    )
+                    self.track_signal(
+                        column_factory,
+                        column_factory.connect("bind", self.bind_column_factory, attribute),
+                    )
                     column.set_factory(column_factory)
                     # Property and sorter setup
                     try:
@@ -476,7 +553,10 @@ class Torrents(Component, ColumnTranslationMixin):
                 )
                 if column:
                     column.set_visible(attribute in visible_set)
-            logger.debug(f"Background column creation completed: {created_count} columns", "Torrents")
+            logger.debug(
+                f"Background column creation completed: {created_count} columns",
+                "Torrents",
+            )
         except Exception:
             logger.debug("Background column creation error:", "Torrents")
         return False  # Don't repeat this idle task
@@ -527,31 +607,34 @@ class Torrents(Component, ColumnTranslationMixin):
             # If the attribute has a text renderer defined
             text_renderer_func_name = textrenderers[attribute]
             # Bind the attribute to the widget's label property
-            item_data.bind_property(
+            binding = item_data.bind_property(
                 attribute,
                 widget,
                 "label",
                 GObject.BindingFlags.SYNC_CREATE,
                 self.get_text_renderer(text_renderer_func_name),
             )
+            self.track_binding(binding)
         else:
             # For non-text attributes, handle appropriately
             if isinstance(widget, Gtk.Label):
                 # Bind the attribute to the widget's label property
-                item_data.bind_property(
+                binding = item_data.bind_property(
                     attribute,
                     widget,
                     "label",
                     GObject.BindingFlags.SYNC_CREATE,
                     self.to_str,
                 )
+                self.track_binding(binding)
             elif isinstance(widget, Gtk.ProgressBar):
-                item_data.bind_property(
+                binding = item_data.bind_property(
                     attribute,
                     widget,
                     "fraction",
                     GObject.BindingFlags.SYNC_CREATE,
                 )
+                self.track_binding(binding)
             # Add more cases for other widget types as needed
 
     def get_text_renderer(self, func_name):
@@ -572,19 +655,20 @@ class Torrents(Component, ColumnTranslationMixin):
 
     def set_model(self, model):
         """Set the model for the torrents component."""
-        logger.info("Torrents set_model", extra={"class_name": self.__class__.__name__})
+        logger.debug("Torrents set_model", extra={"class_name": self.__class__.__name__})
         self.model = model
         # Connect to language change signals for column translation
         if self.model and hasattr(self.model, "connect"):
             try:
-                self.model.connect("language-changed", self.on_language_changed)
+                self.track_signal(model, model.connect("language-changed", self.on_language_changed))
                 logger.debug(
                     "Successfully connected to language-changed signal for column translation",
                     extra={"class_name": self.__class__.__name__},
                 )
             except Exception as e:
                 logger.error(
-                    f"FAILED to connect to language-changed signal: {e}", extra={"class_name": self.__class__.__name__}
+                    f"FAILED to connect to language-changed signal: {e}",
+                    extra={"class_name": self.__class__.__name__},
                 )
         # Update the view if model is set
         if self.model:
@@ -598,45 +682,47 @@ class Torrents(Component, ColumnTranslationMixin):
             self.store = self.model.get_liststore()
         self.sorter = Gtk.ColumnView.get_sorter(self.torrents_columnview)
         self.sort_model = Gtk.SortListModel.new(self.store, self.sorter)
-        self.selection = Gtk.SingleSelection.new(self.sort_model)
+
+        # CRITICAL: Create SingleSelection with None model first
+        # This prevents auto-selection before we can set properties
+        self.selection = Gtk.SingleSelection.new(None)
+
+        # CRITICAL: Disable automatic selection BEFORE setting the model
+        # This allows detail tabs to show "No Torrent Selected" empty state on startup
+        self.selection.set_autoselect(False)
+        self.selection.set_can_unselect(True)
+
+        # Now set the model after disabling autoselect
+        self.selection.set_model(self.sort_model)
+
         # Connect to the notify::selected signal which fires when selection changes
         try:
-            self.selection.connect("notify::selected", self.on_selection_changed)
+            self.track_signal(
+                self.selection,
+                self.selection.connect("notify::selected", self.on_selection_changed),
+            )
         except Exception as e:
             logger.error(f"Failed to connect notify::selected signal: {e}")
             # Try alternative signal names
             try:
-                self.selection.connect("selection-changed", self.on_selection_changed_old)
-                logger.info("Connected to selection-changed signal as fallback")
+                self.track_signal(
+                    self.selection,
+                    self.selection.connect("selection-changed", self.on_selection_changed_old),
+                )
+                logger.debug("Connected to selection-changed signal as fallback")
             except Exception as e2:
                 logger.error(f"All signal connections failed: {e2}")
         self.torrents_columnview.set_model(self.selection)
-        # Auto-select the first torrent if available
-        if self.sort_model.get_n_items() > 0:
-            logger.info(
-                "Auto-selecting first torrent",
-                extra={"class_name": self.__class__.__name__},
-            )
-            self.selection.set_selected(0)
-
-            # Use idle to defer the manual emission until after all components are initialized
-            # This fixes the issue where details show "Unknown" on first load
-            def emit_selection_after_idle():
-                item = self.sort_model.get_item(0)
-                if item and self.model:
-                    logger.info(
-                        f"Manually emitting selection-changed for first torrent: {item.name}",
-                        extra={"class_name": self.__class__.__name__},
-                    )
-                    self.model.emit("selection-changed", self.model, item)
-                return False  # Don't repeat
-
-            # Use idle to ensure components are ready
-            GLib.idle_add(emit_selection_after_idle)
+        # Don't auto-select the first torrent - let user manually select
+        # This allows detail tabs to show "No Torrent Selected" empty state on startup
+        logger.debug(
+            "Torrent list initialized - no auto-selection, user must select manually",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     # Method to update the ColumnView with compatible attributes
     def update_view(self, model, torrent, updated_attributes):
-        logger.info(
+        logger.debug(
             f"📺 VIEW RECEIVED SIGNAL: torrent={getattr(torrent, 'name', 'Unknown') if torrent else 'None'}, "
             f"attributes={updated_attributes}",
             extra={"class_name": self.__class__.__name__},
@@ -653,13 +739,13 @@ class Torrents(Component, ColumnTranslationMixin):
         # Check if the model is initialized
         current_model = self.torrents_columnview.get_model()
         if current_model is None:
-            logger.info(
+            logger.debug(
                 "📺 VIEW: No current model, initializing with update_model()",
                 extra={"class_name": self.__class__.__name__},
             )
             self.update_model()
         else:
-            logger.info(
+            logger.debug(
                 "📺 VIEW: Column view has model, torrent update should be visible",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -717,29 +803,33 @@ class Torrents(Component, ColumnTranslationMixin):
         sorter.changed(0)
 
     def handle_attribute_changed(self, source, key, value):
-        logger.info(
+        logger.debug(
             f"🔴 ATTRIBUTE CHANGED: key={key}, value={value}",
             extra={"class_name": self.__class__.__name__},
         )
 
         # Skip if we're in the middle of a column toggle operation
         if hasattr(self, "_updating_columns") and self._updating_columns:
-            logger.info(
+            logger.debug(
                 "🔴 ATTRIBUTE CHANGED: Skipping due to _updating_columns flag",
                 extra={"class_name": self.__class__.__name__},
             )
             return
 
-        logger.info(
-            "🔴 ATTRIBUTE CHANGED: About to call get_sorter()...", extra={"class_name": self.__class__.__name__}
+        logger.debug(
+            "🔴 ATTRIBUTE CHANGED: About to call get_sorter()...",
+            extra={"class_name": self.__class__.__name__},
         )
         sorter = Gtk.ColumnView.get_sorter(self.torrents_columnview)
-        logger.info(
+        logger.debug(
             "🔴 ATTRIBUTE CHANGED: get_sorter() returned, calling changed(0)...",
             extra={"class_name": self.__class__.__name__},
         )
         sorter.changed(0)
-        logger.info("🔴 ATTRIBUTE CHANGED: COMPLETE", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "🔴 ATTRIBUTE CHANGED: COMPLETE",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def on_key_pressed(self, controller, keyval, keycode, state):
         """Handle keyboard events for navigation"""
@@ -817,7 +907,7 @@ class Torrents(Component, ColumnTranslationMixin):
         for action_name, handler in actions.items():
             if not self.action_group.has_action(action_name):
                 action = Gio.SimpleAction.new(action_name, None)
-                action.connect("activate", handler)
+                self.track_signal(action, action.connect("activate", handler))
                 self.action_group.add_action(action)
 
     def _get_selected_torrent(self):
@@ -843,22 +933,34 @@ class Torrents(Component, ColumnTranslationMixin):
         """Handle pause action from context menu"""
         torrent, selected_item = self._get_selected_torrent()
         if torrent is None:
-            logger.warning("No torrent selected for pause", extra={"class_name": self.__class__.__name__})
+            logger.warning(
+                "No torrent selected for pause",
+                extra={"class_name": self.__class__.__name__},
+            )
             return
 
         torrent_name = getattr(selected_item, "name", "Unknown")
-        logger.info(f"Pausing torrent: {torrent_name}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Pausing torrent: {torrent_name}",
+            extra={"class_name": self.__class__.__name__},
+        )
         torrent.active = False
 
     def on_resume(self, action, parameter):
         """Handle resume action from context menu"""
         torrent, selected_item = self._get_selected_torrent()
         if torrent is None:
-            logger.warning("No torrent selected for resume", extra={"class_name": self.__class__.__name__})
+            logger.warning(
+                "No torrent selected for resume",
+                extra={"class_name": self.__class__.__name__},
+            )
             return
 
         torrent_name = getattr(selected_item, "name", "Unknown")
-        logger.info(f"Resuming torrent: {torrent_name}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Resuming torrent: {torrent_name}",
+            extra={"class_name": self.__class__.__name__},
+        )
         torrent.active = True
 
     def on_force_start(self, action, parameter):
@@ -867,7 +969,10 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        logger.info(f"Force starting torrent: {torrent.name}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Force starting torrent: {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
         torrent.force_start = True
         torrent.active = True
 
@@ -879,7 +984,10 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        logger.info(f"Force rechecking torrent: {torrent.name}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Force rechecking torrent: {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
         # Simulate recheck by randomly adjusting progress slightly
         old_progress = torrent.progress
         variation = random.uniform(-0.05, 0.05)  # ±5% variation
@@ -897,7 +1005,10 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        logger.info(f"Force completing torrent: {torrent.name}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Force completing torrent: {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
         torrent.progress = 1.0
         torrent.total_downloaded = torrent.total_size
 
@@ -923,7 +1034,7 @@ class Torrents(Component, ColumnTranslationMixin):
         else:
             progress = random.uniform(0.9, 0.99)
 
-        logger.info(
+        logger.debug(
             f"Setting random progress for {torrent.name}: {progress*100:.1f}%",
             extra={"class_name": self.__class__.__name__},
         )
@@ -939,10 +1050,16 @@ class Torrents(Component, ColumnTranslationMixin):
         """Handle update tracker action from context menu"""
         torrent, selected_item = self._get_selected_torrent()
         if torrent is None:
-            logger.warning("No torrent selected for update tracker", extra={"class_name": self.__class__.__name__})
+            logger.warning(
+                "No torrent selected for update tracker",
+                extra={"class_name": self.__class__.__name__},
+            )
             return
 
-        logger.info(f"Updating tracker for torrent: {torrent.name}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Updating tracker for torrent: {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
         torrent.force_tracker_update()
 
     # ===== COPY ACTIONS =====
@@ -955,7 +1072,10 @@ class Torrents(Component, ColumnTranslationMixin):
 
         clipboard = Gdk.Display.get_default().get_clipboard()
         clipboard.set(torrent.name)
-        logger.info(f"Copied name to clipboard: {torrent.name}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Copied name to clipboard: {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
         from d_fake_seeder.view import View
 
@@ -972,14 +1092,20 @@ class Torrents(Component, ColumnTranslationMixin):
             info_hash = torrent.torrent_file.file_hash.hex()
             clipboard = Gdk.Display.get_default().get_clipboard()
             clipboard.set(info_hash)
-            logger.info(f"Copied info hash to clipboard: {info_hash}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Copied info hash to clipboard: {info_hash}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             from d_fake_seeder.view import View
 
             if View.instance:
                 View.instance.notify(f"Copied info hash: {info_hash[:16]}...")
         else:
-            logger.warning("Torrent file hash not available", extra={"class_name": self.__class__.__name__})
+            logger.warning(
+                "Torrent file hash not available",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def on_copy_magnet(self, action, parameter):
         """Copy magnet link to clipboard"""
@@ -996,14 +1122,20 @@ class Torrents(Component, ColumnTranslationMixin):
 
             clipboard = Gdk.Display.get_default().get_clipboard()
             clipboard.set(magnet_link)
-            logger.info("Copied magnet link to clipboard", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "Copied magnet link to clipboard",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             from d_fake_seeder.view import View
 
             if View.instance:
                 View.instance.notify(f"Copied magnet link for {torrent.name}")
         else:
-            logger.warning("Torrent info not available for magnet link", extra={"class_name": self.__class__.__name__})
+            logger.warning(
+                "Torrent info not available for magnet link",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def on_copy_tracker(self, action, parameter):
         """Copy tracker URL to clipboard"""
@@ -1015,8 +1147,9 @@ class Torrents(Component, ColumnTranslationMixin):
             tracker_url = torrent.torrent_file.announce
             clipboard = Gdk.Display.get_default().get_clipboard()
             clipboard.set(tracker_url)
-            logger.info(
-                f"Copied tracker URL to clipboard: {tracker_url}", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                f"Copied tracker URL to clipboard: {tracker_url}",
+                extra={"class_name": self.__class__.__name__},
             )
 
             from d_fake_seeder.view import View
@@ -1024,7 +1157,10 @@ class Torrents(Component, ColumnTranslationMixin):
             if View.instance:
                 View.instance.notify("Copied tracker URL")
         else:
-            logger.warning("Tracker URL not available", extra={"class_name": self.__class__.__name__})
+            logger.warning(
+                "Tracker URL not available",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     # ===== PRIORITY ACTIONS =====
 
@@ -1034,7 +1170,10 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        logger.info(f"Setting high priority for {torrent.name}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Setting high priority for {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
         torrent.priority = "high"
         # Increase speeds for high priority
         torrent.upload_speed = int(torrent.upload_speed * 1.5)
@@ -1051,7 +1190,10 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        logger.info(f"Setting normal priority for {torrent.name}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Setting normal priority for {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
         torrent.priority = "normal"
         # Reset to configured speeds
         torrent.upload_speed = self.settings.upload_speed
@@ -1068,7 +1210,10 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        logger.info(f"Setting low priority for {torrent.name}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Setting low priority for {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
         torrent.priority = "low"
         # Decrease speeds for low priority
         torrent.upload_speed = max(1, int(torrent.upload_speed * 0.5))
@@ -1103,15 +1248,19 @@ class Torrents(Component, ColumnTranslationMixin):
             try:
                 limit = int(entry.get_text())
                 torrent.upload_limit = limit
-                logger.info(
-                    f"Set upload limit for {torrent.name}: {limit} KB/s", extra={"class_name": self.__class__.__name__}
+                logger.debug(
+                    f"Set upload limit for {torrent.name}: {limit} KB/s",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 from d_fake_seeder.view import View
 
                 if View.instance:
                     View.instance.notify(f"Upload limit set to {limit} KB/s" if limit > 0 else "Upload limit removed")
             except ValueError:
-                logger.warning("Invalid upload limit entered", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "Invalid upload limit entered",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
         dialog.destroy()
 
@@ -1137,7 +1286,7 @@ class Torrents(Component, ColumnTranslationMixin):
             try:
                 limit = int(entry.get_text())
                 torrent.download_limit = limit
-                logger.info(
+                logger.debug(
                     f"Set download limit for {torrent.name}: {limit} KB/s",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -1148,7 +1297,10 @@ class Torrents(Component, ColumnTranslationMixin):
                         f"Download limit set to {limit} KB/s" if limit > 0 else "Download limit removed"
                     )
             except ValueError:
-                logger.warning("Invalid download limit entered", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "Invalid download limit entered",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
         dialog.destroy()
 
@@ -1158,8 +1310,9 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        logger.info(
-            f"Resetting speed limits to global for {torrent.name}", extra={"class_name": self.__class__.__name__}
+        logger.debug(
+            f"Resetting speed limits to global for {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
         )
         torrent.upload_limit = 0
         torrent.download_limit = 0
@@ -1196,8 +1349,9 @@ class Torrents(Component, ColumnTranslationMixin):
                 if not hasattr(torrent.torrent_file, "announce_list"):
                     torrent.torrent_file.announce_list = []
                 torrent.torrent_file.announce_list.append(tracker_url)
-                logger.info(
-                    f"Added tracker {tracker_url} to {torrent.name}", extra={"class_name": self.__class__.__name__}
+                logger.debug(
+                    f"Added tracker {tracker_url} to {torrent.name}",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 from d_fake_seeder.view import View
 
@@ -1230,8 +1384,9 @@ class Torrents(Component, ColumnTranslationMixin):
             new_tracker = entry.get_text()
             if new_tracker and hasattr(torrent, "torrent_file"):
                 torrent.torrent_file.announce = new_tracker
-                logger.info(
-                    f"Updated tracker for {torrent.name}: {new_tracker}", extra={"class_name": self.__class__.__name__}
+                logger.debug(
+                    f"Updated tracker for {torrent.name}: {new_tracker}",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 from d_fake_seeder.view import View
 
@@ -1246,7 +1401,10 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        logger.info(f"Remove tracker requested for {torrent.name}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Remove tracker requested for {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
         from d_fake_seeder.view import View
 
         if View.instance:
@@ -1260,7 +1418,10 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        logger.info(f"Moving {torrent.name} to top of queue", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Moving {torrent.name} to top of queue",
+            extra={"class_name": self.__class__.__name__},
+        )
         # Set ID to 1 and shift others down
         if hasattr(self.model, "torrent_list"):
             for t in self.model.torrent_list:
@@ -1279,7 +1440,10 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None or torrent.id <= 1:
             return
 
-        logger.info(f"Moving {torrent.name} up in queue", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Moving {torrent.name} up in queue",
+            extra={"class_name": self.__class__.__name__},
+        )
         # Swap with previous torrent
         if hasattr(self.model, "torrent_list"):
             for t in self.model.torrent_list:
@@ -1294,7 +1458,10 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        logger.info(f"Moving {torrent.name} down in queue", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Moving {torrent.name} down in queue",
+            extra={"class_name": self.__class__.__name__},
+        )
         # Swap with next torrent
         if hasattr(self.model, "torrent_list"):
             for t in self.model.torrent_list:
@@ -1309,7 +1476,10 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        logger.info(f"Moving {torrent.name} to bottom of queue", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Moving {torrent.name} to bottom of queue",
+            extra={"class_name": self.__class__.__name__},
+        )
         # Set ID to max + 1
         if hasattr(self.model, "torrent_list"):
             max_id = max(t.id for t in self.model.torrent_list)
@@ -1345,8 +1515,9 @@ class Torrents(Component, ColumnTranslationMixin):
             if new_name:
                 old_name = torrent.name
                 torrent.name = new_name
-                logger.info(
-                    f"Renamed torrent from {old_name} to {new_name}", extra={"class_name": self.__class__.__name__}
+                logger.debug(
+                    f"Renamed torrent from {old_name} to {new_name}",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 from d_fake_seeder.view import View
 
@@ -1376,7 +1547,10 @@ class Torrents(Component, ColumnTranslationMixin):
         if response == Gtk.ResponseType.OK:
             label = entry.get_text()
             torrent.label = label
-            logger.info(f"Set label for {torrent.name}: {label}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Set label for {torrent.name}: {label}",
+                extra={"class_name": self.__class__.__name__},
+            )
             from d_fake_seeder.view import View
 
             if View.instance:
@@ -1391,7 +1565,9 @@ class Torrents(Component, ColumnTranslationMixin):
             return
 
         dialog = Gtk.FileChooserDialog(
-            title=self._("Set Location"), transient_for=self.window, action=Gtk.FileChooserAction.SELECT_FOLDER
+            title=self._("Set Location"),
+            transient_for=self.window,
+            action=Gtk.FileChooserAction.SELECT_FOLDER,
         )
         dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
         dialog.add_button(self._("Select"), Gtk.ResponseType.OK)
@@ -1399,7 +1575,10 @@ class Torrents(Component, ColumnTranslationMixin):
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
             location = dialog.get_file().get_path()
-            logger.info(f"Set location for {torrent.name}: {location}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Set location for {torrent.name}: {location}",
+                extra={"class_name": self.__class__.__name__},
+            )
             from d_fake_seeder.view import View
 
             if View.instance:
@@ -1414,7 +1593,7 @@ class Torrents(Component, ColumnTranslationMixin):
             return
 
         torrent.super_seeding = not torrent.super_seeding
-        logger.info(
+        logger.debug(
             f"Super seeding {'enabled' if torrent.super_seeding else 'disabled'} for {torrent.name}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -1431,7 +1610,7 @@ class Torrents(Component, ColumnTranslationMixin):
             return
 
         torrent.sequential_download = not torrent.sequential_download
-        logger.info(
+        logger.debug(
             f"Sequential download {'enabled' if torrent.sequential_download else 'disabled'} for {torrent.name}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -1448,7 +1627,10 @@ class Torrents(Component, ColumnTranslationMixin):
             return
 
         # For now, just log and notify - full properties dialog would be more complex
-        logger.info(f"Showing properties for {torrent.name}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Showing properties for {torrent.name}",
+            extra={"class_name": self.__class__.__name__},
+        )
         from d_fake_seeder.view import View
 
         if View.instance:
@@ -1476,7 +1658,10 @@ class Torrents(Component, ColumnTranslationMixin):
         dialog.destroy()
 
         if response == Gtk.ResponseType.YES:
-            logger.info(f"Removing torrent: {torrent.name}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Removing torrent: {torrent.name}",
+                extra={"class_name": self.__class__.__name__},
+            )
             if hasattr(self.model, "remove_torrent"):
                 self.model.remove_torrent(torrent)
 
@@ -1509,15 +1694,24 @@ class Torrents(Component, ColumnTranslationMixin):
         dialog.destroy()
 
         if response == Gtk.ResponseType.YES:
-            logger.info(f"Removing torrent and data: {torrent.name}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Removing torrent and data: {torrent.name}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             # Delete .torrent file
             if hasattr(torrent, "file_path") and os.path.exists(torrent.file_path):
                 try:
                     os.remove(torrent.file_path)
-                    logger.info(f"Deleted file: {torrent.file_path}", extra={"class_name": self.__class__.__name__})
+                    logger.debug(
+                        f"Deleted file: {torrent.file_path}",
+                        extra={"class_name": self.__class__.__name__},
+                    )
                 except Exception as e:
-                    logger.error(f"Failed to delete file: {e}", extra={"class_name": self.__class__.__name__})
+                    logger.error(
+                        f"Failed to delete file: {e}",
+                        extra={"class_name": self.__class__.__name__},
+                    )
 
             if hasattr(self.model, "remove_torrent"):
                 self.model.remove_torrent(torrent)

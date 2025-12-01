@@ -4,6 +4,7 @@ Peer Protocol settings tab for the settings dialog.
 Handles peer protocol timeouts, seeder settings, and peer behavior configuration.
 """
 
+# fmt: off
 from typing import Any, Dict
 
 import gi
@@ -14,6 +15,8 @@ from gi.repository import Gtk  # noqa: E402
 from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import NotificationMixin  # noqa: E402
 from .settings_mixins import UtilityMixin, ValidationMixin  # noqa: E402
+
+# fmt: on
 
 
 class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin):
@@ -67,85 +70,145 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         # Peer Protocol Timeouts
         handshake_timeout = self.get_widget("handshake_timeout")
         if handshake_timeout:
-            handshake_timeout.connect("value-changed", self.on_handshake_timeout_changed)
+            self.track_signal(
+                handshake_timeout,
+                handshake_timeout.connect("value-changed", self.on_handshake_timeout_changed),
+            )
 
         message_read_timeout = self.get_widget("message_read_timeout")
         if message_read_timeout:
-            message_read_timeout.connect("value-changed", self.on_message_read_timeout_changed)
+            self.track_signal(
+                message_read_timeout,
+                message_read_timeout.connect("value-changed", self.on_message_read_timeout_changed),
+            )
 
         keep_alive_interval = self.get_widget("keep_alive_interval")
         if keep_alive_interval:
-            keep_alive_interval.connect("value-changed", self.on_keep_alive_interval_changed)
+            self.track_signal(
+                keep_alive_interval,
+                keep_alive_interval.connect("value-changed", self.on_keep_alive_interval_changed),
+            )
 
         peer_contact_interval = self.get_widget("peer_contact_interval")
         if peer_contact_interval:
-            peer_contact_interval.connect("value-changed", self.on_peer_contact_interval_changed)
+            self.track_signal(
+                peer_contact_interval,
+                peer_contact_interval.connect("value-changed", self.on_peer_contact_interval_changed),
+            )
 
         # Seeder Protocol Settings
         udp_seeder_timeout = self.get_widget("udp_seeder_timeout")
         if udp_seeder_timeout:
-            udp_seeder_timeout.connect("value-changed", self.on_udp_seeder_timeout_changed)
+            self.track_signal(
+                udp_seeder_timeout,
+                udp_seeder_timeout.connect("value-changed", self.on_udp_seeder_timeout_changed),
+            )
 
         http_seeder_timeout = self.get_widget("http_seeder_timeout")
         if http_seeder_timeout:
-            http_seeder_timeout.connect("value-changed", self.on_http_seeder_timeout_changed)
+            self.track_signal(
+                http_seeder_timeout,
+                http_seeder_timeout.connect("value-changed", self.on_http_seeder_timeout_changed),
+            )
 
         seeder_port_min = self.get_widget("seeder_port_min")
         if seeder_port_min:
-            seeder_port_min.connect("value-changed", self.on_seeder_port_min_changed)
+            self.track_signal(
+                seeder_port_min,
+                seeder_port_min.connect("value-changed", self.on_seeder_port_min_changed),
+            )
 
         seeder_port_max = self.get_widget("seeder_port_max")
         if seeder_port_max:
-            seeder_port_max.connect("value-changed", self.on_seeder_port_max_changed)
+            self.track_signal(
+                seeder_port_max,
+                seeder_port_max.connect("value-changed", self.on_seeder_port_max_changed),
+            )
 
         transaction_id_min = self.get_widget("transaction_id_min")
         if transaction_id_min:
-            transaction_id_min.connect("value-changed", self.on_transaction_id_min_changed)
+            self.track_signal(
+                transaction_id_min,
+                transaction_id_min.connect("value-changed", self.on_transaction_id_min_changed),
+            )
 
         transaction_id_max = self.get_widget("transaction_id_max")
         if transaction_id_max:
-            transaction_id_max.connect("value-changed", self.on_transaction_id_max_changed)
+            self.track_signal(
+                transaction_id_max,
+                transaction_id_max.connect("value-changed", self.on_transaction_id_max_changed),
+            )
 
         peer_request_count = self.get_widget("peer_request_count")
         if peer_request_count:
-            peer_request_count.connect("value-changed", self.on_peer_request_count_changed)
+            self.track_signal(
+                peer_request_count,
+                peer_request_count.connect("value-changed", self.on_peer_request_count_changed),
+            )
 
         # Peer Behavior Settings
         seeder_upload_activity = self.get_widget("seeder_upload_activity")
         if seeder_upload_activity:
-            seeder_upload_activity.connect("value-changed", self.on_seeder_upload_activity_probability_changed)
+            self.track_signal(
+                seeder_upload_activity,
+                seeder_upload_activity.connect("value-changed", self.on_seeder_upload_activity_probability_changed),
+            )
 
         peer_idle_chance = self.get_widget("peer_idle_chance")
         if peer_idle_chance:
-            peer_idle_chance.connect("value-changed", self.on_peer_idle_chance_changed)
+            self.track_signal(
+                peer_idle_chance,
+                peer_idle_chance.connect("value-changed", self.on_peer_idle_chance_changed),
+            )
 
         progress_dist_start = self.get_widget("progress_dist_start")
         if progress_dist_start:
-            progress_dist_start.connect("value-changed", self.on_progress_distribution_start_changed)
+            self.track_signal(
+                progress_dist_start,
+                progress_dist_start.connect("value-changed", self.on_progress_distribution_start_changed),
+            )
 
         progress_dist_middle = self.get_widget("progress_dist_middle")
         if progress_dist_middle:
-            progress_dist_middle.connect("value-changed", self.on_progress_distribution_middle_changed)
+            self.track_signal(
+                progress_dist_middle,
+                progress_dist_middle.connect("value-changed", self.on_progress_distribution_middle_changed),
+            )
 
         progress_dist_almost = self.get_widget("progress_dist_almost")
         if progress_dist_almost:
-            progress_dist_almost.connect("value-changed", self.on_progress_distribution_almost_changed)
+            self.track_signal(
+                progress_dist_almost,
+                progress_dist_almost.connect("value-changed", self.on_progress_distribution_almost_changed),
+            )
 
         peer_behavior_analysis = self.get_widget("peer_behavior_analysis")
         if peer_behavior_analysis:
-            peer_behavior_analysis.connect("value-changed", self.on_peer_behavior_analysis_probability_changed)
+            self.track_signal(
+                peer_behavior_analysis,
+                peer_behavior_analysis.connect("value-changed", self.on_peer_behavior_analysis_probability_changed),
+            )
 
         peer_status_change = self.get_widget("peer_status_change")
         if peer_status_change:
-            peer_status_change.connect("value-changed", self.on_peer_status_change_probability_changed)
+            self.track_signal(
+                peer_status_change,
+                peer_status_change.connect("value-changed", self.on_peer_status_change_probability_changed),
+            )
 
         peer_dropout = self.get_widget("peer_dropout")
         if peer_dropout:
-            peer_dropout.connect("value-changed", self.on_peer_dropout_probability_changed)
+            self.track_signal(
+                peer_dropout,
+                peer_dropout.connect("value-changed", self.on_peer_dropout_probability_changed),
+            )
 
         connection_rotation = self.get_widget("connection_rotation")
         if connection_rotation:
-            connection_rotation.connect("value-changed", self.on_connection_rotation_percentage_changed)
+            self.track_signal(
+                connection_rotation,
+                connection_rotation.connect("value-changed", self.on_connection_rotation_percentage_changed),
+            )
 
     def _load_settings(self) -> None:
         """Load current settings into Peer Protocol tab widgets."""

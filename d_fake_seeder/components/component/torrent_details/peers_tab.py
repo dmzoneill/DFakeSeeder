@@ -4,6 +4,7 @@ Peers tab for torrent details.
 Displays torrent peer information in a column view with sorting capabilities.
 """
 
+# fmt: off
 from typing import Any, Dict, List
 
 import gi
@@ -19,8 +20,16 @@ gi.require_version("GioUnix", "2.0")
 from gi.repository import Gio  # noqa: E402
 from gi.repository import GObject, Gtk  # noqa: E402
 
+# fmt: on
 
-class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin, ColumnTranslationMixin):
+
+class PeersTab(
+    BaseTorrentTab,
+    DataUpdateMixin,
+    UIUtilityMixin,
+    PerformanceMixin,
+    ColumnTranslationMixin,
+):
     """
     Peers tab component for displaying torrent peer information.
 
@@ -56,11 +65,17 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
 
     def _init_widgets(self) -> None:
         """Initialize Peers tab widgets."""
-        # Cache the peers column view widget
+        # Cache the peers column view widget and content container
         self._peers_columnview = self.get_widget("peers_columnview")
+        self._peers_content = self.get_widget("peers_content")
         self._init_peers_column_view()
 
-    def set_connection_managers(self, incoming_connections=None, outgoing_connections=None, global_peer_manager=None):
+    def set_connection_managers(
+        self,
+        incoming_connections=None,
+        outgoing_connections=None,
+        global_peer_manager=None,
+    ):
         """
         Set connection managers for peer data sources.
 
@@ -76,7 +91,10 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
     def _init_peers_column_view(self) -> None:
         """Initialize the peers column view with sortable columns."""
         try:
-            self.logger.info("Initializing peers column view", extra={"class_name": self.__class__.__name__})
+            self.logger.debug(
+                "Initializing peers column view",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             if not self._peers_columnview:
                 self.logger.error("Peers column view not found")
@@ -86,11 +104,12 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
 
             # Create list store for peer data
             self._peers_store = Gio.ListStore.new(TorrentPeer)
+            self.track_store(self._peers_store)  # Track for automatic cleanup
             self.logger.debug(f"Created peers store: {self._peers_store}")
 
             # Get TorrentPeer properties for columns
             properties = [prop.name for prop in TorrentPeer.list_properties()]
-            self.logger.info(f"Creating {len(properties)} peer columns: {properties}")
+            self.logger.debug(f"Creating {len(properties)} peer columns: {properties}")
 
             # Create columns for each property
             for property_name in properties:
@@ -102,7 +121,7 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
             self._selection = Gtk.SingleSelection.new(self._sort_model)
             self._peers_columnview.set_model(self._selection)
 
-            self.logger.info(f"Peers column view initialized successfully with {len(properties)} columns")
+            self.logger.debug(f"Peers column view initialized successfully with {len(properties)} columns")
 
         except Exception as e:
             self.logger.error(f"Error initializing peers column view: {e}", exc_info=True)
@@ -129,8 +148,11 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
         try:
             # Create factory for the column
             factory = Gtk.SignalListItemFactory()
-            factory.connect("setup", self._setup_column_item, property_name)
-            factory.connect("bind", self._bind_column_item, property_name)
+            self.track_signal(
+                factory,
+                factory.connect("setup", self._setup_column_item, property_name),
+            )
+            self.track_signal(factory, factory.connect("bind", self._bind_column_item, property_name))
 
             # Create column
             column = Gtk.ColumnViewColumn.new(None, factory)
@@ -187,12 +209,41 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
             self.logger.error(f"Error creating sorter for {property_name}: {e}")
             return None
 
+    def _show_empty_state(self) -> None:
+        """Show the empty state and hide the content."""
+        try:
+            # Call parent to show empty state widget
+            super()._show_empty_state()
+
+            # Hide the peers content
+            if self._peers_content:
+                self._peers_content.set_visible(False)
+                self.logger.debug("Hiding peers content")
+        except Exception as e:
+            self.logger.error(f"Error showing empty state: {e}")
+
+    def _hide_empty_state(self) -> None:
+        """Hide the empty state and show the content."""
+        try:
+            # Call parent to hide empty state widget
+            super()._hide_empty_state()
+
+            # Show the peers content
+            if self._peers_content:
+                self._peers_content.set_visible(True)
+                self.logger.debug("Showing peers content")
+        except Exception as e:
+            self.logger.error(f"Error hiding empty state: {e}")
+
     def clear_content(self) -> None:
         """Clear the peers tab content."""
         try:
             if self._peers_store:
                 self._peers_store.remove_all()
                 self.logger.debug(f"Cleared peers store (now has {self._peers_store.get_n_items()} items)")
+
+            # Show empty state
+            super().clear_content()
 
         except Exception as e:
             self.logger.error(f"Error clearing peers tab content: {e}")
@@ -206,8 +257,9 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
         """
         try:
             torrent_id = torrent.id if torrent else "None"
-            self.logger.info(
-                f"Updating peers tab for torrent {torrent_id}", extra={"class_name": self.__class__.__name__}
+            self.logger.debug(
+                f"Updating peers tab for torrent {torrent_id}",
+                extra={"class_name": self.__class__.__name__},
             )
 
             if not torrent:
@@ -215,15 +267,18 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
                 self.clear_content()
                 return
 
+            # Hide empty state when showing content
+            self._hide_empty_state()
+
             # Collect peer data from all sources
             peer_data = self._collect_peer_data(torrent)
-            self.logger.info(f"Collected {len(peer_data)} peers for torrent {torrent_id}")
+            self.logger.debug(f"Collected {len(peer_data)} peers for torrent {torrent_id}")
 
             # Update peers store with new data
             self._update_peers_store(peer_data)
 
             final_count = self._peers_store.get_n_items() if self._peers_store else 0
-            self.logger.info(f"Peers tab updated: {final_count} peers now in store")
+            self.logger.debug(f"Peers tab updated: {final_count} peers now in store")
 
         except Exception as e:
             self.logger.error(f"Error updating peers tab content: {e}", exc_info=True)
@@ -250,7 +305,7 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
             # Add data from active connections
             connection_peer_count = self._add_connection_peer_data(torrent, peer_data)
 
-            self.logger.info(
+            self.logger.debug(
                 f"Collected peer data for torrent {torrent.id}: "
                 f"global={global_peer_count}, legacy={legacy_peer_count}, "
                 f"connections={connection_peer_count}, total={len(peer_data)}",
@@ -349,13 +404,19 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
             connection_addresses = set()
 
             # Collect addresses from incoming connections
-            for conn_key, conn_peer in self._incoming_connections.all_connections.items():
+            for (
+                conn_key,
+                conn_peer,
+            ) in self._incoming_connections.all_connections.items():
                 if hasattr(conn_peer, "torrent_hash") and conn_peer.torrent_hash == str(torrent.id):
                     address = f"{conn_peer.address}:{conn_peer.port}"
                     connection_addresses.add(address)
 
             # Collect addresses from outgoing connections
-            for conn_key, conn_peer in self._outgoing_connections.all_connections.items():
+            for (
+                conn_key,
+                conn_peer,
+            ) in self._outgoing_connections.all_connections.items():
                 if hasattr(conn_peer, "torrent_hash") and conn_peer.torrent_hash == str(torrent.id):
                     address = f"{conn_peer.address}:{conn_peer.port}"
                     connection_addresses.add(address)
@@ -437,7 +498,12 @@ class PeersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin, PerformanceMixin
             try:
                 label = Gtk.Label()
                 label.set_hexpand(True)
-                label.set_halign(Gtk.Align.START)
+                # Align based on text direction (RTL for Arabic, Hebrew, etc.)
+                text_direction = label.get_direction()
+                if text_direction == Gtk.TextDirection.RTL:
+                    label.set_halign(Gtk.Align.END)
+                else:
+                    label.set_halign(Gtk.Align.START)
                 item.set_child(label)
             except Exception as e:
                 self.logger.error(f"Error in setup callback: {e}")

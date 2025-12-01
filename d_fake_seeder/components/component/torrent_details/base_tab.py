@@ -4,6 +4,7 @@ Base class for torrent details tab components.
 Provides common functionality and interface for all torrent detail tabs.
 """
 
+# fmt: off
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
 
@@ -14,9 +15,12 @@ from gi.repository import Gtk  # noqa: E402
 
 from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
 from d_fake_seeder.lib.logger import logger  # noqa: E402
+from d_fake_seeder.lib.util.cleanup_mixin import CleanupMixin  # noqa: E402
+
+# fmt: on
 
 
-class BaseTorrentTab(ABC):
+class BaseTorrentTab(ABC, CleanupMixin):
     """
     Abstract base class for torrent details tab components.
 
@@ -35,6 +39,7 @@ class BaseTorrentTab(ABC):
             builder: GTK Builder instance with UI loaded
             model: Application model instance
         """
+        CleanupMixin.__init__(self)
         self.builder = builder
         self.model = model
         self.logger = logger
@@ -58,6 +63,9 @@ class BaseTorrentTab(ABC):
         self._connect_signals()
         self._setup_ui_styling()
         self._register_for_translation()
+
+        # Show empty state by default since no torrent is selected on init
+        self._show_empty_state()
 
     @property
     @abstractmethod
@@ -86,10 +94,8 @@ class BaseTorrentTab(ABC):
             self._tab_widget = self.get_widget(self.tab_widget_id)
             if self._tab_widget:
                 self._tab_widget.set_visible(True)
-                self._tab_widget.set_margin_top(self.ui_margin_large)
-                self._tab_widget.set_margin_bottom(self.ui_margin_large)
-                self._tab_widget.set_margin_start(self.ui_margin_large)
-                self._tab_widget.set_margin_end(self.ui_margin_large)
+                # Margins are now set in XML for consistency across all tabs
+                # Removed: set_margin_top/bottom/start/end calls
         except Exception as e:
             self.logger.error(f"Error setting up UI styling for {self.tab_name} tab: {e}")
 
@@ -120,7 +126,29 @@ class BaseTorrentTab(ABC):
 
     def clear_content(self) -> None:
         """Clear tab content. Override in subclasses if needed."""
-        pass
+        self._show_empty_state()
+
+    def _show_empty_state(self) -> None:
+        """Show the empty state widget for this tab."""
+        try:
+            empty_state_id = f"{self.tab_widget_id.replace('_tab', '')}_empty_state"
+            empty_state = self.get_widget(empty_state_id)
+            if empty_state:
+                empty_state.set_visible(True)
+                self.logger.debug(f"Showing empty state for {self.tab_name} tab")
+        except Exception as e:
+            self.logger.debug(f"No empty state widget found for {self.tab_name} tab: {e}")
+
+    def _hide_empty_state(self) -> None:
+        """Hide the empty state widget for this tab."""
+        try:
+            empty_state_id = f"{self.tab_widget_id.replace('_tab', '')}_empty_state"
+            empty_state = self.get_widget(empty_state_id)
+            if empty_state:
+                empty_state.set_visible(False)
+                self.logger.debug(f"Hiding empty state for {self.tab_name} tab")
+        except Exception as e:
+            self.logger.debug(f"No empty state widget found for {self.tab_name} tab: {e}")
 
     def _register_for_translation(self) -> None:
         """Register this tab for translation updates."""
@@ -174,6 +202,7 @@ class BaseTorrentTab(ABC):
         try:
             self._current_torrent = torrent
             if torrent:
+                self._hide_empty_state()
                 self.update_content(torrent)
             else:
                 self.clear_content()
@@ -242,6 +271,10 @@ class BaseTorrentTab(ABC):
     def cleanup(self) -> None:
         """Cleanup resources when tab is destroyed."""
         try:
+            # Clean up tracked resources (signals, bindings, timeouts, stores)
+            CleanupMixin.cleanup(self)
+
+            # Clear tab-specific resources
             self._current_torrent = None
             self._widgets.clear()
             self.logger.debug(f"{self.tab_name} tab cleaned up")

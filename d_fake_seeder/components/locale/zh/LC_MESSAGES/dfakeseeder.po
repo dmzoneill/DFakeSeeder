@@ -212,6 +212,9 @@ msgstr "激进配置文件下载速度"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "激进配置文件上传速度（0 = 无限制）"
 
+msgid "All"
+msgstr "全部"
+
 msgid "Alt download limit (KB/s):"
 msgstr "备用下载限制 (KB/s):"
 
@@ -247,6 +250,9 @@ msgstr "公告间隔:"
 
 msgid "Arabic"
 msgstr "阿拉伯语"
+
+msgid "Auto (Follow System)"
+msgstr "自动（跟随系统）"
 
 msgid "Auto Detect"
 msgstr "自动检测"
@@ -362,11 +368,20 @@ msgstr "严重"
 msgid "Cancel"
 msgstr "取消"
 
+msgid "Checking"
+msgstr "校验中"
+
 msgid "Chinese"
 msgstr "中文"
 
 msgid "Choose a pre-configured seeding profile"
 msgstr "选择预配置的做种配置文件"
+
+msgid "Choose light or dark color scheme"
+msgstr "选择浅色或深色配色方案"
+
+msgid "Choose the UI theme style"
+msgstr "选择用户界面主题样式"
 
 msgid "Choose the application theme"
 msgstr "选择应用程序主题"
@@ -382,6 +397,9 @@ msgstr "客户端"
 
 msgid "Client Switch Probability:"
 msgstr "客户端切换概率:"
+
+msgid "Color Scheme:"
+msgstr "配色方案："
 
 msgid "Columns"
 msgstr "列"
@@ -521,6 +539,9 @@ msgstr "成功添加后删除种子文件"
 msgid "Deluge"
 msgstr "Deluge"
 
+msgid "Deluge Theme"
+msgstr "Deluge 主题"
+
 msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
@@ -589,6 +610,9 @@ msgstr "已下载 会话 / 总计"
 
 msgid "Downloaded Speed"
 msgstr "下载速度"
+
+msgid "Downloading"
+msgstr "下载中"
 
 msgid "Dropout probability:"
 msgstr "退出概率:"
@@ -890,6 +914,9 @@ msgstr "生成合成节点"
 msgid "German"
 msgstr "德语"
 
+msgid "Get the main widget for this tab."
+msgstr "获取此选项卡的主小部件。"
+
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
 
@@ -1184,11 +1211,17 @@ msgstr "通告之间的最短时间 (10-3600 秒)"
 msgid "Minimum transaction ID for tracker communication"
 msgstr "Tracker 通信的最小事务 ID"
 
+msgid "Modern Chunky"
+msgstr "现代粗体"
+
 msgid "Mon"
 msgstr "一"
 
 msgid "Monday"
 msgstr "星期一"
+
+msgid "Monitoring"
+msgstr "监控"
 
 msgid "Multi-Tracker"
 msgstr "多Tracker"
@@ -1216,6 +1249,9 @@ msgstr "下次更新"
 
 msgid "No"
 msgstr "否"
+
+msgid "No Torrent Selected"
+msgstr "未选择种子"
 
 msgid "No editable options available for this torrent."
 msgstr "此种子没有可编辑的选项。"
@@ -1282,6 +1318,9 @@ msgstr "暂停所有种子"
 
 msgid "Pause torrent"
 msgstr "暂停种子"
+
+msgid "Paused"
+msgstr "已暂停"
 
 msgid "Peer Analysis Depth:"
 msgstr "节点分析深度:"
@@ -1472,6 +1511,9 @@ msgstr "查询超时:"
 msgid "Queue"
 msgstr "队列"
 
+msgid "Queued"
+msgstr "队列中"
+
 msgid "Quit"
 msgstr "退出"
 
@@ -1619,6 +1661,9 @@ msgstr "搜索设置"
 msgid "Secure password generated"
 msgstr "已生成安全密码"
 
+msgid "Seed"
+msgstr "做种"
+
 msgid "Seeder port range (max):"
 msgstr "做种端口范围 (最大):"
 
@@ -1627,6 +1672,9 @@ msgstr "做种端口范围 (最小):"
 
 msgid "Seeders"
 msgstr "做种者"
+
+msgid "Seeding"
+msgstr "做种中"
 
 msgid "Seeding Profile"
 msgstr "做种配置"
@@ -1639,6 +1687,24 @@ msgstr "选择"
 
 msgid "Select Watch Folder"
 msgstr "选择监视文件夹"
+
+msgid "Select a torrent to configure its options"
+msgstr "选择一个种子以配置其选项"
+
+msgid "Select a torrent to view its details"
+msgstr "选择一个种子以查看其详细信息"
+
+msgid "Select a torrent to view its files"
+msgstr "选择一个种子以查看其文件"
+
+msgid "Select a torrent to view its peers"
+msgstr "选择一个种子以查看其对等端"
+
+msgid "Select a torrent to view its status information"
+msgstr "选择一个种子以查看其状态信息"
+
+msgid "Select a torrent to view its trackers"
+msgstr "选择一个种子以查看其追踪器"
 
 msgid "Select proxy type for connections"
 msgstr "选择连接的代理类型"
@@ -1760,6 +1826,9 @@ msgstr "开机自启动"
 msgid "Start the application minimized to system tray"
 msgstr "启动应用程序时最小化到系统托盘"
 
+msgid "States"
+msgstr "状态"
+
 msgid "Stats Update Interval:"
 msgstr "统计更新间隔:"
 
@@ -1787,6 +1856,9 @@ msgstr "瑞典语"
 msgid "Synthetic Peer Count:"
 msgstr "合成节点数量:"
 
+msgid "System Theme"
+msgstr "系统主题"
+
 msgid "TCP fallback"
 msgstr "TCP 回退"
 
@@ -1798,6 +1870,9 @@ msgstr ".torrent 文件将被删除。"
 
 msgid "The .torrent file will be kept."
 msgstr ".torrent 文件将被保留。"
+
+msgid "Theme Style:"
+msgstr "主题样式："
 
 msgid "Theme:"
 msgstr "主题："
@@ -2125,6 +2200,9 @@ msgstr "日志选项卡"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave（片段可用性）"
+
+msgid "monitoring_tab"
+msgstr "monitoring_tab"
 
 msgid "name"
 msgstr "名称"

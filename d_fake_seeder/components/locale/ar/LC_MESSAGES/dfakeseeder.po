@@ -212,6 +212,9 @@ msgstr "سرعة تنزيل الملف العدواني"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "سرعة رفع الملف العدواني (0 = غير محدود)"
 
+msgid "All"
+msgstr "الكل"
+
 msgid "Alt download limit (KB/s):"
 msgstr "حد التنزيل البديل (كيلوبايت/ثانية):"
 
@@ -247,6 +250,9 @@ msgstr "فترة الإعلان:"
 
 msgid "Arabic"
 msgstr "العربية"
+
+msgid "Auto (Follow System)"
+msgstr "تلقائي（اتبع النظام）"
 
 msgid "Auto Detect"
 msgstr "الكشف التلقائي"
@@ -362,11 +368,20 @@ msgstr "حرج"
 msgid "Cancel"
 msgstr "إلغاء"
 
+msgid "Checking"
+msgstr "جاري التحقق"
+
 msgid "Chinese"
 msgstr "الصينية"
 
 msgid "Choose a pre-configured seeding profile"
 msgstr "اختر ملف مشاركة معد مسبقاً"
+
+msgid "Choose light or dark color scheme"
+msgstr "اختر نظام الألوان الفاتح أو الداكن"
+
+msgid "Choose the UI theme style"
+msgstr "اختر نمط سمة واجهة المستخدم"
 
 msgid "Choose the application theme"
 msgstr "اختر موضوع التطبيق"
@@ -382,6 +397,9 @@ msgstr "العميل"
 
 msgid "Client Switch Probability:"
 msgstr "احتمالية تبديل العميل:"
+
+msgid "Color Scheme:"
+msgstr "نظام الألوان："
 
 msgid "Columns"
 msgstr "الأعمدة"
@@ -521,6 +539,9 @@ msgstr "حذف ملفات التورنت بعد إضافتها بنجاح"
 msgid "Deluge"
 msgstr "Deluge"
 
+msgid "Deluge Theme"
+msgstr "سمة Deluge"
+
 msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
@@ -589,6 +610,9 @@ msgstr "تنزيل الجلسة / الإجمالي"
 
 msgid "Downloaded Speed"
 msgstr "سرعة التنزيل"
+
+msgid "Downloading"
+msgstr "جاري التنزيل"
 
 msgid "Dropout probability:"
 msgstr "احتمالية الانقطاع:"
@@ -890,6 +914,9 @@ msgstr "توليد نظراء اصطناعيين"
 msgid "German"
 msgstr "الألمانية"
 
+msgid "Get the main widget for this tab."
+msgstr "احصل على الأداة الرئيسية لهذا التبويب."
+
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
 
@@ -1184,11 +1211,17 @@ msgstr "الحد الأدنى للوقت بين الإعلانات (10-3600 ثا
 msgid "Minimum transaction ID for tracker communication"
 msgstr "الحد الأدنى لمعرف المعاملة لاتصال المتتبع"
 
+msgid "Modern Chunky"
+msgstr "Modern Chunky"
+
 msgid "Mon"
 msgstr "اثنين"
 
 msgid "Monday"
 msgstr "الاثنين"
+
+msgid "Monitoring"
+msgstr "المراقبة"
 
 msgid "Multi-Tracker"
 msgstr "متعدد المتتبعات"
@@ -1216,6 +1249,9 @@ msgstr "التحديث التالي"
 
 msgid "No"
 msgstr "لا"
+
+msgid "No Torrent Selected"
+msgstr "لم يتم تحديد تورنت"
 
 msgid "No editable options available for this torrent."
 msgstr "لا توجد خيارات قابلة للتحرير متاحة لهذا التورنت."
@@ -1282,6 +1318,9 @@ msgstr "إيقاف جميع التورنتات مؤقتًا"
 
 msgid "Pause torrent"
 msgstr "إيقاف التورنت مؤقتاً"
+
+msgid "Paused"
+msgstr "متوقف مؤقتاً"
 
 msgid "Peer Analysis Depth:"
 msgstr "عمق تحليل الأقران:"
@@ -1472,6 +1511,9 @@ msgstr "انتهاء مهلة الاستعلام:"
 msgid "Queue"
 msgstr "الطابور"
 
+msgid "Queued"
+msgstr "في قائمة الانتظار"
+
 msgid "Quit"
 msgstr "خروج"
 
@@ -1619,6 +1661,9 @@ msgstr "البحث في الإعدادات"
 msgid "Secure password generated"
 msgstr "تم إنشاء كلمة مرور آمنة"
 
+msgid "Seed"
+msgstr "بذرة"
+
 msgid "Seeder port range (max):"
 msgstr "نطاق منفذ المشارك (الحد الأقصى):"
 
@@ -1627,6 +1672,9 @@ msgstr "نطاق منفذ المشارك (الحد الأدنى):"
 
 msgid "Seeders"
 msgstr "المشاركون"
+
+msgid "Seeding"
+msgstr "جاري المشاركة"
 
 msgid "Seeding Profile"
 msgstr "ملف تعريف البذر"
@@ -1639,6 +1687,24 @@ msgstr "اختيار"
 
 msgid "Select Watch Folder"
 msgstr "اختيار مجلد المراقبة"
+
+msgid "Select a torrent to configure its options"
+msgstr "حدد تورنت لتكوين خياراته"
+
+msgid "Select a torrent to view its details"
+msgstr "حدد تورنت لعرض تفاصيله"
+
+msgid "Select a torrent to view its files"
+msgstr "حدد تورنت لعرض ملفاته"
+
+msgid "Select a torrent to view its peers"
+msgstr "حدد تورنت لعرض النظراء"
+
+msgid "Select a torrent to view its status information"
+msgstr "حدد تورنت لعرض معلومات حالته"
+
+msgid "Select a torrent to view its trackers"
+msgstr "حدد تورنت لعرض المتتبعات"
 
 msgid "Select proxy type for connections"
 msgstr "اختر نوع البروكسي للاتصالات"
@@ -1760,6 +1826,9 @@ msgstr "بدء عند إقلاع النظام"
 msgid "Start the application minimized to system tray"
 msgstr "بدء التطبيق مصغراً إلى شريط النظام"
 
+msgid "States"
+msgstr "الحالات"
+
 msgid "Stats Update Interval:"
 msgstr "فترة تحديث الإحصائيات:"
 
@@ -1787,6 +1856,9 @@ msgstr "السويدية"
 msgid "Synthetic Peer Count:"
 msgstr "عدد الأقران الاصطناعيين:"
 
+msgid "System Theme"
+msgstr "سمة النظام"
+
 msgid "TCP fallback"
 msgstr "TCP احتياطي"
 
@@ -1798,6 +1870,9 @@ msgstr "سيتم حذف ملف .torrent."
 
 msgid "The .torrent file will be kept."
 msgstr "سيتم الاحتفاظ بملف .torrent."
+
+msgid "Theme Style:"
+msgstr "نمط السمة："
 
 msgid "Theme:"
 msgstr "المظهر:"
@@ -2125,6 +2200,9 @@ msgstr "تبويب_السجل"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (توفر القطع)"
+
+msgid "monitoring_tab"
+msgstr "monitoring_tab"
 
 msgid "name"
 msgstr "الاسم"

@@ -5,6 +5,7 @@ Manages peer protocol communication in the context of torrent selection.
 Starts/stops peer communication when torrents are selected/deselected.
 """
 
+# fmt: off
 import threading
 import time
 from typing import Dict, List, Optional
@@ -12,6 +13,8 @@ from typing import Dict, List, Optional
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.peer_protocol_manager import PeerProtocolManager
 from d_fake_seeder.lib.logger import logger
+
+# fmt: on
 
 
 class TorrentPeerManager:
@@ -31,7 +34,7 @@ class TorrentPeerManager:
         self.last_stats_update = 0
         self.stats_update_interval = torrent_peer_manager_config.get("stats_update_interval_seconds", 2.0)
 
-        logger.info(
+        logger.debug(
             "🎯 TorrentPeerManager initialized",
             extra={"class_name": self.__class__.__name__},
         )
@@ -81,7 +84,7 @@ class TorrentPeerManager:
                         peer_addresses = seeder.peers
                         if peer_addresses:
                             self.current_manager.add_peers(peer_addresses)
-                            logger.info(
+                            logger.debug(
                                 f"➕ Added {len(peer_addresses)} peers for {torrent_id}",
                                 extra={"class_name": self.__class__.__name__},
                             )

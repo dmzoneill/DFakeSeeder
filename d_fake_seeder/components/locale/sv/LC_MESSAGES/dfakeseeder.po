@@ -212,6 +212,9 @@ msgstr "Aggressiv profil nedladdningshastighet"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "Aggressiv profil uppladdningshastighet (0 = obegränsad)"
 
+msgid "All"
+msgstr "Alla"
+
 msgid "Alt download limit (KB/s):"
 msgstr "Alt. nedladdningsgräns (KB/s):"
 
@@ -247,6 +250,9 @@ msgstr "Meddelningsintervall:"
 
 msgid "Arabic"
 msgstr "Arabiska"
+
+msgid "Auto (Follow System)"
+msgstr "Auto (Follow System)"
 
 msgid "Auto Detect"
 msgstr "Automatisk Detektering"
@@ -362,11 +368,20 @@ msgstr "KRITISK"
 msgid "Cancel"
 msgstr "Avbryt"
 
+msgid "Checking"
+msgstr "Kontrollerar"
+
 msgid "Chinese"
 msgstr "Kinesiska"
 
 msgid "Choose a pre-configured seeding profile"
 msgstr "Välj en förkonfigurerad seeding-profil"
+
+msgid "Choose light or dark color scheme"
+msgstr "Välj ljust eller mörkt färgschema"
+
+msgid "Choose the UI theme style"
+msgstr "Choose the UI theme style"
 
 msgid "Choose the application theme"
 msgstr "Välj applikationstema"
@@ -382,6 +397,9 @@ msgstr "Klient"
 
 msgid "Client Switch Probability:"
 msgstr "Klientbytessannolikhet:"
+
+msgid "Color Scheme:"
+msgstr "Färgschema："
 
 msgid "Columns"
 msgstr "Kolumner"
@@ -521,6 +539,9 @@ msgstr "Ta bort torrentfiler efter att de har lagts till"
 msgid "Deluge"
 msgstr "Deluge"
 
+msgid "Deluge Theme"
+msgstr "Deluge Theme"
+
 msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
@@ -589,6 +610,9 @@ msgstr "Nedladdat Session / Totalt"
 
 msgid "Downloaded Speed"
 msgstr "Nedladdningshastighet"
+
+msgid "Downloading"
+msgstr "Laddar ner"
 
 msgid "Dropout probability:"
 msgstr "Utfallssannolikhet:"
@@ -890,6 +914,9 @@ msgstr "Generera syntetiska peers"
 msgid "German"
 msgstr "Tyska"
 
+msgid "Get the main widget for this tab."
+msgstr "Get the main widget for this tab."
+
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
 
@@ -1184,11 +1211,17 @@ msgstr "Minimitid mellan annonser (10-3600 sekunder)"
 msgid "Minimum transaction ID for tracker communication"
 msgstr "Minimalt transaktions-ID för spårarkommunikation"
 
+msgid "Modern Chunky"
+msgstr "Modern Chunky"
+
 msgid "Mon"
 msgstr "Mån"
 
 msgid "Monday"
 msgstr "Måndag"
+
+msgid "Monitoring"
+msgstr "Övervakning"
 
 msgid "Multi-Tracker"
 msgstr "Multi-spårare"
@@ -1216,6 +1249,9 @@ msgstr "Nästa Uppdatering"
 
 msgid "No"
 msgstr "Nej"
+
+msgid "No Torrent Selected"
+msgstr "Ingen Torrent Vald"
 
 msgid "No editable options available for this torrent."
 msgstr "Inga redigerbara alternativ tillgängliga för denna torrent."
@@ -1282,6 +1318,9 @@ msgstr "Pausa Alla Torrenter"
 
 msgid "Pause torrent"
 msgstr "Pausa torrent"
+
+msgid "Paused"
+msgstr "Pausad"
 
 msgid "Peer Analysis Depth:"
 msgstr "Peer-analysdjup:"
@@ -1472,6 +1511,9 @@ msgstr "Förfrågningstimeout:"
 msgid "Queue"
 msgstr "Kö"
 
+msgid "Queued"
+msgstr "I kö"
+
 msgid "Quit"
 msgstr "Avsluta"
 
@@ -1619,6 +1661,9 @@ msgstr "Sökinställningar"
 msgid "Secure password generated"
 msgstr "Säkert lösenord genererat"
 
+msgid "Seed"
+msgstr "Seed"
+
 msgid "Seeder port range (max):"
 msgstr "Seeder portområde (max):"
 
@@ -1627,6 +1672,9 @@ msgstr "Seeder portområde (min):"
 
 msgid "Seeders"
 msgstr "Seeders"
+
+msgid "Seeding"
+msgstr "Distribuerar"
 
 msgid "Seeding Profile"
 msgstr "Seedingprofil"
@@ -1639,6 +1687,24 @@ msgstr "Välj"
 
 msgid "Select Watch Folder"
 msgstr "Välj bevakad mapp"
+
+msgid "Select a torrent to configure its options"
+msgstr "Select a torrent to configure its options"
+
+msgid "Select a torrent to view its details"
+msgstr "Select a torrent to view its details"
+
+msgid "Select a torrent to view its files"
+msgstr "Select a torrent to view its files"
+
+msgid "Select a torrent to view its peers"
+msgstr "Select a torrent to view its peers"
+
+msgid "Select a torrent to view its status information"
+msgstr "Select a torrent to view its status information"
+
+msgid "Select a torrent to view its trackers"
+msgstr "Select a torrent to view its trackers"
 
 msgid "Select proxy type for connections"
 msgstr "Välj proxy-typ för anslutningar"
@@ -1760,6 +1826,9 @@ msgstr "Starta vid systemstart"
 msgid "Start the application minimized to system tray"
 msgstr "Starta applikationen minimerad till systemfältet"
 
+msgid "States"
+msgstr "Tillstånd"
+
 msgid "Stats Update Interval:"
 msgstr "Statistikuppdateringsintervall:"
 
@@ -1787,6 +1856,9 @@ msgstr "Svenska"
 msgid "Synthetic Peer Count:"
 msgstr "Syntetisk peer-antal:"
 
+msgid "System Theme"
+msgstr "Systemtema"
+
 msgid "TCP fallback"
 msgstr "TCP-reserv"
 
@@ -1798,6 +1870,9 @@ msgstr ".torrent-filen kommer att RADERAS."
 
 msgid "The .torrent file will be kept."
 msgstr ".torrent-filen kommer att behållas."
+
+msgid "Theme Style:"
+msgstr "Temastil："
 
 msgid "Theme:"
 msgstr "Tema:"
@@ -2125,6 +2200,9 @@ msgstr "logg_flik"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (Bittillgänglighet)"
+
+msgid "monitoring_tab"
+msgstr "monitoring_tab"
 
 msgid "name"
 msgstr "Namn"

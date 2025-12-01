@@ -5,6 +5,7 @@ Accepts incoming peer connections and handles the BitTorrent peer protocol.
 Responds with fake data that will be discarded by real clients due to hash verification.
 """
 
+# fmt: off
 import asyncio
 import struct
 import threading
@@ -19,6 +20,8 @@ from d_fake_seeder.lib.util.constants import (
     NetworkConstants,
     TimeoutConstants,
 )
+
+# fmt: on
 
 
 class PeerServer:
@@ -109,7 +112,7 @@ class PeerServer:
         if self.server:
             try:
                 self.server.close()
-                logger.info(
+                logger.debug(
                     "🚪 Peer server closed (no longer accepting connections)",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -130,7 +133,7 @@ class PeerServer:
         # Wait for server thread with aggressive timeout
         if self.server_thread and self.server_thread.is_alive():
             join_timeout = TimeoutConstants.SERVER_THREAD_SHUTDOWN
-            logger.info(
+            logger.debug(
                 f"⏱️ Waiting for server thread to finish (timeout: {join_timeout}s)",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -154,7 +157,7 @@ class PeerServer:
 
             self.server = await asyncio.start_server(self._handle_client, bind_address, self.port)
 
-            logger.info(
+            logger.debug(
                 f"🎧 Peer server listening on {bind_address}:{self.port}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -186,7 +189,7 @@ class PeerServer:
         self.active_connections[client_key] = writer
         self.connection_count += 1
 
-        logger.info(
+        logger.debug(
             f"🤝 Accepted peer connection from {client_key} " f"(total: {len(self.active_connections)})",
             extra={"class_name": self.__class__.__name__},
         )
@@ -229,13 +232,19 @@ class PeerServer:
             if self.connection_callback:
                 self.connection_callback("incoming", "remove", client_ip, client_port)
 
-    async def _handle_peer_protocol(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter, client_key: str):
+    async def _handle_peer_protocol(
+        self,
+        reader: asyncio.StreamReader,
+        writer: asyncio.StreamWriter,
+        client_key: str,
+    ):
         """Handle BitTorrent peer protocol messages"""
 
         # Wait for handshake
         try:
             handshake_data = await asyncio.wait_for(
-                reader.read(BitTorrentProtocolConstants.HANDSHAKE_LENGTH), timeout=self.handshake_timeout
+                reader.read(BitTorrentProtocolConstants.HANDSHAKE_LENGTH),
+                timeout=self.handshake_timeout,
             )
             if len(handshake_data) < BitTorrentProtocolConstants.HANDSHAKE_LENGTH:
                 return

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object class="GtkScrolledWindow">
-    <property name="visible">True</property>
+<object class="GtkScrolledWindow" id="peers_content">
+    <property name="visible">False</property>
     <property name="can-focus">True</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>

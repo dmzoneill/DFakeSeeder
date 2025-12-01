@@ -6,6 +6,7 @@ Provides clean window control operations integrated with AppSettings.
 Replaces external window manipulation tools with native GTK4 functionality.
 """
 
+# fmt: off
 from typing import Optional
 
 import gi
@@ -17,6 +18,8 @@ from gi.repository import Gdk, Gtk  # noqa: E402
 
 from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
 from d_fake_seeder.lib.logger import logger  # noqa: E402
+
+# fmt: on
 
 
 class WindowManager:
@@ -34,7 +37,7 @@ class WindowManager:
         Args:
             window: GTK4 window to manage (optional, can be set later)
         """
-        logger.info("Initializing WindowManager", extra={"class_name": self.__class__.__name__})
+        logger.debug("Initializing WindowManager", extra={"class_name": self.__class__.__name__})
 
         self.window = window
         self.app_settings = AppSettings.get_instance()
@@ -60,7 +63,7 @@ class WindowManager:
         self.window = window
         self._setup_window_handlers()
         self._load_window_state()
-        logger.info("Window set for management", extra={"class_name": self.__class__.__name__})
+        logger.debug("Window set for management", extra={"class_name": self.__class__.__name__})
 
     def _setup_window_handlers(self):
         """Setup window event handlers for state tracking"""
@@ -76,9 +79,15 @@ class WindowManager:
             self.window.connect("notify::default-width", self._on_size_changed)
             self.window.connect("notify::default-height", self._on_size_changed)
 
-            logger.debug("Window event handlers connected", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "Window event handlers connected",
+                extra={"class_name": self.__class__.__name__},
+            )
         except Exception as e:
-            logger.error(f"Failed to setup window handlers: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to setup window handlers: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _load_window_state(self):
         """Load saved window state from AppSettings"""
@@ -108,37 +117,64 @@ class WindowManager:
             )
 
         except Exception as e:
-            logger.error(f"Failed to load window state: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to load window state: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _save_window_state(self):
         """Save current window state to AppSettings"""
         try:
-            logger.info("_save_window_state called", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "_save_window_state called",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             if not self.window:
-                logger.info("No window to save state for", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    "No window to save state for",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return
 
-            logger.info("Getting window dimensions", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "Getting window dimensions",
+                extra={"class_name": self.__class__.__name__},
+            )
             # Save window size
             width = self.window.get_width()
             height = self.window.get_height()
-            logger.info(f"Window dimensions: {width}x{height}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Window dimensions: {width}x{height}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             if width > 0 and height > 0:
-                logger.info("Setting window_width", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    "Setting window_width",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 self.app_settings.set("window_width", width)
-                logger.info("Setting window_height", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    "Setting window_height",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 self.app_settings.set("window_height", height)
                 self._last_size = (width, height)
-                logger.info("Window size saved", extra={"class_name": self.__class__.__name__})
+                logger.debug("Window size saved", extra={"class_name": self.__class__.__name__})
 
             # Save visibility state
-            logger.info("Getting window visibility", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "Getting window visibility",
+                extra={"class_name": self.__class__.__name__},
+            )
             visible = self.window.get_visible()
-            logger.info(f"Setting window_visible={visible}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Setting window_visible={visible}",
+                extra={"class_name": self.__class__.__name__},
+            )
             self.app_settings.set("window_visible", visible)
-            logger.info("Window visibility saved", extra={"class_name": self.__class__.__name__})
+            logger.debug("Window visibility saved", extra={"class_name": self.__class__.__name__})
 
             logger.debug(
                 f"Saved window state: size=({width}, {height}), visible={visible}",
@@ -147,14 +183,19 @@ class WindowManager:
 
         except Exception as e:
             logger.error(
-                f"Failed to save window state: {e}", extra={"class_name": self.__class__.__name__}, exc_info=True
+                f"Failed to save window state: {e}",
+                extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     def show(self):
         """Show the window"""
         try:
             if not self.window:
-                logger.warning("No window available to show", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "No window available to show",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             self.window.set_visible(True)
@@ -163,18 +204,24 @@ class WindowManager:
             # Update settings
             self.app_settings.set("window_visible", True)
 
-            logger.info("Window shown", extra={"class_name": self.__class__.__name__})
+            logger.debug("Window shown", extra={"class_name": self.__class__.__name__})
             return True
 
         except Exception as e:
-            logger.error(f"Failed to show window: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to show window: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def hide(self):
         """Hide the window"""
         try:
             if not self.window:
-                logger.warning("No window available to hide", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "No window available to hide",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             # Save state before hiding
@@ -185,18 +232,24 @@ class WindowManager:
             # Update settings
             self.app_settings.set("window_visible", False)
 
-            logger.info("Window hidden", extra={"class_name": self.__class__.__name__})
+            logger.debug("Window hidden", extra={"class_name": self.__class__.__name__})
             return True
 
         except Exception as e:
-            logger.error(f"Failed to hide window: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to hide window: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def minimize(self):
         """Minimize the window"""
         try:
             if not self.window:
-                logger.warning("No window available to minimize", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "No window available to minimize",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             self.window.minimize()
@@ -207,52 +260,70 @@ class WindowManager:
             if minimize_to_tray:
                 self.hide()
 
-            logger.info("Window minimized", extra={"class_name": self.__class__.__name__})
+            logger.debug("Window minimized", extra={"class_name": self.__class__.__name__})
             return True
 
         except Exception as e:
-            logger.error(f"Failed to minimize window: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to minimize window: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def maximize(self):
         """Maximize the window"""
         try:
             if not self.window:
-                logger.warning("No window available to maximize", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "No window available to maximize",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             self.window.maximize()
             self._is_maximized = True
 
-            logger.info("Window maximized", extra={"class_name": self.__class__.__name__})
+            logger.debug("Window maximized", extra={"class_name": self.__class__.__name__})
             return True
 
         except Exception as e:
-            logger.error(f"Failed to maximize window: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to maximize window: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def unmaximize(self):
         """Restore window from maximized state"""
         try:
             if not self.window:
-                logger.warning("No window available to unmaximize", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "No window available to unmaximize",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             self.window.unmaximize()
             self._is_maximized = False
 
-            logger.info("Window unmaximized", extra={"class_name": self.__class__.__name__})
+            logger.debug("Window unmaximized", extra={"class_name": self.__class__.__name__})
             return True
 
         except Exception as e:
-            logger.error(f"Failed to unmaximize window: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to unmaximize window: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def toggle_visibility(self):
         """Toggle window visibility (show/hide)"""
         try:
             if not self.window:
-                logger.warning("No window available to toggle", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "No window available to toggle",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             if self.window.get_visible():
@@ -261,14 +332,20 @@ class WindowManager:
                 return self.show()
 
         except Exception as e:
-            logger.error(f"Failed to toggle window visibility: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to toggle window visibility: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def toggle_maximize(self):
         """Toggle window maximized state"""
         try:
             if not self.window:
-                logger.warning("No window available to toggle maximize", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "No window available to toggle maximize",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             if self._is_maximized:
@@ -277,14 +354,20 @@ class WindowManager:
                 return self.maximize()
 
         except Exception as e:
-            logger.error(f"Failed to toggle window maximize: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to toggle window maximize: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def restore(self):
         """Restore window to normal state (not minimized, not maximized)"""
         try:
             if not self.window:
-                logger.warning("No window available to restore", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "No window available to restore",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             # Show window if hidden
@@ -300,29 +383,41 @@ class WindowManager:
 
             self._is_minimized = False
 
-            logger.info("Window restored", extra={"class_name": self.__class__.__name__})
+            logger.debug("Window restored", extra={"class_name": self.__class__.__name__})
             return True
 
         except Exception as e:
-            logger.error(f"Failed to restore window: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to restore window: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def center_on_screen(self):
         """Center window on the current monitor"""
         try:
             if not self.window:
-                logger.warning("No window available to center", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "No window available to center",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             # Get the display and monitor
             display = Gdk.Display.get_default()
             if not display:
-                logger.warning("No display available", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "No display available",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             surface = self.window.get_surface()
             if not surface:
-                logger.warning("No surface available for window", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "No surface available for window",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             monitor = display.get_monitor_at_surface(surface)
@@ -343,14 +438,17 @@ class WindowManager:
                 self.app_settings.set("window_pos_x", center_x)
                 self.app_settings.set("window_pos_y", center_y)
 
-                logger.info(
+                logger.debug(
                     f"Window position set to center: ({center_x}, {center_y})",
                     extra={"class_name": self.__class__.__name__},
                 )
                 return True
 
         except Exception as e:
-            logger.error(f"Failed to center window: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to center window: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def _on_window_state_changed(self, window, pspec):
@@ -359,7 +457,10 @@ class WindowManager:
             # Save current state
             self._save_window_state()
         except Exception as e:
-            logger.error(f"Error handling window state change: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Error handling window state change: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _on_size_changed(self, window, pspec):
         """Handle window size changes"""
@@ -367,7 +468,10 @@ class WindowManager:
             # Save current size
             self._save_window_state()
         except Exception as e:
-            logger.error(f"Error handling window size change: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Error handling window size change: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _on_close_request(self, window):
         """Handle window close request"""
@@ -390,7 +494,7 @@ class WindowManager:
                 return True  # Prevent default close behavior
             else:
                 # Allow normal close behavior - let view.quit() handle it
-                logger.info(
+                logger.debug(
                     "Allowing normal close/quit behavior",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -398,14 +502,22 @@ class WindowManager:
                 return False  # Allow other handlers to process
 
         except Exception as e:
-            logger.error(f"Error handling close request: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Error handling close request: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def get_window_info(self) -> dict:
         """Get current window information"""
         try:
             if not self.window:
-                return {"available": False, "visible": False, "size": self._last_size, "position": self._last_position}
+                return {
+                    "available": False,
+                    "visible": False,
+                    "size": self._last_size,
+                    "position": self._last_position,
+                }
 
             return {
                 "available": True,
@@ -417,27 +529,41 @@ class WindowManager:
             }
 
         except Exception as e:
-            logger.error(f"Failed to get window info: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to get window info: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return {"available": False, "error": str(e)}
 
     def cleanup(self):
         """Clean up window manager resources"""
         try:
-            logger.info("WindowManager cleanup starting", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "WindowManager cleanup starting",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             # Skip saving window state during cleanup to avoid deadlocks during shutdown
             # Window state has already been saved during normal operation
-            logger.info(
+            logger.debug(
                 "Skipping window state save during cleanup (already saved)",
                 extra={"class_name": self.__class__.__name__},
             )
 
             # Clear window reference
-            logger.info("Clearing window reference", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "Clearing window reference",
+                extra={"class_name": self.__class__.__name__},
+            )
             self.window = None
 
-            logger.info("WindowManager cleaned up", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "WindowManager cleaned up",
+                extra={"class_name": self.__class__.__name__},
+            )
         except Exception as e:
             logger.error(
-                f"Error during WindowManager cleanup: {e}", extra={"class_name": self.__class__.__name__}, exc_info=True
+                f"Error during WindowManager cleanup: {e}",
+                extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )

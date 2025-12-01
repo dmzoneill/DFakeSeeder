@@ -5,6 +5,7 @@ Handles individual TCP connections to BitTorrent peers including handshakes
 and message exchange following BEP-003 specification.
 """
 
+# fmt: off
 import asyncio
 import socket
 import struct
@@ -15,6 +16,8 @@ from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.peer_info import PeerInfo
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import BitTorrentProtocolConstants
+
+# fmt: on
 
 
 class PeerConnection:
@@ -66,7 +69,7 @@ class PeerConnection:
             self.peer_info.last_connected = time.time()
 
             # Notify UI of new outgoing connection
-            logger.info(
+            logger.debug(
                 f"✅ Successfully connected to peer " f"{self.peer_info.ip}:{self.peer_info.port}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -229,7 +232,9 @@ class PeerConnection:
 
             # Read message length (4 bytes)
             length_data = await asyncio.get_running_loop().run_in_executor(
-                None, self.socket.recv, BitTorrentProtocolConstants.MESSAGE_LENGTH_HEADER_BYTES
+                None,
+                self.socket.recv,
+                BitTorrentProtocolConstants.MESSAGE_LENGTH_HEADER_BYTES,
             )
 
             if len(length_data) != BitTorrentProtocolConstants.MESSAGE_LENGTH_HEADER_BYTES:

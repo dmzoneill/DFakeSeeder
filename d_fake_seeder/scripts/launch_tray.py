@@ -6,6 +6,7 @@ Launches the system tray application with connection management and error handli
 Provides automatic retry logic and graceful error recovery.
 """
 
+# fmt: off
 import os
 import signal
 import subprocess
@@ -25,6 +26,8 @@ except ImportError:
 
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
+
+# fmt: on
 
 
 class TrayLauncher:
@@ -97,7 +100,11 @@ class TrayLauncher:
 
             # Launch the tray application
             self.process = subprocess.Popen(
-                [sys.executable, str(tray_script)], env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+                [sys.executable, str(tray_script)],
+                env=env,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
             )
 
             # Wait a moment to see if it starts successfully
@@ -108,7 +115,7 @@ class TrayLauncher:
                 stdout, stderr = self.process.communicate()
 
                 if self.process.returncode == 0:
-                    logger.info("Tray application completed successfully")
+                    logger.debug("Tray application completed successfully")
                     return True
                 else:
                     logger.error(f"Tray application failed with code {self.process.returncode}")

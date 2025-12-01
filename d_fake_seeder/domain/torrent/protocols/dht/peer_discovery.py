@@ -5,6 +5,7 @@ Manages peer discovery through DHT network.
 Implements get_peers and announce_peer operations for efficient peer finding.
 """
 
+# fmt: off
 import asyncio
 import hashlib
 import time
@@ -21,6 +22,8 @@ try:
     import bencode
 except ImportError:
     from d_fake_seeder.domain.torrent import bencoding as bencode
+
+# fmt: on
 
 
 @dataclass(frozen=True)
@@ -67,7 +70,10 @@ class PeerDiscovery:
         self.pending_queries: Dict[bytes, Dict] = {}
         self.transaction_counter = 0
 
-        logger.info("DHT Peer Discovery initialized", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "DHT Peer Discovery initialized",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     async def discover_peers(self, info_hash: bytes, count: int = 50) -> List[Tuple[str, int]]:
         """
@@ -80,14 +86,18 @@ class PeerDiscovery:
         Returns:
             List of (IP, port) tuples
         """
-        logger.info(
-            f"Starting peer discovery for {info_hash.hex()[:16]}", extra={"class_name": self.__class__.__name__}
+        logger.debug(
+            f"Starting peer discovery for {info_hash.hex()[:16]}",
+            extra={"class_name": self.__class__.__name__},
         )
 
         # Check if we already have peers stored
         stored_peers = self._get_stored_peers(info_hash, count)
         if len(stored_peers) >= count:
-            logger.debug(f"Returning {len(stored_peers)} stored peers", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Returning {len(stored_peers)} stored peers",
+                extra={"class_name": self.__class__.__name__},
+            )
             return stored_peers
 
         # Start discovery process
@@ -96,7 +106,7 @@ class PeerDiscovery:
         # Combine stored and discovered peers
         all_peers = list(set(stored_peers + discovered_peers))[:count]
 
-        logger.info(
+        logger.debug(
             f"Discovered {len(all_peers)} peers for {info_hash.hex()[:16]}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -114,8 +124,9 @@ class PeerDiscovery:
         Returns:
             True if announcement was successful
         """
-        logger.info(
-            f"Announcing peer for {info_hash.hex()[:16]} on port {port}", extra={"class_name": self.__class__.__name__}
+        logger.debug(
+            f"Announcing peer for {info_hash.hex()[:16]} on port {port}",
+            extra={"class_name": self.__class__.__name__},
         )
 
         try:
@@ -123,14 +134,20 @@ class PeerDiscovery:
             closest_nodes = self.routing_table.find_closest_nodes(info_hash, 8)
 
             if not closest_nodes:
-                logger.warning("No nodes available for announcement", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "No nodes available for announcement",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             # First, get tokens from nodes
             tokens = await self._get_announce_tokens(closest_nodes, info_hash)
 
             if not tokens:
-                logger.warning("Failed to get announce tokens", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "Failed to get announce tokens",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
             # Announce to nodes with tokens
@@ -141,17 +158,23 @@ class PeerDiscovery:
                     successful_announces += 1
 
             if successful_announces > 0:
-                logger.info(
+                logger.debug(
                     f"Successfully announced to {successful_announces} nodes",
                     extra={"class_name": self.__class__.__name__},
                 )
                 return True
             else:
-                logger.warning("Failed to announce to any nodes", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "Failed to announce to any nodes",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
         except Exception as e:
-            logger.error(f"Peer announcement failed: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Peer announcement failed: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def store_peer(self, info_hash: bytes, ip: str, port: int):
@@ -176,7 +199,8 @@ class PeerDiscovery:
             self.peer_storage[info_hash] = set(sorted_peers[-DHTConstants.MAX_PEERS_PER_INFOHASH :])
 
         logger.debug(
-            f"Stored peer {ip}:{port} for {info_hash.hex()[:16]}", extra={"class_name": self.__class__.__name__}
+            f"Stored peer {ip}:{port} for {info_hash.hex()[:16]}",
+            extra={"class_name": self.__class__.__name__},
         )
 
     def get_stored_peers(self, info_hash: bytes) -> List[Tuple[str, int]]:
@@ -206,7 +230,10 @@ class PeerDiscovery:
                     del self.peer_storage[info_hash]
 
         if removed_count > 0:
-            logger.info(f"Cleaned up {removed_count} old peer entries", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Cleaned up {removed_count} old peer entries",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _get_stored_peers(self, info_hash: bytes, count: int) -> List[Tuple[str, int]]:
         """Get stored peers for info hash"""
@@ -363,7 +390,12 @@ class PeerDiscovery:
                 b"t": transaction_id,
                 b"y": b"q",
                 b"q": b"announce_peer",
-                b"a": {b"id": self.node_id, b"info_hash": info_hash, b"port": port, b"token": token},
+                b"a": {
+                    b"id": self.node_id,
+                    b"info_hash": info_hash,
+                    b"port": port,
+                    b"token": token,
+                },
             }
 
             await self._send_dht_message(message, (node_contact.ip, node_contact.port))
@@ -408,7 +440,10 @@ class PeerDiscovery:
             data = bencode.bencode(message)
             await asyncio.get_running_loop().sock_sendto(self.socket, data, addr)
         except Exception as e:
-            logger.debug(f"Failed to send DHT message to {addr}: {e}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Failed to send DHT message to {addr}: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     async def _wait_for_response(self, transaction_id: bytes, timeout: float = 10) -> Optional[dict]:
         """Wait for response to a query"""
@@ -450,7 +485,11 @@ class PeerDiscovery:
         # Check if we have peers for this info hash
         stored_peers = self._get_stored_peers(info_hash, 50)
 
-        response = {b"t": transaction_id, b"y": b"r", b"r": {b"id": self.node_id, b"token": token}}
+        response = {
+            b"t": transaction_id,
+            b"y": b"r",
+            b"r": {b"id": self.node_id, b"token": token},
+        }
 
         if stored_peers:
             # Convert peers to compact format

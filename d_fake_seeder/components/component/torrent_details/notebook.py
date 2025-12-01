@@ -3,6 +3,7 @@ Main torrent details notebook component.
 Coordinates all torrent details tabs and provides the main interface.
 """
 
+# fmt: off
 from typing import Any, List, Optional
 
 import gi
@@ -22,6 +23,7 @@ from .details_tab import DetailsTab
 from .files_tab import FilesTab
 from .incoming_connections_tab import IncomingConnectionsTab
 from .log_tab import LogTab
+from .monitoring_tab import MonitoringTab
 from .options_tab import OptionsTab
 from .outgoing_connections_tab import OutgoingConnectionsTab
 from .peers_tab import PeersTab
@@ -31,6 +33,8 @@ from .status_tab import StatusTab
 from .trackers_tab import TrackersTab
 
 gi.require_version("Gtk", "4.0")
+
+# fmt: on
 
 
 class TorrentDetailsNotebook(Component):
@@ -45,7 +49,7 @@ class TorrentDetailsNotebook(Component):
         with logger.performance.operation_context("notebook_init", self.__class__.__name__):
             logger.debug("TorrentDetailsNotebook.__init__() started", self.__class__.__name__)
             super().__init__()
-            logger.info("TorrentDetailsNotebook startup", self.__class__.__name__)
+            logger.debug("TorrentDetailsNotebook startup", self.__class__.__name__)
             with logger.performance.operation_context("basic_setup", self.__class__.__name__):
                 self.builder = builder
                 self.model = model
@@ -69,15 +73,20 @@ class TorrentDetailsNotebook(Component):
                     "PeersTab": PeersTab,
                     "TrackersTab": TrackersTab,
                     "LogTab": LogTab,
+                    "MonitoringTab": MonitoringTab,
                 }
                 # Load tab configuration
                 try:
                     self._lazy_tab_classes = get_torrent_details_tab_classes(self._module_mapping)
                     logger.debug(
-                        f"Loaded {len(self._lazy_tab_classes)} tabs from configuration", self.__class__.__name__
+                        f"Loaded {len(self._lazy_tab_classes)} tabs from configuration",
+                        self.__class__.__name__,
                     )
                 except Exception as e:
-                    logger.debug(f"Warning: Could not load tab config ({e}), using fallback", self.__class__.__name__)
+                    logger.debug(
+                        f"Warning: Could not load tab config ({e}), using fallback",
+                        self.__class__.__name__,
+                    )
                     self._lazy_tab_classes = [
                         StatusTab,
                         FilesTab,
@@ -86,6 +95,7 @@ class TorrentDetailsNotebook(Component):
                         PeersTab,
                         TrackersTab,
                         LogTab,
+                        MonitoringTab,
                     ]
                 self._initialize_essential_tabs_only()
                 logger.debug("Essential tab initialization completed", self.__class__.__name__)
@@ -95,7 +105,10 @@ class TorrentDetailsNotebook(Component):
                 self.incoming_connections = None
                 self.outgoing_connections = None
                 self._schedule_background_component_creation()
-                logger.debug("Connection components scheduled for background creation", self.__class__.__name__)
+                logger.debug(
+                    "Connection components scheduled for background creation",
+                    self.__class__.__name__,
+                )
             # Set up connection callbacks (will be applied when components are created)
             with logger.performance.operation_context("callbacks_setup", self.__class__.__name__):
                 # Note: Connection callbacks will be set up in background creation
@@ -151,13 +164,13 @@ class TorrentDetailsNotebook(Component):
                 # CRITICAL FIX: Refresh translations for newly registered notebook widgets
                 # This ensures that notebook and tab widgets get translated with the correct language
                 if new_widgets > 0:
-                    logger.info(
+                    logger.debug(
                         f"Newly registered {new_widgets} notebook widgets will be refreshed by debounced system",
                         extra={"class_name": self.__class__.__name__},
                     )
                     # Use debounced refresh to avoid cascading refresh operations
                     self.model.translation_manager.refresh_all_translations()
-                logger.info(
+                logger.debug(
                     f"Registered torrent details notebook and all tabs for translation updates "
                     f"({new_widgets} new widgets)",
                     extra={"class_name": self.__class__.__name__},
@@ -168,7 +181,7 @@ class TorrentDetailsNotebook(Component):
     def on_language_changed(self, source, new_language):
         """Handle language change events."""
         try:
-            logger.info(
+            logger.debug(
                 f"Notebook language changed to: {new_language}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -230,23 +243,38 @@ class TorrentDetailsNotebook(Component):
 
         try:
             # Create tab instances in order matching the notebook
-            tab_classes = [StatusTab, FilesTab, DetailsTab, OptionsTab, PeersTab, TrackersTab, LogTab]
+            tab_classes = [
+                StatusTab,
+                FilesTab,
+                DetailsTab,
+                OptionsTab,
+                PeersTab,
+                TrackersTab,
+                LogTab,
+            ]
             for i, tab_class in enumerate(tab_classes):
                 try:
                     logger.debug("Creating ...", "TorrentDetailsNotebook")
                     tab = tab_class(self.builder, self.model)  # type: ignore[abstract]
                     self.tabs.append(tab)
-                    logger.debug(f"{tab_class.__name__} created successfully", "TorrentDetailsNotebook")
+                    logger.debug(
+                        f"{tab_class.__name__} created successfully",
+                        "TorrentDetailsNotebook",
+                    )
                     logger.debug(f"Initialized {tab.tab_name} tab")
                 except Exception as e:
-                    logger.debug(f"ERROR creating {tab_class.__name__}: {e}", "TorrentDetailsNotebook")
+                    logger.debug(
+                        f"ERROR creating {tab_class.__name__}: {e}",
+                        "TorrentDetailsNotebook",
+                    )
                     logger.error(f"Error initializing {tab_class.__name__}: {e}")
             # Set up special dependencies for peers tab
             self._setup_peers_tab_dependencies()
             logger.debug(
-                "Peers tab dependencies setup completed (took {(deps_end - deps_start)*1000:.1f}ms)", "UnknownClass"
+                "Peers tab dependencies setup completed (took {(deps_end - deps_start)*1000:.1f}ms)",
+                "UnknownClass",
             )
-            logger.info(f"Initialized {len(self.tabs)} torrent details tabs")
+            logger.debug(f"Initialized {len(self.tabs)} torrent details tabs")
         except Exception as e:
             logger.error(f"Error initializing torrent details tabs: {e}")
 
@@ -259,10 +287,14 @@ class TorrentDetailsNotebook(Component):
             # Load essential tabs from configuration
             try:
                 essential_tabs = get_essential_tab_classes(self._module_mapping)
-                logger.debug("Loaded  essential tabs from configuration", "TorrentDetailsNotebook")
+                logger.debug(
+                    "Loaded  essential tabs from configuration",
+                    "TorrentDetailsNotebook",
+                )
             except Exception:
                 logger.debug(
-                    "Warning: Could not load essential tab config (), using fallback", "TorrentDetailsNotebook"
+                    "Warning: Could not load essential tab config (), using fallback",
+                    "TorrentDetailsNotebook",
                 )
                 essential_tabs = [StatusTab]  # Only create the most essential tab
             for tab_class in essential_tabs:
@@ -270,27 +302,48 @@ class TorrentDetailsNotebook(Component):
                     logger.debug("Creating essential ...", "TorrentDetailsNotebook")
                     tab = tab_class(self.builder, self.model)  # type: ignore[abstract]
                     self.tabs.append(tab)
-                    logger.debug(f"Essential {tab_class.__name__} created successfully", "TorrentDetailsNotebook")
+                    logger.debug(
+                        f"Essential {tab_class.__name__} created successfully",
+                        "TorrentDetailsNotebook",
+                    )
                     logger.debug(f"Initialized essential {tab.tab_name} tab")
                 except Exception as e:
-                    logger.debug(f"ERROR creating essential {tab_class.__name__}: {e}", "TorrentDetailsNotebook")
-                    logger.error(f"Error initializing essential {tab_class.__name__}: {e}")
+                    logger.error(
+                        f"ERROR creating essential {tab_class.__name__}: {e}",
+                        extra={"class_name": "TorrentDetailsNotebook"},
+                        exc_info=True,
+                    )
             # Schedule remaining tabs for background creation
             try:
                 remaining_tabs = get_lazy_load_tab_classes(self._module_mapping)
-                logger.debug("Loaded  lazy load tabs from configuration", "TorrentDetailsNotebook")
+                logger.debug(
+                    "Loaded  lazy load tabs from configuration",
+                    "TorrentDetailsNotebook",
+                )
             except Exception:
-                logger.debug("Warning: Could not load lazy tab config (), using fallback", "TorrentDetailsNotebook")
-                remaining_tabs = [FilesTab, DetailsTab, OptionsTab, PeersTab, TrackersTab, LogTab]
+                logger.debug(
+                    "Warning: Could not load lazy tab config (), using fallback",
+                    "TorrentDetailsNotebook",
+                )
+                remaining_tabs = [
+                    FilesTab,
+                    DetailsTab,
+                    OptionsTab,
+                    PeersTab,
+                    TrackersTab,
+                    LogTab,
+                    MonitoringTab,
+                ]
             GLib.idle_add(self._create_remaining_tabs_background, remaining_tabs)
-            logger.info(f"Initialized {len(self.tabs)} essential tabs, {len(remaining_tabs)} scheduled for background")
+            logger.debug(f"Initialized {len(self.tabs)} essential tabs, {len(remaining_tabs)} scheduled for background")
         except Exception as e:
             logger.error(f"Error initializing essential tabs: {e}")
 
     def _create_remaining_tabs_background(self, remaining_tab_classes):
         """Create remaining tabs in background to avoid blocking startup."""
         logger.debug(
-            f"Starting background tab creation for {len(remaining_tab_classes)} tabs", "TorrentDetailsNotebook"
+            f"Starting background tab creation for {len(remaining_tab_classes)} tabs",
+            "TorrentDetailsNotebook",
         )
         try:
             created_count = 0
@@ -298,15 +351,29 @@ class TorrentDetailsNotebook(Component):
                 try:
                     tab = tab_class(self.builder, self.model)  # type: ignore[abstract]
                     self.tabs.append(tab)
-                    logger.debug(f"Background {tab_class.__name__} created successfully", "TorrentDetailsNotebook")
+                    logger.debug(
+                        f"Background {tab_class.__name__} created successfully",
+                        "TorrentDetailsNotebook",
+                    )
                     created_count += 1
                 except Exception as e:
-                    logger.debug(f"ERROR creating background {tab_class.__name__}: {e}", "TorrentDetailsNotebook")
+                    logger.error(
+                        f"ERROR creating background {tab_class.__name__}: {e}",
+                        extra={"class_name": "TorrentDetailsNotebook"},
+                        exc_info=True,
+                    )
             # Set up peers tab dependencies after creation
             self._setup_peers_tab_dependencies()
-            logger.debug(f"Background tab creation completed: {created_count} tabs", "TorrentDetailsNotebook")
-        except Exception:
-            logger.debug("Background tab creation error:", "TorrentDetailsNotebook")
+            logger.debug(
+                f"Background tab creation completed: {created_count} tabs",
+                "TorrentDetailsNotebook",
+            )
+        except Exception as e:
+            logger.error(
+                f"Background tab creation error: {e}",
+                extra={"class_name": "TorrentDetailsNotebook"},
+                exc_info=True,
+            )
         return False  # Don't repeat this idle task
 
     def _schedule_background_component_creation(self):
@@ -317,7 +384,10 @@ class TorrentDetailsNotebook(Component):
 
     def _create_connection_components_background(self):
         """Create connection components in background."""
-        logger.debug("Starting background connection component creation", "TorrentDetailsNotebook")
+        logger.debug(
+            "Starting background connection component creation",
+            "TorrentDetailsNotebook",
+        )
         try:
             # Create connection components
             self.incoming_connections = IncomingConnectionsTab(self.builder, self.model)
@@ -327,9 +397,15 @@ class TorrentDetailsNotebook(Component):
             self.outgoing_connections.set_count_update_callback(self.update_connection_counts)
             # LAZY LOADING FIX: Connect the signals now that components exist
             self._connect_background_signals()
-            logger.debug("Background connection components created successfully", "TorrentDetailsNotebook")
+            logger.debug(
+                "Background connection components created successfully",
+                "TorrentDetailsNotebook",
+            )
         except Exception:
-            logger.debug("Background connection component creation error:", "TorrentDetailsNotebook")
+            logger.debug(
+                "Background connection component creation error:",
+                "TorrentDetailsNotebook",
+            )
         return False  # Don't repeat this idle task
 
     def _connect_background_signals(self):
@@ -339,10 +415,16 @@ class TorrentDetailsNotebook(Component):
             if self.model and hasattr(self.model, "connect"):
                 if self.incoming_connections:
                     self.model.connect("data-changed", self.incoming_connections.update_view)
-                    logger.debug("Connected incoming connections signals", "TorrentDetailsNotebook")
+                    logger.debug(
+                        "Connected incoming connections signals",
+                        "TorrentDetailsNotebook",
+                    )
                 if self.outgoing_connections:
                     self.model.connect("data-changed", self.outgoing_connections.update_view)
-                    logger.debug("Connected outgoing connections signals", "TorrentDetailsNotebook")
+                    logger.debug(
+                        "Connected outgoing connections signals",
+                        "TorrentDetailsNotebook",
+                    )
         except Exception:
             logger.debug("Error connecting background signals:", "TorrentDetailsNotebook")
 
@@ -379,7 +461,7 @@ class TorrentDetailsNotebook(Component):
             if self.model and hasattr(self.model, "translation_manager"):
                 current_lang = self.model.translation_manager.get_current_language()
                 if current_lang:
-                    logger.info(f"Applying startup translations for language: {current_lang}")
+                    logger.debug(f"Applying startup translations for language: {current_lang}")
                     self._update_notebook_tab_labels()
         except Exception as e:
             logger.error(f"Error completing notebook initialization: {e}")
@@ -553,7 +635,10 @@ class TorrentDetailsNotebook(Component):
     def set_model(self, model):
         """Set model for notebook and all its tabs."""
         try:
-            logger.info("TorrentDetailsNotebook set_model", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "TorrentDetailsNotebook set_model",
+                extra={"class_name": self.__class__.__name__},
+            )
             # Update notebook model
             self.model = model
             # Re-establish signal connections now that model is available
@@ -586,7 +671,7 @@ class TorrentDetailsNotebook(Component):
             # Re-register for translations now that model is available
             if model and hasattr(model, "translation_manager"):
                 self.register_for_translation()
-                logger.info("Re-registered notebook for translations after model update")
+                logger.debug("Re-registered notebook for translations after model update")
         except Exception as e:
             logger.error(f"Error setting model for notebook: {e}")
 
@@ -652,8 +737,18 @@ class TorrentDetailsNotebook(Component):
                 "Torrent details notebook update view",
                 extra={"class_name": self.__class__.__name__},
             )
-            # Update all tabs with the new torrent data
-            if torrent:
-                self.update_all_tabs(torrent)
+            # CRITICAL: Only update tabs if the torrent is the currently selected one
+            # Don't update tabs just because a torrent was added or changed
+            if torrent and self._current_torrent and hasattr(torrent, "id") and hasattr(self._current_torrent, "id"):
+                if torrent.id == self._current_torrent.id:
+                    self.update_all_tabs(torrent)
+                    logger.debug(f"Updated tabs for currently selected torrent: {torrent.id}")
+                else:
+                    logger.debug(
+                        f"Ignoring update for torrent {torrent.id} - not currently selected "
+                        f"(current: {self._current_torrent.id})"
+                    )
+            elif not self._current_torrent:
+                logger.debug("Ignoring update - no torrent currently selected")
         except Exception as e:
             logger.error(f"Error updating view: {e}")

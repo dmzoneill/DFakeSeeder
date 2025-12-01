@@ -11,9 +11,12 @@ Profiles supported:
 - Custom: User-defined settings
 """
 
+# fmt: off
 from typing import Any, Dict
 
 from d_fake_seeder.lib.logger import logger
+
+# fmt: on
 
 
 class SeedingProfileManager:
@@ -40,16 +43,25 @@ class SeedingProfileManager:
         self.app_settings = app_settings
         self.logger = logger
         self.current_profile = self._load_current_profile()
-        self.logger.debug("SeedingProfileManager initialized", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            "SeedingProfileManager initialized",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _load_current_profile(self) -> str:
         """Load the currently active profile from settings."""
         try:
             current = self.app_settings.get("seeding_profile", "balanced")
-            self.logger.debug(f"Loaded current profile: {current}", extra={"class_name": self.__class__.__name__})
+            self.logger.debug(
+                f"Loaded current profile: {current}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return current
         except Exception as e:
-            self.logger.error(f"Error loading current profile: {e}", extra={"class_name": self.__class__.__name__})
+            self.logger.error(
+                f"Error loading current profile: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return "balanced"
 
     def get_predefined_profiles(self) -> Dict[str, Dict[str, Any]]:
@@ -134,7 +146,8 @@ class SeedingProfileManager:
                 return predefined_profiles[profile_name]
             else:
                 self.logger.warning(
-                    f"Unknown profile '{profile_name}', using balanced", extra={"class_name": self.__class__.__name__}
+                    f"Unknown profile '{profile_name}', using balanced",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 return predefined_profiles["balanced"]
 
@@ -156,14 +169,18 @@ class SeedingProfileManager:
             True if profile was successfully applied, False otherwise
         """
         try:
-            self.logger.info(f"Applying seeding profile: {profile_name}", extra={"class_name": self.__class__.__name__})
+            self.logger.info(
+                f"Applying seeding profile: {profile_name}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             # Get profile settings
             profile_settings = self.get_profile_settings(profile_name)
 
             if not self.validate_profile(profile_settings):
                 self.logger.error(
-                    f"Profile '{profile_name}' failed validation", extra={"class_name": self.__class__.__name__}
+                    f"Profile '{profile_name}' failed validation",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 return False
 
@@ -175,13 +192,15 @@ class SeedingProfileManager:
             self.current_profile = profile_name
 
             self.logger.info(
-                f"Successfully applied seeding profile: {profile_name}", extra={"class_name": self.__class__.__name__}
+                f"Successfully applied seeding profile: {profile_name}",
+                extra={"class_name": self.__class__.__name__},
             )
             return True
 
         except Exception as e:
             self.logger.error(
-                f"Error applying profile '{profile_name}': {e}", extra={"class_name": self.__class__.__name__}
+                f"Error applying profile '{profile_name}': {e}",
+                extra={"class_name": self.__class__.__name__},
             )
             return False
 
@@ -208,7 +227,10 @@ class SeedingProfileManager:
             if profile_key in profile_settings:
                 value = profile_settings[profile_key]
                 self.app_settings.set(settings_key, value)
-                self.logger.debug(f"Applied {settings_key} = {value}", extra={"class_name": self.__class__.__name__})
+                self.logger.debug(
+                    f"Applied {settings_key} = {value}",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
         # Store profile-specific settings
         profile_specific_keys = [
@@ -237,17 +259,35 @@ class SeedingProfileManager:
         try:
             validations = [
                 # Speed limits (0 = unlimited, otherwise positive)
-                ("upload_limit", lambda x: x == 0 or (isinstance(x, (int, float)) and x > 0)),
-                ("download_limit", lambda x: x == 0 or (isinstance(x, (int, float)) and x > 0)),
+                (
+                    "upload_limit",
+                    lambda x: x == 0 or (isinstance(x, (int, float)) and x > 0),
+                ),
+                (
+                    "download_limit",
+                    lambda x: x == 0 or (isinstance(x, (int, float)) and x > 0),
+                ),
                 # Connection limits (positive integers)
                 ("max_connections", lambda x: isinstance(x, int) and 1 <= x <= 1000),
                 ("concurrent_uploads", lambda x: isinstance(x, int) and 1 <= x <= 50),
                 # Intervals (positive seconds)
-                ("announce_interval", lambda x: isinstance(x, (int, float)) and 300 <= x <= 7200),
+                (
+                    "announce_interval",
+                    lambda x: isinstance(x, (int, float)) and 300 <= x <= 7200,
+                ),
                 # Probability values (0.0 to 1.0)
-                ("idle_probability", lambda x: isinstance(x, (int, float)) and 0.0 <= x <= 1.0),
-                ("speed_variance", lambda x: isinstance(x, (int, float)) and 0.0 <= x <= 1.0),
-                ("burst_probability", lambda x: isinstance(x, (int, float)) and 0.0 <= x <= 1.0),
+                (
+                    "idle_probability",
+                    lambda x: isinstance(x, (int, float)) and 0.0 <= x <= 1.0,
+                ),
+                (
+                    "speed_variance",
+                    lambda x: isinstance(x, (int, float)) and 0.0 <= x <= 1.0,
+                ),
+                (
+                    "burst_probability",
+                    lambda x: isinstance(x, (int, float)) and 0.0 <= x <= 1.0,
+                ),
                 ("share_ratio_target", lambda x: isinstance(x, (int, float)) and x > 0),
                 # Boolean values
                 ("dht_enabled", lambda x: isinstance(x, bool)),
@@ -259,14 +299,18 @@ class SeedingProfileManager:
                     value = profile_settings[setting_name]
                     if not validator(value):
                         self.logger.error(
-                            f"Invalid value for {setting_name}: {value}", extra={"class_name": self.__class__.__name__}
+                            f"Invalid value for {setting_name}: {value}",
+                            extra={"class_name": self.__class__.__name__},
                         )
                         return False
 
             return True
 
         except Exception as e:
-            self.logger.error(f"Error validating profile: {e}", extra={"class_name": self.__class__.__name__})
+            self.logger.error(
+                f"Error validating profile: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def get_current_profile(self) -> str:
@@ -317,12 +361,16 @@ class SeedingProfileManager:
             self.app_settings.set("custom_seeding_profile", custom_settings)
 
             self.logger.info(
-                f"Created custom profile from {base_template} template", extra={"class_name": self.__class__.__name__}
+                f"Created custom profile from {base_template} template",
+                extra={"class_name": self.__class__.__name__},
             )
             return custom_settings
 
         except Exception as e:
-            self.logger.error(f"Error creating custom profile: {e}", extra={"class_name": self.__class__.__name__})
+            self.logger.error(
+                f"Error creating custom profile: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return self.get_predefined_profiles()["balanced"]
 
     def get_profile_summary(self, profile_name: str) -> str:

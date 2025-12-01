@@ -5,6 +5,7 @@ Implements the µTorrent Transport Protocol for NAT-friendly peer connections.
 Provides congestion control and connection multiplexing over UDP.
 """
 
+# fmt: off
 import asyncio
 import random
 import struct
@@ -15,6 +16,8 @@ from typing import Dict, Tuple
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import UTPConstants
+
+# fmt: on
 
 
 class UTPPacketType(IntEnum):
@@ -96,8 +99,9 @@ class UTPConnection:
             True if connection established successfully
         """
         try:
-            logger.info(
-                f"Initiating µTP connection to {self.remote_addr}", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                f"Initiating µTP connection to {self.remote_addr}",
+                extra={"class_name": self.__class__.__name__},
             )
 
             # Send SYN packet
@@ -114,14 +118,23 @@ class UTPConnection:
                     await self._send_syn()
 
             if self.state == "CONNECTED":
-                logger.info("µTP connection established", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    "µTP connection established",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return True
             else:
-                logger.warning("µTP connection timeout", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "µTP connection timeout",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
         except Exception as e:
-            logger.error(f"Failed to connect via µTP: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to connect via µTP: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     async def send_data(self, data: bytes) -> bool:
@@ -136,7 +149,8 @@ class UTPConnection:
         """
         if self.state != "CONNECTED":
             logger.warning(
-                "Cannot send data, connection not established", extra={"class_name": self.__class__.__name__}
+                "Cannot send data, connection not established",
+                extra={"class_name": self.__class__.__name__},
             )
             return False
 
@@ -153,7 +167,10 @@ class UTPConnection:
             return True
 
         except Exception as e:
-            logger.error(f"Failed to send data: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to send data: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     async def close(self):
@@ -174,7 +191,10 @@ class UTPConnection:
             self.state = "CLOSED"
 
         except Exception as e:
-            logger.error(f"Error closing µTP connection: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Error closing µTP connection: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             self.state = "CLOSED"
 
     async def handle_packet(self, packet: bytes, addr: Tuple[str, int]):
@@ -214,7 +234,10 @@ class UTPConnection:
             self._update_congestion_window(header)
 
         except Exception as e:
-            logger.error(f"Error handling µTP packet: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Error handling µTP packet: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     async def _send_syn(self):
         """Send SYN packet to initiate connection"""
@@ -229,7 +252,11 @@ class UTPConnection:
         await self._send_packet(packet)
 
         # Track sent packet for retransmission
-        self.sent_packets[self.seq_nr] = {"data": data, "timestamp": time.time(), "retransmits": 0}
+        self.sent_packets[self.seq_nr] = {
+            "data": data,
+            "timestamp": time.time(),
+            "retransmits": 0,
+        }
 
     async def _send_fin(self):
         """Send FIN packet to close connection"""
@@ -249,7 +276,10 @@ class UTPConnection:
                 self.packets_sent += 1
                 self.bytes_sent += len(packet)
         except Exception as e:
-            logger.error(f"Failed to send µTP packet: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to send µTP packet: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             raise
 
     def _create_packet(self, packet_type: UTPPacketType, payload: bytes) -> bytes:
@@ -333,7 +363,7 @@ class UTPConnection:
         # Send STATE (ACK)
         await self._send_state()
 
-        logger.info("µTP connection accepted", extra={"class_name": self.__class__.__name__})
+        logger.debug("µTP connection accepted", extra={"class_name": self.__class__.__name__})
 
     async def _handle_state(self, header: Dict):
         """Handle STATE packet (ACK)"""
@@ -372,12 +402,18 @@ class UTPConnection:
         await self._send_state()
         self.state = "CLOSED"
 
-        logger.debug("µTP connection closed by peer", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "µTP connection closed by peer",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     async def _handle_reset(self, header: Dict):
         """Handle RESET packet"""
         self.state = "CLOSED"
-        logger.warning("µTP connection reset by peer", extra={"class_name": self.__class__.__name__})
+        logger.warning(
+            "µTP connection reset by peer",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _update_rtt(self, header: Dict):
         """Update RTT estimate"""
@@ -421,13 +457,22 @@ class UTPConnection:
                 # Adjust window based on delay
                 if queuing_delay < target_delay:
                     # Increase window (slow start/congestion avoidance)
-                    self.send_window = min(self.send_window + UTPConstants.WINDOW_INCREASE_STEP, self.max_window_size)
+                    self.send_window = min(
+                        self.send_window + UTPConstants.WINDOW_INCREASE_STEP,
+                        self.max_window_size,
+                    )
                 else:
                     # Decrease window (congestion detected)
-                    self.send_window = max(self.send_window - UTPConstants.WINDOW_DECREASE_STEP, self.min_window_size)
+                    self.send_window = max(
+                        self.send_window - UTPConstants.WINDOW_DECREASE_STEP,
+                        self.min_window_size,
+                    )
 
         except Exception as e:
-            logger.error(f"Error updating congestion window: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Error updating congestion window: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def get_statistics(self) -> Dict:
         """Get connection statistics"""

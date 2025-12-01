@@ -6,7 +6,10 @@ in the application. This system integrates with the existing TranslationManager 
 support runtime language switching for column headers.
 """
 
+# fmt: off
 from d_fake_seeder.lib.logger import logger
+
+# fmt: on
 
 # Column translations should integrate with the main TranslationManager
 # Get translation function through the model's TranslationManager
@@ -36,7 +39,10 @@ class ColumnTranslations:
         """
         logger.debug("Translation function registration called", "ColumnTranslations")
         logger.debug(f"New translation function: {translate_func}", "ColumnTranslations")
-        logger.debug(f"Previous translation function: {cls._translation_function}", "ColumnTranslations")
+        logger.debug(
+            f"Previous translation function: {cls._translation_function}",
+            "ColumnTranslations",
+        )
         cls._translation_function = translate_func
         logger.debug("Translation function registered successfully", "ColumnTranslations")
 
@@ -88,6 +94,7 @@ class ColumnTranslations:
             "ratio": _("Ratio"),
             # Additional details tab strings
             "created": _("Created"),
+            "creation_date": _("Created"),
             "comment": _("Comment"),
             "created_by": _("Created By"),
             "piece_length": _("Piece Length"),

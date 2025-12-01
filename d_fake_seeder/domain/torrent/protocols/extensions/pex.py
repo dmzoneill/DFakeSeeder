@@ -5,6 +5,7 @@ Implements the Peer Exchange extension that allows peers to exchange
 information about other peers in the swarm without relying on trackers.
 """
 
+# fmt: off
 import random
 import socket
 import struct
@@ -19,6 +20,8 @@ try:
     import bencodepy as bencode
 except ImportError:
     from d_fake_seeder.domain.torrent.bencoding import bencode
+
+# fmt: on
 
 
 class PeerExchangeExtension:
@@ -54,7 +57,10 @@ class PeerExchangeExtension:
 
         logger.debug(
             "PEX extension initialized",
-            extra={"class_name": self.__class__.__name__, "pex_interval": self.pex_interval},
+            extra={
+                "class_name": self.__class__.__name__,
+                "pex_interval": self.pex_interval,
+            },
         )
 
     def initialize(self):
@@ -66,7 +72,10 @@ class PeerExchangeExtension:
         if self.generate_synthetic_peers:
             self._generate_synthetic_peers()
 
-        logger.debug("PEX extension initialized and ready", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "PEX extension initialized and ready",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def handle_message(self, payload: bytes):
         """
@@ -100,7 +109,10 @@ class PeerExchangeExtension:
             )
 
         except Exception as e:
-            logger.error(f"Failed to handle PEX message: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to handle PEX message: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def send_pex_message(self, force: bool = False):
         """
@@ -150,10 +162,16 @@ class PeerExchangeExtension:
                     extra={"class_name": self.__class__.__name__},
                 )
             else:
-                logger.debug("Failed to send PEX message", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    "Failed to send PEX message",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
         except Exception as e:
-            logger.error(f"Failed to send PEX message: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to send PEX message: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def add_peer(self, ip: str, port: int, flags: int = 0):
         """
@@ -169,7 +187,10 @@ class PeerExchangeExtension:
             self.known_peers.add(peer_tuple)
             self.peer_flags[peer_tuple] = flags
 
-            logger.debug(f"Added peer to PEX: {ip}:{port}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Added peer to PEX: {ip}:{port}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def remove_peer(self, ip: str, port: int):
         """
@@ -183,7 +204,10 @@ class PeerExchangeExtension:
         self.known_peers.discard(peer_tuple)
         self.peer_flags.pop(peer_tuple, None)
 
-        logger.debug(f"Removed peer from PEX: {ip}:{port}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Removed peer from PEX: {ip}:{port}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _decode_peers(self, peers_data: bytes) -> List[Tuple[str, int]]:
         """
@@ -208,7 +232,10 @@ class PeerExchangeExtension:
                     peers.append((ip, port))
 
         except Exception as e:
-            logger.error(f"Failed to decode peers: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to decode peers: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         return peers
 
@@ -237,7 +264,10 @@ class PeerExchangeExtension:
                 flags_data += struct.pack("B", flags)
 
         except Exception as e:
-            logger.error(f"Failed to encode peers: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to encode peers: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         return peers_data, flags_data
 
@@ -260,7 +290,10 @@ class PeerExchangeExtension:
 
             # Optionally connect to new peers (for real client behavior)
             # In fake seeding, we just track them
-            logger.debug(f"Learned about peer via PEX: {ip}:{port}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Learned about peer via PEX: {ip}:{port}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _process_dropped_peers(self, peers: List[Tuple[str, int]]):
         """
@@ -340,10 +373,12 @@ class PeerExchangeExtension:
                 port = random.choice(
                     [
                         random.randint(
-                            PeerExchangeConstants.WELL_KNOWN_PORT_MIN, PeerExchangeConstants.WELL_KNOWN_PORT_MAX
+                            PeerExchangeConstants.WELL_KNOWN_PORT_MIN,
+                            PeerExchangeConstants.WELL_KNOWN_PORT_MAX,
                         ),  # Traditional BT ports
                         random.randint(
-                            PeerExchangeConstants.EPHEMERAL_PORT_MIN, PeerExchangeConstants.EPHEMERAL_PORT_MAX
+                            PeerExchangeConstants.EPHEMERAL_PORT_MIN,
+                            PeerExchangeConstants.EPHEMERAL_PORT_MAX,
                         ),  # Dynamic/ephemeral ports
                     ]
                 )
@@ -359,7 +394,10 @@ class PeerExchangeExtension:
             )
 
         except Exception as e:
-            logger.error(f"Failed to generate synthetic peers: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to generate synthetic peers: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def get_statistics(self) -> dict:
         """

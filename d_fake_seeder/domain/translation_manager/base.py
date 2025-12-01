@@ -6,8 +6,11 @@ Defines the interface that all TranslationManager implementations must follow,
 allowing for GTK3 and GTK4 compatible versions while maintaining a consistent API.
 """
 
+# fmt: off
 from abc import ABC, abstractmethod
 from typing import Any, Callable, Dict, List
+
+# fmt: on
 
 
 class TranslationManagerBase(ABC):

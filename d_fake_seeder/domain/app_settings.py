@@ -1,3 +1,4 @@
+# fmt: off
 import json
 import os
 import shutil
@@ -35,6 +36,8 @@ else:
 
         def stop(self):
             pass
+
+# fmt: on
 
 
 class AppSettings(GObject.GObject):
@@ -101,7 +104,7 @@ class AppSettings(GObject.GObject):
         # GObject.__init__ already called in __new__
         self._initialized = True
 
-        self.logger.info("AppSettings instantiate", extra={"class_name": self.__class__.__name__})
+        self.logger.debug("AppSettings instantiate", extra={"class_name": self.__class__.__name__})
 
         # Initialize file paths (compatible with Settings API)
         if file_path is None:
@@ -125,12 +128,33 @@ class AppSettings(GObject.GObject):
         # Create config directory if needed (like Settings does)
         home_config_path = os.path.expanduser("~/.config/dfakeseeder")
         if not os.path.exists(home_config_path):
-            source_path = str(self.default_config_file)
             os.makedirs(home_config_path, exist_ok=True)
             os.makedirs(home_config_path + "/torrents", exist_ok=True)
+
+            # Determine source config file (priority order):
+            # 1. System-wide RPM config: /etc/dfakeseeder/default.json
+            # 2. Package default: d_fake_seeder/config/default.json
+            system_config = Path("/etc/dfakeseeder/default.json")
+            if system_config.exists():
+                source_path = str(system_config)
+                self.logger.debug(
+                    f"Using system-wide config from {source_path}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+            else:
+                source_path = str(self.default_config_file)
+                self.logger.debug(
+                    f"Using package default config from {source_path}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
             # Copy the source file to the destination directory
             if os.path.exists(source_path):
                 shutil.copy(source_path, home_config_path + "/settings.json")
+                self.logger.debug(
+                    f"Created user config at {home_config_path}/settings.json",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
         # Load defaults and settings
         self._load_defaults()
@@ -162,7 +186,7 @@ class AppSettings(GObject.GObject):
         try:
             with open(self.default_config_file, "r") as f:
                 self._defaults = json.load(f)
-            self.logger.info(f"Loaded {len(self._defaults)} default settings from {self.default_config_file}")
+            self.logger.debug(f"Loaded {len(self._defaults)} default settings from {self.default_config_file}")
         except (FileNotFoundError, json.JSONDecodeError) as e:
             self.logger.warning(f"Could not load default settings file ({e}), using hardcoded defaults")
             self._defaults = {
@@ -207,7 +231,7 @@ class AppSettings(GObject.GObject):
 
     def load_settings(self):
         """Load settings from files (compatible with Settings API)"""
-        self.logger.info("Settings load", extra={"class_name": self.__class__.__name__})
+        self.logger.debug("Settings load", extra={"class_name": self.__class__.__name__})
         try:
             # Check if the file has been modified since last load
             modified = os.path.getmtime(self._file_path)
@@ -221,7 +245,7 @@ class AppSettings(GObject.GObject):
                 self._settings = merged_settings
                 self.settings = merged_settings.copy()
                 self._last_modified = modified
-                self.logger.info(
+                self.logger.debug(
                     f"Loaded settings - language from file: {user_settings.get('language', 'NOT SET')},"
                     f" merged language: {merged_settings.get('language', 'NOT SET')}",
                     extra={"class_name": self.__class__.__name__},
@@ -236,7 +260,7 @@ class AppSettings(GObject.GObject):
                 # Create the JSON file with default contents
                 with open(self._file_path, "w") as f:
                     json.dump(self._settings, f, indent=4)
-                self.logger.info("Created new settings file with defaults")
+                self.logger.debug("Created new settings file with defaults")
         except json.JSONDecodeError as e:
             # Handle corrupt/truncated JSON files
             self.logger.warning(f"Settings file contains invalid JSON, using defaults: {e}")
@@ -247,15 +271,24 @@ class AppSettings(GObject.GObject):
 
     def save_settings(self):
         """Save current settings to user config file (thread-safe with atomic writes)"""
-        self.logger.info("Settings save", extra={"class_name": self.__class__.__name__})
+        self.logger.debug("Settings save", extra={"class_name": self.__class__.__name__})
         try:
             # Use lock to prevent concurrent save operations
-            self.logger.info("About to acquire settings lock", extra={"class_name": self.__class__.__name__})
+            self.logger.debug(
+                "About to acquire settings lock",
+                extra={"class_name": self.__class__.__name__},
+            )
             with AppSettings._lock:
-                self.logger.info("Settings lock acquired", extra={"class_name": self.__class__.__name__})
+                self.logger.debug(
+                    "Settings lock acquired",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 self._save_settings_unlocked()
-                self.logger.info("Settings saved to disk", extra={"class_name": self.__class__.__name__})
-            self.logger.info("Settings lock released", extra={"class_name": self.__class__.__name__})
+                self.logger.debug(
+                    "Settings saved to disk",
+                    extra={"class_name": self.__class__.__name__},
+                )
+            self.logger.debug("Settings lock released", extra={"class_name": self.__class__.__name__})
         except Exception as e:
             self.logger.error(f"Failed to save settings: {e}", exc_info=True)
 
@@ -302,7 +335,7 @@ class AppSettings(GObject.GObject):
 
     def save_quit(self):
         """Save settings and stop file watching (Settings API compatibility)"""
-        self.logger.info("Settings quit", extra={"class_name": self.__class__.__name__})
+        self.logger.debug("Settings quit", extra={"class_name": self.__class__.__name__})
         if hasattr(self, "_observer"):
             self._observer.stop()
         self.save_settings()
@@ -466,7 +499,7 @@ class AppSettings(GObject.GObject):
                 defaults = json.load(f)
                 self._settings = defaults.copy()
                 self.save_settings()
-                self.logger.info("Settings reset to defaults")
+                self.logger.debug("Settings reset to defaults")
                 # Emit signals for each changed setting
                 for key, value in defaults.items():
                     # Emit new signals
@@ -489,7 +522,7 @@ class AppSettings(GObject.GObject):
         try:
             from d_fake_seeder.lib.logger import logger
 
-            logger.info("AppSettings get instance", extra={"class_name": "AppSettings"})
+            logger.debug("AppSettings get instance", extra={"class_name": "AppSettings"})
         except ImportError:
             pass
         if cls._instance is None:
@@ -569,14 +602,14 @@ class AppSettings(GObject.GObject):
 
         # Get the configured language from settings
         configured_lang = self.get("language", "auto")
-        self.logger.info(
+        self.logger.debug(
             f"get_language() - configured_lang from settings: {configured_lang}",
             extra={"class_name": self.__class__.__name__},
         )
 
         # If it's a specific language (not "auto"), use it directly
         if configured_lang != "auto":
-            self.logger.info(
+            self.logger.debug(
                 f"get_language() - returning configured language: {configured_lang}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -733,7 +766,7 @@ class AppSettings(GObject.GObject):
         # Add to detected clients
         detected_clients.append(user_agent)
         self.set("detected_clients", detected_clients)
-        self.logger.info(f"Added detected client: {user_agent}")
+        self.logger.debug(f"Added detected client: {user_agent}")
 
     def get_detected_clients(self):
         """Get list of detected clients"""
@@ -742,4 +775,4 @@ class AppSettings(GObject.GObject):
     def clear_detected_clients(self):
         """Clear all detected clients"""
         self.set("detected_clients", [])
-        self.logger.info("Cleared all detected clients")
+        self.logger.debug("Cleared all detected clients")

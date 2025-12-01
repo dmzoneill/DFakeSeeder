@@ -4,6 +4,7 @@
 Manages multiple µTP connections and provides connection pooling.
 """
 
+# fmt: off
 import asyncio
 import socket
 from typing import Dict, Optional, Tuple
@@ -13,6 +14,8 @@ from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import UTPConstants
 
 from .utp_connection import UTPConnection
+
+# fmt: on
 
 
 class UTPManager:
@@ -39,7 +42,10 @@ class UTPManager:
         self.enabled = utp_config.get("enabled", True)
         self.max_connections = utp_config.get("max_connections", 100)
 
-        logger.info("µTP Manager initialized", extra={"class_name": self.__class__.__name__, "port": port})
+        logger.debug(
+            "µTP Manager initialized",
+            extra={"class_name": self.__class__.__name__, "port": port},
+        )
 
     async def start(self) -> bool:
         """
@@ -49,11 +55,14 @@ class UTPManager:
             True if started successfully
         """
         if not self.enabled:
-            logger.info("µTP disabled in settings", extra={"class_name": self.__class__.__name__})
+            logger.info(
+                "µTP disabled in settings",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
         try:
-            logger.info("Starting µTP manager", extra={"class_name": self.__class__.__name__})
+            logger.debug("Starting µTP manager", extra={"class_name": self.__class__.__name__})
 
             # Create UDP socket
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -70,16 +79,22 @@ class UTPManager:
             # Start listening loop
             asyncio.create_task(self._listen_loop())
 
-            logger.info(f"µTP manager started on port {self.port}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"µTP manager started on port {self.port}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return True
 
         except Exception as e:
-            logger.error(f"Failed to start µTP manager: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to start µTP manager: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     async def stop(self):
         """Stop µTP manager"""
-        logger.info("Stopping µTP manager", extra={"class_name": self.__class__.__name__})
+        logger.debug("Stopping µTP manager", extra={"class_name": self.__class__.__name__})
 
         self.running = False
 
@@ -107,11 +122,17 @@ class UTPManager:
             UTPConnection instance if successful, None otherwise
         """
         if not self.running:
-            logger.warning("Cannot connect, µTP manager not running", extra={"class_name": self.__class__.__name__})
+            logger.warning(
+                "Cannot connect, µTP manager not running",
+                extra={"class_name": self.__class__.__name__},
+            )
             return None
 
         if len(self.connections) >= self.max_connections:
-            logger.warning("Maximum µTP connections reached", extra={"class_name": self.__class__.__name__})
+            logger.warning(
+                "Maximum µTP connections reached",
+                extra={"class_name": self.__class__.__name__},
+            )
             return None
 
         try:
@@ -126,8 +147,9 @@ class UTPManager:
             success = await connection.connect(timeout)
 
             if success:
-                logger.info(
-                    f"µTP connection established to {host}:{port}", extra={"class_name": self.__class__.__name__}
+                logger.debug(
+                    f"µTP connection established to {host}:{port}",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 return connection
             else:
@@ -136,7 +158,10 @@ class UTPManager:
                 return None
 
         except Exception as e:
-            logger.error(f"Failed to create µTP connection: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to create µTP connection: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return None
 
     async def _listen_loop(self):
@@ -152,7 +177,10 @@ class UTPManager:
             except asyncio.CancelledError:
                 break
             except Exception as e:
-                logger.error(f"µTP listen error: {e}", extra={"class_name": self.__class__.__name__})
+                logger.error(
+                    f"µTP listen error: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 await asyncio.sleep(0.1)
 
     async def _route_packet(self, data: bytes, addr: Tuple[str, int]):
@@ -182,7 +210,10 @@ class UTPManager:
                     await self._accept_connection(data, addr, connection_id)
 
         except Exception as e:
-            logger.error(f"Error routing µTP packet: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Error routing µTP packet: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     async def _accept_connection(self, data: bytes, addr: Tuple[str, int], connection_id: int):
         """
@@ -195,7 +226,8 @@ class UTPManager:
         """
         if len(self.connections) >= self.max_connections:
             logger.warning(
-                "Cannot accept µTP connection, max connections reached", extra={"class_name": self.__class__.__name__}
+                "Cannot accept µTP connection, max connections reached",
+                extra={"class_name": self.__class__.__name__},
             )
             return
 
@@ -207,10 +239,16 @@ class UTPManager:
             # Handle SYN packet
             await connection.handle_packet(data, addr)
 
-            logger.info(f"Accepted µTP connection from {addr}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Accepted µTP connection from {addr}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         except Exception as e:
-            logger.error(f"Failed to accept µTP connection: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to accept µTP connection: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _get_next_connection_id(self) -> int:
         """Get next available connection ID"""

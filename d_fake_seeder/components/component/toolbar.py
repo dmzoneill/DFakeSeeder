@@ -1,3 +1,4 @@
+# fmt: off
 import math
 import os
 import shutil
@@ -15,13 +16,15 @@ gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa
 
+# fmt: on
+
 
 class Toolbar(Component):
     def __init__(self, builder, model, app):
         super().__init__()
         with logger.performance.operation_context("toolbar_init", self.__class__.__name__):
             logger.debug("Toolbar.__init__ START", self.__class__.__name__)
-            logger.info("Toolbar startup", self.__class__.__name__)
+            logger.debug("Toolbar startup", self.__class__.__name__)
             logger.debug("Logger call completed", self.__class__.__name__)
             logger.debug("About to set builder, model, app attributes", self.__class__.__name__)
             self.builder = builder
@@ -34,69 +37,111 @@ class Toolbar(Component):
                 logger.debug("About to get AppSettings instance", self.__class__.__name__)
                 try:
                     self.settings = AppSettings.get_instance()
-                    logger.debug("AppSettings instance obtained successfully", self.__class__.__name__)
-                    logger.debug("About to connect settings changed signal", self.__class__.__name__)
-                    self.settings.connect("attribute-changed", self.handle_settings_changed)
-                    logger.debug("Settings signal connected successfully", self.__class__.__name__)
+                    logger.debug(
+                        "AppSettings instance obtained successfully",
+                        self.__class__.__name__,
+                    )
+                    logger.debug(
+                        "About to connect settings changed signal",
+                        self.__class__.__name__,
+                    )
+                    self.track_signal(
+                        self.settings,
+                        self.settings.connect("attribute-changed", self.handle_settings_changed),
+                    )
+                    logger.debug(
+                        "Settings signal connected successfully",
+                        self.__class__.__name__,
+                    )
                 except Exception as e:
                     logger.debug(f"ERROR getting AppSettings: {e}", self.__class__.__name__)
                     self.settings = None
-                    logger.debug("Continuing without AppSettings connection", self.__class__.__name__)
+                    logger.debug(
+                        "Continuing without AppSettings connection",
+                        self.__class__.__name__,
+                    )
             with logger.performance.operation_context("toolbar_buttons_setup", self.__class__.__name__):
                 logger.debug("About to get toolbar_add button", self.__class__.__name__)
                 self.toolbar_add_button = self.builder.get_object("toolbar_add")
                 logger.debug("Got toolbar_add button successfully", self.__class__.__name__)
-                self.toolbar_add_button.connect("clicked", self.on_toolbar_add_clicked)
+                self.track_signal(
+                    self.toolbar_add_button,
+                    self.toolbar_add_button.connect("clicked", self.on_toolbar_add_clicked),
+                )
                 self.toolbar_add_button.add_css_class("flat")
                 logger.debug("toolbar_add button setup completed", self.__class__.__name__)
         logger.debug("About to get toolbar_remove button", "Toolbar")
         self.toolbar_remove_button = self.builder.get_object("toolbar_remove")
         logger.debug("Got toolbar_remove button successfully", "Toolbar")
-        self.toolbar_remove_button.connect("clicked", self.on_toolbar_remove_clicked)
+        self.track_signal(
+            self.toolbar_remove_button,
+            self.toolbar_remove_button.connect("clicked", self.on_toolbar_remove_clicked),
+        )
         self.toolbar_remove_button.add_css_class("flat")
         logger.debug("toolbar_remove button setup completed", "Toolbar")
         logger.debug("About to get toolbar_search button", "Toolbar")
         self.toolbar_search_button = self.builder.get_object("toolbar_search")
         logger.debug("Got toolbar_search button successfully", "Toolbar")
-        self.toolbar_search_button.connect("clicked", self.on_toolbar_search_clicked)
+        self.track_signal(
+            self.toolbar_search_button,
+            self.toolbar_search_button.connect("clicked", self.on_toolbar_search_clicked),
+        )
         self.toolbar_search_button.add_css_class("flat")
         logger.debug("toolbar_search button setup completed", "Toolbar")
         logger.debug("About to get toolbar_search_entry", "Toolbar")
         self.toolbar_search_entry = self.builder.get_object("toolbar_search_entry")
         logger.debug("Got toolbar_search_entry successfully", "Toolbar")
-        self.toolbar_search_entry.connect("changed", self.on_search_entry_changed)
+        self.track_signal(
+            self.toolbar_search_entry,
+            self.toolbar_search_entry.connect("changed", self.on_search_entry_changed),
+        )
         logger.debug("toolbar_search_entry connect completed", "Toolbar")
         # Create focus event controller for handling focus loss
         logger.debug("About to create focus controller", "Toolbar")
         from gi.repository import Gtk
 
         focus_controller = Gtk.EventControllerFocus()
-        focus_controller.connect("leave", self.on_search_entry_focus_out)
+        self.track_signal(
+            focus_controller,
+            focus_controller.connect("leave", self.on_search_entry_focus_out),
+        )
         self.toolbar_search_entry.add_controller(focus_controller)
         self.search_visible = False
         logger.debug("Focus controller setup completed", "Toolbar")
         logger.debug("About to get toolbar_pause button", "Toolbar")
         self.toolbar_pause_button = self.builder.get_object("toolbar_pause")
         logger.debug("Got toolbar_pause button successfully", "Toolbar")
-        self.toolbar_pause_button.connect("clicked", self.on_toolbar_pause_clicked)
+        self.track_signal(
+            self.toolbar_pause_button,
+            self.toolbar_pause_button.connect("clicked", self.on_toolbar_pause_clicked),
+        )
         self.toolbar_pause_button.add_css_class("flat")
         logger.debug("toolbar_pause button setup completed", "Toolbar")
         logger.debug("About to get toolbar_resume button", "Toolbar")
         self.toolbar_resume_button = self.builder.get_object("toolbar_resume")
         logger.debug("Got toolbar_resume button successfully", "Toolbar")
-        self.toolbar_resume_button.connect("clicked", self.on_toolbar_resume_clicked)
+        self.track_signal(
+            self.toolbar_resume_button,
+            self.toolbar_resume_button.connect("clicked", self.on_toolbar_resume_clicked),
+        )
         self.toolbar_resume_button.add_css_class("flat")
         logger.debug("toolbar_resume button setup completed", "Toolbar")
         logger.debug("About to get toolbar_up button", "Toolbar")
         self.toolbar_up_button = self.builder.get_object("toolbar_up")
         logger.debug("Got toolbar_up button successfully", "Toolbar")
-        self.toolbar_up_button.connect("clicked", self.on_toolbar_up_clicked)
+        self.track_signal(
+            self.toolbar_up_button,
+            self.toolbar_up_button.connect("clicked", self.on_toolbar_up_clicked),
+        )
         self.toolbar_up_button.add_css_class("flat")
         logger.debug("toolbar_up button setup completed", "Toolbar")
         logger.debug("About to get toolbar_down button", "Toolbar")
         self.toolbar_down_button = self.builder.get_object("toolbar_down")
         logger.debug("Got toolbar_down button successfully", "Toolbar")
-        self.toolbar_down_button.connect("clicked", self.on_toolbar_down_clicked)
+        self.track_signal(
+            self.toolbar_down_button,
+            self.toolbar_down_button.connect("clicked", self.on_toolbar_down_clicked),
+        )
         self.toolbar_down_button.add_css_class("flat")
         logger.debug("toolbar_down button setup completed", "Toolbar")
         logger.debug("About to get toolbar_settings button", "Toolbar")
@@ -110,25 +155,41 @@ class Toolbar(Component):
             logger.debug("Full traceback:", "Toolbar")
             self.toolbar_settings_button = None
         logger.debug("Got toolbar_settings button successfully", "Toolbar")
-        logger.info("=== SETTINGS BUTTON SETUP ===", extra={"class_name": self.__class__.__name__})
-        logger.info(
+        logger.debug(
+            "=== SETTINGS BUTTON SETUP ===",
+            extra={"class_name": self.__class__.__name__},
+        )
+        logger.debug(
             f"toolbar_settings_button object: {self.toolbar_settings_button}",
             extra={"class_name": self.__class__.__name__},
         )
         if self.toolbar_settings_button:
             logger.debug("Settings button found, connecting signal", "Toolbar")
-            logger.info(
+            logger.debug(
                 "Settings button found and connecting signal",
                 extra={"class_name": self.__class__.__name__},
             )
-            logger.debug("About to connect clicked signal to on_toolbar_settings_clicked", "Toolbar")
+            logger.debug(
+                "About to connect clicked signal to on_toolbar_settings_clicked",
+                "Toolbar",
+            )
             signal_id = self.toolbar_settings_button.connect("clicked", self.on_toolbar_settings_clicked)
+            self.track_signal(
+                self.toolbar_settings_button,
+                signal_id,
+            )
             logger.debug("Signal connected successfully with ID:", "Toolbar")
-            logger.info(f"Signal connected with ID: {signal_id}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Signal connected with ID: {signal_id}",
+                extra={"class_name": self.__class__.__name__},
+            )
             logger.debug("About to add CSS class 'flat'", "Toolbar")
             self.toolbar_settings_button.add_css_class("flat")
             logger.debug("CSS class 'flat' added successfully", "Toolbar")
-            logger.info("CSS class 'flat' added to settings button", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "CSS class 'flat' added to settings button",
+                extra={"class_name": self.__class__.__name__},
+            )
             logger.debug("Settings button setup completed successfully", "Toolbar")
         else:
             logger.debug("ERROR: Settings button not found in UI", "Toolbar")
@@ -159,7 +220,10 @@ class Toolbar(Component):
         from gi.repository import Gtk
 
         button_controller = Gtk.GestureClick()
-        button_controller.connect("released", self.on_toolbar_refresh_rate_released)
+        self.track_signal(
+            button_controller,
+            button_controller.connect("released", self.on_toolbar_refresh_rate_released),
+        )
         self.toolbar_refresh_rate.add_controller(button_controller)
 
         try:
@@ -171,13 +235,19 @@ class Toolbar(Component):
             self.toolbar_refresh_rate.set_value(int(tickspeed_value))
             logger.debug("set_value completed, now connecting signal", "Toolbar")
             # Connect value-changed for real-time visual feedback but don't save to settings yet
-            self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_preview)
+            self.track_signal(
+                self.toolbar_refresh_rate,
+                self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_preview),
+            )
         except Exception:
             logger.debug("ERROR accessing tickspeed:", "Toolbar")
             logger.debug("Using default value of 9", "Toolbar")
             self.toolbar_refresh_rate.set_value(9)
             # Connect signal even on error
-            self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_preview)
+            self.track_signal(
+                self.toolbar_refresh_rate,
+                self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_preview),
+            )
         logger.debug("set_value completed successfully", "Toolbar")
         logger.debug("About to set size request", "Toolbar")
         self.toolbar_refresh_rate.set_size_request(150, -1)
@@ -204,25 +274,25 @@ class Toolbar(Component):
         logger.debug(f"Saved tickspeed to settings: {self.settings.tickspeed}", "Toolbar")
 
     def on_toolbar_add_clicked(self, button):
-        logger.info(
+        logger.debug(
             "Toolbar add button clicked",
             extra={"class_name": self.__class__.__name__},
         )
         self.show_file_selection_dialog()
 
     def on_toolbar_remove_clicked(self, button):
-        logger.info(
+        logger.debug(
             "Toolbar remove button clicked",
             extra={"class_name": self.__class__.__name__},
         )
         selected = self.get_selected_torrent()
         if not selected:
             return
-        logger.info(
+        logger.debug(
             "Toolbar remove " + selected.filepath,
             extra={"class_name": self.__class__.__name__},
         )
-        logger.info(
+        logger.debug(
             "Toolbar remove " + str(selected.id),
             extra={"class_name": self.__class__.__name__},
         )
@@ -237,7 +307,7 @@ class Toolbar(Component):
         self.model.remove_torrent(selected.filepath)
 
     def on_toolbar_pause_clicked(self, button):
-        logger.info(
+        logger.debug(
             "Toolbar pause button clicked",
             extra={"class_name": self.__class__.__name__},
         )
@@ -248,7 +318,7 @@ class Toolbar(Component):
         self.model.emit("data-changed", self.model, selected)
 
     def on_toolbar_resume_clicked(self, button):
-        logger.info(
+        logger.debug(
             "Toolbar resume button clicked",
             extra={"class_name": self.__class__.__name__},
         )
@@ -259,7 +329,7 @@ class Toolbar(Component):
         self.model.emit("data-changed", self.model, selected)
 
     def on_toolbar_up_clicked(self, button):
-        logger.info(
+        logger.debug(
             "Toolbar up button clicked",
             extra={"class_name": self.__class__.__name__},
         )
@@ -277,7 +347,7 @@ class Toolbar(Component):
                 break
 
     def on_toolbar_down_clicked(self, button):
-        logger.info(
+        logger.debug(
             "Toolbar down button clicked",
             extra={"class_name": self.__class__.__name__},
         )
@@ -295,7 +365,7 @@ class Toolbar(Component):
                 break
 
     def on_toolbar_search_clicked(self, button):
-        logger.info(
+        logger.debug(
             "Toolbar search button clicked",
             extra={"class_name": self.__class__.__name__},
         )
@@ -305,7 +375,7 @@ class Toolbar(Component):
         logger.debug("===== SETTINGS BUTTON CLICKED =====", "Toolbar")
         logger.debug("Button clicked:", "Toolbar")
         logger.debug("Button type:", "Toolbar")
-        logger.info(
+        logger.debug(
             "=== SETTINGS BUTTON CLICKED ===",
             extra={"class_name": self.__class__.__name__},
         )
@@ -314,70 +384,104 @@ class Toolbar(Component):
             logger.debug("Self app:", "Toolbar")
             logger.debug("Self model:", "Toolbar")
             logger.debug("About to call show_settings_dialog()", "Toolbar")
-            logger.info(f"Button object: {button}", extra={"class_name": self.__class__.__name__})
-            logger.info(f"Self app: {self.app}", extra={"class_name": self.__class__.__name__})
-            logger.info(f"Self model: {self.model}", extra={"class_name": self.__class__.__name__})
-            logger.info("About to call show_settings_dialog()", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Button object: {button}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            logger.debug(f"Self app: {self.app}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Self model: {self.model}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            logger.debug(
+                "About to call show_settings_dialog()",
+                extra={"class_name": self.__class__.__name__},
+            )
             self.show_settings_dialog()
             logger.debug("show_settings_dialog() call completed", "Toolbar")
-            logger.info("show_settings_dialog() completed successfully", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "show_settings_dialog() completed successfully",
+                extra={"class_name": self.__class__.__name__},
+            )
         except Exception as e:
             logger.debug("EXCEPTION in on_toolbar_settings_clicked:", "Toolbar")
             logger.debug("Exception type:", "Toolbar")
-            logger.error(f"ERROR in on_toolbar_settings_clicked: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"ERROR in on_toolbar_settings_clicked: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             logger.debug("Full traceback:", "Toolbar")
-            logger.error(f"TRACEBACK: {traceback.format_exc()}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"TRACEBACK: {traceback.format_exc()}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def show_settings_dialog(self):
         """Show the application settings dialog"""
         logger.debug("===== ENTERING show_settings_dialog =====", "Toolbar")
-        logger.info("=== ENTERING show_settings_dialog ===", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "=== ENTERING show_settings_dialog ===",
+            extra={"class_name": self.__class__.__name__},
+        )
         try:
             logger.debug("Current settings_dialog:", "Toolbar")
-            logger.info(
-                f"Current settings_dialog: {self.settings_dialog}", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                f"Current settings_dialog: {self.settings_dialog}",
+                extra={"class_name": self.__class__.__name__},
             )
             # Check if settings dialog already exists and is visible
             if self.settings_dialog and hasattr(self.settings_dialog, "window"):
                 try:
                     logger.debug("Existing settings dialog found, trying to present", "Toolbar")
-                    logger.info(
+                    logger.debug(
                         "Existing settings dialog found, trying to present",
                         extra={"class_name": self.__class__.__name__},
                     )
                     # Try to present the existing window
                     self.settings_dialog.window.present()
                     logger.debug("Existing settings dialog presented successfully", "Toolbar")
-                    logger.info(
+                    logger.debug(
                         "Presenting existing settings dialog",
                         extra={"class_name": self.__class__.__name__},
                     )
                     return
                 except Exception as e:
-                    logger.debug("Existing settings dialog invalid: , creating new one", "Toolbar")
+                    logger.debug(
+                        "Existing settings dialog invalid: , creating new one",
+                        "Toolbar",
+                    )
                     logger.debug(f"Existing settings dialog invalid, creating new one: {e}")
                     self.settings_dialog = None
             logger.debug("About to import SettingsDialog", "Toolbar")
-            logger.info("About to import SettingsDialog", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "About to import SettingsDialog",
+                extra={"class_name": self.__class__.__name__},
+            )
             from components.component.settings.settings_dialog import SettingsDialog
 
             logger.debug("SettingsDialog imported successfully", "Toolbar")
-            logger.info("SettingsDialog imported successfully", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "SettingsDialog imported successfully",
+                extra={"class_name": self.__class__.__name__},
+            )
             # Get main window from app
             main_window = None
             logger.debug("Checking app: hasattr(self, 'app'):", "Toolbar")
             logger.debug("self.app:", "Toolbar")
-            logger.info(
+            logger.debug(
                 f"Checking app: hasattr(self, 'app'): {hasattr(self, 'app')}",
                 extra={"class_name": self.__class__.__name__},
             )
-            logger.info(f"self.app: {self.app}", extra={"class_name": self.__class__.__name__})
+            logger.debug(f"self.app: {self.app}", extra={"class_name": self.__class__.__name__})
             if hasattr(self, "app") and self.app:
                 logger.debug("Getting active window from app", "Toolbar")
-                logger.info("Getting active window from app", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    "Getting active window from app",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 main_window = self.app.get_active_window()
                 logger.debug("Main window found:", "Toolbar")
-                logger.info(
+                logger.debug(
                     f"Main window found: {main_window}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -392,7 +496,7 @@ class Toolbar(Component):
             logger.debug("main_window=", "Toolbar")
             logger.debug("app=", "Toolbar")
             logger.debug("model=", "Toolbar")
-            logger.info(
+            logger.debug(
                 f"Creating new settings dialog with params: main_window={main_window}, "
                 f"app={self.app}, model={self.model}",
                 extra={"class_name": self.__class__.__name__},
@@ -400,30 +504,44 @@ class Toolbar(Component):
             logger.debug("About to call SettingsDialog constructor", "Toolbar")
             self.settings_dialog = SettingsDialog(main_window, self.app, self.model)
             logger.debug("Settings dialog created:", "Toolbar")
-            logger.info(
-                f"Settings dialog created: {self.settings_dialog}", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                f"Settings dialog created: {self.settings_dialog}",
+                extra={"class_name": self.__class__.__name__},
             )
             # Connect close signal to clean up reference
             logger.debug("Checking if settings dialog has window attribute", "Toolbar")
-            logger.info(
-                "Checking if settings dialog has window attribute", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                "Checking if settings dialog has window attribute",
+                extra={"class_name": self.__class__.__name__},
             )
             if hasattr(self.settings_dialog, "window"):
-                logger.debug("Settings dialog has window attribute, connecting close-request signal", "Toolbar")
-                logger.info("Connecting close-request signal", extra={"class_name": self.__class__.__name__})
-                self.settings_dialog.window.connect("close-request", self._on_settings_dialog_closed)
+                logger.debug(
+                    "Settings dialog has window attribute, connecting close-request signal",
+                    "Toolbar",
+                )
+                logger.debug(
+                    "Connecting close-request signal",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                self.track_signal(
+                    self.settings_dialog.window,
+                    self.settings_dialog.window.connect("close-request", self._on_settings_dialog_closed),
+                )
                 logger.debug("Close-request signal connected successfully", "Toolbar")
             else:
                 logger.debug("WARNING: Settings dialog has no window attribute", "Toolbar")
-                logger.warning("Settings dialog has no window attribute", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "Settings dialog has no window attribute",
+                    extra={"class_name": self.__class__.__name__},
+                )
             logger.debug("About to call settings_dialog.show()", "Toolbar")
-            logger.info(
+            logger.debug(
                 "About to call settings_dialog.show()",
                 extra={"class_name": self.__class__.__name__},
             )
             self.settings_dialog.show()
             logger.debug("Settings dialog show() called successfully", "Toolbar")
-            logger.info(
+            logger.debug(
                 "Settings dialog show() called successfully",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -435,11 +553,14 @@ class Toolbar(Component):
                 extra={"class_name": self.__class__.__name__},
             )
             logger.debug("Full exception traceback:", "Toolbar")
-            logger.error(f"FULL TRACEBACK: {traceback.format_exc()}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"FULL TRACEBACK: {traceback.format_exc()}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _on_settings_dialog_closed(self, window):
         """Clean up settings dialog reference when closed"""
-        logger.info(
+        logger.debug(
             "Settings dialog closed, cleaning up reference",
             extra={"class_name": self.__class__.__name__},
         )
@@ -448,7 +569,7 @@ class Toolbar(Component):
 
     def on_dialog_response(self, dialog, response_id):
         if response_id == Gtk.ResponseType.OK:
-            logger.info(
+            logger.debug(
                 "Toolbar file added",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -464,11 +585,11 @@ class Toolbar(Component):
             dialog.destroy()
 
     def show_file_selection_dialog(self):
-        logger.info("Toolbar file dialog", extra={"class_name": self.__class__.__name__})
+        logger.debug("Toolbar file dialog", extra={"class_name": self.__class__.__name__})
         # Create a new file chooser dialog
         dialog = Gtk.FileChooserDialog(
             title=self._("Select torrent"),
-            transient_for=self.app,
+            transient_for=self.app.get_active_window(),
             modal=True,
             action=Gtk.FileChooserAction.OPEN,
         )
@@ -479,7 +600,7 @@ class Toolbar(Component):
         filter_torrent.add_pattern("*.torrent")
         dialog.add_filter(filter_torrent)
         # Connect the "response" signal to the callback function
-        dialog.connect("response", self.on_dialog_response)
+        self.track_signal(dialog, dialog.connect("response", self.on_dialog_response))
         # Run the dialog
         dialog.show()
 
@@ -496,7 +617,7 @@ class Toolbar(Component):
         )
 
     def handle_model_changed(self, source, data_obj, data_changed):
-        logger.info(
+        logger.debug(
             "Toolbar settings changed",
             extra={"class_name": self.__class__.__name__},
         )

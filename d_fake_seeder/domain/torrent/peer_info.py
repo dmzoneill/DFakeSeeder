@@ -4,8 +4,11 @@ BitTorrent Peer Information
 Represents information about a peer including connection state and statistics.
 """
 
+# fmt: off
 from dataclasses import dataclass
 from typing import Optional
+
+# fmt: on
 
 
 @dataclass

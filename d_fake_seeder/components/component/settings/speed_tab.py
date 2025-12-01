@@ -3,6 +3,7 @@ Speed settings tab for the settings dialog.
 Handles upload/download limits, alternative speeds, and scheduler configuration.
 """
 
+# fmt: off
 from typing import Any, Dict
 
 import gi
@@ -15,6 +16,8 @@ from gi.repository import Gtk  # noqa: E402
 from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import NotificationMixin  # noqa: E402
 from .settings_mixins import UtilityMixin, ValidationMixin  # noqa: E402
+
+# fmt: on
 
 
 class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin):
@@ -58,59 +61,73 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
     def _connect_signals(self) -> None:
         """Connect signal handlers for Speed tab."""
-        # Initialize signal handler storage if not exists
-        if not hasattr(self, "_signal_handlers"):
-            self._signal_handlers = {}
         # Global limits
         upload_limit = self.get_widget("upload_limit")
         if upload_limit:
-            handler_id = upload_limit.connect("value-changed", self.on_upload_limit_changed)
-            self._signal_handlers["upload_limit"] = (upload_limit, handler_id)
+            self.track_signal(
+                upload_limit,
+                upload_limit.connect("value-changed", self.on_upload_limit_changed),
+            )
+
         download_limit = self.get_widget("download_limit")
         if download_limit:
-            handler_id = download_limit.connect("value-changed", self.on_download_limit_changed)
-            self._signal_handlers["download_limit"] = (download_limit, handler_id)
+            self.track_signal(
+                download_limit,
+                download_limit.connect("value-changed", self.on_download_limit_changed),
+            )
+
         # Alternative speeds
         enable_alt = self.get_widget("enable_alt_speeds")
         if enable_alt:
-            handler_id = enable_alt.connect("state-set", self.on_enable_alt_speeds_changed)
-            self._signal_handlers["enable_alt_speeds"] = (enable_alt, handler_id)
+            self.track_signal(
+                enable_alt,
+                enable_alt.connect("state-set", self.on_enable_alt_speeds_changed),
+            )
+
         alt_upload_limit = self.get_widget("alt_upload_limit")
         if alt_upload_limit:
-            handler_id = alt_upload_limit.connect("value-changed", self.on_alt_upload_limit_changed)
-            self._signal_handlers["alt_upload_limit"] = (alt_upload_limit, handler_id)
+            self.track_signal(
+                alt_upload_limit,
+                alt_upload_limit.connect("value-changed", self.on_alt_upload_limit_changed),
+            )
+
         alt_download_limit = self.get_widget("alt_download_limit")
         if alt_download_limit:
-            handler_id = alt_download_limit.connect("value-changed", self.on_alt_download_limit_changed)
-            self._signal_handlers["alt_download_limit"] = (alt_download_limit, handler_id)
+            self.track_signal(
+                alt_download_limit,
+                alt_download_limit.connect("value-changed", self.on_alt_download_limit_changed),
+            )
+
         # Scheduler
         enable_scheduler = self.get_widget("enable_scheduler")
         if enable_scheduler:
-            handler_id = enable_scheduler.connect("state-set", self.on_enable_scheduler_changed)
-            self._signal_handlers["enable_scheduler"] = (enable_scheduler, handler_id)
+            self.track_signal(
+                enable_scheduler,
+                enable_scheduler.connect("state-set", self.on_enable_scheduler_changed),
+            )
+
         scheduler_start_time = self.get_widget("scheduler_start_time")
         if scheduler_start_time:
-            handler_id = scheduler_start_time.connect("notify::time", self.on_scheduler_start_time_changed)
-            self._signal_handlers["scheduler_start_time"] = (scheduler_start_time, handler_id)
+            self.track_signal(
+                scheduler_start_time,
+                scheduler_start_time.connect("notify::time", self.on_scheduler_start_time_changed),
+            )
+
         scheduler_end_time = self.get_widget("scheduler_end_time")
         if scheduler_end_time:
-            handler_id = scheduler_end_time.connect("notify::time", self.on_scheduler_end_time_changed)
-            self._signal_handlers["scheduler_end_time"] = (scheduler_end_time, handler_id)
+            self.track_signal(
+                scheduler_end_time,
+                scheduler_end_time.connect("notify::time", self.on_scheduler_end_time_changed),
+            )
+
         scheduler_days = self.get_widget("scheduler_days")
         if scheduler_days:
-            handler_id = scheduler_days.connect("changed", self.on_scheduler_days_changed)
-            self._signal_handlers["scheduler_days"] = (scheduler_days, handler_id)
+            self.track_signal(
+                scheduler_days,
+                scheduler_days.connect("changed", self.on_scheduler_days_changed),
+            )
 
-    def _disconnect_signals(self) -> None:
-        """Disconnect signal handlers for Speed tab."""
-        if hasattr(self, "_signal_handlers"):
-            for widget_name, (widget, handler_id) in self._signal_handlers.items():
-                try:
-                    widget.disconnect(handler_id)
-                except Exception:
-                    pass  # Ignore errors if already disconnected
-            # Clear the handlers dict but don't delete it (will be refilled on reconnect)
-            self._signal_handlers.clear()
+    # Note: _disconnect_signals() is no longer needed - CleanupMixin handles it automatically
 
     def _load_settings(self) -> None:
         """Load current settings into Speed tab widgets."""

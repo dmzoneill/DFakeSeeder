@@ -1,0 +1,171 @@
+{
+    "upload_speed": 50,
+    "download_speed": 500,
+    "total_upload_speed": 50,
+    "total_download_speed": 500,
+    "announce_interval": 1800,
+    "torrents": {},
+    "http_headers": {"Accept-Encoding": "gzip", "User-Agent": "Deluge/2.0.3 libtorrent/2.0.5.0"},
+    "agents": [
+        "Deluge/2.0.3 libtorrent/2.0.5.0,-DE2003-",
+        "qBittorrent/4.3.1,-qB4310-",
+        "Transmission/3.00,-TR3000-",
+        "uTorrent/3.5.5,-UT3550-",
+        "Vuze/5.7.6.0,-AZ5760-",
+        "BitTorrent/7.10.5,-BT7105-",
+        "rTorrent/0.9.6,-RT0960-"
+    ],
+    "agent": 0,
+    "proxies": {"http": "", "https": ""},
+    "columns": "",
+    "concurrent_http_connections": 2,
+    "concurrent_peer_connections": 10,
+    "cellrenderers": {"progress": "Gtk.ProgressBar"},
+    "textrenderers": {
+        "total_uploaded": "humanbytes",
+        "total_downloaded": "humanbytes",
+        "session_uploaded": "humanbytes",
+        "session_downloaded": "humanbytes",
+        "total_size": "humanbytes",
+        "announce_interval": "convert_seconds_to_hours_mins_seconds",
+        "next_update": "convert_seconds_to_hours_mins_seconds",
+        "upload_speed": "add_kb",
+        "download_speed": "add_kb",
+        "threshold": "add_percent"
+    },
+    "threshold": 30,
+    "tickspeed": 9,
+    "alternative_speed_enabled": false,
+    "alternative_upload_speed": 25,
+    "alternative_download_speed": 100,
+    "seeding_paused": false,
+    "current_seeding_profile": "balanced",
+    "window_visible": true,
+    "window_width": 1024,
+    "window_height": 600,
+    "window_pos_x": -1,
+    "window_pos_y": -1,
+    "close_to_tray": true,
+    "minimize_to_tray": true,
+    "show_preferences": false,
+    "show_about": false,
+    "language": "auto",
+    "application_quit_requested": false,
+    "editwidgets": {
+        "active": "Gtk.Switch",
+        "announce_interval": "Gtk.SpinButton",
+        "download_speed": "Gtk.SpinButton",
+        "next_update": "Gtk.SpinButton",
+        "session_downloaded": "Gtk.SpinButton",
+        "session_uploaded": "Gtk.SpinButton",
+        "small_torrent_limit": "Gtk.SpinButton",
+        "threshold": "Gtk.SpinButton",
+        "total_downloaded": "Gtk.SpinButton",
+        "total_uploaded": "Gtk.SpinButton",
+        "upload_speed": "Gtk.SpinButton"
+    },
+    "issues_page": "https://github.com/dmzoneill/DFakeSeeder/issues",
+    "website": "https://github.com/dmzoneill/DFakeSeeder/",
+    "author": "David O Neill",
+    "copyright": "Copyright {year}",
+    "version": "1.0",
+    "logo": "components/images/dfakeseeder.png",
+    "peer_protocol": {
+        "peer_update_interval_seconds": 30.0,
+        "stats_update_interval_seconds": 5.0,
+        "handshake_timeout_seconds": 30.0,
+        "message_read_timeout_seconds": 60.0,
+        "keep_alive_interval_seconds": 120.0,
+        "contact_interval_seconds": 300.0
+    },
+    "connection_manager": {
+        "callback_throttle_delay_seconds": 1.0,
+        "cleanup_interval_seconds": 30,
+        "max_incoming_connections": 500,
+        "max_outgoing_connections": 500,
+        "connection_expiry_seconds": 600
+    },
+    "ui_settings": {
+        "async_sleep_interval_seconds": 5.0,
+        "error_sleep_interval_seconds": 5.0,
+        "manager_thread_join_timeout_seconds": 5.0,
+        "splash_display_duration_seconds": 2,
+        "notification_timeout_min_ms": 2000,
+        "seeder_retry_interval_divisor": 2,
+        "seeder_retry_count": 5,
+        "speed_variation_min": 0.2,
+        "speed_variation_max": 0.8,
+        "peer_idle_probability": 0.3,
+        "speed_calculation_multiplier": 1000,
+        "log_buffer_max_lines": 1000
+    },
+    "seeders": {
+        "port_range_min": 1025,
+        "port_range_max": 65000,
+        "udp_timeout_seconds": 5,
+        "http_timeout_seconds": 10,
+        "peer_request_count": 200
+    },
+    "shared_async_executor": {
+        "max_workers": 100,
+        "task_timeout_seconds": 30.0,
+        "shutdown_timeout_seconds": 5.0,
+        "stats_enabled": true
+    },
+    "protocols": {
+        "dht": {
+            "enabled": true,
+            "node_id": "auto_generate",
+            "routing_table_size": 160,
+            "announcement_interval": 1800
+        },
+        "extensions": {
+            "ut_metadata": true,
+            "ut_pex": true,
+            "lt_donthave": true,
+            "fast_extension": true
+        },
+        "transport": {
+            "utp": {
+                "enabled": true,
+                "max_connections": 100,
+                "max_window_size": 4194304,
+                "min_window_size": 65536,
+                "target_delay_ms": 100
+            },
+            "tcp_fallback": true,
+            "connection_timeout": 30
+        },
+        "multi_tracker": {
+            "enabled": true,
+            "failover_enabled": true,
+            "announce_to_all_tiers": false,
+            "announce_to_all_in_tier": false
+        }
+    },
+    "simulation": {
+        "client_behavior_engine": {
+            "enabled": true,
+            "primary_client": "qBittorrent",
+            "behavior_variation": 0.3,
+            "switch_client_probability": 0.05
+        },
+        "traffic_patterns": {
+            "profile": "balanced",
+            "realistic_variations": true,
+            "time_based_patterns": true
+        },
+        "swarm_intelligence": {
+            "enabled": true,
+            "adaptation_rate": 0.5,
+            "peer_analysis_depth": 10
+        }
+    },
+    "watch_folder": {
+        "enabled": false,
+        "path": "",
+        "scan_interval_seconds": 10,
+        "auto_start_torrents": true,
+        "delete_added_torrents": false
+    }
+}

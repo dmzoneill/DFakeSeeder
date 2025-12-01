@@ -10,6 +10,7 @@ References:
 """
 
 # Import all components from separate files
+# fmt: off
 from d_fake_seeder.domain.torrent.bittorrent_message import BitTorrentMessage
 from d_fake_seeder.domain.torrent.peer_connection import PeerConnection
 from d_fake_seeder.domain.torrent.peer_info import PeerInfo
@@ -22,3 +23,5 @@ __all__ = [
     "PeerInfo",
     "PeerProtocolManager",
 ]
+
+# fmt: on

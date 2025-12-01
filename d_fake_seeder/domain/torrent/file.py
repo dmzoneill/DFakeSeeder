@@ -1,3 +1,4 @@
+# fmt: off
 import hashlib
 from datetime import datetime
 
@@ -5,10 +6,12 @@ import d_fake_seeder.domain.torrent.bencoding as bencoding
 import d_fake_seeder.lib.util.helpers as helpers
 from d_fake_seeder.lib.logger import logger
 
+# fmt: on
+
 
 class File:
     def __init__(self, filepath):
-        logger.info("File Startup", extra={"class_name": self.__class__.__name__})
+        logger.debug("Startup", extra={"class_name": self.__class__.__name__})
         while True:
             try:
                 self.filepath = filepath

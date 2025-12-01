@@ -4,6 +4,7 @@ D-Bus Client for DFakeSeeder
 Handles communication with the main DFakeSeeder application via D-Bus.
 """
 
+# fmt: off
 import json
 from typing import Any, Dict, Optional
 
@@ -14,6 +15,8 @@ gi.require_version("Gio", "2.0")
 from gi.repository import Gio, GLib  # noqa: E402
 
 from d_fake_seeder.lib.logger import logger  # noqa: E402
+
+# fmt: on
 
 
 class DBusClient:
@@ -51,13 +54,17 @@ class DBusClient:
                 )
             except Exception as e:
                 # Service not found - this is normal when main app isn't running
-                logger.debug(f"Service not available on D-Bus: {e}", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    f"Service not available on D-Bus: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 self.connected = False
                 return False
 
             if not name_owner:
                 logger.debug(
-                    "Main application service not available on D-Bus", extra={"class_name": self.__class__.__name__}
+                    "Main application service not available on D-Bus",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 self.connected = False
                 return False
@@ -75,7 +82,8 @@ class DBusClient:
             # Test the connection by calling GetSettings directly
             # (don't use self.get_settings which checks self.connected)
             logger.debug(
-                "Testing D-Bus connection with GetSettings call", extra={"class_name": self.__class__.__name__}
+                "Testing D-Bus connection with GetSettings call",
+                extra={"class_name": self.__class__.__name__},
             )
             try:
                 test_result = self.proxy.call_sync(
@@ -83,17 +91,24 @@ class DBusClient:
                 )  # 5 second timeout
                 if test_result:
                     self.connected = True
-                    logger.info("Connected to D-Bus service", extra={"class_name": self.__class__.__name__})
+                    logger.info(
+                        "Connected to D-Bus service",
+                        extra={"class_name": self.__class__.__name__},
+                    )
                     return True
                 else:
                     self.connected = False
                     logger.warning(
-                        "Service found but GetSettings returned None", extra={"class_name": self.__class__.__name__}
+                        "Service found but GetSettings returned None",
+                        extra={"class_name": self.__class__.__name__},
                     )
                     return False
             except Exception as e:
                 self.connected = False
-                logger.warning(f"Service found but not responding: {e}", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    f"Service found but not responding: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
         except Exception as e:
@@ -108,25 +123,42 @@ class DBusClient:
         """Get settings from main application"""
         try:
             if not self.connected:
-                logger.debug("get_settings called but not connected", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    "get_settings called but not connected",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return None
 
-            logger.debug("Calling GetSettings via D-Bus proxy", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "Calling GetSettings via D-Bus proxy",
+                extra={"class_name": self.__class__.__name__},
+            )
             result = self.proxy.call_sync("GetSettings", None, Gio.DBusCallFlags.NONE, 5000, None)  # 5 second timeout
-            logger.debug(f"GetSettings result type: {type(result)}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"GetSettings result type: {type(result)}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             if result:
                 unpacked = result.unpack()[0]
                 logger.debug(
-                    f"GetSettings returned {len(unpacked)} bytes", extra={"class_name": self.__class__.__name__}
+                    f"GetSettings returned {len(unpacked)} bytes",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 return unpacked
             else:
-                logger.warning("GetSettings returned None result", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "GetSettings returned None result",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return None
 
         except Exception as e:
-            logger.error(f"Failed to get settings: {e}", extra={"class_name": self.__class__.__name__}, exc_info=True)
+            logger.error(
+                f"Failed to get settings: {e}",
+                extra={"class_name": self.__class__.__name__},
+                exc_info=True,
+            )
             return None
 
     def update_settings(self, changes: Dict[str, Any]) -> bool:
@@ -137,12 +169,19 @@ class DBusClient:
 
             changes_json = json.dumps(changes)
             result = self.proxy.call_sync(
-                "UpdateSettings", GLib.Variant("(s)", (changes_json,)), Gio.DBusCallFlags.NONE, -1, None
+                "UpdateSettings",
+                GLib.Variant("(s)", (changes_json,)),
+                Gio.DBusCallFlags.NONE,
+                -1,
+                None,
             )
             return result.unpack()[0] if result else False
 
         except Exception as e:
-            logger.error(f"Failed to update settings: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to update settings: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def subscribe(self, signal_name: str, callback):
@@ -165,7 +204,8 @@ class DBusClient:
 
         except Exception as e:
             logger.error(
-                f"Failed to subscribe to signal {signal_name}: {e}", extra={"class_name": self.__class__.__name__}
+                f"Failed to subscribe to signal {signal_name}: {e}",
+                extra={"class_name": self.__class__.__name__},
             )
             return False
 
@@ -184,7 +224,10 @@ class DBusClient:
 
     def reconnect(self) -> bool:
         """Attempt to reconnect to D-Bus service"""
-        logger.debug("Attempting to reconnect to D-Bus", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Attempting to reconnect to D-Bus",
+            extra={"class_name": self.__class__.__name__},
+        )
         # Clean up old connection state
         self.connected = False
         self.proxy = None

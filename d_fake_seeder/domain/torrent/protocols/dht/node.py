@@ -5,6 +5,7 @@ Implements a Kademlia-based DHT node for BitTorrent peer discovery.
 Supports trackerless operation and distributed peer storage.
 """
 
+# fmt: off
 import asyncio
 import hashlib
 import random
@@ -24,6 +25,8 @@ try:
     import bencode
 except ImportError:
     from d_fake_seeder.domain.torrent.bencoding import bencode
+
+# fmt: on
 
 
 class DHTNode:
@@ -68,9 +71,13 @@ class DHTNode:
         # Active announcements
         self.announced_torrents: Set[bytes] = set()
 
-        logger.info(
+        logger.debug(
             "DHT Node initialized",
-            extra={"class_name": self.__class__.__name__, "node_id": self.node_id.hex()[:16], "port": self.port},
+            extra={
+                "class_name": self.__class__.__name__,
+                "node_id": self.node_id.hex()[:16],
+                "port": self.port,
+            },
         )
 
     def _generate_node_id(self) -> bytes:
@@ -80,10 +87,13 @@ class DHTNode:
     async def start(self):
         """Start the DHT node"""
         if not self.enabled:
-            logger.info("DHT disabled in settings", extra={"class_name": self.__class__.__name__})
+            logger.info(
+                "DHT disabled in settings",
+                extra={"class_name": self.__class__.__name__},
+            )
             return
 
-        logger.info("Starting DHT node", extra={"class_name": self.__class__.__name__})
+        logger.debug("Starting DHT node", extra={"class_name": self.__class__.__name__})
 
         try:
             # Create UDP socket
@@ -102,15 +112,21 @@ class DHTNode:
             asyncio.create_task(self._bootstrap())
             asyncio.create_task(self._maintenance_loop())
 
-            logger.info("DHT node started successfully", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "DHT node started successfully",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         except Exception as e:
-            logger.error(f"Failed to start DHT node: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to start DHT node: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             self.running = False
 
     async def stop(self):
         """Stop the DHT node"""
-        logger.info("Stopping DHT node", extra={"class_name": self.__class__.__name__})
+        logger.debug("Stopping DHT node", extra={"class_name": self.__class__.__name__})
         self.running = False
 
         if self.socket:
@@ -131,8 +147,9 @@ class DHTNode:
         if not self.running:
             return False
 
-        logger.info(
-            f"Announcing peer for torrent {info_hash.hex()[:16]}", extra={"class_name": self.__class__.__name__}
+        logger.debug(
+            f"Announcing peer for torrent {info_hash.hex()[:16]}",
+            extra={"class_name": self.__class__.__name__},
         )
 
         try:
@@ -143,17 +160,23 @@ class DHTNode:
 
             if success:
                 self.announced_torrents.add(info_hash)
-                logger.info(
+                logger.debug(
                     f"Successfully announced peer for {info_hash.hex()[:16]}",
                     extra={"class_name": self.__class__.__name__},
                 )
                 return True
             else:
-                logger.warning("Failed to announce to DHT nodes", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "Failed to announce to DHT nodes",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return False
 
         except Exception as e:
-            logger.error(f"DHT announcement failed: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"DHT announcement failed: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     async def get_peers(self, info_hash: bytes) -> List[Tuple[str, int]]:
@@ -169,7 +192,10 @@ class DHTNode:
         if not self.running:
             return []
 
-        logger.debug(f"Finding peers for torrent {info_hash.hex()[:16]}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Finding peers for torrent {info_hash.hex()[:16]}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
         try:
             # Use peer discovery for finding peers
@@ -177,12 +203,18 @@ class DHTNode:
                 return []
             peers = await self.peer_discovery.discover_peers(info_hash, 50)
 
-            logger.debug(f"Found {len(peers)} peers via DHT", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Found {len(peers)} peers via DHT",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             return peers
 
         except Exception as e:
-            logger.error(f"DHT peer query failed: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"DHT peer query failed: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return []
 
     async def _listen_loop(self):
@@ -198,7 +230,10 @@ class DHTNode:
             except asyncio.CancelledError:
                 break
             except Exception as e:
-                logger.error(f"DHT listen error: {e}", extra={"class_name": self.__class__.__name__})
+                logger.error(
+                    f"DHT listen error: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 await asyncio.sleep(1)
 
     async def _handle_message(self, data: bytes, addr: Tuple[str, int]):
@@ -220,7 +255,8 @@ class DHTNode:
 
         except Exception as e:
             logger.debug(
-                f"Failed to decode DHT message from {addr}: {e}", extra={"class_name": self.__class__.__name__}
+                f"Failed to decode DHT message from {addr}: {e}",
+                extra={"class_name": self.__class__.__name__},
             )
 
     async def _handle_query(self, message: dict, addr: Tuple[str, int]):
@@ -248,7 +284,10 @@ class DHTNode:
                         await self._send_message(response, addr)
 
         except Exception as e:
-            logger.debug(f"Failed to handle DHT query: {e}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Failed to handle DHT query: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     async def _send_ping_response(self, transaction_id: bytes, addr: Tuple[str, int]):
         """Send ping response"""
@@ -263,11 +302,14 @@ class DHTNode:
             data = bencode.bencode(message)
             await asyncio.get_running_loop().sock_sendto(self.socket, data, addr)
         except Exception as e:
-            logger.debug(f"Failed to send DHT message to {addr}: {e}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Failed to send DHT message to {addr}: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     async def _bootstrap(self):
         """Bootstrap the DHT by connecting to known nodes"""
-        logger.info("Bootstrapping DHT", extra={"class_name": self.__class__.__name__})
+        logger.debug("Bootstrapping DHT", extra={"class_name": self.__class__.__name__})
 
         for host, port in self.bootstrap_nodes:
             try:
@@ -276,12 +318,20 @@ class DHTNode:
                 await self._send_ping(addr)
                 await asyncio.sleep(DHTConstants.RATE_LIMIT_DELAY_SECONDS)  # Rate limiting
             except Exception as e:
-                logger.debug(f"Bootstrap failed for {host}:{port}: {e}", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    f"Bootstrap failed for {host}:{port}: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
     async def _send_ping(self, addr: Tuple[str, int]):
         """Send ping query to a node"""
         transaction_id = self._get_transaction_id()
-        message = {b"t": transaction_id, b"y": b"q", b"q": b"ping", b"a": {b"id": self.node_id}}
+        message = {
+            b"t": transaction_id,
+            b"y": b"q",
+            b"q": b"ping",
+            b"a": {b"id": self.node_id},
+        }
         await self._send_message(message, addr)
 
     def _get_transaction_id(self) -> bytes:
@@ -308,7 +358,10 @@ class DHTNode:
             except asyncio.CancelledError:
                 break
             except Exception as e:
-                logger.error(f"DHT maintenance error: {e}", extra={"class_name": self.__class__.__name__})
+                logger.error(
+                    f"DHT maintenance error: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
     def _cleanup_old_data(self):
         """Clean up old DHT data"""
@@ -346,7 +399,12 @@ class DHTNode:
                 b"t": transaction_id,
                 b"y": b"q",
                 b"q": b"announce_peer",
-                b"a": {b"id": self.node_id, b"info_hash": info_hash, b"port": port, b"token": token},
+                b"a": {
+                    b"id": self.node_id,
+                    b"info_hash": info_hash,
+                    b"port": port,
+                    b"token": token,
+                },
             }
 
             await self._send_message(message, node_addr)
@@ -354,7 +412,8 @@ class DHTNode:
 
         except Exception as e:
             logger.debug(
-                f"Failed to send announce_peer to {node_addr}: {e}", extra={"class_name": self.__class__.__name__}
+                f"Failed to send announce_peer to {node_addr}: {e}",
+                extra={"class_name": self.__class__.__name__},
             )
             return False
 
@@ -373,7 +432,8 @@ class DHTNode:
         if len(error_info) >= 2:
             error_code, error_msg = error_info[0], error_info[1]
             logger.debug(
-                f"DHT error from {addr}: {error_code} - {error_msg}", extra={"class_name": self.__class__.__name__}
+                f"DHT error from {addr}: {error_code} - {error_msg}",
+                extra={"class_name": self.__class__.__name__},
             )
 
     def _add_node_to_routing_table(self, node_id: bytes, addr: Tuple[str, int]):
@@ -385,7 +445,11 @@ class DHTNode:
     async def _send_find_node_response(self, message: dict, transaction_id: bytes, addr: Tuple[str, int]):
         """Send find_node response"""
         # Simplified implementation
-        response = {b"t": transaction_id, b"y": b"r", b"r": {b"id": self.node_id, b"nodes": b""}}  # Empty nodes list
+        response = {
+            b"t": transaction_id,
+            b"y": b"r",
+            b"r": {b"id": self.node_id, b"nodes": b""},
+        }  # Empty nodes list
         await self._send_message(response, addr)
 
     async def _send_get_peers_response(self, message: dict, transaction_id: bytes, addr: Tuple[str, int]):
@@ -397,7 +461,11 @@ class DHTNode:
         response = {
             b"t": transaction_id,
             b"y": b"r",
-            b"r": {b"id": self.node_id, b"token": token, b"nodes": b""},  # Empty nodes list - no peers stored
+            b"r": {
+                b"id": self.node_id,
+                b"token": token,
+                b"nodes": b"",
+            },  # Empty nodes list - no peers stored
         }
         await self._send_message(response, addr)
 

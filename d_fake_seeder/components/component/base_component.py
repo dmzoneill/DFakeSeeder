@@ -1,12 +1,17 @@
+# fmt: off
 from abc import abstractmethod
 
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.cleanup_mixin import CleanupMixin
+
+# fmt: on
 
 
-class Component:
+class Component(CleanupMixin):
     def __init__(self):
         """Initialize component."""
-        pass
+        CleanupMixin.__init__(self)
+        self.model = None
 
     @staticmethod
     def to_str(bind, from_value):
@@ -42,8 +47,9 @@ class Component:
 
     def set_model(self, model):
         self.model = model
-        # subscribe to model changes
-        self.model.connect("data-changed", self.handle_model_changed)
+        # subscribe to model changes and track signal for cleanup
+        handler_id = self.model.connect("data-changed", self.handle_model_changed)
+        self.track_signal(self.model, handler_id)
 
     def model_selection_changed(self, source, model, torrent):
         logger.debug(

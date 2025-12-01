@@ -5,18 +5,24 @@ Extension for Peers to Send Metadata Files.
 Allows peers to exchange torrent metadata for magnet links.
 """
 
+# fmt: off
 import math
 import struct
 from typing import Dict, Optional
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
-from d_fake_seeder.lib.util.constants import BitTorrentProtocolConstants, ProtocolConstants
+from d_fake_seeder.lib.util.constants import (
+    BitTorrentProtocolConstants,
+    ProtocolConstants,
+)
 
 try:
     import bencodepy as bencode
 except ImportError:
     from d_fake_seeder.domain.torrent.bencoding import bencode
+
+# fmt: on
 
 
 class MetadataExtension:
@@ -50,7 +56,10 @@ class MetadataExtension:
         # For fake seeding - generate synthetic metadata if needed
         self.generate_synthetic_metadata = True
 
-        logger.debug("Metadata extension initialized", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Metadata extension initialized",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def initialize(self):
         """Initialize metadata extension after handshake"""
@@ -91,11 +100,15 @@ class MetadataExtension:
                 self._handle_reject(payload[1:])
             else:
                 logger.debug(
-                    f"Unknown metadata message type: {msg_type}", extra={"class_name": self.__class__.__name__}
+                    f"Unknown metadata message type: {msg_type}",
+                    extra={"class_name": self.__class__.__name__},
                 )
 
         except Exception as e:
-            logger.error(f"Failed to handle metadata message: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to handle metadata message: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _handle_request(self, payload: bytes):
         """
@@ -110,7 +123,8 @@ class MetadataExtension:
             piece_index = request_data.get(b"piece", 0)
 
             logger.debug(
-                f"Received metadata request for piece {piece_index}", extra={"class_name": self.__class__.__name__}
+                f"Received metadata request for piece {piece_index}",
+                extra={"class_name": self.__class__.__name__},
             )
 
             # Check if we have the metadata
@@ -127,7 +141,10 @@ class MetadataExtension:
             self._send_metadata_piece(piece_index)
 
         except Exception as e:
-            logger.error(f"Failed to handle metadata request: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to handle metadata request: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _handle_data(self, payload: bytes):
         """
@@ -169,7 +186,10 @@ class MetadataExtension:
                 self._assemble_metadata()
 
         except Exception as e:
-            logger.error(f"Failed to handle metadata data: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to handle metadata data: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _handle_reject(self, payload: bytes):
         """
@@ -183,14 +203,18 @@ class MetadataExtension:
             piece_index = reject_data.get(b"piece", 0)
 
             logger.debug(
-                f"Metadata request rejected for piece {piece_index}", extra={"class_name": self.__class__.__name__}
+                f"Metadata request rejected for piece {piece_index}",
+                extra={"class_name": self.__class__.__name__},
             )
 
             # Remove from requested pieces
             self.requested_pieces.discard(piece_index)
 
         except Exception as e:
-            logger.error(f"Failed to handle metadata reject: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to handle metadata reject: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _send_metadata_piece(self, piece_index: int):
         """
@@ -210,7 +234,11 @@ class MetadataExtension:
             piece_data = self.metadata[start_offset:end_offset]
 
             # Build message
-            metadata_dict = {b"msg_type": self.DATA, b"piece": piece_index, b"total_size": len(self.metadata)}
+            metadata_dict = {
+                b"msg_type": self.DATA,
+                b"piece": piece_index,
+                b"total_size": len(self.metadata),
+            }
 
             # Encode message
             payload = struct.pack("B", self.DATA)
@@ -227,11 +255,15 @@ class MetadataExtension:
                 )
             else:
                 logger.debug(
-                    f"Failed to send metadata piece {piece_index}", extra={"class_name": self.__class__.__name__}
+                    f"Failed to send metadata piece {piece_index}",
+                    extra={"class_name": self.__class__.__name__},
                 )
 
         except Exception as e:
-            logger.error(f"Failed to send metadata piece: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to send metadata piece: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _send_reject(self, piece_index: int):
         """
@@ -248,15 +280,24 @@ class MetadataExtension:
 
             self.extension_manager.send_extended_message("ut_metadata", payload)
 
-            logger.debug(f"Sent metadata reject for piece {piece_index}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Sent metadata reject for piece {piece_index}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         except Exception as e:
-            logger.error(f"Failed to send metadata reject: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to send metadata reject: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def request_metadata(self):
         """Request metadata from peer"""
         if not self.metadata_size or self.pieces_count == 0:
-            logger.debug("No metadata size information available", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "No metadata size information available",
+                extra={"class_name": self.__class__.__name__},
+            )
             return
 
         # Request all pieces we don't have
@@ -281,10 +322,16 @@ class MetadataExtension:
 
             if success:
                 self.requested_pieces.add(piece_index)
-                logger.debug(f"Requested metadata piece {piece_index}", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    f"Requested metadata piece {piece_index}",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
         except Exception as e:
-            logger.error(f"Failed to request metadata piece: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to request metadata piece: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _assemble_metadata(self):
         """Assemble complete metadata from received pieces"""
@@ -295,23 +342,36 @@ class MetadataExtension:
 
             # Verify metadata integrity
             if len(self.metadata) != self.metadata_size:
-                logger.warning("Assembled metadata size mismatch", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "Assembled metadata size mismatch",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return
 
             # Parse metadata to verify it's valid
             try:
                 metadata_dict = bencode.bdecode(self.metadata)
                 if b"announce" in metadata_dict and b"info" in metadata_dict:
-                    logger.info(
-                        "Successfully assembled complete metadata", extra={"class_name": self.__class__.__name__}
+                    logger.debug(
+                        "Successfully assembled complete metadata",
+                        extra={"class_name": self.__class__.__name__},
                     )
                 else:
-                    logger.warning("Assembled metadata appears invalid", extra={"class_name": self.__class__.__name__})
+                    logger.warning(
+                        "Assembled metadata appears invalid",
+                        extra={"class_name": self.__class__.__name__},
+                    )
             except Exception:
-                logger.warning("Failed to parse assembled metadata", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "Failed to parse assembled metadata",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
         except Exception as e:
-            logger.error(f"Failed to assemble metadata: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to assemble metadata: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _generate_synthetic_metadata(self):
         """Generate synthetic metadata for fake seeding"""
@@ -341,7 +401,10 @@ class MetadataExtension:
             )
 
         except Exception as e:
-            logger.error(f"Failed to generate synthetic metadata: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to generate synthetic metadata: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def get_metadata(self) -> Optional[bytes]:
         """
@@ -383,4 +446,7 @@ class MetadataExtension:
         self.requested_pieces.clear()
         self.metadata = None
 
-        logger.debug("Metadata extension cleaned up", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Metadata extension cleaned up",
+            extra={"class_name": self.__class__.__name__},
+        )

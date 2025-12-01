@@ -4,6 +4,7 @@ Options tab for torrent details.
 Displays editable torrent options with dynamic widgets based on configuration.
 """
 
+# fmt: off
 from typing import Any, List
 
 import gi
@@ -13,6 +14,8 @@ from .tab_mixins import DataUpdateMixin, UIUtilityMixin
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa
+
+# fmt: on
 
 
 class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
@@ -29,7 +32,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
         # Connect to language change signal for translation updates
         if hasattr(self.model, "connect"):
-            self.model.connect("language-changed", self.on_language_changed)
+            self.track_signal(model, model.connect("language-changed", self.on_language_changed))
 
     @property
     def tab_name(self) -> str:
@@ -73,7 +76,10 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             torrent: Torrent object to display
         """
         try:
-            self.logger.info("Updating options tab for torrent", extra={"class_name": self.__class__.__name__})
+            self.logger.debug(
+                "Updating options tab for torrent",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             # Store current torrent for language change handling
             self._current_torrent = torrent
@@ -234,7 +240,10 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             widget.set_active(bool(current_value))
 
             # Connect signal
-            widget.connect("state-set", self._on_switch_value_changed, torrent, attribute)
+            self.track_signal(
+                widget,
+                widget.connect("state-set", self._on_switch_value_changed, torrent, attribute),
+            )
 
         except Exception as e:
             self.logger.error(f"Error configuring switch widget for {attribute}: {e}")
@@ -269,7 +278,15 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 widget.set_wrap(True)
 
             # Connect signal
-            widget.connect("value-changed", self._on_adjustment_value_changed, torrent, attribute)
+            self.track_signal(
+                widget,
+                widget.connect(
+                    "value-changed",
+                    self._on_adjustment_value_changed,
+                    torrent,
+                    attribute,
+                ),
+            )
 
         except Exception as e:
             self.logger.error(f"Error configuring adjustment widget for {attribute}: {e}")

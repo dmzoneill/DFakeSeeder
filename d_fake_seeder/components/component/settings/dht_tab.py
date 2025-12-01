@@ -5,6 +5,7 @@ Provides configuration interface for DHT (Distributed Hash Table) settings.
 Manages DHT node configuration, bootstrap settings, and trackerless operation parameters.
 """
 
+# fmt: off
 from typing import Any, Dict
 
 import gi
@@ -12,6 +13,8 @@ import gi
 gi.require_version("Gtk", "4.0")
 
 from .base_tab import BaseSettingsTab  # noqa: E402
+
+# fmt: on
 
 
 class DHTTab(BaseSettingsTab):
@@ -169,7 +172,11 @@ class DHTTab(BaseSettingsTab):
                 buffer = self._widgets["bootstrap_nodes"].get_buffer()
                 bootstrap_list = extended_config.get(
                     "bootstrap_nodes",
-                    ["router.bittorrent.com:6881", "dht.transmissionbt.com:6881", "router.utorrent.com:6881"],
+                    [
+                        "router.bittorrent.com:6881",
+                        "dht.transmissionbt.com:6881",
+                        "router.utorrent.com:6881",
+                    ],
                 )
                 buffer.set_text("\n".join(bootstrap_list))
 
@@ -190,10 +197,16 @@ class DHTTab(BaseSettingsTab):
             if self._widgets["max_queries_per_second"]:
                 self._widgets["max_queries_per_second"].set_value(extended_config.get("max_queries_per_second", 10))
 
-            self.logger.debug("DHT settings loaded successfully", extra={"class_name": self.__class__.__name__})
+            self.logger.debug(
+                "DHT settings loaded successfully",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         except Exception as e:
-            self.logger.error(f"Failed to load DHT settings: {e}", extra={"class_name": self.__class__.__name__})
+            self.logger.error(
+                f"Failed to load DHT settings: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _collect_settings(self) -> Dict[str, Any]:
         """Collect current DHT settings from UI widgets"""
@@ -271,12 +284,18 @@ class DHTTab(BaseSettingsTab):
             # Save back to settings
             protocols_config["dht"] = dht_config
 
-            self.logger.debug("DHT settings collected successfully", extra={"class_name": self.__class__.__name__})
+            self.logger.debug(
+                "DHT settings collected successfully",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             return {"protocols": protocols_config}
 
         except Exception as e:
-            self.logger.error(f"Failed to collect DHT settings: {e}", extra={"class_name": self.__class__.__name__})
+            self.logger.error(
+                f"Failed to collect DHT settings: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return {}
 
     def _setup_dependencies(self):
@@ -312,14 +331,24 @@ class DHTTab(BaseSettingsTab):
                 rate_limit_enabled = self._widgets["rate_limit_enabled"].get_active()
                 self._widgets["max_queries_per_second"].set_sensitive(rate_limit_enabled)
 
-            self.logger.debug("DHT tab dependencies set up", extra={"class_name": self.__class__.__name__})
+            self.logger.debug(
+                "DHT tab dependencies set up",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         except Exception as e:
-            self.logger.error(f"Failed to set up DHT dependencies: {e}", extra={"class_name": self.__class__.__name__})
+            self.logger.error(
+                f"Failed to set up DHT dependencies: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _validate_tab_settings(self) -> Dict[str, Any]:
         """Validate DHT settings"""
-        validation_result: Dict[str, Any] = {"valid": True, "errors": [], "warnings": []}
+        validation_result: Dict[str, Any] = {
+            "valid": True,
+            "errors": [],
+            "warnings": [],
+        }
 
         try:
             # Validate custom node ID format
@@ -374,14 +403,20 @@ class DHTTab(BaseSettingsTab):
         except Exception as e:
             validation_result["errors"].append(f"Validation error: {str(e)}")
             validation_result["valid"] = False
-            self.logger.error(f"DHT settings validation failed: {e}", extra={"class_name": self.__class__.__name__})
+            self.logger.error(
+                f"DHT settings validation failed: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         return validation_result
 
     # Signal handlers
     def _on_dht_enabled_changed(self, switch, state):
         """Handle DHT enable/disable toggle"""
-        self.logger.debug(f"DHT enabled changed: {state}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"DHT enabled changed: {state}",
+            extra={"class_name": self.__class__.__name__},
+        )
         # Enable/disable other DHT widgets based on state
         sensitive_widgets = [
             "node_id_auto",
@@ -401,7 +436,10 @@ class DHTTab(BaseSettingsTab):
         auto_enabled = check_button.get_active()
         if self._widgets["node_id_custom"]:
             self._widgets["node_id_custom"].set_sensitive(not auto_enabled)
-        self.logger.debug(f"Node ID auto generation: {auto_enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Node ID auto generation: {auto_enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_node_id_custom_changed(self, entry):
         """Handle custom node ID changes"""
@@ -410,12 +448,18 @@ class DHTTab(BaseSettingsTab):
     def _on_announcement_interval_changed(self, spin_button):
         """Handle announcement interval changes"""
         interval = spin_button.get_value()
-        self.logger.debug(f"DHT announcement interval: {interval}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"DHT announcement interval: {interval}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_bootstrap_timeout_changed(self, spin_button):
         """Handle bootstrap timeout changes"""
         timeout = spin_button.get_value()
-        self.logger.debug(f"Bootstrap timeout: {timeout}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Bootstrap timeout: {timeout}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_query_timeout_changed(self, spin_button):
         """Handle query timeout changes"""
@@ -440,7 +484,10 @@ class DHTTab(BaseSettingsTab):
     def _on_concurrent_queries_changed(self, spin_button):
         """Handle concurrent queries changes"""
         queries = spin_button.get_value()
-        self.logger.debug(f"Concurrent queries: {queries}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Concurrent queries: {queries}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_auto_bootstrap_toggled(self, check_button):
         """Handle auto bootstrap toggle"""
@@ -452,7 +499,10 @@ class DHTTab(BaseSettingsTab):
         enabled = check_button.get_active()
         if self._widgets["stats_interval"]:
             self._widgets["stats_interval"].set_sensitive(enabled)
-        self.logger.debug(f"DHT stats enabled: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"DHT stats enabled: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_stats_interval_changed(self, spin_button):
         """Handle stats interval changes"""
@@ -469,9 +519,15 @@ class DHTTab(BaseSettingsTab):
         enabled = check_button.get_active()
         if self._widgets["max_queries_per_second"]:
             self._widgets["max_queries_per_second"].set_sensitive(enabled)
-        self.logger.debug(f"Rate limit enabled: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Rate limit enabled: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_max_queries_changed(self, spin_button):
         """Handle max queries per second changes"""
         max_queries = spin_button.get_value()
-        self.logger.debug(f"Max queries per second: {max_queries}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Max queries per second: {max_queries}",
+            extra={"class_name": self.__class__.__name__},
+        )

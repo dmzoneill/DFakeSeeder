@@ -5,9 +5,12 @@ Distributed Hash Table support for trackerless torrents.
 Implements Kademlia-based DHT as specified in BEP-005.
 """
 
+# fmt: off
 from .node import DHTNode
 from .peer_discovery import PeerDiscovery
 from .routing_table import RoutingTable
 from .seeder import DHTSeeder
 
 __all__ = ["DHTNode", "RoutingTable", "PeerDiscovery", "DHTSeeder"]
+
+# fmt: on

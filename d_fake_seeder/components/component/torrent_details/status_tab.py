@@ -4,6 +4,7 @@ Status tab for torrent details.
 Displays torrent attributes and status information in a grid layout.
 """
 
+# fmt: off
 import gi
 
 from d_fake_seeder.domain.torrent.model.attributes import Attributes
@@ -13,6 +14,8 @@ from .tab_mixins import DataUpdateMixin, UIUtilityMixin
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import GObject  # noqa
+
+# fmt: on
 
 
 class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
@@ -45,6 +48,9 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 self._remove_current_grid()
                 self._status_grid_child = None
 
+            # Show empty state
+            super().clear_content()
+
         except Exception as e:
             self.logger.error(f"Error clearing status tab content: {e}")
 
@@ -71,7 +77,14 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             torrent: Torrent object to display
         """
         try:
-            self.logger.info("Updating status tab for torrent", extra={"class_name": self.__class__.__name__})
+            import traceback
+
+            torrent_name = getattr(torrent, "name", "None") if torrent else "None"
+            self.logger.debug(
+                f"🔍 STATUS TAB update_content called with torrent: {torrent_name}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.logger.debug(f"Call stack:\n{''.join(traceback.format_stack())}")
 
             # Remove existing content
             self._remove_current_grid()

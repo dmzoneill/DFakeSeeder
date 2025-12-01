@@ -5,6 +5,7 @@ Provides functionality to load language configurations from JSON files
 instead of hardcoded dictionaries.
 """
 
+# fmt: off
 import json
 import os
 from pathlib import Path
@@ -17,6 +18,8 @@ except ImportError:
     import logging
 
     logger = logging.getLogger(__name__)
+
+# fmt: on
 
 
 def get_languages_config_path() -> Path:
@@ -86,7 +89,10 @@ def _discover_languages_from_locale() -> Dict[str, Dict[str, str]]:
 
     # Always ensure English is present as ultimate fallback
     if "en" not in languages:
-        languages["en"] = {"name": "English", "plural_forms": "nplurals=2; plural=n != 1;"}
+        languages["en"] = {
+            "name": "English",
+            "plural_forms": "nplurals=2; plural=n != 1;",
+        }
         logger.debug("Added English as fallback language")
 
     logger.info(f"Discovered {len(languages)} languages from locale directory")

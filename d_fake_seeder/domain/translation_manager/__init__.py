@@ -9,6 +9,7 @@ the compatible TranslationManager implementation.
 Usage Examples:
 
     # Auto-detect GTK version and create appropriate manager
+# fmt: off
     from domain.translation_manager import create_translation_manager
     tm = create_translation_manager(domain="dfakeseeder", localedir="d_fake_seeder/locale")
 
@@ -66,3 +67,5 @@ GTK4TranslationManager = create_gtk4_translation_manager
 __version__ = "1.0.0"
 __author__ = "DFakeSeeder Development Team"
 __description__ = "Unified translation management for GTK3 and GTK4 applications"
+
+# fmt: on

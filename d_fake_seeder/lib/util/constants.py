@@ -54,7 +54,16 @@ class UIConstants:
     NOTIFICATION_DEFAULT = 3000
 
     # Icon sizes
-    ICON_SIZES = ["16x16", "32x32", "48x48", "64x64", "96x96", "128x128", "192x192", "256x256"]
+    ICON_SIZES = [
+        "16x16",
+        "32x32",
+        "48x48",
+        "64x64",
+        "96x96",
+        "128x128",
+        "192x192",
+        "256x256",
+    ]
 
 
 class ProtocolConstants:

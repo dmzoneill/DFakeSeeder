@@ -12,6 +12,7 @@ Performance Impact:
 - Estimated CPU reduction: 20-40% (on top of Phase 2 optimizations)
 """
 
+# fmt: off
 import asyncio
 import threading
 import time
@@ -21,6 +22,8 @@ from typing import Dict, Optional, Set
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import AsyncConstants
+
+# fmt: on
 
 
 class SharedAsyncExecutor:
@@ -72,7 +75,7 @@ class SharedAsyncExecutor:
         self.task_timeout = executor_config.get("task_timeout_seconds", 30.0)
         self.shutdown_timeout = executor_config.get("shutdown_timeout_seconds", 5.0)
 
-        logger.info(
+        logger.debug(
             f"SharedAsyncExecutor initialized (max_workers={self.max_workers})",
             extra={"class_name": self.__class__.__name__},
         )
@@ -89,7 +92,10 @@ class SharedAsyncExecutor:
     def start(self):
         """Start the shared async executor"""
         if self.running:
-            logger.debug("SharedAsyncExecutor already running", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "SharedAsyncExecutor already running",
+                extra={"class_name": self.__class__.__name__},
+            )
             return
 
         with self._lock:
@@ -111,7 +117,8 @@ class SharedAsyncExecutor:
 
             if self.event_loop is None:
                 logger.error(
-                    "SharedAsyncExecutor failed to start event loop", extra={"class_name": self.__class__.__name__}
+                    "SharedAsyncExecutor failed to start event loop",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 self.running = False
                 return
@@ -143,7 +150,7 @@ class SharedAsyncExecutor:
 
         # Wait for loop thread to finish
         if self.loop_thread and self.loop_thread.is_alive():
-            logger.info(
+            logger.debug(
                 f"⏱️ Waiting for event loop thread (timeout: {self.shutdown_timeout}s)",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -158,9 +165,15 @@ class SharedAsyncExecutor:
         # Shutdown thread pool
         try:
             self.thread_pool.shutdown(wait=False)
-            logger.info("✅ Thread pool shut down", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "✅ Thread pool shut down",
+                extra={"class_name": self.__class__.__name__},
+            )
         except Exception as e:
-            logger.debug(f"Error during thread pool shutdown: {e}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Error during thread pool shutdown: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         logger.info(
             "✅ SharedAsyncExecutor stopped",
@@ -169,7 +182,7 @@ class SharedAsyncExecutor:
 
     def _run_event_loop(self):
         """Run the shared event loop in dedicated thread"""
-        logger.info(
+        logger.debug(
             "🔄 SharedAsyncExecutor event loop thread started",
             extra={"class_name": self.__class__.__name__},
         )
@@ -207,7 +220,7 @@ class SharedAsyncExecutor:
                         extra={"class_name": self.__class__.__name__},
                     )
 
-            logger.info(
+            logger.debug(
                 "🛑 SharedAsyncExecutor event loop thread stopped",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -301,7 +314,7 @@ class SharedAsyncExecutor:
                 return
 
             tasks = list(self.active_tasks[manager_id])
-            logger.info(
+            logger.debug(
                 f"🚫 Cancelling {len(tasks)} tasks for manager {manager_id}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -317,7 +330,7 @@ class SharedAsyncExecutor:
         with self.tasks_lock:
             total_tasks = sum(len(tasks) for tasks in self.active_tasks.values())
             if total_tasks > 0:
-                logger.info(
+                logger.debug(
                     f"🚫 Cancelling {total_tasks} active tasks",
                     extra={"class_name": self.__class__.__name__},
                 )

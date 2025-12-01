@@ -5,12 +5,15 @@ Implements Kademlia-style routing table for DHT node management.
 Manages node contacts and distance calculations for efficient peer discovery.
 """
 
+# fmt: off
 import time
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import DHTConstants
+
+# fmt: on
 
 
 @dataclass
@@ -152,7 +155,7 @@ class RoutingTable:
         # Start with one bucket for the entire space
         self.buckets.append(KBucket(k))
 
-        logger.info(
+        logger.debug(
             f"DHT Routing table initialized for node {node_id.hex()[:16]}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -267,8 +270,9 @@ class RoutingTable:
                 removed_count += 1
 
         if removed_count > 0:
-            logger.info(
-                f"Removed {removed_count} stale nodes from routing table", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                f"Removed {removed_count} stale nodes from routing table",
+                extra={"class_name": self.__class__.__name__},
             )
 
     def _get_bucket_index(self, node_id: bytes) -> int:

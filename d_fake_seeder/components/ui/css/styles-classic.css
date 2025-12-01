@@ -1,0 +1,285 @@
+/* Classic Theme - Original DFakeSeeder Look */
+
+.statusbar {
+    padding: 50px;
+    margin: 50px;
+}
+
+columnview column header {
+    padding: 5px;
+    margin: 0;
+}
+
+/* Progress bar styling to make them more prominent */
+.thick-progress-bar {
+    min-height: 40px;
+    border-radius: 8px;
+}
+
+.thick-progress-bar > trough {
+    min-height: 40px;
+    border-radius: 8px;
+    background-color: #e0e0e0;
+}
+
+.thick-progress-bar > trough > progress {
+    min-height: 40px;
+    border-radius: 8px;
+    background-color: #4a90e2;
+}
+
+/* More aggressive approach - target all progress bars in columnview */
+columnview progressbar {
+    min-height: 40px;
+    border-radius: 8px;
+}
+
+columnview progressbar > trough {
+    min-height: 40px;
+    border-radius: 8px;
+    background-color: #e0e0e0;
+}
+
+columnview progressbar > trough > progress {
+    min-height: 40px;
+    border-radius: 8px;
+    background-color: #4a90e2;
+}
+
+/* Even more specific selectors for GTK4 ColumnView */
+columnview listitem progressbar {
+    min-height: 40px;
+}
+
+columnview listitem progressbar > trough {
+    min-height: 40px;
+}
+
+columnview listitem progressbar > trough > progress {
+    min-height: 40px;
+}
+
+/* Target the specific column that contains progress bars */
+columnview column progressbar {
+    min-height: 40px;
+}
+
+/* Force row height in columnview */
+columnview listitem {
+    min-height: 50px;
+    padding: 5px 0;
+}
+
+/* Force the columnview itself to have larger rows */
+columnview {
+    /* This property might be available in some GTK4 versions */
+    -gtk-dpi: 120;
+}
+
+/* Alternative approach - add padding to all cells */
+columnview listitem > * {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/* Status indicators for connections */
+.success {
+    color: #4caf50;
+}
+
+.error {
+    color: #f44336;
+}
+
+/* Shutdown Progress Overlay Styling */
+.shutdown-overlay {
+    background-color: rgba(30, 30, 30, 0.95);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.shutdown-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.shutdown-progress {
+    min-height: 24px;
+    border-radius: 12px;
+    margin: 10px 0;
+}
+
+.shutdown-progress > trough {
+    min-height: 24px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.shutdown-progress > trough > progress {
+    min-height: 24px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #4a90e2, #357abd);
+}
+
+.shutdown-component {
+    font-size: 14px;
+    color: #e0e0e0;
+    padding: 2px 0;
+    font-family: monospace;
+}
+
+.shutdown-timer {
+    font-size: 12px;
+    color: #b0b0b0;
+    font-family: monospace;
+}
+
+
+/* GTK4 compatible animation - using simpler opacity transition */
+.shutdown-warning {
+    color: #ff6b6b;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+    /* Remove animation that may not be supported in GTK CSS */
+}
+
+/* Monitoring Tab Styles */
+.metric-tile {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.03);
+    min-width: 320px;
+    min-height: 200px;
+}
+
+.live-graph {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Sidebar Filter Styles (Deluge-style) */
+.sidebar {
+    min-width: 200px;
+    background-color: @theme_base_color;
+    border-right: 1px solid @borders;
+}
+
+.sidebar-expander {
+    padding: 4px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-expander > label {
+    font-weight: bold;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.sidebar-listbox {
+    background-color: transparent;
+    border: none;
+}
+
+.sidebar-listbox > row {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+.sidebar-listbox > row:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-listbox > row:selected {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+.sidebar-listbox > row:selected:hover {
+    background-color: @theme_selected_bg_color;
+}
+
+.filter-item {
+    padding: 6px 12px;
+    min-height: 32px;
+}
+
+.filter-item image {
+    opacity: 0.7;
+    margin-right: 8px;
+}
+
+.filter-item label {
+    font-size: 13px;
+}
+
+.filter-item .count-badge {
+    opacity: 0.6;
+    font-size: 11px;
+    font-weight: bold;
+    color: @theme_fg_color;
+    padding: 2px 6px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-listbox > row:selected .filter-item .count-badge {
+    background-color: rgba(255, 255, 255, 0.2);
+    opacity: 0.9;
+}
+
+/* ========== DARK MODE SUPPORT ========== */
+@media (prefers-color-scheme: dark) {
+    /* Sidebar dark mode adjustments */
+    .sidebar {
+        background-color: #2b2b3c;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-expander {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sidebar-listbox > row:hover {
+        background-color: rgba(137, 180, 250, 0.1);
+    }
+
+    .sidebar-listbox > row:selected {
+        background-color: rgba(137, 180, 250, 0.2);
+    }
+
+    .filter-item .count-badge {
+        color: #cdd6f4;
+        background-color: rgba(137, 180, 250, 0.2);
+    }
+
+    .sidebar-listbox > row:selected .filter-item .count-badge {
+        background-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Progress bars dark mode */
+    columnview progressbar > trough {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    columnview progressbar > trough > progress {
+        background-color: #89b4fa;
+    }
+
+    /* Success/error indicators dark mode */
+    .success {
+        color: #a6e3a1;
+    }
+
+    .error {
+        color: #f38ba8;
+    }
+}

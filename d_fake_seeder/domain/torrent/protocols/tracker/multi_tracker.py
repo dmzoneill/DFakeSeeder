@@ -5,6 +5,7 @@ Implements multi-tracker tier system with automatic failover and load balancing.
 Provides robust tracker interaction with fallback support.
 """
 
+# fmt: off
 import asyncio
 import random
 import time
@@ -13,6 +14,8 @@ from typing import Dict, List, Optional, Tuple
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import MultiTrackerConstants
+
+# fmt: on
 
 
 class TrackerTier:
@@ -135,7 +138,8 @@ class TrackerTier:
                 )
             else:
                 logger.debug(
-                    f"Tracker {tracker_url} announce failed: {error}", extra={"class_name": self.__class__.__name__}
+                    f"Tracker {tracker_url} announce failed: {error}",
+                    extra={"class_name": self.__class__.__name__},
                 )
 
     def _is_tracker_available(self, status: Dict) -> bool:
@@ -175,7 +179,7 @@ class TrackerTier:
             "enabled_trackers": sum(1 for s in self.tracker_status.values() if s["enabled"]),
             "total_announces": total_announces,
             "successful_announces": successful_announces,
-            "success_rate": successful_announces / total_announces if total_announces > 0 else 0.0,
+            "success_rate": (successful_announces / total_announces if total_announces > 0 else 0.0),
             "trackers": list(self.tracker_status.values()),
         }
 
@@ -208,7 +212,7 @@ class MultiTrackerManager:
         self.current_tier_index = 0
         self.last_announce_time = 0.0
 
-        logger.info(
+        logger.debug(
             f"Multi-tracker manager initialized with {len(self.tiers)} tiers",
             extra={"class_name": self.__class__.__name__},
         )
@@ -246,11 +250,15 @@ class MultiTrackerManager:
                 self.tiers.append(tier)
 
             logger.debug(
-                f"Parsed {len(self.tiers)} tracker tiers from torrent", extra={"class_name": self.__class__.__name__}
+                f"Parsed {len(self.tiers)} tracker tiers from torrent",
+                extra={"class_name": self.__class__.__name__},
             )
 
         except Exception as e:
-            logger.error(f"Failed to parse trackers: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to parse trackers: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     async def announce(self, seeder_manager, event: str = "started") -> Tuple[bool, List[Dict]]:
         """
@@ -277,7 +285,10 @@ class MultiTrackerManager:
                 return await self._announce_with_failover(seeder_manager, event)
 
         except Exception as e:
-            logger.error(f"Multi-tracker announce failed: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Multi-tracker announce failed: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False, []
 
     async def _announce_all_tiers(self, seeder_manager, event: str) -> Tuple[bool, List[Dict]]:
@@ -415,7 +426,8 @@ class MultiTrackerManager:
 
             else:
                 logger.warning(
-                    f"Unsupported tracker protocol: {tracker_url}", extra={"class_name": self.__class__.__name__}
+                    f"Unsupported tracker protocol: {tracker_url}",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 tier.mark_failure(tracker_url, "Unsupported protocol")
                 return False, []
@@ -441,7 +453,8 @@ class MultiTrackerManager:
         except Exception as e:
             tier.mark_failure(tracker_url, str(e))
             logger.error(
-                f"Tracker announce failed for {tracker_url}: {e}", extra={"class_name": self.__class__.__name__}
+                f"Tracker announce failed for {tracker_url}: {e}",
+                extra={"class_name": self.__class__.__name__},
             )
             return False, []
 
@@ -490,7 +503,7 @@ class MultiTrackerManager:
             "enabled_trackers": enabled_trackers,
             "total_announces": total_announces,
             "successful_announces": successful_announces,
-            "overall_success_rate": successful_announces / total_announces if total_announces > 0 else 0.0,
+            "overall_success_rate": (successful_announces / total_announces if total_announces > 0 else 0.0),
             "current_tier": self.current_tier_index,
             "tiers": tier_stats,
         }

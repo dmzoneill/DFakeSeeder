@@ -6,6 +6,7 @@ announce URLs, status, response data, statistics, and real-time updates.
 Integrates with the seeding system to provide live tracker monitoring.
 """
 
+# fmt: off
 import time
 from typing import Any, Dict, Optional
 
@@ -16,6 +17,8 @@ gi.require_version("GObject", "2.0")
 from gi.repository import GObject  # noqa: E402
 
 from d_fake_seeder.lib.logger import logger  # noqa: E402
+
+# fmt: on
 
 
 class Tracker(GObject.Object):
@@ -78,7 +81,10 @@ class Tracker(GObject.Object):
         self._response_times = []  # Keep last 10 response times for averaging
         self._last_update_time = current_time
 
-        logger.debug(f"Tracker model initialized: {url} (tier {tier})", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Tracker model initialized: {url} (tier {tier})",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     @property
     def time_since_last_announce(self) -> float:
@@ -174,7 +180,8 @@ class Tracker(GObject.Object):
 
         except Exception as e:
             logger.error(
-                f"Error updating tracker announce response: {e}", extra={"class_name": self.__class__.__name__}
+                f"Error updating tracker announce response: {e}",
+                extra={"class_name": self.__class__.__name__},
             )
 
     def update_announce_failure(self, error_message: str, response_time: Optional[float] = None) -> None:
@@ -206,13 +213,23 @@ class Tracker(GObject.Object):
             backoff_interval = min(base_interval * (2 ** min(consecutive - 1, 5)), 3600)  # Max 1 hour
             self.set_property("next_announce", current_time + backoff_interval)
 
-            logger.warning(
-                f"Tracker {self.get_property('url')} failed (attempt {consecutive}): {error_message}",
-                extra={"class_name": self.__class__.__name__},
-            )
+            # Log at DEBUG for first 2 attempts, WARNING for persistent failures
+            if consecutive <= 2:
+                logger.debug(
+                    f"Tracker {self.get_property('url')} failed (attempt {consecutive}): {error_message}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+            else:
+                logger.warning(
+                    f"Tracker {self.get_property('url')} failed (attempt {consecutive}): {error_message}",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
         except Exception as e:
-            logger.error(f"Error updating tracker failure: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Error updating tracker failure: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def update_scrape_response(self, scrape_data: Dict[str, Any]) -> None:
         """
@@ -240,7 +257,10 @@ class Tracker(GObject.Object):
             )
 
         except Exception as e:
-            logger.error(f"Error updating tracker scrape response: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Error updating tracker scrape response: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def set_announcing(self) -> None:
         """Mark tracker as currently announcing"""

@@ -4,11 +4,14 @@ Provides functionality to load tab configurations from JSON files
 instead of hardcoded class lists, enabling modular tab management.
 """
 
+# fmt: off
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Type
 
 from d_fake_seeder.lib.logger import logger
+
+# fmt: on
 
 
 def get_tabs_config_path() -> Path:
