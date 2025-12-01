@@ -4,6 +4,7 @@ Web UI settings tab for the settings dialog.
 Handles web interface configuration, authentication, and security settings.
 """
 
+# fmt: off
 from typing import Any, Dict
 
 import gi
@@ -13,7 +14,13 @@ from gi.repository import Gtk  # noqa: E402
 
 from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import NotificationMixin  # noqa: E402
-from .settings_mixins import TranslationMixin, UtilityMixin, ValidationMixin  # noqa: E402
+from .settings_mixins import (  # noqa: E402
+    TranslationMixin,
+    UtilityMixin,
+    ValidationMixin,
+)
+
+# fmt: on
 
 
 class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
@@ -61,54 +68,84 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         # Main settings
         enable_webui = self.get_widget("enable_webui")
         if enable_webui:
-            enable_webui.connect("state-set", self.on_enable_webui_changed)
+            self.track_signal(
+                enable_webui,
+                enable_webui.connect("state-set", self.on_enable_webui_changed),
+            )
 
         webui_port = self.get_widget("webui_port")
         if webui_port:
-            webui_port.connect("value-changed", self.on_webui_port_changed)
+            self.track_signal(
+                webui_port,
+                webui_port.connect("value-changed", self.on_webui_port_changed),
+            )
 
         webui_interface = self.get_widget("webui_interface")
         if webui_interface:
-            webui_interface.connect("changed", self.on_webui_interface_changed)
+            self.track_signal(
+                webui_interface,
+                webui_interface.connect("changed", self.on_webui_interface_changed),
+            )
 
         # Authentication
         webui_auth = self.get_widget("webui_auth_enabled")
         if webui_auth:
-            webui_auth.connect("state-set", self.on_webui_auth_changed)
+            self.track_signal(webui_auth, webui_auth.connect("state-set", self.on_webui_auth_changed))
 
         webui_username = self.get_widget("webui_username")
         if webui_username:
-            webui_username.connect("changed", self.on_webui_username_changed)
+            self.track_signal(
+                webui_username,
+                webui_username.connect("changed", self.on_webui_username_changed),
+            )
 
         webui_password = self.get_widget("webui_password")
         if webui_password:
-            webui_password.connect("changed", self.on_webui_password_changed)
+            self.track_signal(
+                webui_password,
+                webui_password.connect("changed", self.on_webui_password_changed),
+            )
 
         gen_password = self.get_widget("webui_generate_password")
         if gen_password:
-            gen_password.connect("clicked", self.on_generate_password_clicked)
+            self.track_signal(
+                gen_password,
+                gen_password.connect("clicked", self.on_generate_password_clicked),
+            )
 
         # Security
         webui_https = self.get_widget("webui_https_enabled")
         if webui_https:
-            webui_https.connect("state-set", self.on_webui_https_changed)
+            self.track_signal(
+                webui_https,
+                webui_https.connect("state-set", self.on_webui_https_changed),
+            )
 
         webui_csrf = self.get_widget("webui_csrf_protection")
         if webui_csrf:
-            webui_csrf.connect("state-set", self.on_webui_csrf_changed)
+            self.track_signal(webui_csrf, webui_csrf.connect("state-set", self.on_webui_csrf_changed))
 
         webui_host_header = self.get_widget("webui_host_header_validation")
         if webui_host_header:
-            webui_host_header.connect("state-set", self.on_webui_host_header_changed)
+            self.track_signal(
+                webui_host_header,
+                webui_host_header.connect("state-set", self.on_webui_host_header_changed),
+            )
 
         # Access control
         webui_ban = self.get_widget("webui_ban_after_failures")
         if webui_ban:
-            webui_ban.connect("value-changed", self.on_webui_ban_after_failures_changed)
+            self.track_signal(
+                webui_ban,
+                webui_ban.connect("value-changed", self.on_webui_ban_after_failures_changed),
+            )
 
         webui_session = self.get_widget("webui_session_timeout")
         if webui_session:
-            webui_session.connect("value-changed", self.on_webui_session_timeout_changed)
+            self.track_signal(
+                webui_session,
+                webui_session.connect("value-changed", self.on_webui_session_timeout_changed),
+            )
 
     def _load_settings(self) -> None:
         """Load current settings into Web UI tab widgets."""

@@ -6,9 +6,12 @@ This mixin integrates with the existing TranslationManager to support runtime
 language switching for column headers.
 """
 
+# fmt: off
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.column_translations import ColumnTranslations
+
+# fmt: on
 
 
 class ColumnTranslationMixin:
@@ -70,7 +73,8 @@ class ColumnTranslationMixin:
             )
         except Exception as e:
             logger.error(
-                f"Failed to update column title for {property_name}: {e}", extra={"class_name": self.__class__.__name__}
+                f"Failed to update column title for {property_name}: {e}",
+                extra={"class_name": self.__class__.__name__},
             )
 
     def refresh_column_translations(self):
@@ -81,7 +85,10 @@ class ColumnTranslationMixin:
         all column headers with new translations.
         """
         logger.debug("Refreshing column translations", self.__class__.__name__)
-        logger.debug(f"Number of column views: {len(self._translatable_columns)}", self.__class__.__name__)
+        logger.debug(
+            f"Number of column views: {len(self._translatable_columns)}",
+            self.__class__.__name__,
+        )
 
         logger.debug(
             f"Refreshing column translations for {len(self._translatable_columns)} column views",
@@ -92,7 +99,10 @@ class ColumnTranslationMixin:
             logger.debug(f"Processing column view: {column_view}", self.__class__.__name__)
             logger.debug(f"Number of columns: {len(columns)}", self.__class__.__name__)
             for column, property_name, column_type in columns:
-                logger.debug(f"Updating column: {property_name} ({column_type})", self.__class__.__name__)
+                logger.debug(
+                    f"Updating column: {property_name} ({column_type})",
+                    self.__class__.__name__,
+                )
                 self._update_column_title(column, property_name, column_type)
 
         logger.debug("Column translations refresh completed", self.__class__.__name__)
@@ -111,7 +121,10 @@ class ColumnTranslationMixin:
         logger.debug("Language change received", self.__class__.__name__)
         logger.debug(f"Model: {model}", self.__class__.__name__)
         logger.debug(f"Language code: {lang_code}", self.__class__.__name__)
-        logger.debug(f"Number of column views: {len(self._translatable_columns)}", self.__class__.__name__)
+        logger.debug(
+            f"Number of column views: {len(self._translatable_columns)}",
+            self.__class__.__name__,
+        )
 
         logger.debug(
             f"Column translation mixin received language change: {lang_code}",
@@ -198,7 +211,10 @@ class ColumnTranslationMixin:
                 )
         else:
             self._translatable_columns.clear()
-            logger.debug("Cleared all translatable columns", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "Cleared all translatable columns",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def cleanup_column_translations(self):
         """
@@ -207,4 +223,7 @@ class ColumnTranslationMixin:
         Should be called when the component is being destroyed.
         """
         self.clear_translatable_columns()
-        logger.debug("Cleaned up column translation resources", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Cleaned up column translation resources",
+            extra={"class_name": self.__class__.__name__},
+        )

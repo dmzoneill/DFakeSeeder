@@ -5,6 +5,7 @@ This package contains the refactored settings dialog components, broken down
 into focused, single-responsibility classes for better maintainability.
 """
 
+# fmt: off
 from .advanced_tab import AdvancedTab
 
 # Base classes
@@ -35,3 +36,5 @@ __all__ = [
     "ValidationMixin",
     "KeyboardShortcutMixin",
 ]
+
+# fmt: on

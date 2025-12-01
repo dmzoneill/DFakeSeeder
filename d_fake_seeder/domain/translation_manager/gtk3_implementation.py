@@ -7,6 +7,7 @@ specifically designed for use with system tray applications that require GTK3
 due to AppIndicator3 dependencies.
 """
 
+# fmt: off
 import gettext
 import locale
 import os
@@ -34,6 +35,8 @@ except ImportError as e:
     Gio = None
 
 from .base import TranslationManagerBase  # noqa: E402
+
+# fmt: on
 
 
 class TranslationManagerGTK3(TranslationManagerBase):
@@ -95,7 +98,10 @@ class TranslationManagerGTK3(TranslationManagerBase):
 
     def _discover_supported_languages(self) -> Set[str]:
         """Dynamically discover supported languages from the locale directory"""
-        logger.debug(f"Starting language discovery in {self._localedir}", "TranslationManagerGTK3")
+        logger.debug(
+            f"Starting language discovery in {self._localedir}",
+            "TranslationManagerGTK3",
+        )
         start_time = time.time()
         discovered_languages = {self.fallback_language}
 
@@ -133,7 +139,10 @@ class TranslationManagerGTK3(TranslationManagerBase):
         logger.debug(f"switch_language() called with: {language_code}", "TranslationManagerGTK3")
 
         if self._current_language == language_code:
-            logger.debug(f"Already using language '{language_code}' - skipping switch", "TranslationManagerGTK3")
+            logger.debug(
+                f"Already using language '{language_code}' - skipping switch",
+                "TranslationManagerGTK3",
+            )
             return language_code
 
         # Validate language is supported
@@ -148,12 +157,21 @@ class TranslationManagerGTK3(TranslationManagerBase):
         try:
             if language_code == self.fallback_language:
                 trans = gettext.NullTranslations()
-                logger.debug("Using NullTranslations for fallback language", "TranslationManagerGTK3")
+                logger.debug(
+                    "Using NullTranslations for fallback language",
+                    "TranslationManagerGTK3",
+                )
             else:
                 trans = gettext.translation(self._domain, self._localedir, languages=[language_code])
-                logger.debug(f"Loaded translation for '{language_code}'", "TranslationManagerGTK3")
+                logger.debug(
+                    f"Loaded translation for '{language_code}'",
+                    "TranslationManagerGTK3",
+                )
         except FileNotFoundError:
-            logger.debug(f"Warning: Translation file for '{language_code}' not found", "TranslationManagerGTK3")
+            logger.debug(
+                f"Warning: Translation file for '{language_code}' not found",
+                "TranslationManagerGTK3",
+            )
             trans = gettext.NullTranslations()
             language_code = self.fallback_language
 
@@ -319,7 +337,11 @@ class TranslationManagerGTK3(TranslationManagerBase):
         """Get translation coverage information for a language"""
         try:
             if language_code == self.fallback_language:
-                return {"translated_count": 100, "total_count": 100, "coverage_percent": 100}
+                return {
+                    "translated_count": 100,
+                    "total_count": 100,
+                    "coverage_percent": 100,
+                }
 
             gettext.translation(self._domain, self._localedir, languages=[language_code])
             return {"translated_count": 1, "total_count": 1, "coverage_percent": 100}
@@ -365,11 +387,17 @@ class TranslationManagerGTK3(TranslationManagerBase):
 
     def setup_translations(self, auto_detect: bool = True) -> str:
         """Set up translations with automatic language detection"""
-        logger.debug(f"setup_translations called with auto_detect={auto_detect}", "TranslationManagerGTK3")
+        logger.debug(
+            f"setup_translations called with auto_detect={auto_detect}",
+            "TranslationManagerGTK3",
+        )
 
         if auto_detect:
             target_language = self._get_target_language()
-            logger.debug(f"_get_target_language() returned: {target_language}", "TranslationManagerGTK3")
+            logger.debug(
+                f"_get_target_language() returned: {target_language}",
+                "TranslationManagerGTK3",
+            )
         else:
             target_language = self.fallback_language
             logger.debug(f"Using fallback language: {target_language}", "TranslationManagerGTK3")
@@ -392,16 +420,26 @@ class TranslationManagerGTK3(TranslationManagerBase):
             logger.debug("AppSettings.get_instance() completed", "TranslationManagerGTK3")
 
             language = app_settings.get_language()
-            logger.debug(f"AppSettings.get_language() returned: {language}", "TranslationManagerGTK3")
+            logger.debug(
+                f"AppSettings.get_language() returned: {language}",
+                "TranslationManagerGTK3",
+            )
 
-            logger.debug(f"_get_target_language() final target: {language}", "TranslationManagerGTK3")
+            logger.debug(
+                f"_get_target_language() final target: {language}",
+                "TranslationManagerGTK3",
+            )
             return language
         except Exception as e:
-            logger.debug(f"Could not get language from AppSettings: {e}", "TranslationManagerGTK3")
+            logger.debug(
+                f"Could not get language from AppSettings: {e}",
+                "TranslationManagerGTK3",
+            )
 
         # Fallback to system language
         logger.debug(
-            f"AppSettings failed, falling back to system language: {system_language}", "TranslationManagerGTK3"
+            f"AppSettings failed, falling back to system language: {system_language}",
+            "TranslationManagerGTK3",
         )
         return system_language
 
@@ -669,7 +707,10 @@ class TranslationManagerGTK3(TranslationManagerBase):
             try:
                 self._recreate_menu(menu_info)
             except Exception as e:
-                logger.debug(f"Warning: Could not refresh menu translations: {e}", "TranslationManagerGTK3")
+                logger.debug(
+                    f"Warning: Could not refresh menu translations: {e}",
+                    "TranslationManagerGTK3",
+                )
 
     def _recreate_menu(self, menu_info: Dict[str, Any]):
         """Recreate a menu with translated text (GTK3 compatible)"""

@@ -3,11 +3,22 @@ Version=1.0
 Type=Application
 Name=D' Fake Seeder
 Comment=BitTorrent seeding simulator for testing and development
-Exec=env LOG_LEVEL=DEBUG /usr/bin/python3 dfakeseeder.py
+Exec=/home/daoneill/src/DFakeSeeder/d_fake_seeder/launch-with-tray.sh
 Icon=dfakeseeder
 StartupWMClass=ie.fio.dfakeseeder
 StartupNotify=true
 Terminal=false
 Categories=Network;P2P;Utility;
 Keywords=torrent;seeder;bittorrent;p2p;
-Path=/home/daoneill/src/DFakeSeeder/d_fake_seeder
+Path=/home/daoneill/src/DFakeSeeder
+Actions=main-only;tray-only;
+
+[Desktop Action main-only]
+Name=Launch Main Window Only
+Exec=env LOG_LEVEL=DEBUG PYTHONPATH=/home/daoneill/src/DFakeSeeder pipenv run python3 d_fake_seeder/dfakeseeder.py
+Icon=dfakeseeder
+
+[Desktop Action tray-only]
+Name=Launch Tray Only
+Exec=env LOG_LEVEL=DEBUG PYTHONPATH=/home/daoneill/src/DFakeSeeder pipenv run python3 d_fake_seeder/dfakeseeder_tray.py
+Icon=dfakeseeder

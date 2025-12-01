@@ -31,7 +31,10 @@ from typing import Dict, List, Optional, Set, Tuple
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 try:
-    from d_fake_seeder.lib.util.language_config import get_config_metadata, get_supported_languages
+    from d_fake_seeder.lib.util.language_config import (
+        get_config_metadata,
+        get_supported_languages,
+    )
 
     LANGUAGES = get_supported_languages()
     print(f"Loaded {len(LANGUAGES)} languages from configuration file")
@@ -277,7 +280,12 @@ msgstr ""
 
         if python_pot.exists() and xml_pot.exists():
             try:
-                cmd = ["msgcat", "--output=" + str(self.pot_file), str(python_pot), str(xml_pot)]
+                cmd = [
+                    "msgcat",
+                    "--output=" + str(self.pot_file),
+                    str(python_pot),
+                    str(xml_pot),
+                ]
                 subprocess.run(cmd, capture_output=True, text=True, check=True)
             except (subprocess.CalledProcessError, FileNotFoundError):
                 # Manual merge fallback
@@ -888,7 +896,7 @@ msgstr ""
                 "extra_keys": len(extra_keys),
                 "fallback_count": fallback_count,
                 "native_translations": len(lang_keys) - fallback_count,
-                "fallback_percentage": (fallback_count / len(english_keys) * 100) if english_keys else 0,
+                "fallback_percentage": ((fallback_count / len(english_keys) * 100) if english_keys else 0),
             }
 
             if missing_keys or extra_keys:
@@ -1198,7 +1206,13 @@ msgstr ""
 
             # Filter out metadata keys and update translations
             updated_keys = 0
-            metadata_keys = {"_instructions", "_help", "_total_strings", "_categories", "_note"}
+            metadata_keys = {
+                "_instructions",
+                "_help",
+                "_total_strings",
+                "_categories",
+                "_note",
+            }
 
             for key, translated_value in fallback_translations.items():
                 # Skip metadata keys
@@ -1221,7 +1235,13 @@ msgstr ""
 
                     # Save updated translations
                     with open(json_file, "w", encoding="utf-8") as f:
-                        json.dump(translations, f, ensure_ascii=False, indent=2, sort_keys=True)
+                        json.dump(
+                            translations,
+                            f,
+                            ensure_ascii=False,
+                            indent=2,
+                            sort_keys=True,
+                        )
 
                     print(f"   ✅ Updated {updated_keys} translations")
                     print(f"   💾 Backup saved to: {backup_file}")
@@ -1326,7 +1346,13 @@ msgstr ""
             print(f"DEBUG: Saving updated file for {lang_code}...")
             # Save updated file with sorted keys
             with open(json_file, "w", encoding="utf-8") as f:
-                json.dump(updated_translations, f, ensure_ascii=False, indent=2, sort_keys=True)
+                json.dump(
+                    updated_translations,
+                    f,
+                    ensure_ascii=False,
+                    indent=2,
+                    sort_keys=True,
+                )
 
             print(f"   ✅ Added {len(missing_keys)} keys (now {len(updated_translations)} total)")
             total_added += len(missing_keys)

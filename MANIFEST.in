@@ -1,20 +1,28 @@
 include README.md
 include LICENSE
-include Pipfile
-include Pipfile.lock
+include CLAUDE.md
 
 # Include all package data
-recursive-include d_fake_seeder/images *
-recursive-include d_fake_seeder/ui *
+recursive-include d_fake_seeder/components *
 recursive-include d_fake_seeder/config *
 recursive-include d_fake_seeder/locale *
 recursive-include d_fake_seeder/domain/config *
+recursive-include d_fake_seeder/desktop *
 
 # Include desktop files
 include d_fake_seeder/*.desktop
 include d_fake_seeder/*.desktop.template
 
+# Exclude RPM-specific files (not needed for PyPI)
+exclude packaging/*
+exclude dfakeseeder.spec
+exclude control
+prune rpmbuild
+prune debbuild
+
 # Exclude Python bytecode and cache
 global-exclude __pycache__
 global-exclude *.py[co]
 global-exclude .DS_Store
+global-exclude *.swp
+global-exclude *.log

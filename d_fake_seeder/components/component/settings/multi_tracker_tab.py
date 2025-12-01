@@ -5,6 +5,7 @@ Provides configuration interface for Multi-Tracker Support (BEP-012).
 Manages tracker tier configuration, failover settings, and announce strategies.
 """
 
+# fmt: off
 from typing import Any, Dict
 
 import gi
@@ -15,6 +16,8 @@ from .base_tab import BaseSettingsTab  # noqa: E402
 from .settings_mixins import NotificationMixin  # noqa: E402
 from .settings_mixins import TranslationMixin  # noqa: E402
 from .settings_mixins import ValidationMixin  # noqa: E402
+
+# fmt: on
 
 
 class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin):
@@ -55,7 +58,10 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
         self._widgets["log_tracker_failures"] = self.builder.get_object("log_tracker_failures_check")
         self._widgets["log_tier_changes"] = self.builder.get_object("log_tier_changes_check")
 
-        self.logger.debug("Multi-Tracker tab widgets initialized", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            "Multi-Tracker tab widgets initialized",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _connect_signals(self):
         """Connect Multi-Tracker specific signals"""
@@ -119,7 +125,10 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
         if self._widgets["log_tier_changes"]:
             self._widgets["log_tier_changes"].connect("toggled", self._on_log_tier_changes_toggled)
 
-        self.logger.debug("Multi-Tracker tab signals connected", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            "Multi-Tracker tab signals connected",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _load_settings(self):
         """Load Multi-Tracker settings from configuration"""
@@ -194,7 +203,8 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
                 self._widgets["log_tier_changes"].set_active(stats_config.get("log_tier_changes", False))
 
             self.logger.debug(
-                "Multi-Tracker settings loaded successfully", extra={"class_name": self.__class__.__name__}
+                "Multi-Tracker settings loaded successfully",
+                extra={"class_name": self.__class__.__name__},
             )
 
         except Exception as e:
@@ -426,86 +436,134 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
     # Signal handlers
     def _on_multi_tracker_enabled_changed(self, switch, state):
         """Handle Multi-Tracker enable/disable toggle"""
-        self.logger.debug(f"Multi-Tracker enabled changed: {state}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Multi-Tracker enabled changed: {state}",
+            extra={"class_name": self.__class__.__name__},
+        )
         self.update_dependencies()
 
     def _on_failover_enabled_toggled(self, check_button):
         """Handle failover enable toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Failover enabled: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Failover enabled: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
         self.update_dependencies()
 
     def _on_max_consecutive_failures_changed(self, spin_button):
         """Handle max consecutive failures changes"""
         failures = spin_button.get_value()
-        self.logger.debug(f"Max consecutive failures: {failures}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Max consecutive failures: {failures}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_backoff_base_seconds_changed(self, spin_button):
         """Handle backoff base seconds changes"""
         seconds = spin_button.get_value()
-        self.logger.debug(f"Backoff base seconds: {seconds}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Backoff base seconds: {seconds}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_max_backoff_seconds_changed(self, spin_button):
         """Handle max backoff seconds changes"""
         seconds = spin_button.get_value()
-        self.logger.debug(f"Max backoff seconds: {seconds}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Max backoff seconds: {seconds}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_announce_to_all_tiers_toggled(self, check_button):
         """Handle announce to all tiers toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Announce to all tiers: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Announce to all tiers: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_announce_to_all_in_tier_toggled(self, check_button):
         """Handle announce to all in tier toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Announce to all in tier: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Announce to all in tier: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_health_monitoring_enabled_toggled(self, check_button):
         """Handle health monitoring enable toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Health monitoring enabled: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Health monitoring enabled: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
         self.update_dependencies()
 
     def _on_response_time_tracking_toggled(self, check_button):
         """Handle response time tracking toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Response time tracking: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Response time tracking: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_response_time_smoothing_changed(self, spin_button):
         """Handle response time smoothing changes"""
         smoothing = spin_button.get_value()
-        self.logger.debug(f"Response time smoothing: {smoothing}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Response time smoothing: {smoothing}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_auto_disable_failed_trackers_toggled(self, check_button):
         """Handle auto disable failed trackers toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Auto disable failed trackers: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Auto disable failed trackers: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_tracker_rotation_enabled_toggled(self, check_button):
         """Handle tracker rotation enable toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Tracker rotation enabled: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Tracker rotation enabled: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
         self.update_dependencies()
 
     def _on_rotation_interval_seconds_changed(self, spin_button):
         """Handle rotation interval seconds changes"""
         seconds = spin_button.get_value()
-        self.logger.debug(f"Rotation interval seconds: {seconds}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Rotation interval seconds: {seconds}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_track_tier_statistics_toggled(self, check_button):
         """Handle track tier statistics toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Track tier statistics: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Track tier statistics: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_log_tracker_failures_toggled(self, check_button):
         """Handle log tracker failures toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Log tracker failures: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Log tracker failures: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _on_log_tier_changes_toggled(self, check_button):
         """Handle log tier changes toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Log tier changes: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.debug(
+            f"Log tier changes: {enabled}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def handle_model_changed(self, source, data_obj, _data_changed):
         """Handle model change events."""

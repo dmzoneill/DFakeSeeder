@@ -1,3 +1,4 @@
+# fmt: off
 import random
 import threading
 
@@ -18,6 +19,8 @@ gi.require_version("Gtk", "4.0")
 from gi.repository import GLib  # noqa: E402
 from gi.repository import GObject  # noqa: E402
 
+# fmt: on
+
 
 # Torrent class definition
 class Torrent(GObject.GObject):
@@ -33,7 +36,7 @@ class Torrent(GObject.GObject):
 
     def __init__(self, filepath):
         super().__init__()
-        logger.info("Torrent instantiate", extra={"class_name": self.__class__.__name__})
+        logger.debug("instantiate", extra={"class_name": self.__class__.__name__})
 
         self.torrent_attributes = Attributes()
 
@@ -139,7 +142,7 @@ class Torrent(GObject.GObject):
         self.peers_worker.start()
 
     def peers_worker_update(self):
-        logger.info(
+        logger.debug(
             "Peers worker",
             extra={"class_name": self.__class__.__name__},
         )
@@ -151,7 +154,7 @@ class Torrent(GObject.GObject):
             while fetched is False and count != 0:
                 # Check for shutdown request before each iteration
                 if self.peers_worker_stop_event.is_set():
-                    logger.info(
+                    logger.debug(
                         f"🛑 PEERS WORKER SHUTDOWN: {self.name} - stop event received",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -169,7 +172,7 @@ class Torrent(GObject.GObject):
                     )
                     # Use Event.wait() instead of time.sleep() for instant shutdown response
                     if self.peers_worker_stop_event.wait(timeout=int(self.seeder_retry_interval)):
-                        logger.info(
+                        logger.debug(
                             f"🛑 PEERS WORKER SHUTDOWN: {self.name} - stop event received during retry sleep",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -185,7 +188,7 @@ class Torrent(GObject.GObject):
             )
 
     def update_torrent_worker(self):
-        logger.info(
+        logger.debug(
             f"🔄 TORRENT UPDATE WORKER STARTED for {self.name}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -201,7 +204,7 @@ class Torrent(GObject.GObject):
                     extra={"class_name": self.__class__.__name__},
                 )
                 if ticker >= self.settings.tickspeed and self.active:
-                    logger.info(
+                    logger.debug(
                         f"🔄 WORKER: Adding update callback to UI thread for {self.name} "
                         f"(ticker={ticker}, tickspeed={self.settings.tickspeed})",
                         extra={"class_name": self.__class__.__name__},
@@ -218,7 +221,7 @@ class Torrent(GObject.GObject):
             )
 
     def update_torrent_callback(self):
-        logger.info(
+        logger.debug(
             f"📊 TORRENT UPDATE CALLBACK STARTED for {self.name} - updating values",
             extra={"class_name": self.__class__.__name__},
         )
@@ -303,7 +306,7 @@ class Torrent(GObject.GObject):
                 download_left,
             )
 
-        logger.info(
+        logger.debug(
             f"🚀 EMITTING SIGNAL: {self.name} - progress={self.progress:.3f}, "
             f"up_speed={self.session_uploaded}, down_speed={self.session_downloaded}, "
             f"next_update={self.next_update}",
@@ -370,7 +373,7 @@ class Torrent(GObject.GObject):
         return self.seeder.ready
 
     def handle_settings_changed(self, source, key, value):
-        logger.info(
+        logger.debug(
             "Torrent settings changed",
             extra={"class_name": self.__class__.__name__},
         )
@@ -379,14 +382,14 @@ class Torrent(GObject.GObject):
         """Perform the actual tracker update - called in background thread"""
         try:
             # First, load peers to refresh peer list
-            logger.info(
+            logger.debug(
                 f"📥 Loading peers for {self.name}",
                 extra={"class_name": self.__class__.__name__},
             )
             peers_loaded = self.seeder.load_peers()
 
             if peers_loaded:
-                logger.info(
+                logger.debug(
                     f"✅ Peers loaded successfully for {self.name}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -402,7 +405,7 @@ class Torrent(GObject.GObject):
             )
 
             # Announce to tracker with current stats
-            logger.info(
+            logger.debug(
                 f"📤 Announcing to tracker for {self.name}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -428,7 +431,7 @@ class Torrent(GObject.GObject):
     def _complete_tracker_update(self):
         """Complete tracker update in UI thread - resets timer and updates UI"""
         self.next_update = 1800
-        logger.info(
+        logger.debug(
             f"⏰ Timer reset to 1800 seconds for {self.name}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -458,7 +461,7 @@ class Torrent(GObject.GObject):
             )
             return
 
-        logger.info(
+        logger.debug(
             f"🔄 FORCE TRACKER UPDATE: Manually triggered for {self.name}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -482,7 +485,7 @@ class Torrent(GObject.GObject):
         self.tracker_update_threads = [t for t in self.tracker_update_threads if t.is_alive()]
 
     def restart_worker(self, state):
-        logger.info(
+        logger.debug(
             f"⚡ RESTART WORKER: {self.name} state={state} (active={getattr(self, 'active', 'Unknown')})",
             extra={"class_name": self.__class__.__name__},
         )
@@ -495,7 +498,10 @@ class Torrent(GObject.GObject):
 
             self.peers_worker_stop_event.set()
             self.peers_worker.join()
-            logger.info(f"⚡ STOPPED WORKERS: {self.name}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"⚡ STOPPED WORKERS: {self.name}",
+                extra={"class_name": self.__class__.__name__},
+            )
         except Exception as e:
             logger.error(
                 f"Error stopping peers worker: {e}",
@@ -514,7 +520,10 @@ class Torrent(GObject.GObject):
                     daemon=True,  # PyPy optimization: daemon threads for better cleanup
                 )
                 self.torrent_worker.start()
-                logger.info(f"⚡ STARTED UPDATE WORKER: {self.name}", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    f"⚡ STARTED UPDATE WORKER: {self.name}",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
                 # Start peers worker thread
                 self.peers_worker_stop_event = threading.Event()
@@ -524,7 +533,10 @@ class Torrent(GObject.GObject):
                     daemon=True,  # PyPy optimization: daemon threads for better cleanup
                 )
                 self.peers_worker.start()
-                logger.info(f"⚡ STARTED PEERS WORKER: {self.name}", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    f"⚡ STARTED PEERS WORKER: {self.name}",
+                    extra={"class_name": self.__class__.__name__},
+                )
             except Exception as e:
                 logger.error(
                     f"Error starting peers worker: {e}",
@@ -543,8 +555,8 @@ class Torrent(GObject.GObject):
             return self.torrent_attributes
         elif hasattr(self.torrent_attributes, attr):
             return getattr(self.torrent_attributes, attr)
-        elif hasattr(self, attr):
-            return getattr(self, attr)
+        # Note: Removed hasattr(self, attr) check - it creates infinite recursion
+        # and is unnecessary since __getattr__ is only called when attr doesn't exist on self
         raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{attr}'")
 
     def __setattr__(self, attr, value):
@@ -552,7 +564,7 @@ class Torrent(GObject.GObject):
             self.__dict__["torrent_attributes"] = value
         elif hasattr(self.torrent_attributes, attr):
             if attr == "active":
-                logger.info(
+                logger.debug(
                     f"🔄 ACTIVE CHANGED: {getattr(self, 'name', 'Unknown')} active={value}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -571,7 +583,10 @@ class Torrent(GObject.GObject):
                     return active_seeder._get_tracker_model()
             return None
         except Exception as e:
-            logger.debug(f"Failed to get active tracker model: {e}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Failed to get active tracker model: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return None
 
     def get_all_tracker_models(self):
@@ -595,7 +610,10 @@ class Torrent(GObject.GObject):
                         tracker_models.append(tracker_model)
 
         except Exception as e:
-            logger.debug(f"Failed to get all tracker models: {e}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Failed to get all tracker models: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         return tracker_models
 
@@ -652,6 +670,9 @@ class Torrent(GObject.GObject):
                 stats["last_announce"] = max(last_announces)
 
         except Exception as e:
-            logger.debug(f"Failed to get tracker statistics: {e}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Failed to get tracker statistics: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         return stats

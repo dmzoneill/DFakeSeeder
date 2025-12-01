@@ -6,12 +6,15 @@ This is useful for correcting erroneous HAVE messages and maintaining
 accurate piece availability information.
 """
 
+# fmt: off
 import struct
 from typing import Set
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import BitTorrentProtocolConstants
+
+# fmt: on
 
 
 class DontHaveExtension:
@@ -45,7 +48,10 @@ class DontHaveExtension:
 
         logger.debug(
             "DontHave Extension initialized",
-            extra={"class_name": self.__class__.__name__, "enabled": self.donthave_enabled},
+            extra={
+                "class_name": self.__class__.__name__,
+                "enabled": self.donthave_enabled,
+            },
         )
 
     def supports_donthave_extension(self) -> bool:
@@ -55,7 +61,10 @@ class DontHaveExtension:
     def enable_peer_donthave_support(self):
         """Enable DontHave extension support for peer"""
         self.peer_supports_donthave = True
-        logger.debug("Peer DontHave extension support enabled", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Peer DontHave extension support enabled",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def handle_donthave(self, payload: bytes):
         """
@@ -65,14 +74,20 @@ class DontHaveExtension:
             payload: Message payload containing piece index
         """
         if len(payload) < BitTorrentProtocolConstants.DONTHAVE_PAYLOAD_SIZE:
-            logger.warning("Invalid DONT_HAVE message length", extra={"class_name": self.__class__.__name__})
+            logger.warning(
+                "Invalid DONT_HAVE message length",
+                extra={"class_name": self.__class__.__name__},
+            )
             return
 
         try:
             piece_index = struct.unpack(">I", payload[:4])[0]
             self.received_donthave_pieces.add(piece_index)
 
-            logger.debug(f"Received DONT_HAVE: {piece_index}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Received DONT_HAVE: {piece_index}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             # Update peer's piece availability
             self._update_peer_availability(piece_index, has_piece=False)
@@ -82,7 +97,10 @@ class DontHaveExtension:
                 self._handle_piece_unavailable(piece_index)
 
         except Exception as e:
-            logger.error(f"Failed to handle DONT_HAVE: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to handle DONT_HAVE: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def send_donthave(self, piece_index: int) -> bool:
         """
@@ -95,7 +113,10 @@ class DontHaveExtension:
             True if message sent successfully
         """
         if not self.peer_supports_donthave:
-            logger.debug("Peer doesn't support DONT_HAVE", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "Peer doesn't support DONT_HAVE",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
         try:
@@ -105,15 +126,22 @@ class DontHaveExtension:
                 self.peer_connection.send_message(message)
                 self.sent_donthave_pieces.add(piece_index)
 
-                logger.debug(f"Sent DONT_HAVE: {piece_index}", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    f"Sent DONT_HAVE: {piece_index}",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return True
             else:
                 logger.warning(
-                    "Peer connection has no send_message method", extra={"class_name": self.__class__.__name__}
+                    "Peer connection has no send_message method",
+                    extra={"class_name": self.__class__.__name__},
                 )
 
         except Exception as e:
-            logger.error(f"Failed to send DONT_HAVE: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to send DONT_HAVE: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         return False
 
@@ -130,7 +158,10 @@ class DontHaveExtension:
         if not self.error_correction_enabled:
             return False
 
-        logger.info(f"Correcting HAVE message for piece {piece_index}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Correcting HAVE message for piece {piece_index}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
         return self.send_donthave(piece_index)
 
@@ -150,7 +181,10 @@ class DontHaveExtension:
         # Check if we previously claimed to have this piece
         if hasattr(self.peer_connection, "sent_have_pieces"):
             if piece_index in self.peer_connection.sent_have_pieces:
-                logger.debug(f"Simulating loss of piece {piece_index}", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    f"Simulating loss of piece {piece_index}",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return self.send_donthave(piece_index)
 
         return False
@@ -163,7 +197,8 @@ class DontHaveExtension:
             piece_index: Index of piece that became unavailable
         """
         logger.warning(
-            f"Storage error for piece {piece_index}, sending DONT_HAVE", extra={"class_name": self.__class__.__name__}
+            f"Storage error for piece {piece_index}, sending DONT_HAVE",
+            extra={"class_name": self.__class__.__name__},
         )
 
         # Send DONT_HAVE to correct any previous HAVE messages
@@ -207,7 +242,10 @@ class DontHaveExtension:
                 )
 
         except Exception as e:
-            logger.error(f"Failed to verify piece availability: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to verify piece availability: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         return unavailable_pieces
 
@@ -313,4 +351,7 @@ class DontHaveExtension:
         self.received_donthave_pieces.clear()
         self.peer_supports_donthave = False
 
-        logger.debug("DontHave Extension cleaned up", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "DontHave Extension cleaned up",
+            extra={"class_name": self.__class__.__name__},
+        )

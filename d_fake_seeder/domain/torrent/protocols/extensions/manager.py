@@ -5,6 +5,7 @@ Manages BitTorrent protocol extensions and handles extension handshakes.
 Coordinates between different extension implementations.
 """
 
+# fmt: off
 import struct
 from typing import Any, Dict
 
@@ -16,6 +17,8 @@ try:
     import bencodepy as bencode
 except ImportError:
     from d_fake_seeder.domain.torrent.bencoding import bencode
+
+# fmt: on
 
 
 class ExtensionManager:
@@ -79,7 +82,8 @@ class ExtensionManager:
         self.supported_extensions["fast_extension"] = FastExtension
 
         logger.debug(
-            f"Registered {len(self.supported_extensions)} extensions", extra={"class_name": self.__class__.__name__}
+            f"Registered {len(self.supported_extensions)} extensions",
+            extra={"class_name": self.__class__.__name__},
         )
 
     def create_extended_handshake(self) -> bytes:
@@ -103,7 +107,7 @@ class ExtensionManager:
             handshake_data = {
                 b"m": extension_dict,  # Extension mapping
                 b"v": b"DFakeSeeder 1.0",  # Client version
-                b"p": self.peer_connection.port if hasattr(self.peer_connection, "port") else 6881,
+                b"p": (self.peer_connection.port if hasattr(self.peer_connection, "port") else 6881),
             }
 
             # Add metadata size if available
@@ -135,7 +139,10 @@ class ExtensionManager:
             return message
 
         except Exception as e:
-            logger.error(f"Failed to create extended handshake: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to create extended handshake: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return b""
 
     def handle_extended_handshake(self, payload: bytes):
@@ -179,7 +186,10 @@ class ExtensionManager:
             self.peer_metadata_size = handshake_data.get(b"metadata_size", 0)
 
         except Exception as e:
-            logger.error(f"Failed to handle extended handshake: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to handle extended handshake: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def handle_extended_message(self, extension_id: int, payload: bytes):
         """
@@ -203,7 +213,10 @@ class ExtensionManager:
                     break
 
             if not extension_name:
-                logger.debug(f"Unknown extension ID: {extension_id}", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    f"Unknown extension ID: {extension_id}",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return
 
             # Handle extension message
@@ -212,11 +225,15 @@ class ExtensionManager:
                 extension.handle_message(payload)
             else:
                 logger.debug(
-                    f"No handler for extension: {extension_name}", extra={"class_name": self.__class__.__name__}
+                    f"No handler for extension: {extension_name}",
+                    extra={"class_name": self.__class__.__name__},
                 )
 
         except Exception as e:
-            logger.error(f"Failed to handle extended message: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to handle extended message: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def send_extended_message(self, extension_name: str, payload: bytes):
         """
@@ -230,7 +247,8 @@ class ExtensionManager:
             # Check if peer supports this extension
             if extension_name not in self.peer_extensions:
                 logger.debug(
-                    f"Peer doesn't support extension: {extension_name}", extra={"class_name": self.__class__.__name__}
+                    f"Peer doesn't support extension: {extension_name}",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 return False
 
@@ -248,12 +266,16 @@ class ExtensionManager:
                 return True
             else:
                 logger.warning(
-                    "Peer connection has no send_message method", extra={"class_name": self.__class__.__name__}
+                    "Peer connection has no send_message method",
+                    extra={"class_name": self.__class__.__name__},
                 )
                 return False
 
         except Exception as e:
-            logger.error(f"Failed to send extended message: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to send extended message: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     def _initialize_extension(self, extension_name: str):
@@ -279,11 +301,15 @@ class ExtensionManager:
             if hasattr(extension, "initialize"):
                 extension.initialize()
 
-            logger.debug(f"Initialized extension: {extension_name}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Initialized extension: {extension_name}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         except Exception as e:
             logger.error(
-                f"Failed to initialize extension {extension_name}: {e}", extra={"class_name": self.__class__.__name__}
+                f"Failed to initialize extension {extension_name}: {e}",
+                extra={"class_name": self.__class__.__name__},
             )
 
     def get_extension(self, extension_name: str):
@@ -332,7 +358,8 @@ class ExtensionManager:
                     extension.cleanup()
             except Exception as e:
                 logger.error(
-                    f"Error cleaning up extension {extension_name}: {e}", extra={"class_name": self.__class__.__name__}
+                    f"Error cleaning up extension {extension_name}: {e}",
+                    extra={"class_name": self.__class__.__name__},
                 )
 
         self.extension_instances.clear()

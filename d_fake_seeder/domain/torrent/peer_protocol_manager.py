@@ -6,6 +6,7 @@ connection pooling. Includes protection against excessive peer communication
 when users frequently switch between torrents.
 """
 
+# fmt: off
 import asyncio
 import struct
 import threading
@@ -24,6 +25,8 @@ from d_fake_seeder.lib.util.constants import (
     ConnectionConstants,
     TimeoutConstants,
 )
+
+# fmt: on
 
 
 class PeerProtocolManager:
@@ -53,7 +56,9 @@ class PeerProtocolManager:
         self.manager_thread_join_timeout = ui_settings.get("manager_thread_join_timeout_seconds", 5.0)
         self.metadata_exchange_probability = ui_settings.get("metadata_exchange_probability", 0.3)
         self.fake_piece_count_max = ui_settings.get("fake_piece_count_max", 1000)
-        self.connection_cleanup_timeout = ui_settings.get("connection_cleanup_timeout_seconds", 300)
+        self.connection_cleanup_timeout = ui_settings.get(
+            "connection_cleanup_timeout_seconds", 120
+        )  # Reduced from 300 to 120 to prevent socket accumulation
 
         # Connection management
         self.peers: Dict[str, PeerInfo] = {}  # ip:port -> PeerInfo
@@ -87,10 +92,11 @@ class PeerProtocolManager:
         self.last_connection_rotation = 0.0
 
     def add_peers(self, peer_addresses: List[str]):
-        """Add peers from tracker response with rate limiting"""
+        """Add peers from tracker response with rate limiting and max peer limits"""
         with self.lock:
             current_time = time.time()
             added_count = 0
+            MAX_PEERS = 1000  # Prevent unbounded growth
 
             for address in peer_addresses:
                 if ":" not in address:
@@ -111,7 +117,19 @@ class PeerProtocolManager:
                             )
                             continue
 
+                    # Enforce max peer limit - remove oldest peer if at limit
                     if address not in self.peers:
+                        if len(self.peers) >= MAX_PEERS:
+                            # Remove oldest peer
+                            oldest_address = min(self.peers.items(), key=lambda x: x[1].last_seen)[0]
+                            del self.peers[oldest_address]
+                            if oldest_address in self.peer_contact_history:
+                                del self.peer_contact_history[oldest_address]
+                            logger.debug(
+                                f"🗑️ Removed oldest peer {oldest_address} to make room (max: {MAX_PEERS})",
+                                extra={"class_name": self.__class__.__name__},
+                            )
+
                         self.peers[address] = PeerInfo(ip=ip, port=port, last_seen=current_time)
                         added_count += 1
                         logger.debug(
@@ -129,7 +147,7 @@ class PeerProtocolManager:
                     )
 
             if added_count > 0:
-                logger.info(
+                logger.debug(
                     f"📋 Added {added_count} new peers "
                     f"(total: {len(self.peers)}, active: {len(self.active_connections)})",
                     extra={"class_name": self.__class__.__name__},
@@ -153,7 +171,7 @@ class PeerProtocolManager:
             self.running = False
             return
 
-        logger.info(
+        logger.debug(
             f"🚀 Started PeerProtocolManager via SharedAsyncExecutor "
             f"(manager_id: {self.manager_id}, max_connections: {self.max_connections})",
             extra={"class_name": self.__class__.__name__},
@@ -164,7 +182,7 @@ class PeerProtocolManager:
         if not self.running:
             return
 
-        logger.info(
+        logger.debug(
             f"🛑 Stopping PeerProtocolManager (manager_id: {self.manager_id})",
             extra={"class_name": self.__class__.__name__},
         )
@@ -180,14 +198,14 @@ class PeerProtocolManager:
                 connection.close()
             self.active_connections.clear()
 
-        logger.info(
+        logger.debug(
             f"✅ PeerProtocolManager stopped (manager_id: {self.manager_id})",
             extra={"class_name": self.__class__.__name__},
         )
 
     async def _async_manager_loop(self):
         """Async manager loop with proper cancellation"""
-        logger.info(
+        logger.debug(
             "🔄 PeerProtocolManager loop started",
             extra={"class_name": self.__class__.__name__},
         )
@@ -203,7 +221,8 @@ class PeerProtocolManager:
 
                     # Manage connections with cancellation checks and timeout
                     await asyncio.wait_for(
-                        self._manage_connections(current_time), timeout=AsyncConstants.MANAGE_CONNECTIONS_TIMEOUT
+                        self._manage_connections(current_time),
+                        timeout=AsyncConstants.MANAGE_CONNECTIONS_TIMEOUT,
                     )
 
                     if not self.running:
@@ -211,21 +230,26 @@ class PeerProtocolManager:
 
                     # Send keep-alive messages with timeout
                     await asyncio.wait_for(
-                        self._send_keep_alives(current_time), timeout=AsyncConstants.SEND_KEEP_ALIVES_TIMEOUT
+                        self._send_keep_alives(current_time),
+                        timeout=AsyncConstants.SEND_KEEP_ALIVES_TIMEOUT,
                     )
 
                     if not self.running:
                         break
 
                     # Poll peer status with timeout
-                    await asyncio.wait_for(self._poll_peer_status(), timeout=AsyncConstants.POLL_PEER_STATUS_TIMEOUT)
+                    await asyncio.wait_for(
+                        self._poll_peer_status(),
+                        timeout=AsyncConstants.POLL_PEER_STATUS_TIMEOUT,
+                    )
 
                     if not self.running:
                         break
 
                     # Exchange metadata with timeout
                     await asyncio.wait_for(
-                        self._exchange_metadata(current_time), timeout=AsyncConstants.EXCHANGE_METADATA_TIMEOUT
+                        self._exchange_metadata(current_time),
+                        timeout=AsyncConstants.EXCHANGE_METADATA_TIMEOUT,
                     )
 
                     if not self.running:
@@ -233,7 +257,8 @@ class PeerProtocolManager:
 
                     # Rotate connections with timeout
                     await asyncio.wait_for(
-                        self._rotate_connections(current_time), timeout=AsyncConstants.ROTATE_CONNECTIONS_TIMEOUT
+                        self._rotate_connections(current_time),
+                        timeout=AsyncConstants.ROTATE_CONNECTIONS_TIMEOUT,
                     )
 
                     if not self.running:
@@ -241,12 +266,16 @@ class PeerProtocolManager:
 
                     # Clean up connections with timeout
                     await asyncio.wait_for(
-                        self._cleanup_connections(current_time), timeout=AsyncConstants.CLEANUP_CONNECTIONS_TIMEOUT
+                        self._cleanup_connections(current_time),
+                        timeout=AsyncConstants.CLEANUP_CONNECTIONS_TIMEOUT,
                     )
 
                     # Use shorter sleep with cancellation checks
                     sleep_duration = self.async_sleep_interval
-                    sleep_chunks = max(1, int(sleep_duration / TimeoutConstants.PEER_MANAGER_SLEEP_CHUNK))
+                    sleep_chunks = max(
+                        1,
+                        int(sleep_duration / TimeoutConstants.PEER_MANAGER_SLEEP_CHUNK),
+                    )
                     for _ in range(sleep_chunks):
                         if not self.running:
                             return
@@ -257,7 +286,8 @@ class PeerProtocolManager:
                     if not self.running:
                         break
                     logger.debug(
-                        "⏱️ Operation timeout in peer manager loop", extra={"class_name": self.__class__.__name__}
+                        "⏱️ Operation timeout in peer manager loop",
+                        extra={"class_name": self.__class__.__name__},
                     )
                 except Exception as e:
                     logger.error(
@@ -268,7 +298,8 @@ class PeerProtocolManager:
                         break
                     # Shorter error sleep with cancellation check
                     error_sleep_chunks = max(
-                        1, int(self.error_sleep_interval / TimeoutConstants.PEER_MANAGER_SLEEP_CHUNK)
+                        1,
+                        int(self.error_sleep_interval / TimeoutConstants.PEER_MANAGER_SLEEP_CHUNK),
                     )
                     for _ in range(error_sleep_chunks):
                         if not self.running:
@@ -276,9 +307,15 @@ class PeerProtocolManager:
                         await asyncio.sleep(TimeoutConstants.PEER_MANAGER_SLEEP_CHUNK)
 
         except asyncio.CancelledError:
-            logger.info("🛑 PeerProtocolManager async loop cancelled", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "🛑 PeerProtocolManager async loop cancelled",
+                extra={"class_name": self.__class__.__name__},
+            )
         finally:
-            logger.info("🛑 PeerProtocolManager loop stopped", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "🛑 PeerProtocolManager loop stopped",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     async def _manage_connections(self, current_time: float):
         """Manage peer connections with rate limiting"""
@@ -307,27 +344,50 @@ class PeerProtocolManager:
             if current_time - peer_info.last_connected < self.connection_retry_interval:
                 continue
 
-            # Try to connect
+            # Try to connect with proper cleanup
             connection = PeerConnection(peer_info, self.info_hash, self.our_peer_id, self.connection_callback)
-            if await connection.connect():
-                if await connection.perform_handshake():
-                    # Successful connection
-                    with self.lock:
-                        self.active_connections[address] = connection
-                        # Update contact history
-                        self.peer_contact_history[address] = current_time
+            connection_success = False
 
-                    logger.info(
-                        f"✅ Connected to peer {address}",
+            try:
+                if await connection.connect():
+                    if await connection.perform_handshake():
+                        # Successful connection
+                        with self.lock:
+                            self.active_connections[address] = connection
+                            # Update contact history
+                            self.peer_contact_history[address] = current_time
+
+                        logger.debug(
+                            f"✅ Connected to peer {address}",
+                            extra={"class_name": self.__class__.__name__},
+                        )
+
+                        # Send interested message
+                        await connection.send_message(BitTorrentMessage.INTERESTED)
+                        connection_success = True
+                    else:
+                        # Handshake failed - close connection
+                        logger.debug(
+                            f"🔒 Handshake failed with {address}",
+                            extra={"class_name": self.__class__.__name__},
+                        )
+                else:
+                    # Connection failed - increment attempts
+                    peer_info.connection_attempts += 1
+                    logger.debug(
+                        f"❌ Connection failed to {address} (attempt {peer_info.connection_attempts})",
                         extra={"class_name": self.__class__.__name__},
                     )
-
-                    # Send interested message
-                    await connection.send_message(BitTorrentMessage.INTERESTED)
-                else:
+            except Exception as e:
+                logger.debug(
+                    f"❌ Error connecting to {address}: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+            finally:
+                # CRITICAL FIX: Always close connection if not successfully established
+                # This prevents socket leaks when connections fail
+                if not connection_success:
                     connection.close()
-            else:
-                peer_info.connection_attempts += 1
 
             # Don't try to connect to too many at once
             with self.lock:
@@ -353,6 +413,8 @@ class PeerProtocolManager:
         with self.lock:
             connections_list = list(self.active_connections.items())
 
+        connections_to_remove = []
+
         for address, connection in connections_list:
             try:
                 # Try to receive any pending messages
@@ -360,12 +422,32 @@ class PeerProtocolManager:
                 if message:
                     message_id, payload = message
                     await self._handle_peer_message(address, connection, message_id, payload)
+                elif message is None:
+                    # Connection closed by peer - mark for removal
+                    logger.debug(
+                        f"🔌 Connection closed by peer {address}",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                    connections_to_remove.append((address, connection))
 
             except Exception as e:
                 logger.debug(
                     f"❌ Error polling peer {address}: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
+                # Connection is broken - mark for removal
+                connections_to_remove.append((address, connection))
+
+        # Clean up failed connections
+        for address, connection in connections_to_remove:
+            with self.lock:
+                if address in self.active_connections:
+                    del self.active_connections[address]
+            connection.close()
+            logger.debug(
+                f"🗑️ Removed failed connection to {address}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     async def _handle_peer_message(self, address: str, connection: PeerConnection, message_id: int, payload: bytes):
         """Handle incoming peer message"""
@@ -413,26 +495,62 @@ class PeerProtocolManager:
         return set_bits / total_bits if total_bits > 0 else 0.0
 
     async def _cleanup_connections(self, current_time: float):
-        """Clean up dead or old connections"""
-        to_remove = []
+        """Clean up dead or old connections, peers, and contact history"""
+        to_remove_connections = []
+        to_remove_peers = []
+        to_remove_history = []
 
+        # Clean up stale connections
         with self.lock:
             for address, connection in self.active_connections.items():
                 # Remove connections that haven't communicated in a while
                 if (
                     current_time - connection.last_message_time > self.connection_cleanup_timeout
                 ):  # Configurable timeout
-                    to_remove.append(address)
+                    to_remove_connections.append(address)
                     connection.close()
 
-        with self.lock:
-            for address in to_remove:
+            for address in to_remove_connections:
                 if address in self.active_connections:
                     del self.active_connections[address]
                     logger.debug(
                         f"🗑️ Cleaned up stale connection to {address}",
                         extra={"class_name": self.__class__.__name__},
                     )
+
+        # Clean up old inactive peers (not seen in 24 hours)
+        PEER_EXPIRY_SECONDS = 86400  # 24 hours
+        with self.lock:
+            for address, peer_info in self.peers.items():
+                if current_time - peer_info.last_seen > PEER_EXPIRY_SECONDS:
+                    to_remove_peers.append(address)
+
+            for address in to_remove_peers:
+                del self.peers[address]
+                if address in self.peer_contact_history:
+                    del self.peer_contact_history[address]
+
+            if to_remove_peers:
+                logger.debug(
+                    f"🗑️ Cleaned up {len(to_remove_peers)} old peers (not seen in 24h)",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+        # Clean up old contact history entries (keep last 30 days)
+        HISTORY_EXPIRY_SECONDS = 2592000  # 30 days
+        with self.lock:
+            for address, last_contact in self.peer_contact_history.items():
+                if current_time - last_contact > HISTORY_EXPIRY_SECONDS:
+                    to_remove_history.append(address)
+
+            for address in to_remove_history:
+                del self.peer_contact_history[address]
+
+            if to_remove_history:
+                logger.debug(
+                    f"🗑️ Cleaned up {len(to_remove_history)} old contact history entries",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
     def get_peer_stats(self) -> Dict[str, Dict]:
         """Get current peer statistics"""
@@ -512,7 +630,7 @@ class PeerProtocolManager:
             connections_to_disconnect = random.sample(connections_list, disconnect_count)
 
             for address, connection in connections_to_disconnect:
-                logger.info(
+                logger.debug(
                     f"🔄 Rotating connection to {address}",
                     extra={"class_name": self.__class__.__name__},
                 )

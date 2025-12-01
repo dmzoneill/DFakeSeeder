@@ -1,5 +1,8 @@
+# fmt: off
 import random
 import string
+
+# fmt: on
 
 
 def sizeof_fmt(num, suffix="B"):

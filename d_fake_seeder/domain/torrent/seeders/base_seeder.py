@@ -1,3 +1,4 @@
+# fmt: off
 import random
 import struct
 import threading
@@ -7,7 +8,13 @@ from urllib.parse import urlparse
 import d_fake_seeder.lib.util.helpers as helpers
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
-from d_fake_seeder.lib.util.constants import BitTorrentProtocolConstants, CalculationConstants, NetworkConstants
+from d_fake_seeder.lib.util.constants import (
+    BitTorrentProtocolConstants,
+    CalculationConstants,
+    NetworkConstants,
+)
+
+# fmt: on
 
 
 class BaseSeeder:
@@ -23,7 +30,7 @@ class BaseSeeder:
 
     # Common functionality goes here
     def __init__(self, torrent):
-        logger.info("Seeder Startup", extra={"class_name": self.__class__.__name__})
+        logger.debug("Startup", extra={"class_name": self.__class__.__name__})
 
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
@@ -145,7 +152,7 @@ class BaseSeeder:
 
     @staticmethod
     def recreate_semaphore(obj):
-        logger.info(
+        logger.debug(
             "Seeder recreate_semaphore",
             extra={"class_name": obj.__class__.__name__},
         )
@@ -167,7 +174,7 @@ class BaseSeeder:
         BaseSeeder._tracker_semaphore = new_semaphore
 
     def handle_exception(self, e, message):
-        logger.info(
+        logger.debug(
             f"{message}: {str(e)}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -182,7 +189,7 @@ class BaseSeeder:
         self.shutdown_requested = True
 
     def handle_settings_changed(self, source, key, value):
-        logger.info(
+        logger.debug(
             "Seeder settings changed",
             extra={"class_name": self.__class__.__name__},
         )
@@ -196,7 +203,7 @@ class BaseSeeder:
         return random.randint(transaction_id_min, transaction_id_max)
 
     def __str__(self):
-        logger.info("Seeder __get__", extra={"class_name": self.__class__.__name__})
+        logger.debug("Seeder __get__", extra={"class_name": self.__class__.__name__})
         result = "Peer ID: %s\n" % self.peer_id
         result += "Key: %s\n" % self.download_key
         result += "Port: %d\n" % self.port
@@ -403,10 +410,10 @@ class BaseSeeder:
 
     @property
     def peers(self):
-        logger.info("Seeder get peers", extra={"class_name": self.__class__.__name__})
+        logger.debug("Seeder get peers", extra={"class_name": self.__class__.__name__})
         result = []
         if b"peers" not in self.info:
-            logger.warning(
+            logger.debug(
                 "😲 No peers data available from tracker response",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -417,7 +424,7 @@ class BaseSeeder:
         self.peer_data.clear()
 
         peers = self.info[b"peers"]
-        logger.info(
+        logger.debug(
             f"🔍 Processing peers data: {type(peers)}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -426,7 +433,7 @@ class BaseSeeder:
         if isinstance(peers, bytes):
             if len(peers) == 0:
                 # If no real peers, add some fake ones for demonstration
-                logger.info(
+                logger.debug(
                     "🎭 No real peers found, generating demo peers for testing",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -456,7 +463,11 @@ class BaseSeeder:
                         9091,
                         "-LT2000-mno123456789",
                     ),  # libtorrent 2.0.0 (Romania)
-                    ("51.75.144.43", 8080, "-AZ5750-pqr123456789"),  # Vuze 5.7.5 (Canada)
+                    (
+                        "51.75.144.43",
+                        8080,
+                        "-AZ5750-pqr123456789",
+                    ),  # Vuze 5.7.5 (Canada)
                     (
                         "94.23.173.157",
                         6969,
@@ -472,7 +483,7 @@ class BaseSeeder:
                 for ip, port, peer_id in fake_peers:
                     peer_address = f"{ip}:{port}"
                     result.append(peer_address)
-                    logger.info(
+                    logger.debug(
                         f"🤖 Added demo peer: {peer_address} ({peer_id})",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -483,7 +494,7 @@ class BaseSeeder:
                     BaseSeeder.peer_clients[peer_address] = peer_data["client"]
             else:
                 peer_count = len(peers) // 6
-                logger.info(
+                logger.debug(
                     f"🗂 Parsing compact peer data ({len(peers)} bytes = {peer_count})",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -495,7 +506,7 @@ class BaseSeeder:
                         port = struct.unpack(">H", port_bytes)[0]
                         peer_address = f"{ip}:{port}"
                         result.append(peer_address)
-                        logger.info(
+                        logger.debug(
                             f"👥 Found peer: {peer_address}",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -512,7 +523,7 @@ class BaseSeeder:
                 first_peer = peers[0]
                 if isinstance(first_peer, tuple) and len(first_peer) == 2:
                     # UDP tuple format: [(ip, port), ...]
-                    logger.info(
+                    logger.debug(
                         f"🗃 Parsing UDP tuple peer data ({len(peers)} peer entries)",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -520,7 +531,7 @@ class BaseSeeder:
                         peer_address = f"{ip}:{port}"
                         result.append(peer_address)
 
-                        logger.info(
+                        logger.debug(
                             f"👥 UDP Peer {i+1}: {peer_address}",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -532,7 +543,7 @@ class BaseSeeder:
 
                 elif isinstance(first_peer, dict):
                     # HTTP dictionary format
-                    logger.info(
+                    logger.debug(
                         f"🗃 Parsing HTTP dictionary peer data ({len(peers)} entries)",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -560,7 +571,7 @@ class BaseSeeder:
                             if client_name and client_name != "Unknown":
                                 self.settings.add_detected_client(client_name)
 
-                            logger.info(
+                            logger.debug(
                                 f"👥 HTTP Peer {i+1}: {peer_address} ({client_name})",
                                 extra={"class_name": self.__class__.__name__},
                             )
@@ -571,7 +582,7 @@ class BaseSeeder:
                                     else str(peer_id)
                                 )
                                 truncated = "..." if len(peer_id_str) > 20 else ""
-                                logger.info(
+                                logger.debug(
                                     f"🆔 Peer ID: {peer_id_str[:20]}{truncated}",
                                     extra={"class_name": self.__class__.__name__},
                                 )
@@ -592,7 +603,7 @@ class BaseSeeder:
                 extra={"class_name": self.__class__.__name__},
             )
 
-        logger.info(
+        logger.debug(
             f"✅ Processed {len(result)} total peers",
             extra={"class_name": self.__class__.__name__},
         )
@@ -769,7 +780,7 @@ class BaseSeeder:
         is_seed = progress >= 1.0
 
         # Log peer analysis
-        logger.info(
+        logger.debug(
             f"🔍 Analyzing peer {address}: {client_name}, {country}, Seed={is_seed}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -777,7 +788,7 @@ class BaseSeeder:
             down_kb = down_speed / 1024
             up_kb = up_speed / 1024
             progress_pct = progress * 100
-            logger.info(
+            logger.debug(
                 f"📈 Stats: {progress_pct:.1f}%, D:{down_kb:.1f} KB/s, U:{up_kb:.1f} KB/s",
                 extra={"class_name": self.__class__.__name__},
             )

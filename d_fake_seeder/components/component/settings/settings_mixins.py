@@ -5,6 +5,7 @@ These mixins provide reusable functionality that can be composed
 into different settings tab classes.
 """
 
+# fmt: off
 import random
 import secrets
 import string
@@ -18,6 +19,8 @@ from gi.repository import Gtk  # noqa: E402
 
 from d_fake_seeder.lib.logger import logger  # noqa: E402
 from d_fake_seeder.lib.util.constants import SIZE_UNITS_BASIC  # noqa: E402
+
+# fmt: on
 
 
 class WidgetProviderProtocol(Protocol):

@@ -1,3 +1,4 @@
+# fmt: off
 import uuid
 
 import gi
@@ -5,6 +6,8 @@ import gi
 gi.require_version("GObject", "2.0")
 
 from gi.repository import GObject  # noqa: E402
+
+# fmt: on
 
 
 class Attributes(GObject.Object):
@@ -39,6 +42,13 @@ class Attributes(GObject.Object):
     super_seeding = GObject.Property(type=GObject.TYPE_BOOLEAN, default=False)
     sequential_download = GObject.Property(type=GObject.TYPE_BOOLEAN, default=False)
     force_start = GObject.Property(type=GObject.TYPE_BOOLEAN, default=False)
+
+    # Torrent metadata properties
+    creation_date = GObject.Property(type=GObject.TYPE_LONG, default=0)  # Unix timestamp
+    comment = GObject.Property(type=GObject.TYPE_STRING, default="")
+    created_by = GObject.Property(type=GObject.TYPE_STRING, default="")
+    piece_length = GObject.Property(type=GObject.TYPE_LONG, default=0)  # Bytes per piece
+    piece_count = GObject.Property(type=GObject.TYPE_LONG, default=0)  # Total number of pieces
 
     def __init__(self):
         super().__init__()

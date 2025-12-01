@@ -5,10 +5,13 @@ Provides visual feedback during application shutdown by tracking the progress
 of various component shutdowns (torrents, peer managers, threads, etc.).
 """
 
+# fmt: off
 import time
 from typing import Callable, Dict, List
 
 from d_fake_seeder.lib.logger import logger
+
+# fmt: on
 
 
 class ShutdownProgressTracker:
@@ -31,7 +34,7 @@ class ShutdownProgressTracker:
         if component_type in self.components:
             self.components[component_type]["total"] = count
             self.components[component_type]["status"] = "pending" if count > 0 else "complete"
-            logger.info(
+            logger.debug(
                 f"📊 Registered {count} {component_type} for shutdown tracking",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -59,7 +62,7 @@ class ShutdownProgressTracker:
         """Mark a component type as starting shutdown"""
         if component_type in self.components:
             self.components[component_type]["status"] = "in_progress"
-            logger.info(
+            logger.debug(
                 f"🔄 Started shutdown of {component_type}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -101,7 +104,10 @@ class ShutdownProgressTracker:
     def is_complete(self) -> bool:
         """Check if all components are shut down"""
         for component in self.components.values():
-            if component["total"] > 0 and component["status"] not in ["complete", "timeout"]:
+            if component["total"] > 0 and component["status"] not in [
+                "complete",
+                "timeout",
+            ]:
                 return False
         return True
 
@@ -122,7 +128,10 @@ class ShutdownProgressTracker:
         """Mark shutdown as started"""
         self.is_shutting_down = True
         self.start_time = time.time()
-        logger.info("🛑 Shutdown progress tracking started", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "🛑 Shutdown progress tracking started",
+            extra={"class_name": self.__class__.__name__},
+        )
         self._notify_callbacks()
 
     def _notify_callbacks(self):

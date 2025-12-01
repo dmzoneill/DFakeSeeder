@@ -84,7 +84,10 @@ def test_torrent_stop_with_none_view_instance(tmp_path, monkeypatch):
         "seeder_retry_count": 5,
     }
 
-    with patch("d_fake_seeder.domain.torrent.torrent.AppSettings.get_instance", return_value=mock_settings):
+    with patch(
+        "d_fake_seeder.domain.torrent.torrent.AppSettings.get_instance",
+        return_value=mock_settings,
+    ):
         # Create torrent instance
         torrent = Torrent(str(torrent_path))
 
@@ -173,7 +176,10 @@ def test_torrent_restart_worker_with_none_view_instance(tmp_path):
         "seeder_retry_count": 5,
     }
 
-    with patch("d_fake_seeder.domain.torrent.torrent.AppSettings.get_instance", return_value=mock_settings):
+    with patch(
+        "d_fake_seeder.domain.torrent.torrent.AppSettings.get_instance",
+        return_value=mock_settings,
+    ):
         # Create torrent instance
         torrent = Torrent(str(torrent_path))
 

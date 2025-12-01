@@ -5,6 +5,7 @@ Manages the UI for displaying incoming peer connections, showing information
 about peers that have connected to our peer server.
 """
 
+# fmt: off
 import gi
 
 from d_fake_seeder.domain.app_settings import AppSettings
@@ -21,6 +22,8 @@ gi.require_version("GioUnix", "2.0")
 from gi.repository import Gio  # noqa: E402
 from gi.repository import GLib, GObject, Gtk  # noqa: E402
 
+# fmt: on
+
 
 class IncomingConnectionsTab(Component, ColumnTranslationMixin):
     """Component for managing incoming connections display"""
@@ -29,7 +32,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         super().__init__()
         ColumnTranslationMixin.__init__(self)
 
-        logger.info(
+        logger.debug(
             "IncomingConnectionsTab view startup",
             extra={"class_name": self.__class__.__name__},
         )
@@ -62,19 +65,26 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         self.gb_threshold = ui_settings.get("byte_format_threshold_gb", 1073741824)
 
         # Connect checkbox signal
-        self.filter_checkbox.connect("toggled", self.on_filter_toggled)
+        self.track_signal(
+            self.filter_checkbox,
+            self.filter_checkbox.connect("toggled", self.on_filter_toggled),
+        )
 
         # Connect to language change signals for column translation
         if self.model and hasattr(self.model, "connect"):
             try:
-                self.model.connect("language-changed", self.on_language_changed)
+                self.track_signal(
+                    self.model,
+                    self.model.connect("language-changed", self.on_language_changed),
+                )
                 logger.debug(
                     "Connected to language-changed signal for column translation",
                     extra={"class_name": self.__class__.__name__},
                 )
             except Exception as e:
                 logger.debug(
-                    f"Could not connect to language-changed signal: {e}", extra={"class_name": self.__class__.__name__}
+                    f"Could not connect to language-changed signal: {e}",
+                    extra={"class_name": self.__class__.__name__},
                 )
 
     def on_connections_updated(self):
@@ -87,7 +97,10 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
 
         # Connect to model selection changes
         if hasattr(self.model, "connect"):
-            self.model.connect("selection-changed", self.on_selection_changed)
+            self.track_signal(
+                self.model,
+                self.model.connect("selection-changed", self.on_selection_changed),
+            )
 
     def set_count_update_callback(self, callback):
         """Set the callback to be called when connection count changes"""
@@ -101,12 +114,13 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
 
     def init_incoming_column_view(self):
         """Initialize the incoming connections column view"""
-        logger.info(
+        logger.debug(
             "IncomingConnections init columnview",
             extra={"class_name": self.__class__.__name__},
         )
 
         self.incoming_store = Gio.ListStore.new(ConnectionPeer)
+        self.track_store(self.incoming_store)  # Track for automatic cleanup
 
         # Define columns for incoming connections
         columns = [
@@ -126,8 +140,8 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
 
         for property_name, column_title in columns:
             factory = Gtk.SignalListItemFactory()
-            factory.connect("setup", self.setup_cell, property_name)
-            factory.connect("bind", self.bind_cell, property_name)
+            self.track_signal(factory, factory.connect("setup", self.setup_cell, property_name))
+            self.track_signal(factory, factory.connect("bind", self.bind_cell, property_name))
             column = Gtk.ColumnViewColumn.new(None, factory)
 
             # Register column for translation instead of using hardcoded title
@@ -143,7 +157,11 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
             ]:
                 property_expression = Gtk.PropertyExpression.new(ConnectionPeer, None, property_name)
                 sorter = Gtk.NumericSorter.new(property_expression)
-            elif property_name in ["handshake_complete", "peer_interested", "am_choking"]:
+            elif property_name in [
+                "handshake_complete",
+                "peer_interested",
+                "am_choking",
+            ]:
                 property_expression = Gtk.PropertyExpression.new(ConnectionPeer, None, property_name)
                 sorter = Gtk.NumericSorter.new(property_expression)
             else:
@@ -173,7 +191,12 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                 widget_obj.set_sensitive(False)  # Read-only
             else:
                 widget_obj = Gtk.Label()
-                widget_obj.set_xalign(0)
+                # Align based on text direction (RTL for Arabic, Hebrew, etc.)
+                text_direction = widget_obj.get_direction()
+                if text_direction == Gtk.TextDirection.RTL:
+                    widget_obj.set_xalign(1)  # Right align for RTL
+                else:
+                    widget_obj.set_xalign(0)  # Left align for LTR
 
             item.set_child(widget_obj)
 
@@ -214,12 +237,13 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                         and hasattr(obj, "bind_property")
                     ):
                         try:
-                            obj.bind_property(
+                            binding = obj.bind_property(
                                 property_name,
                                 child,
                                 "active",
                                 GObject.BindingFlags.SYNC_CREATE,
                             )
+                            self.track_binding(binding)
                         except Exception as e:
                             logger.error(
                                 f"Error binding boolean property {property_name}: {e}",
@@ -344,13 +368,14 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                         and hasattr(obj, "bind_property")
                     ):
                         try:
-                            obj.bind_property(
+                            binding = obj.bind_property(
                                 property_name,
                                 child,
                                 "label",
                                 GObject.BindingFlags.SYNC_CREATE,
                                 Component.to_str,
                             )
+                            self.track_binding(binding)
                         except Exception as e:
                             logger.error(
                                 f"Error binding default property {property_name}: {e}",

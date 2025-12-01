@@ -5,6 +5,7 @@ Implements trackerless seeding using DHT (Distributed Hash Table) protocol.
 Extends BaseSeeder to provide DHT-based peer discovery and announcement.
 """
 
+# fmt: off
 import asyncio
 import hashlib
 import time
@@ -13,6 +14,8 @@ from typing import Optional
 from d_fake_seeder.domain.torrent.protocols.dht.node import DHTNode
 from d_fake_seeder.domain.torrent.seeders.base_seeder import BaseSeeder
 from d_fake_seeder.lib.logger import logger
+
+# fmt: on
 
 
 class DHTSeeder(BaseSeeder):
@@ -39,7 +42,7 @@ class DHTSeeder(BaseSeeder):
         # Apply jitter to announce interval to prevent request storms
         self.announce_interval = self._apply_announce_jitter(base_interval)
 
-        logger.info(
+        logger.debug(
             "DHT Seeder initialized",
             extra={
                 "class_name": self.__class__.__name__,
@@ -62,11 +65,17 @@ class DHTSeeder(BaseSeeder):
                     info_data = bencode.bencode(torrent_data[b"info"])
                     return hashlib.sha1(info_data).digest()
 
-            logger.warning("Could not calculate info hash for DHT", extra={"class_name": self.__class__.__name__})
+            logger.warning(
+                "Could not calculate info hash for DHT",
+                extra={"class_name": self.__class__.__name__},
+            )
             return None
 
         except Exception as e:
-            logger.error(f"Failed to calculate info hash: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to calculate info hash: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return None
 
     async def start(self):
@@ -76,11 +85,14 @@ class DHTSeeder(BaseSeeder):
             return False
 
         if not self.info_hash:
-            logger.error("Cannot start DHT seeding without info hash", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                "Cannot start DHT seeding without info hash",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
         try:
-            logger.info("Starting DHT seeder", extra={"class_name": self.__class__.__name__})
+            logger.debug("Starting DHT seeder", extra={"class_name": self.__class__.__name__})
 
             # Initialize DHT node
             self.dht_node = DHTNode(port=self.port)
@@ -90,11 +102,17 @@ class DHTSeeder(BaseSeeder):
             self.announce_task = asyncio.create_task(self._announce_loop())
 
             self.active = True
-            logger.info("DHT seeder started successfully", extra={"class_name": self.__class__.__name__})
+            logger.info(
+                "DHT seeder started successfully",
+                extra={"class_name": self.__class__.__name__},
+            )
             return True
 
         except Exception as e:
-            logger.error(f"Failed to start DHT seeder: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to start DHT seeder: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
     async def stop(self):
@@ -134,7 +152,10 @@ class DHTSeeder(BaseSeeder):
             except asyncio.CancelledError:
                 break
             except Exception as e:
-                logger.error(f"DHT announce loop error: {e}", extra={"class_name": self.__class__.__name__})
+                logger.error(
+                    f"DHT announce loop error: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 await asyncio.sleep(60)
 
     async def _announce_to_dht(self):
@@ -143,23 +164,33 @@ class DHTSeeder(BaseSeeder):
             return
 
         try:
-            logger.info(
-                f"Announcing torrent {self.info_hash.hex()[:16]} to DHT", extra={"class_name": self.__class__.__name__}
+            logger.debug(
+                f"Announcing torrent {self.info_hash.hex()[:16]} to DHT",
+                extra={"class_name": self.__class__.__name__},
             )
 
             success = await self.dht_node.announce_peer(self.info_hash, self.port)
 
             if success:
-                logger.info("DHT announcement successful", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    "DHT announcement successful",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
                 # Update statistics
                 self._update_stats("dht_announce", True)
             else:
-                logger.warning("DHT announcement failed", extra={"class_name": self.__class__.__name__})
+                logger.warning(
+                    "DHT announcement failed",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 self._update_stats("dht_announce", False)
 
         except Exception as e:
-            logger.error(f"DHT announcement error: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"DHT announcement error: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             self._update_stats("dht_announce", False)
 
     async def find_peers(self) -> list:
@@ -170,12 +201,18 @@ class DHTSeeder(BaseSeeder):
         try:
             peers = await self.dht_node.get_peers(self.info_hash)
 
-            logger.debug(f"Found {len(peers)} peers via DHT", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Found {len(peers)} peers via DHT",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             return peers
 
         except Exception as e:
-            logger.error(f"DHT peer discovery error: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"DHT peer discovery error: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return []
 
     def _update_stats(self, operation: str, success: bool):
@@ -198,7 +235,10 @@ class DHTSeeder(BaseSeeder):
             setattr(self.settings, "dht_stats", dht_stats)
 
         except Exception as e:
-            logger.debug(f"Failed to update DHT stats: {e}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Failed to update DHT stats: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def get_status(self) -> dict:
         """Get DHT seeder status information"""
@@ -224,7 +264,10 @@ class DHTSeeder(BaseSeeder):
 
         # Handle DHT-specific settings
         if key.startswith("protocols.dht"):
-            logger.info(f"DHT setting changed: {key} = {value}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"DHT setting changed: {key} = {value}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             if key == "protocols.dht.enabled":
                 self.dht_enabled = value
@@ -243,4 +286,7 @@ class DHTSeeder(BaseSeeder):
 
     def set_announce_url(self, url):
         """Set announce URL (not applicable for DHT)"""
-        logger.debug("DHT seeder ignoring announce URL setting", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "DHT seeder ignoring announce URL setting",
+            extra={"class_name": self.__class__.__name__},
+        )

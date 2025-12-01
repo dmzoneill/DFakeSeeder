@@ -4,6 +4,7 @@ Advanced settings tab for the settings dialog.
 Handles advanced configuration, logging, search functionality, and expert settings.
 """
 
+# fmt: off
 from typing import Any, Dict
 
 import gi
@@ -14,11 +15,22 @@ from gi.repository import Gtk  # noqa: E402
 from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import KeyboardShortcutMixin  # noqa: E402
 from .settings_mixins import NotificationMixin  # noqa: E402
-from .settings_mixins import TranslationMixin, UtilityMixin, ValidationMixin  # noqa: E402
+from .settings_mixins import (  # noqa: E402
+    TranslationMixin,
+    UtilityMixin,
+    ValidationMixin,
+)
+
+# fmt: on
 
 
 class AdvancedTab(
-    BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin, KeyboardShortcutMixin
+    BaseSettingsTab,
+    NotificationMixin,
+    TranslationMixin,
+    ValidationMixin,
+    UtilityMixin,
+    KeyboardShortcutMixin,
 ):
     """
     Advanced settings tab component.
@@ -76,83 +88,137 @@ class AdvancedTab(
         # Search functionality
         search_entry = self.get_widget("search_entry")
         if search_entry:
-            search_entry.connect("search-changed", self.on_search_changed)
+            self.track_signal(
+                search_entry,
+                search_entry.connect("search-changed", self.on_search_changed),
+            )
 
         search_clear = self.get_widget("search_clear")
         if search_clear:
-            search_clear.connect("clicked", self.on_search_clear_clicked)
+            self.track_signal(
+                search_clear,
+                search_clear.connect("clicked", self.on_search_clear_clicked),
+            )
 
         search_threshold = self.get_widget("search_threshold")
         if search_threshold:
-            search_threshold.connect("value-changed", self.on_search_threshold_changed)
+            self.track_signal(
+                search_threshold,
+                search_threshold.connect("value-changed", self.on_search_threshold_changed),
+            )
 
         # Logging
         log_level = self.get_widget("log_level")
         if log_level:
-            log_level.connect("notify::selected", self.on_log_level_changed)
+            self.track_signal(
+                log_level,
+                log_level.connect("notify::selected", self.on_log_level_changed),
+            )
 
         log_to_file = self.get_widget("log_to_file")
         if log_to_file:
-            log_to_file.connect("state-set", self.on_log_to_file_changed)
+            self.track_signal(
+                log_to_file,
+                log_to_file.connect("state-set", self.on_log_to_file_changed),
+            )
 
         log_file_path = self.get_widget("log_file_path")
         if log_file_path:
-            log_file_path.connect("changed", self.on_log_file_path_changed)
+            self.track_signal(
+                log_file_path,
+                log_file_path.connect("changed", self.on_log_file_path_changed),
+            )
 
         log_file_browse = self.get_widget("log_file_browse")
         if log_file_browse:
-            log_file_browse.connect("clicked", self.on_log_file_browse_clicked)
+            self.track_signal(
+                log_file_browse,
+                log_file_browse.connect("clicked", self.on_log_file_browse_clicked),
+            )
 
         log_max_size = self.get_widget("log_max_size")
         if log_max_size:
-            log_max_size.connect("value-changed", self.on_log_max_size_changed)
+            self.track_signal(
+                log_max_size,
+                log_max_size.connect("value-changed", self.on_log_max_size_changed),
+            )
 
         log_backup_count = self.get_widget("log_backup_count")
         if log_backup_count:
-            log_backup_count.connect("value-changed", self.on_log_backup_count_changed)
+            self.track_signal(
+                log_backup_count,
+                log_backup_count.connect("value-changed", self.on_log_backup_count_changed),
+            )
 
         # Performance
         disk_cache_size = self.get_widget("disk_cache_size")
         if disk_cache_size:
-            disk_cache_size.connect("value-changed", self.on_disk_cache_size_changed)
+            self.track_signal(
+                disk_cache_size,
+                disk_cache_size.connect("value-changed", self.on_disk_cache_size_changed),
+            )
 
         memory_limit = self.get_widget("memory_limit")
         if memory_limit:
-            memory_limit.connect("value-changed", self.on_memory_limit_changed)
+            self.track_signal(
+                memory_limit,
+                memory_limit.connect("value-changed", self.on_memory_limit_changed),
+            )
 
         worker_threads = self.get_widget("worker_threads")
         if worker_threads:
-            worker_threads.connect("value-changed", self.on_worker_threads_changed)
+            self.track_signal(
+                worker_threads,
+                worker_threads.connect("value-changed", self.on_worker_threads_changed),
+            )
 
         # Expert settings
         enable_debug = self.get_widget("enable_debug_mode")
         if enable_debug:
-            enable_debug.connect("state-set", self.on_debug_mode_changed)
+            self.track_signal(
+                enable_debug,
+                enable_debug.connect("state-set", self.on_debug_mode_changed),
+            )
 
         enable_experimental = self.get_widget("enable_experimental")
         if enable_experimental:
-            enable_experimental.connect("state-set", self.on_experimental_changed)
+            self.track_signal(
+                enable_experimental,
+                enable_experimental.connect("state-set", self.on_experimental_changed),
+            )
 
         config_export = self.get_widget("config_export")
         if config_export:
-            config_export.connect("clicked", self.on_config_export_clicked)
+            self.track_signal(
+                config_export,
+                config_export.connect("clicked", self.on_config_export_clicked),
+            )
 
         config_import = self.get_widget("config_import")
         if config_import:
-            config_import.connect("clicked", self.on_config_import_clicked)
+            self.track_signal(
+                config_import,
+                config_import.connect("clicked", self.on_config_import_clicked),
+            )
 
         reset_all = self.get_widget("reset_all_settings")
         if reset_all:
-            reset_all.connect("clicked", self.on_reset_all_clicked)
+            self.track_signal(reset_all, reset_all.connect("clicked", self.on_reset_all_clicked))
 
         # Keyboard shortcuts
         enable_shortcuts = self.get_widget("enable_shortcuts")
         if enable_shortcuts:
-            enable_shortcuts.connect("state-set", self.on_enable_shortcuts_changed)
+            self.track_signal(
+                enable_shortcuts,
+                enable_shortcuts.connect("state-set", self.on_enable_shortcuts_changed),
+            )
 
         shortcuts_config = self.get_widget("shortcuts_config")
         if shortcuts_config:
-            shortcuts_config.connect("clicked", self.on_shortcuts_config_clicked)
+            self.track_signal(
+                shortcuts_config,
+                shortcuts_config.connect("clicked", self.on_shortcuts_config_clicked),
+            )
 
     def _load_settings(self) -> None:
         """Load current settings into Advanced tab widgets."""
@@ -195,7 +261,13 @@ class AdvancedTab(
             log_level = self.get_widget("log_level")
             if log_level:
                 level = logging_settings.get("level", "INFO")
-                level_mapping = {"DEBUG": 0, "INFO": 1, "WARNING": 2, "ERROR": 3, "CRITICAL": 4}
+                level_mapping = {
+                    "DEBUG": 0,
+                    "INFO": 1,
+                    "WARNING": 2,
+                    "ERROR": 3,
+                    "CRITICAL": 4,
+                }
                 log_level.set_selected(level_mapping.get(level, 1))
 
             # Log to file
@@ -350,7 +422,13 @@ class AdvancedTab(
         try:
             log_level = self.get_widget("log_level")
             if log_level:
-                level_mapping = {0: "DEBUG", 1: "INFO", 2: "WARNING", 3: "ERROR", 4: "CRITICAL"}
+                level_mapping = {
+                    0: "DEBUG",
+                    1: "INFO",
+                    2: "WARNING",
+                    3: "ERROR",
+                    4: "CRITICAL",
+                }
                 logging_settings["level"] = level_mapping.get(log_level.get_selected(), "INFO")
 
             log_to_file = self.get_widget("log_to_file")
@@ -476,7 +554,13 @@ class AdvancedTab(
     def on_log_level_changed(self, dropdown: Gtk.DropDown, _param) -> None:
         """Handle log level change."""
         try:
-            level_mapping = {0: "DEBUG", 1: "INFO", 2: "WARNING", 3: "ERROR", 4: "CRITICAL"}
+            level_mapping = {
+                0: "DEBUG",
+                1: "INFO",
+                2: "WARNING",
+                3: "ERROR",
+                4: "CRITICAL",
+            }
             level = level_mapping.get(dropdown.get_selected(), "INFO")
             self.app_settings.set("logging.level", level)
             self.logger.debug(f"Log level changed to: {level}")

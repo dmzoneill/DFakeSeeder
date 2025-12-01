@@ -212,6 +212,9 @@ msgstr "Kecepatan unduh profil agresif"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "Kecepatan unggah profil agresif (0 = tidak terbatas)"
 
+msgid "All"
+msgstr "Semua"
+
 msgid "Alt download limit (KB/s):"
 msgstr "Batas unduh alt (KB/s):"
 
@@ -247,6 +250,9 @@ msgstr "Interval Pengumuman:"
 
 msgid "Arabic"
 msgstr "Arab"
+
+msgid "Auto (Follow System)"
+msgstr "Auto (Follow System)"
 
 msgid "Auto Detect"
 msgstr "Deteksi Otomatis"
@@ -362,11 +368,20 @@ msgstr "KRITIS"
 msgid "Cancel"
 msgstr "Batal"
 
+msgid "Checking"
+msgstr "Memeriksa"
+
 msgid "Chinese"
 msgstr "Cina"
 
 msgid "Choose a pre-configured seeding profile"
 msgstr "Pilih profil seeding yang telah dikonfigurasi"
+
+msgid "Choose light or dark color scheme"
+msgstr "Pilih skema warna terang atau gelap"
+
+msgid "Choose the UI theme style"
+msgstr "Choose the UI theme style"
 
 msgid "Choose the application theme"
 msgstr "Pilih tema aplikasi"
@@ -382,6 +397,9 @@ msgstr "Klien"
 
 msgid "Client Switch Probability:"
 msgstr "Probabilitas Perpindahan Klien:"
+
+msgid "Color Scheme:"
+msgstr "Skema Warna："
 
 msgid "Columns"
 msgstr "Kolom"
@@ -521,6 +539,9 @@ msgstr "Hapus file torrent setelah berhasil ditambahkan"
 msgid "Deluge"
 msgstr "Deluge"
 
+msgid "Deluge Theme"
+msgstr "Deluge Theme"
+
 msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
@@ -589,6 +610,9 @@ msgstr "Sesi Diunduh / Total"
 
 msgid "Downloaded Speed"
 msgstr "Kecepatan Unduh"
+
+msgid "Downloading"
+msgstr "Mengunduh"
 
 msgid "Dropout probability:"
 msgstr "Probabilitas dropout:"
@@ -890,6 +914,9 @@ msgstr "Buat peer sintetis"
 msgid "German"
 msgstr "Jerman"
 
+msgid "Get the main widget for this tab."
+msgstr "Get the main widget for this tab."
+
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
 
@@ -1184,11 +1211,17 @@ msgstr "Waktu minimum antara pengumuman (10-3600 detik)"
 msgid "Minimum transaction ID for tracker communication"
 msgstr "ID transaksi minimum untuk komunikasi tracker"
 
+msgid "Modern Chunky"
+msgstr "Modern Chunky"
+
 msgid "Mon"
 msgstr "Sen"
 
 msgid "Monday"
 msgstr "Senin"
+
+msgid "Monitoring"
+msgstr "Pemantauan"
 
 msgid "Multi-Tracker"
 msgstr "Multi-Pelacak"
@@ -1216,6 +1249,9 @@ msgstr "Pembaruan Berikutnya"
 
 msgid "No"
 msgstr "Tidak"
+
+msgid "No Torrent Selected"
+msgstr "Tidak Ada Torrent Dipilih"
 
 msgid "No editable options available for this torrent."
 msgstr "Tidak ada opsi yang dapat diedit untuk torrent ini."
@@ -1282,6 +1318,9 @@ msgstr "Jeda Semua Torrent"
 
 msgid "Pause torrent"
 msgstr "Jeda torrent"
+
+msgid "Paused"
+msgstr "Dijeda"
 
 msgid "Peer Analysis Depth:"
 msgstr "Kedalaman Analisis Peer:"
@@ -1472,6 +1511,9 @@ msgstr "Batas Waktu Query:"
 msgid "Queue"
 msgstr "Antrian"
 
+msgid "Queued"
+msgstr "Antrian"
+
 msgid "Quit"
 msgstr "Keluar"
 
@@ -1619,6 +1661,9 @@ msgstr "Cari pengaturan"
 msgid "Secure password generated"
 msgstr "Kata sandi aman dibuat"
 
+msgid "Seed"
+msgstr "Seed"
+
 msgid "Seeder port range (max):"
 msgstr "Rentang port seeder (maks):"
 
@@ -1627,6 +1672,9 @@ msgstr "Rentang port seeder (min):"
 
 msgid "Seeders"
 msgstr "Seeder"
+
+msgid "Seeding"
+msgstr "Berbagi"
 
 msgid "Seeding Profile"
 msgstr "Profil Seeding"
@@ -1639,6 +1687,24 @@ msgstr "Pilih"
 
 msgid "Select Watch Folder"
 msgstr "Pilih Folder Pantauan"
+
+msgid "Select a torrent to configure its options"
+msgstr "Select a torrent to configure its options"
+
+msgid "Select a torrent to view its details"
+msgstr "Select a torrent to view its details"
+
+msgid "Select a torrent to view its files"
+msgstr "Select a torrent to view its files"
+
+msgid "Select a torrent to view its peers"
+msgstr "Select a torrent to view its peers"
+
+msgid "Select a torrent to view its status information"
+msgstr "Select a torrent to view its status information"
+
+msgid "Select a torrent to view its trackers"
+msgstr "Select a torrent to view its trackers"
 
 msgid "Select proxy type for connections"
 msgstr "Pilih tipe proxy untuk koneksi"
@@ -1760,6 +1826,9 @@ msgstr "Mulai saat sistem startup"
 msgid "Start the application minimized to system tray"
 msgstr "Mulai aplikasi diminimalkan ke system tray"
 
+msgid "States"
+msgstr "Status"
+
 msgid "Stats Update Interval:"
 msgstr "Interval Pembaruan Statistik:"
 
@@ -1787,6 +1856,9 @@ msgstr "Swedia"
 msgid "Synthetic Peer Count:"
 msgstr "Jumlah Peer Sintetis:"
 
+msgid "System Theme"
+msgstr "Tema Sistem"
+
 msgid "TCP fallback"
 msgstr "Fallback TCP"
 
@@ -1798,6 +1870,9 @@ msgstr "File .torrent akan DIHAPUS."
 
 msgid "The .torrent file will be kept."
 msgstr "File .torrent akan disimpan."
+
+msgid "Theme Style:"
+msgstr "Gaya Tema："
 
 msgid "Theme:"
 msgstr "Tema:"
@@ -2125,6 +2200,9 @@ msgstr "Tab Log"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (Ketersediaan Piece)"
+
+msgid "monitoring_tab"
+msgstr "monitoring_tab"
 
 msgid "name"
 msgstr "Nama"

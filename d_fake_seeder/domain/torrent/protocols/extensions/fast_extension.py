@@ -6,6 +6,7 @@ Implements the Fast Extension which adds four new message types:
 - Allows fast startup by eliminating certain delay-causing messages
 """
 
+# fmt: off
 import random
 import struct
 from typing import Set
@@ -13,6 +14,8 @@ from typing import Set
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import BitTorrentProtocolConstants
+
+# fmt: on
 
 
 class FastExtension:
@@ -53,7 +56,10 @@ class FastExtension:
 
         logger.debug(
             "Fast Extension initialized",
-            extra={"class_name": self.__class__.__name__, "enabled": self.fast_extension_enabled},
+            extra={
+                "class_name": self.__class__.__name__,
+                "enabled": self.fast_extension_enabled,
+            },
         )
 
     def supports_fast_extension(self) -> bool:
@@ -63,7 +69,10 @@ class FastExtension:
     def enable_peer_fast_support(self):
         """Enable fast extension support for peer"""
         self.peer_supports_fast = True
-        logger.debug("Peer fast extension support enabled", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Peer fast extension support enabled",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def handle_suggest_piece(self, payload: bytes):
         """
@@ -79,14 +88,20 @@ class FastExtension:
             piece_index = struct.unpack(">I", payload[:4])[0]
             self.suggested_pieces.add(piece_index)
 
-            logger.debug(f"Received SUGGEST_PIECE: {piece_index}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Received SUGGEST_PIECE: {piece_index}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             # In fake seeding, we can immediately "consider" this suggestion
             if self.simulate_fast_behavior:
                 self._handle_suggested_piece(piece_index)
 
         except Exception as e:
-            logger.error(f"Failed to handle SUGGEST_PIECE: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to handle SUGGEST_PIECE: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def handle_have_all(self, payload: bytes):
         """
@@ -148,7 +163,10 @@ class FastExtension:
                 self.peer_connection.pending_requests.discard(request_key)
 
         except Exception as e:
-            logger.error(f"Failed to handle REJECT_REQUEST: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to handle REJECT_REQUEST: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def handle_allowed_fast(self, payload: bytes):
         """
@@ -164,14 +182,20 @@ class FastExtension:
             piece_index = struct.unpack(">I", payload[:4])[0]
             self.allowed_fast_pieces.add(piece_index)
 
-            logger.debug(f"Received ALLOWED_FAST: {piece_index}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Received ALLOWED_FAST: {piece_index}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
             # In fake seeding, we can use this for immediate requests
             if self.simulate_fast_behavior:
                 self._handle_allowed_fast_piece(piece_index)
 
         except Exception as e:
-            logger.error(f"Failed to handle ALLOWED_FAST: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to handle ALLOWED_FAST: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def send_suggest_piece(self, piece_index: int) -> bool:
         """
@@ -191,11 +215,17 @@ class FastExtension:
 
             if hasattr(self.peer_connection, "send_message"):
                 self.peer_connection.send_message(message)
-                logger.debug(f"Sent SUGGEST_PIECE: {piece_index}", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    f"Sent SUGGEST_PIECE: {piece_index}",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return True
 
         except Exception as e:
-            logger.error(f"Failed to send SUGGEST_PIECE: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to send SUGGEST_PIECE: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         return False
 
@@ -218,7 +248,10 @@ class FastExtension:
                 return True
 
         except Exception as e:
-            logger.error(f"Failed to send HAVE_ALL: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to send HAVE_ALL: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         return False
 
@@ -241,7 +274,10 @@ class FastExtension:
                 return True
 
         except Exception as e:
-            logger.error(f"Failed to send HAVE_NONE: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to send HAVE_NONE: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         return False
 
@@ -272,7 +308,10 @@ class FastExtension:
                 return True
 
         except Exception as e:
-            logger.error(f"Failed to send REJECT_REQUEST: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to send REJECT_REQUEST: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         return False
 
@@ -294,11 +333,17 @@ class FastExtension:
 
             if hasattr(self.peer_connection, "send_message"):
                 self.peer_connection.send_message(message)
-                logger.debug(f"Sent ALLOWED_FAST: {piece_index}", extra={"class_name": self.__class__.__name__})
+                logger.debug(
+                    f"Sent ALLOWED_FAST: {piece_index}",
+                    extra={"class_name": self.__class__.__name__},
+                )
                 return True
 
         except Exception as e:
-            logger.error(f"Failed to send ALLOWED_FAST: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to send ALLOWED_FAST: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         return False
 
@@ -336,11 +381,15 @@ class FastExtension:
                 self.send_allowed_fast(piece_index)
 
             logger.debug(
-                f"Generated {len(fast_pieces)} allowed fast pieces", extra={"class_name": self.__class__.__name__}
+                f"Generated {len(fast_pieces)} allowed fast pieces",
+                extra={"class_name": self.__class__.__name__},
             )
 
         except Exception as e:
-            logger.error(f"Failed to generate allowed fast set: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to generate allowed fast set: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def suggest_pieces_to_peer(self, available_pieces: Set[int]):
         """
@@ -355,28 +404,39 @@ class FastExtension:
         try:
             # Select random pieces to suggest
             pieces_to_suggest = random.sample(
-                list(available_pieces), min(self.max_suggest_pieces, len(available_pieces))
+                list(available_pieces),
+                min(self.max_suggest_pieces, len(available_pieces)),
             )
 
             for piece_index in pieces_to_suggest:
                 self.send_suggest_piece(piece_index)
 
             logger.debug(
-                f"Suggested {len(pieces_to_suggest)} pieces to peer", extra={"class_name": self.__class__.__name__}
+                f"Suggested {len(pieces_to_suggest)} pieces to peer",
+                extra={"class_name": self.__class__.__name__},
             )
 
         except Exception as e:
-            logger.error(f"Failed to suggest pieces: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to suggest pieces: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _handle_suggested_piece(self, piece_index: int):
         """Handle a piece suggestion from peer"""
         # In fake seeding, we simulate considering the suggestion
-        logger.debug(f"Considering suggested piece: {piece_index}", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Considering suggested piece: {piece_index}",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _handle_allowed_fast_piece(self, piece_index: int):
         """Handle an allowed fast piece from peer"""
         # In fake seeding, we could immediately "request" this piece
-        logger.debug(f"Piece {piece_index} available for fast download", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            f"Piece {piece_index} available for fast download",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _mark_peer_has_piece(self, piece_index: int):
         """Mark that peer has a specific piece"""

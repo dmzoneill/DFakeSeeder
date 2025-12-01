@@ -4,6 +4,7 @@ Log tab for torrent details.
 Displays application log messages in a scrollable text view with batched updates.
 """
 
+# fmt: off
 import logging
 from typing import List, Optional
 
@@ -17,6 +18,8 @@ from gi.repository import GLib  # noqa: E402
 from gi.repository import Gtk  # noqa: E402
 
 from d_fake_seeder.lib.logger import logger  # noqa: E402
+
+# fmt: on
 
 
 class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
@@ -101,7 +104,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             # Add handler to the main logger
             logger.addHandler(self._log_handler)
 
-            self.logger.info("Log viewer handler set up successfully")
+            self.logger.debug("Log viewer handler set up successfully")
 
         except Exception as e:
             self.logger.error(f"Error setting up log viewer handler: {e}")

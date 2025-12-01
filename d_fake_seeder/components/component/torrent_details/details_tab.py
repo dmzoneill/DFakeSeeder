@@ -4,6 +4,7 @@ Details tab for torrent details.
 Displays key torrent information like name, ID, file path, size, and progress.
 """
 
+# fmt: off
 import gi
 
 from d_fake_seeder.lib.util.constants import SIZE_UNITS_BASIC
@@ -13,6 +14,8 @@ from .tab_mixins import DataUpdateMixin, UIUtilityMixin
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa
+
+# fmt: on
 
 
 class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
@@ -40,11 +43,18 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
     def clear_content(self) -> None:
         """Clear the details tab content."""
         try:
-            if self._details_grid:
-                self.remove_all_children(self._details_grid)
+            self._clear_grid()
+
+            # Show empty state
+            super().clear_content()
 
         except Exception as e:
             self.logger.error(f"Error clearing details tab content: {e}")
+
+    def _clear_grid(self) -> None:
+        """Clear the grid without showing empty state (used internally)."""
+        if self._details_grid:
+            self.remove_all_children(self._details_grid)
 
     def update_content(self, torrent) -> None:
         """
@@ -54,10 +64,13 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             torrent: Torrent object to display
         """
         try:
-            self.logger.info("Updating details tab for torrent", extra={"class_name": self.__class__.__name__})
+            self.logger.debug(
+                "Updating details tab for torrent",
+                extra={"class_name": self.__class__.__name__},
+            )
 
-            # Clear existing content
-            self.clear_content()
+            # Clear existing content (without showing empty state)
+            self._clear_grid()
 
             if not self._details_grid:
                 self.logger.error("Details grid not found")
@@ -102,8 +115,14 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             details = [
                 (translate_func("Name"), torrent_name),
-                (translate_func("ID"), str(self.safe_get_property(torrent, "id", "Unknown"))),
-                (translate_func("File Path"), self.safe_get_property(torrent, "filepath", "Unknown")),
+                (
+                    translate_func("ID"),
+                    str(self.safe_get_property(torrent, "id", "Unknown")),
+                ),
+                (
+                    translate_func("File Path"),
+                    self.safe_get_property(torrent, "filepath", "Unknown"),
+                ),
                 (
                     translate_func("Total Size"),
                     self._format_size(self.safe_get_property(torrent, "total_size", 0)),

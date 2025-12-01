@@ -226,10 +226,50 @@
                     <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">10</property>
-                    <property name="margin-start">20</property>
-                    <property name="margin-end">20</property>
-                    <property name="margin-top">20</property>
-                    <property name="margin-bottom">20</property>
+                    <property name="margin-start">15</property>
+                    <property name="margin-end">15</property>
+                    <property name="margin-top">15</property>
+                    <property name="margin-bottom">15</property>
+                    <child>
+                        <object class="GtkBox" id="details_empty_state">
+                            <property name="visible">False</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">20</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <property name="vexpand">True</property>
+                            <child>
+                                <object class="GtkImage">
+                                    <property name="icon-name">document-properties-symbolic</property>
+                                    <property name="pixel-size">128</property>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">No Torrent Selected</property>
+                                    <property name="wrap">True</property>
+                                    <attributes>
+                                        <attribute name="scale" value="1.5"/>
+                                        <attribute name="weight" value="bold"/>
+                                    </attributes>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Select a torrent to view its details</property>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
                     <child>
                         <object class="GtkGrid" id="details_grid">
                             <property name="visible">True</property>
@@ -243,8 +283,19 @@
         </object>
     </child>
     <child type="tab">
-        <object class="GtkLabel">
-            <property name="label" translatable="yes">Details</property>
+        <object class="GtkBox">
+            <property name="spacing">5</property>
+            <property name="orientation">horizontal</property>
+            <child>
+                <object class="GtkImage">
+                    <property name="icon-name">document-properties-symbolic</property>
+                </object>
+            </child>
+            <child>
+                <object class="GtkLabel">
+                    <property name="label" translatable="yes">Details</property>
+                </object>
+            </child>
         </object>
     </child>
 
@@ -255,13 +306,70 @@
                 <object class="GtkBox" id="status_tab">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">10</property>
+                    <property name="margin-start">15</property>
+                    <property name="margin-end">15</property>
+                    <property name="margin-top">15</property>
+                    <property name="margin-bottom">15</property>
+                    <child>
+                        <object class="GtkBox" id="status_empty_state">
+                            <property name="visible">False</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">20</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <property name="vexpand">True</property>
+                            <child>
+                                <object class="GtkImage">
+                                    <property name="icon-name">view-list-symbolic</property>
+                                    <property name="pixel-size">128</property>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">No Torrent Selected</property>
+                                    <property name="wrap">True</property>
+                                    <attributes>
+                                        <attribute name="scale" value="1.5"/>
+                                        <attribute name="weight" value="bold"/>
+                                    </attributes>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Select a torrent to view its status information</property>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
                 </object>
             </child>
         </object>
     </child>
     <child type="tab">
-        <object class="GtkLabel">
-            <property name="label" translatable="yes">Status</property>
+        <object class="GtkBox">
+            <property name="spacing">5</property>
+            <property name="orientation">horizontal</property>
+            <child>
+                <object class="GtkImage">
+                    <property name="icon-name">view-list-symbolic</property>
+                </object>
+            </child>
+            <child>
+                <object class="GtkLabel">
+                    <property name="label" translatable="yes">Status</property>
+                </object>
+            </child>
         </object>
     </child>
 
@@ -272,6 +380,52 @@
                 <object class="GtkBox" id="options_tab">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">10</property>
+                    <property name="margin-start">15</property>
+                    <property name="margin-end">15</property>
+                    <property name="margin-top">15</property>
+                    <property name="margin-bottom">15</property>
+                    <child>
+                        <object class="GtkBox" id="options_empty_state">
+                            <property name="visible">False</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">20</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <property name="vexpand">True</property>
+                            <child>
+                                <object class="GtkImage">
+                                    <property name="icon-name">emblem-system-symbolic</property>
+                                    <property name="pixel-size">128</property>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">No Torrent Selected</property>
+                                    <property name="wrap">True</property>
+                                    <attributes>
+                                        <attribute name="scale" value="1.5"/>
+                                        <attribute name="weight" value="bold"/>
+                                    </attributes>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Select a torrent to configure its options</property>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
                     <child>
                         <interface>
   <object class="GtkGrid" id="options_grid">
@@ -280,7 +434,7 @@
     <property name="column-spacing">10</property>
     <property name="hexpand">False</property>
     <property name="vexpand">False</property>
-    <property name="halign">center</property>
+    <property name="halign">start</property>
     <property name="valign">start</property>
   </object>
 </interface>
@@ -290,8 +444,19 @@
         </object>
     </child>    
     <child type="tab">
-        <object class="GtkLabel">
-            <property name="label" translatable="yes">Options</property>
+        <object class="GtkBox">
+            <property name="spacing">5</property>
+            <property name="orientation">horizontal</property>
+            <child>
+                <object class="GtkImage">
+                    <property name="icon-name">emblem-system-symbolic</property>
+                </object>
+            </child>
+            <child>
+                <object class="GtkLabel">
+                    <property name="label" translatable="yes">Options</property>
+                </object>
+            </child>
         </object>
     </child>
 
@@ -302,23 +467,129 @@
                 <object class="GtkBox" id="files_tab">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">10</property>
+                    <property name="margin-start">15</property>
+                    <property name="margin-end">15</property>
+                    <property name="margin-top">15</property>
+                    <property name="margin-bottom">15</property>
+                    <child>
+                        <object class="GtkBox" id="files_empty_state">
+                            <property name="visible">False</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">20</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <property name="vexpand">True</property>
+                            <child>
+                                <object class="GtkImage">
+                                    <property name="icon-name">folder-documents-symbolic</property>
+                                    <property name="pixel-size">128</property>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">No Torrent Selected</property>
+                                    <property name="wrap">True</property>
+                                    <attributes>
+                                        <attribute name="scale" value="1.5"/>
+                                        <attribute name="weight" value="bold"/>
+                                    </attributes>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Select a torrent to view its files</property>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
                 </object>
             </child>
         </object>
     </child>
     <child type="tab">
-        <object class="GtkLabel">
-            <property name="label" translatable="yes">Files</property>
+        <object class="GtkBox">
+            <property name="spacing">5</property>
+            <property name="orientation">horizontal</property>
+            <child>
+                <object class="GtkImage">
+                    <property name="icon-name">folder-documents-symbolic</property>
+                </object>
+            </child>
+            <child>
+                <object class="GtkLabel">
+                    <property name="label" translatable="yes">Files</property>
+                </object>
+            </child>
         </object>
     </child>
 
     <child>
-        <object class="GtkBox" id="peers_tab">
-            <property name="visible">True</property>
+        <object class="GtkScrolledWindow">
             <property name="can-focus">False</property>
             <child>
-                <object class="GtkScrolledWindow">
-    <property name="visible">True</property>
+                <object class="GtkBox" id="peers_tab">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">10</property>
+                    <property name="margin-start">15</property>
+                    <property name="margin-end">15</property>
+                    <property name="margin-top">15</property>
+                    <property name="margin-bottom">15</property>
+                    <child>
+                        <object class="GtkBox" id="peers_empty_state">
+                            <property name="visible">False</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">20</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <property name="vexpand">True</property>
+                            <child>
+                                <object class="GtkImage">
+                                    <property name="icon-name">network-workgroup-symbolic</property>
+                                    <property name="pixel-size">128</property>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">No Torrent Selected</property>
+                                    <property name="wrap">True</property>
+                                    <attributes>
+                                        <attribute name="scale" value="1.5"/>
+                                        <attribute name="weight" value="bold"/>
+                                    </attributes>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Select a torrent to view its peers</property>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkScrolledWindow" id="peers_content">
+    <property name="visible">False</property>
     <property name="can-focus">True</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
@@ -331,21 +602,43 @@
         </object>
     </child>
 </object>
+                    </child>
+                </object>
             </child>
         </object>
     </child>
     <child type="tab">
-        <object class="GtkLabel">
-            <property name="label" translatable="yes">Peers</property>
+        <object class="GtkBox">
+            <property name="spacing">5</property>
+            <property name="orientation">horizontal</property>
+            <child>
+                <object class="GtkImage">
+                    <property name="icon-name">network-workgroup-symbolic</property>
+                </object>
+            </child>
+            <child>
+                <object class="GtkLabel">
+                    <property name="label" translatable="yes">Peers</property>
+                </object>
+            </child>
         </object>
     </child>
 
     <child>
-        <object class="GtkBox" id="incoming_tab">
-            <property name="visible">True</property>
+        <object class="GtkScrolledWindow">
             <property name="can-focus">False</property>
             <child>
-                <object class="GtkBox">
+                <object class="GtkBox" id="incoming_tab">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">10</property>
+                    <property name="margin-start">15</property>
+                    <property name="margin-end">15</property>
+                    <property name="margin-top">15</property>
+                    <property name="margin-bottom">15</property>
+                    <child>
+                        <object class="GtkBox">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
@@ -396,21 +689,43 @@
         </object>
     </child>
 </object>
+                    </child>
+                </object>
             </child>
         </object>
     </child>
     <child type="tab">
-        <object class="GtkLabel">
-            <property name="label" translatable="yes">Incoming</property>
+        <object class="GtkBox">
+            <property name="spacing">5</property>
+            <property name="orientation">horizontal</property>
+            <child>
+                <object class="GtkImage">
+                    <property name="icon-name">network-receive-symbolic</property>
+                </object>
+            </child>
+            <child>
+                <object class="GtkLabel">
+                    <property name="label" translatable="yes">Incoming</property>
+                </object>
+            </child>
         </object>
     </child>
 
     <child>
-        <object class="GtkBox" id="outgoing_tab">
-            <property name="visible">True</property>
+        <object class="GtkScrolledWindow">
             <property name="can-focus">False</property>
             <child>
-                <object class="GtkBox">
+                <object class="GtkBox" id="outgoing_tab">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">10</property>
+                    <property name="margin-start">15</property>
+                    <property name="margin-end">15</property>
+                    <property name="margin-top">15</property>
+                    <property name="margin-bottom">15</property>
+                    <child>
+                        <object class="GtkBox">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
@@ -461,69 +776,187 @@
         </object>
     </child>
 </object>
-            </child>
-        </object>
-    </child>
-    <child type="tab">
-        <object class="GtkLabel">
-            <property name="label" translatable="yes">Outgoing</property>
-        </object>
-    </child>
-
-    <child>
-        <object class="GtkBox" id="trackers_tab">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <child>
-                <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="label" translatable="yes"/>
-                    <property name="halign">center</property>
-                    <property name="use-markup">True</property>
-                    <property name="wrap">True</property>
-                    <property name="wrap-mode">word</property>
-                    <property name="justify">center</property>
-                    <property name="selectable">True</property>
-                    <property name="use_underline">False</property>
-                    <attributes>
-                        <attribute name="weight" value="bold"/>
-                        <attribute name="size" value="12000"/>
-                    </attributes>
+                    </child>
                 </object>
             </child>
         </object>
     </child>
     <child type="tab">
-        <object class="GtkLabel">
-            <property name="label" translatable="yes">Trackers</property>
+        <object class="GtkBox">
+            <property name="spacing">5</property>
+            <property name="orientation">horizontal</property>
+            <child>
+                <object class="GtkImage">
+                    <property name="icon-name">network-transmit-symbolic</property>
+                </object>
+            </child>
+            <child>
+                <object class="GtkLabel">
+                    <property name="label" translatable="yes">Outgoing</property>
+                </object>
+            </child>
         </object>
     </child>
 
     <child>
-        <object class="GtkBox" id="log_tab">
-            <property name="visible">True</property>
+        <object class="GtkScrolledWindow">
             <property name="can-focus">False</property>
-            <property name="homogeneous">True</property>
             <child>
-                <object class="GtkScrolledWindow" id="log_scroll">
+                <object class="GtkBox" id="trackers_tab">
                     <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">10</property>
+                    <property name="margin-start">15</property>
+                    <property name="margin-end">15</property>
+                    <property name="margin-top">15</property>
+                    <property name="margin-bottom">15</property>
                     <child>
-                        <object class="GtkTextView" id="log_viewer">
-                            <property name="visible">True</property>
-                            <property name="can-focus">True</property>
-                            <property name="monospace">True</property>
+                        <object class="GtkBox" id="trackers_empty_state">
+                            <property name="visible">False</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">20</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
                             <property name="vexpand">True</property>
-                            <property name="hexpand">True</property>
+                            <child>
+                                <object class="GtkImage">
+                                    <property name="icon-name">network-server-symbolic</property>
+                                    <property name="pixel-size">128</property>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">No Torrent Selected</property>
+                                    <property name="wrap">True</property>
+                                    <attributes>
+                                        <attribute name="scale" value="1.5"/>
+                                        <attribute name="weight" value="bold"/>
+                                    </attributes>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Select a torrent to view its trackers</property>
+                                    <style>
+                                        <class name="dim-label"/>
+                                    </style>
+                                </object>
+                            </child>
                         </object>
                     </child>
                 </object>
             </child>
         </object>
-    </child>    
+    </child>
     <child type="tab">
-        <object class="GtkLabel">
-            <property name="label" translatable="yes">Log</property>
+        <object class="GtkBox">
+            <property name="spacing">5</property>
+            <property name="orientation">horizontal</property>
+            <child>
+                <object class="GtkImage">
+                    <property name="icon-name">network-server-symbolic</property>
+                </object>
+            </child>
+            <child>
+                <object class="GtkLabel">
+                    <property name="label" translatable="yes">Trackers</property>
+                </object>
+            </child>
+        </object>
+    </child>
+
+    <child>
+        <object class="GtkScrolledWindow">
+            <property name="can-focus">False</property>
+            <child>
+                <object class="GtkBox" id="log_tab">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">10</property>
+                    <property name="margin-start">15</property>
+                    <property name="margin-end">15</property>
+                    <property name="margin-top">15</property>
+                    <property name="margin-bottom">15</property>
+                    <child>
+                        <object class="GtkScrolledWindow" id="log_scroll">
+                            <property name="visible">True</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
+                            <child>
+                                <object class="GtkTextView" id="log_viewer">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="monospace">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="left-margin">15</property>
+                                    <property name="right-margin">15</property>
+                                    <property name="top-margin">15</property>
+                                    <property name="bottom-margin">15</property>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+    </child>
+    <child type="tab">
+        <object class="GtkBox">
+            <property name="spacing">5</property>
+            <property name="orientation">horizontal</property>
+            <child>
+                <object class="GtkImage">
+                    <property name="icon-name">utilities-terminal-symbolic</property>
+                </object>
+            </child>
+            <child>
+                <object class="GtkLabel">
+                    <property name="label" translatable="yes">Log</property>
+                </object>
+            </child>
+        </object>
+    </child>
+
+    <child>
+        <object class="GtkScrolledWindow">
+            <property name="can-focus">False</property>
+            <child>
+                <object class="GtkBox" id="monitoring_tab">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">10</property>
+                    <property name="margin-start">15</property>
+                    <property name="margin-end">15</property>
+                    <property name="margin-top">15</property>
+                    <property name="margin-bottom">15</property>
+                </object>
+            </child>
+        </object>
+    </child>
+    <child type="tab">
+        <object class="GtkBox">
+            <property name="spacing">5</property>
+            <property name="orientation">horizontal</property>
+            <child>
+                <object class="GtkImage">
+                    <property name="icon-name">utilities-system-monitor-symbolic</property>
+                </object>
+            </child>
+            <child>
+                <object class="GtkLabel">
+                    <property name="label" translatable="yes">Monitoring</property>
+                </object>
+            </child>
         </object>
     </child>
 </object>

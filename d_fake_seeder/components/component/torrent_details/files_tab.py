@@ -4,6 +4,7 @@ Files tab for torrent details.
 Displays torrent file listing with file paths and sizes.
 """
 
+# fmt: off
 import gi
 
 from d_fake_seeder.lib.util.constants import SIZE_UNITS_BASIC
@@ -12,6 +13,8 @@ from .base_tab import BaseTorrentTab
 from .tab_mixins import DataUpdateMixin, UIUtilityMixin
 
 gi.require_version("Gtk", "4.0")
+
+# fmt: on
 
 
 class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
@@ -67,7 +70,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             attributes: Attributes object from the torrent list
         """
         try:
-            self.logger.info(
+            self.logger.debug(
                 f"🔄 FILES TAB: Starting update_content for attributes: {attributes}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -100,7 +103,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 extra={"class_name": self.__class__.__name__},
             )
             files_data = self._get_torrent_files(attributes)
-            self.logger.info(
+            self.logger.debug(
                 f"📊 FILES TAB: Retrieved {len(files_data) if files_data else 0} files from torrent",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -180,7 +183,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 extra={"class_name": self.__class__.__name__},
             )
             torrent_file = torrent.get_torrent_file()
-            self.logger.info(
+            self.logger.debug(
                 f"📁 FILES TAB: Torrent file retrieved: {torrent_file} (type: {type(torrent_file)})",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -202,7 +205,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 extra={"class_name": self.__class__.__name__},
             )
             files = list(torrent_file.get_files())
-            self.logger.info(
+            self.logger.debug(
                 f"📂 FILES TAB: Multi-file torrent files: {len(files)} files",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -220,7 +223,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                     extra={"class_name": self.__class__.__name__},
                 )
                 single_file_info = torrent_file.get_single_file_info()
-                self.logger.info(
+                self.logger.debug(
                     f"📄 FILES TAB: Single file info: {single_file_info}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -228,12 +231,12 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                     # Use the torrent name as the filename for single-file torrents
                     filename = getattr(attributes, "name", "unknown.file")
                     files = [(filename, single_file_info)]
-                    self.logger.info(
+                    self.logger.debug(
                         f"✅ FILES TAB: Created single file entry: {files}",
                         extra={"class_name": self.__class__.__name__},
                     )
 
-            self.logger.info(
+            self.logger.debug(
                 f"🎯 FILES TAB: Final files list: {len(files)} files - {files[:2] if files else 'empty'}",
                 extra={"class_name": self.__class__.__name__},
             )

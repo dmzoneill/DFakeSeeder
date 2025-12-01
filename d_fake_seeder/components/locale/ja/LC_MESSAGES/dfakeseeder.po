@@ -212,6 +212,9 @@ msgstr "アグレッシブプロファイルダウンロード速度"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "アグレッシブプロファイルアップロード速度（0=無制限）"
 
+msgid "All"
+msgstr "すべて"
+
 msgid "Alt download limit (KB/s):"
 msgstr "代替ダウンロード制限 (KB/s):"
 
@@ -247,6 +250,9 @@ msgstr "アナウンス間隔:"
 
 msgid "Arabic"
 msgstr "アラビア語"
+
+msgid "Auto (Follow System)"
+msgstr "自動（システムに従う）"
 
 msgid "Auto Detect"
 msgstr "自動検出"
@@ -362,11 +368,20 @@ msgstr "重要"
 msgid "Cancel"
 msgstr "キャンセル"
 
+msgid "Checking"
+msgstr "チェック中"
+
 msgid "Chinese"
 msgstr "中国語"
 
 msgid "Choose a pre-configured seeding profile"
 msgstr "事前設定されたシーディングプロファイルを選択"
+
+msgid "Choose light or dark color scheme"
+msgstr "明るいまたは暗い配色を選択"
+
+msgid "Choose the UI theme style"
+msgstr "UIテーマスタイルを選択"
 
 msgid "Choose the application theme"
 msgstr "アプリケーションテーマを選択"
@@ -382,6 +397,9 @@ msgstr "クライアント"
 
 msgid "Client Switch Probability:"
 msgstr "クライアント切り替え確率:"
+
+msgid "Color Scheme:"
+msgstr "配色："
 
 msgid "Columns"
 msgstr "列"
@@ -521,6 +539,9 @@ msgstr "正常に追加された後、トレントファイルを削除"
 msgid "Deluge"
 msgstr "Deluge"
 
+msgid "Deluge Theme"
+msgstr "Delugeテーマ"
+
 msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
@@ -589,6 +610,9 @@ msgstr "ダウンロード済み セッション / 合計"
 
 msgid "Downloaded Speed"
 msgstr "ダウンロード速度"
+
+msgid "Downloading"
+msgstr "ダウンロード中"
 
 msgid "Dropout probability:"
 msgstr "ドロップアウト確率:"
@@ -890,6 +914,9 @@ msgstr "合成ピアを生成する"
 msgid "German"
 msgstr "ドイツ語"
 
+msgid "Get the main widget for this tab."
+msgstr "このタブのメインウィジェットを取得します。"
+
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
 
@@ -1184,11 +1211,17 @@ msgstr "アナウンス間の最小時間 (10-3600秒)"
 msgid "Minimum transaction ID for tracker communication"
 msgstr "トラッカー通信の最小トランザクションID"
 
+msgid "Modern Chunky"
+msgstr "Modern Chunky"
+
 msgid "Mon"
 msgstr "月"
 
 msgid "Monday"
 msgstr "月曜日"
+
+msgid "Monitoring"
+msgstr "監視"
 
 msgid "Multi-Tracker"
 msgstr "マルチトラッカー"
@@ -1216,6 +1249,9 @@ msgstr "次回更新"
 
 msgid "No"
 msgstr "いいえ"
+
+msgid "No Torrent Selected"
+msgstr "トレント未選択"
 
 msgid "No editable options available for this torrent."
 msgstr "このトレントには編集可能なオプションがありません。"
@@ -1282,6 +1318,9 @@ msgstr "すべてのトレントを一時停止"
 
 msgid "Pause torrent"
 msgstr "トレント一時停止"
+
+msgid "Paused"
+msgstr "一時停止"
 
 msgid "Peer Analysis Depth:"
 msgstr "ピア分析深度:"
@@ -1472,6 +1511,9 @@ msgstr "クエリタイムアウト:"
 msgid "Queue"
 msgstr "キュー"
 
+msgid "Queued"
+msgstr "キュー中"
+
 msgid "Quit"
 msgstr "終了"
 
@@ -1619,6 +1661,9 @@ msgstr "設定を検索"
 msgid "Secure password generated"
 msgstr "安全なパスワードを生成しました"
 
+msgid "Seed"
+msgstr "シード"
+
 msgid "Seeder port range (max):"
 msgstr "シーダーポート範囲 (最大):"
 
@@ -1627,6 +1672,9 @@ msgstr "シーダーポート範囲 (最小):"
 
 msgid "Seeders"
 msgstr "シーダー"
+
+msgid "Seeding"
+msgstr "シード中"
 
 msgid "Seeding Profile"
 msgstr "シードプロファイル"
@@ -1639,6 +1687,24 @@ msgstr "選択"
 
 msgid "Select Watch Folder"
 msgstr "監視フォルダを選択"
+
+msgid "Select a torrent to configure its options"
+msgstr "トレントを選択してオプションを設定"
+
+msgid "Select a torrent to view its details"
+msgstr "トレントを選択して詳細を表示"
+
+msgid "Select a torrent to view its files"
+msgstr "トレントを選択してファイルを表示"
+
+msgid "Select a torrent to view its peers"
+msgstr "トレントを選択してピアを表示"
+
+msgid "Select a torrent to view its status information"
+msgstr "トレントを選択してステータス情報を表示"
+
+msgid "Select a torrent to view its trackers"
+msgstr "トレントを選択してトラッカーを表示"
 
 msgid "Select proxy type for connections"
 msgstr "接続用プロキシタイプを選択"
@@ -1760,6 +1826,9 @@ msgstr "システム起動時に開始"
 msgid "Start the application minimized to system tray"
 msgstr "アプリケーションをシステムトレイに最小化して開始"
 
+msgid "States"
+msgstr "状態"
+
 msgid "Stats Update Interval:"
 msgstr "統計更新間隔:"
 
@@ -1787,6 +1856,9 @@ msgstr "スウェーデン語"
 msgid "Synthetic Peer Count:"
 msgstr "合成ピア数:"
 
+msgid "System Theme"
+msgstr "システムテーマ"
+
 msgid "TCP fallback"
 msgstr "TCPフォールバック"
 
@@ -1798,6 +1870,9 @@ msgstr ".torrentファイルは削除されます。"
 
 msgid "The .torrent file will be kept."
 msgstr ".torrentファイルは保持されます。"
+
+msgid "Theme Style:"
+msgstr "テーマスタイル："
 
 msgid "Theme:"
 msgstr "テーマ:"
@@ -2125,6 +2200,9 @@ msgstr "ログタブ"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave（ピース可用性）"
+
+msgid "monitoring_tab"
+msgstr "monitoring_tab"
 
 msgid "name"
 msgstr "名前"

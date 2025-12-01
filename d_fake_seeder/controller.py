@@ -1,3 +1,4 @@
+# fmt: off
 import os
 
 from d_fake_seeder.domain.app_settings import AppSettings
@@ -9,11 +10,13 @@ from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.dbus_unifier import DBusUnifier
 from d_fake_seeder.lib.util.window_manager import WindowManager
 
+# fmt: on
+
 
 # Cont roller
 class Controller:
     def __init__(self, view, model):
-        logger.info("Controller Startup", extra={"class_name": self.__class__.__name__})
+        logger.debug("Startup", extra={"class_name": self.__class__.__name__})
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
@@ -34,9 +37,15 @@ class Controller:
         self.dbus = None
         try:
             self.dbus = DBusUnifier()
-            logger.info("D-Bus service initialized", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "D-Bus service initialized",
+                extra={"class_name": self.__class__.__name__},
+            )
         except Exception as e:
-            logger.error(f"Failed to initialize D-Bus service: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to initialize D-Bus service: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         # self.listener = Listener(self.model)
         # self.listener.start()
@@ -45,7 +54,10 @@ class Controller:
         # Initialize window manager after view is set up
         if hasattr(self.view, "window") and self.view.window:
             self.window_manager = WindowManager(self.view.window)
-            logger.info("Window manager initialized", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "Window manager initialized",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         # Make managers accessible to view components
         self.view.global_peer_manager = self.global_peer_manager
@@ -63,12 +75,15 @@ class Controller:
         # Setup D-Bus signal forwarding after all components are initialized
         if self.dbus:
             self.dbus.setup_settings_signal_forwarding()
-            logger.info("D-Bus settings signal forwarding enabled", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "D-Bus settings signal forwarding enabled",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         self.view.connect_signals()
 
     def run(self):
-        logger.info("Controller Run", extra={"class_name": self.__class__.__name__})
+        logger.debug("Controller Run", extra={"class_name": self.__class__.__name__})
         for filename in os.listdir(os.path.expanduser("~/.config/dfakeseeder/torrents")):
             if filename.endswith(".torrent"):
                 torrent_file = os.path.join(
@@ -86,7 +101,7 @@ class Controller:
 
     def stop(self, shutdown_tracker=None):
         """Stop the controller and cleanup all background processes"""
-        logger.info("Controller stopping", extra={"class_name": self.__class__.__name__})
+        logger.debug("Controller stopping", extra={"class_name": self.__class__.__name__})
 
         # Stop global peer manager
         if hasattr(self, "global_peer_manager") and self.global_peer_manager:
@@ -102,22 +117,28 @@ class Controller:
         if hasattr(self, "torrent_watcher") and self.torrent_watcher:
             self.torrent_watcher.stop()
 
-        logger.info("🔧 About to cleanup window manager", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "🔧 About to cleanup window manager",
+            extra={"class_name": self.__class__.__name__},
+        )
         # Cleanup window manager
         if hasattr(self, "window_manager") and self.window_manager:
             self.window_manager.cleanup()
-        logger.info("✅ Window manager cleanup complete", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "✅ Window manager cleanup complete",
+            extra={"class_name": self.__class__.__name__},
+        )
 
-        logger.info("🔧 About to cleanup D-Bus", extra={"class_name": self.__class__.__name__})
+        logger.debug("🔧 About to cleanup D-Bus", extra={"class_name": self.__class__.__name__})
         # Cleanup D-Bus service
         if hasattr(self, "dbus") and self.dbus:
             self.dbus.cleanup()
-        logger.info("✅ D-Bus cleanup complete", extra={"class_name": self.__class__.__name__})
+        logger.debug("✅ D-Bus cleanup complete", extra={"class_name": self.__class__.__name__})
 
-        logger.info("Controller stopped", extra={"class_name": self.__class__.__name__})
+        logger.debug("Controller stopped", extra={"class_name": self.__class__.__name__})
 
     def handle_settings_changed(self, source, key, value):
-        logger.info(
+        logger.debug(
             f"Controller settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -130,7 +151,11 @@ class Controller:
                 self.torrent_watcher.start()
 
         # Handle window management settings changes
-        if self.window_manager and key in ["window_visible", "close_to_tray", "minimize_to_tray"]:
+        if self.window_manager and key in [
+            "window_visible",
+            "close_to_tray",
+            "minimize_to_tray",
+        ]:
             if key == "window_visible":
                 if value:
                     self.window_manager.show()
@@ -139,7 +164,7 @@ class Controller:
 
         # Handle application quit request
         if key == "application_quit_requested" and value:
-            logger.info(
+            logger.debug(
                 "🚨 QUIT SEQUENCE START: Quit requested via D-Bus settings",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -148,28 +173,28 @@ class Controller:
 
             # Trigger proper application shutdown (not immediate quit)
             if hasattr(self, "view") and self.view:
-                logger.info(
+                logger.debug(
                     "✅ QUIT SEQUENCE: Found view object, triggering proper shutdown sequence",
                     extra={"class_name": self.__class__.__name__},
                 )
                 if hasattr(self.view, "on_quit_clicked"):
-                    logger.info(
+                    logger.debug(
                         "🎯 QUIT SEQUENCE: Calling self.view.on_quit_clicked() with fast_shutdown=True for D-Bus quit",
                         extra={"class_name": self.__class__.__name__},
                     )
                     self.view.on_quit_clicked(None, fast_shutdown=True)  # Use fast shutdown for D-Bus triggered quit
-                    logger.info(
+                    logger.debug(
                         "📞 QUIT SEQUENCE: self.view.on_quit_clicked() call completed",
                         extra={"class_name": self.__class__.__name__},
                     )
                 else:
-                    logger.info(
+                    logger.debug(
                         "🎯 QUIT SEQUENCE: Calling self.view.quit() with fast_shutdown=True "
                         "for ShutdownProgressTracker shutdown",
                         extra={"class_name": self.__class__.__name__},
                     )
                     self.view.quit(fast_shutdown=True)  # Fallback to direct quit with fast shutdown
-                    logger.info(
+                    logger.debug(
                         "📞 QUIT SEQUENCE: self.view.quit() call completed",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -180,7 +205,7 @@ class Controller:
                 )
                 # Even in fallback, try to use the proper shutdown if available
                 if hasattr(self.view, "quit"):
-                    logger.info(
+                    logger.debug(
                         "🔄 QUIT SEQUENCE: Found view.quit() method, using proper shutdown in fallback",
                         extra={"class_name": self.__class__.__name__},
                     )

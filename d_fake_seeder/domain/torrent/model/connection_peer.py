@@ -5,6 +5,7 @@ GObject model for tracking individual peer connections with their
 status, statistics, and protocol information.
 """
 
+# fmt: off
 import time
 
 import gi
@@ -12,6 +13,8 @@ import gi
 gi.require_version("GObject", "2.0")
 
 from gi.repository import GObject  # noqa: E402
+
+# fmt: on
 
 
 class ConnectionPeer(GObject.Object):

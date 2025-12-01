@@ -2,6 +2,7 @@
 RFC: https://wiki.theory.org/index.php/BitTorrentSpecification
 """
 
+# fmt: off
 from urllib.parse import urlparse
 
 import gi
@@ -15,10 +16,12 @@ from d_fake_seeder.domain.torrent.seeders.http_seeder import HTTPSeeder  # noqa:
 from d_fake_seeder.domain.torrent.seeders.udp_seeder import UDPSeeder  # noqa: E402
 from d_fake_seeder.lib.logger import logger  # noqa: E402
 
+# fmt: on
+
 
 class Seeder:
     def __init__(self, torrent):
-        logger.info("Seeder Startup", extra={"class_name": self.__class__.__name__})
+        logger.debug("Startup", extra={"class_name": self.__class__.__name__})
         self.ready = False
         self.seeder = None
         self.settings = AppSettings.get_instance()

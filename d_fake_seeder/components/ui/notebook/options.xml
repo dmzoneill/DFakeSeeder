@@ -6,7 +6,7 @@
     <property name="column-spacing">10</property>
     <property name="hexpand">False</property>
     <property name="vexpand">False</property>
-    <property name="halign">center</property>
+    <property name="halign">start</property>
     <property name="valign">start</property>
   </object>
 </interface>

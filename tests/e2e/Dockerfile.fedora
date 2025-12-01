@@ -1,0 +1,68 @@
+# Dockerfile for end-to-end RPM testing on Fedora
+# Provides clean environment for automated installation testing
+
+FROM fedora:latest
+
+# Install base dependencies for testing
+RUN dnf install -y \
+    python3 \
+    python3-pip \
+    python3-gobject \
+    python3-requests \
+    python3-urllib3 \
+    python3-watchdog \
+    gtk4 \
+    libadwaita \
+    xorg-x11-server-Xvfb \
+    xorg-x11-xinit \
+    dbus-x11 \
+    desktop-file-utils \
+    gtk-update-icon-cache \
+    at-spi2-core \
+    mesa-dri-drivers \
+    mesa-libGL \
+    mesa-libEGL \
+    mesa-libGLES \
+    mesa-libgbm \
+    xdpyinfo \
+    procps-ng \
+    dbus-daemon \
+    adwaita-gtk2-theme \
+    adwaita-icon-theme \
+    glibc-langpack-en \
+    && dnf clean all
+
+# Install pipenv via pip (not available as RPM in Fedora 42)
+RUN pip3 install --no-cache-dir pipenv
+
+# Fix D-Bus machine-id for GTK apps
+RUN dbus-uuidgen > /etc/machine-id && \
+    mkdir -p /var/lib/dbus && \
+    ln -sf /etc/machine-id /var/lib/dbus/machine-id
+
+# Create test user (non-root testing)
+RUN useradd -m -s /bin/bash tester && \
+    echo "tester ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    mkdir -p /home/tester/.local/share/virtualenvs && \
+    chown -R tester:tester /home/tester/.local
+
+# Set up environment
+ENV DISPLAY=:99
+ENV PYTHONUNBUFFERED=1
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+
+# Create directories
+RUN mkdir -p /test-artifacts /rpms
+WORKDIR /workspace
+
+# Switch to test user for most operations
+USER tester
+
+# Create user config directory
+RUN mkdir -p /home/tester/.config/dfakeseeder
+
+# Test scripts will be mounted at runtime via volume mounts
+
+# Entry point for tests
+CMD ["/bin/bash"]

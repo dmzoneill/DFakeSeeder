@@ -5,6 +5,7 @@ Centralized connection management for both incoming and outgoing peer connection
 Provides shared logic for connection counting, filtering, and lifetime management.
 """
 
+# fmt: off
 import time
 from typing import Dict, List, Tuple
 
@@ -15,9 +16,13 @@ gi.require_version("GLib", "2.0")
 from gi.repository import GLib  # noqa: E402
 
 from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
-from d_fake_seeder.domain.torrent.model.connection_peer import ConnectionPeer  # noqa: E402
+from d_fake_seeder.domain.torrent.model.connection_peer import (  # noqa: E402
+    ConnectionPeer,
+)
 from d_fake_seeder.lib.logger import logger  # noqa: E402
 from d_fake_seeder.lib.util.constants import ConnectionConstants  # noqa: E402
+
+# fmt: on
 
 
 class ConnectionManager:
@@ -37,6 +42,10 @@ class ConnectionManager:
         # Track when connections were added for display time calculation
         self.incoming_display_timers: Dict[str, float] = {}
         self.outgoing_display_timers: Dict[str, float] = {}
+
+        # Track when connections were created for age-based expiry
+        self.incoming_creation_times: Dict[str, float] = {}
+        self.outgoing_creation_times: Dict[str, float] = {}
 
         # Connection display settings (based on tickspeed)
         self.failed_connection_display_cycles = (
@@ -128,16 +137,28 @@ class ConnectionManager:
             logger.debug("Stopped periodic connection cleanup timer")
 
     def _periodic_cleanup(self):
-        """Periodic cleanup of expired failed connections (single timer for all connections)"""
+        """Periodic cleanup of expired failed connections and enforcement of connection limits"""
         current_time = time.time()
         failed_display_time = self.get_failed_connection_display_time()
+
+        # Get connection limits and expiry settings from config
+        connection_manager_config = getattr(self.settings, "connection_manager", {})
+        max_incoming = connection_manager_config.get("max_incoming_connections", 500)
+        max_outgoing = connection_manager_config.get("max_outgoing_connections", 500)
+        connection_expiry = connection_manager_config.get("connection_expiry_seconds", 600)
 
         # Cleanup expired incoming connections
         incoming_to_remove = []
         for connection_key, conn in self.all_incoming_connections.items():
+            # Remove failed connections after display time
             if hasattr(conn, "status") and conn.status == "failed":
                 failed_time = self.incoming_failed_times.get(connection_key, current_time)
                 if current_time - failed_time >= failed_display_time:
+                    incoming_to_remove.append(connection_key)
+            # Remove old connections based on age (even if not failed)
+            elif connection_key in self.incoming_creation_times:
+                creation_time = self.incoming_creation_times[connection_key]
+                if current_time - creation_time >= connection_expiry:
                     incoming_to_remove.append(connection_key)
 
         for connection_key in incoming_to_remove:
@@ -146,16 +167,46 @@ class ConnectionManager:
         # Cleanup expired outgoing connections
         outgoing_to_remove = []
         for connection_key, conn in self.all_outgoing_connections.items():
+            # Remove failed connections after display time
             if hasattr(conn, "status") and conn.status == "failed":
                 failed_time = self.outgoing_failed_times.get(connection_key, current_time)
                 if current_time - failed_time >= failed_display_time:
+                    outgoing_to_remove.append(connection_key)
+            # Remove old connections based on age (even if not failed)
+            elif connection_key in self.outgoing_creation_times:
+                creation_time = self.outgoing_creation_times[connection_key]
+                if current_time - creation_time >= connection_expiry:
                     outgoing_to_remove.append(connection_key)
 
         for connection_key in outgoing_to_remove:
             self._remove_outgoing_connection_by_key(connection_key)
 
+        # Enforce max connection limits using LRU eviction
+        incoming_overflow = len(self.all_incoming_connections) - max_incoming
+        if incoming_overflow > 0:
+            # Remove oldest connections first
+            sorted_incoming = sorted(self.incoming_creation_times.items(), key=lambda x: x[1])  # Sort by creation time
+            for connection_key, _ in sorted_incoming[:incoming_overflow]:
+                self._remove_incoming_connection_by_key(connection_key)
+            logger.warning(
+                f"Enforced incoming connection limit: removed {incoming_overflow} oldest connections "
+                f"(max: {max_incoming})"
+            )
+
+        outgoing_overflow = len(self.all_outgoing_connections) - max_outgoing
+        if outgoing_overflow > 0:
+            # Remove oldest connections first
+            sorted_outgoing = sorted(self.outgoing_creation_times.items(), key=lambda x: x[1])  # Sort by creation time
+            for connection_key, _ in sorted_outgoing[:outgoing_overflow]:
+                self._remove_outgoing_connection_by_key(connection_key)
+            logger.warning(
+                f"Enforced outgoing connection limit: removed {outgoing_overflow} oldest connections "
+                f"(max: {max_outgoing})"
+            )
+
         # Log if we cleaned up any connections
-        if incoming_to_remove or outgoing_to_remove:
+        total_removed = len(incoming_to_remove) + len(outgoing_to_remove)
+        if total_removed > 0:
             logger.debug(
                 f"Periodic cleanup removed {len(incoming_to_remove)} incoming "
                 f"and {len(outgoing_to_remove)} outgoing expired connections"
@@ -178,8 +229,10 @@ class ConnectionManager:
             connection_peer = ConnectionPeer(**connection_kwargs)
             self.all_incoming_connections[connection_key] = connection_peer
 
-            # Set display timer
-            self.incoming_display_timers[connection_key] = time.time()
+            # Set timers
+            current_time = time.time()
+            self.incoming_display_timers[connection_key] = current_time
+            self.incoming_creation_times[connection_key] = current_time
 
             logger.debug(f"Added incoming connection: {connection_key}")
             self.notify_update_callbacks()
@@ -217,13 +270,15 @@ class ConnectionManager:
         # Remove from storage
         del self.all_incoming_connections[connection_key]
 
-        # Clean up display timer
+        # Clean up all tracking dictionaries
         if connection_key in self.incoming_display_timers:
             del self.incoming_display_timers[connection_key]
 
-        # Clean up failed time tracking
         if connection_key in self.incoming_failed_times:
             del self.incoming_failed_times[connection_key]
+
+        if connection_key in self.incoming_creation_times:
+            del self.incoming_creation_times[connection_key]
 
         logger.debug(f"Removed incoming connection: {connection_key}")
         self.notify_update_callbacks()
@@ -243,8 +298,10 @@ class ConnectionManager:
             connection_peer = ConnectionPeer(**connection_kwargs)
             self.all_outgoing_connections[connection_key] = connection_peer
 
-            # Set display timer
-            self.outgoing_display_timers[connection_key] = time.time()
+            # Set timers
+            current_time = time.time()
+            self.outgoing_display_timers[connection_key] = current_time
+            self.outgoing_creation_times[connection_key] = current_time
 
             logger.debug(f"Added outgoing connection: {connection_key}")
             self.notify_update_callbacks()
@@ -282,13 +339,15 @@ class ConnectionManager:
         # Remove from storage
         del self.all_outgoing_connections[connection_key]
 
-        # Clean up display timer
+        # Clean up all tracking dictionaries
         if connection_key in self.outgoing_display_timers:
             del self.outgoing_display_timers[connection_key]
 
-        # Clean up failed time tracking
         if connection_key in self.outgoing_failed_times:
             del self.outgoing_failed_times[connection_key]
+
+        if connection_key in self.outgoing_creation_times:
+            del self.outgoing_creation_times[connection_key]
 
         logger.debug(f"Removed outgoing connection: {connection_key}")
         self.notify_update_callbacks()
@@ -430,6 +489,8 @@ class ConnectionManager:
         self.outgoing_display_timers.clear()
         self.incoming_failed_times.clear()
         self.outgoing_failed_times.clear()
+        self.incoming_creation_times.clear()
+        self.outgoing_creation_times.clear()
 
         logger.debug("Cleared all connections and stopped cleanup timer")
         self.notify_update_callbacks()
@@ -439,7 +500,10 @@ class ConnectionManager:
 
     def shutdown(self):
         """Shutdown the connection manager - stop all timers permanently"""
-        logger.info("ConnectionManager shutting down", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "ConnectionManager shutting down",
+            extra={"class_name": self.__class__.__name__},
+        )
 
         # Stop the cleanup timer permanently (don't restart)
         self._stop_cleanup_timer()
@@ -456,13 +520,26 @@ class ConnectionManager:
         self.outgoing_display_timers.clear()
         self.incoming_failed_times.clear()
         self.outgoing_failed_times.clear()
+        self.incoming_creation_times.clear()
+        self.outgoing_creation_times.clear()
 
-        logger.info("ConnectionManager shutdown complete", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "ConnectionManager shutdown complete",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def get_max_connections(self) -> Tuple[int, int, int]:
         """Get maximum connection limits (incoming, outgoing, total)"""
-        max_incoming = getattr(self.settings, "max_incoming_connections", ConnectionConstants.MAX_INCOMING_CONNECTIONS)
-        max_outgoing = getattr(self.settings, "max_outgoing_connections", ConnectionConstants.MAX_OUTGOING_CONNECTIONS)
+        max_incoming = getattr(
+            self.settings,
+            "max_incoming_connections",
+            ConnectionConstants.MAX_INCOMING_CONNECTIONS,
+        )
+        max_outgoing = getattr(
+            self.settings,
+            "max_outgoing_connections",
+            ConnectionConstants.MAX_OUTGOING_CONNECTIONS,
+        )
         max_total = max_incoming + max_outgoing
         return max_incoming, max_outgoing, max_total
 

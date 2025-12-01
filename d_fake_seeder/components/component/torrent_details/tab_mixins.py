@@ -5,6 +5,7 @@ These mixins provide reusable functionality that can be composed
 into different torrent details tab classes.
 """
 
+# fmt: off
 from typing import Any, Callable, Optional
 
 import gi
@@ -14,6 +15,8 @@ from d_fake_seeder.lib.logger import logger
 gi.require_version("Gtk", "4.0")
 from gi.repository import GLib  # noqa: E402
 from gi.repository import Gtk  # noqa: E402
+
+# fmt: on
 
 
 class DataUpdateMixin:
@@ -242,15 +245,21 @@ class UIUtilityMixin:
         """
         Create a grid with standard settings.
 
+        Uses consistent spacing values matching the Details tab:
+        - row-spacing: 8px
+        - column-spacing: 15px
+        - margins: 0px (parent container already has 20px margins)
+
         Returns:
             Configured Grid
         """
         try:
             grid = Gtk.Grid()
-            grid.set_column_spacing(10)
-            grid.set_row_spacing(5)
+            grid.set_column_spacing(15)  # Match details_grid: 15px
+            grid.set_row_spacing(8)  # Match details_grid: 8px
             grid.set_hexpand(True)
             grid.set_vexpand(True)
+            # DO NOT add margins - parent container (status_tab/files_tab/trackers_tab) already has 20px margins
             return grid
         except Exception as e:
             logger.error(f"Error creating grid: {e}")

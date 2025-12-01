@@ -212,6 +212,9 @@ msgstr "Luas íoslódála próifíl ionsaitheach"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "Luas uaslódála próifíl ionsaitheach (0 = neamhtheoranta)"
 
+msgid "All"
+msgstr "Uile"
+
 msgid "Alt download limit (KB/s):"
 msgstr "Teorainn íoslódála malartach (KB/s):"
 
@@ -247,6 +250,9 @@ msgstr "Eatramh Fógra:"
 
 msgid "Arabic"
 msgstr "Araibis"
+
+msgid "Auto (Follow System)"
+msgstr "Auto (Follow System)"
 
 msgid "Auto Detect"
 msgstr "Brath Uathoibríoch"
@@ -362,11 +368,20 @@ msgstr "RÍTHÁBHACHTACH"
 msgid "Cancel"
 msgstr "Cealaigh"
 
+msgid "Checking"
+msgstr "Ag Seiceáil"
+
 msgid "Chinese"
 msgstr "Sínis"
 
 msgid "Choose a pre-configured seeding profile"
 msgstr "Roghnaigh próifíl síolacháin réamhchumraithe"
+
+msgid "Choose light or dark color scheme"
+msgstr "Roghnaigh scéim dathanna éadrom nó dorcha"
+
+msgid "Choose the UI theme style"
+msgstr "Choose the UI theme style"
 
 msgid "Choose the application theme"
 msgstr "Roghnaigh téama an fheidhmchláir"
@@ -382,6 +397,9 @@ msgstr "Cliant"
 
 msgid "Client Switch Probability:"
 msgstr "Dóchúlacht Athrú Cliant:"
+
+msgid "Color Scheme:"
+msgstr "Scéim Dathanna："
 
 msgid "Columns"
 msgstr "Colúin"
@@ -521,6 +539,9 @@ msgstr "Scrios comhaid torrent tar éis iad a chur leis go rathúil"
 msgid "Deluge"
 msgstr "Deluge"
 
+msgid "Deluge Theme"
+msgstr "Deluge Theme"
+
 msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
@@ -589,6 +610,9 @@ msgstr "Seisiún Íoslódáilte / Iomlán"
 
 msgid "Downloaded Speed"
 msgstr "Luas Íoslódála"
+
+msgid "Downloading"
+msgstr "Ag Íoslódáil"
 
 msgid "Dropout probability:"
 msgstr "Dóchúlacht titim amach:"
@@ -890,6 +914,9 @@ msgstr "Gin piaraí sintéiseacha"
 msgid "German"
 msgstr "Gearmáinis"
 
+msgid "Get the main widget for this tab."
+msgstr "Get the main widget for this tab."
+
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
 
@@ -1184,11 +1211,17 @@ msgstr "Íosam idir fógraí (10-3600 soicind)"
 msgid "Minimum transaction ID for tracker communication"
 msgstr "Íosmhéid ID idirbhirt le haghaidh cumarsáid lorgaire"
 
+msgid "Modern Chunky"
+msgstr "Modern Chunky"
+
 msgid "Mon"
 msgstr "Luan"
 
 msgid "Monday"
 msgstr "Luan"
+
+msgid "Monitoring"
+msgstr "Monatóireacht"
 
 msgid "Multi-Tracker"
 msgstr "Il-Lorgaire"
@@ -1216,6 +1249,9 @@ msgstr "Nuashonrú Eile"
 
 msgid "No"
 msgstr "Níl"
+
+msgid "No Torrent Selected"
+msgstr "Níl aon Torrent Roghnaithe"
 
 msgid "No editable options available for this torrent."
 msgstr "Níl roghanna ineagarthóireachta ar fáil don torrent seo."
@@ -1282,6 +1318,9 @@ msgstr "Cuir Gach Torrent ar Sos"
 
 msgid "Pause torrent"
 msgstr "Cuir torrent ar sos"
+
+msgid "Paused"
+msgstr "Curtha ar Sos"
 
 msgid "Peer Analysis Depth:"
 msgstr "Doimhneacht Anailíse Piaraí:"
@@ -1472,6 +1511,9 @@ msgstr "Teorainn Ama Ceiste:"
 msgid "Queue"
 msgstr "Ciú"
 
+msgid "Queued"
+msgstr "Sa Chiú"
+
 msgid "Quit"
 msgstr "Scoir"
 
@@ -1619,6 +1661,9 @@ msgstr "Cuardaigh socruithe"
 msgid "Secure password generated"
 msgstr "Pasfhocal slán ginte"
 
+msgid "Seed"
+msgstr "Síol"
+
 msgid "Seeder port range (max):"
 msgstr "Raon port síolóra (uas):"
 
@@ -1627,6 +1672,9 @@ msgstr "Raon port síolóra (íos):"
 
 msgid "Seeders"
 msgstr "Seeders"
+
+msgid "Seeding"
+msgstr "Ag Síolú"
 
 msgid "Seeding Profile"
 msgstr "Próifíl Síolacháin"
@@ -1639,6 +1687,24 @@ msgstr "Select"
 
 msgid "Select Watch Folder"
 msgstr "Roghnaigh Fillteán Faire"
+
+msgid "Select a torrent to configure its options"
+msgstr "Select a torrent to configure its options"
+
+msgid "Select a torrent to view its details"
+msgstr "Select a torrent to view its details"
+
+msgid "Select a torrent to view its files"
+msgstr "Select a torrent to view its files"
+
+msgid "Select a torrent to view its peers"
+msgstr "Select a torrent to view its peers"
+
+msgid "Select a torrent to view its status information"
+msgstr "Select a torrent to view its status information"
+
+msgid "Select a torrent to view its trackers"
+msgstr "Select a torrent to view its trackers"
 
 msgid "Select proxy type for connections"
 msgstr "Roghnaigh cineál seachfhreastalaí le haghaidh ceangail"
@@ -1760,6 +1826,9 @@ msgstr "Tosaigh ag tosú an chórais"
 msgid "Start the application minimized to system tray"
 msgstr "Tosaigh an feidhmchlár íoslaghdaithe go tráidire an chórais"
 
+msgid "States"
+msgstr "Stáit"
+
 msgid "Stats Update Interval:"
 msgstr "Eatramh Nuashonraithe Staitisticí:"
 
@@ -1787,6 +1856,9 @@ msgstr "Sualainnis"
 msgid "Synthetic Peer Count:"
 msgstr "Líon Piaraí Sintéiseacha:"
 
+msgid "System Theme"
+msgstr "Téama an Chórais"
+
 msgid "TCP fallback"
 msgstr "Cúltaca TCP"
 
@@ -1798,6 +1870,9 @@ msgstr "Scriosfar an comhad .torrent."
 
 msgid "The .torrent file will be kept."
 msgstr "Coimeádfar an comhad .torrent."
+
+msgid "Theme Style:"
+msgstr "Stíl Téama："
 
 msgid "Theme:"
 msgstr "Téama:"
@@ -2125,6 +2200,9 @@ msgstr "cluaisín_loga"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (Infhaighteacht Píosaí)"
+
+msgid "monitoring_tab"
+msgstr "monitoring_tab"
 
 msgid "name"
 msgstr "Ainm"

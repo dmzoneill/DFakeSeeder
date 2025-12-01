@@ -5,6 +5,7 @@ Analyzes torrent swarms and adapts seeding behavior based on swarm health,
 peer distribution, and network conditions for optimal fake seeding performance.
 """
 
+# fmt: off
 import random
 import time
 from typing import Dict, List, Optional
@@ -12,6 +13,8 @@ from typing import Dict, List, Optional
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import SwarmIntelligenceConstants
+
+# fmt: on
 
 
 class SwarmHealthMetrics:
@@ -129,7 +132,8 @@ class SwarmHealthMetrics:
                 score *= SwarmIntelligenceConstants.SCORE_STALLED_PEERS
 
         self.health_score = max(
-            SwarmIntelligenceConstants.HEALTH_SCORE_MIN, min(SwarmIntelligenceConstants.HEALTH_SCORE_MAX, score)
+            SwarmIntelligenceConstants.HEALTH_SCORE_MIN,
+            min(SwarmIntelligenceConstants.HEALTH_SCORE_MAX, score),
         )
         self.is_healthy = self.health_score > SwarmIntelligenceConstants.HEALTH_SCORE_THRESHOLD
 
@@ -259,7 +263,10 @@ class SwarmIntelligence:
         # Behavior state
         self.current_behaviors: Dict[bytes, str] = {}  # info_hash -> behavior_mode
 
-        logger.info("Swarm Intelligence system initialized", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Swarm Intelligence system initialized",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def register_torrent(self, info_hash: bytes, total_pieces: int):
         """
@@ -310,7 +317,10 @@ class SwarmIntelligence:
             return summary
 
         except Exception as e:
-            logger.error(f"Failed to analyze swarm: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to analyze swarm: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return {"error": str(e)}
 
     def adapt_seeding_behavior(self, info_hash: bytes) -> Dict[str, any]:
@@ -350,7 +360,10 @@ class SwarmIntelligence:
             }
 
         except Exception as e:
-            logger.error(f"Failed to adapt behavior: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to adapt behavior: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return {"behavior": "normal"}
 
     def _calculate_adjustments(self, metrics: SwarmHealthMetrics) -> Dict:
@@ -384,7 +397,11 @@ class SwarmIntelligence:
             adjustments["pex_enabled"] = False
 
         # Apply adaptation rate
-        for key in ["upload_multiplier", "connection_multiplier", "announce_multiplier"]:
+        for key in [
+            "upload_multiplier",
+            "connection_multiplier",
+            "announce_multiplier",
+        ]:
             # Smooth transitions using adaptation rate
             adjustments[key] = 1.0 + (adjustments[key] - 1.0) * self.adaptation_rate
 
@@ -437,4 +454,7 @@ class SwarmIntelligence:
         self.piece_strategies.clear()
         self.current_behaviors.clear()
 
-        logger.debug("Swarm intelligence cleaned up", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Swarm intelligence cleaned up",
+            extra={"class_name": self.__class__.__name__},
+        )

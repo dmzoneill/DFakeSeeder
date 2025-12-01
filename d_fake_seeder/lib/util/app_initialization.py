@@ -5,9 +5,12 @@ This module provides utilities for application startup and environment
 configuration that should be done before GTK initialization.
 """
 
+# fmt: off
 import os
 
 from d_fake_seeder.lib.logger import logger
+
+# fmt: on
 
 
 class AppInitializationHelper:

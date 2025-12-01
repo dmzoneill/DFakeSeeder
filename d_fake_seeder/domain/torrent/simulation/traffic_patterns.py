@@ -5,6 +5,7 @@ Generates realistic BitTorrent traffic patterns including upload/download variat
 connection patterns, and time-based behavior simulation.
 """
 
+# fmt: off
 import math
 import random
 import time
@@ -12,6 +13,8 @@ from typing import Any, Dict, Generator, List, Optional, Tuple
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
+
+# fmt: on
 
 
 class TrafficPatternSimulator:
@@ -112,7 +115,10 @@ class TrafficPatternSimulator:
                 yield (current_time, speed)
 
         except Exception as e:
-            logger.error(f"Failed to generate upload pattern: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to generate upload pattern: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def generate_download_pattern(
         self, base_speed: Optional[int] = None, duration: int = 60
@@ -146,7 +152,10 @@ class TrafficPatternSimulator:
                 yield (current_time, speed)
 
         except Exception as e:
-            logger.error(f"Failed to generate download pattern: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to generate download pattern: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def simulate_peer_interactions(self, peer_count: int) -> List[Dict]:
         """
@@ -188,7 +197,10 @@ class TrafficPatternSimulator:
             return interactions
 
         except Exception as e:
-            logger.error(f"Failed to simulate peer interactions: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to simulate peer interactions: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return []
 
     def _calculate_realistic_speed(self, base_speed: int, traffic_type: str, current_time: float) -> int:
@@ -237,7 +249,10 @@ class TrafficPatternSimulator:
             return int(speed)
 
         except Exception as e:
-            logger.error(f"Failed to calculate realistic speed: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to calculate realistic speed: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return base_speed
 
     def _get_time_based_factor(self, current_time: float) -> float:
@@ -415,16 +430,29 @@ class TrafficPatternSimulator:
         """
         try:
             # Generate realistic peer address
-            ip_parts = [random.randint(1, 223), random.randint(1, 254), random.randint(1, 254), random.randint(1, 254)]
+            ip_parts = [
+                random.randint(1, 223),
+                random.randint(1, 254),
+                random.randint(1, 254),
+                random.randint(1, 254),
+            ]
             ip_address = ".".join(map(str, ip_parts))
 
             # Generate realistic port
             port = random.choice(
-                [random.randint(6881, 6889), random.randint(49152, 65535)]  # Traditional BT ports  # Dynamic ports
+                [
+                    random.randint(6881, 6889),
+                    random.randint(49152, 65535),
+                ]  # Traditional BT ports  # Dynamic ports
             )
 
             # Generate interaction type
-            interaction_types = ["connect", "disconnect", "piece_exchange", "keep_alive"]
+            interaction_types = [
+                "connect",
+                "disconnect",
+                "piece_exchange",
+                "keep_alive",
+            ]
             weights = [0.3, 0.2, 0.4, 0.1]
             interaction_type = random.choices(interaction_types, weights=weights)[0]
 
@@ -445,8 +473,15 @@ class TrafficPatternSimulator:
             }
 
         except Exception as e:
-            logger.error(f"Failed to generate peer interaction: {e}", extra={"class_name": self.__class__.__name__})
-            return {"timestamp": timestamp, "peer_index": peer_index, "interaction_type": "error"}
+            logger.error(
+                f"Failed to generate peer interaction: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return {
+                "timestamp": timestamp,
+                "peer_index": peer_index,
+                "interaction_type": "error",
+            }
 
     def get_current_speeds(self) -> Dict[str, Any]:
         """
@@ -465,7 +500,11 @@ class TrafficPatternSimulator:
             self.current_profile["base_download_speed"], "download", current_time
         )
 
-        return {"upload_speed": upload_speed, "download_speed": download_speed, "timestamp": current_time}
+        return {
+            "upload_speed": upload_speed,
+            "download_speed": download_speed,
+            "timestamp": current_time,
+        }
 
     def get_statistics(self) -> Dict:
         """
@@ -490,8 +529,8 @@ class TrafficPatternSimulator:
             "current_idle_state": self.idle_state,
             "traffic_history_size": len(self.traffic_history),
             "connection_history_size": len(self.connection_history),
-            "average_upload_speed": sum(upload_speeds) / len(upload_speeds) if upload_speeds else 0,
-            "average_download_speed": sum(download_speeds) / len(download_speeds) if download_speeds else 0,
+            "average_upload_speed": (sum(upload_speeds) / len(upload_speeds) if upload_speeds else 0),
+            "average_download_speed": (sum(download_speeds) / len(download_speeds) if download_speeds else 0),
             "realistic_variations_enabled": self.realistic_variations,
             "time_based_patterns_enabled": self.time_based_patterns,
         }
@@ -501,4 +540,7 @@ class TrafficPatternSimulator:
         self.traffic_history.clear()
         self.connection_history.clear()
 
-        logger.debug("Traffic pattern simulator cleaned up", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Traffic pattern simulator cleaned up",
+            extra={"class_name": self.__class__.__name__},
+        )

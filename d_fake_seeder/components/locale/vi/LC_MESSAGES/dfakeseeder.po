@@ -212,6 +212,9 @@ msgstr "Tốc độ tải xuống hồ sơ tích cực"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "Tốc độ tải lên hồ sơ tích cực (0 = không giới hạn)"
 
+msgid "All"
+msgstr "Tất cả"
+
 msgid "Alt download limit (KB/s):"
 msgstr "Giới hạn tải xuống thay thế (KB/s):"
 
@@ -247,6 +250,9 @@ msgstr "Khoảng thời gian Thông báo:"
 
 msgid "Arabic"
 msgstr "Tiếng Ả Rập"
+
+msgid "Auto (Follow System)"
+msgstr "Auto (Follow System)"
 
 msgid "Auto Detect"
 msgstr "Tự động Phát hiện"
@@ -362,11 +368,20 @@ msgstr "NGHIÊM TRỌNG"
 msgid "Cancel"
 msgstr "Hủy"
 
+msgid "Checking"
+msgstr "Đang kiểm tra"
+
 msgid "Chinese"
 msgstr "Tiếng Trung"
 
 msgid "Choose a pre-configured seeding profile"
 msgstr "Chọn hồ sơ seeding được cấu hình sẵn"
+
+msgid "Choose light or dark color scheme"
+msgstr "Chọn bảng màu sáng hoặc tối"
+
+msgid "Choose the UI theme style"
+msgstr "Choose the UI theme style"
 
 msgid "Choose the application theme"
 msgstr "Chọn chủ đề ứng dụng"
@@ -382,6 +397,9 @@ msgstr "Máy khách"
 
 msgid "Client Switch Probability:"
 msgstr "Xác suất Chuyển đổi Máy khách:"
+
+msgid "Color Scheme:"
+msgstr "Bảng màu："
 
 msgid "Columns"
 msgstr "Cột"
@@ -521,6 +539,9 @@ msgstr "Xóa tệp torrent sau khi chúng được thêm thành công"
 msgid "Deluge"
 msgstr "Deluge"
 
+msgid "Deluge Theme"
+msgstr "Deluge Theme"
+
 msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
@@ -589,6 +610,9 @@ msgstr "Phiên Đã tải xuống / Tổng"
 
 msgid "Downloaded Speed"
 msgstr "Tốc độ Tải xuống"
+
+msgid "Downloading"
+msgstr "Đang tải xuống"
 
 msgid "Dropout probability:"
 msgstr "Xác suất bỏ cuộc:"
@@ -890,6 +914,9 @@ msgstr "Tạo ngang hàng tổng hợp"
 msgid "German"
 msgstr "Tiếng Đức"
 
+msgid "Get the main widget for this tab."
+msgstr "Get the main widget for this tab."
+
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
 
@@ -1184,11 +1211,17 @@ msgstr "Thời gian tối thiểu giữa các thông báo (10-3600 giây)"
 msgid "Minimum transaction ID for tracker communication"
 msgstr "ID giao dịch tối thiểu cho giao tiếp tracker"
 
+msgid "Modern Chunky"
+msgstr "Modern Chunky"
+
 msgid "Mon"
 msgstr "T2"
 
 msgid "Monday"
 msgstr "Thứ Hai"
+
+msgid "Monitoring"
+msgstr "Giám sát"
 
 msgid "Multi-Tracker"
 msgstr "Đa Tracker"
@@ -1216,6 +1249,9 @@ msgstr "Cập nhật Tiếp theo"
 
 msgid "No"
 msgstr "Không"
+
+msgid "No Torrent Selected"
+msgstr "Không có Torrent được chọn"
 
 msgid "No editable options available for this torrent."
 msgstr "Không có tùy chọn có thể chỉnh sửa cho torrent này."
@@ -1282,6 +1318,9 @@ msgstr "Tạm dừng Tất cả Torrent"
 
 msgid "Pause torrent"
 msgstr "Tạm dừng torrent"
+
+msgid "Paused"
+msgstr "Tạm dừng"
 
 msgid "Peer Analysis Depth:"
 msgstr "Độ sâu Phân tích Ngang hàng:"
@@ -1472,6 +1511,9 @@ msgstr "Hết thời gian Truy vấn:"
 msgid "Queue"
 msgstr "Hàng đợi"
 
+msgid "Queued"
+msgstr "Đang chờ"
+
 msgid "Quit"
 msgstr "Thoát"
 
@@ -1619,6 +1661,9 @@ msgstr "Tìm kiếm cài đặt"
 msgid "Secure password generated"
 msgstr "Mật khẩu an toàn đã được tạo"
 
+msgid "Seed"
+msgstr "Seed"
+
 msgid "Seeder port range (max):"
 msgstr "Phạm vi cổng seeder (tối đa):"
 
@@ -1627,6 +1672,9 @@ msgstr "Phạm vi cổng seeder (tối thiểu):"
 
 msgid "Seeders"
 msgstr "Seeder"
+
+msgid "Seeding"
+msgstr "Đang chia sẻ"
 
 msgid "Seeding Profile"
 msgstr "Hồ sơ Seeding"
@@ -1639,6 +1687,24 @@ msgstr "Chọn"
 
 msgid "Select Watch Folder"
 msgstr "Chọn thư mục theo dõi"
+
+msgid "Select a torrent to configure its options"
+msgstr "Select a torrent to configure its options"
+
+msgid "Select a torrent to view its details"
+msgstr "Select a torrent to view its details"
+
+msgid "Select a torrent to view its files"
+msgstr "Select a torrent to view its files"
+
+msgid "Select a torrent to view its peers"
+msgstr "Select a torrent to view its peers"
+
+msgid "Select a torrent to view its status information"
+msgstr "Select a torrent to view its status information"
+
+msgid "Select a torrent to view its trackers"
+msgstr "Select a torrent to view its trackers"
 
 msgid "Select proxy type for connections"
 msgstr "Chọn loại proxy cho kết nối"
@@ -1760,6 +1826,9 @@ msgstr "Bắt đầu khi khởi động hệ thống"
 msgid "Start the application minimized to system tray"
 msgstr "Bắt đầu ứng dụng thu nhỏ vào khay hệ thống"
 
+msgid "States"
+msgstr "Trạng thái"
+
 msgid "Stats Update Interval:"
 msgstr "Khoảng thời gian Cập nhật Thống kê:"
 
@@ -1787,6 +1856,9 @@ msgstr "Tiếng Thụy Điển"
 msgid "Synthetic Peer Count:"
 msgstr "Số lượng Ngang hàng Tổng hợp:"
 
+msgid "System Theme"
+msgstr "Giao diện hệ thống"
+
 msgid "TCP fallback"
 msgstr "TCP dự phòng"
 
@@ -1798,6 +1870,9 @@ msgstr "Tệp .torrent sẽ bị XÓA."
 
 msgid "The .torrent file will be kept."
 msgstr "Tệp .torrent sẽ được giữ lại."
+
+msgid "Theme Style:"
+msgstr "Kiểu giao diện："
 
 msgid "Theme:"
 msgstr "Chủ đề:"
@@ -2125,6 +2200,9 @@ msgstr "Nhật ký"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (Tính khả dụng Mảnh)"
+
+msgid "monitoring_tab"
+msgstr "monitoring_tab"
 
 msgid "name"
 msgstr "Tên"

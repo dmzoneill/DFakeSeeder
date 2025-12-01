@@ -7,6 +7,7 @@ It includes all the advanced features like widget discovery, menu translation,
 and automatic UI updates.
 """
 
+# fmt: off
 import gettext
 import locale
 import os
@@ -24,6 +25,8 @@ from gi.repository import Gio, Gtk  # noqa: E402
 from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 from .base import TranslationManagerBase  # noqa: E402
+
+# fmt: on
 
 
 class TranslationManagerGTK4(TranslationManagerBase):
@@ -88,7 +91,10 @@ class TranslationManagerGTK4(TranslationManagerBase):
 
     def _discover_supported_languages(self) -> Set[str]:
         """Dynamically discover supported languages from the locale directory"""
-        logger.debug(f"Starting language discovery in {self._localedir}", "TranslationManagerGTK4")
+        logger.debug(
+            f"Starting language discovery in {self._localedir}",
+            "TranslationManagerGTK4",
+        )
         start_time = time.time()
         discovered_languages = {self.fallback_language}
 
@@ -124,10 +130,16 @@ class TranslationManagerGTK4(TranslationManagerBase):
     def switch_language(self, language_code: str) -> str:
         """Switch to a specific language"""
         with logger.performance.operation_context("switch_language", "TranslationManagerGTK4"):
-            logger.debug(f"switch_language() called with: {language_code}", "TranslationManagerGTK4")
+            logger.debug(
+                f"switch_language() called with: {language_code}",
+                "TranslationManagerGTK4",
+            )
 
             if self._current_language == language_code:
-                logger.debug(f"Already using language '{language_code}' - skipping switch", "TranslationManagerGTK4")
+                logger.debug(
+                    f"Already using language '{language_code}' - skipping switch",
+                    "TranslationManagerGTK4",
+                )
                 return language_code
 
             # Validate language is supported
@@ -142,12 +154,21 @@ class TranslationManagerGTK4(TranslationManagerBase):
             try:
                 if language_code == self.fallback_language:
                     trans = gettext.NullTranslations()
-                    logger.debug("Using NullTranslations for fallback language", "TranslationManagerGTK4")
+                    logger.debug(
+                        "Using NullTranslations for fallback language",
+                        "TranslationManagerGTK4",
+                    )
                 else:
                     trans = gettext.translation(self._domain, self._localedir, languages=[language_code])
-                    logger.debug(f"Loaded translation for '{language_code}'", "TranslationManagerGTK4")
+                    logger.debug(
+                        f"Loaded translation for '{language_code}'",
+                        "TranslationManagerGTK4",
+                    )
             except FileNotFoundError:
-                logger.debug(f"Warning: Translation file for '{language_code}' not found", "TranslationManagerGTK4")
+                logger.debug(
+                    f"Warning: Translation file for '{language_code}' not found",
+                    "TranslationManagerGTK4",
+                )
                 trans = gettext.NullTranslations()
                 language_code = self.fallback_language
 
@@ -297,7 +318,10 @@ class TranslationManagerGTK4(TranslationManagerBase):
             language_names = get_language_display_names()
             return language_names.get(language_code, language_code.upper())
         except Exception as e:
-            logger.debug(f"Could not load language names from config: {e}", "TranslationManagerGTK4")
+            logger.debug(
+                f"Could not load language names from config: {e}",
+                "TranslationManagerGTK4",
+            )
             # Ultimate fallback: uppercase language code
             return language_code.upper()
 
@@ -309,7 +333,11 @@ class TranslationManagerGTK4(TranslationManagerBase):
         """Get translation coverage information for a language"""
         try:
             if language_code == self.fallback_language:
-                return {"translated_count": 100, "total_count": 100, "coverage_percent": 100}
+                return {
+                    "translated_count": 100,
+                    "total_count": 100,
+                    "coverage_percent": 100,
+                }
 
             gettext.translation(self._domain, self._localedir, languages=[language_code])
             # This is a simplified implementation - actual coverage would require parsing MO files
@@ -510,14 +538,23 @@ class TranslationManagerGTK4(TranslationManagerBase):
     def setup_translations(self, auto_detect: bool = True) -> str:
         """Set up translations with automatic language detection"""
         with logger.performance.operation_context("setup_translations", "TranslationManagerGTK4"):
-            logger.debug(f"setup_translations called with auto_detect={auto_detect}", "TranslationManagerGTK4")
+            logger.debug(
+                f"setup_translations called with auto_detect={auto_detect}",
+                "TranslationManagerGTK4",
+            )
 
             if auto_detect:
                 target_language = self._get_target_language()
-                logger.debug(f"_get_target_language() returned: {target_language}", "TranslationManagerGTK4")
+                logger.debug(
+                    f"_get_target_language() returned: {target_language}",
+                    "TranslationManagerGTK4",
+                )
             else:
                 target_language = self.fallback_language
-                logger.debug(f"Using fallback language: {target_language}", "TranslationManagerGTK4")
+                logger.debug(
+                    f"Using fallback language: {target_language}",
+                    "TranslationManagerGTK4",
+                )
 
             result = self.switch_language(target_language)
             logger.debug("setup_translations completed", "TranslationManagerGTK4")
@@ -540,16 +577,26 @@ class TranslationManagerGTK4(TranslationManagerBase):
 
                 with logger.performance.operation_context("get_language", "TranslationManagerGTK4"):
                     language = app_settings.get_language()
-                    logger.debug(f"AppSettings.get_language() returned: {language}", "TranslationManagerGTK4")
+                    logger.debug(
+                        f"AppSettings.get_language() returned: {language}",
+                        "TranslationManagerGTK4",
+                    )
 
-                logger.debug(f"_get_target_language() final target: {language}", "TranslationManagerGTK4")
+                logger.debug(
+                    f"_get_target_language() final target: {language}",
+                    "TranslationManagerGTK4",
+                )
                 return language
             except Exception as e:
-                logger.debug(f"Could not get language from AppSettings: {e}", "TranslationManagerGTK4")
+                logger.debug(
+                    f"Could not get language from AppSettings: {e}",
+                    "TranslationManagerGTK4",
+                )
 
             # Fallback to system language
             logger.debug(
-                f"AppSettings failed, falling back to system language: {system_language}", "TranslationManagerGTK4"
+                f"AppSettings failed, falling back to system language: {system_language}",
+                "TranslationManagerGTK4",
             )
             return system_language
 

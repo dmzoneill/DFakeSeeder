@@ -1,0 +1,58 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-30 22:26+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: components/component/sidebar.py:29 components/component/sidebar.py:201
+msgid "All"
+msgstr ""
+
+#: components/component/sidebar.py:30
+msgid "Downloading"
+msgstr ""
+
+#: components/component/sidebar.py:31
+msgid "Seeding"
+msgstr ""
+
+#: components/component/sidebar.py:32
+msgid "Active"
+msgstr ""
+
+#: components/component/sidebar.py:33
+msgid "Paused"
+msgstr ""
+
+#: components/component/sidebar.py:34
+msgid "Checking"
+msgstr ""
+
+#: components/component/sidebar.py:35
+msgid "Error"
+msgstr ""
+
+#: components/component/sidebar.py:36
+msgid "Queued"
+msgstr ""
+
+#: components/component/sidebar.py:121 components/component/sidebar.py:427
+msgid "States"
+msgstr ""
+
+#: components/component/sidebar.py:147 components/component/sidebar.py:428
+msgid "Trackers"
+msgstr ""

@@ -4,6 +4,7 @@ Post-install script for D' Fake Seeder desktop integration.
 This script installs desktop files and icons to provide proper
 desktop environment integration after PyPI installation.
 """
+# fmt: off
 import os
 import shutil
 import subprocess
@@ -13,6 +14,8 @@ from pathlib import Path
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import DEFAULT_ICON_SIZES
 
+# fmt: on
+
 
 def get_package_dir():
     """Get the installed package directory."""
@@ -21,15 +24,18 @@ def get_package_dir():
 
         return Path(d_fake_seeder.__file__).parent
     except ImportError:
-        logger.debug("Error: d_fake_seeder package not found. Please install it first.", "UnknownClass")
+        logger.debug(
+            "Error: d_fake_seeder package not found. Please install it first.",
+            "UnknownClass",
+        )
         sys.exit(1)
 
 
 def install_icons(package_dir, home_dir):
     """Install application icons to user icon directories."""
-    icon_source = package_dir / "images" / "dfakeseeder.png"
+    icon_source = package_dir / "components" / "images" / "dfakeseeder.png"
     if not icon_source.exists():
-        logger.debug("Warning: Icon file not found at ...", "UnknownClass")
+        logger.debug(f"Warning: Icon file not found at {icon_source}", "UnknownClass")
         return False
     icon_base = home_dir / ".local" / "share" / "icons" / "hicolor"
     # Install to multiple sizes for better compatibility
@@ -140,14 +146,20 @@ def update_caches(home_dir):
             shutil.rmtree(gnome_cache_dir)
             logger.debug("✓ Cleared GNOME Shell cache", "UnknownClass")
         except Exception:
-            logger.debug("Info: Could not clear GNOME Shell cache (this is optional)", "UnknownClass")
+            logger.debug(
+                "Info: Could not clear GNOME Shell cache (this is optional)",
+                "UnknownClass",
+            )
 
     # Update icon cache
     try:
         subprocess.run(["gtk-update-icon-cache", str(icon_dir)], check=False, capture_output=True)
         logger.debug("✓ Updated icon cache", "UnknownClass")
     except FileNotFoundError:
-        logger.debug("Info: gtk-update-icon-cache not available (this is optional)", "UnknownClass")
+        logger.debug(
+            "Info: gtk-update-icon-cache not available (this is optional)",
+            "UnknownClass",
+        )
     except Exception:
         logger.debug("Info: Could not update icon cache: ...", "UnknownClass")
     # Update desktop database
@@ -159,7 +171,10 @@ def update_caches(home_dir):
         )
         logger.debug("✓ Updated desktop database", "UnknownClass")
     except FileNotFoundError:
-        logger.debug("Info: update-desktop-database not available (this is optional)", "UnknownClass")
+        logger.debug(
+            "Info: update-desktop-database not available (this is optional)",
+            "UnknownClass",
+        )
     except Exception:
         logger.debug("Info: Could not update desktop database: ...", "UnknownClass")
 
@@ -181,14 +196,23 @@ def install_desktop_integration():
             # Update caches
             update_caches(home_dir)
             logger.debug("\n✅ Desktop integration installed successfully!", "UnknownClass")
-            logger.debug("\nThe application should now appear in your application menu", "UnknownClass")
+            logger.debug(
+                "\nThe application should now appear in your application menu",
+                "UnknownClass",
+            )
             logger.debug("and show proper icons in the taskbar when launched.", "UnknownClass")
             if tray_installed:
                 logger.debug("System tray will start automatically on login.", "UnknownClass")
 
             # GNOME Shell refresh instructions
-            logger.debug("\n⚠️  GNOME Shell users: To ensure changes take effect immediately:", "UnknownClass")
-            logger.debug("  • Press Alt+F2, type 'r', and press Enter to restart GNOME Shell", "UnknownClass")
+            logger.debug(
+                "\n⚠️  GNOME Shell users: To ensure changes take effect immediately:",
+                "UnknownClass",
+            )
+            logger.debug(
+                "  • Press Alt+F2, type 'r', and press Enter to restart GNOME Shell",
+                "UnknownClass",
+            )
             logger.debug("  • Or log out and log back in", "UnknownClass")
 
             logger.debug("\nYou can launch it from:", "UnknownClass")
@@ -199,10 +223,16 @@ def install_desktop_integration():
                 logger.debug("  • System tray (automatic)", "UnknownClass")
         else:
             logger.debug("\n❌ Could not install desktop integration files.", "UnknownClass")
-            logger.debug("The application will still work from the command line with 'dfs'", "UnknownClass")
+            logger.debug(
+                "The application will still work from the command line with 'dfs'",
+                "UnknownClass",
+            )
     except Exception:
         logger.debug("\n❌ Error during desktop integration installation: ...", "UnknownClass")
-        logger.debug("The application will still work from the command line with 'dfs'", "UnknownClass")
+        logger.debug(
+            "The application will still work from the command line with 'dfs'",
+            "UnknownClass",
+        )
         sys.exit(1)
 
 

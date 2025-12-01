@@ -212,6 +212,9 @@ msgstr "Velocità download profilo aggressivo"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "Velocità upload profilo aggressivo (0 = illimitato)"
 
+msgid "All"
+msgstr "Tutti"
+
 msgid "Alt download limit (KB/s):"
 msgstr "Limite download alt. (KB/s):"
 
@@ -247,6 +250,9 @@ msgstr "Intervallo annuncio:"
 
 msgid "Arabic"
 msgstr "Arabo"
+
+msgid "Auto (Follow System)"
+msgstr "Auto (Segui Sistema)"
 
 msgid "Auto Detect"
 msgstr "Rileva Automaticamente"
@@ -362,11 +368,20 @@ msgstr "CRITICO"
 msgid "Cancel"
 msgstr "Annulla"
 
+msgid "Checking"
+msgstr "Controllo"
+
 msgid "Chinese"
 msgstr "Cinese"
 
 msgid "Choose a pre-configured seeding profile"
 msgstr "Scegli profilo seeding preconfigurato"
+
+msgid "Choose light or dark color scheme"
+msgstr "Scegli schema colori chiaro o scuro"
+
+msgid "Choose the UI theme style"
+msgstr "Scegli lo stile del tema dell'interfaccia"
 
 msgid "Choose the application theme"
 msgstr "Scegli tema applicazione"
@@ -382,6 +397,9 @@ msgstr "Cliente"
 
 msgid "Client Switch Probability:"
 msgstr "Probabilità cambio client:"
+
+msgid "Color Scheme:"
+msgstr "Schema Colori:"
 
 msgid "Columns"
 msgstr "Colonne"
@@ -521,6 +539,9 @@ msgstr "Elimina i file torrent dopo l'aggiunta riuscita"
 msgid "Deluge"
 msgstr "Deluge"
 
+msgid "Deluge Theme"
+msgstr "Tema Deluge"
+
 msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgstr "Deluge versione 2.0.3 con libtorrent 2.0.5.0"
 
@@ -589,6 +610,9 @@ msgstr "Scaricato Sessione / Totale"
 
 msgid "Downloaded Speed"
 msgstr "Velocità Download"
+
+msgid "Downloading"
+msgstr "Download"
 
 msgid "Dropout probability:"
 msgstr "Probabilità abbandono:"
@@ -890,6 +914,9 @@ msgstr "Genera peer sintetici"
 msgid "German"
 msgstr "Tedesco"
 
+msgid "Get the main widget for this tab."
+msgstr "Ottieni il widget principale per questa scheda."
+
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
 
@@ -1184,11 +1211,17 @@ msgstr "Tempo minimo tra annunci (10-3600 secondi)"
 msgid "Minimum transaction ID for tracker communication"
 msgstr "ID transazione minimo comunicazione tracker"
 
+msgid "Modern Chunky"
+msgstr "Modern Chunky"
+
 msgid "Mon"
 msgstr "Lun"
 
 msgid "Monday"
 msgstr "Lunedì"
+
+msgid "Monitoring"
+msgstr "Monitoraggio"
 
 msgid "Multi-Tracker"
 msgstr "Multi-Tracker"
@@ -1216,6 +1249,9 @@ msgstr "Prossimo Aggiornamento"
 
 msgid "No"
 msgstr "No"
+
+msgid "No Torrent Selected"
+msgstr "Nessun Torrent Selezionato"
 
 msgid "No editable options available for this torrent."
 msgstr "Nessuna opzione modificabile disponibile per questo torrent."
@@ -1282,6 +1318,9 @@ msgstr "Metti in Pausa Tutti i Torrent"
 
 msgid "Pause torrent"
 msgstr "Pausa torrent"
+
+msgid "Paused"
+msgstr "In pausa"
 
 msgid "Peer Analysis Depth:"
 msgstr "Profondità analisi peer:"
@@ -1472,6 +1511,9 @@ msgstr "Timeout query:"
 msgid "Queue"
 msgstr "Coda"
 
+msgid "Queued"
+msgstr "In coda"
+
 msgid "Quit"
 msgstr "Esci"
 
@@ -1619,6 +1661,9 @@ msgstr "Cerca impostazioni"
 msgid "Secure password generated"
 msgstr "Password sicura generata"
 
+msgid "Seed"
+msgstr "Seme"
+
 msgid "Seeder port range (max):"
 msgstr "Range porta seeder (max):"
 
@@ -1627,6 +1672,9 @@ msgstr "Range porta seeder (min):"
 
 msgid "Seeders"
 msgstr "Seeder"
+
+msgid "Seeding"
+msgstr "Condivisione"
 
 msgid "Seeding Profile"
 msgstr "Profilo di Seeding"
@@ -1639,6 +1687,24 @@ msgstr "Seleziona"
 
 msgid "Select Watch Folder"
 msgstr "Seleziona Cartella Monitorata"
+
+msgid "Select a torrent to configure its options"
+msgstr "Seleziona un torrent per configurare le sue opzioni"
+
+msgid "Select a torrent to view its details"
+msgstr "Seleziona un torrent per visualizzare i suoi dettagli"
+
+msgid "Select a torrent to view its files"
+msgstr "Seleziona un torrent per visualizzare i suoi file"
+
+msgid "Select a torrent to view its peers"
+msgstr "Seleziona un torrent per visualizzare i suoi peer"
+
+msgid "Select a torrent to view its status information"
+msgstr "Seleziona un torrent per visualizzare le sue informazioni di stato"
+
+msgid "Select a torrent to view its trackers"
+msgstr "Seleziona un torrent per visualizzare i suoi tracker"
 
 msgid "Select proxy type for connections"
 msgstr "Seleziona tipo proxy per connessioni"
@@ -1760,6 +1826,9 @@ msgstr "Avvia all'avvio sistema"
 msgid "Start the application minimized to system tray"
 msgstr "Avvia applicazione minimizzata nel vassoio sistema"
 
+msgid "States"
+msgstr "Stati"
+
 msgid "Stats Update Interval:"
 msgstr "Intervallo aggiornamento stats:"
 
@@ -1787,6 +1856,9 @@ msgstr "Svedese"
 msgid "Synthetic Peer Count:"
 msgstr "Conteggio peer sintetici:"
 
+msgid "System Theme"
+msgstr "Tema di Sistema"
+
 msgid "TCP fallback"
 msgstr "Fallback TCP"
 
@@ -1798,6 +1870,9 @@ msgstr "Il file .torrent sarà ELIMINATO."
 
 msgid "The .torrent file will be kept."
 msgstr "Il file .torrent sarà conservato."
+
+msgid "Theme Style:"
+msgstr "Stile Tema:"
 
 msgid "Theme:"
 msgstr "Tema:"
@@ -2125,6 +2200,9 @@ msgstr "Scheda Log"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (Disponibilità Pezzi)"
+
+msgid "monitoring_tab"
+msgstr "monitoring_tab"
 
 msgid "name"
 msgstr "Nome"

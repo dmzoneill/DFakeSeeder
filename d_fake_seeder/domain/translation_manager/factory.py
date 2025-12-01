@@ -6,12 +6,15 @@ Provides factory functions to create the appropriate TranslationManager
 implementation based on GTK version requirements and auto-detection.
 """
 
+# fmt: off
 import sys
 from typing import Optional, Set
 
 from d_fake_seeder.lib.logger import logger
 
 from .base import TranslationManagerBase
+
+# fmt: on
 
 
 def detect_gtk_version() -> str:
@@ -56,7 +59,10 @@ def detect_gtk_version() -> str:
         return "4"
 
     except Exception as e:
-        logger.warning(f"Error detecting GTK version: {e}, defaulting to GTK4", "TranslationManagerFactory")
+        logger.warning(
+            f"Error detecting GTK version: {e}, defaulting to GTK4",
+            "TranslationManagerFactory",
+        )
         return "4"
 
 
@@ -91,7 +97,10 @@ def create_translation_manager(
     # Determine GTK version to use
     if gtk_version is None and auto_detect:
         detected_version = detect_gtk_version()
-        logger.debug(f"Auto-detected GTK version: {detected_version}", "TranslationManagerFactory")
+        logger.debug(
+            f"Auto-detected GTK version: {detected_version}",
+            "TranslationManagerFactory",
+        )
         gtk_version = detected_version
     elif gtk_version is None:
         gtk_version = "4"  # Default to GTK4
@@ -126,7 +135,10 @@ def create_translation_manager(
             )
 
     except ImportError as e:
-        logger.error(f"Failed to import GTK{gtk_version} implementation: {e}", "TranslationManagerFactory")
+        logger.error(
+            f"Failed to import GTK{gtk_version} implementation: {e}",
+            "TranslationManagerFactory",
+        )
 
         # Check if the error is due to GTK version conflict
         error_msg = str(e)
@@ -165,7 +177,8 @@ def create_translation_manager(
                 )
         except ImportError as fallback_error:
             logger.error(
-                f"Fallback to GTK{fallback_version} also failed: {fallback_error}", "TranslationManagerFactory"
+                f"Fallback to GTK{fallback_version} also failed: {fallback_error}",
+                "TranslationManagerFactory",
             )
             raise ImportError(f"Neither GTK{gtk_version} nor GTK{fallback_version} implementation available")
 
@@ -195,7 +208,10 @@ def create_gtk3_translation_manager(
             **kwargs,
         )
     except ImportError as e:
-        logger.error(f"Failed to import GTK3 implementation directly: {e}", "TranslationManagerFactory")
+        logger.error(
+            f"Failed to import GTK3 implementation directly: {e}",
+            "TranslationManagerFactory",
+        )
         raise ImportError(f"GTK3 implementation not available: {e}")
 
 
@@ -223,7 +239,10 @@ def create_gtk4_translation_manager(
             **kwargs,
         )
     except ImportError as e:
-        logger.error(f"Failed to import GTK4 implementation directly: {e}", "TranslationManagerFactory")
+        logger.error(
+            f"Failed to import GTK4 implementation directly: {e}",
+            "TranslationManagerFactory",
+        )
         raise ImportError(f"GTK4 implementation not available: {e}")
 
 
@@ -279,7 +298,10 @@ def validate_gtk_environment(gtk_version: str) -> bool:
     """
     # Validate version is supported before attempting to load GTK
     if gtk_version not in ["3", "4"]:
-        logger.debug(f"Invalid GTK version: {gtk_version}. Must be '3' or '4'.", "TranslationManagerFactory")
+        logger.debug(
+            f"Invalid GTK version: {gtk_version}. Must be '3' or '4'.",
+            "TranslationManagerFactory",
+        )
         return False
 
     try:

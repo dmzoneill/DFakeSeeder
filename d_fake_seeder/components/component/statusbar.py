@@ -1,3 +1,4 @@
+# fmt: off
 import time
 
 import requests
@@ -8,18 +9,23 @@ from d_fake_seeder.domain.torrent.connection_manager import get_connection_manag
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.format_helpers import format_number, format_size
 
+# fmt: on
+
 
 class Statusbar(Component):
     def __init__(self, builder, model):
         super().__init__()
 
-        logger.info("StatusBar startup", extra={"class_name": self.__class__.__name__})
+        logger.debug("startup", extra={"class_name": self.__class__.__name__})
         self.builder = builder
         self.model = model
 
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
-        self.settings.connect("attribute-changed", self.handle_settings_changed)
+        self.track_signal(
+            self.settings,
+            self.settings.connect("attribute-changed", self.handle_settings_changed),
+        )
 
         # Load UI margin settings
         ui_settings = getattr(self.settings, "ui_settings", {})
@@ -161,7 +167,7 @@ class Statusbar(Component):
         )
 
     def handle_model_changed(self, source, data_obj, data_changed):
-        logger.info(
+        logger.debug(
             "StatusBar settings changed",
             extra={"class_name": self.__class__.__name__},
         )

@@ -1,3 +1,4 @@
+# fmt: off
 import gi
 
 from d_fake_seeder.components.component.base_component import Component
@@ -9,6 +10,8 @@ gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa
 
+# fmt: on
+
 
 class States(Component, ColumnTranslationMixin):
     def __init__(self, builder, model):
@@ -16,18 +19,25 @@ class States(Component, ColumnTranslationMixin):
         logger.debug("States.__init__() started", "States")
         super().__init__()
         ColumnTranslationMixin.__init__(self)
-        logger.debug("Super initialization completed (took {(super_end - super_start)*1000:.1f}ms)", "UnknownClass")
+        logger.debug(
+            "Super initialization completed (took {(super_end - super_start)*1000:.1f}ms)",
+            "UnknownClass",
+        )
         self.builder = builder
         self.model = model
         # Subscribe to settings changed
         self.settings = AppSettings.get_instance()
-        self.settings.connect("attribute-changed", self.handle_settings_changed)
+        self.track_signal(
+            self.settings,
+            self.settings.connect("attribute-changed", self.handle_settings_changed),
+        )
         self.states_columnview = self.builder.get_object("states_columnview")
         logger.debug("Basic setup completed (took ms)", "States")
         # PERFORMANCE OPTIMIZATION: Create essential column immediately, defer the rest
         self.create_essential_columns_only()
         logger.debug(
-            "Essential column creation completed (took {(columns_end - columns_start)*1000:.1f}ms)", "UnknownClass"
+            "Essential column creation completed (took {(columns_end - columns_start)*1000:.1f}ms)",
+            "UnknownClass",
         )
         logger.debug("States.__init__() TOTAL TIME: ms", "States")
 
@@ -41,8 +51,11 @@ class States(Component, ColumnTranslationMixin):
         self.register_translatable_column(self.states_columnview, tracker_col, "tracker", "states")
         # Create a custom factory for the tracker column
         tracker_factory = Gtk.SignalListItemFactory()
-        tracker_factory.connect("setup", self.setup_tracker_factory)
-        tracker_factory.connect("bind", self.bind_tracker_factory)
+        self.track_signal(
+            tracker_factory,
+            tracker_factory.connect("setup", self.setup_tracker_factory),
+        )
+        self.track_signal(tracker_factory, tracker_factory.connect("bind", self.bind_tracker_factory))
         tracker_col.set_factory(tracker_factory)
         self.states_columnview.append_column(tracker_col)
         logger.debug(
@@ -56,8 +69,8 @@ class States(Component, ColumnTranslationMixin):
         self.register_translatable_column(self.states_columnview, count_col, "count", "states")
         # Create a custom factory for the count column
         count_factory = Gtk.SignalListItemFactory()
-        count_factory.connect("setup", self.setup_count_factory)
-        count_factory.connect("bind", self.bind_count_factory)
+        self.track_signal(count_factory, count_factory.connect("setup", self.setup_count_factory))
+        self.track_signal(count_factory, count_factory.connect("bind", self.bind_count_factory))
         count_col.set_factory(count_factory)
         self.states_columnview.append_column(count_col)
         logger.debug(
@@ -75,8 +88,11 @@ class States(Component, ColumnTranslationMixin):
         tracker_col.set_expand(True)
         # Minimal factory setup without expensive operations
         tracker_factory = Gtk.SignalListItemFactory()
-        tracker_factory.connect("setup", self.setup_tracker_factory)
-        tracker_factory.connect("bind", self.bind_tracker_factory)
+        self.track_signal(
+            tracker_factory,
+            tracker_factory.connect("setup", self.setup_tracker_factory),
+        )
+        self.track_signal(tracker_factory, tracker_factory.connect("bind", self.bind_tracker_factory))
         tracker_col.set_factory(tracker_factory)
         self.states_columnview.append_column(tracker_col)
         # Register for translation after creation to reduce blocking
@@ -84,7 +100,10 @@ class States(Component, ColumnTranslationMixin):
             self.register_translatable_column(self.states_columnview, tracker_col, "tracker", "states")
         except Exception:
             pass  # Translation registration can fail, column still works
-        logger.debug("Essential tracker column created in {(tracker_end - tracker_start)*1000:.1f}ms", "UnknownClass")
+        logger.debug(
+            "Essential tracker column created in {(tracker_end - tracker_start)*1000:.1f}ms",
+            "UnknownClass",
+        )
         # Schedule count column for background creation
         GLib.idle_add(self._create_count_column_background)
 
@@ -98,8 +117,8 @@ class States(Component, ColumnTranslationMixin):
             count_col.set_visible(True)
             # Create a custom factory for the count column
             count_factory = Gtk.SignalListItemFactory()
-            count_factory.connect("setup", self.setup_count_factory)
-            count_factory.connect("bind", self.bind_count_factory)
+            self.track_signal(count_factory, count_factory.connect("setup", self.setup_count_factory))
+            self.track_signal(count_factory, count_factory.connect("bind", self.bind_count_factory))
             count_col.set_factory(count_factory)
             self.states_columnview.append_column(count_col)
             # Register count column for translation
@@ -133,19 +152,20 @@ class States(Component, ColumnTranslationMixin):
 
     def set_model(self, model):
         """Set the model for the states component."""
-        logger.info("States set_model", extra={"class_name": self.__class__.__name__})
+        logger.debug("States set_model", extra={"class_name": self.__class__.__name__})
         self.model = model
         # Connect to language change signals for column translation
         if self.model and hasattr(self.model, "connect"):
             try:
-                self.model.connect("language-changed", self.on_language_changed)
+                self.track_signal(model, model.connect("language-changed", self.on_language_changed))
                 logger.debug(
                     "Connected to language-changed signal for column translation",
                     extra={"class_name": self.__class__.__name__},
                 )
             except Exception as e:
                 logger.debug(
-                    f"Could not connect to language-changed signal: {e}", extra={"class_name": self.__class__.__name__}
+                    f"Could not connect to language-changed signal: {e}",
+                    extra={"class_name": self.__class__.__name__},
                 )
 
     # Method to update the ColumnView with compatible attributes

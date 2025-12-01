@@ -11,10 +11,16 @@ Provides base fixtures and configuration for all tests according to TESTING_PLAN
 """
 
 import json
+import sys
 from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
+
+# Add project root to Python path for imports
+project_root = Path(__file__).parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
 # =============================================================================
 # Configuration Fixtures

@@ -6,6 +6,7 @@ into focused, single-responsibility classes for better maintainability.
 """
 
 # Base classes
+# fmt: off
 from .base_tab import BaseTorrentTab
 from .details_tab import DetailsTab
 from .files_tab import FilesTab
@@ -38,3 +39,5 @@ __all__ = [
     "IncomingConnectionsTab",
     "OutgoingConnectionsTab",
 ]
+
+# fmt: on

@@ -3,6 +3,9 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[pipenv]
+allow_prereleases = true
+
 [packages]
 requests = "==2.31.0"
 typer = "==0.12.3"
@@ -11,7 +14,7 @@ bencodepy = "*"
 watchdog = "*"
 
 [dev-packages]
-pytest = "==7.3.2"
+pytest = ">=7.3.2"
 pytest-cov = "*"
 pytest-timeout = "*"
 pytest-randomly = "*"

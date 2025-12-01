@@ -1,0 +1,906 @@
+/* Modern Chunky Theme - Comprehensive UI Modernization */
+/* Implements all 3 phases from UI_MODERNIZATION_PLAN.md */
+
+/* ========== COLOR VARIABLES ========== */
+@define-color light_bg #f5f5f7;
+@define-color light_card #ffffff;
+@define-color light_text #1f2937;
+@define-color light_border #dee2e6;
+@define-color accent_blue #4285f4;
+@define-color accent_green #22c55e;
+@define-color accent_yellow #f59e0b;
+@define-color accent_red #ef4444;
+
+@define-color dark_bg #1e1e2e;
+@define-color dark_card #2b2b3c;
+@define-color dark_text #cdd6f4;
+@define-color dark_border rgba(255, 255, 255, 0.1);
+
+/* ========== PHASE 1: QUICK WINS ========== */
+
+/* Global Background */
+#main_box {
+    background: @light_bg;
+}
+
+/* Chunky Modern Toolbar */
+#main_toolbar {
+    padding: 12px 16px;
+    background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid @light_border;
+    min-height: 64px;
+}
+
+#main_toolbar button {
+    min-width: 48px;
+    min-height: 48px;
+    margin: 0 4px;
+    border-radius: 8px;
+    padding: 12px;
+    transition: all 200ms ease;
+}
+
+#main_toolbar button:hover {
+    background-color: rgba(66, 133, 244, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#main_toolbar button:active {
+    transform: translateY(0);
+}
+
+#main_toolbar image {
+    -gtk-icon-size: 24px;
+}
+
+/* Modern Chunky Statusbar */
+#status_bar {
+    padding: 14px 20px;
+    background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+    border-top: 3px solid #3498db;
+    min-height: 56px;
+    color: #ecf0f1;
+    font-weight: 500;
+}
+
+#status_bar label {
+    color: #ecf0f1;
+    font-size: 13px;
+    padding: 0 8px;
+}
+
+#status_bar image {
+    -gtk-icon-size: 20px;
+    margin: 0 6px;
+    opacity: 0.9;
+}
+
+/* Rounded Modern Containers - Only apply to main window, not dialogs */
+window#main_window scrolledwindow {
+    border-radius: 12px;
+    margin: 8px;
+    background: @light_card;
+}
+
+window#main_window paned {
+    margin: 12px;
+}
+
+/* Modern Button Design - Main window buttons only */
+window#main_window button {
+    min-height: 40px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 500;
+    transition: all 150ms ease;
+}
+
+window#main_window button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Suggested and destructive actions apply everywhere for consistency */
+button.suggested-action {
+    min-height: 44px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    background: linear-gradient(135deg, @accent_blue 0%, #2563eb 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+button.destructive-action {
+    background: linear-gradient(135deg, @accent_red 0%, #dc2626 100%);
+    color: white;
+}
+
+/* ========== PHASE 2: VISUAL IMPACT ========== */
+
+/* Modern Table Design */
+columnview {
+    background: @light_card;
+    border-radius: 12px;
+    padding: 8px;
+}
+
+/* Chunky Headers */
+columnview column header {
+    padding: 16px 12px;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+    background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid @light_border;
+}
+
+columnview column header:hover {
+    background: linear-gradient(180deg, #e9ecef 0%, #dee2e6 100%);
+}
+
+/* Enhanced Row Styling */
+columnview listitem {
+    min-height: 64px;
+    padding: 12px 8px;
+    border-radius: 8px;
+    margin: 2px 4px;
+    transition: background 150ms ease;
+}
+
+columnview listitem:hover {
+    background: rgba(66, 133, 244, 0.05);
+}
+
+columnview listitem:selected {
+    background: linear-gradient(135deg, rgba(66, 133, 244, 0.1), rgba(66, 133, 244, 0.15));
+    border-left: 4px solid @accent_blue;
+}
+
+columnview listitem:nth-child(even) {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+/* Modern Gradient Progress Bars - Pill-shaped */
+columnview progressbar {
+    min-height: 48px;
+    border-radius: 24px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+columnview progressbar > trough {
+    min-height: 48px;
+    border-radius: 24px;
+    background: linear-gradient(180deg, #e9ecef 0%, #dee2e6 100%);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+columnview progressbar > trough > progress {
+    min-height: 48px;
+    border-radius: 24px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+/* Alternative: Simple blue gradient */
+.progress-simple > trough > progress {
+    background: linear-gradient(90deg, @accent_blue 0%, #2563eb 100%);
+}
+
+/* Even more specific selectors for GTK4 ColumnView */
+columnview listitem progressbar {
+    min-height: 48px;
+}
+
+columnview listitem progressbar > trough {
+    min-height: 48px;
+}
+
+columnview listitem progressbar > trough > progress {
+    min-height: 48px;
+}
+
+columnview column progressbar {
+    min-height: 48px;
+}
+
+/* Status Pills - Modern Badges */
+.status-pill {
+    border-radius: 16px;
+    padding: 6px 16px;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.status-seeding {
+    background: linear-gradient(135deg, #4ade80 0%, @accent_green 100%);
+    color: white;
+}
+
+.status-downloading {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    color: white;
+}
+
+.status-paused {
+    background: linear-gradient(135deg, #fbbf24 0%, @accent_yellow 100%);
+    color: white;
+}
+
+.status-error {
+    background: linear-gradient(135deg, #f87171 0%, @accent_red 100%);
+    color: white;
+}
+
+.status-complete {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    color: white;
+}
+
+/* Modern Pill-Shaped Tabs */
+notebook > header {
+    background: transparent;
+    padding: 8px 12px;
+}
+
+notebook > header > tabs > tab {
+    min-height: 44px;
+    padding: 12px 24px;
+    margin: 0 4px;
+    border-radius: 22px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 200ms ease;
+    border: none;
+}
+
+notebook > header > tabs > tab:hover {
+    background: rgba(66, 133, 244, 0.08);
+}
+
+notebook > header > tabs > tab:checked {
+    background: linear-gradient(135deg, @accent_blue 0%, #2563eb 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+notebook > header > tabs > tab label {
+    font-weight: 600;
+}
+
+notebook > stack {
+    padding: 16px;
+    background: @light_card;
+    border-radius: 0 0 12px 12px;
+}
+
+/* ========== PHASE 3: POLISH & ADVANCED FEATURES ========== */
+
+/* Global Smooth Transitions - Applied selectively to avoid breaking dialogs */
+button, columnview, notebook, .card, .sidebar {
+    transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Fade-in animation for new rows */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+columnview listitem {
+    animation: fadeIn 300ms ease;
+}
+
+/* Card System */
+.card {
+    background: @light_card;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transition: box-shadow 200ms ease;
+}
+
+.card-header {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: @light_text;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* Status indicators for connections */
+.success {
+    color: @accent_green;
+}
+
+.error {
+    color: @accent_red;
+}
+
+/* Shutdown Progress Overlay Styling */
+.shutdown-overlay {
+    background-color: rgba(30, 30, 30, 0.95);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.shutdown-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.shutdown-progress {
+    min-height: 32px;
+    border-radius: 16px;
+    margin: 10px 0;
+}
+
+.shutdown-progress > trough {
+    min-height: 32px;
+    border-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.shutdown-progress > trough > progress {
+    min-height: 32px;
+    border-radius: 16px;
+    background: linear-gradient(90deg, @accent_blue, #357abd);
+}
+
+.shutdown-component {
+    font-size: 14px;
+    color: #e0e0e0;
+    padding: 2px 0;
+    font-family: monospace;
+}
+
+.shutdown-timer {
+    font-size: 12px;
+    color: #b0b0b0;
+    font-family: monospace;
+}
+
+.shutdown-warning {
+    color: #ff6b6b;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Monitoring Tab Styles */
+.metric-tile {
+    border: 1px solid rgba(66, 133, 244, 0.2);
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.05);
+    min-width: 320px;
+    min-height: 200px;
+    padding: 16px;
+}
+
+.live-graph {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(66, 133, 244, 0.1);
+}
+
+/* Sidebar Filter Styles (Deluge-style) - Enhanced */
+.sidebar {
+    min-width: 220px;
+    background-color: @light_card;
+    border-right: 2px solid @light_border;
+    border-radius: 12px 0 0 12px;
+}
+
+.sidebar-expander {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-expander > label {
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
+}
+
+.sidebar-listbox {
+    background-color: transparent;
+    border: none;
+}
+
+.sidebar-listbox > row {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    border-radius: 8px;
+    margin: 2px 8px;
+}
+
+.sidebar-listbox > row:hover {
+    background-color: rgba(66, 133, 244, 0.05);
+}
+
+.sidebar-listbox > row:selected {
+    background: linear-gradient(135deg, rgba(66, 133, 244, 0.1), rgba(66, 133, 244, 0.15));
+    border-left: 3px solid @accent_blue;
+}
+
+.sidebar-listbox > row:selected:hover {
+    background: linear-gradient(135deg, rgba(66, 133, 244, 0.15), rgba(66, 133, 244, 0.2));
+}
+
+.filter-item {
+    padding: 10px 16px;
+    min-height: 40px;
+}
+
+.filter-item image {
+    opacity: 0.7;
+    margin-right: 10px;
+}
+
+.filter-item label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.filter-item .count-badge {
+    opacity: 0.8;
+    font-size: 11px;
+    font-weight: 700;
+    color: @light_text;
+    padding: 4px 8px;
+    border-radius: 12px;
+    background-color: rgba(66, 133, 244, 0.15);
+}
+
+.sidebar-listbox > row:selected .filter-item .count-badge {
+    background-color: rgba(255, 255, 255, 0.25);
+    opacity: 1;
+    color: white;
+}
+
+/* ========== DARK MODE SUPPORT ========== */
+@media (prefers-color-scheme: dark) {
+    #main_box {
+        background: @dark_bg;
+        color: @dark_text;
+    }
+
+    /* Dialog windows need dark backgrounds */
+    window:not(#main_window) {
+        background: #1e1e2e;
+        color: #cdd6f4;
+    }
+
+    /* All scrolled windows get dark card background */
+    scrolledwindow {
+        background-color: #2b2b3c;
+    }
+
+    /* All boxes and grids - transparent to avoid stacking */
+    box,
+    grid {
+        background-color: transparent;
+    }
+
+    /* Notebook content area */
+    notebook > stack {
+        background: #2b2b3c;
+    }
+
+    /* Dialog content areas */
+    dialog,
+    popover {
+        background: #2b2b3c;
+        color: #cdd6f4;
+    }
+
+    /* Column views in dialogs */
+    columnview {
+        background: #2b2b3c;
+        color: #cdd6f4;
+    }
+
+    /* Form widgets in dark mode */
+    label {
+        color: #cdd6f4;
+    }
+
+    entry {
+        background: rgba(255, 255, 255, 0.05);
+        color: #cdd6f4;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    entry:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: #89b4fa;
+    }
+
+    switch {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    switch:checked {
+        background: #89b4fa;
+    }
+
+    spinbutton {
+        background: rgba(255, 255, 255, 0.05);
+        color: #cdd6f4;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    combobox,
+    dropdown {
+        background: rgba(255, 255, 255, 0.05);
+        color: #cdd6f4;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Specific styling for main window elements */
+    window#main_window scrolledwindow,
+    window#main_window columnview,
+    window#main_window .card {
+        background: @dark_card;
+        color: @dark_text;
+        border-color: @dark_border;
+    }
+
+    columnview column header {
+        background: rgba(255, 255, 255, 0.05);
+        color: @dark_text;
+        border-bottom: 2px solid @dark_border;
+    }
+
+    columnview listitem:hover {
+        background: rgba(137, 180, 250, 0.1);
+    }
+
+    columnview listitem:selected {
+        background: linear-gradient(135deg, rgba(137, 180, 250, 0.2), rgba(137, 180, 250, 0.3));
+        border-left: 4px solid #89b4fa;
+    }
+
+    columnview listitem:nth-child(even) {
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    #main_toolbar {
+        background: linear-gradient(180deg, @dark_card 0%, @dark_bg 100%);
+        border-bottom: 2px solid @dark_border;
+    }
+
+    #main_toolbar button:hover {
+        background-color: rgba(137, 180, 250, 0.15);
+    }
+
+    #status_bar {
+        background: linear-gradient(180deg, #181825 0%, #11111b 100%);
+        border-top: 3px solid #89b4fa;
+    }
+
+    window#main_window button {
+        background: rgba(255, 255, 255, 0.05);
+        color: @dark_text;
+        border: 1px solid @dark_border;
+    }
+
+    window#main_window button:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    window#main_window button.suggested-action,
+    button.suggested-action {
+        background: linear-gradient(135deg, #89b4fa 0%, #7287fd 100%);
+    }
+
+    window#main_window button.destructive-action,
+    button.destructive-action {
+        background: linear-gradient(135deg, #f38ba8 0%, #eba0ac 100%);
+    }
+
+    notebook > header > tabs > tab:hover {
+        background: rgba(137, 180, 250, 0.1);
+    }
+
+    notebook > header > tabs > tab:checked {
+        background: linear-gradient(135deg, #89b4fa 0%, #7287fd 100%);
+    }
+
+    notebook > stack {
+        background: @dark_card;
+    }
+
+    .sidebar {
+        background-color: @dark_card;
+        border-right: 2px solid @dark_border;
+    }
+
+    .sidebar-expander {
+        border-bottom: 1px solid @dark_border;
+    }
+
+    .sidebar-listbox > row:hover {
+        background-color: rgba(137, 180, 250, 0.1);
+    }
+
+    .sidebar-listbox > row:selected {
+        background: linear-gradient(135deg, rgba(137, 180, 250, 0.2), rgba(137, 180, 250, 0.3));
+        border-left: 3px solid #89b4fa;
+    }
+
+    .filter-item .count-badge {
+        background-color: rgba(137, 180, 250, 0.2);
+        color: @dark_text;
+    }
+
+    .card {
+        background: @dark_card;
+        border: 1px solid @dark_border;
+    }
+
+    .card-header {
+        color: @dark_text;
+        border-bottom: 2px solid @dark_border;
+    }
+
+    columnview progressbar > trough {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
+    }
+}
+
+/* ========== PROGRAMMATIC DARK MODE (.dark class) ========== */
+/* When dark mode is forced via Adw.ColorScheme.FORCE_DARK */
+/* Applied to both main window and dialog windows */
+
+window.dark #main_box {
+    background: #1e1e2e;
+    color: #cdd6f4;
+}
+
+window.dark {
+    background: #1e1e2e;
+    color: #cdd6f4;
+}
+
+/* Main window specific elements */
+window.dark#main_window {
+    background: #1e1e2e;
+}
+
+window.dark#main_window paned {
+    background: #1e1e2e;
+}
+
+window.dark scrolledwindow {
+    background-color: #2b2b3c;
+}
+
+window.dark box,
+window.dark grid {
+    background-color: transparent;
+}
+
+window.dark notebook > stack {
+    background: #2b2b3c;
+}
+
+/* Dialog and popover backgrounds - needs to override defaults */
+window.dark dialog,
+window.dark dialog > *,
+window.dark dialog box,
+window.dark dialog grid,
+window.dark popover,
+window.dark popover > *,
+window.dark popover box,
+window.dark popover grid {
+    background: #2b2b3c;
+    background-color: #2b2b3c;
+    color: #cdd6f4;
+}
+
+/* Scrolled windows inside dialogs */
+window.dark dialog scrolledwindow,
+window.dark popover scrolledwindow {
+    background: #2b2b3c;
+    background-color: #2b2b3c;
+}
+
+/* Notebooks inside dialogs */
+window.dark dialog notebook,
+window.dark dialog notebook > stack,
+window.dark dialog notebook > header,
+window.dark popover notebook,
+window.dark popover notebook > stack,
+window.dark popover notebook > header {
+    background: #2b2b3c;
+    background-color: #2b2b3c;
+}
+
+/* Tab content in dialogs */
+window.dark dialog notebook > stack > * {
+    background: #2b2b3c;
+    background-color: #2b2b3c;
+}
+
+window.dark columnview {
+    background: #2b2b3c;
+    color: #cdd6f4;
+}
+
+/* All text elements - GTK CSS doesn't support !important, rely on specificity */
+window.dark label,
+window.dark box label,
+window.dark grid label,
+window.dark dialog label,
+window.dark popover label {
+    color: #cdd6f4;
+}
+
+window.dark text,
+window.dark .title,
+window.dark .subtitle {
+    color: #cdd6f4;
+}
+
+/* Dropdown/combobox - ensure both widget and child labels are styled */
+window.dark combobox,
+window.dark combobox label,
+window.dark combobox box,
+window.dark dropdown,
+window.dark dropdown label,
+window.dark dropdown box {
+    color: #cdd6f4;
+}
+
+/* Button text visibility and styling - including in dialogs */
+window.dark button,
+window.dark button label,
+window.dark dialog button,
+window.dark dialog button label {
+    color: #cdd6f4;
+}
+
+window.dark dialog button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+window.dark dialog button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Entry fields - including in dialogs */
+window.dark entry,
+window.dark entry text,
+window.dark dialog entry,
+window.dark dialog entry text {
+    background: rgba(255, 255, 255, 0.05);
+    color: #cdd6f4;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Switches - including in dialogs */
+window.dark switch,
+window.dark dialog switch {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+window.dark switch:checked,
+window.dark dialog switch:checked {
+    background: #89b4fa;
+}
+
+/* Spinbuttons and their child elements - including in dialogs */
+window.dark spinbutton,
+window.dark spinbutton entry,
+window.dark spinbutton text,
+window.dark dialog spinbutton,
+window.dark dialog spinbutton entry,
+window.dark dialog spinbutton text {
+    background: rgba(255, 255, 255, 0.05);
+    color: #cdd6f4;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Combo boxes and dropdowns with child elements - including in dialogs */
+window.dark combobox box,
+window.dark dropdown box,
+window.dark dialog combobox,
+window.dark dialog combobox box,
+window.dark dialog dropdown,
+window.dark dialog dropdown box {
+    background: rgba(255, 255, 255, 0.05);
+    color: #cdd6f4;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ========== PROGRAMMATIC LIGHT MODE ========== */
+/* Override dark theme when light mode is explicitly selected */
+/* This ensures dialogs and popovers respect the light theme choice */
+
+window:not(.dark) dialog,
+window:not(.dark) popover {
+    background: @light_card;
+    color: @light_text;
+}
+
+window:not(.dark) dialog label,
+window:not(.dark) popover label,
+window:not(.dark) dialog box label,
+window:not(.dark) popover box label {
+    color: @light_text;
+}
+
+window:not(.dark) dialog entry,
+window:not(.dark) popover entry {
+    background: white;
+    color: @light_text;
+    border: 1px solid @light_border;
+}
+
+window:not(.dark) dialog button,
+window:not(.dark) popover button,
+window:not(.dark) dialog button label,
+window:not(.dark) popover button label {
+    color: @light_text;
+}
+
+window:not(.dark) dialog combobox,
+window:not(.dark) dialog dropdown,
+window:not(.dark) popover combobox,
+window:not(.dark) popover dropdown {
+    background: white;
+    color: @light_text;
+    border: 1px solid @light_border;
+}
+
+window:not(.dark) dialog combobox label,
+window:not(.dark) dialog dropdown label,
+window:not(.dark) popover combobox label,
+window:not(.dark) popover dropdown label {
+    color: @light_text;
+}
+
+window:not(.dark) dialog spinbutton,
+window:not(.dark) popover spinbutton {
+    background: white;
+    color: @light_text;
+    border: 1px solid @light_border;
+}
+
+window:not(.dark) dialog switch,
+window:not(.dark) popover switch {
+    background: @light_border;
+}
+
+window:not(.dark) dialog switch:checked,
+window:not(.dark) popover switch:checked {
+    background: @accent_blue;
+}

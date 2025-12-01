@@ -5,6 +5,7 @@ Handles network connection settings like listening port, connection limits,
 proxy configuration, and UPnP settings.
 """
 
+# fmt: off
 from typing import Any, Dict
 
 import gi
@@ -18,6 +19,8 @@ from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import NotificationMixin  # noqa: E402
 from .settings_mixins import TranslationMixin  # noqa: E402
 from .settings_mixins import UtilityMixin, ValidationMixin  # noqa: E402
+
+# fmt: on
 
 
 class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
@@ -64,48 +67,72 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         # Listening port
         listening_port = self.get_widget("listening_port")
         if listening_port:
-            listening_port.connect("value-changed", self.on_listening_port_changed)
+            self.track_signal(
+                listening_port,
+                listening_port.connect("value-changed", self.on_listening_port_changed),
+            )
 
         # Random port button
         random_port_button = self.get_widget("random_port_button")
         if random_port_button:
-            random_port_button.connect("clicked", self.on_random_port_clicked)
+            self.track_signal(
+                random_port_button,
+                random_port_button.connect("clicked", self.on_random_port_clicked),
+            )
 
         # UPnP toggle
         upnp_enabled = self.get_widget("upnp_enabled")
         if upnp_enabled:
-            upnp_enabled.connect("state-set", self.on_upnp_changed)
+            self.track_signal(upnp_enabled, upnp_enabled.connect("state-set", self.on_upnp_changed))
 
         # Connection limits
         max_global = self.get_widget("max_global_connections")
         if max_global:
-            max_global.connect("value-changed", self.on_connection_limit_changed)
+            self.track_signal(
+                max_global,
+                max_global.connect("value-changed", self.on_connection_limit_changed),
+            )
 
         max_per_torrent = self.get_widget("max_per_torrent")
         if max_per_torrent:
-            max_per_torrent.connect("value-changed", self.on_connection_limit_changed)
+            self.track_signal(
+                max_per_torrent,
+                max_per_torrent.connect("value-changed", self.on_connection_limit_changed),
+            )
 
         max_upload_slots = self.get_widget("max_upload_slots")
         if max_upload_slots:
-            max_upload_slots.connect("value-changed", self.on_connection_limit_changed)
+            self.track_signal(
+                max_upload_slots,
+                max_upload_slots.connect("value-changed", self.on_connection_limit_changed),
+            )
 
         # Proxy settings
         proxy_type = self.get_widget("proxy_type")
         if proxy_type:
-            proxy_type.connect("notify::selected", self.on_proxy_type_changed)
+            self.track_signal(
+                proxy_type,
+                proxy_type.connect("notify::selected", self.on_proxy_type_changed),
+            )
 
         proxy_auth = self.get_widget("proxy_auth_enabled")
         if proxy_auth:
-            proxy_auth.connect("state-set", self.on_proxy_auth_changed)
+            self.track_signal(proxy_auth, proxy_auth.connect("state-set", self.on_proxy_auth_changed))
 
         # Proxy server/port (for validation)
         proxy_server = self.get_widget("proxy_server")
         if proxy_server:
-            proxy_server.connect("changed", self.on_proxy_server_changed)
+            self.track_signal(
+                proxy_server,
+                proxy_server.connect("changed", self.on_proxy_server_changed),
+            )
 
         proxy_port = self.get_widget("proxy_port")
         if proxy_port:
-            proxy_port.connect("value-changed", self.on_proxy_port_changed)
+            self.track_signal(
+                proxy_port,
+                proxy_port.connect("value-changed", self.on_proxy_port_changed),
+            )
 
     def _load_settings(self) -> None:
         """Load current settings into Connection tab widgets."""

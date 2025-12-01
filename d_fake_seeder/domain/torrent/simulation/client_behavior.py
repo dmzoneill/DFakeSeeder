@@ -5,6 +5,7 @@ Provides deep emulation of specific BitTorrent client behaviors,
 including protocol-level quirks, timing patterns, and behavioral characteristics.
 """
 
+# fmt: off
 import random
 import time
 from typing import Any, Dict, List
@@ -12,6 +13,8 @@ from typing import Any, Dict, List
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import BitTorrentProtocolConstants
+
+# fmt: on
 
 
 class ClientBehaviorEngine:
@@ -220,7 +223,11 @@ class ClientBehaviorEngine:
         self.behavior_state = {}
 
         # Performance tracking
-        self.behavior_stats = {"client_switches": 0, "behavior_adaptations": 0, "protocol_violations": 0}
+        self.behavior_stats = {
+            "client_switches": 0,
+            "behavior_adaptations": 0,
+            "protocol_violations": 0,
+        }
 
         logger.info(
             "Client behavior engine initialized",
@@ -247,13 +254,19 @@ class ClientBehaviorEngine:
             # Generate random suffix (usually 12 characters)
             suffix_length = 20 - len(prefix)
             suffix = "".join(
-                random.choices("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", k=suffix_length)
+                random.choices(
+                    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+                    k=suffix_length,
+                )
             )
 
             return prefix + suffix
 
         except Exception as e:
-            logger.error(f"Failed to generate peer ID: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to generate peer ID: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
             return self._generate_generic_peer_id()
 
     def get_user_agent(self) -> str:
@@ -314,7 +327,8 @@ class ClientBehaviorEngine:
 
         except Exception as e:
             logger.error(
-                f"Failed to get behavior parameter {parameter}: {e}", extra={"class_name": self.__class__.__name__}
+                f"Failed to get behavior parameter {parameter}: {e}",
+                extra={"class_name": self.__class__.__name__},
             )
             return default
 
@@ -345,7 +359,8 @@ class ClientBehaviorEngine:
 
         except Exception as e:
             logger.error(
-                f"Failed to get timing parameter {parameter}: {e}", extra={"class_name": self.__class__.__name__}
+                f"Failed to get timing parameter {parameter}: {e}",
+                extra={"class_name": self.__class__.__name__},
             )
             return default
 
@@ -450,11 +465,21 @@ class ClientBehaviorEngine:
         """Simulate client-specific keep-alive behavior"""
         interval = self.get_behavior_parameter("keep_alive_interval", 120)
 
-        return {"simulated": True, "action": "keep_alive", "interval": interval, "client": self.primary_client}
+        return {
+            "simulated": True,
+            "action": "keep_alive",
+            "interval": interval,
+            "client": self.primary_client,
+        }
 
     def _simulate_generic_behavior(self, action: str, context: Dict) -> Dict[str, Any]:
         """Simulate generic client behavior"""
-        return {"simulated": True, "action": action, "client": self.primary_client, "context": context}
+        return {
+            "simulated": True,
+            "action": action,
+            "client": self.primary_client,
+            "context": context,
+        }
 
     def _maybe_update_behavior(self):
         """Possibly update client behavior based on time and probability"""
@@ -481,10 +506,16 @@ class ClientBehaviorEngine:
                 self.current_client_profile = self.CLIENT_PROFILES[new_client]
                 self.behavior_stats["client_switches"] += 1
 
-                logger.info(f"Switched client profile to {new_client}", extra={"class_name": self.__class__.__name__})
+                logger.info(
+                    f"Switched client profile to {new_client}",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
         except Exception as e:
-            logger.error(f"Failed to switch client profile: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                f"Failed to switch client profile: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _get_reserved_bytes(self) -> bytes:
         """Get client-specific reserved bytes for handshake"""
@@ -536,4 +567,7 @@ class ClientBehaviorEngine:
         """Clean up client behavior engine"""
         self.behavior_state.clear()
 
-        logger.debug("Client behavior engine cleaned up", extra={"class_name": self.__class__.__name__})
+        logger.debug(
+            "Client behavior engine cleaned up",
+            extra={"class_name": self.__class__.__name__},
+        )

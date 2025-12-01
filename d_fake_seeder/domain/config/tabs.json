@@ -39,7 +39,8 @@
       "OptionsTab",
       "PeersTab",
       "TrackersTab",
-      "LogTab"
+      "LogTab",
+      "MonitoringTab"
     ],
     "essential": [
       "StatusTab"
@@ -50,10 +51,12 @@
       "OptionsTab",
       "PeersTab",
       "TrackersTab",
-      "LogTab"
+      "LogTab",
+      "MonitoringTab"
     ],
     "background_load": [
-      "LogTab"
+      "LogTab",
+      "MonitoringTab"
     ]
   },
   "tab_features": {

@@ -4,6 +4,7 @@ BitTorrent settings tab for the settings dialog.
 Handles BitTorrent protocol features, user agent settings, and announce intervals.
 """
 
+# fmt: off
 from typing import Any, Dict
 
 import gi
@@ -15,6 +16,8 @@ from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import NotificationMixin  # noqa: E402
 from .settings_mixins import TranslationMixin  # noqa: E402
 from .settings_mixins import UtilityMixin, ValidationMixin  # noqa: E402
+
+# fmt: on
 
 
 class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
@@ -65,54 +68,78 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         # Protocol features
         dht = self.get_widget("enable_dht")
         if dht:
-            dht.connect("state-set", self.on_dht_changed)
+            self.track_signal(dht, dht.connect("state-set", self.on_dht_changed))
 
         pex = self.get_widget("enable_pex")
         if pex:
-            pex.connect("state-set", self.on_pex_changed)
+            self.track_signal(pex, pex.connect("state-set", self.on_pex_changed))
 
         lsd = self.get_widget("enable_lsd")
         if lsd:
-            lsd.connect("state-set", self.on_lsd_changed)
+            self.track_signal(lsd, lsd.connect("state-set", self.on_lsd_changed))
 
         utp = self.get_widget("enable_utp")
         if utp:
-            utp.connect("state-set", self.on_utp_changed)
+            self.track_signal(utp, utp.connect("state-set", self.on_utp_changed))
 
         # User agent
         user_agent = self.get_widget("user_agent")
         if user_agent:
-            user_agent.connect("notify::selected", self.on_user_agent_changed)
+            self.track_signal(
+                user_agent,
+                user_agent.connect("notify::selected", self.on_user_agent_changed),
+            )
 
         custom_user_agent = self.get_widget("custom_user_agent")
         if custom_user_agent:
-            custom_user_agent.connect("changed", self.on_custom_user_agent_changed)
+            self.track_signal(
+                custom_user_agent,
+                custom_user_agent.connect("changed", self.on_custom_user_agent_changed),
+            )
 
         # Announce intervals
         announce = self.get_widget("announce_interval")
         if announce:
-            announce.connect("value-changed", self.on_announce_interval_changed)
+            self.track_signal(
+                announce,
+                announce.connect("value-changed", self.on_announce_interval_changed),
+            )
 
         min_announce = self.get_widget("min_announce_interval")
         if min_announce:
-            min_announce.connect("value-changed", self.on_min_announce_interval_changed)
+            self.track_signal(
+                min_announce,
+                min_announce.connect("value-changed", self.on_min_announce_interval_changed),
+            )
 
         # Peer settings
         max_peers_global = self.get_widget("max_peers_global")
         if max_peers_global:
-            max_peers_global.connect("value-changed", self.on_max_peers_global_changed)
+            self.track_signal(
+                max_peers_global,
+                max_peers_global.connect("value-changed", self.on_max_peers_global_changed),
+            )
 
         max_peers_torrent = self.get_widget("max_peers_torrent")
         if max_peers_torrent:
-            max_peers_torrent.connect("value-changed", self.on_max_peers_torrent_changed)
+            self.track_signal(
+                max_peers_torrent,
+                max_peers_torrent.connect("value-changed", self.on_max_peers_torrent_changed),
+            )
 
         max_upload_slots_global = self.get_widget("max_upload_slots_global")
         if max_upload_slots_global:
-            max_upload_slots_global.connect("value-changed", self.on_max_upload_slots_global_changed)
+            self.track_signal(
+                max_upload_slots_global,
+                max_upload_slots_global.connect("value-changed", self.on_max_upload_slots_global_changed),
+            )
 
         max_upload_slots_torrent = self.get_widget("max_upload_slots_torrent")
         if max_upload_slots_torrent:
-            max_upload_slots_torrent.connect("value-changed", self.on_max_upload_slots_torrent_changed)
+            self.track_signal(
+                max_upload_slots_torrent,
+                max_upload_slots_torrent.connect("value-changed", self.on_max_upload_slots_torrent_changed),
+            )
 
     def _load_settings(self) -> None:
         """Load current settings into BitTorrent tab widgets."""

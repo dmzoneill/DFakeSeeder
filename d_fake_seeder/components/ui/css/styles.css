@@ -146,3 +146,90 @@ columnview listitem > * {
     margin-top: 10px;
     /* Remove animation that may not be supported in GTK CSS */
 }
+
+/* Monitoring Tab Styles */
+.metric-tile {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.03);
+    min-width: 320px;
+    min-height: 200px;
+}
+
+.live-graph {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Sidebar Filter Styles (Deluge-style) */
+.sidebar {
+    min-width: 200px;
+    background-color: @theme_base_color;
+    border-right: 1px solid @borders;
+}
+
+.sidebar-expander {
+    padding: 4px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-expander > label {
+    font-weight: bold;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.sidebar-listbox {
+    background-color: transparent;
+    border: none;
+}
+
+.sidebar-listbox > row {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+.sidebar-listbox > row:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-listbox > row:selected {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+.sidebar-listbox > row:selected:hover {
+    background-color: @theme_selected_bg_color;
+}
+
+.filter-item {
+    padding: 6px 12px;
+    min-height: 32px;
+}
+
+.filter-item image {
+    opacity: 0.7;
+    margin-right: 8px;
+}
+
+.filter-item label {
+    font-size: 13px;
+}
+
+.filter-item .count-badge {
+    opacity: 0.6;
+    font-size: 11px;
+    font-weight: bold;
+    color: @theme_fg_color;
+    padding: 2px 6px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-listbox > row:selected .filter-item .count-badge {
+    background-color: rgba(255, 255, 255, 0.2);
+    opacity: 0.9;
+}

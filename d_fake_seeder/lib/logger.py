@@ -1,3 +1,4 @@
+# fmt: off
 import functools
 import logging
 import sys
@@ -11,6 +12,8 @@ try:
     SYSTEMD_AVAILABLE = True
 except ImportError:
     SYSTEMD_AVAILABLE = False
+
+# fmt: on
 
 
 class ClassNameFilter(logging.Filter):
@@ -72,7 +75,12 @@ class DuplicateFilter(logging.Filter):
         current_time = time.time()
         to_remove = []
 
-        for message_key, (count, first_time, last_time, saved_record) in self.last_messages.items():
+        for message_key, (
+            count,
+            first_time,
+            last_time,
+            saved_record,
+        ) in self.last_messages.items():
             if count > 1:
                 # Create a summary record
                 duration = current_time - first_time
@@ -111,7 +119,12 @@ class DuplicateFilter(logging.Filter):
             # Check if still within suppression window
             if current_time - last_time < self.time_window:
                 # Update count and suppress this message
-                self.last_messages[message_key] = (count + 1, first_time, current_time, record)
+                self.last_messages[message_key] = (
+                    count + 1,
+                    first_time,
+                    current_time,
+                    record,
+                )
                 return False
             else:
                 # Time window expired, log summary of suppressed messages
@@ -122,7 +135,12 @@ class DuplicateFilter(logging.Filter):
                     )
 
                 # Reset counter for this message
-                self.last_messages[message_key] = (1, current_time, current_time, record)
+                self.last_messages[message_key] = (
+                    1,
+                    current_time,
+                    current_time,
+                    record,
+                )
                 return True
         else:
             # First occurrence of this message
@@ -138,7 +156,12 @@ class PerformanceLogger:
         self._timers: Dict[str, float] = {}
         self._operation_stack: list = []
 
-    def timing_info(self, message: str, class_name: Optional[str] = None, operation_time_ms: Optional[float] = None):
+    def timing_info(
+        self,
+        message: str,
+        class_name: Optional[str] = None,
+        operation_time_ms: Optional[float] = None,
+    ):
         """Log with timing information similar to the old print statements."""
         extra = {}
         if class_name:
@@ -149,7 +172,12 @@ class PerformanceLogger:
 
         self._logger.info(message, extra=extra)
 
-    def timing_debug(self, message: str, class_name: Optional[str] = None, operation_time_ms: Optional[float] = None):
+    def timing_debug(
+        self,
+        message: str,
+        class_name: Optional[str] = None,
+        operation_time_ms: Optional[float] = None,
+    ):
         """Debug level timing information."""
         extra = {}
         if class_name:
@@ -167,7 +195,11 @@ class PerformanceLogger:
         return start_time
 
     def end_timer(
-        self, operation_name: str, message: Optional[str] = None, class_name: Optional[str] = None, level: str = "info"
+        self,
+        operation_name: str,
+        message: Optional[str] = None,
+        class_name: Optional[str] = None,
+        level: str = "info",
     ) -> float:
         """End a named timer and log the duration."""
         if operation_name not in self._timers:
@@ -207,7 +239,12 @@ class PerformanceLogger:
 class OperationTimer:
     """Context manager for timing operations."""
 
-    def __init__(self, perf_logger: PerformanceLogger, operation_name: str, class_name: Optional[str] = None):
+    def __init__(
+        self,
+        perf_logger: PerformanceLogger,
+        operation_name: str,
+        class_name: Optional[str] = None,
+    ):
         self.perf_logger = perf_logger
         self.operation_name = operation_name
         self.class_name = class_name
@@ -218,7 +255,7 @@ class OperationTimer:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.perf_logger.end_timer(self.operation_name, class_name=self.class_name)
+        self.perf_logger.end_timer(self.operation_name, class_name=self.class_name, level="debug")
 
 
 def timing_decorator(operation_name: Optional[str] = None, level: str = "debug"):

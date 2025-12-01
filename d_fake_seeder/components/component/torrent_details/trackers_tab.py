@@ -4,6 +4,7 @@ Trackers tab for torrent details.
 Displays torrent tracker information including primary and backup trackers.
 """
 
+# fmt: off
 from typing import Any, Dict, List
 
 import gi
@@ -13,6 +14,8 @@ from .tab_mixins import DataUpdateMixin, UIUtilityMixin
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa
+
+# fmt: on
 
 
 class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
@@ -68,7 +71,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             attributes: Attributes object from the torrent list
         """
         try:
-            self.logger.info(
+            self.logger.debug(
                 f"🔄 TRACKERS TAB: Starting update_content for attributes: {attributes}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -101,7 +104,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 extra={"class_name": self.__class__.__name__},
             )
             trackers = self._get_tracker_data(attributes)
-            self.logger.info(
+            self.logger.debug(
                 f"📊 TRACKERS TAB: Retrieved {len(trackers) if trackers else 0} trackers from torrent",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -132,10 +135,8 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             grid.set_visible(True)
             grid.set_column_spacing(self.ui_column_spacing_large)
             grid.set_row_spacing(self.ui_row_spacing)
-            grid.set_margin_start(self.ui_margin_xlarge)
-            grid.set_margin_end(self.ui_margin_xlarge)
-            grid.set_margin_top(self.ui_margin_xlarge)
-            grid.set_margin_bottom(self.ui_margin_xlarge)
+            # Margins are now set in XML for consistency across all tabs
+            # Removed: set_margin_start/end/top/bottom calls
             return grid
 
         except Exception as e:
@@ -195,7 +196,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                         tracker_data = {
                             "url": tracker_model.get_property("url"),
                             "tier": tracker_model.get_property("tier"),
-                            "type": "Primary" if tracker_model.get_property("tier") == 0 else "Backup",
+                            "type": ("Primary" if tracker_model.get_property("tier") == 0 else "Backup"),
                             "status": tracker_model.get_property("status"),
                             "seeders": tracker_model.get_property("seeders"),
                             "leechers": tracker_model.get_property("leechers"),
@@ -204,17 +205,18 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                             "response_time": tracker_model.get_property("average_response_time"),
                             "error_message": tracker_model.get_property("error_message"),
                             "success_rate": tracker_model.success_rate,
-                            "health_status": "Healthy" if tracker_model.is_healthy else "Unhealthy",
+                            "health_status": ("Healthy" if tracker_model.is_healthy else "Unhealthy"),
                             "status_summary": tracker_model.get_status_summary(),
                             "timing_summary": tracker_model.get_timing_summary(),
                         }
                         trackers.append(tracker_data)
                     except Exception as e:
                         self.logger.debug(
-                            f"Error processing tracker model: {e}", extra={"class_name": self.__class__.__name__}
+                            f"Error processing tracker model: {e}",
+                            extra={"class_name": self.__class__.__name__},
                         )
 
-                self.logger.info(
+                self.logger.debug(
                     f"🎯 TRACKERS TAB: Retrieved {len(trackers)} live tracker models",
                     extra={"class_name": self.__class__.__name__},
                 )

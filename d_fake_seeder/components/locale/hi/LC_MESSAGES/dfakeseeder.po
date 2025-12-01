@@ -212,6 +212,9 @@ msgstr "आक्रामक प्रोफाइल डाउनलोड ग
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "आक्रामक प्रोफाइल अपलोड गति (0 = असीमित)"
 
+msgid "All"
+msgstr "सभी"
+
 msgid "Alt download limit (KB/s):"
 msgstr "वैकल्पिक डाउनलोड सीमा (KB/s):"
 
@@ -247,6 +250,9 @@ msgstr "घोषणा अंतराल:"
 
 msgid "Arabic"
 msgstr "अरबी"
+
+msgid "Auto (Follow System)"
+msgstr "Auto (Follow System)"
 
 msgid "Auto Detect"
 msgstr "स्वचालित पहचान"
@@ -362,11 +368,20 @@ msgstr "गंभीर"
 msgid "Cancel"
 msgstr "रद्द करें"
 
+msgid "Checking"
+msgstr "जाँच हो रही है"
+
 msgid "Chinese"
 msgstr "चीनी"
 
 msgid "Choose a pre-configured seeding profile"
 msgstr "पूर्व-कॉन्फ़िगर किया गया सीडिंग प्रोफ़ाइल चुनें"
+
+msgid "Choose light or dark color scheme"
+msgstr "हल्का या गहरा रंग योजना चुनें"
+
+msgid "Choose the UI theme style"
+msgstr "Choose the UI theme style"
 
 msgid "Choose the application theme"
 msgstr "एप्लिकेशन थीम चुनें"
@@ -382,6 +397,9 @@ msgstr "क्लाइंट"
 
 msgid "Client Switch Probability:"
 msgstr "क्लाइंट स्विच संभावना:"
+
+msgid "Color Scheme:"
+msgstr "रंग योजना："
 
 msgid "Columns"
 msgstr "स्तंभ"
@@ -521,6 +539,9 @@ msgstr "सफलतापूर्वक जोड़ने के बाद �
 msgid "Deluge"
 msgstr "Deluge"
 
+msgid "Deluge Theme"
+msgstr "Deluge Theme"
+
 msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
@@ -589,6 +610,9 @@ msgstr "डाउनलोड किया गया सत्र / कुल"
 
 msgid "Downloaded Speed"
 msgstr "डाउनलोड गति"
+
+msgid "Downloading"
+msgstr "डाउनलोड हो रहा है"
 
 msgid "Dropout probability:"
 msgstr "ड्रॉपआउट संभावना:"
@@ -890,6 +914,9 @@ msgstr "कृत्रिम पीयर उत्पन्न करें"
 msgid "German"
 msgstr "जर्मन"
 
+msgid "Get the main widget for this tab."
+msgstr "Get the main widget for this tab."
+
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
 
@@ -1184,11 +1211,17 @@ msgstr "घोषणाओं के बीच न्यूनतम समय (
 msgid "Minimum transaction ID for tracker communication"
 msgstr "ट्रैकर संचार के लिए न्यूनतम लेनदेन ID"
 
+msgid "Modern Chunky"
+msgstr "Modern Chunky"
+
 msgid "Mon"
 msgstr "सोम"
 
 msgid "Monday"
 msgstr "सोमवार"
+
+msgid "Monitoring"
+msgstr "निगरानी"
 
 msgid "Multi-Tracker"
 msgstr "मल्टी-ट्रैकर"
@@ -1216,6 +1249,9 @@ msgstr "अगला अपडेट"
 
 msgid "No"
 msgstr "नहीं"
+
+msgid "No Torrent Selected"
+msgstr "कोई टॉरेंट चयनित नहीं"
 
 msgid "No editable options available for this torrent."
 msgstr "इस टॉरेंट के लिए कोई संपादन योग्य विकल्प उपलब्ध नहीं।"
@@ -1282,6 +1318,9 @@ msgstr "सभी टॉरेंट रोकें"
 
 msgid "Pause torrent"
 msgstr "टॉरेंट रोकें"
+
+msgid "Paused"
+msgstr "रोका गया"
 
 msgid "Peer Analysis Depth:"
 msgstr "पीयर विश्लेषण गहराई:"
@@ -1472,6 +1511,9 @@ msgstr "क्वेरी टाइमआउट:"
 msgid "Queue"
 msgstr "कतार"
 
+msgid "Queued"
+msgstr "कतार में"
+
 msgid "Quit"
 msgstr "बाहर निकलें"
 
@@ -1619,6 +1661,9 @@ msgstr "सेटिंग्स खोजें"
 msgid "Secure password generated"
 msgstr "सुरक्षित पासवर्ड बनाया गया"
 
+msgid "Seed"
+msgstr "सीड"
+
 msgid "Seeder port range (max):"
 msgstr "सीडर पोर्ट रेंज (अधिकतम):"
 
@@ -1627,6 +1672,9 @@ msgstr "सीडर पोर्ट रेंज (न्यूनतम):"
 
 msgid "Seeders"
 msgstr "सीडर्स"
+
+msgid "Seeding"
+msgstr "सीड हो रहा है"
 
 msgid "Seeding Profile"
 msgstr "सीडिंग प्रोफाइल"
@@ -1639,6 +1687,24 @@ msgstr "चुनें"
 
 msgid "Select Watch Folder"
 msgstr "वॉच फ़ोल्डर चुनें"
+
+msgid "Select a torrent to configure its options"
+msgstr "Select a torrent to configure its options"
+
+msgid "Select a torrent to view its details"
+msgstr "Select a torrent to view its details"
+
+msgid "Select a torrent to view its files"
+msgstr "Select a torrent to view its files"
+
+msgid "Select a torrent to view its peers"
+msgstr "Select a torrent to view its peers"
+
+msgid "Select a torrent to view its status information"
+msgstr "Select a torrent to view its status information"
+
+msgid "Select a torrent to view its trackers"
+msgstr "Select a torrent to view its trackers"
 
 msgid "Select proxy type for connections"
 msgstr "कनेक्शन के लिए प्रॉक्सी प्रकार चुनें"
@@ -1760,6 +1826,9 @@ msgstr "सिस्टम स्टार्टअप पर शुरू क�
 msgid "Start the application minimized to system tray"
 msgstr "एप्लिकेशन को सिस्टम ट्रे में छोटा करके शुरू करें"
 
+msgid "States"
+msgstr "स्थितियाँ"
+
 msgid "Stats Update Interval:"
 msgstr "आंकड़े अपडेट अंतराल:"
 
@@ -1787,6 +1856,9 @@ msgstr "स्वीडिश"
 msgid "Synthetic Peer Count:"
 msgstr "सिंथेटिक पीयर काउंट:"
 
+msgid "System Theme"
+msgstr "सिस्टम थीम"
+
 msgid "TCP fallback"
 msgstr "TCP फॉलबैक"
 
@@ -1798,6 +1870,9 @@ msgstr ".torrent फ़ाइल हटा दी जाएगी।"
 
 msgid "The .torrent file will be kept."
 msgstr ".torrent फ़ाइल सुरक्षित रखी जाएगी।"
+
+msgid "Theme Style:"
+msgstr "थीम शैली："
 
 msgid "Theme:"
 msgstr "थीम:"
@@ -2125,6 +2200,9 @@ msgstr "लॉग_टैब"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (पीस उपलब्धता)"
+
+msgid "monitoring_tab"
+msgstr "monitoring_tab"
 
 msgid "name"
 msgstr "नाम"

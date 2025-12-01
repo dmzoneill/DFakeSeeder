@@ -212,6 +212,9 @@ msgstr "공격적 프로필 다운로드 속도"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "공격적 프로필 업로드 속도(0 = 무제한)"
 
+msgid "All"
+msgstr "모두"
+
 msgid "Alt download limit (KB/s):"
 msgstr "대체 다운로드 제한 (KB/s):"
 
@@ -247,6 +250,9 @@ msgstr "발표 간격:"
 
 msgid "Arabic"
 msgstr "아랍어"
+
+msgid "Auto (Follow System)"
+msgstr "자동（시스템 따르기）"
 
 msgid "Auto Detect"
 msgstr "자동 감지"
@@ -362,11 +368,20 @@ msgstr "치명적"
 msgid "Cancel"
 msgstr "취소"
 
+msgid "Checking"
+msgstr "확인 중"
+
 msgid "Chinese"
 msgstr "중국어"
 
 msgid "Choose a pre-configured seeding profile"
 msgstr "미리 구성된 시딩 프로필 선택"
+
+msgid "Choose light or dark color scheme"
+msgstr "밝은 색상 또는 어두운 색상 구성표 선택"
+
+msgid "Choose the UI theme style"
+msgstr "UI 테마 스타일 선택"
 
 msgid "Choose the application theme"
 msgstr "애플리케이션 테마 선택"
@@ -382,6 +397,9 @@ msgstr "클라이언트"
 
 msgid "Client Switch Probability:"
 msgstr "클라이언트 전환 확률:"
+
+msgid "Color Scheme:"
+msgstr "색상 구성표："
 
 msgid "Columns"
 msgstr "열"
@@ -521,6 +539,9 @@ msgstr "성공적으로 추가된 후 토렌트 파일 삭제"
 msgid "Deluge"
 msgstr "Deluge"
 
+msgid "Deluge Theme"
+msgstr "Deluge 테마"
+
 msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
@@ -589,6 +610,9 @@ msgstr "다운로드된 세션 / 총합"
 
 msgid "Downloaded Speed"
 msgstr "다운로드 속도"
+
+msgid "Downloading"
+msgstr "다운로드 중"
 
 msgid "Dropout probability:"
 msgstr "중단 확률:"
@@ -890,6 +914,9 @@ msgstr "합성 피어 생성"
 msgid "German"
 msgstr "독일어"
 
+msgid "Get the main widget for this tab."
+msgstr "이 탭의 기본 위젯을 가져옵니다."
+
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
 
@@ -1184,11 +1211,17 @@ msgstr "알림 간 최소 시간 (10-3600초)"
 msgid "Minimum transaction ID for tracker communication"
 msgstr "트래커 통신을 위한 최소 트랜잭션 ID"
 
+msgid "Modern Chunky"
+msgstr "Modern Chunky"
+
 msgid "Mon"
 msgstr "월"
 
 msgid "Monday"
 msgstr "월요일"
+
+msgid "Monitoring"
+msgstr "모니터링"
 
 msgid "Multi-Tracker"
 msgstr "다중 추적기"
@@ -1216,6 +1249,9 @@ msgstr "다음 업데이트"
 
 msgid "No"
 msgstr "아니오"
+
+msgid "No Torrent Selected"
+msgstr "선택된 토렌트 없음"
 
 msgid "No editable options available for this torrent."
 msgstr "이 토렌트에 사용할 수 있는 편집 가능한 옵션이 없습니다."
@@ -1282,6 +1318,9 @@ msgstr "모든 토렌트 일시정지"
 
 msgid "Pause torrent"
 msgstr "토렌트 일시정지"
+
+msgid "Paused"
+msgstr "일시 중지"
 
 msgid "Peer Analysis Depth:"
 msgstr "피어 분석 깊이:"
@@ -1472,6 +1511,9 @@ msgstr "쿼리 타임아웃:"
 msgid "Queue"
 msgstr "대기열"
 
+msgid "Queued"
+msgstr "대기 중"
+
 msgid "Quit"
 msgstr "종료"
 
@@ -1619,6 +1661,9 @@ msgstr "설정 검색"
 msgid "Secure password generated"
 msgstr "보안 암호가 생성됨"
 
+msgid "Seed"
+msgstr "시드"
+
 msgid "Seeder port range (max):"
 msgstr "시더 포트 범위 (최대):"
 
@@ -1627,6 +1672,9 @@ msgstr "시더 포트 범위 (최소):"
 
 msgid "Seeders"
 msgstr "시더"
+
+msgid "Seeding"
+msgstr "시딩 중"
 
 msgid "Seeding Profile"
 msgstr "시드 프로필"
@@ -1639,6 +1687,24 @@ msgstr "선택"
 
 msgid "Select Watch Folder"
 msgstr "감시 폴더 선택"
+
+msgid "Select a torrent to configure its options"
+msgstr "토렌트를 선택하여 옵션 구성"
+
+msgid "Select a torrent to view its details"
+msgstr "토렌트를 선택하여 세부 정보 보기"
+
+msgid "Select a torrent to view its files"
+msgstr "토렌트를 선택하여 파일 보기"
+
+msgid "Select a torrent to view its peers"
+msgstr "토렌트를 선택하여 피어 보기"
+
+msgid "Select a torrent to view its status information"
+msgstr "토렌트를 선택하여 상태 정보 보기"
+
+msgid "Select a torrent to view its trackers"
+msgstr "토렌트를 선택하여 트래커 보기"
 
 msgid "Select proxy type for connections"
 msgstr "연결용 프록시 유형 선택"
@@ -1760,6 +1826,9 @@ msgstr "시스템 시작 시 실행"
 msgid "Start the application minimized to system tray"
 msgstr "애플리케이션을 시스템 트레이로 최소화하여 시작"
 
+msgid "States"
+msgstr "상태"
+
 msgid "Stats Update Interval:"
 msgstr "통계 업데이트 간격:"
 
@@ -1787,6 +1856,9 @@ msgstr "스웨덴어"
 msgid "Synthetic Peer Count:"
 msgstr "합성 피어 수:"
 
+msgid "System Theme"
+msgstr "시스템 테마"
+
 msgid "TCP fallback"
 msgstr "TCP 대체"
 
@@ -1798,6 +1870,9 @@ msgstr ".torrent 파일이 삭제됩니다."
 
 msgid "The .torrent file will be kept."
 msgstr ".torrent 파일이 유지됩니다."
+
+msgid "Theme Style:"
+msgstr "테마 스타일："
 
 msgid "Theme:"
 msgstr "테마:"
@@ -2125,6 +2200,9 @@ msgstr "로그 탭"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave(조각 가용성)"
+
+msgid "monitoring_tab"
+msgstr "monitoring_tab"
 
 msgid "name"
 msgstr "이름"

@@ -1,0 +1,62 @@
+# Dockerfile for DEB package E2E testing on Ubuntu/Debian
+ARG UBUNTU_VERSION=22.04
+FROM ubuntu:${UBUNTU_VERSION}
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+
+# Install required system packages for DFakeSeeder and testing
+RUN apt-get update && apt-get install -y \
+    # Python and pip
+    python3 \
+    python3-pip \
+    python3-gi \
+    # GTK4 and LibAdwaita
+    gir1.2-gtk-4.0 \
+    libadwaita-1-0 \
+    gir1.2-adw-1 \
+    # Python dependencies
+    python3-requests \
+    python3-urllib3 \
+    python3-watchdog \
+    # GUI testing dependencies
+    xvfb \
+    x11-utils \
+    dbus-x11 \
+    dbus \
+    # Mesa for software rendering
+    mesa-utils \
+    libgl1-mesa-dri \
+    libgl1-mesa-glx \
+    libegl1-mesa \
+    libgles2-mesa \
+    libgbm1 \
+    # Desktop integration tools
+    desktop-file-utils \
+    # Locale support
+    locales \
+    # Utilities
+    sudo \
+    wget \
+    curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Generate locale
+RUN locale-gen en_US.UTF-8
+
+# Setup D-Bus machine ID
+RUN dbus-uuidgen > /etc/machine-id && \
+    mkdir -p /var/lib/dbus && \
+    ln -sf /etc/machine-id /var/lib/dbus/machine-id
+
+# Create test artifacts directory
+RUN mkdir -p /test-artifacts
+
+# Set working directory
+WORKDIR /workspace
+
+# Default command
+CMD ["/bin/bash"]

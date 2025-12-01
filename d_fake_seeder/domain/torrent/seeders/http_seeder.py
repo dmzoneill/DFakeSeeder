@@ -1,3 +1,4 @@
+# fmt: off
 import time
 from time import sleep
 
@@ -10,6 +11,8 @@ from d_fake_seeder.domain.torrent.seeders.base_seeder import BaseSeeder
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import RetryConstants, TimeoutConstants
 from d_fake_seeder.view import View
+
+# fmt: on
 
 
 class HTTPSeeder(BaseSeeder):
@@ -25,16 +28,19 @@ class HTTPSeeder(BaseSeeder):
         )  # Much smaller for HTTP retries
 
     def load_peers(self):
-        logger.info("Seeder load peers", extra={"class_name": self.__class__.__name__})
+        logger.debug("Seeder load peers", extra={"class_name": self.__class__.__name__})
 
         if self.shutdown_requested:
-            logger.info("🛑 Shutdown requested, aborting load_peers", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                "🛑 Shutdown requested, aborting load_peers",
+                extra={"class_name": self.__class__.__name__},
+            )
             return False
 
         try:
             # Use timeout for semaphore acquisition
             if not self.get_tracker_semaphore().acquire(timeout=5.0):
-                logger.warning(
+                logger.debug(
                     "⏱️ Timeout acquiring tracker semaphore for load_peers",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -48,42 +54,42 @@ class HTTPSeeder(BaseSeeder):
             self._set_tracker_announcing()
 
             # Log torrent information
-            logger.info(
+            logger.debug(
                 f"🔗 Connecting to HTTP tracker: {self.tracker_url}",
                 extra={"class_name": self.__class__.__name__},
             )
 
             request_start_time = time.time()
-            logger.info(
+            logger.debug(
                 f"📁 Torrent: {self.torrent.name} " f"(Hash: {self.torrent.file_hash.hex()[:16]}...)",
                 extra={"class_name": self.__class__.__name__},
             )
-            logger.info(
+            logger.debug(
                 f"🆔 Peer ID: {self.peer_id}",
                 extra={"class_name": self.__class__.__name__},
             )
-            logger.info(f"🔌 Port: {self.port}", extra={"class_name": self.__class__.__name__})
+            logger.debug(f"🔌 Port: {self.port}", extra={"class_name": self.__class__.__name__})
 
             req = self.make_http_request(download_left=self.torrent.total_size)
 
             # Log the actual HTTP request URL
-            logger.info(
+            logger.debug(
                 f"🌐 FULL REQUEST URL: {req.url}",
                 extra={"class_name": self.__class__.__name__},
             )
 
             # Log equivalent curl command for manual testing
-            logger.info(
+            logger.debug(
                 f"🔧 CURL COMMAND: curl -v '{req.url}'",
                 extra={"class_name": self.__class__.__name__},
             )
 
             # Log HTTP response details
-            logger.info(
+            logger.debug(
                 f"📡 HTTP Response: {req.status_code} ({req.reason})",
                 extra={"class_name": self.__class__.__name__},
             )
-            logger.info(
+            logger.debug(
                 f"📊 Response size: {len(req.content)} bytes",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -103,18 +109,18 @@ class HTTPSeeder(BaseSeeder):
                 self.info = data
 
                 # Log tracker response details
-                logger.info(
+                logger.debug(
                     "✅ Tracker response decoded successfully",
                     extra={"class_name": self.__class__.__name__},
                 )
                 response_keys = [k.decode() if isinstance(k, bytes) else k for k in data.keys()]
-                logger.info(
+                logger.debug(
                     f"🔑 Response keys: {response_keys}",
                     extra={"class_name": self.__class__.__name__},
                 )
 
                 # Log complete decoded response for debugging
-                logger.info(
+                logger.debug(
                     f"📦 FULL TRACKER RESPONSE DATA: {data}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -124,17 +130,17 @@ class HTTPSeeder(BaseSeeder):
 
                 # Log seeders/leechers info
                 if b"complete" in data:
-                    logger.info(
+                    logger.debug(
                         f"🌱 Seeders: {data[b'complete']}",
                         extra={"class_name": self.__class__.__name__},
                     )
                 if b"incomplete" in data:
-                    logger.info(
+                    logger.debug(
                         f"⬇️ Leechers: {data[b'incomplete']}",
                         extra={"class_name": self.__class__.__name__},
                     )
                 if b"interval" in data:
-                    logger.info(
+                    logger.debug(
                         f"⏱️ Update interval: {data[b'interval']} seconds",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -144,12 +150,12 @@ class HTTPSeeder(BaseSeeder):
                     peers_data = data[b"peers"]
                     if isinstance(peers_data, bytes):
                         peer_count = len(peers_data) // 6
-                        logger.info(
+                        logger.debug(
                             f"👥 Found {peer_count} peers " f"(compact format, {len(peers_data)} bytes)",
                             extra={"class_name": self.__class__.__name__},
                         )
                     elif isinstance(peers_data, list):
-                        logger.info(
+                        logger.debug(
                             f"👥 Found {len(peers_data)} peers (dictionary format)",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -204,14 +210,14 @@ class HTTPSeeder(BaseSeeder):
             return False
 
     def upload(self, uploaded_bytes, downloaded_bytes, download_left):
-        logger.info("Seeder upload", extra={"class_name": self.__class__.__name__})
+        logger.debug("Seeder upload", extra={"class_name": self.__class__.__name__})
 
         # Log upload attempt
-        logger.info(
+        logger.debug(
             f"📤 Announcing to tracker: {self.tracker_url}",
             extra={"class_name": self.__class__.__name__},
         )
-        logger.info(
+        logger.debug(
             f"📊 Upload stats - Up: {uploaded_bytes} bytes, "
             f"Down: {downloaded_bytes} bytes, Left: {download_left} bytes",
             extra={"class_name": self.__class__.__name__},
@@ -224,7 +230,7 @@ class HTTPSeeder(BaseSeeder):
             try:
                 # Use timeout for semaphore acquisition
                 if not self.get_tracker_semaphore().acquire(timeout=TimeoutConstants.TRACKER_SEMAPHORE_ANNOUNCE):
-                    logger.warning(
+                    logger.debug(
                         "⏱️ Timeout acquiring tracker semaphore",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -234,7 +240,7 @@ class HTTPSeeder(BaseSeeder):
                 req = self.make_http_request(uploaded_bytes, downloaded_bytes, download_left, num_want=0)
 
                 # Log successful announce
-                logger.info(
+                logger.debug(
                     f"✅ Announce successful: HTTP {req.status_code}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -243,7 +249,7 @@ class HTTPSeeder(BaseSeeder):
                 try:
                     data = bencoding.decode(req.content)
                     if data and b"interval" in data:
-                        logger.info(
+                        logger.debug(
                             f"⏱️ Next announce in: {data[b'interval']} seconds",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -256,7 +262,7 @@ class HTTPSeeder(BaseSeeder):
             except BaseException as e:
                 retry_count += 1
                 if self.shutdown_requested:
-                    logger.info(
+                    logger.debug(
                         "🛑 Shutdown requested, aborting HTTP announce",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -272,7 +278,7 @@ class HTTPSeeder(BaseSeeder):
 
                 if retry_count < max_retries:
                     self.set_random_announce_url()
-                    logger.info(
+                    logger.debug(
                         f"🔄 Switched to tracker: {self.tracker_url}",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -327,16 +333,16 @@ class HTTPSeeder(BaseSeeder):
         http_agent_headers["User-Agent"] = self.settings.agents[self.settings.agent].split(",")[0]
 
         # Log request details
-        logger.info(
+        logger.debug(
             f"🌐 Making HTTP request to: {self.tracker_url}",
             extra={"class_name": self.__class__.__name__},
         )
-        logger.info(
+        logger.debug(
             f"🔧 User-Agent: {http_agent_headers['User-Agent']}",
             extra={"class_name": self.__class__.__name__},
         )
         event = http_params.get("event", "none")
-        logger.info(
+        logger.debug(
             f"📋 Request params: numwant={num_want}, event={event}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -367,7 +373,10 @@ class HTTPSeeder(BaseSeeder):
             tracker = self._get_tracker_model()
             tracker.set_announcing()
         except Exception as e:
-            logger.debug(f"Failed to set tracker announcing status: {e}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Failed to set tracker announcing status: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _update_tracker_success(self, response_data: dict, response_time: float):
         """Update tracker model with successful response"""
@@ -385,7 +394,10 @@ class HTTPSeeder(BaseSeeder):
 
             tracker.update_announce_response(converted_data, response_time)
         except Exception as e:
-            logger.debug(f"Failed to update tracker success: {e}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Failed to update tracker success: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _update_tracker_failure(self, error_message: str, response_time: float = None):
         """Update tracker model with failed response"""
@@ -393,4 +405,7 @@ class HTTPSeeder(BaseSeeder):
             tracker = self._get_tracker_model()
             tracker.update_announce_failure(error_message, response_time)
         except Exception as e:
-            logger.debug(f"Failed to update tracker failure: {e}", extra={"class_name": self.__class__.__name__})
+            logger.debug(
+                f"Failed to update tracker failure: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )

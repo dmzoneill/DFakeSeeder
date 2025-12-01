@@ -281,14 +281,14 @@
                             <property name="spacing">12</property>
                             <property name="margin-start">12</property>
 
-                            <!-- Theme selection -->
+                            <!-- Theme Style selection -->
                             <child>
                                 <object class="GtkBox">
                                     <property name="spacing">12</property>
                                     <property name="halign">fill</property>
                                     <child>
                                         <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Theme:</property>
+                                            <property name="label" translatable="yes">Theme Style:</property>
                                             <property name="halign">start</property>
                                             <property name="valign">center</property>
                                             <property name="hexpand">False</property>
@@ -300,13 +300,45 @@
                                             <property name="model">
                                                 <object class="GtkStringList">
                                                     <items>
-                                                        <item translatable="yes">Follow System</item>
+                                                        <item translatable="yes">System Theme</item>
+                                                        <item translatable="yes">Deluge Theme</item>
+                                                        <item translatable="yes">Modern Chunky</item>
+                                                    </items>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Choose the UI theme style</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Color Scheme selection -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Color Scheme:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkDropDown" id="settings_color_scheme">
+                                            <property name="model">
+                                                <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">Auto (Follow System)</item>
                                                         <item translatable="yes">Light</item>
                                                         <item translatable="yes">Dark</item>
                                                     </items>
                                                 </object>
                                             </property>
-                                            <property name="tooltip-text" translatable="yes">Choose the application theme</property>
+                                            <property name="tooltip-text" translatable="yes">Choose light or dark color scheme</property>
                                             <property name="hexpand">True</property>
                                         </object>
                                     </child>

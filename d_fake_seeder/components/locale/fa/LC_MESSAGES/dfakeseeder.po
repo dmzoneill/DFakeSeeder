@@ -212,6 +212,9 @@ msgstr "سرعت دانلود نمایه تهاجمی"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "سرعت آپلود نمایه تهاجمی (۰ = نامحدود)"
 
+msgid "All"
+msgstr "همه"
+
 msgid "Alt download limit (KB/s):"
 msgstr "محدودیت دانلود جایگزین (کیلوبایت/ثانیه):"
 
@@ -247,6 +250,9 @@ msgstr "فاصله زمانی اعلان:"
 
 msgid "Arabic"
 msgstr "عربی"
+
+msgid "Auto (Follow System)"
+msgstr "Auto (Follow System)"
 
 msgid "Auto Detect"
 msgstr "تشخیص خودکار"
@@ -362,11 +368,20 @@ msgstr "بحرانی"
 msgid "Cancel"
 msgstr "لغو"
 
+msgid "Checking"
+msgstr "در حال بررسی"
+
 msgid "Chinese"
 msgstr "چینی"
 
 msgid "Choose a pre-configured seeding profile"
 msgstr "انتخاب نمایه از پیش پیکربندی‌شده اشتراک‌گذاری"
+
+msgid "Choose light or dark color scheme"
+msgstr "انتخاب طرح رنگ روشن یا تیره"
+
+msgid "Choose the UI theme style"
+msgstr "Choose the UI theme style"
 
 msgid "Choose the application theme"
 msgstr "انتخاب پوسته برنامه"
@@ -382,6 +397,9 @@ msgstr "کلاینت"
 
 msgid "Client Switch Probability:"
 msgstr "احتمال تغییر مشتری:"
+
+msgid "Color Scheme:"
+msgstr "طرح رنگ："
 
 msgid "Columns"
 msgstr "ستون‌ها"
@@ -521,6 +539,9 @@ msgstr "حذف فایل‌های تورنت پس از افزودن موفق"
 msgid "Deluge"
 msgstr "Deluge"
 
+msgid "Deluge Theme"
+msgstr "Deluge Theme"
+
 msgid "Deluge/2.0.3 libtorrent/2.0.5.0"
 msgstr "Deluge/2.0.3 libtorrent/2.0.5.0"
 
@@ -589,6 +610,9 @@ msgstr "دانلود شده نشست / کل"
 
 msgid "Downloaded Speed"
 msgstr "سرعت دانلود"
+
+msgid "Downloading"
+msgstr "در حال دانلود"
 
 msgid "Dropout probability:"
 msgstr "احتمال ریزش:"
@@ -890,6 +914,9 @@ msgstr "تولید همتاهای مصنوعی"
 msgid "German"
 msgstr "آلمانی"
 
+msgid "Get the main widget for this tab."
+msgstr "Get the main widget for this tab."
+
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
 
@@ -1184,11 +1211,17 @@ msgstr "حداقل زمان بین اعلام‌ها (۱۰-۳۶۰۰ ثانیه)"
 msgid "Minimum transaction ID for tracker communication"
 msgstr "حداقل شناسه تراکنش برای ارتباط ردیاب"
 
+msgid "Modern Chunky"
+msgstr "Modern Chunky"
+
 msgid "Mon"
 msgstr "دوشنبه"
 
 msgid "Monday"
 msgstr "دوشنبه"
+
+msgid "Monitoring"
+msgstr "نظارت"
 
 msgid "Multi-Tracker"
 msgstr "چند ردیابی"
@@ -1216,6 +1249,9 @@ msgstr "به‌روزرسانی بعدی"
 
 msgid "No"
 msgstr "خیر"
+
+msgid "No Torrent Selected"
+msgstr "هیچ تورنتی انتخاب نشده"
 
 msgid "No editable options available for this torrent."
 msgstr "هیچ گزینه قابل ویرایشی برای این تورنت در دسترس نیست."
@@ -1282,6 +1318,9 @@ msgstr "توقف همه تورنت‌ها"
 
 msgid "Pause torrent"
 msgstr "توقف تورنت"
+
+msgid "Paused"
+msgstr "متوقف شده"
 
 msgid "Peer Analysis Depth:"
 msgstr "عمق تحلیل همتا:"
@@ -1472,6 +1511,9 @@ msgstr "زمان انقضای پرس‌وجو:"
 msgid "Queue"
 msgstr "صف"
 
+msgid "Queued"
+msgstr "در صف"
+
 msgid "Quit"
 msgstr "خروج"
 
@@ -1619,6 +1661,9 @@ msgstr "جستجوی تنظیمات"
 msgid "Secure password generated"
 msgstr "رمز عبور امن تولید شد"
 
+msgid "Seed"
+msgstr "بذر"
+
 msgid "Seeder port range (max):"
 msgstr "محدوده پورت اشتراک‌گذار (حداکثر):"
 
@@ -1627,6 +1672,9 @@ msgstr "محدوده پورت اشتراک‌گذار (حداقل):"
 
 msgid "Seeders"
 msgstr "اشتراک‌گذاران"
+
+msgid "Seeding"
+msgstr "در حال اشتراک‌گذاری"
 
 msgid "Seeding Profile"
 msgstr "نمایه اشتراک‌گذاری"
@@ -1639,6 +1687,24 @@ msgstr "انتخاب"
 
 msgid "Select Watch Folder"
 msgstr "انتخاب پوشه نظارت"
+
+msgid "Select a torrent to configure its options"
+msgstr "Select a torrent to configure its options"
+
+msgid "Select a torrent to view its details"
+msgstr "Select a torrent to view its details"
+
+msgid "Select a torrent to view its files"
+msgstr "Select a torrent to view its files"
+
+msgid "Select a torrent to view its peers"
+msgstr "Select a torrent to view its peers"
+
+msgid "Select a torrent to view its status information"
+msgstr "Select a torrent to view its status information"
+
+msgid "Select a torrent to view its trackers"
+msgstr "Select a torrent to view its trackers"
 
 msgid "Select proxy type for connections"
 msgstr "انتخاب نوع پروکسی برای اتصالات"
@@ -1760,6 +1826,9 @@ msgstr "شروع در راه‌اندازی سیستم"
 msgid "Start the application minimized to system tray"
 msgstr "شروع برنامه به صورت کوچک‌شده در سینی سیستم"
 
+msgid "States"
+msgstr "وضعیت‌ها"
+
 msgid "Stats Update Interval:"
 msgstr "فاصله زمانی به‌روزرسانی آمار:"
 
@@ -1787,6 +1856,9 @@ msgstr "سوئدی"
 msgid "Synthetic Peer Count:"
 msgstr "تعداد همتای مصنوعی:"
 
+msgid "System Theme"
+msgstr "پوسته سیستم"
+
 msgid "TCP fallback"
 msgstr "بازگشت TCP"
 
@@ -1798,6 +1870,9 @@ msgstr "فایل .torrent حذف خواهد شد."
 
 msgid "The .torrent file will be kept."
 msgstr "فایل .torrent نگه‌داری خواهد شد."
+
+msgid "Theme Style:"
+msgstr "سبک پوسته："
 
 msgid "Theme:"
 msgstr "پوسته:"
@@ -2125,6 +2200,9 @@ msgstr "log_tab"
 
 msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (در دسترس بودن قطعه)"
+
+msgid "monitoring_tab"
+msgstr "monitoring_tab"
 
 msgid "name"
 msgstr "name"

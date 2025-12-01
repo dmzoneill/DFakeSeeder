@@ -4,10 +4,13 @@ Simple formatting helpers for DFakeSeeder.
 This module provides basic formatting functions without localization support.
 """
 
+# fmt: off
 import math
 from typing import Optional, Union
 
 from .constants import SIZE_UNITS_EXTENDED
+
+# fmt: on
 
 
 def format_size(bytes_count: Union[int, float], decimal_places: int = 1) -> str:

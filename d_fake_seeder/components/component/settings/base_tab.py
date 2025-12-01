@@ -4,6 +4,7 @@ Base class for settings tab components.
 Provides common functionality and interface for all settings tabs.
 """
 
+# fmt: off
 from abc import abstractmethod
 from typing import Any, Dict
 
@@ -16,6 +17,8 @@ from d_fake_seeder.domain.app_settings import AppSettings  # noqa
 from d_fake_seeder.lib.logger import logger  # noqa
 
 from ..base_component import Component  # noqa
+
+# fmt: on
 
 
 class BaseSettingsTab(Component):
@@ -84,9 +87,50 @@ class BaseSettingsTab(Component):
         pass
 
     def _disconnect_signals(self) -> None:
-        """Disconnect signal handlers for this tab's widgets. Override in subclasses if needed."""
+        """
+        Disconnect signal handlers for this tab's widgets.
+
+        NOTE: If you tracked signals using track_signal(), you don't need to override this.
+        The cleanup() method will automatically disconnect tracked signals.
+
+        Override this only if you need custom disconnection logic.
+        """
         # Default implementation - subclasses should override if they need custom disconnection
         pass
+
+    def cleanup(self) -> None:
+        """
+        Clean up all resources used by this tab.
+
+        This method:
+        1. Calls _disconnect_signals() for custom disconnection logic
+        2. Calls CleanupMixin.cleanup() to clean tracked resources
+        3. Clears widget cache
+        """
+        logger.debug(
+            f"Cleaning up {self.tab_name} tab",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        # Call custom disconnection logic first
+        try:
+            self._disconnect_signals()
+        except Exception as e:
+            logger.warning(
+                f"Error in _disconnect_signals for {self.tab_name}: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+        # Call parent cleanup to handle tracked resources
+        super().cleanup()
+
+        # Clear widget cache
+        self._widgets.clear()
+
+        logger.debug(
+            f"{self.tab_name} tab cleanup completed",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     @abstractmethod
     def _load_settings(self) -> None:
@@ -122,6 +166,11 @@ class BaseSettingsTab(Component):
         """
         try:
             changed_settings = self._collect_settings()
+
+            # Handle None return (should return empty dict instead)
+            if changed_settings is None:
+                self.logger.warning(f"{self.tab_name} _collect_settings returned None, using empty dict")
+                changed_settings = {}
 
             for key, value in changed_settings.items():
                 self.app_settings.set(key, value)
@@ -181,7 +230,7 @@ class BaseSettingsTab(Component):
         """Reset tab settings to default values."""
         try:
             self._reset_tab_defaults()
-            self.logger.info(f"{self.tab_name} tab reset to defaults")
+            self.logger.debug(f"{self.tab_name} tab reset to defaults")
         except Exception as e:
             self.logger.error(f"Error resetting {self.tab_name} tab to defaults: {e}")
 
