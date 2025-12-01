@@ -1,0 +1,31 @@
+---
+# Super-Linter Configuration
+# https://github.com/super-linter/super-linter
+
+# Enable linters
+VALIDATE_PYTHON_BLACK: true
+VALIDATE_PYTHON_FLAKE8: true
+VALIDATE_PYTHON_ISORT: true
+VALIDATE_BASH: true
+VALIDATE_BASH_EXEC: true
+VALIDATE_DOCKERFILE_HADOLINT: true
+VALIDATE_MARKDOWN: true
+VALIDATE_YAML: true
+VALIDATE_JSON: true
+VALIDATE_XML: true
+
+# Disable linters we don't use
+VALIDATE_PYTHON_PYLINT: false
+VALIDATE_PYTHON_MYPY: false
+VALIDATE_JSCPD: false
+
+# Configuration files
+PYTHON_BLACK_CONFIG_FILE: .python-black
+PYTHON_FLAKE8_CONFIG_FILE: .flake8
+PYTHON_ISORT_CONFIG_FILE: .isort.cfg
+
+# Exclude patterns
+FILTER_REGEX_EXCLUDE: .*/(rpmbuild|debbuild|dist|build|\.venv|\.eggs|__pycache__|\.pytest_cache|\.git)/.*
+
+# Logging
+LOG_LEVEL: INFO
