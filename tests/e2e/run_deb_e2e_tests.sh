@@ -143,7 +143,7 @@ Date: $(date)
 Container Engine: $CONTAINER_ENGINE
 Ubuntu Version: $UBUNTU_VERSION
 Test Image: dfakeseeder-deb-e2e-test:ubuntu-$UBUNTU_VERSION
-Package: $(basename $(find "$PROJECT_ROOT/dist/debs" -name "dfakeseeder*.deb" | head -1))
+Package: $(basename "$(find "$PROJECT_ROOT/dist/debs" -name "dfakeseeder*.deb" | head -1)")
 
 Test Results:
 -------------

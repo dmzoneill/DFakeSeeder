@@ -230,12 +230,12 @@ test_performance() {
         start=$(date +%s%N)
         gdbus call --session --dest $SERVICE --object-path $OBJECT_PATH --method $INTERFACE.Ping >/dev/null 2>&1
         end=$(date +%s%N)
-        elapsed=$((($end - $start) / 1000000))  # Convert to milliseconds
+        elapsed=$(((end - start) / 1000000))  # Convert to milliseconds
         echo "Call $i: ${elapsed}ms"
-        total_time=$(($total_time + $elapsed))
+        total_time=$((total_time + elapsed))
     done
 
-    avg_time=$(($total_time / 10))
+    avg_time=$((total_time / 10))
     echo -e "\n${GREEN}Average response time: ${avg_time}ms${NC}\n"
 }
 
@@ -258,7 +258,7 @@ test_quit() {
     print_header "15. APPLICATION QUIT TEST"
 
     echo -e "${RED}⚠️  WARNING: This will quit the application!${NC}"
-    read -p "Press Enter to continue or Ctrl+C to cancel..."
+    read -r -p "Press Enter to continue or Ctrl+C to cancel..."
 
     echo -e "\n${BLUE}Testing: Trigger application quit via D-Bus${NC}"
     print_command "gdbus call --session --dest $SERVICE --object-path $OBJECT_PATH --method $INTERFACE.UpdateSettings '{\"application_quit_requested\": true}'"
@@ -343,7 +343,7 @@ main() {
 
     while true; do
         show_menu
-        read -p "Select test (1-15, A, Q): " choice
+        read -r -p "Select test (1-15, A, Q): " choice
 
         case $choice in
             1) check_service ;;
@@ -366,7 +366,7 @@ main() {
             *) echo -e "\n${RED}Invalid option. Please try again.${NC}\n" ;;
         esac
 
-        read -p "Press Enter to continue..."
+        read -r -p "Press Enter to continue..."
     done
 }
 
