@@ -3,7 +3,11 @@
 
 # D' Fake Seeder
 
-A sophisticated Python GTK4 BitTorrent client that simulates seeding activity with advanced peer-to-peer networking capabilities, comprehensive settings management, and multi-language support.
+[![RPM E2E Tests](https://github.com/dmzoneill/DFakeSeeder/workflows/RPM%20End-to-End%20Tests/badge.svg)](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/rpm-e2e-tests.yml)
+[![PyPI E2E Tests](https://github.com/dmzoneill/DFakeSeeder/workflows/PyPI%20End-to-End%20Tests/badge.svg)](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/pypi-e2e-tests.yml)
+[![DEB E2E Tests](https://github.com/dmzoneill/DFakeSeeder/workflows/DEB%20End-to-End%20Tests/badge.svg)](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/deb-e2e-tests.yml)
+
+A sophisticated Python GTK4 BitTorrent client that simulates seeding activity with advanced peer-to-peer networking capabilities, comprehensive settings management, multi-language support, and extensive automated testing.
 
 ## About the Name
 
@@ -36,28 +40,31 @@ The name "D' Fake Seeder" is a playful nod to the Irish English accent. In Irish
 
 ### PyPI Installation (Recommended)
 ```bash
-# Install system dependencies first
-# Fedora/RHEL
-sudo dnf install gtk4 python3-gobject
-
-# Debian/Ubuntu
-sudo apt install gir1.2-gtk-4.0 python3-gi
-
 # Install from PyPI
 pip install d-fake-seeder
 
-# Install desktop integration (icons, desktop file, tray autostart)
-dfs-install-desktop
+# Run automated setup (checks dependencies, offers desktop integration)
+dfs-setup
+# This will:
+#  - Check for required system packages (GTK4, LibAdwaita, PyGObject)
+#  - Show OS-specific installation commands if dependencies are missing
+#  - Offer to install desktop integration (icons, menu entries)
+#  - Display launch instructions
 
-# GNOME Shell users: Restart GNOME Shell for immediate recognition
-# Press Alt+F2, type 'r', and press Enter
+# Or skip setup and install system dependencies manually:
+# Fedora/RHEL
+sudo dnf install gtk4 libadwaita python3-gobject
 
-# Run the application
+# Debian/Ubuntu
+sudo apt install gir1.2-gtk-4.0 libadwaita-1-0 gir1.2-adw-1 python3-gi
+
+# Launch the application
 dfs                    # Short command
 dfakeseeder           # Full command
+dfs --with-tray       # Launch with system tray
 dfs-tray              # Tray application only
 
-# Launch from application menu
+# Launch from application menu (after desktop integration)
 gtk-launch dfakeseeder
 # Or search "D' Fake Seeder" in application menu
 ```
@@ -76,30 +83,48 @@ make run-debug-docker
 
 ### Package Installations
 
-#### Debian/Ubuntu
+#### Debian/Ubuntu (.deb)
 ```bash
 # Download and install
 curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep deb) -o dfakeseeder.deb
 sudo dpkg -i dfakeseeder.deb
 
-# Desktop integration is automatic (icons, desktop file, cache updates)
-# GNOME Shell users: Press Alt+F2, type 'r', and press Enter to restart GNOME Shell
+# Everything is automatic:
+#  - All dependencies installed (GTK4, LibAdwaita, Python packages)
+#  - Desktop integration (icons, menu entries, cache updates)
+#  - Command-line launchers: dfs, dfakeseeder
 
-# Launch
+# Launch from command line
+dfs                    # Short command
+dfakeseeder           # Full command
+
+# Or launch from application menu
 gtk-launch dfakeseeder
+# Search "D' Fake Seeder" in application menu
+
+# GNOME Shell users: Press Alt+F2, type 'r', Enter to restart shell
 ```
 
-#### RHEL/Fedora
+#### RHEL/Fedora (.rpm)
 ```bash
 # Download and install
 curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep rpm) -o dfakeseeder.rpm
 sudo rpm -i dfakeseeder.rpm
 
-# Desktop integration is automatic (icons, desktop file, cache updates)
-# GNOME Shell users: Press Alt+F2, type 'r', and press Enter to restart GNOME Shell
+# Everything is automatic:
+#  - All dependencies installed (GTK4, LibAdwaita, Python packages)
+#  - Desktop integration (icons, menu entries, cache updates)
+#  - Command-line launchers: dfs, dfakeseeder
 
-# Launch
+# Launch from command line
+dfs                    # Short command
+dfakeseeder           # Full command
+
+# Or launch from application menu
 gtk-launch dfakeseeder
+# Search "D' Fake Seeder" in application menu
+
+# GNOME Shell users: Press Alt+F2, type 'r', Enter to restart shell
 ```
 
 #### Docker
@@ -116,9 +141,43 @@ docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xa
 
 ### Code Quality
 - **Code Quality**: Black, flake8, and isort formatting standards (max-line-length: 120)
-- **Testing**: Pytest framework with comprehensive test coverage
+- **Testing**: Pytest framework with comprehensive unit and E2E test coverage
+- **CI/CD**: GitHub Actions with automated E2E testing across 12 OS configurations
 - **Performance**: Automatic timing and structured logging throughout
 - **Dependency Management**: Pipfile/Pipfile.lock (primary), setup.py for PyPI publishing
+
+### Testing Infrastructure
+
+#### End-to-End Testing
+Comprehensive E2E test suite with **140+ automated tests** across all package formats:
+
+```bash
+# Run all E2E tests (RPM, PyPI, DEB)
+make test-e2e-all
+
+# Run specific package format tests
+make test-e2e          # RPM packages (Fedora)
+make test-e2e-pypi     # PyPI packages (Fedora + Ubuntu)
+make test-e2e-deb      # DEB packages (Ubuntu + Debian)
+```
+
+**Coverage:**
+- **RPM E2E**: Fedora latest, 42, 41 (50 tests per version)
+- **PyPI E2E**: Fedora latest, 42, 41 + Ubuntu 22.04, 24.04 (43 tests per version)
+- **DEB E2E**: Ubuntu 22.04, 24.04 + Debian 12, 11 (52 tests per version)
+
+**Tests Include:**
+- Package building and validation
+- Installation and dependency resolution
+- Desktop integration verification
+- Application launch in headless environment
+- Core component initialization
+- Configuration file creation
+- Wrapper script functionality
+- Uninstallation cleanup
+
+**GitHub Actions:**
+All E2E tests run automatically on every push and PR with results visible in status checks.
 
 ### Build System
 ```bash
@@ -145,6 +204,29 @@ make pypi-build          # Build source distribution and wheel
 make pypi-check          # Validate package quality
 make pypi-test-upload    # Upload to TestPyPI
 make pypi-upload         # Upload to production PyPI
+
+# E2E Testing
+make test-e2e-all        # Run all E2E tests (RPM + PyPI + DEB)
+make test-e2e            # RPM E2E tests
+make test-e2e-pypi       # PyPI E2E tests
+make test-e2e-deb        # DEB E2E tests
+make clean-e2e-deb       # Clean DEB test artifacts
+make clean-e2e-pypi      # Clean PyPI test artifacts
+```
+
+### Package Format Feature Parity
+
+All three package formats (RPM, DEB, PyPI) provide the same installation experience:
+
+| Feature | RPM | DEB | PyPI |
+|---------|-----|-----|------|
+| **Command-line launcher** | ✅ `dfs` / `dfakeseeder` | ✅ `dfs` / `dfakeseeder` | ✅ `dfs` / `dfakeseeder` |
+| **Desktop integration** | ✅ Automatic | ✅ Automatic | ✅ via `dfs-setup` |
+| **All dependencies** | ✅ Automatic | ✅ Automatic | ✅ Manual GTK4/LibAdwaita |
+| **System tray** | ✅ Included | ✅ Included | ✅ Included |
+| **Wrapper script** | ✅ `/usr/bin/dfakeseeder` | ✅ `/usr/bin/dfakeseeder` | ✅ Direct Python |
+| **Auto-updates** | ✅ via dnf/yum | ✅ via apt | ✅ via pip |
+| **E2E tested** | ✅ 3 Fedora versions | ✅ 4 Ubuntu/Debian versions | ✅ 5 OS versions |
 ```
 
 ### Architecture
@@ -213,7 +295,20 @@ The application auto-creates `~/.config/dfakeseeder/settings.json` with comprehe
 - Protocol timeouts and networking
 - Internationalization preferences
 
+## Documentation
+
+- **[PyPI Installation Guide](docs/PYPI_INSTALLATION.md)** - Comprehensive PyPI installation and setup documentation
+- **[GitHub Actions CI/CD](docs/GITHUB_ACTIONS.md)** - Complete guide to CI/CD workflows and E2E testing
+- **[Packaging Guide](docs/PACKAGING.md)** - Documentation for all package formats (RPM, DEB, PyPI)
+- **[Configuration Guide](docs/CONFIGURATION.md)** - Settings system documentation
+- **[Localization Guide](docs/LOCALIZATION.md)** - Internationalization system documentation
+
 ## Links
 - **GitHub**: https://github.com/dmzoneill/DFakeSeeder
 - **Issues**: https://github.com/dmzoneill/DFakeSeeder/issues
 - **PyPI**: https://pypi.org/project/d-fake-seeder/
+- **Actions**: https://github.com/dmzoneill/DFakeSeeder/actions
+
+## License
+
+MIT License - See [LICENSE](LICENSE) file for details
