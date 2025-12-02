@@ -3,6 +3,7 @@ Peers tab for torrent details.
 
 Displays torrent peer information in a column view with sorting capabilities.
 """
+
 # isort: skip_file
 
 # fmt: off

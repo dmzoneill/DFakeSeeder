@@ -3,6 +3,7 @@ Base class for settings tab components.
 
 Provides common functionality and interface for all settings tabs.
 """
+
 # isort: skip_file
 
 # fmt: off

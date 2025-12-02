@@ -4,6 +4,7 @@ Mixin classes for settings dialog functionality.
 These mixins provide reusable functionality that can be composed
 into different settings tab classes.
 """
+
 # isort: skip_file
 
 # fmt: off
