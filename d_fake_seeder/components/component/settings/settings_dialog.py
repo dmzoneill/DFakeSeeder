@@ -2,6 +2,7 @@
 Main settings dialog component.
 Coordinates all settings tabs and provides the main settings interface.
 """
+# isort: skip_file
 
 # fmt: off
 import os

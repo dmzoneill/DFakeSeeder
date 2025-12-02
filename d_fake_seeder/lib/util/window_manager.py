@@ -5,6 +5,7 @@ Window Manager - GTK4 native window management for DFakeSeeder
 Provides clean window control operations integrated with AppSettings.
 Replaces external window manipulation tools with native GTK4 functionality.
 """
+# isort: skip_file
 
 # fmt: off
 from typing import Optional

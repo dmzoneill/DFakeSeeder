@@ -50,8 +50,7 @@ while self.running:
     # Update peer connections every 30s (configurable)
     # Update statistics every 2s (configurable)
     time.sleep(1.0)  # Default 1 second sleep
-```
-
+```text
 **Impact**:
 - Worker thread wakes up **every 1 second** (configurable, but default is aggressive)
 - Even when idle, CPU wakes from sleep 86,400 times/day
@@ -71,8 +70,7 @@ time.sleep(sleep_time)
 self.shutdown_event = threading.Event()
 while not self.shutdown_event.wait(timeout=sleep_time):
     # ... do work
-```
-
+```text
 **Estimated Savings**: 5-10% CPU reduction, better battery life
 
 ---
@@ -105,8 +103,7 @@ class SharedPeerManager:
             tasks = [self._manage_torrent(t) for t in self.torrents.values()]
             await asyncio.gather(*tasks)
             await asyncio.sleep(1.0)
-```
-
+```text
 **Estimated Savings**: 15-25% CPU reduction with 100+ torrents
 
 ---
@@ -123,8 +120,7 @@ def _periodic_update(self):
 
 def _create_menu(self):
     # Destroys and recreates entire menu structure
-```
-
+```text
 **Impact**:
 - Menu rebuilt entirely on connection state change
 - Menu creation involves widget allocation/destruction
@@ -144,8 +140,7 @@ class TrayMenu:
         self._menu_items['quit_app'].set_visible(connected)
         # Update labels in-place
         self._menu_items['status'].set_label(self._get_status())
-```
-
+```text
 **Estimated Savings**: 2-5% CPU reduction, smoother tray interactions
 
 ---
@@ -161,8 +156,7 @@ def _update_global_stats(self):
         peer_stats = manager.get_peer_stats()  # May recalculate
         for stats in peer_stats.values():  # O(n) iteration
             # ... aggregate stats
-```
-
+```text
 **Impact**:
 - With 100 torrents × 50 peers each = 5,000 peer stats processed every 2s
 - O(n) aggregation across all torrents and peers
@@ -186,8 +180,7 @@ class CachedStatsManager:
                 self._update_torrent_stats(torrent_id)
             self._dirty_torrents.clear()
         return self._stats_cache
-```
-
+```text
 **Estimated Savings**: 10-15% CPU reduction with many torrents
 
 ---
@@ -204,8 +197,7 @@ self.removal_timers[connection_key] = timer_id
 # If connections fail/retry, timers can accumulate
 if connection_key in self.removal_timers:
     GLib.source_remove(self.removal_timers[connection_key])
-```
-
+```text
 **Impact**:
 - In high-churn scenarios (many short-lived connections), timer dictionary grows
 - Timers may fire even after connections removed (race condition potential)
@@ -232,8 +224,7 @@ class ConnectionCleanupManager:
             self.remove_connection(key)
             del self.connections_to_cleanup[key]
         return True  # Keep running
-```
-
+```text
 **Estimated Savings**: 3-8% CPU reduction with active peer connections
 
 ---
@@ -256,8 +247,7 @@ def schedule_announce(self, interval):
     jitter = interval * 0.1 * (random.random() * 2 - 1)
     actual_interval = interval + jitter
     GLib.timeout_add_seconds(int(actual_interval), self.announce)
-```
-
+```text
 **Estimated Savings**: 5-10% peak CPU reduction, smoother operation
 
 ---
@@ -278,8 +268,7 @@ if peer_id in [p.id for p in peers]:  # O(n)
 peer_ids = {p.id for p in peers}  # O(1) lookup
 if peer_id in peer_ids:
     ...
-```
-
+```text
 **Recommendation**: Audit high-frequency membership tests and convert to sets where appropriate.
 
 ---
@@ -307,8 +296,7 @@ class CachedTranslation:
         if text not in self._cache:
             self._cache[text] = gettext.gettext(text)
         return self._cache[text]
-```
-
+```text
 ---
 
 ### 9. **Log Message Formatting**
@@ -321,8 +309,7 @@ logger.debug(f"Processing {len(peers)} peers for {torrent_id}")
 
 # BETTER: Lazy evaluation
 logger.debug("Processing %d peers for %s", len(peers), torrent_id)
-```
-
+```text
 **Recommendation**: Use lazy formatting for debug logs (already good for info/warning).
 
 ---
@@ -376,8 +363,7 @@ if self.update_timer:
 
 # Thread join with timeout
 self.worker_thread.join(timeout=1.0)
-```
-
+```text
 ### Potential Leaks ⚠️
 
 1. **Timer references** - Mostly cleaned up, but verify all paths
@@ -519,8 +505,7 @@ for thread in threading.enumerate():
 
 # GTK Inspector (UI performance)
 GTK_DEBUG=interactive dfs
-```
-
+```text
 ### Continuous Monitoring
 
 Add to `logger.py`:
@@ -539,8 +524,7 @@ class PerformanceMonitor:
 if DEBUG:
     monitor = PerformanceMonitor()
     GLib.timeout_add_seconds(60, monitor.log_stats)
-```
-
+```text
 ---
 
 ## Configuration Recommendations
@@ -560,8 +544,7 @@ if DEBUG:
     "contact_interval_seconds": 300.0           // ✅ Good
   }
 }
-```
-
+```text
 ### Recommended Power-User Profile
 
 ```json
@@ -575,8 +558,7 @@ if DEBUG:
     "max_connections_per_torrent": 25           // Fewer threads
   }
 }
-```
-
+```text
 ---
 
 ## Testing Methodology
@@ -628,8 +610,7 @@ def test_stats_calculation_performance(benchmark):
     # Assert performance targets
     assert result.stats.median < 0.010  # < 10ms median
     assert result.stats.max < 0.050     # < 50ms max
-```
-
+```text
 ---
 
 ## Conclusions

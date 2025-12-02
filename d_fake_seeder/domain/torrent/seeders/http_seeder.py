@@ -1,4 +1,5 @@
 # fmt: off
+# isort: skip_file
 import time
 from time import sleep
 

@@ -1,4 +1,5 @@
 # fmt: off
+# isort: skip_file
 import os
 from urllib.parse import urlparse
 

@@ -53,6 +53,7 @@ log_step() {
 }
 
 # Cleanup function
+# shellcheck disable=SC2329  # Function is invoked indirectly via trap
 cleanup() {
     log_info "Cleaning up..."
 

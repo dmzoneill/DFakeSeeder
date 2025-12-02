@@ -146,7 +146,7 @@ Messages converted to DEBUG represent:
 ### Before and After Example
 
 **Before (noisy INFO logs)**:
-```
+```text
 [INFO] 📡 Connecting to UDP tracker: tracker.example.com:6969
 [INFO] 📁 Torrent: example.torrent (Hash: 1234abcd...)
 [INFO] 🆔 Peer ID: -DE13F0-...
@@ -162,14 +162,12 @@ Messages converted to DEBUG represent:
 [INFO] 👥 Peer 1: 192.168.1.100:51234
 [INFO] 👥 Peer 2: 192.168.1.101:51235
 ... (very verbose)
-```
-
+```text
 **After (focused INFO logs)**:
-```
+```text
 [INFO] 🔄 FORCE TRACKER UPDATE: Manually triggered for example.torrent
 [INFO] 🔄 Switched to backup tracker: backup.example.com:6969
-```
-
+```text
 *All the detailed protocol operations now appear only in DEBUG logs*
 
 ### Phase 3: Network Infrastructure (COMPLETED)

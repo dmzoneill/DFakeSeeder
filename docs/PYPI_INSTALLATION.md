@@ -10,13 +10,12 @@ The PyPI installation of D' Fake Seeder now provides an automated setup experien
 
 ```bash
 pip install d-fake-seeder
-```
-
+```text
 ### What Happens After Installation
 
 After `pip install` completes, you'll see an automated post-installation message:
 
-```
+```text
 ============================================================
 D' Fake Seeder - Installation Complete
 ============================================================
@@ -39,8 +38,7 @@ D' Fake Seeder - Installation Complete
 ============================================================
 
 Would you like to run setup now? [Y/n]:
-```
-
+```text
 ### Interactive Setup (Recommended)
 
 If you're installing interactively (in a terminal), the installer will ask if you want to run setup immediately. Press Enter or type 'y' to run the automated setup.
@@ -69,8 +67,7 @@ If you skip the automated setup or want to run it later:
 
 ```bash
 dfs-setup
-```
-
+```text
 ### Non-Interactive Installation
 
 If installing via scripts or in non-interactive environments (like CI/CD), the post-installation message will be printed but won't prompt for input. You can run `dfs-setup` manually afterward.
@@ -84,18 +81,15 @@ Before installing D' Fake Seeder, ensure these system packages are installed:
 **Fedora/RHEL:**
 ```bash
 sudo dnf install gtk4 libadwaita python3-gobject
-```
-
+```text
 **Debian/Ubuntu:**
 ```bash
 sudo apt install python3-gi gir1.2-gtk-4.0 gir1.2-adw-1
-```
-
+```text
 **Arch Linux:**
 ```bash
 sudo pacman -S gtk4 libadwaita python-gobject
-```
-
+```text
 ### Verification
 
 The `dfs-setup` command will automatically check for these dependencies and show OS-specific installation instructions if any are missing.
@@ -119,8 +113,7 @@ dfs-install-desktop
 
 # Uninstall desktop integration
 dfs-uninstall-desktop
-```
-
+```text
 ### File Locations
 
 After desktop integration:
@@ -145,8 +138,7 @@ dfs --with-tray
 
 # Tray only
 dfs-tray
-```
-
+```text
 ### Desktop Environment
 
 ```bash
@@ -154,14 +146,12 @@ dfs-tray
 gtk-launch dfakeseeder
 
 # Or search "D' Fake Seeder" in application menu
-```
-
+```text
 ### Help
 
 ```bash
 dfs --help
-```
-
+```text
 ## Configuration
 
 ### User Configuration
@@ -182,7 +172,7 @@ Settings can be managed through:
 ## Comparison: PyPI vs RPM Installation
 
 | Feature | PyPI Installation | RPM Installation |
-|---------|------------------|------------------|
+| ------- | ---------------- | ---------------- |
 | **Package Management** | pip (user-level) | dnf/yum (system-level) |
 | **Dependencies** | Python packages auto-installed | System packages via RPM |
 | **Setup Process** | Interactive setup prompt | Automatic in %post script |
@@ -227,7 +217,7 @@ For development purposes:
 
 ```bash
 # Clone repository
-git clone https://github.com/dmzoneill/DFakeSeeder.git
+git clone <<https://github.com/dmzoneill/DFakeSeeder.git>>
 cd DFakeSeeder
 
 # Install in development mode
@@ -236,8 +226,7 @@ pip install -e .
 # Or use pipenv for isolated environment
 make setup-venv
 make run-debug-venv
-```
-
+```text
 ## Uninstallation
 
 ### Complete Uninstallation
@@ -251,12 +240,11 @@ pip uninstall d-fake-seeder
 
 # Optionally remove user configuration
 rm -rf ~/.config/dfakeseeder/
-```
-
+```text
 ## Support
 
 For issues or questions:
-- GitHub Issues: https://github.com/dmzoneill/DFakeSeeder/issues
+- GitHub Issues: <<https://github.com/dmzoneill/DFakeSeeder/issues>>
 - Documentation: See other docs in this directory
 
 ## See Also

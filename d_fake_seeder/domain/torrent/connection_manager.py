@@ -4,6 +4,7 @@ Connection Manager
 Centralized connection management for both incoming and outgoing peer connections.
 Provides shared logic for connection counting, filtering, and lifetime management.
 """
+# isort: skip_file
 
 # fmt: off
 import time

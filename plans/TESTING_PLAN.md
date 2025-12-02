@@ -94,8 +94,7 @@ def temp_watch_dir(tmp_path):
 
     # Explicit cleanup (if needed beyond tmp_path auto-cleanup)
     # Additional cleanup code here
-```
-
+```text
 ### Test Naming Convention
 - **Balanced verbosity**: Descriptive but not excessively long
 - Pattern: `test_<component>_<scenario>_<expected_behavior>`
@@ -116,8 +115,7 @@ def temp_watch_dir(tmp_path):
 [pytest]
 timeout = 0.1  # 100ms timeout applies to test body only
 timeout_func_only = true  # Don't include fixture setup/teardown
-```
-
+```text
 **Integration tests override with explicit timeout:**
 
 ```python
@@ -125,8 +123,7 @@ timeout_func_only = true  # Don't include fixture setup/teardown
 def test_complete_torrent_lifecycle(tmp_path):
     """Integration tests set explicit timeouts"""
     # ... test code ...
-```
-
+```text
 **Rationale:**
 - Unit tests must be blazingly fast
 - Forces proper mocking (no real I/O, network, or sleep)
@@ -155,16 +152,14 @@ def test_watcher_copies_file(tmp_path, mock_model):
     # Assert
     config_dir = tmp_path / ".config" / "dfakeseeder" / "torrents"
     assert (config_dir / "test.torrent").exists()
-```
-
+```text
 ❌ **BAD - Too long, testing too much:**
 ```python
 def test_watcher_complete_workflow(tmp_path, mock_model):
     """Test is too long - should be split"""
     # 50+ lines of setup, multiple scenarios, many assertions
     # This should be 3-4 separate tests!
-```
-
+```text
 **Line counting:**
 - Guideline, not hard rule
 - Don't count blank lines or comments
@@ -209,12 +204,11 @@ def pytest_collection_modifyitems(items):
 
         if assert_count > 3:
             item.add_marker(pytest.mark.xfail(reason=f"Too many assertions: {assert_count} (max: 3)"))
-```
-
+```text
 ### Constraint Summary
 
 | Constraint | Unit Tests | Integration Tests |
-|-----------|-----------|-------------------|
+| ----------- | ----------- | ------------------- |
 | **Timeout** | 100ms (enforced) | Explicit per-test |
 | **Assertions** | Flexible | Flexible |
 | **Line Count** | ~20 lines (guideline) | Flexible |
@@ -235,8 +229,7 @@ def pytest_collection_modifyitems(items):
 def setup_environment():
     # This runs for EVERY test whether needed or not
     pass
-```
-
+```text
 ### ✅ DO: Explicit Fixture Requests
 ```python
 # GOOD: Only used when explicitly requested
@@ -249,59 +242,51 @@ def temp_config_dir(tmp_path):
 def test_settings_loading(temp_config_dir):
     # Explicitly requests the fixture
     settings = Settings(str(temp_config_dir))
-```
-
+```text
 ### ❌ DON'T: Use pytest's monkeypatch
 ```python
 # BAD: Using monkeypatch fixture
 def test_settings_loading(monkeypatch):
     monkeypatch.setattr('os.path.exists', lambda x: True)
-```
-
+```text
 ### ✅ DO: Use unittest.mock.patch via mocker
 ```python
 # GOOD: Using unittest.mock.patch via pytest-mock
 def test_settings_loading(mocker):
     mocker.patch('os.path.exists', return_value=True)
-```
-
+```text
 ### ❌ DON'T: Mock sys.modules
 ```python
 # BAD: Breaks Python module system
 def test_import_handling(mocker):
     mocker.patch('sys.modules', {'somemodule': None})
-```
-
+```text
 ### ✅ DO: Mock at Import Point
 ```python
 # GOOD: Mock where the module is used
 def test_import_handling(mocker):
     mocker.patch('d_fake_seeder.domain.torrent.protocols.tracker.http_seeder.requests.get')
-```
-
+```text
 ### ❌ DON'T: Use Fake Filesystem Libraries
 ```python
 # BAD: Uses pyfakefs which can cause issues
 def test_file_operations(fs):
     fs.create_file('/fake/path/file.txt')
-```
-
+```text
 ### ✅ DO: Use Real Temporary Directories
 ```python
 # GOOD: Uses real filesystem with pytest tmp_path
 def test_file_operations(tmp_path):
     test_file = tmp_path / "file.txt"
     test_file.write_text("content")
-```
-
+```text
 ### ❌ DON'T: Test UI Rendering Details
 ```python
 # BAD: Testing GTK widget rendering
 def test_button_color():
     button = Gtk.Button()
     assert button.get_style_context().has_class("blue")
-```
-
+```text
 ### ✅ DO: Test Business Logic Only
 ```python
 # GOOD: Testing button click handler logic
@@ -313,15 +298,14 @@ def test_button_handler(mocker):
     # Simulate button click (don't render GTK)
     toolbar.on_add_torrent_clicked(None)
     mock_handler.assert_called_once()
-```
-
+```text
 ## Test Structure
 
 ### Directory Organization
 
 **IMPORTANT**: Test structure mirrors the source code structure in `d_fake_seeder/` to maintain consistency and navigability.
 
-```
+```text
 tests/
 ├── unit/                    # Unit tests (fast, isolated)
 │   ├── domain/             # Domain logic tests (mirrors d_fake_seeder/domain/)
@@ -392,8 +376,7 @@ tests/
 
 ├── conftest.py            # Pytest configuration
 └── README.md              # Testing documentation
-```
-
+```text
 ## Testing Criteria
 
 ### Unit Tests
@@ -417,8 +400,7 @@ def test_<component>_<scenario>_<expected_behavior>():
     """
     Test that <component> <expected_behavior> when <scenario>
     """
-```
-
+```text
 **Example:**
 ```python
 def test_torrent_folder_watcher_copies_file_when_new_torrent_added(tmp_path):
@@ -442,8 +424,7 @@ def test_torrent_folder_watcher_copies_file_when_new_torrent_added(tmp_path):
 
     # Verify: File was copied
     assert (config_dir / "test.torrent").exists()
-```
-
+```text
 ### Integration Tests
 
 **Characteristics:**
@@ -465,8 +446,7 @@ def test_<workflow>_<scenario>_<expected_outcome>():
     Integration test for <workflow> that verifies <expected_outcome>
     when <scenario>
     """
-```
-
+```text
 ## Test Categories
 
 ### 1. Domain Logic Tests (Unit)
@@ -615,8 +595,7 @@ def test_complete_torrent_lifecycle_from_add_to_remove(tmp_path):
     # Assert 3: Verify complete cleanup
     assert len(model.torrents) == 0
     assert model.torrents[0].info_hash not in peer_manager.torrents
-```
-
+```text
 **Expected Duration:** 3-5 seconds
 **Mock Strategy:** Mock ONLY network (tracker HTTP requests, socket connections)
 **Real Components:** Torrent, Model, GlobalPeerManager, Settings (with tmp_path)
@@ -697,8 +676,7 @@ def test_watch_folder_automatic_torrent_addition(tmp_path):
     # Cleanup
     watcher.stop()
     peer_manager.stop()
-```
-
+```text
 **Expected Duration:** 5-10 seconds (includes watchdog detection time)
 **Mock Strategy:** NO MOCKING - pure integration test with real filesystem
 **Real Components:** TorrentFolderWatcher, watchdog.Observer, Model, GlobalPeerManager
@@ -766,8 +744,7 @@ async def test_incoming_peer_connection_handshake_flow():
     writer.close()
     await writer.wait_closed()
     await server.stop()
-```
-
+```text
 **Expected Duration:** 3-5 seconds
 **Mock Strategy:** Use localhost instead of real external peers
 **Real Components:** PeerServer, PeerConnection, BitTorrent message parsing, asyncio
@@ -836,8 +813,7 @@ def test_http_tracker_announce_and_peer_discovery(mocker):
 
     # Assert 3: Peer manager tracks discovered peers
     assert len(peer_manager.get_peers(torrent.info_hash)) == 1
-```
-
+```text
 **Expected Duration:** 2-3 seconds
 **Mock Strategy:** Mock ONLY HTTP requests (unittest.mock.patch for requests.get)
 **Real Components:** HTTPSeeder, bencodepy parser, GlobalPeerManager
@@ -907,8 +883,7 @@ def test_settings_save_and_reload_with_file_watching(tmp_path):
     # Assert 3: Settings auto-reloaded
     assert settings.upload_speed == 200
     assert ('upload_speed', 200) in signal_emissions
-```
-
+```text
 **Expected Duration:** 5-8 seconds (includes watchdog detection)
 **Mock Strategy:** NO MOCKING - pure integration with real filesystem and file watching
 **Real Components:** Settings, watchdog.Observer, GObject signals, JSON file I/O
@@ -918,7 +893,7 @@ def test_settings_save_and_reload_with_file_watching(tmp_path):
 ### Integration Test Summary
 
 | Test | Duration | Mocks | Real Components | Assertions |
-|------|----------|-------|-----------------|------------|
+| ------ | ---------- | ------- | ----------------- | ------------ |
 | Torrent Lifecycle | 3-5s | Network only | Torrent, Model, GlobalPeerManager | 3 per stage |
 | Watch Folder | 5-10s | None | TorrentFolderWatcher, watchdog, Model | 4 total |
 | Peer Protocol | 3-5s | Use localhost | PeerServer, PeerConnection, asyncio | 2-3 per stage |
@@ -948,8 +923,7 @@ bencodepy = "^0.9.5"           # For generating test torrent files
 # - responses (use unittest.mock instead)
 # - pyfakefs (use tmp_path instead)
 # - pytest-parametrize (write separate test functions)
-```
-
+```text
 ### Pytest Configuration
 
 **conftest.py:**
@@ -1051,8 +1025,7 @@ def mock_model():
     model.torrents = []
     model.get_torrents.return_value = []
     return model
-```
-
+```text
 **pytest.ini:**
 ```ini
 [pytest]
@@ -1091,8 +1064,7 @@ asyncio_mode = auto
 
 # Randomize test order to catch hidden dependencies
 # Use --randomly-seed=<number> to reproduce specific test order
-```
-
+```text
 ## Detailed Test Writing Guidelines
 
 ### 1. Patch Where Imported (Not Where Defined)
@@ -1107,15 +1079,13 @@ def test_http_tracker_announce(mocker):
 
     mocker.patch('d_fake_seeder.domain.torrent.protocols.tracker.http_seeder.requests.get',
                  return_value=mock_response)
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_http_tracker_announce(mocker):
     """Don't patch at the definition location"""
     mocker.patch('requests.get', return_value=mock_response)  # Wrong!
-```
-
+```text
 ### 2. Arrange-Act-Assert with Explicit Comments
 
 ✅ **DO:**
@@ -1139,8 +1109,7 @@ def test_watcher_copies_torrent_to_config_dir(tmp_path, mock_model):
     # Assert
     assert (config_dir / "test.torrent").exists()
     assert (config_dir / "test.torrent").read_bytes() == b"d8:announce..."
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_watcher_copies_torrent_to_config_dir(tmp_path, mock_model):
@@ -1152,8 +1121,7 @@ def test_watcher_copies_torrent_to_config_dir(tmp_path, mock_model):
     watcher = TorrentFolderWatcher(mock_model, mock_settings)
     watcher.process_torrent_file(str(test_torrent))
     assert (tmp_path / ".config" / "dfakeseeder" / "torrents" / "test.torrent").exists()
-```
-
+```text
 ### 3. Set Mock Return Values in Tests (Not Fixtures)
 
 ✅ **DO:**
@@ -1174,8 +1142,7 @@ def test_model_adds_torrent(mock_model):
 
     # Assert
     mock_model.add_torrent.assert_called_once_with("/path/to/test.torrent")
-```
-
+```text
 ❌ **DON'T:**
 ```python
 @pytest.fixture
@@ -1185,8 +1152,7 @@ def mock_model():
     model.get_torrents.return_value = []  # Too specific!
     model.torrent_count = 0
     return model
-```
-
+```text
 ### 4. Multiple Separate Assertions (Not Combined)
 
 ✅ **DO:**
@@ -1203,16 +1169,14 @@ def test_torrent_parsing(sample_torrent_file):
     assert torrent.name == "test_file.txt"
     assert torrent.piece_length == 16384
     assert torrent.announce == "http://tracker.example.com:8080/announce"
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_torrent_parsing(sample_torrent_file):
     """Don't combine assertions with 'and'"""
     torrent = Torrent(str(sample_torrent_file))
     assert torrent.name == "test_file.txt" and torrent.piece_length == 16384  # Which failed?
-```
-
+```text
 ### 5. Verify File Contents (Not Just Existence)
 
 ✅ **DO:**
@@ -1237,8 +1201,7 @@ def test_watcher_copies_file_correctly(tmp_path, mock_model):
     copied_file = config_dir / "test.torrent"
     assert copied_file.exists()
     assert copied_file.read_bytes() == original_content
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_watcher_copies_file_correctly(tmp_path, mock_model):
@@ -1246,8 +1209,7 @@ def test_watcher_copies_file_correctly(tmp_path, mock_model):
     # ... setup code ...
     watcher.process_torrent_file(str(test_torrent))
     assert (config_dir / "test.torrent").exists()  # File could be empty or corrupted!
-```
-
+```text
 ### 6. Use `with` for Single Patches, Assignment for Multiple
 
 ✅ **DO - Single Patch:**
@@ -1264,8 +1226,7 @@ def test_single_network_call(mocker):
 
         # Assert
         assert result['complete'] == 10
-```
-
+```text
 ✅ **DO - Multiple Patches:**
 ```python
 def test_multiple_patches(mocker):
@@ -1286,8 +1247,7 @@ def test_multiple_patches(mocker):
     assert mock_get.called
     assert mock_post.called
     assert mock_sleep.called
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_multiple_patches(mocker):
@@ -1297,8 +1257,7 @@ def test_multiple_patches(mocker):
             with mocker.patch('time.sleep') as mock_sleep:
                 # Too deeply nested!
                 pass
-```
-
+```text
 ### 7. Flexible Mock Assertions
 
 ✅ **DO:**
@@ -1317,8 +1276,7 @@ def test_model_called_with_correct_path(mocker, tmp_path):
     assert mock_model.add_torrent.called
     call_path = mock_model.add_torrent.call_args[0][0]
     assert call_path.endswith("test.torrent")
-```
-
+```text
 ### 8. Test Both Async and Sync Patterns When Relevant
 
 ✅ **DO:**
@@ -1348,8 +1306,7 @@ def test_peer_connection_sync_wrapper():
 
     # Assert
     assert result.success is True
-```
-
+```text
 ### 9. Minimal Valid Test Data
 
 ✅ **DO:**
@@ -1371,8 +1328,7 @@ def minimal_torrent_file(tmp_path):
     }
     torrent_file.write_bytes(bencodepy.encode(torrent_data))
     return torrent_file
-```
-
+```text
 ❌ **DON'T:**
 ```python
 @pytest.fixture
@@ -1381,8 +1337,7 @@ def realistic_torrent_file(tmp_path):
     # Don't generate real piece hashes, multi-file structures, etc.
     # unless specifically testing those features
     pass
-```
-
+```text
 ### 10. Verify Exception Type and Message
 
 ✅ **DO:**
@@ -1396,8 +1351,7 @@ def test_invalid_torrent_raises_error(tmp_path):
     # Act & Assert
     with pytest.raises(ValueError, match="Invalid torrent file.*bencode"):
         Torrent(str(invalid_file))
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_invalid_torrent_raises_error(tmp_path):
@@ -1407,8 +1361,7 @@ def test_invalid_torrent_raises_error(tmp_path):
 
     with pytest.raises(ValueError):  # What was the error message?
         Torrent(str(invalid_file))
-```
-
+```text
 ## Testing Best Practices
 
 ### 1. Test Isolation with Real Filesystem
@@ -1436,16 +1389,14 @@ def test_watch_folder_adds_torrent(tmp_path, mock_model, mock_settings):
 
     # Verify with real file operations
     assert (config_dir / "test.torrent").exists()
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_watch_folder_adds_torrent(fs):  # pyfakefs
     """Don't use fake filesystem libraries"""
     fs.create_file('/fake/watch/test.torrent')
     # This can cause issues with real file operations
-```
-
+```text
 ### 2. Test Data Generation
 
 ✅ **DO:**
@@ -1472,15 +1423,13 @@ def test_torrent_parsing(valid_torrent_data, tmp_path):
 
     torrent = Torrent(str(torrent_file))
     assert torrent.name == "test.txt"
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_torrent_parsing():
     """Don't hardcode paths or assume external files exist"""
     torrent = Torrent('/path/to/some/torrent.torrent')  # Fragile!
-```
-
+```text
 ### 3. Network Mocking with unittest.mock.patch and MagicMock
 
 ✅ **DO:**
@@ -1505,29 +1454,25 @@ def test_tracker_announce(mocker):
     # Verify
     assert result['complete'] == 10
     assert result['incomplete'] == 5
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_tracker_announce():
     """Don't make real network calls in unit tests"""
     result = announce_to_tracker('http://real-tracker.com')  # Slow and fragile!
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_tracker_announce(responses):
     """Don't use responses library - use unittest.mock instead"""
     responses.add(responses.GET, 'http://tracker.example.com', ...)
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_tracker_announce(monkeypatch):
     """Don't use monkeypatch - use mocker.patch instead"""
     monkeypatch.setattr('requests.get', lambda *args: ...)
-```
-
+```text
 ### 4. UI Component Testing (Logic Only)
 
 ✅ **DO:**
@@ -1552,8 +1497,7 @@ def test_toolbar_add_torrent_handler(mocker, mock_model):
 
     # Verify business logic executed
     mock_model.add_torrent.assert_called_once_with("/tmp/test.torrent")
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_toolbar_button_appearance():
@@ -1564,8 +1508,7 @@ def test_toolbar_button_appearance():
     # Testing visual appearance is fragile and slow
     assert button.get_style_context().has_class("suggested-action")
     assert button.get_label() == "Add Torrent"
-```
-
+```text
 ### 5. Async Testing
 
 ✅ **DO:**
@@ -1588,8 +1531,7 @@ async def test_peer_connection_handshake(mocker):
 
     assert result.success is True
     mock_writer.write.assert_called()
-```
-
+```text
 ### 6. Clear Assertions
 
 ✅ **DO:**
@@ -1604,16 +1546,14 @@ def test_torrent_addition(mock_model, sample_torrent_file):
     assert len(mock_model.torrents) == initial_count + 1
     assert mock_model.torrents[-1].filename == "sample.torrent"
     assert mock_model.add_torrent.called is True
-```
-
+```text
 ❌ **DON'T:**
 ```python
 def test_torrent_addition(mock_model):
     """Vague assertions"""
     mock_model.add_torrent("/tmp/test.torrent")
     assert mock_model.torrents  # What are we testing?
-```
-
+```text
 ## GTK GUI Automation Testing (Optional)
 
 ### Overview
@@ -1637,8 +1577,7 @@ sudo apt-get install python3-dogtail at-spi2-core xvfb
 
 # Python packages
 pip install dogtail pytest-xvfb
-```
-
+```text
 #### Capabilities
 - Launch GTK applications via subprocess
 - Find widgets by accessibility name, role, or label
@@ -1709,8 +1648,7 @@ def test_add_torrent_via_gui():
         # Cleanup - terminate application
         app_process.terminate()
         app_process.wait(timeout=5)
-```
-
+```text
 #### Headless Execution with pytest-xvfb
 
 GUI tests can run without a physical display using Xvfb (virtual framebuffer):
@@ -1723,11 +1661,10 @@ def test_settings_dialog_headless():
     # Same test code as above - pytest-xvfb handles virtual display
     app_process = subprocess.Popen(['dfakeseeder'])
     # ... rest of test
-```
-
+```text
 ### GUI Test Organization
 
-```
+```text
 tests/
 ├── gui/                      # GUI automation tests (optional)
 │   ├── conftest.py          # GUI test configuration
@@ -1736,8 +1673,7 @@ tests/
 │   ├── test_toolbar_interactions_gui.py
 │   └── screenshots/         # Failure screenshots
 │       └── .gitignore       # Don't commit screenshots
-```
-
+```text
 ### Best Practices for GUI Tests
 
 #### 1. Minimal GUI Test Coverage
@@ -1764,8 +1700,7 @@ tests/
 # pytest.ini
 markers =
     gui: GUI automation tests (very slow, requires display)
-```
-
+```text
 ```makefile
 # Makefile
 test-gui:
@@ -1773,8 +1708,7 @@ test-gui:
 
 test-gui-headless:
 	pipenv run pytest tests/gui -v -m gui --xvfb
-```
-
+```text
 **Run separately from unit/integration tests:**
 ```bash
 # Regular tests (fast)
@@ -1782,8 +1716,7 @@ make test-all
 
 # GUI tests (slow, optional)
 make test-gui
-```
-
+```text
 #### 3. Longer Timeouts
 
 GUI tests are inherently slow:
@@ -1794,8 +1727,7 @@ GUI tests are inherently slow:
 def test_complete_user_workflow():
     """GUI tests need much longer timeouts"""
     pass
-```
-
+```text
 #### 4. Accessibility Requirements
 
 **For Dogtail/LDTP to work**, widgets must have:
@@ -1811,8 +1743,7 @@ button.set_name("add-torrent-button")  # Unique identifier
 # Bad - No accessibility info
 button = Gtk.Button()
 button.set_icon_name("list-add")  # Icon only, no label
-```
-
+```text
 #### 5. Retry Logic
 
 GUI tests can be flaky - add retry logic:
@@ -1830,8 +1761,7 @@ def test_dialog_appears():
         assert dialog.showing
 
     wait_for_dialog()
-```
-
+```text
 #### 6. Screenshot on Failure
 
 ```python
@@ -1850,8 +1780,7 @@ def pytest_runtest_makereport(item, call):
             screenshot_path = f"tests/gui/screenshots/{item.name}.png"
             screenshot(screenshot_path)
             print(f"Screenshot saved: {screenshot_path}")
-```
-
+```text
 ### GUI Test Scope
 
 GUI automation tests verify **end-to-end user workflows** through the actual GTK interface, including:
@@ -1871,7 +1800,7 @@ GUI automation tests verify **end-to-end user workflows** through the actual GTK
 
 ### Recommended Testing Pyramid
 
-```
+```text
          GUI Tests (E2E)
         /  5-10 tests   \
        /   Very Slow     \
@@ -1884,8 +1813,7 @@ GUI automation tests verify **end-to-end user workflows** through the actual GTK
     /  100+ tests         \
    /    Very Fast          \
   /___________________________\
-```
-
+```text
 **Ratio:** 100 unit : 20 integration : 5 GUI tests
 
 ### CI/CD Considerations
@@ -1944,8 +1872,7 @@ jobs:
       with:
         name: gui-test-screenshots
         path: tests/gui/screenshots/*.png
-```
-
+```text
 ### GUI Testing Summary
 
 **DFakeSeeder GUI automation uses:**
@@ -1970,8 +1897,7 @@ make test-gui-headless
 
 # Or directly with pytest
 pipenv run pytest tests/gui -v -m gui --xvfb
-```
-
+```text
 **For detailed test scenarios, implementation examples, and infrastructure setup**, see **[GUI_TESTING_PLAN.md](GUI_TESTING_PLAN.md)**.
 
 **Remember:** GUI tests supplement (not replace) the comprehensive unit and integration testing that forms the foundation of the test suite.
@@ -2072,7 +1998,7 @@ pipenv run pytest tests/gui -v -m gui --xvfb
 ## Coverage Targets
 
 | Component | Target Coverage |
-|-----------|----------------|
+| ----------- | ---------------- |
 | **Overall** | **100%** |
 | Domain Logic | 100% |
 | Protocol Implementations | 100% |
@@ -2132,8 +2058,7 @@ test-seed:
 		exit 1; \
 	fi
 	pipenv run pytest tests/ -v --randomly-seed=$(SEED)
-```
-
+```text
 ### Usage Examples
 
 ```bash
@@ -2154,8 +2079,7 @@ make test-seed SEED=12345
 
 # Fast parallel execution
 make test-parallel
-```
-
+```text
 ## CI/CD Integration
 
 ### GitHub Actions Workflow
@@ -2266,8 +2190,7 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         flags: all
-```
-
+```text
 ## Maintenance
 
 ### Regular Tasks

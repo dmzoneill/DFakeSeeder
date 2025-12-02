@@ -3,6 +3,7 @@ Details tab for torrent details.
 
 Displays key torrent information like name, ID, file path, size, and progress.
 """
+# isort: skip_file
 
 # fmt: off
 import gi

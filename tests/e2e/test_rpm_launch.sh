@@ -27,30 +27,6 @@ log_warning() {
     echo -e "${YELLOW}[WARNING]${NC} $1"
 }
 
-# Test: Python module imports (fallback if GUI tests fail)
-test_python_imports() {
-    log_info "Test: Python module imports"
-
-    if python3 -c "
-import sys
-sys.path.insert(0, '/opt/dfakeseeder')
-import gi
-gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk
-from d_fake_seeder.domain.app_settings import AppSettings
-from d_fake_seeder.model import Model
-print('All imports successful')
-" 2>&1; then
-        log_info "✓ Python imports successful"
-        TESTS_PASSED=$((TESTS_PASSED + 1))
-        return 0
-    else
-        log_error "✗ Python imports failed"
-        TESTS_FAILED=$((TESTS_FAILED + 1))
-        return 1
-    fi
-}
-
 # Start Xvfb (virtual X server for headless GUI testing)
 start_xvfb() {
     log_info "Starting Xvfb virtual display..."
@@ -198,9 +174,9 @@ test_app_process() {
 
     # Launch app in background with timeout
     log_info "Launching application..."
+    export DISPLAY=:99
+    export LOG_LEVEL=DEBUG
     (
-        export DISPLAY=:99
-        export LOG_LEVEL=DEBUG
         timeout 15s /usr/bin/dfakeseeder > /tmp/app-launch.log 2>&1
     ) &
     APP_PID=$!
@@ -250,9 +226,9 @@ test_tray_app() {
 
     # Launch tray app
     log_info "Launching tray application..."
+    export DISPLAY=:99
+    export LOG_LEVEL=DEBUG
     (
-        export DISPLAY=:99
-        export LOG_LEVEL=DEBUG
         timeout 10s python3 /opt/dfakeseeder/dfakeseeder_tray.py > /tmp/tray-launch.log 2>&1
     ) &
     TRAY_PID=$!
@@ -260,11 +236,11 @@ test_tray_app() {
     sleep 2
 
     # Check if process started
-    if ps -p $TRAY_PID > /dev/null 2>&1; then
+    if ps -p "$TRAY_PID" > /dev/null 2>&1; then
         log_info "✓ Tray application started (PID: $TRAY_PID)"
         TESTS_PASSED=$((TESTS_PASSED + 1))
 
-        kill $TRAY_PID 2>/dev/null || true
+        kill "$TRAY_PID" 2>/dev/null || true
         pkill -9 -f dfakeseeder_tray.py || true
     else
         log_warning "Tray application may have issues (expected in headless)"

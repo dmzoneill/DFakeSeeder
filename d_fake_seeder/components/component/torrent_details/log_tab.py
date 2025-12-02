@@ -3,6 +3,7 @@ Log tab for torrent details.
 
 Displays application log messages in a scrollable text view with batched updates.
 """
+# isort: skip_file
 
 # fmt: off
 import logging

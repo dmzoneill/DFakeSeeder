@@ -4,6 +4,7 @@ Mixin classes for torrent details tab functionality.
 These mixins provide reusable functionality that can be composed
 into different torrent details tab classes.
 """
+# isort: skip_file
 
 # fmt: off
 from typing import Any, Callable, Optional

@@ -71,8 +71,7 @@ USER testuser
 
 # Execute Ansible playbook for DEB verification
 CMD ["ansible-playbook", "/home/testuser/ansible/verify_deb_package.yml", "-i", "/home/testuser/ansible/inventory/localhost"]
-```
-
+```text
 ### Ansible Playbook Structure
 
 #### Inventory File
@@ -82,8 +81,7 @@ CMD ["ansible-playbook", "/home/testuser/ansible/verify_deb_package.yml", "-i", 
 ```ini
 [test_hosts]
 localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
-```
-
+```text
 #### DEB Verification Playbook
 
 **File:** `tests/deb/ansible/verify_deb_package.yml`
@@ -221,8 +219,7 @@ localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
           - "✓ Desktop integration"
           - "✓ DEB uninstallation"
           - "========================================="
-```
-
+```text
 ### Ansible Test Orchestration Playbook
 
 **File:** `tests/deb/ansible/run_all_deb_tests.yml`
@@ -338,8 +335,7 @@ localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
         - name: All tests passed
           debug:
             msg: "✓ All DEB package tests passed successfully!"
-```
-
+```text
 ### Ansible Requirements
 
 **File:** `tests/deb/ansible/requirements.yml`
@@ -349,13 +345,11 @@ localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
 collections:
   - name: community.docker
     version: ">=3.0.0"
-```
-
+```text
 Install with:
 ```bash
 ansible-galaxy collection install -r tests/deb/ansible/requirements.yml
-```
-
+```text
 ## Makefile Integration
 
 Add to project Makefile:
@@ -391,8 +385,7 @@ test-deb:
 test-deb-results:
 	@echo "=== DEB Test Results Summary ==="
 	@find tests/deb/ansible/test_results -name "*.log" -exec echo "{}:" \; -exec head -n 5 {} \; -exec echo "" \;
-```
-
+```text
 ## CI/CD Integration
 
 ### GitHub Actions Workflow
@@ -448,8 +441,7 @@ jobs:
         with:
           name: deb-test-logs-${{ matrix.platform.name }}
           path: tests/deb/ansible/test_results/
-```
-
+```text
 ## Test Execution
 
 ### Local Testing with Ansible
@@ -466,8 +458,7 @@ make test-deb-all
 
 # View test results
 make test-deb-results
-```
-
+```text
 ### Manual Ansible Execution
 
 ```bash
@@ -488,8 +479,7 @@ ansible-playbook tests/deb/ansible/run_single_platform.yml \
 # Run specific verification playbook inside container manually
 docker run --rm -it dfakeseeder-deb-test:ubuntu-24.04 \
     ansible-playbook /home/testuser/ansible/verify_deb_package.yml -i /home/testuser/ansible/inventory/localhost
-```
-
+```text
 ### Manual Docker Testing (Interactive Debugging)
 
 ```bash
@@ -510,8 +500,7 @@ docker run --rm -it dfakeseeder-deb-test:ubuntu-24.04 /bin/bash
 # (from within container shell)
 ansible-playbook /home/testuser/ansible/verify_deb_package.yml \
     -i /home/testuser/ansible/inventory/localhost
-```
-
+```text
 ### CI/CD Execution
 
 Tests run automatically via Ansible playbooks:
@@ -577,7 +566,7 @@ If tests fail:
 
 ## Best Practices
 
-### DO:
+### DO
 - ✅ Test in clean containers
 - ✅ Use non-root user for testing when possible
 - ✅ Verify desktop integration thoroughly
@@ -585,7 +574,7 @@ If tests fail:
 - ✅ Check for missing system dependencies
 - ✅ Verify CLI scripts are in PATH
 
-### DON'T:
+### DON'T
 - ❌ Test on host machine (not isolated)
 - ❌ Skip platform-specific tests
 - ❌ Ignore failed tests

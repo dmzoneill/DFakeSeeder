@@ -3,14 +3,13 @@
 ## What We Already Have ✅
 
 ### Current Layout
-```
+```text
 main_paned (vertical - top/bottom)
 └── paned (horizontal - left/right)
     ├── LEFT: states_columnview (Trackers)
     │   └── Shows: Tracker name | Count
     └── RIGHT: columnview1 (Torrents list)
-```
-
+```text
 ### Existing Components
 - ✅ **`states.py`** - Already displays tracker list with counts!
 - ✅ **`states_columnview`** - GTK4 ColumnView showing trackers
@@ -20,17 +19,16 @@ main_paned (vertical - top/bottom)
 
 ## Current Functionality
 
-### What `states.py` Does NOW:
+### What `states.py` Does NOW
 ```python
 def update_view(self, model, torrent, attribute):
     selection_model = Gtk.SingleSelection.new(model.get_trackers_liststore())
     self.states_columnview.set_model(selection_model)
-```
-
+```text
 **Displays**: Tracker Name | Count
 **Source**: `model.get_trackers_liststore()`
 
-### What It DOESN'T Do Yet:
+### What It DOESN'T Do Yet
 ❌ Filter torrents when you click a tracker
 ❌ Show torrent states (All, Seeding, Downloading, etc.)
 ❌ Show "All" option
@@ -63,8 +61,7 @@ class States(Component):
             tracker_name = selected_item.tracker
             # Tell model to filter by this tracker
             self.model.set_filter_criteria('tracker', tracker_name)
-```
-
+```text
 #### 1.2 Enhance Model Filtering
 **File**: `d_fake_seeder/model.py`
 
@@ -101,8 +98,7 @@ class Model:
             # ... existing search logic ...
 
         return True
-```
-
+```text
 **Estimated Time**: 2-3 hours
 
 ---
@@ -131,8 +127,7 @@ def get_trackers_liststore(self):
         list_store.append(TorrentState(fqdn, count))
 
     return list_store
-```
-
+```text
 #### 2.2 Option B: Convert to ListBox with Expanders (More Complex)
 Replace ColumnView with ListBox to support Gtk.Expander:
 
@@ -165,8 +160,7 @@ Replace ColumnView with ListBox to support Gtk.Expander:
     </object>
   </child>
 </object>
-```
-
+```text
 **Estimated Time**: Option A (2 hours), Option B (5-6 hours)
 
 ---
@@ -198,8 +192,7 @@ Replace ColumnView with ListBox to support Gtk.Expander:
     margin-left: 8px;
     opacity: 0.7;
 }
-```
-
+```text
 **Estimated Time**: 2-3 hours
 
 ---
@@ -230,24 +223,22 @@ Replace ColumnView with ListBox to support Gtk.Expander:
 
 ## Comparison: Current vs Deluge
 
-### Current DFakeSeeder:
-```
+### Current DFakeSeeder
+```text
 [Trackers]
 archlinux.org     3
 fedoraproject...  1
 ubuntu.com        1
-```
-
-### After Phase 1:
-```
+```text
+### After Phase 1
+```text
 [Trackers] ← Clickable, filters work!
 archlinux.org     3
 fedoraproject...  1
 ubuntu.com        1
-```
-
-### After Phase 2A:
-```
+```text
+### After Phase 2A
+```text
 ━━━ States ━━━
 All               5
 Seeding           3
@@ -256,10 +247,9 @@ Downloading       2
 archlinux.org     3
 fedoraproject...  1
 ubuntu.com        1
-```
-
-### After Phase 2B (Full Deluge Style):
-```
+```text
+### After Phase 2B (Full Deluge Style)
+```text
 ▼ States
   All             5
   Seeding         3
@@ -269,8 +259,7 @@ ubuntu.com        1
   ⚠ Error         1
   archlinux.org   3
   fedoraproject   1
-```
-
+```text
 ---
 
 ## Questions for You

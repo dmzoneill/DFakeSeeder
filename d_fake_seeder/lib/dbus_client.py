@@ -3,6 +3,7 @@ D-Bus Client for DFakeSeeder
 
 Handles communication with the main DFakeSeeder application via D-Bus.
 """
+# isort: skip_file
 
 # fmt: off
 import json

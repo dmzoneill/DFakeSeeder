@@ -179,7 +179,7 @@ Messages converted to DEBUG represent:
 ## Impact Analysis
 
 ### Before Conversion
-```
+```text
 [INFO] 📡 Connecting to UDP tracker: tracker.example.com:6969
 [INFO] 📁 Torrent: example.torrent (Hash: 1234abcd...)
 [INFO] 🆔 Peer ID: -DE13F0-...
@@ -193,16 +193,14 @@ Messages converted to DEBUG represent:
 [INFO] ⏱️ Update interval: 1800 seconds
 [INFO] 👥 Found 15 peers
 ... (very verbose)
-```
-
+```text
 ### After Conversion
-```
+```text
 [INFO] 🚀 Global peer manager started
 [INFO] 🚀 DHT seeder started successfully
 [INFO] 🌐 Started BitTorrent peer server on port 6881
 ... (clean, focused on important events)
-```
-
+```text
 All detailed protocol operations now appear only at DEBUG level.
 
 ## Benefits Achieved

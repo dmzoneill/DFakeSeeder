@@ -52,8 +52,7 @@ class Sidebar(Component):
         # Main scrolled window
         # Vertical box container
         # Filter sections (States, Trackers, etc.)
-```
-
+```text
 **Key Features**:
 - Collapsible sections using `Gtk.Expander`
 - Tree-like structure using `Gtk.ListBox`
@@ -64,23 +63,21 @@ class Sidebar(Component):
 **File**: `d_fake_seeder/view.py`
 
 **Current Layout**:
-```
+```text
 Window
 └── Paned (horizontal)
     ├── Left: Torrents List
     └── Right: Details Notebook
-```
-
+```text
 **New Layout**:
-```
+```text
 Window
 └── Paned (horizontal) - main_paned
     ├── Left: Paned (horizontal) - filter_paned
     │   ├── Left: Sidebar (200-300px)
     │   └── Right: Torrents List
     └── Right: Details Notebook
-```
-
+```text
 **Changes Needed**:
 - Wrap existing torrents view in a new nested paned
 - Add sidebar as left pane
@@ -121,8 +118,7 @@ Window
     </object>
   </child>
 </object>
-```
-
+```text
 ### Phase 2: Filter Logic Implementation
 
 #### 2.1 Extend Model Filtering
@@ -180,8 +176,7 @@ class Model:
             ...
 
         return True
-```
-
+```text
 #### 2.2 State Filter Items
 Define the standard torrent states:
 
@@ -196,8 +191,7 @@ STATE_FILTERS = [
     ('error', 'Error', 'dialog-error-symbolic'),
     ('queued', 'Queued', 'view-list-symbolic'),
 ]
-```
-
+```text
 #### 2.3 Tracker Grouping Logic
 **File**: `d_fake_seeder/model.py` (enhance existing method)
 
@@ -220,8 +214,7 @@ def get_tracker_filters(self):
                 tracker_stats[domain]['has_error'] = True
 
     return sorted(tracker_stats.items(), key=lambda x: (-x[1]['count'], x[0]))
-```
-
+```text
 ### Phase 3: Sidebar Component Implementation
 
 #### 3.1 Filter Item Widget
@@ -251,8 +244,7 @@ class FilterItem(Gtk.Box):
 
         # Store filter ID for event handling
         self.filter_id = filter_id
-```
-
+```text
 #### 3.2 Sidebar Class Structure
 
 ```python
@@ -344,8 +336,7 @@ class Sidebar(Component):
     def refresh_trackers(self):
         """Rebuild tracker list (when trackers change)."""
         self._populate_trackers()
-```
-
+```text
 ### Phase 4: Visual Design & Styling
 
 #### 4.1 CSS Styling
@@ -397,8 +388,7 @@ class Sidebar(Component):
     background: @warning_color;
     color: @theme_base_color;
 }
-```
-
+```text
 #### 4.2 Icons
 Use standard GTK symbolic icons:
 - **All**: (no icon or `folder-symbolic`)
@@ -414,13 +404,12 @@ Use standard GTK symbolic icons:
 
 #### 5.1 Connect Model Signals
 ```python
-# In View.__init__():
+# In View.__init__()
 self.sidebar = Sidebar(self.builder, self.model)
 
-# In View.connect_signals():
+# In View.connect_signals()
 self.model.connect("data-changed", self.sidebar.update_counts)
-```
-
+```text
 #### 5.2 Settings Persistence
 **File**: `d_fake_seeder/config/default.json`
 
@@ -438,8 +427,7 @@ self.model.connect("data-changed", self.sidebar.update_counts)
     }
   }
 }
-```
-
+```text
 ### Phase 6: Advanced Features (Future Enhancements)
 
 #### 6.1 Custom Labels/Tags

@@ -24,8 +24,7 @@ Added GitHub Super-Linter integration to provide comprehensive code quality chec
 **Usage:**
 ```bash
 make super-lint
-```
-
+```text
 **Features:**
 - Uses latest super-linter image
 - Validates entire codebase
@@ -42,8 +41,7 @@ make super-lint
 **Usage:**
 ```bash
 make super-lint-slim
-```
-
+```text
 **Benefits:**
 - Faster execution (~2-3x faster)
 - Fewer dependencies to download
@@ -72,29 +70,26 @@ VALIDATE_PYTHON_MYPY: false
 
 # Exclude patterns
 FILTER_REGEX_EXCLUDE: .*/(rpmbuild|debbuild|dist|build|\.venv|\.eggs|__pycache__|\.pytest_cache|\.git)/.*
-```
-
+```text
 #### `.python-black`
 Black configuration for consistent formatting:
 
-```
+```text
 [tool.black]
 line-length = 120
 target-version = ['py311']
-```
-
+```text
 **Matches existing lint target** for consistency.
 
 ### 3. Updated Help Documentation
 
 Added to `make help` output:
-```
+```text
 Development:
   lint                - Run code formatters and linters (black, flake8, isort)
   super-lint          - Run GitHub Super-Linter locally (comprehensive)
   super-lint-slim     - Run Super-Linter slim version (faster)
-```
-
+```text
 ## How It Works
 
 ### Docker-Based Linting
@@ -107,8 +102,7 @@ docker run --rm \
   -e VALIDATE_ALL_CODEBASE=true \
   -v $(PWD):/tmp/lint \
   ghcr.io/super-linter/super-linter:latest
-```
-
+```text
 **Benefits:**
 - No local installation required
 - Consistent environment
@@ -127,7 +121,7 @@ Super-linter uses existing configuration files:
 ## Comparison: lint vs super-lint
 
 | Feature | `make lint` | `make super-lint` | `make super-lint-slim` |
-|---------|-------------|-------------------|------------------------|
+| --------- | ------------- | ------------------- | ------------------------ |
 | **Python Black** | ✅ | ✅ | ✅ |
 | **Python Flake8** | ✅ | ✅ | ✅ |
 | **Python isort** | ✅ | ✅ | ✅ |
@@ -147,20 +141,17 @@ Super-linter uses existing configuration files:
 ```bash
 # Fast, only Python linters
 make lint
-```
-
+```text
 ### Comprehensive Check
 ```bash
 # Full validation (Python, Bash, Dockerfiles, Markdown, YAML, JSON, XML)
 make super-lint
-```
-
+```text
 ### Fast Multi-Language Check
 ```bash
 # Python, Bash, Markdown, YAML
 make super-lint-slim
-```
-
+```text
 ### Before Commit
 ```bash
 # Run local lint before committing
@@ -168,8 +159,7 @@ make lint
 
 # Run super-lint for comprehensive check
 make super-lint-slim
-```
-
+```text
 ### CI/CD Integration
 
 Super-linter can be integrated into GitHub Actions (future enhancement):
@@ -180,8 +170,7 @@ Super-linter can be integrated into GitHub Actions (future enhancement):
   env:
     VALIDATE_ALL_CODEBASE: true
     DEFAULT_BRANCH: main
-```
-
+```text
 ## Exclusions
 
 The following directories are excluded from linting:
@@ -283,25 +272,21 @@ The following directories are excluded from linting:
 ### Docker Not Running
 ```bash
 Error: Cannot connect to Docker daemon
-```
-
+```text
 **Solution:**
 ```bash
 sudo systemctl start docker
 # Or install Docker if not installed
-```
-
+```text
 ### Permission Denied
 ```bash
 Error: permission denied while trying to connect to Docker
-```
-
+```text
 **Solution:**
 ```bash
 sudo usermod -aG docker $USER
 # Then log out and back in
-```
-
+```text
 ### Slow Performance
 ```bash
 # Use slim version for faster results
@@ -309,8 +294,7 @@ make super-lint-slim
 
 # Or use standard lint for Python only
 make lint
-```
-
+```text
 ## Future Enhancements
 
 Potential improvements:

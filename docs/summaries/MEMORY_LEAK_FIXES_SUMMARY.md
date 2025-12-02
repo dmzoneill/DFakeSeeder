@@ -49,18 +49,17 @@ class MyComponent(CleanupMixin):
     def cleanup(self):
         # Automatically cleans up all tracked resources
         super().cleanup()
-```
-
+```text
 ### ✅ 2. Signal Connection Leaks (COMPLETE)
 
 **Files Fixed:** 24 files
 **Total Fixes:** 148 signal connections
 
-#### Base Classes Updated:
+#### Base Classes Updated
 1. **base_component.py** - Added CleanupMixin inheritance and cleanup() method
 2. **base_tab.py** (settings) - Added cleanup() method that calls CleanupMixin.cleanup()
 
-#### Settings Tabs Fixed (11 files):
+#### Settings Tabs Fixed (11 files)
 - `advanced_tab.py` - 19 signal connections tracked
 - `bittorrent_tab.py` - 12 signal connections tracked
 - `connection_tab.py` - 10 signal connections tracked
@@ -73,7 +72,7 @@ class MyComponent(CleanupMixin):
 - `speed_tab.py` - 9 signal connections tracked
 - `webui_tab.py` - 12 signal connections tracked
 
-#### Torrent Detail Tabs Fixed (9 files):
+#### Torrent Detail Tabs Fixed (9 files)
 - `details_tab.py` - Signal connections tracked
 - `files_tab.py` - Signal connections tracked
 - `incoming_connections_tab.py` - 5 signal connections tracked
@@ -84,13 +83,13 @@ class MyComponent(CleanupMixin):
 - `status_tab.py` - Signal connections tracked
 - `trackers_tab.py` - Signal connections tracked
 
-#### Main Components Fixed (4 files):
+#### Main Components Fixed (4 files)
 - `toolbar.py` - 16 signal connections tracked
 - `torrents.py` - 11 signal connections tracked
 - `states.py` - 10 signal connections tracked
 - `statusbar.py` - 1 signal connection tracked
 
-#### Settings Dialog Updated:
+#### Settings Dialog Updated
 - `settings_dialog.py` - Added cleanup() call in `on_window_close()` to clean up all tabs when dialog is closed
 
 **Impact:**
@@ -164,8 +163,7 @@ python tools/fix_signal_leaks_v2.py
 
 # Fix specific files
 python tools/fix_signal_leaks_v2.py path/to/file1.py path/to/file2.py
-```
-
+```text
 ---
 
 ## Testing Recommendations
@@ -174,8 +172,7 @@ python tools/fix_signal_leaks_v2.py path/to/file1.py path/to/file2.py
 ```bash
 # Run the application and verify basic functionality
 make run-debug-venv
-```
-
+```text
 ### 2. Settings Dialog Test
 1. Open settings dialog
 2. Switch between multiple tabs
@@ -201,11 +198,10 @@ for i in range(100):
 # After closing settings
 after = objgraph.typestats()
 objgraph.show_growth()
-```
-
+```text
 ### 4. Expected Log Output
 Look for these messages in logs:
-```
+```text
 CleanupMixin initialized
 Tracking signal handler X on WidgetName
 ...
@@ -214,19 +210,18 @@ Disconnected X signal handlers
 Cleared X property bindings
 Removed X timeout sources
 SpeedTab tab cleanup completed
-```
-
+```text
 ---
 
 ## Performance Impact
 
-### Before Fixes:
+### Before Fixes
 - ❌ 278 signal connections never disconnected
 - ❌ 5 ListStore instances never cleared
 - ❌ Memory grows continuously with UI interaction
 - ❌ Components never garbage collected
 
-### After Fixes:
+### After Fixes
 - ✅ ALL signal connections tracked and auto-disconnected
 - ✅ Model ListStore properly cleared on shutdown
 - ✅ Automatic cleanup on component destruction
@@ -237,7 +232,7 @@ SpeedTab tab cleanup completed
 ## Memory Leak Reduction Statistics
 
 | Category | Before | After | Improvement |
-|----------|--------|-------|-------------|
+| ---------- | -------- | ------- | ------------- |
 | Signal Cleanup | 5.4% (2/37 files) | 100% (37/37 files) | **+94.6%** ✅ |
 | ListStore Cleanup | 0% (0/5 stores) | 100% (5/5 stores) | **+100%** ✅ |
 | Property Binding Cleanup | 0% (0/11 bindings) | 100% (11/11 bindings) | **+100%** ✅ |
@@ -247,7 +242,7 @@ SpeedTab tab cleanup completed
 
 ## Next Steps (Phase 3 - Optional)
 
-### Medium Priority:
+### Medium Priority
 1. **Timeout Source Tracking** - Add tracking to 14 files using GLib timeouts
    - `view.py`, `connection_manager.py`, `notebook.py`, etc.
    - Wrap `GLib.timeout_add()` and `GLib.idle_add()` with `self.track_timeout()`
@@ -256,7 +251,7 @@ SpeedTab tab cleanup completed
    - Consider converting to bound methods where appropriate
    - Document which lambdas are safe (short-lived)
 
-### Low Priority:
+### Low Priority
 3. **Async Operation Cleanup** - Review 11 files with async operations
    - Ensure event loops are properly closed
    - Cancel pending tasks on shutdown
@@ -325,8 +320,7 @@ class MyComponent(CleanupMixin):
         """Ensure cleanup is called."""
         if not self._cleanup_done:
             self.cleanup()
-```
-
+```text
 ---
 
 ## Verification Commands
@@ -343,8 +337,7 @@ grep -r "GLib.timeout_add\|GLib.idle_add" d_fake_seeder/ | grep -v "track_timeou
 
 # Check for property bindings without tracking
 grep -r "bind_property" d_fake_seeder/ | grep -v "track_binding"
-```
-
+```text
 ---
 
 ## Documentation
@@ -389,7 +382,7 @@ grep -r "bind_property" d_fake_seeder/ | grep -v "track_binding"
 
 **Overall Impact:** Memory leak risk reduced from **CRITICAL** 🔴 to **LOW** 🟢
 
-### Major Achievements:
+### Major Achievements
 ✅ **100% of signal connections** properly tracked and cleaned up
 ✅ **100% of ListStore instances** properly tracked and cleaned up
 ✅ **100% of property bindings** properly tracked and cleaned up

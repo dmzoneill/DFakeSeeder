@@ -50,23 +50,19 @@ We use **pytest-forked** to run GTK3 tests in separate subprocess, isolating the
 ```bash
 # GTK3 tests run in forked subprocess automatically
 pipenv run pytest
-```
-
+```text
 ### Run Only GTK3 Tests
 ```bash
 pipenv run pytest -m gtk3 --forked
-```
-
+```text
 ### Run Only GTK4 Tests (exclude GTK3)
 ```bash
 pipenv run pytest -m "not gtk3"
-```
-
+```text
 ### Run Specific GTK3 Test File
 ```bash
 pipenv run pytest tests/unit/test_dfakeseeder_tray_isolated.py --forked
-```
-
+```text
 ## Example: GTK3 Test File Structure
 
 See `tests/unit/test_dfakeseeder_tray_isolated.py` for a complete example:
@@ -107,8 +103,7 @@ def test_tray_functionality():
     with patch('d_fake_seeder.dfakeseeder_tray.signal.signal'):
         app = TrayApplication()
         assert app.indicator is None
-```
-
+```text
 ## How It Works
 
 1. **pytest-forked** creates a subprocess for each test marked with `@pytest.mark.forked`
@@ -157,6 +152,6 @@ def test_tray_functionality():
 
 ## References
 
-- pytest-forked: https://github.com/pytest-dev/pytest-forked
+- pytest-forked: <<https://github.com/pytest-dev/pytest-forked>>
 - PyGObject: https://pygobject.readthedocs.io/
 - GTK3/GTK4 incompatibility: https://discourse.gnome.org/t/using-gtk3-and-gtk4-in-same-process/

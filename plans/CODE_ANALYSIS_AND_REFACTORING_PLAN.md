@@ -33,8 +33,7 @@ UDP_TIMEOUT = 5
 HANDSHAKE_TIMEOUT = 30
 PORT_RANGE_MIN = 1025
 PORT_RANGE_MAX = 65535
-```
-
+```text
 #### UI Constants
 ```python
 # Repeated in various components
@@ -43,8 +42,7 @@ MARGIN_SMALL = 5
 PADDING_DEFAULT = 6
 SPLASH_DURATION = 2000  # ms
 NOTIFICATION_TIMEOUT = 5000  # ms
-```
-
+```text
 #### Protocol Constants
 ```python
 # BitTorrent message IDs and intervals
@@ -52,8 +50,7 @@ KEEP_ALIVE_INTERVAL = 120  # seconds
 CONTACT_INTERVAL = 300     # seconds
 PIECE_SIZE_DEFAULT = 16384 # bytes
 PIECE_SIZE_MAX = 32768     # bytes
-```
-
+```text
 ### ✅ Already Fixed
 - **SIZE_UNITS arrays**: Duplicated 5+ times → centralized to `constants.py`
 - **LANGUAGES dictionary**: 31 lines → externalized to `languages.json`
@@ -68,20 +65,18 @@ PIECE_SIZE_MAX = 32768     # bytes
 # ORIGINAL: Pattern repeated across 47 files - MOSTLY MIGRATED!
 print(f"[ClassName] [{timestamp:.3f}] operation completed in {time:.1f}ms")
 
-# REMAINING (1 file):
+# REMAINING (1 file)
 # d_fake_seeder/domain/translation_manager/__init__.py:26
 print(f"Available GTK versions: {versions}")
-```
-
+```text
 #### Try/Catch Blocks: **1,286 occurrences** (UNVERIFIED - needs audit)
 ```python
-# Standard pattern in 64 files:
+# Standard pattern in 64 files
 try:
     operation()
 except Exception as e:
     logger.error(f"Error in operation: {e}")
-```
-
+```text
 #### GTK Setup: ~~**49 gi.require_version calls**~~ → **63 calls** ❌ (VERIFIED 2025-10-07)
 ```python
 # ACTUAL STATE: Still repeated in 63 files (increased from 49!)
@@ -89,21 +84,18 @@ gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk
 
 # NOTE: Phase 1.4 standardization NOT implemented despite being marked complete
-```
-
+```text
 #### Logger Initialization: **1,241 calls across 64 files**
 ```python
-# Pattern in every class:
+# Pattern in every class
 logger.info("Operation started", extra={"class_name": self.__class__.__name__})
-```
-
+```text
 #### Signal Connection Patterns: **200+ occurrences**
 ```python
-# Repeated across UI components:
+# Repeated across UI components
 self.model.connect("data-changed", self.update_view)
 self.model.connect("selection-changed", self.selection_changed)
-```
-
+```text
 ## 3. Architectural Issues
 
 ### 🔴 Large File Analysis
@@ -116,8 +108,7 @@ self.model.connect("selection-changed", self.selection_changed)
 **17 classes use 3+ parent classes:**
 ```python
 class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
-```
-
+```text
 ### 🔴 Component Hierarchy Issues
 - **Deep inheritance**: 6-level inheritance chains in some UI components
 - **Mixin overuse**: 23 different mixin classes across the codebase
@@ -127,12 +118,11 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
 ### 🔴 GTK Dependencies: **43 files** import gi/GTK
 ```python
-# Standard pattern across UI components:
+# Standard pattern across UI components
 import gi
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk, GObject, Gio
-```
-
+```text
 ### 🔴 Relative Import Issues
 - **Mixed patterns**: Some files use relative imports, others absolute
 - **Path manipulation**: 12 files modify `sys.path` for imports
@@ -147,11 +137,10 @@ from gi.repository import Gtk, GObject, Gio
 
 ### 🔴 Thread Safety Issues
 ```python
-# Found in 23 files - potential race conditions:
+# Found in 23 files - potential race conditions
 if not hasattr(self, '_lock'):
     self._lock = threading.Lock()
-```
-
+```text
 ### 🔴 Memory Management
 - **Large lists**: Torrent lists with 1000+ entries not optimized
 - **Signal leaks**: 156 signal connections without corresponding disconnections
@@ -192,7 +181,7 @@ The DFakeSeeder logging system has been significantly enhanced to address the 48
 
 ### Migration Examples
 
-#### Before (Old Pattern):
+#### Before (Old Pattern)
 ```python
 import time
 start_time = time.time()
@@ -200,9 +189,8 @@ print(f"[ClassName] [{start_time:.3f}] Operation started")
 # ... operation code ...
 end_time = time.time()
 print(f"[ClassName] [{end_time:.3f}] Operation completed (took {(end_time - start_time)*1000:.1f}ms)")
-```
-
-#### After (New Pattern):
+```text
+#### After (New Pattern)
 ```python
 from lib.logger import logger
 
@@ -217,8 +205,7 @@ operation_time_ms = logger.performance.end_timer("operation", "Operation complet
 
 # Method 3: Simple timing logs
 logger.timing_info("Operation completed", self.__class__.__name__, operation_time_ms)
-```
-
+```text
 ### Files Updated
 - ✅ `d_fake_seeder/lib/logger.py` - Enhanced with performance tracking
 - ✅ `d_fake_seeder/dfakeseeder.py` - Demo implementation with context managers
@@ -239,7 +226,7 @@ logger.timing_info("Operation completed", self.__class__.__name__, operation_tim
 
 **Solution**: Enhanced logger with performance tracking capabilities
 
-#### Enhanced Logger Features Implemented:
+#### Enhanced Logger Features Implemented
 ```python
 # Enhanced in: d_fake_seeder/lib/logger.py
 class PerformanceLogger:
@@ -252,9 +239,8 @@ class PerformanceLogger:
 
 class OperationTimer:  # Context manager for timing operations
 class TimingFilter:    # Adds precise timing to log records
-```
-
-#### New Logging Patterns:
+```text
+#### New Logging Patterns
 ```python
 # Context manager approach (recommended)
 with logger.performance.operation_context("operation_name", self.__class__.__name__):
@@ -269,14 +255,13 @@ def my_method(self):
 
 # Manual timing
 logger.timing_info("Operation completed", self.__class__.__name__, operation_time_ms)
-```
-
-#### Implementation Status (VERIFIED 2025-10-07):
+```text
+#### Implementation Status (VERIFIED 2025-10-07)
 ✅ **Logger Enhanced**: Added timing functionality, performance tracking, and context managers
 ✅ **Demonstration**: Updated dfakeseeder.py and view.py with new logging patterns
 ✅ **Migration Complete**: ~~485 print statements~~ → **Only 1 remaining** (99.8% migrated!)
 
-#### Migration Strategy:
+#### Migration Strategy
 1. **Pattern Replacement**: Replace `print(f"[Class] [{time:.3f}] message")` with `logger.timing_debug("message", "Class")`
 2. **Context Managers**: Use operation contexts for timing code blocks automatically
 3. **Performance Tracking**: Leverage built-in timing for operation measurement
@@ -387,7 +372,7 @@ logger.timing_info("Operation completed", self.__class__.__name__, operation_tim
 
 #### 2.1.1 Translation Manager (1,700+ lines)
 **Solution**: Split into focused components
-```
+```text
 d_fake_seeder/domain/translation/
 ├── translation_manager.py      (coordinator, ~300 lines)
 ├── translation_loader.py       (file loading, ~200 lines)
@@ -395,18 +380,16 @@ d_fake_seeder/domain/translation/
 ├── translation_cache.py        (caching system, ~200 lines)
 ├── translation_updater.py      (UI updates, ~400 lines)
 └── translation_validator.py    (validation, ~100 lines)
-```
-
+```text
 #### 2.1.2 Base Seeder (855 lines)
 **Solution**: Extract protocol-specific logic
-```
+```text
 d_fake_seeder/domain/torrent/seeders/
 ├── base_seeder.py              (core logic, ~300 lines)
 ├── http_seeder_logic.py        (HTTP specifics, ~200 lines)
 ├── udp_seeder_logic.py         (UDP specifics, ~200 lines)
 └── seeder_utilities.py         (shared utilities, ~155 lines)
-```
-
+```text
 **Implementation**:
 - Identify single responsibility boundaries
 - Extract cohesive functionality into separate modules
@@ -420,10 +403,10 @@ d_fake_seeder/domain/torrent/seeders/
 
 **Solution**: Favor composition over inheritance
 ```python
-# Before:
+# Before
 class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
 
-# After:
+# After
 class BitTorrentTab(BaseSettingsTab):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -431,8 +414,7 @@ class BitTorrentTab(BaseSettingsTab):
         self.translations = TranslationService()
         self.validator = ValidationService()
         self.utilities = UtilityService()
-```
-
+```text
 **Implementation**:
 - Convert mixins to service classes where appropriate
 - Maintain essential mixins for shared behavior
@@ -460,8 +442,7 @@ class SignalManager:
         for source, connection_id in self._connections:
             source.disconnect(connection_id)
         self._connections.clear()
-```
-
+```text
 **Implementation**:
 - Create centralized signal management
 - Update components to use signal manager
@@ -477,7 +458,7 @@ class SignalManager:
 
 **Solution**: Create import style guide and tools
 ```python
-# Standard import order:
+# Standard import order
 # 1. Standard library imports
 # 2. Third-party imports
 # 3. Local application imports
@@ -495,8 +476,7 @@ from domain.app_settings import AppSettings
 from lib.logger import logger
 
 from .component import Component
-```
-
+```text
 **Implementation**:
 - Create import style guide
 - Add isort configuration for automatic sorting
@@ -522,8 +502,7 @@ class CacheManager:
                 self._evict_oldest()
             self._cache[key] = compute_func()
         return self._cache[key]
-```
-
+```text
 **Implementation**:
 - Identify expensive computations for caching
 - Implement LRU cache for torrent data
@@ -548,8 +527,7 @@ class ThreadSafeMixin:
             with self._lock:
                 return func(self, *args, **kwargs)
         return wrapper
-```
-
+```text
 **Implementation**:
 - Audit all thread-unsafe operations
 - Add proper locking mechanisms

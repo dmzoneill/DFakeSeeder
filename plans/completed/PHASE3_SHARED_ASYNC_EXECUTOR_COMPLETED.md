@@ -8,11 +8,10 @@
 - High context switching overhead and resource waste
 
 **Example Resource Usage:**
-```
+```text
 10 torrents × (1 manager thread + 50 connection workers) = 510 threads
 10 separate asyncio event loops running identical operations
-```
-
+```text
 ## Solution Architecture
 
 ### SharedAsyncExecutor Singleton
@@ -50,8 +49,7 @@ class SharedAsyncExecutor:
             "total_completed": 0,
             "total_failed": 0,
         }
-```
-
+```text
 **Key Methods:**
 
 1. **`get_instance()`** - Thread-safe singleton access
@@ -120,13 +118,12 @@ class SharedAsyncExecutor:
 ### Implementation Plan
 
 **File Structure:**
-```
+```text
 d_fake_seeder/domain/torrent/
 ├── shared_async_executor.py          # NEW - Singleton executor
 ├── peer_protocol_manager.py          # MODIFIED - Use shared executor
 └── global_peer_manager.py            # MODIFIED - Start/stop executor
-```
-
+```text
 **Step-by-step Implementation:**
 
 1. **Create `shared_async_executor.py`:**
@@ -160,19 +157,17 @@ d_fake_seeder/domain/torrent/
 ### Expected Performance Impact
 
 **Thread Reduction:**
-```
+```text
 BEFORE: 10 torrents × (1 + 50) = 510 threads
 AFTER:  1 executor thread + 100 global workers = 101 threads
 REDUCTION: 80% fewer threads (409 threads saved)
-```
-
+```text
 **Event Loop Reduction:**
-```
+```text
 BEFORE: 10 separate event loops
 AFTER:  1 shared event loop
 REDUCTION: 90% reduction in loop overhead
-```
-
+```text
 **Estimated CPU Impact:**
 - Context switching reduction: 70-80%
 - Memory footprint reduction: 60-70%
@@ -231,8 +226,7 @@ If Phase 3 causes issues:
 "peer_protocol": {
   "use_shared_executor": true  // Set to false to use old per-instance threads
 }
-```
-
+```text
 ### Success Metrics
 
 **Primary Metrics:**

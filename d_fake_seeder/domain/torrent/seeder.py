@@ -1,6 +1,7 @@
 """
 RFC: https://wiki.theory.org/index.php/BitTorrentSpecification
 """
+# isort: skip_file
 
 # fmt: off
 from urllib.parse import urlparse

@@ -38,8 +38,7 @@ DFakeSeeder will implement a comprehensive seeding profiles system that allows u
   "pex_enabled": false,            // Privacy-focused
   "client_behavior": "conservative"
 }
-```
-
+```text
 ### Balanced Profile ⚖️ (Default)
 **Target User:** Regular seeders, moderate bandwidth, balanced approach
 ```json
@@ -58,8 +57,7 @@ DFakeSeeder will implement a comprehensive seeding profiles system that allows u
   "pex_enabled": true,             // Standard peer exchange
   "client_behavior": "balanced"
 }
-```
-
+```text
 ### Aggressive Profile 🚀
 **Target User:** Power seeders, high bandwidth, maximum sharing
 ```json
@@ -78,8 +76,7 @@ DFakeSeeder will implement a comprehensive seeding profiles system that allows u
   "pex_enabled": true,             // Active peer discovery
   "client_behavior": "aggressive"
 }
-```
-
+```text
 ### Custom Profile 🔧
 **Target User:** Advanced users wanting fine-grained control
 - Inherits from selected base template (default: balanced)
@@ -158,7 +155,7 @@ Profiles affect multiple components:
 
 ## Profile Application Flow
 
-```
+```text
 1. User Selection
    ↓
 2. Profile Validation
@@ -172,12 +169,11 @@ Profiles affect multiple components:
 6. Real-time Effect on Active Torrents
    ↓
 7. Settings Persistence
-```
-
+```text
 ## Parameter Mapping
 
 | Profile Parameter | App Setting Location | Component Effect |
-|------------------|---------------------|------------------|
+| ------------------ | --------------------- | ------------------ |
 | `upload_limit` | `upload_speed` | Global upload speed limit |
 | `download_limit` | `download_speed` | Global download speed limit |
 | `max_connections` | `concurrent_peer_connections` | Peer connection manager |

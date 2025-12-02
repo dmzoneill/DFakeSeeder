@@ -5,6 +5,7 @@ DFakeSeeder System Tray Application
 Comprehensive system tray interface for DFakeSeeder with full feature support.
 Communicates with main application via D-Bus for settings management.
 """
+# isort: skip_file
 
 # fmt: off
 import json

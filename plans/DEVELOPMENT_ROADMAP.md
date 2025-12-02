@@ -99,7 +99,7 @@
 ### 📊 **Phase Overview**
 
 | Phase | Focus Area | Priority | Timeline | Status |
-|-------|-----------|----------|----------|--------|
+| ------- | ----------- | ---------- | ---------- | -------- |
 | **Phase 1** | Enhanced Ratio Management | 🔴 High | Q4 2025 (3 months) | 📋 Planned |
 | **Phase 2** | Advanced Protocol Features | 🔴 High | Q1 2026 (3 months) | 📋 Planned |
 | **Phase 3** | UI/UX Improvements | 🟡 Medium | Q2 2026 (2 months) | 📋 Planned |
@@ -150,8 +150,7 @@ class ClientEmulationEngine:
         }
         # ... more profiles
     }
-```
-
+```text
 **Success Criteria**:
 - [ ] Support for 10+ popular client versions
 - [ ] Protocol-level behavioral matching validated
@@ -188,8 +187,7 @@ class ClientEmulationEngine:
     // ... other profiles
   }
 }
-```
-
+```text
 **Success Criteria**:
 - [ ] All 3 default profiles fully implemented
 - [ ] Custom profile creation and saving
@@ -222,8 +220,7 @@ class TrackerManager:
                    min_interval: int = None):
         """Add tracker with optional passkey and custom settings"""
         pass
-```
-
+```text
 **Security**:
 - Encrypted passkey storage using system keyring
 - No passkeys in plain-text configuration files
@@ -260,8 +257,7 @@ class TrafficPatternSimulator:
         # Consider time-of-day patterns
         # Add network congestion simulation
         pass
-```
-
+```text
 **Success Criteria**:
 - [ ] 5+ pattern presets (stable, variable, bursty, etc.)
 - [ ] Time-based behavior changes working
@@ -355,8 +351,7 @@ class UTPConnection:
     def handle_data_packet(self, packet):
         """Process incoming µTP data"""
         pass
-```
-
+```text
 **Testing**:
 - Protocol compliance testing against reference implementations
 - Interoperability testing with µTorrent, qBittorrent
@@ -397,8 +392,7 @@ class FastExtension:
     def handle_allowed_fast(self, piece_index: int):
         """Handle ALLOWED_FAST message"""
         pass
-```
-
+```text
 **Success Criteria**:
 - [ ] All 4 Fast Extension messages implemented
 - [ ] Piece suggestion algorithm working
@@ -437,8 +431,7 @@ class MagnetHandler:
                       trackers: list) -> TorrentMetadata:
         """Exchange metadata with peers"""
         pass
-```
-
+```text
 **Success Criteria**:
 - [ ] Magnet URI parsing working for all valid formats
 - [ ] Metadata exchange from DHT working
@@ -470,8 +463,7 @@ class WebSeeder:
     def download_piece(self, piece_index: int) -> bytes:
         """Download piece via HTTP"""
         pass
-```
-
+```text
 **Success Criteria**:
 - [ ] WebSeed URL parsing from torrents
 - [ ] HTTP piece download working
@@ -547,7 +539,7 @@ class WebSeeder:
 - **Live Preview**: See profile effects before applying
 
 **UI Design** (GNOME HIG Compliant):
-```
+```text
 ┌─────────────────────────────────────────────┐
 │  Seeding Profile: [Balanced ▼]   [Edit...]  │
 ├─────────────────────────────────────────────┤
@@ -561,8 +553,7 @@ class WebSeeder:
 │  [Conservative] [Balanced] [Aggressive]     │
 │  [Create Custom...]                         │
 └─────────────────────────────────────────────┘
-```
-
+```text
 **Success Criteria**:
 - [ ] Profile switching in < 1 second
 - [ ] Profile editor follows GNOME HIG
@@ -603,7 +594,7 @@ class WebSeeder:
 - **Batch Import**: Add folder of torrents
 
 **Dialog Design**:
-```
+```text
 ┌───────────────────────────────────────┐
 │  Add Torrent                    [×]   │
 ├───────────────────────────────────────┤
@@ -618,8 +609,7 @@ class WebSeeder:
 │                                       │
 │  [Cancel]              [Add Torrent]  │
 └───────────────────────────────────────┘
-```
-
+```text
 **Success Criteria**:
 - [ ] Quick Add dialog implemented
 - [ ] Clipboard monitoring working
@@ -663,7 +653,7 @@ class WebSeeder:
 **Chart Library**: Consider libadwaita charts or Chart.js integration
 
 **Dashboard Design**:
-```
+```text
 ┌─────────────────────────────────────────────┐
 │  Statistics                                 │
 ├─────────────────────────────────────────────┤
@@ -680,8 +670,7 @@ class WebSeeder:
 │  ├─ Share Ratio: 1.81                       │
 │  └─ Active Torrents: 43                     │
 └─────────────────────────────────────────────┘
-```
-
+```text
 **Success Criteria**:
 - [ ] 3+ chart types implemented
 - [ ] Real-time updates (< 1s latency)
@@ -778,8 +767,7 @@ class TestTorrent:
         response = torrent.announce(mock_tracker)
         assert response.interval == 1800
         assert len(response.peers) > 0
-```
-
+```text
 **Test Categories**:
 - Protocol parsing and message handling
 - Tracker communication (HTTP/UDP)
@@ -816,8 +804,7 @@ class TestBEP003Compliance:
     def test_piece_request_handling(self):
         """Verify piece request/response"""
         pass
-```
-
+```text
 **Compliance Testing**:
 - BEP-003: Peer Protocol
 - BEP-005: DHT
@@ -860,8 +847,7 @@ class TestPerformance:
         """Benchmark peer connection handling"""
         result = benchmark(simulate_peer_connections, count=100)
         assert result.throughput > 1000  # > 1000 conn/s
-```
-
+```text
 **Performance Metrics**:
 - Torrent loading time
 - Tracker announce latency
@@ -908,8 +894,7 @@ class TestUserWorkflows:
 
         # 5. Verify peer connections
         assert len(app.active_peers) > 0
-```
-
+```text
 **Integration Test Coverage**:
 - Complete user workflows
 - D-Bus IPC between main app and tray
@@ -957,8 +942,7 @@ jobs:
         run: |
           make deb
           make rpm
-```
-
+```text
 **CI Features**:
 - Automated testing on every commit
 - Code coverage tracking
@@ -1305,9 +1289,9 @@ We welcome contributions of all types! See [CONTRIBUTING.md](CONTRIBUTING.md) fo
 ## Contact & Support
 
 **Project Maintainer**: David O Neill
-**GitHub**: https://github.com/dmzoneill/DFakeSeeder
-**Issues**: https://github.com/dmzoneill/DFakeSeeder/issues
-**Discussions**: https://github.com/dmzoneill/DFakeSeeder/discussions
+**GitHub**: <<https://github.com/dmzoneill/DFakeSeeder>>
+**Issues**: <<https://github.com/dmzoneill/DFakeSeeder/issues>>
+**Discussions**: <<https://github.com/dmzoneill/DFakeSeeder/discussions>>
 
 **Getting Help**:
 1. Check documentation in `docs/` and `plans/`

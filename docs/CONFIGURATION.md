@@ -22,8 +22,7 @@ Controls fundamental BitTorrent transfer speeds.
   "total_download_speed": 500,     // Global download limit
   "announce_interval": 1800        // Tracker announce interval (seconds)
 }
-```
-
+```text
 ### 2. BitTorrent Client Simulation
 Configures client impersonation for realistic torrent behavior.
 ```json
@@ -42,8 +41,7 @@ Configures client impersonation for realistic torrent behavior.
   "peer_id_prefix": "-DE2003-",    // BitTorrent peer ID prefix
   "custom_user_agent": ""          // Override agent string
 }
-```
-
+```text
 ### 3. Network Configuration
 Network connectivity and proxy settings.
 ```json
@@ -63,8 +61,7 @@ Network connectivity and proxy settings.
   "max_connections_per_torrent": 50,
   "max_upload_slots": 4
 }
-```
-
+```text
 ### 4. Proxy Settings
 Advanced proxy configuration for anonymization.
 ```json
@@ -76,8 +73,7 @@ Advanced proxy configuration for anonymization.
   "proxy_username": "",
   "proxy_password": ""
 }
-```
-
+```text
 ### 5. UI Renderer Configuration
 Configures GTK widget renderers for torrent data display.
 ```json
@@ -104,21 +100,19 @@ Configures GTK widget renderers for torrent data display.
     // ... more widget mappings
   }
 }
-```
-
+```text
 ### 6. Application Metadata
 Basic application information and branding.
 ```json
 {
-  "issues_page": "https://github.com/dmzoneill/DFakeSeeder/issues",
-  "website": "https://github.com/dmzoneill/DFakeSeeder/",
+  "issues_page": "<<https://github.com/dmzoneill/DFakeSeeder/issues",>>
+  "website": "<<https://github.com/dmzoneill/DFakeSeeder/",>>
   "author": "David O Neill",
   "copyright": "Copyright {year}",
   "version": "1.0",
   "logo": "images/dfakeseeder.png"
 }
-```
-
+```text
 ### 7. Window and UI Settings
 Desktop application behavior and appearance.
 ```json
@@ -131,8 +125,7 @@ Desktop application behavior and appearance.
   "theme": "system",
   "remember_window_size": true
 }
-```
-
+```text
 ### 8. BitTorrent Protocol Features
 Core BitTorrent protocol configuration.
 ```json
@@ -144,8 +137,7 @@ Core BitTorrent protocol configuration.
   "min_announce_interval": 300,    // Minimum tracker announce
   "scrape_interval": 900           // Tracker scrape interval
 }
-```
-
+```text
 ### 9. Speed Management
 Advanced speed control and scheduling.
 ```json
@@ -162,8 +154,7 @@ Advanced speed control and scheduling.
   "scheduler_end_minute": 0,
   "scheduler_days": [true, true, true, true, true, true, true]  // Mon-Sun
 }
-```
-
+```text
 ### 10. Web UI Configuration
 HTTP interface for remote management.
 ```json
@@ -180,8 +171,7 @@ HTTP interface for remote management.
   "webui_clickjacking_protection": true,
   "webui_secure_headers": true
 }
-```
-
+```text
 ### 11. Logging Configuration
 Debug and monitoring settings.
 ```json
@@ -194,8 +184,7 @@ Debug and monitoring settings.
   "log_filename": "log.log",
   "log_format": "[%(asctime)s][%(class_name)s][%(levelname)s][%(lineno)d] - %(message)s"
 }
-```
-
+```text
 ### 12. Performance Settings
 System performance and caching configuration.
 ```json
@@ -206,8 +195,7 @@ System performance and caching configuration.
   "validate_settings": true,
   "auto_save": true
 }
-```
-
+```text
 ### 13. Peer Protocol Configuration
 Low-level BitTorrent peer communication settings.
 ```json
@@ -231,8 +219,7 @@ Low-level BitTorrent peer communication settings.
     "connection_rotation_percentage": 0.25
   }
 }
-```
-
+```text
 ### 14. Seeder Configuration
 Protocol-specific seeder settings.
 ```json
@@ -252,8 +239,7 @@ Protocol-specific seeder settings.
     "peer_request_count": 200
   }
 }
-```
-
+```text
 ### 15. Seeding Profiles
 Predefined behavior profiles for different use cases.
 ```json
@@ -277,8 +263,7 @@ Predefined behavior profiles for different use cases.
   },
   "seeding_profile": "balanced"      // Active profile
 }
-```
-
+```text
 ### 16. Application Identity
 GTK application integration settings.
 ```json
@@ -291,8 +276,7 @@ GTK application integration settings.
     "torrents_directory": "~/.config/dfakeseeder/torrents"
   }
 }
-```
-
+```text
 ### 17. Internationalization
 Language and localization settings.
 ```json
@@ -316,8 +300,7 @@ Language and localization settings.
     "sv": "Svenska"
   }
 }
-```
-
+```text
 ### 18. UI Behavior Settings
 Extensive UI timing and behavior configuration (60+ settings).
 ```json
@@ -401,8 +384,7 @@ Extensive UI timing and behavior configuration (60+ settings).
     "max_seeder_retries": 3
   }
 }
-```
-
+```text
 ### 19. Component-Specific Settings
 Settings for individual application components.
 ```json
@@ -419,8 +401,7 @@ Settings for individual application components.
     "default_port": 34567
   }
 }
-```
-
+```text
 ### 20. Client Speed Profiles
 Performance characteristics for different BitTorrent clients.
 ```json
@@ -448,8 +429,7 @@ Performance characteristics for different BitTorrent clients.
     }
   }
 }
-```
-
+```text
 ## Configuration Management
 
 ### Settings Hierarchy

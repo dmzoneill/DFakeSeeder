@@ -5,6 +5,7 @@ Enhanced GObject model for tracking live tracker information including
 announce URLs, status, response data, statistics, and real-time updates.
 Integrates with the seeding system to provide live tracker monitoring.
 """
+# isort: skip_file
 
 # fmt: off
 import time

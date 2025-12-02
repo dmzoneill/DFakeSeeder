@@ -192,8 +192,7 @@ class ProtocolExtension:
     def send_extended_message(self, message_id, payload):
         """Send extended messages to peer"""
         pass
-```
-
+```text
 #### Traffic Simulator
 ```python
 class TrafficSimulator:
@@ -208,8 +207,7 @@ class TrafficSimulator:
     def simulate_peer_behavior(self, peer_count):
         """Simulate realistic peer connection patterns"""
         pass
-```
-
+```text
 ## Conclusion
 
 DFakeSeeder has a solid foundation and modern architecture that positions it well for enhancement. The recommended features would bring it to feature parity with established clients while maintaining its unique advantages in code quality and extensibility.
