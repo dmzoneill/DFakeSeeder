@@ -67,30 +67,34 @@ setup:
 			rpm-build rpmlint python3-setuptools \
 			libxml2 gtk3-devel python3-devel \
 			python3-pip python3-black python3-flake8 python3-isort \
-			tar findutils sed gawk make pipenv \
-			2>/dev/null || true; \
+			tar findutils sed gawk make pipenv || echo "⚠️  Some packages failed to install"; \
 	elif command -v apt-get >/dev/null 2>&1; then \
 		echo "Detected Debian/Ubuntu - using apt-get..."; \
 		sudo apt-get update && sudo apt-get install -y \
 			dpkg dpkg-dev fakeroot \
 			libxml2-utils libgtk-3-dev python3-dev \
 			python3-pip python3-black python3-flake8 python3-isort \
-			make sed coreutils pipenv \
-			2>/dev/null || true; \
+			make sed coreutils pipenv || echo "⚠️  Some packages failed to install"; \
 	elif command -v yum >/dev/null 2>&1; then \
 		echo "Detected older RHEL/CentOS - using yum..."; \
 		sudo yum install -y \
 			rpm-build rpmlint python3-setuptools \
 			libxml2 gtk3-devel python3-devel \
-			python3-pip tar findutils sed gawk make \
-			2>/dev/null || true; \
-		sudo pip3 install pipenv black flake8 isort 2>/dev/null || true; \
+			python3-pip tar findutils sed gawk make || echo "⚠️  Some packages failed to install"; \
+		sudo pip3 install pipenv black flake8 isort || echo "⚠️  Some pip packages failed to install"; \
 	else \
 		echo "⚠️  Warning: Unknown package manager. Please install dependencies manually."; \
 		echo "Required: rpm-build/dpkg-dev, libxml2-utils, gtk3-devel, python3-dev, black, flake8, isort"; \
 	fi
 	@echo "Installing pipenv if not available..."
 	@command -v pipenv >/dev/null 2>&1 || pip3 install --user pipenv
+	@echo ""
+	@echo "Verifying critical build tools..."
+	@command -v xmllint >/dev/null 2>&1 || { echo "❌ ERROR: xmllint not found! Install libxml2 (Fedora/RHEL) or libxml2-utils (Debian/Ubuntu)"; exit 1; }
+	@command -v black >/dev/null 2>&1 || { echo "⚠️  WARNING: black not found"; }
+	@command -v flake8 >/dev/null 2>&1 || { echo "⚠️  WARNING: flake8 not found"; }
+	@command -v isort >/dev/null 2>&1 || { echo "⚠️  WARNING: isort not found"; }
+	@echo "✅ Critical tools verified!"
 	@echo "✅ System dependencies installed!"
 	@$(MAKE) setup-venv
 
@@ -134,6 +138,7 @@ super-lint:
 		-e PYTHON_BLACK_CONFIG_FILE=pyproject.toml \
 		-e PYTHON_FLAKE8_CONFIG_FILE=.flake8 \
 		-e PYTHON_ISORT_CONFIG_FILE=.isort.cfg \
+		-e MARKDOWN_CONFIG_FILE=.markdownlint.json \
 		-e FILTER_REGEX_EXCLUDE=".*/(rpmbuild|debbuild|dist|build|\.venv|\.eggs|__pycache__|\.pytest_cache)/.*" \
 		-v $(PWD):/tmp/lint \
 		ghcr.io/super-linter/super-linter:latest
@@ -155,6 +160,7 @@ super-lint-slim:
 		-e PYTHON_BLACK_CONFIG_FILE=pyproject.toml \
 		-e PYTHON_FLAKE8_CONFIG_FILE=.flake8 \
 		-e PYTHON_ISORT_CONFIG_FILE=.isort.cfg \
+		-e MARKDOWN_CONFIG_FILE=.markdownlint.json \
 		-e FILTER_REGEX_EXCLUDE=".*/(rpmbuild|debbuild|dist|build|\.venv|\.eggs|__pycache__|\.pytest_cache)/.*" \
 		-v $(PWD):/tmp/lint \
 		ghcr.io/super-linter/super-linter:slim-latest
