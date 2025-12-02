@@ -1,0 +1,35 @@
+[tool.black]
+line-length = 120
+target-version = ['py311', 'py312', 'py313', 'py314']
+extend-exclude = '''
+/(
+    \.git
+  | \.venv
+  | \.eggs
+  | __pycache__
+  | build
+  | dist
+  | rpmbuild
+  | debbuild
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 120
+skip_gitignore = true
+extend_skip_glob = ["build/*", "dist/*", "rpmbuild/*", "debbuild/*"]
+
+[tool.flake8]
+max-line-length = 120
+extend-ignore = ["E203", "W503"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+    ".eggs",
+    "rpmbuild",
+    "debbuild"
+]
