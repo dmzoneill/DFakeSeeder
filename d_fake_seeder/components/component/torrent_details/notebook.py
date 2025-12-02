@@ -2,6 +2,7 @@
 Main torrent details notebook component.
 Coordinates all torrent details tabs and provides the main interface.
 """
+
 # isort: skip_file
 
 # fmt: off

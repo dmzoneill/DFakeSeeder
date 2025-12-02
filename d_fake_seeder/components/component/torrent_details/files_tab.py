@@ -3,6 +3,7 @@ Files tab for torrent details.
 
 Displays torrent file listing with file paths and sizes.
 """
+
 # isort: skip_file
 
 # fmt: off

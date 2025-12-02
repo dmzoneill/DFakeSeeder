@@ -7,31 +7,29 @@ name = "pypi"
 allow_prereleases = true
 
 [packages]
-requests = "==2.32.4"
-typer = "==0.12.3"
-urllib3 = "==1.26.18"
+requests = ">=2.32.0"
+typer = ">=0.20.0"
+urllib3 = ">=2.0.0"
 bencodepy = "*"
 watchdog = "*"
 
 [dev-packages]
-pytest = ">=7.3.2"
+pytest = ">=8.0.0"
 pytest-cov = "*"
 pytest-timeout = "*"
 pytest-randomly = "*"
 pytest-mock = "*"
 pytest-xdist = "*"
-setuptools = "==67.7.2"
+setuptools = ">=75.0.0"
 black = "*"
 isort = "*"
 flake8 = "*"
 mypy = "*"
 types-requests = "*"
 vulture = "*"
-unimport = "*"
-autoflake = "*"
 pyflakes = "*"
 pytest-forked = "*"
 pytest-asyncio = "*"
 
 [requires]
-python_version = "3"
+python_version = "3.14"

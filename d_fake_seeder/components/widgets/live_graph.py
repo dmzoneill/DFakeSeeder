@@ -3,6 +3,7 @@ LiveGraph - Real-time line graph widget using Cairo.
 
 Provides System Monitor-style live graphs for metrics visualization.
 """
+
 # isort: skip_file
 
 # fmt: off
