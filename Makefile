@@ -109,8 +109,8 @@ clearlog:
 
 lint: clearlog
 	@echo "Running lint commands..."
-	black -v --line-length=120 .
-	flake8 --max-line-length=120
+	black -v .
+	flake8
 	find . -iname "*.py" -exec isort --profile=black --df {} \;
 	@echo "✅ Linting complete!"
 
@@ -131,7 +131,7 @@ super-lint:
 		-e VALIDATE_YAML=true \
 		-e VALIDATE_JSON=true \
 		-e VALIDATE_XML=true \
-		-e PYTHON_BLACK_CONFIG_FILE=.python-black \
+		-e PYTHON_BLACK_CONFIG_FILE=pyproject.toml \
 		-e PYTHON_FLAKE8_CONFIG_FILE=.flake8 \
 		-e PYTHON_ISORT_CONFIG_FILE=.isort.cfg \
 		-e FILTER_REGEX_EXCLUDE=".*/(rpmbuild|debbuild|dist|build|\.venv|\.eggs|__pycache__|\.pytest_cache)/.*" \
@@ -152,6 +152,9 @@ super-lint-slim:
 		-e VALIDATE_BASH=true \
 		-e VALIDATE_MARKDOWN=true \
 		-e VALIDATE_YAML=true \
+		-e PYTHON_BLACK_CONFIG_FILE=pyproject.toml \
+		-e PYTHON_FLAKE8_CONFIG_FILE=.flake8 \
+		-e PYTHON_ISORT_CONFIG_FILE=.isort.cfg \
 		-e FILTER_REGEX_EXCLUDE=".*/(rpmbuild|debbuild|dist|build|\.venv|\.eggs|__pycache__|\.pytest_cache)/.*" \
 		-v $(PWD):/tmp/lint \
 		ghcr.io/super-linter/super-linter:slim-latest
