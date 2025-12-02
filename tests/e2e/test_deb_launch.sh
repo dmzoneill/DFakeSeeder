@@ -54,7 +54,7 @@ start_xvfb() {
 
     # Wait for X server to be ready
     log_info "Waiting for X server..."
-    for i in {1..10}; do
+    for _ in {1..10}; do
         if xdpyinfo -display :99 >/dev/null 2>&1; then
             log_info "✓ X server ready"
             return 0
@@ -140,7 +140,7 @@ test_app_launch() {
     sleep 1
 
     # Start D-Bus session
-    eval $(dbus-launch --sh-syntax)
+    eval "$(dbus-launch --sh-syntax)"
     export DBUS_SESSION_BUS_ADDRESS
 
     # Launch app in background with timeout
@@ -182,8 +182,8 @@ test_app_launch() {
     fi
 
     # Clean up
-    kill $APP_PID 2>/dev/null || true
-    kill $DBUS_SESSION_BUS_PID 2>/dev/null || true
+    kill "$APP_PID" 2>/dev/null || true
+    kill "$DBUS_SESSION_BUS_PID" 2>/dev/null || true
     pkill -9 -f dfakeseeder.py || true
 }
 
@@ -195,7 +195,7 @@ test_user_config_creation() {
     rm -rf ~/.config/dfakeseeder
 
     # Start D-Bus session for GTK
-    eval $(dbus-launch --sh-syntax)
+    eval "$(dbus-launch --sh-syntax)"
     export DBUS_SESSION_BUS_ADDRESS
 
     # Launch app in background with timeout
@@ -211,14 +211,14 @@ test_user_config_creation() {
     APP_PID=$!
 
     # Wait for config to be created
-    for i in {1..30}; do
+    for _ in {1..30}; do
         if [ -f ~/.config/dfakeseeder/settings.json ]; then
             log_info "✓ User config created"
             TESTS_PASSED=$((TESTS_PASSED + 1))
 
             # Kill app and dbus
-            kill $APP_PID 2>/dev/null || true
-            kill $DBUS_SESSION_BUS_PID 2>/dev/null || true
+            kill "$APP_PID" 2>/dev/null || true
+            kill "$DBUS_SESSION_BUS_PID" 2>/dev/null || true
             return 0
         fi
         sleep 0.5
@@ -226,8 +226,8 @@ test_user_config_creation() {
 
     log_error "✗ User config not created"
     TESTS_FAILED=$((TESTS_FAILED + 1))
-    kill $APP_PID 2>/dev/null || true
-    kill $DBUS_SESSION_BUS_PID 2>/dev/null || true
+    kill "$APP_PID" 2>/dev/null || true
+    kill "$DBUS_SESSION_BUS_PID" 2>/dev/null || true
     return 1
 }
 

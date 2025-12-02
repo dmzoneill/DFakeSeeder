@@ -3,6 +3,7 @@ Status tab for torrent details.
 
 Displays torrent attributes and status information in a grid layout.
 """
+# isort: skip_file
 
 # fmt: off
 import gi

@@ -49,12 +49,12 @@ build_package() {
     cd "$PROJECT_ROOT"
 
     # Clean previous builds
-    rm -rf dist/ build/ *.egg-info
+    rm -rf dist/ build/ ./*.egg-info
 
     log_info "Building wheel and sdist..."
     python3 setup.py sdist bdist_wheel
 
-    if [ -d "$DIST_DIR" ] && [ "$(ls -A $DIST_DIR/*.whl 2>/dev/null)" ]; then
+    if [ -d "$DIST_DIR" ] && [ "$(ls -A "$DIST_DIR"/*.whl 2>/dev/null)" ]; then
         log_info "✓ Package built successfully"
         ls -lh "$DIST_DIR"
     else
@@ -101,10 +101,10 @@ run_installation_tests() {
     log_info "Installing package from wheel in container..."
 
     # Find the wheel file
-    WHEEL_FILE=$(ls "$DIST_DIR"/*.whl | head -1)
+    WHEEL_FILE=$(find "$DIST_DIR" -name "*.whl" -type f | head -1)
     WHEEL_NAME=$(basename "$WHEEL_FILE")
 
-    $CONTAINER_ENGINE run --rm \
+    if $CONTAINER_ENGINE run --rm \
         -v "$DIST_DIR:/packages:ro" \
         "$TEST_IMAGE" \
         bash -c "
@@ -125,9 +125,7 @@ run_installation_tests() {
             echo ''
             echo '=== Testing imports ==='
             python3 -c 'import d_fake_seeder; print(\"✓ Package imports successfully\")'
-        "
-
-    if [ $? -eq 0 ]; then
+        "; then
         log_info "✓ Installation tests passed"
     else
         log_error "✗ Installation tests failed"
@@ -139,11 +137,11 @@ run_installation_tests() {
 run_launch_tests() {
     log_section "Step 4: Running Application Launch Tests"
 
-    WHEEL_FILE=$(ls "$DIST_DIR"/*.whl | head -1)
+    WHEEL_FILE=$(find "$DIST_DIR" -name "*.whl" -type f | head -1)
     WHEEL_NAME=$(basename "$WHEEL_FILE")
 
     # Run the test script inside the container
-    $CONTAINER_ENGINE run --rm \
+    if $CONTAINER_ENGINE run --rm \
         -v "$DIST_DIR:/packages:ro" \
         -v "$SCRIPT_DIR/test_pypi_install.sh:/test_pypi_install.sh:ro" \
         "$TEST_IMAGE" \
@@ -154,9 +152,7 @@ run_launch_tests() {
 
             # Run the E2E test script
             bash /test_pypi_install.sh
-        "
-
-    if [ $? -eq 0 ]; then
+        "; then
         log_info "✓ Launch tests passed"
     else
         log_error "✗ Launch tests failed"
@@ -168,10 +164,10 @@ run_launch_tests() {
 run_uninstall_tests() {
     log_section "Step 5: Running Uninstallation Tests"
 
-    WHEEL_FILE=$(ls "$DIST_DIR"/*.whl | head -1)
+    WHEEL_FILE=$(find "$DIST_DIR" -name "*.whl" -type f | head -1)
     WHEEL_NAME=$(basename "$WHEEL_FILE")
 
-    $CONTAINER_ENGINE run --rm \
+    if $CONTAINER_ENGINE run --rm \
         -v "$DIST_DIR:/packages:ro" \
         "$TEST_IMAGE" \
         bash -c "
@@ -195,9 +191,7 @@ run_uninstall_tests() {
                 echo '✗ Package still found after uninstall'
                 exit 1
             fi
-        "
-
-    if [ $? -eq 0 ]; then
+        "; then
         log_info "✓ Uninstall tests passed"
     else
         log_error "✗ Uninstall tests failed"
@@ -215,7 +209,7 @@ DFakeSeeder PyPI Package E2E Test Report
 Date: $(date)
 Container Engine: $CONTAINER_ENGINE
 Test Image: $TEST_IMAGE
-Package: $(ls "$DIST_DIR"/*.whl | head -1 | xargs basename)
+Package: $(basename "$(find "$DIST_DIR" -name "*.whl" -type f | head -1)")
 
 Test Results:
 -------------

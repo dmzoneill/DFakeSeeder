@@ -4,6 +4,7 @@ Connection settings tab for the settings dialog.
 Handles network connection settings like listening port, connection limits,
 proxy configuration, and UPnP settings.
 """
+# isort: skip_file
 
 # fmt: off
 from typing import Any, Dict

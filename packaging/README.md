@@ -15,15 +15,14 @@ make rpm-install
 
 # Or install manually
 sudo dnf install ./rpmbuild/RPMS/noarch/dfakeseeder-*.rpm
-```
-
+```text
 ## Package Structure
 
 ### Installed Files
 
 After installation, the RPM creates the following structure:
 
-```
+```text
 /opt/dfakeseeder/              # Main application directory
 ├── config/                    # Application config templates
 ├── components/                # UI components and images
@@ -44,8 +43,7 @@ After installation, the RPM creates the following structure:
 
 /usr/share/icons/hicolor/*/apps/
 └── dfakeseeder.png           # Icons (all sizes: 16-256px)
-```
-
+```text
 ### User Configuration
 
 On first run, the application:
@@ -73,8 +71,7 @@ dfakeseeder --help
 
 # Show version
 dfakeseeder --version
-```
-
+```text
 ### 2. Desktop Environment
 
 **From Application Menu:**
@@ -86,8 +83,7 @@ dfakeseeder --version
 **From Command Line:**
 ```bash
 gtk-launch dfakeseeder
-```
-
+```text
 ## Configuration
 
 ### System Default Config
@@ -117,8 +113,7 @@ DFS_PATH=/custom/path dfakeseeder
 
 # Custom Python interpreter
 PYTHON=/usr/bin/python3.12 dfakeseeder
-```
-
+```text
 ## Build System
 
 ### Makefile Target
@@ -149,8 +144,7 @@ make lint
 
 # Build RPM manually
 rpmbuild --define "_topdir $(pwd)/rpmbuild" -ba dfakeseeder.spec
-```
-
+```text
 ## Package Contents
 
 ### Wrapper Script (`packaging/dfakeseeder-wrapper.sh`)
@@ -219,8 +213,7 @@ rpm -qip ./rpmbuild/RPMS/noarch/dfakeseeder-*.rpm
 
 # Validate with rpmlint
 rpmlint ./rpmbuild/RPMS/noarch/dfakeseeder-*.rpm
-```
-
+```text
 ### Installation Test
 
 ```bash
@@ -235,8 +228,7 @@ dfakeseeder --help
 
 # Test desktop integration
 gtk-launch dfakeseeder
-```
-
+```text
 ### Uninstallation Test
 
 ```bash
@@ -245,13 +237,12 @@ sudo dnf remove dfakeseeder
 
 # Verify cleanup
 rpm -q dfakeseeder  # Should report "not installed"
-```
-
+```text
 ## Build Artifacts
 
 ### Build Directory Structure
 
-```
+```text
 rpmbuild/
 ├── BUILD/              # Unpacked sources during build
 ├── BUILDROOT/          # Installed files before packaging
@@ -264,8 +255,7 @@ rpmbuild/
 │   └── dfakeseeder.spec
 └── SRPMS/             # Source RPM
     └── dfakeseeder-0.0.46-1.fc43.src.rpm
-```
-
+```text
 ### .gitignore
 
 The `rpmbuild/` directory is already in `.gitignore` to prevent committing build artifacts.
@@ -277,8 +267,7 @@ The `rpmbuild/` directory is already in `.gitignore` to prevent committing build
 ```bash
 # Install on local system
 sudo dnf install ./rpmbuild/RPMS/noarch/dfakeseeder-*.rpm
-```
-
+```text
 ### Repository Distribution
 
 ```bash
@@ -287,15 +276,13 @@ cp ./rpmbuild/RPMS/noarch/dfakeseeder-*.rpm /path/to/repo/
 
 # Update repository metadata
 createrepo /path/to/repo/
-```
-
+```text
 ### COPR (Fedora Build System)
 
 ```bash
 # Upload source RPM to COPR
 copr-cli build your-project ./rpmbuild/SRPMS/dfakeseeder-*.src.rpm
-```
-
+```text
 ## Troubleshooting
 
 ### Build Failures
@@ -303,20 +290,17 @@ copr-cli build your-project ./rpmbuild/SRPMS/dfakeseeder-*.src.rpm
 **Missing dependencies:**
 ```bash
 sudo dnf install rpm-build rpmlint python3-setuptools
-```
-
+```text
 **Permission errors:**
 ```bash
 # Don't run rpmbuild as root
 # Build in user directory (current method)
-```
-
+```text
 **Tarball errors:**
 ```bash
 # Ensure proper directory structure
 ls -la rpmbuild/dfakeseeder-0.0.46/d_fake_seeder/
-```
-
+```text
 ### Installation Issues
 
 **Dependency conflicts:**
@@ -326,8 +310,7 @@ sudo dnf install --allowerasing dfakeseeder-*.rpm
 
 # Or use RPM directly
 sudo rpm -ivh --nodeps dfakeseeder-*.rpm  # Not recommended
-```
-
+```text
 **Icon not showing:**
 ```bash
 # Update icon cache
@@ -336,15 +319,13 @@ sudo gtk-update-icon-cache -f -t /usr/share/icons/hicolor/
 
 # Restart GNOME Shell (GNOME users)
 # Press Alt+F2, type 'r', press Enter
-```
-
+```text
 **Desktop file not appearing:**
 ```bash
 # Update desktop database
 update-desktop-database ~/.local/share/applications/
 sudo update-desktop-database /usr/share/applications/
-```
-
+```text
 ## Maintenance
 
 ### Version Updates
@@ -385,6 +366,6 @@ To update system default config:
 ## Support
 
 For issues with RPM packaging:
-- GitHub Issues: https://github.com/dmzoneill/DFakeSeeder/issues
+- GitHub Issues: <<https://github.com/dmzoneill/DFakeSeeder/issues>>
 - Check logs: `journalctl -xe` (post-install script errors)
 - Validate package: `rpmlint dfakeseeder-*.rpm`

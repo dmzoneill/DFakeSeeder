@@ -5,6 +5,7 @@ Provides collapsible sections for:
 - States (All, Seeding, Downloading, Active, Paused, etc.)
 - Trackers (All, individual trackers with counts)
 """
+# isort: skip_file
 
 # fmt: off
 import gi

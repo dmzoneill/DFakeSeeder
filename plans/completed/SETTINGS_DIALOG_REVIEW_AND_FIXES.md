@@ -14,7 +14,7 @@ The settings system is **well-architected** with a modular tab-based structure, 
 
 ### Overall Structure
 
-```
+```text
 SettingsDialog (settings_dialog.py)
 ├── Notebook with 12 tabs
 ├── Global keyboard shortcuts
@@ -27,8 +27,7 @@ BaseSettingsTab (base_tab.py)
 ├── Signal management
 ├── Settings load/save/validate lifecycle
 └── Dependency management
-```
-
+```text
 ### Mixin System
 
 **Five mixins provide reusable functionality** (`settings_mixins.py`):
@@ -42,7 +41,7 @@ BaseSettingsTab (base_tab.py)
 ## Complete Settings Tabs Inventory
 
 | # | Tab Name | File | Lines | Mixins | Status |
-|---|----------|------|-------|--------|--------|
+| --- | ---------- | ------ | ------- | -------- | -------- |
 | 1 | General | `general_tab.py` | 745 | Notification, Translation, Validation | ⚠️ Issues |
 | 2 | Connection | `connection_tab.py` | 482 | Notification, Translation, Validation, Utility | ✅ Working |
 | 3 | Peer Protocol | `peer_protocol_tab.py` | 688 | Notification, Translation, Validation, Utility | ✅ Working |
@@ -149,8 +148,7 @@ def _load_scheduler_settings(self, scheduler_settings: Dict[str, Any]) -> None:
             # Set time on widget (implementation depends on widget type)
             # end_time = scheduler_settings.get("end_time", "06:00")
             pass  # ❌ NOT IMPLEMENTED
-```
-
+```text
 **Problem:**
 - Time widgets exist in UI
 - Load method does nothing with time values
@@ -211,8 +209,7 @@ def close_dialog(self) -> None:
             # TODO: Show error dialog  # ❌ NOT IMPLEMENTED
             logger.warning(f"Settings validation failed: {validation_errors}")
             return
-```
-
+```text
 **Problem:**
 - Validation logic exists
 - Error message is constructed
@@ -230,8 +227,7 @@ def close_dialog(self) -> None:
 widget = self.get_widget("some_widget")
 if widget:
     widget.set_value(some_value)
-```
-
+```text
 **Problem:**
 - Uses `if widget:` pattern (good)
 - But no logging when widget is None
@@ -272,8 +268,7 @@ def _disconnect_signals(self) -> None:
             except Exception:
                 pass  # Ignore errors if already disconnected
         self._signal_handlers.clear()
-```
-
+```text
 **Bad Practice (Most Other Tabs):**
 ```python
 def _connect_signals(self) -> None:
@@ -281,8 +276,7 @@ def _connect_signals(self) -> None:
     if widget:
         widget.connect("signal", self.handler)
     # No handler ID storage, cannot disconnect properly
-```
-
+```text
 **Problem:**
 - Most tabs don't store handler IDs
 - Cannot properly disconnect signals
@@ -309,8 +303,7 @@ def __init__(self, builder: Gtk.Builder, app_settings: AppSettings):
     self._load_settings()     # 2. Load settings into widgets
     self._connect_signals()   # 3. Connect after loading (prevents loops)
     self._setup_dependencies()# 4. Set up widget dependencies
-```
-
+```text
 ### 4. Translation Support
 - TranslationMixin provides dropdown translation
 - Integrates with TranslationManager
@@ -535,8 +528,7 @@ def on_search_changed(self, search_entry):
         # Use fuzzy matching with threshold
         # Show/hide widgets based on match score
         # Highlight matching widgets
-```
-
+```text
 #### Task 1.2: Implement Validation Error Dialog
 
 **Effort:** 1 hour
@@ -563,8 +555,7 @@ def close_dialog(self) -> None:
     # Proceed with close
     self.save_all_settings()
     self.hide()
-```
-
+```text
 #### Task 1.3: Fix Speed Tab Scheduler Time Widgets
 
 **Effort:** 2-3 hours
@@ -587,8 +578,7 @@ def _load_scheduler_settings(self, scheduler_settings: Dict[str, Any]) -> None:
         hours, minutes = map(int, start_time.split(":"))
         # Set hours and minutes on widget
         # Implementation depends on widget type
-```
-
+```text
 ### Phase 2: Feature Completion (Priority: MEDIUM)
 
 #### Task 2.1: Implement Log File Browser
@@ -613,8 +603,7 @@ def on_log_file_browse_clicked(self, button: Gtk.Button) -> None:
     # Similar to GeneralTab.on_watch_folder_browse_clicked()
 
     dialog.save(parent_window, None, on_file_selected)
-```
-
+```text
 #### Task 2.2: Implement Config Export/Import
 
 **Effort:** 3-4 hours
@@ -645,8 +634,7 @@ def on_config_import_clicked(self, button):
     dialog.set_title("Import Settings")
     # Add file filter for .json
     dialog.open(self.window, None, self._import_settings_file)
-```
-
+```text
 #### Task 2.3: Implement Reset All Settings
 
 **Effort:** 2 hours
@@ -671,8 +659,7 @@ def on_reset_all_clicked(self, button):
     dialog.set_default_button(0)
 
     dialog.choose(self.window, None, self._confirm_reset_all)
-```
-
+```text
 #### Task 2.4: Implement Shortcuts Configuration Dialog
 
 **Effort:** 4-6 hours
@@ -696,8 +683,7 @@ class ShortcutsDialog(Gtk.Window):
         # Allow rebinding
         # Validate conflicts
         # Save to settings
-```
-
+```text
 ### Phase 3: Enhancements (Priority: LOW)
 
 #### Task 3.1: Implement Watch Folder Monitoring
@@ -748,8 +734,7 @@ class WatchFolderService:
         if self.observer:
             self.observer.stop()
             self.observer.join()
-```
-
+```text
 #### Task 3.2: Add Widget Existence Validation
 
 **Effort:** 2-3 hours
@@ -780,8 +765,7 @@ class BaseSettingsTab:
             self.logger.error(f"Tab {self.tab_name} missing {len(missing_widgets)} widgets")
             return False
         return True
-```
-
+```text
 #### Task 3.3: Implement Signal Connection Best Practices
 
 **Effort:** 3-4 hours
@@ -806,8 +790,7 @@ def _connect_signals(self) -> None:
         if widget:
             handler_id = widget.connect(signal_name, handler)
             self._signal_handlers[widget_name] = (widget, handler_id)
-```
-
+```text
 #### Task 3.4: Add Settings Import Validation
 
 **Effort:** 2 hours

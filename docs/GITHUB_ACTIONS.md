@@ -21,8 +21,7 @@ pypi-extension: "true"
 deb-build: "true"
 rpm-build: "true"
 docker-build: "true"
-```
-
+```text
 ### 2. RPM End-to-End Tests (`.github/workflows/rpm-e2e-tests.yml`)
 
 **Triggers:**
@@ -254,35 +253,31 @@ This is useful for:
 **Strategy:**
 ```yaml
 fail-fast: false
-```
-
+```text
 This ensures all OS versions are tested even if one fails, providing comprehensive results.
 
 **Continuation:**
 ```yaml
 continue-on-error: true
-```
-
+```text
 Used for non-critical steps like linting to prevent blocking builds on warnings.
 
 ## Local Testing
 
 Before pushing changes, you can run tests locally:
 
-### RPM E2E Tests
+### Running RPM E2E Tests Locally
 ```bash
 # Build and test RPM
 make rpm
 make test-e2e-rpm
-```
-
-### PyPI E2E Tests
+```text
+### Running PyPI E2E Tests Locally
 ```bash
 # Build and test PyPI package
 make pypi-build
 make test-e2e-pypi
-```
-
+```text
 This provides faster feedback than waiting for CI/CD.
 
 ## Debugging Failed Tests
@@ -350,10 +345,9 @@ All PR commits show test status:
 
 Add to README.md:
 ```markdown
-![RPM E2E Tests](https://github.com/dmzoneill/DFakeSeeder/workflows/RPM%20End-to-End%20Tests/badge.svg)
-![PyPI E2E Tests](https://github.com/dmzoneill/DFakeSeeder/workflows/PyPI%20End-to-End%20Tests/badge.svg)
-```
-
+![RPM E2E Tests](<<https://github.com/dmzoneill/DFakeSeeder/workflows/RPM%20End-to-End%20Tests/badge.svg>>)
+![PyPI E2E Tests](<<https://github.com/dmzoneill/DFakeSeeder/workflows/PyPI%20End-to-End%20Tests/badge.svg>>)
+```text
 ## Future Enhancements
 
 Potential improvements to CI/CD:

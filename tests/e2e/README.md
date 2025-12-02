@@ -21,8 +21,7 @@ This E2E testing system provides **fully automated** testing for:
 ```bash
 # From project root
 make test-e2e
-```
-
+```text
 This will:
 1. Build the RPM package
 2. Create a Docker/Podman test container
@@ -45,21 +44,19 @@ make test-e2e-uninstall
 
 # Fast mode (skip build, use existing RPM)
 make test-e2e-fast
-```
-
+```text
 ## Test Architecture
 
 ### Components
 
-```
+```text
 tests/e2e/
 ├── Dockerfile.fedora              # Test container definition
 ├── test_rpm_installation.sh       # Installation and file verification tests
 ├── test_rpm_launch.sh             # Application launch and GUI tests
 ├── run_e2e_tests.sh               # Main test orchestrator
 └── README.md                      # This file
-```
-
+```text
 ### Test Flow
 
 ```mermaid
@@ -73,8 +70,7 @@ graph TD
     G --> H[Verify Processes]
     H --> I[Run Uninstall Tests]
     I --> J[Generate Report]
-```
-
+```text
 ## Test Details
 
 ### 1. Installation Tests (`test_rpm_installation.sh`)
@@ -118,7 +114,7 @@ graph TD
 - System libraries (GTK4, GObject)
 
 **Example Output:**
-```
+```text
 ==========================================
 RPM Installation End-to-End Tests
 ==========================================
@@ -139,8 +135,7 @@ Tests Failed: 0
 Total Tests:  42
 
 [INFO] All tests passed! ✓
-```
-
+```text
 ### 2. Launch Tests (`test_rpm_launch.sh`)
 
 **Tests Performed** (15+ individual tests):
@@ -178,7 +173,7 @@ Total Tests:  42
 - Process lifecycle management
 
 **Example Output:**
-```
+```text
 ==========================================
 Application Launch End-to-End Tests
 ==========================================
@@ -200,8 +195,7 @@ Tests Failed: 0
 Total Tests:  16
 
 [INFO] All tests passed! ✓
-```
-
+```text
 ### 3. Uninstall Tests
 
 **Tests Performed:**
@@ -239,8 +233,7 @@ sudo dnf install docker
 
 # Make scripts executable
 chmod +x tests/e2e/*.sh
-```
-
+```text
 ### Manual Test Execution
 
 ```bash
@@ -254,8 +247,7 @@ make test-e2e
 make test-e2e-install
 make test-e2e-launch
 make test-e2e-uninstall
-```
-
+```text
 ### Advanced Usage
 
 ```bash
@@ -264,8 +256,7 @@ tests/e2e/run_e2e_tests.sh --skip-build   # Use existing RPM
 tests/e2e/run_e2e_tests.sh --skip-image   # Use existing container
 tests/e2e/run_e2e_tests.sh --test install  # Run only installation tests
 tests/e2e/run_e2e_tests.sh --cleanup      # Clean artifacts after tests
-```
-
+```text
 ### Direct Container Testing
 
 ```bash
@@ -291,8 +282,7 @@ podman run --rm --privileged \
     sudo rpm -ivh \"\$RPM_FILE\"
     /bin/bash /workspace/tests/test_rpm_launch.sh
   "
-```
-
+```text
 ## CI/CD Integration
 
 ### GitHub Actions
@@ -323,23 +313,21 @@ GitHub Actions uploads:
 ```bash
 # Simulate GitHub Actions locally
 act push --workflows .github/workflows/rpm-e2e-tests.yml
-```
-
+```text
 ## Test Reports
 
 ### Locations
 
-```
+```text
 rpmbuild/test-artifacts/
 ├── e2e-test-report.txt          # Summary report
 ├── installation-test.log        # Installation test output
 ├── launch-test.log              # Launch test output
 └── uninstall-test.log           # Uninstall test output
-```
-
+```text
 ### Report Format
 
-```
+```text
 DFakeSeeder E2E Test Report
 ===========================
 Date: 2024-11-27 12:00:00
@@ -354,8 +342,7 @@ Test Results:
 ✓ Uninstall Tests: PASSED (3 tests)
 
 Full details available in test-artifacts directory
-```
-
+```text
 ## Troubleshooting
 
 ### Common Issues
@@ -372,8 +359,7 @@ podman pull fedora:latest
 # Rebuild without cache
 cd tests/e2e
 podman build --no-cache -t dfakeseeder-e2e-test:latest -f Dockerfile.fedora .
-```
-
+```text
 #### 2. RPM Not Found
 
 **Problem**: Tests can't find RPM file
@@ -388,8 +374,7 @@ find rpmbuild/RPMS -name "*.rpm"
 
 # Verify RPM path is correct
 ls -la rpmbuild/RPMS/noarch/dfakeseeder-*.rpm
-```
-
+```text
 #### 3. Xvfb Fails to Start
 
 **Problem**: Virtual display errors
@@ -400,8 +385,7 @@ ls -la rpmbuild/RPMS/noarch/dfakeseeder-*.rpm
 podman run --privileged ...
 
 # Or install additional X11 dependencies in Dockerfile
-```
-
+```text
 #### 4. GUI Tests Fail in Headless
 
 **Problem**: GTK application won't start
@@ -418,8 +402,7 @@ podman run --privileged ...
 **Solution**:
 ```bash
 chmod +x tests/e2e/*.sh
-```
-
+```text
 ## Best Practices
 
 ### For Developers
@@ -503,7 +486,7 @@ For issues with E2E tests:
 - Check logs in `rpmbuild/test-artifacts/`
 - Review test script output
 - Verify container engine is working: `podman run hello-world`
-- GitHub Issues: https://github.com/dmzoneill/DFakeSeeder/issues
+- GitHub Issues: <<https://github.com/dmzoneill/DFakeSeeder/issues>>
 
 ---
 

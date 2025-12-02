@@ -116,8 +116,7 @@ self.model.connect("selection-changed", self.on_selection_changed)
 # Line 129-130: Factory signals connected, NEVER disconnected
 factory.connect("setup", self.setup_cell, property_name)
 factory.connect("bind", self.bind_cell, property_name)
-```
-
+```text
 **Impact:** Every time a tab is created or recreated, all these connections remain in memory forever, keeping the entire component tree alive.
 
 ---
@@ -166,8 +165,7 @@ def cleanup(self):
     if self.store:
         self.store.remove_all()  # Clear all items
         self.store = None
-```
-
+```text
 **Impact:** Every torrent, peer, and connection added to these stores remains in memory forever, even after removal from the UI.
 
 ---
@@ -180,7 +178,7 @@ Components store strong references to each other (model ↔ view, parent ↔ chi
 ### Circular Reference Patterns
 
 Found in **23 files**:
-```
+```text
 d_fake_seeder/components/component/toolbar.py
 d_fake_seeder/components/component/torrent_details/notebook.py
 d_fake_seeder/components/component/torrents.py
@@ -188,8 +186,7 @@ d_fake_seeder/components/component/torrent_details/base_tab.py
 d_fake_seeder/view.py
 d_fake_seeder/controller.py
 # ... 17 more files
-```
-
+```text
 #### Example Circular References
 
 **Model → Settings → Model**
@@ -198,8 +195,7 @@ d_fake_seeder/controller.py
 self.settings = AppSettings.get_instance()
 self.settings.connect("settings-attribute-changed", self.handle_settings_changed)
 # Settings keeps reference to Model via signal connection
-```
-
+```text
 **PeersTab Circular Chain**
 ```python
 # peers_tab.py lines 40-42
@@ -208,8 +204,7 @@ self._incoming_connections = None     # Stores connection tab reference
 self._outgoing_connections = None     # Stores connection tab reference
 
 # These objects likely store references back to PeersTab
-```
-
+```text
 **Component → Model → Component**
 ```python
 # All components store model reference
@@ -219,14 +214,12 @@ self.model = model
 self.model.connect("data-changed", self.update_view)
 
 # Creates Model → Component → Model cycle
-```
-
+```text
 ### Zero Usage of Weak References
 ```bash
 $ grep -r "weakref\|WeakRef" d_fake_seeder/**/*.py
 # NO RESULTS
-```
-
+```text
 **Impact:** Component trees cannot be garbage collected even when no longer visible or needed. Every tab opened and closed remains in memory forever.
 
 ---
@@ -240,22 +233,20 @@ Lambda functions and closures passed to signal handlers capture strong reference
 - **49 lambda/closure usages** across 25 files
 
 ### Problem Files
-```
+```text
 d_fake_seeder/view.py:2
 d_fake_seeder/model.py:3
 d_fake_seeder/dfakeseeder_tray.py:4
 d_fake_seeder/lib/seeding_profile_manager.py:11
 # ... 21 more files
-```
-
+```text
 ### Critical Examples
 
 **view.py Line 180**
 ```python
 action.connect("activate", lambda action, param: self.quit())
 # Lambda captures 'self' (View instance), preventing GC
-```
-
+```text
 **incoming_connections_tab.py Lines 185, 190**
 ```python
 def setup_cell(self, widget, item, property_name):
@@ -263,8 +254,7 @@ def setup_cell(self, widget, item, property_name):
         obj = item.get_item()
         # ... uses self, widget, item, property_name
     GLib.idle_add(setup_when_idle)  # Idle callback keeps closure alive
-```
-
+```text
 **Impact:** Each lambda/closure creates a strong reference chain that prevents cleanup of the entire component hierarchy.
 
 ---
@@ -275,15 +265,14 @@ def setup_cell(self, widget, item, property_name):
 Timeout and idle sources created with `GLib.timeout_add()` and `GLib.idle_add()` are not always properly removed, keeping callbacks and their captured references alive.
 
 ### Affected Files (14 total)
-```
+```text
 d_fake_seeder/view.py
 d_fake_seeder/domain/torrent/connection_manager.py
 d_fake_seeder/components/component/torrent_details/notebook.py
 d_fake_seeder/components/component/torrent_details/incoming_connections_tab.py
 d_fake_seeder/components/component/torrent_details/outgoing_connections_tab.py
 # ... 9 more
-```
-
+```text
 ### Partial Cleanup Example
 
 **view.py** has **some** cleanup (lines 472-518):
@@ -296,8 +285,7 @@ def _cleanup_timers(self):
     # Cleans up connection removal timers
     for timer_id in incoming_tab.removal_timers.values():
         GLib.source_remove(timer_id)
-```
-
+```text
 However, many timeout sources throughout the codebase are **NOT** tracked or cleaned up.
 
 ### Missing Cleanup Patterns
@@ -308,11 +296,10 @@ GLib.idle_add(self.some_callback)
 
 # CORRECT - timeout tracked and removed
 self.timeout_id = GLib.idle_add(self.some_callback)
-# Later in cleanup:
+# Later in cleanup
 if self.timeout_id:
     GLib.source_remove(self.timeout_id)
-```
-
+```text
 **Impact:** Background callbacks continue running even after components are "destroyed", keeping them alive indefinitely.
 
 ---
@@ -327,12 +314,11 @@ if self.timeout_id:
 - **0 bindings** properly tracked or unbound
 
 ### Affected Files
-```
+```text
 d_fake_seeder/components/component/torrents.py: 3 bindings
 d_fake_seeder/components/component/torrent_details/outgoing_connections_tab.py: 4 bindings
 d_fake_seeder/components/component/torrent_details/incoming_connections_tab.py: 4 bindings
-```
-
+```text
 ### Critical Example - torrents.py
 
 **Lines 530, 541, 549:**
@@ -364,8 +350,7 @@ item_data.bind_property(
 )
 
 # PROBLEM: GBinding objects not stored, cannot be unbound later!
-```
-
+```text
 ### Missing Cleanup Pattern
 ```python
 # CORRECT approach - track bindings
@@ -374,12 +359,11 @@ self._bindings = []
 binding = item_data.bind_property(...)
 self._bindings.append(binding)
 
-# Later in cleanup:
+# Later in cleanup
 for binding in self._bindings:
     binding.unbind()
 self._bindings.clear()
-```
-
+```text
 **Impact:** Every data binding creates a permanent connection between model and view objects, preventing either from being garbage collected.
 
 ---
@@ -390,7 +374,7 @@ self._bindings.clear()
 Asyncio event loops, tasks, and connections created in threads may not be properly cleaned up, keeping async operations and their resources alive.
 
 ### Affected Files (11 total)
-```
+```text
 d_fake_seeder/domain/torrent/peer_server.py
 d_fake_seeder/domain/torrent/peer_connection.py
 d_fake_seeder/domain/torrent/peer_protocol_manager.py
@@ -402,8 +386,7 @@ d_fake_seeder/domain/torrent/protocols/transport/utp_connection.py
 d_fake_seeder/domain/torrent/protocols/transport/utp_manager.py
 d_fake_seeder/domain/torrent/seeders/dht_seeder.py
 d_fake_seeder/domain/torrent/shared_async_executor.py
-```
-
+```text
 ### Partial Cleanup Example - peer_server.py
 
 **Good cleanup** (lines 96-143):
@@ -422,15 +405,13 @@ def stop(self):
 
     # Wait for thread
     self.server_thread.join(timeout=join_timeout)
-```
-
+```text
 **Missing cleanup:**
 ```python
 def _run_server(self):
     asyncio.new_event_loop().run_until_complete(self._async_server())
     # Event loop NOT stored, NOT closed!
-```
-
+```text
 ### Proper Pattern
 ```python
 def _run_server(self):
@@ -439,8 +420,7 @@ def _run_server(self):
         self.loop.run_until_complete(self._async_server())
     finally:
         self.loop.close()  # Properly close event loop
-```
-
+```text
 **Impact:** Event loops and their associated tasks may continue running in background threads even after shutdown, consuming CPU and memory.
 
 ---
@@ -466,8 +446,7 @@ class MyComponent:
         for obj, handler_id in self._signal_handlers:
             obj.disconnect(handler_id)
         self._signal_handlers.clear()
-```
-
+```text
 ### Priority 2 - ListStore Cleanup (CRITICAL)
 
 Add cleanup for all 5 ListStore instances:
@@ -478,8 +457,7 @@ class MyComponent:
         if hasattr(self, 'store') and self.store:
             self.store.remove_all()
             self.store = None
-```
-
+```text
 ### Priority 3 - Property Binding Tracking (HIGH)
 
 Track and unbind all property bindings:
@@ -497,8 +475,7 @@ class MyComponent:
         for binding in self._bindings:
             binding.unbind()
         self._bindings.clear()
-```
-
+```text
 ### Priority 4 - Use Weak References (HIGH)
 
 Break circular reference chains:
@@ -516,8 +493,7 @@ class MyComponent:
             # Model was garbage collected
             return None
         return model
-```
-
+```text
 ### Priority 5 - Timeout Source Tracking (MEDIUM)
 
 Track and remove all timeout sources:
@@ -535,8 +511,7 @@ class MyComponent:
         for timeout_id in self._timeout_ids:
             GLib.source_remove(timeout_id)
         self._timeout_ids.clear()
-```
-
+```text
 ### Priority 6 - Async Loop Cleanup (MEDIUM)
 
 Properly close event loops:
@@ -555,8 +530,7 @@ class AsyncComponent:
             # Close loop
             self.loop.close()
             self.loop = None
-```
-
+```text
 ---
 
 ## Testing Recommendations
@@ -619,7 +593,7 @@ class AsyncComponent:
 ## Summary Statistics
 
 | Category | Total | With Cleanup | Without Cleanup | % Failing |
-|----------|-------|--------------|-----------------|-----------|
+| ---------- | ------- | -------------- | ----------------- | ----------- |
 | Signal Connections | 37 files | 2 files | 35 files | **94.6%** |
 | ListStore Instances | 5 instances | 0 instances | 5 instances | **100%** |
 | Property Bindings | 11 bindings | 0 bindings | 11 bindings | **100%** |

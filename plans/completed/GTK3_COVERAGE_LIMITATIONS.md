@@ -20,13 +20,11 @@ from gi.repository import Gtk as Gtk4
 
 gi.require_version('Gtk', '3.0')  # GTK3 - FAILS!
 from gi.repository import Gtk as Gtk3
-```
-
+```text
 Python crashes with:
-```
+```text
 RuntimeError: Namespace Gtk not available for version 3.0
-```
-
+```text
 ## Testing Strategies Evaluated
 
 ### 1. Process Isolation with pytest-forked ✅ (Current Approach)
@@ -53,8 +51,7 @@ RuntimeError: Namespace Gtk not available for version 3.0
 sys.modules['gi'] = MagicMock()
 sys.modules['gi.repository.Gtk'] = MagicMock()
 # ... etc
-```
-
+```text
 **Result**: Coverage reports "Module was never imported" because only mocks execute, not real code.
 
 ### 3. Separate Test Process (Not Attempted)
@@ -106,8 +103,7 @@ def test_tray_application_init():
 def test_main_function_exists():
     """Verify main() entry point exists"""
     # Tests entry point structure
-```
-
+```text
 These tests validate:
 - ✅ Module can be imported
 - ✅ Classes are defined correctly
@@ -177,8 +173,7 @@ pipenv run pytest
 
 # GTK3 tests run in subprocess, don't affect coverage
 # Coverage excludes dfakeseeder_tray.py and gtk3_implementation.py
-```
-
+```text
 ## Future Improvements
 
 Potential approaches to improve GTK3 testing coverage:
@@ -205,7 +200,7 @@ Potential approaches to improve GTK3 testing coverage:
 
 ## References
 
-- [pytest-forked Documentation](https://github.com/pytest-dev/pytest-forked)
+- [pytest-forked Documentation](<<https://github.com/pytest-dev/pytest-forked>>)
 - [GObject Introspection Multi-Version Issue](https://gitlab.gnome.org/GNOME/gobject-introspection/-/issues/3)
 - [GTK3 Testing Best Practices](https://wiki.gnome.org/Projects/GTK/Testing)
 

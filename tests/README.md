@@ -16,7 +16,7 @@ This test suite follows the guidelines in `/plans/TESTING_PLAN.md` with strict r
 
 ## Directory Structure
 
-```
+```text
 tests/
 ├── unit/                    # Unit tests (fast, isolated)
 │   ├── domain/             # Domain logic tests
@@ -29,8 +29,7 @@ tests/
 │   └── common_fixtures.py  # Reusable pytest fixtures
 ├── conftest.py            # Root conftest with base fixtures
 └── README.md              # This file
-```
-
+```text
 ## Running Tests
 
 ### Basic Test Execution
@@ -50,8 +49,7 @@ pipenv run pytest tests/unit/domain/test_app_settings.py::test_app_settings_sing
 
 # Run tests matching pattern
 pipenv run pytest -k "test_torrent"
-```
-
+```text
 ### Test Categories
 
 ```bash
@@ -66,8 +64,7 @@ pipenv run pytest -m requires_gtk
 
 # Exclude slow tests
 pipenv run pytest -m "not slow"
-```
-
+```text
 ### Coverage Reports
 
 ```bash
@@ -79,8 +76,7 @@ open htmlcov/index.html
 
 # Coverage with missing lines
 pipenv run pytest --cov=d_fake_seeder --cov-report=term-missing
-```
-
+```text
 ## Writing Tests
 
 ### Test Structure
@@ -100,8 +96,7 @@ def test_example_functionality():
     # Assert - Verify the expected outcome
     assert result == expected_value
     mock_settings.method_call.assert_called_once()
-```
-
+```text
 ### Naming Conventions
 
 - Test files: `test_<module_name>.py`
@@ -119,8 +114,7 @@ def test_peer_connection_timeout_handling():
 def test_1():
 def test_settings():
 def test_torrent():
-```
-
+```text
 ### Using Fixtures
 
 Request fixtures explicitly (NO autouse):
@@ -134,8 +128,7 @@ def test_with_temp_config(temp_config_dir):
     # Act & Assert
     assert temp_config_dir.exists()
     assert (temp_config_dir / "torrents").exists()
-```
-
+```text
 ### Mocking with unittest.mock
 
 Use the `mocker` fixture (pytest-mock) or `unittest.mock` directly:
@@ -167,8 +160,7 @@ def test_with_context_manager():
 
         # Assert
         assert result == 42
-```
-
+```text
 ### Testing Async Code
 
 ```python
@@ -185,8 +177,7 @@ async def test_async_function():
 
     # Assert
     assert result == expected_value
-```
-
+```text
 ### Test Timeouts
 
 Unit tests have a 100ms timeout enforced in pytest.ini:
@@ -204,8 +195,7 @@ def test_slow_integration():
     """Integration test with longer timeout."""
     result = slow_integration_function()
     assert result is not None
-```
-
+```text
 ## Available Fixtures
 
 ### Base Fixtures (tests/conftest.py)
@@ -305,6 +295,6 @@ CI requirements:
 ## References
 
 - Main Testing Plan: `/plans/TESTING_PLAN.md`
-- Pytest Documentation: https://docs.pytest.org/
-- unittest.mock Documentation: https://docs.python.org/3/library/unittest.mock.html
-- Coverage.py Documentation: https://coverage.readthedocs.io/
+- [Pytest Documentation](https://docs.pytest.org/)
+- [unittest.mock Documentation](https://docs.python.org/3/library/unittest.mock.html)
+- [Coverage.py Documentation](https://coverage.readthedocs.io/)

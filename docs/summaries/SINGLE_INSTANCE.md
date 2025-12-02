@@ -64,8 +64,7 @@ class DFakeSeeder(Gtk.Application):
         # First instance - initialize UI
         # ... normal initialization ...
         self.ui_initialized = True
-```
-
+```text
 **User Feedback**: GTK4 AlertDialog with message about existing instance
 
 ### Method 2: D-Bus Service Check
@@ -107,8 +106,7 @@ class DBusSingleInstance(SingleInstanceChecker):
             if "NameHasNoOwner" in str(e):
                 return False  # No instance running
         return False
-```
-
+```text
 **User Feedback**: Console message before GTK initialization
 
 ### Method 3: Unix Socket Lock
@@ -146,8 +144,7 @@ class SocketLock(SingleInstanceChecker):
             return False  # Successfully acquired lock
         except OSError:
             return True   # Another instance holds lock
-```
-
+```text
 **User Feedback**: Included in multi-method detection message
 
 ### Method 4: PID File Lock
@@ -192,16 +189,14 @@ class PIDFileLock(SingleInstanceChecker):
             return True
         except OSError:
             return False
-```
-
+```text
 **User Feedback**: Included in multi-method detection message
 
 ## Defense-in-Depth Strategy
 
 The multi-method approach provides **layered protection**:
 
-### Main Application Check Order:
-
+### Main Application Check Order
 1. **D-Bus Check** (fastest, pre-GTK)
    - Detects existing instance before GTK initialization
    - Exits early if another instance detected
@@ -218,8 +213,7 @@ The multi-method approach provides **layered protection**:
    - Final layer within GTK framework
    - Handles case where previous checks fail
 
-### Tray Application Check Order:
-
+### Tray Application Check Order
 1. **Socket Lock** (primary, GTK3 has no built-in support)
 2. **PID File Lock** (secondary safety)
 
@@ -227,8 +221,7 @@ The multi-method approach provides **layered protection**:
 
 ## User Experience
 
-### When Second Instance Detected:
-
+### When Second Instance Detected
 **Main Application**:
 - Console message with detection method
 - GTK4 AlertDialog if GTK initialized
@@ -240,10 +233,9 @@ The multi-method approach provides **layered protection**:
 - Console fallback if dialog fails
 - Clean exit with code 0
 
-### Dialog Messages:
-
+### Dialog Messages
 **Main App** (GTK4):
-```
+```text
 Title: DFakeSeeder Already Running
 
 Message: DFakeSeeder is already running. The existing window
@@ -252,10 +244,9 @@ has been brought to front.
 Detection method: <method_name>
 
 [OK]
-```
-
+```text
 **Tray App** (GTK3):
-```
+```text
 Title: DFakeSeeder Tray Already Running
 
 Message: Another instance of DFakeSeeder Tray is already running.
@@ -265,12 +256,10 @@ Detection method: <method_name>
 Please check your system tray.
 
 [OK]
-```
-
+```text
 ## Testing
 
-### Manual Testing:
-
+### Manual Testing
 ```bash
 # Test main application
 make run-debug &
@@ -281,15 +270,12 @@ make run-debug  # Should detect existing instance
 python3 d_fake_seeder/dfakeseeder_tray.py &
 sleep 3
 python3 d_fake_seeder/dfakeseeder_tray.py  # Should detect existing instance
-```
-
-### Automated Testing:
-
+```text
+### Automated Testing
 ```bash
 # Run comprehensive test suite
 ./test_single_instance.sh
-```
-
+```text
 The test script verifies:
 1. GTK4 single instance for main app
 2. D-Bus detection for main app
@@ -297,9 +283,8 @@ The test script verifies:
 4. PID file lock for main app
 5. Socket + PID lock for tray app
 
-### Expected Output:
-
-```
+### Expected Output
+```text
 ==========================================
 DFakeSeeder Single Instance Test Suite
 ==========================================
@@ -326,38 +311,32 @@ Tests Passed: 10
 Tests Failed: 0
 All tests passed! ✓
 ==========================================
-```
-
+```text
 ## Technical Implementation
 
-### File Structure:
-
-```
+### File Structure
+```text
 d_fake_seeder/
 ├── lib/util/single_instance.py       # Core implementation
 ├── dfakeseeder.py                     # Main app with all 4 methods
 └── dfakeseeder_tray.py               # Tray app with Socket + PID
 
 test_single_instance.sh                # Automated test suite
-```
-
-### Lock File Locations:
-
+```text
+### Lock File Locations
 - Main app socket: `\0dfakeseeder_main` (abstract)
 - Main app PID: `~/.config/dfakeseeder/dfakeseeder-main.lock`
 - Tray socket: `\0dfakeseeder_tray` (abstract)
 - Tray PID: `~/.config/dfakeseeder/dfakeseeder-tray.lock`
 
-### Cleanup:
-
+### Cleanup
 All methods implement automatic cleanup:
 - **GTK4**: Framework handles cleanup
 - **D-Bus**: Service automatically unregistered on exit
 - **Socket**: Kernel releases socket on process exit
 - **PID File**: `atexit` handler removes file
 
-### Error Handling:
-
+### Error Handling
 Each method gracefully handles errors:
 - Failed checks log debug message
 - Returns `False` (no existing instance)

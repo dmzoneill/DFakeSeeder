@@ -20,7 +20,7 @@ GUI tests verify end-to-end user workflows by launching the actual application a
 
 ## Test Organization
 
-```
+```text
 tests/
 └── gui/                              # GUI automation tests
     ├── conftest.py                   # GUI-specific fixtures and hooks
@@ -31,8 +31,7 @@ tests/
     ├── test_window_state_gui.py      # Window management workflows
     └── screenshots/                  # Failure screenshots (gitignored)
         └── .gitignore
-```
-
+```text
 ## GUI Test Constraints
 
 - **Timeout**: 60 seconds per test (GUI tests are slow)
@@ -976,15 +975,13 @@ def pytest_runtest_makereport(item, call):
                 print(f"Screenshot saved: {screenshot_path}")
             except Exception as e:
                 print(f"Failed to save screenshot: {e}")
-```
-
+```text
 ### pytest.ini Markers
 
 ```ini
 markers =
     gui: GUI automation tests (very slow, requires display or xvfb)
-```
-
+```text
 ## Makefile Targets
 
 ```makefile
@@ -998,8 +995,7 @@ test-gui:
 # Run GUI tests headlessly (CI/CD)
 test-gui-headless:
 	pipenv run pytest tests/gui -v -m gui --xvfb
-```
-
+```text
 ## CI/CD Integration
 
 ```yaml
@@ -1042,8 +1038,7 @@ jobs:
       with:
         name: gui-test-screenshots
         path: tests/gui/screenshots/*.png
-```
-
+```text
 ## Test Execution Guidelines
 
 ### Local Development
@@ -1060,8 +1055,7 @@ pipenv run pytest tests/gui/test_torrent_workflow_gui.py::test_add_torrent_via_t
 
 # Run with verbose Dogtail output
 pipenv run pytest tests/gui -v -s -m gui
-```
-
+```text
 ### CI/CD Execution
 
 ```bash
@@ -1070,11 +1064,10 @@ make test-gui-headless
 
 # Or directly
 xvfb-run -a pipenv run pytest tests/gui -v -m gui
-```
-
+```text
 ## Best Practices
 
-### DO:
+### DO
 - Use explicit waits (`time.sleep()`) after actions that trigger UI updates
 - Verify widgets via accessibility tree (name, role, visible state)
 - Include cleanup in `finally` blocks or fixtures
@@ -1082,7 +1075,7 @@ xvfb-run -a pipenv run pytest tests/gui -v -m gui
 - Take screenshots on failure for debugging
 - Use descriptive widget names for better test maintainability
 
-### DON'T:
+### DON'T
 - Test business logic (covered by unit tests)
 - Test internal application state (use integration tests)
 - Make assumptions about timing (add explicit waits)
@@ -1099,17 +1092,17 @@ xvfb-run -a pipenv run pytest tests/gui -v -m gui
 
 ## Maintenance
 
-### Weekly:
+### Weekly
 - Review GUI test failures from nightly builds
 - Update screenshots reference if UI changes
 - Verify accessibility labels on new widgets
 
-### Per Release:
+### Per Release
 - Run full GUI test suite locally
 - Update tests for UI/UX changes
 - Verify all tests pass before release
 
-### Quarterly:
+### Quarterly
 - Audit slow GUI tests and optimize
 - Review test coverage for new features
 - Update Dogtail/pytest-xvfb versions

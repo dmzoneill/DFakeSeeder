@@ -173,8 +173,7 @@ This plan outlines a comprehensive modernization of the D' Fake Seeder user inte
 #main_toolbar image {
     -gtk-icon-size: 24px;
 }
-```
-
+```text
 **Benefits**:
 - Larger click targets (48px vs ~32px)
 - Visual feedback on hover
@@ -207,8 +206,7 @@ This plan outlines a comprehensive modernization of the D' Fake Seeder user inte
     margin: 0 6px;
     opacity: 0.9;
 }
-```
-
+```text
 **Benefits**:
 - Professional dark footer design
 - Better contrast with main content
@@ -234,8 +232,7 @@ paned {
 #main_box {
     background: #f5f5f7; /* Light gray background */
 }
-```
-
+```text
 **Benefits**:
 - Softer, friendlier appearance
 - Modern aesthetic
@@ -274,8 +271,7 @@ button.suggested-action {
 button.destructive-action {
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
 }
-```
-
+```text
 **Deliverables**:
 - [ ] Update `styles.css` with Phase 1 styles
 - [ ] Test on light theme
@@ -338,8 +334,7 @@ columnview listitem:selected {
 columnview listitem:nth-child(even) {
     background: rgba(0, 0, 0, 0.02);
 }
-```
-
+```text
 **Benefits**:
 - Clear visual hierarchy
 - Better readability with larger rows
@@ -379,8 +374,7 @@ columnview progressbar > trough > progress {
 .progress-simple > trough > progress {
     background: linear-gradient(90deg, #4285f4 0%, #2563eb 100%);
 }
-```
-
+```text
 **Benefits**:
 - Eye-catching visual element
 - Clear progress indication
@@ -426,8 +420,7 @@ columnview progressbar > trough > progress {
     background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
     color: white;
 }
-```
-
+```text
 **Python Integration** (Optional):
 - Modify `torrents.py` to add CSS classes to status labels
 - Create status badge widgets instead of plain labels
@@ -479,8 +472,7 @@ notebook > stack {
     background: white;
     border-radius: 0 0 12px 12px;
 }
-```
-
+```text
 **Benefits**:
 - Modern, friendly tab design
 - Clear active state
@@ -573,8 +565,7 @@ notebook > stack {
         background: rgba(255, 255, 255, 0.1);
     }
 }
-```
-
+```text
 **Testing Requirements**:
 - Test with GNOME dark theme
 - Test with KDE Breeze Dark
@@ -632,8 +623,7 @@ columnview progressbar > trough > progress {
 #main_toolbar button:hover {
     transform: translateY(-2px) scale(1.05);
 }
-```
-
+```text
 **Performance Considerations**:
 - Use `will-change` for animated properties
 - Limit animations to visible elements
@@ -674,8 +664,7 @@ columnview progressbar > trough > progress {
 scrolledwindow {
     /* Inherits card-like styling */
 }
-```
-
+```text
 **XML Changes** (if implementing):
 - Add CSS classes to major container boxes
 - Wrap sections in GtkBox with "card" class
@@ -705,8 +694,7 @@ columnview listitem:selected {
 }
 
 /* etc... */
-```
-
+```text
 **Python Integration** (Optional):
 - Add accent color picker to settings
 - Apply CSS dynamically via `Gtk.CssProvider`
@@ -727,15 +715,14 @@ columnview listitem:selected {
 ### CSS Organization
 
 **Recommended File Structure**:
-```
+```text
 d_fake_seeder/components/ui/css/
 ├── styles.css              (main stylesheet - keep current)
 ├── _variables.css          (color variables, spacing)
 ├── _components.css         (individual component styles)
 ├── _dark-mode.css          (dark mode overrides)
 └── _animations.css         (transitions, keyframes)
-```
-
+```text
 **Alternative**: Keep single `styles.css` file (simpler, current approach)
 
 ### GTK4 CSS Compatibility
@@ -1032,8 +1019,7 @@ d_fake_seeder/components/ui/css/
 @define-color accent_green #22c55e;
 @define-color accent_yellow #f59e0b;
 @define-color accent_red #ef4444;
-```
-
+```text
 **Dark Mode**:
 ```css
 @define-color bg_primary_dark #1e1e2e;
@@ -1046,12 +1032,11 @@ d_fake_seeder/components/ui/css/
 @define-color accent_green_dark #a6e3a1;
 @define-color accent_yellow_dark #f9e2af;
 @define-color accent_red_dark #f38ba8;
-```
-
+```text
 ### C. Before/After Screenshots
 
 **Planned Screenshot Locations**:
-```
+```text
 docs/screenshots/modernization/
 ├── before/
 │   ├── toolbar-before.png
@@ -1061,8 +1046,7 @@ docs/screenshots/modernization/
 ├── after-phase1/
 ├── after-phase2/
 └── after-phase3/
-```
-
+```text
 ---
 
 ## Document Changelog

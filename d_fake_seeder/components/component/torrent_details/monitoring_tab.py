@@ -4,6 +4,7 @@ Monitoring Tab - Real-time system metrics visualization.
 Displays comprehensive metrics about the running application including
 CPU, memory, file descriptors, network, threads, and more.
 """
+# isort: skip_file
 
 # fmt: off
 import gi

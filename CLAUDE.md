@@ -28,8 +28,7 @@ make run-debug-docker
 
 # Production run
 make run
-```
-
+```text
 ### Building and Testing
 ```bash
 # Setup pipenv environment
@@ -55,8 +54,7 @@ make clean-venv
 
 # Clean everything
 make clean-all
-```
-
+```text
 ### UI Building
 ```bash
 # Build UI with XInclude compilation
@@ -64,8 +62,7 @@ make ui-build
 
 # Install icons to system directories
 make icons
-```
-
+```text
 ### Package Building
 ```bash
 # Build Debian package
@@ -79,8 +76,7 @@ make docker
 
 # Build Flatpak
 make flatpak
-```
-
+```text
 ## Desktop Integration
 
 The application includes comprehensive desktop integration features for better user experience after PyPI installation.
@@ -101,8 +97,7 @@ dfs-install-desktop
 
 # Uninstall desktop integration
 dfs-uninstall-desktop
-```
-
+```text
 ### Launch Methods
 ```bash
 # Command line
@@ -112,8 +107,7 @@ dfakeseeder           # Original command
 # Desktop environment
 gtk-launch dfakeseeder  # Desktop launcher
 # Or search "D' Fake Seeder" in application menu
-```
-
+```text
 ### File Locations
 - **Icons**: `~/.local/share/icons/hicolor/{size}/apps/dfakeseeder.png`
 - **Desktop File**: `~/.local/share/applications/dfakeseeder.desktop`
@@ -130,8 +124,7 @@ ls ~/.local/share/applications/dfakeseeder.desktop
 # Update caches manually if needed
 gtk-update-icon-cache ~/.local/share/icons/hicolor/
 update-desktop-database ~/.local/share/applications/
-```
-
+```text
 ### Compatibility
 Tested with GNOME Shell, KDE Plasma, XFCE, MATE, Cinnamon. Compatible with any XDG-compliant desktop environment.
 
@@ -254,8 +247,7 @@ The application follows MVC pattern with these core components:
     "aggressive": { "upload_limit": 0, "max_connections": 500 }
   }
 }
-```
-
+```text
 ### Key Settings Categories
 - **Application Behavior**: Auto-start, minimize to tray, window management
 - **Interface**: Theme selection, language, window persistence
@@ -294,7 +286,7 @@ The application follows MVC pattern with these core components:
 
 ## Project Structure
 
-```
+```text
 d_fake_seeder/                 # Main package (47 Python files, 78 total files)
 ├── dfakeseeder.py             # Main application entry point (Typer CLI)
 ├── post_install.py            # Desktop integration script
@@ -357,8 +349,7 @@ d_fake_seeder/                 # Main package (47 Python files, 78 total files)
 └── tools/                   # Development helper scripts
     ├── translation_build_manager.py # Advanced translation build system ✅
     └── translations/         # Translation utilities and assets
-```
-
+```text
 ## Dependency Management
 
 ### Pipenv (Primary)
@@ -372,7 +363,7 @@ d_fake_seeder/                 # Main package (47 Python files, 78 total files)
 - Provides CLI scripts: `dfs`, `dfakeseeder`, `dfs-install-desktop`, `dfs-uninstall-desktop`
 - Version management and build configuration
 
-## Desktop Integration
+## Packaging and Installation
 
 ### Installation Scripts
 - `post_install.py`: Automated desktop integration for PyPI installations
@@ -449,8 +440,9 @@ d_fake_seeder/                 # Main package (47 Python files, 78 total files)
 
 **Status: EXCELLENT** ✅ - The `/d_fake_seeder/lib/` directory maintains a well-organized and consistent structure.
 
-#### Directory Organization:
-```
+#### Directory Organization
+
+```text
 lib/
 ├── model.py, view.py, controller.py    # Core MVC components
 ├── app_settings.py, settings.py        # Configuration management
@@ -466,15 +458,14 @@ lib/
 ├── util/                              # Utility functions (3 files)
 ├── helpers/                           # Helper classes (4 files)
 └── handlers/                          # Event handlers (2 files)
-```
-
+```text
 #### MVC Pattern Integrity: **MAINTAINED** ✅
 - **Model Layer**: Pure data management with GObject signals, no inappropriate dependencies
 - **View Layer**: Clean UI coordination with modular component architecture
 - **Controller Layer**: Proper MVC coordination with GlobalPeerManager integration
 - **Minimal Coupling**: Notification patterns used appropriately without violating MVC principles
 
-#### Recent Structural Improvements:
+#### Recent Structural Improvements
 1. **Tab Naming Consistency**: All tab components now follow consistent naming conventions:
    - `*Tab` suffix for all tab classes (StatusTab, FilesTab, IncomingConnectionsTab, etc.)
    - `*_tab.py` file naming pattern throughout the codebase
@@ -482,7 +473,7 @@ lib/
 3. **Component Inheritance**: Proper inheritance hierarchies with appropriate base classes and mixins
 4. **Import Structure**: Clean imports with no circular dependencies, proper `__init__.py` management
 
-#### Code Quality Metrics:
+#### Code Quality Metrics
 - **Total Python files**: 71 across 10 directories
 - **Naming consistency**: ✅ Fixed and standardized
 - **Inheritance patterns**: ✅ Proper use of base classes and mixins
@@ -497,30 +488,30 @@ This section documents major features that have been fully implemented and are c
 
 **Status: COMPLETE** - Full i18n/l10n implementation with runtime language switching
 
-#### Core Implementation:
+#### Core Implementation
 - **TranslationManager** (`domain/translation_manager.py`): Complete automatic widget translation system
 - **ColumnTranslations** (`lib/util/column_translations.py`): Centralized column header translation
 - **ColumnTranslationMixin** (`lib/util/column_translation_mixin.py`): Reusable column translation functionality
 
-#### Language Support:
+#### Language Support
 - **15 Languages**: en, es, fr, de, it, pt, ru, zh, ja, ko, ar, hi, nl, sv, pl
 - **Complete Infrastructure**: PO/MO files, gettext integration, locale detection
 - **Build System**: Advanced translation build manager with validation and compilation
 
-#### UI Translation Features:
+#### UI Translation Features
 - **Runtime Language Switching**: Change language without application restart
 - **Settings Dialog Translation**: Complete multi-tab settings interface translation
 - **Column Header Translation**: Dynamic table/list column header updates
 - **GTK Integration**: Proper translation domain binding for all UI elements
 - **Signal-Based Updates**: Automatic UI refresh on language changes
 
-#### Translation Fixes Implemented:
+#### Translation Fixes Implemented
 - **Settings Signal Loop Prevention**: Fixed infinite loops in settings dialog translation
 - **Signal Connection Management**: Proper GTK signal block/unblock patterns
 - **Translation Function Timing**: Fixed column translation update timing issues
 - **Static Method Bug Fixes**: Corrected undefined variable issues in translation utilities
 
-#### Development Tools:
+#### Development Tools
 - **Translation Build Manager**: Advanced build system with quality gates
 - **String Extraction**: Automated extraction from Python and XML sources
 - **Validation Tools**: Translation completeness and quality checking
@@ -530,19 +521,19 @@ This section documents major features that have been fully implemented and are c
 
 **Status: COMPLETE** - All translation system bugs resolved, fully functional
 
-#### Architecture Achievements:
+#### Architecture Achievements
 - **Component Isolation**: Settings tabs prevented from creating translation loops
 - **Signal Management**: Proper GTK signal handling for dropdown widgets
 - **Translation Timing**: Correct sequencing of translation function registration
 - **Error Resilience**: Graceful handling of missing translations and edge cases
 
-#### Technical Implementations:
+#### Technical Implementations
 - **TranslationMixin Isolation**: Prevented auto-connection in settings components
 - **Handler Block/Unblock**: Proper GTK signal management patterns
 - **Translation Function Lifecycle**: Correct timing of function updates during language changes
 - **Debug Infrastructure**: Comprehensive debug output for troubleshooting
 
-#### User Experience:
+#### User Experience
 - **Seamless Language Changes**: Instant UI updates without glitches
 - **Consistent Behavior**: All UI elements translate uniformly
 - **No Application Restart**: Full functionality without restart requirements
@@ -552,7 +543,7 @@ This section documents major features that have been fully implemented and are c
 
 **Status: COMPLETE** - Comprehensive planning documentation established
 
-#### Planning Documentation:
+#### Planning Documentation
 - **plans/LOCALIZATION_PLAN.md**: Detailed implementation roadmap (moved to plans/completed/)
 - **docs/LOCALIZATION.md**: Comprehensive system documentation
 - **docs/FEATURE_COMPARISON.md**: Industry analysis and feature recommendations
@@ -561,7 +552,7 @@ This section documents major features that have been fully implemented and are c
 - **docs/PACKAGING.md**: Packaging and distribution documentation
 - **docs/PERFORMANCE_AUDIT_2025-10-05.md**: Performance analysis and optimization recommendations
 
-#### Planning Achievements:
+#### Planning Achievements
 - **Foundation Analysis**: Complete assessment of existing capabilities
 - **Implementation Roadmaps**: Detailed technical implementation plans
 - **Industry Research**: Comprehensive analysis of competing solutions

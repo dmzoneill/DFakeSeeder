@@ -7,8 +7,7 @@
 ### Run All Tests
 ```bash
 make test-e2e
-```
-
+```text
 That's it! This will:
 - ✅ Build RPM
 - ✅ Create test container
@@ -34,8 +33,7 @@ make test-e2e-fast               # Skip build, use existing RPM
 # Maintenance
 make test-e2e-build-image        # Rebuild test container
 make clean-e2e                   # Clean test artifacts
-```
-
+```text
 ## What Gets Tested
 
 ### Installation (42 tests)
@@ -60,7 +58,7 @@ make clean-e2e                   # Clean test artifacts
 
 ## Test Output
 
-```
+```text
 ========================================
 RPM Installation End-to-End Tests
 ========================================
@@ -85,8 +83,7 @@ Tests Failed: 0
 Total Tests:  42
 
 [INFO] All tests passed! ✓
-```
-
+```text
 ## Prerequisites
 
 ```bash
@@ -94,8 +91,7 @@ Total Tests:  42
 sudo dnf install podman  # Recommended
 # or
 sudo dnf install docker
-```
-
+```text
 ## Troubleshooting
 
 ### Tests Fail
@@ -103,18 +99,15 @@ sudo dnf install docker
 **Check logs:**
 ```bash
 cat rpmbuild/test-artifacts/*.log
-```
-
+```text
 **Run specific test:**
 ```bash
 make test-e2e-install  # Just installation
-```
-
+```text
 **Debug container:**
 ```bash
 podman run -it dfakeseeder-e2e-test:latest /bin/bash
-```
-
+```text
 ### RPM Not Found
 
 ```bash
@@ -123,8 +116,7 @@ make rpm
 
 # Verify location
 ls -la rpmbuild/RPMS/noarch/dfakeseeder-*.rpm
-```
-
+```text
 ### Container Engine Not Found
 
 ```bash
@@ -134,8 +126,7 @@ sudo dnf install podman
 # Or docker
 sudo dnf install docker
 sudo systemctl start docker
-```
-
+```text
 ## Advanced Usage
 
 ### Custom Test Execution
@@ -145,8 +136,7 @@ sudo systemctl start docker
 tests/e2e/run_e2e_tests.sh --skip-build   # Use existing RPM
 tests/e2e/run_e2e_tests.sh --test install # Only installation
 tests/e2e/run_e2e_tests.sh --cleanup      # Clean after
-```
-
+```text
 ### Manual Container Testing
 
 ```bash
@@ -160,8 +150,7 @@ podman run --rm \
   -v $(pwd):/workspace/tests:ro \
   dfakeseeder-e2e-test:latest \
   /bin/bash /workspace/tests/test_rpm_installation.sh
-```
-
+```text
 ## CI/CD Integration
 
 ### GitHub Actions
@@ -179,7 +168,7 @@ Tests run automatically on:
 
 **Location**: `rpmbuild/test-artifacts/e2e-test-report.txt`
 
-```
+```text
 DFakeSeeder E2E Test Report
 ===========================
 Date: 2024-11-27 12:00:00
@@ -192,8 +181,7 @@ Test Results:
 ✓ Installation Tests: PASSED (42 tests)
 ✓ Launch Tests: PASSED (16 tests)
 ✓ Uninstall Tests: PASSED (3 tests)
-```
-
+```text
 ## Documentation
 
 - **Full Guide**: `tests/e2e/README.md` (500+ lines)
@@ -224,8 +212,7 @@ git commit -m "Update packaging"
 
 # 4. CI runs tests automatically
 git push
-```
-
+```text
 ## Best Practices
 
 ✅ Run `make test-e2e` before committing
@@ -237,7 +224,7 @@ git push
 
 - **Logs**: `rpmbuild/test-artifacts/*.log`
 - **Docs**: `tests/e2e/README.md`
-- **Issues**: https://github.com/dmzoneill/DFakeSeeder/issues
+- **Issues**: <<https://github.com/dmzoneill/DFakeSeeder/issues>>
 
 ---
 

@@ -96,8 +96,7 @@ Created comprehensive end-to-end (E2E) testing infrastructure for Debian/Ubuntu 
 
 ### 3. Makefile Integration
 
-#### New Targets Added:
-
+#### New Targets Added
 ```makefile
 test-e2e-deb              # Run full DEB E2E suite (Ubuntu 22.04)
 test-e2e-deb-ubuntu22     # Test on Ubuntu 22.04
@@ -106,16 +105,14 @@ test-e2e-deb-debian12     # Test on Debian 12
 build-e2e-deb-image       # Build test container only
 clean-e2e-deb             # Clean DEB test artifacts
 test-e2e-all              # Run ALL E2E tests (RPM + PyPI + DEB)
-```
-
+```text
 **Usage:**
 ```bash
 make test-e2e-deb              # Default (Ubuntu 22.04)
 make test-e2e-deb-ubuntu24     # Ubuntu 24.04
 make test-e2e-deb-debian12     # Debian 12
 make test-e2e-all              # All package formats
-```
-
+```text
 ### 4. GitHub Actions Workflow
 
 #### `.github/workflows/deb-e2e-tests.yml`
@@ -133,8 +130,7 @@ matrix:
     - os_name: ubuntu, os_version: '24.04'
     - os_name: debian, os_version: '12'
     - os_name: debian, os_version: '11'
-```
-
+```text
 **Jobs:**
 
 1. **deb-e2e-tests** (Parallel execution across 4 OS versions)
@@ -167,7 +163,7 @@ matrix:
 ### Tests Per Package Format
 
 | Test Category | RPM | PyPI | DEB |
-|--------------|-----|------|-----|
+| -------------- | ----- | ------ | ----- |
 | **Installation Tests** | 37 | 20 | 37 |
 | **Launch Tests** | 13 | 23 | 15 |
 | **Total Tests** | 50 | 43 | 52 |
@@ -175,7 +171,7 @@ matrix:
 ### Coverage Areas
 
 | Feature | RPM | PyPI | DEB |
-|---------|-----|------|-----|
+| --------- | ----- | ------ | ----- |
 | Package file verification | ✅ | ✅ | ✅ |
 | Metadata validation | ✅ | ✅ | ✅ |
 | Contents verification | ✅ | ✅ | ✅ |
@@ -203,10 +199,9 @@ UBUNTU_VERSION=24.04 make test-e2e-deb-ubuntu24
 
 # Test all package formats
 make test-e2e-all
-```
-
+```text
 ### CI/CD Testing (GitHub Actions)
-```
+```text
 Push to main/develop
     ↓
 Trigger DEB E2E workflow
@@ -231,8 +226,7 @@ Generate summary report
 Upload artifacts
     ↓
 Comment on PR (if applicable)
-```
-
+```text
 ## Key Features
 
 ### 1. Comprehensive Testing
@@ -267,20 +261,18 @@ Comment on PR (if applicable)
 ## Files Created/Modified
 
 ### Created Files
-```
+```text
 tests/e2e/test_deb_installation.sh    - Installation test script
 tests/e2e/test_deb_launch.sh          - Launch test script
 tests/e2e/run_deb_e2e_tests.sh        - Test orchestration script
 tests/e2e/Dockerfile.ubuntu           - Ubuntu/Debian test container
 .github/workflows/deb-e2e-tests.yml   - GitHub Actions workflow
 docs/summaries/DEB_E2E_TESTS_IMPLEMENTATION.md - This summary
-```
-
+```text
 ### Modified Files
-```
+```text
 Makefile                              - Added DEB E2E test targets
-```
-
+```text
 ## Benefits
 
 ### 1. Quality Assurance
@@ -344,8 +336,7 @@ Tests Failed: 0
 Total Tests:  52
 
 [INFO] All tests passed! ✓
-```
-
+```text
 ## Next Steps
 
 ### Potential Enhancements
@@ -381,7 +372,7 @@ Total Tests:  52
 
 ### All E2E Test Workflows
 
-```
+```text
 ┌─────────────────────────────────────┐
 │   DFakeSeeder E2E Test Suite        │
 ├─────────────────────────────────────┤
@@ -415,13 +406,12 @@ Total Tests:  52
 │  └────────────┘                    │
 │                                     │
 └─────────────────────────────────────┘
-```
-
+```text
 ### Workflow Status Checks
 
 After adding DEB E2E tests, PRs will show:
 
-```
+```text
 ✅ CICD / cicd
 ✅ RPM E2E Tests / rpm-e2e-tests (latest)
 ✅ RPM E2E Tests / rpm-e2e-tests (42)
@@ -435,8 +425,7 @@ After adding DEB E2E tests, PRs will show:
 ✅ DEB E2E Tests / deb-e2e-tests (ubuntu 24.04)  ← NEW!
 ✅ DEB E2E Tests / deb-e2e-tests (debian 12)     ← NEW!
 ✅ DEB E2E Tests / deb-e2e-tests (debian 11)     ← NEW!
-```
-
+```text
 ## Conclusion
 
 The DEB package now has comprehensive E2E testing infrastructure that:

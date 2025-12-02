@@ -5,6 +5,7 @@ D-Bus Unifier - Inter-process communication bridge for DFakeSeeder
 Provides D-Bus service for communication between main application and tray application.
 Integrates directly with AppSettings for settings management and signal forwarding.
 """
+# isort: skip_file
 
 # fmt: off
 import json

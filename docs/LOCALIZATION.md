@@ -23,7 +23,7 @@ DFakeSeeder uses a sophisticated localization system built on GNU gettext with c
 The application supports 15 languages with full translation infrastructure:
 
 | Code | Language | Native Name |
-|------|----------|-------------|
+| ---- | -------- | ----------- |
 | `en` | English | English |
 | `es` | Spanish | Español |
 | `fr` | French | Français |
@@ -42,7 +42,7 @@ The application supports 15 languages with full translation infrastructure:
 
 ## Directory Structure
 
-```
+```text
 d_fake_seeder/
 ├── lib/
 │   ├── i18n.py                     # Main localization manager
@@ -69,11 +69,10 @@ d_fake_seeder/
 tools/                             # Translation management tools
 ├── extract_strings.py            # String extraction from Python/XML
 └── compile_translations.py       # PO to MO compilation
-```
-
+```text
 ## Language Helper Classes
 
-### Overview
+### Helper Classes Overview
 
 The language helper classes provide reusable utilities to centralize language-related functionality that was previously scattered throughout the codebase. These classes eliminate code duplication and provide a consistent API for language operations.
 
@@ -92,9 +91,8 @@ GTKTranslationHelper.setup_environment_for_language("zh")
 
 # Apply text direction (RTL/LTR) to widgets
 GTKTranslationHelper.apply_text_direction(window)
-```
-
-#### Key Methods
+```text
+#### GTKTranslationHelper Methods
 
 - `setup_builder_translation(builder)` - Configure GTK Builder for translations
 - `setup_environment_for_language(language_code)` - Set GTK environment variables
@@ -115,9 +113,8 @@ LocaleHelper.set_messages_locale("zh")
 
 # Get locale string for a language
 locale_str = LocaleHelper.get_locale_for_language("zh")  # "zh_CN.UTF-8"
-```
-
-#### Features
+```text
+#### LocaleHelper Features
 
 - **Consistent Mappings**: Centralized language-to-locale mapping
 - **Fallback Handling**: Automatic fallback to C/POSIX locales
@@ -143,8 +140,7 @@ manager.change_language("zh")
 
 # Manual refresh of all components
 manager.refresh_all_ui_text()
-```
-
+```text
 #### Key Features
 
 - **Component Registration**: Manage components that need refresh
@@ -164,8 +160,7 @@ class MyComponent(UIRefreshable):
         """Refresh UI text content after language change."""
         # Update component-specific UI text
         self.label.set_text(_("Updated Text"))
-```
-
+```text
 ### Menu Helper Classes
 
 Specialized utilities for creating and managing translatable menus.
@@ -184,8 +179,7 @@ menu.refresh()
 
 # Create standard app menu
 standard_menu = TranslatableMenuHelper.create_standard_app_menu()
-```
-
+```text
 #### RefreshableMenu Class
 
 - **Automatic Translation**: Menu items automatically translated
@@ -211,8 +205,7 @@ setup_component_for_i18n(my_component, builder)
 
 # Clean up component i18n registration
 cleanup_component_i18n(my_component)
-```
-
+```text
 ## Translation Infrastructure
 
 ### LocalizationManager Class
@@ -229,9 +222,8 @@ class LocalizationManager:
         self._fallback_translation = None
         self._supported_languages = { ... }
         self._locale_dir = self._app_root / "locale"
-```
-
-#### Key Methods
+```text
+#### LocalizationManager Methods
 
 - `detect_system_language()` - Auto-detects system language
 - `load_language(language_code)` - Loads specific language translations
@@ -252,8 +244,7 @@ gettext.textdomain("dfakeseeder")
 os.environ["TEXTDOMAINDIR"] = str(self._locale_dir)
 os.environ["TEXTDOMAIN"] = "dfakeseeder"
 os.environ["LANGUAGE"] = language_code
-```
-
+```text
 ### Global Functions
 
 The module provides convenient global functions:
@@ -270,8 +261,7 @@ message = ngettext("1 file", "%d files", count) % count
 # Language management
 supported = get_supported_languages()  # Returns dict of lang codes -> names
 success = set_language("zh")           # Switch to Chinese
-```
-
+```text
 ## Localization Utilities
 
 ### Culture-Specific Formatting
@@ -288,8 +278,7 @@ full_format = format_timestamp(timestamp, "full")    # Full date and time
 date_only = format_timestamp(timestamp, "date")     # Date only
 time_only = format_timestamp(timestamp, "time")     # Time only
 short_format = format_timestamp(timestamp, "short") # Short format
-```
-
+```text
 #### File Size Formatting
 
 ```python
@@ -297,8 +286,7 @@ from lib.util.localization import format_size
 
 # Locale-aware size formatting
 size_text = format_size(1024*1024, decimal_places=1)  # "1.0 MB" or "1,0 MB"
-```
-
+```text
 #### Number Formatting
 
 ```python
@@ -306,8 +294,7 @@ from lib.util.localization import format_number
 
 # European locales use comma as decimal separator
 number_text = format_number(1234.56)  # "1,234.56" or "1 234,56"
-```
-
+```text
 #### Text Direction
 
 ```python
@@ -316,15 +303,14 @@ from lib.util.localization import is_rtl_language, get_text_direction
 # RTL language detection (Arabic, Hebrew, etc.)
 is_rtl = is_rtl_language()       # True for ar, he, fa, ur
 direction = get_text_direction() # "rtl" or "ltr"
-```
-
+```text
 ## Translation Tools
 
 ### String Extraction Tool (`tools/extract_strings.py`)
 
 Comprehensive tool for extracting translatable strings from both Python and XML sources:
 
-#### Features
+#### Extraction Tool Features
 
 - **Python String Extraction**: Uses `xgettext` to extract `_()` and `ngettext()` calls
 - **XML String Extraction**: Custom parser for `translatable="yes"` attributes
@@ -332,21 +318,20 @@ Comprehensive tool for extracting translatable strings from both Python and XML 
 - **PO File Management**: Creates/updates translation files for all supported languages
 - **MO Compilation**: Compiles binary translation files
 
-#### Usage
+#### Extraction Tool Usage
 
 ```bash
 # Extract all strings and update translations
 python tools/extract_strings.py
 
-# The tool automatically:
+# The tool automatically
 # 1. Finds all Python files in d_fake_seeder/
 # 2. Finds all XML files in d_fake_seeder/ui/
 # 3. Extracts translatable strings
 # 4. Creates/updates dfakeseeder.pot template
 # 5. Updates all language PO files
 # 6. Compiles MO files
-```
-
+```text
 #### XML String Extraction
 
 The tool uses regex patterns to find translatable XML strings:
@@ -355,8 +340,7 @@ The tool uses regex patterns to find translatable XML strings:
 # Pattern to match translatable properties
 pattern = r'<property\s+name="(?:label|tooltip-text)"\s+translatable="yes">' \
           r"([^<]+)</property>"
-```
-
+```text
 #### String Processing
 
 - HTML entity decoding (`&lt;` → `<`, `&gt;` → `>`, `&amp;` → `&`)
@@ -367,13 +351,13 @@ pattern = r'<property\s+name="(?:label|tooltip-text)"\s+translatable="yes">' \
 
 Dedicated tool for compiling PO files to MO format:
 
-#### Features
+#### Compilation Tool Features
 
 - **Batch Compilation**: Compiles all PO files in the locale directory
 - **Error Reporting**: Detailed error messages for compilation failures
 - **Template Updates**: Can update POT templates from source files
 
-#### Usage
+#### Compilation Tool Usage
 
 ```bash
 # Compile all translation files
@@ -381,8 +365,7 @@ python tools/compile_translations.py
 
 # Update POT template from source files
 python tools/compile_translations.py --update-pot
-```
-
+```text
 ## File Formats
 
 ### POT Template Files (`.pot`)
@@ -398,7 +381,7 @@ Template files contain all extractable strings in a standardized format:
 msgid ""
 msgstr ""
 "Project-Id-Version: DFakeSeeder 1.0.0\n"
-"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"Report-Msgid-Bugs-To: <<https://github.com/username/dfakeseeder/issues\n">>
 "POT-Creation-Date: 2025-09-18 09:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
@@ -414,8 +397,7 @@ msgstr ""
 
 msgid "Settings"
 msgstr ""
-```
-
+```text
 ### PO Translation Files (`.po`)
 
 Language-specific translation files with actual translations:
@@ -427,7 +409,7 @@ Language-specific translation files with actual translations:
 msgid ""
 msgstr ""
 "Project-Id-Version: DFakeSeeder 1.0.0\n"
-"Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
+"Report-Msgid-Bugs-To: <<https://github.com/username/dfakeseeder/issues\n">>
 "POT-Creation-Date: 2025-09-18 17:51+0100\n"
 "PO-Revision-Date: 2024-09-18 18:30+0100\n"
 "Last-Translator: Claude <noreply@anthropic.com>\n"
@@ -443,8 +425,7 @@ msgstr "设置"
 
 msgid "Connection"
 msgstr "连接"
-```
-
+```text
 ### MO Binary Files (`.mo`)
 
 Compiled binary files generated from PO files for runtime use. These are created automatically by the compilation tools.
@@ -463,8 +444,7 @@ GTK XML files use the `translatable="yes"` attribute to mark strings for transla
 <object class="GtkSwitch" id="settings_auto_start">
     <property name="tooltip-text" translatable="yes">Start DFakeSeeder automatically when the system boots</property>
 </object>
-```
-
+```text
 ### Supported Properties
 
 The extraction tool looks for these translatable properties:
@@ -491,8 +471,7 @@ from lib.i18n import _
 
 # Simple string translation
 message = _("Hello, World!")
-```
-
+```text
 ### Plural Forms
 
 ```python
@@ -501,8 +480,7 @@ from lib.i18n import ngettext
 # Plural-aware translation
 count = 5
 message = ngettext("1 file selected", "%d files selected", count) % count
-```
-
+```text
 ### Format String Translation
 
 ```python
@@ -514,8 +492,7 @@ message = _("Welcome, {}!").format(user_name)
 
 # Or with % formatting
 message = _("Welcome, %s!") % user_name
-```
-
+```text
 ### Context-Sensitive Translation
 
 ```python
@@ -525,8 +502,7 @@ from lib.i18n import _
 def show_error():
     # TRANSLATORS: This error message appears when file loading fails
     error_msg = _("Failed to load file")
-```
-
+```text
 ## Build System Integration
 
 ### Makefile Targets
@@ -550,8 +526,7 @@ make translations-quality-gate
 
 # Custom quality threshold
 make translations-quality-threshold THRESHOLD=95.0
-```
-
+```text
 #### Validation Targets
 
 ```bash
@@ -563,8 +538,7 @@ make check-duplicate-strings
 
 # Comprehensive validation (all checks)
 make validate-translations-comprehensive
-```
-
+```text
 #### Legacy Workflow
 
 ```bash
@@ -573,8 +547,7 @@ make extract-strings        # Extract strings to POT
 make validate-translations  # Validate PO files
 make compile-translations   # Compile to MO files
 make translations          # Complete legacy workflow
-```
-
+```text
 #### System-Level Targets
 
 ```bash
@@ -583,15 +556,13 @@ make build-translations-system
 make verify-translations-system
 make validate-translations-system
 make compile-translations-system
-```
-
+```text
 ### Integration with UI Build
 
 ```bash
 # UI build includes translation compilation
 make ui-build  # Builds UI and translations together
-```
-
+```text
 ### Help and Documentation
 
 ```bash
@@ -600,8 +571,7 @@ make translations-help
 
 # Quick help with common commands
 make help
-```
-
+```text
 ## Settings Integration
 
 ### Language Settings
@@ -622,8 +592,7 @@ def set_language_from_settings(self, app_settings) -> bool:
         target_language = self.detect_system_language()
 
     return self.load_language(target_language)
-```
-
+```text
 ### Language Dropdown
 
 The settings dialog provides a language dropdown populated from supported languages:
@@ -639,8 +608,7 @@ def update_language_dropdown(self):
         string_list.append(display_name)
 
     language_dropdown.set_model(string_list)
-```
-
+```text
 ### Dynamic Language Switching
 
 The application supports runtime language switching:
@@ -660,11 +628,10 @@ def on_language_changed(self, dropdown, param):
         # Refresh main application UI
         if View.instance:
             View.instance.refresh_ui_for_language_change()
-```
-
+```text
 ## Translation Workflow
 
-### For Developers
+### Developer Workflow
 
 1. **Write translatable code**:
    ```python
@@ -688,7 +655,7 @@ def on_language_changed(self, dropdown, param):
    DFS_LANGUAGE=zh make run-debug
    ```
 
-### For Translators
+### Translator Workflow
 
 1. **Edit PO files**: Modify `d_fake_seeder/locale/LANG/LC_MESSAGES/dfakeseeder.po`
 
@@ -740,8 +707,7 @@ os.environ["LANGUAGE"] = language_code
 
 # Locale setting for culture-specific formatting
 locale.setlocale(locale.LC_MESSAGES, f"{language_code}.UTF-8")
-```
-
+```text
 ### Fallback Handling
 
 Robust fallback mechanisms ensure the application works even with missing translations:
@@ -762,8 +728,7 @@ def load_language(self, language_code: str) -> bool:
         # Fallback to English
         self._translation = self._fallback_translation
         return False
-```
-
+```text
 ### Translation Statistics
 
 The system provides translation statistics for monitoring:
@@ -783,8 +748,7 @@ def get_translation_stats(self) -> dict:
             stats["available_translations"].append(lang_code)
 
     return stats
-```
-
+```text
 ## Troubleshooting
 
 ### Common Issues
@@ -823,18 +787,14 @@ Enable translation debugging:
 ```python
 import logging
 logging.getLogger('lib.i18n').setLevel(logging.DEBUG)
-```
-
+```text
 Check translation statistics:
 
 ```python
 from lib.i18n import get_localization_manager
 stats = get_localization_manager().get_translation_stats()
 print(stats)
-```
-
-## Best Practices
-
+```text
 ## Migration to Helper Classes
 
 ### Before and After Comparison
@@ -845,15 +805,13 @@ print(stats)
 ```python
 # In multiple files (view.py, settings_dialog.py, etc.)
 self.builder.set_translation_domain("dfakeseeder")
-```
-
+```text
 **After (centralized helper):**
 ```python
 from lib.helpers.language_helpers import GTKTranslationHelper
 
 GTKTranslationHelper.setup_builder_translation(self.builder)
-```
-
+```text
 #### Text Direction Handling
 
 **Before (repeated logic):**
@@ -866,15 +824,13 @@ if text_direction == "rtl":
     widget.set_default_direction(Gtk.TextDirection.RTL)
 else:
     widget.set_default_direction(Gtk.TextDirection.LTR)
-```
-
+```text
 **After (single helper call):**
 ```python
 from lib.helpers.language_helpers import GTKTranslationHelper
 
 GTKTranslationHelper.apply_text_direction(widget)
-```
-
+```text
 #### Locale Setting
 
 **Before (massive if/else chains):**
@@ -885,15 +841,13 @@ if current_lang == "es":
 elif current_lang == "fr":
     locale.setlocale(locale.LC_TIME, "fr_FR.UTF-8")
 # ... 15 more conditions
-```
-
+```text
 **After (centralized mapping):**
 ```python
 from lib.helpers.language_helpers import LocaleHelper
 
 LocaleHelper.set_locale_for_language(current_lang, locale.LC_TIME)
-```
-
+```text
 #### Menu Creation and Refresh
 
 **Before (manual menu management):**
@@ -907,8 +861,7 @@ menu.append(_("About"), "win.about")
 menu.remove_all()
 menu.append(_("About"), "win.about")
 menu.append(_("Quit"), "win.quit")
-```
-
+```text
 **After (refreshable menu wrapper):**
 ```python
 from lib.helpers.menu_helpers import RefreshableMenu
@@ -921,8 +874,7 @@ self.main_menu = RefreshableMenu([
 
 # Simple refresh
 self.main_menu.refresh()
-```
-
+```text
 ### Benefits of the Helper Classes
 
 1. **Code Deduplication**: Eliminated repeated translation setup code across multiple files
@@ -942,7 +894,7 @@ self.main_menu.refresh()
 
 ## Best Practices
 
-### For Developers
+### Development Best Practices
 
 1. **Use helper classes for new code**:
    ```python
@@ -987,7 +939,7 @@ self.main_menu.refresh()
    action_type = "save_action"
    ```
 
-### For Translators
+### Translation Best Practices
 
 1. **Maintain consistent terminology**
 2. **Consider UI space constraints**

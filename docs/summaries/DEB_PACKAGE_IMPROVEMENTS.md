@@ -12,17 +12,15 @@ The Debian (.deb) package was missing features that the RPM package had, resulti
 ### 1. Updated Dependencies (`control` file)
 
 **Before:**
-```
+```text
 Depends: python3 (>= 3.11), gir1.2-gtk-4.0, python3-gi, python3-requests
 Recommends: gir1.2-appindicator3-0.1, gir1.2-notify-0.7
-```
-
+```text
 **After:**
-```
+```text
 Depends: python3 (>= 3.11), python3-pip, gir1.2-gtk-4.0, libadwaita-1-0, gir1.2-adw-1, python3-gi, python3-requests (>= 2.31.0), python3-urllib3 (>= 1.26.18), python3-watchdog
 Recommends: gir1.2-appindicator3-0.1, gir1.2-notify-0.7, gtk-update-icon-cache, desktop-file-utils
-```
-
+```text
 **Added Dependencies:**
 - `python3-pip` - For installing Python packages
 - `libadwaita-1-0` + `gir1.2-adw-1` - LibAdwaita support
@@ -44,8 +42,7 @@ chmod 755 ./debbuild/usr/bin/dfakeseeder
 
 # Create symlinks for convenience
 ln -s dfakeseeder ./debbuild/usr/bin/dfs
-```
-
+```text
 **Result:**
 - Users can run `dfakeseeder` or `dfs` from command line
 - Wrapper script sets up environment (DFS_PATH, PYTHONPATH, LOG_LEVEL)
@@ -58,22 +55,19 @@ ln -s dfakeseeder ./debbuild/usr/bin/dfs
 cp -r d_fake_seeder/model.py ./debbuild/opt/dfakeseeder
 cp -r d_fake_seeder/view.py ./debbuild/opt/dfakeseeder
 cp -r d_fake_seeder/controller.py ./debbuild/opt/dfakeseeder
-```
-
+```text
 These MVC core files were missing from the DEB package.
 
 ### 4. Updated Desktop File to Use Wrapper (Makefile)
 
 **Before:**
-```
+```text
 Exec=/usr/bin/python3 /opt/dfakeseeder/dfakeseeder.py
-```
-
+```text
 **After:**
-```
+```text
 Exec=/usr/bin/dfakeseeder
-```
-
+```text
 Now the desktop file uses the wrapper script, ensuring proper environment setup.
 
 ### 5. Added pip Package Installation (postinst script)
@@ -82,8 +76,7 @@ Now the desktop file uses the wrapper script, ensuring proper environment setup.
 ```bash
 # Install Python packages not available as DEB packages
 pip3 install --no-cache-dir bencodepy typer==0.12.3 2>/dev/null || true
-```
-
+```text
 **Why:**
 - `bencodepy` - Not available as Debian package
 - `typer` - Not available as Debian package (or outdated version)
@@ -94,7 +87,7 @@ pip3 install --no-cache-dir bencodepy typer==0.12.3 2>/dev/null || true
 ### Installation Structure
 
 **Before:**
-```
+```text
 /opt/dfakeseeder/
 ├── dfakeseeder.py
 ├── dfakeseeder_tray.py
@@ -106,10 +99,9 @@ pip3 install --no-cache-dir bencodepy typer==0.12.3 2>/dev/null || true
 
 /usr/share/applications/
 └── dfakeseeder.desktop → calls Python directly
-```
-
+```text
 **After:**
-```
+```text
 /opt/dfakeseeder/
 ├── dfakeseeder.py
 ├── dfakeseeder_tray.py
@@ -128,8 +120,7 @@ pip3 install --no-cache-dir bencodepy typer==0.12.3 2>/dev/null || true
 
 /usr/share/applications/
 └── dfakeseeder.desktop → calls /usr/bin/dfakeseeder
-```
-
+```text
 ### User Experience
 
 **Before:**
@@ -141,8 +132,7 @@ sudo dpkg -i dfakeseeder_0.0.46_all.deb
 # Launch
 # Desktop file doesn't work properly
 # No command-line launcher available
-```
-
+```text
 **After:**
 ```bash
 # Installation
@@ -154,12 +144,11 @@ sudo dpkg -i dfakeseeder_0.0.46_all.deb
 dfs                    # Command line (short)
 dfakeseeder           # Command line (full)
 # Desktop menu works properly
-```
-
+```text
 ## Package Comparison Matrix
 
 | Feature | RPM Package | DEB Package (Before) | DEB Package (After) |
-|---------|-------------|---------------------|---------------------|
+| --------- | ------------- | --------------------- | --------------------- |
 | **Wrapper Script** | ✅ `/usr/bin/dfakeseeder` | ❌ None | ✅ `/usr/bin/dfakeseeder` |
 | **CLI Shortcuts** | ✅ `dfs` command | ❌ None | ✅ `dfs` command |
 | **LibAdwaita** | ✅ libadwaita | ❌ Missing | ✅ libadwaita-1-0 |
@@ -207,7 +196,7 @@ make deb
 # Install in Ubuntu/Debian Docker container
 docker run -it --rm ubuntu:22.04 bash
 
-# Inside container:
+# Inside container
 apt update
 apt install ./dfakeseeder_0.0.46_all.deb
 
@@ -216,8 +205,7 @@ which dfs              # Should show /usr/bin/dfs
 which dfakeseeder      # Should show /usr/bin/dfakeseeder
 dfs --help            # Should work
 python3 -c "import bencodepy; import typer"  # Should work
-```
-
+```text
 ### E2E Tests Needed
 
 Consider creating DEB E2E tests similar to RPM E2E tests:

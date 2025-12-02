@@ -4,6 +4,7 @@ Incoming Connections Component
 Manages the UI for displaying incoming peer connections, showing information
 about peers that have connected to our peer server.
 """
+# isort: skip_file
 
 # fmt: off
 import gi

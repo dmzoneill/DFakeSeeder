@@ -6,6 +6,7 @@ This implementation provides compatibility with GTK3 widgets and applications,
 specifically designed for use with system tray applications that require GTK3
 due to AppIndicator3 dependencies.
 """
+# isort: skip_file
 
 # fmt: off
 import gettext

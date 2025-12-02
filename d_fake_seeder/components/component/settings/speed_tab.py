@@ -2,6 +2,7 @@
 Speed settings tab for the settings dialog.
 Handles upload/download limits, alternative speeds, and scheduler configuration.
 """
+# isort: skip_file
 
 # fmt: off
 from typing import Any, Dict

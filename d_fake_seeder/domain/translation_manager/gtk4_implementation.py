@@ -6,6 +6,7 @@ This implementation provides full compatibility with GTK4 widgets and applicatio
 It includes all the advanced features like widget discovery, menu translation,
 and automatic UI updates.
 """
+# isort: skip_file
 
 # fmt: off
 import gettext

@@ -18,7 +18,7 @@ DFakeSeeder supports multiple packaging formats for distribution across differen
 
 ## 1. PyPI Packaging ✅
 
-### Status: COMPLETE
+### PyPI Status
 **Build System:** setup.py + MANIFEST.in
 **Dependency Source:** Pipfile/Pipfile.lock (primary)
 **Entry Points:** 5 console scripts
@@ -30,20 +30,18 @@ DFakeSeeder supports multiple packaging formats for distribution across differen
 - `dfs-install-desktop` - Install desktop integration
 - `dfs-uninstall-desktop` - Remove desktop integration
 
-### Build Commands
+### PyPI Build Commands
 ```bash
 make pypi-build          # Build source distribution and wheel
 make pypi-check          # Validate package quality
 make pypi-test-upload    # Upload to TestPyPI
 make pypi-upload         # Upload to production PyPI (with confirmation)
-```
-
-### Installation
+```text
+### PyPI Installation
 ```bash
 pip install d-fake-seeder
 dfs-install-desktop      # Install icons, desktop file, tray autostart
-```
-
+```text
 ### Desktop Integration
 The `dfs-install-desktop` command:
 - Installs application icons to `~/.local/share/icons/hicolor/` (multiple sizes)
@@ -52,7 +50,7 @@ The `dfs-install-desktop` command:
 - Clears GNOME Shell cache for immediate recognition
 - Provides user instructions for GNOME Shell restart
 
-### Features
+### PyPI Features
 - Uses `dfakeseeder.desktop.template` (no hardcoded paths)
 - Reads from README.md for long description
 - Proper PyPI classifiers for discoverability
@@ -63,27 +61,26 @@ The `dfs-install-desktop` command:
 
 ## 2. Debian Package (.deb) ✅
 
-### Status: COMPLETE
+### Debian Status
 **Control File:** `control`
 **Build System:** dpkg-deb + fakeroot
 **Install Location:** `/opt/dfakeseeder/`
 
-### Build Commands
+### Debian Build Commands
 ```bash
 make deb                 # Build .deb package
 make deb-install         # Build and install locally
-```
+```text
+### Debian Features
 
-### Features
-
-#### Package Metadata
+#### Debian Package Metadata
 - **Architecture:** `all` (Python is architecture-independent)
 - **Dependencies:** python3 (>= 3.11), gir1.2-gtk-4.0, python3-gi, python3-requests
 - **Recommends:** gir1.2-appindicator3-0.1, gir1.2-notify-0.7
 - **Section:** net
 - **Priority:** optional
 
-#### Installation Includes
+#### Debian Installation Includes
 - All application files in `/opt/dfakeseeder/`:
   - config/, images/, lib/, ui/, locale/, domain/, components/
   - dfakeseeder.py, dfakeseeder_tray.py
@@ -101,39 +98,37 @@ The postinst script automatically:
 
 All operations use `|| true` for graceful error handling to prevent installation failures.
 
-### Installation
+### Debian Installation
 ```bash
 curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep deb) -o dfakeseeder.deb
 sudo dpkg -i dfakeseeder.deb
 # GNOME users: Press Alt+F2, type 'r', press Enter
 gtk-launch dfakeseeder
-```
-
+```text
 ---
 
 ## 3. RPM Package (.rpm) ✅
 
-### Status: COMPLETE
+### RPM Status
 **Spec File:** `dfakeseeder.spec`
 **Build System:** rpmbuild
 **Install Location:** `/opt/dfakeseeder/`
 
-### Build Commands
+### RPM Build Commands
 ```bash
 make rpm                 # Build .rpm package
 make rpm-install         # Build and install locally
-```
+```text
+### RPM Features
 
-### Features
-
-#### Package Metadata
+#### RPM Package Metadata
 - **Name:** DFakeSeeder
 - **License:** MIT
 - **BuildArch:** noarch (Python is architecture-independent)
 - **Requires:** python3 >= 3.11, gtk4, python3-gobject
 - **Summary:** BitTorrent seeding simulator for testing and development
 
-#### Installation Includes
+#### RPM Installation Includes
 - All application files in `/opt/dfakeseeder/`:
   - config/, images/, lib/, ui/, locale/, domain/, components/
   - dfakeseeder.py, dfakeseeder_tray.py
@@ -151,29 +146,27 @@ The %post section automatically:
 
 All operations use `|| true` for graceful error handling.
 
-### Installation
+### RPM Installation
 ```bash
 curl -sL $(curl -s https://api.github.com/repos/dmzoneill/dfakeseeder/releases/latest | grep browser_download_url | cut -d\" -f4 | grep rpm) -o dfakeseeder.rpm
 sudo rpm -i dfakeseeder.rpm
 # GNOME users: Press Alt+F2, type 'r', press Enter
 gtk-launch dfakeseeder
-```
-
+```text
 ---
 
 ## 4. Docker ✅
 
-### Status: COMPLETE
+### Docker Status
 **Dockerfile:** Fedora 40 base with GTK4 support
 **Build System:** Multi-stage Docker build
 
-### Build Commands
+### Docker Build Commands
 ```bash
 make docker              # Build local Docker image
 make run-debug-docker    # Build and run with debug output
-```
-
-### Features
+```text
+### Docker Features
 - Based on Fedora 40
 - User isolation (non-root user with matching UID/GID)
 - X11 display forwarding support
@@ -192,8 +185,7 @@ docker run --rm --net=host --env="DISPLAY" \
   --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
   --volume="/tmp/.X11-unix:/tmp/.X11-unix" \
   -it ghcr.io/dmzoneill/dfakeseeder
-```
-
+```text
 ---
 
 ## 5. Flatpak ⚠️
@@ -211,11 +203,10 @@ docker run --rm --net=host --env="DISPLAY" \
   - Complete module configuration
   - Desktop/icon integration
 
-### Build Commands
+### Flatpak Build Commands
 ```bash
 make flatpak             # Build Flatpak package (incomplete)
-```
-
+```text
 ### TODO
 - [ ] Add finish-args for X11, network, filesystem access
 - [ ] Implement proper build commands
@@ -306,8 +297,7 @@ make flatpak             # Flatpak (incomplete)
 
 # Clean up
 make clean               # Remove all build artifacts
-```
-
+```text
 ---
 
 ## Post-Installation User Experience
@@ -318,22 +308,19 @@ pip install d-fake-seeder
 dfs-install-desktop
 # GNOME: Alt+F2 → r → Enter
 gtk-launch dfakeseeder
-```
-
+```text
 ### DEB/RPM
 ```bash
 sudo dpkg -i dfakeseeder.deb  # or rpm -i
 # Desktop integration automatic
 # GNOME: Alt+F2 → r → Enter
 gtk-launch dfakeseeder
-```
-
+```text
 ### Docker
 ```bash
 make docker
 # X11 forwarding handled automatically
-```
-
+```text
 All formats provide identical functionality once installed.
 
 ---

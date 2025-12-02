@@ -295,8 +295,7 @@ Verify basic application functionality after PyPI installation.
 2. Run Python import test:
 ```python
 python3 -c "from d_fake_seeder.dfakeseeder import main; print('Import successful')"
-```
-
+```text
 **Verification:**
 - All modules import without errors
 - No missing dependencies
@@ -473,8 +472,7 @@ USER testuser
 
 # Execute Ansible playbook
 CMD ["ansible-playbook", "/home/testuser/ansible/verify_pypi_package.yml", "-i", "/home/testuser/ansible/inventory/localhost"]
-```
-
+```text
 #### Fedora Variant
 
 ```dockerfile
@@ -501,8 +499,7 @@ USER testuser
 
 # Execute Ansible playbook
 CMD ["ansible-playbook", "/home/testuser/ansible/verify_pypi_package.yml", "-i", "/home/testuser/ansible/inventory/localhost"]
-```
-
+```text
 ### Ansible Playbook Structure
 
 #### Inventory File
@@ -512,8 +509,7 @@ CMD ["ansible-playbook", "/home/testuser/ansible/verify_pypi_package.yml", "-i",
 ```ini
 [test_hosts]
 localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
-```
-
+```text
 #### Main Verification Playbook
 
 **File:** `ansible/verify_pypi_package.yml`
@@ -759,8 +755,7 @@ localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
           - "✓ Desktop integration cleanup"
           - "✓ Configuration initialization"
           - "========================================="
-```
-
+```text
 ### Ansible Test Orchestration Playbook
 
 **File:** `ansible/run_all_pypi_tests.yml`
@@ -883,8 +878,7 @@ localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
         - name: All tests passed
           debug:
             msg: "✓ All PyPI package tests passed successfully!"
-```
-
+```text
 ### Makefile Integration
 
 Add to project Makefile:
@@ -930,8 +924,7 @@ test-pypi:
 test-pypi-results:
 	@echo "=== Test Results Summary ==="
 	@find tests/pypi/ansible/test_results -name "*.log" -exec echo "{}:" \; -exec head -n 5 {} \; -exec echo "" \;
-```
-
+```text
 ### Ansible Requirements
 
 **File:** `ansible/requirements.yml`
@@ -941,13 +934,11 @@ test-pypi-results:
 collections:
   - name: community.docker
     version: ">=3.0.0"
-```
-
+```text
 Install with:
 ```bash
 ansible-galaxy collection install -r tests/pypi/ansible/requirements.yml
-```
-
+```text
 ## CI/CD Integration
 
 ### GitHub Actions Workflow
@@ -1033,8 +1024,7 @@ jobs:
           ansible-playbook tests/pypi/ansible/verify_python_version.yml \
             -e "python_version=${{ matrix.python-version }}" \
             -e "package_name=d-fake-seeder"
-```
-
+```text
 ## Test Execution
 
 ### Local Testing with Ansible
@@ -1051,8 +1041,7 @@ make test-pypi-all
 
 # View test results
 make test-pypi-results
-```
-
+```text
 ### Manual Ansible Execution
 
 ```bash
@@ -1075,8 +1064,7 @@ ansible-playbook tests/pypi/ansible/run_single_platform.yml \
 # Run specific verification playbook inside container manually
 docker run --rm -it dfakeseeder-pypi-test:ubuntu-24.04 \
     ansible-playbook /home/testuser/ansible/verify_pypi_package.yml -i /home/testuser/ansible/inventory/localhost
-```
-
+```text
 ### Manual Docker Testing (Interactive Debugging)
 
 ```bash
@@ -1097,8 +1085,7 @@ docker run --rm -it dfakeseeder-pypi-test:ubuntu-24.04 /bin/bash
 # (from within container shell)
 ansible-playbook /home/testuser/ansible/verify_pypi_package.yml \
     -i /home/testuser/ansible/inventory/localhost
-```
-
+```text
 ### CI/CD Execution
 
 Tests run automatically via Ansible playbooks:
@@ -1165,7 +1152,7 @@ If tests fail:
 
 ## Best Practices
 
-### DO:
+### DO
 - ✅ Test in clean containers
 - ✅ Use non-root user for testing
 - ✅ Verify desktop integration thoroughly
@@ -1173,7 +1160,7 @@ If tests fail:
 - ✅ Check for missing system dependencies
 - ✅ Verify CLI scripts are in PATH
 
-### DON'T:
+### DON'T
 - ❌ Test on host machine (not isolated)
 - ❌ Skip platform-specific tests
 - ❌ Ignore failed tests

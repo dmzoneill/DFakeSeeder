@@ -21,7 +21,7 @@ This document provides a comprehensive review of all right-click context menu im
 ### 1. Basic Actions Section
 
 | Menu Item | Action Name | Handler | Status | Issues |
-|-----------|-------------|---------|--------|--------|
+| ----------- | ------------- | --------- | -------- | -------- |
 | Pause | `app.pause` | `on_pause()` | ✅ Working | Context-aware (shown only if active=True) |
 | Resume | `app.resume` | `on_resume()` | ✅ Working | Context-aware (shown only if active=False) |
 | Force Start | `app.force_start` | `on_force_start()` | ✅ Working | Always shown |
@@ -31,14 +31,14 @@ This document provides a comprehensive review of all right-click context menu im
 ### 2. Context-Aware Actions
 
 | Menu Item | Action Name | Handler | Condition | Status |
-|-----------|-------------|---------|-----------|--------|
+| ----------- | ------------- | --------- | ----------- | -------- |
 | Force Complete | `app.force_complete` | `on_force_complete()` | progress < 1.0 | ✅ Working |
 | Set Random Progress | `app.set_random_progress` | `on_set_random_progress()` | progress == 0.0 | ✅ Working |
 
 ### 3. Copy Submenu
 
 | Menu Item | Action Name | Handler | Status | Issues |
-|-----------|-------------|---------|--------|--------|
+| ----------- | ------------- | --------- | -------- | -------- |
 | Copy Name | `app.copy_name` | `on_copy_name()` | ✅ Working | Uses `Gdk.Display.get_default().get_clipboard()` |
 | Copy Info Hash | `app.copy_hash` | `on_copy_hash()` | ⚠️ Conditional | Requires `torrent.torrent_file.file_hash` |
 | Copy Magnet Link | `app.copy_magnet` | `on_copy_magnet()` | ⚠️ Conditional | Requires `torrent.torrent_file.file_hash` |
@@ -47,7 +47,7 @@ This document provides a comprehensive review of all right-click context menu im
 ### 4. Priority Submenu
 
 | Menu Item | Action Name | Handler | Status | Issues |
-|-----------|-------------|---------|--------|--------|
+| ----------- | ------------- | --------- | -------- | -------- |
 | High Priority | `app.priority_high` | `on_priority_high()` | ✅ Working | Multiplies speeds by 1.5x |
 | Normal Priority | `app.priority_normal` | `on_priority_normal()` | ✅ Working | Resets to global speeds |
 | Low Priority | `app.priority_low` | `on_priority_low()` | ✅ Working | Multiplies speeds by 0.5x |
@@ -55,7 +55,7 @@ This document provides a comprehensive review of all right-click context menu im
 ### 5. Speed Limits Submenu
 
 | Menu Item | Action Name | Handler | Status | Issues |
-|-----------|-------------|---------|--------|--------|
+| ----------- | ------------- | --------- | -------- | -------- |
 | Set Upload Limit... | `app.set_upload_limit` | `on_set_upload_limit()` | ❌ Broken | Uses deprecated `dialog.run()` - GTK4 incompatible |
 | Set Download Limit... | `app.set_download_limit` | `on_set_download_limit()` | ❌ Broken | Uses deprecated `dialog.run()` - GTK4 incompatible |
 | Reset to Global Limits | `app.reset_limits` | `on_reset_limits()` | ✅ Working | Resets limit attributes |
@@ -63,7 +63,7 @@ This document provides a comprehensive review of all right-click context menu im
 ### 6. Tracker Management Submenu
 
 | Menu Item | Action Name | Handler | Status | Issues |
-|-----------|-------------|---------|--------|--------|
+| ----------- | ------------- | --------- | -------- | -------- |
 | Add Tracker... | `app.add_tracker` | `on_add_tracker()` | ❌ Broken | Uses deprecated `dialog.run()` - GTK4 incompatible |
 | Edit Tracker... | `app.edit_tracker` | `on_edit_tracker()` | ❌ Broken | Uses deprecated `dialog.run()` - GTK4 incompatible |
 | Remove Tracker... | `app.remove_tracker` | `on_remove_tracker()` | ⚠️ Placeholder | Shows "not yet implemented" notification |
@@ -71,7 +71,7 @@ This document provides a comprehensive review of all right-click context menu im
 ### 7. Queue Submenu
 
 | Menu Item | Action Name | Handler | Status | Issues |
-|-----------|-------------|---------|--------|--------|
+| ----------- | ------------- | --------- | -------- | -------- |
 | Top | `app.queue_top` | `on_queue_top()` | ⚠️ Limited | Manipulates ID, may not affect display order |
 | Up | `app.queue_up` | `on_queue_up()` | ⚠️ Limited | Manipulates ID, may not affect display order |
 | Down | `app.queue_down` | `on_queue_down()` | ⚠️ Limited | Manipulates ID, may not affect display order |
@@ -80,7 +80,7 @@ This document provides a comprehensive review of all right-click context menu im
 ### 8. Advanced Options
 
 | Menu Item | Action Name | Handler | Status | Issues |
-|-----------|-------------|---------|--------|--------|
+| ----------- | ------------- | --------- | -------- | -------- |
 | Rename... | `app.rename_torrent` | `on_rename_torrent()` | ❌ Broken | Uses deprecated `dialog.run()` - GTK4 incompatible |
 | Set Label... | `app.set_label` | `on_set_label()` | ❌ Broken | Uses deprecated `dialog.run()` - GTK4 incompatible |
 | Set Location... | `app.set_location` | `on_set_location()` | ❌ Broken | Uses deprecated `dialog.run()` - GTK4 incompatible |
@@ -88,14 +88,14 @@ This document provides a comprehensive review of all right-click context menu im
 ### 9. Toggle Options
 
 | Menu Item | Action Name | Handler | Status | Issues |
-|-----------|-------------|---------|--------|--------|
+| ----------- | ------------- | --------- | -------- | -------- |
 | Enable/Disable Super Seeding | `app.toggle_super_seed` | `on_toggle_super_seed()` | ✅ Working | Context-aware label based on current state |
 | Enable/Disable Sequential Download | `app.toggle_sequential` | `on_toggle_sequential()` | ✅ Working | Context-aware label based on current state |
 
 ### 10. Properties and Removal
 
 | Menu Item | Action Name | Handler | Status | Issues |
-|-----------|-------------|---------|--------|--------|
+| ----------- | ------------- | --------- | -------- | -------- |
 | Properties | `app.show_properties` | `on_show_properties()` | ⚠️ Placeholder | Shows "not yet implemented" notification |
 | Remove Torrent | `app.remove_torrent` | `on_remove_torrent()` | ❌ Broken | Uses deprecated `dialog.run()` - GTK4 incompatible |
 | Remove Torrent and Data | `app.remove_torrent_and_data` | `on_remove_torrent_and_data()` | ❌ Broken | Uses deprecated `dialog.run()` - GTK4 incompatible |
@@ -103,7 +103,7 @@ This document provides a comprehensive review of all right-click context menu im
 ### 11. Columns Submenu
 
 | Type | Handler | Status | Issues |
-|------|---------|--------|--------|
+| ------ | --------- | -------- | -------- |
 | Column toggles (dynamic) | `on_stateful_action_change_state()` | ✅ Working | Complex signal blocking logic to prevent deadlocks |
 
 ## Critical Issues Identified
@@ -131,15 +131,13 @@ GTK4 removed the synchronous `dialog.run()` method. All these handlers use the o
 dialog = Gtk.Dialog(...)
 response = dialog.run()  # ❌ This doesn't exist in GTK4!
 dialog.destroy()
-```
-
+```text
 **Modern GTK4 Pattern Required:**
 ```python
 dialog = Gtk.Dialog(...)
 dialog.connect("response", callback_function)
 dialog.present()
-```
-
+```text
 ### Issue #2: Unimplemented Features
 
 **Severity:** MEDIUM
@@ -258,8 +256,7 @@ def on_dialog_response(dialog, response):
 dialog = Gtk.Dialog(...)
 dialog.connect("response", on_dialog_response)
 dialog.present()
-```
-
+```text
 **Affected Methods:**
 - `on_set_upload_limit()` (line 1084)
 - `on_set_download_limit()` (line 1118)

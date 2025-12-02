@@ -32,7 +32,7 @@ This guide focuses on PyPI packaging while maintaining compatibility with other 
 
 ### Files Included in PyPI Distribution
 
-```
+```text
 d-fake-seeder/
 ├── d_fake_seeder/
 │   ├── __init__.py
@@ -56,8 +56,7 @@ d-fake-seeder/
 ├── MANIFEST.in                  # Package inclusion rules
 ├── README.md                    # Documentation
 └── LICENSE                      # MIT License
-```
-
+```text
 ### Files Excluded from PyPI
 
 The `MANIFEST.in` explicitly excludes:
@@ -82,8 +81,7 @@ install_requires = [
     "watchdog>=4.0.0",       # File system monitoring
     "bencodepy>=0.9.5",      # Torrent file parsing
 ]
-```
-
+```text
 ### System Dependencies
 
 Not managed by pip (must be installed separately):
@@ -101,8 +99,7 @@ sudo apt install python3-gi gir1.2-gtk-4.0
 
 # Arch Linux
 sudo pacman -S python-gobject gtk4
-```
-
+```text
 ## Configuration System Compatibility
 
 ### PyPI Installation Flow
@@ -147,7 +144,7 @@ Both installations use the same `AppSettings` class:
 ```python
 # From d_fake_seeder/domain/app_settings.py (lines 131-154)
 
-# Determine source config file (priority order):
+# Determine source config file (priority order)
 # 1. System-wide RPM config: /etc/dfakeseeder/default.json
 # 2. Package default: d_fake_seeder/config/default.json
 system_config = Path("/etc/dfakeseeder/default.json")
@@ -155,8 +152,7 @@ if system_config.exists():
     source_path = str(system_config)  # RPM installation
 else:
     source_path = str(self.default_config_file)  # PyPI installation
-```
-
+```text
 This ensures:
 - ✅ PyPI installations work without system config
 - ✅ RPM installations prefer system config
@@ -173,8 +169,7 @@ pip install build twine
 
 # Optional: Install development dependencies
 pip install -e .[dev]
-```
-
+```text
 ### Build Process
 
 ```bash
@@ -190,25 +185,23 @@ make lint
 # Build PyPI package
 make pypi-build
 
-# This creates:
+# This creates
 # - dist/d-fake-seeder-0.0.46.tar.gz (source distribution)
 # - dist/d_fake_seeder-0.0.46-py3-none-any.whl (wheel)
-```
-
+```text
 ### Validation
 
 ```bash
 # Check package validity
 make pypi-check
 
-# Or manually:
+# Or manually
 twine check dist/*
 
 # Verify package contents
 tar -tzf dist/d-fake-seeder-0.0.46.tar.gz
 unzip -l dist/d_fake_seeder-0.0.46-py3-none-any.whl
-```
-
+```text
 ### Testing PyPI Upload
 
 ```bash
@@ -217,8 +210,7 @@ make pypi-test-upload
 
 # Test installation from Test PyPI
 pip install --index-url https://test.pypi.org/simple/ d-fake-seeder
-```
-
+```text
 ### Production Upload
 
 ```bash
@@ -227,8 +219,7 @@ make pypi-upload
 
 # Verify on PyPI
 # https://pypi.org/project/d-fake-seeder/
-```
-
+```text
 ## Desktop Integration
 
 ### PyPI Post-Install Script
@@ -241,8 +232,7 @@ dfs-install-desktop
 
 # Uninstall desktop integration
 dfs-uninstall-desktop
-```
-
+```text
 This script (`d_fake_seeder/post_install.py`):
 1. Copies desktop file to `~/.local/share/applications/`
 2. Installs icons to `~/.local/share/icons/hicolor/`
@@ -273,8 +263,7 @@ entry_points = {
         "dfs-uninstall-desktop = d_fake_seeder.post_install:uninstall_desktop_integration",
     ]
 }
-```
-
+```text
 After PyPI installation:
 - `dfs` - Launch main application
 - `dfakeseeder` - Launch main application (alias)
@@ -306,8 +295,7 @@ Exec=/usr/bin/dfakeseeder --with-tray
 
 [Desktop Action tray-only]
 Exec=/usr/bin/dfakeseeder --tray-only
-```
-
+```text
 After `dfs-install-desktop`:
 - Exec paths adjusted for PyPI installation
 - Icons installed to user directories
@@ -346,8 +334,7 @@ dfs
 # Cleanup
 deactivate
 rm -rf test-venv
-```
-
+```text
 ### Test RPM Installation
 
 ```bash
@@ -368,8 +355,7 @@ rpm -qi dfakeseeder
 
 # Cleanup
 sudo dnf remove dfakeseeder
-```
-
+```text
 ## Common Issues
 
 ### Missing GTK4 Dependencies
@@ -383,8 +369,7 @@ sudo dnf install python3-gobject gtk4
 
 # Ubuntu
 sudo apt install python3-gi gir1.2-gtk-4.0
-```
-
+```text
 ### Desktop File Not Showing
 
 **Problem**: Application not in menu after PyPI install
@@ -392,8 +377,7 @@ sudo apt install python3-gi gir1.2-gtk-4.0
 **Solution**: Run desktop integration:
 ```bash
 dfs-install-desktop
-```
-
+```text
 ### Config Not Found
 
 **Problem**: Application creates fresh config every run
@@ -402,8 +386,7 @@ dfs-install-desktop
 ```bash
 ls -la ~/.config/dfakeseeder/
 chmod 644 ~/.config/dfakeseeder/settings.json
-```
-
+```text
 ### Icons Not Showing
 
 **Problem**: Default icon in application menu
@@ -412,8 +395,7 @@ chmod 644 ~/.config/dfakeseeder/settings.json
 ```bash
 gtk-update-icon-cache -f -t ~/.local/share/icons/hicolor/
 # Restart desktop environment or logout/login
-```
-
+```text
 ## Version Management
 
 When updating the version:
@@ -470,6 +452,6 @@ When updating the version:
 ## Support
 
 For PyPI packaging issues:
-- GitHub Issues: https://github.com/dmzoneill/DFakeSeeder/issues
+- GitHub Issues: <<https://github.com/dmzoneill/DFakeSeeder/issues>>
 - PyPI Project: https://pypi.org/project/d-fake-seeder/
 - Check build logs: `make pypi-build`

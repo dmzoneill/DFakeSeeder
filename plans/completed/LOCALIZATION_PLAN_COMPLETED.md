@@ -61,8 +61,7 @@ This document outlines the complete localization implementation plan for DFakeSe
 ### Implementation: TranslationManager with automatic widget translation
 ### Completion Date: 2024-09-27
 
-#### ✅ Completed Tasks:
-
+#### ✅ Completed Tasks
 1. **✅ Advanced Translation System Implementation**
    - Complete TranslationManager class with automatic widget discovery
    - Runtime translation without manual string wrapping
@@ -93,8 +92,7 @@ This document outlines the complete localization implementation plan for DFakeSe
 ### Implementation: Full settings dialog translation with runtime switching
 ### Completion Date: 2024-09-27
 
-#### ✅ Completed Implementation:
-
+#### ✅ Completed Implementation
 1. **✅ Advanced Language Selection System**
    - Language dropdown in Settings → General tab
    - Runtime language switching without restart
@@ -113,7 +111,7 @@ This document outlines the complete localization implementation plan for DFakeSe
    - Settings dialog self-translation
    - Error resilience and fallback handling
 
-#### ✅ Features Implemented:
+#### ✅ Features Implemented
 - Language dropdown with 15 language support
 - Instant language switching without application restart
 - Column header translation (torrents, states, peers, etc.)
@@ -134,8 +132,7 @@ message = ngettext(
     "Downloaded %d files",
     file_count
 ) % file_count
-```
-
+```text
 #### 3.2 Date/Time Localization
 ```python
 import locale
@@ -145,16 +142,14 @@ def format_timestamp(timestamp):
     """Format timestamp according to locale"""
     dt = datetime.fromtimestamp(timestamp)
     return dt.strftime(locale.nl_langinfo(locale.D_T_FMT))
-```
-
+```text
 #### 3.3 Number Formatting
 ```python
 def format_size(bytes_count):
     """Format file size according to locale"""
     # Use locale-specific number formatting
     return locale.format_string("%.1f MB", bytes_count / 1024 / 1024)
-```
-
+```text
 #### 3.4 RTL Language Support
 - CSS adjustments for Arabic text direction
 - UI layout adaptations for RTL languages
@@ -174,8 +169,7 @@ def validate_translations():
         # Check translation completeness
         # Validate format strings match
         # Check for encoding issues
-```
-
+```text
 #### 4.2 Translation Memory Integration
 - Integration with translation management systems
 - Support for .xliff format
@@ -186,8 +180,7 @@ def validate_translations():
 # Add translator comments
 _("Add")  # TRANSLATORS: Button to add a new torrent file
 _("Remove")  # TRANSLATORS: Button to remove selected torrent
-```
-
+```text
 ## 🚧 Phase 5: Community Translation (Ongoing)
 
 ### Status: Ready to Start
@@ -241,10 +234,9 @@ xgettext --language=Python \
          --keyword=ngettext:1,2 \
          --output=dfakeseeder.pot \
          --from-code=UTF-8
-```
-
+```text
 ### Translation File Structure
-```
+```text
 d_fake_seeder/locale/
 ├── dfakeseeder.pot              # Template
 ├── en/LC_MESSAGES/              # English (source)
@@ -254,8 +246,7 @@ d_fake_seeder/locale/
 ├── fr/LC_MESSAGES/              # French 🚧
 ├── de/LC_MESSAGES/              # German 🚧
 └── ...                          # Other languages
-```
-
+```text
 ### Language Settings Integration
 ```json
 // In default.json
@@ -267,8 +258,7 @@ d_fake_seeder/locale/
     "number_format": "auto"
   }
 }
-```
-
+```text
 ## Testing Strategy
 
 ### 1. Automated Testing
@@ -279,8 +269,7 @@ def test_localization():
     # Test string translation
     # Test fallback behavior
     # Test invalid language handling
-```
-
+```text
 ### 2. Manual Testing Checklist
 - [ ] Language switching works without restart
 - [ ] All UI elements update when language changes
@@ -313,8 +302,7 @@ sudo dnf install gettext
 
 # macOS
 brew install gettext
-```
-
+```text
 ## Success Metrics
 
 ### Phase 1 Success Criteria

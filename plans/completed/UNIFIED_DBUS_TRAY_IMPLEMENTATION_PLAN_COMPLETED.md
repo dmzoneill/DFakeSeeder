@@ -21,7 +21,7 @@ Based on analysis and requirements clarification:
 ## Architecture Overview
 
 ### System Components
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                        DFakeSeeder Main App                     │
 │  ┌─────────────┐    ┌─────────────┐    ┌─────────────────────┐  │
@@ -43,8 +43,7 @@ Based on analysis and requirements clarification:
 │  │     3)      │    │             │    │                     │  │
 │  └─────────────┘    └─────────────┘    └─────────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
-```
-
+```text
 ### Communication Flow
 1. **Tray Action**: User clicks tray menu item
 2. **D-Bus Update**: Tray sends settings update via D-Bus
@@ -119,8 +118,7 @@ Based on analysis and requirements clarification:
   // Need to ADD for application control:
   "application_quit_requested": false    // NEW - graceful shutdown trigger
 }
-```
-
+```text
 ### Phase 1: D-Bus Infrastructure (Week 1)
 
 #### 1.1 Enhanced D-Bus Communication Manager
@@ -317,8 +315,7 @@ class DBusUnifier:
 
         except Exception as e:
             logger.error(f"Error forwarding settings change to D-Bus: {e}")
-```
-
+```text
 **D-Bus Interface** (XML for interface definition, JSON for message content):
 ```xml
 <interface name="com.dfakeseeder.Communication">
@@ -336,8 +333,7 @@ class DBusUnifier:
         <arg type="s" name="changes_json"/>
     </signal>
 </interface>
-```
-
+```text
 **Enhanced D-Bus Interface** (with health monitoring and debugging):
 ```xml
 <interface name="com.dfakeseeder.Communication">
@@ -369,8 +365,7 @@ class DBusUnifier:
         <arg type="s" name="status_json"/>
     </signal>
 </interface>
-```
-
+```text
 **Note**: XML is required for D-Bus interface definition, but all actual message content is JSON for simplicity.
 
 #### 1.2 AppSettings Integration
@@ -451,8 +446,7 @@ class WindowManager:
             self.app_settings.set("window_visible", False)
             return True  # Prevent window destruction
         return False  # Allow normal close
-```
-
+```text
 #### 2.2 Controller Updates
 
 **File**: `d_fake_seeder/controller.py` (**UPDATE EXISTING** - confirmed exists)
@@ -509,8 +503,7 @@ class Controller:
 
         except Exception as e:
             logger.error(f"Error handling settings change: {e}")
-```
-
+```text
 ### Phase 3: Tray Application (Week 3)
 
 #### 3.1 Tray Application Structure
@@ -1431,8 +1424,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-```
-
+```text
 ### Advanced Tray Features
 
 #### 3.2 Desktop Notifications System
@@ -1497,8 +1489,7 @@ class NotificationManager:
             "critical": "dfakeseeder-error"
         }
         return icon_mapping.get(category, "dfakeseeder-idle")
-```
-
+```text
 #### 3.3 Enhanced Connection Management
 ```python
 class ConnectionManager:
@@ -1564,8 +1555,7 @@ class ConnectionManager:
             return False
 
         return True  # Continue health monitoring
-```
-
+```text
 ### Phase 4: Settings Integration (Week 4)
 
 #### 4.1 AppSettings Updates
@@ -1647,8 +1637,7 @@ class ConnectionManager:
   "active_torrents": [],
   "torrent_controls": {}
 }
-```
-
+```text
 #### 4.2 UI Integration
 
 **Update View to handle new UI settings**:
@@ -1667,8 +1656,7 @@ def _handle_settings_change(self, app_settings, key, old_value, new_value):
         self._show_about_dialog()
         # Reset the setting
         app_settings.set("ui_settings.show_about", False)
-```
-
+```text
 ### Phase 5: Launcher Integration (Week 5)
 
 #### 5.1 Tray Launcher Script
@@ -1690,8 +1678,7 @@ from dfakeseeder_tray import main
 
 if __name__ == "__main__":
     main()
-```
-
+```text
 #### 5.2 Desktop Integration
 
 **File**: `d_fake_seeder/desktop/dfakeseeder-tray.desktop` (**NEW FILE - TO BE CREATED**)
@@ -1706,8 +1693,7 @@ Type=Application
 Categories=Network;FileTransfer;
 StartupNotify=false
 NoDisplay=true
-```
-
+```text
 ---
 
 ## Implementation Timeline
@@ -1758,7 +1744,7 @@ The tray application must respond to language changes from the main application 
 
 ### Language Change Signal Flow
 
-```
+```text
 [Main App Language Change] → [AppSettings.set("language", new_lang)]
                           ↓
 [AppSettings emits "setting-changed" signal] → [DBusUnifier._on_app_setting_changed()]
@@ -1768,8 +1754,7 @@ The tray application must respond to language changes from the main application 
 [Tray detects language change] → [Tray._handle_language_change()]
                           ↓
 [TranslationManager.switch_language()] → [Tray._recreate_menu_with_translations()]
-```
-
+```text
 ### Implementation Details
 
 #### DBusUnifier Signal Forwarding
@@ -1793,8 +1778,7 @@ def _recreate_menu_with_translations(self):
 
     # 2. Recreate with new translations
     self._create_menu()  # Uses self._() which now returns new language
-```
-
+```text
 ### Language Change Testing
 
 To test dynamic language changes:
@@ -1845,8 +1829,7 @@ python translation_build_manager.py build
 
 # 7. Validate translation chain
 python translation_build_manager.py validate
-```
-
+```text
 ### Tray-Specific Translation Strings
 
 The following comprehensive strings need to be added to translation files:
@@ -1898,8 +1881,7 @@ The following comprehensive strings need to be added to translation files:
   "Quit Tray": "Quit Tray",
   "Quit Application": "Quit Application"
 }
-```
-
+```text
 ### Translation Integration Notes
 
 - Tray uses the same TranslationManager as the main application
@@ -1996,13 +1978,12 @@ This unified plan eliminates conflicts between the separate documents and provid
 **ALL instances of these imports in the plan have been corrected:**
 
 ```python
-# ❌ WRONG (corrected in plan):
+# ❌ WRONG (corrected in plan)
 from lib.app_settings import AppSettings
 
-# ✅ CORRECT (updated in plan):
+# ✅ CORRECT (updated in plan)
 from domain.app_settings import AppSettings
-```
-
+```text
 ### 📋 **Implementation Notes**
 
 1. **No MVC Confusion**: Only one active set of MVC files exists now

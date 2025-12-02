@@ -3,6 +3,7 @@ Base class for torrent details tab components.
 
 Provides common functionality and interface for all torrent detail tabs.
 """
+# isort: skip_file
 
 # fmt: off
 from abc import ABC, abstractmethod

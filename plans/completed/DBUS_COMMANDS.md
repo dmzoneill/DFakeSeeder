@@ -13,18 +13,15 @@ Complete reference for testing the D-Bus interface of the main application.
 ### Launch the test suite (Interactive)
 ```bash
 ./test_dbus_interface.sh
-```
-
+```text
 ### Run all tests automatically
 ```bash
 ./test_dbus_interface.sh --all
-```
-
+```text
 ### Run quick health check
 ```bash
 ./test_dbus_interface.sh --quick
-```
-
+```text
 ---
 
 ## Individual D-Bus Commands
@@ -37,13 +34,11 @@ dbus-send --session --print-reply \
   --dest=org.freedesktop.DBus \
   /org/freedesktop/DBus \
   org.freedesktop.DBus.ListNames | grep dfakeseeder
-```
-
+```text
 ```bash
 # Check service owner
 busctl --user list | grep dfakeseeder
-```
-
+```text
 ---
 
 ### 2. Introspect the D-Bus Interface
@@ -53,16 +48,14 @@ busctl --user list | grep dfakeseeder
 gdbus introspect --session \
   --dest ie.fio.dfakeseeder \
   --object-path /ie/fio/dfakeseeder
-```
-
+```text
 ```bash
 # Alternative using dbus-send
 dbus-send --session --print-reply \
   --dest=ie.fio.dfakeseeder \
   /ie/fio/dfakeseeder \
   org.freedesktop.DBus.Introspectable.Introspect
-```
-
+```text
 ---
 
 ### 3. Ping Method (Health Check)
@@ -75,8 +68,7 @@ gdbus call --session \
   --method ie.fio.dfakeseeder.Settings.Ping
 
 # Expected output: (true,)
-```
-
+```text
 ---
 
 ### 4. GetSettings Method
@@ -87,8 +79,7 @@ gdbus call --session \
   --dest ie.fio.dfakeseeder \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.GetSettings
-```
-
+```text
 ```bash
 # Pretty-print the settings JSON
 gdbus call --session \
@@ -97,8 +88,7 @@ gdbus call --session \
   --method ie.fio.dfakeseeder.Settings.GetSettings | \
   sed "s/^('\(.*\)',)$/\1/" | \
   python3 -m json.tool
-```
-
+```text
 ```bash
 # Save settings to file
 gdbus call --session \
@@ -107,8 +97,7 @@ gdbus call --session \
   --method ie.fio.dfakeseeder.Settings.GetSettings | \
   sed "s/^('\(.*\)',)$/\1/" | \
   python3 -m json.tool > current_settings.json
-```
-
+```text
 ---
 
 ### 5. GetConnectionStatus Method
@@ -119,8 +108,7 @@ gdbus call --session \
   --dest ie.fio.dfakeseeder \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.GetConnectionStatus
-```
-
+```text
 ```bash
 # Pretty-print connection status
 gdbus call --session \
@@ -129,8 +117,7 @@ gdbus call --session \
   --method ie.fio.dfakeseeder.Settings.GetConnectionStatus | \
   sed "s/^('\(.*\)',)$/\1/" | \
   python3 -m json.tool
-```
-
+```text
 **Example Output:**
 ```json
 {
@@ -141,8 +128,7 @@ gdbus call --session \
   "error_count": 0,
   "uptime": 123.45
 }
-```
-
+```text
 ---
 
 ### 6. GetDebugInfo Method
@@ -153,8 +139,7 @@ gdbus call --session \
   --dest ie.fio.dfakeseeder \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.GetDebugInfo
-```
-
+```text
 ```bash
 # Pretty-print debug info
 gdbus call --session \
@@ -163,8 +148,7 @@ gdbus call --session \
   --method ie.fio.dfakeseeder.Settings.GetDebugInfo | \
   sed "s/^('\(.*\)',)$/\1/" | \
   python3 -m json.tool
-```
-
+```text
 **Example Output:**
 ```json
 {
@@ -176,8 +160,7 @@ gdbus call --session \
   "app_settings_available": true,
   "settings_count": 150
 }
-```
-
+```text
 ---
 
 ### 7. ShowPreferences Method
@@ -190,8 +173,7 @@ gdbus call --session \
   --method ie.fio.dfakeseeder.Settings.ShowPreferences
 
 # Expected output: (true,)
-```
-
+```text
 **Description:**
 - Opens the preferences/settings dialog in the main application
 - Automatically shows the main window if it's hidden
@@ -210,8 +192,7 @@ gdbus call --session \
   --method ie.fio.dfakeseeder.Settings.ShowAbout
 
 # Expected output: (true,)
-```
-
+```text
 **Description:**
 - Opens the about dialog in the main application
 - Automatically shows the main window if it's hidden
@@ -233,8 +214,7 @@ gdbus call --session \
   '{"upload_speed": 100}'
 
 # Expected output: (true,)
-```
-
+```text
 #### Update Multiple Settings
 
 ```bash
@@ -244,8 +224,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"upload_speed": 200, "download_speed": 1000}'
-```
-
+```text
 #### Update Boolean Settings
 
 ```bash
@@ -255,8 +234,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"window_visible": false}'
-```
-
+```text
 ```bash
 # Show the main window
 gdbus call --session \
@@ -264,8 +242,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"window_visible": true}'
-```
-
+```text
 ```bash
 # Enable alternative speed mode
 gdbus call --session \
@@ -273,8 +250,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"alternative_speed_enabled": true}'
-```
-
+```text
 #### Update Nested Settings
 
 ```bash
@@ -284,8 +260,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"protocols.dht.enabled": true}'
-```
-
+```text
 ```bash
 # Update peer protocol timeout
 gdbus call --session \
@@ -293,8 +268,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"peer_protocol.handshake_timeout_seconds": 60.0}'
-```
-
+```text
 #### Update String Settings
 
 ```bash
@@ -304,8 +278,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"seeding_profile": "aggressive"}'
-```
-
+```text
 ```bash
 # Change language
 gdbus call --session \
@@ -313,8 +286,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"language": "es"}'
-```
-
+```text
 ---
 
 ### 10. Monitor Signals
@@ -324,16 +296,14 @@ gdbus call --session \
 gdbus monitor --session \
   --dest ie.fio.dfakeseeder \
   --object-path /ie/fio/dfakeseeder
-```
-
+```text
 ```bash
 # Monitor with filtering (only SettingsChanged signals)
 gdbus monitor --session \
   --dest ie.fio.dfakeseeder \
   --object-path /ie/fio/dfakeseeder | \
   grep "SettingsChanged"
-```
-
+```text
 ```bash
 # Monitor in background and trigger a change
 gdbus monitor --session \
@@ -351,8 +321,7 @@ gdbus call --session \
 # Stop monitoring after a few seconds
 sleep 5
 kill $MONITOR_PID
-```
-
+```text
 ---
 
 ### 11. Application Control
@@ -366,8 +335,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"application_quit_requested": true}'
-```
-
+```text
 ---
 
 ## Validation Tests
@@ -383,8 +351,7 @@ gdbus call --session \
   '{"upload_speed": 500}'
 
 # Should return: (true,)
-```
-
+```text
 ### Test Invalid Values
 
 ```bash
@@ -396,8 +363,7 @@ gdbus call --session \
   '{"upload_speed": 99999}'
 
 # Should return: (false,)
-```
-
+```text
 ```bash
 # Invalid boolean type (should fail validation)
 gdbus call --session \
@@ -407,8 +373,7 @@ gdbus call --session \
   '{"window_visible": "yes"}'
 
 # Should return: (false,)
-```
-
+```text
 ```bash
 # Invalid seeding profile (should fail validation)
 gdbus call --session \
@@ -418,8 +383,7 @@ gdbus call --session \
   '{"current_seeding_profile": "invalid_profile"}'
 
 # Should return: (false,)
-```
-
+```text
 ---
 
 ## Performance Testing
@@ -432,8 +396,7 @@ time gdbus call --session \
   --dest ie.fio.dfakeseeder \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.Ping
-```
-
+```text
 ### Concurrent Requests
 
 ```bash
@@ -446,8 +409,7 @@ for i in {1..10}; do
     && echo "Request $i completed") &
 done
 wait
-```
-
+```text
 ### Stress Test
 
 ```bash
@@ -460,8 +422,7 @@ for i in {1..100}; do
     >/dev/null 2>&1
 done
 echo "Completed 100 requests"
-```
-
+```text
 ---
 
 ## Debugging Commands
@@ -471,47 +432,39 @@ echo "Completed 100 requests"
 ```bash
 # Follow D-Bus related logs
 journalctl --user -f | grep -i dbus
-```
-
+```text
 ```bash
 # Follow DFakeSeeder logs
 journalctl --user -f | grep dfakeseeder
-```
-
+```text
 ```bash
 # Show recent D-Bus method calls
 journalctl --user -n 100 | grep "D-Bus method call"
-```
-
+```text
 ### Check D-Bus Session
 
 ```bash
 # Show D-Bus session address
 echo $DBUS_SESSION_BUS_ADDRESS
-```
-
+```text
 ```bash
 # List all session bus names
 busctl --user list
-```
-
+```text
 ```bash
 # Show service details
 busctl --user status ie.fio.dfakeseeder
-```
-
+```text
 ### Monitor D-Bus Traffic
 
 ```bash
 # Monitor all D-Bus traffic (verbose)
 dbus-monitor --session "type='method_call',interface='ie.fio.dfakeseeder.Settings'"
-```
-
+```text
 ```bash
 # Monitor only signals
 dbus-monitor --session "type='signal',interface='ie.fio.dfakeseeder.Settings'"
-```
-
+```text
 ---
 
 ## Common Use Cases
@@ -532,8 +485,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"window_visible": true}'
-```
-
+```text
 ### 2. Change Speed Limits
 
 ```bash
@@ -550,8 +502,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"upload_speed": 1000, "download_speed": 5000}'
-```
-
+```text
 ### 3. Profile Switching
 
 ```bash
@@ -575,8 +526,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"seeding_profile": "aggressive"}'
-```
-
+```text
 ### 4. Language Switching
 
 ```bash
@@ -600,8 +550,7 @@ gdbus call --session \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.UpdateSettings \
   '{"language": "fr"}'
-```
-
+```text
 ### 5. UI Control
 
 ```bash
@@ -616,8 +565,7 @@ gdbus call --session \
   --dest ie.fio.dfakeseeder \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.ShowAbout
-```
-
+```text
 ### 6. Health Check Script
 
 ```bash
@@ -645,8 +593,7 @@ gdbus call --session \
   --method ie.fio.dfakeseeder.Settings.GetConnectionStatus | \
   sed "s/^('\(.*\)',)$/\1/" | \
   python3 -m json.tool
-```
-
+```text
 ---
 
 ## Error Handling
@@ -660,8 +607,7 @@ If you get `Error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown`, the a
 # Start the application
 cd /home/daoneill/src/DFakeSeeder
 make run-debug
-```
-
+```text
 ### Timeout Errors
 
 If commands timeout, increase the timeout:
@@ -673,8 +619,7 @@ gdbus call --session \
   --dest ie.fio.dfakeseeder \
   --object-path /ie/fio/dfakeseeder \
   --method ie.fio.dfakeseeder.Settings.GetSettings
-```
-
+```text
 ### Invalid JSON
 
 Make sure JSON is properly formatted:
@@ -685,8 +630,7 @@ gdbus call ... "{'key': 'value'}"
 
 # ✅ Correct (use double quotes for JSON)
 gdbus call ... '{"key": "value"}'
-```
-
+```text
 ---
 
 ## Tips and Tricks
@@ -727,7 +671,7 @@ gdbus call ... '{"key": "value"}'
 Settings that have validation in place:
 
 | Setting | Type | Valid Range | Notes |
-|---------|------|-------------|-------|
+| --------- | ------ | ------------- | ------- |
 | `upload_speed` | int/float | 0-10000 | KB/s |
 | `download_speed` | int/float | 0-10000 | KB/s |
 | `alternative_upload_speed` | int/float | 0-10000 | KB/s |
@@ -747,5 +691,5 @@ Settings that have validation in place:
 
 For issues or questions:
 - Check logs: `journalctl --user -f | grep dfakeseeder`
-- GitHub Issues: https://github.com/dmzoneill/DFakeSeeder/issues
+- GitHub Issues: <<https://github.com/dmzoneill/DFakeSeeder/issues>>
 - See also: `plans/UNIFIED_DBUS_TRAY_IMPLEMENTATION_PLAN.md`

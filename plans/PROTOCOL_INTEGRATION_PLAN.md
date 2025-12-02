@@ -69,8 +69,7 @@ class DHTSeeder(BaseSeeder):
     def start_announcing(self):
         """Begin DHT announcements for torrent"""
         self.dht_node.announce_peer(self.torrent.info_hash, self.port)
-```
-
+```text
 #### 2. Extension Protocol (BEP-010) - ✅ **IMPLEMENTED**
 **Status:** Fully implemented in `d_fake_seeder/domain/torrent/protocols/extensions/manager.py`
 **Fake Seeding Benefit:**
@@ -104,8 +103,7 @@ class MetadataExtension:
     def handle_metadata_request(self, piece_index):
         """Respond to metadata requests realistically"""
         pass
-```
-
+```text
 #### 3. Peer Exchange (PEX) (BEP-011) - ✅ **IMPLEMENTED**
 **Status:** Fully implemented in `d_fake_seeder/domain/torrent/protocols/extensions/pex.py`
 **Fake Seeding Benefit:**
@@ -131,8 +129,7 @@ class PeerExchangeExtension:
         """Create realistic-looking peer IP:port combinations"""
         # Use real IP ranges, realistic port numbers
         pass
-```
-
+```text
 ### ✅ **Phase 2: Advanced Protocol Features - COMPLETE**
 
 #### 4. µTP Support (BEP-029) - ✅ **IMPLEMENTED**
@@ -158,8 +155,7 @@ class UTPConnection:
     def handle_data_packet(self, packet):
         """Process incoming µTP data"""
         pass
-```
-
+```text
 #### 5. Fast Extension (BEP-006) - ✅ **IMPLEMENTED**
 **Status:** Implemented in `d_fake_seeder/domain/torrent/protocols/extensions/fast_extension.py`
 **Fake Seeding Benefit:**
@@ -224,8 +220,7 @@ class ClientBehaviorEngine:
             return self._default_behavior(action)
 
         return self._execute_client_specific_behavior(profile, action)
-```
-
+```text
 ### 📊 **Realistic Traffic Pattern Simulation**
 
 ```python
@@ -262,8 +257,7 @@ class TrafficPatternSimulator:
         """Generate realistic peer connection patterns"""
         # Vary connection timing, implement realistic peer behavior
         pass
-```
-
+```text
 ### 🕸️ **Swarm Intelligence Simulation**
 
 ```python
@@ -289,13 +283,12 @@ class SwarmIntelligence:
         """Implement realistic piece selection algorithms"""
         # Rarest first, end game mode, etc.
         pass
-```
-
+```text
 ## Integration Architecture Plan
 
 ### 📁 **Enhanced Directory Structure**
 
-```
+```text
 d_fake_seeder/domain/torrent/
 ├── protocols/              # Protocol implementations
 │   ├── dht/               # DHT implementation (BEP-005)
@@ -321,8 +314,7 @@ d_fake_seeder/domain/torrent/
     ├── dht_seeder.py     # DHT-based seeding
     ├── hybrid_seeder.py  # Multi-protocol seeding
     └── smart_seeder.py   # AI-enhanced seeding
-```
-
+```text
 ### ⚙️ **Configuration Enhancement**
 
 ```json
@@ -364,8 +356,7 @@ d_fake_seeder/domain/torrent/
     }
   }
 }
-```
-
+```text
 ## Implementation Roadmap
 
 ### 🗓️ **Phase 1: Foundation (Month 1)**
@@ -462,7 +453,7 @@ All phases of the protocol integration plan have been successfully completed:
 
 ### File Structure
 
-```
+```text
 d_fake_seeder/domain/torrent/
 ├── protocols/
 │   ├── dht/                    # ✅ DHT implementation
@@ -485,8 +476,7 @@ d_fake_seeder/domain/torrent/
     ├── client_behavior.py      # ✅ Client emulation
     ├── traffic_patterns.py     # ✅ Traffic simulation
     └── swarm_intelligence.py   # ✅ NEW: Swarm analysis
-```
-
+```text
 ### Configuration Updates
 
 Enhanced `config/default.json` with comprehensive protocol settings:

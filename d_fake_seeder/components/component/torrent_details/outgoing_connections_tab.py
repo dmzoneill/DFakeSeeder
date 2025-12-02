@@ -4,6 +4,7 @@ Outgoing Connections Component
 Manages the UI for displaying outgoing peer connections, showing information
 about peers that we've initiated connections to.
 """
+# isort: skip_file
 
 # fmt: off
 import gi

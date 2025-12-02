@@ -15,12 +15,12 @@ RPM_FILENAME := $(rpm_package_name)-$(package_version)
 # PHONY Targets Declaration
 # ============================================================================
 .PHONY: all clean clean-all clean-venv clean_settings clearlog
-.PHONY: lint icons ui-build
+.PHONY: lint icons ui-build ui-build-fast
 .PHONY: run run-debug run-debug-venv run-debug-docker
 .PHONY: run-tray run-tray-debug run-with-tray run-debug-with-tray
 .PHONY: test test-all test-unit test-integration test-fast test-coverage test-parallel test-file test-seed test-venv test-docker
-.PHONY: setup-venv required
-.PHONY: deb deb-install rpm rpm-install
+.PHONY: setup setup-test setup-venv required
+.PHONY: deb deb-quality deb-install rpm rpm-quality rpm-install
 .PHONY: docker docker-hub docker-ghcr xhosts
 .PHONY: flatpak
 .PHONY: pypi-build pypi-test-upload pypi-upload pypi-check
@@ -51,6 +51,54 @@ clean-venv:
 	@echo "Removing Pipenv virtual environment..."
 	pipenv --rm || true
 	@echo "✅ Pipenv environment removed!"
+
+# ============================================================================
+# CI/CD System Setup
+# ============================================================================
+# Install all system dependencies required for building packages
+# This is the main target called by CI/CD pipelines
+
+setup:
+	@echo "Installing system dependencies for building packages..."
+	@# Detect OS and install required packages
+	@if command -v dnf >/dev/null 2>&1; then \
+		echo "Detected Fedora/RHEL/CentOS - using dnf..."; \
+		sudo dnf install -y \
+			rpm-build rpmlint python3-setuptools \
+			libxml2 gtk3-devel python3-devel \
+			python3-pip python3-black python3-flake8 python3-isort \
+			tar findutils sed gawk make pipenv \
+			2>/dev/null || true; \
+	elif command -v apt-get >/dev/null 2>&1; then \
+		echo "Detected Debian/Ubuntu - using apt-get..."; \
+		sudo apt-get update && sudo apt-get install -y \
+			dpkg dpkg-dev fakeroot \
+			libxml2-utils libgtk-3-dev python3-dev \
+			python3-pip python3-black python3-flake8 python3-isort \
+			make sed coreutils pipenv \
+			2>/dev/null || true; \
+	elif command -v yum >/dev/null 2>&1; then \
+		echo "Detected older RHEL/CentOS - using yum..."; \
+		sudo yum install -y \
+			rpm-build rpmlint python3-setuptools \
+			libxml2 gtk3-devel python3-devel \
+			python3-pip tar findutils sed gawk make \
+			2>/dev/null || true; \
+		sudo pip3 install pipenv black flake8 isort 2>/dev/null || true; \
+	else \
+		echo "⚠️  Warning: Unknown package manager. Please install dependencies manually."; \
+		echo "Required: rpm-build/dpkg-dev, libxml2-utils, gtk3-devel, python3-dev, black, flake8, isort"; \
+	fi
+	@echo "Installing pipenv if not available..."
+	@command -v pipenv >/dev/null 2>&1 || pip3 install --user pipenv
+	@echo "✅ System dependencies installed!"
+	@$(MAKE) setup-venv
+
+# Setup test environment (installs test-specific dependencies)
+test-setup: setup-venv
+	@echo "Setting up test environment..."
+	pipenv install --dev --site-packages
+	@echo "✅ Test environment ready!"
 
 # ============================================================================
 # Code Quality and Linting
@@ -140,6 +188,16 @@ ui-build: icons
 	xmllint --xinclude d_fake_seeder/components/ui/settings.xml > d_fake_seeder/components/ui/generated/settings_generated.xml
 	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/settings_generated.xml
 	@echo "✅ UI built successfully!"
+
+# Fast UI build without linting or icon installation (for CI/package builds)
+ui-build-fast:
+	@echo "Building UI (fast - no linting or icons)..."
+	xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml
+	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml
+	@echo "Building settings UI..."
+	xmllint --xinclude d_fake_seeder/components/ui/settings.xml > d_fake_seeder/components/ui/generated/settings_generated.xml
+	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/settings_generated.xml
+	@echo "✅ UI built successfully (fast mode)!"
 
 # ============================================================================
 # Running the Application
@@ -384,11 +442,9 @@ xprod-wmclass:
 # Package Building
 # ============================================================================
 
-# Build RPM package
-rpm: ui-build lint
-	@echo "Building RPM package..."
-	@echo "Installing RPM build dependencies..."
-	- sudo dnf install -y rpm-build rpmlint python3-setuptools 2>/dev/null || sudo yum install -y rpm-build rpmlint python3-setuptools
+# Build RPM package (fast - for CI, assumes 'make setup' already run)
+rpm: ui-build-fast
+	@echo "Building RPM package (fast mode - no linting)..."
 	@echo "Cleaning previous RPM build..."
 	rm -rf ./rpmbuild
 	@echo "Creating RPM build directory structure..."
@@ -418,6 +474,40 @@ rpm: ui-build lint
 	@echo "  sudo rpm -ivh ./rpmbuild/RPMS/noarch/$(rpm_package_name)-$(package_version)-1*.rpm"
 	@echo ""
 
+# Build RPM package with full quality checks (for local development)
+rpm-quality: ui-build lint
+	@echo "Building RPM package with full quality checks..."
+	@echo "Installing RPM build dependencies..."
+	- sudo dnf install -y rpm-build rpmlint python3-setuptools 2>/dev/null || sudo yum install -y rpm-build rpmlint python3-setuptools
+	@echo "Cleaning previous RPM build..."
+	rm -rf ./rpmbuild
+	@echo "Creating RPM build directory structure..."
+	mkdir -p ./rpmbuild/BUILD ./rpmbuild/BUILDROOT ./rpmbuild/RPMS ./rpmbuild/SOURCES ./rpmbuild/SPECS ./rpmbuild/SRPMS
+	@echo "Creating source tarball..."
+	mkdir -p ./rpmbuild/$(rpm_package_name)-$(package_version)
+	cp -r d_fake_seeder ./rpmbuild/$(rpm_package_name)-$(package_version)/
+	mkdir -p ./rpmbuild/$(rpm_package_name)-$(package_version)/packaging
+	cp packaging/dfakeseeder-wrapper.sh ./rpmbuild/$(rpm_package_name)-$(package_version)/packaging/
+	cp Pipfile ./rpmbuild/$(rpm_package_name)-$(package_version)/
+	cp Pipfile.lock ./rpmbuild/$(rpm_package_name)-$(package_version)/
+	tar -czf ./rpmbuild/SOURCES/$(rpm_package_name)-$(package_version).tar.gz -C ./rpmbuild $(rpm_package_name)-$(package_version)
+	@echo "Copying spec file..."
+	cp dfakeseeder.spec ./rpmbuild/SPECS/
+	@echo "Building RPM with rpmbuild..."
+	rpmbuild --define "_topdir $$(pwd)/rpmbuild" -v -ba ./rpmbuild/SPECS/dfakeseeder.spec
+	@echo ""
+	@echo "✅ RPM package built successfully with quality checks!"
+	@echo ""
+	@echo "RPM files location:"
+	@find ./rpmbuild/RPMS -name "*.rpm" -exec echo "  {}" \;
+	@find ./rpmbuild/SRPMS -name "*.rpm" -exec echo "  {}" \;
+	@echo ""
+	@echo "Install with:"
+	@echo "  sudo dnf install ./rpmbuild/RPMS/noarch/$(rpm_package_name)-$(package_version)-1*.rpm"
+	@echo "  or"
+	@echo "  sudo rpm -ivh ./rpmbuild/RPMS/noarch/$(rpm_package_name)-$(package_version)-1*.rpm"
+	@echo ""
+
 rpm-install: rpm
 	@echo "Installing RPM package..."
 	@RPM_FILE=$$(find ./rpmbuild/RPMS/noarch -name "$(rpm_package_name)-$(package_version)-1*.rpm" | head -1); \
@@ -432,10 +522,9 @@ rpm-install: rpm
 	- rpmlint $(rpm_package_name) 2>/dev/null || echo "rpmlint not available or package has warnings"
 	@echo "✅ RPM package installed!"
 
-# Build Debian package
-deb: clean
-	@echo "Building Debian package..."
-	sudo apt-get install dpkg dpkg-dev fakeroot
+# Build Debian package (fast - for CI, assumes 'make setup' already run)
+deb: ui-build-fast
+	@echo "Building Debian package (fast mode - no linting)..."
 	sudo rm -rvf ./debbuild
 	mkdir -vp ./debbuild/DEBIAN
 	cp control ./debbuild/DEBIAN
@@ -496,6 +585,71 @@ deb: clean
 	dpkg -c $(DEB_FILENAME)
 	dpkg -I $(DEB_FILENAME)
 	@echo "✅ Debian package built: $(DEB_FILENAME)"
+
+# Build Debian package with full quality checks (for local development)
+deb-quality: clean ui-build lint
+	@echo "Building Debian package with full quality checks..."
+	sudo apt-get install dpkg dpkg-dev fakeroot
+	sudo rm -rvf ./debbuild
+	mkdir -vp ./debbuild/DEBIAN
+	cp control ./debbuild/DEBIAN
+	mkdir -vp ./debbuild/opt/dfakeseeder
+	mkdir -vp ./debbuild/usr/bin
+	mkdir -vp ./debbuild/usr/share/applications/
+	cp -r d_fake_seeder/dfakeseeder.desktop ./debbuild/usr/share/applications/
+	cp -r d_fake_seeder/config ./debbuild/opt/dfakeseeder
+	cp -r d_fake_seeder/lib ./debbuild/opt/dfakeseeder
+	cp -r d_fake_seeder/locale ./debbuild/opt/dfakeseeder
+	cp -r d_fake_seeder/domain ./debbuild/opt/dfakeseeder
+	cp -r d_fake_seeder/components ./debbuild/opt/dfakeseeder
+	cp -r d_fake_seeder/dfakeseeder.py ./debbuild/opt/dfakeseeder
+	cp -r d_fake_seeder/dfakeseeder_tray.py ./debbuild/opt/dfakeseeder
+	cp -r d_fake_seeder/model.py ./debbuild/opt/dfakeseeder
+	cp -r d_fake_seeder/view.py ./debbuild/opt/dfakeseeder
+	cp -r d_fake_seeder/controller.py ./debbuild/opt/dfakeseeder
+	# Install wrapper script
+	cp packaging/dfakeseeder-wrapper.sh ./debbuild/usr/bin/dfakeseeder
+	chmod 755 ./debbuild/usr/bin/dfakeseeder
+	# Create symlinks for convenience
+	ln -s dfakeseeder ./debbuild/usr/bin/dfs
+	# Update desktop file to use wrapper
+	sed 's#Exec=env LOG_LEVEL=DEBUG /usr/bin/python3 dfakeseeder.py#Exec=/usr/bin/dfakeseeder#g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
+	sed 's#Path=.*##g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
+	touch ./debbuild/DEBIAN/postinst
+	echo "#!/bin/bash" >> ./debbuild/DEBIAN/postinst
+	echo "" >> ./debbuild/DEBIAN/postinst
+	echo "# Install Python packages not available as DEB packages" >> ./debbuild/DEBIAN/postinst
+	echo "pip3 install --no-cache-dir bencodepy typer==0.12.3 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "" >> ./debbuild/DEBIAN/postinst
+	echo "# Install icons to user directories" >> ./debbuild/DEBIAN/postinst
+	echo "for X in 16 32 48 64 96 128 192 256; do " >> ./debbuild/DEBIAN/postinst
+	echo "  mkdir -vp \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
+	echo "  mkdir -vp \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
+	echo "  cp -f /opt/dfakeseeder/components/images/dfakeseeder.png \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "  cp -f /opt/dfakeseeder/components/images/dfakeseeder.png \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "done " >> ./debbuild/DEBIAN/postinst
+	echo "" >> ./debbuild/DEBIAN/postinst
+	echo "# Update icon caches" >> ./debbuild/DEBIAN/postinst
+	echo "if [ -d \$$HOME/.local/share/icons/hicolor ]; then" >> ./debbuild/DEBIAN/postinst
+	echo "  cd \$$HOME/.local/share/icons/ && gtk-update-icon-cache -t -f hicolor 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "fi" >> ./debbuild/DEBIAN/postinst
+	echo "if [ -d \$$HOME/.icons/hicolor ]; then" >> ./debbuild/DEBIAN/postinst
+	echo "  cd \$$HOME/.icons/ && gtk-update-icon-cache -t -f hicolor 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "fi" >> ./debbuild/DEBIAN/postinst
+	echo "" >> ./debbuild/DEBIAN/postinst
+	echo "# Update desktop database" >> ./debbuild/DEBIAN/postinst
+	echo "update-desktop-database \$$HOME/.local/share/applications/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "" >> ./debbuild/DEBIAN/postinst
+	echo "# Clear GNOME Shell cache for immediate recognition" >> ./debbuild/DEBIAN/postinst
+	echo "rm -rf \$$HOME/.cache/gnome-shell/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	echo "" >> ./debbuild/DEBIAN/postinst
+	echo "echo 'Desktop integration installed. GNOME users: Press Alt+F2, type r, and press Enter to restart GNOME Shell.'" >> ./debbuild/DEBIAN/postinst
+	chmod 755 ./debbuild/DEBIAN/postinst
+	sudo chown -R root:root debbuild
+	fakeroot dpkg-deb --build debbuild $(DEB_FILENAME)
+	dpkg -c $(DEB_FILENAME)
+	dpkg -I $(DEB_FILENAME)
+	@echo "✅ Debian package built with quality checks: $(DEB_FILENAME)"
 
 deb-install: deb
 	@echo "Installing Debian package..."
@@ -719,6 +873,10 @@ test-e2e-all:
 help:
 	@echo "DFakeSeeder Makefile - Available targets:"
 	@echo ""
+	@echo "CI/CD Setup:"
+	@echo "  setup               - Install all system dependencies for building packages"
+	@echo "  test-setup          - Setup test environment (installs test dependencies)"
+	@echo ""
 	@echo "Environment Setup:"
 	@echo "  setup-venv          - Setup Pipenv virtual environment"
 	@echo "  required            - Install dependencies with Pipenv"
@@ -736,7 +894,8 @@ help:
 	@echo "  lint                - Run code formatters and linters (black, flake8, isort)"
 	@echo "  super-lint          - Run GitHub Super-Linter locally (comprehensive)"
 	@echo "  super-lint-slim     - Run Super-Linter slim version (faster)"
-	@echo "  ui-build            - Build UI from XML templates"
+	@echo "  ui-build            - Build UI from XML templates (with linting)"
+	@echo "  ui-build-fast       - Build UI from XML templates (fast, no linting)"
 	@echo "  icons               - Install application icons"
 	@echo ""
 	@echo "Testing (all targets use Pipenv by default):"
@@ -764,13 +923,17 @@ help:
 	@echo "  test-e2e-pypi       - Run full PyPI E2E tests (build, install, launch)"
 	@echo "  clean-e2e-pypi      - Clean PyPI E2E test artifacts"
 	@echo ""
-	@echo "Packaging:"
-	@echo "  deb                 - Build Debian package"
+	@echo "Packaging (Fast - for CI/CD, run 'make setup' first):"
+	@echo "  deb                 - Build Debian package (fast, no linting)"
 	@echo "  deb-install         - Build and install Debian package"
-	@echo "  rpm                 - Build RPM package"
+	@echo "  rpm                 - Build RPM package (fast, no linting)"
 	@echo "  rpm-install         - Build and install RPM package"
 	@echo "  flatpak             - Build Flatpak package"
 	@echo "  docker              - Build and run Docker container"
+	@echo ""
+	@echo "Packaging (Quality - for local development, includes linting):"
+	@echo "  deb-quality         - Build Debian package with full quality checks"
+	@echo "  rpm-quality         - Build RPM package with full quality checks"
 	@echo ""
 	@echo "PyPI:"
 	@echo "  pypi-build          - Build PyPI distribution"

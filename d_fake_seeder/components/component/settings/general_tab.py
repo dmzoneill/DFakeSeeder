@@ -3,6 +3,7 @@ General settings tab for the settings dialog.
 Handles general application settings like auto-start, minimized start,
 language selection, and other basic preferences.
 """
+# isort: skip_file
 
 # fmt: off
 from typing import Any, Dict

@@ -87,29 +87,27 @@ Created comprehensive documentation:
 ```bash
 # Manual testing only
 make test-e2e-pypi  # Had to run manually
-```
-
+```text
 No GitHub Actions integration for PyPI E2E tests.
 
 #### After
 ```yaml
-# Automatic testing on:
+# Automatic testing on
 - Every push to main/develop
 - Every pull request to main
 - Manual trigger via GitHub UI
 
-# Tests on:
+# Tests on
 - Fedora latest, 42, 41
 - Ubuntu 22.04, 24.04
 
-# With:
+# With
 - 23+ automated tests per Fedora version
 - Full desktop integration testing
 - Comprehensive test reports
 - PR comments with results
 - Artifact uploads (packages + logs)
-```
-
+```text
 ## Benefits
 
 ### 1. Continuous Integration
@@ -150,8 +148,7 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:  # Manual trigger
-```
-
+```text
 ### Test Matrix Strategy
 
 ```yaml
@@ -159,8 +156,7 @@ strategy:
   matrix:
     fedora_version: ['latest', '42', '41']
   fail-fast: false  # Test all versions even if one fails
-```
-
+```text
 ### Docker Integration
 
 Tests run in isolated Docker containers:
@@ -198,7 +194,7 @@ Tests run in isolated Docker containers:
 ### Status Checks
 
 All three workflows contribute to PR status:
-```
+```text
 ✅ CICD / cicd
 ✅ RPM End-to-End Tests / rpm-e2e-tests (latest)
 ✅ RPM End-to-End Tests / rpm-e2e-tests (39)
@@ -208,8 +204,7 @@ All three workflows contribute to PR status:
 ✅ PyPI End-to-End Tests / pypi-e2e-tests (41)
 ✅ PyPI End-to-End Tests / pypi-ubuntu-e2e-tests (22.04)
 ✅ PyPI End-to-End Tests / pypi-ubuntu-e2e-tests (24.04)
-```
-
+```text
 ## Usage
 
 ### Automatic (Default)
@@ -234,8 +229,7 @@ Before pushing:
 make test-e2e-pypi
 
 # This is faster than waiting for CI
-```
-
+```text
 ## Artifacts Generated
 
 ### Per Workflow Run

@@ -1,4 +1,5 @@
 # fmt: off
+# isort: skip_file
 import gi
 
 from d_fake_seeder.components.component.base_component import Component

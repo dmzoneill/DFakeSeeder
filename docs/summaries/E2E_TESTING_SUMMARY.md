@@ -92,8 +92,7 @@ test-e2e-uninstall    # Uninstall tests only
 test-e2e-fast         # Skip builds, run fast
 test-e2e-build-image  # Build test container
 clean-e2e             # Clean artifacts
-```
-
+```text
 ### 7. Comprehensive Documentation
 **File**: `tests/e2e/README.md` (500+ lines)
 
@@ -110,7 +109,7 @@ clean-e2e             # Clean artifacts
 ## Test Coverage
 
 ### Installation Tests (42 tests)
-```
+```text
 ✓ RPM file validation (3 tests)
 ✓ File installation (20+ tests)
 ✓ System files (8 tests)
@@ -118,25 +117,22 @@ clean-e2e             # Clean artifacts
 ✓ System integration (3 tests)
 ✓ Configuration (5 tests)
 ✓ Dependencies (8+ tests)
-```
-
+```text
 ### Launch Tests (16 tests)
-```
+```text
 ✓ GUI environment (3 tests)
 ✓ Config creation (4 tests)
 ✓ Application launch (3 tests)
 ✓ Module imports (5+ tests)
 ✓ Desktop integration (3 tests)
 ✓ Tray application (1 test)
-```
-
+```text
 ### Uninstall Tests (3 tests)
-```
+```text
 ✓ Package removal
 ✓ RPM database cleanup
 ✓ Clean uninstallation
-```
-
+```text
 **Total: 60+ Automated Tests**
 
 ## Usage Examples
@@ -145,10 +141,9 @@ clean-e2e             # Clean artifacts
 ```bash
 # Run all E2E tests (fully automated)
 make test-e2e
-```
-
+```text
 Output:
-```
+```text
 ========================================
 Step 1: Building RPM
 ========================================
@@ -185,8 +180,7 @@ Tests Failed: 0
 Final Summary
 ========================================
 ✓✓✓ ALL E2E TESTS PASSED ✓✓✓
-```
-
+```text
 ### Run Specific Tests
 ```bash
 # Only installation tests
@@ -197,8 +191,7 @@ make test-e2e-launch
 
 # Fast mode (existing RPM)
 make test-e2e-fast
-```
-
+```text
 ### Manual Container Testing
 ```bash
 # Build test container
@@ -223,8 +216,7 @@ podman run --rm --privileged \
     sudo rpm -ivh \"\$RPM_FILE\"
     /bin/bash /workspace/tests/test_rpm_launch.sh
   "
-```
-
+```text
 ## CI/CD Automation
 
 ### GitHub Actions Workflow
@@ -256,8 +248,7 @@ rpm-e2e-tests:
   - Run installation tests (Fedora 38) ✓
   - Run launch tests (all versions) ✓
   - Upload artifacts ✓
-```
-
+```text
 ## Test Reports
 
 ### Generated Reports
@@ -265,7 +256,7 @@ rpm-e2e-tests:
 **Location**: `rpmbuild/test-artifacts/e2e-test-report.txt`
 
 **Content**:
-```
+```text
 DFakeSeeder E2E Test Report
 ===========================
 Date: 2024-11-27 12:00:00
@@ -280,13 +271,12 @@ Test Results:
 ✓ Uninstall Tests: PASSED (3 tests)
 
 Total: 61 tests passed
-```
-
+```text
 ## Architecture
 
 ### Test Flow Diagram
 
-```
+```text
 ┌─────────────────┐
 │  make test-e2e  │
 └────────┬────────┘
@@ -316,8 +306,7 @@ Total: 61 tests passed
          │
          └─► Generate Report
              └─► Save to test-artifacts/
-```
-
+```text
 ### Container Isolation
 
 Each test run:
@@ -381,7 +370,7 @@ Each test run:
 ## Comparison: Manual vs Automated
 
 ### Manual Testing (Before)
-```
+```text
 Developer Actions Required:
 1. Build RPM manually
 2. Spin up Fedora VM/container
@@ -398,10 +387,9 @@ Time: 30-60 minutes per test
 Error Rate: High (human error)
 Repeatability: Low
 CI/CD: Not possible
-```
-
+```text
 ### Automated Testing (Now)
-```
+```text
 Developer Actions Required:
 1. Run: make test-e2e
 
@@ -410,8 +398,7 @@ Error Rate: Zero (consistent)
 Repeatability: 100%
 CI/CD: Fully integrated
 Test Coverage: 60+ tests
-```
-
+```text
 ## Benefits
 
 ### For Developers
