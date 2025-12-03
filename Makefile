@@ -63,28 +63,29 @@ setup:
 	@# Detect OS and install required packages
 	@if command -v dnf >/dev/null 2>&1; then \
 		echo "Detected Fedora/RHEL/CentOS - using dnf..."; \
-		sudo dnf install -y \
+		dnf install -y \
 			rpm-build rpmlint python3-setuptools \
 			libxml2 gtk3-devel python3-devel \
 			python3-pip python3-black python3-flake8 python3-isort \
-			tar findutils sed gawk make pipenv || echo "⚠️  Some packages failed to install"; \
+			tar findutils sed gawk make pipenv; \
 	elif command -v apt-get >/dev/null 2>&1; then \
 		echo "Detected Debian/Ubuntu - using apt-get..."; \
-		sudo apt-get update && sudo apt-get install -y \
+		apt-get update && apt-get install -y \
 			dpkg dpkg-dev fakeroot \
 			libxml2-utils libgtk-3-dev python3-dev \
 			python3-pip python3-black python3-flake8 python3-isort \
-			make sed coreutils pipenv || echo "⚠️  Some packages failed to install"; \
+			make sed coreutils pipenv; \
 	elif command -v yum >/dev/null 2>&1; then \
 		echo "Detected older RHEL/CentOS - using yum..."; \
-		sudo yum install -y \
+		yum install -y \
 			rpm-build rpmlint python3-setuptools \
 			libxml2 gtk3-devel python3-devel \
-			python3-pip tar findutils sed gawk make || echo "⚠️  Some packages failed to install"; \
-		sudo pip3 install pipenv black flake8 isort || echo "⚠️  Some pip packages failed to install"; \
+			python3-pip tar findutils sed gawk make; \
+		pip3 install pipenv black flake8 isort; \
 	else \
-		echo "⚠️  Warning: Unknown package manager. Please install dependencies manually."; \
+		echo "❌ ERROR: Unknown package manager. Please install dependencies manually."; \
 		echo "Required: rpm-build/dpkg-dev, libxml2-utils, gtk3-devel, python3-dev, black, flake8, isort"; \
+		exit 1; \
 	fi
 	@echo "Installing pipenv if not available..."
 	@command -v pipenv >/dev/null 2>&1 || pip3 install --user pipenv
@@ -201,6 +202,8 @@ ui-build: icons
 # Fast UI build without linting or icon installation (for CI/package builds)
 ui-build-fast:
 	@echo "Building UI (fast - no linting or icons)..."
+	@echo "Verifying xmllint is available..."
+	@command -v xmllint >/dev/null 2>&1 || { echo "❌ ERROR: xmllint not found!"; echo "Please run 'make setup' first to install build dependencies."; echo "Or manually install: libxml2 (Fedora/RHEL) or libxml2-utils (Debian/Ubuntu)"; exit 1; }
 	xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml
 	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml
 	@echo "Building settings UI..."
