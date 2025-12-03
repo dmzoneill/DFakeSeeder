@@ -487,6 +487,14 @@ rpm: ui-build-fast
 	@echo ""
 	@echo "✅ RPM package built successfully!"
 	@echo ""
+	@echo "Creating architecture compatibility symlinks for CI/CD..."
+	@mkdir -p ./rpmbuild/RPMS/x86_64
+	@if [ -f ./rpmbuild/RPMS/noarch/$(rpm_package_name)-$(package_version)-1.noarch.rpm ]; then \
+		cp ./rpmbuild/RPMS/noarch/$(rpm_package_name)-$(package_version)-1.noarch.rpm \
+		   ./rpmbuild/RPMS/x86_64/$(rpm_package_name)-$(package_version)-1.x86_64.rpm; \
+		echo "  Created x86_64 copy: ./rpmbuild/RPMS/x86_64/$(rpm_package_name)-$(package_version)-1.x86_64.rpm"; \
+	fi
+	@echo ""
 	@echo "RPM files location:"
 	@find ./rpmbuild/RPMS -name "*.rpm" -exec echo "  {}" \;
 	@find ./rpmbuild/SRPMS -name "*.rpm" -exec echo "  {}" \;
@@ -520,6 +528,14 @@ rpm-quality: ui-build lint
 	rpmbuild --define "_topdir $$(pwd)/rpmbuild" -v -ba ./rpmbuild/SPECS/dfakeseeder.spec
 	@echo ""
 	@echo "✅ RPM package built successfully with quality checks!"
+	@echo ""
+	@echo "Creating architecture compatibility symlinks for CI/CD..."
+	@mkdir -p ./rpmbuild/RPMS/x86_64
+	@if [ -f ./rpmbuild/RPMS/noarch/$(rpm_package_name)-$(package_version)-1.noarch.rpm ]; then \
+		cp ./rpmbuild/RPMS/noarch/$(rpm_package_name)-$(package_version)-1.noarch.rpm \
+		   ./rpmbuild/RPMS/x86_64/$(rpm_package_name)-$(package_version)-1.x86_64.rpm; \
+		echo "  Created x86_64 copy: ./rpmbuild/RPMS/x86_64/$(rpm_package_name)-$(package_version)-1.x86_64.rpm"; \
+	fi
 	@echo ""
 	@echo "RPM files location:"
 	@find ./rpmbuild/RPMS -name "*.rpm" -exec echo "  {}" \;
@@ -557,7 +573,6 @@ deb: ui-build-fast
 	cp -r d_fake_seeder/dfakeseeder.desktop ./debbuild/usr/share/applications/
 	cp -r d_fake_seeder/config ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/lib ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/locale ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/domain ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/components ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/dfakeseeder.py ./debbuild/opt/dfakeseeder
@@ -622,7 +637,6 @@ deb-quality: clean ui-build lint
 	cp -r d_fake_seeder/dfakeseeder.desktop ./debbuild/usr/share/applications/
 	cp -r d_fake_seeder/config ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/lib ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/locale ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/domain ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/components ./debbuild/opt/dfakeseeder
 	cp -r d_fake_seeder/dfakeseeder.py ./debbuild/opt/dfakeseeder
