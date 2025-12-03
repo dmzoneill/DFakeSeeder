@@ -63,25 +63,25 @@ setup:
 	@# Detect OS and install required packages
 	@if command -v dnf >/dev/null 2>&1; then \
 		echo "Detected Fedora/RHEL/CentOS - using dnf..."; \
-		dnf install -y \
+		sudo dnf install -y \
 			rpm-build rpmlint python3-setuptools \
 			libxml2 gtk3-devel python3-devel \
 			python3-pip python3-black python3-flake8 python3-isort \
 			tar findutils sed gawk make pipenv; \
 	elif command -v apt-get >/dev/null 2>&1; then \
 		echo "Detected Debian/Ubuntu - using apt-get..."; \
-		apt-get update && apt-get install -y \
+		sudo apt-get update && sudo apt-get install -y \
 			dpkg dpkg-dev fakeroot \
 			libxml2-utils libgtk-3-dev python3-dev \
 			python3-pip python3-black python3-flake8 python3-isort \
 			make sed coreutils pipenv; \
 	elif command -v yum >/dev/null 2>&1; then \
 		echo "Detected older RHEL/CentOS - using yum..."; \
-		yum install -y \
+		sudo yum install -y \
 			rpm-build rpmlint python3-setuptools \
 			libxml2 gtk3-devel python3-devel \
 			python3-pip tar findutils sed gawk make; \
-		pip3 install pipenv black flake8 isort; \
+		sudo pip3 install pipenv black flake8 isort; \
 	else \
 		echo "❌ ERROR: Unknown package manager. Please install dependencies manually."; \
 		echo "Required: rpm-build/dpkg-dev, libxml2-utils, gtk3-devel, python3-dev, black, flake8, isort"; \
@@ -202,17 +202,25 @@ ui-build: icons
 # Fast UI build without linting or icon installation (for CI/package builds)
 ui-build-fast:
 	@echo "Building UI (fast - no linting or icons)..."
-	@echo "Verifying xmllint is available..."
-	@if ! command -v xmllint >/dev/null 2>&1; then \
-		echo "❌ xmllint not found - running 'make setup' to install dependencies..."; \
-		$(MAKE) setup; \
+	@# Check if generated files exist and are up to date
+	@if [ -f d_fake_seeder/components/ui/generated/generated.xml ] && \
+	   [ -f d_fake_seeder/components/ui/generated/settings_generated.xml ]; then \
+		echo "✅ Generated UI files already exist - skipping UI build"; \
+		echo "   (Delete generated/*.xml to force rebuild)"; \
+	else \
+		echo "Verifying xmllint is available..."; \
+		if ! command -v xmllint >/dev/null 2>&1; then \
+			echo "❌ xmllint not found - running 'make setup' to install dependencies..."; \
+			$(MAKE) setup; \
+		fi; \
+		echo "Generating UI from XML templates..."; \
+		xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml; \
+		sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml; \
+		echo "Building settings UI..."; \
+		xmllint --xinclude d_fake_seeder/components/ui/settings.xml > d_fake_seeder/components/ui/generated/settings_generated.xml; \
+		sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/settings_generated.xml; \
+		echo "✅ UI built successfully (fast mode)!"; \
 	fi
-	xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml
-	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml
-	@echo "Building settings UI..."
-	xmllint --xinclude d_fake_seeder/components/ui/settings.xml > d_fake_seeder/components/ui/generated/settings_generated.xml
-	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/settings_generated.xml
-	@echo "✅ UI built successfully (fast mode)!"
 
 # ============================================================================
 # Running the Application
