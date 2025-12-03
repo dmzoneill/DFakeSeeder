@@ -30,6 +30,7 @@ USER ${USER_NAME}
 # Set environment variables
 ENV XDG_RUNTIME_DIR=/run/user/${USER_ID}
 ENV LIBGL_ALWAYS_SOFTWARE=1
+ENV PATH="/home/${USER_NAME}/.local/bin:${PATH}"
 
 # Install pipenv and dependencies
 RUN pip3 install pipenv --no-warn-script-location
@@ -50,7 +51,7 @@ ENV DISPLAY=:0
 ENV GTK_THEME=Adwaita:dark
 
 # Set Python path
-ENV PYTHONPATH="/usr/lib/python3/dist-packages:${PYTHONPATH}"
+ENV PYTHONPATH="/usr/lib/python3/dist-packages"
 
 # Mount host's GTK theme configuration directory into the container
 VOLUME /usr/share/themes
