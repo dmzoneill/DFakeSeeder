@@ -203,7 +203,10 @@ ui-build: icons
 ui-build-fast:
 	@echo "Building UI (fast - no linting or icons)..."
 	@echo "Verifying xmllint is available..."
-	@command -v xmllint >/dev/null 2>&1 || { echo "❌ ERROR: xmllint not found!"; echo "Please run 'make setup' first to install build dependencies."; echo "Or manually install: libxml2 (Fedora/RHEL) or libxml2-utils (Debian/Ubuntu)"; exit 1; }
+	@if ! command -v xmllint >/dev/null 2>&1; then \
+		echo "❌ xmllint not found - running 'make setup' to install dependencies..."; \
+		$(MAKE) setup; \
+	fi
 	xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml
 	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml
 	@echo "Building settings UI..."
