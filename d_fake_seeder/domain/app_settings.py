@@ -235,6 +235,11 @@ class AppSettings(GObject.GObject):
         """Load settings from files (compatible with Settings API)"""
         self.logger.trace("Settings load", extra={"class_name": self.__class__.__name__})
         try:
+            # Skip reload if we're currently saving (prevents file watch feedback loop)
+            if hasattr(self, "_saving") and self._saving:
+                self.logger.trace("Skipping load_settings - save in progress", extra={"class_name": self.__class__.__name__})
+                return
+
             # Check if the file has been modified since last load
             modified = os.path.getmtime(self._file_path)
             if modified > self._last_modified:
@@ -298,6 +303,9 @@ class AppSettings(GObject.GObject):
         """Save current settings without acquiring lock (for internal use when lock already held)"""
         self.config_dir.mkdir(parents=True, exist_ok=True)
 
+        # Set flag to prevent file watch reload during save
+        self._saving = True
+
         # Use atomic write: write to temporary file first, then rename
         # This prevents corruption from incomplete writes during race conditions
         temp_fd = None
@@ -334,6 +342,12 @@ class AppSettings(GObject.GObject):
                 except OSError:
                     pass
             raise write_error
+        finally:
+            # Clear save flag to allow file watch reload (with small delay to ensure file system settles)
+            import time
+            time.sleep(0.1)  # 100ms delay to ensure file system events complete
+            self._saving = False
+            self.logger.trace("Save flag cleared, file watch can reload", extra={"class_name": self.__class__.__name__})
 
     def save_quit(self):
         """Save settings and stop file watching (Settings API compatibility)"""
