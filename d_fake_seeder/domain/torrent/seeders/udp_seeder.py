@@ -293,6 +293,26 @@ class UDPSeeder(BaseSeeder):
             )
             return False
 
+        # Validate uploaded/downloaded bytes to prevent reporting unrealistic values
+        # Maximum reasonable value: 1 TB (1,000,000,000,000 bytes)
+        MAX_REASONABLE_BYTES = 1_000_000_000_000
+
+        if uploaded_bytes > MAX_REASONABLE_BYTES:
+            logger.warning(
+                f"⚠️ Unrealistic upload value detected: {uploaded_bytes:,} bytes "
+                f"({uploaded_bytes / 1_000_000_000:.2f} GB). Capping at 1 TB.",
+                extra={"class_name": self.__class__.__name__},
+            )
+            uploaded_bytes = MAX_REASONABLE_BYTES
+
+        if downloaded_bytes > MAX_REASONABLE_BYTES:
+            logger.warning(
+                f"⚠️ Unrealistic download value detected: {downloaded_bytes:,} bytes "
+                f"({downloaded_bytes / 1_000_000_000:.2f} GB). Capping at 1 TB.",
+                extra={"class_name": self.__class__.__name__},
+            )
+            downloaded_bytes = MAX_REASONABLE_BYTES
+
         packet_data = (uploaded_bytes, downloaded_bytes, download_left)
         result = self.handle_announce(
             packet_data=packet_data,

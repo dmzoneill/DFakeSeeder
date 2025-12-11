@@ -73,10 +73,24 @@ class ConnectionPeer(GObject.Object):
         return 0.0
 
     def update_rates(self, upload_bytes_delta: int, download_bytes_delta: int, time_delta: float):
-        """Update transfer rates based on deltas"""
-        if time_delta > 0:
-            self.upload_rate = upload_bytes_delta / time_delta
-            self.download_rate = download_bytes_delta / time_delta
+        """Update transfer rates based on deltas with validation to prevent unrealistic values"""
+        # Minimum time interval to prevent division by very small numbers
+        MIN_TIME_DELTA = 0.5  # Half second minimum to avoid crazy rates on first update
+
+        # Maximum realistic rate: 1 GB/s (1,000,000,000 bytes/sec)
+        # This is well above any realistic torrent speeds
+        MAX_RATE = 1_000_000_000
+
+        # Only update rates if we have a reasonable time interval
+        if time_delta >= MIN_TIME_DELTA:
+            # Calculate rates
+            upload_rate = upload_bytes_delta / time_delta
+            download_rate = download_bytes_delta / time_delta
+
+            # Cap rates at maximum realistic value
+            self.upload_rate = min(upload_rate, MAX_RATE)
+            self.download_rate = min(download_rate, MAX_RATE)
+        # If time_delta is too small, keep existing rates (don't update)
 
     def get_status_summary(self) -> str:
         """Get a summary of connection status"""
