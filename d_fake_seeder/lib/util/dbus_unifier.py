@@ -79,7 +79,7 @@ class DBusUnifier:
 
     def __init__(self):
         """Initialize D-Bus unifier with AppSettings integration"""
-        logger.debug("Initializing DBusUnifier", extra={"class_name": self.__class__.__name__})
+        logger.trace("Initializing DBusUnifier", extra={"class_name": self.__class__.__name__})
 
         # Get AppSettings singleton instance
         self.app_settings = AppSettings.get_instance()
@@ -103,7 +103,7 @@ class DBusUnifier:
     def _initialize_dbus(self) -> bool:
         """Initialize D-Bus connection and register service"""
         try:
-            logger.debug(
+            logger.trace(
                 "Connecting to D-Bus session bus",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -154,7 +154,7 @@ class DBusUnifier:
                 )
                 return False
 
-            logger.debug(
+            logger.trace(
                 "D-Bus service registered successfully",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -180,7 +180,7 @@ class DBusUnifier:
         """Handle incoming D-Bus method calls"""
         try:
             self._message_count += 1
-            logger.debug(
+            logger.trace(
                 f"D-Bus method call received: {method_name}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -255,7 +255,7 @@ class DBusUnifier:
     def _handle_update_settings(self, changes_json: str) -> bool:
         """Update AppSettings directly with validation (triggers automatic signals)"""
         try:
-            logger.debug(
+            logger.trace(
                 "_handle_update_settings starting",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -280,30 +280,30 @@ class DBusUnifier:
                 return False
 
             # Apply validated changes to AppSettings
-            logger.debug(
+            logger.trace(
                 f"Applying {len(applied_changes)} changes",
                 extra={"class_name": self.__class__.__name__},
             )
             for path, value in applied_changes.items():
                 # Special handling for application_quit_requested to ensure signal is always emitted
                 if path == "application_quit_requested" and value:
-                    logger.debug(
+                    logger.trace(
                         "Forcing application quit signal emission",
                         extra={"class_name": self.__class__.__name__},
                     )
                     # First set to False to ensure the value changes
-                    logger.debug(
+                    logger.trace(
                         "Setting application_quit_requested=False",
                         extra={"class_name": self.__class__.__name__},
                     )
                     self.app_settings.set("application_quit_requested", False)
-                    logger.debug(
+                    logger.trace(
                         "Setting application_quit_requested=True",
                         extra={"class_name": self.__class__.__name__},
                     )
                     # Then set to True to trigger the signal
                     self.app_settings.set("application_quit_requested", True)
-                    logger.debug(
+                    logger.trace(
                         "Quit signal emitted",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -319,7 +319,7 @@ class DBusUnifier:
             # which is connected to AppSettings signals. No need to emit manually here
             # to avoid duplicate signal emissions.
 
-            logger.debug(
+            logger.trace(
                 f"✅ Updated {len(applied_changes)} settings via D-Bus - COMPLETE",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -385,13 +385,13 @@ class DBusUnifier:
         Also ensures main window is visible.
         """
         try:
-            logger.debug(
+            logger.trace(
                 "ShowPreferences D-Bus method called",
                 extra={"class_name": self.__class__.__name__},
             )
 
             # Set window visible first
-            logger.debug(
+            logger.trace(
                 "Setting window_visible=True",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -400,7 +400,7 @@ class DBusUnifier:
             # Force preferences dialog trigger by setting to False first, then True
             # This ensures the value changes and signals are emitted even if it was already True
             self.app_settings.set("show_preferences", False)
-            logger.debug(
+            logger.trace(
                 "Setting show_preferences=True",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -408,7 +408,7 @@ class DBusUnifier:
 
             # Verify the value was set
             current_value = self.app_settings.get("show_preferences")
-            logger.debug(
+            logger.trace(
                 f"Preferences dialog triggered via D-Bus (current value: {current_value})",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -430,13 +430,13 @@ class DBusUnifier:
         Also ensures main window is visible.
         """
         try:
-            logger.debug(
+            logger.trace(
                 "ShowAbout D-Bus method called",
                 extra={"class_name": self.__class__.__name__},
             )
 
             # Set window visible first
-            logger.debug(
+            logger.trace(
                 "Setting window_visible=True",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -445,12 +445,12 @@ class DBusUnifier:
             # Force about dialog trigger by setting to False first, then True
             # This ensures the value changes and signals are emitted even if it was already True
             self.app_settings.set("show_about", False)
-            logger.debug("Setting show_about=True", extra={"class_name": self.__class__.__name__})
+            logger.trace("Setting show_about=True", extra={"class_name": self.__class__.__name__})
             self.app_settings.set("show_about", True)
 
             # Verify the value was set
             current_value = self.app_settings.get("show_about")
-            logger.debug(
+            logger.trace(
                 f"About dialog triggered via D-Bus (current value: {current_value})",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -524,7 +524,7 @@ class DBusUnifier:
                 "SettingsChanged",
                 GLib.Variant("(s)", (changes_json,)),
             )
-            logger.debug(
+            logger.trace(
                 f"Emitted D-Bus SettingsChanged signal: {changes}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -540,7 +540,7 @@ class DBusUnifier:
             # Connect to AppSettings signals to forward them over D-Bus
             # Use the new preferred signal name from AppSettings
             self.app_settings.connect("settings-value-changed", self._on_app_setting_changed)
-            logger.debug(
+            logger.trace(
                 "DBusUnifier connected to AppSettings signals",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -558,7 +558,7 @@ class DBusUnifier:
 
             # Special handling for language changes
             if key == "language":
-                logger.debug(
+                logger.trace(
                     f"Language change detected in DBusUnifier: {value}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -576,7 +576,7 @@ class DBusUnifier:
         """Setup connection health monitoring and debugging tools"""
         try:
             # Health monitoring is built into the existing methods
-            logger.debug(
+            logger.trace(
                 "D-Bus connection health monitoring enabled",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -588,12 +588,12 @@ class DBusUnifier:
 
     def _on_bus_acquired(self, connection, name):
         """Callback when D-Bus connection is acquired"""
-        logger.debug(f"D-Bus bus acquired: {name}", extra={"class_name": self.__class__.__name__})
+        logger.trace(f"D-Bus bus acquired: {name}", extra={"class_name": self.__class__.__name__})
 
     def _on_name_acquired(self, connection, name):
         """Callback when service name is acquired"""
         self._is_service_owner = True
-        logger.debug(
+        logger.trace(
             f"D-Bus service name acquired: {name}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -616,7 +616,7 @@ class DBusUnifier:
             self._connection = None
             self._is_service_owner = False
 
-            logger.debug("DBusUnifier cleaned up", extra={"class_name": self.__class__.__name__})
+            logger.trace("DBusUnifier cleaned up", extra={"class_name": self.__class__.__name__})
         except Exception as e:
             logger.error(
                 f"Error during DBusUnifier cleanup: {e}",

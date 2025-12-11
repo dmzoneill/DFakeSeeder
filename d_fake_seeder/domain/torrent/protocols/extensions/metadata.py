@@ -56,7 +56,7 @@ class MetadataExtension:
         # For fake seeding - generate synthetic metadata if needed
         self.generate_synthetic_metadata = True
 
-        logger.debug(
+        logger.trace(
             "Metadata extension initialized",
             extra={"class_name": self.__class__.__name__},
         )
@@ -73,7 +73,7 @@ class MetadataExtension:
         if self.generate_synthetic_metadata and not self.metadata:
             self._generate_synthetic_metadata()
 
-        logger.debug(
+        logger.trace(
             f"Metadata extension ready - size: {self.metadata_size}, " f"pieces: {self.pieces_count}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -99,7 +99,7 @@ class MetadataExtension:
             elif msg_type == self.REJECT:
                 self._handle_reject(payload[1:])
             else:
-                logger.debug(
+                logger.trace(
                     f"Unknown metadata message type: {msg_type}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -122,7 +122,7 @@ class MetadataExtension:
             request_data = bencode.bdecode(payload)
             piece_index = request_data.get(b"piece", 0)
 
-            logger.debug(
+            logger.trace(
                 f"Received metadata request for piece {piece_index}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -167,7 +167,7 @@ class MetadataExtension:
             # Extract piece data
             piece_data = payload[dict_end:]
 
-            logger.debug(
+            logger.trace(
                 f"Received metadata piece {piece_index}, size: {len(piece_data)}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -202,7 +202,7 @@ class MetadataExtension:
             reject_data = bencode.bdecode(payload)
             piece_index = reject_data.get(b"piece", 0)
 
-            logger.debug(
+            logger.trace(
                 f"Metadata request rejected for piece {piece_index}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -249,12 +249,12 @@ class MetadataExtension:
             success = self.extension_manager.send_extended_message("ut_metadata", payload)
 
             if success:
-                logger.debug(
+                logger.trace(
                     f"Sent metadata piece {piece_index}, size: {len(piece_data)}",
                     extra={"class_name": self.__class__.__name__},
                 )
             else:
-                logger.debug(
+                logger.trace(
                     f"Failed to send metadata piece {piece_index}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -280,7 +280,7 @@ class MetadataExtension:
 
             self.extension_manager.send_extended_message("ut_metadata", payload)
 
-            logger.debug(
+            logger.trace(
                 f"Sent metadata reject for piece {piece_index}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -294,7 +294,7 @@ class MetadataExtension:
     def request_metadata(self):
         """Request metadata from peer"""
         if not self.metadata_size or self.pieces_count == 0:
-            logger.debug(
+            logger.trace(
                 "No metadata size information available",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -322,7 +322,7 @@ class MetadataExtension:
 
             if success:
                 self.requested_pieces.add(piece_index)
-                logger.debug(
+                logger.trace(
                     f"Requested metadata piece {piece_index}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -352,7 +352,7 @@ class MetadataExtension:
             try:
                 metadata_dict = bencode.bdecode(self.metadata)
                 if b"announce" in metadata_dict and b"info" in metadata_dict:
-                    logger.debug(
+                    logger.trace(
                         "Successfully assembled complete metadata",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -395,7 +395,7 @@ class MetadataExtension:
             self.metadata_size = len(self.metadata)
             self.pieces_count = math.ceil(self.metadata_size / self.piece_size)
 
-            logger.debug(
+            logger.trace(
                 f"Generated synthetic metadata - size: {self.metadata_size}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -446,7 +446,7 @@ class MetadataExtension:
         self.requested_pieces.clear()
         self.metadata = None
 
-        logger.debug(
+        logger.trace(
             "Metadata extension cleaned up",
             extra={"class_name": self.__class__.__name__},
         )

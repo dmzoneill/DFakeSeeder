@@ -43,7 +43,7 @@ class SeedingProfileManager:
         self.app_settings = app_settings
         self.logger = logger
         self.current_profile = self._load_current_profile()
-        self.logger.debug(
+        self.logger.trace(
             "SeedingProfileManager initialized",
             extra={"class_name": self.__class__.__name__},
         )
@@ -52,7 +52,7 @@ class SeedingProfileManager:
         """Load the currently active profile from settings."""
         try:
             current = self.app_settings.get("seeding_profile", "balanced")
-            self.logger.debug(
+            self.logger.trace(
                 f"Loaded current profile: {current}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -227,7 +227,7 @@ class SeedingProfileManager:
             if profile_key in profile_settings:
                 value = profile_settings[profile_key]
                 self.app_settings.set(settings_key, value)
-                self.logger.debug(
+                self.logger.trace(
                     f"Applied {settings_key} = {value}",
                     extra={"class_name": self.__class__.__name__},
                 )

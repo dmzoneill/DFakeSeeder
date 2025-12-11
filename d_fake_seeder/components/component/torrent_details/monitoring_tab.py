@@ -56,7 +56,7 @@ class MonitoringTab(BaseTorrentTab):
 
     def _init_widgets(self) -> None:
         """Initialize monitoring tab widgets."""
-        logger.debug(
+        logger.trace(
             "🔧 MONITORING TAB: Starting initialization",
             extra={"class_name": self.__class__.__name__},
         )
@@ -80,25 +80,25 @@ class MonitoringTab(BaseTorrentTab):
         # Initialize metrics collector
         try:
             if MetricsCollector:
-                logger.debug(
+                logger.trace(
                     "🔧 MONITORING TAB: Creating MetricsCollector instance",
                     extra={"class_name": self.__class__.__name__},
                 )
                 self.metrics_collector = MetricsCollector()
                 # Check if process was found
                 if self.metrics_collector and self.metrics_collector.process:
-                    logger.debug(
+                    logger.trace(
                         f"✅ MONITORING TAB: MetricsCollector found DFakeSeeder process "
                         f"(PID: {self.metrics_collector.process.pid})",
                         extra={"class_name": self.__class__.__name__},
                     )
                 elif self.metrics_collector and not self.metrics_collector.process:
-                    logger.debug(
+                    logger.trace(
                         "⚠️ MONITORING TAB: MetricsCollector initialized but no DFakeSeeder process found - will retry",
                         extra={"class_name": self.__class__.__name__},
                     )
             else:
-                logger.debug(
+                logger.trace(
                     "⚠️ MONITORING TAB: MetricsCollector class not available (import failed)",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -112,7 +112,7 @@ class MonitoringTab(BaseTorrentTab):
             self.metrics_collector = None
 
         # Create metric tiles
-        logger.debug(
+        logger.trace(
             "🔧 MONITORING TAB: Creating 8 metric tiles "
             "(CPU, Memory, FD, Connections, Threads, Disk I/O, Network I/O, Torrents)",
             extra={"class_name": self.__class__.__name__},
@@ -121,7 +121,7 @@ class MonitoringTab(BaseTorrentTab):
         grid_children = (
             self.grid.observe_children().get_n_items() if hasattr(self.grid, "observe_children") else "unknown"
         )
-        logger.debug(
+        logger.trace(
             f"✅ MONITORING TAB: Created all metric tiles - grid has {grid_children} children",
             extra={"class_name": self.__class__.__name__},
         )
@@ -129,7 +129,7 @@ class MonitoringTab(BaseTorrentTab):
         # Start update timer (update every 2 seconds)
         self.update_timer = GLib.timeout_add_seconds(2, self._update_metrics)
         self.track_timeout(self.update_timer)
-        logger.debug(
+        logger.trace(
             "⏱️ MONITORING TAB: Started update timer (2 second interval)",
             extra={"class_name": self.__class__.__name__},
         )
@@ -143,7 +143,7 @@ class MonitoringTab(BaseTorrentTab):
 
             monitoring_container.append(self.scrolled_window)
             self._tab_widget = monitoring_container
-            logger.debug(
+            logger.trace(
                 "✅ MONITORING TAB: Added monitoring widgets to container",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -155,7 +155,7 @@ class MonitoringTab(BaseTorrentTab):
                 extra={"class_name": self.__class__.__name__},
             )
 
-        logger.debug(
+        logger.trace(
             "✅ MONITORING TAB: Initialization complete - monitoring tab is ready",
             extra={"class_name": self.__class__.__name__},
         )
@@ -333,7 +333,7 @@ class MonitoringTab(BaseTorrentTab):
     def _update_metrics(self):
         """Update all metrics from collector."""
         if not self.metrics_collector:
-            logger.debug(
+            logger.trace(
                 "📊 MONITORING TAB: Update skipped - no metrics collector",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -341,25 +341,25 @@ class MonitoringTab(BaseTorrentTab):
 
         # Retry finding process if not found initially
         if not self.metrics_collector.process:
-            logger.debug(
+            logger.trace(
                 "🔍 MONITORING TAB: Attempting to find DFakeSeeder process...",
                 extra={"class_name": self.__class__.__name__},
             )
             try:
                 self.metrics_collector._find_dfakeseeder_process()
                 if self.metrics_collector.process:
-                    logger.debug(
+                    logger.trace(
                         f"✅ MONITORING TAB: Found DFakeSeeder process (PID: {self.metrics_collector.process.pid})",
                         extra={"class_name": self.__class__.__name__},
                     )
                 else:
-                    logger.debug(
+                    logger.trace(
                         "🔍 MONITORING TAB: Process not found yet, will retry in 2 seconds",
                         extra={"class_name": self.__class__.__name__},
                     )
                     return True  # Keep trying
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"⚠️ MONITORING TAB: Error finding process: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -374,7 +374,7 @@ class MonitoringTab(BaseTorrentTab):
             self._update_count += 1
 
             if self._update_count % 10 == 0:
-                logger.debug(
+                logger.trace(
                     f"📊 MONITORING TAB: Metrics update #{self._update_count} - "
                     f"CPU: {metrics.get('cpu_percent', 0):.1f}%, "
                     f"RSS: {metrics.get('memory_rss_mb', 0):.1f}MB, "

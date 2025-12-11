@@ -71,7 +71,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             attributes: Attributes object from the torrent list
         """
         try:
-            self.logger.debug(
+            self.logger.trace(
                 f"🔄 TRACKERS TAB: Starting update_content for attributes: {attributes}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -85,26 +85,26 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 return
 
             # Remove existing content
-            self.logger.debug(
+            self.logger.trace(
                 "🗑️ TRACKERS TAB: Removing existing grid content",
                 extra={"class_name": self.__class__.__name__},
             )
             self._remove_current_grid()
 
             # Create new grid with proper styling
-            self.logger.debug(
+            self.logger.trace(
                 "🏗️ TRACKERS TAB: Creating new grid",
                 extra={"class_name": self.__class__.__name__},
             )
             self._trackers_grid_child = self._create_trackers_grid()
 
             # Get tracker information
-            self.logger.debug(
+            self.logger.trace(
                 "🔍 TRACKERS TAB: Calling _get_tracker_data()",
                 extra={"class_name": self.__class__.__name__},
             )
             trackers = self._get_tracker_data(attributes)
-            self.logger.debug(
+            self.logger.trace(
                 f"📊 TRACKERS TAB: Retrieved {len(trackers) if trackers else 0} trackers from torrent",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -154,7 +154,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             List of tracker dictionaries with live status
         """
         try:
-            self.logger.debug(
+            self.logger.trace(
                 "🚀 TRACKERS TAB: _get_tracker_data() started",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -176,7 +176,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 )
                 return trackers
 
-            self.logger.debug(
+            self.logger.trace(
                 f"✅ TRACKERS TAB: Found torrent object with live tracker methods: "
                 f"get_active_tracker_model={hasattr(torrent, 'get_active_tracker_model')}, "
                 f"get_all_tracker_models={hasattr(torrent, 'get_all_tracker_models')}",
@@ -185,7 +185,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             # Get live tracker models from torrent
             if hasattr(torrent, "get_all_tracker_models"):
-                self.logger.debug(
+                self.logger.trace(
                     "📡 TRACKERS TAB: Using live tracker models",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -211,18 +211,18 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                         }
                         trackers.append(tracker_data)
                     except Exception as e:
-                        self.logger.debug(
+                        self.logger.trace(
                             f"Error processing tracker model: {e}",
                             extra={"class_name": self.__class__.__name__},
                         )
 
-                self.logger.debug(
+                self.logger.trace(
                     f"🎯 TRACKERS TAB: Retrieved {len(trackers)} live tracker models",
                     extra={"class_name": self.__class__.__name__},
                 )
             else:
                 # Fallback to static tracker information
-                self.logger.debug(
+                self.logger.trace(
                     "📁 TRACKERS TAB: Fallback to static tracker data",
                     extra={"class_name": self.__class__.__name__},
                 )

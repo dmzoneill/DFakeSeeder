@@ -105,7 +105,7 @@ class AppSettings(GObject.GObject):
         # GObject.__init__ already called in __new__
         self._initialized = True
 
-        self.logger.debug("AppSettings instantiate", extra={"class_name": self.__class__.__name__})
+        self.logger.trace("AppSettings instantiate", extra={"class_name": self.__class__.__name__})
 
         # Initialize file paths (compatible with Settings API)
         if file_path is None:
@@ -138,13 +138,13 @@ class AppSettings(GObject.GObject):
             system_config = Path("/etc/dfakeseeder/default.json")
             if system_config.exists():
                 source_path = str(system_config)
-                self.logger.debug(
+                self.logger.trace(
                     f"Using system-wide config from {source_path}",
                     extra={"class_name": self.__class__.__name__},
                 )
             else:
                 source_path = str(self.default_config_file)
-                self.logger.debug(
+                self.logger.trace(
                     f"Using package default config from {source_path}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -152,7 +152,7 @@ class AppSettings(GObject.GObject):
             # Copy the source file to the destination directory
             if os.path.exists(source_path):
                 shutil.copy(source_path, home_config_path + "/settings.json")
-                self.logger.debug(
+                self.logger.trace(
                     f"Created user config at {home_config_path}/settings.json",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -178,8 +178,9 @@ class AppSettings(GObject.GObject):
             except ImportError:
                 # Fallback to print if logger not available
                 import logging
+                from d_fake_seeder.lib.logger import add_trace_to_logger
 
-                AppSettings._logger = logging.getLogger(__name__)
+                AppSettings._logger = add_trace_to_logger(logging.getLogger(__name__))
         return AppSettings._logger
 
     def _load_defaults(self):
@@ -187,7 +188,7 @@ class AppSettings(GObject.GObject):
         try:
             with open(self.default_config_file, "r") as f:
                 self._defaults = json.load(f)
-            self.logger.debug(f"Loaded {len(self._defaults)} default settings from {self.default_config_file}")
+            self.logger.trace(f"Loaded {len(self._defaults)} default settings from {self.default_config_file}")
         except (FileNotFoundError, json.JSONDecodeError) as e:
             self.logger.warning(f"Could not load default settings file ({e}), using hardcoded defaults")
             self._defaults = {
@@ -232,7 +233,7 @@ class AppSettings(GObject.GObject):
 
     def load_settings(self):
         """Load settings from files (compatible with Settings API)"""
-        self.logger.debug("Settings load", extra={"class_name": self.__class__.__name__})
+        self.logger.trace("Settings load", extra={"class_name": self.__class__.__name__})
         try:
             # Check if the file has been modified since last load
             modified = os.path.getmtime(self._file_path)
@@ -246,7 +247,7 @@ class AppSettings(GObject.GObject):
                 self._settings = merged_settings
                 self.settings = merged_settings.copy()
                 self._last_modified = modified
-                self.logger.debug(
+                self.logger.trace(
                     f"Loaded settings - language from file: {user_settings.get('language', 'NOT SET')},"
                     f" merged language: {merged_settings.get('language', 'NOT SET')}",
                     extra={"class_name": self.__class__.__name__},
@@ -261,10 +262,10 @@ class AppSettings(GObject.GObject):
                 # Create the JSON file with default contents
                 with open(self._file_path, "w") as f:
                     json.dump(self._settings, f, indent=4)
-                self.logger.debug("Created new settings file with defaults")
+                self.logger.info("Created new settings file with defaults")
         except json.JSONDecodeError as e:
             # Handle corrupt/truncated JSON files
-            self.logger.warning(f"Settings file contains invalid JSON, using defaults: {e}")
+            self.logger.error(f"Settings file contains invalid JSON, using defaults: {e}")
             self._settings = self._defaults.copy()
             self.settings = self._defaults.copy()
         except Exception as e:
@@ -272,24 +273,24 @@ class AppSettings(GObject.GObject):
 
     def save_settings(self):
         """Save current settings to user config file (thread-safe with atomic writes)"""
-        self.logger.debug("Settings save", extra={"class_name": self.__class__.__name__})
+        self.logger.trace("Settings save", extra={"class_name": self.__class__.__name__})
         try:
             # Use lock to prevent concurrent save operations
-            self.logger.debug(
+            self.logger.trace(
                 "About to acquire settings lock",
                 extra={"class_name": self.__class__.__name__},
             )
             with AppSettings._lock:
-                self.logger.debug(
+                self.logger.trace(
                     "Settings lock acquired",
                     extra={"class_name": self.__class__.__name__},
                 )
                 self._save_settings_unlocked()
-                self.logger.debug(
+                self.logger.trace(
                     "Settings saved to disk",
                     extra={"class_name": self.__class__.__name__},
                 )
-            self.logger.debug("Settings lock released", extra={"class_name": self.__class__.__name__})
+            self.logger.trace("Settings lock released", extra={"class_name": self.__class__.__name__})
         except Exception as e:
             self.logger.error(f"Failed to save settings: {e}", exc_info=True)
 
@@ -318,7 +319,7 @@ class AppSettings(GObject.GObject):
             os.replace(temp_path, self._file_path)
             temp_path = None  # Successfully moved, don't clean up
 
-            self.logger.debug("Settings saved successfully with atomic write")
+            self.logger.info("Settings saved successfully with atomic write")
 
         except Exception as write_error:
             # Clean up on error
@@ -336,7 +337,7 @@ class AppSettings(GObject.GObject):
 
     def save_quit(self):
         """Save settings and stop file watching (Settings API compatibility)"""
-        self.logger.debug("Settings quit", extra={"class_name": self.__class__.__name__})
+        self.logger.trace("Settings quit", extra={"class_name": self.__class__.__name__})
         if hasattr(self, "_observer"):
             self._observer.stop()
         self.save_settings()
@@ -352,45 +353,45 @@ class AppSettings(GObject.GObject):
 
     def set(self, key, value):
         """Set a setting value and save immediately"""
-        logger.debug("Setting method called", "AppSettings")
-        logger.debug(f"Setting: {key} = {value}", "AppSettings")
+        logger.trace("Setting method called", "AppSettings")
+        logger.trace(f"Setting: {key} = {value}", "AppSettings")
 
         # Determine if we need to emit signals (done outside the lock to avoid deadlock)
         should_emit = False
         with AppSettings._lock:
             # Get old value using nested access for dot notation keys
             old_value = self._get_nested_value(self._settings, key)
-            logger.debug(f"Old value: {old_value}", "AppSettings")
+            logger.trace(f"Old value: {old_value}", "AppSettings")
             if old_value != value:
                 logger.debug("Value changed, updating and saving", "AppSettings")
                 # Use nested setter to properly handle dot notation (e.g., "watch_folder.enabled")
                 self._set_nested_value(self._settings, key, value)
                 # Update both storage systems directly to avoid recursion
                 super().__setattr__("settings", self._settings.copy())
-                logger.debug("About to save settings", "AppSettings")
+                logger.trace("About to save settings", "AppSettings")
                 self._save_settings_unlocked()
-                logger.debug("Settings saved", "AppSettings")
+                logger.info("Settings saved", "AppSettings")
                 should_emit = True
             else:
-                logger.debug("Value unchanged, skipping update", "AppSettings")
+                logger.trace("Value unchanged, skipping update", "AppSettings")
 
         # Emit signals AFTER releasing the lock to avoid re-entrancy deadlocks
         if should_emit:
-            logger.debug("Lock released, emitting signals", "AppSettings")
+            logger.trace("Lock released, emitting signals", "AppSettings")
             # Emit new signals
-            logger.debug("Emitting 'settings-value-changed' signal", "AppSettings")
+            logger.trace("Emitting 'settings-value-changed' signal", "AppSettings")
             self.emit("settings-value-changed", key, value)
-            logger.debug("Emitting 'settings-attribute-changed' signal", "AppSettings")
+            logger.trace("Emitting 'settings-attribute-changed' signal", "AppSettings")
             self.emit("settings-attribute-changed", key, value)
             # Legacy compatibility signals
-            logger.debug("Emitting 'setting-changed' signal", "AppSettings")
+            logger.trace("Emitting 'setting-changed' signal", "AppSettings")
             self.emit("setting-changed", key, value)
-            logger.debug("Emitting 'attribute-changed' signal", "AppSettings")
+            logger.trace("Emitting 'attribute-changed' signal", "AppSettings")
             self.emit("attribute-changed", key, value)
-            logger.debug("All signals emitted successfully", "AppSettings")
-            self.logger.debug(f"Setting changed: {key} = {value}")
+            logger.info("All signals emitted successfully", "AppSettings")
+            self.logger.trace(f"Setting changed: {key} = {value}")
 
-        logger.debug("Setting method completed", "AppSettings")
+        logger.trace("Setting method completed", "AppSettings")
 
     def __getattr__(self, name):
         """Dynamic attribute access (Settings API compatibility)"""
@@ -443,7 +444,7 @@ class AppSettings(GObject.GObject):
             super().__setattr__(name, value)
             return
 
-        self.logger.debug("Settings __setattr__", extra={"class_name": self.__class__.__name__})
+        self.logger.trace("Settings __setattr__", extra={"class_name": self.__class__.__name__})
 
         # Determine what to emit BEFORE acquiring lock
         should_emit = False
@@ -523,7 +524,7 @@ class AppSettings(GObject.GObject):
         try:
             from d_fake_seeder.lib.logger import logger
 
-            logger.debug("AppSettings get instance", extra={"class_name": "AppSettings"})
+            logger.trace("AppSettings get instance", extra={"class_name": "AppSettings"})
         except ImportError:
             pass
         if cls._instance is None:
@@ -603,14 +604,14 @@ class AppSettings(GObject.GObject):
 
         # Get the configured language from settings
         configured_lang = self.get("language", "auto")
-        self.logger.debug(
+        self.logger.trace(
             f"get_language() - configured_lang from settings: {configured_lang}",
             extra={"class_name": self.__class__.__name__},
         )
 
         # If it's a specific language (not "auto"), use it directly
         if configured_lang != "auto":
-            self.logger.debug(
+            self.logger.trace(
                 f"get_language() - returning configured language: {configured_lang}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -739,6 +740,185 @@ class AppSettings(GObject.GObject):
     def disk_cache_size(self, value):
         self.set("disk_cache_size", value)
 
+    # Speed distribution settings - Upload
+    @property
+    def upload_distribution_algorithm(self):
+        speed_dist = self.get("speed_distribution", {})
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            return "off"
+        upload = speed_dist.get("upload", {})
+        if upload is None or not isinstance(upload, dict):
+            return "off"
+        return upload.get("algorithm", "off")
+
+    @upload_distribution_algorithm.setter
+    def upload_distribution_algorithm(self, value):
+        speed_dist = self.get("speed_distribution", {})
+        # Handle None case (when settings file has null)
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            speed_dist = {}
+        if "upload" not in speed_dist:
+            speed_dist["upload"] = {}
+        speed_dist["upload"]["algorithm"] = value
+        self.set("speed_distribution", speed_dist)
+
+    @property
+    def upload_distribution_spread_percentage(self):
+        return self.get("speed_distribution", {}).get("upload", {}).get("spread_percentage", 50)
+
+    @upload_distribution_spread_percentage.setter
+    def upload_distribution_spread_percentage(self, value):
+        speed_dist = self.get("speed_distribution", {})
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            speed_dist = {}
+        if "upload" not in speed_dist:
+            speed_dist["upload"] = {}
+        speed_dist["upload"]["spread_percentage"] = value
+        self.set("speed_distribution", speed_dist)
+
+    @property
+    def upload_distribution_redistribution_mode(self):
+        return self.get("speed_distribution", {}).get("upload", {}).get("redistribution_mode", "tick")
+
+    @upload_distribution_redistribution_mode.setter
+    def upload_distribution_redistribution_mode(self, value):
+        speed_dist = self.get("speed_distribution", {})
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            speed_dist = {}
+        if "upload" not in speed_dist:
+            speed_dist["upload"] = {}
+        speed_dist["upload"]["redistribution_mode"] = value
+        self.set("speed_distribution", speed_dist)
+
+    @property
+    def upload_distribution_custom_interval_minutes(self):
+        return self.get("speed_distribution", {}).get("upload", {}).get("custom_interval_minutes", 5)
+
+    @upload_distribution_custom_interval_minutes.setter
+    def upload_distribution_custom_interval_minutes(self, value):
+        speed_dist = self.get("speed_distribution", {})
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            speed_dist = {}
+        if "upload" not in speed_dist:
+            speed_dist["upload"] = {}
+        speed_dist["upload"]["custom_interval_minutes"] = value
+        self.set("speed_distribution", speed_dist)
+
+    # Speed distribution settings - Download
+    @property
+    def download_distribution_algorithm(self):
+        return self.get("speed_distribution", {}).get("download", {}).get("algorithm", "off")
+
+    @download_distribution_algorithm.setter
+    def download_distribution_algorithm(self, value):
+        speed_dist = self.get("speed_distribution", {})
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            speed_dist = {}
+        if "download" not in speed_dist:
+            speed_dist["download"] = {}
+        speed_dist["download"]["algorithm"] = value
+        self.set("speed_distribution", speed_dist)
+
+    @property
+    def download_distribution_spread_percentage(self):
+        return self.get("speed_distribution", {}).get("download", {}).get("spread_percentage", 50)
+
+    @download_distribution_spread_percentage.setter
+    def download_distribution_spread_percentage(self, value):
+        speed_dist = self.get("speed_distribution", {})
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            speed_dist = {}
+        if "download" not in speed_dist:
+            speed_dist["download"] = {}
+        speed_dist["download"]["spread_percentage"] = value
+        self.set("speed_distribution", speed_dist)
+
+    @property
+    def download_distribution_redistribution_mode(self):
+        return self.get("speed_distribution", {}).get("download", {}).get("redistribution_mode", "tick")
+
+    @download_distribution_redistribution_mode.setter
+    def download_distribution_redistribution_mode(self, value):
+        speed_dist = self.get("speed_distribution", {})
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            speed_dist = {}
+        if "download" not in speed_dist:
+            speed_dist["download"] = {}
+        speed_dist["download"]["redistribution_mode"] = value
+        self.set("speed_distribution", speed_dist)
+
+    @property
+    def download_distribution_custom_interval_minutes(self):
+        return self.get("speed_distribution", {}).get("download", {}).get("custom_interval_minutes", 5)
+
+    @download_distribution_custom_interval_minutes.setter
+    def download_distribution_custom_interval_minutes(self, value):
+        speed_dist = self.get("speed_distribution", {})
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            speed_dist = {}
+        if "download" not in speed_dist:
+            speed_dist["download"] = {}
+        speed_dist["download"]["custom_interval_minutes"] = value
+        self.set("speed_distribution", speed_dist)
+
+    # Upload stopped torrents percentage range
+    @property
+    def upload_distribution_stopped_min_percentage(self):
+        return self.get("speed_distribution", {}).get("upload", {}).get("stopped_min_percentage", 20)
+
+    @upload_distribution_stopped_min_percentage.setter
+    def upload_distribution_stopped_min_percentage(self, value):
+        speed_dist = self.get("speed_distribution", {})
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            speed_dist = {}
+        if "upload" not in speed_dist:
+            speed_dist["upload"] = {}
+        speed_dist["upload"]["stopped_min_percentage"] = value
+        self.set("speed_distribution", speed_dist)
+
+    @property
+    def upload_distribution_stopped_max_percentage(self):
+        return self.get("speed_distribution", {}).get("upload", {}).get("stopped_max_percentage", 40)
+
+    @upload_distribution_stopped_max_percentage.setter
+    def upload_distribution_stopped_max_percentage(self, value):
+        speed_dist = self.get("speed_distribution", {})
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            speed_dist = {}
+        if "upload" not in speed_dist:
+            speed_dist["upload"] = {}
+        speed_dist["upload"]["stopped_max_percentage"] = value
+        self.set("speed_distribution", speed_dist)
+
+    # Download stopped torrents percentage range
+    @property
+    def download_distribution_stopped_min_percentage(self):
+        return self.get("speed_distribution", {}).get("download", {}).get("stopped_min_percentage", 20)
+
+    @download_distribution_stopped_min_percentage.setter
+    def download_distribution_stopped_min_percentage(self, value):
+        speed_dist = self.get("speed_distribution", {})
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            speed_dist = {}
+        if "download" not in speed_dist:
+            speed_dist["download"] = {}
+        speed_dist["download"]["stopped_min_percentage"] = value
+        self.set("speed_distribution", speed_dist)
+
+    @property
+    def download_distribution_stopped_max_percentage(self):
+        return self.get("speed_distribution", {}).get("download", {}).get("stopped_max_percentage", 40)
+
+    @download_distribution_stopped_max_percentage.setter
+    def download_distribution_stopped_max_percentage(self, value):
+        speed_dist = self.get("speed_distribution", {})
+        if speed_dist is None or not isinstance(speed_dist, dict):
+            speed_dist = {}
+        if "download" not in speed_dist:
+            speed_dist["download"] = {}
+        speed_dist["download"]["stopped_max_percentage"] = value
+        self.set("speed_distribution", speed_dist)
+
     # Client detection methods
     def add_detected_client(self, user_agent):
         """Add a newly detected client to the detected clients list"""
@@ -767,7 +947,7 @@ class AppSettings(GObject.GObject):
         # Add to detected clients
         detected_clients.append(user_agent)
         self.set("detected_clients", detected_clients)
-        self.logger.debug(f"Added detected client: {user_agent}")
+        self.logger.trace(f"Added detected client: {user_agent}")
 
     def get_detected_clients(self):
         """Get list of detected clients"""
@@ -776,4 +956,4 @@ class AppSettings(GObject.GObject):
     def clear_detected_clients(self):
         """Clear all detected clients"""
         self.set("detected_clients", [])
-        self.logger.debug("Cleared all detected clients")
+        self.logger.trace("Cleared all detected clients")

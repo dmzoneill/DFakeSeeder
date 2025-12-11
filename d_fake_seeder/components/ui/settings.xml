@@ -116,8 +116,15 @@
                         </object>
                     </child>
 
-                    <!-- Advanced Tab (temporarily disabled due to extensive XML structure issues) -->
-                    <!-- <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/advanced.xml"/> -->
+                    <!-- Advanced Tab -->
+                    <child>
+                        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/advanced.xml"/>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">Advanced</property>
+                        </object>
+                    </child>
                 </object>
             </child>
         </object>

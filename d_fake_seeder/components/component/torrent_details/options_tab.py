@@ -76,7 +76,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             torrent: Torrent object to display
         """
         try:
-            self.logger.debug(
+            self.logger.trace(
                 "Updating options tab for torrent",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -403,7 +403,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         """
         try:
             setattr(torrent, attribute, state)
-            self.logger.debug(f"Updated {attribute} to {state}")
+            self.logger.trace(f"Updated {attribute} to {state}")
         except Exception as e:
             self.logger.error(f"Error updating switch value for {attribute}: {e}")
 
@@ -420,7 +420,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             adjustment = widget.get_adjustment()
             value = adjustment.get_value()
             setattr(torrent, attribute, value)
-            self.logger.debug(f"Updated {attribute} to {value}")
+            self.logger.trace(f"Updated {attribute} to {value}")
         except Exception as e:
             self.logger.error(f"Error updating adjustment value for {attribute}: {e}")
 
@@ -446,7 +446,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             new_language: New language code
         """
         try:
-            self.logger.debug(f"Language changed to {new_language}, refreshing options tab content")
+            self.logger.trace(f"Language changed to {new_language}, refreshing options tab content")
             # Refresh content to update all labels with new translations
             if hasattr(self, "_current_torrent") and self._current_torrent:
                 self.update_content(self._current_torrent)

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2024 David O Neill -->
+<component type="desktop-application">
+  <id>ie.fio.dfakeseeder</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>D' Fake Seeder</name>
+  <summary>BitTorrent seeding simulator for testing and development</summary>
+
+  <description>
+    <p>
+      D' Fake Seeder is a sophisticated Python GTK4 BitTorrent client that simulates seeding activity with advanced peer-to-peer networking capabilities, comprehensive settings management, and multi-language support.
+    </p>
+    <p>
+      The name "D' Fake Seeder" is a playful nod to the Irish English accent, where "the" is often pronounced as "d'" - celebrating the project's Irish heritage while describing exactly what it does: simulates (fakes) torrent seeding activity.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>Multi-Torrent Support: Handle multiple torrents simultaneously with individual configuration</li>
+      <li>Protocol Support: Full HTTP and UDP tracker compatibility with BitTorrent protocol (BEP-003)</li>
+      <li>Peer-to-Peer Networking: Advanced P2P implementation with incoming/outgoing connection management</li>
+      <li>Real-time Monitoring: Live connection tracking and performance metrics</li>
+      <li>System Tray Integration: Full tray application with D-Bus IPC for seamless desktop integration</li>
+      <li>Internationalization: 21 languages supported with runtime language switching</li>
+      <li>GTK4 Modern UI: Clean, responsive interface with modular component architecture</li>
+      <li>Multi-Tab Settings: Organized configuration categories (General, Connection, Peer Protocol, Advanced)</li>
+      <li>Performance Tracking: Built-in automatic timing and performance monitoring</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">ie.fio.dfakeseeder.desktop</launchable>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/dmzoneill/dFakeSeeder/main/d_fake_seeder/components/images/screenshot.png</image>
+      <caption>Main application window showing torrent list and status</caption>
+    </screenshot>
+  </screenshots>
+
+  <url type="homepage">https://github.com/dmzoneill/DFakeSeeder</url>
+  <url type="bugtracker">https://github.com/dmzoneill/DFakeSeeder/issues</url>
+  <url type="help">https://github.com/dmzoneill/DFakeSeeder/blob/main/README.md</url>
+
+  <developer id="ie.fio">
+    <name>David O Neill</name>
+  </developer>
+
+  <content_rating type="oars-1.1" />
+
+  <provides>
+    <binary>dfakeseeder</binary>
+    <binary>dfs</binary>
+    <binary>dfs-tray</binary>
+  </provides>
+
+  <releases>
+    <release version="0.0.52" date="2024-12-03">
+      <description>
+        <p>Current stable release with comprehensive features:</p>
+        <ul>
+          <li>Full BitTorrent protocol support (HTTP and UDP trackers)</li>
+          <li>Advanced peer-to-peer networking with connection management</li>
+          <li>System tray integration with D-Bus IPC</li>
+          <li>21 language support with runtime switching</li>
+          <li>Comprehensive settings management</li>
+          <li>GTK4 modern user interface</li>
+          <li>Real-time performance monitoring</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+
+  <categories>
+    <category>Network</category>
+    <category>P2P</category>
+    <category>Utility</category>
+  </categories>
+
+  <keywords>
+    <keyword>torrent</keyword>
+    <keyword>seeder</keyword>
+    <keyword>bittorrent</keyword>
+    <keyword>p2p</keyword>
+    <keyword>testing</keyword>
+    <keyword>development</keyword>
+  </keywords>
+
+  <recommends>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </recommends>
+
+  <requires>
+    <display_length compare="ge">768</display_length>
+  </requires>
+</component>

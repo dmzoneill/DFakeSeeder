@@ -53,7 +53,7 @@ class PeerConnection:
             timeout = self.connection_timeout
 
         try:
-            logger.debug(
+            logger.trace(
                 f"🔌 Connecting to peer {self.peer_info.ip}:{self.peer_info.port}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -69,7 +69,7 @@ class PeerConnection:
             self.peer_info.last_connected = time.time()
 
             # Notify UI of new outgoing connection
-            logger.debug(
+            logger.trace(
                 f"✅ Successfully connected to peer " f"{self.peer_info.ip}:{self.peer_info.port}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -89,7 +89,7 @@ class PeerConnection:
             return True
 
         except (socket.timeout, socket.error, OSError) as e:
-            logger.debug(
+            logger.trace(
                 f"❌ Failed to connect to " f"{self.peer_info.ip}:{self.peer_info.port}: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -134,7 +134,7 @@ class PeerConnection:
             )
 
             if len(response) != BitTorrentProtocolConstants.HANDSHAKE_LENGTH:
-                logger.debug(
+                logger.trace(
                     f"❌ Invalid handshake response length from {self.peer_info.ip}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -170,7 +170,7 @@ class PeerConnection:
             peer_id = response[peer_id_start:peer_id_end]
             self.peer_info.peer_id = peer_id
 
-            logger.debug(
+            logger.trace(
                 f"✅ Handshake successful with " f"{self.peer_info.ip}:{self.peer_info.port}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -191,7 +191,7 @@ class PeerConnection:
             return True
 
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"❌ Handshake failed with {self.peer_info.ip}: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -213,7 +213,7 @@ class PeerConnection:
             return True
 
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"❌ Failed to send message to {self.peer_info.ip}: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -264,7 +264,7 @@ class PeerConnection:
             return (message_id, payload)
 
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"❌ Failed to receive message from {self.peer_info.ip}: {e}",
                 extra={"class_name": self.__class__.__name__},
             )

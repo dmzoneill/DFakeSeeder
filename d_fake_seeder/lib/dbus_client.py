@@ -56,7 +56,7 @@ class DBusClient:
                 )
             except Exception as e:
                 # Service not found - this is normal when main app isn't running
-                logger.debug(
+                logger.trace(
                     f"Service not available on D-Bus: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -64,7 +64,7 @@ class DBusClient:
                 return False
 
             if not name_owner:
-                logger.debug(
+                logger.trace(
                     "Main application service not available on D-Bus",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -83,7 +83,7 @@ class DBusClient:
 
             # Test the connection by calling GetSettings directly
             # (don't use self.get_settings which checks self.connected)
-            logger.debug(
+            logger.trace(
                 "Testing D-Bus connection with GetSettings call",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -125,25 +125,25 @@ class DBusClient:
         """Get settings from main application"""
         try:
             if not self.connected:
-                logger.debug(
+                logger.trace(
                     "get_settings called but not connected",
                     extra={"class_name": self.__class__.__name__},
                 )
                 return None
 
-            logger.debug(
+            logger.trace(
                 "Calling GetSettings via D-Bus proxy",
                 extra={"class_name": self.__class__.__name__},
             )
             result = self.proxy.call_sync("GetSettings", None, Gio.DBusCallFlags.NONE, 5000, None)  # 5 second timeout
-            logger.debug(
+            logger.trace(
                 f"GetSettings result type: {type(result)}",
                 extra={"class_name": self.__class__.__name__},
             )
 
             if result:
                 unpacked = result.unpack()[0]
-                logger.debug(
+                logger.trace(
                     f"GetSettings returned {len(unpacked)} bytes",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -221,12 +221,12 @@ class DBusClient:
             return result.unpack()[0] if result else False
 
         except Exception as e:
-            logger.debug(f"Ping failed: {e}", extra={"class_name": self.__class__.__name__})
+            logger.error(f"Ping failed: {e}", extra={"class_name": self.__class__.__name__})
             return False
 
     def reconnect(self) -> bool:
         """Attempt to reconnect to D-Bus service"""
-        logger.debug(
+        logger.trace(
             "Attempting to reconnect to D-Bus",
             extra={"class_name": self.__class__.__name__},
         )

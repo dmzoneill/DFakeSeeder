@@ -13,6 +13,29 @@ try:
 except ImportError:
     SYSTEMD_AVAILABLE = False
 
+# Define custom log levels
+# TRACE (5): Ultra-verbose - function entry/exit, every iteration, internal state
+# DEBUG (10): Verbose diagnostic - important state changes, control flow
+# Python's default DEBUG is 10, so we add TRACE below it
+TRACE_LEVEL = 5
+logging.addLevelName(TRACE_LEVEL, "TRACE")
+
+
+def add_trace_to_logger(logger_instance):
+    """
+    Add trace() method to a standard Logger instance.
+
+    This is used to add TRACE level support to fallback loggers
+    that are created when the EnhancedLogger is not available.
+    """
+    def trace(msg, *args, **kwargs):
+        if logger_instance.isEnabledFor(TRACE_LEVEL):
+            logger_instance._log(TRACE_LEVEL, msg, args, **kwargs)
+
+    logger_instance.trace = trace
+    return logger_instance
+
+
 # fmt: on
 
 
@@ -186,7 +209,7 @@ class PerformanceLogger:
         if operation_time_ms is not None:
             message = f"{message} (took {operation_time_ms:.1f}ms)"
 
-        self._logger.debug(message, extra=extra)
+        self._logger.trace(message, extra=extra)
 
     def start_timer(self, operation_name: str) -> float:
         """Start a named timer and return the start time."""
@@ -203,7 +226,7 @@ class PerformanceLogger:
     ) -> float:
         """End a named timer and log the duration."""
         if operation_name not in self._timers:
-            self._logger.warning(f"Timer '{operation_name}' was not started")
+            self._logger.info(f"Timer '{operation_name}' was not started")
             return 0.0
 
         start_time = self._timers.pop(operation_name)
@@ -283,6 +306,7 @@ def get_logger_settings():
         app_settings = AppSettings.get_instance()
         return {
             "level": app_settings.get("log_level", "INFO"),
+            "level_systemd": app_settings.get("log_level_systemd", "WARNING"),
             "filename": app_settings.get("log_filename", "log.log"),
             "format": app_settings.get(
                 "log_format",
@@ -301,6 +325,7 @@ def get_logger_settings():
         default_format = "[%(asctime)s][%(class_name)s][%(levelname)s][%(lineno)d] - %(message)s"
         return {
             "level": "INFO",
+            "level_systemd": "WARNING",
             "filename": "log.log",
             "format": default_format,
             "to_file": False,
@@ -321,6 +346,17 @@ def setup_logger():
     numeric_level = getattr(logging, log_level.upper(), None)
     if not isinstance(numeric_level, int):
         numeric_level = logging.DEBUG
+
+    # Get systemd-specific log level (defaults to WARNING to reduce journal noise)
+    log_level_systemd = settings.get("level_systemd", "WARNING")
+    numeric_level_systemd = getattr(logging, log_level_systemd.upper(), None)
+    if not isinstance(numeric_level_systemd, int):
+        numeric_level_systemd = logging.WARNING
+
+    # Detect if running in a terminal session
+    # If stdin/stdout/stderr are connected to a TTY, we're in an interactive terminal
+    # In this case, systemd journal will write to the terminal instead of the journal daemon
+    running_in_terminal = sys.stdout.isatty() or sys.stderr.isatty()
 
     # Create or get logger
     logger_instance = logging.getLogger(__name__)
@@ -343,22 +379,19 @@ def setup_logger():
         logger_instance.addHandler(file_handler)
 
     # Add systemd journal handler if enabled and available
-    if settings["to_systemd"] and SYSTEMD_AVAILABLE:
+    # Use separate WARNING level for systemd to reduce journal noise
+    # Skip systemd logging when running in a terminal to avoid duplicate console output
+    if settings["to_systemd"] and SYSTEMD_AVAILABLE and not running_in_terminal:
         journal_handler = JournalHandler(SYSLOG_IDENTIFIER="dfakeseeder")
-        journal_handler.setLevel(numeric_level)
+        journal_handler.setLevel(numeric_level_systemd)
         # For systemd, we use a simpler format since it adds its own metadata
         journal_formatter = logging.Formatter("%(class_name)s[%(lineno)d]: %(message)s")
         journal_handler.setFormatter(journal_formatter)
         logger_instance.addHandler(journal_handler)
-    elif settings["to_systemd"] and not SYSTEMD_AVAILABLE:
-        # Fallback to stderr if systemd not available but requested
-        sys.stderr.write(
-            "Warning: systemd journal logging requested but python-systemd not available, falling back to stderr\n"
-        )
-        stderr_handler = logging.StreamHandler(sys.stderr)
-        stderr_handler.setLevel(numeric_level)
-        stderr_handler.setFormatter(formatter)
-        logger_instance.addHandler(stderr_handler)
+    elif settings["to_systemd"] and (not SYSTEMD_AVAILABLE or running_in_terminal):
+        # If systemd logging is requested but not available or running in terminal, skip it
+        # Don't fall back to console - respect the user's logging preferences
+        pass
 
     # Add console handler if enabled
     if settings["to_console"]:
@@ -389,8 +422,22 @@ def setup_logger():
             # Delegate all other attributes to the underlying logger
             return getattr(self._logger, name)
 
+        def trace(self, message: str, class_name: Optional[str] = None, **kwargs):
+            """
+            Ultra-verbose logging for detailed diagnostics.
+            Use for: function entry/exit, loop iterations, internal state.
+            """
+            extra = kwargs.get("extra", {})
+            if class_name:
+                extra["class_name"] = class_name
+            kwargs["extra"] = extra
+            return self._logger.log(TRACE_LEVEL, message, **kwargs)
+
         def debug(self, message: str, class_name: Optional[str] = None, **kwargs):
-            """Enhanced debug with automatic class name."""
+            """
+            Verbose diagnostic logging.
+            Use for: important state changes, control flow, variable values.
+            """
             extra = kwargs.get("extra", {})
             if class_name:
                 extra["class_name"] = class_name
@@ -398,12 +445,48 @@ def setup_logger():
             return self._logger.debug(message, **kwargs)
 
         def info(self, message: str, class_name: Optional[str] = None, **kwargs):
-            """Enhanced info with automatic class name."""
+            """
+            Important state changes and milestones.
+            Use for: application lifecycle, major operations, user actions.
+            """
             extra = kwargs.get("extra", {})
             if class_name:
                 extra["class_name"] = class_name
             kwargs["extra"] = extra
             return self._logger.info(message, **kwargs)
+
+        def warning(self, message: str, class_name: Optional[str] = None, **kwargs):
+            """
+            Unexpected but recoverable situations.
+            Use for: missing optional config, deprecated usage, performance issues.
+            """
+            extra = kwargs.get("extra", {})
+            if class_name:
+                extra["class_name"] = class_name
+            kwargs["extra"] = extra
+            return self._logger.warning(message, **kwargs)
+
+        def error(self, message: str, class_name: Optional[str] = None, **kwargs):
+            """
+            Errors that need attention but don't crash the app.
+            Use for: failed operations, exceptions caught, data errors.
+            """
+            extra = kwargs.get("extra", {})
+            if class_name:
+                extra["class_name"] = class_name
+            kwargs["extra"] = extra
+            return self._logger.error(message, **kwargs)
+
+        def critical(self, message: str, class_name: Optional[str] = None, **kwargs):
+            """
+            Fatal errors that prevent operation.
+            Use for: cannot start app, critical resources missing, unrecoverable errors.
+            """
+            extra = kwargs.get("extra", {})
+            if class_name:
+                extra["class_name"] = class_name
+            kwargs["extra"] = extra
+            return self._logger.critical(message, **kwargs)
 
     enhanced_logger = EnhancedLogger(logger_instance)
     return enhanced_logger

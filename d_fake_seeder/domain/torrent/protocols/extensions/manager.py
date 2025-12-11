@@ -51,7 +51,7 @@ class ExtensionManager:
 
         self._register_extensions()
 
-        logger.debug(
+        logger.trace(
             "Extension manager initialized",
             extra={
                 "class_name": self.__class__.__name__,
@@ -81,7 +81,7 @@ class ExtensionManager:
 
         self.supported_extensions["fast_extension"] = FastExtension
 
-        logger.debug(
+        logger.trace(
             f"Registered {len(self.supported_extensions)} extensions",
             extra={"class_name": self.__class__.__name__},
         )
@@ -127,7 +127,7 @@ class ExtensionManager:
             message += struct.pack(">B", 0)  # Extended handshake ID
             message += handshake_payload
 
-            logger.debug(
+            logger.trace(
                 "Created extended handshake",
                 extra={
                     "class_name": self.__class__.__name__,
@@ -171,7 +171,7 @@ class ExtensionManager:
                 if ext_name in self.peer_extensions:
                     self._initialize_extension(ext_name)
 
-            logger.debug(
+            logger.trace(
                 "Processed extended handshake",
                 extra={
                     "class_name": self.__class__.__name__,
@@ -213,7 +213,7 @@ class ExtensionManager:
                     break
 
             if not extension_name:
-                logger.debug(
+                logger.trace(
                     f"Unknown extension ID: {extension_id}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -224,7 +224,7 @@ class ExtensionManager:
                 extension = self.extension_instances[extension_name]
                 extension.handle_message(payload)
             else:
-                logger.debug(
+                logger.trace(
                     f"No handler for extension: {extension_name}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -246,7 +246,7 @@ class ExtensionManager:
         try:
             # Check if peer supports this extension
             if extension_name not in self.peer_extensions:
-                logger.debug(
+                logger.trace(
                     f"Peer doesn't support extension: {extension_name}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -301,7 +301,7 @@ class ExtensionManager:
             if hasattr(extension, "initialize"):
                 extension.initialize()
 
-            logger.debug(
+            logger.trace(
                 f"Initialized extension: {extension_name}",
                 extra={"class_name": self.__class__.__name__},
             )

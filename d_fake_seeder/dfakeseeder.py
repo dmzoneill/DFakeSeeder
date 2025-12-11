@@ -38,7 +38,7 @@ class DFakeSeeder(Gtk.Application):
             application_id=application_id,
             flags=Gio.ApplicationFlags.FLAGS_NONE,  # Default: single instance
         )
-        logger.debug("Startup", extra={"class_name": self.__class__.__name__})
+        logger.trace("Startup", extra={"class_name": self.__class__.__name__})
 
         # Track if we've shown the UI (for single-instance handling)
         self.ui_initialized = False
@@ -56,7 +56,7 @@ class DFakeSeeder(Gtk.Application):
         2. Another instance tries to start (GTK4 passes activate to existing instance)
         """
         with logger.performance.operation_context("do_activate", self.__class__.__name__):
-            logger.debug("do_activate() started", self.__class__.__name__)
+            logger.info("do_activate() started", self.__class__.__name__)
 
             # If UI already initialized, this is a second instance trying to start
             if self.ui_initialized:
@@ -69,55 +69,55 @@ class DFakeSeeder(Gtk.Application):
                     self.view.window.present()
                 return
 
-            logger.debug("First instance - initializing UI", self.__class__.__name__)
+            logger.trace("First instance - initializing UI", self.__class__.__name__)
 
             # Ensure resource paths are set up before creating Model
             with logger.performance.operation_context("setup_resource_paths", self.__class__.__name__):
-                logger.debug(
+                logger.trace(
                     f"DFS_PATH before setup: {os.environ.get('DFS_PATH')}",
                     self.__class__.__name__,
                 )
                 AppInitializationHelper.setup_resource_paths()
-                logger.debug(
+                logger.trace(
                     f"DFS_PATH after setup: {os.environ.get('DFS_PATH')}",
                     self.__class__.__name__,
                 )
 
             # The Model manages the data and logic
             with logger.performance.operation_context("model_creation", self.__class__.__name__):
-                logger.debug("About to create Model instance", self.__class__.__name__)
+                logger.trace("About to create Model instance", self.__class__.__name__)
                 self.model = Model()
-                logger.debug("Model creation completed successfully", self.__class__.__name__)
+                logger.info("Model creation completed successfully", self.__class__.__name__)
 
             # The View manages the user interface
             with logger.performance.operation_context("view_creation", self.__class__.__name__):
-                logger.debug("About to create View instance", self.__class__.__name__)
+                logger.trace("About to create View instance", self.__class__.__name__)
                 self.view = View(self)
-                logger.debug("View creation completed successfully", self.__class__.__name__)
+                logger.info("View creation completed successfully", self.__class__.__name__)
 
             # The Controller manages the interactions between the Model and View
             with logger.performance.operation_context("controller_creation", self.__class__.__name__):
-                logger.debug("About to create Controller instance", self.__class__.__name__)
+                logger.trace("About to create Controller instance", self.__class__.__name__)
                 self.controller = Controller(self.view, self.model)
-                logger.debug("Controller creation completed", self.__class__.__name__)
+                logger.trace("Controller creation completed", self.__class__.__name__)
 
             # Start the controller
             with logger.performance.operation_context("controller_start", self.__class__.__name__):
-                logger.debug("About to start controller", self.__class__.__name__)
+                logger.trace("About to start controller", self.__class__.__name__)
                 self.controller.run()
-                logger.debug("Controller started", self.__class__.__name__)
+                logger.info("Controller started", self.__class__.__name__)
 
             # Show the window
             with logger.performance.operation_context("window_show", self.__class__.__name__):
-                logger.debug("About to show window", self.__class__.__name__)
+                logger.trace("About to show window", self.__class__.__name__)
                 self.view.window.show()
-                logger.debug("Window shown", self.__class__.__name__)
+                logger.trace("Window shown", self.__class__.__name__)
 
             # Mark UI as initialized
             self.ui_initialized = True
 
     def handle_settings_changed(self, source, key, value):
-        logger.debug("Settings changed", extra={"class_name": self.__class__.__name__})
+        logger.trace("Settings changed", extra={"class_name": self.__class__.__name__})
 
 
 app = typer.Typer()
@@ -139,7 +139,7 @@ def run():
         # ========== MULTI-METHOD SINGLE INSTANCE CHECK ==========
         # Check using D-Bus, Socket, and PID file BEFORE creating GTK app
         # This provides defense-in-depth before GTK4's single-instance mechanism
-        logger.debug("Checking for existing instance using multi-method approach", "DFakeSeeder")
+        logger.trace("Checking for existing instance using multi-method approach", "DFakeSeeder")
 
         instance_checker = MultiMethodSingleInstance(
             app_name="dfakeseeder-main", dbus_service="ie.fio.dfakeseeder", use_pidfile=True
@@ -155,7 +155,7 @@ def run():
             _show_console_message(detected_by)
             sys.exit(0)
 
-        logger.debug(
+        logger.trace(
             "No existing instance detected - proceeding with application startup",
             "DFakeSeeder",
         )
@@ -172,7 +172,7 @@ def run():
 
     except Exception as e:
         logger.error(f"Failed to run DFakeSeeder application: {e}")
-        logger.debug("Failed to start application: ...", "DFakeSeeder")
+        logger.error("Failed to start application: ...", "DFakeSeeder")
         sys.exit(1)
 
 

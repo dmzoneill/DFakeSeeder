@@ -66,7 +66,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             torrent: Torrent object to display
         """
         try:
-            self.logger.debug(
+            self.logger.trace(
                 "Updating details tab for torrent",
                 extra={"class_name": self.__class__.__name__},
             )

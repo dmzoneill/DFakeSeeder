@@ -77,7 +77,7 @@ class GlobalPeerManager:
         self._dirty_managers: set = set()  # Track which managers need stats recalculation
         self._stats_cache_dirty = True  # Global dirty flag
 
-        logger.debug(
+        logger.trace(
             "🌍 GlobalPeerManager initialized",
             extra={"class_name": self.__class__.__name__},
         )
@@ -96,7 +96,7 @@ class GlobalPeerManager:
 
             # Start shared async executor first
             self.executor.start()
-            logger.debug(
+            logger.trace(
                 "🚀 SharedAsyncExecutor started",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -125,7 +125,7 @@ class GlobalPeerManager:
 
             # Stop all peer managers
             peer_manager_count = len(self.peer_managers)
-            logger.debug(
+            logger.trace(
                 f"Stopping {peer_manager_count} peer managers",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -142,13 +142,13 @@ class GlobalPeerManager:
             self.active_torrents.clear()
 
         # Stop peer server
-        logger.debug("Stopping peer server", extra={"class_name": self.__class__.__name__})
+        logger.trace("Stopping peer server", extra={"class_name": self.__class__.__name__})
         self.peer_server.stop()
         if shutdown_tracker:
             shutdown_tracker.mark_completed("network_connections", 1)
 
         # Stop shared async executor
-        logger.debug(
+        logger.trace(
             "Stopping SharedAsyncExecutor",
             extra={"class_name": self.__class__.__name__},
         )
@@ -157,7 +157,7 @@ class GlobalPeerManager:
             shutdown_tracker.mark_completed("async_executor", 1)
 
         # Stop ConnectionManager (stop all GLib timers)
-        logger.debug("Stopping ConnectionManager", extra={"class_name": self.__class__.__name__})
+        logger.trace("Stopping ConnectionManager", extra={"class_name": self.__class__.__name__})
         from d_fake_seeder.domain.torrent.connection_manager import (
             get_connection_manager,
         )
@@ -168,7 +168,7 @@ class GlobalPeerManager:
         # Wait for worker thread to finish with aggressive timeout
         if self.worker_thread and self.worker_thread.is_alive():
             join_timeout = 1.0  # Max 1 second for aggressive shutdown
-            logger.debug(
+            logger.trace(
                 f"⏱️ Waiting for worker thread to finish (timeout: {join_timeout}s)",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -183,7 +183,7 @@ class GlobalPeerManager:
                 if shutdown_tracker:
                     shutdown_tracker.mark_component_timeout("background_workers")
             else:
-                logger.debug(
+                logger.trace(
                     "✅ Worker thread stopped cleanly",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -207,7 +207,7 @@ class GlobalPeerManager:
         torrent_id = str(torrent.id)
 
         # Debug: Log the actual type of object we received
-        logger.debug(
+        logger.trace(
             f"🔍 Adding torrent {torrent_id}: type={type(torrent).__name__}, "
             f"has_get_torrent_file={hasattr(torrent, 'get_torrent_file')}",
             extra={"class_name": self.__class__.__name__},
@@ -217,12 +217,12 @@ class GlobalPeerManager:
             # Extract torrent info
             torrent_file = torrent.get_torrent_file()
             if not torrent_file:
-                logger.warning(f"❌ No torrent file returned for {torrent_id}")
+                logger.error(f"❌ No torrent file returned for {torrent_id}")
                 return
 
             # Debug: Check what attributes the torrent file has
             attrs = [attr for attr in dir(torrent_file) if not attr.startswith("_")]
-            logger.debug(
+            logger.trace(
                 f"🔍 Torrent file for {torrent_id}: "
                 f"type={type(torrent_file).__name__}, "
                 f"has_info_hash={hasattr(torrent_file, 'info_hash')}, "
@@ -240,7 +240,7 @@ class GlobalPeerManager:
                     try:
                         info_hash = bytes.fromhex(info_hash_hex)
                     except ValueError:
-                        logger.warning(f"Invalid hex info_hash for {torrent_id}: " f"{info_hash_hex}")
+                        logger.error(f"Invalid hex info_hash for {torrent_id}: " f"{info_hash_hex}")
                         return
 
             if not info_hash:
@@ -287,12 +287,12 @@ class GlobalPeerManager:
                         if peer_addresses:
                             manager.add_peers(peer_addresses)
 
-                    logger.debug(
+                    logger.trace(
                         f"🎯 Added torrent {torrent_id} " f"({info_hash_hex[:12]}...) with {len(peer_addresses)} peers",
                         extra={"class_name": self.__class__.__name__},
                     )
                 else:
-                    logger.debug(
+                    logger.trace(
                         f"🔄 Torrent {torrent_id} already tracked (shared info_hash)",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -322,12 +322,12 @@ class GlobalPeerManager:
                 self.peer_managers[info_hash_hex].stop()
                 del self.peer_managers[info_hash_hex]
 
-                logger.debug(
+                logger.trace(
                     f"🗑️ Removed torrent {torrent_id} and stopped peer manager",
                     extra={"class_name": self.__class__.__name__},
                 )
             else:
-                logger.debug(
+                logger.trace(
                     f"🔄 Removed torrent {torrent_id} " f"(peer manager still used by other torrents)",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -351,7 +351,7 @@ class GlobalPeerManager:
                 # Mark this manager's stats as dirty
                 self._invalidate_manager_stats(info_hash_hex)
 
-                logger.debug(
+                logger.trace(
                     f"🔄 Updated {len(peer_addresses)} peers for " f"torrent {torrent_id}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -394,7 +394,7 @@ class GlobalPeerManager:
 
     def _worker_loop(self):
         """Main worker loop that runs in background thread"""
-        logger.debug(
+        logger.trace(
             "🔄 Global peer manager worker loop started",
             extra={"class_name": self.__class__.__name__},
         )
@@ -432,7 +432,7 @@ class GlobalPeerManager:
                 if self.shutdown_event.wait(timeout=self.manager_error_sleep_interval):
                     break
 
-        logger.debug(
+        logger.trace(
             "🛑 Global peer manager worker loop stopped",
             extra={"class_name": self.__class__.__name__},
         )
@@ -512,7 +512,7 @@ class GlobalPeerManager:
                     self._per_manager_stats[info_hash_hex] = manager_totals
 
                 except Exception as e:
-                    logger.debug(f"Error getting stats from manager {info_hash_hex}: {e}")
+                    logger.error(f"Error getting stats from manager {info_hash_hex}: {e}")
 
             # Clear dirty set
             self._dirty_managers.clear()

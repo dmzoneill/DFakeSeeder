@@ -226,6 +226,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Interval between PEX message exchanges (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -265,6 +267,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum peers to include in a PEX message</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -297,6 +301,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum dropped peers to track for PEX</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -350,6 +356,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Number of synthetic peers to generate</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -425,6 +433,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Size of metadata pieces in bytes</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -464,6 +474,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Timeout for metadata requests (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -588,6 +600,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Connection timeout for extensions (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -627,6 +641,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Keep alive interval for connections (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -730,6 +746,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">General timeout for extension operations (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -769,6 +787,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum size for extension messages (bytes)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -829,6 +849,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Extension statistics update interval (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -910,6 +932,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum extension messages per second</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>

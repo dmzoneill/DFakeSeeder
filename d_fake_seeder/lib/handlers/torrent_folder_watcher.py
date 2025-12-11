@@ -49,7 +49,7 @@ class TorrentFolderWatcher:
         self.watch_path = None
         self.is_running = False
 
-        logger.debug(
+        logger.trace(
             "TorrentFolderWatcher initialized",
             extra={"class_name": self.__class__.__name__},
         )
@@ -69,7 +69,7 @@ class TorrentFolderWatcher:
         watch_path = watch_config.get("path", "")
 
         if not enabled:
-            logger.debug(
+            logger.trace(
                 "Watch folder is disabled in settings",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -109,7 +109,7 @@ class TorrentFolderWatcher:
             self.observer.start()
             self.is_running = True
 
-            logger.debug(
+            logger.trace(
                 f"Started watching folder for torrents: {self.watch_path}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -151,7 +151,7 @@ class TorrentFolderWatcher:
             return
 
         try:
-            logger.debug(
+            logger.trace(
                 f"Scanning watch folder for existing torrents: {self.watch_path}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -221,7 +221,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
             current_time = time.time()
             if file_path in self.last_process_time:
                 if current_time - self.last_process_time[file_path] < 2.0:
-                    logger.debug(
+                    logger.trace(
                         f"Skipping recently processed file: {file_path}",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -231,7 +231,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
 
             # Verify file still exists and is readable
             if not os.path.exists(file_path):
-                logger.debug(
+                logger.trace(
                     f"Torrent file no longer exists: {file_path}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -251,7 +251,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
 
             # Check if torrent already exists in config directory
             if os.path.exists(destination_path):
-                logger.debug(
+                logger.trace(
                     f"Torrent already exists in config directory: {filename}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -291,7 +291,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
                 if torrents:
                     new_torrent = torrents[-1]  # Last added torrent
                     self.global_peer_manager.add_torrent(new_torrent)
-                    logger.debug(
+                    logger.trace(
                         f"Added torrent to global peer manager: {filename}",
                         extra={"class_name": self.__class__.__name__},
                     )

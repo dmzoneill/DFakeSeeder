@@ -42,7 +42,7 @@ class DHTSeeder(BaseSeeder):
         # Apply jitter to announce interval to prevent request storms
         self.announce_interval = self._apply_announce_jitter(base_interval)
 
-        logger.debug(
+        logger.trace(
             "DHT Seeder initialized",
             extra={
                 "class_name": self.__class__.__name__,
@@ -92,7 +92,7 @@ class DHTSeeder(BaseSeeder):
             return False
 
         try:
-            logger.debug("Starting DHT seeder", extra={"class_name": self.__class__.__name__})
+            logger.trace("Starting DHT seeder", extra={"class_name": self.__class__.__name__})
 
             # Initialize DHT node
             self.dht_node = DHTNode(port=self.port)
@@ -164,7 +164,7 @@ class DHTSeeder(BaseSeeder):
             return
 
         try:
-            logger.debug(
+            logger.trace(
                 f"Announcing torrent {self.info_hash.hex()[:16]} to DHT",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -172,7 +172,7 @@ class DHTSeeder(BaseSeeder):
             success = await self.dht_node.announce_peer(self.info_hash, self.port)
 
             if success:
-                logger.debug(
+                logger.trace(
                     "DHT announcement successful",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -201,7 +201,7 @@ class DHTSeeder(BaseSeeder):
         try:
             peers = await self.dht_node.get_peers(self.info_hash)
 
-            logger.debug(
+            logger.trace(
                 f"Found {len(peers)} peers via DHT",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -235,7 +235,7 @@ class DHTSeeder(BaseSeeder):
             setattr(self.settings, "dht_stats", dht_stats)
 
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"Failed to update DHT stats: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -264,7 +264,7 @@ class DHTSeeder(BaseSeeder):
 
         # Handle DHT-specific settings
         if key.startswith("protocols.dht"):
-            logger.debug(
+            logger.trace(
                 f"DHT setting changed: {key} = {value}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -286,7 +286,7 @@ class DHTSeeder(BaseSeeder):
 
     def set_announce_url(self, url):
         """Set announce URL (not applicable for DHT)"""
-        logger.debug(
+        logger.trace(
             "DHT seeder ignoring announce URL setting",
             extra={"class_name": self.__class__.__name__},
         )

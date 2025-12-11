@@ -47,67 +47,67 @@ class SettingsDialog:
 
     def __init__(self, parent_window, app=None, model=None):
         """Initialize the settings dialog."""
-        logger.debug("===== SettingsDialog.__init__ START =====", "SettingsDialog")
-        logger.debug("parent_window:", "SettingsDialog")
-        logger.debug("app:", "SettingsDialog")
-        logger.debug("model:", "SettingsDialog")
+        logger.trace("===== SettingsDialog.__init__ START =====", "SettingsDialog")
+        logger.trace("parent_window:", "SettingsDialog")
+        logger.trace("app:", "SettingsDialog")
+        logger.trace("model:", "SettingsDialog")
         # Initialize dialog (no Component inheritance - settings don't need general model observation)
-        logger.debug("super().__init__() completed", "SettingsDialog")
-        logger.debug("startup", extra={"class_name": self.__class__.__name__})
-        logger.debug("Setting instance variables", "SettingsDialog")
+        logger.trace("super().__init__() completed", "SettingsDialog")
+        logger.trace("startup", extra={"class_name": self.__class__.__name__})
+        logger.trace("Setting instance variables", "SettingsDialog")
         self.parent_window = parent_window
         self.app = app
         self.model = model
-        logger.debug("About to get AppSettings instance", "SettingsDialog")
+        logger.trace("About to get AppSettings instance", "SettingsDialog")
         self.app_settings = AppSettings.get_instance()
-        logger.debug("AppSettings instance:", "SettingsDialog")
+        logger.trace("AppSettings instance:", "SettingsDialog")
 
         # Connect to AppSettings changes for theme updates
         self.app_settings.connect("attribute-changed", self._on_app_settings_changed)
-        logger.debug("Connected to AppSettings attribute-changed signal", "SettingsDialog")
+        logger.trace("Connected to AppSettings attribute-changed signal", "SettingsDialog")
 
         # Load the settings UI
-        logger.debug("Creating Gtk.Builder", "SettingsDialog")
+        logger.trace("Creating Gtk.Builder", "SettingsDialog")
         self.builder = Gtk.Builder()
-        logger.debug("About to load UI file", "SettingsDialog")
+        logger.trace("About to load UI file", "SettingsDialog")
         ui_file_path = os.environ.get("DFS_PATH") + "/components/ui/generated/settings_generated.xml"
-        logger.debug("UI file path:", "SettingsDialog")
-        logger.debug("UI file exists:", "SettingsDialog")
+        logger.trace("UI file path:", "SettingsDialog")
+        logger.trace("UI file exists:", "SettingsDialog")
         self.builder.add_from_file(ui_file_path)
-        logger.debug("UI file loaded successfully", "SettingsDialog")
+        logger.info("UI file loaded successfully", "SettingsDialog")
         # Get main window
-        logger.debug("Getting settings_window from builder", "SettingsDialog")
+        logger.trace("Getting settings_window from builder", "SettingsDialog")
         self.window = self.builder.get_object("settings_window")
-        logger.debug("Settings window:", "SettingsDialog")
+        logger.trace("Settings window:", "SettingsDialog")
 
         # Apply dark mode class if currently in dark mode
         ui_settings = self.app_settings.get("ui_settings", {})
         color_scheme = ui_settings.get("color_scheme", "auto")
         if color_scheme == "dark":
             self.window.add_css_class("dark")
-            logger.debug("Added 'dark' CSS class to settings dialog", "SettingsDialog")
+            logger.trace("Added 'dark' CSS class to settings dialog", "SettingsDialog")
 
-        logger.debug("Setting transient parent", "SettingsDialog")
+        logger.trace("Setting transient parent", "SettingsDialog")
         self.window.set_transient_for(parent_window)
         logger.debug("Setting modal to False", "SettingsDialog")
         self.window.set_modal(False)
-        logger.debug("Window setup completed", "SettingsDialog")
+        logger.trace("Window setup completed", "SettingsDialog")
         # Get notebook for tab management
         self.notebook = self.builder.get_object("settings_notebook")
         # Initialize all tab components
         self.tabs: List[Any] = []
         self._initialize_tabs()
         # Connect window signals
-        logger.debug("About to connect window signals", "SettingsDialog")
+        logger.trace("About to connect window signals", "SettingsDialog")
         self._connect_window_signals()
-        logger.debug("Window signals connected", "SettingsDialog")
+        logger.trace("Window signals connected", "SettingsDialog")
         # Setup global keyboard shortcuts
-        logger.debug("About to setup global shortcuts", "SettingsDialog")
+        logger.trace("About to setup global shortcuts", "SettingsDialog")
         self._setup_global_shortcuts()
-        logger.debug("Global shortcuts setup completed", "SettingsDialog")
+        logger.trace("Global shortcuts setup completed", "SettingsDialog")
         # Pass model to tabs if available
         if self.model:
-            logger.debug(
+            logger.trace(
                 "Storing model reference for tabs and enabling dropdown translation",
                 "SettingsDialog",
             )
@@ -120,7 +120,7 @@ class SettingsDialog:
                     and tab.tab_name == "General"
                     and hasattr(tab, "_populate_language_dropdown")
                 ):
-                    logger.debug(
+                    logger.trace(
                         "Populating language dropdown for GeneralTab with signal safety",
                         "SettingsDialog",
                     )
@@ -129,33 +129,33 @@ class SettingsDialog:
                         tab._initializing = True
                         tab._populate_language_dropdown()
                     except Exception:
-                        logger.debug("Error populating language dropdown:", "SettingsDialog")
+                        logger.error("Error populating language dropdown:", "SettingsDialog")
                 # Enable dropdown translation for all tabs that support it
                 if hasattr(tab, "update_view"):
-                    logger.debug(
+                    logger.trace(
                         "Calling update_view for  tab to enable dropdown translation",
                         "SettingsDialog",
                     )
                     try:
                         tab.update_view(self.model, None, None)
                     except Exception:
-                        logger.debug("Error calling update_view for :", "SettingsDialog")
-            logger.debug(
+                        logger.error("Error calling update_view for :", "SettingsDialog")
+            logger.trace(
                 "Model references stored and dropdown translation enabled",
                 "SettingsDialog",
             )
             # Register settings dialog widgets for translation
-            logger.debug("About to register for translation", "SettingsDialog")
+            logger.trace("About to register for translation", "SettingsDialog")
             self._register_for_translation()
-            logger.debug("Translation registration completed", "SettingsDialog")
-        logger.debug(
+            logger.trace("Translation registration completed", "SettingsDialog")
+        logger.trace(
             "===== SettingsDialog.__init__ COMPLETED SUCCESSFULLY =====",
             "SettingsDialog",
         )
 
     def _initialize_tabs(self) -> None:
         """Initialize all settings tab components."""
-        logger.debug("Starting tab initialization", "SettingsDialog")
+        logger.trace("Starting tab initialization", "SettingsDialog")
         try:
             # Create module mapping for tab configuration
             module_mapping = {
@@ -173,17 +173,17 @@ class SettingsDialog:
             # Load tab configuration
             try:
                 tab_classes = get_settings_tab_classes(module_mapping)
-                logger.debug("Loaded  tabs from configuration", "SettingsDialog")
-                logger.debug("Configuration metadata:", "SettingsDialog")
+                logger.trace("Loaded  tabs from configuration", "SettingsDialog")
+                logger.trace("Configuration metadata:", "SettingsDialog")
             except Exception:
-                logger.debug(
+                logger.trace(
                     "Warning: Could not load tab config (), using fallback",
                     "SettingsDialog",
                 )
                 # Fallback to essential tabs only
                 tab_classes = [GeneralTab, ConnectionTab, AdvancedTab]
             for tab_class in tab_classes:
-                logger.debug("About to initialize", "SettingsDialog")
+                logger.trace("About to initialize", "SettingsDialog")
                 try:
                     # Pass app reference to GeneralTab for UI restart functionality
                     if tab_class.__name__ == "GeneralTab":
@@ -195,43 +195,43 @@ class SettingsDialog:
                     tab.settings_dialog = self
 
                     self.tabs.append(tab)
-                    logger.debug("Successfully initialized", "SettingsDialog")
+                    logger.info("Successfully initialized", "SettingsDialog")
                     # logger.debug(f"Initialized {tab.tab_name} tab")  # Temporarily commented out - causes hang
                 except Exception as e:
-                    logger.debug("ERROR initializing :", "SettingsDialog")
+                    logger.error("ERROR initializing :", "SettingsDialog")
                     logger.error(f"Error initializing {tab_class.__name__}: {e}")
-            logger.debug("Tab initialization completed. Total tabs:", "SettingsDialog")
-            logger.debug(f"Initialized {len(self.tabs)} settings tabs")
+            logger.trace("Tab initialization completed. Total tabs:", "SettingsDialog")
+            logger.info(f"Initialized {len(self.tabs)} settings tabs")
         except Exception as e:
             logger.error(f"Error initializing settings tabs: {e}")
 
     def _update_tabs_with_model(self) -> None:
         """Update all tabs with the model reference."""
         try:
-            logger.debug("Starting _update_tabs_with_model for  tabs", "SettingsDialog")
+            logger.trace("Starting _update_tabs_with_model for  tabs", "SettingsDialog")
             # Special handling for GeneralTab to populate language dropdown
             for i, tab in enumerate(self.tabs):
-                logger.debug("Checking tab :", "SettingsDialog")
+                logger.trace("Checking tab :", "SettingsDialog")
                 if tab.tab_name == "General" and hasattr(tab, "update_view"):
-                    logger.debug(
+                    logger.trace(
                         "Special handling for GeneralTab to populate language dropdown",
                         "SettingsDialog",
                     )
-                    logger.debug(f"Calling update_view on {tab.tab_name} tab for language dropdown")
+                    logger.trace(f"Calling update_view on {tab.tab_name} tab for language dropdown")
                     # Just store the model reference and populate language dropdown
                     tab.model = self.model
                     if hasattr(tab, "_populate_language_dropdown"):
                         tab._populate_language_dropdown()
-                    logger.debug("Completed language dropdown population for", "SettingsDialog")
+                    logger.trace("Completed language dropdown population for", "SettingsDialog")
                 elif hasattr(tab, "update_view"):
-                    logger.debug("Storing model reference for  tab", "SettingsDialog")
+                    logger.trace("Storing model reference for  tab", "SettingsDialog")
                     # For other tabs, just store the model reference without calling full update_view
                     tab.model = self.model
-                    logger.debug("Model stored for  tab", "SettingsDialog")
-            logger.debug("All tabs updated with model", "SettingsDialog")
-            logger.debug(f"Updated {len(self.tabs)} tabs with model")
+                    logger.trace("Model stored for  tab", "SettingsDialog")
+            logger.trace("All tabs updated with model", "SettingsDialog")
+            logger.trace(f"Updated {len(self.tabs)} tabs with model")
         except Exception as e:
-            logger.debug("ERROR in _update_tabs_with_model:", "SettingsDialog")
+            logger.error("ERROR in _update_tabs_with_model:", "SettingsDialog")
             logger.error(f"Error updating tabs with model: {e}")
 
     def _connect_window_signals(self) -> None:
@@ -250,17 +250,17 @@ class SettingsDialog:
         try:
             # Only handle color scheme changes
             if key == "ui_settings.color_scheme":
-                logger.debug(f"Settings dialog received color scheme change: {value}", "SettingsDialog")
+                logger.trace(f"Settings dialog received color scheme change: {value}", "SettingsDialog")
                 # Update the dialog window's CSS class to match the new color scheme
                 if value == "dark":
                     if not self.window.has_css_class("dark"):
                         self.window.add_css_class("dark")
-                        logger.debug("Added 'dark' CSS class to settings dialog", "SettingsDialog")
+                        logger.trace("Added 'dark' CSS class to settings dialog", "SettingsDialog")
                 else:
                     # Remove dark class for "light" or "auto" modes
                     if self.window.has_css_class("dark"):
                         self.window.remove_css_class("dark")
-                        logger.debug("Removed 'dark' CSS class from settings dialog", "SettingsDialog")
+                        logger.trace("Removed 'dark' CSS class from settings dialog", "SettingsDialog")
         except Exception as e:
             logger.error(f"Error handling app settings change in dialog: {e}", "SettingsDialog")
 
@@ -295,7 +295,7 @@ class SettingsDialog:
                 self.model.translation_manager.scan_builder_widgets(self.builder)
                 final_count = len(self.model.translation_manager.translatable_widgets)
                 new_widgets = final_count - initial_count
-                logger.debug(
+                logger.trace(
                     f"Registered {new_widgets} settings dialog widgets for translation. "
                     f"Total registered widgets: {final_count}",
                     extra={"class_name": self.__class__.__name__},
@@ -303,7 +303,7 @@ class SettingsDialog:
                 # CRITICAL FIX: Refresh translations for newly registered settings widgets
                 # This ensures that settings widgets get translated with the correct language
                 if new_widgets > 0:
-                    logger.debug(
+                    logger.trace(
                         "Newly registered settings widgets will be refreshed by debounced system",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -314,30 +314,30 @@ class SettingsDialog:
 
     def show(self) -> None:
         """Show the settings dialog."""
-        logger.debug("===== show() method called =====", "SettingsDialog")
-        logger.debug("self.window:", "SettingsDialog")
+        logger.trace("===== show() method called =====", "SettingsDialog")
+        logger.trace("self.window:", "SettingsDialog")
         try:
             # Reload settings from app_settings before showing the dialog
-            logger.debug("Reloading settings for all tabs", "SettingsDialog")
+            logger.trace("Reloading settings for all tabs", "SettingsDialog")
             self.reload_all_tab_settings()
 
-            logger.debug("About to call self.window.present()", "SettingsDialog")
+            logger.trace("About to call self.window.present()", "SettingsDialog")
             self.window.present()
-            logger.debug("self.window.present() completed successfully", "SettingsDialog")
-            logger.debug("Settings dialog shown")
+            logger.info("self.window.present() completed successfully", "SettingsDialog")
+            logger.trace("Settings dialog shown")
             # Force translation refresh for settings dialog widgets
-            logger.debug("Checking for translation manager", "SettingsDialog")
+            logger.trace("Checking for translation manager", "SettingsDialog")
             if self.model and hasattr(self.model, "translation_manager"):
-                logger.debug("Translation manager found", "SettingsDialog")
+                logger.trace("Translation manager found", "SettingsDialog")
                 # Widget scanning already handles translation registration and refresh
                 # No need to force additional refresh to avoid infinite loops
-                logger.debug(
+                logger.trace(
                     "Settings dialog shown with translation support",
                     extra={"class_name": self.__class__.__name__},
                 )
             else:
-                logger.debug("No translation manager found", "SettingsDialog")
-            logger.debug("show() method completed successfully", "SettingsDialog")
+                logger.trace("No translation manager found", "SettingsDialog")
+            logger.info("show() method completed successfully", "SettingsDialog")
         except Exception as e:
             logger.error(f"Error showing settings dialog: {e}")
 
@@ -345,7 +345,7 @@ class SettingsDialog:
         """Hide the settings dialog."""
         try:
             self.window.hide()
-            logger.debug("Settings dialog hidden")
+            logger.trace("Settings dialog hidden")
         except Exception as e:
             logger.error(f"Error hiding settings dialog: {e}")
 
@@ -363,7 +363,7 @@ class SettingsDialog:
                         error_message += f"  - {error}\n"
                     error_message += "\n"
                 # TODO: Show error dialog
-                logger.warning(f"Settings validation failed: {validation_errors}")
+                logger.error(f"Settings validation failed: {validation_errors}")
                 return
             # Save all settings before closing
             self.save_all_settings()
@@ -379,10 +379,10 @@ class SettingsDialog:
                 try:
                     saved_settings = tab.save_settings()
                     all_saved_settings.update(saved_settings)
-                    logger.debug(f"Saved settings for {tab.tab_name} tab")
+                    logger.trace(f"Saved settings for {tab.tab_name} tab")
                 except Exception as e:
                     logger.error(f"Error saving {tab.tab_name} tab settings: {e}")
-            logger.debug(f"Saved settings from {len(self.tabs)} tabs")
+            logger.trace(f"Saved settings from {len(self.tabs)} tabs")
             return all_saved_settings
         except Exception as e:
             logger.error(f"Error saving all settings: {e}")
@@ -414,7 +414,7 @@ class SettingsDialog:
             if 0 <= current_page < len(self.tabs):
                 tab = self.tabs[current_page]
                 tab.reset_to_defaults()
-                logger.debug(f"Reset {tab.tab_name} tab to defaults")
+                logger.trace(f"Reset {tab.tab_name} tab to defaults")
         except Exception as e:
             logger.error(f"Error resetting current tab: {e}")
 
@@ -424,7 +424,7 @@ class SettingsDialog:
             for tab in self.tabs:
                 try:
                     tab.reset_to_defaults()
-                    logger.debug(f"Reset {tab.tab_name} tab to defaults")
+                    logger.trace(f"Reset {tab.tab_name} tab to defaults")
                 except Exception as e:
                     logger.error(f"Error resetting {tab.tab_name} tab: {e}")
             logger.debug("Reset all settings tabs to defaults")
@@ -484,17 +484,17 @@ class SettingsDialog:
         """Handle window close request."""
         try:
             # Skip validation on close - just save and close
-            logger.debug("Settings window close requested")
+            logger.trace("Settings window close requested")
             self.save_all_settings()
 
             # Clean up all tabs to prevent memory leaks
-            logger.debug(f"Cleaning up {len(self.tabs)} settings tabs")
+            logger.trace(f"Cleaning up {len(self.tabs)} settings tabs")
             for tab in self.tabs:
                 if hasattr(tab, "cleanup"):
                     try:
                         tab.cleanup()
                     except Exception as e:
-                        logger.warning(f"Error cleaning up tab: {e}")
+                        logger.error(f"Error cleaning up tab: {e}")
 
             self.hide()
             return False  # Allow default close behavior
@@ -507,7 +507,7 @@ class SettingsDialog:
         try:
             if 0 <= page_num < len(self.tabs):
                 tab = self.tabs[page_num]
-                logger.debug(f"Switched to {tab.tab_name} tab")
+                logger.trace(f"Switched to {tab.tab_name} tab")
                 # Update tab dependencies when switching
                 tab.update_dependencies()
         except Exception as e:

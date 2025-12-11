@@ -30,7 +30,7 @@ class AppInitializationHelper:
             # Initialize settings singleton
             AppSettings.get_instance()
 
-            logger.debug("Application settings initialized")
+            logger.info("Application settings initialized")
 
         except Exception as e:
             logger.error(f"Error initializing application settings: {e}")
@@ -53,14 +53,14 @@ class AppInitializationHelper:
                 if spec and spec.origin:
                     package_root = os.path.dirname(spec.origin)
                     os.environ["DFS_PATH"] = package_root
-                    logger.debug(f"DFS_PATH set to: {package_root}")
+                    logger.trace(f"DFS_PATH set to: {package_root}")
                 else:
                     # Fallback: use the directory containing this file
                     current_file = os.path.abspath(__file__)
                     # Go up from lib/util/app_initialization.py to the package root
                     package_root = os.path.dirname(os.path.dirname(os.path.dirname(current_file)))
                     os.environ["DFS_PATH"] = package_root
-                    logger.debug(f"DFS_PATH set to fallback path: {package_root}")
+                    logger.trace(f"DFS_PATH set to fallback path: {package_root}")
 
         except Exception as e:
             logger.error(f"Error setting up resource paths: {e}")
@@ -80,7 +80,7 @@ class AppInitializationHelper:
             # Set up resource paths
             cls.setup_resource_paths()
 
-            logger.info("Full application initialization completed")
+            logger.trace("Full application initialization completed")
 
         except Exception as e:
             logger.error(f"Error during full application initialization: {e}")

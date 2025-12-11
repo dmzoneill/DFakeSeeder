@@ -66,7 +66,7 @@ class TrayLauncher:
                 else:
                     retry_count += 1
                     if retry_count < self.max_retries:
-                        logger.warning(f"Launch failed, retrying in {self.retry_delay} seconds...")
+                        logger.error(f"Launch failed, retrying in {self.retry_delay} seconds...")
                         time.sleep(self.retry_delay)
 
             except KeyboardInterrupt:
@@ -115,7 +115,7 @@ class TrayLauncher:
                 stdout, stderr = self.process.communicate()
 
                 if self.process.returncode == 0:
-                    logger.debug("Tray application completed successfully")
+                    logger.info("Tray application completed successfully")
                     return True
                 else:
                     logger.error(f"Tray application failed with code {self.process.returncode}")
@@ -176,7 +176,7 @@ class TrayLauncher:
             return result.unpack()[0] if result else False
 
         except Exception as e:
-            logger.debug(f"D-Bus service check failed: {e}")
+            logger.error(f"D-Bus service check failed: {e}")
             return False
 
     def _signal_handler(self, signum, frame):

@@ -38,7 +38,7 @@ class WindowManager:
         Args:
             window: GTK4 window to manage (optional, can be set later)
         """
-        logger.debug("Initializing WindowManager", extra={"class_name": self.__class__.__name__})
+        logger.trace("Initializing WindowManager", extra={"class_name": self.__class__.__name__})
 
         self.window = window
         self.app_settings = AppSettings.get_instance()
@@ -64,7 +64,7 @@ class WindowManager:
         self.window = window
         self._setup_window_handlers()
         self._load_window_state()
-        logger.debug("Window set for management", extra={"class_name": self.__class__.__name__})
+        logger.trace("Window set for management", extra={"class_name": self.__class__.__name__})
 
     def _setup_window_handlers(self):
         """Setup window event handlers for state tracking"""
@@ -80,7 +80,7 @@ class WindowManager:
             self.window.connect("notify::default-width", self._on_size_changed)
             self.window.connect("notify::default-height", self._on_size_changed)
 
-            logger.debug(
+            logger.trace(
                 "Window event handlers connected",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -112,7 +112,7 @@ class WindowManager:
                 # Set visibility directly without calling show()/hide() to avoid side effects during init
                 self.window.set_visible(visible)
 
-            logger.debug(
+            logger.trace(
                 f"Loaded window state: size={self._last_size}, pos={self._last_position}, visible={visible}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -126,58 +126,58 @@ class WindowManager:
     def _save_window_state(self):
         """Save current window state to AppSettings"""
         try:
-            logger.debug(
+            logger.trace(
                 "_save_window_state called",
                 extra={"class_name": self.__class__.__name__},
             )
 
             if not self.window:
-                logger.debug(
+                logger.trace(
                     "No window to save state for",
                     extra={"class_name": self.__class__.__name__},
                 )
                 return
 
-            logger.debug(
+            logger.trace(
                 "Getting window dimensions",
                 extra={"class_name": self.__class__.__name__},
             )
             # Save window size
             width = self.window.get_width()
             height = self.window.get_height()
-            logger.debug(
+            logger.trace(
                 f"Window dimensions: {width}x{height}",
                 extra={"class_name": self.__class__.__name__},
             )
 
             if width > 0 and height > 0:
-                logger.debug(
+                logger.trace(
                     "Setting window_width",
                     extra={"class_name": self.__class__.__name__},
                 )
                 self.app_settings.set("window_width", width)
-                logger.debug(
+                logger.trace(
                     "Setting window_height",
                     extra={"class_name": self.__class__.__name__},
                 )
                 self.app_settings.set("window_height", height)
                 self._last_size = (width, height)
-                logger.debug("Window size saved", extra={"class_name": self.__class__.__name__})
+                logger.trace("Window size saved", extra={"class_name": self.__class__.__name__})
 
             # Save visibility state
-            logger.debug(
+            logger.trace(
                 "Getting window visibility",
                 extra={"class_name": self.__class__.__name__},
             )
             visible = self.window.get_visible()
-            logger.debug(
+            logger.trace(
                 f"Setting window_visible={visible}",
                 extra={"class_name": self.__class__.__name__},
             )
             self.app_settings.set("window_visible", visible)
-            logger.debug("Window visibility saved", extra={"class_name": self.__class__.__name__})
+            logger.trace("Window visibility saved", extra={"class_name": self.__class__.__name__})
 
-            logger.debug(
+            logger.trace(
                 f"Saved window state: size=({width}, {height}), visible={visible}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -205,7 +205,7 @@ class WindowManager:
             # Update settings
             self.app_settings.set("window_visible", True)
 
-            logger.debug("Window shown", extra={"class_name": self.__class__.__name__})
+            logger.trace("Window shown", extra={"class_name": self.__class__.__name__})
             return True
 
         except Exception as e:
@@ -233,7 +233,7 @@ class WindowManager:
             # Update settings
             self.app_settings.set("window_visible", False)
 
-            logger.debug("Window hidden", extra={"class_name": self.__class__.__name__})
+            logger.trace("Window hidden", extra={"class_name": self.__class__.__name__})
             return True
 
         except Exception as e:
@@ -261,7 +261,7 @@ class WindowManager:
             if minimize_to_tray:
                 self.hide()
 
-            logger.debug("Window minimized", extra={"class_name": self.__class__.__name__})
+            logger.trace("Window minimized", extra={"class_name": self.__class__.__name__})
             return True
 
         except Exception as e:
@@ -284,7 +284,7 @@ class WindowManager:
             self.window.maximize()
             self._is_maximized = True
 
-            logger.debug("Window maximized", extra={"class_name": self.__class__.__name__})
+            logger.trace("Window maximized", extra={"class_name": self.__class__.__name__})
             return True
 
         except Exception as e:
@@ -307,7 +307,7 @@ class WindowManager:
             self.window.unmaximize()
             self._is_maximized = False
 
-            logger.debug("Window unmaximized", extra={"class_name": self.__class__.__name__})
+            logger.trace("Window unmaximized", extra={"class_name": self.__class__.__name__})
             return True
 
         except Exception as e:
@@ -384,7 +384,7 @@ class WindowManager:
 
             self._is_minimized = False
 
-            logger.debug("Window restored", extra={"class_name": self.__class__.__name__})
+            logger.trace("Window restored", extra={"class_name": self.__class__.__name__})
             return True
 
         except Exception as e:
@@ -439,7 +439,7 @@ class WindowManager:
                 self.app_settings.set("window_pos_x", center_x)
                 self.app_settings.set("window_pos_y", center_y)
 
-                logger.debug(
+                logger.trace(
                     f"Window position set to center: ({center_x}, {center_y})",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -480,7 +480,7 @@ class WindowManager:
             # Check if we should close to tray
             close_to_tray = self.app_settings.get("close_to_tray", False)
 
-            logger.debug(
+            logger.trace(
                 f"Close request received, close_to_tray={close_to_tray}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -495,7 +495,7 @@ class WindowManager:
                 return True  # Prevent default close behavior
             else:
                 # Allow normal close behavior - let view.quit() handle it
-                logger.debug(
+                logger.trace(
                     "Allowing normal close/quit behavior",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -539,26 +539,26 @@ class WindowManager:
     def cleanup(self):
         """Clean up window manager resources"""
         try:
-            logger.debug(
+            logger.trace(
                 "WindowManager cleanup starting",
                 extra={"class_name": self.__class__.__name__},
             )
 
             # Skip saving window state during cleanup to avoid deadlocks during shutdown
             # Window state has already been saved during normal operation
-            logger.debug(
+            logger.trace(
                 "Skipping window state save during cleanup (already saved)",
                 extra={"class_name": self.__class__.__name__},
             )
 
             # Clear window reference
-            logger.debug(
+            logger.trace(
                 "Clearing window reference",
                 extra={"class_name": self.__class__.__name__},
             )
             self.window = None
 
-            logger.debug(
+            logger.trace(
                 "WindowManager cleaned up",
                 extra={"class_name": self.__class__.__name__},
             )

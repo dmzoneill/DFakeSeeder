@@ -81,7 +81,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         self._widgets["protocol_compliance_level"] = self.builder.get_object("protocol_compliance_level_combo")
         self._widgets["behavior_randomization"] = self.builder.get_object("behavior_randomization_check")
 
-        self.logger.debug(
+        self.logger.trace(
             "Advanced Simulation tab widgets initialized",
             extra={"class_name": self.__class__.__name__},
         )
@@ -177,7 +177,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         if self._widgets["behavior_randomization"]:
             self._widgets["behavior_randomization"].connect("toggled", self._on_behavior_randomization_toggled)
 
-        self.logger.debug(
+        self.logger.trace(
             "Advanced Simulation tab signals connected",
             extra={"class_name": self.__class__.__name__},
         )
@@ -300,7 +300,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if self._widgets["behavior_randomization"]:
                 self._widgets["behavior_randomization"].set_active(True)
 
-            self.logger.debug(
+            self.logger.trace(
                 "Advanced Simulation settings loaded successfully",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -392,7 +392,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Save seeding profiles back
             self.app_settings.set("seeding_profiles", seeding_profiles)
 
-            self.logger.debug(
+            self.logger.trace(
                 "Advanced Simulation settings saved successfully",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -562,7 +562,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     # Signal handlers
     def _on_client_behavior_enabled_changed(self, switch, state):
         """Handle client behavior engine enable/disable"""
-        self.logger.debug(
+        self.logger.trace(
             f"Client behavior engine enabled: {state}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -584,7 +584,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _on_primary_client_changed(self, combo_box, _param):
         """Handle primary client changes"""
         client = self._get_combo_active_text(combo_box)
-        self.logger.debug(
+        self.logger.trace(
             f"Primary client changed to: {client}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -592,7 +592,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _on_behavior_variation_changed(self, spin_button):
         """Handle behavior variation changes"""
         variation = spin_button.get_value()
-        self.logger.debug(
+        self.logger.trace(
             f"Behavior variation: {variation}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -600,7 +600,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _on_switch_client_probability_changed(self, spin_button):
         """Handle switch client probability changes"""
         probability = spin_button.get_value()
-        self.logger.debug(
+        self.logger.trace(
             f"Switch client probability: {probability}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -608,7 +608,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _on_traffic_profile_changed(self, combo_box, _param):
         """Handle traffic profile changes"""
         profile = self._get_combo_active_text(combo_box)
-        self.logger.debug(
+        self.logger.trace(
             f"Traffic profile changed to: {profile}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -616,7 +616,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _on_realistic_variations_toggled(self, check_button):
         """Handle realistic variations toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(
+        self.logger.trace(
             f"Realistic variations: {enabled}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -624,7 +624,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _on_time_based_patterns_toggled(self, check_button):
         """Handle time-based patterns toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(
+        self.logger.trace(
             f"Time-based patterns: {enabled}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -636,7 +636,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             self._widgets["adaptation_rate"].set_sensitive(enabled)
         if self._widgets["peer_analysis_depth"]:
             self._widgets["peer_analysis_depth"].set_sensitive(enabled)
-        self.logger.debug(
+        self.logger.trace(
             f"Swarm intelligence enabled: {enabled}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -644,12 +644,12 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _on_adaptation_rate_changed(self, spin_button):
         """Handle adaptation rate changes"""
         rate = spin_button.get_value()
-        self.logger.debug(f"Adaptation rate: {rate}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(f"Adaptation rate: {rate}", extra={"class_name": self.__class__.__name__})
 
     def _on_peer_analysis_depth_changed(self, spin_button):
         """Handle peer analysis depth changes"""
         depth = spin_button.get_value()
-        self.logger.debug(
+        self.logger.trace(
             f"Peer analysis depth: {depth}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -657,7 +657,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _on_client_profile_switching_toggled(self, check_button):
         """Handle client profile switching toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(
+        self.logger.trace(
             f"Client profile switching: {enabled}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -665,7 +665,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _on_protocol_compliance_level_changed(self, combo_box, _param):
         """Handle protocol compliance level changes"""
         level = self._get_combo_active_text(combo_box)
-        self.logger.debug(
+        self.logger.trace(
             f"Protocol compliance level: {level}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -673,147 +673,147 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _on_behavior_randomization_toggled(self, check_button):
         """Handle behavior randomization toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(
+        self.logger.trace(
             f"Behavior randomization: {enabled}",
             extra={"class_name": self.__class__.__name__},
         )
 
     # Dynamic signal handlers for profile settings
     def _on_conservative_upload_speed_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Conservative upload speed: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_conservative_download_speed_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Conservative download speed: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_conservative_upload_variance_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Conservative upload variance: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_conservative_download_variance_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Conservative download variance: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_conservative_max_connections_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Conservative max connections: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_conservative_burst_probability_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Conservative burst probability: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_conservative_idle_probability_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Conservative idle probability: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_balanced_upload_speed_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Balanced upload speed: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_balanced_download_speed_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Balanced download speed: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_balanced_upload_variance_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Balanced upload variance: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_balanced_download_variance_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Balanced download variance: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_balanced_max_connections_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Balanced max connections: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_balanced_burst_probability_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Balanced burst probability: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_balanced_idle_probability_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Balanced idle probability: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_aggressive_upload_speed_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Aggressive upload speed: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_aggressive_download_speed_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Aggressive download speed: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_aggressive_upload_variance_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Aggressive upload variance: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_aggressive_download_variance_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Aggressive download variance: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_aggressive_max_connections_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Aggressive max connections: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_aggressive_burst_probability_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Aggressive burst probability: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_aggressive_idle_probability_changed(self, spin_button):
-        self.logger.debug(
+        self.logger.trace(
             f"Aggressive idle probability: {spin_button.get_value()}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes and enable dropdown translation."""
-        self.logger.debug(
+        self.logger.trace(
             "SimulationTab update_view called",
             extra={"class_name": self.__class__.__name__},
         )
         # Store model reference for translation functionality
         self.model = model
-        self.logger.debug(f"Model stored in SimulationTab: {model is not None}")
+        self.logger.trace(f"Model stored in SimulationTab: {model is not None}")
 
         # Automatically translate all dropdown items now that we have the model
         # But prevent TranslationMixin from connecting to language-changed signal to avoid loops
@@ -829,21 +829,21 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
     def handle_model_changed(self, source, data_obj, _data_changed):
         """Handle model change events."""
-        self.logger.debug(
+        self.logger.trace(
             "SimulationTab model changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_attribute_changed(self, source, key, value):
         """Handle attribute change events."""
-        self.logger.debug(
+        self.logger.trace(
             "SimulationTab attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_settings_changed(self, source, data_obj, _data_changed):
         """Handle settings change events."""
-        self.logger.debug(
+        self.logger.trace(
             "SimulationTab settings changed",
             extra={"class_name": self.__class__.__name__},
         )

@@ -49,7 +49,7 @@ class ColumnTranslationMixin:
         # Set initial translated title
         self._update_column_title(column, property_name, column_type)
 
-        logger.debug(
+        logger.trace(
             f"Registered translatable column: {property_name} ({column_type})",
             extra={"class_name": self.__class__.__name__},
         )
@@ -67,7 +67,7 @@ class ColumnTranslationMixin:
             translated_title = ColumnTranslations.get_column_title(column_type, property_name)
             column.set_title(translated_title)
 
-            logger.debug(
+            logger.trace(
                 f"Updated column title: {property_name} -> '{translated_title}'",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -84,28 +84,28 @@ class ColumnTranslationMixin:
         This method should be called when the language changes to update
         all column headers with new translations.
         """
-        logger.debug("Refreshing column translations", self.__class__.__name__)
-        logger.debug(
+        logger.trace("Refreshing column translations", self.__class__.__name__)
+        logger.trace(
             f"Number of column views: {len(self._translatable_columns)}",
             self.__class__.__name__,
         )
 
-        logger.debug(
+        logger.trace(
             f"Refreshing column translations for {len(self._translatable_columns)} column views",
             extra={"class_name": self.__class__.__name__},
         )
 
         for column_view, columns in self._translatable_columns.items():
-            logger.debug(f"Processing column view: {column_view}", self.__class__.__name__)
-            logger.debug(f"Number of columns: {len(columns)}", self.__class__.__name__)
+            logger.trace(f"Processing column view: {column_view}", self.__class__.__name__)
+            logger.trace(f"Number of columns: {len(columns)}", self.__class__.__name__)
             for column, property_name, column_type in columns:
-                logger.debug(
+                logger.trace(
                     f"Updating column: {property_name} ({column_type})",
                     self.__class__.__name__,
                 )
                 self._update_column_title(column, property_name, column_type)
 
-        logger.debug("Column translations refresh completed", self.__class__.__name__)
+        logger.trace("Column translations refresh completed", self.__class__.__name__)
 
     def on_language_changed(self, model, lang_code):
         """
@@ -118,23 +118,23 @@ class ColumnTranslationMixin:
             model: The model that emitted the signal
             lang_code: The new language code
         """
-        logger.debug("Language change received", self.__class__.__name__)
-        logger.debug(f"Model: {model}", self.__class__.__name__)
-        logger.debug(f"Language code: {lang_code}", self.__class__.__name__)
-        logger.debug(
+        logger.trace("Language change received", self.__class__.__name__)
+        logger.trace(f"Model: {model}", self.__class__.__name__)
+        logger.trace(f"Language code: {lang_code}", self.__class__.__name__)
+        logger.trace(
             f"Number of column views: {len(self._translatable_columns)}",
             self.__class__.__name__,
         )
 
-        logger.debug(
+        logger.trace(
             f"Column translation mixin received language change: {lang_code}",
             extra={"class_name": self.__class__.__name__},
         )
 
         # Refresh all column translations
-        logger.debug("About to refresh column translations", self.__class__.__name__)
+        logger.trace("About to refresh column translations", self.__class__.__name__)
         self.refresh_column_translations()
-        logger.debug("Column translations refresh completed", self.__class__.__name__)
+        logger.trace("Column translations refresh completed", self.__class__.__name__)
 
     def create_translated_column(self, column_view, property_name, column_type, factory=None):
         """
@@ -169,7 +169,7 @@ class ColumnTranslationMixin:
             # Add to column view
             column_view.append_column(column)
 
-            logger.debug(
+            logger.trace(
                 f"Created translated column: {property_name} ({column_type})",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -205,13 +205,13 @@ class ColumnTranslationMixin:
         if column_view:
             if column_view in self._translatable_columns:
                 del self._translatable_columns[column_view]
-                logger.debug(
+                logger.trace(
                     "Cleared translatable columns for specific column view",
                     extra={"class_name": self.__class__.__name__},
                 )
         else:
             self._translatable_columns.clear()
-            logger.debug(
+            logger.trace(
                 "Cleared all translatable columns",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -223,7 +223,7 @@ class ColumnTranslationMixin:
         Should be called when the component is being destroyed.
         """
         self.clear_translatable_columns()
-        logger.debug(
+        logger.trace(
             "Cleaned up column translation resources",
             extra={"class_name": self.__class__.__name__},
         )

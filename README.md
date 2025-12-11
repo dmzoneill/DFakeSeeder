@@ -1,11 +1,11 @@
 <!-- markdownlint-disable MD041 -->
-![DFakeSeeder screenshot](<<https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/components/images/dfakeseeder.png>>)
+![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/components/images/dfakeseeder.png)
 
 # D' Fake Seeder
 
-[![RPM E2E Tests](<<https://github.com/dmzoneill/DFakeSeeder/workflows/RPM%20End-to-End%20Tests/badge.svg>>)](<<https://github.com/dmzoneill/DFakeSeeder/actions/workflows/rpm-e2e-tests.yml>>)
-[![PyPI E2E Tests](<<https://github.com/dmzoneill/DFakeSeeder/workflows/PyPI%20End-to-End%20Tests/badge.svg>>)](<<https://github.com/dmzoneill/DFakeSeeder/actions/workflows/pypi-e2e-tests.yml>>)
-[![DEB E2E Tests](<<https://github.com/dmzoneill/DFakeSeeder/workflows/DEB%20End-to-End%20Tests/badge.svg>>)](<<https://github.com/dmzoneill/DFakeSeeder/actions/workflows/deb-e2e-tests.yml>>)
+[![RPM E2E Tests](https://github.com/dmzoneill/DFakeSeeder/workflows/RPM%20End-to-End%20Tests/badge.svg)](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/rpm-e2e-tests.yml)
+[![PyPI E2E Tests](https://github.com/dmzoneill/DFakeSeeder/workflows/PyPI%20End-to-End%20Tests/badge.svg)](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/pypi-e2e-tests.yml)
+[![DEB E2E Tests](https://github.com/dmzoneill/DFakeSeeder/workflows/DEB%20End-to-End%20Tests/badge.svg)](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/deb-e2e-tests.yml)
 
 A sophisticated Python GTK4 BitTorrent client that simulates seeding activity with advanced peer-to-peer networking capabilities, comprehensive settings management, multi-language support, and extensive automated testing.
 
@@ -34,7 +34,7 @@ The name "D' Fake Seeder" is a playful nod to the Irish English accent. In Irish
 - **Real-time Translation**: Dynamic language changes without application restart
 - **Performance Tracking**: Built-in timing and performance monitoring
 
-![DFakeSeeder screenshot](<<https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/components/images/screenshot.png>>)
+![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/components/images/screenshot.png)
 
 ## Installation & Usage
 
@@ -67,7 +67,8 @@ dfs-tray              # Tray application only
 # Launch from application menu (after desktop integration)
 gtk-launch dfakeseeder
 # Or search "D' Fake Seeder" in application menu
-```text
+```
+
 ### Development Setup
 ```bash
 # Setup pipenv environment
@@ -78,7 +79,8 @@ make run-debug-venv
 
 # Run with Docker
 make run-debug-docker
-```text
+```
+
 ### Package Installations
 
 #### Debian/Ubuntu (.deb)
@@ -101,7 +103,8 @@ gtk-launch dfakeseeder
 # Search "D' Fake Seeder" in application menu
 
 # GNOME Shell users: Press Alt+F2, type 'r', Enter to restart shell
-```text
+```
+
 #### RHEL/Fedora (.rpm)
 ```bash
 # Download and install
@@ -122,7 +125,8 @@ gtk-launch dfakeseeder
 # Search "D' Fake Seeder" in application menu
 
 # GNOME Shell users: Press Alt+F2, type 'r', Enter to restart shell
-```text
+```
+
 #### Docker
 ```bash
 # Local build
@@ -131,7 +135,8 @@ make docker
 # Docker Hub/GHCR
 xhost +local:
 docker run --rm --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it ghcr.io/dmzoneill/dfakeseeder
-```text
+```
+
 ## Development
 
 ### Code Quality
@@ -154,7 +159,8 @@ make test-e2e-all
 make test-e2e          # RPM packages (Fedora)
 make test-e2e-pypi     # PyPI packages (Fedora + Ubuntu)
 make test-e2e-deb      # DEB packages (Ubuntu + Debian)
-```text
+```
+
 **Coverage:**
 - **RPM E2E**: Fedora latest, 42, 41 (50 tests per version)
 - **PyPI E2E**: Fedora latest, 42, 41 + Ubuntu 22.04, 24.04 (43 tests per version)
@@ -206,7 +212,8 @@ make test-e2e-pypi       # PyPI E2E tests
 make test-e2e-deb        # DEB E2E tests
 make clean-e2e-deb       # Clean DEB test artifacts
 make clean-e2e-pypi      # Clean PyPI test artifacts
-```text
+```
+
 ### Package Format Feature Parity
 
 All three package formats (RPM, DEB, PyPI) provide the same installation experience:
@@ -220,7 +227,7 @@ All three package formats (RPM, DEB, PyPI) provide the same installation experie
 | **Wrapper script** | ✅ `/usr/bin/dfakeseeder` | ✅ `/usr/bin/dfakeseeder` | ✅ Direct Python |
 | **Auto-updates** | ✅ via dnf/yum | ✅ via apt | ✅ via pip |
 | **E2E tested** | ✅ 3 Fedora versions | ✅ 4 Ubuntu/Debian versions | ✅ 5 OS versions |
-```text
+
 ### Architecture
 - **MVC Pattern**: Clean separation with Model, View, Controller
 - **Component System**: Modular UI components with GTK4
@@ -271,7 +278,8 @@ gtk-launch dfakeseeder
 
 # Uninstall desktop integration
 dfs-uninstall-desktop
-```text
+```
+
 ### Supported Languages (21)
 English, Spanish, French, German, Italian, Portuguese, Russian, Chinese, Japanese, Korean, Arabic, Hindi, Dutch, Swedish, Polish, Bengali, Persian, Irish, Indonesian, Turkish, Vietnamese
 
@@ -295,10 +303,10 @@ The application auto-creates `~/.config/dfakeseeder/settings.json` with comprehe
 - **[Localization Guide](docs/LOCALIZATION.md)** - Internationalization system documentation
 
 ## Links
-- **GitHub**: <<https://github.com/dmzoneill/DFakeSeeder>>
-- **Issues**: <<https://github.com/dmzoneill/DFakeSeeder/issues>>
+- **GitHub**: https://github.com/dmzoneill/DFakeSeeder
+- **Issues**: https://github.com/dmzoneill/DFakeSeeder/issues
 - **PyPI**: https://pypi.org/project/d-fake-seeder/
-- **Actions**: <<https://github.com/dmzoneill/DFakeSeeder/actions>>
+- **Actions**: https://github.com/dmzoneill/DFakeSeeder/actions
 
 ## License
 

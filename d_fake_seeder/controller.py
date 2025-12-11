@@ -1,6 +1,8 @@
 # fmt: off
 import os
 
+from gi.repository import GLib
+
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.global_peer_manager import GlobalPeerManager
 from d_fake_seeder.lib.handlers.torrent_folder_watcher import TorrentFolderWatcher
@@ -8,6 +10,7 @@ from d_fake_seeder.lib.handlers.torrent_folder_watcher import TorrentFolderWatch
 # from domain.torrent.listener import Listener
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.dbus_unifier import DBusUnifier
+from d_fake_seeder.lib.util.speed_distribution_manager import SpeedDistributionManager
 from d_fake_seeder.lib.util.window_manager import WindowManager
 
 # fmt: on
@@ -16,7 +19,7 @@ from d_fake_seeder.lib.util.window_manager import WindowManager
 # Cont roller
 class Controller:
     def __init__(self, view, model):
-        logger.debug("Startup", extra={"class_name": self.__class__.__name__})
+        logger.trace("Startup", extra={"class_name": self.__class__.__name__})
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
@@ -26,6 +29,12 @@ class Controller:
 
         # Initialize global peer manager
         self.global_peer_manager = GlobalPeerManager()
+
+        # Initialize speed distribution manager
+        self.speed_distribution_manager = SpeedDistributionManager(model)
+
+        # Tick timer for speed distribution
+        self.tick_timer_id = None
 
         # Initialize window manager with main window
         self.window_manager = None  # Will be set after view initialization
@@ -37,7 +46,7 @@ class Controller:
         self.dbus = None
         try:
             self.dbus = DBusUnifier()
-            logger.debug(
+            logger.trace(
                 "D-Bus service initialized",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -54,15 +63,16 @@ class Controller:
         # Initialize window manager after view is set up
         if hasattr(self.view, "window") and self.view.window:
             self.window_manager = WindowManager(self.view.window)
-            logger.debug(
+            logger.trace(
                 "Window manager initialized",
                 extra={"class_name": self.__class__.__name__},
             )
 
-        # Make managers accessible to view components
+        # Make managers accessible to view components and model
         self.view.global_peer_manager = self.global_peer_manager
         self.view.statusbar.global_peer_manager = self.global_peer_manager
         self.view.notebook.global_peer_manager = self.global_peer_manager
+        self.model.speed_distribution_manager = self.speed_distribution_manager
         if self.window_manager:
             self.view.window_manager = self.window_manager
 
@@ -72,10 +82,18 @@ class Controller:
         # Start global peer manager after setting up callbacks
         self.global_peer_manager.start()
 
+        # Start speed distribution manager
+        self.speed_distribution_manager.start()
+
+        # Start tick timer for speed redistribution
+        tick_speed = getattr(self.settings, "tickspeed", 9)
+        self.tick_timer_id = GLib.timeout_add_seconds(tick_speed, self._on_tick)
+        logger.debug(f"Tick timer started ({tick_speed} seconds)", "Controller")
+
         # Setup D-Bus signal forwarding after all components are initialized
         if self.dbus:
             self.dbus.setup_settings_signal_forwarding()
-            logger.debug(
+            logger.trace(
                 "D-Bus settings signal forwarding enabled",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -83,7 +101,7 @@ class Controller:
         self.view.connect_signals()
 
     def run(self):
-        logger.debug("Controller Run", extra={"class_name": self.__class__.__name__})
+        logger.trace("Controller Run", extra={"class_name": self.__class__.__name__})
         for filename in os.listdir(os.path.expanduser("~/.config/dfakeseeder/torrents")):
             if filename.endswith(".torrent"):
                 torrent_file = os.path.join(
@@ -101,7 +119,16 @@ class Controller:
 
     def stop(self, shutdown_tracker=None):
         """Stop the controller and cleanup all background processes"""
-        logger.debug("Controller stopping", extra={"class_name": self.__class__.__name__})
+        logger.trace("Controller stopping", extra={"class_name": self.__class__.__name__})
+
+        # Stop tick timer
+        if hasattr(self, "tick_timer_id") and self.tick_timer_id:
+            GLib.source_remove(self.tick_timer_id)
+            self.tick_timer_id = None
+
+        # Stop speed distribution manager
+        if hasattr(self, "speed_distribution_manager") and self.speed_distribution_manager:
+            self.speed_distribution_manager.stop()
 
         # Stop global peer manager
         if hasattr(self, "global_peer_manager") and self.global_peer_manager:
@@ -117,28 +144,37 @@ class Controller:
         if hasattr(self, "torrent_watcher") and self.torrent_watcher:
             self.torrent_watcher.stop()
 
-        logger.debug(
+        logger.trace(
             "🔧 About to cleanup window manager",
             extra={"class_name": self.__class__.__name__},
         )
         # Cleanup window manager
         if hasattr(self, "window_manager") and self.window_manager:
             self.window_manager.cleanup()
-        logger.debug(
+        logger.trace(
             "✅ Window manager cleanup complete",
             extra={"class_name": self.__class__.__name__},
         )
 
-        logger.debug("🔧 About to cleanup D-Bus", extra={"class_name": self.__class__.__name__})
+        logger.trace("🔧 About to cleanup D-Bus", extra={"class_name": self.__class__.__name__})
         # Cleanup D-Bus service
         if hasattr(self, "dbus") and self.dbus:
             self.dbus.cleanup()
-        logger.debug("✅ D-Bus cleanup complete", extra={"class_name": self.__class__.__name__})
+        logger.trace("✅ D-Bus cleanup complete", extra={"class_name": self.__class__.__name__})
 
-        logger.debug("Controller stopped", extra={"class_name": self.__class__.__name__})
+        logger.info("Controller stopped", extra={"class_name": self.__class__.__name__})
+
+    def _on_tick(self) -> bool:
+        """Tick callback for speed redistribution."""
+        try:
+            if self.speed_distribution_manager:
+                self.speed_distribution_manager.check_redistribution("tick")
+        except Exception as e:
+            logger.error(f"Error in tick callback: {e}", "Controller", exc_info=True)
+        return True  # Keep timer running
 
     def handle_settings_changed(self, source, key, value):
-        logger.debug(
+        logger.trace(
             f"Controller settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -164,7 +200,7 @@ class Controller:
 
         # Handle application quit request
         if key == "application_quit_requested" and value:
-            logger.debug(
+            logger.trace(
                 "🚨 QUIT SEQUENCE START: Quit requested via D-Bus settings",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -173,28 +209,28 @@ class Controller:
 
             # Trigger proper application shutdown (not immediate quit)
             if hasattr(self, "view") and self.view:
-                logger.debug(
+                logger.trace(
                     "✅ QUIT SEQUENCE: Found view object, triggering proper shutdown sequence",
                     extra={"class_name": self.__class__.__name__},
                 )
                 if hasattr(self.view, "on_quit_clicked"):
-                    logger.debug(
+                    logger.trace(
                         "🎯 QUIT SEQUENCE: Calling self.view.on_quit_clicked() with fast_shutdown=True for D-Bus quit",
                         extra={"class_name": self.__class__.__name__},
                     )
                     self.view.on_quit_clicked(None, fast_shutdown=True)  # Use fast shutdown for D-Bus triggered quit
-                    logger.debug(
+                    logger.trace(
                         "📞 QUIT SEQUENCE: self.view.on_quit_clicked() call completed",
                         extra={"class_name": self.__class__.__name__},
                     )
                 else:
-                    logger.debug(
+                    logger.trace(
                         "🎯 QUIT SEQUENCE: Calling self.view.quit() with fast_shutdown=True "
                         "for ShutdownProgressTracker shutdown",
                         extra={"class_name": self.__class__.__name__},
                     )
                     self.view.quit(fast_shutdown=True)  # Fallback to direct quit with fast shutdown
-                    logger.debug(
+                    logger.trace(
                         "📞 QUIT SEQUENCE: self.view.quit() call completed",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -205,7 +241,7 @@ class Controller:
                 )
                 # Even in fallback, try to use the proper shutdown if available
                 if hasattr(self.view, "quit"):
-                    logger.debug(
+                    logger.trace(
                         "🔄 QUIT SEQUENCE: Found view.quit() method, using proper shutdown in fallback",
                         extra={"class_name": self.__class__.__name__},
                     )

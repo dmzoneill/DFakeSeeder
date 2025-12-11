@@ -58,7 +58,7 @@ class DHTTab(BaseSettingsTab):
         self._widgets["rate_limit_enabled"] = self.builder.get_object("dht_rate_limit_check")
         self._widgets["max_queries_per_second"] = self.builder.get_object("dht_max_queries_spin")
 
-        self.logger.debug("DHT tab widgets initialized", extra={"class_name": self.__class__.__name__})
+        self.logger.info("DHT tab widgets initialized", extra={"class_name": self.__class__.__name__})
 
     def _connect_signals(self):
         """Connect DHT-specific signals"""
@@ -117,7 +117,7 @@ class DHTTab(BaseSettingsTab):
         if self._widgets["max_queries_per_second"]:
             self._widgets["max_queries_per_second"].connect("value-changed", self._on_max_queries_changed)
 
-        self.logger.debug("DHT tab signals connected", extra={"class_name": self.__class__.__name__})
+        self.logger.trace("DHT tab signals connected", extra={"class_name": self.__class__.__name__})
 
     def _load_settings(self):
         """Load DHT settings from configuration"""
@@ -197,7 +197,7 @@ class DHTTab(BaseSettingsTab):
             if self._widgets["max_queries_per_second"]:
                 self._widgets["max_queries_per_second"].set_value(extended_config.get("max_queries_per_second", 10))
 
-            self.logger.debug(
+            self.logger.trace(
                 "DHT settings loaded successfully",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -284,7 +284,7 @@ class DHTTab(BaseSettingsTab):
             # Save back to settings
             protocols_config["dht"] = dht_config
 
-            self.logger.debug(
+            self.logger.trace(
                 "DHT settings collected successfully",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -331,7 +331,7 @@ class DHTTab(BaseSettingsTab):
                 rate_limit_enabled = self._widgets["rate_limit_enabled"].get_active()
                 self._widgets["max_queries_per_second"].set_sensitive(rate_limit_enabled)
 
-            self.logger.debug(
+            self.logger.trace(
                 "DHT tab dependencies set up",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -413,7 +413,7 @@ class DHTTab(BaseSettingsTab):
     # Signal handlers
     def _on_dht_enabled_changed(self, switch, state):
         """Handle DHT enable/disable toggle"""
-        self.logger.debug(
+        self.logger.trace(
             f"DHT enabled changed: {state}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -436,19 +436,19 @@ class DHTTab(BaseSettingsTab):
         auto_enabled = check_button.get_active()
         if self._widgets["node_id_custom"]:
             self._widgets["node_id_custom"].set_sensitive(not auto_enabled)
-        self.logger.debug(
+        self.logger.trace(
             f"Node ID auto generation: {auto_enabled}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_node_id_custom_changed(self, entry):
         """Handle custom node ID changes"""
-        self.logger.debug("Custom node ID changed", extra={"class_name": self.__class__.__name__})
+        self.logger.trace("Custom node ID changed", extra={"class_name": self.__class__.__name__})
 
     def _on_announcement_interval_changed(self, spin_button):
         """Handle announcement interval changes"""
         interval = spin_button.get_value()
-        self.logger.debug(
+        self.logger.trace(
             f"DHT announcement interval: {interval}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -456,7 +456,7 @@ class DHTTab(BaseSettingsTab):
     def _on_bootstrap_timeout_changed(self, spin_button):
         """Handle bootstrap timeout changes"""
         timeout = spin_button.get_value()
-        self.logger.debug(
+        self.logger.trace(
             f"Bootstrap timeout: {timeout}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -464,27 +464,27 @@ class DHTTab(BaseSettingsTab):
     def _on_query_timeout_changed(self, spin_button):
         """Handle query timeout changes"""
         timeout = spin_button.get_value()
-        self.logger.debug(f"Query timeout: {timeout}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(f"Query timeout: {timeout}", extra={"class_name": self.__class__.__name__})
 
     def _on_routing_table_size_changed(self, spin_button):
         """Handle routing table size changes"""
         size = spin_button.get_value()
-        self.logger.debug(f"Routing table size: {size}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(f"Routing table size: {size}", extra={"class_name": self.__class__.__name__})
 
     def _on_max_nodes_changed(self, spin_button):
         """Handle max nodes changes"""
         max_nodes = spin_button.get_value()
-        self.logger.debug(f"Max nodes: {max_nodes}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(f"Max nodes: {max_nodes}", extra={"class_name": self.__class__.__name__})
 
     def _on_bucket_size_changed(self, spin_button):
         """Handle bucket size changes"""
         bucket_size = spin_button.get_value()
-        self.logger.debug(f"Bucket size: {bucket_size}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(f"Bucket size: {bucket_size}", extra={"class_name": self.__class__.__name__})
 
     def _on_concurrent_queries_changed(self, spin_button):
         """Handle concurrent queries changes"""
         queries = spin_button.get_value()
-        self.logger.debug(
+        self.logger.trace(
             f"Concurrent queries: {queries}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -492,14 +492,14 @@ class DHTTab(BaseSettingsTab):
     def _on_auto_bootstrap_toggled(self, check_button):
         """Handle auto bootstrap toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Auto bootstrap: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(f"Auto bootstrap: {enabled}", extra={"class_name": self.__class__.__name__})
 
     def _on_enable_stats_toggled(self, check_button):
         """Handle enable stats toggle"""
         enabled = check_button.get_active()
         if self._widgets["stats_interval"]:
             self._widgets["stats_interval"].set_sensitive(enabled)
-        self.logger.debug(
+        self.logger.trace(
             f"DHT stats enabled: {enabled}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -507,19 +507,19 @@ class DHTTab(BaseSettingsTab):
     def _on_stats_interval_changed(self, spin_button):
         """Handle stats interval changes"""
         interval = spin_button.get_value()
-        self.logger.debug(f"Stats interval: {interval}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(f"Stats interval: {interval}", extra={"class_name": self.__class__.__name__})
 
     def _on_validate_tokens_toggled(self, check_button):
         """Handle validate tokens toggle"""
         enabled = check_button.get_active()
-        self.logger.debug(f"Validate tokens: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(f"Validate tokens: {enabled}", extra={"class_name": self.__class__.__name__})
 
     def _on_rate_limit_toggled(self, check_button):
         """Handle rate limit toggle"""
         enabled = check_button.get_active()
         if self._widgets["max_queries_per_second"]:
             self._widgets["max_queries_per_second"].set_sensitive(enabled)
-        self.logger.debug(
+        self.logger.trace(
             f"Rate limit enabled: {enabled}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -527,7 +527,7 @@ class DHTTab(BaseSettingsTab):
     def _on_max_queries_changed(self, spin_button):
         """Handle max queries per second changes"""
         max_queries = spin_button.get_value()
-        self.logger.debug(
+        self.logger.trace(
             f"Max queries per second: {max_queries}",
             extra={"class_name": self.__class__.__name__},
         )

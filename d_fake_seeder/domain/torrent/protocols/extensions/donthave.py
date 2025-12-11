@@ -46,7 +46,7 @@ class DontHaveExtension:
         self.simulate_donthave_behavior = True
         self.error_correction_enabled = True
 
-        logger.debug(
+        logger.trace(
             "DontHave Extension initialized",
             extra={
                 "class_name": self.__class__.__name__,
@@ -61,7 +61,7 @@ class DontHaveExtension:
     def enable_peer_donthave_support(self):
         """Enable DontHave extension support for peer"""
         self.peer_supports_donthave = True
-        logger.debug(
+        logger.trace(
             "Peer DontHave extension support enabled",
             extra={"class_name": self.__class__.__name__},
         )
@@ -84,7 +84,7 @@ class DontHaveExtension:
             piece_index = struct.unpack(">I", payload[:4])[0]
             self.received_donthave_pieces.add(piece_index)
 
-            logger.debug(
+            logger.trace(
                 f"Received DONT_HAVE: {piece_index}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -113,7 +113,7 @@ class DontHaveExtension:
             True if message sent successfully
         """
         if not self.peer_supports_donthave:
-            logger.debug(
+            logger.trace(
                 "Peer doesn't support DONT_HAVE",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -126,7 +126,7 @@ class DontHaveExtension:
                 self.peer_connection.send_message(message)
                 self.sent_donthave_pieces.add(piece_index)
 
-                logger.debug(
+                logger.trace(
                     f"Sent DONT_HAVE: {piece_index}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -158,7 +158,7 @@ class DontHaveExtension:
         if not self.error_correction_enabled:
             return False
 
-        logger.debug(
+        logger.trace(
             f"Correcting HAVE message for piece {piece_index}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -181,7 +181,7 @@ class DontHaveExtension:
         # Check if we previously claimed to have this piece
         if hasattr(self.peer_connection, "sent_have_pieces"):
             if piece_index in self.peer_connection.sent_have_pieces:
-                logger.debug(
+                logger.trace(
                     f"Simulating loss of piece {piece_index}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -236,7 +236,7 @@ class DontHaveExtension:
                         self.send_donthave(piece_index)
 
             if unavailable_pieces:
-                logger.debug(
+                logger.trace(
                     f"Sent DONT_HAVE corrections for {len(unavailable_pieces)} pieces",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -283,7 +283,7 @@ class DontHaveExtension:
 
             for req in requests_to_cancel:
                 self.peer_connection.pending_requests.discard(req)
-                logger.debug(
+                logger.trace(
                     f"Cancelled request for unavailable piece {piece_index}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -299,7 +299,7 @@ class DontHaveExtension:
             unavailable_piece: Index of piece that's no longer available
         """
         # In fake seeding, we can simulate adjusting piece selection
-        logger.debug(
+        logger.trace(
             f"Adjusting piece selection due to unavailable piece {unavailable_piece}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -343,7 +343,7 @@ class DontHaveExtension:
         self.sent_donthave_pieces.clear()
         self.received_donthave_pieces.clear()
 
-        logger.debug("Reset DONT_HAVE corrections", extra={"class_name": self.__class__.__name__})
+        logger.trace("Reset DONT_HAVE corrections", extra={"class_name": self.__class__.__name__})
 
     def cleanup(self):
         """Clean up DontHave Extension state"""
@@ -351,7 +351,7 @@ class DontHaveExtension:
         self.received_donthave_pieces.clear()
         self.peer_supports_donthave = False
 
-        logger.debug(
+        logger.trace(
             "DontHave Extension cleaned up",
             extra={"class_name": self.__class__.__name__},
         )

@@ -79,14 +79,11 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             torrent: Torrent object to display
         """
         try:
-            import traceback
-
             torrent_name = getattr(torrent, "name", "None") if torrent else "None"
-            self.logger.debug(
+            self.logger.trace(
                 f"🔍 STATUS TAB update_content called with torrent: {torrent_name}",
                 extra={"class_name": self.__class__.__name__},
             )
-            self.logger.debug(f"Call stack:\n{''.join(traceback.format_stack())}")
 
             # Remove existing content
             self._remove_current_grid()

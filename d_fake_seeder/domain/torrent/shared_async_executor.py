@@ -75,7 +75,7 @@ class SharedAsyncExecutor:
         self.task_timeout = executor_config.get("task_timeout_seconds", 30.0)
         self.shutdown_timeout = executor_config.get("shutdown_timeout_seconds", 5.0)
 
-        logger.debug(
+        logger.trace(
             f"SharedAsyncExecutor initialized (max_workers={self.max_workers})",
             extra={"class_name": self.__class__.__name__},
         )
@@ -92,7 +92,7 @@ class SharedAsyncExecutor:
     def start(self):
         """Start the shared async executor"""
         if self.running:
-            logger.debug(
+            logger.trace(
                 "SharedAsyncExecutor already running",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -150,7 +150,7 @@ class SharedAsyncExecutor:
 
         # Wait for loop thread to finish
         if self.loop_thread and self.loop_thread.is_alive():
-            logger.debug(
+            logger.trace(
                 f"⏱️ Waiting for event loop thread (timeout: {self.shutdown_timeout}s)",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -165,12 +165,12 @@ class SharedAsyncExecutor:
         # Shutdown thread pool
         try:
             self.thread_pool.shutdown(wait=False)
-            logger.debug(
+            logger.trace(
                 "✅ Thread pool shut down",
                 extra={"class_name": self.__class__.__name__},
             )
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"Error during thread pool shutdown: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -182,7 +182,7 @@ class SharedAsyncExecutor:
 
     def _run_event_loop(self):
         """Run the shared event loop in dedicated thread"""
-        logger.debug(
+        logger.trace(
             "🔄 SharedAsyncExecutor event loop thread started",
             extra={"class_name": self.__class__.__name__},
         )
@@ -215,12 +215,12 @@ class SharedAsyncExecutor:
                 try:
                     self.event_loop.close()
                 except Exception as e:
-                    logger.debug(
+                    logger.trace(
                         f"Error closing event loop: {e}",
                         extra={"class_name": self.__class__.__name__},
                     )
 
-            logger.debug(
+            logger.trace(
                 "🛑 SharedAsyncExecutor event loop thread stopped",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -265,7 +265,7 @@ class SharedAsyncExecutor:
             # Add completion callback
             task.add_done_callback(lambda t: self._task_completed(t, manager_id))
 
-            logger.debug(
+            logger.trace(
                 f"📤 Submitted task for manager {manager_id}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -298,7 +298,7 @@ class SharedAsyncExecutor:
                     self.task_stats["total_cancelled"] += 1
                 elif task.exception():
                     self.task_stats["total_failed"] += 1
-                    logger.debug(
+                    logger.trace(
                         f"Task for {manager_id} failed: {task.exception()}",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -314,7 +314,7 @@ class SharedAsyncExecutor:
                 return
 
             tasks = list(self.active_tasks[manager_id])
-            logger.debug(
+            logger.trace(
                 f"🚫 Cancelling {len(tasks)} tasks for manager {manager_id}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -330,7 +330,7 @@ class SharedAsyncExecutor:
         with self.tasks_lock:
             total_tasks = sum(len(tasks) for tasks in self.active_tasks.values())
             if total_tasks > 0:
-                logger.debug(
+                logger.trace(
                     f"🚫 Cancelling {total_tasks} active tasks",
                     extra={"class_name": self.__class__.__name__},
                 )

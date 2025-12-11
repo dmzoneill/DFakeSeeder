@@ -305,6 +305,8 @@
                                             <property name="tooltip-text" translatable="yes">How often to announce to trackers (60-7200 seconds)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -338,6 +340,8 @@
                                             <property name="tooltip-text" translatable="yes">Minimum time between announces (10-3600 seconds)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -371,6 +375,8 @@
                                             <property name="tooltip-text" translatable="yes">How often to scrape tracker for swarm statistics</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>

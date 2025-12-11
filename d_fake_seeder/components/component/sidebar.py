@@ -69,7 +69,7 @@ class Sidebar(Component):
 
     def __init__(self, builder, model):
         super().__init__()
-        logger.debug("Sidebar.__init__() started", extra={"class_name": self.__class__.__name__})
+        logger.info("Sidebar.__init__() started", extra={"class_name": self.__class__.__name__})
 
         self.builder = builder
         self.model = model
@@ -96,7 +96,7 @@ class Sidebar(Component):
         self.selected_state = None
         self.selected_tracker = None
 
-        logger.debug("Sidebar.__init__() completed", extra={"class_name": self.__class__.__name__})
+        logger.trace("Sidebar.__init__() completed", extra={"class_name": self.__class__.__name__})
 
     def _(self, text):
         """Get translation function from model's TranslationManager"""
@@ -183,7 +183,7 @@ class Sidebar(Component):
             filter_item = FilterItem(state_id, label, icon, count)
             self.states_listbox.append(filter_item)
 
-        logger.debug(
+        logger.trace(
             f"Populated {len(state_filters)} state filters",
             extra={"class_name": self.__class__.__name__},
         )
@@ -214,7 +214,7 @@ class Sidebar(Component):
             filter_item = FilterItem(domain, domain, icon, count)
             self.trackers_listbox.append(filter_item)
 
-        logger.debug(
+        logger.trace(
             f"Populated {len(tracker_stats) + 1} tracker filters",
             extra={"class_name": self.__class__.__name__},
         )
@@ -291,7 +291,7 @@ class Sidebar(Component):
 
                         # Note: Error status would need to come from seeder, not implemented yet
                 except Exception as e:
-                    logger.debug(
+                    logger.trace(
                         f"Error getting trackers for torrent: {e}",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -322,7 +322,7 @@ class Sidebar(Component):
         filter_item = row.get_child()
         state_id = filter_item.filter_id
 
-        logger.debug(
+        logger.trace(
             f"State selected: {state_id}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -347,7 +347,7 @@ class Sidebar(Component):
         filter_item = row.get_child()
         tracker_id = filter_item.filter_id
 
-        logger.debug(
+        logger.trace(
             f"Tracker selected: {tracker_id}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -387,7 +387,7 @@ class Sidebar(Component):
 
     def set_model(self, model):
         """Set the model and populate trackers."""
-        logger.debug("Sidebar set_model", extra={"class_name": self.__class__.__name__})
+        logger.trace("Sidebar set_model", extra={"class_name": self.__class__.__name__})
         self.model = model
 
         # Update section headers with proper translations now that model is available
@@ -408,7 +408,7 @@ class Sidebar(Component):
                     model.connect("language-changed", self.on_language_changed),
                 )
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"Could not connect to language-changed signal: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -423,14 +423,14 @@ class Sidebar(Component):
 
     def handle_settings_changed(self, source, key, value):
         """Handle settings changes."""
-        logger.debug(
+        logger.trace(
             f"Sidebar settings changed: {key}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def on_language_changed(self, model, lang_code):
         """Handle language changes."""
-        logger.debug(
+        logger.trace(
             f"Sidebar language changed: {lang_code}",
             extra={"class_name": self.__class__.__name__},
         )

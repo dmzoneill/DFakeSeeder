@@ -169,7 +169,7 @@ class PieceSelectionStrategy:
         self.completed_pieces: List[int] = []
         self.strategy = "rarest_first"  # rarest_first, sequential, random
 
-        logger.debug(
+        logger.trace(
             f"Piece selection strategy initialized with {total_pieces} pieces",
             extra={"class_name": self.__class__.__name__},
         )
@@ -308,7 +308,7 @@ class SwarmIntelligence:
             # Get current behavior recommendation
             summary = metrics.get_summary()
 
-            logger.debug(
+            logger.trace(
                 f"Swarm analysis for {info_hash.hex()[:16]}: "
                 f"{summary['total_peers']} peers, health={summary['health_score']:.2f}",
                 extra={"class_name": self.__class__.__name__},
@@ -346,7 +346,7 @@ class SwarmIntelligence:
             # Update current behavior
             self.current_behaviors[info_hash] = recommendation
 
-            logger.debug(
+            logger.trace(
                 f"Adapted behavior for {info_hash.hex()[:16]}: {recommendation}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -454,7 +454,7 @@ class SwarmIntelligence:
         self.piece_strategies.clear()
         self.current_behaviors.clear()
 
-        logger.debug(
+        logger.trace(
             "Swarm intelligence cleaned up",
             extra={"class_name": self.__class__.__name__},
         )

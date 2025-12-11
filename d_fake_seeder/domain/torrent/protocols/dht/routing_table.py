@@ -155,7 +155,7 @@ class RoutingTable:
         # Start with one bucket for the entire space
         self.buckets.append(KBucket(k))
 
-        logger.debug(
+        logger.trace(
             f"DHT Routing table initialized for node {node_id.hex()[:16]}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -181,7 +181,7 @@ class RoutingTable:
 
         # Try to add to bucket
         if bucket.add_node(contact):
-            logger.debug(
+            logger.trace(
                 f"Added node {node_id.hex()[:16]} to bucket {bucket_index}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -270,7 +270,7 @@ class RoutingTable:
                 removed_count += 1
 
         if removed_count > 0:
-            logger.debug(
+            logger.trace(
                 f"Removed {removed_count} stale nodes from routing table",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -320,7 +320,7 @@ class RoutingTable:
         # Add new bucket
         self.buckets.append(new_bucket)
 
-        logger.debug(
+        logger.trace(
             f"Split bucket {bucket_index}, now have {len(self.buckets)} buckets",
             extra={"class_name": self.__class__.__name__},
         )

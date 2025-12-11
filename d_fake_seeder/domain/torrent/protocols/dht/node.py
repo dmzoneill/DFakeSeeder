@@ -71,7 +71,7 @@ class DHTNode:
         # Active announcements
         self.announced_torrents: Set[bytes] = set()
 
-        logger.debug(
+        logger.trace(
             "DHT Node initialized",
             extra={
                 "class_name": self.__class__.__name__,
@@ -93,7 +93,7 @@ class DHTNode:
             )
             return
 
-        logger.debug("Starting DHT node", extra={"class_name": self.__class__.__name__})
+        logger.trace("Starting DHT node", extra={"class_name": self.__class__.__name__})
 
         try:
             # Create UDP socket
@@ -112,7 +112,7 @@ class DHTNode:
             asyncio.create_task(self._bootstrap())
             asyncio.create_task(self._maintenance_loop())
 
-            logger.debug(
+            logger.trace(
                 "DHT node started successfully",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -126,7 +126,7 @@ class DHTNode:
 
     async def stop(self):
         """Stop the DHT node"""
-        logger.debug("Stopping DHT node", extra={"class_name": self.__class__.__name__})
+        logger.trace("Stopping DHT node", extra={"class_name": self.__class__.__name__})
         self.running = False
 
         if self.socket:
@@ -147,7 +147,7 @@ class DHTNode:
         if not self.running:
             return False
 
-        logger.debug(
+        logger.trace(
             f"Announcing peer for torrent {info_hash.hex()[:16]}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -160,7 +160,7 @@ class DHTNode:
 
             if success:
                 self.announced_torrents.add(info_hash)
-                logger.debug(
+                logger.trace(
                     f"Successfully announced peer for {info_hash.hex()[:16]}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -192,7 +192,7 @@ class DHTNode:
         if not self.running:
             return []
 
-        logger.debug(
+        logger.trace(
             f"Finding peers for torrent {info_hash.hex()[:16]}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -203,7 +203,7 @@ class DHTNode:
                 return []
             peers = await self.peer_discovery.discover_peers(info_hash, 50)
 
-            logger.debug(
+            logger.trace(
                 f"Found {len(peers)} peers via DHT",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -254,7 +254,7 @@ class DHTNode:
                 await self._handle_error(message, addr)
 
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"Failed to decode DHT message from {addr}: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -284,7 +284,7 @@ class DHTNode:
                         await self._send_message(response, addr)
 
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"Failed to handle DHT query: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -302,14 +302,14 @@ class DHTNode:
             data = bencode.bencode(message)
             await asyncio.get_running_loop().sock_sendto(self.socket, data, addr)
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"Failed to send DHT message to {addr}: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
     async def _bootstrap(self):
         """Bootstrap the DHT by connecting to known nodes"""
-        logger.debug("Bootstrapping DHT", extra={"class_name": self.__class__.__name__})
+        logger.trace("Bootstrapping DHT", extra={"class_name": self.__class__.__name__})
 
         for host, port in self.bootstrap_nodes:
             try:
@@ -318,7 +318,7 @@ class DHTNode:
                 await self._send_ping(addr)
                 await asyncio.sleep(DHTConstants.RATE_LIMIT_DELAY_SECONDS)  # Rate limiting
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"Bootstrap failed for {host}:{port}: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -411,7 +411,7 @@ class DHTNode:
             return True
 
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"Failed to send announce_peer to {node_addr}: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -431,7 +431,7 @@ class DHTNode:
         error_info = message.get(b"e", [])
         if len(error_info) >= 2:
             error_code, error_msg = error_info[0], error_info[1]
-            logger.debug(
+            logger.trace(
                 f"DHT error from {addr}: {error_code} - {error_msg}",
                 extra={"class_name": self.__class__.__name__},
             )

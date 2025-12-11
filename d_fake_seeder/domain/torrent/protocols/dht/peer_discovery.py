@@ -70,7 +70,7 @@ class PeerDiscovery:
         self.pending_queries: Dict[bytes, Dict] = {}
         self.transaction_counter = 0
 
-        logger.debug(
+        logger.trace(
             "DHT Peer Discovery initialized",
             extra={"class_name": self.__class__.__name__},
         )
@@ -86,7 +86,7 @@ class PeerDiscovery:
         Returns:
             List of (IP, port) tuples
         """
-        logger.debug(
+        logger.trace(
             f"Starting peer discovery for {info_hash.hex()[:16]}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -94,7 +94,7 @@ class PeerDiscovery:
         # Check if we already have peers stored
         stored_peers = self._get_stored_peers(info_hash, count)
         if len(stored_peers) >= count:
-            logger.debug(
+            logger.trace(
                 f"Returning {len(stored_peers)} stored peers",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -106,7 +106,7 @@ class PeerDiscovery:
         # Combine stored and discovered peers
         all_peers = list(set(stored_peers + discovered_peers))[:count]
 
-        logger.debug(
+        logger.trace(
             f"Discovered {len(all_peers)} peers for {info_hash.hex()[:16]}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -124,7 +124,7 @@ class PeerDiscovery:
         Returns:
             True if announcement was successful
         """
-        logger.debug(
+        logger.trace(
             f"Announcing peer for {info_hash.hex()[:16]} on port {port}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -158,7 +158,7 @@ class PeerDiscovery:
                     successful_announces += 1
 
             if successful_announces > 0:
-                logger.debug(
+                logger.trace(
                     f"Successfully announced to {successful_announces} nodes",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -198,7 +198,7 @@ class PeerDiscovery:
             sorted_peers = sorted(self.peer_storage[info_hash], key=lambda p: p.discovered_at)
             self.peer_storage[info_hash] = set(sorted_peers[-DHTConstants.MAX_PEERS_PER_INFOHASH :])
 
-        logger.debug(
+        logger.trace(
             f"Stored peer {ip}:{port} for {info_hash.hex()[:16]}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -230,7 +230,7 @@ class PeerDiscovery:
                     del self.peer_storage[info_hash]
 
         if removed_count > 0:
-            logger.debug(
+            logger.trace(
                 f"Cleaned up {removed_count} old peer entries",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -301,7 +301,7 @@ class PeerDiscovery:
         # Remove duplicates and limit count
         unique_peers = list(set(discovered_peers))[:count]
 
-        logger.debug(
+        logger.trace(
             f"Network discovery found {len(unique_peers)} peers for {info_hash.hex()[:16]}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -338,7 +338,7 @@ class PeerDiscovery:
                 return self._parse_get_peers_response(response)
 
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"get_peers query failed for {node_contact.ip}:{node_contact.port}: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -374,7 +374,7 @@ class PeerDiscovery:
                     tokens[node_contact] = response[b"r"][b"token"]
 
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"Failed to get token from {node_contact.ip}:{node_contact.port}: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -405,7 +405,7 @@ class PeerDiscovery:
             return response is not None
 
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"announce_peer failed for {node_contact.ip}:{node_contact.port}: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -440,7 +440,7 @@ class PeerDiscovery:
             data = bencode.bencode(message)
             await asyncio.get_running_loop().sock_sendto(self.socket, data, addr)
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"Failed to send DHT message to {addr}: {e}",
                 extra={"class_name": self.__class__.__name__},
             )

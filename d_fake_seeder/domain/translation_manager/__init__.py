@@ -25,7 +25,7 @@ Usage Examples:
     from domain.translation_manager import get_available_gtk_versions
     from lib.logger import logger
     versions = get_available_gtk_versions()
-    logger.debug(f"Available GTK versions: {versions}", extra={"class_name": "TranslationManager"})
+    logger.trace(f"Available GTK versions: {versions}", extra={"class_name": "TranslationManager"})
 
     # Use the manager
     tm.switch_language("es")

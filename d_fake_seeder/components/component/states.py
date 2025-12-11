@@ -17,10 +17,10 @@ from gi.repository import Gtk  # noqa
 class States(Component, ColumnTranslationMixin):
     def __init__(self, builder, model):
 
-        logger.debug("States.__init__() started", "States")
+        logger.info("States.__init__() started", "States")
         super().__init__()
         ColumnTranslationMixin.__init__(self)
-        logger.debug(
+        logger.trace(
             "Super initialization completed (took {(super_end - super_start)*1000:.1f}ms)",
             "UnknownClass",
         )
@@ -33,14 +33,14 @@ class States(Component, ColumnTranslationMixin):
             self.settings.connect("attribute-changed", self.handle_settings_changed),
         )
         self.states_columnview = self.builder.get_object("states_columnview")
-        logger.debug("Basic setup completed (took ms)", "States")
+        logger.trace("Basic setup completed (took ms)", "States")
         # PERFORMANCE OPTIMIZATION: Create essential column immediately, defer the rest
         self.create_essential_columns_only()
-        logger.debug(
+        logger.trace(
             "Essential column creation completed (took {(columns_end - columns_start)*1000:.1f}ms)",
             "UnknownClass",
         )
-        logger.debug("States.__init__() TOTAL TIME: ms", "States")
+        logger.trace("States.__init__() TOTAL TIME: ms", "States")
 
     def create_columns(self):
 
@@ -59,7 +59,7 @@ class States(Component, ColumnTranslationMixin):
         self.track_signal(tracker_factory, tracker_factory.connect("bind", self.bind_tracker_factory))
         tracker_col.set_factory(tracker_factory)
         self.states_columnview.append_column(tracker_col)
-        logger.debug(
+        logger.trace(
             "Tracker column created successfully",
             "UnknownClass",
         )
@@ -74,7 +74,7 @@ class States(Component, ColumnTranslationMixin):
         self.track_signal(count_factory, count_factory.connect("bind", self.bind_count_factory))
         count_col.set_factory(count_factory)
         self.states_columnview.append_column(count_col)
-        logger.debug(
+        logger.trace(
             "Count column created successfully",
             "UnknownClass",
         )
@@ -101,7 +101,7 @@ class States(Component, ColumnTranslationMixin):
             self.register_translatable_column(self.states_columnview, tracker_col, "tracker", "states")
         except Exception:
             pass  # Translation registration can fail, column still works
-        logger.debug(
+        logger.trace(
             "Essential tracker column created in {(tracker_end - tracker_start)*1000:.1f}ms",
             "UnknownClass",
         )
@@ -111,7 +111,7 @@ class States(Component, ColumnTranslationMixin):
     def _create_count_column_background(self):
         """Create count column in background to avoid blocking startup."""
 
-        logger.debug("Starting background count column creation", "States")
+        logger.trace("Starting background count column creation", "States")
         try:
             # Create the column for the count
             count_col = Gtk.ColumnViewColumn()
@@ -127,9 +127,9 @@ class States(Component, ColumnTranslationMixin):
                 self.register_translatable_column(self.states_columnview, count_col, "count", "states")
             except Exception:
                 pass
-            logger.debug("Background count column created successfully", "States")
+            logger.info("Background count column created successfully", "States")
         except Exception:
-            logger.debug("Background count column creation error:", "States")
+            logger.error("Background count column creation error:", "States")
         return False  # Don't repeat this idle task
 
     def setup_tracker_factory(self, factory, item):
@@ -153,18 +153,18 @@ class States(Component, ColumnTranslationMixin):
 
     def set_model(self, model):
         """Set the model for the states component."""
-        logger.debug("States set_model", extra={"class_name": self.__class__.__name__})
+        logger.trace("States set_model", extra={"class_name": self.__class__.__name__})
         self.model = model
         # Connect to language change signals for column translation
         if self.model and hasattr(self.model, "connect"):
             try:
                 self.track_signal(model, model.connect("language-changed", self.on_language_changed))
-                logger.debug(
+                logger.trace(
                     "Connected to language-changed signal for column translation",
                     extra={"class_name": self.__class__.__name__},
                 )
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"Could not connect to language-changed signal: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -175,25 +175,25 @@ class States(Component, ColumnTranslationMixin):
         self.states_columnview.set_model(selection_model)
 
     def handle_settings_changed(self, source, key, value):
-        logger.debug(
+        logger.trace(
             "Torrents view settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_model_changed(self, source, data_obj, data_changed):
-        logger.debug(
+        logger.trace(
             "States settings update",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_attribute_changed(self, source, key, value):
-        logger.debug(
+        logger.trace(
             "Attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def model_selection_changed(self, source, model, torrent):
-        logger.debug(
+        logger.trace(
             "Model selection changed",
             extra={"class_name": self.__class__.__name__},
         )

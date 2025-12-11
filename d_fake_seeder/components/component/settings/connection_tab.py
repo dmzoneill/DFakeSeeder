@@ -170,7 +170,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             proxy_settings = getattr(self.app_settings, "proxy", {})
             self._load_proxy_settings(proxy_settings)
 
-            self.logger.debug("Connection tab settings loaded")
+            self.logger.info("Connection tab settings loaded")
 
         except Exception as e:
             self.logger.error(f"Error loading Connection tab settings: {e}")
@@ -353,7 +353,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 self.show_notification(validation_errors["port"], "error")
             else:
                 self.app_settings.set("connection.listening_port", port)
-                self.logger.debug(f"Listening port changed to: {port}")
+                self.logger.trace(f"Listening port changed to: {port}")
 
         except Exception as e:
             self.logger.error(f"Error changing listening port: {e}")
@@ -399,7 +399,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             proxy_type = type_mapping.get(dropdown.get_selected(), "none")
 
             self.app_settings.set("proxy.type", proxy_type)
-            self.logger.debug(f"Proxy type changed to: {proxy_type}")
+            self.logger.trace(f"Proxy type changed to: {proxy_type}")
 
         except Exception as e:
             self.logger.error(f"Error changing proxy type: {e}")
@@ -477,28 +477,28 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
     def handle_model_changed(self, source, data_obj, _data_changed):
         """Handle model change events."""
-        self.logger.debug(
+        self.logger.trace(
             "ConnectionTab model changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_attribute_changed(self, source, key, value):
         """Handle attribute change events."""
-        self.logger.debug(
+        self.logger.trace(
             "ConnectionTab attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_settings_changed(self, source, data_obj, _data_changed):
         """Handle settings change events."""
-        self.logger.debug(
+        self.logger.trace(
             "ConnectionTab settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes."""
-        self.logger.debug(
+        self.logger.trace(
             "ConnectionTab update view",
             extra={"class_name": self.__class__.__name__},
         )

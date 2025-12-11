@@ -47,8 +47,8 @@ class View(CleanupMixin):
 
     def __init__(self, app):
         with logger.performance.operation_context("view_init", self.__class__.__name__):
-            logger.debug("View.__init__() started", self.__class__.__name__)
-            logger.debug("View instantiate", self.__class__.__name__)
+            logger.info("View.__init__() started", self.__class__.__name__)
+            logger.trace("View instantiate", self.__class__.__name__)
             CleanupMixin.__init__(self)
             self.app = app
             View.instance = self
@@ -59,21 +59,21 @@ class View(CleanupMixin):
                 # Initialize shutdown progress tracking
                 self.shutdown_tracker = None
                 self.shutdown_overlay = None
-                logger.debug("Basic initialization completed", self.__class__.__name__)
+                logger.trace("Basic initialization completed", self.__class__.__name__)
             # subscribe to settings changed
             with logger.performance.operation_context("settings_init", self.__class__.__name__):
                 self.settings = AppSettings.get_instance()
                 self.settings.connect("attribute-changed", self.handle_settings_changed)
-                logger.debug("Settings subscription completed", self.__class__.__name__)
+                logger.trace("Settings subscription completed", self.__class__.__name__)
             # Loading GUI from XML
             with logger.performance.operation_context("builder_creation", self.__class__.__name__):
-                logger.debug("About to create Gtk.Builder", self.__class__.__name__)
+                logger.trace("About to create Gtk.Builder", self.__class__.__name__)
                 self.builder = Gtk.Builder()
-                logger.debug("Gtk.Builder created", self.__class__.__name__)
+                logger.info("Gtk.Builder created", self.__class__.__name__)
             with logger.performance.operation_context("xml_loading", self.__class__.__name__):
-                logger.debug("About to load XML file", self.__class__.__name__)
+                logger.trace("About to load XML file", self.__class__.__name__)
                 self.builder.add_from_file(os.environ.get("DFS_PATH") + "/components/ui/generated/generated.xml")
-                logger.debug("XML file loaded", self.__class__.__name__)
+                logger.trace("XML file loaded", self.__class__.__name__)
             # CSS will be loaded and applied in setup_window() method
             # Get window object
             with logger.performance.operation_context("window_setup", self.__class__.__name__):
@@ -83,35 +83,35 @@ class View(CleanupMixin):
                 # Also set the application ID to match desktop file
                 if hasattr(self.app, "set_application_id"):
                     self.app.set_application_id("ie.fio.dfakeseeder")
-                logger.debug("Window setup completed", self.__class__.__name__)
+                logger.trace("Window setup completed", self.__class__.__name__)
         # views
-        logger.debug("About to create Torrents component", "View")
+        logger.trace("About to create Torrents component", "View")
         self.torrents = Torrents(self.builder, None)
-        logger.debug(
+        logger.trace(
             "Torrents component created successfully (took {(torrents_end - torrents_start)*1000:.1f}ms)",
             "View",
         )
-        logger.debug("About to create Toolbar component", "View")
+        logger.trace("About to create Toolbar component", "View")
         self.toolbar = Toolbar(self.builder, None, self.app)
-        logger.debug(
+        logger.trace(
             "Toolbar component created successfully (took {(toolbar_end - toolbar_start)*1000:.1f}ms)",
             "View",
         )
-        logger.debug("About to create TorrentDetailsNotebook component", "View")
+        logger.trace("About to create TorrentDetailsNotebook component", "View")
         self.notebook = TorrentDetailsNotebook(self.builder, None)
-        logger.debug(
+        logger.trace(
             "TorrentDetailsNotebook component created successfully (took {(notebook_end - notebook_start)*1000:.1f}ms)",
             "View",
         )
-        logger.debug("About to create Sidebar component", "View")
+        logger.trace("About to create Sidebar component", "View")
         self.sidebar = Sidebar(self.builder, None)
-        logger.debug(
+        logger.trace(
             "Sidebar component created successfully",
             "View",
         )
-        logger.debug("About to create Statusbar component", "View")
+        logger.trace("About to create Statusbar component", "View")
         self.statusbar = Statusbar(self.builder, None)
-        logger.debug(
+        logger.trace(
             "Statusbar component created successfully (took {(statusbar_end - statusbar_start)*1000:.1f}ms)",
             "View",
         )
@@ -126,7 +126,7 @@ class View(CleanupMixin):
         self.current_time = time.time()
 
         # Replace old states_columnview with new sidebar
-        logger.debug("Replacing states_columnview with sidebar", "View")
+        logger.trace("Replacing states_columnview with sidebar", "View")
         old_states_scroll = self.paned.get_start_child()
         if old_states_scroll:
             self.paned.set_start_child(None)  # Remove old widget
@@ -136,9 +136,9 @@ class View(CleanupMixin):
         sidebar_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         sidebar_scroll.set_child(self.sidebar.get_widget())
         self.paned.set_start_child(sidebar_scroll)
-        logger.debug("Sidebar integrated into UI", "View")
+        logger.trace("Sidebar integrated into UI", "View")
 
-        logger.debug(
+        logger.trace(
             "Getting relevant objects completed (took {(objects_end - objects_start)*1000:.1f}ms)",
             "View",
         )
@@ -150,7 +150,7 @@ class View(CleanupMixin):
         self.notify_label.set_valign(Gtk.Align.CENTER)
         self.notify_label.set_halign(Gtk.Align.CENTER)
         self.overlay.add_overlay(self.notify_label)
-        logger.debug(
+        logger.trace(
             "Notification overlay setup completed (took {(overlay_end - overlay_start)*1000:.1f}ms)",
             "View",
         )
@@ -163,24 +163,24 @@ class View(CleanupMixin):
         self.splash_image_size = ui_settings.get("splash_image_size_pixels", 100)
         self.notification_timeout_min = ui_settings.get("notification_timeout_min_ms", 2000)
         self.notification_timeout_multiplier = ui_settings.get("notification_timeout_multiplier", 500)
-        logger.debug(
+        logger.trace(
             "UI settings configuration completed (took {(ui_settings_end - ui_settings_start)*1000:.1f}ms)",
             "View",
         )
-        logger.debug("About to call setup_window()", "View")
+        logger.trace("About to call setup_window()", "View")
         self.setup_window()
-        logger.debug("setup_window() completed (took ms)", "View")
-        logger.debug("About to show splash image", "View")
+        logger.trace("setup_window() completed (took ms)", "View")
+        logger.trace("About to show splash image", "View")
         self.show_splash_image()
-        logger.debug("Splash image shown (took ms)", "View")
+        logger.trace("Splash image shown (took ms)", "View")
         self.track_timeout(GLib.timeout_add_seconds(int(self.resize_delay), self.resize_panes))
-        logger.debug(
+        logger.trace(
             "Timeout for resize panes added (took {(timeout_end - timeout_start)*1000:.1f}ms)",
             "View",
         )
         # Shutdown overlay disabled - keeping only shutdown tracking behavior
         self.shutdown_overlay = None
-        logger.debug("View.__init__() completed", "View")
+        logger.trace("View.__init__() completed", "View")
 
     def _(self, text):
         """Get translation function from model's TranslationManager"""
@@ -201,7 +201,7 @@ class View(CleanupMixin):
         ui_settings = app_settings.get("ui_settings", {})
         theme_style = ui_settings.get("theme_style", "classic")
         color_scheme = ui_settings.get("color_scheme", "auto")
-        logger.debug(f"Initial theme from settings: style={theme_style}, color={color_scheme}")
+        logger.trace(f"Initial theme from settings: style={theme_style}, color={color_scheme}")
         # Apply initial theme (will load appropriate CSS file and color scheme)
         self.apply_theme(theme_style, color_scheme)
         # Connect to AppSettings changes for theme switching
@@ -243,7 +243,7 @@ class View(CleanupMixin):
         # Register widgets for automatic translation
         if hasattr(self, "model") and self.model:
             self.model.translation_manager.scan_builder_widgets(self.builder)
-            logger.debug(
+            logger.trace(
                 "Registered widgets for translation",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -307,7 +307,7 @@ class View(CleanupMixin):
             return False
 
     def resize_panes(self):
-        logger.debug("View resize_panes", extra={"class_name": self.__class__.__name__})
+        logger.trace("View resize_panes", extra={"class_name": self.__class__.__name__})
         allocation = self.main_paned.get_allocation()
         available_height = allocation.height
         position = available_height // 2
@@ -319,7 +319,7 @@ class View(CleanupMixin):
 
     # Setting model for the view
     def notify(self, text):
-        logger.debug("View notify", extra={"class_name": self.__class__.__name__})
+        logger.trace("View notify", extra={"class_name": self.__class__.__name__})
         # Cancel the previous timeout, if it exists
         if hasattr(self, "timeout_source") and self.timeout_source and not self.timeout_source.is_destroyed():
             self.timeout_source.destroy()
@@ -344,7 +344,7 @@ class View(CleanupMixin):
 
     # Setting model for the view
     def set_model(self, model):
-        logger.debug("View set model", extra={"class_name": self.__class__.__name__})
+        logger.trace("View set model", extra={"class_name": self.__class__.__name__})
         self.model = model
         self.notebook.set_model(model)
         self.toolbar.set_model(model)
@@ -359,7 +359,7 @@ class View(CleanupMixin):
         self.model.translation_manager.scan_builder_widgets(self.builder)
         # Debug: Check how many widgets were registered
         widget_count = len(self.model.translation_manager.translatable_widgets)
-        logger.debug(
+        logger.trace(
             f"Registered {widget_count} widgets for automatic translation",
             extra={"class_name": self.__class__.__name__},
         )
@@ -369,7 +369,7 @@ class View(CleanupMixin):
         # CRITICAL FIX: Refresh translations for newly registered widgets
         # This ensures that widgets get translated with the correct language on startup
         if widget_count > 0:
-            logger.debug(
+            logger.trace(
                 "Newly registered widgets will be refreshed by debounced system",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -381,14 +381,14 @@ class View(CleanupMixin):
         # Register main menu for translation updates
         if hasattr(self, "main_menu") and hasattr(self, "main_menu_items"):
             self.model.translation_manager.register_menu(self.main_menu, self.main_menu_items, popover=self.popover)
-            logger.debug(
+            logger.trace(
                 f"Registered main menu with {len(self.main_menu_items)} items for translation",
                 extra={"class_name": self.__class__.__name__},
             )
 
     # Connecting signals for different events
     def connect_signals(self):
-        logger.debug(
+        logger.trace(
             "View connect signals",
             extra={"class_name": self.__class__.__name__},
         )
@@ -416,7 +416,7 @@ class View(CleanupMixin):
 
     # Connecting signals for different events
     def remove_signals(self):
-        logger.debug("Remove signals", extra={"class_name": self.__class__.__name__})
+        logger.trace("Remove signals", extra={"class_name": self.__class__.__name__})
         self.model.disconnect_by_func(self.torrents.update_view)
         self.model.disconnect_by_func(self.notebook.update_view)
         self.model.disconnect_by_func(self.sidebar.update_view)
@@ -427,7 +427,7 @@ class View(CleanupMixin):
     # Event handler for clicking on quit - delegates to consolidated quit procedure
     def on_quit_clicked(self, menu_item, fast_shutdown=False):
         """Handle quit menu click - delegates to consolidated quit procedure"""
-        logger.debug(
+        logger.trace(
             "🎯 QUIT MENU: Quit menu clicked, delegating to quit()",
             extra={"class_name": self.__class__.__name__},
         )
@@ -435,7 +435,7 @@ class View(CleanupMixin):
 
     # open github webpage
     def on_help_clicked(self, menu_item):
-        logger.debug(
+        logger.trace(
             "Opening GitHub webpage",
             extra={"class_name": self.__class__.__name__},
         )
@@ -444,7 +444,7 @@ class View(CleanupMixin):
     def handle_peer_connection_event(self, direction, action, address, port, data=None):
         """Handle peer connection events from peer server or connection manager"""
         torrent_hash = (data or {}).get("torrent_hash", "unknown") if data else "unknown"
-        logger.debug(
+        logger.trace(
             f"Peer connection event: {direction} {action} {address}:{port} " f"(torrent: {torrent_hash})",
             extra={"class_name": self.__class__.__name__},
         )
@@ -457,7 +457,7 @@ class View(CleanupMixin):
                     visible_count = component.get_connection_count()
                     connection_word = "connection" if total_count == 1 else "connections"
                     message = f"Added incoming connection. Total: {total_count} {connection_word}, Visible: {visible_count}"  # noqa: E501
-                    logger.debug(
+                    logger.trace(
                         message,
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -469,7 +469,7 @@ class View(CleanupMixin):
                     visible_count = component.get_connection_count()
                     connection_word = "connection" if total_count == 1 else "connections"
                     message = f"Removed incoming connection. Total: {total_count} {connection_word}, Visible: {visible_count}"  # noqa: E501
-                    logger.debug(
+                    logger.trace(
                         message,
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -481,7 +481,7 @@ class View(CleanupMixin):
                     visible_count = component.get_connection_count()
                     connection_word = "connection" if total_count == 1 else "connections"
                     message = f"Added outgoing connection. Total: {total_count} {connection_word}, Visible: {visible_count}"  # noqa: E501
-                    logger.debug(
+                    logger.trace(
                         message,
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -493,7 +493,7 @@ class View(CleanupMixin):
                     visible_count = component.get_connection_count()
                     connection_word = "connection" if total_count == 1 else "connections"
                     message = f"Removed outgoing connection. Total: {total_count} {connection_word}, Visible: {visible_count}"  # noqa: E501
-                    logger.debug(
+                    logger.trace(
                         message,
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -507,7 +507,7 @@ class View(CleanupMixin):
 
     def _cleanup_timers(self):
         """Cleanup all GLib timers and timeout sources"""
-        logger.debug("🧹 Cleaning up GLib timers", extra={"class_name": self.__class__.__name__})
+        logger.trace("🧹 Cleaning up GLib timers", extra={"class_name": self.__class__.__name__})
 
         # Clean up all tracked timeouts via CleanupMixin
         CleanupMixin.cleanup(self)
@@ -520,7 +520,7 @@ class View(CleanupMixin):
                 self.timeout_source = None
                 self.timeout_id = 0
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"Error cleaning up timeout_source: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -532,7 +532,7 @@ class View(CleanupMixin):
                 self.splash_image.unparent()
                 self.splash_image = None
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"Error cleaning up splash_image: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -544,7 +544,7 @@ class View(CleanupMixin):
                 if incoming_tab and hasattr(incoming_tab, "removal_timers"):
                     timer_count = len(incoming_tab.removal_timers)
                     if timer_count > 0:
-                        logger.debug(
+                        logger.trace(
                             f"🧹 Removing {timer_count} connection removal timers",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -557,12 +557,12 @@ class View(CleanupMixin):
                                 pass  # Timer may have already fired
                         incoming_tab.removal_timers.clear()
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"Error cleaning up connection timers: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-        logger.debug(
+        logger.trace(
             "✅ GLib timer cleanup complete",
             extra={"class_name": self.__class__.__name__},
         )
@@ -595,7 +595,7 @@ class View(CleanupMixin):
         self._quit_in_progress = True
         shutdown_start_time = time.time()
 
-        logger.debug(
+        logger.trace(
             f"🎬 SHUTDOWN START: Consolidated quit procedure "
             f"(widget={widget}, event={event}, fast_shutdown={fast_shutdown})",
             extra={"class_name": self.__class__.__name__},
@@ -627,7 +627,7 @@ class View(CleanupMixin):
         backup_wd = threading.Thread(target=backup_watchdog, daemon=True, name="BackupWatchdog")
         backup_wd.start()
 
-        logger.debug(
+        logger.trace(
             "⏰ Watchdogs active: 100ms + 250ms force-kill",
             extra={"class_name": self.__class__.__name__},
         )
@@ -638,13 +638,13 @@ class View(CleanupMixin):
 
         # Configure shutdown timeout
         if fast_shutdown:
-            logger.debug(
+            logger.trace(
                 "⚡ Using FAST shutdown mode (1s timeout)",
                 extra={"class_name": self.__class__.__name__},
             )
             self.shutdown_tracker.force_shutdown_timer = 1.0
         else:
-            logger.debug(
+            logger.trace(
                 "🐌 Using NORMAL shutdown mode (2s timeout)",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -654,7 +654,7 @@ class View(CleanupMixin):
 
         # ========== PHASE 0: IMMEDIATE UI CLEANUP (< 10ms) ==========
         step_start = time.time()
-        logger.debug(
+        logger.trace(
             "🧹 PHASE 0: Cleaning up UI timers",
             extra={"class_name": self.__class__.__name__},
         )
@@ -663,7 +663,7 @@ class View(CleanupMixin):
 
         # ========== PHASE 1: REMOVE SIGNAL CONNECTIONS (< 10ms) ==========
         step_start = time.time()
-        logger.debug(
+        logger.trace(
             "🔌 PHASE 1: Removing signal connections",
             extra={"class_name": self.__class__.__name__},
         )
@@ -688,7 +688,7 @@ class View(CleanupMixin):
         # ========== PHASE 2: STOP MODEL (PARALLEL TORRENT SHUTDOWN) ==========
         step_start = time.time()
         if hasattr(self, "model") and self.model:
-            logger.debug(
+            logger.trace(
                 f"🛑 PHASE 2: Stopping {model_torrent_count} torrents (parallel)",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -706,7 +706,7 @@ class View(CleanupMixin):
         # ========== PHASE 3: STOP CONTROLLER & NETWORK ==========
         step_start = time.time()
         if hasattr(self, "app") and self.app and hasattr(self.app, "controller"):
-            logger.debug(
+            logger.trace(
                 "🌐 PHASE 3: Stopping controller & network resources",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -727,7 +727,7 @@ class View(CleanupMixin):
 
         # ========== PHASE 4: SAVE SETTINGS ==========
         step_start = time.time()
-        logger.debug("💾 PHASE 4: Saving settings", extra={"class_name": self.__class__.__name__})
+        logger.trace("💾 PHASE 4: Saving settings", extra={"class_name": self.__class__.__name__})
         try:
             self.settings.save_quit()
         except Exception as e:
@@ -760,7 +760,7 @@ class View(CleanupMixin):
 
         # ========== PHASE 5.5: CLEANUP UI RESOURCES ==========
         step_start = time.time()
-        logger.debug(
+        logger.trace(
             "🧹 PHASE 5.5: Cleaning up UI resources",
             extra={"class_name": self.__class__.__name__},
         )
@@ -771,7 +771,7 @@ class View(CleanupMixin):
                 widget_count = len(tm.translatable_widgets) if hasattr(tm, "translatable_widgets") else 0
                 menu_count = len(tm.translatable_menus) if hasattr(tm, "translatable_menus") else 0
 
-                logger.debug(
+                logger.trace(
                     f"Clearing {widget_count} widget references and {menu_count} menu references",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -782,7 +782,7 @@ class View(CleanupMixin):
                 if hasattr(tm, "translatable_menus"):
                     tm.translatable_menus.clear()
 
-                logger.debug(
+                logger.trace(
                     f"Cleared TranslationManager registries ({widget_count} widgets, {menu_count} menus)",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -795,7 +795,7 @@ class View(CleanupMixin):
                     conn_count = len(incoming_tab.connections) if hasattr(incoming_tab.connections, "__len__") else 0
                     if conn_count > 0:
                         incoming_tab.connections.clear()
-                        logger.debug(
+                        logger.trace(
                             f"Cleared {conn_count} incoming connection records",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -806,7 +806,7 @@ class View(CleanupMixin):
                     conn_count = len(outgoing_tab.connections) if hasattr(outgoing_tab.connections, "__len__") else 0
                     if conn_count > 0:
                         outgoing_tab.connections.clear()
-                        logger.debug(
+                        logger.trace(
                             f"Cleared {conn_count} outgoing connection records",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -815,7 +815,7 @@ class View(CleanupMixin):
             import gc
 
             collected = gc.collect()
-            logger.debug(
+            logger.trace(
                 f"UI cleanup garbage collection freed {collected} objects",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -828,7 +828,7 @@ class View(CleanupMixin):
         phase_times["ui_resource_cleanup"] = time.time() - step_start
 
         # ========== PHASE 6: DESTROY WINDOW ==========
-        logger.debug(
+        logger.trace(
             "🏗️ PHASE 6: Destroying window",
             extra={"class_name": self.__class__.__name__},
         )
@@ -842,7 +842,7 @@ class View(CleanupMixin):
 
         # ========== FINAL: LOG SUMMARY & FORCE EXIT ==========
         total_shutdown_time = time.time() - shutdown_start_time
-        logger.debug(
+        logger.trace(
             f"🏁 SHUTDOWN COMPLETE in {total_shutdown_time:.3f}s | "
             f"UI:{phase_times.get('ui_cleanup', 0):.3f}s "
             f"Signals:{phase_times.get('signal_removal', 0):.3f}s "
@@ -855,7 +855,7 @@ class View(CleanupMixin):
 
         # Try graceful GTK quit (watchdogs already running from start of function)
         if hasattr(self, "app") and self.app:
-            logger.debug("🚪 Calling app.quit()", extra={"class_name": self.__class__.__name__})
+            logger.trace("🚪 Calling app.quit()", extra={"class_name": self.__class__.__name__})
             try:
                 self.app.quit()
             except Exception as e:
@@ -875,39 +875,39 @@ class View(CleanupMixin):
 
     def on_language_changed(self, model, lang_code):
         """Handle language change notification from model"""
-        logger.debug("on_language_changed() called with:", "View")
-        logger.debug(
+        logger.trace("on_language_changed() called with:", "View")
+        logger.trace(
             f"View received language change: {lang_code}",
             extra={"class_name": self.__class__.__name__},
         )
         # TranslationManager should automatically refresh all registered widgets and menus
         widget_count = len(model.translation_manager.translatable_widgets) if model.translation_manager else 0
         menu_count = len(model.translation_manager.translatable_menus) if model.translation_manager else 0
-        logger.debug(
+        logger.trace(
             f"TranslationManager has {widget_count} registered widgets and {menu_count} registered menus",
             "View",
         )
-        logger.debug(
+        logger.trace(
             f"TranslationManager has {widget_count} registered widgets and {menu_count} registered menus",
             extra={"class_name": self.__class__.__name__},
         )
         # TranslationManager.switch_language() already handles widget refresh
         # No need to call refresh_all_translations() again to avoid infinite loops
-        logger.debug("Language change signal processed successfully", "View")
-        logger.debug(
+        logger.info("Language change signal processed successfully", "View")
+        logger.trace(
             "Language changed signal received, widget and menu translations already refreshed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_settings_changed(self, _source, key, value):  # noqa: ARG002
-        logger.debug(
+        logger.trace(
             f"View settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},
         )
 
         # Handle theme changes
         if key == "theme":
-            logger.debug(
+            logger.trace(
                 f"Theme setting changed to: {value}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -915,7 +915,7 @@ class View(CleanupMixin):
 
         # Handle show_preferences trigger from tray
         elif key == "show_preferences" and value:
-            logger.debug(
+            logger.trace(
                 "📋 Showing preferences from D-Bus/tray",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -923,7 +923,7 @@ class View(CleanupMixin):
             self.settings.set("show_preferences", False)
             # Show the preferences dialog
             if hasattr(self, "toolbar") and self.toolbar:
-                logger.debug(
+                logger.trace(
                     "Calling toolbar.show_settings_dialog()",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -936,26 +936,26 @@ class View(CleanupMixin):
 
         # Handle show_about trigger from tray
         elif key == "show_about" and value:
-            logger.debug(
+            logger.trace(
                 "ℹ️  Showing about dialog from D-Bus/tray",
                 extra={"class_name": self.__class__.__name__},
             )
             # Reset the flag immediately
             self.settings.set("show_about", False)
             # Show the about dialog
-            logger.debug("Calling show_about()", extra={"class_name": self.__class__.__name__})
+            logger.trace("Calling show_about()", extra={"class_name": self.__class__.__name__})
             GLib.idle_add(self.show_about, None, None)
 
     def handle_app_settings_changed(self, _source, key, value):  # noqa: ARG002
         """Handle AppSettings changes."""
-        logger.debug(
+        logger.trace(
             f"AppSettings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},
         )
 
         # Handle theme style changes
         if key == "ui_settings.theme_style":
-            logger.debug(
+            logger.trace(
                 f"Theme style changed to: {value}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -967,7 +967,7 @@ class View(CleanupMixin):
 
         # Handle color scheme changes
         elif key == "ui_settings.color_scheme":
-            logger.debug(
+            logger.trace(
                 f"Color scheme changed to: {value}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -992,7 +992,7 @@ class View(CleanupMixin):
                 - "dark": Force dark mode
         """
         try:
-            logger.debug(
+            logger.trace(
                 f"Applying theme: style={theme_style}, color={color_scheme}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -1000,7 +1000,7 @@ class View(CleanupMixin):
             # Remove existing CSS provider if one exists
             if hasattr(self, "css_provider") and self.css_provider and hasattr(self, "display"):
                 Gtk.StyleContext.remove_provider_for_display(self.display, self.css_provider)
-                logger.debug(
+                logger.trace(
                     "Removed previous CSS provider",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -1009,13 +1009,13 @@ class View(CleanupMixin):
             css_file = None
             if theme_style == "classic":
                 css_file = "components/ui/css/styles-classic.css"
-                logger.debug("Loading Deluge-style classic theme")
+                logger.trace("Loading Deluge-style classic theme")
             elif theme_style == "modern":
                 css_file = "components/ui/css/styles-modern.css"
-                logger.debug("Loading modern chunky theme")
+                logger.trace("Loading modern chunky theme")
             elif theme_style == "system":
                 # No custom CSS - use system default
-                logger.debug(
+                logger.trace(
                     "Using system default theme (no custom CSS)",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -1047,7 +1047,7 @@ class View(CleanupMixin):
                         self.display, self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                     )
 
-                    logger.debug(
+                    logger.trace(
                         f"CSS loaded: {css_file_path}",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -1061,29 +1061,29 @@ class View(CleanupMixin):
                     style_manager.set_color_scheme(Adw.ColorScheme.DEFAULT)
                     # Remove dark class - let system preference decide
                     self.window.remove_css_class("dark")
-                    logger.debug("Color scheme set to follow system preference")
+                    logger.trace("Color scheme set to follow system preference")
                 elif color_scheme == "light":
                     style_manager.set_color_scheme(Adw.ColorScheme.FORCE_LIGHT)
                     # Remove dark class for light mode
                     self.window.remove_css_class("dark")
-                    logger.debug("Color scheme set to light")
+                    logger.trace("Color scheme set to light")
                 elif color_scheme == "dark":
                     style_manager.set_color_scheme(Adw.ColorScheme.FORCE_DARK)
                     # Add dark class for CSS dark mode styling
                     self.window.add_css_class("dark")
-                    logger.debug("Color scheme set to dark with CSS class")
+                    logger.trace("Color scheme set to dark with CSS class")
                 else:
                     logger.warning(f"Unknown color scheme: {color_scheme}, using auto")
                     style_manager.set_color_scheme(Adw.ColorScheme.DEFAULT)
                     self.window.remove_css_class("dark")
 
             except Exception as adw_error:
-                logger.debug(
+                logger.trace(
                     f"Adwaita StyleManager not available: {adw_error}",
                     extra={"class_name": self.__class__.__name__},
                 )
 
-            logger.debug(
+            logger.trace(
                 f"Theme successfully applied: style={theme_style}, color={color_scheme}",
                 extra={"class_name": self.__class__.__name__},
             )

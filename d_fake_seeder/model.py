@@ -47,9 +47,9 @@ class Model(GObject.GObject):
 
     def __init__(self):
         GObject.GObject.__init__(self)
-        logger.debug("===== Model.__init__ START =====", "Model")
-        logger.debug("Model instantiate", extra={"class_name": self.__class__.__name__})
-        logger.debug("Logger call completed", "Model")
+        logger.trace("===== Model.__init__ START =====", "Model")
+        logger.trace("Model instantiate", extra={"class_name": self.__class__.__name__})
+        logger.trace("Logger call completed", "Model")
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
         logger.debug("DEBUG: Connecting to AppSettings signals...", "Model")
@@ -59,52 +59,52 @@ class Model(GObject.GObject):
             self.settings.connect("settings-attribute-changed", self.handle_settings_changed)
             logger.debug("DEBUG: Connected to 'settings-attribute-changed' signal", "Model")
         except Exception:
-            logger.debug("DEBUG: Failed to connect to 'settings-attribute-changed':", "Model")
+            logger.error("DEBUG: Failed to connect to 'settings-attribute-changed':", "Model")
         try:
             self.settings.connect("attribute-changed", self.handle_settings_changed)
             logger.debug("DEBUG: Connected to 'attribute-changed' signal", "Model")
         except Exception:
-            logger.debug("DEBUG: Failed to connect to 'attribute-changed':", "Model")
-        logger.debug("DEBUG: AppSettings signal connections completed", "Model")
+            logger.error("DEBUG: Failed to connect to 'attribute-changed':", "Model")
+        logger.trace("DEBUG: AppSettings signal connections completed", "Model")
         # Initialize translation manager
-        logger.debug("About to create TranslationManager", "Model")
+        logger.trace("About to create TranslationManager", "Model")
         self.translation_manager = create_translation_manager(
             domain="dfakeseeder",
             localedir=os.path.join(os.environ.get("DFS_PATH", "."), "components", "locale"),
             fallback_language="en",
         )
-        logger.debug("TranslationManager created successfully", "Model")
+        logger.info("TranslationManager created successfully", "Model")
         # Setup automatic translation
-        logger.debug("About to call setup_translations()", "Model")
+        logger.trace("About to call setup_translations()", "Model")
         try:
             result = self.translation_manager.setup_translations(auto_detect=True)
-            logger.debug(f"setup_translations() returned: {result}", "Model")
+            logger.trace(f"setup_translations() returned: {result}", "Model")
         except Exception:
             logger.error("Exception in setup_translations()", "Model", exc_info=True)
         # Register translation function with ColumnTranslations to avoid expensive gc.get_objects() calls
         if hasattr(self.translation_manager, "translate_func"):
             ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
-            logger.debug("Registered translation function with ColumnTranslations", "Model")
+            logger.trace("Registered translation function with ColumnTranslations", "Model")
         self.torrent_list = []  # List to hold all torrent instances
         self.torrent_list_attributes = Gio.ListStore.new(Attributes)  # List to hold all Attributes instances
         # Multi-criteria filtering
-        logger.debug("About to initialize filtering", "Model")
+        logger.trace("About to initialize filtering", "Model")
         self.search_filter = ""
         self.active_filter_state = None  # None = All, or state name
         self.active_filter_tracker = None  # None = All, or tracker domain
         self.filtered_torrent_list_attributes = None
-        logger.debug("About to call _setup_filtering()", "Model")
+        logger.trace("About to call _setup_filtering()", "Model")
         self._setup_filtering()
-        logger.debug("_setup_filtering() completed", "Model")
-        logger.debug("===== Model.__init__ COMPLETE =====", "Model")
-        logger.debug(
+        logger.trace("_setup_filtering() completed", "Model")
+        logger.trace("===== Model.__init__ COMPLETE =====", "Model")
+        logger.trace(
             "Model initialization completed successfully",
             extra={"class_name": self.__class__.__name__},
         )
 
     # Method to add a new torrent
     def add_torrent(self, filepath):
-        logger.debug("Model add torrent", extra={"class_name": self.__class__.__name__})
+        logger.trace("Model add torrent", extra={"class_name": self.__class__.__name__})
         # Create new Torrent instance
         torrent = Torrent(filepath)
         torrent.connect("attribute-changed", self.handle_model_changed)
@@ -123,7 +123,7 @@ class Model(GObject.GObject):
 
     # Method to add a new torrent
     def remove_torrent(self, filepath):
-        logger.debug("Model add torrent", extra={"class_name": self.__class__.__name__})
+        logger.trace("Model add torrent", extra={"class_name": self.__class__.__name__})
         # Find the Torrent instance
         torrent = next((t for t in self.torrent_list if t.filepath == filepath), None)
         if torrent is not None:
@@ -146,15 +146,15 @@ class Model(GObject.GObject):
 
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore(self):
-        logger.debug("Model get_liststore", extra={"class_name": self.__class__.__name__})
+        logger.trace("Model get_liststore", extra={"class_name": self.__class__.__name__})
         return self.torrent_list_attributes
 
     def get_torrents(self):
-        logger.debug("Model get_torrents", extra={"class_name": self.__class__.__name__})
+        logger.trace("Model get_torrents", extra={"class_name": self.__class__.__name__})
         return self.torrent_list
 
     def get_trackers_liststore(self):
-        logger.debug(
+        logger.trace(
             "Model get trackers liststore",
             extra={"class_name": self.__class__.__name__},
         )
@@ -173,7 +173,7 @@ class Model(GObject.GObject):
                             else:
                                 tracker_count[fqdn] = 1
                     except Exception as e:
-                        logger.warning(f"Failed to parse tracker URL {tracker_url}: {e}")
+                        logger.error(f"Failed to parse tracker URL {tracker_url}: {e}")
         # Create a list store with the custom GObject type TorrentState
         list_store = Gio.ListStore.new(TorrentState)
         # Sort trackers by count (descending) then by name (ascending)
@@ -181,14 +181,14 @@ class Model(GObject.GObject):
         for fqdn, count in sorted_trackers:
             # Create a new instance of TorrentState and append it to the list store
             list_store.append(TorrentState(fqdn, count))
-        logger.debug(f"Found {len(sorted_trackers)} unique trackers across all torrents")
+        logger.trace(f"Found {len(sorted_trackers)} unique trackers across all torrents")
         return list_store
 
     def stop(self, shutdown_tracker=None):
         # Stopping all torrents before quitting - PARALLEL SHUTDOWN
         import time
 
-        logger.debug(
+        logger.trace(
             f"🚀 Starting parallel shutdown of {len(self.torrent_list)} torrents",
             extra={"class_name": self.__class__.__name__},
         )
@@ -196,7 +196,7 @@ class Model(GObject.GObject):
         shutdown_start = time.time()
 
         # PHASE 1: Signal all torrents to stop (non-blocking)
-        logger.debug(
+        logger.trace(
             "📡 Phase 1: Signaling all torrents to stop",
             extra={"class_name": self.__class__.__name__},
         )
@@ -210,7 +210,7 @@ class Model(GObject.GObject):
             if hasattr(torrent, "seeder") and torrent.seeder:
                 torrent.seeder.request_shutdown()
 
-        logger.debug(
+        logger.trace(
             "✅ Phase 1 complete: All stop signals sent",
             extra={"class_name": self.__class__.__name__},
         )
@@ -219,7 +219,7 @@ class Model(GObject.GObject):
         max_wait_total = 2.0  # Total time budget for all torrents
         max_wait_per_thread = 0.2  # Max time per individual thread
 
-        logger.debug(
+        logger.trace(
             f"⏱️ Phase 2: Joining threads (budget: {max_wait_total}s total, {max_wait_per_thread}s per thread)",
             extra={"class_name": self.__class__.__name__},
         )
@@ -239,7 +239,7 @@ class Model(GObject.GObject):
                 torrent.torrent_worker.join(timeout=timeout)
                 if torrent.torrent_worker.is_alive():
                     threads_timeout += 1
-                    logger.debug(
+                    logger.trace(
                         f"⚠️ Torrent worker for {torrent.name} still alive after {timeout:.2f}s",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -255,7 +255,7 @@ class Model(GObject.GObject):
                 torrent.peers_worker.join(timeout=timeout)
                 if torrent.peers_worker.is_alive():
                     threads_timeout += 1
-                    logger.debug(
+                    logger.trace(
                         f"⚠️ Peers worker for {torrent.name} still alive after {timeout:.2f}s",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -267,14 +267,36 @@ class Model(GObject.GObject):
                 shutdown_tracker.mark_completed("model_torrents", 1)
 
         shutdown_elapsed = time.time() - shutdown_start
-        logger.debug(
+        logger.trace(
             f"✅ Parallel torrent shutdown complete in {shutdown_elapsed:.2f}s "
             f"(joined: {threads_joined}, timeout: {threads_timeout})",
             extra={"class_name": self.__class__.__name__},
         )
 
+        # PHASE 2.5: Call torrent.stop() to save stats
+        logger.trace(
+            "💾 Phase 2.5: Calling torrent.stop() to save stats",
+            extra={"class_name": self.__class__.__name__},
+        )
+        logger.trace(
+            f"💾 SAVING ALL TORRENT STATS ({len(self.torrent_list)} torrents)...",
+            extra={"class_name": self.__class__.__name__},
+        )
+        for torrent in self.torrent_list:
+            try:
+                torrent.stop()
+            except Exception as e:
+                logger.warning(
+                    f"Error calling stop() for {torrent.name}: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+        logger.trace(
+            "✅ All torrents saved!",
+            extra={"class_name": self.__class__.__name__},
+        )
+
         # PHASE 3: Clean up data stores to prevent memory leaks
-        logger.debug(
+        logger.trace(
             "🧹 Phase 3: Cleaning up data stores",
             extra={"class_name": self.__class__.__name__},
         )
@@ -283,7 +305,7 @@ class Model(GObject.GObject):
             if hasattr(self, "torrent_list_attributes") and self.torrent_list_attributes:
                 items_count = self.torrent_list_attributes.get_n_items()
                 self.torrent_list_attributes.remove_all()
-                logger.debug(
+                logger.trace(
                     f"Cleared {items_count} items from torrent_list_attributes",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -291,7 +313,7 @@ class Model(GObject.GObject):
             # Clear filtered store if it exists
             if hasattr(self, "filtered_torrent_list_attributes") and self.filtered_torrent_list_attributes:
                 # Filtered store is a FilterListModel, get its underlying store
-                logger.debug(
+                logger.trace(
                     "Cleared filtered torrent list",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -299,12 +321,12 @@ class Model(GObject.GObject):
             # Clear torrent list
             if hasattr(self, "torrent_list"):
                 self.torrent_list.clear()
-                logger.debug(
+                logger.trace(
                     "Cleared torrent_list",
                     extra={"class_name": self.__class__.__name__},
                 )
 
-            logger.debug(
+            logger.trace(
                 "✅ Phase 3 complete: Data stores cleaned up",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -315,7 +337,7 @@ class Model(GObject.GObject):
             )
 
         # PHASE 4: Force garbage collection and report memory usage
-        logger.debug(
+        logger.trace(
             "🧹 Phase 4: Forcing garbage collection",
             extra={"class_name": self.__class__.__name__},
         )
@@ -328,7 +350,7 @@ class Model(GObject.GObject):
 
                 process = psutil.Process()
                 mem_before = process.memory_info().rss / (1024 * 1024)
-                logger.debug(
+                logger.trace(
                     f"Memory before GC: {mem_before:.2f} MB",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -341,7 +363,7 @@ class Model(GObject.GObject):
             collected_gen2 = gc.collect(2)
             total_collected = collected_gen0 + collected_gen1 + collected_gen2
 
-            logger.debug(
+            logger.trace(
                 f"✅ Garbage collected {total_collected} objects "
                 f"(gen0: {collected_gen0}, gen1: {collected_gen1}, gen2: {collected_gen2})",
                 extra={"class_name": self.__class__.__name__},
@@ -351,7 +373,7 @@ class Model(GObject.GObject):
             if mem_before is not None:
                 mem_after = process.memory_info().rss / (1024 * 1024)
                 mem_freed = mem_before - mem_after
-                logger.debug(
+                logger.trace(
                     f"Memory after GC: {mem_after:.2f} MB (freed: {mem_freed:.2f} MB)",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -372,7 +394,7 @@ class Model(GObject.GObject):
 
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore_item(self, index):
-        logger.debug(
+        logger.trace(
             "Model get list store item",
             extra={"class_name": self.__class__.__name__},
         )
@@ -404,7 +426,7 @@ class Model(GObject.GObject):
             # Find the torrent with matching ID
             for torrent in self.torrent_list:
                 if hasattr(torrent, "id") and torrent.id == torrent_id:
-                    logger.debug(
+                    logger.trace(
                         f"Found torrent {torrent_id} for attributes",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -422,55 +444,55 @@ class Model(GObject.GObject):
             return None
 
     def handle_settings_changed(self, source, key, value):
-        logger.debug("===== handle_settings_changed() CALLED =====", "Model")
+        logger.trace("===== handle_settings_changed() CALLED =====", "Model")
         logger.debug("DEBUG: Signal received - key='', value=''", "Model")
         logger.debug("DEBUG: Source object:", "Model")
         logger.debug("DEBUG: Source type:", "Model")
-        logger.debug(
+        logger.trace(
             f"Model settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},
         )
         # Handle language changes from AppSettings
         if key == "language":
-            logger.debug("===== LANGUAGE CHANGE DETECTED =====", "Model")
-            logger.debug("New language value: ''", "Model")
+            logger.trace("===== LANGUAGE CHANGE DETECTED =====", "Model")
+            logger.trace("New language value: ''", "Model")
             try:
-                logger.debug(f"Language change detected from AppSettings: {value}")
-                logger.debug("About to check translation_manager availability...", "Model")
+                logger.trace(f"Language change detected from AppSettings: {value}")
+                logger.trace("About to check translation_manager availability...", "Model")
                 # Use the translation manager to switch language
                 if hasattr(self, "translation_manager") and self.translation_manager:
-                    logger.debug(
+                    logger.trace(
                         "Translation manager available, calling switch_language('')",
                         "Model",
                     )
                     actual_lang = self.translation_manager.switch_language(value)
-                    logger.debug("switch_language() returned: ''", "Model")
-                    logger.debug(f"Language switched via translation manager: {actual_lang}")
+                    logger.trace("switch_language() returned: ''", "Model")
+                    logger.info(f"Language switched via translation manager: {actual_lang}")
                     # Update translate function reference
                     logger.debug("Updating translate function reference...", "Model")
                     self.translate_func = self.translation_manager.translate_func
-                    logger.debug("Translate function updated", "Model")
+                    logger.trace("Translate function updated", "Model")
                     # CRITICAL: Re-register the NEW translation function with ColumnTranslations
                     # This must happen BEFORE emitting the signal so column components get the new function
-                    logger.debug(
+                    logger.trace(
                         "About to re-register translation function with ColumnTranslations...",
                         "Model",
                     )
                     if hasattr(self.translation_manager, "translate_func"):
                         ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
-                        logger.debug(
+                        logger.trace(
                             "Re-registered NEW translation function with ColumnTranslations for language:",
                             "Model",
                         )
                     # Emit our own language-changed signal for UI components
-                    logger.debug("About to emit 'language-changed' signal with: ''", "Model")
+                    logger.trace("About to emit 'language-changed' signal with: ''", "Model")
                     self.emit("language-changed", actual_lang)
-                    logger.debug("Successfully emitted language-changed signal:", "Model")
+                    logger.info("Successfully emitted language-changed signal:", "Model")
                 else:
-                    logger.debug("ERROR: Translation manager not available!", "Model")
-                    logger.debug("hasattr(self, 'translation_manager'):", "Model")
+                    logger.error("ERROR: Translation manager not available!", "Model")
+                    logger.trace("hasattr(self, 'translation_manager'):", "Model")
                     if hasattr(self, "translation_manager"):
-                        logger.debug("self.translation_manager:", "Model")
+                        logger.trace("self.translation_manager:", "Model")
                     logger.error("Translation manager not available for language change")
             except Exception as e:
                 logger.error(
@@ -479,13 +501,13 @@ class Model(GObject.GObject):
                     exc_info=True,
                 )
         else:
-            logger.debug("Non-language setting change:  =", "Model")
-        logger.debug("===== handle_settings_changed() COMPLETED =====", "Model")
+            logger.trace("Non-language setting change:  =", "Model")
+        logger.trace("===== handle_settings_changed() COMPLETED =====", "Model")
         # Handle other setting changes as needed
         # Add other key-specific handling here in the future
 
     def handle_model_changed(self, source, data_obj, data_changed):
-        logger.debug(
+        logger.trace(
             "Notebook settings changed",
             extra={"class_name": self.__class__.__name__},
         )
@@ -513,7 +535,7 @@ class Model(GObject.GObject):
 
     def set_search_filter(self, search_text):
         """Set the search filter and update the filtered list"""
-        logger.debug(
+        logger.trace(
             f"Setting search filter: '{search_text}'",
             extra={"class_name": self.__class__.__name__},
         )
@@ -531,7 +553,7 @@ class Model(GObject.GObject):
             filter_type: 'state' or 'tracker'
             value: Filter value (state name or tracker domain)
         """
-        logger.debug(
+        logger.trace(
             f"Setting {filter_type} filter: '{value}'",
             extra={"class_name": self.__class__.__name__},
         )
@@ -553,7 +575,7 @@ class Model(GObject.GObject):
         Args:
             filter_type: 'state', 'tracker', or 'search'
         """
-        logger.debug(
+        logger.trace(
             f"Clearing {filter_type} filter",
             extra={"class_name": self.__class__.__name__},
         )
@@ -584,7 +606,7 @@ class Model(GObject.GObject):
             ):
                 old_store = self.filtered_torrent_list_attributes
                 old_store.remove_all()
-                logger.debug(
+                logger.trace(
                     "Cleared old filtered store when removing all filters",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -600,7 +622,7 @@ class Model(GObject.GObject):
             old_store = self.filtered_torrent_list_attributes
             old_item_count = old_store.get_n_items()
             old_store.remove_all()
-            logger.debug(
+            logger.trace(
                 f"Cleared {old_item_count} items from old filtered store",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -614,7 +636,7 @@ class Model(GObject.GObject):
             if self._matches_all_filters(item):
                 self.filtered_torrent_list_attributes.append(item)
 
-        logger.debug(
+        logger.trace(
             f"Filtered {self.torrent_list_attributes.get_n_items()} torrents to "
             f"{self.filtered_torrent_list_attributes.get_n_items()} results "
             f"(search='{self.search_filter}', state={self.active_filter_state}, "
@@ -717,36 +739,36 @@ class Model(GObject.GObject):
     def switch_language(self, lang_code: str):
         """Switch language and notify views"""
         with logger.performance.operation_context("model_switch_language", "Model"):
-            logger.debug(f"switch_language() called with: {lang_code}", "Model")
-            logger.debug(
+            logger.trace(f"switch_language() called with: {lang_code}", "Model")
+            logger.trace(
                 f"Switching language to: {lang_code}",
                 extra={"class_name": self.__class__.__name__},
             )
             # Check widget registration before switching
             widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0
-            logger.debug(
+            logger.trace(
                 f"TranslationManager has {widget_count} registered widgets before switch",
                 "Model",
             )
-            logger.debug(
+            logger.trace(
                 f"TranslationManager has {widget_count} registered widgets before switch",
                 extra={"class_name": self.__class__.__name__},
             )
             # Call the TranslationManager's switch_language method
             with logger.performance.operation_context("translation_switch", "Model"):
-                logger.debug("Calling TranslationManager.switch_language()", "Model")
+                logger.trace("Calling TranslationManager.switch_language()", "Model")
                 actual_lang = self.translation_manager.switch_language(lang_code)
-                logger.debug(
+                logger.trace(
                     f"TranslationManager.switch_language returned: {actual_lang}",
                     extra={"class_name": self.__class__.__name__},
                 )
             # Check widget registration after switching
             widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0
-            logger.debug(
+            logger.trace(
                 f"TranslationManager has {widget_count} registered widgets after switch",
                 "Model",
             )
-            logger.debug(
+            logger.trace(
                 f"TranslationManager has {widget_count} registered widgets after switch",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -757,16 +779,16 @@ class Model(GObject.GObject):
             with logger.performance.operation_context("translation_reregister", "Model"):
                 if hasattr(self.translation_manager, "translate_func"):
                     ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
-                    logger.debug(
+                    logger.trace(
                         f"Re-registered NEW translation function with ColumnTranslations for language: {lang_code}",
                         "Model",
                     )
             # Emit signal for any manual handling needed
             with logger.performance.operation_context("language_signal_emit", "Model"):
-                logger.debug("Emitting language-changed signal", "Model")
+                logger.trace("Emitting language-changed signal", "Model")
                 self.emit("language-changed", actual_lang)
-            logger.debug("Language switch completed", "Model")
-            logger.debug(
+            logger.trace("Language switch completed", "Model")
+            logger.trace(
                 f"Language switched to: {actual_lang}, signal emitted",
                 extra={"class_name": self.__class__.__name__},
             )

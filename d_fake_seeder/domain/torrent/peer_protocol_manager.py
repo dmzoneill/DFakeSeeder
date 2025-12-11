@@ -110,7 +110,7 @@ class PeerProtocolManager:
                     if current_time - self.startup_time > self.startup_grace_period:
                         last_contact = self.peer_contact_history.get(address, 0)
                         if current_time - last_contact < self.min_contact_interval:
-                            logger.debug(
+                            logger.trace(
                                 f"🔒 Rate limited peer {address} "
                                 f"(last contact {current_time - last_contact:.1f}s ago)",
                                 extra={"class_name": self.__class__.__name__},
@@ -125,14 +125,14 @@ class PeerProtocolManager:
                             del self.peers[oldest_address]
                             if oldest_address in self.peer_contact_history:
                                 del self.peer_contact_history[oldest_address]
-                            logger.debug(
+                            logger.trace(
                                 f"🗑️ Removed oldest peer {oldest_address} to make room (max: {MAX_PEERS})",
                                 extra={"class_name": self.__class__.__name__},
                             )
 
                         self.peers[address] = PeerInfo(ip=ip, port=port, last_seen=current_time)
                         added_count += 1
-                        logger.debug(
+                        logger.trace(
                             f"➕ Added peer {address}",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -141,13 +141,13 @@ class PeerProtocolManager:
                         self.peers[address].last_seen = current_time
 
                 except ValueError:
-                    logger.debug(
+                    logger.trace(
                         f"❌ Invalid peer address format: {address}",
                         extra={"class_name": self.__class__.__name__},
                     )
 
             if added_count > 0:
-                logger.debug(
+                logger.trace(
                     f"📋 Added {added_count} new peers "
                     f"(total: {len(self.peers)}, active: {len(self.active_connections)})",
                     extra={"class_name": self.__class__.__name__},
@@ -171,7 +171,7 @@ class PeerProtocolManager:
             self.running = False
             return
 
-        logger.debug(
+        logger.trace(
             f"🚀 Started PeerProtocolManager via SharedAsyncExecutor "
             f"(manager_id: {self.manager_id}, max_connections: {self.max_connections})",
             extra={"class_name": self.__class__.__name__},
@@ -182,7 +182,7 @@ class PeerProtocolManager:
         if not self.running:
             return
 
-        logger.debug(
+        logger.trace(
             f"🛑 Stopping PeerProtocolManager (manager_id: {self.manager_id})",
             extra={"class_name": self.__class__.__name__},
         )
@@ -198,14 +198,14 @@ class PeerProtocolManager:
                 connection.close()
             self.active_connections.clear()
 
-        logger.debug(
+        logger.trace(
             f"✅ PeerProtocolManager stopped (manager_id: {self.manager_id})",
             extra={"class_name": self.__class__.__name__},
         )
 
     async def _async_manager_loop(self):
         """Async manager loop with proper cancellation"""
-        logger.debug(
+        logger.trace(
             "🔄 PeerProtocolManager loop started",
             extra={"class_name": self.__class__.__name__},
         )
@@ -285,7 +285,7 @@ class PeerProtocolManager:
                     # Timeout is expected during shutdown
                     if not self.running:
                         break
-                    logger.debug(
+                    logger.trace(
                         "⏱️ Operation timeout in peer manager loop",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -307,12 +307,12 @@ class PeerProtocolManager:
                         await asyncio.sleep(TimeoutConstants.PEER_MANAGER_SLEEP_CHUNK)
 
         except asyncio.CancelledError:
-            logger.debug(
+            logger.trace(
                 "🛑 PeerProtocolManager async loop cancelled",
                 extra={"class_name": self.__class__.__name__},
             )
         finally:
-            logger.debug(
+            logger.trace(
                 "🛑 PeerProtocolManager loop stopped",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -357,7 +357,7 @@ class PeerProtocolManager:
                             # Update contact history
                             self.peer_contact_history[address] = current_time
 
-                        logger.debug(
+                        logger.trace(
                             f"✅ Connected to peer {address}",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -367,19 +367,19 @@ class PeerProtocolManager:
                         connection_success = True
                     else:
                         # Handshake failed - close connection
-                        logger.debug(
+                        logger.trace(
                             f"🔒 Handshake failed with {address}",
                             extra={"class_name": self.__class__.__name__},
                         )
                 else:
                     # Connection failed - increment attempts
                     peer_info.connection_attempts += 1
-                    logger.debug(
+                    logger.trace(
                         f"❌ Connection failed to {address} (attempt {peer_info.connection_attempts})",
                         extra={"class_name": self.__class__.__name__},
                     )
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"❌ Error connecting to {address}: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -424,14 +424,14 @@ class PeerProtocolManager:
                     await self._handle_peer_message(address, connection, message_id, payload)
                 elif message is None:
                     # Connection closed by peer - mark for removal
-                    logger.debug(
+                    logger.trace(
                         f"🔌 Connection closed by peer {address}",
                         extra={"class_name": self.__class__.__name__},
                     )
                     connections_to_remove.append((address, connection))
 
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"❌ Error polling peer {address}: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -444,7 +444,7 @@ class PeerProtocolManager:
                 if address in self.active_connections:
                     del self.active_connections[address]
             connection.close()
-            logger.debug(
+            logger.trace(
                 f"🗑️ Removed failed connection to {address}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -452,7 +452,7 @@ class PeerProtocolManager:
     async def _handle_peer_message(self, address: str, connection: PeerConnection, message_id: int, payload: bytes):
         """Handle incoming peer message"""
         if message_id == -1:  # Keep-alive
-            logger.debug(f"💓 Keep-alive from {address}")
+            logger.trace(f"💓 Keep-alive from {address}")
             return
 
         if message_id == BitTorrentMessage.BITFIELD:
@@ -462,7 +462,7 @@ class PeerProtocolManager:
             connection.peer_info.progress = progress
             connection.peer_info.is_seed = progress >= 1.0
 
-            logger.debug(
+            logger.trace(
                 f"📋 Bitfield from {address}: {progress:.1%} complete",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -471,15 +471,15 @@ class PeerProtocolManager:
             # Peer has a new piece
             if len(payload) >= BitTorrentProtocolConstants.HAVE_PAYLOAD_SIZE:
                 piece_index = struct.unpack("!I", payload[: BitTorrentProtocolConstants.HAVE_PAYLOAD_SIZE])[0]
-                logger.debug(f"📦 Peer {address} has piece {piece_index}")
+                logger.trace(f"📦 Peer {address} has piece {piece_index}")
 
         elif message_id == BitTorrentMessage.CHOKE:
             connection.peer_info.choked = True
-            logger.debug(f"🚫 Choked by {address}")
+            logger.trace(f"🚫 Choked by {address}")
 
         elif message_id == BitTorrentMessage.UNCHOKE:
             connection.peer_info.choked = False
-            logger.debug(f"✅ Unchoked by {address}")
+            logger.trace(f"✅ Unchoked by {address}")
 
     def _calculate_progress_from_bitfield(self, bitfield: bytes) -> float:
         """Calculate download progress from bitfield"""
@@ -513,7 +513,7 @@ class PeerProtocolManager:
             for address in to_remove_connections:
                 if address in self.active_connections:
                     del self.active_connections[address]
-                    logger.debug(
+                    logger.trace(
                         f"🗑️ Cleaned up stale connection to {address}",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -531,7 +531,7 @@ class PeerProtocolManager:
                     del self.peer_contact_history[address]
 
             if to_remove_peers:
-                logger.debug(
+                logger.trace(
                     f"🗑️ Cleaned up {len(to_remove_peers)} old peers (not seen in 24h)",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -547,7 +547,7 @@ class PeerProtocolManager:
                 del self.peer_contact_history[address]
 
             if to_remove_history:
-                logger.debug(
+                logger.trace(
                     f"🗑️ Cleaned up {len(to_remove_history)} old contact history entries",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -601,13 +601,13 @@ class PeerProtocolManager:
                     piece_data = struct.pack(">I", piece_index)
                     await connection.send_message(BitTorrentMessage.HAVE, piece_data)
 
-                logger.debug(
+                logger.trace(
                     f"📊 Exchanged metadata with {address}",
                     extra={"class_name": self.__class__.__name__},
                 )
 
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"❌ Error exchanging metadata with {address}: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -630,7 +630,7 @@ class PeerProtocolManager:
             connections_to_disconnect = random.sample(connections_list, disconnect_count)
 
             for address, connection in connections_to_disconnect:
-                logger.debug(
+                logger.trace(
                     f"🔄 Rotating connection to {address}",
                     extra={"class_name": self.__class__.__name__},
                 )

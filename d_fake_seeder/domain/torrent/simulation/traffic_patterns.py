@@ -540,7 +540,7 @@ class TrafficPatternSimulator:
         self.traffic_history.clear()
         self.connection_history.clear()
 
-        logger.debug(
+        logger.trace(
             "Traffic pattern simulator cleaned up",
             extra={"class_name": self.__class__.__name__},
         )

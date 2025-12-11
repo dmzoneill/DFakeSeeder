@@ -50,7 +50,7 @@ class LiveGraph(Gtk.DrawingArea):
             grid_lines: Number of horizontal grid lines
         """
         super().__init__()
-        logger.debug(
+        logger.trace(
             "Initializing LiveGraph widget",
             extra={"class_name": self.__class__.__name__},
         )
@@ -74,7 +74,7 @@ class LiveGraph(Gtk.DrawingArea):
         # Set background color
         self.set_css_classes(["live-graph"])
 
-        logger.debug(
+        logger.trace(
             "LiveGraph widget initialized successfully",
             extra={"class_name": self.__class__.__name__},
         )
@@ -93,7 +93,7 @@ class LiveGraph(Gtk.DrawingArea):
             "color": color,
             "visible": visible,
         }
-        logger.debug(
+        logger.trace(
             f"Added series '{name}' with color {color}",
             extra={"class_name": self.__class__.__name__},
         )

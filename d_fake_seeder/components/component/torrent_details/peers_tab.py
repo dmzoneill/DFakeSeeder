@@ -93,7 +93,7 @@ class PeersTab(
     def _init_peers_column_view(self) -> None:
         """Initialize the peers column view with sortable columns."""
         try:
-            self.logger.debug(
+            self.logger.trace(
                 "Initializing peers column view",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -102,16 +102,16 @@ class PeersTab(
                 self.logger.error("Peers column view not found")
                 return
 
-            self.logger.debug(f"Peers column view widget: {self._peers_columnview}")
+            self.logger.trace(f"Peers column view widget: {self._peers_columnview}")
 
             # Create list store for peer data
             self._peers_store = Gio.ListStore.new(TorrentPeer)
             self.track_store(self._peers_store)  # Track for automatic cleanup
-            self.logger.debug(f"Created peers store: {self._peers_store}")
+            self.logger.info(f"Created peers store: {self._peers_store}")
 
             # Get TorrentPeer properties for columns
             properties = [prop.name for prop in TorrentPeer.list_properties()]
-            self.logger.debug(f"Creating {len(properties)} peer columns: {properties}")
+            self.logger.trace(f"Creating {len(properties)} peer columns: {properties}")
 
             # Create columns for each property
             for property_name in properties:
@@ -123,7 +123,7 @@ class PeersTab(
             self._selection = Gtk.SingleSelection.new(self._sort_model)
             self._peers_columnview.set_model(self._selection)
 
-            self.logger.debug(f"Peers column view initialized successfully with {len(properties)} columns")
+            self.logger.info(f"Peers column view initialized successfully with {len(properties)} columns")
 
         except Exception as e:
             self.logger.error(f"Error initializing peers column view: {e}", exc_info=True)
@@ -175,7 +175,7 @@ class PeersTab(
             # Add column to view
             if self._peers_columnview is not None:
                 self._peers_columnview.append_column(column)
-                self.logger.debug(f"Added peer column: {property_name}")
+                self.logger.trace(f"Added peer column: {property_name}")
 
         except Exception as e:
             self.logger.error(f"Error creating peer column {property_name}: {e}")
@@ -220,7 +220,7 @@ class PeersTab(
             # Hide the peers content
             if self._peers_content:
                 self._peers_content.set_visible(False)
-                self.logger.debug("Hiding peers content")
+                self.logger.trace("Hiding peers content")
         except Exception as e:
             self.logger.error(f"Error showing empty state: {e}")
 
@@ -233,7 +233,7 @@ class PeersTab(
             # Show the peers content
             if self._peers_content:
                 self._peers_content.set_visible(True)
-                self.logger.debug("Showing peers content")
+                self.logger.trace("Showing peers content")
         except Exception as e:
             self.logger.error(f"Error hiding empty state: {e}")
 
@@ -242,7 +242,7 @@ class PeersTab(
         try:
             if self._peers_store:
                 self._peers_store.remove_all()
-                self.logger.debug(f"Cleared peers store (now has {self._peers_store.get_n_items()} items)")
+                self.logger.trace(f"Cleared peers store (now has {self._peers_store.get_n_items()} items)")
 
             # Show empty state
             super().clear_content()
@@ -259,13 +259,13 @@ class PeersTab(
         """
         try:
             torrent_id = torrent.id if torrent else "None"
-            self.logger.debug(
+            self.logger.trace(
                 f"Updating peers tab for torrent {torrent_id}",
                 extra={"class_name": self.__class__.__name__},
             )
 
             if not torrent:
-                self.logger.debug("No torrent provided, clearing content")
+                self.logger.trace("No torrent provided, clearing content")
                 self.clear_content()
                 return
 
@@ -274,13 +274,13 @@ class PeersTab(
 
             # Collect peer data from all sources
             peer_data = self._collect_peer_data(torrent)
-            self.logger.debug(f"Collected {len(peer_data)} peers for torrent {torrent_id}")
+            self.logger.trace(f"Collected {len(peer_data)} peers for torrent {torrent_id}")
 
             # Update peers store with new data
             self._update_peers_store(peer_data)
 
             final_count = self._peers_store.get_n_items() if self._peers_store else 0
-            self.logger.debug(f"Peers tab updated: {final_count} peers now in store")
+            self.logger.trace(f"Peers tab updated: {final_count} peers now in store")
 
         except Exception as e:
             self.logger.error(f"Error updating peers tab content: {e}", exc_info=True)
@@ -307,7 +307,7 @@ class PeersTab(
             # Add data from active connections
             connection_peer_count = self._add_connection_peer_data(torrent, peer_data)
 
-            self.logger.debug(
+            self.logger.trace(
                 f"Collected peer data for torrent {torrent.id}: "
                 f"global={global_peer_count}, legacy={legacy_peer_count}, "
                 f"connections={connection_peer_count}, total={len(peer_data)}",

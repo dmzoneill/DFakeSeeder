@@ -17,7 +17,7 @@ class Statusbar(Component):
     def __init__(self, builder, model):
         super().__init__()
 
-        logger.debug("startup", extra={"class_name": self.__class__.__name__})
+        logger.trace("startup", extra={"class_name": self.__class__.__name__})
         self.builder = builder
         self.model = model
 
@@ -162,27 +162,27 @@ class Statusbar(Component):
             self.status_peers.set_text("  0 / 250")
 
     def handle_settings_changed(self, source, key, value):
-        logger.debug(
+        logger.trace(
             "Torrents view settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_model_changed(self, source, data_obj, data_changed):
-        logger.debug(
+        logger.trace(
             "StatusBar settings changed",
             extra={"class_name": self.__class__.__name__},
         )
         self.update_view(None, None, None)
 
     def handle_attribute_changed(self, source, key, value):
-        logger.debug(
+        logger.trace(
             "Attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
         self.update_view(None, None, None)
 
     def model_selection_changed(self, source, model, torrent):
-        logger.debug(
+        logger.trace(
             "Model selection changed",
             extra={"class_name": self.__class__.__name__},
         )
