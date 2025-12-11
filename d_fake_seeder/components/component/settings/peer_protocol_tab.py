@@ -225,7 +225,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
             peer_behavior = getattr(self.app_settings, "peer_behavior", {})
             self._load_peer_behavior_settings(peer_behavior)
 
-            self.logger.debug("Peer Protocol tab settings loaded")
+            self.logger.info("Peer Protocol tab settings loaded")
 
         except Exception as e:
             self.logger.error(f"Error loading Peer Protocol tab settings: {e}")
@@ -492,7 +492,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             timeout = spin_button.get_value()
             self.app_settings.set("peer_protocol.handshake_timeout_seconds", timeout)
-            self.logger.debug(f"Handshake timeout changed to: {timeout}")
+            self.logger.trace(f"Handshake timeout changed to: {timeout}")
         except Exception as e:
             self.logger.error(f"Error changing handshake timeout: {e}")
 
@@ -501,7 +501,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             timeout = spin_button.get_value()
             self.app_settings.set("peer_protocol.message_read_timeout_seconds", timeout)
-            self.logger.debug(f"Message read timeout changed to: {timeout}")
+            self.logger.trace(f"Message read timeout changed to: {timeout}")
         except Exception as e:
             self.logger.error(f"Error changing message read timeout: {e}")
 
@@ -510,7 +510,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             interval = spin_button.get_value()
             self.app_settings.set("peer_protocol.keep_alive_interval_seconds", interval)
-            self.logger.debug(f"Keep alive interval changed to: {interval}")
+            self.logger.trace(f"Keep alive interval changed to: {interval}")
         except Exception as e:
             self.logger.error(f"Error changing keep alive interval: {e}")
 
@@ -519,7 +519,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             interval = spin_button.get_value()
             self.app_settings.set("peer_protocol.contact_interval_seconds", interval)
-            self.logger.debug(f"Peer contact interval changed to: {interval}")
+            self.logger.trace(f"Peer contact interval changed to: {interval}")
         except Exception as e:
             self.logger.error(f"Error changing peer contact interval: {e}")
 
@@ -528,7 +528,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             timeout = int(spin_button.get_value())
             self.app_settings.set("seeders.udp_timeout_seconds", timeout)
-            self.logger.debug(f"UDP seeder timeout changed to: {timeout}")
+            self.logger.trace(f"UDP seeder timeout changed to: {timeout}")
         except Exception as e:
             self.logger.error(f"Error changing UDP seeder timeout: {e}")
 
@@ -537,7 +537,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             timeout = int(spin_button.get_value())
             self.app_settings.set("seeders.http_timeout_seconds", timeout)
-            self.logger.debug(f"HTTP seeder timeout changed to: {timeout}")
+            self.logger.trace(f"HTTP seeder timeout changed to: {timeout}")
         except Exception as e:
             self.logger.error(f"Error changing HTTP seeder timeout: {e}")
 
@@ -546,7 +546,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             port = int(spin_button.get_value())
             self.app_settings.set("seeders.port_range_min", port)
-            self.logger.debug(f"Seeder minimum port changed to: {port}")
+            self.logger.trace(f"Seeder minimum port changed to: {port}")
         except Exception as e:
             self.logger.error(f"Error changing seeder minimum port: {e}")
 
@@ -555,7 +555,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             port = int(spin_button.get_value())
             self.app_settings.set("seeders.port_range_max", port)
-            self.logger.debug(f"Seeder maximum port changed to: {port}")
+            self.logger.trace(f"Seeder maximum port changed to: {port}")
         except Exception as e:
             self.logger.error(f"Error changing seeder maximum port: {e}")
 
@@ -564,7 +564,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             min_id = int(spin_button.get_value())
             self.app_settings.set("seeders.transaction_id_min", min_id)
-            self.logger.debug(f"Transaction ID minimum changed to: {min_id}")
+            self.logger.trace(f"Transaction ID minimum changed to: {min_id}")
         except Exception as e:
             self.logger.error(f"Error changing transaction ID minimum: {e}")
 
@@ -573,7 +573,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             max_id = int(spin_button.get_value())
             self.app_settings.set("seeders.transaction_id_max", max_id)
-            self.logger.debug(f"Transaction ID maximum changed to: {max_id}")
+            self.logger.trace(f"Transaction ID maximum changed to: {max_id}")
         except Exception as e:
             self.logger.error(f"Error changing transaction ID maximum: {e}")
 
@@ -582,7 +582,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             count = int(spin_button.get_value())
             self.app_settings.set("seeders.peer_request_count", count)
-            self.logger.debug(f"Peer request count changed to: {count}")
+            self.logger.trace(f"Peer request count changed to: {count}")
         except Exception as e:
             self.logger.error(f"Error changing peer request count: {e}")
 
@@ -591,7 +591,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             probability = spin_button.get_value()
             self.app_settings.set("peer_behavior.seeder_upload_activity_probability", probability)
-            self.logger.debug(f"Seeder upload activity probability changed to: {probability}")
+            self.logger.trace(f"Seeder upload activity probability changed to: {probability}")
         except Exception as e:
             self.logger.error(f"Error changing seeder upload activity probability: {e}")
 
@@ -600,7 +600,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             chance = spin_button.get_value()
             self.app_settings.set("peer_behavior.peer_idle_chance", chance)
-            self.logger.debug(f"Peer idle chance changed to: {chance}")
+            self.logger.trace(f"Peer idle chance changed to: {chance}")
         except Exception as e:
             self.logger.error(f"Error changing peer idle chance: {e}")
 
@@ -609,7 +609,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             distribution = spin_button.get_value()
             self.app_settings.set("peer_behavior.progress_distribution_start", distribution)
-            self.logger.debug(f"Progress distribution start changed to: {distribution}")
+            self.logger.trace(f"Progress distribution start changed to: {distribution}")
         except Exception as e:
             self.logger.error(f"Error changing progress distribution start: {e}")
 
@@ -618,7 +618,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             distribution = spin_button.get_value()
             self.app_settings.set("peer_behavior.progress_distribution_middle", distribution)
-            self.logger.debug(f"Progress distribution middle changed to: {distribution}")
+            self.logger.trace(f"Progress distribution middle changed to: {distribution}")
         except Exception as e:
             self.logger.error(f"Error changing progress distribution middle: {e}")
 
@@ -627,7 +627,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             distribution = spin_button.get_value()
             self.app_settings.set("peer_behavior.progress_distribution_almost_done", distribution)
-            self.logger.debug(f"Progress distribution almost done changed to: {distribution}")
+            self.logger.trace(f"Progress distribution almost done changed to: {distribution}")
         except Exception as e:
             self.logger.error(f"Error changing progress distribution almost done: {e}")
 
@@ -636,7 +636,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             probability = spin_button.get_value()
             self.app_settings.set("peer_behavior.peer_behavior_analysis_probability", probability)
-            self.logger.debug(f"Peer behavior analysis probability changed to: {probability}")
+            self.logger.trace(f"Peer behavior analysis probability changed to: {probability}")
         except Exception as e:
             self.logger.error(f"Error changing peer behavior analysis probability: {e}")
 
@@ -645,7 +645,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             probability = spin_button.get_value()
             self.app_settings.set("peer_behavior.peer_status_change_probability", probability)
-            self.logger.debug(f"Peer status change probability changed to: {probability}")
+            self.logger.trace(f"Peer status change probability changed to: {probability}")
         except Exception as e:
             self.logger.error(f"Error changing peer status change probability: {e}")
 
@@ -654,7 +654,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             probability = spin_button.get_value()
             self.app_settings.set("peer_behavior.peer_dropout_probability", probability)
-            self.logger.debug(f"Peer dropout probability changed to: {probability}")
+            self.logger.trace(f"Peer dropout probability changed to: {probability}")
         except Exception as e:
             self.logger.error(f"Error changing peer dropout probability: {e}")
 
@@ -663,7 +663,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             percentage = spin_button.get_value()
             self.app_settings.set("peer_behavior.connection_rotation_percentage", percentage)
-            self.logger.debug(f"Connection rotation percentage changed to: {percentage}")
+            self.logger.trace(f"Connection rotation percentage changed to: {percentage}")
         except Exception as e:
             self.logger.error(f"Error changing connection rotation percentage: {e}")
 
@@ -720,28 +720,28 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
 
     def handle_model_changed(self, source, data_obj, _data_changed):
         """Handle model change events."""
-        self.logger.debug(
+        self.logger.trace(
             "PeerProtocolTab model changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_attribute_changed(self, source, key, value):
         """Handle attribute change events."""
-        self.logger.debug(
+        self.logger.trace(
             "PeerProtocolTab attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_settings_changed(self, source, data_obj, _data_changed):
         """Handle settings change events."""
-        self.logger.debug(
+        self.logger.trace(
             "PeerProtocolTab settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes."""
-        self.logger.debug(
+        self.logger.trace(
             "PeerProtocolTab update view",
             extra={"class_name": self.__class__.__name__},
         )

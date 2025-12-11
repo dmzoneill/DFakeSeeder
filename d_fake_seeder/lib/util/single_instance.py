@@ -50,7 +50,7 @@ class DBusSingleInstance(SingleInstanceChecker):
 
             connection = Gio.bus_get_sync(Gio.BusType.SESSION, None)
             if not connection:
-                logger.debug(
+                logger.trace(
                     "D-Bus connection failed, cannot check for existing instance",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -79,13 +79,13 @@ class DBusSingleInstance(SingleInstanceChecker):
                 error_msg = str(e)
                 if "NameHasNoOwner" in error_msg or "org.freedesktop.DBus.Error.NameHasNoOwner" in error_msg:
                     # Service not registered - no other instance
-                    logger.debug(
+                    logger.trace(
                         f"D-Bus service '{self.service_name}' not registered - no existing instance",
                         extra={"class_name": self.__class__.__name__},
                     )
                     return False
                 else:
-                    logger.debug(
+                    logger.trace(
                         f"D-Bus check error: {e}",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -94,7 +94,7 @@ class DBusSingleInstance(SingleInstanceChecker):
             return False
 
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"D-Bus instance check failed: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -135,7 +135,7 @@ class PIDFileLock(SingleInstanceChecker):
                         return True
                     else:
                         # Stale lock file - remove it
-                        logger.debug(
+                        logger.trace(
                             f"Stale PID file found (PID: {pid}), removing",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -143,7 +143,7 @@ class PIDFileLock(SingleInstanceChecker):
                         return False
                 except (ValueError, OSError) as e:
                     # Corrupted lock file - remove it
-                    logger.debug(
+                    logger.trace(
                         f"Corrupted PID file: {e}, removing",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -154,7 +154,7 @@ class PIDFileLock(SingleInstanceChecker):
             self.lockfile.write_text(str(os.getpid()))
             self.locked = True
             atexit.register(self.cleanup)
-            logger.debug(
+            logger.trace(
                 f"Created PID file: {self.lockfile}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -181,12 +181,12 @@ class PIDFileLock(SingleInstanceChecker):
         try:
             if self.locked and self.lockfile.exists():
                 self.lockfile.unlink()
-                logger.debug(
+                logger.trace(
                     f"Removed PID file: {self.lockfile}",
                     extra={"class_name": self.__class__.__name__},
                 )
         except OSError as e:
-            logger.debug(
+            logger.trace(
                 f"Error removing PID file: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -212,7 +212,7 @@ class SocketLock(SingleInstanceChecker):
             self.locked = True
 
             atexit.register(self.cleanup)
-            logger.debug(
+            logger.trace(
                 f"Socket lock acquired: {self.socket_address}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -243,12 +243,12 @@ class SocketLock(SingleInstanceChecker):
         try:
             if self.locked and self.socket:
                 self.socket.close()
-                logger.debug(
+                logger.trace(
                     f"Socket lock released: {self.socket_address}",
                     extra={"class_name": self.__class__.__name__},
                 )
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"Error releasing socket lock: {e}",
                 extra={"class_name": self.__class__.__name__},
             )

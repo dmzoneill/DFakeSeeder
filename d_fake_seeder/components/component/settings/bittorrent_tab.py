@@ -148,7 +148,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             bittorrent_settings = getattr(self.app_settings, "bittorrent", {})
             self._load_bittorrent_settings(bittorrent_settings)
 
-            self.logger.debug("BitTorrent tab settings loaded")
+            self.logger.info("BitTorrent tab settings loaded")
 
         except Exception as e:
             self.logger.error(f"Error loading BitTorrent tab settings: {e}")
@@ -239,7 +239,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Set model
             user_agent_dropdown.set_model(string_list)
 
-            self.logger.debug(f"User agent dropdown set up with {len(user_agents)} options")
+            self.logger.trace(f"User agent dropdown set up with {len(user_agents)} options")
 
         except Exception as e:
             self.logger.error(f"Error setting up user agent dropdown: {e}")
@@ -481,7 +481,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 if selected_index < len(predefined_agents):
                     user_agent = predefined_agents[selected_index]
                     self.app_settings.set("bittorrent.user_agent", user_agent)
-                    self.logger.debug(f"User agent changed to: {user_agent}")
+                    self.logger.trace(f"User agent changed to: {user_agent}")
 
         except Exception as e:
             self.logger.error(f"Error changing user agent: {e}")
@@ -491,7 +491,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         try:
             user_agent = entry.get_text()
             self.app_settings.set("bittorrent.user_agent", user_agent)
-            self.logger.debug(f"Custom user agent changed to: {user_agent}")
+            self.logger.trace(f"Custom user agent changed to: {user_agent}")
         except Exception as e:
             self.logger.error(f"Error changing custom user agent: {e}")
 
@@ -500,7 +500,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         try:
             interval = int(spin_button.get_value())
             self.app_settings.set("bittorrent.announce_interval_seconds", interval)
-            self.logger.debug(f"Announce interval changed to: {interval}")
+            self.logger.trace(f"Announce interval changed to: {interval}")
         except Exception as e:
             self.logger.error(f"Error changing announce interval: {e}")
 
@@ -509,7 +509,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         try:
             interval = int(spin_button.get_value())
             self.app_settings.set("bittorrent.min_announce_interval_seconds", interval)
-            self.logger.debug(f"Minimum announce interval changed to: {interval}")
+            self.logger.trace(f"Minimum announce interval changed to: {interval}")
         except Exception as e:
             self.logger.error(f"Error changing minimum announce interval: {e}")
 
@@ -518,7 +518,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         try:
             max_peers = int(spin_button.get_value())
             self.app_settings.set("bittorrent.max_peers_global", max_peers)
-            self.logger.debug(f"Global max peers changed to: {max_peers}")
+            self.logger.trace(f"Global max peers changed to: {max_peers}")
         except Exception as e:
             self.logger.error(f"Error changing global max peers: {e}")
 
@@ -527,7 +527,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         try:
             max_peers = int(spin_button.get_value())
             self.app_settings.set("bittorrent.max_peers_per_torrent", max_peers)
-            self.logger.debug(f"Per-torrent max peers changed to: {max_peers}")
+            self.logger.trace(f"Per-torrent max peers changed to: {max_peers}")
         except Exception as e:
             self.logger.error(f"Error changing per-torrent max peers: {e}")
 
@@ -536,7 +536,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         try:
             max_slots = int(spin_button.get_value())
             self.app_settings.set("bittorrent.max_upload_slots_global", max_slots)
-            self.logger.debug(f"Global max upload slots changed to: {max_slots}")
+            self.logger.trace(f"Global max upload slots changed to: {max_slots}")
         except Exception as e:
             self.logger.error(f"Error changing global max upload slots: {e}")
 
@@ -545,7 +545,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         try:
             max_slots = int(spin_button.get_value())
             self.app_settings.set("bittorrent.max_upload_slots_per_torrent", max_slots)
-            self.logger.debug(f"Per-torrent max upload slots changed to: {max_slots}")
+            self.logger.trace(f"Per-torrent max upload slots changed to: {max_slots}")
         except Exception as e:
             self.logger.error(f"Error changing per-torrent max upload slots: {e}")
 
@@ -600,28 +600,28 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
     def handle_model_changed(self, source, data_obj, _data_changed):
         """Handle model change events."""
-        self.logger.debug(
+        self.logger.trace(
             "BitTorrentTab model changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_attribute_changed(self, source, key, value):
         """Handle attribute change events."""
-        self.logger.debug(
+        self.logger.trace(
             "BitTorrentTab attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_settings_changed(self, source, data_obj, _data_changed):
         """Handle settings change events."""
-        self.logger.debug(
+        self.logger.trace(
             "BitTorrentTab settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes."""
-        self.logger.debug(
+        self.logger.trace(
             "BitTorrentTab update view",
             extra={"class_name": self.__class__.__name__},
         )

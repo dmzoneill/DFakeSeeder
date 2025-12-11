@@ -73,7 +73,7 @@ class PeerServer:
     def add_info_hash(self, info_hash: bytes):
         """Add an info hash that we should respond to"""
         self.known_info_hashes.add(info_hash)
-        logger.debug(
+        logger.trace(
             f"📝 Added info hash {info_hash.hex()[:12]}... to peer server",
             extra={"class_name": self.__class__.__name__},
         )
@@ -112,7 +112,7 @@ class PeerServer:
         if self.server:
             try:
                 self.server.close()
-                logger.debug(
+                logger.trace(
                     "🚪 Peer server closed (no longer accepting connections)",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -133,7 +133,7 @@ class PeerServer:
         # Wait for server thread with aggressive timeout
         if self.server_thread and self.server_thread.is_alive():
             join_timeout = TimeoutConstants.SERVER_THREAD_SHUTDOWN
-            logger.debug(
+            logger.trace(
                 f"⏱️ Waiting for server thread to finish (timeout: {join_timeout}s)",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -157,7 +157,7 @@ class PeerServer:
 
             self.server = await asyncio.start_server(self._handle_client, bind_address, self.port)
 
-            logger.debug(
+            logger.trace(
                 f"🎧 Peer server listening on {bind_address}:{self.port}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -179,7 +179,7 @@ class PeerServer:
 
         # Check connection limit
         if len(self.active_connections) >= self.max_connections:
-            logger.debug(
+            logger.trace(
                 f"🚫 Rejected connection from {client_key} (max connections reached)",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -189,7 +189,7 @@ class PeerServer:
         self.active_connections[client_key] = writer
         self.connection_count += 1
 
-        logger.debug(
+        logger.trace(
             f"🤝 Accepted peer connection from {client_key} " f"(total: {len(self.active_connections)})",
             extra={"class_name": self.__class__.__name__},
         )
@@ -209,7 +209,7 @@ class PeerServer:
             await self._handle_peer_protocol(reader, writer, client_key)
 
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"❌ Error handling peer {client_key}: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -223,7 +223,7 @@ class PeerServer:
             except Exception:
                 pass
 
-            logger.debug(
+            logger.trace(
                 f"👋 Disconnected peer {client_key}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -254,7 +254,7 @@ class PeerServer:
                 handshake_data[0] != BitTorrentProtocolConstants.PROTOCOL_NAME_LENGTH
                 or handshake_data[1:20] != BitTorrentProtocolConstants.PROTOCOL_NAME
             ):
-                logger.debug(f"❌ Invalid handshake from {client_key}")
+                logger.error(f"❌ Invalid handshake from {client_key}")
                 return
 
             info_hash_start = (
@@ -265,13 +265,13 @@ class PeerServer:
 
             # Check if we know this torrent
             if info_hash not in self.known_info_hashes:
-                logger.debug(
+                logger.trace(
                     f"❌ Unknown info hash from {client_key}: {info_hash.hex()[:12]}...",
                     extra={"class_name": self.__class__.__name__},
                 )
                 return
 
-            logger.debug(
+            logger.trace(
                 f"✅ Valid handshake from {client_key} for {info_hash.hex()[:12]}...",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -308,7 +308,7 @@ class PeerServer:
             await self._handle_peer_messages(reader, writer, client_key, info_hash)
 
         except asyncio.TimeoutError:
-            logger.debug(f"⏰ Handshake timeout from {client_key}")
+            logger.trace(f"⏰ Handshake timeout from {client_key}")
 
     async def _send_fake_bitfield(self, writer: asyncio.StreamWriter):
         """Send a fake bitfield claiming we have some pieces"""
@@ -349,7 +349,7 @@ class PeerServer:
 
                 # Keep-alive message
                 if message_length == BitTorrentProtocolConstants.KEEPALIVE_MESSAGE_LENGTH:
-                    logger.debug(f"💓 Keep-alive from {client_key}")
+                    logger.trace(f"💓 Keep-alive from {client_key}")
                     continue
 
                 # Read message type and payload
@@ -372,7 +372,7 @@ class PeerServer:
                 await writer.drain()
 
             except Exception as e:
-                logger.debug(f"❌ Message handling error for {client_key}: {e}")
+                logger.error(f"❌ Message handling error for {client_key}: {e}")
                 break
 
     async def _handle_message(
@@ -385,7 +385,7 @@ class PeerServer:
         """Handle specific peer protocol messages"""
 
         if message_type == BitTorrentMessage.INTERESTED:
-            logger.debug(f"🤔 Peer {client_key} is interested")
+            logger.trace(f"🤔 Peer {client_key} is interested")
             # Send unchoke
             unchoke_msg = struct.pack(">I", 1) + bytes([BitTorrentMessage.UNCHOKE])
             writer.write(unchoke_msg)
@@ -397,7 +397,7 @@ class PeerServer:
                 offset = struct.unpack(">I", payload[4:8])[0]
                 length = struct.unpack(">I", payload[8:12])[0]
 
-                logger.debug(
+                logger.trace(
                     f"📥 Piece request from {client_key}: " f"piece={piece_index}, offset={offset}, length={length}"
                 )
 
@@ -407,13 +407,13 @@ class PeerServer:
         elif message_type == BitTorrentMessage.HAVE:
             if len(payload) >= BitTorrentProtocolConstants.HAVE_PAYLOAD_SIZE:
                 piece_index = struct.unpack(">I", payload[0:4])[0]
-                logger.debug(f"📦 Peer {client_key} has piece {piece_index}")
+                logger.trace(f"📦 Peer {client_key} has piece {piece_index}")
 
         elif message_type == BitTorrentMessage.CHOKE:
-            logger.debug(f"🚫 Peer {client_key} choked us")
+            logger.trace(f"🚫 Peer {client_key} choked us")
 
         elif message_type == BitTorrentMessage.UNCHOKE:
-            logger.debug(f"✅ Peer {client_key} unchoked us")
+            logger.trace(f"✅ Peer {client_key} unchoked us")
 
     async def _send_fake_piece(self, writer: asyncio.StreamWriter, piece_index: int, offset: int, length: int):
         """Send fake piece data that will be rejected by hash verification"""
@@ -434,7 +434,7 @@ class PeerServer:
         writer.write(full_message)
         await writer.drain()
 
-        logger.debug(
+        logger.trace(
             f"📤 Sent fake piece to peer: piece={piece_index}, " f"offset={offset}, length={length}",
             extra={"class_name": self.__class__.__name__},
         )

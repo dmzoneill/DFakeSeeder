@@ -54,7 +54,7 @@ class FastExtension:
         self.max_allowed_fast = BitTorrentProtocolConstants.MAX_ALLOWED_FAST_PIECES  # Maximum allowed fast pieces
         self.max_suggest_pieces = BitTorrentProtocolConstants.MAX_SUGGEST_PIECES  # Maximum pieces to suggest
 
-        logger.debug(
+        logger.trace(
             "Fast Extension initialized",
             extra={
                 "class_name": self.__class__.__name__,
@@ -69,7 +69,7 @@ class FastExtension:
     def enable_peer_fast_support(self):
         """Enable fast extension support for peer"""
         self.peer_supports_fast = True
-        logger.debug(
+        logger.trace(
             "Peer fast extension support enabled",
             extra={"class_name": self.__class__.__name__},
         )
@@ -88,7 +88,7 @@ class FastExtension:
             piece_index = struct.unpack(">I", payload[:4])[0]
             self.suggested_pieces.add(piece_index)
 
-            logger.debug(
+            logger.trace(
                 f"Received SUGGEST_PIECE: {piece_index}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -113,7 +113,7 @@ class FastExtension:
         self.have_all = True
         self.have_none = False
 
-        logger.debug("Received HAVE_ALL", extra={"class_name": self.__class__.__name__})
+        logger.trace("Received HAVE_ALL", extra={"class_name": self.__class__.__name__})
 
         # Update peer's availability to all pieces
         if hasattr(self.peer_connection, "torrent") and self.peer_connection.torrent:
@@ -133,7 +133,7 @@ class FastExtension:
         self.have_none = True
         self.have_all = False
 
-        logger.debug("Received HAVE_NONE", extra={"class_name": self.__class__.__name__})
+        logger.trace("Received HAVE_NONE", extra={"class_name": self.__class__.__name__})
 
         # Clear all peer availability
         if hasattr(self.peer_connection, "peer_pieces"):
@@ -152,7 +152,7 @@ class FastExtension:
         try:
             piece_index, begin, length = struct.unpack(">III", payload[:12])
 
-            logger.debug(
+            logger.trace(
                 f"Received REJECT_REQUEST: piece={piece_index}, begin={begin}, length={length}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -182,7 +182,7 @@ class FastExtension:
             piece_index = struct.unpack(">I", payload[:4])[0]
             self.allowed_fast_pieces.add(piece_index)
 
-            logger.debug(
+            logger.trace(
                 f"Received ALLOWED_FAST: {piece_index}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -215,7 +215,7 @@ class FastExtension:
 
             if hasattr(self.peer_connection, "send_message"):
                 self.peer_connection.send_message(message)
-                logger.debug(
+                logger.trace(
                     f"Sent SUGGEST_PIECE: {piece_index}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -244,7 +244,7 @@ class FastExtension:
 
             if hasattr(self.peer_connection, "send_message"):
                 self.peer_connection.send_message(message)
-                logger.debug("Sent HAVE_ALL", extra={"class_name": self.__class__.__name__})
+                logger.trace("Sent HAVE_ALL", extra={"class_name": self.__class__.__name__})
                 return True
 
         except Exception as e:
@@ -270,7 +270,7 @@ class FastExtension:
 
             if hasattr(self.peer_connection, "send_message"):
                 self.peer_connection.send_message(message)
-                logger.debug("Sent HAVE_NONE", extra={"class_name": self.__class__.__name__})
+                logger.trace("Sent HAVE_NONE", extra={"class_name": self.__class__.__name__})
                 return True
 
         except Exception as e:
@@ -301,7 +301,7 @@ class FastExtension:
 
             if hasattr(self.peer_connection, "send_message"):
                 self.peer_connection.send_message(message)
-                logger.debug(
+                logger.trace(
                     f"Sent REJECT_REQUEST: piece={piece_index}, begin={begin}, length={length}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -333,7 +333,7 @@ class FastExtension:
 
             if hasattr(self.peer_connection, "send_message"):
                 self.peer_connection.send_message(message)
-                logger.debug(
+                logger.trace(
                     f"Sent ALLOWED_FAST: {piece_index}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -380,7 +380,7 @@ class FastExtension:
             for piece_index in fast_pieces:
                 self.send_allowed_fast(piece_index)
 
-            logger.debug(
+            logger.trace(
                 f"Generated {len(fast_pieces)} allowed fast pieces",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -411,7 +411,7 @@ class FastExtension:
             for piece_index in pieces_to_suggest:
                 self.send_suggest_piece(piece_index)
 
-            logger.debug(
+            logger.trace(
                 f"Suggested {len(pieces_to_suggest)} pieces to peer",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -425,7 +425,7 @@ class FastExtension:
     def _handle_suggested_piece(self, piece_index: int):
         """Handle a piece suggestion from peer"""
         # In fake seeding, we simulate considering the suggestion
-        logger.debug(
+        logger.trace(
             f"Considering suggested piece: {piece_index}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -433,7 +433,7 @@ class FastExtension:
     def _handle_allowed_fast_piece(self, piece_index: int):
         """Handle an allowed fast piece from peer"""
         # In fake seeding, we could immediately "request" this piece
-        logger.debug(
+        logger.trace(
             f"Piece {piece_index} available for fast download",
             extra={"class_name": self.__class__.__name__},
         )
@@ -469,4 +469,4 @@ class FastExtension:
         self.have_none = False
         self.peer_supports_fast = False
 
-        logger.debug("Fast Extension cleaned up", extra={"class_name": self.__class__.__name__})
+        logger.trace("Fast Extension cleaned up", extra={"class_name": self.__class__.__name__})

@@ -19,28 +19,28 @@ class Component(CleanupMixin):
 
     @abstractmethod
     def handle_model_changed(self, source, data_obj, _data_changed):
-        logger.debug(
+        logger.trace(
             "Component Model changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     @abstractmethod
     def handle_attribute_changed(self, source, key, value):
-        logger.debug(
+        logger.trace(
             "Component Attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     @abstractmethod
     def handle_settings_changed(self, source, data_obj, _data_changed):
-        logger.debug(
+        logger.trace(
             "Component settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     @abstractmethod
     def update_view(self, model, torrent, attribute):
-        logger.debug(
+        logger.trace(
             "Component update view",
             extra={"class_name": self.__class__.__name__},
         )
@@ -52,7 +52,7 @@ class Component(CleanupMixin):
         self.track_signal(self.model, handler_id)
 
     def model_selection_changed(self, source, model, torrent):
-        logger.debug(
+        logger.trace(
             "Model selection changed",
             extra={"class_name": self.__class__.__name__},
         )

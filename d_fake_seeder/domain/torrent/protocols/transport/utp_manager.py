@@ -42,7 +42,7 @@ class UTPManager:
         self.enabled = utp_config.get("enabled", True)
         self.max_connections = utp_config.get("max_connections", 100)
 
-        logger.debug(
+        logger.trace(
             "µTP Manager initialized",
             extra={"class_name": self.__class__.__name__, "port": port},
         )
@@ -62,7 +62,7 @@ class UTPManager:
             return False
 
         try:
-            logger.debug("Starting µTP manager", extra={"class_name": self.__class__.__name__})
+            logger.trace("Starting µTP manager", extra={"class_name": self.__class__.__name__})
 
             # Create UDP socket
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -79,7 +79,7 @@ class UTPManager:
             # Start listening loop
             asyncio.create_task(self._listen_loop())
 
-            logger.debug(
+            logger.trace(
                 f"µTP manager started on port {self.port}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -94,7 +94,7 @@ class UTPManager:
 
     async def stop(self):
         """Stop µTP manager"""
-        logger.debug("Stopping µTP manager", extra={"class_name": self.__class__.__name__})
+        logger.trace("Stopping µTP manager", extra={"class_name": self.__class__.__name__})
 
         self.running = False
 
@@ -147,7 +147,7 @@ class UTPManager:
             success = await connection.connect(timeout)
 
             if success:
-                logger.debug(
+                logger.trace(
                     f"µTP connection established to {host}:{port}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -239,7 +239,7 @@ class UTPManager:
             # Handle SYN packet
             await connection.handle_packet(data, addr)
 
-            logger.debug(
+            logger.trace(
                 f"Accepted µTP connection from {addr}",
                 extra={"class_name": self.__class__.__name__},
             )

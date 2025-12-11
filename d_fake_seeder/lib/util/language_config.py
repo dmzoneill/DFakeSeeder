@@ -17,7 +17,9 @@ except ImportError:
     # Fallback for when imported from tools/ directory
     import logging
 
-    logger = logging.getLogger(__name__)
+    from d_fake_seeder.lib.logger import add_trace_to_logger
+
+    logger = add_trace_to_logger(logging.getLogger(__name__))
 
 # fmt: on
 
@@ -70,7 +72,7 @@ def _discover_languages_from_locale() -> Dict[str, Dict[str, str]]:
     if "DFS_PATH" in os.environ:
         locale_dir = Path(os.environ["DFS_PATH"]) / "components" / "locale"
 
-    logger.debug(f"Scanning locale directory: {locale_dir}")
+    logger.trace(f"Scanning locale directory: {locale_dir}")
 
     if locale_dir.exists() and locale_dir.is_dir():
         for item in os.listdir(locale_dir):
@@ -85,7 +87,7 @@ def _discover_languages_from_locale() -> Dict[str, Dict[str, str]]:
                 lang_name = item.upper()
 
                 languages[item] = {"name": lang_name, "plural_forms": plural_forms}
-                logger.debug(f"Discovered language: {item} ({lang_name})")
+                logger.trace(f"Discovered language: {item} ({lang_name})")
 
     # Always ensure English is present as ultimate fallback
     if "en" not in languages:
@@ -93,7 +95,7 @@ def _discover_languages_from_locale() -> Dict[str, Dict[str, str]]:
             "name": "English",
             "plural_forms": "nplurals=2; plural=n != 1;",
         }
-        logger.debug("Added English as fallback language")
+        logger.trace("Added English as fallback language")
 
     logger.info(f"Discovered {len(languages)} languages from locale directory")
     return languages

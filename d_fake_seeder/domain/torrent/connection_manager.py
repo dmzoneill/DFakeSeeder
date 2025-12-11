@@ -129,14 +129,14 @@ class ConnectionManager:
         """Start the single periodic cleanup timer"""
         if self.cleanup_timer_id is None:
             self.cleanup_timer_id = GLib.timeout_add_seconds(self.cleanup_interval_seconds, self._periodic_cleanup)
-            logger.debug("Started periodic connection cleanup timer")
+            logger.info("Started periodic connection cleanup timer")
 
     def _stop_cleanup_timer(self):
         """Stop the periodic cleanup timer"""
         if self.cleanup_timer_id is not None:
             GLib.source_remove(self.cleanup_timer_id)
             self.cleanup_timer_id = None
-            logger.debug("Stopped periodic connection cleanup timer")
+            logger.info("Stopped periodic connection cleanup timer")
 
     def _periodic_cleanup(self):
         """Periodic cleanup of expired failed connections and enforcement of connection limits"""
@@ -209,7 +209,7 @@ class ConnectionManager:
         # Log if we cleaned up any connections
         total_removed = len(incoming_to_remove) + len(outgoing_to_remove)
         if total_removed > 0:
-            logger.debug(
+            logger.trace(
                 f"Periodic cleanup removed {len(incoming_to_remove)} incoming "
                 f"and {len(outgoing_to_remove)} outgoing expired connections"
             )
@@ -236,7 +236,7 @@ class ConnectionManager:
             self.incoming_display_timers[connection_key] = current_time
             self.incoming_creation_times[connection_key] = current_time
 
-            logger.debug(f"Added incoming connection: {connection_key}")
+            logger.trace(f"Added incoming connection: {connection_key}")
             self.notify_update_callbacks()
 
         return connection_key
@@ -282,7 +282,7 @@ class ConnectionManager:
         if connection_key in self.incoming_creation_times:
             del self.incoming_creation_times[connection_key]
 
-        logger.debug(f"Removed incoming connection: {connection_key}")
+        logger.trace(f"Removed incoming connection: {connection_key}")
         self.notify_update_callbacks()
 
     # Outgoing connection management
@@ -305,7 +305,7 @@ class ConnectionManager:
             self.outgoing_display_timers[connection_key] = current_time
             self.outgoing_creation_times[connection_key] = current_time
 
-            logger.debug(f"Added outgoing connection: {connection_key}")
+            logger.trace(f"Added outgoing connection: {connection_key}")
             self.notify_update_callbacks()
 
         return connection_key
@@ -351,7 +351,7 @@ class ConnectionManager:
         if connection_key in self.outgoing_creation_times:
             del self.outgoing_creation_times[connection_key]
 
-        logger.debug(f"Removed outgoing connection: {connection_key}")
+        logger.trace(f"Removed outgoing connection: {connection_key}")
         self.notify_update_callbacks()
 
     # Query functions for global statistics
@@ -494,7 +494,7 @@ class ConnectionManager:
         self.incoming_creation_times.clear()
         self.outgoing_creation_times.clear()
 
-        logger.debug("Cleared all connections and stopped cleanup timer")
+        logger.info("Cleared all connections and stopped cleanup timer")
         self.notify_update_callbacks()
 
         # Restart the cleanup timer for future connections

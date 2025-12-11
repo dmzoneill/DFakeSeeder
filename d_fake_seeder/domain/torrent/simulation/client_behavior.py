@@ -567,7 +567,7 @@ class ClientBehaviorEngine:
         """Clean up client behavior engine"""
         self.behavior_state.clear()
 
-        logger.debug(
+        logger.trace(
             "Client behavior engine cleaned up",
             extra={"class_name": self.__class__.__name__},
         )

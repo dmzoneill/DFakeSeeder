@@ -51,7 +51,7 @@ class TrackerTier:
         # Current active tracker in this tier
         self.current_tracker_index = 0
 
-        logger.debug(
+        logger.trace(
             f"Tracker tier {tier_number} initialized with {len(trackers)} trackers",
             extra={"class_name": self.__class__.__name__},
         )
@@ -109,7 +109,7 @@ class TrackerTier:
                     + MultiTrackerConstants.RESPONSE_TIME_WEIGHT * response_time
                 )
 
-            logger.debug(
+            logger.trace(
                 f"Tracker {tracker_url} announce successful ({response_time:.2f}s, {peer_count} peers)",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -137,7 +137,7 @@ class TrackerTier:
                     extra={"class_name": self.__class__.__name__},
                 )
             else:
-                logger.debug(
+                logger.trace(
                     f"Tracker {tracker_url} announce failed: {error}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -212,7 +212,7 @@ class MultiTrackerManager:
         self.current_tier_index = 0
         self.last_announce_time = 0.0
 
-        logger.debug(
+        logger.trace(
             f"Multi-tracker manager initialized with {len(self.tiers)} tiers",
             extra={"class_name": self.__class__.__name__},
         )
@@ -249,7 +249,7 @@ class MultiTrackerManager:
                 tier = TrackerTier([self.torrent.tracker_url], 0)
                 self.tiers.append(tier)
 
-            logger.debug(
+            logger.trace(
                 f"Parsed {len(self.tiers)} tracker tiers from torrent",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -339,7 +339,7 @@ class MultiTrackerManager:
                 return True, peers
 
         # All tiers failed
-        logger.warning("All tracker tiers failed", extra={"class_name": self.__class__.__name__})
+        logger.error("All tracker tiers failed", extra={"class_name": self.__class__.__name__})
         return False, []
 
     async def _announce_tier(self, tier: TrackerTier, seeder_manager, event: str) -> Tuple[bool, List[Dict]]:

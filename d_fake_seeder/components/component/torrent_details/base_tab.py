@@ -137,9 +137,9 @@ class BaseTorrentTab(ABC, CleanupMixin):
             empty_state = self.get_widget(empty_state_id)
             if empty_state:
                 empty_state.set_visible(True)
-                self.logger.debug(f"Showing empty state for {self.tab_name} tab")
+                self.logger.trace(f"Showing empty state for {self.tab_name} tab")
         except Exception as e:
-            self.logger.debug(f"No empty state widget found for {self.tab_name} tab: {e}")
+            self.logger.trace(f"No empty state widget found for {self.tab_name} tab: {e}")
 
     def _hide_empty_state(self) -> None:
         """Hide the empty state widget for this tab."""
@@ -148,9 +148,9 @@ class BaseTorrentTab(ABC, CleanupMixin):
             empty_state = self.get_widget(empty_state_id)
             if empty_state:
                 empty_state.set_visible(False)
-                self.logger.debug(f"Hiding empty state for {self.tab_name} tab")
+                self.logger.trace(f"Hiding empty state for {self.tab_name} tab")
         except Exception as e:
-            self.logger.debug(f"No empty state widget found for {self.tab_name} tab: {e}")
+            self.logger.trace(f"No empty state widget found for {self.tab_name} tab: {e}")
 
     def _register_for_translation(self) -> None:
         """Register this tab for translation updates."""
@@ -169,7 +169,7 @@ class BaseTorrentTab(ABC, CleanupMixin):
 
                     # CRITICAL FIX: Refresh translations for newly registered tab widgets
                     if new_widgets > 0:
-                        self.logger.debug(
+                        self.logger.trace(
                             f"Newly registered {new_widgets} {self.tab_name} tab widgets "
                             f"will be refreshed by debounced system"
                         )
@@ -182,7 +182,7 @@ class BaseTorrentTab(ABC, CleanupMixin):
     def on_language_changed(self, source, new_language):
         """Handle language change events for this tab."""
         try:
-            self.logger.debug(
+            self.logger.trace(
                 f"{self.tab_name} tab language changed to: {new_language}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -279,7 +279,7 @@ class BaseTorrentTab(ABC, CleanupMixin):
             # Clear tab-specific resources
             self._current_torrent = None
             self._widgets.clear()
-            self.logger.debug(f"{self.tab_name} tab cleaned up")
+            self.logger.trace(f"{self.tab_name} tab cleaned up")
         except Exception as e:
             self.logger.error(f"Error cleaning up {self.tab_name} tab: {e}")
 

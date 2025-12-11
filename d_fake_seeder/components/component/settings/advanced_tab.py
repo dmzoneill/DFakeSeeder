@@ -60,6 +60,8 @@ class AdvancedTab(
                 # Logging
                 "log_level": self.builder.get_object("settings_log_level"),
                 "log_to_file": self.builder.get_object("settings_log_to_file"),
+                "log_to_console": self.builder.get_object("settings_log_to_console"),
+                "log_to_systemd": self.builder.get_object("settings_log_to_systemd"),
                 "log_file_path": self.builder.get_object("settings_log_file_path"),
                 "log_file_browse": self.builder.get_object("settings_log_file_browse"),
                 "log_max_size": self.builder.get_object("settings_log_max_size"),
@@ -120,6 +122,20 @@ class AdvancedTab(
             self.track_signal(
                 log_to_file,
                 log_to_file.connect("state-set", self.on_log_to_file_changed),
+            )
+
+        log_to_console = self.get_widget("log_to_console")
+        if log_to_console:
+            self.track_signal(
+                log_to_console,
+                log_to_console.connect("state-set", self.on_log_to_console_changed),
+            )
+
+        log_to_systemd = self.get_widget("log_to_systemd")
+        if log_to_systemd:
+            self.track_signal(
+                log_to_systemd,
+                log_to_systemd.connect("state-set", self.on_log_to_systemd_changed),
             )
 
         log_file_path = self.get_widget("log_file_path")
@@ -239,7 +255,7 @@ class AdvancedTab(
             expert_settings = getattr(self.app_settings, "expert", {})
             self._load_expert_settings(expert_settings)
 
-            self.logger.debug("Advanced tab settings loaded")
+            self.logger.info("Advanced tab settings loaded")
 
         except Exception as e:
             self.logger.error(f"Error loading Advanced tab settings: {e}")
@@ -262,18 +278,29 @@ class AdvancedTab(
             if log_level:
                 level = logging_settings.get("level", "INFO")
                 level_mapping = {
-                    "DEBUG": 0,
-                    "INFO": 1,
-                    "WARNING": 2,
-                    "ERROR": 3,
-                    "CRITICAL": 4,
+                    "TRACE": 0,
+                    "DEBUG": 1,
+                    "INFO": 2,
+                    "WARNING": 3,
+                    "ERROR": 4,
+                    "CRITICAL": 5,
                 }
-                log_level.set_selected(level_mapping.get(level, 1))
+                log_level.set_selected(level_mapping.get(level, 2))
 
             # Log to file
             log_to_file = self.get_widget("log_to_file")
             if log_to_file:
                 log_to_file.set_active(logging_settings.get("log_to_file", False))
+
+            # Log to console
+            log_to_console = self.get_widget("log_to_console")
+            if log_to_console:
+                log_to_console.set_active(logging_settings.get("log_to_console", False))
+
+            # Log to systemd
+            log_to_systemd = self.get_widget("log_to_systemd")
+            if log_to_systemd:
+                log_to_systemd.set_active(logging_settings.get("log_to_systemd", True))
 
             # Log file path
             log_file_path = self.get_widget("log_file_path")
@@ -346,7 +373,7 @@ class AdvancedTab(
             # Set model
             log_level_dropdown.set_model(string_list)
 
-            self.logger.debug(f"Log level dropdown set up with {len(levels)} levels")
+            self.logger.trace(f"Log level dropdown set up with {len(levels)} levels")
 
         except Exception as e:
             self.logger.error(f"Error setting up log level dropdown: {e}")
@@ -423,17 +450,26 @@ class AdvancedTab(
             log_level = self.get_widget("log_level")
             if log_level:
                 level_mapping = {
-                    0: "DEBUG",
-                    1: "INFO",
-                    2: "WARNING",
-                    3: "ERROR",
-                    4: "CRITICAL",
+                    0: "TRACE",
+                    1: "DEBUG",
+                    2: "INFO",
+                    3: "WARNING",
+                    4: "ERROR",
+                    5: "CRITICAL",
                 }
                 logging_settings["level"] = level_mapping.get(log_level.get_selected(), "INFO")
 
             log_to_file = self.get_widget("log_to_file")
             if log_to_file:
                 logging_settings["log_to_file"] = log_to_file.get_active()
+
+            log_to_console = self.get_widget("log_to_console")
+            if log_to_console:
+                logging_settings["log_to_console"] = log_to_console.get_active()
+
+            log_to_systemd = self.get_widget("log_to_systemd")
+            if log_to_systemd:
+                logging_settings["log_to_systemd"] = log_to_systemd.get_active()
 
             log_file_path = self.get_widget("log_file_path")
             if log_file_path:
@@ -528,7 +564,7 @@ class AdvancedTab(
         """Handle settings search."""
         try:
             search_text = search_entry.get_text()
-            self.logger.debug(f"Settings search: {search_text}")
+            self.logger.trace(f"Settings search: {search_text}")
             # TODO: Implement actual search filtering
         except Exception as e:
             self.logger.error(f"Error handling search: {e}")
@@ -547,7 +583,7 @@ class AdvancedTab(
         try:
             threshold = spin_button.get_value()
             self.app_settings.set("search.threshold", threshold)
-            self.logger.debug(f"Search threshold changed to: {threshold}")
+            self.logger.trace(f"Search threshold changed to: {threshold}")
         except Exception as e:
             self.logger.error(f"Error changing search threshold: {e}")
 
@@ -555,15 +591,18 @@ class AdvancedTab(
         """Handle log level change."""
         try:
             level_mapping = {
-                0: "DEBUG",
-                1: "INFO",
-                2: "WARNING",
-                3: "ERROR",
-                4: "CRITICAL",
+                0: "TRACE",
+                1: "DEBUG",
+                2: "INFO",
+                3: "WARNING",
+                4: "ERROR",
+                5: "CRITICAL",
             }
             level = level_mapping.get(dropdown.get_selected(), "INFO")
-            self.app_settings.set("logging.level", level)
-            self.logger.debug(f"Log level changed to: {level}")
+            self.app_settings.set("log_level", level)
+            self.logger.trace(f"Log level changed to: {level}")
+            # Trigger logger reconfiguration
+            self._reconfigure_logger()
         except Exception as e:
             self.logger.error(f"Error changing log level: {e}")
 
@@ -571,18 +610,42 @@ class AdvancedTab(
         """Handle log to file toggle."""
         try:
             self.update_dependencies()
-            self.app_settings.set("logging.log_to_file", state)
+            self.app_settings.set("log_to_file", state)
             message = "File logging enabled" if state else "File logging disabled"
             self.show_notification(message, "success")
+            # Trigger logger reconfiguration
+            self._reconfigure_logger()
         except Exception as e:
             self.logger.error(f"Error changing log to file setting: {e}")
+
+    def on_log_to_console_changed(self, switch: Gtk.Switch, state: bool) -> None:
+        """Handle log to console toggle."""
+        try:
+            self.app_settings.set("log_to_console", state)
+            message = "Console logging enabled" if state else "Console logging disabled"
+            self.show_notification(message, "success")
+            # Trigger logger reconfiguration
+            self._reconfigure_logger()
+        except Exception as e:
+            self.logger.error(f"Error changing log to console setting: {e}")
+
+    def on_log_to_systemd_changed(self, switch: Gtk.Switch, state: bool) -> None:
+        """Handle log to systemd toggle."""
+        try:
+            self.app_settings.set("log_to_systemd", state)
+            message = "Systemd journal logging enabled" if state else "Systemd journal logging disabled"
+            self.show_notification(message, "success")
+            # Trigger logger reconfiguration
+            self._reconfigure_logger()
+        except Exception as e:
+            self.logger.error(f"Error changing log to systemd setting: {e}")
 
     def on_log_file_path_changed(self, entry: Gtk.Entry) -> None:
         """Handle log file path change."""
         try:
             path = entry.get_text()
             self.app_settings.set("logging.log_file_path", path)
-            self.logger.debug(f"Log file path changed to: {path}")
+            self.logger.trace(f"Log file path changed to: {path}")
         except Exception as e:
             self.logger.error(f"Error changing log file path: {e}")
 
@@ -599,7 +662,7 @@ class AdvancedTab(
         try:
             max_size = int(spin_button.get_value())
             self.app_settings.set("logging.max_size_mb", max_size)
-            self.logger.debug(f"Log max size changed to: {max_size}MB")
+            self.logger.trace(f"Log max size changed to: {max_size}MB")
         except Exception as e:
             self.logger.error(f"Error changing log max size: {e}")
 
@@ -608,7 +671,7 @@ class AdvancedTab(
         try:
             backup_count = int(spin_button.get_value())
             self.app_settings.set("logging.backup_count", backup_count)
-            self.logger.debug(f"Log backup count changed to: {backup_count}")
+            self.logger.trace(f"Log backup count changed to: {backup_count}")
         except Exception as e:
             self.logger.error(f"Error changing log backup count: {e}")
 
@@ -617,7 +680,7 @@ class AdvancedTab(
         try:
             cache_size = int(spin_button.get_value())
             self.app_settings.set("performance.disk_cache_size_mb", cache_size)
-            self.logger.debug(f"Disk cache size changed to: {cache_size}MB")
+            self.logger.trace(f"Disk cache size changed to: {cache_size}MB")
         except Exception as e:
             self.logger.error(f"Error changing disk cache size: {e}")
 
@@ -626,7 +689,7 @@ class AdvancedTab(
         try:
             memory_limit = int(spin_button.get_value())
             self.app_settings.set("performance.memory_limit_mb", memory_limit)
-            self.logger.debug(f"Memory limit changed to: {memory_limit}MB")
+            self.logger.trace(f"Memory limit changed to: {memory_limit}MB")
         except Exception as e:
             self.logger.error(f"Error changing memory limit: {e}")
 
@@ -635,7 +698,7 @@ class AdvancedTab(
         try:
             threads = int(spin_button.get_value())
             self.app_settings.set("performance.worker_threads", threads)
-            self.logger.debug(f"Worker threads changed to: {threads}")
+            self.logger.trace(f"Worker threads changed to: {threads}")
         except Exception as e:
             self.logger.error(f"Error changing worker threads: {e}")
 
@@ -750,28 +813,43 @@ class AdvancedTab(
 
     def handle_model_changed(self, source, data_obj, _data_changed):
         """Handle model change events."""
-        self.logger.debug(
+        self.logger.trace(
             "AdvancedTab model changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_attribute_changed(self, source, key, value):
         """Handle attribute change events."""
-        self.logger.debug(
+        self.logger.trace(
             "AdvancedTab attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_settings_changed(self, source, data_obj, _data_changed):
         """Handle settings change events."""
-        self.logger.debug(
+        self.logger.trace(
             "AdvancedTab settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
+    def _reconfigure_logger(self) -> None:
+        """Reconfigure logger with current settings - applies changes immediately."""
+        try:
+            # Import reconfigure_logger from logger module
+            from d_fake_seeder.lib.logger import reconfigure_logger
+
+            # Reconfigure the logger with new settings
+            reconfigure_logger()
+            self.logger.trace(
+                "Logger reconfigured with new settings",
+                extra={"class_name": self.__class__.__name__},
+            )
+        except Exception as e:
+            self.logger.error(f"Error reconfiguring logger: {e}", exc_info=True)
+
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes."""
-        self.logger.debug(
+        self.logger.trace(
             "AdvancedTab update view",
             extra={"class_name": self.__class__.__name__},
         )

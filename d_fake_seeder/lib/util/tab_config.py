@@ -51,7 +51,7 @@ def get_settings_tab_config() -> Dict[str, Any]:
         config = load_tabs_config()
         return config.get("settings_tabs", {})
     except Exception:
-        logger.debug("Warning: Could not load tabs config (...), using fallback", "UnknownClass")
+        logger.warning("Warning: Could not load tabs config (...), using fallback", "UnknownClass")
         return {
             "enabled": True,
             "order": ["GeneralTab", "ConnectionTab", "AdvancedTab"],
@@ -70,7 +70,7 @@ def get_torrent_details_tab_config() -> Dict[str, Any]:
         config = load_tabs_config()
         return config.get("torrent_details_tabs", {})
     except Exception:
-        logger.debug("Warning: Could not load tabs config (...), using fallback", "UnknownClass")
+        logger.warning("Warning: Could not load tabs config (...), using fallback", "UnknownClass")
         return {
             "enabled": True,
             "order": ["StatusTab", "FilesTab", "DetailsTab"],

@@ -30,7 +30,7 @@ class BaseSeeder:
 
     # Common functionality goes here
     def __init__(self, torrent):
-        logger.debug("Startup", extra={"class_name": self.__class__.__name__})
+        logger.trace("Startup", extra={"class_name": self.__class__.__name__})
 
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
@@ -124,7 +124,7 @@ class BaseSeeder:
         )  # Random value between -10% and +10%
         jittered_interval = interval + jitter
 
-        logger.debug(
+        logger.trace(
             f"Applied jitter to interval: {interval:.1f}s -> {jittered_interval:.1f}s (jitter: {jitter:+.1f}s)",
             self.__class__.__name__,
         )
@@ -152,7 +152,7 @@ class BaseSeeder:
 
     @staticmethod
     def recreate_semaphore(obj):
-        logger.debug(
+        logger.trace(
             "Seeder recreate_semaphore",
             extra={"class_name": obj.__class__.__name__},
         )
@@ -174,7 +174,7 @@ class BaseSeeder:
         BaseSeeder._tracker_semaphore = new_semaphore
 
     def handle_exception(self, e, message):
-        logger.debug(
+        logger.trace(
             f"{message}: {str(e)}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -189,7 +189,7 @@ class BaseSeeder:
         self.shutdown_requested = True
 
     def handle_settings_changed(self, source, key, value):
-        logger.debug(
+        logger.trace(
             "Seeder settings changed",
             extra={"class_name": self.__class__.__name__},
         )
@@ -203,7 +203,7 @@ class BaseSeeder:
         return random.randint(transaction_id_min, transaction_id_max)
 
     def __str__(self):
-        logger.debug("Seeder __get__", extra={"class_name": self.__class__.__name__})
+        logger.trace("Seeder __get__", extra={"class_name": self.__class__.__name__})
         result = "Peer ID: %s\n" % self.peer_id
         result += "Key: %s\n" % self.download_key
         result += "Port: %d\n" % self.port
@@ -410,10 +410,10 @@ class BaseSeeder:
 
     @property
     def peers(self):
-        logger.debug("Seeder get peers", extra={"class_name": self.__class__.__name__})
+        logger.trace("Seeder get peers", extra={"class_name": self.__class__.__name__})
         result = []
         if b"peers" not in self.info:
-            logger.debug(
+            logger.trace(
                 "😲 No peers data available from tracker response",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -424,7 +424,7 @@ class BaseSeeder:
         self.peer_data.clear()
 
         peers = self.info[b"peers"]
-        logger.debug(
+        logger.trace(
             f"🔍 Processing peers data: {type(peers)}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -433,7 +433,7 @@ class BaseSeeder:
         if isinstance(peers, bytes):
             if len(peers) == 0:
                 # If no real peers, add some fake ones for demonstration
-                logger.debug(
+                logger.trace(
                     "🎭 No real peers found, generating demo peers for testing",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -483,7 +483,7 @@ class BaseSeeder:
                 for ip, port, peer_id in fake_peers:
                     peer_address = f"{ip}:{port}"
                     result.append(peer_address)
-                    logger.debug(
+                    logger.trace(
                         f"🤖 Added demo peer: {peer_address} ({peer_id})",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -494,7 +494,7 @@ class BaseSeeder:
                     BaseSeeder.peer_clients[peer_address] = peer_data["client"]
             else:
                 peer_count = len(peers) // 6
-                logger.debug(
+                logger.trace(
                     f"🗂 Parsing compact peer data ({len(peers)} bytes = {peer_count})",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -506,7 +506,7 @@ class BaseSeeder:
                         port = struct.unpack(">H", port_bytes)[0]
                         peer_address = f"{ip}:{port}"
                         result.append(peer_address)
-                        logger.debug(
+                        logger.trace(
                             f"👥 Found peer: {peer_address}",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -523,7 +523,7 @@ class BaseSeeder:
                 first_peer = peers[0]
                 if isinstance(first_peer, tuple) and len(first_peer) == 2:
                     # UDP tuple format: [(ip, port), ...]
-                    logger.debug(
+                    logger.trace(
                         f"🗃 Parsing UDP tuple peer data ({len(peers)} peer entries)",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -531,7 +531,7 @@ class BaseSeeder:
                         peer_address = f"{ip}:{port}"
                         result.append(peer_address)
 
-                        logger.debug(
+                        logger.trace(
                             f"👥 UDP Peer {i+1}: {peer_address}",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -543,7 +543,7 @@ class BaseSeeder:
 
                 elif isinstance(first_peer, dict):
                     # HTTP dictionary format
-                    logger.debug(
+                    logger.trace(
                         f"🗃 Parsing HTTP dictionary peer data ({len(peers)} entries)",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -571,7 +571,7 @@ class BaseSeeder:
                             if client_name and client_name != "Unknown":
                                 self.settings.add_detected_client(client_name)
 
-                            logger.debug(
+                            logger.trace(
                                 f"👥 HTTP Peer {i+1}: {peer_address} ({client_name})",
                                 extra={"class_name": self.__class__.__name__},
                             )
@@ -582,7 +582,7 @@ class BaseSeeder:
                                     else str(peer_id)
                                 )
                                 truncated = "..." if len(peer_id_str) > 20 else ""
-                                logger.debug(
+                                logger.trace(
                                     f"🆔 Peer ID: {peer_id_str[:20]}{truncated}",
                                     extra={"class_name": self.__class__.__name__},
                                 )
@@ -603,7 +603,7 @@ class BaseSeeder:
                 extra={"class_name": self.__class__.__name__},
             )
 
-        logger.debug(
+        logger.trace(
             f"✅ Processed {len(result)} total peers",
             extra={"class_name": self.__class__.__name__},
         )
@@ -780,7 +780,7 @@ class BaseSeeder:
         is_seed = progress >= 1.0
 
         # Log peer analysis
-        logger.debug(
+        logger.trace(
             f"🔍 Analyzing peer {address}: {client_name}, {country}, Seed={is_seed}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -788,7 +788,7 @@ class BaseSeeder:
             down_kb = down_speed / 1024
             up_kb = up_speed / 1024
             progress_pct = progress * 100
-            logger.debug(
+            logger.trace(
                 f"📈 Stats: {progress_pct:.1f}%, D:{down_kb:.1f} KB/s, U:{up_kb:.1f} KB/s",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -889,20 +889,20 @@ class BaseSeeder:
 
     @property
     def clients(self):
-        logger.debug("Seeder get clients", extra={"class_name": self.__class__.__name__})
+        logger.trace("Seeder get clients", extra={"class_name": self.__class__.__name__})
         return BaseSeeder.peer_clients
 
     @property
     def seeders(self):
-        logger.debug("Seeder get seeders", extra={"class_name": self.__class__.__name__})
+        logger.trace("Seeder get seeders", extra={"class_name": self.__class__.__name__})
         return self.info[b"complete"] if b"complete" in self.info else 0
 
     @property
     def tracker(self):
-        logger.debug("Seeder get tracker", extra={"class_name": self.__class__.__name__})
+        logger.trace("Seeder get tracker", extra={"class_name": self.__class__.__name__})
         return self.tracker_url
 
     @property
     def leechers(self):
-        logger.debug("Seeder get leechers", extra={"class_name": self.__class__.__name__})
+        logger.trace("Seeder get leechers", extra={"class_name": self.__class__.__name__})
         return self.info[b"incomplete"] if b"incomplete" in self.info else 0

@@ -34,7 +34,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         super().__init__()
         ColumnTranslationMixin.__init__(self)
 
-        logger.debug(
+        logger.trace(
             "IncomingConnectionsTab view startup",
             extra={"class_name": self.__class__.__name__},
         )
@@ -79,12 +79,12 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                     self.model,
                     self.model.connect("language-changed", self.on_language_changed),
                 )
-                logger.debug(
+                logger.trace(
                     "Connected to language-changed signal for column translation",
                     extra={"class_name": self.__class__.__name__},
                 )
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"Could not connect to language-changed signal: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -116,7 +116,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
 
     def init_incoming_column_view(self):
         """Initialize the incoming connections column view"""
-        logger.debug(
+        logger.trace(
             "IncomingConnections init columnview",
             extra={"class_name": self.__class__.__name__},
         )
@@ -404,7 +404,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
 
     def on_filter_toggled(self, checkbox):
         """Handle filter checkbox toggle"""
-        logger.debug(
+        logger.trace(
             f"Incoming connections filter toggled: {checkbox.get_active()}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -413,7 +413,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
     def on_selection_changed(self, source, model, torrent):
         """Handle model selection change"""
         self.selected_torrent = torrent
-        logger.debug(
+        logger.trace(
             f"Incoming connections selection changed: " f"{torrent.id if torrent else 'None'}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -493,7 +493,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
             if connection_key in self.all_connections:
                 connection_peer = self.all_connections[connection_key]
                 if connection_peer.status == "failed":
-                    logger.debug(
+                    logger.trace(
                         f"Auto-removing failed connection: {connection_key}",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -525,7 +525,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
 
                 # Only remove if minimum display time has passed
                 if elapsed >= self.min_display_time:
-                    logger.debug(
+                    logger.trace(
                         f"Auto-removing connection after {elapsed:.1f}s display: " f"{connection_key}",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -645,28 +645,28 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
 
     def handle_model_changed(self, source, data_obj, data_changed):
         """Handle model changes"""
-        logger.debug(
+        logger.trace(
             "IncomingConnections model changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_attribute_changed(self, source, key, value):
         """Handle attribute changes"""
-        logger.debug(
+        logger.trace(
             "IncomingConnections attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_settings_changed(self, source, data_obj, data_changed):
         """Handle settings changes"""
-        logger.debug(
+        logger.trace(
             "IncomingConnections settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def update_view(self, model, torrent, attribute):
         """Update view"""
-        logger.debug(
+        logger.trace(
             "IncomingConnections update view",
             extra={"class_name": self.__class__.__name__},
         )
@@ -674,7 +674,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
     def on_language_changed(self, source=None, new_language=None):
         """Handle language change events for column translation."""
         try:
-            logger.debug(
+            logger.trace(
                 f"IncomingConnections language changed to: {new_language}",
                 extra={"class_name": self.__class__.__name__},
             )

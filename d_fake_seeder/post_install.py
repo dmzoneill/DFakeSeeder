@@ -24,7 +24,7 @@ def get_package_dir():
 
         return Path(d_fake_seeder.__file__).parent
     except ImportError:
-        logger.debug(
+        logger.trace(
             "Error: d_fake_seeder package not found. Please install it first.",
             "UnknownClass",
         )
@@ -35,7 +35,7 @@ def install_icons(package_dir, home_dir):
     """Install application icons to user icon directories."""
     icon_source = package_dir / "components" / "images" / "dfakeseeder.png"
     if not icon_source.exists():
-        logger.debug(f"Warning: Icon file not found at {icon_source}", "UnknownClass")
+        logger.error(f"Warning: Icon file not found at {icon_source}", "UnknownClass")
         return False
     icon_base = home_dir / ".local" / "share" / "icons" / "hicolor"
     # Install to multiple sizes for better compatibility
@@ -47,10 +47,10 @@ def install_icons(package_dir, home_dir):
         target_file = target_dir / "dfakeseeder.png"
         try:
             shutil.copy2(icon_source, target_file)
-            logger.debug("✓ Installed icon: ...", "UnknownClass")
+            logger.trace("✓ Installed icon: ...", "UnknownClass")
             installed_any = True
         except Exception:
-            logger.debug("Warning: Could not install icon to ...: ...", "UnknownClass")
+            logger.warning("Warning: Could not install icon to ...: ...", "UnknownClass")
     return installed_any
 
 
@@ -66,7 +66,7 @@ def install_desktop_file(package_dir, home_dir):
     elif desktop_source.exists():
         source_file = desktop_source
     else:
-        logger.debug("Warning: No desktop file found", "UnknownClass")
+        logger.warning("Warning: No desktop file found", "UnknownClass")
         return False
 
     desktop_dir = home_dir / ".local" / "share" / "applications"
@@ -104,10 +104,10 @@ def install_desktop_file(package_dir, home_dir):
 
         # Make desktop file executable
         os.chmod(desktop_target, 0o755)
-        logger.debug("✓ Installed desktop file: ...", "UnknownClass")
+        logger.trace("✓ Installed desktop file: ...", "UnknownClass")
         return True
     except Exception:
-        logger.debug("Warning: Could not install desktop file to ...: ...", "UnknownClass")
+        logger.warning("Warning: Could not install desktop file to ...: ...", "UnknownClass")
         return False
 
 
@@ -115,7 +115,7 @@ def install_tray_desktop_file(package_dir, home_dir):
     """Install tray autostart desktop file."""
     tray_desktop_source = package_dir / "desktop" / "dfakeseeder-tray.desktop"
     if not tray_desktop_source.exists():
-        logger.debug("Warning: Tray desktop file not found", "UnknownClass")
+        logger.error("Warning: Tray desktop file not found", "UnknownClass")
         return False
 
     autostart_dir = home_dir / ".config" / "autostart"
@@ -127,10 +127,10 @@ def install_tray_desktop_file(package_dir, home_dir):
         shutil.copy2(tray_desktop_source, tray_desktop_target)
         # Make executable
         os.chmod(tray_desktop_target, 0o755)
-        logger.debug("✓ Installed tray autostart file", "UnknownClass")
+        logger.trace("✓ Installed tray autostart file", "UnknownClass")
         return True
     except Exception:
-        logger.debug("Warning: Could not install tray desktop file", "UnknownClass")
+        logger.warning("Warning: Could not install tray desktop file", "UnknownClass")
         return False
 
 
@@ -144,9 +144,9 @@ def update_caches(home_dir):
     if gnome_cache_dir.exists():
         try:
             shutil.rmtree(gnome_cache_dir)
-            logger.debug("✓ Cleared GNOME Shell cache", "UnknownClass")
+            logger.trace("✓ Cleared GNOME Shell cache", "UnknownClass")
         except Exception:
-            logger.debug(
+            logger.trace(
                 "Info: Could not clear GNOME Shell cache (this is optional)",
                 "UnknownClass",
             )
@@ -154,14 +154,14 @@ def update_caches(home_dir):
     # Update icon cache
     try:
         subprocess.run(["gtk-update-icon-cache", str(icon_dir)], check=False, capture_output=True)
-        logger.debug("✓ Updated icon cache", "UnknownClass")
+        logger.trace("✓ Updated icon cache", "UnknownClass")
     except FileNotFoundError:
-        logger.debug(
+        logger.trace(
             "Info: gtk-update-icon-cache not available (this is optional)",
             "UnknownClass",
         )
     except Exception:
-        logger.debug("Info: Could not update icon cache: ...", "UnknownClass")
+        logger.trace("Info: Could not update icon cache: ...", "UnknownClass")
     # Update desktop database
     try:
         subprocess.run(
@@ -169,24 +169,24 @@ def update_caches(home_dir):
             check=False,
             capture_output=True,
         )
-        logger.debug("✓ Updated desktop database", "UnknownClass")
+        logger.trace("✓ Updated desktop database", "UnknownClass")
     except FileNotFoundError:
-        logger.debug(
+        logger.trace(
             "Info: update-desktop-database not available (this is optional)",
             "UnknownClass",
         )
     except Exception:
-        logger.debug("Info: Could not update desktop database: ...", "UnknownClass")
+        logger.trace("Info: Could not update desktop database: ...", "UnknownClass")
 
 
 def install_desktop_integration():
     """Main function to install desktop integration."""
-    logger.debug("Installing D' Fake Seeder desktop integration...", "UnknownClass")
+    logger.trace("Installing D' Fake Seeder desktop integration...", "UnknownClass")
     try:
         package_dir = get_package_dir()
         home_dir = Path.home()
-        logger.debug("Package directory: ...", "UnknownClass")
-        logger.debug("Home directory: ...", "UnknownClass")
+        logger.trace("Package directory: ...", "UnknownClass")
+        logger.trace("Home directory: ...", "UnknownClass")
         # Install components
         icons_installed = install_icons(package_dir, home_dir)
         desktop_installed = install_desktop_file(package_dir, home_dir)
@@ -195,41 +195,41 @@ def install_desktop_integration():
         if icons_installed or desktop_installed or tray_installed:
             # Update caches
             update_caches(home_dir)
-            logger.debug("\n✅ Desktop integration installed successfully!", "UnknownClass")
-            logger.debug(
+            logger.info("\n✅ Desktop integration installed successfully!", "UnknownClass")
+            logger.trace(
                 "\nThe application should now appear in your application menu",
                 "UnknownClass",
             )
-            logger.debug("and show proper icons in the taskbar when launched.", "UnknownClass")
+            logger.trace("and show proper icons in the taskbar when launched.", "UnknownClass")
             if tray_installed:
-                logger.debug("System tray will start automatically on login.", "UnknownClass")
+                logger.trace("System tray will start automatically on login.", "UnknownClass")
 
             # GNOME Shell refresh instructions
-            logger.debug(
+            logger.trace(
                 "\n⚠️  GNOME Shell users: To ensure changes take effect immediately:",
                 "UnknownClass",
             )
-            logger.debug(
+            logger.trace(
                 "  • Press Alt+F2, type 'r', and press Enter to restart GNOME Shell",
                 "UnknownClass",
             )
-            logger.debug("  • Or log out and log back in", "UnknownClass")
+            logger.trace("  • Or log out and log back in", "UnknownClass")
 
-            logger.debug("\nYou can launch it from:", "UnknownClass")
-            logger.debug("  • Application menu (search for 'D' Fake Seeder')", "UnknownClass")
-            logger.debug("  • Command line: dfs", "UnknownClass")
-            logger.debug("  • Desktop launcher: gtk-launch dfakeseeder", "UnknownClass")
+            logger.trace("\nYou can launch it from:", "UnknownClass")
+            logger.trace("  • Application menu (search for 'D' Fake Seeder')", "UnknownClass")
+            logger.trace("  • Command line: dfs", "UnknownClass")
+            logger.trace("  • Desktop launcher: gtk-launch dfakeseeder", "UnknownClass")
             if tray_installed:
-                logger.debug("  • System tray (automatic)", "UnknownClass")
+                logger.trace("  • System tray (automatic)", "UnknownClass")
         else:
-            logger.debug("\n❌ Could not install desktop integration files.", "UnknownClass")
-            logger.debug(
+            logger.error("\n❌ Could not install desktop integration files.", "UnknownClass")
+            logger.trace(
                 "The application will still work from the command line with 'dfs'",
                 "UnknownClass",
             )
     except Exception:
-        logger.debug("\n❌ Error during desktop integration installation: ...", "UnknownClass")
-        logger.debug(
+        logger.error("\n❌ Error during desktop integration installation: ...", "UnknownClass")
+        logger.trace(
             "The application will still work from the command line with 'dfs'",
             "UnknownClass",
         )
@@ -238,7 +238,7 @@ def install_desktop_integration():
 
 def uninstall_desktop_integration():
     """Remove desktop integration files."""
-    logger.debug("Removing D' Fake Seeder desktop integration...", "UnknownClass")
+    logger.trace("Removing D' Fake Seeder desktop integration...", "UnknownClass")
     home_dir = Path.home()
     removed_any = False
     # Remove desktop file
@@ -246,20 +246,20 @@ def uninstall_desktop_integration():
     if desktop_file.exists():
         try:
             desktop_file.unlink()
-            logger.debug("✓ Removed desktop file: ...", "UnknownClass")
+            logger.trace("✓ Removed desktop file: ...", "UnknownClass")
             removed_any = True
         except Exception:
-            logger.debug("Warning: Could not remove desktop file: ...", "UnknownClass")
+            logger.warning("Warning: Could not remove desktop file: ...", "UnknownClass")
 
     # Remove tray autostart file
     tray_file = home_dir / ".config" / "autostart" / "dfakeseeder-tray.desktop"
     if tray_file.exists():
         try:
             tray_file.unlink()
-            logger.debug("✓ Removed tray autostart file", "UnknownClass")
+            logger.trace("✓ Removed tray autostart file", "UnknownClass")
             removed_any = True
         except Exception:
-            logger.debug("Warning: Could not remove tray autostart file", "UnknownClass")
+            logger.warning("Warning: Could not remove tray autostart file", "UnknownClass")
     # Remove icons
     icon_base = home_dir / ".local" / "share" / "icons" / "hicolor"
     sizes = DEFAULT_ICON_SIZES
@@ -268,15 +268,15 @@ def uninstall_desktop_integration():
         if icon_file.exists():
             try:
                 icon_file.unlink()
-                logger.debug("✓ Removed icon: ...", "UnknownClass")
+                logger.trace("✓ Removed icon: ...", "UnknownClass")
                 removed_any = True
             except Exception:
-                logger.debug("Warning: Could not remove icon: ...", "UnknownClass")
+                logger.warning("Warning: Could not remove icon: ...", "UnknownClass")
     if removed_any:
         update_caches(home_dir)
-        logger.debug("\n✅ Desktop integration removed successfully!", "UnknownClass")
+        logger.info("\n✅ Desktop integration removed successfully!", "UnknownClass")
     else:
-        logger.debug("\n✓ No desktop integration files found to remove.", "UnknownClass")
+        logger.trace("\n✓ No desktop integration files found to remove.", "UnknownClass")
 
 
 def main():

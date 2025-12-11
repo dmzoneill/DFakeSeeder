@@ -239,7 +239,7 @@ run: ui-build
 		cd d_fake_seeder && \
 		gtk-launch dfakeseeder; \
 	}
-	@$(MAKE) clean_settings
+	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
 
 run-debug: ui-build
 	@echo "Running application with Pipenv and debug output..."
@@ -250,7 +250,7 @@ run-debug: ui-build
 	{ \
 		pipenv run env LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder.py; \
 	}
-	@$(MAKE) clean_settings
+	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
 
 run-debug-venv: ui-build
 	@echo "Running application with Pipenv and debug output..."
@@ -259,9 +259,9 @@ run-debug-venv: ui-build
 	-update-desktop-database ~/.local/share/applications/ 2>/dev/null
 	-ps aux | grep "dfakeseeder.py" | awk '{print $$2}' | xargs kill -9 2>/dev/null
 	{ \
-		pipenv run env LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder.py; \
+		pipenv run env LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder.py; \
 	}
-	@$(MAKE) clean_settings
+	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
 
 run-debug-docker: ui-build
 	@echo "Building Docker image..."
@@ -283,7 +283,7 @@ run-debug-docker: ui-build
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 	    dfakeseeder
 	xhost -local:root
-	@$(MAKE) clean_settings
+	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
 
 # ============================================================================
 # Tray Application Targets
@@ -310,7 +310,7 @@ run-with-tray: ui-build
 		sleep 3 && \
 		pipenv run env LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder_tray.py; \
 	}
-	@$(MAKE) clean_settings
+	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
 
 run-debug-with-tray: ui-build
 	@echo "Running main application with tray (debug mode) using Pipenv..."
@@ -321,7 +321,7 @@ run-debug-with-tray: ui-build
 		sleep 5 && \
 		pipenv run env LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder_tray.py; \
 	}
-	@$(MAKE) clean_settings
+	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
 
 # ============================================================================
 # Testing Targets (following TESTING_PLAN.md)
@@ -455,7 +455,7 @@ valgrind: ui-build
 		cd d_fake_seeder && \
 		valgrind --tool=memcheck --leak-check=full /usr/bin/python3 dfakeseeder.py; \
 	}
-	@$(MAKE) clean_settings
+	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
 
 xprod-wmclass:
 	@echo "Getting WM_CLASS property (click on window)..."
@@ -720,8 +720,9 @@ docker-ghcr: xhosts
 
 flatpak: clean
 	@echo "Building Flatpak package..."
-	flatpak-builder build-dir ie.fio.dfakeseeder manifest.json
-	@echo "✅ Flatpak built!"
+	flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.json
+	@echo "✅ Flatpak built and installed!"
+	@echo "Run with: flatpak run ie.fio.dfakeseeder"
 
 # ============================================================================
 # PyPI Publishing

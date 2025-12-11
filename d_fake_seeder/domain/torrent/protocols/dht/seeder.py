@@ -39,7 +39,7 @@ class DHTSeeder:
         self.active_torrents: Dict[bytes, Dict] = {}
         self.last_announce: Dict[bytes, float] = {}
 
-        logger.debug(
+        logger.trace(
             f"DHT Seeder initialized on port {port}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -56,14 +56,14 @@ class DHTSeeder:
             return False
 
         try:
-            logger.debug("Starting DHT seeder", extra={"class_name": self.__class__.__name__})
+            logger.trace("Starting DHT seeder", extra={"class_name": self.__class__.__name__})
 
             # Start DHT node
             await self.dht_node.start()
 
             if self.dht_node.running:
                 self.running = True
-                logger.debug(
+                logger.trace(
                     "DHT seeder started successfully",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -121,7 +121,7 @@ class DHTSeeder:
             success = await self.announce_torrent(info_hash)
 
             if success:
-                logger.debug(
+                logger.trace(
                     f"Added torrent {info_hash.hex()[:16]} to DHT seeding",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -153,7 +153,7 @@ class DHTSeeder:
         if info_hash in self.last_announce:
             del self.last_announce[info_hash]
 
-        logger.debug(
+        logger.trace(
             f"Removed torrent {info_hash.hex()[:16]} from DHT seeding",
             extra={"class_name": self.__class__.__name__},
         )
@@ -184,12 +184,12 @@ class DHTSeeder:
 
             if success:
                 torrent_info["total_announcements"] += 1
-                logger.debug(
+                logger.trace(
                     f"DHT announcement successful for {info_hash.hex()[:16]}",
                     extra={"class_name": self.__class__.__name__},
                 )
             else:
-                logger.debug(
+                logger.trace(
                     f"DHT announcement failed for {info_hash.hex()[:16]}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -224,7 +224,7 @@ class DHTSeeder:
             if info_hash in self.active_torrents:
                 self.active_torrents[info_hash]["last_peers_count"] = len(peers)
 
-            logger.debug(
+            logger.trace(
                 f"DHT discovered {len(peers)} peers for {info_hash.hex()[:16]}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -330,7 +330,7 @@ class DHTSeeder:
                 if current_time - last_announce_time >= announcement_interval:
                     await self.announce_torrent(info_hash)
 
-            logger.debug(
+            logger.trace(
                 f"DHT maintenance completed for {len(self.active_torrents)} torrents",
                 extra={"class_name": self.__class__.__name__},
             )

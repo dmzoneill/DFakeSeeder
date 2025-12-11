@@ -57,6 +57,8 @@
                                             <property name="tooltip-text" translatable="yes">Port for incoming BitTorrent connections (1024-65535)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -139,6 +141,8 @@
                                             <property name="tooltip-text" translatable="yes">Maximum number of connections to all torrents</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -172,6 +176,8 @@
                                             <property name="tooltip-text" translatable="yes">Maximum number of connections per individual torrent</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -205,6 +211,8 @@
                                             <property name="tooltip-text" translatable="yes">Maximum number of simultaneous upload slots</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -317,6 +325,8 @@
                                             <property name="tooltip-text" translatable="yes">Proxy server port number</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>

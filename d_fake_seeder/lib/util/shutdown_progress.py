@@ -34,7 +34,7 @@ class ShutdownProgressTracker:
         if component_type in self.components:
             self.components[component_type]["total"] = count
             self.components[component_type]["status"] = "pending" if count > 0 else "complete"
-            logger.debug(
+            logger.trace(
                 f"📊 Registered {count} {component_type} for shutdown tracking",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -52,7 +52,7 @@ class ShutdownProgressTracker:
             elif component["completed"] > 0:
                 component["status"] = "in_progress"
 
-            logger.debug(
+            logger.trace(
                 f"✅ Marked {count} {component_type} as completed " f"({component['completed']}/{component['total']})",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -62,7 +62,7 @@ class ShutdownProgressTracker:
         """Mark a component type as starting shutdown"""
         if component_type in self.components:
             self.components[component_type]["status"] = "in_progress"
-            logger.debug(
+            logger.trace(
                 f"🔄 Started shutdown of {component_type}",
                 extra={"class_name": self.__class__.__name__},
             )

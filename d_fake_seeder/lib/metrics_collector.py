@@ -18,10 +18,13 @@ from typing import Dict, List, Optional, Tuple
 
 import psutil
 
+# Setup logging (works both standalone and when imported)
+from d_fake_seeder.lib.logger import add_trace_to_logger
+
 # fmt: on
 
-# Setup logging (works both standalone and when imported)
-logger = logging.getLogger(__name__)
+
+logger = add_trace_to_logger(logging.getLogger(__name__))
 if not logger.handlers:
     handler = logging.StreamHandler()
     handler.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
@@ -93,21 +96,21 @@ class MetricsCollector:
                     self.process = candidates[0][1]
                     self.pid = self.process.pid
                     cmdline = self.process.cmdline()
-                    logger.debug(f"Found DFakeSeeder main app: PID {self.pid}")
-                    logger.debug(f"Process: {self.process.name()}")
-                    logger.debug(f"Command: {' '.join(cmdline[:3])}")
+                    logger.trace(f"Found DFakeSeeder main app: PID {self.pid}")
+                    logger.trace(f"Process: {self.process.name()}")
+                    logger.trace(f"Command: {' '.join(cmdline[:3])}")
                     if len(candidates) > 1:
-                        logger.debug(f"Note: Found {len(candidates)} candidates, selected Python process")
+                        logger.trace(f"Note: Found {len(candidates)} candidates, selected Python process")
 
             if self.process:
-                logger.debug(f"Monitoring process: {self.process.name()} (PID: {self.pid})")
+                logger.trace(f"Monitoring process: {self.process.name()} (PID: {self.pid})")
                 # Capture baseline metrics
                 self.baseline_metrics = self.collect_metrics()
             else:
-                logger.debug("Warning: DFakeSeeder process not found")
+                logger.error("Warning: DFakeSeeder process not found")
 
         except Exception as e:
-            logger.debug(f"Error initializing process: {e}")
+            logger.error(f"Error initializing process: {e}")
 
     def collect_metrics(self) -> Dict:
         """

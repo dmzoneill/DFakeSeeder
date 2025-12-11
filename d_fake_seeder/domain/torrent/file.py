@@ -11,7 +11,7 @@ from d_fake_seeder.lib.logger import logger
 
 class File:
     def __init__(self, filepath):
-        logger.debug("Startup", extra={"class_name": self.__class__.__name__})
+        logger.trace("Startup", extra={"class_name": self.__class__.__name__})
         while True:
             try:
                 self.filepath = filepath
@@ -43,7 +43,7 @@ class File:
 
     @property
     def total_size(self):
-        logger.debug("File size", extra={"class_name": self.__class__.__name__})
+        logger.trace("File size", extra={"class_name": self.__class__.__name__})
         size = 0
         torrent_info = self.torrent_header[b"info"]
         if b"files" in torrent_info:
@@ -58,12 +58,12 @@ class File:
 
     @property
     def name(self):
-        logger.debug("File name", extra={"class_name": self.__class__.__name__})
+        logger.trace("File name", extra={"class_name": self.__class__.__name__})
         torrent_info = self.torrent_header[b"info"]
         return torrent_info[b"name"].decode("utf-8")
 
     def __str__(self):
-        logger.debug("File attribute", extra={"class_name": self.__class__.__name__})
+        logger.trace("File attribute", extra={"class_name": self.__class__.__name__})
         announce = self.torrent_header[b"announce"].decode("utf-8")
         result = "Announce: %s\n" % announce
 

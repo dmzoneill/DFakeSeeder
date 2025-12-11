@@ -79,7 +79,7 @@ class UTPConnection:
         self.min_window_size = utp_config.get("min_window_size", UTPConstants.MIN_WINDOW_SIZE)
         self.target_delay_ms = utp_config.get("target_delay_ms", UTPConstants.TARGET_DELAY_MS)
 
-        logger.debug(
+        logger.trace(
             "µTP connection initialized",
             extra={
                 "class_name": self.__class__.__name__,
@@ -99,7 +99,7 @@ class UTPConnection:
             True if connection established successfully
         """
         try:
-            logger.debug(
+            logger.trace(
                 f"Initiating µTP connection to {self.remote_addr}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -118,7 +118,7 @@ class UTPConnection:
                     await self._send_syn()
 
             if self.state == "CONNECTED":
-                logger.debug(
+                logger.trace(
                     "µTP connection established",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -179,7 +179,7 @@ class UTPConnection:
             return
 
         try:
-            logger.debug("Closing µTP connection", extra={"class_name": self.__class__.__name__})
+            logger.trace("Closing µTP connection", extra={"class_name": self.__class__.__name__})
 
             # Send FIN packet
             self.state = "FIN_SENT"
@@ -363,7 +363,7 @@ class UTPConnection:
         # Send STATE (ACK)
         await self._send_state()
 
-        logger.debug("µTP connection accepted", extra={"class_name": self.__class__.__name__})
+        logger.trace("µTP connection accepted", extra={"class_name": self.__class__.__name__})
 
     async def _handle_state(self, header: Dict):
         """Handle STATE packet (ACK)"""
@@ -402,7 +402,7 @@ class UTPConnection:
         await self._send_state()
         self.state = "CLOSED"
 
-        logger.debug(
+        logger.trace(
             "µTP connection closed by peer",
             extra={"class_name": self.__class__.__name__},
         )

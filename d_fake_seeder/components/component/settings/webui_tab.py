@@ -154,7 +154,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             webui_settings = getattr(self.app_settings, "webui", {})
             self._load_webui_settings(webui_settings)
 
-            self.logger.debug("Web UI tab settings loaded")
+            self.logger.info("Web UI tab settings loaded")
 
         except Exception as e:
             self.logger.error(f"Error loading Web UI tab settings: {e}")
@@ -398,7 +398,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
                 self.show_notification(validation_errors["port"], "error")
             else:
                 self.app_settings.set("webui.port", port)
-                self.logger.debug(f"Web UI port changed to: {port}")
+                self.logger.trace(f"Web UI port changed to: {port}")
         except Exception as e:
             self.logger.error(f"Error changing Web UI port: {e}")
 
@@ -407,7 +407,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         try:
             interface = entry.get_text()
             self.app_settings.set("webui.interface", interface)
-            self.logger.debug(f"Web UI interface changed to: {interface}")
+            self.logger.trace(f"Web UI interface changed to: {interface}")
         except Exception as e:
             self.logger.error(f"Error changing Web UI interface: {e}")
 
@@ -426,7 +426,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         try:
             username = entry.get_text()
             self.app_settings.set("webui.username", username)
-            self.logger.debug(f"Web UI username changed to: {username}")
+            self.logger.trace(f"Web UI username changed to: {username}")
         except Exception as e:
             self.logger.error(f"Error changing Web UI username: {e}")
 
@@ -435,7 +435,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         try:
             password = entry.get_text()
             self.app_settings.set("webui.password", password)
-            self.logger.debug("Web UI password changed")
+            self.logger.trace("Web UI password changed")
         except Exception as e:
             self.logger.error(f"Error changing Web UI password: {e}")
 
@@ -488,7 +488,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         try:
             failures = int(spin_button.get_value())
             self.app_settings.set("webui.ban_after_failures", failures)
-            self.logger.debug(f"Ban after failures changed to: {failures}")
+            self.logger.error(f"Ban after failures changed to: {failures}")
         except Exception as e:
             self.logger.error(f"Error changing ban after failures: {e}")
 
@@ -497,7 +497,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         try:
             timeout = int(spin_button.get_value())
             self.app_settings.set("webui.session_timeout_minutes", timeout)
-            self.logger.debug(f"Session timeout changed to: {timeout} minutes")
+            self.logger.trace(f"Session timeout changed to: {timeout} minutes")
         except Exception as e:
             self.logger.error(f"Error changing session timeout: {e}")
 
@@ -560,28 +560,28 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
     def handle_model_changed(self, source, data_obj, data_changed):
         """Handle model change events."""
-        self.logger.debug(
+        self.logger.trace(
             "WebUITab model changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_attribute_changed(self, source, key, value):
         """Handle attribute change events."""
-        self.logger.debug(
+        self.logger.trace(
             "WebUITab attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_settings_changed(self, source, data_obj, data_changed):
         """Handle settings change events."""
-        self.logger.debug(
+        self.logger.trace(
             "WebUITab settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes."""
-        self.logger.debug(
+        self.logger.trace(
             "WebUITab update view",
             extra={"class_name": self.__class__.__name__},
         )

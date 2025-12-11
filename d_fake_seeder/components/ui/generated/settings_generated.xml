@@ -232,6 +232,7 @@
                                                     <property name="tooltip-text" translatable="yes">How often to check for new torrent files (in seconds)</property>
                                                     <property name="digits">0</property>
                                                     <property name="numeric">True</property>
+                                                    <property name="editable">True</property>
                                                 </object>
                                             </child>
                                             <child>
@@ -666,6 +667,8 @@
                                             <property name="tooltip-text" translatable="yes">Port for incoming BitTorrent connections (1024-65535)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -748,6 +751,8 @@
                                             <property name="tooltip-text" translatable="yes">Maximum number of connections to all torrents</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -781,6 +786,8 @@
                                             <property name="tooltip-text" translatable="yes">Maximum number of connections per individual torrent</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -814,6 +821,8 @@
                                             <property name="tooltip-text" translatable="yes">Maximum number of simultaneous upload slots</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -926,6 +935,8 @@
                                             <property name="tooltip-text" translatable="yes">Proxy server port number</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1077,6 +1088,8 @@
                                             <property name="tooltip-text" translatable="yes">Timeout for peer handshake in seconds</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1111,6 +1124,8 @@
                                             <property name="tooltip-text" translatable="yes">Timeout for reading peer messages in seconds</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1145,6 +1160,8 @@
                                             <property name="tooltip-text" translatable="yes">Interval for sending keep alive messages in seconds</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1179,6 +1196,8 @@
                                             <property name="tooltip-text" translatable="yes">Interval for contacting peers in seconds</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1235,6 +1254,8 @@
                                             <property name="tooltip-text" translatable="yes">Timeout for UDP seeder connections in seconds</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1269,6 +1290,8 @@
                                             <property name="tooltip-text" translatable="yes">Timeout for HTTP seeder connections in seconds</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1302,6 +1325,8 @@
                                             <property name="tooltip-text" translatable="yes">Minimum port for seeder connections</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1334,6 +1359,8 @@
                                             <property name="tooltip-text" translatable="yes">Maximum port for seeder connections</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1367,6 +1394,8 @@
                                             <property name="tooltip-text" translatable="yes">Minimum transaction ID for tracker communication</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1399,6 +1428,8 @@
                                             <property name="tooltip-text" translatable="yes">Maximum transaction ID for tracker communication</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1432,6 +1463,8 @@
                                             <property name="tooltip-text" translatable="yes">Number of peers to request from tracker</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1488,6 +1521,8 @@
                                             <property name="tooltip-text" translatable="yes">Probability of seeder upload activity (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1522,6 +1557,8 @@
                                             <property name="tooltip-text" translatable="yes">Probability of peer being idle (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1556,6 +1593,8 @@
                                             <property name="tooltip-text" translatable="yes">Progress distribution for starting peers (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1589,6 +1628,8 @@
                                             <property name="tooltip-text" translatable="yes">Progress distribution for middle progress peers (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1622,6 +1663,8 @@
                                             <property name="tooltip-text" translatable="yes">Progress distribution for almost complete peers (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1656,6 +1699,8 @@
                                             <property name="tooltip-text" translatable="yes">Probability of peer behavior analysis (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1690,6 +1735,8 @@
                                             <property name="tooltip-text" translatable="yes">Probability of peer status changes (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1724,6 +1771,8 @@
                                             <property name="tooltip-text" translatable="yes">Probability of peer dropping out (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1758,6 +1807,8 @@
                                             <property name="tooltip-text" translatable="yes">Percentage of connections to rotate (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1836,6 +1887,8 @@
                                             <property name="tooltip-text" translatable="yes">Global upload speed limit in KB/s (0 = unlimited)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">10</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -1877,6 +1930,8 @@
                                             <property name="tooltip-text" translatable="yes">Global download speed limit in KB/s (0 = unlimited)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">10</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -1968,6 +2023,8 @@
                                                     <property name="tooltip-text" translatable="yes">Alternative upload speed limit in KB/s</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">10</property>
+                                                    <property name="editable">True</property>
+                                                    <property name="numeric">True</property>
                                                 </object>
                                             </child>
                                         </object>
@@ -2001,6 +2058,8 @@
                                                     <property name="tooltip-text" translatable="yes">Alternative download speed limit in KB/s</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">10</property>
+                                                    <property name="editable">True</property>
+                                                    <property name="numeric">True</property>
                                                 </object>
                                             </child>
                                         </object>
@@ -2086,6 +2145,8 @@
                                                     <property name="tooltip-text" translatable="yes">Start hour (24-hour format)</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">4</property>
+                                                    <property name="editable">True</property>
+                                                    <property name="numeric">True</property>
                                                 </object>
                                             </child>
                                             <child>
@@ -2109,6 +2170,8 @@
                                                     <property name="tooltip-text" translatable="yes">Start minute</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">4</property>
+                                                    <property name="editable">True</property>
+                                                    <property name="numeric">True</property>
                                                 </object>
                                             </child>
                                             <child>
@@ -2134,6 +2197,8 @@
                                                     <property name="tooltip-text" translatable="yes">End hour (24-hour format)</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">4</property>
+                                                    <property name="editable">True</property>
+                                                    <property name="numeric">True</property>
                                                 </object>
                                             </child>
                                             <child>
@@ -2157,6 +2222,8 @@
                                                     <property name="tooltip-text" translatable="yes">End minute</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">4</property>
+                                                    <property name="editable">True</property>
+                                                    <property name="numeric">True</property>
                                                 </object>
                                             </child>
                                         </object>
@@ -2218,6 +2285,487 @@
                                                         <object class="GtkCheckButton" id="settings_scheduler_sun">
                                                             <property name="label" translatable="yes">Sun</property>
                                                             <property name="tooltip-text" translatable="yes">Sunday</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Speed Distribution Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Speed Distribution&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">18</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Upload Distribution -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">12</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Upload Distribution</property>
+                                            <property name="halign">start</property>
+                                            <attributes>
+                                                <attribute name="weight" value="bold"/></attributes>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="orientation">vertical</property>
+                                            <property name="spacing">8</property>
+                                            <property name="margin-start">12</property>
+
+                                            <!-- Upload algorithm -->
+                                            <child>
+                                                <object class="GtkBox">
+                                                    <property name="spacing">12</property>
+                                                    <property name="halign">fill</property>
+                                                    <child>
+                                                        <object class="GtkLabel">
+                                                            <property name="label" translatable="yes">Algorithm:</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">20</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkDropDown" id="settings_upload_distribution_algorithm">
+                                                            <property name="model">
+                                                                <object class="GtkStringList">
+                                                                    <items>
+                                                                        <item translatable="yes">Off</item>
+                                                                        <item translatable="yes">Pareto</item>
+                                                                        <item translatable="yes">Power-Law</item>
+                                                                        <item translatable="yes">Log-Normal</item>
+                                                                    </items>
+                                                                </object>
+                                                            </property>
+                                                            <property name="tooltip-text" translatable="yes">Speed distribution algorithm for uploads</property>
+                                                            <property name="hexpand">True</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+
+                                            <!-- Upload spread percentage -->
+                                            <child>
+                                                <object class="GtkBox">
+                                                    <property name="spacing">12</property>
+                                                    <property name="halign">fill</property>
+                                                    <child>
+                                                        <object class="GtkLabel">
+                                                            <property name="label" translatable="yes">Spread percentage:</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">20</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkSpinButton" id="settings_upload_spread_percentage">
+                                                            <property name="adjustment">
+                                                                <object class="GtkAdjustment">
+                                                                    <property name="lower">0</property>
+                                                                    <property name="upper">100</property>
+                                                                    <property name="value">50</property>
+                                                                    <property name="step-increment">1</property>
+                                                                    <property name="page-increment">10</property>
+                                                                </object>
+                                                            </property>
+                                                            <property name="tooltip-text" translatable="yes">Algorithm-specific spread parameter (0-100)</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">10</property>
+                                                            <property name="editable">True</property>
+                                                            <property name="numeric">True</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+
+                                            <!-- Upload redistribution mode -->
+                                            <child>
+                                                <object class="GtkBox">
+                                                    <property name="spacing">12</property>
+                                                    <property name="halign">fill</property>
+                                                    <child>
+                                                        <object class="GtkLabel">
+                                                            <property name="label" translatable="yes">Redistribution mode:</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">20</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkDropDown" id="settings_upload_redistribution_mode">
+                                                            <property name="model">
+                                                                <object class="GtkStringList">
+                                                                    <items>
+                                                                        <item translatable="yes">Tick speed</item>
+                                                                        <item translatable="yes">Time Interval</item>
+                                                                        <item translatable="yes">Announce Interval</item>
+                                                                    </items>
+                                                                </object>
+                                                            </property>
+                                                            <property name="tooltip-text" translatable="yes">How often to redistribute speeds</property>
+                                                            <property name="hexpand">True</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+
+                                            <!-- Upload custom interval -->
+                                            <child>
+                                                <object class="GtkBox" id="settings_upload_custom_interval_box">
+                                                    <property name="spacing">12</property>
+                                                    <property name="halign">fill</property>
+                                                    <property name="visible">False</property>
+                                                    <child>
+                                                        <object class="GtkLabel">
+                                                            <property name="label" translatable="yes">Custom interval (minutes):</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">20</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkSpinButton" id="settings_upload_custom_interval">
+                                                            <property name="adjustment">
+                                                                <object class="GtkAdjustment">
+                                                                    <property name="lower">1</property>
+                                                                    <property name="upper">1440</property>
+                                                                    <property name="value">5</property>
+                                                                    <property name="step-increment">1</property>
+                                                                    <property name="page-increment">5</property>
+                                                                </object>
+                                                            </property>
+                                                            <property name="tooltip-text" translatable="yes">Custom redistribution interval in minutes</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">10</property>
+                                                            <property name="editable">True</property>
+                                                            <property name="numeric">True</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+
+                                            <!-- Upload stopped min percentage -->
+                                            <child>
+                                                <object class="GtkBox">
+                                                    <property name="spacing">12</property>
+                                                    <property name="halign">fill</property>
+                                                    <child>
+                                                        <object class="GtkLabel">
+                                                            <property name="label" translatable="yes">Stopped min %:</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">20</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkSpinButton" id="settings_upload_stopped_min">
+                                                            <property name="adjustment">
+                                                                <object class="GtkAdjustment">
+                                                                    <property name="lower">0</property>
+                                                                    <property name="upper">100</property>
+                                                                    <property name="value">20</property>
+                                                                    <property name="step-increment">1</property>
+                                                                    <property name="page-increment">10</property>
+                                                                </object>
+                                                            </property>
+                                                            <property name="tooltip-text" translatable="yes">Minimum percentage of torrents to stop completely</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">10</property>
+                                                            <property name="editable">True</property>
+                                                            <property name="numeric">True</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+
+                                            <!-- Upload stopped max percentage -->
+                                            <child>
+                                                <object class="GtkBox">
+                                                    <property name="spacing">12</property>
+                                                    <property name="halign">fill</property>
+                                                    <child>
+                                                        <object class="GtkLabel">
+                                                            <property name="label" translatable="yes">Stopped max %:</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">20</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkSpinButton" id="settings_upload_stopped_max">
+                                                            <property name="adjustment">
+                                                                <object class="GtkAdjustment">
+                                                                    <property name="lower">0</property>
+                                                                    <property name="upper">100</property>
+                                                                    <property name="value">40</property>
+                                                                    <property name="step-increment">1</property>
+                                                                    <property name="page-increment">10</property>
+                                                                </object>
+                                                            </property>
+                                                            <property name="tooltip-text" translatable="yes">Maximum percentage of torrents to stop completely</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">10</property>
+                                                            <property name="editable">True</property>
+                                                            <property name="numeric">True</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Download Distribution -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">12</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Download Distribution</property>
+                                            <property name="halign">start</property>
+                                            <attributes>
+                                                <attribute name="weight" value="bold"/>
+                                            </attributes>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="orientation">vertical</property>
+                                            <property name="spacing">8</property>
+                                            <property name="margin-start">12</property>
+
+                                            <!-- Download algorithm -->
+                                            <child>
+                                                <object class="GtkBox">
+                                                    <property name="spacing">12</property>
+                                                    <property name="halign">fill</property>
+                                                    <child>
+                                                        <object class="GtkLabel">
+                                                            <property name="label" translatable="yes">Algorithm:</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">20</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkDropDown" id="settings_download_distribution_algorithm">
+                                                            <property name="model">
+                                                                <object class="GtkStringList">
+                                                                    <items>
+                                                                        <item translatable="yes">Off</item>
+                                                                        <item translatable="yes">Pareto</item>
+                                                                        <item translatable="yes">Power-Law</item>
+                                                                        <item translatable="yes">Log-Normal</item>
+                                                                    </items>
+                                                                </object>
+                                                            </property>
+                                                            <property name="tooltip-text" translatable="yes">Speed distribution algorithm for downloads</property>
+                                                            <property name="hexpand">True</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+
+                                            <!-- Download spread percentage -->
+                                            <child>
+                                                <object class="GtkBox">
+                                                    <property name="spacing">12</property>
+                                                    <property name="halign">fill</property>
+                                                    <child>
+                                                        <object class="GtkLabel">
+                                                            <property name="label" translatable="yes">Spread percentage:</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">20</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkSpinButton" id="settings_download_spread_percentage">
+                                                            <property name="adjustment">
+                                                                <object class="GtkAdjustment">
+                                                                    <property name="lower">0</property>
+                                                                    <property name="upper">100</property>
+                                                                    <property name="value">50</property>
+                                                                    <property name="step-increment">1</property>
+                                                                    <property name="page-increment">10</property>
+                                                                </object>
+                                                            </property>
+                                                            <property name="tooltip-text" translatable="yes">Algorithm-specific spread parameter (0-100)</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">10</property>
+                                                            <property name="editable">True</property>
+                                                            <property name="numeric">True</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+
+                                            <!-- Download redistribution mode -->
+                                            <child>
+                                                <object class="GtkBox">
+                                                    <property name="spacing">12</property>
+                                                    <property name="halign">fill</property>
+                                                    <child>
+                                                        <object class="GtkLabel">
+                                                            <property name="label" translatable="yes">Redistribution mode:</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">20</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkDropDown" id="settings_download_redistribution_mode">
+                                                            <property name="model">
+                                                                <object class="GtkStringList">
+                                                                    <items>
+                                                                        <item translatable="yes">Tick speed</item>
+                                                                        <item translatable="yes">Time Interval</item>
+                                                                        <item translatable="yes">Announce Interval</item>
+                                                                    </items>
+                                                                </object>
+                                                            </property>
+                                                            <property name="tooltip-text" translatable="yes">How often to redistribute speeds</property>
+                                                            <property name="hexpand">True</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+
+                                            <!-- Download custom interval -->
+                                            <child>
+                                                <object class="GtkBox" id="settings_download_custom_interval_box">
+                                                    <property name="spacing">12</property>
+                                                    <property name="halign">fill</property>
+                                                    <property name="visible">False</property>
+                                                    <child>
+                                                        <object class="GtkLabel">
+                                                            <property name="label" translatable="yes">Custom interval (minutes):</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">20</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkSpinButton" id="settings_download_custom_interval">
+                                                            <property name="adjustment">
+                                                                <object class="GtkAdjustment">
+                                                                    <property name="lower">1</property>
+                                                                    <property name="upper">1440</property>
+                                                                    <property name="value">5</property>
+                                                                    <property name="step-increment">1</property>
+                                                                    <property name="page-increment">5</property>
+                                                                </object>
+                                                            </property>
+                                                            <property name="tooltip-text" translatable="yes">Custom redistribution interval in minutes</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">10</property>
+                                                            <property name="editable">True</property>
+                                                            <property name="numeric">True</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+
+                                            <!-- Download stopped min percentage -->
+                                            <child>
+                                                <object class="GtkBox">
+                                                    <property name="spacing">12</property>
+                                                    <property name="halign">fill</property>
+                                                    <child>
+                                                        <object class="GtkLabel">
+                                                            <property name="label" translatable="yes">Stopped min %:</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">20</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkSpinButton" id="settings_download_stopped_min">
+                                                            <property name="adjustment">
+                                                                <object class="GtkAdjustment">
+                                                                    <property name="lower">0</property>
+                                                                    <property name="upper">100</property>
+                                                                    <property name="value">20</property>
+                                                                    <property name="step-increment">1</property>
+                                                                    <property name="page-increment">10</property>
+                                                                </object>
+                                                            </property>
+                                                            <property name="tooltip-text" translatable="yes">Minimum percentage of torrents to stop completely</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">10</property>
+                                                            <property name="editable">True</property>
+                                                            <property name="numeric">True</property>
+                                                        </object>
+                                                    </child>
+                                                </object>
+                                            </child>
+
+                                            <!-- Download stopped max percentage -->
+                                            <child>
+                                                <object class="GtkBox">
+                                                    <property name="spacing">12</property>
+                                                    <property name="halign">fill</property>
+                                                    <child>
+                                                        <object class="GtkLabel">
+                                                            <property name="label" translatable="yes">Stopped max %:</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">center</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">20</property>
+                                                        </object>
+                                                    </child>
+                                                    <child>
+                                                        <object class="GtkSpinButton" id="settings_download_stopped_max">
+                                                            <property name="adjustment">
+                                                                <object class="GtkAdjustment">
+                                                                    <property name="lower">0</property>
+                                                                    <property name="upper">100</property>
+                                                                    <property name="value">40</property>
+                                                                    <property name="step-increment">1</property>
+                                                                    <property name="page-increment">10</property>
+                                                                </object>
+                                                            </property>
+                                                            <property name="tooltip-text" translatable="yes">Maximum percentage of torrents to stop completely</property>
+                                                            <property name="hexpand">False</property>
+                                                            <property name="width-chars">10</property>
+                                                            <property name="editable">True</property>
+                                                            <property name="numeric">True</property>
                                                         </object>
                                                     </child>
                                                 </object>
@@ -2548,6 +3096,8 @@
                                             <property name="tooltip-text" translatable="yes">How often to announce to trackers (60-7200 seconds)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -2581,6 +3131,8 @@
                                             <property name="tooltip-text" translatable="yes">Minimum time between announces (10-3600 seconds)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -2614,6 +3166,8 @@
                                             <property name="tooltip-text" translatable="yes">How often to scrape tracker for swarm statistics</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -2780,6 +3334,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum number of nodes in the routing table</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -2834,6 +3390,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Interval between DHT announcements (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -2873,6 +3431,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Timeout for DHT bootstrap operations (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -2912,6 +3472,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Timeout for DHT queries (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -2973,6 +3535,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum number of DHT nodes to maintain</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -3005,6 +3569,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum number of nodes per bucket</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -3037,6 +3603,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum number of concurrent DHT queries</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -3187,6 +3755,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Interval for DHT statistics updates (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -3268,6 +3838,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum DHT queries per second</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -3515,6 +4087,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Interval between PEX message exchanges (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -3554,6 +4128,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum peers to include in a PEX message</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -3586,6 +4162,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum dropped peers to track for PEX</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -3639,6 +4217,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Number of synthetic peers to generate</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -3714,6 +4294,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Size of metadata pieces in bytes</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -3753,6 +4335,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Timeout for metadata requests (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -3877,6 +4461,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Connection timeout for extensions (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -3916,6 +4502,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Keep alive interval for connections (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -4019,6 +4607,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">General timeout for extension operations (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -4058,6 +4648,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum size for extension messages (bytes)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -4118,6 +4710,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Extension statistics update interval (seconds)</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -4199,6 +4793,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum extension messages per second</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -4588,6 +5184,8 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Conservative profile upload speed</property>
+                                    <property name="editable">True</property>
+                                    <property name="numeric">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">0</property>
@@ -4623,6 +5221,8 @@
                                         <property name="column">1</property>
                                         <property name="row">1</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -4655,6 +5255,8 @@
                                         <property name="column">1</property>
                                         <property name="row">2</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -4687,6 +5289,8 @@
                                         <property name="column">1</property>
                                         <property name="row">3</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -4718,6 +5322,8 @@
                                         <property name="column">1</property>
                                         <property name="row">4</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -4751,6 +5357,8 @@
                                         <property name="column">1</property>
                                         <property name="row">5</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -4784,6 +5392,8 @@
                                         <property name="column">1</property>
                                         <property name="row">6</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
                         </object>
@@ -4837,6 +5447,8 @@
                                         <property name="column">1</property>
                                         <property name="row">0</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -4868,6 +5480,8 @@
                                         <property name="column">1</property>
                                         <property name="row">1</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -4901,6 +5515,8 @@
                                         <property name="column">1</property>
                                         <property name="row">2</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -4934,6 +5550,8 @@
                                         <property name="column">1</property>
                                         <property name="row">3</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -4965,6 +5583,8 @@
                                         <property name="column">1</property>
                                         <property name="row">4</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -4998,6 +5618,8 @@
                                         <property name="column">1</property>
                                         <property name="row">5</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5031,6 +5653,8 @@
                                         <property name="column">1</property>
                                         <property name="row">6</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
                         </object>
@@ -5084,6 +5708,8 @@
                                         <property name="column">1</property>
                                         <property name="row">0</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5115,6 +5741,8 @@
                                         <property name="column">1</property>
                                         <property name="row">1</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5148,6 +5776,8 @@
                                         <property name="column">1</property>
                                         <property name="row">2</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5181,6 +5811,8 @@
                                         <property name="column">1</property>
                                         <property name="row">3</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5212,6 +5844,8 @@
                                         <property name="column">1</property>
                                         <property name="row">4</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5245,6 +5879,8 @@
                                         <property name="column">1</property>
                                         <property name="row">5</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5278,6 +5914,8 @@
                                         <property name="column">1</property>
                                         <property name="row">6</property>
                                     </layout>
+                                        <property name="editable">True</property>
+                                        <property name="numeric">True</property>
                                 </object>
                             </child>
                         </object>
@@ -5353,6 +5991,8 @@
                                     <property name="digits">1</property>
                                             <property name="tooltip-text" translatable="yes">Rate of adaptation to swarm behavior</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -5385,6 +6025,8 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Number of peers to analyze for behavior patterns</property>
                                             <property name="hexpand">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -5519,6 +6161,8 @@
                                             <property name="tooltip-text" translatable="yes">Port for web interface (1024-65535)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                     <child>
@@ -5732,6 +6376,8 @@
                                                     <property name="tooltip-text" translatable="yes">Automatic logout after inactivity (5-1440 minutes)</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">8</property>
+                                                    <property name="editable">True</property>
+                                                    <property name="numeric">True</property>
                                                 </object>
                                             </child>
                                         </object>
@@ -5841,8 +6487,499 @@
                         </object>
                     </child>
 
-                    <!-- Advanced Tab (temporarily disabled due to extensive XML structure issues) -->
-                    <!-- <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/advanced.xml"/> -->
+                    <!-- Advanced Tab -->
+                    <child>
+                        <object class="GtkScrolledWindow" id="settings_advanced_scroll" >
+    <property name="hscrollbar-policy">never</property>
+    <property name="vscrollbar-policy">automatic</property>
+    <child>
+        <object class="GtkBox" id="settings_advanced_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">18</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+
+            <!-- Warning -->
+            <child>
+                <object class="GtkInfoBar" id="settings_advanced_warning">
+                    <property name="message-type">warning</property>
+                    <property name="show-close-button">False</property>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="spacing">8</property>
+                            <child>
+                                <object class="GtkImage">
+                                    <property name="icon-name">dialog-warning-symbolic</property>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkLabel">
+                                <property name="label" translatable="yes">⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.</property>
+                                    <property name="wrap">True</property>
+                                    <property name="wrap-mode">word</property>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Search Settings -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                        <property name="label" translatable="yes">&lt;b&gt;Settings Search&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+                            <child>
+                                <object class="GtkSearchEntry" id="settings_search_entry">
+                                    <property name="placeholder-text" translatable="yes">Search settings...</property>
+                                    <property name="tooltip-text" translatable="yes">Search for settings across all tabs</property>
+                                    <property name="hexpand">True</property>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkButton" id="settings_search_clear">
+                                    <property name="icon-name">edit-clear-symbolic</property>
+                                    <property name="tooltip-text" translatable="yes">Clear search</property>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Logging Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                        <property name="label" translatable="yes">&lt;b&gt;Logging&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Log level -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Log Level:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkDropDown" id="settings_log_level">
+                                            <property name="model">
+                                                <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">DEBUG</item>
+                                                        <item translatable="yes">INFO</item>
+                                                        <item translatable="yes">WARNING</item>
+                                                        <item translatable="yes">ERROR</item>
+                                                        <item translatable="yes">CRITICAL</item>
+                                                    </items>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Minimum log level to record</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Log to file -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_log_to_file">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Save logs to file in addition to console</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Log to file</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Max log file size -->
+                            <child>
+                                <object class="GtkBox" id="settings_log_file_box">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <property name="sensitive">False</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Max log file size (MB):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_max_log_size">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1</property>
+                                                    <property name="upper">1000</property>
+                                                    <property name="value">10</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">10</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Maximum size of log file before rotation</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Performance Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                        <property name="label" translatable="yes">&lt;b&gt;Performance&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Disk cache size -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Disk cache size (MB):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_disk_cache_size">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1</property>
+                                                    <property name="upper">2048</property>
+                                                    <property name="value">64</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">32</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Amount of RAM to use for disk caching</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- UI refresh rate -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">UI refresh rate (sec):</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_ui_refresh_rate">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1</property>
+                                                    <property name="upper">60</property>
+                                                    <property name="value">9</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">5</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">How often to update the user interface</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                            <property name="editable">True</property>
+                                            <property name="numeric">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Network interface -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Network interface:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkEntry" id="settings_network_interface">
+                                            <property name="placeholder-text" translatable="yes">0.0.0.0 (all interfaces)</property>
+                                            <property name="tooltip-text" translatable="yes">IP address to bind to (0.0.0.0 for all interfaces)</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Expert Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                        <property name="label" translatable="yes">&lt;b&gt;Expert Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable debug mode -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_debug_mode">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable debug mode with extra logging and error details</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Enable debug mode</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Validate settings -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_validate_settings">
+                                            <property name="valign">center</property>
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Validate setting values and show warnings for invalid combinations</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Validate settings on change</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Auto-save settings -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_auto_save">
+                                            <property name="valign">center</property>
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Automatically save settings when changed</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Auto-save settings</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Keyboard Shortcuts Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                        <property name="label" translatable="yes">&lt;b&gt;Keyboard Shortcuts&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Shortcuts list -->
+                            <child>
+                                <object class="GtkListBox" id="settings_shortcuts_list">
+                                    <property name="selection-mode">none</property>
+                                    <property name="css-classes">boxed-list</property>
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="margin-start">12</property>
+                                            <property name="margin-end">12</property>
+                                            <property name="margin-top">8</property>
+                                            <property name="margin-bottom">8</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Open preferences</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="hexpand">True</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Ctrl+,</property>
+                                                    <property name="css-classes">keycap</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="margin-start">12</property>
+                                            <property name="margin-end">12</property>
+                                            <property name="margin-top">8</property>
+                                            <property name="margin-bottom">8</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Search settings</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="hexpand">True</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Ctrl+F</property>
+                                                    <property name="css-classes">keycap</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkBox">
+                                            <property name="spacing">12</property>
+                                            <property name="margin-start">12</property>
+                                            <property name="margin-end">12</property>
+                                            <property name="margin-top">8</property>
+                                            <property name="margin-bottom">8</property>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Reset to defaults</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="hexpand">True</property>
+                                                </object>
+                                            </child>
+                                            <child>
+                                                <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Ctrl+R</property>
+                                                    <property name="css-classes">keycap</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+    </child>
+</object>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">Advanced</property>
+                        </object>
+                    </child>
                 </object>
             </child>
         </object>

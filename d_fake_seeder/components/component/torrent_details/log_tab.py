@@ -106,7 +106,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             # Add handler to the main logger
             logger.addHandler(self._log_handler)
 
-            self.logger.debug("Log viewer handler set up successfully")
+            self.logger.info("Log viewer handler set up successfully")
 
         except Exception as e:
             self.logger.error(f"Error setting up log viewer handler: {e}")

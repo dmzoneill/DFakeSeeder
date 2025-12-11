@@ -42,7 +42,7 @@ class BaseSettingsTab(Component):
             builder: GTK Builder instance with UI loaded
             app_settings: Application settings instance
         """
-        logger.debug("Starting initialization for", "BaseTab")
+        logger.trace("Starting initialization for", "BaseTab")
         super().__init__()
 
         self.builder = builder
@@ -53,24 +53,24 @@ class BaseSettingsTab(Component):
         self._widgets: Dict[str, Any] = {}
 
         # Initialize tab-specific setup
-        logger.debug("About to call _init_widgets for", "BaseTab")
+        logger.trace("About to call _init_widgets for", "BaseTab")
         self._init_widgets()
-        logger.debug("Completed _init_widgets for", "BaseTab")
+        logger.trace("Completed _init_widgets for", "BaseTab")
 
         # Load settings BEFORE connecting signals to avoid circular loops
-        logger.debug("About to call _load_settings for", "BaseTab")
+        logger.trace("About to call _load_settings for", "BaseTab")
         self._load_settings()
-        logger.debug("Completed _load_settings for", "BaseTab")
+        logger.trace("Completed _load_settings for", "BaseTab")
 
         # Connect signals AFTER loading settings
-        logger.debug("About to call _connect_signals for", "BaseTab")
+        logger.trace("About to call _connect_signals for", "BaseTab")
         self._connect_signals()
-        logger.debug("Completed _connect_signals for", "BaseTab")
+        logger.trace("Completed _connect_signals for", "BaseTab")
 
-        logger.debug("About to call _setup_dependencies for", "BaseTab")
+        logger.trace("About to call _setup_dependencies for", "BaseTab")
         self._setup_dependencies()
-        logger.debug("Completed _setup_dependencies for", "BaseTab")
-        logger.debug("===== FULLY COMPLETED  =====", "BaseTab")
+        logger.trace("Completed _setup_dependencies for", "BaseTab")
+        logger.trace("===== FULLY COMPLETED  =====", "BaseTab")
 
     @property
     @abstractmethod
@@ -109,7 +109,7 @@ class BaseSettingsTab(Component):
         2. Calls CleanupMixin.cleanup() to clean tracked resources
         3. Clears widget cache
         """
-        logger.debug(
+        logger.trace(
             f"Cleaning up {self.tab_name} tab",
             extra={"class_name": self.__class__.__name__},
         )
@@ -129,7 +129,7 @@ class BaseSettingsTab(Component):
         # Clear widget cache
         self._widgets.clear()
 
-        logger.debug(
+        logger.trace(
             f"{self.tab_name} tab cleanup completed",
             extra={"class_name": self.__class__.__name__},
         )
@@ -177,7 +177,7 @@ class BaseSettingsTab(Component):
             for key, value in changed_settings.items():
                 self.app_settings.set(key, value)
 
-            self.logger.debug(f"{self.tab_name} tab settings saved: {len(changed_settings)} items")
+            self.logger.info(f"{self.tab_name} tab settings saved: {len(changed_settings)} items")
             return changed_settings
 
         except Exception as e:
@@ -232,7 +232,7 @@ class BaseSettingsTab(Component):
         """Reset tab settings to default values."""
         try:
             self._reset_tab_defaults()
-            self.logger.debug(f"{self.tab_name} tab reset to defaults")
+            self.logger.trace(f"{self.tab_name} tab reset to defaults")
         except Exception as e:
             self.logger.error(f"Error resetting {self.tab_name} tab to defaults: {e}")
 
@@ -254,7 +254,7 @@ class BaseSettingsTab(Component):
 
             # Log the change for debugging
             widget_name = getattr(widget, "get_name", lambda: "unknown")()
-            self.logger.debug(f"{self.tab_name} tab setting changed: {widget_name}")
+            self.logger.trace(f"{self.tab_name} tab setting changed: {widget_name}")
 
         except Exception as e:
             self.logger.error(f"Error handling setting change in {self.tab_name} tab: {e}")

@@ -73,7 +73,7 @@ class CleanupMixin:
         # Cleanup performed flag
         self._cleanup_done = False
 
-        logger.debug("CleanupMixin initialized", extra={"class_name": self.__class__.__name__})
+        logger.info("CleanupMixin initialized", extra={"class_name": self.__class__.__name__})
 
     def track_signal(self, obj: GObject.Object, handler_id: int) -> int:
         """
@@ -90,7 +90,7 @@ class CleanupMixin:
         try:
             obj_ref = weakref.ref(obj)
             self._tracked_signals.append((obj_ref, handler_id))
-            logger.debug(
+            logger.trace(
                 f"Tracking signal handler {handler_id} on {obj.__class__.__name__}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -115,7 +115,7 @@ class CleanupMixin:
             The binding (for convenience)
         """
         self._tracked_bindings.append(binding)
-        logger.debug("Tracking property binding", extra={"class_name": self.__class__.__name__})
+        logger.trace("Tracking property binding", extra={"class_name": self.__class__.__name__})
         return binding
 
     def track_timeout(self, source_id: int) -> int:
@@ -129,7 +129,7 @@ class CleanupMixin:
             The source_id (for convenience)
         """
         self._tracked_timeouts.append(source_id)
-        logger.debug(
+        logger.trace(
             f"Tracking timeout source {source_id}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -148,7 +148,7 @@ class CleanupMixin:
         try:
             store_ref = weakref.ref(store)
             self._tracked_stores.append(store_ref)
-            logger.debug(
+            logger.trace(
                 f"Tracking store {store.__class__.__name__}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -174,13 +174,13 @@ class CleanupMixin:
         - Clear all tracked ListStore data
         """
         if self._cleanup_done:
-            logger.debug(
+            logger.trace(
                 "Cleanup already performed, skipping",
                 extra={"class_name": self.__class__.__name__},
             )
             return
 
-        logger.debug(
+        logger.trace(
             f"Cleaning up resources: {len(self._tracked_signals)} signals, "
             f"{len(self._tracked_bindings)} bindings, "
             f"{len(self._tracked_timeouts)} timeouts, "
@@ -201,7 +201,7 @@ class CleanupMixin:
         self._cleanup_stores()
 
         self._cleanup_done = True
-        logger.debug("Cleanup completed", extra={"class_name": self.__class__.__name__})
+        logger.trace("Cleanup completed", extra={"class_name": self.__class__.__name__})
 
     def _cleanup_signals(self):
         """Disconnect all tracked signal handlers."""
@@ -224,7 +224,7 @@ class CleanupMixin:
                 disconnected += 1
 
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"Failed to disconnect handler {handler_id}: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -233,7 +233,7 @@ class CleanupMixin:
         self._tracked_signals.clear()
 
         if disconnected > 0:
-            logger.debug(
+            logger.trace(
                 f"Disconnected {disconnected} signal handlers ({failed} failed)",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -248,7 +248,7 @@ class CleanupMixin:
                 binding.unbind()
                 unbound += 1
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"Failed to unbind binding: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -257,7 +257,7 @@ class CleanupMixin:
         self._tracked_bindings.clear()
 
         if unbound > 0:
-            logger.debug(
+            logger.trace(
                 f"Unbound {unbound} property bindings ({failed} failed)",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -275,7 +275,7 @@ class CleanupMixin:
                     # Source already removed or invalid
                     pass
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"Failed to remove timeout source {source_id}: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -284,7 +284,7 @@ class CleanupMixin:
         self._tracked_timeouts.clear()
 
         if removed > 0:
-            logger.debug(
+            logger.trace(
                 f"Removed {removed} timeout sources ({failed} failed)",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -314,7 +314,7 @@ class CleanupMixin:
                     cleared += 1
 
             except Exception as e:
-                logger.debug(
+                logger.trace(
                     f"Failed to clear store: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -323,7 +323,7 @@ class CleanupMixin:
         self._tracked_stores.clear()
 
         if cleared > 0:
-            logger.debug(
+            logger.trace(
                 f"Cleared {cleared} data stores ({failed} failed)",
                 extra={"class_name": self.__class__.__name__},
             )

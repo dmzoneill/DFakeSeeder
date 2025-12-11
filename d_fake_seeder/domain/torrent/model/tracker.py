@@ -83,7 +83,7 @@ class Tracker(GObject.Object):
         self._response_times = []  # Keep last 10 response times for averaging
         self._last_update_time = current_time
 
-        logger.debug(
+        logger.trace(
             f"Tracker model initialized: {url} (tier {tier})",
             extra={"class_name": self.__class__.__name__},
         )
@@ -173,7 +173,7 @@ class Tracker(GObject.Object):
             if "tracker_name" in response_data:
                 self.set_property("tracker_name", response_data["tracker_name"])
 
-            logger.debug(
+            logger.trace(
                 f"Tracker {self.get_property('url')} updated successfully: "
                 f"S:{self.get_property('seeders')} L:{self.get_property('leechers')} "
                 f"RT:{response_time:.2f}s",
@@ -217,7 +217,7 @@ class Tracker(GObject.Object):
 
             # Log at DEBUG for first 2 attempts, WARNING for persistent failures
             if consecutive <= 2:
-                logger.debug(
+                logger.trace(
                     f"Tracker {self.get_property('url')} failed (attempt {consecutive}): {error_message}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -252,7 +252,7 @@ class Tracker(GObject.Object):
             if "downloaded" in scrape_data:
                 self.set_property("downloaded", scrape_data["downloaded"])
 
-            logger.debug(
+            logger.trace(
                 f"Tracker {self.get_property('url')} scrape updated: "
                 f"S:{self.get_property('seeders')} L:{self.get_property('leechers')}",
                 extra={"class_name": self.__class__.__name__},

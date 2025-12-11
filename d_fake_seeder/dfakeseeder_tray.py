@@ -47,7 +47,7 @@ class TrayApplication:
     """Main tray application with comprehensive menu system"""
 
     def __init__(self, instance_checker=None):
-        logger.debug(
+        logger.trace(
             "Initializing TrayApplication",
             extra={"class_name": self.__class__.__name__},
         )
@@ -120,7 +120,7 @@ class TrayApplication:
             # Initialize translation manager with language from D-Bus settings
             # Do NOT let it access AppSettings/file system - only use D-Bus cache
             self._setup_translations()
-            logger.debug(
+            logger.trace(
                 "Translation manager initialized",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -173,7 +173,7 @@ class TrayApplication:
                 except Exception:
                     target_language = "en"
 
-            logger.debug(
+            logger.trace(
                 f"Tray using language from D-Bus cache: {target_language}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -182,7 +182,7 @@ class TrayApplication:
             self.translation_manager.switch_language(target_language)
             self._ = self.translation_manager.get_translate_func()
 
-            logger.debug(
+            logger.trace(
                 "GTK3 TranslationManager initialized for tray",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -199,7 +199,7 @@ class TrayApplication:
             if self.translation_manager:
                 actual_language = self.translation_manager.switch_language(language_code)
                 self._ = self.translation_manager.get_translate_func()
-                logger.debug(
+                logger.trace(
                     f"Tray switched to language: {actual_language}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -236,7 +236,7 @@ class TrayApplication:
 
             if os.path.exists(icon_path):
                 self.indicator.set_icon_full(icon_path, "DFakeSeeder")
-                logger.debug(
+                logger.trace(
                     f"Using tray icon from: {icon_path}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -245,7 +245,7 @@ class TrayApplication:
                 icon_theme = Gtk.IconTheme.get_default()
                 if icon_theme.has_icon("dfakeseeder"):
                     self.indicator.set_icon("dfakeseeder")
-                    logger.debug(
+                    logger.trace(
                         "Using system theme dfakeseeder icon",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -257,7 +257,7 @@ class TrayApplication:
                         extra={"class_name": self.__class__.__name__},
                     )
 
-            logger.debug(
+            logger.trace(
                 "System tray indicator created",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -275,13 +275,13 @@ class TrayApplication:
             self.connected = self.dbus_client.connected
 
             if self.connected:
-                logger.debug(
+                logger.trace(
                     "Connected to main application via D-Bus",
                     extra={"class_name": self.__class__.__name__},
                 )
                 self._update_indicator_status(True)
             else:
-                logger.debug(
+                logger.trace(
                     "Failed to connect to main application",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -336,7 +336,7 @@ class TrayApplication:
                 settings_json = self.dbus_client.get_settings()
                 if settings_json:
                     self.settings_cache = json.loads(settings_json)
-                    logger.debug(
+                    logger.trace(
                         f"Loaded {len(self.settings_cache)} settings",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -353,12 +353,12 @@ class TrayApplication:
             if not self.dbus_handlers_setup:
                 self.dbus_client.subscribe("SettingsChanged", self._on_settings_changed)
                 self.dbus_handlers_setup = True
-                logger.debug(
+                logger.trace(
                     "D-Bus signal handlers set up",
                     extra={"class_name": self.__class__.__name__},
                 )
             else:
-                logger.debug(
+                logger.trace(
                     "D-Bus handlers already set up, skipping",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -386,7 +386,7 @@ class TrayApplication:
             # Check for language changes first (before updating cache)
             language_changed = False
             if "language" in changes:
-                logger.debug(
+                logger.trace(
                     f"Language change detected in tray: {changes['language']}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -428,7 +428,7 @@ class TrayApplication:
     def _handle_language_change(self, new_language: str):
         """Handle language change by updating translations and recreating menu"""
         try:
-            logger.debug(
+            logger.trace(
                 f"Tray handling language change to: {new_language}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -436,7 +436,7 @@ class TrayApplication:
             # Switch language using TranslationManager
             if self.translation_manager:
                 actual_language = self._switch_language(new_language)
-                logger.debug(
+                logger.trace(
                     f"Tray TranslationManager switched to: {actual_language}",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -458,7 +458,7 @@ class TrayApplication:
     def _recreate_menu_with_translations(self):
         """Recreate the entire menu with updated translations"""
         try:
-            logger.debug(
+            logger.trace(
                 "Recreating tray menu with new translations",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -475,7 +475,7 @@ class TrayApplication:
             # Recreate menu with new translations
             self._create_menu()
 
-            logger.debug(
+            logger.trace(
                 "Tray menu recreated with new translations",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -493,7 +493,7 @@ class TrayApplication:
 
         # Only rebuild menu structure if connection state changed or not yet cached
         if not self.menu_structure_cached or connection_state_changed:
-            logger.debug(
+            logger.trace(
                 f"Full menu rebuild (cached={self.menu_structure_cached}, "
                 f"state_changed={connection_state_changed})",
                 extra={"class_name": self.__class__.__name__},
@@ -503,7 +503,7 @@ class TrayApplication:
             self.last_connection_state = self.connected
         else:
             # Menu structure is cached, just update dynamic values
-            logger.debug(
+            logger.trace(
                 "Using cached menu, updating dynamic values only",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -579,7 +579,7 @@ class TrayApplication:
 
         # Register menu items for translation if TranslationManager supports it
         if self.translation_manager and hasattr(self.translation_manager, "register_simple_text"):
-            logger.debug(
+            logger.trace(
                 "Menu items could be registered for automatic translation",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -683,7 +683,7 @@ class TrayApplication:
                 lang_name = language_names.get(lang_code, lang_code.upper())
                 languages.append((lang_code, lang_name))
 
-            logger.debug(
+            logger.trace(
                 f"Loaded {len(languages)} languages for tray menu",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -860,7 +860,7 @@ class TrayApplication:
             )
 
             if result and result.unpack()[0]:
-                logger.debug(
+                logger.trace(
                     "Preferences dialog opened successfully",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -896,7 +896,7 @@ class TrayApplication:
             )
 
             if result and result.unpack()[0]:
-                logger.debug(
+                logger.trace(
                     "About dialog opened successfully",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -939,7 +939,7 @@ class TrayApplication:
                 # Check if command exists (for CLI commands)
                 if cmd[0] in ["dfs", "dfakeseeder"]:
                     if not shutil.which(cmd[0]):
-                        logger.debug(
+                        logger.trace(
                             f"Command '{cmd[0]}' not found, trying next method",
                             extra={"class_name": self.__class__.__name__},
                         )
@@ -975,7 +975,7 @@ class TrayApplication:
                     break
 
                 except Exception as e:
-                    logger.debug(
+                    logger.trace(
                         f"Failed to launch via {method_name}: {e}",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -1003,7 +1003,7 @@ class TrayApplication:
             self._connect_to_dbus()
             return False  # Don't repeat
         except Exception as e:
-            logger.debug(
+            logger.trace(
                 f"Reconnection after launch failed: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -1014,19 +1014,19 @@ class TrayApplication:
         try:
             changes = {"application_quit_requested": True}
             if self.dbus_client and self.connected:
-                logger.debug(
+                logger.trace(
                     "🚀 TRAY QUIT: Sending quit signal to main application via D-Bus",
                     extra={"class_name": self.__class__.__name__},
                 )
                 try:
                     result = self.dbus_client.update_settings(changes)
-                    logger.debug(
+                    logger.trace(
                         f"✅ TRAY QUIT: Quit signal sent successfully, result: {result}",
                         extra={"class_name": self.__class__.__name__},
                     )
                 except Exception as e:
                     # Main app may disconnect immediately on quit, which is expected
-                    logger.debug(
+                    logger.trace(
                         f"Main app disconnected during quit (expected): {e}",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -1051,7 +1051,7 @@ class TrayApplication:
     def _on_quit_tray_only(self, menu_item):
         """Handle quit tray only (when main app is not running)"""
         try:
-            logger.debug(
+            logger.trace(
                 "Quitting tray application only",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -1074,7 +1074,7 @@ class TrayApplication:
             if self.connected and self.dbus_client:
                 # Ping the main application to verify it's still alive
                 if not self.dbus_client.ping():
-                    logger.debug(
+                    logger.trace(
                         "Main application no longer responding, marking as disconnected",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -1086,7 +1086,7 @@ class TrayApplication:
                     # Note: periodic update will handle reconnection, no need for separate timer
             elif not self.connected:
                 # Try to reconnect if we're not connected
-                logger.debug(
+                logger.trace(
                     "Attempting to reconnect to main application",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -1099,7 +1099,7 @@ class TrayApplication:
                     reconnected = self.connected
 
                 if reconnected and self.connected:
-                    logger.debug(
+                    logger.trace(
                         "Main application is now available, reconnected",
                         extra={"class_name": self.__class__.__name__},
                     )
@@ -1121,7 +1121,7 @@ class TrayApplication:
 
     def quit(self):
         """Quit the tray application"""
-        logger.debug(
+        logger.trace(
             "Shutting down tray application",
             extra={"class_name": self.__class__.__name__},
         )
@@ -1162,7 +1162,7 @@ def main():
     # ========== MULTI-METHOD SINGLE INSTANCE CHECK ==========
     # GTK3 doesn't have built-in single instance support like GTK4
     # Use D-Bus, Socket, and PID file checking
-    logger.debug("Checking for existing tray instance using multi-method approach", "TrayApplication")
+    logger.trace("Checking for existing tray instance using multi-method approach", "TrayApplication")
 
     # Note: Use different app_name and different D-Bus service for tray
     # Tray doesn't register D-Bus service, so we skip D-Bus check
@@ -1183,7 +1183,7 @@ def main():
         instance_checker.cleanup()
         return False
 
-    logger.debug(
+    logger.trace(
         "No existing tray instance detected - proceeding with tray startup",
         "TrayApplication",
     )

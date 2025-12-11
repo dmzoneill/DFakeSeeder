@@ -56,6 +56,11 @@ class NotificationMixin:
             if not overlay:
                 overlay = self._create_notification_overlay()
 
+            # If no overlay available, just log and return
+            if not overlay:
+                logger.trace(f"Notification (no UI): {message} ({notification_type})")
+                return
+
             # Create notification label
             notification_label = Gtk.Label(label=message)
             notification_label.set_halign(Gtk.Align.CENTER)
@@ -79,16 +84,52 @@ class NotificationMixin:
             # Auto-hide after timeout
             GLib.timeout_add(timeout, lambda: (self._hide_notification(notification_label), False)[1])
 
-            logger.debug(f"Notification shown: {message} ({notification_type})")
+            logger.trace(f"Notification shown: {message} ({notification_type})")
 
         except Exception as e:
             logger.error(f"Error showing notification: {e}")
 
     def _create_notification_overlay(self) -> Gtk.Overlay:
-        """Create notification overlay if it doesn't exist."""
-        # This should be implemented by the class using this mixin
-        # to integrate with their specific UI structure
-        raise NotImplementedError("Notification overlay creation must be implemented by the using class")
+        """
+        Create notification overlay if it doesn't exist.
+
+        Default implementation creates a simple overlay attached to the settings window.
+        Classes can override this to integrate with their specific UI structure.
+        """
+        # Check if we already have an overlay stored
+        if hasattr(self, "_notification_overlay"):
+            return self._notification_overlay
+
+        # Try to get the settings window from builder
+        window = None
+        if hasattr(self, "builder"):
+            window = self.builder.get_object("settings_window")
+
+        if not window:
+            # Fallback: return None and show_notification will skip overlay display
+            logger.trace("No settings window found, notifications will be skipped")
+            return None
+
+        # Create an overlay for the window
+        # Get the current child of the window
+        current_child = window.get_child()
+
+        # Create overlay
+        overlay = Gtk.Overlay()
+
+        # Remove current child from window and add to overlay
+        if current_child:
+            window.set_child(None)
+            overlay.set_child(current_child)
+
+        # Set overlay as window's child
+        window.set_child(overlay)
+
+        # Cache it
+        self._notification_overlay = overlay
+
+        logger.trace("Created notification overlay for settings window")
+        return overlay
 
     def _hide_notification(self, notification_label: Gtk.Label) -> bool:
         """
@@ -222,7 +263,7 @@ class KeyboardShortcutMixin:
             for key_combo, callback in shortcuts.items():
                 self._add_keyboard_shortcut(window, key_combo, callback)
 
-            logger.debug(f"Set up {len(shortcuts)} keyboard shortcuts")
+            logger.trace(f"Set up {len(shortcuts)} keyboard shortcuts")
 
         except Exception as e:
             logger.error(f"Error setting up keyboard shortcuts: {e}")
@@ -239,7 +280,7 @@ class KeyboardShortcutMixin:
         try:
             # This is a simplified implementation
             # In a real implementation, you'd parse key_combo and set up proper GTK accelerators
-            logger.debug(f"Would set up shortcut: {key_combo}")
+            logger.trace(f"Would set up shortcut: {key_combo}")
             # TODO: Implement actual GTK accelerator setup
         except Exception as e:
             logger.error(f"Error adding keyboard shortcut {key_combo}: {e}")
@@ -365,12 +406,12 @@ class TranslationMixin:
         try:
             # Skip language dropdown - it's managed separately
             if dropdown_id in ["settings_language", "language_dropdown"]:
-                self.logger.debug(f"Skipping translation for language dropdown: {dropdown_id}")
+                self.logger.trace(f"Skipping translation for language dropdown: {dropdown_id}")
                 return
 
             dropdown = self.get_widget(dropdown_id)  # type: ignore[attr-defined]
             if not dropdown:
-                self.logger.debug(f"Dropdown widget not found: {dropdown_id}")
+                self.logger.error(f"Dropdown widget not found: {dropdown_id}")
                 return
 
             # Store current selection index to preserve it
@@ -392,17 +433,17 @@ class TranslationMixin:
                 if dropdown_id in self._original_dropdown_items:
                     # Use cached original items
                     items = self._original_dropdown_items[dropdown_id]
-                    self.logger.debug(f"Using cached original items for {dropdown_id}")
+                    self.logger.trace(f"Using cached original items for {dropdown_id}")
                 else:
                     # Extract current items and cache them as original
                     items = self._extract_dropdown_items(dropdown)
                     if not items:
-                        self.logger.debug(f"No items found in dropdown {dropdown_id}")
+                        self.logger.trace(f"No items found in dropdown {dropdown_id}")
                         return
 
                     # Cache these as the original items
                     self._original_dropdown_items[dropdown_id] = items.copy()
-                    self.logger.debug(f"Cached original items for {dropdown_id}")
+                    self.logger.trace(f"Cached original items for {dropdown_id}")
 
             # Translate all items
             translated_items = [translate_func(item) for item in items]
@@ -419,7 +460,7 @@ class TranslationMixin:
             if 0 <= current_selection < len(items):
                 dropdown.set_selected(current_selection)
 
-            self.logger.debug(f"Successfully translated dropdown {dropdown_id} with {len(items)} items")
+            self.logger.info(f"Successfully translated dropdown {dropdown_id} with {len(items)} items")
 
         except Exception as e:
             self.logger.error(f"Error translating dropdown {dropdown_id}: {e}", exc_info=True)
@@ -449,7 +490,7 @@ class TranslationMixin:
                         items.append(item_text)
                 return items
 
-            logger.debug(f"Unsupported dropdown model type: {type(model)}")
+            logger.trace(f"Unsupported dropdown model type: {type(model)}")
             return []
 
         except Exception as e:
@@ -471,7 +512,7 @@ class TranslationMixin:
 
         # Only proceed if we have translation capability
         if not (hasattr(self, "model") and hasattr(self.model, "get_translate_func")):
-            self.logger.debug("No translation capability available")
+            self.logger.trace("No translation capability available")
             return
 
         # Discover all dropdown widgets dynamically
@@ -488,14 +529,14 @@ class TranslationMixin:
 
                     # Skip language dropdowns - they're managed separately
                     if widget_id in ["settings_language", "language_dropdown"]:
-                        self.logger.debug(f"Skipping special language dropdown: {widget_id}")
+                        self.logger.trace(f"Skipping special language dropdown: {widget_id}")
                         continue
 
                     # Translate this dropdown using its current items
                     try:
                         self.translate_dropdown_items(widget_id)
                         dropdowns_translated += 1
-                        self.logger.debug(f"Translated dropdown: {widget_id}")
+                        self.logger.trace(f"Translated dropdown: {widget_id}")
                     except Exception as e:
                         self.logger.error(f"Failed to translate dropdown {widget_id}: {e}")
 
@@ -503,7 +544,7 @@ class TranslationMixin:
             if hasattr(self, "builder") and self.builder:
                 self._discover_and_translate_uncached_dropdowns()
 
-            self.logger.debug(
+            self.logger.trace(
                 f"Dropdown translation completed for {tab_name}: {dropdowns_translated}/{dropdowns_found} translated"
             )
 
@@ -546,7 +587,7 @@ class TranslationMixin:
 
                         try:
                             self.translate_dropdown_items(widget_id)
-                            logger.debug(f"Discovered and translated uncached dropdown: {widget_id}")
+                            logger.trace(f"Discovered and translated uncached dropdown: {widget_id}")
                         except Exception as e:
                             logger.error(f"Failed to translate discovered dropdown {widget_id}: {e}")
 
@@ -575,14 +616,14 @@ class TranslationMixin:
             if hasattr(self.model, "connect"):
                 self.model.connect("language-changed", self._on_language_changed)
                 self._language_change_connected = True
-                logger.debug("Connected to language-changed signal for dropdown translation")
+                logger.trace("Connected to language-changed signal for dropdown translation")
         except Exception as e:
             logger.error(f"Error connecting to language change signal: {e}")
 
     def _on_language_changed(self, source, new_language):
         """Handle language change events by refreshing dropdown translations."""
         try:
-            logger.debug(f"Refreshing dropdown translations for language: {new_language}")
+            logger.trace(f"Refreshing dropdown translations for language: {new_language}")
             # Dynamically translate all dropdowns
             self.translate_all_dropdowns()
         except Exception as e:

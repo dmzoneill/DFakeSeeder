@@ -34,7 +34,7 @@ class TorrentPeerManager:
         self.last_stats_update = 0
         self.stats_update_interval = torrent_peer_manager_config.get("stats_update_interval_seconds", 2.0)
 
-        logger.debug(
+        logger.trace(
             "🎯 TorrentPeerManager initialized",
             extra={"class_name": self.__class__.__name__},
         )
@@ -84,7 +84,7 @@ class TorrentPeerManager:
                         peer_addresses = seeder.peers
                         if peer_addresses:
                             self.current_manager.add_peers(peer_addresses)
-                            logger.debug(
+                            logger.trace(
                                 f"➕ Added {len(peer_addresses)} peers for {torrent_id}",
                                 extra={"class_name": self.__class__.__name__},
                             )
@@ -124,7 +124,7 @@ class TorrentPeerManager:
         with self.lock:
             if self.current_manager:
                 self.current_manager.add_peers(peer_addresses)
-                logger.debug(
+                logger.trace(
                     f"🔄 Updated {len(peer_addresses)} peers for current torrent",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -147,7 +147,7 @@ class TorrentPeerManager:
                         seeds = sum(1 for stats in self.peer_stats_cache.values() if stats["is_seed"])
 
                         if total_peers > 0:
-                            logger.debug(
+                            logger.trace(
                                 f"📊 Peer stats: {total_peers} total, " f"{connected_peers} connected, {seeds} seeds",
                                 extra={"class_name": self.__class__.__name__},
                             )
@@ -198,7 +198,7 @@ class TorrentPeerManager:
             suffix = "".join(random.choices(string.ascii_letters + string.digits, k=12))
             peer_id = (prefix + suffix)[:20]
 
-            logger.debug(
+            logger.trace(
                 f"🆔 Generated peer ID: {peer_id}",
                 extra={"class_name": self.__class__.__name__},
             )

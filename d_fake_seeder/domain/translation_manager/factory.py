@@ -55,7 +55,7 @@ def detect_gtk_version() -> str:
 
         # No GTK loaded - default to GTK4 for new applications
         # We avoid trying to load GTK versions here to prevent conflicts
-        logger.debug("No GTK version loaded, defaulting to GTK4", "TranslationManagerFactory")
+        logger.trace("No GTK version loaded, defaulting to GTK4", "TranslationManagerFactory")
         return "4"
 
     except Exception as e:
@@ -97,7 +97,7 @@ def create_translation_manager(
     # Determine GTK version to use
     if gtk_version is None and auto_detect:
         detected_version = detect_gtk_version()
-        logger.debug(
+        logger.trace(
             f"Auto-detected GTK version: {detected_version}",
             "TranslationManagerFactory",
         )
@@ -114,7 +114,7 @@ def create_translation_manager(
         if gtk_version == "3":
             from .gtk3_implementation import TranslationManagerGTK3
 
-            logger.debug("Creating GTK3 TranslationManager", "TranslationManagerFactory")
+            logger.trace("Creating GTK3 TranslationManager", "TranslationManagerFactory")
             return TranslationManagerGTK3(
                 domain=domain,
                 localedir=localedir,
@@ -125,7 +125,7 @@ def create_translation_manager(
         else:  # GTK4
             from .gtk4_implementation import TranslationManagerGTK4
 
-            logger.debug("Creating GTK4 TranslationManager", "TranslationManagerFactory")
+            logger.trace("Creating GTK4 TranslationManager", "TranslationManagerFactory")
             return TranslationManagerGTK4(
                 domain=domain,
                 localedir=localedir,
@@ -199,7 +199,7 @@ def create_gtk3_translation_manager(
     try:
         from .gtk3_implementation import TranslationManagerGTK3
 
-        logger.debug("Creating GTK3 TranslationManager directly", "TranslationManagerFactory")
+        logger.trace("Creating GTK3 TranslationManager directly", "TranslationManagerFactory")
         return TranslationManagerGTK3(
             domain=domain,
             localedir=localedir,
@@ -230,7 +230,7 @@ def create_gtk4_translation_manager(
     try:
         from .gtk4_implementation import TranslationManagerGTK4
 
-        logger.debug("Creating GTK4 TranslationManager directly", "TranslationManagerFactory")
+        logger.trace("Creating GTK4 TranslationManager directly", "TranslationManagerFactory")
         return TranslationManagerGTK4(
             domain=domain,
             localedir=localedir,
@@ -298,7 +298,7 @@ def validate_gtk_environment(gtk_version: str) -> bool:
     """
     # Validate version is supported before attempting to load GTK
     if gtk_version not in ["3", "4"]:
-        logger.debug(
+        logger.trace(
             f"Invalid GTK version: {gtk_version}. Must be '3' or '4'.",
             "TranslationManagerFactory",
         )
@@ -319,5 +319,5 @@ def validate_gtk_environment(gtk_version: str) -> bool:
         return widget is not None
 
     except Exception as e:
-        logger.debug(f"GTK{gtk_version} validation failed: {e}", "TranslationManagerFactory")
+        logger.error(f"GTK{gtk_version} validation failed: {e}", "TranslationManagerFactory")
         return False

@@ -23,7 +23,7 @@ from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 class Seeder:
     def __init__(self, torrent):
-        logger.debug("Startup", extra={"class_name": self.__class__.__name__})
+        logger.trace("Startup", extra={"class_name": self.__class__.__name__})
         self.ready = False
         self.seeder = None
         self.settings = AppSettings.get_instance()

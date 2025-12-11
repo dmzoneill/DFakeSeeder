@@ -55,7 +55,7 @@ class PeerExchangeExtension:
         self.generate_synthetic_peers = pex_config.get("generate_synthetic_peers", True)
         self.synthetic_peer_count = pex_config.get("synthetic_peer_count", 20)
 
-        logger.debug(
+        logger.trace(
             "PEX extension initialized",
             extra={
                 "class_name": self.__class__.__name__,
@@ -72,7 +72,7 @@ class PeerExchangeExtension:
         if self.generate_synthetic_peers:
             self._generate_synthetic_peers()
 
-        logger.debug(
+        logger.trace(
             "PEX extension initialized and ready",
             extra={"class_name": self.__class__.__name__},
         )
@@ -103,7 +103,7 @@ class PeerExchangeExtension:
                 dropped_peer_list = self._decode_peers(dropped_peers)
                 self._process_dropped_peers(dropped_peer_list)
 
-            logger.debug(
+            logger.trace(
                 f"Processed PEX message: {len(added_peers)} added, " f"{len(dropped_peer_list)} dropped",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -157,12 +157,12 @@ class PeerExchangeExtension:
                 # Update sent peers tracking
                 self.sent_peers.update(peers_to_send)
 
-                logger.debug(
+                logger.trace(
                     f"Sent PEX message: {len(peers_to_send)} added, " f"{len(dropped_peers)} dropped",
                     extra={"class_name": self.__class__.__name__},
                 )
             else:
-                logger.debug(
+                logger.trace(
                     "Failed to send PEX message",
                     extra={"class_name": self.__class__.__name__},
                 )
@@ -187,7 +187,7 @@ class PeerExchangeExtension:
             self.known_peers.add(peer_tuple)
             self.peer_flags[peer_tuple] = flags
 
-            logger.debug(
+            logger.trace(
                 f"Added peer to PEX: {ip}:{port}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -204,7 +204,7 @@ class PeerExchangeExtension:
         self.known_peers.discard(peer_tuple)
         self.peer_flags.pop(peer_tuple, None)
 
-        logger.debug(
+        logger.trace(
             f"Removed peer from PEX: {ip}:{port}",
             extra={"class_name": self.__class__.__name__},
         )
@@ -290,7 +290,7 @@ class PeerExchangeExtension:
 
             # Optionally connect to new peers (for real client behavior)
             # In fake seeding, we just track them
-            logger.debug(
+            logger.trace(
                 f"Learned about peer via PEX: {ip}:{port}",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -388,7 +388,7 @@ class PeerExchangeExtension:
 
                 self.add_peer(ip, port, flags)
 
-            logger.debug(
+            logger.trace(
                 f"Generated {self.synthetic_peer_count} synthetic peers for PEX",
                 extra={"class_name": self.__class__.__name__},
             )
@@ -420,4 +420,4 @@ class PeerExchangeExtension:
         self.sent_peers.clear()
         self.peer_flags.clear()
 
-        logger.debug("PEX extension cleaned up", extra={"class_name": self.__class__.__name__})
+        logger.trace("PEX extension cleaned up", extra={"class_name": self.__class__.__name__})

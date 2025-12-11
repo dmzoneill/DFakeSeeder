@@ -40,7 +40,7 @@ class DataUpdateMixin:
             if hasattr(model, "connect"):
                 model.connect("data-changed", callback)
                 model.connect("selection-changed", callback)
-            logger.debug(f"Data binding set up for {getattr(self, 'tab_name', 'unknown')} tab")
+            logger.trace(f"Data binding set up for {getattr(self, 'tab_name', 'unknown')} tab")
         except Exception as e:
             logger.error(f"Error setting up data binding: {e}")
 
@@ -66,7 +66,7 @@ class DataUpdateMixin:
             else:
                 return default
         except Exception as e:
-            logger.warning(f"Error getting property {property_name}: {e}")
+            logger.error(f"Error getting property {property_name}: {e}")
             return default
 
     def format_property_value(self, value: Any) -> str:
