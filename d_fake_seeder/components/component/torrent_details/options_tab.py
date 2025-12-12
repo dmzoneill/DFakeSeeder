@@ -192,6 +192,12 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if isinstance(dynamic_widget, Gtk.SpinButton):
                 dynamic_widget.set_numeric(True)  # Filter non-numeric input
                 dynamic_widget.set_can_focus(True)  # Enable keyboard focus
+                dynamic_widget.set_editable(True)  # Allow text editing
+
+            # Configure entry-specific properties
+            if isinstance(dynamic_widget, Gtk.Entry):
+                dynamic_widget.set_can_focus(True)  # Enable keyboard focus
+                dynamic_widget.set_editable(True)  # Allow text editing
 
             # Configure widget based on type
             if isinstance(dynamic_widget, Gtk.Switch):

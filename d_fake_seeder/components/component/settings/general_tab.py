@@ -232,7 +232,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
             watch_folder_delete_added = self.get_widget("watch_folder_delete_added")
             if watch_folder_delete_added:
-                self.set_switch_state(watch_folder_delete_added, watch_folder_config.get("delete_added_torrents", False))
+                self.set_switch_state(
+                    watch_folder_delete_added, watch_folder_config.get("delete_added_torrents", False)
+                )
 
             self.logger.info("General tab settings loaded successfully", "GeneralTab")
         except Exception as e:

@@ -259,7 +259,9 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 self._widgets["pex_max_dropped"].set_value(pex_config.get("max_dropped_peers", 20))
 
             if self._widgets["pex_synthetic_peers"]:
-                self.set_switch_state(self._widgets["pex_synthetic_peers"], pex_config.get("generate_synthetic_peers", True))
+                self.set_switch_state(
+                    self._widgets["pex_synthetic_peers"], pex_config.get("generate_synthetic_peers", True)
+                )
 
             if self._widgets["pex_synthetic_count"]:
                 self._widgets["pex_synthetic_count"].set_value(pex_config.get("synthetic_peer_count", 20))
@@ -298,7 +300,9 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 self._widgets["metadata_timeout"].set_value(extended_config.get("metadata_timeout", 60))
 
             if self._widgets["metadata_synthetic"]:
-                self.set_switch_state(self._widgets["metadata_synthetic"], extended_config.get("metadata_synthetic", True))
+                self.set_switch_state(
+                    self._widgets["metadata_synthetic"], extended_config.get("metadata_synthetic", True)
+                )
 
             if self._widgets["extension_timeout"]:
                 self._widgets["extension_timeout"].set_value(extended_config.get("extension_timeout", 30))
@@ -309,16 +313,22 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 )
 
             if self._widgets["track_extension_stats"]:
-                self.set_switch_state(self._widgets["track_extension_stats"], extended_config.get("track_extension_stats", True))
+                self.set_switch_state(
+                    self._widgets["track_extension_stats"], extended_config.get("track_extension_stats", True)
+                )
 
             if self._widgets["stats_update_interval"]:
                 self._widgets["stats_update_interval"].set_value(extended_config.get("stats_update_interval", 60))
 
             if self._widgets["validate_extensions"]:
-                self.set_switch_state(self._widgets["validate_extensions"], extended_config.get("validate_extensions", True))
+                self.set_switch_state(
+                    self._widgets["validate_extensions"], extended_config.get("validate_extensions", True)
+                )
 
             if self._widgets["limit_extension_msgs"]:
-                self.set_switch_state(self._widgets["limit_extension_msgs"], extended_config.get("limit_extension_msgs", True))
+                self.set_switch_state(
+                    self._widgets["limit_extension_msgs"], extended_config.get("limit_extension_msgs", True)
+                )
 
             if self._widgets["max_msgs_per_second"]:
                 self._widgets["max_msgs_per_second"].set_value(extended_config.get("max_msgs_per_second", 50))

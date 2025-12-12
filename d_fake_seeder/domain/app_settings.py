@@ -126,6 +126,18 @@ class AppSettings(GObject.GObject):
         self._defaults = {}
         self._last_modified = 0
 
+        # Transient settings (runtime-only, not persisted until flush)
+        self._transient_values = {}  # key -> value mapping for transient settings
+        self._transient_keys = set(
+            [
+                # Speed distribution runtime values
+                "speed_distribution.upload.current_speed",
+                "speed_distribution.download.current_speed",
+                "speed_distribution.upload.current_values",
+                "speed_distribution.download.current_values",
+            ]
+        )
+
         # Create config directory if needed (like Settings does)
         home_config_path = os.path.expanduser("~/.config/dfakeseeder")
         if not os.path.exists(home_config_path):
@@ -231,13 +243,50 @@ class AppSettings(GObject.GObject):
             data = data.setdefault(k, {})
         data[keys[-1]] = value
 
+    def _is_transient_key(self, key):
+        """Check if a key is marked as transient (runtime-only)."""
+        # Check exact match or prefix match
+        for transient_key in self._transient_keys:
+            if key == transient_key or key.startswith(transient_key + "."):
+                return True
+        return False
+
+    def flush_transient_values(self):
+        """
+        Flush all transient values to persistent storage.
+        Called during application shutdown to preserve final runtime state.
+        """
+        if not self._transient_values:
+            self.logger.trace("No transient values to flush", extra={"class_name": self.__class__.__name__})
+            return
+
+        self.logger.info(
+            f"Flushing {len(self._transient_values)} transient values to disk",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        with AppSettings._lock:
+            for key, value in self._transient_values.items():
+                # Persist transient value to settings (bypassing transient flag)
+                self._set_nested_value(self._settings, key, value)
+                self.logger.trace(f"Flushed transient: {key} = {value}", extra={"class_name": self.__class__.__name__})
+
+            # Update both storage systems
+            super().__setattr__("settings", self._settings.copy())
+            # Save to disk
+            self._save_settings_unlocked()
+
+        self.logger.info("Transient values flushed successfully", extra={"class_name": self.__class__.__name__})
+
     def load_settings(self):
         """Load settings from files (compatible with Settings API)"""
         self.logger.trace("Settings load", extra={"class_name": self.__class__.__name__})
         try:
             # Skip reload if we're currently saving (prevents file watch feedback loop)
             if hasattr(self, "_saving") and self._saving:
-                self.logger.trace("Skipping load_settings - save in progress", extra={"class_name": self.__class__.__name__})
+                self.logger.trace(
+                    "Skipping load_settings - save in progress", extra={"class_name": self.__class__.__name__}
+                )
                 return
 
             # Check if the file has been modified since last load
@@ -345,6 +394,7 @@ class AppSettings(GObject.GObject):
         finally:
             # Clear save flag to allow file watch reload (with small delay to ensure file system settles)
             import time
+
             time.sleep(0.1)  # 100ms delay to ensure file system events complete
             self._saving = False
             self.logger.trace("Save flag cleared, file watch can reload", extra={"class_name": self.__class__.__name__})
@@ -352,6 +402,10 @@ class AppSettings(GObject.GObject):
     def save_quit(self):
         """Save settings and stop file watching (Settings API compatibility)"""
         self.logger.trace("Settings quit", extra={"class_name": self.__class__.__name__})
+
+        # Flush transient values to persistent storage before shutdown
+        self.flush_transient_values()
+
         if hasattr(self, "_observer"):
             self._observer.stop()
         self.save_settings()
@@ -365,26 +419,46 @@ class AppSettings(GObject.GObject):
         # Fallback to direct key access for backward compatibility
         return self._settings.get(key, default)
 
-    def set(self, key, value):
-        """Set a setting value and save immediately"""
+    def set(self, key, value, transient=False):
+        """Set a setting value and save immediately (unless transient).
+
+        Args:
+            key: Setting key (supports dot notation)
+            value: Setting value
+            transient: If True, value is stored in memory only (no file save)
+                      Transient values are persisted on shutdown via flush_transient_values()
+        """
         logger.trace("Setting method called", "AppSettings")
-        logger.trace(f"Setting: {key} = {value}", "AppSettings")
+        logger.trace(f"Setting: {key} = {value} (transient={transient})", "AppSettings")
+
+        # Check if key is in transient keys list
+        is_transient_key = self._is_transient_key(key) or transient
 
         # Determine if we need to emit signals (done outside the lock to avoid deadlock)
         should_emit = False
         with AppSettings._lock:
-            # Get old value using nested access for dot notation keys
-            old_value = self._get_nested_value(self._settings, key)
+            # Get old value
+            if is_transient_key:
+                old_value = self._transient_values.get(key)
+            else:
+                old_value = self._get_nested_value(self._settings, key)
+
             logger.trace(f"Old value: {old_value}", "AppSettings")
             if old_value != value:
-                logger.debug("Value changed, updating and saving", "AppSettings")
-                # Use nested setter to properly handle dot notation (e.g., "watch_folder.enabled")
-                self._set_nested_value(self._settings, key, value)
-                # Update both storage systems directly to avoid recursion
-                super().__setattr__("settings", self._settings.copy())
-                logger.trace("About to save settings", "AppSettings")
-                self._save_settings_unlocked()
-                logger.info("Settings saved", "AppSettings")
+                if is_transient_key:
+                    # Store in transient values only (no file save)
+                    logger.trace("Storing transient value (no file save)", "AppSettings")
+                    self._transient_values[key] = value
+                else:
+                    # Normal persistent setting
+                    logger.debug("Value changed, updating and saving", "AppSettings")
+                    # Use nested setter to properly handle dot notation (e.g., "watch_folder.enabled")
+                    self._set_nested_value(self._settings, key, value)
+                    # Update both storage systems directly to avoid recursion
+                    super().__setattr__("settings", self._settings.copy())
+                    logger.trace("About to save settings", "AppSettings")
+                    self._save_settings_unlocked()
+                    logger.info("Settings saved", "AppSettings")
                 should_emit = True
             else:
                 logger.trace("Value unchanged, skipping update", "AppSettings")

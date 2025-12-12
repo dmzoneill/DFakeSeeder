@@ -188,11 +188,15 @@ class SpeedDistributionManager:
 
             # Apply speeds to torrents
             speeds_list = []
+            speed_values = {}  # Track current speeds for transient storage
             for torrent in torrents:
                 new_speed = speed_distribution.get(torrent.file_path, 0.0)
 
                 # Update torrent upload speed
                 torrent.upload_speed = int(new_speed)
+
+                # Store speed value for transient state
+                speed_values[torrent.file_path] = new_speed
 
                 # Get category for display
                 category = speed_distribution.get(f"{torrent.file_path}_category", None)
@@ -227,6 +231,11 @@ class SpeedDistributionManager:
             print("=" * 80 + "\n")
 
             self.last_upload_redistribution = time.time()
+
+            # Store current state in transient settings (will be saved on shutdown only)
+            self.settings.set("speed_distribution.upload.current_speed", total_bandwidth, transient=True)
+            self.settings.set("speed_distribution.upload.current_values", speed_values, transient=True)
+
             logger.debug(
                 f"Redistributed upload speeds: {algorithm} algorithm, "
                 f"{len(torrents)} torrents, {total_bandwidth:.1f} KB/s total",
@@ -304,11 +313,15 @@ class SpeedDistributionManager:
 
             # Apply speeds to torrents
             speeds_list = []
+            speed_values = {}  # Track current speeds for transient storage
             for torrent in torrents:
                 new_speed = speed_distribution.get(torrent.file_path, 0.0)
 
                 # Update torrent download speed
                 torrent.download_speed = int(new_speed)
+
+                # Store speed value for transient state
+                speed_values[torrent.file_path] = new_speed
 
                 # Get category for display
                 category = speed_distribution.get(f"{torrent.file_path}_category", None)
@@ -343,6 +356,11 @@ class SpeedDistributionManager:
             print("=" * 80 + "\n")
 
             self.last_download_redistribution = time.time()
+
+            # Store current state in transient settings (will be saved on shutdown only)
+            self.settings.set("speed_distribution.download.current_speed", total_bandwidth, transient=True)
+            self.settings.set("speed_distribution.download.current_values", speed_values, transient=True)
+
             logger.debug(
                 f"Redistributed download speeds: {algorithm} algorithm, "
                 f"{len(torrents)} torrents, {total_bandwidth:.1f} KB/s total",

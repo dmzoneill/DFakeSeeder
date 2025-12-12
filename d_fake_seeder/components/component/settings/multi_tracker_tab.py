@@ -157,10 +157,14 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
 
             # Announce strategy
             if self._widgets["announce_to_all_tiers"]:
-                self.set_switch_state(self._widgets["announce_to_all_tiers"], mt_config.get("announce_to_all_tiers", False))
+                self.set_switch_state(
+                    self._widgets["announce_to_all_tiers"], mt_config.get("announce_to_all_tiers", False)
+                )
 
             if self._widgets["announce_to_all_in_tier"]:
-                self.set_switch_state(self._widgets["announce_to_all_in_tier"], mt_config.get("announce_to_all_in_tier", False))
+                self.set_switch_state(
+                    self._widgets["announce_to_all_in_tier"], mt_config.get("announce_to_all_in_tier", False)
+                )
 
             # Health monitoring
             health_config = mt_config.get("health_monitoring", {})
@@ -169,7 +173,9 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
                 self.set_switch_state(self._widgets["health_monitoring_enabled"], health_config.get("enabled", True))
 
             if self._widgets["response_time_tracking"]:
-                self.set_switch_state(self._widgets["response_time_tracking"], health_config.get("track_response_time", True))
+                self.set_switch_state(
+                    self._widgets["response_time_tracking"], health_config.get("track_response_time", True)
+                )
 
             if self._widgets["response_time_smoothing"]:
                 self._widgets["response_time_smoothing"].set_value(health_config.get("response_time_smoothing", 0.8))
@@ -178,12 +184,14 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
             advanced_config = mt_config.get("advanced", {})
 
             if self._widgets["auto_disable_failed_trackers"]:
-                self.set_switch_state(self._widgets["auto_disable_failed_trackers"], 
-                    advanced_config.get("auto_disable_failed", True)
+                self.set_switch_state(
+                    self._widgets["auto_disable_failed_trackers"], advanced_config.get("auto_disable_failed", True)
                 )
 
             if self._widgets["tracker_rotation_enabled"]:
-                self.set_switch_state(self._widgets["tracker_rotation_enabled"], advanced_config.get("rotation_enabled", False))
+                self.set_switch_state(
+                    self._widgets["tracker_rotation_enabled"], advanced_config.get("rotation_enabled", False)
+                )
 
             if self._widgets["rotation_interval_seconds"]:
                 self._widgets["rotation_interval_seconds"].set_value(
@@ -194,7 +202,9 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
             stats_config = mt_config.get("statistics", {})
 
             if self._widgets["track_tier_statistics"]:
-                self.set_switch_state(self._widgets["track_tier_statistics"], stats_config.get("track_tier_stats", True))
+                self.set_switch_state(
+                    self._widgets["track_tier_statistics"], stats_config.get("track_tier_stats", True)
+                )
 
             if self._widgets["log_tracker_failures"]:
                 self.set_switch_state(self._widgets["log_tracker_failures"], stats_config.get("log_failures", True))
