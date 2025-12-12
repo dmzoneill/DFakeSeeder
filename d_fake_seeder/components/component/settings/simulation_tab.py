@@ -213,10 +213,10 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 self._set_combo_active_text(self._widgets["traffic_profile"], profile)
 
             if self._widgets["realistic_variations"]:
-                self._widgets["realistic_variations"].set_active(traffic_config.get("realistic_variations", True))
+                self.set_switch_state(self._widgets["realistic_variations"], traffic_config.get("realistic_variations", True))
 
             if self._widgets["time_based_patterns"]:
-                self._widgets["time_based_patterns"].set_active(traffic_config.get("time_based_patterns", True))
+                self.set_switch_state(self._widgets["time_based_patterns"], traffic_config.get("time_based_patterns", True))
 
             # Load traffic profiles from seeding_profiles config
             seeding_profiles = getattr(self.app_settings, "seeding_profiles", {})
@@ -282,7 +282,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             swarm_config = simulation_config.get("swarm_intelligence", {})
 
             if self._widgets["swarm_intelligence_enabled"]:
-                self._widgets["swarm_intelligence_enabled"].set_active(swarm_config.get("enabled", True))
+                self.set_switch_state(self._widgets["swarm_intelligence_enabled"], swarm_config.get("enabled", True))
 
             if self._widgets["adaptation_rate"]:
                 self._widgets["adaptation_rate"].set_value(swarm_config.get("adaptation_rate", 0.5))
@@ -292,13 +292,13 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
             # Advanced Settings (set defaults)
             if self._widgets["client_profile_switching"]:
-                self._widgets["client_profile_switching"].set_active(True)
+                self.set_switch_state(self._widgets["client_profile_switching"], True)
 
             if self._widgets["protocol_compliance_level"]:
                 self._set_combo_active_text(self._widgets["protocol_compliance_level"], "strict")
 
             if self._widgets["behavior_randomization"]:
-                self._widgets["behavior_randomization"].set_active(True)
+                self.set_switch_state(self._widgets["behavior_randomization"], True)
 
             self.logger.trace(
                 "Advanced Simulation settings loaded successfully",

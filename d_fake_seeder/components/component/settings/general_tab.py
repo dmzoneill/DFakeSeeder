@@ -185,11 +185,11 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             # Auto-start setting
             auto_start = self.get_widget("auto_start")
             if auto_start:
-                auto_start.set_active(getattr(self.app_settings, "auto_start", False))
+                self.set_switch_state(auto_start, getattr(self.app_settings, "auto_start", False))
             # Start minimized setting
             start_minimized = self.get_widget("start_minimized")
             if start_minimized:
-                start_minimized.set_active(getattr(self.app_settings, "start_minimized", False))
+                self.set_switch_state(start_minimized, getattr(self.app_settings, "start_minimized", False))
             # Theme style setting - load from ui_settings.theme_style
             theme_style_dropdown = self.get_widget("settings_theme")
             if theme_style_dropdown:
@@ -216,7 +216,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
             watch_folder_enabled = self.get_widget("watch_folder_enabled")
             if watch_folder_enabled:
-                watch_folder_enabled.set_active(watch_folder_config.get("enabled", False))
+                self.set_switch_state(watch_folder_enabled, watch_folder_config.get("enabled", False))
 
             watch_folder_path = self.get_widget("watch_folder_path")
             if watch_folder_path:
@@ -228,11 +228,11 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
             watch_folder_auto_start = self.get_widget("watch_folder_auto_start")
             if watch_folder_auto_start:
-                watch_folder_auto_start.set_active(watch_folder_config.get("auto_start_torrents", True))
+                self.set_switch_state(watch_folder_auto_start, watch_folder_config.get("auto_start_torrents", True))
 
             watch_folder_delete_added = self.get_widget("watch_folder_delete_added")
             if watch_folder_delete_added:
-                watch_folder_delete_added.set_active(watch_folder_config.get("delete_added_torrents", False))
+                self.set_switch_state(watch_folder_delete_added, watch_folder_config.get("delete_added_torrents", False))
 
             self.logger.info("General tab settings loaded successfully", "GeneralTab")
         except Exception as e:
@@ -408,10 +408,10 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             # Reset to default values
             auto_start = self.get_widget("auto_start")
             if auto_start:
-                auto_start.set_active(False)
+                self.set_switch_state(auto_start, False)
             start_minimized = self.get_widget("start_minimized")
             if start_minimized:
-                start_minimized.set_active(False)
+                self.set_switch_state(start_minimized, False)
             # Reset theme to system default
             theme_dropdown = self.get_widget("settings_theme")
             if theme_dropdown:

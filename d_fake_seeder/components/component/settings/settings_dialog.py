@@ -94,9 +94,13 @@ class SettingsDialog:
         logger.trace("Window setup completed", "SettingsDialog")
         # Get notebook for tab management
         self.notebook = self.builder.get_object("settings_notebook")
-        # Initialize all tab components
+        # Initialize all tab components (lazy loading - only structures created)
         self.tabs: List[Any] = []
         self._initialize_tabs()
+
+        # Store model reference for lazy initialization later
+        self._deferred_model = self.model
+
         # Connect window signals
         logger.trace("About to connect window signals", "SettingsDialog")
         self._connect_window_signals()
@@ -105,49 +109,9 @@ class SettingsDialog:
         logger.trace("About to setup global shortcuts", "SettingsDialog")
         self._setup_global_shortcuts()
         logger.trace("Global shortcuts setup completed", "SettingsDialog")
-        # Pass model to tabs if available
-        if self.model:
-            logger.trace(
-                "Storing model reference for tabs and enabling dropdown translation",
-                "SettingsDialog",
-            )
-            # Store model reference and enable dropdown translation for all tabs
-            for tab in self.tabs:
-                tab.model = self.model
-                # Special handling for GeneralTab language dropdown
-                if (
-                    hasattr(tab, "tab_name")
-                    and tab.tab_name == "General"
-                    and hasattr(tab, "_populate_language_dropdown")
-                ):
-                    logger.trace(
-                        "Populating language dropdown for GeneralTab with signal safety",
-                        "SettingsDialog",
-                    )
-                    try:
-                        # Set initialization flag to prevent signal handling during setup
-                        tab._initializing = True
-                        tab._populate_language_dropdown()
-                    except Exception:
-                        logger.error("Error populating language dropdown:", "SettingsDialog")
-                # Enable dropdown translation for all tabs that support it
-                if hasattr(tab, "update_view"):
-                    logger.trace(
-                        "Calling update_view for  tab to enable dropdown translation",
-                        "SettingsDialog",
-                    )
-                    try:
-                        tab.update_view(self.model, None, None)
-                    except Exception:
-                        logger.error("Error calling update_view for :", "SettingsDialog")
-            logger.trace(
-                "Model references stored and dropdown translation enabled",
-                "SettingsDialog",
-            )
-            # Register settings dialog widgets for translation
-            logger.trace("About to register for translation", "SettingsDialog")
-            self._register_for_translation()
-            logger.trace("Translation registration completed", "SettingsDialog")
+
+        # Flag to track if first show initialization is done
+        self._first_show_complete = False
         logger.trace(
             "===== SettingsDialog.__init__ COMPLETED SUCCESSFULLY =====",
             "SettingsDialog",
@@ -239,11 +203,58 @@ class SettingsDialog:
         try:
             # Window close
             self.window.connect("close-request", self.on_window_close)
+            # Window shown - for deferred initialization
+            self.window.connect("map", self.on_window_shown)
             # Notebook page switching
             if self.notebook:
                 self.notebook.connect("switch-page", self.on_page_switched)
         except Exception as e:
             logger.error(f"Error connecting window signals: {e}")
+
+    def on_window_shown(self, window) -> None:
+        """Handle window shown event - perform deferred initialization."""
+        if self._first_show_complete:
+            return
+
+        logger.trace("Settings dialog shown - performing deferred initialization", "SettingsDialog")
+
+        # Use idle_add to defer initialization until after window is rendered
+        from gi.repository import GLib
+
+        def _deferred_init():
+            try:
+                # Pass model to tabs BEFORE initialization so they can use it
+                if self._deferred_model:
+                    for tab in self.tabs:
+                        tab.model = self._deferred_model
+
+                # Initialize currently visible tab only
+                current_page = self.notebook.get_current_page() if self.notebook else 0
+                if 0 <= current_page < len(self.tabs):
+                    tab = self.tabs[current_page]
+                    logger.trace(f"Initializing visible tab: {tab.tab_name}", "SettingsDialog")
+                    tab.ensure_initialized()
+
+                    # Special handling for GeneralTab language dropdown
+                    if hasattr(tab, "tab_name") and tab.tab_name == "General":
+                        if hasattr(tab, "_populate_language_dropdown"):
+                            logger.trace("Populating language dropdown for GeneralTab", "SettingsDialog")
+                            try:
+                                tab._populate_language_dropdown()
+                            except Exception as e:
+                                logger.error(f"Error populating language dropdown: {e}", exc_info=True)
+
+                # Register for translation (if model available)
+                if self._deferred_model:
+                    self._register_for_translation()
+
+                self._first_show_complete = True
+                logger.trace("Deferred initialization complete", "SettingsDialog")
+            except Exception as e:
+                logger.error(f"Error in deferred initialization: {e}", exc_info=True)
+            return False  # Remove idle callback
+
+        GLib.idle_add(_deferred_init)
 
     def _on_app_settings_changed(self, app_settings, key: str, value: Any) -> None:
         """Handle AppSettings changes to update dialog theme."""
@@ -508,6 +519,8 @@ class SettingsDialog:
             if 0 <= page_num < len(self.tabs):
                 tab = self.tabs[page_num]
                 logger.trace(f"Switched to {tab.tab_name} tab")
+                # Ensure tab is initialized (lazy loading)
+                tab.ensure_initialized()
                 # Update tab dependencies when switching
                 tab.update_dependencies()
         except Exception as e:

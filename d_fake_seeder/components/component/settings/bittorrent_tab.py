@@ -156,22 +156,22 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _load_bittorrent_settings(self, bittorrent_settings: Dict[str, Any]) -> None:
         """Load BitTorrent protocol settings."""
         try:
-            # Protocol features
+            # Protocol features - use set_switch_state for proper visual sync
             dht = self.get_widget("enable_dht")
             if dht:
-                dht.set_active(bittorrent_settings.get("enable_dht", True))
+                self.set_switch_state(dht, bittorrent_settings.get("enable_dht", True))
 
             pex = self.get_widget("enable_pex")
             if pex:
-                pex.set_active(bittorrent_settings.get("enable_pex", True))
+                self.set_switch_state(pex, bittorrent_settings.get("enable_pex", True))
 
             lsd = self.get_widget("enable_lsd")
             if lsd:
-                lsd.set_active(bittorrent_settings.get("enable_lsd", True))
+                self.set_switch_state(lsd, bittorrent_settings.get("enable_lsd", True))
 
             utp = self.get_widget("enable_utp")
             if utp:
-                utp.set_active(bittorrent_settings.get("enable_utp", True))
+                self.set_switch_state(utp, bittorrent_settings.get("enable_utp", True))
 
             # User agent
             self._update_user_agent_dropdown(bittorrent_settings)
@@ -552,22 +552,22 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _reset_tab_defaults(self) -> None:
         """Reset BitTorrent tab to default values."""
         try:
-            # Reset protocol features
+            # Reset protocol features - use set_switch_state for proper visual sync
             dht = self.get_widget("enable_dht")
             if dht:
-                dht.set_active(True)
+                self.set_switch_state(dht, True)
 
             pex = self.get_widget("enable_pex")
             if pex:
-                pex.set_active(True)
+                self.set_switch_state(pex, True)
 
             lsd = self.get_widget("enable_lsd")
             if lsd:
-                lsd.set_active(True)
+                self.set_switch_state(lsd, True)
 
             utp = self.get_widget("enable_utp")
             if utp:
-                utp.set_active(True)
+                self.set_switch_state(utp, True)
 
             # Reset user agent to default
             user_agent = self.get_widget("user_agent")

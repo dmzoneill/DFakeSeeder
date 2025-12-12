@@ -290,17 +290,17 @@ class AdvancedTab(
             # Log to file
             log_to_file = self.get_widget("log_to_file")
             if log_to_file:
-                log_to_file.set_active(logging_settings.get("log_to_file", False))
+                self.set_switch_state(log_to_file, logging_settings.get("log_to_file", False))
 
             # Log to console
             log_to_console = self.get_widget("log_to_console")
             if log_to_console:
-                log_to_console.set_active(logging_settings.get("log_to_console", False))
+                self.set_switch_state(log_to_console, logging_settings.get("log_to_console", False))
 
             # Log to systemd
             log_to_systemd = self.get_widget("log_to_systemd")
             if log_to_systemd:
-                log_to_systemd.set_active(logging_settings.get("log_to_systemd", True))
+                self.set_switch_state(log_to_systemd, logging_settings.get("log_to_systemd", True))
 
             # Log file path
             log_file_path = self.get_widget("log_file_path")
@@ -342,15 +342,15 @@ class AdvancedTab(
         try:
             enable_debug = self.get_widget("enable_debug_mode")
             if enable_debug:
-                enable_debug.set_active(expert_settings.get("debug_mode", False))
+                self.set_switch_state(enable_debug, expert_settings.get("debug_mode", False))
 
             enable_experimental = self.get_widget("enable_experimental")
             if enable_experimental:
-                enable_experimental.set_active(expert_settings.get("experimental_features", False))
+                self.set_switch_state(enable_experimental, expert_settings.get("experimental_features", False))
 
             enable_shortcuts = self.get_widget("enable_shortcuts")
             if enable_shortcuts:
-                enable_shortcuts.set_active(expert_settings.get("keyboard_shortcuts", True))
+                self.set_switch_state(enable_shortcuts, expert_settings.get("keyboard_shortcuts", True))
 
         except Exception as e:
             self.logger.error(f"Error loading expert settings: {e}")
@@ -777,7 +777,7 @@ class AdvancedTab(
 
             log_to_file = self.get_widget("log_to_file")
             if log_to_file:
-                log_to_file.set_active(False)
+                self.set_switch_state(log_to_file, False)
 
             # Reset performance
             disk_cache_size = self.get_widget("disk_cache_size")
@@ -795,15 +795,15 @@ class AdvancedTab(
             # Reset expert settings
             enable_debug = self.get_widget("enable_debug_mode")
             if enable_debug:
-                enable_debug.set_active(False)
+                self.set_switch_state(enable_debug, False)
 
             enable_experimental = self.get_widget("enable_experimental")
             if enable_experimental:
-                enable_experimental.set_active(False)
+                self.set_switch_state(enable_experimental, False)
 
             enable_shortcuts = self.get_widget("enable_shortcuts")
             if enable_shortcuts:
-                enable_shortcuts.set_active(True)
+                self.set_switch_state(enable_shortcuts, True)
 
             self.update_dependencies()
             self.show_notification("Advanced settings reset to defaults", "success")
