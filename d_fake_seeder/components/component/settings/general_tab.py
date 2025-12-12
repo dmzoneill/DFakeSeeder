@@ -246,61 +246,21 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         pass
 
     def _collect_settings(self) -> Dict[str, Any]:
-        """Collect current settings from General tab widgets."""
-        settings = {}
-        try:
-            # Auto-start setting
-            auto_start = self.get_widget("auto_start")
-            if auto_start:
-                settings["auto_start"] = auto_start.get_active()
-            # Start minimized setting
-            start_minimized = self.get_widget("start_minimized")
-            if start_minimized:
-                settings["start_minimized"] = start_minimized.get_active()
-            # Theme style setting (system/classic/modern)
-            theme_style_dropdown = self.get_widget("settings_theme")
-            if theme_style_dropdown:
-                theme_style_values = ["system", "classic", "modern"]
-                selected_index = theme_style_dropdown.get_selected()
-                if 0 <= selected_index < len(theme_style_values):
-                    settings["theme_style"] = theme_style_values[selected_index]
+        """Collect current settings from General tab widgets.
 
-            # Color scheme setting (auto/light/dark)
-            color_scheme_dropdown = self.get_widget("settings_color_scheme")
-            if color_scheme_dropdown:
-                color_scheme_values = ["auto", "light", "dark"]
-                selected_index = color_scheme_dropdown.get_selected()
-                if 0 <= selected_index < len(color_scheme_values):
-                    settings["color_scheme"] = color_scheme_values[selected_index]
-            # Seeding profile setting
-            profile_dropdown = self.get_widget("settings_seeding_profile")
-            if profile_dropdown:
-                selected_index = profile_dropdown.get_selected()
-                profile_name = self.profile_manager.get_profile_from_dropdown_index(selected_index)
-                settings["seeding_profile"] = profile_name
-
-            # Watch folder settings
-            watch_folder_settings = {}
-            watch_folder_enabled = self.get_widget("watch_folder_enabled")
-            if watch_folder_enabled:
-                watch_folder_settings["enabled"] = watch_folder_enabled.get_active()
-            watch_folder_path = self.get_widget("watch_folder_path")
-            if watch_folder_path:
-                watch_folder_settings["path"] = watch_folder_path.get_text()
-            watch_folder_scan_interval = self.get_widget("watch_folder_scan_interval")
-            if watch_folder_scan_interval:
-                watch_folder_settings["scan_interval_seconds"] = int(watch_folder_scan_interval.get_value())
-            watch_folder_auto_start = self.get_widget("watch_folder_auto_start")
-            if watch_folder_auto_start:
-                watch_folder_settings["auto_start_torrents"] = watch_folder_auto_start.get_active()
-            watch_folder_delete_added = self.get_widget("watch_folder_delete_added")
-            if watch_folder_delete_added:
-                watch_folder_settings["delete_added_torrents"] = watch_folder_delete_added.get_active()
-            if watch_folder_settings:
-                settings["watch_folder"] = watch_folder_settings
-        except Exception as e:
-            self.logger.error(f"Error collecting General tab settings: {e}")
-        return settings
+        NOTE: All settings are saved in real-time by signal handlers.
+        This method returns empty dict to avoid duplicate saves.
+        Signal handlers save to the correct nested paths that match load locations.
+        """
+        # All settings already saved by signal handlers:
+        # - auto_start -> app_settings.set("auto_start")
+        # - start_minimized -> app_settings.set("start_minimized")
+        # - theme_style -> app_settings.set("ui_settings.theme_style")
+        # - color_scheme -> app_settings.set("ui_settings.color_scheme")
+        # - seeding_profile -> via profile_manager.apply_profile()
+        # - watch_folder.* -> app_settings.set("watch_folder.*")
+        # - language -> app_settings.set("language")
+        return {}
 
     def on_auto_start_changed(self, switch: Gtk.Switch, state: bool) -> None:
         """Handle auto-start setting change."""

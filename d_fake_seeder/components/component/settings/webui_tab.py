@@ -256,17 +256,13 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             self.logger.error(f"Error updating Web UI dependencies: {e}")
 
     def _collect_settings(self) -> Dict[str, Any]:
-        """Collect current settings from Web UI tab widgets."""
-        settings = {}
+        """Collect current settings from WebUI tab widgets.
 
-        try:
-            # Collect Web UI settings
-            settings["webui"] = self._collect_webui_settings()
-
-        except Exception as e:
-            self.logger.error(f"Error collecting Web UI tab settings: {e}")
-
-        return settings
+        NOTE: All settings are saved in real-time by signal handlers.
+        This method returns empty dict to avoid duplicate saves.
+        """
+        # All settings already saved by signal handlers to webui.* keys
+        return {}
 
     def _collect_webui_settings(self) -> Dict[str, Any]:
         """Collect Web UI settings."""

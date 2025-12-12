@@ -333,19 +333,13 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         pass
 
     def _collect_settings(self) -> Dict[str, Any]:
-        """Collect current settings from Peer Protocol tab widgets."""
-        settings = {}
+        """Collect current settings from Peer Protocol tab widgets.
 
-        try:
-            # Collect peer protocol settings
-            settings["peer_protocol"] = self._collect_peer_protocol_settings()
-            settings["seeders"] = self._collect_seeder_settings()
-            settings["peer_behavior"] = self._collect_peer_behavior_settings()
-
-        except Exception as e:
-            self.logger.error(f"Error collecting Peer Protocol tab settings: {e}")
-
-        return settings
+        NOTE: All settings are saved in real-time by signal handlers.
+        This method returns empty dict to avoid duplicate saves.
+        """
+        # All settings already saved by signal handlers to peer_protocol.*, peer_behavior.*, seeders.* keys
+        return {}
 
     def _collect_peer_protocol_settings(self) -> Dict[str, Any]:
         """Collect peer protocol timeout settings."""
