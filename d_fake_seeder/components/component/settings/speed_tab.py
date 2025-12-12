@@ -340,96 +340,75 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
             # Upload distribution
             upload_algorithm = self.app_settings.upload_distribution_algorithm.lower()
+
             upload_dist_algorithm = self.get_widget("upload_dist_algorithm")
             if upload_dist_algorithm:
-                upload_dist_algorithm.handler_block_by_func(self.on_upload_dist_algorithm_changed)
+                # Note: No need to block signals - they haven't been connected yet
+                # (_load_settings is called BEFORE _connect_signals in base_tab.py)
                 index = algorithm_map.get(upload_algorithm, 0)
                 upload_dist_algorithm.set_selected(index)
-                upload_dist_algorithm.handler_unblock_by_func(self.on_upload_dist_algorithm_changed)
 
             upload_dist_percentage = self.get_widget("upload_dist_percentage")
             if upload_dist_percentage:
-                upload_dist_percentage.handler_block_by_func(self.on_upload_dist_percentage_changed)
                 upload_dist_percentage.set_value(self.app_settings.upload_distribution_spread_percentage)
-                upload_dist_percentage.handler_unblock_by_func(self.on_upload_dist_percentage_changed)
 
             upload_mode = self.app_settings.upload_distribution_redistribution_mode.lower()
             upload_dist_mode = self.get_widget("upload_dist_mode")
             if upload_dist_mode:
-                upload_dist_mode.handler_block_by_func(self.on_upload_dist_mode_changed)
                 if upload_mode == "tick":
                     upload_dist_mode.set_selected(0)
                 elif "minute" in upload_mode or upload_mode == "custom":
                     upload_dist_mode.set_selected(1)
                 elif upload_mode == "announce":
                     upload_dist_mode.set_selected(2)
-                upload_dist_mode.handler_unblock_by_func(self.on_upload_dist_mode_changed)
 
             upload_dist_interval = self.get_widget("upload_dist_interval")
             if upload_dist_interval:
-                upload_dist_interval.handler_block_by_func(self.on_upload_dist_interval_changed)
                 upload_dist_interval.set_value(self.app_settings.upload_distribution_custom_interval_minutes)
-                upload_dist_interval.handler_unblock_by_func(self.on_upload_dist_interval_changed)
 
             upload_dist_stopped_min = self.get_widget("upload_dist_stopped_min")
             if upload_dist_stopped_min:
-                upload_dist_stopped_min.handler_block_by_func(self.on_upload_dist_stopped_min_changed)
                 upload_dist_stopped_min.set_value(self.app_settings.upload_distribution_stopped_min_percentage)
-                upload_dist_stopped_min.handler_unblock_by_func(self.on_upload_dist_stopped_min_changed)
 
             upload_dist_stopped_max = self.get_widget("upload_dist_stopped_max")
             if upload_dist_stopped_max:
-                upload_dist_stopped_max.handler_block_by_func(self.on_upload_dist_stopped_max_changed)
                 upload_dist_stopped_max.set_value(self.app_settings.upload_distribution_stopped_max_percentage)
-                upload_dist_stopped_max.handler_unblock_by_func(self.on_upload_dist_stopped_max_changed)
 
             # Download distribution
             download_algorithm = self.app_settings.download_distribution_algorithm.lower()
             download_dist_algorithm = self.get_widget("download_dist_algorithm")
             if download_dist_algorithm:
-                download_dist_algorithm.handler_block_by_func(self.on_download_dist_algorithm_changed)
                 index = algorithm_map.get(download_algorithm, 0)
                 download_dist_algorithm.set_selected(index)
-                download_dist_algorithm.handler_unblock_by_func(self.on_download_dist_algorithm_changed)
 
             download_dist_percentage = self.get_widget("download_dist_percentage")
             if download_dist_percentage:
-                download_dist_percentage.handler_block_by_func(self.on_download_dist_percentage_changed)
                 download_dist_percentage.set_value(self.app_settings.download_distribution_spread_percentage)
-                download_dist_percentage.handler_unblock_by_func(self.on_download_dist_percentage_changed)
 
             download_mode = self.app_settings.download_distribution_redistribution_mode.lower()
             download_dist_mode = self.get_widget("download_dist_mode")
             if download_dist_mode:
-                download_dist_mode.handler_block_by_func(self.on_download_dist_mode_changed)
                 if download_mode == "tick":
                     download_dist_mode.set_selected(0)
                 elif "minute" in download_mode or download_mode == "custom":
                     download_dist_mode.set_selected(1)
                 elif download_mode == "announce":
                     download_dist_mode.set_selected(2)
-                download_dist_mode.handler_unblock_by_func(self.on_download_dist_mode_changed)
 
             download_dist_interval = self.get_widget("download_dist_interval")
             if download_dist_interval:
-                download_dist_interval.handler_block_by_func(self.on_download_dist_interval_changed)
                 download_dist_interval.set_value(self.app_settings.download_distribution_custom_interval_minutes)
-                download_dist_interval.handler_unblock_by_func(self.on_download_dist_interval_changed)
 
             download_dist_stopped_min = self.get_widget("download_dist_stopped_min")
             if download_dist_stopped_min:
-                download_dist_stopped_min.handler_block_by_func(self.on_download_dist_stopped_min_changed)
                 download_dist_stopped_min.set_value(self.app_settings.download_distribution_stopped_min_percentage)
-                download_dist_stopped_min.handler_unblock_by_func(self.on_download_dist_stopped_min_changed)
 
             download_dist_stopped_max = self.get_widget("download_dist_stopped_max")
             if download_dist_stopped_max:
-                download_dist_stopped_max.handler_block_by_func(self.on_download_dist_stopped_max_changed)
                 download_dist_stopped_max.set_value(self.app_settings.download_distribution_stopped_max_percentage)
-                download_dist_stopped_max.handler_unblock_by_func(self.on_download_dist_stopped_max_changed)
 
         except Exception as e:
-            self.logger.error(f"Error loading distribution settings: {e}")
+            self.logger.error(f"Error loading distribution settings: {e}", exc_info=True)
 
     def _setup_dependencies(self) -> None:
         """Set up dependencies for Speed tab."""
@@ -464,7 +443,9 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             settings["speed"] = self._collect_speed_settings()
             settings["scheduler"] = self._collect_scheduler_settings()
             # NOTE: Distribution settings are saved in real-time by signal handlers
-            # to top-level keys (upload_distribution_algorithm, etc.)
+            # via property setters that write to the nested speed_distribution structure:
+            # - app_settings.upload_distribution_algorithm -> speed_distribution.upload.algorithm
+            # - app_settings.download_distribution_algorithm -> speed_distribution.download.algorithm
             # No need to collect them here to avoid duplicate/conflicting storage
         except Exception as e:
             self.logger.error(f"Error collecting Speed tab settings: {e}")
@@ -762,6 +743,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             selected = dropdown.get_selected()
             algorithm_names = ["off", "pareto", "power-law", "log-normal"]
             algorithm = algorithm_names[selected] if selected < len(algorithm_names) else "off"
+
             self.app_settings.upload_distribution_algorithm = algorithm
             self.logger.trace(f"Upload distribution algorithm changed to: {algorithm}")
         except Exception as e:

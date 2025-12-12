@@ -12,7 +12,7 @@ import gi
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 
-from gi.repository import GObject  # noqa: E402
+from gi.repository import GLib, GObject  # noqa: E402
 
 from d_fake_seeder.lib.handlers.file_modified_event_handler import (  # noqa: E402
     WATCHDOG_AVAILABLE,
@@ -120,23 +120,21 @@ class AppSettings(GObject.GObject):
         self.config_file = Path(file_path)
         self.default_config_file = Path(__file__).parent / "config" / "default.json"
 
-        # Initialize settings storage (compatible with both APIs)
-        self.settings = {}  # New API
-        self._settings = {}  # Legacy API compatibility
+        # Three-layer data structure:
+        # 1. _defaults: Loaded from default.json, never changes
+        # 2. _user_settings: Persistent user preferences (everything except torrents)
+        # 3. _transient_data: Runtime-only data (ENTIRE torrents dictionary)
         self._defaults = {}
-        self._last_modified = 0
+        self._user_settings = {}
+        self._transient_data = {}  # ENTIRE torrents dictionary stored here
 
-        # Transient settings (runtime-only, not persisted until flush)
-        self._transient_values = {}  # key -> value mapping for transient settings
-        self._transient_keys = set(
-            [
-                # Speed distribution runtime values
-                "speed_distribution.upload.current_speed",
-                "speed_distribution.download.current_speed",
-                "speed_distribution.upload.current_values",
-                "speed_distribution.download.current_values",
-            ]
-        )
+        # Merged view for reading (rebuilt when any layer changes)
+        self._settings = {}  # Legacy compatibility - will be merged view
+
+        # File watching state
+        self._last_modified = 0
+        self._save_timer = None  # Debounce timer for queued saves
+        self._pending_save = False  # Flag for pending save operations
 
         # Create config directory if needed (like Settings does)
         home_config_path = os.path.expanduser("~/.config/dfakeseeder")
@@ -195,6 +193,23 @@ class AppSettings(GObject.GObject):
                 AppSettings._logger = add_trace_to_logger(logging.getLogger(__name__))
         return AppSettings._logger
 
+    @property
+    def settings(self):
+        """
+        Backwards compatibility property.
+        Returns merged view of all settings (defaults + user + transient).
+        NOTE: This is read-only. Use get()/set() methods for access.
+        """
+        return self._settings
+
+    @property
+    def torrents(self):
+        """
+        Convenience property for accessing torrents dictionary.
+        Returns transient data directly.
+        """
+        return self._transient_data
+
     def _load_defaults(self):
         """Load default settings from config/default.json"""
         try:
@@ -226,6 +241,24 @@ class AppSettings(GObject.GObject):
 
         return deep_merge(self._defaults, user_settings)
 
+    def _build_merged_view(self):
+        """
+        Build merged settings view from three layers:
+        1. Defaults (from default.json)
+        2. User settings (persistent preferences)
+        3. Transient data (torrents dictionary only)
+
+        Returns: Complete merged dictionary
+        """
+        # Start with defaults
+        merged = self._merge_with_defaults(self._user_settings)
+
+        # Add transient data (entire torrents dictionary)
+        if self._transient_data:
+            merged["torrents"] = self._transient_data
+
+        return merged
+
     def _get_nested_value(self, data, key):
         """Get value from nested dictionary using dot notation"""
         keys = key.split(".")
@@ -243,43 +276,14 @@ class AppSettings(GObject.GObject):
             data = data.setdefault(k, {})
         data[keys[-1]] = value
 
-    def _is_transient_key(self, key):
-        """Check if a key is marked as transient (runtime-only)."""
-        # Check exact match or prefix match
-        for transient_key in self._transient_keys:
-            if key == transient_key or key.startswith(transient_key + "."):
-                return True
-        return False
-
-    def flush_transient_values(self):
-        """
-        Flush all transient values to persistent storage.
-        Called during application shutdown to preserve final runtime state.
-        """
-        if not self._transient_values:
-            self.logger.trace("No transient values to flush", extra={"class_name": self.__class__.__name__})
-            return
-
-        self.logger.info(
-            f"Flushing {len(self._transient_values)} transient values to disk",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-        with AppSettings._lock:
-            for key, value in self._transient_values.items():
-                # Persist transient value to settings (bypassing transient flag)
-                self._set_nested_value(self._settings, key, value)
-                self.logger.trace(f"Flushed transient: {key} = {value}", extra={"class_name": self.__class__.__name__})
-
-            # Update both storage systems
-            super().__setattr__("settings", self._settings.copy())
-            # Save to disk
-            self._save_settings_unlocked()
-
-        self.logger.info("Transient values flushed successfully", extra={"class_name": self.__class__.__name__})
-
     def load_settings(self):
-        """Load settings from files (compatible with Settings API)"""
+        """
+        Load settings from disk with three-layer architecture:
+        1. Load file from disk
+        2. Extract torrents → _transient_data (runtime-only)
+        3. Remaining → _user_settings (persistent)
+        4. Build merged view = defaults + user_settings + transient_data
+        """
         self.logger.trace("Settings load", extra={"class_name": self.__class__.__name__})
         try:
             # Skip reload if we're currently saving (prevents file watch feedback loop)
@@ -289,41 +293,117 @@ class AppSettings(GObject.GObject):
                 )
                 return
 
+            # Skip reload if we have a pending save (queued changes more important)
+            if self._pending_save:
+                self.logger.trace(
+                    "Skipping load_settings - save pending", extra={"class_name": self.__class__.__name__}
+                )
+                return
+
             # Check if the file has been modified since last load
             modified = os.path.getmtime(self._file_path)
             if modified > self._last_modified:
                 with open(self._file_path, "r") as f:
-                    user_settings = json.load(f)
-                # Merge user settings with defaults
-                merged_settings = self._merge_with_defaults(user_settings)
+                    loaded_data = json.load(f)
 
-                # Update both storage systems
-                self._settings = merged_settings
-                self.settings = merged_settings.copy()
+                # Check if this is initial load (transient data empty)
+                is_initial_load = not self._transient_data
+
+                if is_initial_load:
+                    # INITIAL LOAD: Extract torrents to transient
+                    self._transient_data = loaded_data.pop("torrents", {})
+                    self.logger.info(
+                        f"Initial load: Extracted {len(self._transient_data)} torrents to transient data",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                else:
+                    # RELOAD (file change event): Ignore torrents from disk, keep memory version
+                    loaded_data.pop("torrents", None)  # Discard disk torrents
+                    self.logger.info(
+                        "Reload: Ignoring torrents from disk, keeping {len(self._transient_data)} torrents in memory",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+
+                # Store remaining data as user settings
+                self._user_settings = loaded_data
+
+                # Rebuild merged view
+                self._settings = self._build_merged_view()
                 self._last_modified = modified
-                self.logger.trace(
-                    f"Loaded settings - language from file: {user_settings.get('language', 'NOT SET')},"
-                    f" merged language: {merged_settings.get('language', 'NOT SET')}",
-                    extra={"class_name": self.__class__.__name__},
+
+                self.logger.debug(
+                    f"Settings loaded - {len(self._user_settings)} user settings, "
+                    f"{len(self._transient_data)} transient torrents"
                 )
-                self.logger.debug(f"Loaded and merged settings, total: {len(self.settings)}")
+
         except FileNotFoundError:
             # If the file doesn't exist, start with defaults and create the file
-            self._settings = self._defaults.copy()
-            self.settings = self._defaults.copy()
+            self.logger.warning("Settings file not found, creating from defaults")
+            self._user_settings = {}
+            self._transient_data = {}
+            self._settings = self._build_merged_view()
 
             if not os.path.exists(self._file_path):
-                # Create the JSON file with default contents
+                # Create the JSON file with default contents (no torrents yet)
                 with open(self._file_path, "w") as f:
-                    json.dump(self._settings, f, indent=4)
+                    json.dump(self._defaults, f, indent=4)
                 self.logger.info("Created new settings file with defaults")
+
         except json.JSONDecodeError as e:
             # Handle corrupt/truncated JSON files
             self.logger.error(f"Settings file contains invalid JSON, using defaults: {e}")
-            self._settings = self._defaults.copy()
-            self.settings = self._defaults.copy()
+            self._user_settings = {}
+            self._transient_data = {}
+            self._settings = self._build_merged_view()
+
         except Exception as e:
-            self.logger.error(f"Error loading settings: {e}")
+            self.logger.error(f"Error loading settings: {e}", exc_info=True)
+
+    def _queue_save(self):
+        """
+        Queue a debounced save operation.
+
+        Cancels any existing timer and creates a new one that fires after 1 second.
+        This prevents excessive disk writes when settings are changed rapidly.
+        """
+        logger.trace("Queueing save operation with 1-second debounce", "AppSettings")
+
+        # Set pending save flag to prevent file watcher reload
+        self._pending_save = True
+
+        # Cancel any existing save timer
+        if self._save_timer is not None:
+            logger.trace("Cancelling existing save timer", "AppSettings")
+            GLib.source_remove(self._save_timer)
+            self._save_timer = None
+
+        # Create new timer that fires after 1 second (1000ms)
+        self._save_timer = GLib.timeout_add(1000, self._debounced_save_callback)
+        logger.trace(f"Save timer created: {self._save_timer}", "AppSettings")
+
+    def _debounced_save_callback(self):
+        """
+        Callback for debounced save timer.
+        Saves settings and clears the pending flag.
+
+        Returns:
+            False to remove the timer source (one-shot timer)
+        """
+        logger.debug("Executing debounced save callback", "AppSettings")
+
+        try:
+            self.save_settings()
+            logger.info("Debounced save completed successfully", "AppSettings")
+        except Exception as e:
+            logger.error(f"Error in debounced save: {e}", "AppSettings", exc_info=True)
+        finally:
+            # Clear pending save flag and timer reference
+            self._pending_save = False
+            self._save_timer = None
+            logger.trace("Pending save flag cleared", "AppSettings")
+
+        # Return False to remove the timer source (one-shot timer)
+        return False
 
     def save_settings(self):
         """Save current settings to user config file (thread-safe with atomic writes)"""
@@ -349,7 +429,12 @@ class AppSettings(GObject.GObject):
             self.logger.error(f"Failed to save settings: {e}", exc_info=True)
 
     def _save_settings_unlocked(self):
-        """Save current settings without acquiring lock (for internal use when lock already held)"""
+        """
+        Save current settings without acquiring lock (for internal use when lock already held).
+
+        Saves only _user_settings to disk (persistent preferences).
+        Transient data (_transient_data) is NOT saved here - it's merged during save_quit().
+        """
         self.config_dir.mkdir(parents=True, exist_ok=True)
 
         # Set flag to prevent file watch reload during save
@@ -364,8 +449,10 @@ class AppSettings(GObject.GObject):
             temp_fd, temp_path = tempfile.mkstemp(dir=str(self.config_dir), prefix=".settings_tmp_", suffix=".json")
 
             # Write settings to temporary file
+            # NOTE: We save _user_settings only (persistent preferences)
+            # Transient data (torrents) is NOT included in normal saves
             with os.fdopen(temp_fd, "w") as temp_file:
-                json.dump(self._settings, temp_file, indent=4)
+                json.dump(self._user_settings, temp_file, indent=4)
                 temp_file.flush()  # Ensure data is written to disk
                 os.fsync(temp_file.fileno())  # Force OS to write to disk
 
@@ -375,6 +462,9 @@ class AppSettings(GObject.GObject):
             # This operation is atomic on POSIX systems, preventing corruption
             os.replace(temp_path, self._file_path)
             temp_path = None  # Successfully moved, don't clean up
+
+            # Update last modified timestamp to prevent unnecessary reloads
+            self._last_modified = os.path.getmtime(self._file_path)
 
             self.logger.info("Settings saved successfully with atomic write")
 
@@ -400,15 +490,38 @@ class AppSettings(GObject.GObject):
             self.logger.trace("Save flag cleared, file watch can reload", extra={"class_name": self.__class__.__name__})
 
     def save_quit(self):
-        """Save settings and stop file watching (Settings API compatibility)"""
+        """
+        Save settings and stop file watching (Settings API compatibility).
+
+        Merges transient data (torrents) into user_settings before final write.
+        This is the ONLY place where transient data is persisted to disk.
+        """
         self.logger.trace("Settings quit", extra={"class_name": self.__class__.__name__})
 
-        # Flush transient values to persistent storage before shutdown
-        self.flush_transient_values()
+        # Cancel any pending debounced save timer
+        if self._save_timer is not None:
+            logger.debug("Cancelling pending save timer before shutdown", "AppSettings")
+            GLib.source_remove(self._save_timer)
+            self._save_timer = None
+            self._pending_save = False
 
+        # Merge transient data (torrents) into user_settings before final write
+        with AppSettings._lock:
+            if self._transient_data:
+                logger.info(
+                    f"Merging {len(self._transient_data)} torrents into user_settings for final save", "AppSettings"
+                )
+                self._user_settings["torrents"] = self._transient_data
+            else:
+                logger.debug("No transient data to merge", "AppSettings")
+
+        # Stop file watching
         if hasattr(self, "_observer"):
             self._observer.stop()
+
+        # Save merged settings to disk (includes torrents)
         self.save_settings()
+        logger.info("Settings saved to disk with transient data included", "AppSettings")
 
     def get(self, key, default=None):
         """Get a setting value (supports dot notation for nested values)"""
@@ -419,67 +532,90 @@ class AppSettings(GObject.GObject):
         # Fallback to direct key access for backward compatibility
         return self._settings.get(key, default)
 
-    def set(self, key, value, transient=False):
-        """Set a setting value and save immediately (unless transient).
+    def set(self, key, value):
+        """
+        Set a setting value with automatic transient/persistent routing.
+
+        Transient data (torrents.*): Stored in memory only, no disk write
+        Persistent data (everything else): Stored in user_settings, queued for save
 
         Args:
-            key: Setting key (supports dot notation)
+            key: Setting key (supports dot notation, e.g., "torrents.*.upload_speed")
             value: Setting value
-            transient: If True, value is stored in memory only (no file save)
-                      Transient values are persisted on shutdown via flush_transient_values()
         """
-        logger.trace("Setting method called", "AppSettings")
-        logger.trace(f"Setting: {key} = {value} (transient={transient})", "AppSettings")
+        logger.trace(f"set() called: {key} = {value}", "AppSettings")
 
-        # Check if key is in transient keys list
-        is_transient_key = self._is_transient_key(key) or transient
+        # Determine if this is transient data (entire torrents dictionary)
+        is_transient = key == "torrents" or key.startswith("torrents.")
 
-        # Determine if we need to emit signals (done outside the lock to avoid deadlock)
         should_emit = False
         with AppSettings._lock:
-            # Get old value
-            if is_transient_key:
-                old_value = self._transient_values.get(key)
-            else:
-                old_value = self._get_nested_value(self._settings, key)
+            if is_transient:
+                # TRANSIENT DATA: Update in-memory only, NO disk write
+                logger.trace(f"Transient key detected: {key}", "AppSettings")
 
-            logger.trace(f"Old value: {old_value}", "AppSettings")
-            if old_value != value:
-                if is_transient_key:
-                    # Store in transient values only (no file save)
-                    logger.trace("Storing transient value (no file save)", "AppSettings")
-                    self._transient_values[key] = value
+                if key == "torrents":
+                    # Setting entire torrents dictionary
+                    old_value = self._transient_data
+                    if old_value != value:
+                        self._transient_data = value
+                        should_emit = True
+                        logger.info(f"Updated entire torrents dict ({len(value)} torrents)", "AppSettings")
+                elif "." in key:
+                    # Setting specific torrent data (e.g., "torrents./path/to/file.torrent")
+                    # Extract torrent file path (everything after "torrents.")
+                    torrent_path = key[9:]  # Remove "torrents." prefix
+
+                    # Check if we're setting the entire torrent entry or a nested field
+                    if torrent_path and "." not in torrent_path:
+                        # Setting entire torrent entry: torrents.<filepath>
+                        old_value = self._transient_data.get(torrent_path)
+                        if old_value != value:
+                            self._transient_data[torrent_path] = value
+                            should_emit = True
+                            logger.debug(
+                                f"Updated torrent entry: {torrent_path[:50]}... (NO disk write)", "AppSettings"
+                            )
+                    else:
+                        # Setting nested field: torrents.<filepath>.<field>
+                        old_value = self._get_nested_value({"torrents": self._transient_data}, key)
+                        if old_value != value:
+                            self._set_nested_value({"torrents": self._transient_data}, key, value)
+                            should_emit = True
+                            logger.debug(f"Updated transient field: {key} (NO disk write)", "AppSettings")
+
+                # Rebuild merged view to include updated transient data
+                self._settings = self._build_merged_view()
+
+            else:
+                # PERSISTENT DATA: Update user_settings and queue save
+                logger.trace(f"Persistent key detected: {key}", "AppSettings")
+
+                old_value = self._get_nested_value(self._user_settings, key)
+                if old_value != value:
+                    self._set_nested_value(self._user_settings, key, value)
+                    should_emit = True
+                    logger.debug(f"Updated persistent: {key}", "AppSettings")
+
+                    # Rebuild merged view
+                    self._settings = self._build_merged_view()
+
+                    # Queue debounced save (1 second delay)
+                    self._queue_save()
                 else:
-                    # Normal persistent setting
-                    logger.debug("Value changed, updating and saving", "AppSettings")
-                    # Use nested setter to properly handle dot notation (e.g., "watch_folder.enabled")
-                    self._set_nested_value(self._settings, key, value)
-                    # Update both storage systems directly to avoid recursion
-                    super().__setattr__("settings", self._settings.copy())
-                    logger.trace("About to save settings", "AppSettings")
-                    self._save_settings_unlocked()
-                    logger.info("Settings saved", "AppSettings")
-                should_emit = True
-            else:
-                logger.trace("Value unchanged, skipping update", "AppSettings")
+                    logger.trace("Value unchanged, skipping update", "AppSettings")
 
-        # Emit signals AFTER releasing the lock to avoid re-entrancy deadlocks
+        # Emit signals AFTER releasing lock
         if should_emit:
-            logger.trace("Lock released, emitting signals", "AppSettings")
-            # Emit new signals
-            logger.trace("Emitting 'settings-value-changed' signal", "AppSettings")
+            logger.trace("Emitting change signals", "AppSettings")
             self.emit("settings-value-changed", key, value)
-            logger.trace("Emitting 'settings-attribute-changed' signal", "AppSettings")
             self.emit("settings-attribute-changed", key, value)
-            # Legacy compatibility signals
-            logger.trace("Emitting 'setting-changed' signal", "AppSettings")
+            # Legacy signals
             self.emit("setting-changed", key, value)
-            logger.trace("Emitting 'attribute-changed' signal", "AppSettings")
             self.emit("attribute-changed", key, value)
-            logger.info("All signals emitted successfully", "AppSettings")
-            self.logger.trace(f"Setting changed: {key} = {value}")
+            logger.info(f"Setting updated: {key}", "AppSettings")
 
-        logger.trace("Setting method completed", "AppSettings")
+        logger.trace("set() completed", "AppSettings")
 
     def __getattr__(self, name):
         """Dynamic attribute access (Settings API compatibility)"""
@@ -522,7 +658,12 @@ class AppSettings(GObject.GObject):
             raise AttributeError(f"Setting '{name}' not found in user settings or defaults.")
 
     def __setattr__(self, name, value):
-        """Dynamic attribute setting (Settings API compatibility)"""
+        """
+        Dynamic attribute setting (Settings API compatibility).
+
+        DEPRECATED: Use app_settings.set(key, value) instead for explicit settings updates.
+        This method is kept for backwards compatibility but may be removed in future versions.
+        """
         # Handle private attributes and initialization normally
         if (
             name.startswith("_")
@@ -531,6 +672,23 @@ class AppSettings(GObject.GObject):
         ):
             super().__setattr__(name, value)
             return
+
+        # Check if this attribute has a property setter defined in the class
+        # If so, delegate to the property setter instead of setting directly
+        for cls in type(self).__mro__:
+            if name in cls.__dict__:
+                attr = cls.__dict__[name]
+                if isinstance(attr, property) and attr.fset is not None:
+                    # Use the property setter
+                    attr.fset(self, value)
+                    return
+
+        # Emit deprecation warning for non-property attribute access
+        logger.warning(
+            f"DEPRECATED: app_settings.{name} = value syntax is deprecated. "
+            f"Use app_settings.set('{name}', value) instead.",
+            "AppSettings",
+        )
 
         self.logger.trace("Settings __setattr__", extra={"class_name": self.__class__.__name__})
 
@@ -837,18 +995,34 @@ class AppSettings(GObject.GObject):
         upload = speed_dist.get("upload", {})
         if upload is None or not isinstance(upload, dict):
             return "off"
-        return upload.get("algorithm", "off")
+        algorithm = upload.get("algorithm", "off")
+        return algorithm
 
     @upload_distribution_algorithm.setter
     def upload_distribution_algorithm(self, value):
-        speed_dist = self.get("speed_distribution", {})
+        import copy
+
+        self.logger.info(f"🔧 SETTER CALLED: upload_distribution_algorithm = {value}")
+
+        # IMPORTANT: Create a deep copy to avoid in-place modification bug
+        # If we modify the original dict, old_value == new_value in set(), preventing save
+        old_speed_dist = self.get("speed_distribution", {})
+        self.logger.info(f"   Old speed_distribution: {old_speed_dist}")
+
+        speed_dist = copy.deepcopy(old_speed_dist)
+        self.logger.info(f"   Deep copied (id changed: {id(old_speed_dist)} -> {id(speed_dist)})")
+
         # Handle None case (when settings file has null)
         if speed_dist is None or not isinstance(speed_dist, dict):
             speed_dist = {}
         if "upload" not in speed_dist:
             speed_dist["upload"] = {}
         speed_dist["upload"]["algorithm"] = value
+
+        self.logger.info(f"   New speed_distribution: {speed_dist}")
+        self.logger.info("   Calling self.set('speed_distribution', ...)")
         self.set("speed_distribution", speed_dist)
+        self.logger.info("   ✅ self.set() completed")
 
     @property
     def upload_distribution_spread_percentage(self):
@@ -856,7 +1030,9 @@ class AppSettings(GObject.GObject):
 
     @upload_distribution_spread_percentage.setter
     def upload_distribution_spread_percentage(self, value):
-        speed_dist = self.get("speed_distribution", {})
+        import copy
+
+        speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
         if speed_dist is None or not isinstance(speed_dist, dict):
             speed_dist = {}
         if "upload" not in speed_dist:
@@ -870,7 +1046,9 @@ class AppSettings(GObject.GObject):
 
     @upload_distribution_redistribution_mode.setter
     def upload_distribution_redistribution_mode(self, value):
-        speed_dist = self.get("speed_distribution", {})
+        import copy
+
+        speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
         if speed_dist is None or not isinstance(speed_dist, dict):
             speed_dist = {}
         if "upload" not in speed_dist:
@@ -884,7 +1062,9 @@ class AppSettings(GObject.GObject):
 
     @upload_distribution_custom_interval_minutes.setter
     def upload_distribution_custom_interval_minutes(self, value):
-        speed_dist = self.get("speed_distribution", {})
+        import copy
+
+        speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
         if speed_dist is None or not isinstance(speed_dist, dict):
             speed_dist = {}
         if "upload" not in speed_dist:
@@ -899,7 +1079,9 @@ class AppSettings(GObject.GObject):
 
     @download_distribution_algorithm.setter
     def download_distribution_algorithm(self, value):
-        speed_dist = self.get("speed_distribution", {})
+        import copy
+
+        speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
         if speed_dist is None or not isinstance(speed_dist, dict):
             speed_dist = {}
         if "download" not in speed_dist:
@@ -913,7 +1095,9 @@ class AppSettings(GObject.GObject):
 
     @download_distribution_spread_percentage.setter
     def download_distribution_spread_percentage(self, value):
-        speed_dist = self.get("speed_distribution", {})
+        import copy
+
+        speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
         if speed_dist is None or not isinstance(speed_dist, dict):
             speed_dist = {}
         if "download" not in speed_dist:
@@ -927,7 +1111,9 @@ class AppSettings(GObject.GObject):
 
     @download_distribution_redistribution_mode.setter
     def download_distribution_redistribution_mode(self, value):
-        speed_dist = self.get("speed_distribution", {})
+        import copy
+
+        speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
         if speed_dist is None or not isinstance(speed_dist, dict):
             speed_dist = {}
         if "download" not in speed_dist:
@@ -941,7 +1127,9 @@ class AppSettings(GObject.GObject):
 
     @download_distribution_custom_interval_minutes.setter
     def download_distribution_custom_interval_minutes(self, value):
-        speed_dist = self.get("speed_distribution", {})
+        import copy
+
+        speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
         if speed_dist is None or not isinstance(speed_dist, dict):
             speed_dist = {}
         if "download" not in speed_dist:
@@ -956,7 +1144,9 @@ class AppSettings(GObject.GObject):
 
     @upload_distribution_stopped_min_percentage.setter
     def upload_distribution_stopped_min_percentage(self, value):
-        speed_dist = self.get("speed_distribution", {})
+        import copy
+
+        speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
         if speed_dist is None or not isinstance(speed_dist, dict):
             speed_dist = {}
         if "upload" not in speed_dist:
@@ -970,7 +1160,9 @@ class AppSettings(GObject.GObject):
 
     @upload_distribution_stopped_max_percentage.setter
     def upload_distribution_stopped_max_percentage(self, value):
-        speed_dist = self.get("speed_distribution", {})
+        import copy
+
+        speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
         if speed_dist is None or not isinstance(speed_dist, dict):
             speed_dist = {}
         if "upload" not in speed_dist:
@@ -985,7 +1177,9 @@ class AppSettings(GObject.GObject):
 
     @download_distribution_stopped_min_percentage.setter
     def download_distribution_stopped_min_percentage(self, value):
-        speed_dist = self.get("speed_distribution", {})
+        import copy
+
+        speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
         if speed_dist is None or not isinstance(speed_dist, dict):
             speed_dist = {}
         if "download" not in speed_dist:
@@ -999,7 +1193,9 @@ class AppSettings(GObject.GObject):
 
     @download_distribution_stopped_max_percentage.setter
     def download_distribution_stopped_max_percentage(self, value):
-        speed_dist = self.get("speed_distribution", {})
+        import copy
+
+        speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
         if speed_dist is None or not isinstance(speed_dist, dict):
             speed_dist = {}
         if "download" not in speed_dist:

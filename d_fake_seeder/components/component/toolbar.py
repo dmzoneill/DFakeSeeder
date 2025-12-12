@@ -271,8 +271,9 @@ class Toolbar(Component):
         """Save settings only when user releases the mouse button"""
         value = self.toolbar_refresh_rate.get_value()
         logger.trace(f"Slider released with value: {value}", "Toolbar")
-        self.settings.tickspeed = math.ceil(float(value))
-        logger.trace(f"Saved tickspeed to settings: {self.settings.tickspeed}", "Toolbar")
+        tickspeed = math.ceil(float(value))
+        self.settings.set("tickspeed", tickspeed)
+        logger.trace(f"Saved tickspeed to settings: {tickspeed}", "Toolbar")
 
     def on_toolbar_add_clicked(self, button):
         logger.trace(

@@ -86,7 +86,9 @@ class Torrent(GObject.GObject):
                 "⚠️  CREATING NEW TORRENT ENTRY (this will reset stats to 0!)",
                 extra={"class_name": self.__class__.__name__},
             )
-            self.settings.torrents[self.file_path] = {
+
+            # Build new torrent data dictionary
+            new_torrent_data = {
                 "active": True,
                 "id": (len(self.settings.torrents) + 1 if len(self.settings.torrents) > 0 else 1),
                 "name": "",
@@ -115,7 +117,14 @@ class Torrent(GObject.GObject):
                 "sequential_download": False,
                 "force_start": False,
             }
-            self.settings.save_settings()
+
+            # Add to transient storage (will be saved during shutdown via save_quit())
+            self.settings.torrents[self.file_path] = new_torrent_data
+
+            logger.info(
+                f"New torrent added to transient storage: {self.file_path}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         ATTRIBUTES = Attributes
         attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
@@ -278,11 +287,8 @@ class Torrent(GObject.GObject):
             if self.leechers != self.seeder.leechers:
                 self.leechers = self.seeder.leechers
 
-        threshold = (
-            self.settings.torrents[self.file_path]["threshold"]
-            if "threshold" in self.settings.torrents[self.file_path]
-            else self.settings.threshold
-        )
+        # Get torrent-specific threshold, or fall back to global threshold
+        threshold = self.settings.torrents[self.file_path].get("threshold", self.settings.threshold)
 
         if self.threshold != threshold:
             self.threshold = threshold
@@ -416,19 +422,23 @@ class Torrent(GObject.GObject):
 
         ATTRIBUTES = Attributes
         attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
-        self.settings.torrents[self.file_path] = {attr: getattr(self, attr) for attr in attributes}
+
+        # Build torrent data dictionary
+        torrent_data = {attr: getattr(self, attr) for attr in attributes}
 
         # Debug: Log saved values
         logger.trace(
-            f"💾 SAVING TORRENT: {self.name[:30]} - progress={self.progress:.2%}, "
+            f"💾 SAVING TORRENT (transient): {self.name[:30]} - progress={self.progress:.2%}, "
             f"downloaded={self.total_downloaded:,}, uploaded={self.total_uploaded:,}",
             extra={"class_name": self.__class__.__name__},
         )
 
-        # IMPORTANT: Save settings to disk immediately
-        self.settings.save_settings()
+        # Update transient storage (NO disk write during runtime)
+        # Torrents are only persisted to disk during application shutdown via save_quit()
+        self.settings.torrents[self.file_path] = torrent_data
+
         logger.trace(
-            f"✅ Settings saved to disk for {self.name[:30]}",
+            f"✅ Torrent data updated in transient storage (not written to disk): {self.name[:30]}",
             extra={"class_name": self.__class__.__name__},
         )
 

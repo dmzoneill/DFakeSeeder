@@ -232,7 +232,7 @@ class DHTSeeder(BaseSeeder):
                 dht_stats[operation]["failure"] += 1
 
             # Store back to settings
-            setattr(self.settings, "dht_stats", dht_stats)
+            self.settings.set("dht_stats", dht_stats)
 
         except Exception as e:
             logger.trace(

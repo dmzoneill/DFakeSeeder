@@ -404,7 +404,7 @@ class Torrents(Component, ColumnTranslationMixin):
                         "🔵 COLUMN TOGGLE: Saving empty columns",
                         extra={"class_name": self.__class__.__name__},
                     )
-                    self.settings.columns = ""
+                    self.settings.set("columns", "")
                 else:
                     checked_items.sort(key=lambda x: column_titles.index(x))
                     columns_str = ",".join(checked_items)
@@ -412,7 +412,7 @@ class Torrents(Component, ColumnTranslationMixin):
                         f"🔵 COLUMN TOGGLE: Saving columns={columns_str}",
                         extra={"class_name": self.__class__.__name__},
                     )
-                    self.settings.columns = columns_str
+                    self.settings.set("columns", columns_str)
                 logger.trace(
                     "🔵 COLUMN TOGGLE: Settings saved",
                     extra={"class_name": self.__class__.__name__},

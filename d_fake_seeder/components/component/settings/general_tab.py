@@ -621,9 +621,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             return
         # Check if the selected language is already the current language
         selected_index = dropdown.get_selected()
+        current_lang = getattr(self.app_settings, "language", "en")
         if 0 <= selected_index < len(self.language_codes):
             selected_lang = self.language_codes[selected_index]
-            current_lang = getattr(self.app_settings, "language", "en")
             # If we're trying to switch to the same language, skip
             if selected_lang == current_lang:
                 self.logger.trace(f"Skipping language change - already using {selected_lang}")
