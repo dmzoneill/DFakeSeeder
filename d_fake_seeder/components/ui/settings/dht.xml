@@ -145,7 +145,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum number of nodes in the routing table</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -201,7 +200,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Interval between DHT announcements (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -242,7 +240,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Timeout for DHT bootstrap operations (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -283,7 +280,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Timeout for DHT queries (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -346,7 +342,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum number of DHT nodes to maintain</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -380,7 +375,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum number of nodes per bucket</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -414,7 +408,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum number of concurrent DHT queries</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -566,7 +559,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Interval for DHT statistics updates (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -649,7 +641,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum DHT queries per second</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>

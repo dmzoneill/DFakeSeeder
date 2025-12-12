@@ -203,7 +203,6 @@
                                                     <property name="tooltip-text" translatable="yes">How often to check for new torrent files (in seconds)</property>
                                                     <property name="digits">0</property>
                                                     <property name="numeric">True</property>
-                                                    <property name="editable">True</property>
                                                 </object>
                                             </child>
                                             <child>

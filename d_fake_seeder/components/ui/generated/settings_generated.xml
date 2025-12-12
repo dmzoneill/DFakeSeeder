@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk+" version="4.0"/>
   <object class="GtkWindow" id="settings_window">
-    <property name="can-focus">False</property>
+    <property name="can-focus">True</property>
     <property name="title" translatable="yes">Preferences</property>
     <property name="default-width">600</property>
     <property name="default-height">500</property>
@@ -232,7 +232,6 @@
                                                     <property name="tooltip-text" translatable="yes">How often to check for new torrent files (in seconds)</property>
                                                     <property name="digits">0</property>
                                                     <property name="numeric">True</property>
-                                                    <property name="editable">True</property>
                                                 </object>
                                             </child>
                                             <child>
@@ -667,7 +666,6 @@
                                             <property name="tooltip-text" translatable="yes">Port for incoming BitTorrent connections (1024-65535)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -751,7 +749,6 @@
                                             <property name="tooltip-text" translatable="yes">Maximum number of connections to all torrents</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -786,7 +783,6 @@
                                             <property name="tooltip-text" translatable="yes">Maximum number of connections per individual torrent</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -821,7 +817,6 @@
                                             <property name="tooltip-text" translatable="yes">Maximum number of simultaneous upload slots</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -935,7 +930,6 @@
                                             <property name="tooltip-text" translatable="yes">Proxy server port number</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1088,7 +1082,6 @@
                                             <property name="tooltip-text" translatable="yes">Timeout for peer handshake in seconds</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1124,7 +1117,6 @@
                                             <property name="tooltip-text" translatable="yes">Timeout for reading peer messages in seconds</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1160,7 +1152,6 @@
                                             <property name="tooltip-text" translatable="yes">Interval for sending keep alive messages in seconds</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1196,7 +1187,6 @@
                                             <property name="tooltip-text" translatable="yes">Interval for contacting peers in seconds</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1254,7 +1244,6 @@
                                             <property name="tooltip-text" translatable="yes">Timeout for UDP seeder connections in seconds</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1290,7 +1279,6 @@
                                             <property name="tooltip-text" translatable="yes">Timeout for HTTP seeder connections in seconds</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1325,7 +1313,6 @@
                                             <property name="tooltip-text" translatable="yes">Minimum port for seeder connections</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1359,7 +1346,6 @@
                                             <property name="tooltip-text" translatable="yes">Maximum port for seeder connections</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1394,7 +1380,6 @@
                                             <property name="tooltip-text" translatable="yes">Minimum transaction ID for tracker communication</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1428,7 +1413,6 @@
                                             <property name="tooltip-text" translatable="yes">Maximum transaction ID for tracker communication</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1463,7 +1447,6 @@
                                             <property name="tooltip-text" translatable="yes">Number of peers to request from tracker</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1521,7 +1504,6 @@
                                             <property name="tooltip-text" translatable="yes">Probability of seeder upload activity (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1557,7 +1539,6 @@
                                             <property name="tooltip-text" translatable="yes">Probability of peer being idle (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1593,7 +1574,6 @@
                                             <property name="tooltip-text" translatable="yes">Progress distribution for starting peers (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1628,7 +1608,6 @@
                                             <property name="tooltip-text" translatable="yes">Progress distribution for middle progress peers (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1663,7 +1642,6 @@
                                             <property name="tooltip-text" translatable="yes">Progress distribution for almost complete peers (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1699,7 +1677,6 @@
                                             <property name="tooltip-text" translatable="yes">Probability of peer behavior analysis (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1735,7 +1712,6 @@
                                             <property name="tooltip-text" translatable="yes">Probability of peer status changes (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1771,7 +1747,6 @@
                                             <property name="tooltip-text" translatable="yes">Probability of peer dropping out (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1807,7 +1782,6 @@
                                             <property name="tooltip-text" translatable="yes">Percentage of connections to rotate (0.0 - 1.0)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1887,7 +1861,6 @@
                                             <property name="tooltip-text" translatable="yes">Global upload speed limit in KB/s (0 = unlimited)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">10</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -1930,7 +1903,6 @@
                                             <property name="tooltip-text" translatable="yes">Global download speed limit in KB/s (0 = unlimited)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">10</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -2023,7 +1995,6 @@
                                                     <property name="tooltip-text" translatable="yes">Alternative upload speed limit in KB/s</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">10</property>
-                                                    <property name="editable">True</property>
                                                     <property name="numeric">True</property>
                                                 </object>
                                             </child>
@@ -2058,7 +2029,6 @@
                                                     <property name="tooltip-text" translatable="yes">Alternative download speed limit in KB/s</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">10</property>
-                                                    <property name="editable">True</property>
                                                     <property name="numeric">True</property>
                                                 </object>
                                             </child>
@@ -2145,7 +2115,6 @@
                                                     <property name="tooltip-text" translatable="yes">Start hour (24-hour format)</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">4</property>
-                                                    <property name="editable">True</property>
                                                     <property name="numeric">True</property>
                                                 </object>
                                             </child>
@@ -2170,7 +2139,6 @@
                                                     <property name="tooltip-text" translatable="yes">Start minute</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">4</property>
-                                                    <property name="editable">True</property>
                                                     <property name="numeric">True</property>
                                                 </object>
                                             </child>
@@ -2197,7 +2165,6 @@
                                                     <property name="tooltip-text" translatable="yes">End hour (24-hour format)</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">4</property>
-                                                    <property name="editable">True</property>
                                                     <property name="numeric">True</property>
                                                 </object>
                                             </child>
@@ -2222,7 +2189,6 @@
                                                     <property name="tooltip-text" translatable="yes">End minute</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">4</property>
-                                                    <property name="editable">True</property>
                                                     <property name="numeric">True</property>
                                                 </object>
                                             </child>
@@ -2350,7 +2316,7 @@
                                                         </object>
                                                     </child>
                                                     <child>
-                                                        <object class="GtkDropDown" id="settings_upload_distribution_algorithm">
+                                                        <object class="GtkDropDown" id="settings_upload_dist_algorithm">
                                                             <property name="model">
                                                                 <object class="GtkStringList">
                                                                     <items>
@@ -2383,7 +2349,7 @@
                                                         </object>
                                                     </child>
                                                     <child>
-                                                        <object class="GtkSpinButton" id="settings_upload_spread_percentage">
+                                                        <object class="GtkSpinButton" id="settings_upload_dist_percentage">
                                                             <property name="adjustment">
                                                                 <object class="GtkAdjustment">
                                                                     <property name="lower">0</property>
@@ -2396,7 +2362,6 @@
                                                             <property name="tooltip-text" translatable="yes">Algorithm-specific spread parameter (0-100)</property>
                                                             <property name="hexpand">False</property>
                                                             <property name="width-chars">10</property>
-                                                            <property name="editable">True</property>
                                                             <property name="numeric">True</property>
                                                         </object>
                                                     </child>
@@ -2418,7 +2383,7 @@
                                                         </object>
                                                     </child>
                                                     <child>
-                                                        <object class="GtkDropDown" id="settings_upload_redistribution_mode">
+                                                        <object class="GtkDropDown" id="settings_upload_dist_mode">
                                                             <property name="model">
                                                                 <object class="GtkStringList">
                                                                     <items>
@@ -2437,7 +2402,7 @@
 
                                             <!-- Upload custom interval -->
                                             <child>
-                                                <object class="GtkBox" id="settings_upload_custom_interval_box">
+                                                <object class="GtkBox" id="settings_upload_dist_interval_box">
                                                     <property name="spacing">12</property>
                                                     <property name="halign">fill</property>
                                                     <property name="visible">False</property>
@@ -2451,7 +2416,7 @@
                                                         </object>
                                                     </child>
                                                     <child>
-                                                        <object class="GtkSpinButton" id="settings_upload_custom_interval">
+                                                        <object class="GtkSpinButton" id="settings_upload_dist_interval">
                                                             <property name="adjustment">
                                                                 <object class="GtkAdjustment">
                                                                     <property name="lower">1</property>
@@ -2464,7 +2429,6 @@
                                                             <property name="tooltip-text" translatable="yes">Custom redistribution interval in minutes</property>
                                                             <property name="hexpand">False</property>
                                                             <property name="width-chars">10</property>
-                                                            <property name="editable">True</property>
                                                             <property name="numeric">True</property>
                                                         </object>
                                                     </child>
@@ -2486,7 +2450,7 @@
                                                         </object>
                                                     </child>
                                                     <child>
-                                                        <object class="GtkSpinButton" id="settings_upload_stopped_min">
+                                                        <object class="GtkSpinButton" id="settings_upload_dist_stopped_min">
                                                             <property name="adjustment">
                                                                 <object class="GtkAdjustment">
                                                                     <property name="lower">0</property>
@@ -2499,7 +2463,6 @@
                                                             <property name="tooltip-text" translatable="yes">Minimum percentage of torrents to stop completely</property>
                                                             <property name="hexpand">False</property>
                                                             <property name="width-chars">10</property>
-                                                            <property name="editable">True</property>
                                                             <property name="numeric">True</property>
                                                         </object>
                                                     </child>
@@ -2521,7 +2484,7 @@
                                                         </object>
                                                     </child>
                                                     <child>
-                                                        <object class="GtkSpinButton" id="settings_upload_stopped_max">
+                                                        <object class="GtkSpinButton" id="settings_upload_dist_stopped_max">
                                                             <property name="adjustment">
                                                                 <object class="GtkAdjustment">
                                                                     <property name="lower">0</property>
@@ -2534,7 +2497,6 @@
                                                             <property name="tooltip-text" translatable="yes">Maximum percentage of torrents to stop completely</property>
                                                             <property name="hexpand">False</property>
                                                             <property name="width-chars">10</property>
-                                                            <property name="editable">True</property>
                                                             <property name="numeric">True</property>
                                                         </object>
                                                     </child>
@@ -2580,7 +2542,7 @@
                                                         </object>
                                                     </child>
                                                     <child>
-                                                        <object class="GtkDropDown" id="settings_download_distribution_algorithm">
+                                                        <object class="GtkDropDown" id="settings_download_dist_algorithm">
                                                             <property name="model">
                                                                 <object class="GtkStringList">
                                                                     <items>
@@ -2613,7 +2575,7 @@
                                                         </object>
                                                     </child>
                                                     <child>
-                                                        <object class="GtkSpinButton" id="settings_download_spread_percentage">
+                                                        <object class="GtkSpinButton" id="settings_download_dist_percentage">
                                                             <property name="adjustment">
                                                                 <object class="GtkAdjustment">
                                                                     <property name="lower">0</property>
@@ -2626,7 +2588,6 @@
                                                             <property name="tooltip-text" translatable="yes">Algorithm-specific spread parameter (0-100)</property>
                                                             <property name="hexpand">False</property>
                                                             <property name="width-chars">10</property>
-                                                            <property name="editable">True</property>
                                                             <property name="numeric">True</property>
                                                         </object>
                                                     </child>
@@ -2648,7 +2609,7 @@
                                                         </object>
                                                     </child>
                                                     <child>
-                                                        <object class="GtkDropDown" id="settings_download_redistribution_mode">
+                                                        <object class="GtkDropDown" id="settings_download_dist_mode">
                                                             <property name="model">
                                                                 <object class="GtkStringList">
                                                                     <items>
@@ -2667,7 +2628,7 @@
 
                                             <!-- Download custom interval -->
                                             <child>
-                                                <object class="GtkBox" id="settings_download_custom_interval_box">
+                                                <object class="GtkBox" id="settings_download_dist_interval_box">
                                                     <property name="spacing">12</property>
                                                     <property name="halign">fill</property>
                                                     <property name="visible">False</property>
@@ -2681,7 +2642,7 @@
                                                         </object>
                                                     </child>
                                                     <child>
-                                                        <object class="GtkSpinButton" id="settings_download_custom_interval">
+                                                        <object class="GtkSpinButton" id="settings_download_dist_interval">
                                                             <property name="adjustment">
                                                                 <object class="GtkAdjustment">
                                                                     <property name="lower">1</property>
@@ -2694,7 +2655,6 @@
                                                             <property name="tooltip-text" translatable="yes">Custom redistribution interval in minutes</property>
                                                             <property name="hexpand">False</property>
                                                             <property name="width-chars">10</property>
-                                                            <property name="editable">True</property>
                                                             <property name="numeric">True</property>
                                                         </object>
                                                     </child>
@@ -2716,7 +2676,7 @@
                                                         </object>
                                                     </child>
                                                     <child>
-                                                        <object class="GtkSpinButton" id="settings_download_stopped_min">
+                                                        <object class="GtkSpinButton" id="settings_download_dist_stopped_min">
                                                             <property name="adjustment">
                                                                 <object class="GtkAdjustment">
                                                                     <property name="lower">0</property>
@@ -2729,7 +2689,6 @@
                                                             <property name="tooltip-text" translatable="yes">Minimum percentage of torrents to stop completely</property>
                                                             <property name="hexpand">False</property>
                                                             <property name="width-chars">10</property>
-                                                            <property name="editable">True</property>
                                                             <property name="numeric">True</property>
                                                         </object>
                                                     </child>
@@ -2751,7 +2710,7 @@
                                                         </object>
                                                     </child>
                                                     <child>
-                                                        <object class="GtkSpinButton" id="settings_download_stopped_max">
+                                                        <object class="GtkSpinButton" id="settings_download_dist_stopped_max">
                                                             <property name="adjustment">
                                                                 <object class="GtkAdjustment">
                                                                     <property name="lower">0</property>
@@ -2764,7 +2723,6 @@
                                                             <property name="tooltip-text" translatable="yes">Maximum percentage of torrents to stop completely</property>
                                                             <property name="hexpand">False</property>
                                                             <property name="width-chars">10</property>
-                                                            <property name="editable">True</property>
                                                             <property name="numeric">True</property>
                                                         </object>
                                                     </child>
@@ -3096,7 +3054,6 @@
                                             <property name="tooltip-text" translatable="yes">How often to announce to trackers (60-7200 seconds)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -3131,7 +3088,6 @@
                                             <property name="tooltip-text" translatable="yes">Minimum time between announces (10-3600 seconds)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -3166,7 +3122,6 @@
                                             <property name="tooltip-text" translatable="yes">How often to scrape tracker for swarm statistics</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -3334,7 +3289,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum number of nodes in the routing table</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -3390,7 +3344,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Interval between DHT announcements (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -3431,7 +3384,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Timeout for DHT bootstrap operations (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -3472,7 +3424,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Timeout for DHT queries (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -3535,7 +3486,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum number of DHT nodes to maintain</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -3569,7 +3519,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum number of nodes per bucket</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -3603,7 +3552,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum number of concurrent DHT queries</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -3755,7 +3703,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Interval for DHT statistics updates (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -3838,7 +3785,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum DHT queries per second</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4087,7 +4033,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Interval between PEX message exchanges (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4128,7 +4073,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum peers to include in a PEX message</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4162,7 +4106,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum dropped peers to track for PEX</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4217,7 +4160,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Number of synthetic peers to generate</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4294,7 +4236,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Size of metadata pieces in bytes</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4335,7 +4276,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Timeout for metadata requests (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4461,7 +4401,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Connection timeout for extensions (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4502,7 +4441,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Keep alive interval for connections (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4607,7 +4545,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">General timeout for extension operations (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4648,7 +4585,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum size for extension messages (bytes)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4710,7 +4646,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Extension statistics update interval (seconds)</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4793,7 +4728,6 @@
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Maximum extension messages per second</property>
                                             <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -4927,8 +4861,9 @@
                                                     <property name="value">0.3</property>
                                                 </object>
                                             </property>
-                                            
+                                            <property name="digits">1</property>
                                             <property name="tooltip-text" translatable="yes">Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)</property>
+                                            <property name="numeric">True</property>
                                             <property name="hexpand">True</property>
                                         </object>
                                     </child>
@@ -4962,6 +4897,7 @@
                                             </property>
                                             <property name="digits">2</property>
                                             <property name="tooltip-text" translatable="yes">Probability of switching to a different client behavior</property>
+                                            <property name="numeric">True</property>
                                             <property name="hexpand">True</property>
                                         </object>
                                     </child>
@@ -5184,8 +5120,8 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Conservative profile upload speed</property>
-                                    <property name="editable">True</property>
                                     <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">0</property>
@@ -5217,12 +5153,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Conservative profile download speed</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">1</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5249,14 +5185,14 @@
                                             <property name="value">0.1</property>
                                         </object>
                                     </property>
-                                    
+                                    <property name="digits">1</property>
                                     <property name="tooltip-text" translatable="yes">Upload speed variance for conservative profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">2</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5285,12 +5221,12 @@
                                     </property>
                                     <property name="digits">1</property>
                                     <property name="tooltip-text" translatable="yes">Download speed variance for conservative profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">3</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5318,12 +5254,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Maximum connections for conservative profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">4</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5348,17 +5284,17 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.05</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Probability of traffic bursts for conservative profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">5</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5383,17 +5319,17 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.2</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Probability of idle periods for conservative profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">6</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
                         </object>
@@ -5443,12 +5379,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Balanced profile upload speed</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">0</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5476,12 +5412,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Balanced profile download speed</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">1</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5506,17 +5442,17 @@
                                             <property name="step-increment">0.1</property>
                                             <property name="page-increment">0.1</property>
                                             <property name="value">0.3</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">1</property>
                                     <property name="tooltip-text" translatable="yes">Upload speed variance for balanced profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">2</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5541,17 +5477,17 @@
                                             <property name="step-increment">0.05</property>
                                             <property name="page-increment">0.1</property>
                                             <property name="value">0.25</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Download speed variance for balanced profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">3</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5579,12 +5515,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Maximum connections for balanced profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">4</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5609,17 +5545,17 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.15</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Probability of traffic bursts for balanced profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">5</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5644,17 +5580,17 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.1</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Probability of idle periods for balanced profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">6</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
                         </object>
@@ -5704,12 +5640,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Aggressive profile upload speed (0 = unlimited)</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">0</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5737,12 +5673,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Aggressive profile download speed</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">1</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5767,17 +5703,17 @@
                                             <property name="step-increment">0.1</property>
                                             <property name="page-increment">0.1</property>
                                             <property name="value">0.5</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">1</property>
                                     <property name="tooltip-text" translatable="yes">Upload speed variance for aggressive profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">2</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5802,17 +5738,17 @@
                                             <property name="step-increment">0.05</property>
                                             <property name="page-increment">0.1</property>
                                             <property name="value">0.4</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">1</property>
                                     <property name="tooltip-text" translatable="yes">Download speed variance for aggressive profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">3</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5840,12 +5776,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Maximum connections for aggressive profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">4</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5870,17 +5806,17 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.3</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Probability of traffic bursts for aggressive profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">5</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -5905,17 +5841,17 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.05</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Probability of idle periods for aggressive profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">6</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
                         </object>
@@ -5985,14 +5921,14 @@
                                                     <property name="step-increment">0.1</property>
                                                     <property name="page-increment">0.1</property>
                                                     <property name="value">0.5</property>
-                                                    
+
                                                 </object>
                                             </property>
-                                    <property name="digits">1</property>
+                                            <property name="digits">1</property>
                                             <property name="tooltip-text" translatable="yes">Rate of adaptation to swarm behavior</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="hexpand">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -6024,9 +5960,9 @@
                                                 </object>
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Number of peers to analyze for behavior patterns</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="hexpand">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -6161,7 +6097,6 @@
                                             <property name="tooltip-text" translatable="yes">Port for web interface (1024-65535)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -6376,7 +6311,6 @@
                                                     <property name="tooltip-text" translatable="yes">Automatic logout after inactivity (5-1440 minutes)</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">8</property>
-                                                    <property name="editable">True</property>
                                                     <property name="numeric">True</property>
                                                 </object>
                                             </child>
@@ -6662,7 +6596,6 @@
                                             <property name="tooltip-text" translatable="yes">Maximum size of log file before rotation</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -6719,7 +6652,6 @@
                                             <property name="tooltip-text" translatable="yes">Amount of RAM to use for disk caching</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -6754,7 +6686,6 @@
                                             <property name="tooltip-text" translatable="yes">How often to update the user interface</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>

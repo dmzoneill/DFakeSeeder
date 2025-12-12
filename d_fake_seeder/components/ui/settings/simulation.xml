@@ -111,8 +111,9 @@
                                                     <property name="value">0.3</property>
                                                 </object>
                                             </property>
-                                            
+                                            <property name="digits">1</property>
                                             <property name="tooltip-text" translatable="yes">Variation in client behavior (0.0 = no variation, 1.0 = maximum variation)</property>
+                                            <property name="numeric">True</property>
                                             <property name="hexpand">True</property>
                                         </object>
                                     </child>
@@ -146,6 +147,7 @@
                                             </property>
                                             <property name="digits">2</property>
                                             <property name="tooltip-text" translatable="yes">Probability of switching to a different client behavior</property>
+                                            <property name="numeric">True</property>
                                             <property name="hexpand">True</property>
                                         </object>
                                     </child>
@@ -368,8 +370,8 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Conservative profile upload speed</property>
-                                    <property name="editable">True</property>
                                     <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">0</property>
@@ -401,12 +403,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Conservative profile download speed</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">1</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -433,14 +435,14 @@
                                             <property name="value">0.1</property>
                                         </object>
                                     </property>
-                                    
+                                    <property name="digits">1</property>
                                     <property name="tooltip-text" translatable="yes">Upload speed variance for conservative profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">2</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -469,12 +471,12 @@
                                     </property>
                                     <property name="digits">1</property>
                                     <property name="tooltip-text" translatable="yes">Download speed variance for conservative profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">3</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -502,12 +504,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Maximum connections for conservative profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">4</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -532,17 +534,17 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.05</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Probability of traffic bursts for conservative profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">5</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -567,17 +569,17 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.2</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Probability of idle periods for conservative profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">6</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
                         </object>
@@ -627,12 +629,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Balanced profile upload speed</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">0</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -660,12 +662,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Balanced profile download speed</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">1</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -690,17 +692,17 @@
                                             <property name="step-increment">0.1</property>
                                             <property name="page-increment">0.1</property>
                                             <property name="value">0.3</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">1</property>
                                     <property name="tooltip-text" translatable="yes">Upload speed variance for balanced profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">2</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -725,17 +727,17 @@
                                             <property name="step-increment">0.05</property>
                                             <property name="page-increment">0.1</property>
                                             <property name="value">0.25</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Download speed variance for balanced profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">3</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -763,12 +765,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Maximum connections for balanced profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">4</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -793,17 +795,17 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.15</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Probability of traffic bursts for balanced profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">5</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -828,17 +830,17 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.1</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Probability of idle periods for balanced profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">6</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
                         </object>
@@ -888,12 +890,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Aggressive profile upload speed (0 = unlimited)</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">0</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -921,12 +923,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Aggressive profile download speed</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">1</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -951,17 +953,17 @@
                                             <property name="step-increment">0.1</property>
                                             <property name="page-increment">0.1</property>
                                             <property name="value">0.5</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">1</property>
                                     <property name="tooltip-text" translatable="yes">Upload speed variance for aggressive profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">2</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -986,17 +988,17 @@
                                             <property name="step-increment">0.05</property>
                                             <property name="page-increment">0.1</property>
                                             <property name="value">0.4</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">1</property>
                                     <property name="tooltip-text" translatable="yes">Download speed variance for aggressive profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">3</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -1024,12 +1026,12 @@
                                         </object>
                                     </property>
                                     <property name="tooltip-text" translatable="yes">Maximum connections for aggressive profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">4</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -1054,17 +1056,17 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.3</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Probability of traffic bursts for aggressive profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">5</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
 
@@ -1089,17 +1091,17 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.05</property>
-                                            
+
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
                                     <property name="tooltip-text" translatable="yes">Probability of idle periods for aggressive profile</property>
+                                    <property name="numeric">True</property>
+                                    <property name="editable">True</property>
                                     <layout>
                                         <property name="column">1</property>
                                         <property name="row">6</property>
                                     </layout>
-                                        <property name="editable">True</property>
-                                        <property name="numeric">True</property>
                                 </object>
                             </child>
                         </object>
@@ -1169,14 +1171,14 @@
                                                     <property name="step-increment">0.1</property>
                                                     <property name="page-increment">0.1</property>
                                                     <property name="value">0.5</property>
-                                                    
+
                                                 </object>
                                             </property>
-                                    <property name="digits">1</property>
+                                            <property name="digits">1</property>
                                             <property name="tooltip-text" translatable="yes">Rate of adaptation to swarm behavior</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="hexpand">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -1208,9 +1210,9 @@
                                                 </object>
                                             </property>
                                             <property name="tooltip-text" translatable="yes">Number of peers to analyze for behavior patterns</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
+                                            <property name="editable">True</property>
+                                            <property name="hexpand">True</property>
                                         </object>
                                     </child>
                                 </object>

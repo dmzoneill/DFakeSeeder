@@ -113,7 +113,6 @@
                                             <property name="tooltip-text" translatable="yes">Port for web interface (1024-65535)</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -328,7 +327,6 @@
                                                     <property name="tooltip-text" translatable="yes">Automatic logout after inactivity (5-1440 minutes)</property>
                                                     <property name="hexpand">False</property>
                                                     <property name="width-chars">8</property>
-                                                    <property name="editable">True</property>
                                                     <property name="numeric">True</property>
                                                 </object>
                                             </child>

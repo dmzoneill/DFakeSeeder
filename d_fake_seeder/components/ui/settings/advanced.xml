@@ -172,7 +172,6 @@
                                             <property name="tooltip-text" translatable="yes">Maximum size of log file before rotation</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -229,7 +228,6 @@
                                             <property name="tooltip-text" translatable="yes">Amount of RAM to use for disk caching</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
@@ -264,7 +262,6 @@
                                             <property name="tooltip-text" translatable="yes">How often to update the user interface</property>
                                             <property name="hexpand">False</property>
                                             <property name="width-chars">8</property>
-                                            <property name="editable">True</property>
                                             <property name="numeric">True</property>
                                         </object>
                                     </child>
