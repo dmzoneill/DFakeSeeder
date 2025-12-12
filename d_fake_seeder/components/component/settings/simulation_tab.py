@@ -213,10 +213,14 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 self._set_combo_active_text(self._widgets["traffic_profile"], profile)
 
             if self._widgets["realistic_variations"]:
-                self.set_switch_state(self._widgets["realistic_variations"], traffic_config.get("realistic_variations", True))
+                self.set_switch_state(
+                    self._widgets["realistic_variations"], traffic_config.get("realistic_variations", True)
+                )
 
             if self._widgets["time_based_patterns"]:
-                self.set_switch_state(self._widgets["time_based_patterns"], traffic_config.get("time_based_patterns", True))
+                self.set_switch_state(
+                    self._widgets["time_based_patterns"], traffic_config.get("time_based_patterns", True)
+                )
 
             # Load traffic profiles from seeding_profiles config
             seeding_profiles = getattr(self.app_settings, "seeding_profiles", {})

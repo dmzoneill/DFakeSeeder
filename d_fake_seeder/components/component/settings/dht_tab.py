@@ -192,7 +192,9 @@ class DHTTab(BaseSettingsTab):
                 self.set_switch_state(self._widgets["validate_tokens"], extended_config.get("validate_tokens", True))
 
             if self._widgets["rate_limit_enabled"]:
-                self.set_switch_state(self._widgets["rate_limit_enabled"], extended_config.get("rate_limit_enabled", True))
+                self.set_switch_state(
+                    self._widgets["rate_limit_enabled"], extended_config.get("rate_limit_enabled", True)
+                )
 
             if self._widgets["max_queries_per_second"]:
                 self._widgets["max_queries_per_second"].set_value(extended_config.get("max_queries_per_second", 10))
