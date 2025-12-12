@@ -188,6 +188,11 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             dynamic_widget.set_visible(True)
             dynamic_widget.set_hexpand(True)
 
+            # Configure spinbutton-specific properties
+            if isinstance(dynamic_widget, Gtk.SpinButton):
+                dynamic_widget.set_numeric(True)  # Filter non-numeric input
+                dynamic_widget.set_can_focus(True)  # Enable keyboard focus
+
             # Configure widget based on type
             if isinstance(dynamic_widget, Gtk.Switch):
                 self._configure_switch_widget(dynamic_widget, torrent, attribute)
