@@ -463,7 +463,9 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             # Collect speed settings
             settings["speed"] = self._collect_speed_settings()
             settings["scheduler"] = self._collect_scheduler_settings()
-            settings["speed_distribution"] = self._collect_distribution_settings()
+            # NOTE: Distribution settings are saved in real-time by signal handlers
+            # to top-level keys (upload_distribution_algorithm, etc.)
+            # No need to collect them here to avoid duplicate/conflicting storage
         except Exception as e:
             self.logger.error(f"Error collecting Speed tab settings: {e}")
         return settings
