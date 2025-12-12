@@ -232,19 +232,19 @@ class ProtocolExtensionsTab(BaseSettingsTab):
 
             # Individual extensions
             if self._widgets["ut_metadata"]:
-                self._widgets["ut_metadata"].set_active(extensions_config.get("ut_metadata", True))
+                self.set_switch_state(self._widgets["ut_metadata"], extensions_config.get("ut_metadata", True))
 
             if self._widgets["ut_pex"]:
-                self._widgets["ut_pex"].set_active(extensions_config.get("ut_pex", True))
+                self.set_switch_state(self._widgets["ut_pex"], extensions_config.get("ut_pex", True))
 
             if self._widgets["lt_donthave"]:
-                self._widgets["lt_donthave"].set_active(extensions_config.get("lt_donthave", True))
+                self.set_switch_state(self._widgets["lt_donthave"], extensions_config.get("lt_donthave", True))
 
             if self._widgets["fast_extension"]:
-                self._widgets["fast_extension"].set_active(extensions_config.get("fast_extension", True))
+                self.set_switch_state(self._widgets["fast_extension"], extensions_config.get("fast_extension", True))
 
             if self._widgets["ut_holepunch"]:
-                self._widgets["ut_holepunch"].set_active(extensions_config.get("ut_holepunch", False))
+                self.set_switch_state(self._widgets["ut_holepunch"], extensions_config.get("ut_holepunch", False))
 
             # PEX Settings
             pex_config = protocols_config.get("pex", {})
@@ -259,7 +259,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 self._widgets["pex_max_dropped"].set_value(pex_config.get("max_dropped_peers", 20))
 
             if self._widgets["pex_synthetic_peers"]:
-                self._widgets["pex_synthetic_peers"].set_active(pex_config.get("generate_synthetic_peers", True))
+                self.set_switch_state(self._widgets["pex_synthetic_peers"], pex_config.get("generate_synthetic_peers", True))
 
             if self._widgets["pex_synthetic_count"]:
                 self._widgets["pex_synthetic_count"].set_value(pex_config.get("synthetic_peer_count", 20))
@@ -268,10 +268,10 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             transport_config = protocols_config.get("transport", {})
 
             if self._widgets["utp_enabled"]:
-                self._widgets["utp_enabled"].set_active(transport_config.get("utp_enabled", False))
+                self.set_switch_state(self._widgets["utp_enabled"], transport_config.get("utp_enabled", False))
 
             if self._widgets["tcp_fallback"]:
-                self._widgets["tcp_fallback"].set_active(transport_config.get("tcp_fallback", True))
+                self.set_switch_state(self._widgets["tcp_fallback"], transport_config.get("tcp_fallback", True))
 
             if self._widgets["connection_timeout"]:
                 self._widgets["connection_timeout"].set_value(transport_config.get("connection_timeout", 30))
@@ -280,16 +280,16 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 self._widgets["keep_alive_interval"].set_value(transport_config.get("keep_alive_interval", 120))
 
             if self._widgets["nagle_algorithm"]:
-                self._widgets["nagle_algorithm"].set_active(transport_config.get("nagle_algorithm", False))
+                self.set_switch_state(self._widgets["nagle_algorithm"], transport_config.get("nagle_algorithm", False))
 
             if self._widgets["tcp_keepalive"]:
-                self._widgets["tcp_keepalive"].set_active(transport_config.get("tcp_keepalive", True))
+                self.set_switch_state(self._widgets["tcp_keepalive"], transport_config.get("tcp_keepalive", True))
 
             # Extended settings
             extended_config = protocols_config.get("extended", {})
 
             if self._widgets["metadata_enabled"]:
-                self._widgets["metadata_enabled"].set_active(extended_config.get("metadata_enabled", True))
+                self.set_switch_state(self._widgets["metadata_enabled"], extended_config.get("metadata_enabled", True))
 
             if self._widgets["metadata_piece_size"]:
                 self._widgets["metadata_piece_size"].set_value(extended_config.get("metadata_piece_size", 16384))
@@ -298,7 +298,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 self._widgets["metadata_timeout"].set_value(extended_config.get("metadata_timeout", 60))
 
             if self._widgets["metadata_synthetic"]:
-                self._widgets["metadata_synthetic"].set_active(extended_config.get("metadata_synthetic", True))
+                self.set_switch_state(self._widgets["metadata_synthetic"], extended_config.get("metadata_synthetic", True))
 
             if self._widgets["extension_timeout"]:
                 self._widgets["extension_timeout"].set_value(extended_config.get("extension_timeout", 30))
@@ -309,16 +309,16 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 )
 
             if self._widgets["track_extension_stats"]:
-                self._widgets["track_extension_stats"].set_active(extended_config.get("track_extension_stats", True))
+                self.set_switch_state(self._widgets["track_extension_stats"], extended_config.get("track_extension_stats", True))
 
             if self._widgets["stats_update_interval"]:
                 self._widgets["stats_update_interval"].set_value(extended_config.get("stats_update_interval", 60))
 
             if self._widgets["validate_extensions"]:
-                self._widgets["validate_extensions"].set_active(extended_config.get("validate_extensions", True))
+                self.set_switch_state(self._widgets["validate_extensions"], extended_config.get("validate_extensions", True))
 
             if self._widgets["limit_extension_msgs"]:
-                self._widgets["limit_extension_msgs"].set_active(extended_config.get("limit_extension_msgs", True))
+                self.set_switch_state(self._widgets["limit_extension_msgs"], extended_config.get("limit_extension_msgs", True))
 
             if self._widgets["max_msgs_per_second"]:
                 self._widgets["max_msgs_per_second"].set_value(extended_config.get("max_msgs_per_second", 50))

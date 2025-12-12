@@ -52,6 +52,22 @@ class BaseSettingsTab(Component):
         # Store UI widgets specific to this tab
         self._widgets: Dict[str, Any] = {}
 
+        # Flag to track if tab has been fully initialized (for lazy loading)
+        self._fully_initialized = False
+
+        # Only do minimal initialization - defer full setup until tab is first viewed
+        logger.trace("Tab created (deferred initialization)", "BaseTab")
+
+    def ensure_initialized(self) -> None:
+        """
+        Ensure the tab is fully initialized (lazy initialization).
+        Called when the tab is first viewed.
+        """
+        if self._fully_initialized:
+            return
+
+        logger.trace("Performing deferred initialization for", "BaseTab")
+
         # Initialize tab-specific setup
         logger.trace("About to call _init_widgets for", "BaseTab")
         self._init_widgets()
@@ -70,6 +86,8 @@ class BaseSettingsTab(Component):
         logger.trace("About to call _setup_dependencies for", "BaseTab")
         self._setup_dependencies()
         logger.trace("Completed _setup_dependencies for", "BaseTab")
+
+        self._fully_initialized = True
         logger.trace("===== FULLY COMPLETED  =====", "BaseTab")
 
     @property

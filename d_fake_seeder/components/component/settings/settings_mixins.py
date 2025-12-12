@@ -377,6 +377,31 @@ class UtilityMixin:
         except Exception as e:
             logger.error(f"Error updating widget visibility for {widget_id}: {e}")
 
+    def set_switch_state(self, switch: Gtk.Switch, active: bool) -> None:
+        """
+        Properly set a GTK switch state with visual synchronization.
+
+        In GTK4, switches sometimes show incorrect visual state when only set_active() is called.
+        This method ensures both the boolean state AND the visual state are properly synchronized.
+
+        Args:
+            switch: GTK Switch widget to update
+            active: Desired boolean state
+        """
+        try:
+            if not switch:
+                return
+
+            # Set the active property (boolean state)
+            switch.set_active(active)
+
+            # Force visual state synchronization
+            # GTK4 switches should auto-sync, but we force it to prevent visual glitches
+            switch.set_state(active)
+
+        except Exception as e:
+            logger.error(f"Error setting switch state: {e}")
+
 
 class TranslationMixin:
     """

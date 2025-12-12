@@ -165,7 +165,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             # Main settings
             enable_webui = self.get_widget("enable_webui")
             if enable_webui:
-                enable_webui.set_active(webui_settings.get("enabled", False))
+                self.set_switch_state(enable_webui, webui_settings.get("enabled", False))
 
             webui_port = self.get_widget("webui_port")
             if webui_port:
@@ -178,7 +178,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             # Authentication
             webui_auth = self.get_widget("webui_auth_enabled")
             if webui_auth:
-                webui_auth.set_active(webui_settings.get("auth_enabled", True))
+                self.set_switch_state(webui_auth, webui_settings.get("auth_enabled", True))
 
             webui_username = self.get_widget("webui_username")
             if webui_username:
@@ -191,15 +191,15 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             # Security
             webui_https = self.get_widget("webui_https_enabled")
             if webui_https:
-                webui_https.set_active(webui_settings.get("https_enabled", False))
+                self.set_switch_state(webui_https, webui_settings.get("https_enabled", False))
 
             webui_csrf = self.get_widget("webui_csrf_protection")
             if webui_csrf:
-                webui_csrf.set_active(webui_settings.get("csrf_protection", True))
+                self.set_switch_state(webui_csrf, webui_settings.get("csrf_protection", True))
 
             webui_host_header = self.get_widget("webui_host_header_validation")
             if webui_host_header:
-                webui_host_header.set_active(webui_settings.get("host_header_validation", True))
+                self.set_switch_state(webui_host_header, webui_settings.get("host_header_validation", True))
 
             # Access control
             webui_ban = self.get_widget("webui_ban_after_failures")
@@ -507,7 +507,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             # Reset main settings
             enable_webui = self.get_widget("enable_webui")
             if enable_webui:
-                enable_webui.set_active(False)
+                self.set_switch_state(enable_webui, False)
 
             webui_port = self.get_widget("webui_port")
             if webui_port:
@@ -520,7 +520,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             # Reset authentication
             webui_auth = self.get_widget("webui_auth_enabled")
             if webui_auth:
-                webui_auth.set_active(True)
+                self.set_switch_state(webui_auth, True)
 
             webui_username = self.get_widget("webui_username")
             if webui_username:
@@ -533,15 +533,15 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             # Reset security settings
             webui_https = self.get_widget("webui_https_enabled")
             if webui_https:
-                webui_https.set_active(False)
+                self.set_switch_state(webui_https, False)
 
             webui_csrf = self.get_widget("webui_csrf_protection")
             if webui_csrf:
-                webui_csrf.set_active(True)
+                self.set_switch_state(webui_csrf, True)
 
             webui_host_header = self.get_widget("webui_host_header_validation")
             if webui_host_header:
-                webui_host_header.set_active(True)
+                self.set_switch_state(webui_host_header, True)
 
             # Reset access control
             webui_ban = self.get_widget("webui_ban_after_failures")

@@ -285,7 +285,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             enable_alt = self.get_widget("enable_alt_speeds")
             if enable_alt:
                 logger.debug("Setting enable_alt_speeds active to", "SpeedTab")
-                enable_alt.set_active(speed_settings.get("enable_alternative_speeds", False))
+                self.set_switch_state(enable_alt, speed_settings.get("enable_alternative_speeds", False))
                 logger.info("Enable alt speeds set successfully", "SpeedTab")
             logger.trace("Getting alt_upload_limit widget", "SpeedTab")
             alt_upload_limit = self.get_widget("alt_upload_limit")
@@ -312,7 +312,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             enable_scheduler = self.get_widget("enable_scheduler")
             if enable_scheduler:
-                enable_scheduler.set_active(scheduler_settings.get("enabled", False))
+                self.set_switch_state(enable_scheduler, scheduler_settings.get("enabled", False))
             # Time settings (these would need specific widget implementations)
             scheduler_start_time = self.get_widget("scheduler_start_time")
             if scheduler_start_time:
@@ -339,52 +339,29 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             algorithm_map = {"off": 0, "pareto": 1, "power-law": 2, "log-normal": 3}
 
             # Upload distribution
-            logger.debug("=== LOADING UPLOAD DISTRIBUTION SETTINGS ===", "SpeedTab")
             upload_algorithm = self.app_settings.upload_distribution_algorithm.lower()
-            logger.debug(f"Raw value from app_settings: '{upload_algorithm}'", "SpeedTab")
-
-            # Also check the underlying settings dict
-            speed_dist = self.app_settings.get("speed_distribution", {})
-            logger.debug(f"Full speed_distribution dict: {speed_dist}", "SpeedTab")
-
             upload_dist_algorithm = self.get_widget("upload_dist_algorithm")
             if upload_dist_algorithm:
-                # Block signals to prevent triggering change handlers during load
                 upload_dist_algorithm.handler_block_by_func(self.on_upload_dist_algorithm_changed)
-
-                current_selected = upload_dist_algorithm.get_selected()
-                logger.debug(f"Dropdown currently shows index: {current_selected}", "SpeedTab")
                 index = algorithm_map.get(upload_algorithm, 0)
-                logger.debug(f"Setting dropdown to index {index} for algorithm '{upload_algorithm}'", "SpeedTab")
                 upload_dist_algorithm.set_selected(index)
-                # Verify it was set
-                new_selected = upload_dist_algorithm.get_selected()
-                logger.debug(f"After set_selected, dropdown shows index: {new_selected}", "SpeedTab")
-
-                # Unblock signals
                 upload_dist_algorithm.handler_unblock_by_func(self.on_upload_dist_algorithm_changed)
 
             upload_dist_percentage = self.get_widget("upload_dist_percentage")
             if upload_dist_percentage:
                 upload_dist_percentage.handler_block_by_func(self.on_upload_dist_percentage_changed)
-                percentage = self.app_settings.upload_distribution_spread_percentage
-                logger.debug(f"Loading upload percentage: {percentage}", "SpeedTab")
-                upload_dist_percentage.set_value(percentage)
+                upload_dist_percentage.set_value(self.app_settings.upload_distribution_spread_percentage)
                 upload_dist_percentage.handler_unblock_by_func(self.on_upload_dist_percentage_changed)
 
             upload_mode = self.app_settings.upload_distribution_redistribution_mode.lower()
-            logger.debug(f"Loading upload mode: {upload_mode}", "SpeedTab")
             upload_dist_mode = self.get_widget("upload_dist_mode")
             if upload_dist_mode:
                 upload_dist_mode.handler_block_by_func(self.on_upload_dist_mode_changed)
                 if upload_mode == "tick":
-                    logger.debug("Setting upload mode to index 0 (Tick Interval)", "SpeedTab")
                     upload_dist_mode.set_selected(0)
                 elif "minute" in upload_mode or upload_mode == "custom":
-                    logger.debug("Setting upload mode to index 1 (Every X Minutes)", "SpeedTab")
                     upload_dist_mode.set_selected(1)
                 elif upload_mode == "announce":
-                    logger.debug("Setting upload mode to index 2 (Announce Interval)", "SpeedTab")
                     upload_dist_mode.set_selected(2)
                 upload_dist_mode.handler_unblock_by_func(self.on_upload_dist_mode_changed)
 
@@ -487,7 +464,6 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             settings["speed"] = self._collect_speed_settings()
             settings["scheduler"] = self._collect_scheduler_settings()
             settings["speed_distribution"] = self._collect_distribution_settings()
-            logger.debug(f"Collected speed_distribution settings: {settings['speed_distribution']}", "SpeedTab")
         except Exception as e:
             self.logger.error(f"Error collecting Speed tab settings: {e}")
         return settings
@@ -553,7 +529,6 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             if upload_dist_algorithm:
                 selected = upload_dist_algorithm.get_selected()
                 distribution_settings["upload"]["algorithm"] = algorithm_names[selected]
-                logger.debug(f"Collecting upload algorithm: index {selected} = {algorithm_names[selected]}", "SpeedTab")
 
             upload_dist_percentage = self.get_widget("upload_dist_percentage")
             if upload_dist_percentage:
@@ -734,7 +709,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             # Reset alternative speeds
             enable_alt = self.get_widget("enable_alt_speeds")
             if enable_alt:
-                enable_alt.set_active(False)
+                self.set_switch_state(enable_alt, False)
             alt_upload_limit = self.get_widget("alt_upload_limit")
             if alt_upload_limit:
                 alt_upload_limit.set_value(0)
@@ -744,7 +719,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             # Reset scheduler
             enable_scheduler = self.get_widget("enable_scheduler")
             if enable_scheduler:
-                enable_scheduler.set_active(False)
+                self.set_switch_state(enable_scheduler, False)
             self.update_dependencies()
             self.show_notification("Speed settings reset to defaults", "success")
         except Exception as e:
@@ -785,19 +760,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             selected = dropdown.get_selected()
             algorithm_names = ["off", "pareto", "power-law", "log-normal"]
             algorithm = algorithm_names[selected] if selected < len(algorithm_names) else "off"
-            logger.debug(f"=== SIGNAL: Algorithm dropdown changed to index {selected} -> {algorithm}", "SpeedTab")
-
-            # Save to app_settings
             self.app_settings.upload_distribution_algorithm = algorithm
-
-            # Verify it was saved to app_settings
-            saved_value = self.app_settings.upload_distribution_algorithm
-            logger.debug(f"After save to app_settings, retrieved value is: {saved_value}", "SpeedTab")
-
-            # Check the underlying settings dict
-            speed_dist = self.app_settings.get("speed_distribution", {})
-            logger.debug(f"Full speed_distribution dict after save: {speed_dist}", "SpeedTab")
-
             self.logger.trace(f"Upload distribution algorithm changed to: {algorithm}")
         except Exception as e:
             self.logger.error(f"Error changing upload distribution algorithm: {e}", exc_info=True)

@@ -131,7 +131,7 @@ class DHTTab(BaseSettingsTab):
             # Node configuration
             node_id_setting = dht_config.get("node_id", "auto_generate")
             if self._widgets["node_id_auto"]:
-                self._widgets["node_id_auto"].set_active(node_id_setting == "auto_generate")
+                self.set_switch_state(self._widgets["node_id_auto"], node_id_setting == "auto_generate")
 
             if self._widgets["node_id_custom"]:
                 if node_id_setting != "auto_generate":
@@ -165,7 +165,7 @@ class DHTTab(BaseSettingsTab):
 
             # Bootstrap settings
             if self._widgets["auto_bootstrap"]:
-                self._widgets["auto_bootstrap"].set_active(extended_config.get("auto_bootstrap", True))
+                self.set_switch_state(self._widgets["auto_bootstrap"], extended_config.get("auto_bootstrap", True))
 
             # Bootstrap nodes text
             if self._widgets["bootstrap_nodes"]:
@@ -182,17 +182,17 @@ class DHTTab(BaseSettingsTab):
 
             # Statistics settings
             if self._widgets["enable_stats"]:
-                self._widgets["enable_stats"].set_active(extended_config.get("enable_stats", True))
+                self.set_switch_state(self._widgets["enable_stats"], extended_config.get("enable_stats", True))
 
             if self._widgets["stats_interval"]:
                 self._widgets["stats_interval"].set_value(extended_config.get("stats_interval", 60))
 
             # Security settings
             if self._widgets["validate_tokens"]:
-                self._widgets["validate_tokens"].set_active(extended_config.get("validate_tokens", True))
+                self.set_switch_state(self._widgets["validate_tokens"], extended_config.get("validate_tokens", True))
 
             if self._widgets["rate_limit_enabled"]:
-                self._widgets["rate_limit_enabled"].set_active(extended_config.get("rate_limit_enabled", True))
+                self.set_switch_state(self._widgets["rate_limit_enabled"], extended_config.get("rate_limit_enabled", True))
 
             if self._widgets["max_queries_per_second"]:
                 self._widgets["max_queries_per_second"].set_value(extended_config.get("max_queries_per_second", 10))

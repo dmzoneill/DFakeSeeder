@@ -151,7 +151,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # UPnP setting
             upnp_enabled = self.get_widget("upnp_enabled")
             if upnp_enabled:
-                upnp_enabled.set_active(connection_settings.get("upnp_enabled", True))
+                self.set_switch_state(upnp_enabled, connection_settings.get("upnp_enabled", True))
 
             # Connection limits
             max_global = self.get_widget("max_global_connections")
@@ -198,7 +198,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Authentication
             proxy_auth = self.get_widget("proxy_auth_enabled")
             if proxy_auth:
-                proxy_auth.set_active(proxy_settings.get("auth_enabled", False))
+                self.set_switch_state(proxy_auth, proxy_settings.get("auth_enabled", False))
 
             proxy_username = self.get_widget("proxy_username")
             if proxy_username:
@@ -446,7 +446,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
             upnp_enabled = self.get_widget("upnp_enabled")
             if upnp_enabled:
-                upnp_enabled.set_active(True)
+                self.set_switch_state(upnp_enabled, True)
 
             max_global = self.get_widget("max_global_connections")
             if max_global:
@@ -467,7 +467,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
             proxy_auth = self.get_widget("proxy_auth_enabled")
             if proxy_auth:
-                proxy_auth.set_active(False)
+                self.set_switch_state(proxy_auth, False)
 
             self.update_dependencies()
             self.show_notification("Connection settings reset to defaults", "success")
