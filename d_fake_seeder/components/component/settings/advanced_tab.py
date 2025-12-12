@@ -414,19 +414,13 @@ class AdvancedTab(
             self.logger.error(f"Error updating expert dependencies: {e}")
 
     def _collect_settings(self) -> Dict[str, Any]:
-        """Collect current settings from Advanced tab widgets."""
-        settings = {}
+        """Collect current settings from Advanced tab widgets.
 
-        try:
-            settings["search"] = self._collect_search_settings()
-            settings["logging"] = self._collect_logging_settings()
-            settings["performance"] = self._collect_performance_settings()
-            settings["expert"] = self._collect_expert_settings()
-
-        except Exception as e:
-            self.logger.error(f"Error collecting Advanced tab settings: {e}")
-
-        return settings
+        NOTE: All settings are saved in real-time by signal handlers.
+        This method returns empty dict to avoid duplicate saves.
+        """
+        # All settings already saved by signal handlers to expert.*, logging.*, performance.* keys
+        return {}
 
     def _collect_search_settings(self) -> Dict[str, Any]:
         """Collect search settings."""

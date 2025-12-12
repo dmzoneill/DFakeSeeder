@@ -310,17 +310,13 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             self.logger.error(f"Error updating user agent dependencies: {e}")
 
     def _collect_settings(self) -> Dict[str, Any]:
-        """Collect current settings from BitTorrent tab widgets."""
-        settings = {}
+        """Collect current settings from BitTorrent tab widgets.
 
-        try:
-            # Collect BitTorrent settings
-            settings["bittorrent"] = self._collect_bittorrent_settings()
-
-        except Exception as e:
-            self.logger.error(f"Error collecting BitTorrent tab settings: {e}")
-
-        return settings
+        NOTE: All settings are saved in real-time by signal handlers.
+        This method returns empty dict to avoid duplicate saves.
+        """
+        # All settings already saved by signal handlers to bittorrent.* keys
+        return {}
 
     def _collect_bittorrent_settings(self) -> Dict[str, Any]:
         """Collect BitTorrent protocol settings."""

@@ -245,42 +245,20 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             self.logger.error(f"Error updating proxy dependencies: {e}")
 
     def _collect_settings(self) -> Dict[str, Any]:
-        """Collect current settings from Connection tab widgets."""
-        settings = {}
+        """Collect current settings from Connection tab widgets.
 
-        try:
-            # Connection settings
-            connection_settings = {}
-
-            listening_port = self.get_widget("listening_port")
-            if listening_port:
-                connection_settings["listening_port"] = int(listening_port.get_value())
-
-            upnp_enabled = self.get_widget("upnp_enabled")
-            if upnp_enabled:
-                connection_settings["upnp_enabled"] = upnp_enabled.get_active()
-
-            max_global = self.get_widget("max_global_connections")
-            if max_global:
-                connection_settings["max_global_connections"] = int(max_global.get_value())
-
-            max_per_torrent = self.get_widget("max_per_torrent")
-            if max_per_torrent:
-                connection_settings["max_per_torrent"] = int(max_per_torrent.get_value())
-
-            max_upload_slots = self.get_widget("max_upload_slots")
-            if max_upload_slots:
-                connection_settings["max_upload_slots"] = int(max_upload_slots.get_value())
-
-            settings["connection"] = connection_settings
-
-            # Proxy settings
-            settings["proxy"] = self._collect_proxy_settings()
-
-        except Exception as e:
-            self.logger.error(f"Error collecting Connection tab settings: {e}")
-
-        return settings
+        NOTE: All settings are saved in real-time by signal handlers.
+        This method returns empty dict to avoid duplicate saves.
+        """
+        # All settings already saved by signal handlers:
+        # - connection.listening_port
+        # - connection.upnp_enabled
+        # - connection.max_global_connections
+        # - connection.max_per_torrent
+        # - connection.max_upload_slots
+        # - proxy.type, proxy.server, proxy.port
+        # - proxy.auth_enabled, proxy.username, proxy.password
+        return {}
 
     def _collect_proxy_settings(self) -> Dict[str, Any]:
         """Collect proxy settings from widgets."""
