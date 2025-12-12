@@ -160,18 +160,23 @@ class SpeedDistributionManager:
                 logger.debug("No upload bandwidth to distribute", "SpeedDistributionManager")
                 return
 
-            print("\n" + "=" * 80)
-            print("🔄 REDISTRIBUTING UPLOAD SPEEDS")
-            print("=" * 80)
-            print(f"Algorithm: {algorithm.upper()}")
-            print(f"Spread: {percentage}%")
+            logger.debug("=" * 80, "SpeedDistributionManager")
+            logger.debug("🔄 REDISTRIBUTING UPLOAD SPEEDS", "SpeedDistributionManager")
+            logger.debug("=" * 80, "SpeedDistributionManager")
+            logger.debug(f"Algorithm: {algorithm.upper()}", "SpeedDistributionManager")
+            logger.debug(f"Spread: {percentage}%", "SpeedDistributionManager")
             if base_bandwidth > 0:
-                print(f"Base Bandwidth: {base_bandwidth:.1f} KB/s")
-                print(f"Randomized Total: {total_bandwidth:.1f} KB/s ({min_bandwidth:.1f} - {max_bandwidth:.1f})")
+                logger.debug(f"Base Bandwidth: {base_bandwidth:.1f} KB/s", "SpeedDistributionManager")
+                logger.debug(
+                    f"Randomized Total: {total_bandwidth:.1f} KB/s ({min_bandwidth:.1f} - {max_bandwidth:.1f})",
+                    "SpeedDistributionManager",
+                )
             else:
-                print(f"Total Bandwidth: {total_bandwidth:.1f} KB/s (sum of current speeds)")
-            print(f"Torrents: {len(torrents)}")
-            print("-" * 80)
+                logger.debug(
+                    f"Total Bandwidth: {total_bandwidth:.1f} KB/s (sum of current speeds)", "SpeedDistributionManager"
+                )
+            logger.debug(f"Torrents: {len(torrents)}", "SpeedDistributionManager")
+            logger.debug("-" * 80, "SpeedDistributionManager")
 
             # Create distributor and get speed distribution
             # Randomize stopped percentage within configured range
@@ -201,10 +206,12 @@ class SpeedDistributionManager:
                 # Get category for display
                 category = speed_distribution.get(f"{torrent.file_path}_category", None)
 
-                # Print torrent info
+                # Log torrent info
                 torrent_name = torrent.name[:50] + "..." if len(torrent.name) > 50 else torrent.name
                 category_str = f" [{category}]" if category else ""
-                print(f"  📁 {torrent_name:53} → {new_speed:7.2f} KB/s{category_str}")
+                logger.debug(
+                    f"  📁 {torrent_name:53} → {new_speed:7.2f} KB/s{category_str}", "SpeedDistributionManager"
+                )
 
                 speeds_list.append(new_speed)
 
@@ -217,24 +224,24 @@ class SpeedDistributionManager:
                 )
                 logger.debug(debug_msg, "SpeedDist")
 
-            # Print summary
+            # Log summary
             if speeds_list:
-                print("-" * 80)
-                print("📊 Distribution Stats:")
-                print(f"   Min: {min(speeds_list):.2f} KB/s")
-                print(f"   Max: {max(speeds_list):.2f} KB/s")
-                print(f"   Avg: {sum(speeds_list)/len(speeds_list):.2f} KB/s")
-                print(f"   Total: {sum(speeds_list):.2f} KB/s")
+                logger.debug("-" * 80, "SpeedDistributionManager")
+                logger.debug("📊 Distribution Stats:", "SpeedDistributionManager")
+                logger.debug(f"   Min: {min(speeds_list):.2f} KB/s", "SpeedDistributionManager")
+                logger.debug(f"   Max: {max(speeds_list):.2f} KB/s", "SpeedDistributionManager")
+                logger.debug(f"   Avg: {sum(speeds_list)/len(speeds_list):.2f} KB/s", "SpeedDistributionManager")
+                logger.debug(f"   Total: {sum(speeds_list):.2f} KB/s", "SpeedDistributionManager")
                 stopped_count = sum(1 for s in speeds_list if s == 0)
                 if stopped_count > 0:
-                    print(f"   Stopped: {stopped_count}/{len(speeds_list)} torrents")
-            print("=" * 80 + "\n")
+                    logger.debug(f"   Stopped: {stopped_count}/{len(speeds_list)} torrents", "SpeedDistributionManager")
+            logger.debug("=" * 80, "SpeedDistributionManager")
 
             self.last_upload_redistribution = time.time()
 
-            # Store current state in transient settings (will be saved on shutdown only)
-            self.settings.set("speed_distribution.upload.current_speed", total_bandwidth, transient=True)
-            self.settings.set("speed_distribution.upload.current_values", speed_values, transient=True)
+            # Store current state in settings (will be saved via debounced save)
+            self.settings.set("speed_distribution.upload.current_speed", total_bandwidth)
+            self.settings.set("speed_distribution.upload.current_values", speed_values)
 
             logger.debug(
                 f"Redistributed upload speeds: {algorithm} algorithm, "
@@ -285,18 +292,23 @@ class SpeedDistributionManager:
                 logger.debug("No download bandwidth to distribute", "SpeedDistributionManager")
                 return
 
-            print("\n" + "=" * 80)
-            print("⬇️  REDISTRIBUTING DOWNLOAD SPEEDS")
-            print("=" * 80)
-            print(f"Algorithm: {algorithm.upper()}")
-            print(f"Spread: {percentage}%")
+            logger.debug("=" * 80, "SpeedDistributionManager")
+            logger.debug("⬇️  REDISTRIBUTING DOWNLOAD SPEEDS", "SpeedDistributionManager")
+            logger.debug("=" * 80, "SpeedDistributionManager")
+            logger.debug(f"Algorithm: {algorithm.upper()}", "SpeedDistributionManager")
+            logger.debug(f"Spread: {percentage}%", "SpeedDistributionManager")
             if base_bandwidth > 0:
-                print(f"Base Bandwidth: {base_bandwidth:.1f} KB/s")
-                print(f"Randomized Total: {total_bandwidth:.1f} KB/s ({min_bandwidth:.1f} - {max_bandwidth:.1f})")
+                logger.debug(f"Base Bandwidth: {base_bandwidth:.1f} KB/s", "SpeedDistributionManager")
+                logger.debug(
+                    f"Randomized Total: {total_bandwidth:.1f} KB/s ({min_bandwidth:.1f} - {max_bandwidth:.1f})",
+                    "SpeedDistributionManager",
+                )
             else:
-                print(f"Total Bandwidth: {total_bandwidth:.1f} KB/s (sum of current speeds)")
-            print(f"Torrents: {len(torrents)}")
-            print("-" * 80)
+                logger.debug(
+                    f"Total Bandwidth: {total_bandwidth:.1f} KB/s (sum of current speeds)", "SpeedDistributionManager"
+                )
+            logger.debug(f"Torrents: {len(torrents)}", "SpeedDistributionManager")
+            logger.debug("-" * 80, "SpeedDistributionManager")
 
             # Create distributor and get speed distribution
             # Randomize stopped percentage within configured range
@@ -326,10 +338,12 @@ class SpeedDistributionManager:
                 # Get category for display
                 category = speed_distribution.get(f"{torrent.file_path}_category", None)
 
-                # Print torrent info
+                # Log torrent info
                 torrent_name = torrent.name[:50] + "..." if len(torrent.name) > 50 else torrent.name
                 category_str = f" [{category}]" if category else ""
-                print(f"  📁 {torrent_name:53} → {new_speed:7.2f} KB/s{category_str}")
+                logger.debug(
+                    f"  📁 {torrent_name:53} → {new_speed:7.2f} KB/s{category_str}", "SpeedDistributionManager"
+                )
 
                 speeds_list.append(new_speed)
 
@@ -342,24 +356,24 @@ class SpeedDistributionManager:
                 )
                 logger.debug(debug_msg, "SpeedDist")
 
-            # Print summary
+            # Log summary
             if speeds_list:
-                print("-" * 80)
-                print("📊 Distribution Stats:")
-                print(f"   Min: {min(speeds_list):.2f} KB/s")
-                print(f"   Max: {max(speeds_list):.2f} KB/s")
-                print(f"   Avg: {sum(speeds_list)/len(speeds_list):.2f} KB/s")
-                print(f"   Total: {sum(speeds_list):.2f} KB/s")
+                logger.debug("-" * 80, "SpeedDistributionManager")
+                logger.debug("📊 Distribution Stats:", "SpeedDistributionManager")
+                logger.debug(f"   Min: {min(speeds_list):.2f} KB/s", "SpeedDistributionManager")
+                logger.debug(f"   Max: {max(speeds_list):.2f} KB/s", "SpeedDistributionManager")
+                logger.debug(f"   Avg: {sum(speeds_list)/len(speeds_list):.2f} KB/s", "SpeedDistributionManager")
+                logger.debug(f"   Total: {sum(speeds_list):.2f} KB/s", "SpeedDistributionManager")
                 stopped_count = sum(1 for s in speeds_list if s == 0)
                 if stopped_count > 0:
-                    print(f"   Stopped: {stopped_count}/{len(speeds_list)} torrents")
-            print("=" * 80 + "\n")
+                    logger.debug(f"   Stopped: {stopped_count}/{len(speeds_list)} torrents", "SpeedDistributionManager")
+            logger.debug("=" * 80, "SpeedDistributionManager")
 
             self.last_download_redistribution = time.time()
 
-            # Store current state in transient settings (will be saved on shutdown only)
-            self.settings.set("speed_distribution.download.current_speed", total_bandwidth, transient=True)
-            self.settings.set("speed_distribution.download.current_values", speed_values, transient=True)
+            # Store current state in settings (will be saved via debounced save)
+            self.settings.set("speed_distribution.download.current_speed", total_bandwidth)
+            self.settings.set("speed_distribution.download.current_values", speed_values)
 
             logger.debug(
                 f"Redistributed download speeds: {algorithm} algorithm, "
