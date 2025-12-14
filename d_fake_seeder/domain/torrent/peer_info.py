@@ -29,3 +29,5 @@ class PeerInfo:
     upload_speed: float = 0.0
     progress: float = 0.0
     is_seed: bool = False
+    # Extension protocol support (BEP 10)
+    supported_extensions: Optional[dict] = None  # Dict of extension name -> message ID

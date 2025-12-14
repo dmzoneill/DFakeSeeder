@@ -116,7 +116,9 @@ class BitTorrentProtocolConstants:
     PROTOCOL_NAME = b"BitTorrent protocol"
     PROTOCOL_NAME_LENGTH = 19
     RESERVED_BYTES_LENGTH = 8
-    RESERVED_BYTES = b"\x00" * 8
+    # Reserved bytes with extension protocol enabled (BEP 10)
+    # Bit 20 (byte 5, bit 4) = 0x10 indicates extension protocol support
+    RESERVED_BYTES = b"\x00\x00\x00\x00\x00\x10\x00\x00"
     INFOHASH_LENGTH = 20
     PEER_ID_LENGTH = 20
 

@@ -4,11 +4,13 @@ import os
 from gi.repository import GLib
 
 from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.domain.torrent.dht_manager import DHTManager
 from d_fake_seeder.domain.torrent.global_peer_manager import GlobalPeerManager
 from d_fake_seeder.lib.handlers.torrent_folder_watcher import TorrentFolderWatcher
 
 # from domain.torrent.listener import Listener
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.client_behavior_simulator import ClientBehaviorSimulator
 from d_fake_seeder.lib.util.dbus_unifier import DBusUnifier
 from d_fake_seeder.lib.util.speed_distribution_manager import SpeedDistributionManager
 from d_fake_seeder.lib.util.window_manager import WindowManager
@@ -30,10 +32,21 @@ class Controller:
         # Initialize global peer manager
         self.global_peer_manager = GlobalPeerManager()
 
+        # Initialize DHT manager
+        dht_enabled = getattr(self.settings, "dht_enabled", False)
+        self.dht_manager = None
+        if dht_enabled:
+            dht_port = getattr(self.settings, "dht_port", 6881)
+            self.dht_manager = DHTManager(port=dht_port)
+
         # Initialize speed distribution manager
         self.speed_distribution_manager = SpeedDistributionManager(model)
 
-        # Tick timer for speed distribution
+        # Initialize client behavior simulator
+        behavior_profile = getattr(self.settings, "client_behavior_profile", "balanced")
+        self.client_behavior_simulator = ClientBehaviorSimulator(behavior_profile)
+
+        # Tick timer for speed distribution and behavior simulation
         self.tick_timer_id = None
 
         # Initialize window manager with main window
@@ -82,6 +95,11 @@ class Controller:
         # Start global peer manager after setting up callbacks
         self.global_peer_manager.start()
 
+        # Start DHT manager if enabled
+        if self.dht_manager:
+            self.dht_manager.start()
+            logger.info("DHT Manager started", "Controller")
+
         # Start speed distribution manager
         self.speed_distribution_manager.start()
 
@@ -114,6 +132,10 @@ class Controller:
         for torrent in self.model.get_torrents():
             self.global_peer_manager.add_torrent(torrent)
 
+            # Register torrent with DHT if enabled
+            if self.dht_manager and hasattr(torrent, "torrent_file") and hasattr(torrent.torrent_file, "info_hash"):
+                self.dht_manager.register_torrent(torrent.torrent_file.info_hash, torrent)
+
         # Start watching folder for new torrents
         self.torrent_watcher.start()
 
@@ -129,6 +151,11 @@ class Controller:
         # Stop speed distribution manager
         if hasattr(self, "speed_distribution_manager") and self.speed_distribution_manager:
             self.speed_distribution_manager.stop()
+
+        # Stop DHT manager (before peer manager to cleanly unregister torrents)
+        if hasattr(self, "dht_manager") and self.dht_manager:
+            logger.trace("Stopping DHT Manager", extra={"class_name": self.__class__.__name__})
+            self.dht_manager.stop()
 
         # Stop global peer manager
         if hasattr(self, "global_peer_manager") and self.global_peer_manager:
@@ -165,10 +192,16 @@ class Controller:
         logger.info("Controller stopped", extra={"class_name": self.__class__.__name__})
 
     def _on_tick(self) -> bool:
-        """Tick callback for speed redistribution and torrent state persistence."""
+        """Tick callback for speed redistribution, behavior simulation, and torrent state persistence."""
         try:
             if self.speed_distribution_manager:
                 self.speed_distribution_manager.check_redistribution("tick")
+
+            # Run client behavior simulation
+            if hasattr(self, "client_behavior_simulator") and self.client_behavior_simulator:
+                if hasattr(self, "model") and self.model:
+                    torrents = self.model.get_torrents()
+                    self.client_behavior_simulator.simulate_tick(torrents)
 
             # Save all torrent states to transient storage (in-memory only)
             # This ensures torrent progress is always up-to-date when save_quit() is called
