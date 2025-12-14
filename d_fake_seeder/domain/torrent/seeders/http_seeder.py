@@ -258,6 +258,14 @@ class HTTPSeeder(BaseSeeder):
                     retry_count += 1
                     continue
 
+                # Log announce values before sending
+                logger.debug(
+                    f"📊 Announcing to tracker: uploaded={uploaded_bytes:,} bytes ({uploaded_bytes/1024/1024:.2f} MB), "
+                    f"downloaded={downloaded_bytes:,} bytes ({downloaded_bytes/1024/1024:.2f} MB), "
+                    f"left={download_left:,} bytes ({download_left/1024/1024:.2f} MB)",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
                 req = self.make_http_request(uploaded_bytes, downloaded_bytes, download_left, num_want=0)
 
                 # Log successful announce
