@@ -88,7 +88,13 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         widget_objects = {
             "auto_start": self.builder.get_object("settings_auto_start"),
             "start_minimized": self.builder.get_object("settings_start_minimized"),
+            "minimize_to_tray": self.builder.get_object("settings_minimize_to_tray"),
+            "remember_window_size": self.builder.get_object("settings_remember_window_size"),
             "language_dropdown": self.builder.get_object("settings_language"),
+            # Configuration management buttons
+            "export_button": self.builder.get_object("settings_export_button"),
+            "import_button": self.builder.get_object("settings_import_button"),
+            "reset_button": self.builder.get_object("settings_reset_button"),
             # Watch folder widgets
             "watch_folder_enabled": self.builder.get_object("settings_watch_folder_enabled"),
             "watch_folder_path": self.builder.get_object("settings_watch_folder_path"),
@@ -117,6 +123,45 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 start_minimized,
                 start_minimized.connect("state-set", self.on_start_minimized_changed),
             )
+
+        # Minimize to tray toggle
+        minimize_to_tray = self.get_widget("minimize_to_tray")
+        if minimize_to_tray:
+            self.track_signal(
+                minimize_to_tray,
+                minimize_to_tray.connect("state-set", self.on_minimize_to_tray_changed),
+            )
+
+        # Remember window size toggle
+        remember_window_size = self.get_widget("remember_window_size")
+        if remember_window_size:
+            self.track_signal(
+                remember_window_size,
+                remember_window_size.connect("state-set", self.on_remember_window_size_changed),
+            )
+
+        # Configuration management buttons
+        export_button = self.get_widget("export_button")
+        if export_button:
+            self.track_signal(
+                export_button,
+                export_button.connect("clicked", self.on_export_clicked),
+            )
+
+        import_button = self.get_widget("import_button")
+        if import_button:
+            self.track_signal(
+                import_button,
+                import_button.connect("clicked", self.on_import_clicked),
+            )
+
+        reset_button = self.get_widget("reset_button")
+        if reset_button:
+            self.track_signal(
+                reset_button,
+                reset_button.connect("clicked", self.on_reset_clicked),
+            )
+
         # Theme style dropdown
         theme_style_dropdown = self.get_widget("settings_theme")
         if theme_style_dropdown:
@@ -191,6 +236,17 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             start_minimized = self.get_widget("start_minimized")
             if start_minimized:
                 self.set_switch_state(start_minimized, getattr(self.app_settings, "start_minimized", False))
+
+            # Minimize to tray setting
+            minimize_to_tray = self.get_widget("minimize_to_tray")
+            if minimize_to_tray:
+                self.set_switch_state(minimize_to_tray, getattr(self.app_settings, "minimize_to_tray", False))
+
+            # Remember window size setting
+            remember_window_size = self.get_widget("remember_window_size")
+            if remember_window_size:
+                self.set_switch_state(remember_window_size, getattr(self.app_settings, "remember_window_size", True))
+
             # Theme style setting - load from ui_settings.theme_style
             theme_style_dropdown = self.get_widget("settings_theme")
             if theme_style_dropdown:
@@ -284,6 +340,168 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             self.show_notification(message, "success")
         except Exception as e:
             self.logger.error(f"Error changing start minimized setting: {e}")
+
+    def on_minimize_to_tray_changed(self, switch: Gtk.Switch, state: bool) -> None:
+        """Handle minimize to tray setting change."""
+        try:
+            self.app_settings.set("minimize_to_tray", state)
+            self.logger.trace(f"Minimize to tray changed to: {state}")
+            # Show notification
+            message = "Minimize to tray enabled" if state else "Minimize to tray disabled"
+            self.show_notification(message, "success")
+        except Exception as e:
+            self.logger.error(f"Error changing minimize to tray setting: {e}")
+
+    def on_remember_window_size_changed(self, switch: Gtk.Switch, state: bool) -> None:
+        """Handle remember window size setting change."""
+        try:
+            self.app_settings.set("remember_window_size", state)
+            self.logger.trace(f"Remember window size changed to: {state}")
+            # Show notification
+            message = "Window size memory enabled" if state else "Window size memory disabled"
+            self.show_notification(message, "success")
+        except Exception as e:
+            self.logger.error(f"Error changing remember window size setting: {e}")
+
+    def on_export_clicked(self, button: Gtk.Button) -> None:
+        """Handle export settings button click."""
+        try:
+            from gi.repository import Gio
+
+            # Create file chooser dialog
+            dialog = Gtk.FileDialog()
+            dialog.set_title("Export Settings")
+
+            # Set initial name
+            dialog.set_initial_name("dfakeseeder-settings.json")
+
+            # Create file filter for JSON files
+            json_filter = Gtk.FileFilter()
+            json_filter.set_name("JSON files")
+            json_filter.add_pattern("*.json")
+
+            all_filter = Gtk.FileFilter()
+            all_filter.set_name("All files")
+            all_filter.add_pattern("*")
+
+            filters = Gio.ListStore.new(Gtk.FileFilter)
+            filters.append(json_filter)
+            filters.append(all_filter)
+            dialog.set_filters(filters)
+
+            # Get parent window
+            parent = button.get_root()
+
+            # Show save dialog
+            dialog.save(parent, None, self._on_export_file_selected)
+
+        except Exception as e:
+            self.logger.error(f"Error showing export dialog: {e}", exc_info=True)
+            self.show_notification(f"Error exporting settings: {e}", "error")
+
+    def _on_export_file_selected(self, dialog, result):
+        """Handle file selection for export."""
+        try:
+            file = dialog.save_finish(result)
+            if file:
+                file_path = file.get_path()
+                # Export settings
+                self.app_settings.export_settings(file_path)
+                self.show_notification(f"Settings exported to {file_path}", "success")
+                self.logger.info(f"Settings exported to: {file_path}")
+        except Exception as e:
+            if "dismissed" not in str(e).lower():  # Don't show error if user cancelled
+                self.logger.error(f"Error exporting settings: {e}", exc_info=True)
+                self.show_notification(f"Error exporting settings: {e}", "error")
+
+    def on_import_clicked(self, button: Gtk.Button) -> None:
+        """Handle import settings button click."""
+        try:
+            from gi.repository import Gio
+
+            # Create file chooser dialog
+            dialog = Gtk.FileDialog()
+            dialog.set_title("Import Settings")
+
+            # Create file filter for JSON files
+            json_filter = Gtk.FileFilter()
+            json_filter.set_name("JSON files")
+            json_filter.add_pattern("*.json")
+
+            all_filter = Gtk.FileFilter()
+            all_filter.set_name("All files")
+            all_filter.add_pattern("*")
+
+            filters = Gio.ListStore.new(Gtk.FileFilter)
+            filters.append(json_filter)
+            filters.append(all_filter)
+            dialog.set_filters(filters)
+
+            # Get parent window
+            parent = button.get_root()
+
+            # Show open dialog
+            dialog.open(parent, None, self._on_import_file_selected)
+
+        except Exception as e:
+            self.logger.error(f"Error showing import dialog: {e}", exc_info=True)
+            self.show_notification(f"Error importing settings: {e}", "error")
+
+    def _on_import_file_selected(self, dialog, result):
+        """Handle file selection for import."""
+        try:
+            file = dialog.open_finish(result)
+            if file:
+                file_path = file.get_path()
+                # Import settings
+                self.app_settings.import_settings(file_path)
+                # Reload all settings in UI
+                self._load_settings()
+                self.show_notification(f"Settings imported from {file_path}", "success")
+                self.logger.info(f"Settings imported from: {file_path}")
+        except Exception as e:
+            if "dismissed" not in str(e).lower():  # Don't show error if user cancelled
+                self.logger.error(f"Error importing settings: {e}", exc_info=True)
+                self.show_notification(f"Error importing settings: {e}", "error")
+
+    def on_reset_clicked(self, button: Gtk.Button) -> None:
+        """Handle reset to defaults button click."""
+        try:
+            # Show confirmation dialog
+            from gi.repository import Gio
+
+            dialog = Gtk.AlertDialog()
+            dialog.set_message("Reset to Defaults?")
+            dialog.set_detail("This will reset ALL settings to their default values. This action cannot be undone.")
+            dialog.set_buttons(["Cancel", "Reset to Defaults"])
+            dialog.set_cancel_button(0)
+            dialog.set_default_button(0)
+
+            # Get parent window
+            parent = button.get_root()
+
+            # Show dialog
+            dialog.choose(parent, None, self._on_reset_confirmed)
+
+        except Exception as e:
+            self.logger.error(f"Error showing reset dialog: {e}", exc_info=True)
+            self.show_notification(f"Error resetting settings: {e}", "error")
+
+    def _on_reset_confirmed(self, dialog, result):
+        """Handle reset confirmation."""
+        try:
+            button_index = dialog.choose_finish(result)
+            if button_index == 1:  # "Reset to Defaults" button
+                # Reset all settings to defaults
+                self.app_settings.reset_to_defaults()
+                # Reload all settings in UI
+                self._load_settings()
+                self.show_notification("All settings reset to defaults", "success")
+                self.logger.info("Settings reset to defaults")
+        except Exception as e:
+            if "dismissed" not in str(e).lower():  # Don't show error if user cancelled
+                self.logger.error(f"Error resetting settings: {e}", exc_info=True)
+                self.show_notification(f"Error resetting settings: {e}", "error")
 
     def on_theme_style_changed(self, dropdown: Gtk.DropDown, param) -> None:
         """Handle theme style setting change."""
