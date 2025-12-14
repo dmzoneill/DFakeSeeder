@@ -472,6 +472,43 @@
                             <property name="halign">start</property>
                         </object>
                     </child>
+
+                    <!-- Info message about redistribution timing -->
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+                            <property name="margin-end">12</property>
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="orientation">horizontal</property>
+                                    <property name="spacing">12</property>
+                                    <property name="css-classes">info-box</property>
+                                    <property name="margin-top">6</property>
+                                    <property name="margin-bottom">6</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label">ℹ️</property>
+                                            <property name="valign">start</property>
+                                            <property name="margin-top">2</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Note: Choosing "Tick speed" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use "Announce Interval" redistribution mode.</property>
+                                            <property name="wrap">True</property>
+                                            <property name="wrap-mode">word</property>
+                                            <property name="xalign">0</property>
+                                            <property name="max-width-chars">80</property>
+                                            <property name="css-classes">dim-label</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>

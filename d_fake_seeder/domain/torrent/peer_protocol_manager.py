@@ -518,8 +518,9 @@ class PeerProtocolManager:
                         for ext, msg_id in extensions.items()
                     }
 
+                    ext_list = list(connection.peer_info.supported_extensions.keys())
                     logger.trace(
-                        f"📋 Peer {address} supports extensions: {list(connection.peer_info.supported_extensions.keys())}",
+                        f"📋 Peer {address} supports extensions: {ext_list}",
                         extra={"class_name": self.__class__.__name__},
                     )
 
@@ -574,9 +575,7 @@ class PeerProtocolManager:
                     message = struct.pack("!I", len(extended_payload) + 1) + bytes([20]) + extended_payload
 
                     try:
-                        await asyncio.get_running_loop().run_in_executor(
-                            None, connection.socket.send, message
-                        )
+                        await asyncio.get_running_loop().run_in_executor(None, connection.socket.send, message)
                         logger.trace(
                             f"✅ Sent ut_metadata response for piece {piece_index} to {address}",
                             extra={"class_name": self.__class__.__name__},

@@ -5,7 +5,6 @@ Allows fetching torrent metadata from peers without requiring the .torrent file.
 """
 
 # fmt: off
-import struct
 from typing import Optional
 
 try:
@@ -70,10 +69,7 @@ class UTMetadataExtension:
             end = min(start + self.PIECE_SIZE, self.metadata_size)
             self.metadata_pieces[i] = self.metadata[start:end]
 
-        logger.trace(
-            f"Split metadata into {num_pieces} pieces ({self.metadata_size} bytes)",
-            "UTMetadataExtension"
-        )
+        logger.trace(f"Split metadata into {num_pieces} pieces ({self.metadata_size} bytes)", "UTMetadataExtension")
 
     def handle_request(self, piece_index: int) -> Optional[bytes]:
         """
