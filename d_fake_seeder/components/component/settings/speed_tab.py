@@ -257,6 +257,12 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             logger.trace("About to call _load_distribution_settings", "SpeedTab")
             self._load_distribution_settings()
             logger.trace("Completed _load_distribution_settings", "SpeedTab")
+
+            # Update widget dependencies after loading (enable/disable based on loaded state)
+            logger.trace("Updating dependencies after settings load", "SpeedTab")
+            self.update_dependencies()
+            logger.trace("Dependencies updated", "SpeedTab")
+
             self.logger.info("Speed tab settings loaded")
             logger.info("Completed _load_settings successfully", "SpeedTab")
         except Exception as e:
