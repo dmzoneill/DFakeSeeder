@@ -208,6 +208,10 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if proxy_password:
                 proxy_password.set_text(proxy_settings.get("password", ""))
 
+            # Update proxy auth field sensitivity based on current state
+            auth_enabled = proxy_settings.get("auth_enabled", False)
+            self._update_proxy_auth_fields(auth_enabled)
+
         except Exception as e:
             self.logger.error(f"Error loading proxy settings: {e}")
 
@@ -366,7 +370,23 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
     def on_connection_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle connection limit changes."""
-        self.on_setting_changed(spin_button)
+        try:
+            # Get widget name to determine which setting to save
+            widget_name = Gtk.Buildable.get_buildable_id(spin_button)
+            value = int(spin_button.get_value())
+
+            if widget_name == "settings_max_global_connections":
+                self.app_settings.set("connection.max_connections", value)
+                self.logger.trace(f"Max global connections changed to: {value}")
+            elif widget_name == "settings_max_per_torrent":
+                self.app_settings.set("connection.max_connections_per_torrent", value)
+                self.logger.trace(f"Max connections per torrent changed to: {value}")
+            elif widget_name == "settings_max_upload_slots":
+                self.app_settings.set("connection.max_upload_slots", value)
+                self.logger.trace(f"Max upload slots changed to: {value}")
+
+        except Exception as e:
+            self.logger.error(f"Error saving connection limit: {e}", exc_info=True)
 
     def on_proxy_type_changed(self, dropdown: Gtk.DropDown, param) -> None:
         """Handle proxy type change."""
@@ -385,11 +405,28 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def on_proxy_auth_changed(self, switch: Gtk.Switch, state: bool) -> None:
         """Handle proxy authentication toggle."""
         try:
-            self.update_dependencies()
             self.app_settings.set("proxy.auth_enabled", state)
+            # Update proxy username/password field sensitivity
+            self._update_proxy_auth_fields(state)
 
         except Exception as e:
             self.logger.error(f"Error changing proxy authentication: {e}")
+
+    def _update_proxy_auth_fields(self, enabled: bool) -> None:
+        """Enable/disable proxy username and password fields based on authentication state."""
+        try:
+            proxy_username = self.get_widget("proxy_username")
+            proxy_password = self.get_widget("proxy_password")
+
+            if proxy_username:
+                proxy_username.set_sensitive(enabled)
+            if proxy_password:
+                proxy_password.set_sensitive(enabled)
+
+            self.logger.trace(f"Proxy auth fields sensitivity set to: {enabled}")
+
+        except Exception as e:
+            self.logger.error(f"Error updating proxy auth fields: {e}")
 
     def on_proxy_server_changed(self, entry: Gtk.Entry) -> None:
         """Handle proxy server change."""
