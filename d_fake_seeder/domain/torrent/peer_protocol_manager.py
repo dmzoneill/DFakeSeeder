@@ -15,6 +15,7 @@ from typing import Dict, List, Optional
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.bittorrent_message import BitTorrentMessage
+from d_fake_seeder.domain.torrent.extensions.ut_metadata import UTMetadataExtension
 from d_fake_seeder.domain.torrent.peer_connection import PeerConnection
 from d_fake_seeder.domain.torrent.peer_info import PeerInfo
 from d_fake_seeder.domain.torrent.shared_async_executor import SharedAsyncExecutor
@@ -90,6 +91,9 @@ class PeerProtocolManager:
         self.connection_rotation_percentage = peer_protocol.get("connection_rotation_percentage", 0.25)
         self.last_metadata_exchange = 0.0
         self.last_connection_rotation = 0.0
+
+        # Extension protocol support (BEP 9 - ut_metadata)
+        self.ut_metadata = None  # Will be initialized when torrent info is available
 
     def add_peers(self, peer_addresses: List[str]):
         """Add peers from tracker response with rate limiting and max peer limits"""
@@ -480,6 +484,122 @@ class PeerProtocolManager:
         elif message_id == BitTorrentMessage.UNCHOKE:
             connection.peer_info.choked = False
             logger.trace(f"✅ Unchoked by {address}")
+
+        elif message_id == BitTorrentMessage.EXTENDED:
+            # Extension protocol message (BEP 10)
+            await self._handle_extended_message(address, connection, payload)
+
+    async def _handle_extended_message(self, address: str, connection: PeerConnection, payload: bytes):
+        """Handle BitTorrent extension protocol messages (BEP 10)"""
+        if not payload:
+            logger.trace(f"⚠️ Empty extended message from {address}")
+            return
+
+        # First byte is the extended message ID
+        extended_msg_id = payload[0]
+        extended_payload = payload[1:] if len(payload) > 1 else b""
+
+        if extended_msg_id == 0:
+            # Extension handshake (BEP 10)
+            try:
+                import bencodepy
+
+                handshake_data = bencodepy.decode(extended_payload)
+                logger.trace(
+                    f"🤝 Extension handshake from {address}: {handshake_data}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+                # Store supported extensions
+                if b"m" in handshake_data:
+                    extensions = handshake_data[b"m"]
+                    connection.peer_info.supported_extensions = {
+                        ext.decode("utf-8") if isinstance(ext, bytes) else ext: msg_id
+                        for ext, msg_id in extensions.items()
+                    }
+
+                    logger.trace(
+                        f"📋 Peer {address} supports extensions: {list(connection.peer_info.supported_extensions.keys())}",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+
+            except Exception as e:
+                logger.trace(
+                    f"⚠️ Failed to parse extension handshake from {address}: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+        else:
+            # Other extension messages (ut_metadata, ut_pex, etc.)
+            # Check if this is a ut_metadata message
+            if connection.peer_info.supported_extensions and "ut_metadata" in connection.peer_info.supported_extensions:
+                ut_metadata_id = connection.peer_info.supported_extensions["ut_metadata"]
+                if extended_msg_id == ut_metadata_id and self.ut_metadata:
+                    # Handle ut_metadata message
+                    await self._handle_ut_metadata_message(address, connection, extended_payload)
+                    return
+
+            logger.trace(
+                f"📨 Extended message ID {extended_msg_id} from {address} ({len(extended_payload)} bytes)",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+    async def _handle_ut_metadata_message(self, address: str, connection: PeerConnection, payload: bytes):
+        """Handle ut_metadata extension messages (BEP 9)"""
+        if not self.ut_metadata:
+            return
+
+        message_info = self.ut_metadata.parse_message(payload)
+        if not message_info:
+            logger.trace(f"⚠️ Failed to parse ut_metadata message from {address}")
+            return
+
+        msg_type = message_info.get("msg_type")
+        piece_index = message_info.get("piece", -1)
+
+        if msg_type == UTMetadataExtension.REQUEST:
+            # Peer is requesting a metadata piece
+            logger.trace(
+                f"📥 ut_metadata REQUEST for piece {piece_index} from {address}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+            # Generate response (either DATA or REJECT)
+            response = self.ut_metadata.handle_request(piece_index)
+            if response and connection.peer_info.supported_extensions:
+                ut_metadata_id = connection.peer_info.supported_extensions.get("ut_metadata")
+                if ut_metadata_id is not None:
+                    # Send extended message with ut_metadata data
+                    # Format: <length><id=20><extended_id><payload>
+                    extended_payload = bytes([ut_metadata_id]) + response
+                    message = struct.pack("!I", len(extended_payload) + 1) + bytes([20]) + extended_payload
+
+                    try:
+                        await asyncio.get_running_loop().run_in_executor(
+                            None, connection.socket.send, message
+                        )
+                        logger.trace(
+                            f"✅ Sent ut_metadata response for piece {piece_index} to {address}",
+                            extra={"class_name": self.__class__.__name__},
+                        )
+                    except Exception as e:
+                        logger.trace(
+                            f"❌ Failed to send ut_metadata response to {address}: {e}",
+                            extra={"class_name": self.__class__.__name__},
+                        )
+
+        elif msg_type == UTMetadataExtension.DATA:
+            # Peer sent us metadata
+            logger.trace(
+                f"📦 ut_metadata DATA for piece {piece_index} from {address}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+        elif msg_type == UTMetadataExtension.REJECT:
+            # Peer rejected our request
+            logger.trace(
+                f"🚫 ut_metadata REJECT for piece {piece_index} from {address}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _calculate_progress_from_bitfield(self, bitfield: bytes) -> float:
         """Calculate download progress from bitfield"""

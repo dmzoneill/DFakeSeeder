@@ -27,12 +27,13 @@ from d_fake_seeder.lib.util.language_config import (  # noqa: E402
 from .base_tab import BaseSettingsTab  # noqa
 from .settings_mixins import NotificationMixin  # noqa: E402
 from .settings_mixins import TranslationMixin  # noqa: E402
+from .settings_mixins import UtilityMixin  # noqa: E402
 from .settings_mixins import ValidationMixin  # noqa: E402
 
 # fmt: on
 
 
-class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin):
+class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
     """
     General settings tab component.
     Manages:
