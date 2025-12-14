@@ -595,6 +595,18 @@ class View(CleanupMixin):
         self._quit_in_progress = True
         shutdown_start_time = time.time()
 
+        # ========== SAVE SETTINGS IMMEDIATELY (BEFORE WATCHDOGS OR CLEANUP) ==========
+        try:
+            print(f"🔄 Calling save_quit() - torrents count: {len(self.settings.torrents)}")
+            self.settings.save_quit()
+            print("✅ save_quit() completed successfully")
+        except Exception as e:
+            print(f"Error saving settings: {e}")
+            logger.warning(
+                f"Error saving settings: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
         logger.trace(
             f"🎬 SHUTDOWN START: Consolidated quit procedure "
             f"(widget={widget}, event={event}, fast_shutdown={fast_shutdown})",
@@ -725,17 +737,11 @@ class View(CleanupMixin):
                 self.shutdown_tracker.mark_completed("network_connections", 1)
         phase_times["controller_stop"] = time.time() - step_start
 
-        # ========== PHASE 4: SAVE SETTINGS ==========
+        # ========== PHASE 4: SAVE SETTINGS (NOW DONE AT START) ==========
         step_start = time.time()
-        logger.trace("💾 PHASE 4: Saving settings", extra={"class_name": self.__class__.__name__})
-        try:
-            self.settings.save_quit()
-        except Exception as e:
-            logger.warning(
-                f"Error saving settings: {e}",
-                extra={"class_name": self.__class__.__name__},
-            )
-        phase_times["settings_save"] = time.time() - step_start
+        logger.trace("💾 PHASE 4: Settings already saved at start", extra={"class_name": self.__class__.__name__})
+        # Note: save_quit() is now called FIRST thing in quit() before watchdogs start
+        phase_times["settings_save"] = 0  # Already done
 
         # ========== PHASE 5: CHECK TIMEOUT & LOG STATUS ==========
         if self.shutdown_tracker.is_force_shutdown_time():

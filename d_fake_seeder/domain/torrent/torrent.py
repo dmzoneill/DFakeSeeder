@@ -376,6 +376,27 @@ class Torrent(GObject.GObject):
         )
         self.emit("attribute-changed", None, None)
 
+    def save_to_transient(self):
+        """
+        Save current torrent state to transient storage (in-memory only, no disk write).
+        Called periodically during runtime and when stopping.
+        """
+        ATTRIBUTES = Attributes
+        attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
+
+        # Build torrent data dictionary
+        torrent_data = {attr: getattr(self, attr) for attr in attributes}
+
+        # Update transient storage (NO disk write during runtime)
+        # Torrents are only persisted to disk during application shutdown via save_quit()
+        self.settings.torrents[self.file_path] = torrent_data
+
+        logger.trace(
+            f"💾 Torrent data saved to transient: {self.name[:30]} - progress={self.progress:.2%}, "
+            f"uploaded={self.total_uploaded:,}, downloaded={self.total_downloaded:,}",
+            extra={"class_name": self.__class__.__name__},
+        )
+
     def stop(self):
         logger.info("Torrent stop", extra={"class_name": self.__class__.__name__})
 
@@ -420,27 +441,8 @@ class Torrent(GObject.GObject):
             # Clear the list
             self.tracker_update_threads.clear()
 
-        ATTRIBUTES = Attributes
-        attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
-
-        # Build torrent data dictionary
-        torrent_data = {attr: getattr(self, attr) for attr in attributes}
-
-        # Debug: Log saved values
-        logger.trace(
-            f"💾 SAVING TORRENT (transient): {self.name[:30]} - progress={self.progress:.2%}, "
-            f"downloaded={self.total_downloaded:,}, uploaded={self.total_uploaded:,}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-        # Update transient storage (NO disk write during runtime)
-        # Torrents are only persisted to disk during application shutdown via save_quit()
-        self.settings.torrents[self.file_path] = torrent_data
-
-        logger.trace(
-            f"✅ Torrent data updated in transient storage (not written to disk): {self.name[:30]}",
-            extra={"class_name": self.__class__.__name__},
-        )
+        # Save final state to transient storage
+        self.save_to_transient()
 
     def get_seeder(self):
         # logger.info("Torrent get seeder",

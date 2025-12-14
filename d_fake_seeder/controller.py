@@ -165,10 +165,23 @@ class Controller:
         logger.info("Controller stopped", extra={"class_name": self.__class__.__name__})
 
     def _on_tick(self) -> bool:
-        """Tick callback for speed redistribution."""
+        """Tick callback for speed redistribution and torrent state persistence."""
         try:
             if self.speed_distribution_manager:
                 self.speed_distribution_manager.check_redistribution("tick")
+
+            # Save all torrent states to transient storage (in-memory only)
+            # This ensures torrent progress is always up-to-date when save_quit() is called
+            if hasattr(self, "model") and self.model:
+                for torrent in self.model.get_torrents():
+                    try:
+                        torrent.save_to_transient()
+                    except Exception as e:
+                        logger.error(
+                            f"Error saving torrent {getattr(torrent, 'name', 'unknown')} to transient: {e}",
+                            "Controller",
+                            exc_info=True,
+                        )
         except Exception as e:
             logger.error(f"Error in tick callback: {e}", "Controller", exc_info=True)
         return True  # Keep timer running
