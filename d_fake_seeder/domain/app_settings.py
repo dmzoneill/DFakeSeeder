@@ -466,6 +466,9 @@ class AppSettings(GObject.GObject):
             # Update last modified timestamp to prevent unnecessary reloads
             self._last_modified = os.path.getmtime(self._file_path)
 
+            # Console output for save confirmation
+            print(f"💾 SETTINGS SAVED to {self._file_path}")
+
             self.logger.info("Settings saved successfully with atomic write")
 
         except Exception as write_error:
@@ -594,6 +597,9 @@ class AppSettings(GObject.GObject):
                     self._set_nested_value(self._user_settings, key, value)
                     should_emit = True
                     logger.debug(f"Updated persistent: {key}", "AppSettings")
+
+                    # Console output for UI validation
+                    print(f"⚙️  SETTING CHANGED: {key} = {value}")
 
                     # Rebuild merged view
                     self._settings = self._build_merged_view()
