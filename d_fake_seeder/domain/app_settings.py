@@ -747,25 +747,62 @@ class AppSettings(GObject.GObject):
     def reset_to_defaults(self):
         """Reset all settings to defaults"""
         try:
-            with open(self.default_config_file, "r") as f:
-                defaults = json.load(f)
-                self._settings = defaults.copy()
-                self.save_settings()
+            with self._lock:
+                # Load defaults
+                self._user_settings = self._defaults.copy()
+                # Rebuild merged view
+                self._settings = self._build_merged_view()
+                # Save to disk
+                self._save_settings_unlocked()
                 self.logger.debug("Settings reset to defaults")
-                # Emit signals for each changed setting
-                for key, value in defaults.items():
-                    # Emit new signals
-                    self.emit("settings-value-changed", key, value)
-                    self.emit("settings-attribute-changed", key, value)
-                    # Legacy compatibility signal
-                    self.emit("setting-changed", key, value)
-        except (FileNotFoundError, json.JSONDecodeError) as e:
-            self.logger.warning(f"Could not load default config file, using current defaults ({e})")
-            # Use already loaded defaults
-            self._settings = self._defaults.copy()
-            self.save_settings()
+            # Emit signals for each changed setting
+            for key, value in self._defaults.items():
+                # Emit new signals
+                self.emit("settings-value-changed", key, value)
+                self.emit("settings-attribute-changed", key, value)
+                # Legacy compatibility signal
+                self.emit("setting-changed", key, value)
+                self.emit("attribute-changed", key, value)
         except Exception as e:
             self.logger.error(f"Failed to reset settings: {e}")
+
+    def export_settings(self, file_path: str):
+        """Export current settings to a file"""
+        try:
+            with self._lock:
+                # Export user settings (not including transient data)
+                with open(file_path, "w") as f:
+                    json.dump(self._user_settings, f, indent=4)
+                self.logger.info(f"Settings exported to: {file_path}")
+        except Exception as e:
+            self.logger.error(f"Failed to export settings: {e}", exc_info=True)
+            raise
+
+    def import_settings(self, file_path: str):
+        """Import settings from a file"""
+        try:
+            with self._lock:
+                # Load settings from file
+                with open(file_path, "r") as f:
+                    imported_settings = json.load(f)
+                # Update user settings
+                self._user_settings = imported_settings.copy()
+                # Rebuild merged view
+                self._settings = self._build_merged_view()
+                # Save to disk
+                self._save_settings_unlocked()
+                self.logger.info(f"Settings imported from: {file_path}")
+            # Emit signals for each changed setting
+            for key, value in imported_settings.items():
+                # Emit new signals
+                self.emit("settings-value-changed", key, value)
+                self.emit("settings-attribute-changed", key, value)
+                # Legacy compatibility signal
+                self.emit("setting-changed", key, value)
+                self.emit("attribute-changed", key, value)
+        except Exception as e:
+            self.logger.error(f"Failed to import settings: {e}", exc_info=True)
+            raise
 
     @classmethod
     def get_instance(cls, file_path=None):
