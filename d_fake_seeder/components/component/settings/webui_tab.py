@@ -34,6 +34,71 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
     - Security configuration
     """
 
+    # Auto-connect simple widgets with WIDGET_MAPPINGS
+    WIDGET_MAPPINGS = [
+        # Security settings
+        {
+            "id": "settings_webui_https_enabled",
+            "name": "webui_https_enabled",
+            "setting_key": "webui.https_enabled",
+            "type": bool,
+            "on_change": lambda self, value: self.show_notification(
+                f"HTTPS {'enabled' if value else 'disabled'}", "success"
+            ),
+        },
+        {
+            "id": "settings_webui_csrf_protection",
+            "name": "webui_csrf_protection",
+            "setting_key": "webui.csrf_protection",
+            "type": bool,
+            "on_change": lambda self, value: self.show_notification(
+                f"CSRF protection {'enabled' if value else 'disabled'}", "success"
+            ),
+        },
+        {
+            "id": "settings_webui_host_header_validation",
+            "name": "webui_host_header_validation",
+            "setting_key": "webui.host_header_validation",
+            "type": bool,
+            "on_change": lambda self, value: self.show_notification(
+                f"Host header validation {'enabled' if value else 'disabled'}", "success"
+            ),
+        },
+        # Access control
+        {
+            "id": "settings_webui_ban_after_failures",
+            "name": "webui_ban_after_failures",
+            "setting_key": "webui.ban_after_failures",
+            "type": int,
+        },
+        {
+            "id": "settings_webui_session_timeout",
+            "name": "webui_session_timeout",
+            "setting_key": "webui.session_timeout_minutes",
+            "type": int,
+        },
+        # Main settings
+        {
+            "id": "settings_webui_interface",
+            "name": "webui_interface",
+            "setting_key": "webui.interface",
+            "type": str,
+        },
+        # Authentication
+        {
+            "id": "settings_webui_username",
+            "name": "webui_username",
+            "setting_key": "webui.username",
+            "type": str,
+        },
+        {
+            "id": "settings_webui_password",
+            "name": "webui_password",
+            "setting_key": "webui.password",
+            "type": str,
+        },
+    ]
+
     @property
     def tab_name(self) -> str:
         """Return the name of this tab."""
@@ -44,6 +109,10 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         # Cache commonly used widgets
         self._widgets.update(
             {
+                # Section containers (these are hardcoded to sensitive=False in XML)
+                "webui_config_box": self.builder.get_object("settings_webui_config_box"),
+                "webui_auth_box": self.builder.get_object("settings_webui_auth_box"),
+                "webui_security_box": self.builder.get_object("settings_webui_security_box"),
                 # Main settings
                 "enable_webui": self.builder.get_object("settings_enable_webui"),
                 "webui_port": self.builder.get_object("settings_webui_port"),
@@ -65,7 +134,11 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
     def _connect_signals(self) -> None:
         """Connect signal handlers for Web UI tab."""
-        # Main settings
+        # Simple widgets (webui_https_enabled, webui_csrf_protection, webui_host_header_validation,
+        # webui_ban_after_failures, webui_session_timeout, webui_interface, webui_username, webui_password)
+        # are now auto-connected via WIDGET_MAPPINGS
+
+        # Main enable switch (has dependencies - controls all other widgets)
         enable_webui = self.get_widget("enable_webui")
         if enable_webui:
             self.track_signal(
@@ -73,6 +146,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
                 enable_webui.connect("state-set", self.on_enable_webui_changed),
             )
 
+        # Port setting (has validation logic)
         webui_port = self.get_widget("webui_port")
         if webui_port:
             self.track_signal(
@@ -80,71 +154,17 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
                 webui_port.connect("value-changed", self.on_webui_port_changed),
             )
 
-        webui_interface = self.get_widget("webui_interface")
-        if webui_interface:
-            self.track_signal(
-                webui_interface,
-                webui_interface.connect("changed", self.on_webui_interface_changed),
-            )
-
-        # Authentication
+        # Authentication enable (has dependencies - controls username/password/generate)
         webui_auth = self.get_widget("webui_auth_enabled")
         if webui_auth:
             self.track_signal(webui_auth, webui_auth.connect("state-set", self.on_webui_auth_changed))
 
-        webui_username = self.get_widget("webui_username")
-        if webui_username:
-            self.track_signal(
-                webui_username,
-                webui_username.connect("changed", self.on_webui_username_changed),
-            )
-
-        webui_password = self.get_widget("webui_password")
-        if webui_password:
-            self.track_signal(
-                webui_password,
-                webui_password.connect("changed", self.on_webui_password_changed),
-            )
-
+        # Password generation button (complex logic)
         gen_password = self.get_widget("webui_generate_password")
         if gen_password:
             self.track_signal(
                 gen_password,
                 gen_password.connect("clicked", self.on_generate_password_clicked),
-            )
-
-        # Security
-        webui_https = self.get_widget("webui_https_enabled")
-        if webui_https:
-            self.track_signal(
-                webui_https,
-                webui_https.connect("state-set", self.on_webui_https_changed),
-            )
-
-        webui_csrf = self.get_widget("webui_csrf_protection")
-        if webui_csrf:
-            self.track_signal(webui_csrf, webui_csrf.connect("state-set", self.on_webui_csrf_changed))
-
-        webui_host_header = self.get_widget("webui_host_header_validation")
-        if webui_host_header:
-            self.track_signal(
-                webui_host_header,
-                webui_host_header.connect("state-set", self.on_webui_host_header_changed),
-            )
-
-        # Access control
-        webui_ban = self.get_widget("webui_ban_after_failures")
-        if webui_ban:
-            self.track_signal(
-                webui_ban,
-                webui_ban.connect("value-changed", self.on_webui_ban_after_failures_changed),
-            )
-
-        webui_session = self.get_widget("webui_session_timeout")
-        if webui_session:
-            self.track_signal(
-                webui_session,
-                webui_session.connect("value-changed", self.on_webui_session_timeout_changed),
             )
 
     def _load_settings(self) -> None:
@@ -153,6 +173,9 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             # Load Web UI settings
             webui_settings = getattr(self.app_settings, "webui", {})
             self._load_webui_settings(webui_settings)
+
+            # Update widget dependencies after loading (enable/disable based on loaded state)
+            self.update_dependencies()
 
             self.logger.info("Web UI tab settings loaded")
 
@@ -228,7 +251,12 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             enable_webui = self.get_widget("enable_webui")
             webui_enabled = enable_webui and enable_webui.get_active()
 
-            # Main settings
+            # IMPORTANT: Enable all three main section containers that are hardcoded to sensitive=False in XML
+            self.update_widget_sensitivity("webui_config_box", webui_enabled)  # Connection Settings
+            self.update_widget_sensitivity("webui_auth_box", webui_enabled)  # Authentication
+            self.update_widget_sensitivity("webui_security_box", webui_enabled)  # Security Options
+
+            # Main settings (already enabled via parent box above)
             self.update_widget_sensitivity("webui_port", webui_enabled)
             self.update_widget_sensitivity("webui_interface", webui_enabled)
 
@@ -258,11 +286,19 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
     def _collect_settings(self) -> Dict[str, Any]:
         """Collect current settings from WebUI tab widgets.
 
-        NOTE: All settings are saved in real-time by signal handlers.
-        This method returns empty dict to avoid duplicate saves.
+        Returns:
+            Dictionary of setting_key -> value pairs for all widgets
         """
-        # All settings already saved by signal handlers to webui.* keys
-        return {}
+        # Collect from WIDGET_MAPPINGS
+        settings = self._collect_mapped_settings()
+
+        # Collect WebUI settings with proper key prefixes
+        webui_settings = self._collect_webui_settings()
+        for key, value in webui_settings.items():
+            settings[f"webui.{key}"] = value
+
+        self.logger.trace(f"Collected {len(settings)} settings from WebUI tab")
+        return settings
 
     def _collect_webui_settings(self) -> Dict[str, Any]:
         """Collect Web UI settings."""
@@ -327,13 +363,21 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         errors = {}
 
         try:
-            # Validate port
+            # Only validate WebUI settings when WebUI is actually enabled
+            enable_webui = self.get_widget("enable_webui")
+            webui_enabled = enable_webui and enable_webui.get_active()
+
+            if not webui_enabled:
+                # Skip all validation when WebUI is disabled
+                return errors
+
+            # Validate port (only when WebUI is enabled)
             webui_port = self.get_widget("webui_port")
             if webui_port:
                 port_errors = self.validate_port(webui_port.get_value())
                 errors.update(port_errors)
 
-            # Validate interface (basic IP validation)
+            # Validate interface (basic IP validation, only when WebUI is enabled)
             webui_interface = self.get_widget("webui_interface")
             if webui_interface:
                 interface = webui_interface.get_text().strip()
@@ -352,9 +396,10 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
                         except ValueError:
                             errors["webui_interface"] = "Invalid IP address"
 
-            # Validate authentication if enabled
+            # Validate authentication (only when WebUI AND auth are both enabled)
+
             webui_auth = self.get_widget("webui_auth_enabled")
-            if webui_auth and webui_auth.get_active():
+            if webui_enabled and webui_auth and webui_auth.get_active():
                 webui_username = self.get_widget("webui_username")
                 if webui_username:
                     username = webui_username.get_text().strip()
@@ -376,11 +421,13 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
     # Signal handlers
     def on_enable_webui_changed(self, switch: Gtk.Switch, state: bool) -> None:
         """Handle Web UI enable/disable."""
+        if self._loading_settings:
+            return
         try:
             self.update_dependencies()
-            self.app_settings.set("webui.enabled", state)
-            message = "Web UI enabled" if state else "Web UI disabled"
-            self.show_notification(message, "success")
+            # NOTE: Setting will be saved in batch via _collect_settings()
+            message = "Web UI will be " + ("enabled" if state else "disabled")
+            self.show_notification(message, "info")
         except Exception as e:
             self.logger.error(f"Error changing Web UI enable setting: {e}")
 
@@ -393,47 +440,22 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             if validation_errors:
                 self.show_notification(validation_errors["port"], "error")
             else:
-                self.app_settings.set("webui.port", port)
+                # NOTE: Setting will be saved in batch via _collect_settings()
                 self.logger.trace(f"Web UI port changed to: {port}")
         except Exception as e:
             self.logger.error(f"Error changing Web UI port: {e}")
 
-    def on_webui_interface_changed(self, entry: Gtk.Entry) -> None:
-        """Handle Web UI interface change."""
-        try:
-            interface = entry.get_text()
-            self.app_settings.set("webui.interface", interface)
-            self.logger.trace(f"Web UI interface changed to: {interface}")
-        except Exception as e:
-            self.logger.error(f"Error changing Web UI interface: {e}")
-
     def on_webui_auth_changed(self, switch: Gtk.Switch, state: bool) -> None:
         """Handle Web UI authentication toggle."""
+        if self._loading_settings:
+            return
         try:
             self.update_dependencies()
-            self.app_settings.set("webui.auth_enabled", state)
-            message = "Web UI authentication enabled" if state else "Web UI authentication disabled"
-            self.show_notification(message, "success")
+            # NOTE: Setting will be saved in batch via _collect_settings()
+            message = "Web UI authentication will be " + ("enabled" if state else "disabled")
+            self.show_notification(message, "info")
         except Exception as e:
             self.logger.error(f"Error changing Web UI authentication: {e}")
-
-    def on_webui_username_changed(self, entry: Gtk.Entry) -> None:
-        """Handle Web UI username change."""
-        try:
-            username = entry.get_text()
-            self.app_settings.set("webui.username", username)
-            self.logger.trace(f"Web UI username changed to: {username}")
-        except Exception as e:
-            self.logger.error(f"Error changing Web UI username: {e}")
-
-    def on_webui_password_changed(self, entry: Gtk.Entry) -> None:
-        """Handle Web UI password change."""
-        try:
-            password = entry.get_text()
-            self.app_settings.set("webui.password", password)
-            self.logger.trace("Web UI password changed")
-        except Exception as e:
-            self.logger.error(f"Error changing Web UI password: {e}")
 
     def on_generate_password_clicked(self, button: Gtk.Button) -> None:
         """Generate a secure password for Web UI."""
@@ -451,51 +473,6 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
         except Exception as e:
             self.logger.error(f"Error generating password: {e}")
-
-    def on_webui_https_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle Web UI HTTPS toggle."""
-        try:
-            self.app_settings.set("webui.https_enabled", state)
-            message = "HTTPS enabled" if state else "HTTPS disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing HTTPS setting: {e}")
-
-    def on_webui_csrf_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle CSRF protection toggle."""
-        try:
-            self.app_settings.set("webui.csrf_protection", state)
-            message = "CSRF protection enabled" if state else "CSRF protection disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing CSRF protection: {e}")
-
-    def on_webui_host_header_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle host header validation toggle."""
-        try:
-            self.app_settings.set("webui.host_header_validation", state)
-            message = "Host header validation enabled" if state else "Host header validation disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing host header validation: {e}")
-
-    def on_webui_ban_after_failures_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle ban after failures change."""
-        try:
-            failures = int(spin_button.get_value())
-            self.app_settings.set("webui.ban_after_failures", failures)
-            self.logger.error(f"Ban after failures changed to: {failures}")
-        except Exception as e:
-            self.logger.error(f"Error changing ban after failures: {e}")
-
-    def on_webui_session_timeout_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle session timeout change."""
-        try:
-            timeout = int(spin_button.get_value())
-            self.app_settings.set("webui.session_timeout_minutes", timeout)
-            self.logger.trace(f"Session timeout changed to: {timeout} minutes")
-        except Exception as e:
-            self.logger.error(f"Error changing session timeout: {e}")
 
     def _reset_tab_defaults(self) -> None:
         """Reset Web UI tab to default values."""
@@ -553,27 +530,6 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
         except Exception as e:
             self.logger.error(f"Error resetting Web UI tab to defaults: {e}")
-
-    def handle_model_changed(self, source, data_obj, data_changed):
-        """Handle model change events."""
-        self.logger.trace(
-            "WebUITab model changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_attribute_changed(self, source, key, value):
-        """Handle attribute change events."""
-        self.logger.trace(
-            "WebUITab attribute changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_settings_changed(self, source, data_obj, data_changed):
-        """Handle settings change events."""
-        self.logger.trace(
-            "WebUITab settings changed",
-            extra={"class_name": self.__class__.__name__},
-        )
 
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes."""

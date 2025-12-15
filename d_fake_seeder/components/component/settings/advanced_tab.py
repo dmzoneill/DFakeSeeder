@@ -43,6 +43,74 @@ class AdvancedTab(
     - Keyboard shortcuts
     """
 
+    # Auto-connect simple widgets with WIDGET_MAPPINGS
+    WIDGET_MAPPINGS = [
+        # Search settings
+        {
+            "id": "settings_search_threshold",
+            "name": "search_threshold",
+            "setting_key": "search.threshold",
+            "type": float,
+        },
+        # Logging settings
+        {
+            "id": "settings_log_file_path",
+            "name": "log_file_path",
+            "setting_key": "logging.log_file_path",
+            "type": str,
+        },
+        {
+            "id": "settings_log_max_size",
+            "name": "log_max_size",
+            "setting_key": "logging.max_size_mb",
+            "type": int,
+        },
+        {
+            "id": "settings_log_backup_count",
+            "name": "log_backup_count",
+            "setting_key": "logging.backup_count",
+            "type": int,
+        },
+        # Performance settings
+        {
+            "id": "settings_disk_cache_size",
+            "name": "disk_cache_size",
+            "setting_key": "performance.disk_cache_size_mb",
+            "type": int,
+        },
+        {
+            "id": "settings_memory_limit",
+            "name": "memory_limit",
+            "setting_key": "performance.memory_limit_mb",
+            "type": int,
+        },
+        {
+            "id": "settings_worker_threads",
+            "name": "worker_threads",
+            "setting_key": "performance.worker_threads",
+            "type": int,
+        },
+        # Expert settings
+        {
+            "id": "settings_enable_debug_mode",
+            "name": "enable_debug_mode",
+            "setting_key": "expert.debug_mode",
+            "type": bool,
+            "on_change": lambda self, value: self.show_notification(
+                f"Debug mode {'enabled' if value else 'disabled'}", "success"
+            ),
+        },
+        {
+            "id": "settings_enable_experimental",
+            "name": "enable_experimental",
+            "setting_key": "expert.experimental_features",
+            "type": bool,
+            "on_change": lambda self, value: self.show_notification(
+                f"Experimental features {'enabled' if value else 'disabled'}", "warning" if value else "success"
+            ),
+        },
+    ]
+
     @property
     def tab_name(self) -> str:
         """Return the name of this tab."""
@@ -62,6 +130,8 @@ class AdvancedTab(
                 "log_to_file": self.builder.get_object("settings_log_to_file"),
                 "log_to_console": self.builder.get_object("settings_log_to_console"),
                 "log_to_systemd": self.builder.get_object("settings_log_to_systemd"),
+                # Section container (hardcoded to sensitive=False in XML)
+                "log_file_box": self.builder.get_object("settings_log_file_box"),
                 "log_file_path": self.builder.get_object("settings_log_file_path"),
                 "log_file_browse": self.builder.get_object("settings_log_file_browse"),
                 "log_max_size": self.builder.get_object("settings_log_max_size"),
@@ -87,7 +157,11 @@ class AdvancedTab(
 
     def _connect_signals(self) -> None:
         """Connect signal handlers for Advanced tab."""
-        # Search functionality
+        # Simple widgets (search_threshold, log_file_path, log_max_size, log_backup_count,
+        # disk_cache_size, memory_limit, worker_threads, enable_debug_mode, enable_experimental)
+        # are now auto-connected via WIDGET_MAPPINGS
+
+        # Search functionality (complex logic)
         search_entry = self.get_widget("search_entry")
         if search_entry:
             self.track_signal(
@@ -102,14 +176,7 @@ class AdvancedTab(
                 search_clear.connect("clicked", self.on_search_clear_clicked),
             )
 
-        search_threshold = self.get_widget("search_threshold")
-        if search_threshold:
-            self.track_signal(
-                search_threshold,
-                search_threshold.connect("value-changed", self.on_search_threshold_changed),
-            )
-
-        # Logging
+        # Logging (custom dropdown + reconfigure_logger calls)
         log_level = self.get_widget("log_level")
         if log_level:
             self.track_signal(
@@ -138,13 +205,6 @@ class AdvancedTab(
                 log_to_systemd.connect("state-set", self.on_log_to_systemd_changed),
             )
 
-        log_file_path = self.get_widget("log_file_path")
-        if log_file_path:
-            self.track_signal(
-                log_file_path,
-                log_file_path.connect("changed", self.on_log_file_path_changed),
-            )
-
         log_file_browse = self.get_widget("log_file_browse")
         if log_file_browse:
             self.track_signal(
@@ -152,57 +212,7 @@ class AdvancedTab(
                 log_file_browse.connect("clicked", self.on_log_file_browse_clicked),
             )
 
-        log_max_size = self.get_widget("log_max_size")
-        if log_max_size:
-            self.track_signal(
-                log_max_size,
-                log_max_size.connect("value-changed", self.on_log_max_size_changed),
-            )
-
-        log_backup_count = self.get_widget("log_backup_count")
-        if log_backup_count:
-            self.track_signal(
-                log_backup_count,
-                log_backup_count.connect("value-changed", self.on_log_backup_count_changed),
-            )
-
-        # Performance
-        disk_cache_size = self.get_widget("disk_cache_size")
-        if disk_cache_size:
-            self.track_signal(
-                disk_cache_size,
-                disk_cache_size.connect("value-changed", self.on_disk_cache_size_changed),
-            )
-
-        memory_limit = self.get_widget("memory_limit")
-        if memory_limit:
-            self.track_signal(
-                memory_limit,
-                memory_limit.connect("value-changed", self.on_memory_limit_changed),
-            )
-
-        worker_threads = self.get_widget("worker_threads")
-        if worker_threads:
-            self.track_signal(
-                worker_threads,
-                worker_threads.connect("value-changed", self.on_worker_threads_changed),
-            )
-
-        # Expert settings
-        enable_debug = self.get_widget("enable_debug_mode")
-        if enable_debug:
-            self.track_signal(
-                enable_debug,
-                enable_debug.connect("state-set", self.on_debug_mode_changed),
-            )
-
-        enable_experimental = self.get_widget("enable_experimental")
-        if enable_experimental:
-            self.track_signal(
-                enable_experimental,
-                enable_experimental.connect("state-set", self.on_experimental_changed),
-            )
-
+        # Expert settings (complex button handlers + shortcuts with dependencies)
         config_export = self.get_widget("config_export")
         if config_export:
             self.track_signal(
@@ -221,7 +231,7 @@ class AdvancedTab(
         if reset_all:
             self.track_signal(reset_all, reset_all.connect("clicked", self.on_reset_all_clicked))
 
-        # Keyboard shortcuts
+        # Keyboard shortcuts (has dependencies - controls shortcuts_config widget)
         enable_shortcuts = self.get_widget("enable_shortcuts")
         if enable_shortcuts:
             self.track_signal(
@@ -394,6 +404,8 @@ class AdvancedTab(
             log_to_file = self.get_widget("log_to_file")
             file_logging_enabled = log_to_file and log_to_file.get_active()
 
+            # IMPORTANT: Enable the parent box first (hardcoded to sensitive=False in XML)
+            self.update_widget_sensitivity("log_file_box", file_logging_enabled)
             self.update_widget_sensitivity("log_file_path", file_logging_enabled)
             self.update_widget_sensitivity("log_file_browse", file_logging_enabled)
             self.update_widget_sensitivity("log_max_size", file_logging_enabled)
@@ -416,11 +428,24 @@ class AdvancedTab(
     def _collect_settings(self) -> Dict[str, Any]:
         """Collect current settings from Advanced tab widgets.
 
-        NOTE: All settings are saved in real-time by signal handlers.
-        This method returns empty dict to avoid duplicate saves.
+        Returns:
+            Dictionary of setting_key -> value pairs for all widgets
         """
-        # All settings already saved by signal handlers to expert.*, logging.*, performance.* keys
-        return {}
+        # Collect from WIDGET_MAPPINGS (search, logging file settings, performance, expert)
+        settings = self._collect_mapped_settings()
+
+        # Collect logging settings (includes log_level dropdown and toggle switches)
+        logging_settings = self._collect_logging_settings()
+        for key, value in logging_settings.items():
+            settings[f"logging.{key}"] = value
+
+        # Collect expert settings (includes enable_shortcuts not in WIDGET_MAPPINGS)
+        expert_settings = self._collect_expert_settings()
+        for key, value in expert_settings.items():
+            settings[f"expert.{key}"] = value
+
+        self.logger.trace(f"Collected {len(settings)} settings from Advanced tab")
+        return settings
 
     def _collect_search_settings(self) -> Dict[str, Any]:
         """Collect search settings."""
@@ -572,15 +597,6 @@ class AdvancedTab(
         except Exception as e:
             self.logger.error(f"Error clearing search: {e}")
 
-    def on_search_threshold_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle search threshold change."""
-        try:
-            threshold = spin_button.get_value()
-            self.app_settings.set("search.threshold", threshold)
-            self.logger.trace(f"Search threshold changed to: {threshold}")
-        except Exception as e:
-            self.logger.error(f"Error changing search threshold: {e}")
-
     def on_log_level_changed(self, dropdown: Gtk.DropDown, _param) -> None:
         """Handle log level change."""
         try:
@@ -593,10 +609,9 @@ class AdvancedTab(
                 5: "CRITICAL",
             }
             level = level_mapping.get(dropdown.get_selected(), "INFO")
-            self.app_settings.set("log_level", level)
-            self.logger.trace(f"Log level changed to: {level}")
-            # Trigger logger reconfiguration
-            self._reconfigure_logger()
+            # NOTE: Setting will be saved in batch via _collect_settings()
+            self.logger.trace(f"Log level will change to: {level}")
+            # Trigger logger reconfiguration will happen after save
         except Exception as e:
             self.logger.error(f"Error changing log level: {e}")
 
@@ -604,44 +619,32 @@ class AdvancedTab(
         """Handle log to file toggle."""
         try:
             self.update_dependencies()
-            self.app_settings.set("log_to_file", state)
-            message = "File logging enabled" if state else "File logging disabled"
-            self.show_notification(message, "success")
-            # Trigger logger reconfiguration
-            self._reconfigure_logger()
+            # NOTE: Setting will be saved in batch via _collect_settings()
+            message = "File logging will be " + ("enabled" if state else "disabled")
+            self.show_notification(message, "info")
+            # Trigger logger reconfiguration will happen after save
         except Exception as e:
             self.logger.error(f"Error changing log to file setting: {e}")
 
     def on_log_to_console_changed(self, switch: Gtk.Switch, state: bool) -> None:
         """Handle log to console toggle."""
         try:
-            self.app_settings.set("log_to_console", state)
-            message = "Console logging enabled" if state else "Console logging disabled"
-            self.show_notification(message, "success")
-            # Trigger logger reconfiguration
-            self._reconfigure_logger()
+            # NOTE: Setting will be saved in batch via _collect_settings()
+            message = "Console logging will be " + ("enabled" if state else "disabled")
+            self.show_notification(message, "info")
+            # Trigger logger reconfiguration will happen after save
         except Exception as e:
             self.logger.error(f"Error changing log to console setting: {e}")
 
     def on_log_to_systemd_changed(self, switch: Gtk.Switch, state: bool) -> None:
         """Handle log to systemd toggle."""
         try:
-            self.app_settings.set("log_to_systemd", state)
-            message = "Systemd journal logging enabled" if state else "Systemd journal logging disabled"
-            self.show_notification(message, "success")
-            # Trigger logger reconfiguration
-            self._reconfigure_logger()
+            # NOTE: Setting will be saved in batch via _collect_settings()
+            message = "Systemd journal logging will be " + ("enabled" if state else "disabled")
+            self.show_notification(message, "info")
+            # Trigger logger reconfiguration will happen after save
         except Exception as e:
             self.logger.error(f"Error changing log to systemd setting: {e}")
-
-    def on_log_file_path_changed(self, entry: Gtk.Entry) -> None:
-        """Handle log file path change."""
-        try:
-            path = entry.get_text()
-            self.app_settings.set("logging.log_file_path", path)
-            self.logger.trace(f"Log file path changed to: {path}")
-        except Exception as e:
-            self.logger.error(f"Error changing log file path: {e}")
 
     def on_log_file_browse_clicked(self, button: Gtk.Button) -> None:
         """Open file chooser for log file."""
@@ -650,69 +653,6 @@ class AdvancedTab(
             self.show_notification("File chooser not yet implemented", "info")
         except Exception as e:
             self.logger.error(f"Error opening file chooser: {e}")
-
-    def on_log_max_size_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle log max size change."""
-        try:
-            max_size = int(spin_button.get_value())
-            self.app_settings.set("logging.max_size_mb", max_size)
-            self.logger.trace(f"Log max size changed to: {max_size}MB")
-        except Exception as e:
-            self.logger.error(f"Error changing log max size: {e}")
-
-    def on_log_backup_count_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle log backup count change."""
-        try:
-            backup_count = int(spin_button.get_value())
-            self.app_settings.set("logging.backup_count", backup_count)
-            self.logger.trace(f"Log backup count changed to: {backup_count}")
-        except Exception as e:
-            self.logger.error(f"Error changing log backup count: {e}")
-
-    def on_disk_cache_size_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle disk cache size change."""
-        try:
-            cache_size = int(spin_button.get_value())
-            self.app_settings.set("performance.disk_cache_size_mb", cache_size)
-            self.logger.trace(f"Disk cache size changed to: {cache_size}MB")
-        except Exception as e:
-            self.logger.error(f"Error changing disk cache size: {e}")
-
-    def on_memory_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle memory limit change."""
-        try:
-            memory_limit = int(spin_button.get_value())
-            self.app_settings.set("performance.memory_limit_mb", memory_limit)
-            self.logger.trace(f"Memory limit changed to: {memory_limit}MB")
-        except Exception as e:
-            self.logger.error(f"Error changing memory limit: {e}")
-
-    def on_worker_threads_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle worker threads change."""
-        try:
-            threads = int(spin_button.get_value())
-            self.app_settings.set("performance.worker_threads", threads)
-            self.logger.trace(f"Worker threads changed to: {threads}")
-        except Exception as e:
-            self.logger.error(f"Error changing worker threads: {e}")
-
-    def on_debug_mode_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle debug mode toggle."""
-        try:
-            self.app_settings.set("expert.debug_mode", state)
-            message = "Debug mode enabled" if state else "Debug mode disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing debug mode: {e}")
-
-    def on_experimental_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle experimental features toggle."""
-        try:
-            self.app_settings.set("expert.experimental_features", state)
-            message = "Experimental features enabled" if state else "Experimental features disabled"
-            self.show_notification(message, "warning" if state else "success")
-        except Exception as e:
-            self.logger.error(f"Error changing experimental features: {e}")
 
     def on_config_export_clicked(self, button: Gtk.Button) -> None:
         """Export configuration."""
@@ -742,9 +682,9 @@ class AdvancedTab(
         """Handle keyboard shortcuts toggle."""
         try:
             self.update_dependencies()
-            self.app_settings.set("expert.keyboard_shortcuts", state)
-            message = "Keyboard shortcuts enabled" if state else "Keyboard shortcuts disabled"
-            self.show_notification(message, "success")
+            # NOTE: Setting will be saved in batch via _collect_settings()
+            message = "Keyboard shortcuts will be " + ("enabled" if state else "disabled")
+            self.show_notification(message, "info")
         except Exception as e:
             self.logger.error(f"Error changing keyboard shortcuts: {e}")
 
@@ -804,27 +744,6 @@ class AdvancedTab(
 
         except Exception as e:
             self.logger.error(f"Error resetting Advanced tab to defaults: {e}")
-
-    def handle_model_changed(self, source, data_obj, _data_changed):
-        """Handle model change events."""
-        self.logger.trace(
-            "AdvancedTab model changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_attribute_changed(self, source, key, value):
-        """Handle attribute change events."""
-        self.logger.trace(
-            "AdvancedTab attribute changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_settings_changed(self, source, data_obj, _data_changed):
-        """Handle settings change events."""
-        self.logger.trace(
-            "AdvancedTab settings changed",
-            extra={"class_name": self.__class__.__name__},
-        )
 
     def _reconfigure_logger(self) -> None:
         """Reconfigure logger with current settings - applies changes immediately."""

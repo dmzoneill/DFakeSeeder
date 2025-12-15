@@ -140,6 +140,9 @@ msgstr "<b>Perfis Seeding</b>"
 msgid "<b>Settings Search</b>"
 msgstr "<b>Busca Configurações</b>"
 
+msgid "<b>Speed Distribution</b>"
+msgstr "<b>Distribuição de Velocidade</b>"
+
 msgid "<b>Speed Scheduler</b>"
 msgstr "<b>Agendador Velocidade</b>"
 
@@ -212,8 +215,17 @@ msgstr "Velocidade de download do perfil agressivo"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "Velocidade de envio do perfil agressivo (0 = ilimitado)"
 
+msgid "Algorithm-specific spread parameter (0-100)"
+msgstr "Parâmetro de dispersão específico do algoritmo (0-100)"
+
+msgid "Algorithm:"
+msgstr "Algoritmo:"
+
 msgid "All"
 msgstr "Todos"
+
+msgid "All settings reset to defaults"
+msgstr "Todas as configurações redefinidas para padrão"
 
 msgid "Alt download limit (KB/s):"
 msgstr "Limite download alt. (KB/s):"
@@ -247,6 +259,9 @@ msgstr "Intervalo anúncio (seg):"
 
 msgid "Announcement Interval:"
 msgstr "Intervalo de Anúncio:"
+
+msgid "Apply"
+msgstr "Aplicar"
 
 msgid "Arabic"
 msgstr "Árabe"
@@ -398,6 +413,9 @@ msgstr "Cliente"
 msgid "Client Switch Probability:"
 msgstr "Probabilidade de Mudança de Cliente:"
 
+msgid "Close without saving"
+msgstr "Fechar sem salvar"
+
 msgid "Color Scheme:"
 msgstr "Esquema de Cores:"
 
@@ -482,6 +500,9 @@ msgstr "Copiar URL do Tracker"
 msgid "Country"
 msgstr "País"
 
+msgid "Create notification overlay for this tab."
+msgstr "Criar sobreposição de notificação para esta aba."
+
 msgid "Created"
 msgstr "Criado"
 
@@ -506,8 +527,14 @@ msgstr "Agente Personalizado:"
 msgid "Custom Node ID:"
 msgstr "ID de Nó Personalizado:"
 
+msgid "Custom interval (minutes):"
+msgstr "Intervalo personalizado (minutos):"
+
 msgid "Custom node ID (40 hex characters)"
 msgstr "ID de nó personalizado (40 caracteres hex)"
+
+msgid "Custom redistribution interval in minutes"
+msgstr "Intervalo de redistribuição personalizado em minutos"
 
 msgid "Custom user agent string"
 msgstr "String user agent personalizada"
@@ -571,6 +598,9 @@ msgstr "Abaixo"
 
 msgid "Down Speed"
 msgstr "Vel. Download"
+
+msgid "Download Distribution"
+msgstr "Distribuição de Download"
 
 msgid "Download Limit"
 msgstr "Limite de Download"
@@ -959,6 +989,9 @@ msgstr "Frequência anúncios aos trackers (60-7200 segundos)"
 msgid "How often to check for new torrent files (in seconds)"
 msgstr "Frequência de verificação de novos arquivos torrent (em segundos)"
 
+msgid "How often to redistribute speeds"
+msgstr "Com que frequência redistribuir velocidades"
+
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "Frequência consulta tracker para estatísticas enxame"
 
@@ -1091,6 +1124,9 @@ msgstr "Nível Log:"
 msgid "Log to file"
 msgstr "Log para arquivo"
 
+msgid "Log-Normal"
+msgstr "Log-Normal"
+
 msgid "Low Priority"
 msgstr "Prioridade Baixa"
 
@@ -1169,6 +1205,9 @@ msgstr "Número máximo slots upload simultâneos"
 msgid "Maximum peers to include in a PEX message"
 msgstr "Máximo de peers para incluir em uma mensagem PEX"
 
+msgid "Maximum percentage of torrents to stop completely"
+msgstr "Porcentagem máxima de torrents para parar completamente"
+
 msgid "Maximum port for seeder connections"
 msgstr "Porta máxima conexões seeder"
 
@@ -1201,6 +1240,9 @@ msgstr "Minimizar para bandeja sistema"
 
 msgid "Minimum log level to record"
 msgstr "Nível log mínimo para gravar"
+
+msgid "Minimum percentage of torrents to stop completely"
+msgstr "Porcentagem mínima de torrents para parar completamente"
 
 msgid "Minimum port for seeder connections"
 msgstr "Porta mínima conexões seeder"
@@ -1262,6 +1304,12 @@ msgstr "Nenhum"
 msgid "Normal Priority"
 msgstr "Prioridade Normal"
 
+msgid "Note: Choosing \\\\"
+msgstr "Nota: Escolhendo \\\\"
+
+msgid "Note: Choosing \\\\\\\\"
+msgstr "Note: Choosing \\\\\\\\"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Número de peers para analisar padrões de comportamento"
 
@@ -1273,6 +1321,9 @@ msgstr "Número de peers sintéticos para gerar"
 
 msgid "OK"
 msgstr "OK"
+
+msgid "Off"
+msgstr "Desligado"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "Permitir apenas conexões de localhost (mais seguro)"
@@ -1297,6 +1348,9 @@ msgstr "Notificação de Sobreposição"
 
 msgid "PEX Interval:"
 msgstr "Intervalo PEX:"
+
+msgid "Pareto"
+msgstr "Pareto"
 
 msgid "Password for web interface login"
 msgstr "Senha para login interface web"
@@ -1393,6 +1447,9 @@ msgstr "Porta:"
 
 msgid "Portuguese"
 msgstr "Português"
+
+msgid "Power-Law"
+msgstr "Lei de Potência"
 
 msgid "Preference 1:"
 msgstr "Preferência 1:"
@@ -1535,6 +1592,9 @@ msgstr "Variações realistas"
 msgid "Received"
 msgstr "Recebido"
 
+msgid "Redistribution mode:"
+msgstr "Modo de redistribuição:"
+
 msgid "Relaxed"
 msgstr "Relaxado"
 
@@ -1598,6 +1658,9 @@ msgstr "Redefinir todas as configurações ainda não implementado"
 msgid "Reset all settings to default values"
 msgstr "Redefinir todas configurações para valores padrão"
 
+msgid "Reset current tab to default values"
+msgstr "Redefinir aba atual para valores padrão"
+
 msgid "Reset to Defaults"
 msgstr "Restaurar Padrões"
 
@@ -1639,6 +1702,12 @@ msgstr "Salvar"
 
 msgid "Save logs to file in addition to console"
 msgstr "Salvar logs em arquivo além do console"
+
+msgid "Save settings"
+msgstr "Salvar configurações"
+
+msgid "Save settings and close"
+msgstr "Salvar configurações e fechar"
 
 msgid "Scan interval:"
 msgstr "Intervalo de verificação:"
@@ -1763,6 +1832,9 @@ msgstr "Definir Limite de Upload"
 msgid "Set Upload Limit..."
 msgstr "Definir Limite de Upload..."
 
+msgid "Settings saved successfully"
+msgstr "Configurações salvas com sucesso"
+
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Configuração de atalhos ainda não implementada"
 
@@ -1796,8 +1868,17 @@ msgstr "Controle de Velocidade"
 msgid "Speed Limits"
 msgstr "Limites de Velocidade"
 
+msgid "Speed distribution algorithm for downloads"
+msgstr "Algoritmo de distribuição de velocidade para downloads"
+
+msgid "Speed distribution algorithm for uploads"
+msgstr "Algoritmo de distribuição de velocidade para uploads"
+
 msgid "Speed settings reset to defaults"
 msgstr "Configurações de velocidade redefinidas para padrões"
+
+msgid "Spread percentage:"
+msgstr "Porcentagem de dispersão:"
 
 msgid "Standard"
 msgstr "Padrão"
@@ -1837,6 +1918,12 @@ msgstr "Estado"
 
 msgid "Status change probability:"
 msgstr "Probabilidade mudança status:"
+
+msgid "Stopped max %:"
+msgstr "Parado máx %:"
+
+msgid "Stopped min %:"
+msgstr "Parado mín %:"
 
 msgid "Strict"
 msgstr "Rigoroso"
@@ -1886,8 +1973,14 @@ msgstr "Qui"
 msgid "Thursday"
 msgstr "Quinta-feira"
 
+msgid "Tick speed"
+msgstr "Velocidade de tick"
+
 msgid "Tier"
 msgstr "Nível"
+
+msgid "Time Interval"
+msgstr "Intervalo de tempo"
 
 msgid "Time-based patterns"
 msgstr "Padrões baseados no tempo"
@@ -2023,6 +2116,9 @@ msgstr "Vel. Envio"
 
 msgid "Update Tracker"
 msgstr "Atualizar Rastreador"
+
+msgid "Upload Distribution"
+msgstr "Distribuição de Upload"
 
 msgid "Upload Limit"
 msgstr "Limite de Upload"
@@ -2162,6 +2258,9 @@ msgstr "Bytes Baixados"
 msgid "bytes_uploaded"
 msgstr "Bytes Enviados"
 
+msgid "changed"
+msgstr "alterado"
+
 msgid "class_name"
 msgstr "Nome da Classe"
 
@@ -2202,7 +2301,7 @@ msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (Disponibilidade de Peças)"
 
 msgid "monitoring_tab"
-msgstr "monitoring_tab"
+msgstr "aba_monitoramento"
 
 msgid "name"
 msgstr "Nome"
@@ -2311,6 +2410,9 @@ msgstr "ut_pex (Troca de Peers)"
 
 msgid "µTorrent"
 msgstr "µTorrent"
+
+msgid "ℹ️"
+msgstr "ℹ️"
 
 msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
 msgstr "⚠️ Configurações avançadas - modificar com cuidado. Valores incorretos podem afetar desempenho ou estabilidade."

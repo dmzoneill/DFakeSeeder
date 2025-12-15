@@ -36,6 +36,27 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     - Proxy settings (type, server, port, authentication)
     """
 
+    # Auto-connect simple widgets with WIDGET_MAPPINGS
+    WIDGET_MAPPINGS = [
+        # UPnP setting
+        {
+            "id": "settings_upnp_enabled",
+            "name": "upnp_enabled",
+            "setting_key": "connection.upnp_enabled",
+            "type": bool,
+            "on_change": lambda self, value: self.show_notification(
+                f"UPnP {'enabled' if value else 'disabled'}", "success"
+            ),
+        },
+        # Proxy server
+        {
+            "id": "settings_proxy_server",
+            "name": "proxy_server",
+            "setting_key": "proxy.server",
+            "type": str,
+        },
+    ]
+
     @property
     def tab_name(self) -> str:
         """Return the name of this tab."""
@@ -59,6 +80,8 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 "proxy_server": self.builder.get_object("settings_proxy_server"),
                 "proxy_port": self.builder.get_object("settings_proxy_port"),
                 "proxy_auth_enabled": self.builder.get_object("settings_proxy_auth_enabled"),
+                # Section container (hardcoded to sensitive=False in XML)
+                "proxy_auth_box": self.builder.get_object("settings_proxy_auth_box"),
                 "proxy_username": self.builder.get_object("settings_proxy_username"),
                 "proxy_password": self.builder.get_object("settings_proxy_password"),
             }
@@ -66,6 +89,8 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
     def _connect_signals(self) -> None:
         """Connect signal handlers for Connection tab."""
+        # Simple widgets (upnp_enabled, proxy_server) are now auto-connected via WIDGET_MAPPINGS
+
         # Listening port
         listening_port = self.get_widget("listening_port")
         if listening_port:
@@ -81,11 +106,6 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 random_port_button,
                 random_port_button.connect("clicked", self.on_random_port_clicked),
             )
-
-        # UPnP toggle
-        upnp_enabled = self.get_widget("upnp_enabled")
-        if upnp_enabled:
-            self.track_signal(upnp_enabled, upnp_enabled.connect("state-set", self.on_upnp_changed))
 
         # Connection limits
         max_global = self.get_widget("max_global_connections")
@@ -121,14 +141,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         if proxy_auth:
             self.track_signal(proxy_auth, proxy_auth.connect("state-set", self.on_proxy_auth_changed))
 
-        # Proxy server/port (for validation)
-        proxy_server = self.get_widget("proxy_server")
-        if proxy_server:
-            self.track_signal(
-                proxy_server,
-                proxy_server.connect("changed", self.on_proxy_server_changed),
-            )
-
+        # Proxy port (has validation)
         proxy_port = self.get_widget("proxy_port")
         if proxy_port:
             self.track_signal(
@@ -169,6 +182,9 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Proxy settings
             proxy_settings = getattr(self.app_settings, "proxy", {})
             self._load_proxy_settings(proxy_settings)
+
+            # Update widget dependencies after loading (enable/disable based on loaded state)
+            self.update_dependencies()
 
             self.logger.info("Connection tab settings loaded")
 
@@ -242,6 +258,8 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             proxy_auth = self.get_widget("proxy_auth_enabled")
             auth_enabled = proxy_enabled and proxy_auth and proxy_auth.get_active()
 
+            # IMPORTANT: Enable the parent box first (hardcoded to sensitive=False in XML)
+            self.update_widget_sensitivity("proxy_auth_box", auth_enabled)
             self.update_widget_sensitivity("proxy_username", auth_enabled)
             self.update_widget_sensitivity("proxy_password", auth_enabled)
 
@@ -251,18 +269,37 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _collect_settings(self) -> Dict[str, Any]:
         """Collect current settings from Connection tab widgets.
 
-        NOTE: All settings are saved in real-time by signal handlers.
-        This method returns empty dict to avoid duplicate saves.
+        Returns:
+            Dictionary of setting_key -> value pairs for all widgets
         """
-        # All settings already saved by signal handlers:
-        # - connection.listening_port
-        # - connection.upnp_enabled
-        # - connection.max_global_connections
-        # - connection.max_per_torrent
-        # - connection.max_upload_slots
-        # - proxy.type, proxy.server, proxy.port
-        # - proxy.auth_enabled, proxy.username, proxy.password
-        return {}
+        # Collect from WIDGET_MAPPINGS (upnp_enabled, proxy_server)
+        settings = self._collect_mapped_settings()
+
+        # Collect listening port
+        listening_port = self.get_widget("listening_port")
+        if listening_port:
+            settings["connection.listening_port"] = int(listening_port.get_value())
+
+        # Collect connection limits
+        max_global = self.get_widget("max_global_connections")
+        if max_global:
+            settings["connection.max_connections"] = int(max_global.get_value())
+
+        max_per_torrent = self.get_widget("max_per_torrent")
+        if max_per_torrent:
+            settings["connection.max_connections_per_torrent"] = int(max_per_torrent.get_value())
+
+        max_upload_slots = self.get_widget("max_upload_slots")
+        if max_upload_slots:
+            settings["connection.max_upload_slots"] = int(max_upload_slots.get_value())
+
+        # Collect proxy settings using existing helper method
+        proxy_settings = self._collect_proxy_settings()
+        for key, value in proxy_settings.items():
+            settings[f"proxy.{key}"] = value
+
+        self.logger.trace(f"Collected {len(settings)} settings from Connection tab")
+        return settings
 
     def _collect_proxy_settings(self) -> Dict[str, Any]:
         """Collect proxy settings from widgets."""
@@ -327,6 +364,8 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     # Signal handlers
     def on_listening_port_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle listening port change."""
+        if self._loading_settings:
+            return
         try:
             port = int(spin_button.get_value())
             validation_errors = self.validate_port(port)
@@ -334,7 +373,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if validation_errors:
                 self.show_notification(validation_errors["port"], "error")
             else:
-                self.app_settings.set("connection.listening_port", port)
+                # NOTE: Setting will be saved in batch via _collect_settings()
                 self.logger.trace(f"Listening port changed to: {port}")
 
         except Exception as e:
@@ -358,45 +397,37 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         except Exception as e:
             self.logger.error(f"Error generating random port: {e}")
 
-    def on_upnp_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle UPnP setting change."""
-        try:
-            self.app_settings.set("connection.upnp_enabled", state)
-            message = "UPnP enabled" if state else "UPnP disabled"
-            self.show_notification(message, "success")
-
-        except Exception as e:
-            self.logger.error(f"Error changing UPnP setting: {e}")
-
     def on_connection_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle connection limit changes."""
+        if self._loading_settings:
+            return
         try:
-            # Get widget name to determine which setting to save
+            # Get widget name to determine which setting changed
             widget_name = Gtk.Buildable.get_buildable_id(spin_button)
             value = int(spin_button.get_value())
 
+            # NOTE: Settings will be saved in batch via _collect_settings()
             if widget_name == "settings_max_global_connections":
-                self.app_settings.set("connection.max_connections", value)
                 self.logger.trace(f"Max global connections changed to: {value}")
             elif widget_name == "settings_max_per_torrent":
-                self.app_settings.set("connection.max_connections_per_torrent", value)
                 self.logger.trace(f"Max connections per torrent changed to: {value}")
             elif widget_name == "settings_max_upload_slots":
-                self.app_settings.set("connection.max_upload_slots", value)
                 self.logger.trace(f"Max upload slots changed to: {value}")
 
         except Exception as e:
-            self.logger.error(f"Error saving connection limit: {e}", exc_info=True)
+            self.logger.error(f"Error handling connection limit change: {e}", exc_info=True)
 
     def on_proxy_type_changed(self, dropdown: Gtk.DropDown, param) -> None:
         """Handle proxy type change."""
+        if self._loading_settings:
+            return
         try:
             self.update_dependencies()
 
             type_mapping = {0: "none", 1: "http", 2: "socks4", 3: "socks5"}
             proxy_type = type_mapping.get(dropdown.get_selected(), "none")
 
-            self.app_settings.set("proxy.type", proxy_type)
+            # NOTE: Setting will be saved in batch via _collect_settings()
             self.logger.trace(f"Proxy type changed to: {proxy_type}")
 
         except Exception as e:
@@ -404,8 +435,10 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
     def on_proxy_auth_changed(self, switch: Gtk.Switch, state: bool) -> None:
         """Handle proxy authentication toggle."""
+        if self._loading_settings:
+            return
         try:
-            self.app_settings.set("proxy.auth_enabled", state)
+            # NOTE: Setting will be saved in batch via _collect_settings()
             # Update proxy username/password field sensitivity
             self._update_proxy_auth_fields(state)
 
@@ -428,17 +461,10 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         except Exception as e:
             self.logger.error(f"Error updating proxy auth fields: {e}")
 
-    def on_proxy_server_changed(self, entry: Gtk.Entry) -> None:
-        """Handle proxy server change."""
-        try:
-            server = entry.get_text()
-            self.app_settings.set("proxy.server", server)
-
-        except Exception as e:
-            self.logger.error(f"Error changing proxy server: {e}")
-
     def on_proxy_port_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle proxy port change."""
+        if self._loading_settings:
+            return
         try:
             port = int(spin_button.get_value())
             validation_errors = self.validate_port(port)
@@ -446,7 +472,8 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if validation_errors:
                 self.show_notification(validation_errors["port"], "error")
             else:
-                self.app_settings.set("proxy.port", port)
+                # NOTE: Setting will be saved in batch via _collect_settings()
+                self.logger.trace(f"Proxy port changed to: {port}")
 
         except Exception as e:
             self.logger.error(f"Error changing proxy port: {e}")
@@ -489,27 +516,6 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
         except Exception as e:
             self.logger.error(f"Error resetting Connection tab to defaults: {e}")
-
-    def handle_model_changed(self, source, data_obj, _data_changed):
-        """Handle model change events."""
-        self.logger.trace(
-            "ConnectionTab model changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_attribute_changed(self, source, key, value):
-        """Handle attribute change events."""
-        self.logger.trace(
-            "ConnectionTab attribute changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_settings_changed(self, source, data_obj, _data_changed):
-        """Handle settings change events."""
-        self.logger.trace(
-            "ConnectionTab settings changed",
-            extra={"class_name": self.__class__.__name__},
-        )
 
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes."""

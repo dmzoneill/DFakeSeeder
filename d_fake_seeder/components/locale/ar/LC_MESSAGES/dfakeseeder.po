@@ -140,6 +140,9 @@ msgstr "<b>ملفات المشاركة</b>"
 msgid "<b>Settings Search</b>"
 msgstr "<b>البحث في الإعدادات</b>"
 
+msgid "<b>Speed Distribution</b>"
+msgstr "<b>توزيع السرعة</b>"
+
 msgid "<b>Speed Scheduler</b>"
 msgstr "<b>جدولة السرعة</b>"
 
@@ -212,8 +215,17 @@ msgstr "سرعة تنزيل الملف العدواني"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "سرعة رفع الملف العدواني (0 = غير محدود)"
 
+msgid "Algorithm-specific spread parameter (0-100)"
+msgstr "معامل الانتشار الخاص بالخوارزمية (0-100)"
+
+msgid "Algorithm:"
+msgstr "الخوارزمية:"
+
 msgid "All"
 msgstr "الكل"
+
+msgid "All settings reset to defaults"
+msgstr "إعادة تعيين جميع الإعدادات إلى الافتراضية"
 
 msgid "Alt download limit (KB/s):"
 msgstr "حد التنزيل البديل (كيلوبايت/ثانية):"
@@ -247,6 +259,9 @@ msgstr "فترة الإعلان (ثانية):"
 
 msgid "Announcement Interval:"
 msgstr "فترة الإعلان:"
+
+msgid "Apply"
+msgstr "تطبيق"
 
 msgid "Arabic"
 msgstr "العربية"
@@ -398,6 +413,9 @@ msgstr "العميل"
 msgid "Client Switch Probability:"
 msgstr "احتمالية تبديل العميل:"
 
+msgid "Close without saving"
+msgstr "إغلاق بدون حفظ"
+
 msgid "Color Scheme:"
 msgstr "نظام الألوان："
 
@@ -482,6 +500,9 @@ msgstr "نسخ رابط المتتبع"
 msgid "Country"
 msgstr "البلد"
 
+msgid "Create notification overlay for this tab."
+msgstr "إنشاء طبقة إشعارات لهذا التبويب."
+
 msgid "Created"
 msgstr "تم إنشاءه"
 
@@ -506,8 +527,14 @@ msgstr "وكيل مخصص:"
 msgid "Custom Node ID:"
 msgstr "معرف العقدة المخصص:"
 
+msgid "Custom interval (minutes):"
+msgstr "الفاصل المخصص (دقائق):"
+
 msgid "Custom node ID (40 hex characters)"
 msgstr "معرف عقدة مخصص (40 حرف سادس عشري)"
+
+msgid "Custom redistribution interval in minutes"
+msgstr "فاصل إعادة التوزيع المخصص بالدقائق"
 
 msgid "Custom user agent string"
 msgstr "نص وكيل المستخدم المخصص"
@@ -571,6 +598,9 @@ msgstr "أسفل"
 
 msgid "Down Speed"
 msgstr "سرعة التحميل"
+
+msgid "Download Distribution"
+msgstr "توزيع التنزيل"
 
 msgid "Download Limit"
 msgstr "حد التنزيل"
@@ -959,6 +989,9 @@ msgstr "كم مرة للإعلان للمتتبعات (60-7200 ثانية)"
 msgid "How often to check for new torrent files (in seconds)"
 msgstr "عدد مرات التحقق من ملفات التورنت الجديدة (بالثواني)"
 
+msgid "How often to redistribute speeds"
+msgstr "عدد مرات إعادة توزيع السرعات"
+
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "كم مرة لاستخراج إحصائيات السرب من المتتبع"
 
@@ -1091,6 +1124,9 @@ msgstr "مستوى السجل:"
 msgid "Log to file"
 msgstr "تسجيل في ملف"
 
+msgid "Log-Normal"
+msgstr "لوغاريتمي طبيعي"
+
 msgid "Low Priority"
 msgstr "أولوية منخفضة"
 
@@ -1169,6 +1205,9 @@ msgstr "الحد الأقصى لعدد فتحات الرفع المتزامنة"
 msgid "Maximum peers to include in a PEX message"
 msgstr "الحد الأقصى للأقران لتضمينهم في رسالة PEX"
 
+msgid "Maximum percentage of torrents to stop completely"
+msgstr "النسبة المئوية القصوى للتورنتات المتوقفة تمامًا"
+
 msgid "Maximum port for seeder connections"
 msgstr "الحد الأقصى للمنفذ لاتصالات المشارك"
 
@@ -1201,6 +1240,9 @@ msgstr "تصغير إلى شريط النظام"
 
 msgid "Minimum log level to record"
 msgstr "الحد الأدنى لمستوى السجل للتسجيل"
+
+msgid "Minimum percentage of torrents to stop completely"
+msgstr "النسبة المئوية الدنيا للتورنتات المتوقفة تمامًا"
 
 msgid "Minimum port for seeder connections"
 msgstr "الحد الأدنى للمنفذ لاتصالات المشارك"
@@ -1262,6 +1304,12 @@ msgstr "لا شيء"
 msgid "Normal Priority"
 msgstr "أولوية عادية"
 
+msgid "Note: Choosing \\\\"
+msgstr "ملاحظة: اختيار \\\\"
+
+msgid "Note: Choosing \\\\\\\\"
+msgstr "Note: Choosing \\\\\\\\"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "عدد الأقران للتحليل لأنماط السلوك"
 
@@ -1273,6 +1321,9 @@ msgstr "عدد الأقران الاصطناعيين لإنشائهم"
 
 msgid "OK"
 msgstr "موافق"
+
+msgid "Off"
+msgstr "إيقاف"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "السماح بالاتصالات من المضيف المحلي فقط (أكثر أماناً)"
@@ -1297,6 +1348,9 @@ msgstr "إشعار تراكبي"
 
 msgid "PEX Interval:"
 msgstr "فترة PEX:"
+
+msgid "Pareto"
+msgstr "باريتو"
 
 msgid "Password for web interface login"
 msgstr "كلمة المرور لتسجيل دخول واجهة الويب"
@@ -1393,6 +1447,9 @@ msgstr "المنفذ:"
 
 msgid "Portuguese"
 msgstr "البرتغالية"
+
+msgid "Power-Law"
+msgstr "قانون القوة"
 
 msgid "Preference 1:"
 msgstr "التفضيل 1:"
@@ -1535,6 +1592,9 @@ msgstr "تنوعات واقعية"
 msgid "Received"
 msgstr "تم الاستلام"
 
+msgid "Redistribution mode:"
+msgstr "وضع إعادة التوزيع:"
+
 msgid "Relaxed"
 msgstr "مرن"
 
@@ -1598,6 +1658,9 @@ msgstr "إعادة تعيين جميع الإعدادات غير مُطبَّق�
 msgid "Reset all settings to default values"
 msgstr "إعادة تعيين جميع الإعدادات للقيم الافتراضية"
 
+msgid "Reset current tab to default values"
+msgstr "إعادة تعيين علامة التبويب الحالية إلى القيم الافتراضية"
+
 msgid "Reset to Defaults"
 msgstr "إعادة تعيين للافتراضية"
 
@@ -1639,6 +1702,12 @@ msgstr "حفظ"
 
 msgid "Save logs to file in addition to console"
 msgstr "حفظ السجلات في ملف بالإضافة لوحة التحكم"
+
+msgid "Save settings"
+msgstr "حفظ الإعدادات"
+
+msgid "Save settings and close"
+msgstr "حفظ الإعدادات والإغلاق"
 
 msgid "Scan interval:"
 msgstr "فترة المسح:"
@@ -1763,6 +1832,9 @@ msgstr "تعيين حد الرفع"
 msgid "Set Upload Limit..."
 msgstr "تعيين حد الرفع..."
 
+msgid "Settings saved successfully"
+msgstr "تم حفظ الإعدادات بنجاح"
+
 msgid "Shortcuts configuration not yet implemented"
 msgstr "تكوين الاختصارات غير مُطبَّق بعد"
 
@@ -1796,8 +1868,17 @@ msgstr "التحكم في السرعة"
 msgid "Speed Limits"
 msgstr "حدود السرعة"
 
+msgid "Speed distribution algorithm for downloads"
+msgstr "خوارزمية توزيع السرعة للتنزيلات"
+
+msgid "Speed distribution algorithm for uploads"
+msgstr "خوارزمية توزيع السرعة للرفع"
+
 msgid "Speed settings reset to defaults"
 msgstr "إعادة تعيين إعدادات السرعة للافتراضية"
+
+msgid "Spread percentage:"
+msgstr "نسبة الانتشار:"
 
 msgid "Standard"
 msgstr "قياسي"
@@ -1837,6 +1918,12 @@ msgstr "الحالة"
 
 msgid "Status change probability:"
 msgstr "احتمالية تغيير الحالة:"
+
+msgid "Stopped max %:"
+msgstr "الحد الأقصى للتوقف %:"
+
+msgid "Stopped min %:"
+msgstr "الحد الأدنى للتوقف %:"
 
 msgid "Strict"
 msgstr "صارم"
@@ -1886,8 +1973,14 @@ msgstr "خميس"
 msgid "Thursday"
 msgstr "الخميس"
 
+msgid "Tick speed"
+msgstr "سرعة التكة"
+
 msgid "Tier"
 msgstr "المستوى"
+
+msgid "Time Interval"
+msgstr "الفاصل الزمني"
 
 msgid "Time-based patterns"
 msgstr "الأنماط المبنية على الوقت"
@@ -2023,6 +2116,9 @@ msgstr "سرعة الرفع"
 
 msgid "Update Tracker"
 msgstr "تحديث المتتبع"
+
+msgid "Upload Distribution"
+msgstr "توزيع الرفع"
 
 msgid "Upload Limit"
 msgstr "حد الرفع"
@@ -2162,6 +2258,9 @@ msgstr "بايتات تم تنزيلها"
 msgid "bytes_uploaded"
 msgstr "بايتات تم رفعها"
 
+msgid "changed"
+msgstr "تم التغيير"
+
 msgid "class_name"
 msgstr "اسم_الفئة"
 
@@ -2202,7 +2301,7 @@ msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (توفر القطع)"
 
 msgid "monitoring_tab"
-msgstr "monitoring_tab"
+msgstr "علامة_التبويب_المراقبة"
 
 msgid "name"
 msgstr "الاسم"
@@ -2311,6 +2410,9 @@ msgstr "ut_pex (تبادل الأقران)"
 
 msgid "µTorrent"
 msgstr "µTorrent"
+
+msgid "ℹ️"
+msgstr "ℹ️"
 
 msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
 msgstr "⚠️ إعدادات متقدمة - عدل بحذر. القيم غير الصحيحة قد تؤثر على الأداء أو الاستقرار."

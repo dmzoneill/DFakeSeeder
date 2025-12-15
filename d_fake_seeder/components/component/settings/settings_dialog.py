@@ -101,10 +101,18 @@ class SettingsDialog:
         # Store model reference for lazy initialization later
         self._deferred_model = self.model
 
+        # Track whether settings have been modified (dirty flag)
+        self._settings_dirty = False
+
         # Connect window signals
         logger.trace("About to connect window signals", "SettingsDialog")
         self._connect_window_signals()
         logger.trace("Window signals connected", "SettingsDialog")
+
+        # Connect button signals
+        logger.trace("About to connect button signals", "SettingsDialog")
+        self._connect_button_signals()
+        logger.trace("Button signals connected", "SettingsDialog")
         # Setup global keyboard shortcuts
         logger.trace("About to setup global shortcuts", "SettingsDialog")
         self._setup_global_shortcuts()
@@ -210,6 +218,29 @@ class SettingsDialog:
                 self.notebook.connect("switch-page", self.on_page_switched)
         except Exception as e:
             logger.error(f"Error connecting window signals: {e}")
+
+    def _connect_button_signals(self) -> None:
+        """Connect action button signals."""
+        try:
+            # Get button widgets
+            cancel_button = self.builder.get_object("settings_cancel_button")
+            apply_button = self.builder.get_object("settings_apply_button")
+            ok_button = self.builder.get_object("settings_ok_button")
+            reset_button = self.builder.get_object("settings_reset_button")
+
+            # Connect signals
+            if cancel_button:
+                cancel_button.connect("clicked", self.on_cancel_clicked)
+            if apply_button:
+                apply_button.connect("clicked", self.on_apply_clicked)
+            if ok_button:
+                ok_button.connect("clicked", self.on_ok_clicked)
+            if reset_button:
+                reset_button.connect("clicked", self.on_reset_clicked)
+
+            logger.trace("Action button signals connected", "SettingsDialog")
+        except Exception as e:
+            logger.error(f"Error connecting button signals: {e}")
 
     def on_window_shown(self, window) -> None:
         """Handle window shown event - perform deferred initialization."""
@@ -492,12 +523,51 @@ class SettingsDialog:
 
     # Signal handlers
     def on_window_close(self, window) -> bool:
-        """Handle window close request."""
+        """Handle window close request (X button or Alt+F4)."""
         try:
-            # Skip validation on close - just save and close
-            logger.trace("Settings window close requested")
-            self.save_all_settings()
+            logger.trace("Settings window close requested via window controls")
 
+            # Check if there are unsaved changes
+            if self._settings_dirty:
+                # Show confirmation dialog for unsaved changes
+                from gi.repository import GLib
+
+                def _show_unsaved_dialog():
+                    dialog = Gtk.AlertDialog()
+                    dialog.set_message("Unsaved Changes")
+                    dialog.set_detail("You have unsaved changes. What would you like to do?")
+                    dialog.set_buttons(["Cancel", "Discard Changes", "Save"])
+                    dialog.set_cancel_button(0)
+                    dialog.set_default_button(2)
+
+                    def on_response(dialog, result):
+                        try:
+                            response = dialog.choose_finish(result)
+                            if response == 2:  # Save
+                                self.save_all_settings()
+                                self._cleanup_and_close()
+                            elif response == 1:  # Discard
+                                self._cleanup_and_close()
+                            # else: Cancel - do nothing, dialog stays open
+                        except Exception as e:
+                            logger.error(f"Error handling unsaved changes dialog: {e}")
+
+                    dialog.choose(self.window, None, on_response)
+                    return False
+
+                GLib.idle_add(_show_unsaved_dialog)
+                return True  # Prevent immediate close
+            else:
+                # No unsaved changes - just close
+                self._cleanup_and_close()
+                return False  # Allow default close behavior
+        except Exception as e:
+            logger.error(f"Error handling window close: {e}")
+            return False  # Allow close even if there was an error
+
+    def _cleanup_and_close(self) -> None:
+        """Clean up resources and close the dialog."""
+        try:
             # Clean up all tabs to prevent memory leaks
             logger.trace(f"Cleaning up {len(self.tabs)} settings tabs")
             for tab in self.tabs:
@@ -507,11 +577,13 @@ class SettingsDialog:
                     except Exception as e:
                         logger.error(f"Error cleaning up tab: {e}")
 
+            # Reset dirty flag
+            self._settings_dirty = False
+
             self.hide()
-            return False  # Allow default close behavior
+            logger.trace("Settings dialog closed and cleaned up")
         except Exception as e:
-            logger.error(f"Error handling window close: {e}")
-            return False  # Allow close even if there was an error
+            logger.error(f"Error during cleanup and close: {e}")
 
     def on_page_switched(self, notebook: Gtk.Notebook, page: Gtk.Widget, page_num: int) -> None:
         """Handle notebook page switch."""
@@ -525,6 +597,117 @@ class SettingsDialog:
                 tab.update_dependencies()
         except Exception as e:
             logger.error(f"Error handling page switch: {e}")
+
+    # Button signal handlers
+    def on_cancel_clicked(self, button) -> None:
+        """Handle Cancel button click - close without saving."""
+        try:
+            logger.trace("Cancel button clicked")
+            # Reload all settings to discard changes
+            self.reload_all_tab_settings()
+            # Reset dirty flag
+            self._settings_dirty = False
+            # Close the dialog
+            self._cleanup_and_close()
+        except Exception as e:
+            logger.error(f"Error handling cancel button: {e}")
+
+    def on_apply_clicked(self, button) -> None:
+        """Handle Apply button click - save but keep dialog open."""
+        try:
+            logger.trace("Apply button clicked")
+            # Validate settings first
+            validation_errors = self.validate_all_settings()
+            if validation_errors:
+                self._show_validation_errors(validation_errors)
+                return
+
+            # Save all settings
+            self.save_all_settings()
+            # Reset dirty flag
+            self._settings_dirty = False
+            logger.info("Settings applied successfully")
+
+            # Show brief confirmation
+            self._show_notification("Settings saved successfully")
+        except Exception as e:
+            logger.error(f"Error handling apply button: {e}")
+
+    def on_ok_clicked(self, button) -> None:
+        """Handle OK button click - save and close."""
+        try:
+            logger.trace("OK button clicked")
+            # Validate settings first
+            validation_errors = self.validate_all_settings()
+            if validation_errors:
+                self._show_validation_errors(validation_errors)
+                return
+
+            # Save all settings
+            self.save_all_settings()
+            # Reset dirty flag
+            self._settings_dirty = False
+            # Close the dialog
+            self._cleanup_and_close()
+            logger.info("Settings saved and dialog closed")
+        except Exception as e:
+            logger.error(f"Error handling OK button: {e}")
+
+    def on_reset_clicked(self, button) -> None:
+        """Handle Reset button click - reset current tab to defaults."""
+        try:
+            logger.trace("Reset button clicked")
+            # Reset the current tab
+            self.reset_current_tab()
+            # Mark settings as modified
+            self._settings_dirty = True
+            logger.info("Current tab reset to defaults")
+        except Exception as e:
+            logger.error(f"Error handling reset button: {e}")
+
+    # Helper methods
+    def _show_validation_errors(self, validation_errors: Dict[str, Dict[str, str]]) -> None:
+        """Show validation error dialog."""
+        try:
+            # Build error message
+            error_message = "Please fix the following errors:\n\n"
+            for tab_name, errors in validation_errors.items():
+                error_message += f"{tab_name}:\n"
+                for field, error in errors.items():
+                    error_message += f"  • {error}\n"
+                error_message += "\n"
+
+            # Show error dialog
+            dialog = Gtk.AlertDialog()
+            dialog.set_message("Validation Errors")
+            dialog.set_detail(error_message.strip())
+            dialog.set_buttons(["OK"])
+            dialog.set_default_button(0)
+
+            def on_response(dialog, result):
+                try:
+                    dialog.choose_finish(result)
+                except Exception as e:
+                    logger.error(f"Error handling validation dialog response: {e}")
+
+            dialog.choose(self.window, None, on_response)
+        except Exception as e:
+            logger.error(f"Error showing validation errors: {e}")
+
+    def _show_notification(self, message: str) -> None:
+        """Show a brief notification message."""
+        try:
+            # For now, just log the message
+            # In the future, this could show a toast notification
+            logger.info(message)
+            # TODO: Implement toast notification UI
+        except Exception as e:
+            logger.error(f"Error showing notification: {e}")
+
+    def mark_dirty(self) -> None:
+        """Mark settings as modified (dirty)."""
+        self._settings_dirty = True
+        logger.trace("Settings marked as dirty")
 
     # Utility methods for external access
     def get_current_tab(self) -> Any:

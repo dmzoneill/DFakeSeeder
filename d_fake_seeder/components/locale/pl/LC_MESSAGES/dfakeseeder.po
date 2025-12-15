@@ -140,6 +140,9 @@ msgstr "<b>Profile seedowania</b>"
 msgid "<b>Settings Search</b>"
 msgstr "<b>Wyszukiwanie ustawień</b>"
 
+msgid "<b>Speed Distribution</b>"
+msgstr "<b>Dystrybucja Prędkości</b>"
+
 msgid "<b>Speed Scheduler</b>"
 msgstr "<b>Harmonogram prędkości</b>"
 
@@ -212,8 +215,17 @@ msgstr "Prędkość pobierania profilu agresywnego"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "Prędkość wysyłania profilu agresywnego (0 = nieograniczona)"
 
+msgid "Algorithm-specific spread parameter (0-100)"
+msgstr "Specyficzny dla algorytmu parametr rozproszenia (0-100)"
+
+msgid "Algorithm:"
+msgstr "Algorytm:"
+
 msgid "All"
 msgstr "Wszystkie"
+
+msgid "All settings reset to defaults"
+msgstr "Wszystkie ustawienia przywrócone do wartości domyślnych"
 
 msgid "Alt download limit (KB/s):"
 msgstr "Alt. limit pobierania (KB/s):"
@@ -248,11 +260,14 @@ msgstr "Interwał ogłoszeń (sek):"
 msgid "Announcement Interval:"
 msgstr "Interwał ogłoszeń:"
 
+msgid "Apply"
+msgstr "Zastosuj"
+
 msgid "Arabic"
 msgstr "Arabski"
 
 msgid "Auto (Follow System)"
-msgstr "Auto (Follow System)"
+msgstr "Auto (Podążaj za Systemem)"
 
 msgid "Auto Detect"
 msgstr "Automatyczne Wykrywanie"
@@ -381,7 +396,7 @@ msgid "Choose light or dark color scheme"
 msgstr "Wybierz jasny lub ciemny schemat kolorów"
 
 msgid "Choose the UI theme style"
-msgstr "Choose the UI theme style"
+msgstr "Wybierz styl motywu UI"
 
 msgid "Choose the application theme"
 msgstr "Wybierz motyw aplikacji"
@@ -397,6 +412,9 @@ msgstr "Klient"
 
 msgid "Client Switch Probability:"
 msgstr "Prawdopodobieństwo przełączenia klienta:"
+
+msgid "Close without saving"
+msgstr "Zamknij bez zapisywania"
 
 msgid "Color Scheme:"
 msgstr "Schemat kolorów："
@@ -482,6 +500,9 @@ msgstr "Kopiuj URL Trackera"
 msgid "Country"
 msgstr "Kraj"
 
+msgid "Create notification overlay for this tab."
+msgstr "Utwórz nakładkę powiadomień dla tej karty."
+
 msgid "Created"
 msgstr "Utworzony"
 
@@ -506,8 +527,14 @@ msgstr "Niestandardowy agent:"
 msgid "Custom Node ID:"
 msgstr "Niestandardowy ID węzła:"
 
+msgid "Custom interval (minutes):"
+msgstr "Niestandardowy interwał (minuty):"
+
 msgid "Custom node ID (40 hex characters)"
 msgstr "Niestandardowy ID węzła (40 znaków hex)"
+
+msgid "Custom redistribution interval in minutes"
+msgstr "Niestandardowy interwał redystrybucji w minutach"
 
 msgid "Custom user agent string"
 msgstr "Niestandardowy ciąg agenta użytkownika"
@@ -571,6 +598,9 @@ msgstr "W dół"
 
 msgid "Down Speed"
 msgstr "Prędkość pobierania"
+
+msgid "Download Distribution"
+msgstr "Dystrybucja Pobierania"
 
 msgid "Download Limit"
 msgstr "Limit Pobierania"
@@ -915,7 +945,7 @@ msgid "German"
 msgstr "Niemiecki"
 
 msgid "Get the main widget for this tab."
-msgstr "Get the main widget for this tab."
+msgstr "Pobierz główny widget dla tej karty."
 
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
@@ -958,6 +988,9 @@ msgstr "Jak często ogłaszać się trackerom (60-7200 sekund)"
 
 msgid "How often to check for new torrent files (in seconds)"
 msgstr "Jak często sprawdzać nowe pliki torrent (w sekundach)"
+
+msgid "How often to redistribute speeds"
+msgstr "Jak często redystrybuować prędkości"
 
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "Jak często pobierać statystyki roju z trackera"
@@ -1091,6 +1124,9 @@ msgstr "Poziom logowania:"
 msgid "Log to file"
 msgstr "Loguj do pliku"
 
+msgid "Log-Normal"
+msgstr "Log-normalny"
+
 msgid "Low Priority"
 msgstr "Niski Priorytet"
 
@@ -1169,6 +1205,9 @@ msgstr "Maksymalna liczba jednoczesnych slotów wysyłania"
 msgid "Maximum peers to include in a PEX message"
 msgstr "Maksimum peerów do uwzględnienia w wiadomości PEX"
 
+msgid "Maximum percentage of torrents to stop completely"
+msgstr "Maksymalny procent torrentów do całkowitego zatrzymania"
+
 msgid "Maximum port for seeder connections"
 msgstr "Maksymalny port dla połączeń seedera"
 
@@ -1201,6 +1240,9 @@ msgstr "Minimalizuj do zasobnika systemowego"
 
 msgid "Minimum log level to record"
 msgstr "Minimalny poziom logowania do nagrywania"
+
+msgid "Minimum percentage of torrents to stop completely"
+msgstr "Minimalny procent torrentów do całkowitego zatrzymania"
 
 msgid "Minimum port for seeder connections"
 msgstr "Minimalny port dla połączeń seedera"
@@ -1262,6 +1304,12 @@ msgstr "Brak"
 msgid "Normal Priority"
 msgstr "Normalny Priorytet"
 
+msgid "Note: Choosing \\\\"
+msgstr "Uwaga: Wybierając \\\\"
+
+msgid "Note: Choosing \\\\\\\\"
+msgstr "Note: Choosing \\\\\\\\"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Liczba peerów do analizy wzorców zachowania"
 
@@ -1273,6 +1321,9 @@ msgstr "Liczba syntetycznych peerów do wygenerowania"
 
 msgid "OK"
 msgstr "OK"
+
+msgid "Off"
+msgstr "Wyłącz"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "Zezwalaj tylko na połączenia z localhost (bardziej bezpieczne)"
@@ -1297,6 +1348,9 @@ msgstr "Powiadomienie nakładkowe"
 
 msgid "PEX Interval:"
 msgstr "Interwał PEX:"
+
+msgid "Pareto"
+msgstr "Pareto"
 
 msgid "Password for web interface login"
 msgstr "Hasło do logowania interfejsu webowego"
@@ -1393,6 +1447,9 @@ msgstr "Numer portu:"
 
 msgid "Portuguese"
 msgstr "Portugalski"
+
+msgid "Power-Law"
+msgstr "Prawo potęgowe"
 
 msgid "Preference 1:"
 msgstr "Preferencja 1:"
@@ -1535,6 +1592,9 @@ msgstr "Realistyczne wariacje"
 msgid "Received"
 msgstr "Odebrano"
 
+msgid "Redistribution mode:"
+msgstr "Tryb redystrybucji:"
+
 msgid "Relaxed"
 msgstr "Luźny"
 
@@ -1598,6 +1658,9 @@ msgstr "Reset wszystkich ustawień jeszcze nie zaimplementowany"
 msgid "Reset all settings to default values"
 msgstr "Resetuj wszystkie ustawienia do wartości domyślnych"
 
+msgid "Reset current tab to default values"
+msgstr "Zresetuj bieżącą kartę do wartości domyślnych"
+
 msgid "Reset to Defaults"
 msgstr "Resetuj do domyślnych"
 
@@ -1639,6 +1702,12 @@ msgstr "Zapisz"
 
 msgid "Save logs to file in addition to console"
 msgstr "Zapisuj logi do pliku oprócz konsoli"
+
+msgid "Save settings"
+msgstr "Zapisz ustawienia"
+
+msgid "Save settings and close"
+msgstr "Zapisz ustawienia i zamknij"
 
 msgid "Scan interval:"
 msgstr "Interwał skanowania:"
@@ -1689,7 +1758,7 @@ msgid "Select Watch Folder"
 msgstr "Wybierz Folder Obserwowany"
 
 msgid "Select a torrent to configure its options"
-msgstr "Select a torrent to configure its options"
+msgstr "Wybierz torrent, aby skonfigurować jego opcje"
 
 msgid "Select a torrent to view its details"
 msgstr "Select a torrent to view its details"
@@ -1698,7 +1767,7 @@ msgid "Select a torrent to view its files"
 msgstr "Select a torrent to view its files"
 
 msgid "Select a torrent to view its peers"
-msgstr "Select a torrent to view its peers"
+msgstr "Wybierz torrent, aby zobaczyć jego peery"
 
 msgid "Select a torrent to view its status information"
 msgstr "Select a torrent to view its status information"
@@ -1763,6 +1832,9 @@ msgstr "Ustaw Limit Wysyłania"
 msgid "Set Upload Limit..."
 msgstr "Ustaw Limit Wysyłania..."
 
+msgid "Settings saved successfully"
+msgstr "Ustawienia zapisane pomyślnie"
+
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Konfiguracja skrótów jeszcze nie zaimplementowana"
 
@@ -1796,8 +1868,17 @@ msgstr "Kontrola Prędkości"
 msgid "Speed Limits"
 msgstr "Limity Prędkości"
 
+msgid "Speed distribution algorithm for downloads"
+msgstr "Algorytm dystrybucji prędkości dla pobierania"
+
+msgid "Speed distribution algorithm for uploads"
+msgstr "Algorytm dystrybucji prędkości dla wysyłania"
+
 msgid "Speed settings reset to defaults"
 msgstr "Ustawienia prędkości przywrócone do domyślnych"
+
+msgid "Spread percentage:"
+msgstr "Procent rozproszenia:"
 
 msgid "Standard"
 msgstr "Standardowy"
@@ -1837,6 +1918,12 @@ msgstr "Status"
 
 msgid "Status change probability:"
 msgstr "Prawdopodobieństwo zmiany statusu:"
+
+msgid "Stopped max %:"
+msgstr "Zatrzymano maks %:"
+
+msgid "Stopped min %:"
+msgstr "Zatrzymano min %:"
 
 msgid "Strict"
 msgstr "Ścisły"
@@ -1886,8 +1973,14 @@ msgstr "Czw"
 msgid "Thursday"
 msgstr "Czwartek"
 
+msgid "Tick speed"
+msgstr "Prędkość ticka"
+
 msgid "Tier"
 msgstr "Warstwa"
+
+msgid "Time Interval"
+msgstr "Przedział czasu"
 
 msgid "Time-based patterns"
 msgstr "Wzorce czasowe"
@@ -2023,6 +2116,9 @@ msgstr "Prędkość wysyłania"
 
 msgid "Update Tracker"
 msgstr "Aktualizuj tracker"
+
+msgid "Upload Distribution"
+msgstr "Dystrybucja Wysyłania"
 
 msgid "Upload Limit"
 msgstr "Limit Wysyłania"
@@ -2162,6 +2258,9 @@ msgstr "bajty pobrane"
 msgid "bytes_uploaded"
 msgstr "bajty wysłane"
 
+msgid "changed"
+msgstr "zmieniono"
+
 msgid "class_name"
 msgstr "nazwa_klasy"
 
@@ -2202,7 +2301,7 @@ msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (dostępność fragmentów)"
 
 msgid "monitoring_tab"
-msgstr "monitoring_tab"
+msgstr "karta_monitorowania"
 
 msgid "name"
 msgstr "Nazwa"
@@ -2311,6 +2410,9 @@ msgstr "ut_pex (wymiana peerów)"
 
 msgid "µTorrent"
 msgstr "µTorrent"
+
+msgid "ℹ️"
+msgstr "ℹ️"
 
 msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
 msgstr "⚠️ Ustawienia zaawansowane - modyfikuj ostrożnie. Nieprawidłowe wartości mogą wpłynąć na wydajność lub stabilność."

@@ -140,6 +140,9 @@ msgstr "<b>सीडिंग प्रोफ़ाइल</b>"
 msgid "<b>Settings Search</b>"
 msgstr "<b>सेटिंग्स खोज</b>"
 
+msgid "<b>Speed Distribution</b>"
+msgstr "<b>गति वितरण</b>"
+
 msgid "<b>Speed Scheduler</b>"
 msgstr "<b>गति शेड्यूलर</b>"
 
@@ -212,8 +215,17 @@ msgstr "आक्रामक प्रोफाइल डाउनलोड ग
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "आक्रामक प्रोफाइल अपलोड गति (0 = असीमित)"
 
+msgid "Algorithm-specific spread parameter (0-100)"
+msgstr "एल्गोरिदम-विशिष्ट प्रसार पैरामीटर (0-100)"
+
+msgid "Algorithm:"
+msgstr "एल्गोरिदम:"
+
 msgid "All"
 msgstr "सभी"
+
+msgid "All settings reset to defaults"
+msgstr "सभी सेटिंग्स डिफ़ॉल्ट पर रीसेट हो गईं"
 
 msgid "Alt download limit (KB/s):"
 msgstr "वैकल्पिक डाउनलोड सीमा (KB/s):"
@@ -248,11 +260,14 @@ msgstr "घोषणा अंतराल (सेकंड):"
 msgid "Announcement Interval:"
 msgstr "घोषणा अंतराल:"
 
+msgid "Apply"
+msgstr "लागू करें"
+
 msgid "Arabic"
 msgstr "अरबी"
 
 msgid "Auto (Follow System)"
-msgstr "Auto (Follow System)"
+msgstr "स्वचालित (सिस्टम का अनुसरण करें)"
 
 msgid "Auto Detect"
 msgstr "स्वचालित पहचान"
@@ -381,7 +396,7 @@ msgid "Choose light or dark color scheme"
 msgstr "हल्का या गहरा रंग योजना चुनें"
 
 msgid "Choose the UI theme style"
-msgstr "Choose the UI theme style"
+msgstr "UI थीम शैली चुनें"
 
 msgid "Choose the application theme"
 msgstr "एप्लिकेशन थीम चुनें"
@@ -397,6 +412,9 @@ msgstr "क्लाइंट"
 
 msgid "Client Switch Probability:"
 msgstr "क्लाइंट स्विच संभावना:"
+
+msgid "Close without saving"
+msgstr "सहेजे बिना बंद करें"
 
 msgid "Color Scheme:"
 msgstr "रंग योजना："
@@ -482,6 +500,9 @@ msgstr "ट्रैकर URL कॉपी करें"
 msgid "Country"
 msgstr "देश"
 
+msgid "Create notification overlay for this tab."
+msgstr "इस टैब के लिए सूचना ओवरले बनाएं।"
+
 msgid "Created"
 msgstr "बनाया गया"
 
@@ -506,8 +527,14 @@ msgstr "कस्टम एजेंट:"
 msgid "Custom Node ID:"
 msgstr "कस्टम नोड ID:"
 
+msgid "Custom interval (minutes):"
+msgstr "कस्टम अंतराल (मिनट):"
+
 msgid "Custom node ID (40 hex characters)"
 msgstr "कस्टम नोड ID (40 हेक्स कैरेक्टर)"
+
+msgid "Custom redistribution interval in minutes"
+msgstr "मिनट में कस्टम पुनर्वितरण अंतराल"
 
 msgid "Custom user agent string"
 msgstr "कस्टम उपयोगकर्ता एजेंट स्ट्रिंग"
@@ -571,6 +598,9 @@ msgstr "नीचे"
 
 msgid "Down Speed"
 msgstr "डाउनलोड गति"
+
+msgid "Download Distribution"
+msgstr "डाउनलोड वितरण"
 
 msgid "Download Limit"
 msgstr "डाउनलोड सीमा"
@@ -915,7 +945,7 @@ msgid "German"
 msgstr "जर्मन"
 
 msgid "Get the main widget for this tab."
-msgstr "Get the main widget for this tab."
+msgstr "इस टैब के लिए मुख्य विजेट प्राप्त करें।"
 
 msgid "Github - D' Fake Seeder"
 msgstr "Github - D' Fake Seeder"
@@ -958,6 +988,9 @@ msgstr "ट्रैकर्स को कितनी बार घोषण�
 
 msgid "How often to check for new torrent files (in seconds)"
 msgstr "नई टोरेंट फ़ाइलों की जाँच कितनी बार करें (सेकंड में)"
+
+msgid "How often to redistribute speeds"
+msgstr "गति को कितनी बार पुनर्वितरित करें"
 
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "स्वार्म आंकड़ों के लिए ट्रैकर को कितनी बार स्क्रैप करें"
@@ -1091,6 +1124,9 @@ msgstr "लॉग स्तर:"
 msgid "Log to file"
 msgstr "फ़ाइल में लॉग करें"
 
+msgid "Log-Normal"
+msgstr "लॉग-नॉर्मल"
+
 msgid "Low Priority"
 msgstr "निम्न प्राथमिकता"
 
@@ -1169,6 +1205,9 @@ msgstr "समकालिक अपलोड स्लॉट की अधि�
 msgid "Maximum peers to include in a PEX message"
 msgstr "PEX मैसेज में शामिल करने के लिए अधिकतम पीयर्स"
 
+msgid "Maximum percentage of torrents to stop completely"
+msgstr "पूरी तरह से रोकने के लिए टोरेंट का अधिकतम प्रतिशत"
+
 msgid "Maximum port for seeder connections"
 msgstr "सीडर कनेक्शन के लिए अधिकतम पोर्ट"
 
@@ -1201,6 +1240,9 @@ msgstr "सिस्टम ट्रे में छोटा करें"
 
 msgid "Minimum log level to record"
 msgstr "रिकॉर्ड करने के लिए न्यूनतम लॉग स्तर"
+
+msgid "Minimum percentage of torrents to stop completely"
+msgstr "पूरी तरह से रोकने के लिए टोरेंट का न्यूनतम प्रतिशत"
 
 msgid "Minimum port for seeder connections"
 msgstr "सीडर कनेक्शन के लिए न्यूनतम पोर्ट"
@@ -1262,6 +1304,12 @@ msgstr "कोई नहीं"
 msgid "Normal Priority"
 msgstr "सामान्य प्राथमिकता"
 
+msgid "Note: Choosing \\\\"
+msgstr "नोट: चुनना \\\\"
+
+msgid "Note: Choosing \\\\\\\\"
+msgstr "Note: Choosing \\\\\\\\"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "व्यवहार पैटर्न के लिए विश्लेषण करने वाले पीयर्स की संख्या"
 
@@ -1273,6 +1321,9 @@ msgstr "जेनरेट करने के लिए सिंथेटि�
 
 msgid "OK"
 msgstr "ठीक है"
+
+msgid "Off"
+msgstr "बंद"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "केवल localhost से कनेक्शन की अनुमति दें (अधिक सुरक्षित)"
@@ -1297,6 +1348,9 @@ msgstr "ओवरले नोटिफिकेशन"
 
 msgid "PEX Interval:"
 msgstr "PEX अंतराल:"
+
+msgid "Pareto"
+msgstr "Pareto"
 
 msgid "Password for web interface login"
 msgstr "वेब इंटरफ़ेस लॉगिन के लिए पासवर्ड"
@@ -1393,6 +1447,9 @@ msgstr "पोर्ट:"
 
 msgid "Portuguese"
 msgstr "पुर्तगाली"
+
+msgid "Power-Law"
+msgstr "शक्ति-नियम"
 
 msgid "Preference 1:"
 msgstr "प्राथमिकता 1:"
@@ -1535,6 +1592,9 @@ msgstr "वास्तविक विविधताएं"
 msgid "Received"
 msgstr "प्राप्त"
 
+msgid "Redistribution mode:"
+msgstr "पुनर्वितरण मोड:"
+
 msgid "Relaxed"
 msgstr "शिथिल"
 
@@ -1598,6 +1658,9 @@ msgstr "सभी सेटिंग्स रीसेट अभी तक ल�
 msgid "Reset all settings to default values"
 msgstr "सभी सेटिंग्स को डिफ़ॉल्ट वैल्यू पर रीसेट करें"
 
+msgid "Reset current tab to default values"
+msgstr "वर्तमान टैब को डिफ़ॉल्ट मानों पर रीसेट करें"
+
 msgid "Reset to Defaults"
 msgstr "डिफ़ॉल्ट पर रीसेट करें"
 
@@ -1639,6 +1702,12 @@ msgstr "सहेजें"
 
 msgid "Save logs to file in addition to console"
 msgstr "कंसोल के अलावा फ़ाइल में लॉग सहेजें"
+
+msgid "Save settings"
+msgstr "सेटिंग्स सहेजें"
+
+msgid "Save settings and close"
+msgstr "सेटिंग्स सहेजें और बंद करें"
 
 msgid "Scan interval:"
 msgstr "स्कैन अंतराल:"
@@ -1689,7 +1758,7 @@ msgid "Select Watch Folder"
 msgstr "वॉच फ़ोल्डर चुनें"
 
 msgid "Select a torrent to configure its options"
-msgstr "Select a torrent to configure its options"
+msgstr "विकल्प कॉन्फ़िगर करने के लिए एक टॉरेंट चुनें"
 
 msgid "Select a torrent to view its details"
 msgstr "Select a torrent to view its details"
@@ -1698,7 +1767,7 @@ msgid "Select a torrent to view its files"
 msgstr "Select a torrent to view its files"
 
 msgid "Select a torrent to view its peers"
-msgstr "Select a torrent to view its peers"
+msgstr "पीयर देखने के लिए एक टॉरेंट चुनें"
 
 msgid "Select a torrent to view its status information"
 msgstr "Select a torrent to view its status information"
@@ -1763,6 +1832,9 @@ msgstr "अपलोड सीमा सेट करें"
 msgid "Set Upload Limit..."
 msgstr "अपलोड सीमा सेट करें..."
 
+msgid "Settings saved successfully"
+msgstr "सेटिंग्स सफलतापूर्वक सहेजी गई"
+
 msgid "Shortcuts configuration not yet implemented"
 msgstr "शॉर्टकट कॉन्फ़िगरेशन अभी तक लागू नहीं"
 
@@ -1796,8 +1868,17 @@ msgstr "गति नियंत्रण"
 msgid "Speed Limits"
 msgstr "गति सीमाएँ"
 
+msgid "Speed distribution algorithm for downloads"
+msgstr "डाउनलोड के लिए गति वितरण एल्गोरिदम"
+
+msgid "Speed distribution algorithm for uploads"
+msgstr "अपलोड के लिए गति वितरण एल्गोरिदम"
+
 msgid "Speed settings reset to defaults"
 msgstr "गति सेटिंग्स डिफ़ॉल्ट में रीसेट"
+
+msgid "Spread percentage:"
+msgstr "प्रसार प्रतिशत:"
 
 msgid "Standard"
 msgstr "मानक"
@@ -1837,6 +1918,12 @@ msgstr "स्थिति"
 
 msgid "Status change probability:"
 msgstr "स्थिति बदलने की संभावना:"
+
+msgid "Stopped max %:"
+msgstr "अधिकतम रोका गया %:"
+
+msgid "Stopped min %:"
+msgstr "न्यूनतम रोका गया %:"
 
 msgid "Strict"
 msgstr "सख्त"
@@ -1886,8 +1973,14 @@ msgstr "गुरु"
 msgid "Thursday"
 msgstr "गुरुवार"
 
+msgid "Tick speed"
+msgstr "टिक गति"
+
 msgid "Tier"
 msgstr "स्तर"
+
+msgid "Time Interval"
+msgstr "समय अंतराल"
 
 msgid "Time-based patterns"
 msgstr "समय आधारित पैटर्न"
@@ -2023,6 +2116,9 @@ msgstr "अपलोड गति"
 
 msgid "Update Tracker"
 msgstr "ट्रैकर अपडेट करें"
+
+msgid "Upload Distribution"
+msgstr "अपलोड वितरण"
 
 msgid "Upload Limit"
 msgstr "अपलोड सीमा"
@@ -2162,6 +2258,9 @@ msgstr "बाइट डाउनलोड"
 msgid "bytes_uploaded"
 msgstr "बाइट अपलोड"
 
+msgid "changed"
+msgstr "बदला गया"
+
 msgid "class_name"
 msgstr "क्लास_नाम"
 
@@ -2202,7 +2301,7 @@ msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (पीस उपलब्धता)"
 
 msgid "monitoring_tab"
-msgstr "monitoring_tab"
+msgstr "निगरानी_टैब"
 
 msgid "name"
 msgstr "नाम"
@@ -2311,6 +2410,9 @@ msgstr "ut_pex (पीयर एक्सचेंज)"
 
 msgid "µTorrent"
 msgstr "µTorrent"
+
+msgid "ℹ️"
+msgstr "ℹ️"
 
 msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
 msgstr "⚠️ उन्नत सेटिंग्स - सावधानी से संशोधित करें। गलत मूल्य प्रदर्शन या स्थिरता को प्रभावित कर सकते हैं।"

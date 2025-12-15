@@ -140,6 +140,9 @@ msgstr "<b>做种配置文件</b>"
 msgid "<b>Settings Search</b>"
 msgstr "<b>设置搜索</b>"
 
+msgid "<b>Speed Distribution</b>"
+msgstr "<b>速度分布</b>"
+
 msgid "<b>Speed Scheduler</b>"
 msgstr "<b>速度调度器</b>"
 
@@ -212,8 +215,17 @@ msgstr "激进配置文件下载速度"
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "激进配置文件上传速度（0 = 无限制）"
 
+msgid "Algorithm-specific spread parameter (0-100)"
+msgstr "算法特定的传播参数（0-100）"
+
+msgid "Algorithm:"
+msgstr "算法："
+
 msgid "All"
 msgstr "全部"
+
+msgid "All settings reset to defaults"
+msgstr "所有设置已重置为默认值"
 
 msgid "Alt download limit (KB/s):"
 msgstr "备用下载限制 (KB/s):"
@@ -247,6 +259,9 @@ msgstr "通告间隔 (秒):"
 
 msgid "Announcement Interval:"
 msgstr "公告间隔:"
+
+msgid "Apply"
+msgstr "应用"
 
 msgid "Arabic"
 msgstr "阿拉伯语"
@@ -398,6 +413,9 @@ msgstr "客户端"
 msgid "Client Switch Probability:"
 msgstr "客户端切换概率:"
 
+msgid "Close without saving"
+msgstr "关闭而不保存"
+
 msgid "Color Scheme:"
 msgstr "配色方案："
 
@@ -482,6 +500,9 @@ msgstr "复制 Tracker 地址"
 msgid "Country"
 msgstr "国家"
 
+msgid "Create notification overlay for this tab."
+msgstr "为此标签页创建通知覆盖层。"
+
 msgid "Created"
 msgstr "创建时间"
 
@@ -506,8 +527,14 @@ msgstr "自定义代理:"
 msgid "Custom Node ID:"
 msgstr "自定义节点 ID:"
 
+msgid "Custom interval (minutes):"
+msgstr "自定义间隔（分钟）："
+
 msgid "Custom node ID (40 hex characters)"
 msgstr "自定义节点 ID（40 个十六进制字符）"
+
+msgid "Custom redistribution interval in minutes"
+msgstr "自定义重新分配间隔（分钟）"
 
 msgid "Custom user agent string"
 msgstr "自定义用户代理字符串"
@@ -571,6 +598,9 @@ msgstr "下移"
 
 msgid "Down Speed"
 msgstr "下载速度"
+
+msgid "Download Distribution"
+msgstr "下载分布"
 
 msgid "Download Limit"
 msgstr "下载限制"
@@ -959,6 +989,9 @@ msgstr "向 Tracker 通告的频率 (60-7200 秒)"
 msgid "How often to check for new torrent files (in seconds)"
 msgstr "检查新种子文件的频率（秒）"
 
+msgid "How often to redistribute speeds"
+msgstr "重新分配速度的频率"
+
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "从 Tracker 获取群体统计信息的频率"
 
@@ -1091,6 +1124,9 @@ msgstr "日志级别:"
 msgid "Log to file"
 msgstr "记录到文件"
 
+msgid "Log-Normal"
+msgstr "对数正态"
+
 msgid "Low Priority"
 msgstr "低优先级"
 
@@ -1169,6 +1205,9 @@ msgstr "最大同时上传槽位数"
 msgid "Maximum peers to include in a PEX message"
 msgstr "PEX 消息中包含的最大节点数"
 
+msgid "Maximum percentage of torrents to stop completely"
+msgstr "完全停止种子的最大百分比"
+
 msgid "Maximum port for seeder connections"
 msgstr "做种连接的最大端口"
 
@@ -1201,6 +1240,9 @@ msgstr "最小化到系统托盘"
 
 msgid "Minimum log level to record"
 msgstr "记录的最低日志级别"
+
+msgid "Minimum percentage of torrents to stop completely"
+msgstr "完全停止种子的最小百分比"
 
 msgid "Minimum port for seeder connections"
 msgstr "做种连接的最小端口"
@@ -1262,6 +1304,12 @@ msgstr "无"
 msgid "Normal Priority"
 msgstr "普通优先级"
 
+msgid "Note: Choosing \\\\"
+msgstr "注意：选择 \\\\"
+
+msgid "Note: Choosing \\\\\\\\"
+msgstr "Note: Choosing \\\\\\\\"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "要分析行为模式的节点数量"
 
@@ -1273,6 +1321,9 @@ msgstr "要生成的合成节点数量"
 
 msgid "OK"
 msgstr "确定"
+
+msgid "Off"
+msgstr "关闭"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "仅允许来自本地主机的连接 (更安全)"
@@ -1297,6 +1348,9 @@ msgstr "覆盖通知"
 
 msgid "PEX Interval:"
 msgstr "PEX 间隔:"
+
+msgid "Pareto"
+msgstr "Pareto"
 
 msgid "Password for web interface login"
 msgstr "网页界面登录密码"
@@ -1393,6 +1447,9 @@ msgstr "端口："
 
 msgid "Portuguese"
 msgstr "葡萄牙语"
+
+msgid "Power-Law"
+msgstr "幂律"
 
 msgid "Preference 1:"
 msgstr "偏好 1:"
@@ -1535,6 +1592,9 @@ msgstr "真实变化"
 msgid "Received"
 msgstr "已接收"
 
+msgid "Redistribution mode:"
+msgstr "重新分配模式："
+
 msgid "Relaxed"
 msgstr "宽松"
 
@@ -1598,6 +1658,9 @@ msgstr "重置所有设置尚未实现"
 msgid "Reset all settings to default values"
 msgstr "将所有设置重置为默认值"
 
+msgid "Reset current tab to default values"
+msgstr "将当前选项卡重置为默认值"
+
 msgid "Reset to Defaults"
 msgstr "重置为默认值"
 
@@ -1639,6 +1702,12 @@ msgstr "保存"
 
 msgid "Save logs to file in addition to console"
 msgstr "除控制台外还将日志保存到文件"
+
+msgid "Save settings"
+msgstr "保存设置"
+
+msgid "Save settings and close"
+msgstr "保存设置并关闭"
 
 msgid "Scan interval:"
 msgstr "扫描间隔:"
@@ -1763,6 +1832,9 @@ msgstr "设置上传限制"
 msgid "Set Upload Limit..."
 msgstr "设置上传限制..."
 
+msgid "Settings saved successfully"
+msgstr "设置已成功保存"
+
 msgid "Shortcuts configuration not yet implemented"
 msgstr "快捷键配置尚未实现"
 
@@ -1796,8 +1868,17 @@ msgstr "速度控制"
 msgid "Speed Limits"
 msgstr "速度限制"
 
+msgid "Speed distribution algorithm for downloads"
+msgstr "下载速度分布算法"
+
+msgid "Speed distribution algorithm for uploads"
+msgstr "上传速度分布算法"
+
 msgid "Speed settings reset to defaults"
 msgstr "速度设置已重置为默认值"
+
+msgid "Spread percentage:"
+msgstr "传播百分比："
 
 msgid "Standard"
 msgstr "标准"
@@ -1837,6 +1918,12 @@ msgstr "状态"
 
 msgid "Status change probability:"
 msgstr "状态变化概率:"
+
+msgid "Stopped max %:"
+msgstr "停止最大 %："
+
+msgid "Stopped min %:"
+msgstr "停止最小 %："
 
 msgid "Strict"
 msgstr "严格"
@@ -1886,8 +1973,14 @@ msgstr "四"
 msgid "Thursday"
 msgstr "星期四"
 
+msgid "Tick speed"
+msgstr "刻度速度"
+
 msgid "Tier"
 msgstr "层级"
+
+msgid "Time Interval"
+msgstr "时间间隔"
 
 msgid "Time-based patterns"
 msgstr "基于时间的模式"
@@ -2023,6 +2116,9 @@ msgstr "上传速度"
 
 msgid "Update Tracker"
 msgstr "更新追踪器"
+
+msgid "Upload Distribution"
+msgstr "上传分布"
 
 msgid "Upload Limit"
 msgstr "上传限制"
@@ -2162,6 +2258,9 @@ msgstr "字节已下载"
 msgid "bytes_uploaded"
 msgstr "字节已上传"
 
+msgid "changed"
+msgstr "已更改"
+
 msgid "class_name"
 msgstr "类名"
 
@@ -2202,7 +2301,7 @@ msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave（片段可用性）"
 
 msgid "monitoring_tab"
-msgstr "monitoring_tab"
+msgstr "监控选项卡"
 
 msgid "name"
 msgstr "名称"
@@ -2311,6 +2410,9 @@ msgstr "ut_pex（节点交换）"
 
 msgid "µTorrent"
 msgstr "µTorrent"
+
+msgid "ℹ️"
+msgstr "ℹ️"
 
 msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
 msgstr "⚠️ 高级设置 - 请谨慎修改。错误的值可能影响性能或稳定性。"
