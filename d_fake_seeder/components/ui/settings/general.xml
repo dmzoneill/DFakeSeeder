@@ -475,7 +475,7 @@
 
                             <!-- Reset to defaults -->
                             <child>
-                                <object class="GtkButton" id="settings_reset_button">
+                                <object class="GtkButton" id="general_reset_button">
                                     <property name="label" translatable="yes">Reset to Defaults</property>
                                     <property name="tooltip-text" translatable="yes">Reset all settings to default values</property>
                                     <property name="css-classes">destructive-action</property>

@@ -47,6 +47,76 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
     COLOR_SCHEME_ITEMS = ["Auto (Follow System)", "Light", "Dark"]
     PROFILE_ITEMS = ["Conservative", "Balanced", "Aggressive", "Custom"]
 
+    # Auto-connect simple widgets with WIDGET_MAPPINGS
+    WIDGET_MAPPINGS = [
+        # Application startup behavior
+        {
+            "id": "settings_auto_start",
+            "name": "auto_start",
+            "setting_key": "auto_start",
+            "type": bool,
+        },
+        {
+            "id": "settings_start_minimized",
+            "name": "start_minimized",
+            "setting_key": "start_minimized",
+            "type": bool,
+        },
+        {
+            "id": "settings_minimize_to_tray",
+            "name": "minimize_to_tray",
+            "setting_key": "minimize_to_tray",
+            "type": bool,
+        },
+        {
+            "id": "settings_remember_window_size",
+            "name": "remember_window_size",
+            "setting_key": "remember_window_size",
+            "type": bool,
+        },
+        # Watch folder settings
+        {
+            "id": "settings_watch_folder_enabled",
+            "name": "watch_folder_enabled",
+            "setting_key": "watch_folder.enabled",
+            "type": bool,
+            "enables": [
+                "watch_folder_path",
+                "watch_folder_browse",
+                "watch_folder_scan_interval",
+                "watch_folder_auto_start",
+                "watch_folder_delete_added",
+            ],
+            "on_change": lambda self, value: self.show_notification(
+                f"Watch folder {'enabled' if value else 'disabled'}", "success"
+            ),
+        },
+        {
+            "id": "settings_watch_folder_path",
+            "name": "watch_folder_path",
+            "setting_key": "watch_folder.path",
+            "type": str,
+        },
+        {
+            "id": "settings_watch_folder_scan_interval",
+            "name": "watch_folder_scan_interval",
+            "setting_key": "watch_folder.scan_interval_seconds",
+            "type": int,
+        },
+        {
+            "id": "settings_watch_folder_auto_start",
+            "name": "watch_folder_auto_start",
+            "setting_key": "watch_folder.auto_start_torrents",
+            "type": bool,
+        },
+        {
+            "id": "settings_watch_folder_delete_added",
+            "name": "watch_folder_delete_added",
+            "setting_key": "watch_folder.delete_after_adding",
+            "type": bool,
+        },
+    ]
+
     def __init__(self, builder: Gtk.Builder, app_settings, app=None):
         """Initialize the General tab."""
         self.app = app
@@ -94,7 +164,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             # Configuration management buttons
             "export_button": self.builder.get_object("settings_export_button"),
             "import_button": self.builder.get_object("settings_import_button"),
-            "reset_button": self.builder.get_object("settings_reset_button"),
+            "reset_button": self.builder.get_object("general_reset_button"),
             # Watch folder widgets
             "watch_folder_enabled": self.builder.get_object("settings_watch_folder_enabled"),
             "watch_folder_path": self.builder.get_object("settings_watch_folder_path"),
@@ -112,33 +182,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
     def _connect_signals(self) -> None:
         """Connect signal handlers for General tab."""
-        # Auto-start toggle
-        auto_start = self.get_widget("auto_start")
-        if auto_start:
-            self.track_signal(auto_start, auto_start.connect("state-set", self.on_auto_start_changed))
-        # Start minimized toggle
-        start_minimized = self.get_widget("start_minimized")
-        if start_minimized:
-            self.track_signal(
-                start_minimized,
-                start_minimized.connect("state-set", self.on_start_minimized_changed),
-            )
-
-        # Minimize to tray toggle
-        minimize_to_tray = self.get_widget("minimize_to_tray")
-        if minimize_to_tray:
-            self.track_signal(
-                minimize_to_tray,
-                minimize_to_tray.connect("state-set", self.on_minimize_to_tray_changed),
-            )
-
-        # Remember window size toggle
-        remember_window_size = self.get_widget("remember_window_size")
-        if remember_window_size:
-            self.track_signal(
-                remember_window_size,
-                remember_window_size.connect("state-set", self.on_remember_window_size_changed),
-            )
+        # Simple widgets (auto_start, start_minimized, minimize_to_tray, remember_window_size,
+        # watch_folder_enabled, watch_folder_path, watch_folder_scan_interval,
+        # watch_folder_auto_start, watch_folder_delete_added) are now auto-connected via WIDGET_MAPPINGS
 
         # Configuration management buttons
         export_button = self.get_widget("export_button")
@@ -183,43 +229,15 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 profile_dropdown,
                 profile_dropdown.connect("notify::selected", self.on_seeding_profile_changed),
             )
-        # Watch folder widgets
-        watch_folder_enabled = self.get_widget("watch_folder_enabled")
-        if watch_folder_enabled:
-            self.track_signal(
-                watch_folder_enabled,
-                watch_folder_enabled.connect("state-set", self.on_watch_folder_enabled_changed),
-            )
-        watch_folder_path = self.get_widget("watch_folder_path")
-        if watch_folder_path:
-            self.track_signal(
-                watch_folder_path,
-                watch_folder_path.connect("changed", self.on_watch_folder_path_changed),
-            )
+
+        # Watch folder browse button (complex logic, keep manual)
         watch_folder_browse = self.get_widget("watch_folder_browse")
         if watch_folder_browse:
             self.track_signal(
                 watch_folder_browse,
                 watch_folder_browse.connect("clicked", self.on_watch_folder_browse_clicked),
             )
-        watch_folder_scan_interval = self.get_widget("watch_folder_scan_interval")
-        if watch_folder_scan_interval:
-            self.track_signal(
-                watch_folder_scan_interval,
-                watch_folder_scan_interval.connect("value-changed", self.on_watch_folder_scan_interval_changed),
-            )
-        watch_folder_auto_start = self.get_widget("watch_folder_auto_start")
-        if watch_folder_auto_start:
-            self.track_signal(
-                watch_folder_auto_start,
-                watch_folder_auto_start.connect("state-set", self.on_watch_folder_auto_start_changed),
-            )
-        watch_folder_delete_added = self.get_widget("watch_folder_delete_added")
-        if watch_folder_delete_added:
-            self.track_signal(
-                watch_folder_delete_added,
-                watch_folder_delete_added.connect("state-set", self.on_watch_folder_delete_added_changed),
-            )
+
         # Language dropdown - signal connection handled in _setup_language_dropdown()
         # to avoid dual connections and ensure proper disconnect/reconnect during population
 
@@ -305,63 +323,50 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
     def _collect_settings(self) -> Dict[str, Any]:
         """Collect current settings from General tab widgets.
 
-        NOTE: All settings are saved in real-time by signal handlers.
-        This method returns empty dict to avoid duplicate saves.
-        Signal handlers save to the correct nested paths that match load locations.
+        Returns:
+            Dictionary of setting_key -> value pairs for all widgets
         """
-        # All settings already saved by signal handlers:
-        # - auto_start -> app_settings.set("auto_start")
-        # - start_minimized -> app_settings.set("start_minimized")
-        # - theme_style -> app_settings.set("ui_settings.theme_style")
-        # - color_scheme -> app_settings.set("ui_settings.color_scheme")
-        # - seeding_profile -> via profile_manager.apply_profile()
-        # - watch_folder.* -> app_settings.set("watch_folder.*")
-        # - language -> app_settings.set("language")
-        return {}
+        # Collect from WIDGET_MAPPINGS (auto_start, start_minimized, minimize_to_tray,
+        # remember_window_size, watch_folder settings)
+        settings = self._collect_mapped_settings()
 
-    def on_auto_start_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle auto-start setting change."""
-        try:
-            self.app_settings.set("auto_start", state)
-            self.logger.trace(f"Auto-start changed to: {state}")
-            # Show notification
-            message = "Auto-start enabled" if state else "Auto-start disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing auto-start setting: {e}")
+        # Collect manual widgets not in WIDGET_MAPPINGS
 
-    def on_start_minimized_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle start minimized setting change."""
-        try:
-            self.app_settings.set("start_minimized", state)
-            self.logger.trace(f"Start minimized changed to: {state}")
-            # Show notification
-            message = "Start minimized enabled" if state else "Start minimized disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing start minimized setting: {e}")
+        # Theme style dropdown
+        theme_dropdown = self.get_widget("settings_theme")
+        if theme_dropdown:
+            theme_style_values = ["system", "classic", "modern"]
+            selected_index = theme_dropdown.get_selected()
+            if 0 <= selected_index < len(theme_style_values):
+                settings["ui_settings.theme_style"] = theme_style_values[selected_index]
 
-    def on_minimize_to_tray_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle minimize to tray setting change."""
-        try:
-            self.app_settings.set("minimize_to_tray", state)
-            self.logger.trace(f"Minimize to tray changed to: {state}")
-            # Show notification
-            message = "Minimize to tray enabled" if state else "Minimize to tray disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing minimize to tray setting: {e}")
+        # Color scheme dropdown
+        color_scheme_dropdown = self.get_widget("settings_color_scheme")
+        if color_scheme_dropdown:
+            color_scheme_values = ["auto", "light", "dark"]
+            selected_index = color_scheme_dropdown.get_selected()
+            if 0 <= selected_index < len(color_scheme_values):
+                settings["ui_settings.color_scheme"] = color_scheme_values[selected_index]
 
-    def on_remember_window_size_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle remember window size setting change."""
-        try:
-            self.app_settings.set("remember_window_size", state)
-            self.logger.trace(f"Remember window size changed to: {state}")
-            # Show notification
-            message = "Window size memory enabled" if state else "Window size memory disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing remember window size setting: {e}")
+        # Seeding profile - collect the selected profile name (don't apply it)
+        # NOTE: Profile is applied immediately when user changes dropdown via on_seeding_profile_changed()
+        # We only collect the setting value here for persistence
+        profile_dropdown = self.get_widget("settings_seeding_profile")
+        if profile_dropdown:
+            selected_index = profile_dropdown.get_selected()
+            profile_name = self.profile_manager.get_profile_from_dropdown_index(selected_index)
+            settings["seeding_profile"] = profile_name
+            logger.trace(f"Collected seeding profile: {profile_name}", "GeneralTab")
+
+        # Language dropdown
+        language_dropdown = self.get_widget("language_dropdown")
+        if language_dropdown and hasattr(self, "language_codes"):
+            selected_index = language_dropdown.get_selected()
+            if 0 <= selected_index < len(self.language_codes):
+                settings["language"] = self.language_codes[selected_index]
+
+        logger.trace(f"Collected {len(settings)} settings from General tab", "GeneralTab")
+        return settings
 
     def on_export_clicked(self, button: Gtk.Button) -> None:
         """Handle export settings button click."""
@@ -468,8 +473,6 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         """Handle reset to defaults button click."""
         try:
             # Show confirmation dialog
-            from gi.repository import Gio
-
             dialog = Gtk.AlertDialog()
             dialog.set_message("Reset to Defaults?")
             dialog.set_detail("This will reset ALL settings to their default values. This action cannot be undone.")
@@ -505,18 +508,17 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
     def on_theme_style_changed(self, dropdown: Gtk.DropDown, param) -> None:
         """Handle theme style setting change."""
+        if self._loading_settings:
+            return
         try:
             theme_style_values = ["system", "classic", "modern"]
             selected_index = dropdown.get_selected()
 
             if 0 <= selected_index < len(theme_style_values):
                 new_theme_style = theme_style_values[selected_index]
-                # Save to ui_settings.theme_style
-                self.app_settings.set("ui_settings.theme_style", new_theme_style)
+                # NOTE: Setting will be saved in batch via _collect_settings()
+                # when dialog closes or Apply is clicked
                 self.logger.trace(f"Theme style changed to: {new_theme_style}")
-
-                # Apply theme immediately by emitting a signal
-                # The view should listen to app_settings changes and apply themes accordingly
 
                 # Show notification
                 theme_style_names = {
@@ -524,25 +526,24 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                     "classic": "Deluge Theme",
                     "modern": "Modern Chunky",
                 }
-                message = f"Theme style changed to: {theme_style_names.get(new_theme_style, new_theme_style)}"
-                self.show_notification(message, "success")
+                message = f"Theme style will change to: {theme_style_names.get(new_theme_style, new_theme_style)}"
+                self.show_notification(message, "info")
         except Exception as e:
             self.logger.error(f"Error changing theme style setting: {e}")
 
     def on_color_scheme_changed(self, dropdown: Gtk.DropDown, param) -> None:
         """Handle color scheme setting change."""
+        if self._loading_settings:
+            return
         try:
             color_scheme_values = ["auto", "light", "dark"]
             selected_index = dropdown.get_selected()
 
             if 0 <= selected_index < len(color_scheme_values):
                 new_color_scheme = color_scheme_values[selected_index]
-                # Save to ui_settings.color_scheme
-                self.app_settings.set("ui_settings.color_scheme", new_color_scheme)
+                # NOTE: Setting will be saved in batch via _collect_settings()
+                # when dialog closes or Apply is clicked
                 self.logger.trace(f"Color scheme changed to: {new_color_scheme}")
-
-                # Apply color scheme immediately by emitting a signal
-                # The view should listen to app_settings changes and apply themes accordingly
 
                 # Show notification
                 color_scheme_names = {
@@ -550,13 +551,15 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                     "light": "Light",
                     "dark": "Dark",
                 }
-                message = f"Color scheme changed to: {color_scheme_names.get(new_color_scheme, new_color_scheme)}"
-                self.show_notification(message, "success")
+                message = f"Color scheme will change to: {color_scheme_names.get(new_color_scheme, new_color_scheme)}"
+                self.show_notification(message, "info")
         except Exception as e:
             self.logger.error(f"Error changing color scheme setting: {e}")
 
     def on_seeding_profile_changed(self, dropdown: Gtk.DropDown, param) -> None:
         """Handle seeding profile setting change."""
+        if self._loading_settings:
+            return
         try:
             selected_index = dropdown.get_selected()
             profile_name = self.profile_manager.get_profile_from_dropdown_index(selected_index)
@@ -611,27 +614,6 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         overlay = Gtk.Overlay()
         self._notification_overlay = overlay
         return overlay
-
-    def handle_model_changed(self, source, data_obj, _data_changed):
-        """Handle model change events."""
-        self.logger.trace(
-            "GeneralTab model changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_attribute_changed(self, source, key, value):
-        """Handle attribute change events."""
-        self.logger.trace(
-            "GeneralTab attribute changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_settings_changed(self, source, data_obj, _data_changed):
-        """Handle settings change events."""
-        self.logger.trace(
-            "GeneralTab settings changed",
-            extra={"class_name": self.__class__.__name__},
-        )
 
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes."""
@@ -796,6 +778,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
     def on_language_changed(self, dropdown, _param):
         """Handle language dropdown selection change."""
+        # Skip language changes during settings load
+        if self._loading_settings:
+            return
         logger.trace("===== on_language_changed() CALLED =====", "GeneralTab")
         logger.trace("Dropdown:", "GeneralTab")
         logger.trace("Param:", "GeneralTab")
@@ -953,43 +938,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         except Exception as e:
             self.logger.error(f"Error handling settings dialog translation: {e}", exc_info=True)
 
-    # REMOVED: on_model_language_changed() - settings dialog should not listen to model language changes
     # This was causing infinite loops. Settings dialog handles its own translation directly.
-
-    # Watch folder signal handlers
-    def on_watch_folder_enabled_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle watch folder enabled setting change."""
-        try:
-            self.app_settings.set("watch_folder.enabled", state)
-            self.logger.trace(f"Watch folder enabled changed to: {state}")
-
-            # Get current path to provide helpful feedback
-            watch_folder_config = getattr(self.app_settings, "watch_folder", {})
-            watch_path = watch_folder_config.get("path", "")
-
-            if state:
-                if watch_path:
-                    message = f"Watch folder enabled: monitoring {watch_path}"
-                else:
-                    message = "Watch folder enabled (set a path to start monitoring)"
-                    self.show_notification(message, "warning")
-                    return
-            else:
-                message = "Watch folder disabled"
-
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing watch folder enabled setting: {e}")
-            self.show_notification("Error enabling watch folder", "error")
-
-    def on_watch_folder_path_changed(self, entry: Gtk.Entry) -> None:
-        """Handle watch folder path setting change."""
-        try:
-            path = entry.get_text()
-            self.app_settings.set("watch_folder.path", path)
-            self.logger.trace(f"Watch folder path changed to: {path}")
-        except Exception as e:
-            self.logger.error(f"Error changing watch folder path setting: {e}")
 
     def on_watch_folder_browse_clicked(self, button: Gtk.Button) -> None:
         """Handle browse button click to select watch folder."""
@@ -1018,7 +967,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                         folder_path = folder.get_path()
                         if path_entry:
                             path_entry.set_text(folder_path)
-                            self.app_settings.set("watch_folder.path", folder_path)
+                            # NOTE: Setting will be saved in batch via _collect_settings()
                             self.logger.trace(f"Watch folder path selected: {folder_path}")
                             self.show_notification(f"Watch folder set to: {folder_path}", "success")
                 except Exception as e:
@@ -1034,32 +983,3 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         except Exception as e:
             self.logger.error(f"Error showing folder chooser dialog: {e}")
             self.show_notification("Error opening folder browser", "error")
-
-    def on_watch_folder_scan_interval_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle watch folder scan interval setting change."""
-        try:
-            interval = int(spin_button.get_value())
-            self.app_settings.set("watch_folder.scan_interval_seconds", interval)
-            self.logger.trace(f"Watch folder scan interval changed to: {interval}")
-        except Exception as e:
-            self.logger.error(f"Error changing watch folder scan interval setting: {e}")
-
-    def on_watch_folder_auto_start_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle watch folder auto-start setting change."""
-        try:
-            self.app_settings.set("watch_folder.auto_start_torrents", state)
-            self.logger.trace(f"Watch folder auto-start changed to: {state}")
-            message = "Auto-start torrents enabled" if state else "Auto-start torrents disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing watch folder auto-start setting: {e}")
-
-    def on_watch_folder_delete_added_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle watch folder delete added torrents setting change."""
-        try:
-            self.app_settings.set("watch_folder.delete_added_torrents", state)
-            self.logger.trace(f"Watch folder delete added changed to: {state}")
-            message = "Delete added torrents enabled" if state else "Delete added torrents disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing watch folder delete added setting: {e}")

@@ -15,7 +15,7 @@ RPM_FILENAME := $(rpm_package_name)-$(package_version)
 # PHONY Targets Declaration
 # ============================================================================
 .PHONY: all clean clean-all clean-venv clean_settings clearlog
-.PHONY: lint icons ui-build ui-build-fast
+.PHONY: lint validate-handlers icons ui-build ui-build-fast
 .PHONY: run run-debug run-debug-venv run-debug-docker
 .PHONY: run-tray run-tray-debug run-with-tray run-debug-with-tray
 .PHONY: test test-all test-unit test-integration test-fast test-coverage test-parallel test-file test-seed test-venv test-docker
@@ -119,6 +119,18 @@ lint: clearlog
 	find . -iname "*.py" -exec isort --profile=black --df {} \;
 	@echo "✅ Linting complete!"
 
+# Validate settings handler coverage
+validate-handlers:
+	@echo "Validating settings handler coverage..."
+	@python3 tools/validate_settings_handlers.py
+	@echo "✅ Validation complete!"
+
+# Validate with debug output
+validate-handlers-debug:
+	@echo "Validating settings handler coverage (debug mode)..."
+	@DFS_DEBUG_HANDLERS=true python3 tools/validate_settings_handlers.py
+	@echo "✅ Validation complete!"
+
 # Run GitHub Super-Linter locally
 super-lint:
 	@echo "Running GitHub Super-Linter..."
@@ -197,6 +209,8 @@ ui-build: icons
 	@echo "Building settings UI..."
 	xmllint --xinclude d_fake_seeder/components/ui/settings.xml > d_fake_seeder/components/ui/generated/settings_generated.xml
 	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/settings_generated.xml
+	@echo "Validating settings UI..."
+	python3 tools/validate_settings_xml.py
 	@echo "✅ UI built successfully!"
 
 # Fast UI build without linting or icon installation (for CI/package builds)
@@ -759,7 +773,7 @@ pypi-check:
 
 translate-build:
 	@echo "Building translations using translation manager..."
-	python3 tools/translation_build_manager.py --build
+	python3 tools/translation_build_manager.py build
 	@echo "✅ Translations built!"
 
 translate-extract:

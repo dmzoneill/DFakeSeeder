@@ -478,14 +478,29 @@ class TranslationMixin:
             for item in translated_items:
                 string_list.append(item)
 
-            # Update dropdown model
-            dropdown.set_model(string_list)
+            # Block all signals on the dropdown during model/selection update
+            # This prevents change handlers from firing when we update translations
+            from gi.repository import GObject
 
-            # Restore previous selection if valid
-            if 0 <= current_selection < len(items):
-                dropdown.set_selected(current_selection)
+            blocked_count = GObject.signal_handlers_block_matched(
+                dropdown, GObject.SignalMatchType.DATA, 0, 0, None, None, None
+            )
 
-            self.logger.info(f"Successfully translated dropdown {dropdown_id} with {len(items)} items")
+            try:
+                # Update dropdown model
+                dropdown.set_model(string_list)
+
+                # Restore previous selection if valid
+                if 0 <= current_selection < len(items):
+                    dropdown.set_selected(current_selection)
+
+                self.logger.info(
+                    f"Successfully translated dropdown {dropdown_id} with {len(items)} items "
+                    f"(blocked {blocked_count} signals)"
+                )
+            finally:
+                # Always unblock signals, even if an error occurred
+                GObject.signal_handlers_unblock_matched(dropdown, GObject.SignalMatchType.DATA, 0, 0, None, None, None)
 
         except Exception as e:
             self.logger.error(f"Error translating dropdown {dropdown_id}: {e}", exc_info=True)

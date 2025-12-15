@@ -31,6 +31,36 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
     - Speed scheduler configuration
     """
 
+    # Auto-connect simple widgets with WIDGET_MAPPINGS
+    WIDGET_MAPPINGS = [
+        # Global speed limits
+        {
+            "id": "settings_upload_limit",
+            "name": "upload_limit",
+            "setting_key": "speed.upload_limit_kbps",
+            "type": int,
+        },
+        {
+            "id": "settings_download_limit",
+            "name": "download_limit",
+            "setting_key": "speed.download_limit_kbps",
+            "type": int,
+        },
+        # Alternative speed limits
+        {
+            "id": "settings_alt_upload_limit",
+            "name": "alt_upload_limit",
+            "setting_key": "speed.alt_upload_limit_kbps",
+            "type": int,
+        },
+        {
+            "id": "settings_alt_download_limit",
+            "name": "alt_download_limit",
+            "setting_key": "speed.alt_download_limit_kbps",
+            "type": int,
+        },
+    ]
+
     @property
     def tab_name(self) -> str:
         """Return the name of this tab."""
@@ -44,6 +74,9 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             ("upload_limit", "settings_upload_limit"),
             ("download_limit", "settings_download_limit"),
             ("enable_alt_speeds", "settings_enable_alt_speeds"),
+            # Section containers (hardcoded to sensitive=False in XML)
+            ("alt_speed_box", "settings_alt_speed_box"),
+            ("scheduler_box", "settings_scheduler_box"),
             ("alt_upload_limit", "settings_alt_upload_limit"),
             ("alt_download_limit", "settings_alt_download_limit"),
             ("enable_scheduler", "settings_enable_scheduler"),
@@ -79,41 +112,15 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
     def _connect_signals(self) -> None:
         """Connect signal handlers for Speed tab."""
-        # Global limits
-        upload_limit = self.get_widget("upload_limit")
-        if upload_limit:
-            self.track_signal(
-                upload_limit,
-                upload_limit.connect("value-changed", self.on_upload_limit_changed),
-            )
+        # Simple widgets (upload_limit, download_limit, alt_upload_limit, alt_download_limit)
+        # are now auto-connected via WIDGET_MAPPINGS
 
-        download_limit = self.get_widget("download_limit")
-        if download_limit:
-            self.track_signal(
-                download_limit,
-                download_limit.connect("value-changed", self.on_download_limit_changed),
-            )
-
-        # Alternative speeds
+        # Alternative speeds enable (has dependencies)
         enable_alt = self.get_widget("enable_alt_speeds")
         if enable_alt:
             self.track_signal(
                 enable_alt,
                 enable_alt.connect("state-set", self.on_enable_alt_speeds_changed),
-            )
-
-        alt_upload_limit = self.get_widget("alt_upload_limit")
-        if alt_upload_limit:
-            self.track_signal(
-                alt_upload_limit,
-                alt_upload_limit.connect("value-changed", self.on_alt_upload_limit_changed),
-            )
-
-        alt_download_limit = self.get_widget("alt_download_limit")
-        if alt_download_limit:
-            self.track_signal(
-                alt_download_limit,
-                alt_download_limit.connect("value-changed", self.on_alt_download_limit_changed),
             )
 
         # Scheduler
@@ -232,8 +239,6 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
                 download_dist_stopped_max,
                 download_dist_stopped_max.connect("value-changed", self.on_download_dist_stopped_max_changed),
             )
-
-    # Note: _disconnect_signals() is no longer needed - CleanupMixin handles it automatically
 
     def _load_settings(self) -> None:
         """Load current settings into Speed tab widgets."""
@@ -419,10 +424,12 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
     def _setup_dependencies(self) -> None:
         """Set up dependencies for Speed tab."""
         self._update_speed_dependencies()
+        self._update_distribution_dependencies()
 
     def _update_tab_dependencies(self) -> None:
         """Update Speed tab dependencies."""
         self._update_speed_dependencies()
+        self._update_distribution_dependencies()
 
     def _update_speed_dependencies(self) -> None:
         """Update speed-related widget dependencies."""
@@ -430,31 +437,107 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             # Enable/disable alternative speed controls
             enable_alt = self.get_widget("enable_alt_speeds")
             alt_enabled = enable_alt and enable_alt.get_active()
+            # IMPORTANT: Enable the parent box first (hardcoded to sensitive=False in XML)
+            self.update_widget_sensitivity("alt_speed_box", alt_enabled)
             self.update_widget_sensitivity("alt_upload_limit", alt_enabled)
             self.update_widget_sensitivity("alt_download_limit", alt_enabled)
+
             # Enable/disable scheduler controls
             enable_scheduler = self.get_widget("enable_scheduler")
             scheduler_enabled = enable_scheduler and enable_scheduler.get_active()
+            # IMPORTANT: Enable the parent box first (hardcoded to sensitive=False in XML)
+            self.update_widget_sensitivity("scheduler_box", scheduler_enabled)
             self.update_widget_sensitivity("scheduler_start_time", scheduler_enabled)
             self.update_widget_sensitivity("scheduler_end_time", scheduler_enabled)
             self.update_widget_sensitivity("scheduler_days", scheduler_enabled)
         except Exception as e:
             self.logger.error(f"Error updating speed dependencies: {e}")
 
-    def _collect_settings(self) -> Dict[str, Any]:
-        """Collect current settings from Speed tab widgets."""
-        settings = {}
+    def _update_distribution_dependencies(self) -> None:
+        """Update speed distribution widget dependencies."""
         try:
-            # Collect speed settings
-            settings["speed"] = self._collect_speed_settings()
-            settings["scheduler"] = self._collect_scheduler_settings()
-            # NOTE: Distribution settings are saved in real-time by signal handlers
-            # via property setters that write to the nested speed_distribution structure:
-            # - app_settings.upload_distribution_algorithm -> speed_distribution.upload.algorithm
-            # - app_settings.download_distribution_algorithm -> speed_distribution.download.algorithm
-            # No need to collect them here to avoid duplicate/conflicting storage
+            # Upload distribution - enable widgets only if algorithm is not "off"
+            upload_dist_algorithm = self.get_widget("upload_dist_algorithm")
+            if upload_dist_algorithm:
+                upload_algorithm_enabled = upload_dist_algorithm.get_selected() > 0  # 0 = "off"
+                self.update_widget_sensitivity("upload_dist_percentage", upload_algorithm_enabled)
+                self.update_widget_sensitivity("upload_dist_mode", upload_algorithm_enabled)
+                self.update_widget_sensitivity("upload_dist_stopped_min", upload_algorithm_enabled)
+                self.update_widget_sensitivity("upload_dist_stopped_max", upload_algorithm_enabled)
+
+                # Also handle interval box visibility based on mode (only if algorithm is enabled)
+                if upload_algorithm_enabled:
+                    upload_dist_mode = self.get_widget("upload_dist_mode")
+                    if upload_dist_mode:
+                        mode_index = upload_dist_mode.get_selected()
+                        is_custom = mode_index == 1  # custom mode
+                        interval_box = self.get_widget("upload_dist_interval_box")
+                        if interval_box:
+                            interval_box.set_visible(is_custom)
+                else:
+                    # Hide interval box when algorithm is off
+                    interval_box = self.get_widget("upload_dist_interval_box")
+                    if interval_box:
+                        interval_box.set_visible(False)
+
+            # Download distribution - enable widgets only if algorithm is not "off"
+            download_dist_algorithm = self.get_widget("download_dist_algorithm")
+            if download_dist_algorithm:
+                download_algorithm_enabled = download_dist_algorithm.get_selected() > 0  # 0 = "off"
+                self.update_widget_sensitivity("download_dist_percentage", download_algorithm_enabled)
+                self.update_widget_sensitivity("download_dist_mode", download_algorithm_enabled)
+                self.update_widget_sensitivity("download_dist_stopped_min", download_algorithm_enabled)
+                self.update_widget_sensitivity("download_dist_stopped_max", download_algorithm_enabled)
+
+                # Also handle interval box visibility based on mode (only if algorithm is enabled)
+                if download_algorithm_enabled:
+                    download_dist_mode = self.get_widget("download_dist_mode")
+                    if download_dist_mode:
+                        mode_index = download_dist_mode.get_selected()
+                        is_custom = mode_index == 1  # custom mode
+                        interval_box = self.get_widget("download_dist_interval_box")
+                        if interval_box:
+                            interval_box.set_visible(is_custom)
+                else:
+                    # Hide interval box when algorithm is off
+                    interval_box = self.get_widget("download_dist_interval_box")
+                    if interval_box:
+                        interval_box.set_visible(False)
+
+        except Exception as e:
+            self.logger.error(f"Error updating distribution dependencies: {e}")
+
+    def _collect_settings(self) -> Dict[str, Any]:
+        """Collect current settings from Speed tab widgets.
+
+        Returns:
+            Dictionary of setting_key -> value pairs for all widgets
+        """
+        # Collect from WIDGET_MAPPINGS
+        settings = self._collect_mapped_settings()
+
+        try:
+            # Collect speed settings with proper key prefixes
+            speed_settings = self._collect_speed_settings()
+            for key, value in speed_settings.items():
+                settings[f"speed.{key}"] = value
+
+            # Collect scheduler settings with proper key prefixes
+            scheduler_settings = self._collect_scheduler_settings()
+            for key, value in scheduler_settings.items():
+                settings[f"scheduler.{key}"] = value
+
+            # Collect distribution settings with proper key prefixes
+            distribution_settings = self._collect_distribution_settings()
+            for direction in ["upload", "download"]:
+                if direction in distribution_settings:
+                    for key, value in distribution_settings[direction].items():
+                        settings[f"speed_distribution.{direction}.{key}"] = value
+
         except Exception as e:
             self.logger.error(f"Error collecting Speed tab settings: {e}")
+
+        self.logger.trace(f"Collected {len(settings)} settings from Speed tab")
         return settings
 
     def _collect_speed_settings(self) -> Dict[str, Any]:
@@ -599,88 +682,60 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         return errors
 
     # Signal handlers
-    def on_upload_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle upload limit change."""
-        try:
-            limit = int(spin_button.get_value())
-            self.app_settings.set("speed.upload_limit_kbps", limit)
-            self.logger.trace(f"Upload limit changed to: {limit} kbps")
-        except Exception as e:
-            self.logger.error(f"Error changing upload limit: {e}")
-
-    def on_download_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle download limit change."""
-        try:
-            limit = int(spin_button.get_value())
-            self.app_settings.set("speed.download_limit_kbps", limit)
-            self.logger.trace(f"Download limit changed to: {limit} kbps")
-        except Exception as e:
-            self.logger.error(f"Error changing download limit: {e}")
 
     def on_enable_alt_speeds_changed(self, switch: Gtk.Switch, state: bool) -> None:
         """Handle alternative speeds toggle."""
+        if self._loading_settings:
+            return
         try:
             self.update_dependencies()
-            self.app_settings.set("speed.enable_alternative_speeds", state)
-            message = "Alternative speeds enabled" if state else "Alternative speeds disabled"
-            self.show_notification(message, "success")
+            # NOTE: Setting will be saved in batch via _collect_settings()
+            message = "Alternative speeds will be " + ("enabled" if state else "disabled")
+            self.show_notification(message, "info")
         except Exception as e:
             self.logger.error(f"Error changing alternative speeds setting: {e}")
 
-    def on_alt_upload_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle alternative upload limit change."""
-        try:
-            limit = int(spin_button.get_value())
-            self.app_settings.set("speed.alt_upload_limit_kbps", limit)
-            self.logger.trace(f"Alternative upload limit changed to: {limit} kbps")
-        except Exception as e:
-            self.logger.error(f"Error changing alternative upload limit: {e}")
-
-    def on_alt_download_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle alternative download limit change."""
-        try:
-            limit = int(spin_button.get_value())
-            self.app_settings.set("speed.alt_download_limit_kbps", limit)
-            self.logger.trace(f"Alternative download limit changed to: {limit} kbps")
-        except Exception as e:
-            self.logger.error(f"Error changing alternative download limit: {e}")
-
     def on_enable_scheduler_changed(self, switch: Gtk.Switch, state: bool) -> None:
         """Handle scheduler toggle."""
+        if self._loading_settings:
+            return
         try:
             self.update_dependencies()
-            self.app_settings.set("scheduler.enabled", state)
-            message = "Speed scheduler enabled" if state else "Speed scheduler disabled"
-            self.show_notification(message, "success")
+            # NOTE: Setting will be saved in batch via _collect_settings()
+            message = "Speed scheduler will be " + ("enabled" if state else "disabled")
+            self.show_notification(message, "info")
         except Exception as e:
             self.logger.error(f"Error changing scheduler setting: {e}")
 
     def on_scheduler_start_time_changed(self, widget, param) -> None:
         """Handle scheduler start time change."""
+        if self._loading_settings:
+            return
         try:
+            # NOTE: Setting will be saved in batch via _collect_settings()
             # Implementation depends on the specific time widget used
-            # This is a placeholder for the actual time handling
-            self.app_settings.set("scheduler.start_time", "22:00")
             self.logger.trace("Scheduler start time changed")
         except Exception as e:
             self.logger.error(f"Error changing scheduler start time: {e}")
 
     def on_scheduler_end_time_changed(self, widget, param) -> None:
         """Handle scheduler end time change."""
+        if self._loading_settings:
+            return
         try:
+            # NOTE: Setting will be saved in batch via _collect_settings()
             # Implementation depends on the specific time widget used
-            # This is a placeholder for the actual time handling
-            self.app_settings.set("scheduler.end_time", "06:00")
             self.logger.trace("Scheduler end time changed")
         except Exception as e:
             self.logger.error(f"Error changing scheduler end time: {e}")
 
     def on_scheduler_days_changed(self, widget) -> None:
         """Handle scheduler days change."""
+        if self._loading_settings:
+            return
         try:
+            # NOTE: Setting will be saved in batch via _collect_settings()
             # Implementation depends on the specific days selection widget used
-            # This is a placeholder for the actual days handling
-            self.app_settings.set("scheduler.days", [])
             self.logger.trace("Scheduler days changed")
         except Exception as e:
             self.logger.error(f"Error changing scheduler days: {e}")
@@ -714,27 +769,6 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         except Exception as e:
             self.logger.error(f"Error resetting Speed tab to defaults: {e}")
 
-    def handle_model_changed(self, source, data_obj, _data_changed):
-        """Handle model change events."""
-        self.logger.trace(
-            "SpeedTab model changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_attribute_changed(self, source, key, value):
-        """Handle attribute change events."""
-        self.logger.trace(
-            "SpeedTab attribute changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_settings_changed(self, source, data_obj, _data_changed):
-        """Handle settings change events."""
-        self.logger.trace(
-            "SpeedTab settings changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes."""
         self.logger.trace(
@@ -745,6 +779,8 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
     # Speed distribution signal handlers
     def on_upload_dist_algorithm_changed(self, dropdown, _param) -> None:
         """Handle upload distribution algorithm change."""
+        if self._loading_settings:
+            return
         try:
             selected = dropdown.get_selected()
             algorithm_names = ["off", "pareto", "power-law", "log-normal"]
@@ -752,11 +788,16 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
             self.app_settings.upload_distribution_algorithm = algorithm
             self.logger.trace(f"Upload distribution algorithm changed to: {algorithm}")
+
+            # Update dependencies to enable/disable distribution options
+            self.update_dependencies()
         except Exception as e:
             self.logger.error(f"Error changing upload distribution algorithm: {e}", exc_info=True)
 
     def on_upload_dist_percentage_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle upload distribution percentage change."""
+        if self._loading_settings:
+            return
         try:
             percentage = int(spin_button.get_value())
             self.app_settings.upload_distribution_spread_percentage = percentage
@@ -766,6 +807,8 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
     def on_upload_dist_mode_changed(self, dropdown, _param) -> None:
         """Handle upload distribution mode change."""
+        if self._loading_settings:
+            return
         try:
             selected = dropdown.get_selected()
             mode_names = ["tick", "custom", "announce"]
@@ -783,6 +826,8 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
     def on_upload_dist_interval_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle upload distribution interval change."""
+        if self._loading_settings:
+            return
         try:
             interval = int(spin_button.get_value())
             self.app_settings.upload_distribution_custom_interval_minutes = interval
@@ -792,17 +837,24 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
     def on_download_dist_algorithm_changed(self, dropdown, _param) -> None:
         """Handle download distribution algorithm change."""
+        if self._loading_settings:
+            return
         try:
             selected = dropdown.get_selected()
             algorithm_names = ["off", "pareto", "power-law", "log-normal"]
             algorithm = algorithm_names[selected] if selected < len(algorithm_names) else "off"
             self.app_settings.download_distribution_algorithm = algorithm
             self.logger.trace(f"Download distribution algorithm changed to: {algorithm}")
+
+            # Update dependencies to enable/disable distribution options
+            self.update_dependencies()
         except Exception as e:
             self.logger.error(f"Error changing download distribution algorithm: {e}")
 
     def on_download_dist_percentage_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle download distribution percentage change."""
+        if self._loading_settings:
+            return
         try:
             percentage = int(spin_button.get_value())
             self.app_settings.download_distribution_spread_percentage = percentage
@@ -812,6 +864,8 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
     def on_download_dist_mode_changed(self, dropdown, _param) -> None:
         """Handle download distribution mode change."""
+        if self._loading_settings:
+            return
         try:
             selected = dropdown.get_selected()
             mode_names = ["tick", "custom", "announce"]
@@ -829,6 +883,8 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
     def on_download_dist_interval_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle download distribution interval change."""
+        if self._loading_settings:
+            return
         try:
             interval = int(spin_button.get_value())
             self.app_settings.download_distribution_custom_interval_minutes = interval
@@ -838,6 +894,8 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
     def on_upload_dist_stopped_min_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle upload distribution stopped min percentage change."""
+        if self._loading_settings:
+            return
         try:
             percentage = int(spin_button.get_value())
             self.app_settings.upload_distribution_stopped_min_percentage = percentage
@@ -847,6 +905,8 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
     def on_upload_dist_stopped_max_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle upload distribution stopped max percentage change."""
+        if self._loading_settings:
+            return
         try:
             percentage = int(spin_button.get_value())
             self.app_settings.upload_distribution_stopped_max_percentage = percentage
@@ -856,6 +916,8 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
     def on_download_dist_stopped_min_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle download distribution stopped min percentage change."""
+        if self._loading_settings:
+            return
         try:
             percentage = int(spin_button.get_value())
             self.app_settings.download_distribution_stopped_min_percentage = percentage
@@ -865,6 +927,8 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
     def on_download_dist_stopped_max_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle download distribution stopped max percentage change."""
+        if self._loading_settings:
+            return
         try:
             percentage = int(spin_button.get_value())
             self.app_settings.download_distribution_stopped_max_percentage = percentage

@@ -31,6 +31,107 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     - BitTorrent-specific behavior
     """
 
+    # Auto-connect simple widgets with WIDGET_MAPPINGS
+    WIDGET_MAPPINGS = [
+        # Protocol features
+        {
+            "id": "settings_enable_dht",
+            "name": "enable_dht",
+            "setting_key": "bittorrent.enable_dht",
+            "type": bool,
+            "on_change": lambda self, value: self.show_notification(
+                f"DHT {'enabled' if value else 'disabled'}", "success"
+            ),
+        },
+        {
+            "id": "settings_enable_pex",
+            "name": "enable_pex",
+            "setting_key": "bittorrent.enable_pex",
+            "type": bool,
+            "on_change": lambda self, value: self.show_notification(
+                f"PEX {'enabled' if value else 'disabled'}", "success"
+            ),
+        },
+        {
+            "id": "settings_enable_lsd",
+            "name": "enable_lsd",
+            "setting_key": "bittorrent.enable_lsd",
+            "type": bool,
+            "on_change": lambda self, value: self.show_notification(
+                f"LSD {'enabled' if value else 'disabled'}", "success"
+            ),
+        },
+        {
+            "id": "settings_enable_utp",
+            "name": "enable_utp",
+            "setting_key": "bittorrent.enable_utp",
+            "type": bool,
+            "on_change": lambda self, value: self.show_notification(
+                f"uTP {'enabled' if value else 'disabled'}", "success"
+            ),
+        },
+        # Custom user agent
+        {
+            "id": "settings_custom_user_agent",
+            "name": "custom_user_agent",
+            "setting_key": "bittorrent.user_agent",
+            "type": str,
+        },
+        # Announce intervals
+        {
+            "id": "settings_announce_interval",
+            "name": "announce_interval",
+            "setting_key": "bittorrent.announce_interval_seconds",
+            "type": int,
+        },
+        {
+            "id": "settings_min_announce_interval",
+            "name": "min_announce_interval",
+            "setting_key": "bittorrent.min_announce_interval_seconds",
+            "type": int,
+        },
+        # Peer settings
+        {
+            "id": "settings_max_peers_global",
+            "name": "max_peers_global",
+            "setting_key": "bittorrent.max_peers_global",
+            "type": int,
+        },
+        {
+            "id": "settings_max_peers_torrent",
+            "name": "max_peers_torrent",
+            "setting_key": "bittorrent.max_peers_per_torrent",
+            "type": int,
+        },
+        {
+            "id": "settings_max_upload_slots_global",
+            "name": "max_upload_slots_global",
+            "setting_key": "bittorrent.max_upload_slots_global",
+            "type": int,
+        },
+        {
+            "id": "settings_max_upload_slots_torrent",
+            "name": "max_upload_slots_torrent",
+            "setting_key": "bittorrent.max_upload_slots_per_torrent",
+            "type": int,
+        },
+        # Encryption mode with transform
+        {
+            "id": "settings_encryption_mode",
+            "name": "encryption_mode",
+            "setting_key": "bittorrent.encryption_mode",
+            "transform": lambda index: {0: "disabled", 1: "prefer", 2: "require"}.get(index, "prefer"),
+            "on_change": lambda self, value: self.show_notification(f"Encryption mode: {value}", "success"),
+        },
+        # Scrape interval
+        {
+            "id": "settings_scrape_interval",
+            "name": "scrape_interval",
+            "setting_key": "bittorrent.scrape_interval_seconds",
+            "type": int,
+        },
+    ]
+
     @property
     def tab_name(self) -> str:
         """Return the name of this tab."""
@@ -48,6 +149,8 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 "enable_utp": self.builder.get_object("settings_enable_utp"),
                 # User agent
                 "user_agent": self.builder.get_object("settings_user_agent"),
+                # Section container (hardcoded to sensitive=False in XML)
+                "custom_agent_box": self.builder.get_object("settings_custom_agent_box"),
                 "custom_user_agent": self.builder.get_object("settings_custom_user_agent"),
                 # Announce intervals
                 "announce_interval": self.builder.get_object("settings_announce_interval"),
@@ -57,6 +160,9 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 "max_peers_torrent": self.builder.get_object("settings_max_peers_torrent"),
                 "max_upload_slots_global": self.builder.get_object("settings_max_upload_slots_global"),
                 "max_upload_slots_torrent": self.builder.get_object("settings_max_upload_slots_torrent"),
+                # Encryption and scrape
+                "encryption_mode": self.builder.get_object("settings_encryption_mode"),
+                "scrape_interval": self.builder.get_object("settings_scrape_interval"),
             }
         )
 
@@ -65,80 +171,15 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
     def _connect_signals(self) -> None:
         """Connect signal handlers for BitTorrent tab."""
-        # Protocol features
-        dht = self.get_widget("enable_dht")
-        if dht:
-            self.track_signal(dht, dht.connect("state-set", self.on_dht_changed))
+        # Simple widgets (protocol features, custom_user_agent, announce intervals,
+        # peer settings, encryption_mode, scrape_interval) are now auto-connected via WIDGET_MAPPINGS
 
-        pex = self.get_widget("enable_pex")
-        if pex:
-            self.track_signal(pex, pex.connect("state-set", self.on_pex_changed))
-
-        lsd = self.get_widget("enable_lsd")
-        if lsd:
-            self.track_signal(lsd, lsd.connect("state-set", self.on_lsd_changed))
-
-        utp = self.get_widget("enable_utp")
-        if utp:
-            self.track_signal(utp, utp.connect("state-set", self.on_utp_changed))
-
-        # User agent
+        # User agent dropdown (has complex logic with dependencies)
         user_agent = self.get_widget("user_agent")
         if user_agent:
             self.track_signal(
                 user_agent,
                 user_agent.connect("notify::selected", self.on_user_agent_changed),
-            )
-
-        custom_user_agent = self.get_widget("custom_user_agent")
-        if custom_user_agent:
-            self.track_signal(
-                custom_user_agent,
-                custom_user_agent.connect("changed", self.on_custom_user_agent_changed),
-            )
-
-        # Announce intervals
-        announce = self.get_widget("announce_interval")
-        if announce:
-            self.track_signal(
-                announce,
-                announce.connect("value-changed", self.on_announce_interval_changed),
-            )
-
-        min_announce = self.get_widget("min_announce_interval")
-        if min_announce:
-            self.track_signal(
-                min_announce,
-                min_announce.connect("value-changed", self.on_min_announce_interval_changed),
-            )
-
-        # Peer settings
-        max_peers_global = self.get_widget("max_peers_global")
-        if max_peers_global:
-            self.track_signal(
-                max_peers_global,
-                max_peers_global.connect("value-changed", self.on_max_peers_global_changed),
-            )
-
-        max_peers_torrent = self.get_widget("max_peers_torrent")
-        if max_peers_torrent:
-            self.track_signal(
-                max_peers_torrent,
-                max_peers_torrent.connect("value-changed", self.on_max_peers_torrent_changed),
-            )
-
-        max_upload_slots_global = self.get_widget("max_upload_slots_global")
-        if max_upload_slots_global:
-            self.track_signal(
-                max_upload_slots_global,
-                max_upload_slots_global.connect("value-changed", self.on_max_upload_slots_global_changed),
-            )
-
-        max_upload_slots_torrent = self.get_widget("max_upload_slots_torrent")
-        if max_upload_slots_torrent:
-            self.track_signal(
-                max_upload_slots_torrent,
-                max_upload_slots_torrent.connect("value-changed", self.on_max_upload_slots_torrent_changed),
             )
 
     def _load_settings(self) -> None:
@@ -201,6 +242,19 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             max_upload_slots_torrent = self.get_widget("max_upload_slots_torrent")
             if max_upload_slots_torrent:
                 max_upload_slots_torrent.set_value(bittorrent_settings.get("max_upload_slots_per_torrent", 2))
+
+            # Encryption mode
+            encryption_mode = self.get_widget("encryption_mode")
+            if encryption_mode:
+                encryption_value = bittorrent_settings.get("encryption_mode", "prefer")
+                # Map encryption modes to dropdown index: disabled=0, prefer=1, require=2
+                encryption_mapping = {"disabled": 0, "prefer": 1, "require": 2}
+                encryption_mode.set_selected(encryption_mapping.get(encryption_value, 1))
+
+            # Scrape interval
+            scrape_interval = self.get_widget("scrape_interval")
+            if scrape_interval:
+                scrape_interval.set_value(bittorrent_settings.get("scrape_interval_seconds", 1800))
 
         except Exception as e:
             self.logger.error(f"Error loading BitTorrent settings: {e}")
@@ -304,6 +358,8 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
             # Enable custom user agent entry if "Custom" is selected
             is_custom = user_agent_dropdown.get_selected() == 7  # Custom is last option
+            # IMPORTANT: Enable the parent box first (hardcoded to sensitive=False in XML)
+            self.update_widget_sensitivity("custom_agent_box", is_custom)
             self.update_widget_sensitivity("custom_user_agent", is_custom)
 
         except Exception as e:
@@ -312,11 +368,19 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _collect_settings(self) -> Dict[str, Any]:
         """Collect current settings from BitTorrent tab widgets.
 
-        NOTE: All settings are saved in real-time by signal handlers.
-        This method returns empty dict to avoid duplicate saves.
+        Returns:
+            Dictionary of setting_key -> value pairs for all widgets
         """
-        # All settings already saved by signal handlers to bittorrent.* keys
-        return {}
+        # Collect from WIDGET_MAPPINGS
+        settings = self._collect_mapped_settings()
+
+        # Collect BitTorrent settings with proper key prefixes
+        bittorrent_settings = self._collect_bittorrent_settings()
+        for key, value in bittorrent_settings.items():
+            settings[f"bittorrent.{key}"] = value
+
+        self.logger.trace(f"Collected {len(settings)} settings from BitTorrent tab")
+        return settings
 
     def _collect_bittorrent_settings(self) -> Dict[str, Any]:
         """Collect BitTorrent protocol settings."""
@@ -422,41 +486,6 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         return errors
 
     # Signal handlers
-    def on_dht_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle DHT setting change."""
-        try:
-            self.app_settings.set("bittorrent.enable_dht", state)
-            message = "DHT enabled" if state else "DHT disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing DHT setting: {e}")
-
-    def on_pex_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle PEX setting change."""
-        try:
-            self.app_settings.set("bittorrent.enable_pex", state)
-            message = "PEX enabled" if state else "PEX disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing PEX setting: {e}")
-
-    def on_lsd_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle LSD setting change."""
-        try:
-            self.app_settings.set("bittorrent.enable_lsd", state)
-            message = "LSD enabled" if state else "LSD disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing LSD setting: {e}")
-
-    def on_utp_changed(self, switch: Gtk.Switch, state: bool) -> None:
-        """Handle uTP setting change."""
-        try:
-            self.app_settings.set("bittorrent.enable_utp", state)
-            message = "uTP enabled" if state else "uTP disabled"
-            self.show_notification(message, "success")
-        except Exception as e:
-            self.logger.error(f"Error changing uTP setting: {e}")
 
     def on_user_agent_changed(self, dropdown: Gtk.DropDown, param) -> None:
         """Handle user agent selection change."""
@@ -464,6 +493,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             self.update_dependencies()
             selected_index = dropdown.get_selected()
 
+            # NOTE: Setting will be saved in batch via _collect_settings()
             if selected_index < 7:  # Not custom
                 predefined_agents = [
                     "DFakeSeeder/1.0",
@@ -476,74 +506,10 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 ]
                 if selected_index < len(predefined_agents):
                     user_agent = predefined_agents[selected_index]
-                    self.app_settings.set("bittorrent.user_agent", user_agent)
-                    self.logger.trace(f"User agent changed to: {user_agent}")
+                    self.logger.trace(f"User agent will change to: {user_agent}")
 
         except Exception as e:
             self.logger.error(f"Error changing user agent: {e}")
-
-    def on_custom_user_agent_changed(self, entry: Gtk.Entry) -> None:
-        """Handle custom user agent change."""
-        try:
-            user_agent = entry.get_text()
-            self.app_settings.set("bittorrent.user_agent", user_agent)
-            self.logger.trace(f"Custom user agent changed to: {user_agent}")
-        except Exception as e:
-            self.logger.error(f"Error changing custom user agent: {e}")
-
-    def on_announce_interval_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle announce interval change."""
-        try:
-            interval = int(spin_button.get_value())
-            self.app_settings.set("bittorrent.announce_interval_seconds", interval)
-            self.logger.trace(f"Announce interval changed to: {interval}")
-        except Exception as e:
-            self.logger.error(f"Error changing announce interval: {e}")
-
-    def on_min_announce_interval_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle minimum announce interval change."""
-        try:
-            interval = int(spin_button.get_value())
-            self.app_settings.set("bittorrent.min_announce_interval_seconds", interval)
-            self.logger.trace(f"Minimum announce interval changed to: {interval}")
-        except Exception as e:
-            self.logger.error(f"Error changing minimum announce interval: {e}")
-
-    def on_max_peers_global_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle global max peers change."""
-        try:
-            max_peers = int(spin_button.get_value())
-            self.app_settings.set("bittorrent.max_peers_global", max_peers)
-            self.logger.trace(f"Global max peers changed to: {max_peers}")
-        except Exception as e:
-            self.logger.error(f"Error changing global max peers: {e}")
-
-    def on_max_peers_torrent_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle per-torrent max peers change."""
-        try:
-            max_peers = int(spin_button.get_value())
-            self.app_settings.set("bittorrent.max_peers_per_torrent", max_peers)
-            self.logger.trace(f"Per-torrent max peers changed to: {max_peers}")
-        except Exception as e:
-            self.logger.error(f"Error changing per-torrent max peers: {e}")
-
-    def on_max_upload_slots_global_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle global max upload slots change."""
-        try:
-            max_slots = int(spin_button.get_value())
-            self.app_settings.set("bittorrent.max_upload_slots_global", max_slots)
-            self.logger.trace(f"Global max upload slots changed to: {max_slots}")
-        except Exception as e:
-            self.logger.error(f"Error changing global max upload slots: {e}")
-
-    def on_max_upload_slots_torrent_changed(self, spin_button: Gtk.SpinButton) -> None:
-        """Handle per-torrent max upload slots change."""
-        try:
-            max_slots = int(spin_button.get_value())
-            self.app_settings.set("bittorrent.max_upload_slots_per_torrent", max_slots)
-            self.logger.trace(f"Per-torrent max upload slots changed to: {max_slots}")
-        except Exception as e:
-            self.logger.error(f"Error changing per-torrent max upload slots: {e}")
 
     def _reset_tab_defaults(self) -> None:
         """Reset BitTorrent tab to default values."""
@@ -593,27 +559,6 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
         except Exception as e:
             self.logger.error(f"Error resetting BitTorrent tab to defaults: {e}")
-
-    def handle_model_changed(self, source, data_obj, _data_changed):
-        """Handle model change events."""
-        self.logger.trace(
-            "BitTorrentTab model changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_attribute_changed(self, source, key, value):
-        """Handle attribute change events."""
-        self.logger.trace(
-            "BitTorrentTab attribute changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_settings_changed(self, source, data_obj, _data_changed):
-        """Handle settings change events."""
-        self.logger.trace(
-            "BitTorrentTab settings changed",
-            extra={"class_name": self.__class__.__name__},
-        )
 
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes."""

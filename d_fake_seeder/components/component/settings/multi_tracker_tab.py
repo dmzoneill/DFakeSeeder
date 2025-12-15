@@ -24,6 +24,87 @@ from .settings_mixins import ValidationMixin  # noqa: E402
 class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
     """Multi-Tracker (BEP-012) configuration tab"""
 
+    # Auto-connect simple widgets with WIDGET_MAPPINGS
+    WIDGET_MAPPINGS = [
+        # Failover settings
+        {
+            "id": "max_consecutive_failures_spin",
+            "name": "max_consecutive_failures",
+            "setting_key": "protocols.multi_tracker.failover.max_consecutive_failures",
+            "type": int,
+        },
+        {
+            "id": "backoff_base_seconds_spin",
+            "name": "backoff_base_seconds",
+            "setting_key": "protocols.multi_tracker.failover.backoff_base_seconds",
+            "type": int,
+        },
+        {
+            "id": "max_backoff_seconds_spin",
+            "name": "max_backoff_seconds",
+            "setting_key": "protocols.multi_tracker.failover.max_backoff_seconds",
+            "type": int,
+        },
+        # Announce strategy
+        {
+            "id": "announce_to_all_tiers_check",
+            "name": "announce_to_all_tiers",
+            "setting_key": "protocols.multi_tracker.announce_to_all_tiers",
+            "type": bool,
+        },
+        {
+            "id": "announce_to_all_in_tier_check",
+            "name": "announce_to_all_in_tier",
+            "setting_key": "protocols.multi_tracker.announce_to_all_in_tier",
+            "type": bool,
+        },
+        # Health monitoring
+        {
+            "id": "response_time_tracking_check",
+            "name": "response_time_tracking",
+            "setting_key": "protocols.multi_tracker.health_monitoring.track_response_time",
+            "type": bool,
+        },
+        {
+            "id": "response_time_smoothing_spin",
+            "name": "response_time_smoothing",
+            "setting_key": "protocols.multi_tracker.health_monitoring.response_time_smoothing",
+            "type": float,
+        },
+        # Advanced settings
+        {
+            "id": "auto_disable_failed_trackers_check",
+            "name": "auto_disable_failed_trackers",
+            "setting_key": "protocols.multi_tracker.advanced.auto_disable_failed",
+            "type": bool,
+        },
+        {
+            "id": "rotation_interval_seconds_spin",
+            "name": "rotation_interval_seconds",
+            "setting_key": "protocols.multi_tracker.advanced.rotation_interval_seconds",
+            "type": int,
+        },
+        # Statistics settings
+        {
+            "id": "track_tier_statistics_check",
+            "name": "track_tier_statistics",
+            "setting_key": "protocols.multi_tracker.statistics.track_tier_stats",
+            "type": bool,
+        },
+        {
+            "id": "log_tracker_failures_check",
+            "name": "log_tracker_failures",
+            "setting_key": "protocols.multi_tracker.statistics.log_failures",
+            "type": bool,
+        },
+        {
+            "id": "log_tier_changes_check",
+            "name": "log_tier_changes",
+            "setting_key": "protocols.multi_tracker.statistics.log_tier_changes",
+            "type": bool,
+        },
+    ]
+
     @property
     def tab_name(self) -> str:
         """Return the name of this tab"""
@@ -66,65 +147,26 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
 
     def _connect_signals(self):
         """Connect Multi-Tracker specific signals"""
-        # Enable/Disable Multi-Tracker
+        # Simple widgets (max_consecutive_failures, backoff_base_seconds, max_backoff_seconds,
+        # announce_to_all_tiers, announce_to_all_in_tier, response_time_tracking,
+        # response_time_smoothing, auto_disable_failed_trackers, rotation_interval_seconds,
+        # track_tier_statistics, log_tracker_failures, log_tier_changes) are now auto-connected via WIDGET_MAPPINGS
+
+        # Enable/Disable Multi-Tracker (has dependencies - controls child widget sensitivity)
         if self._widgets["multi_tracker_enabled"]:
             self._widgets["multi_tracker_enabled"].connect("state-set", self._on_multi_tracker_enabled_changed)
 
-        # Failover settings
+        # Failover enabled (has dependencies - controls failover-related widgets)
         if self._widgets["failover_enabled"]:
             self._widgets["failover_enabled"].connect("toggled", self._on_failover_enabled_toggled)
 
-        if self._widgets["max_consecutive_failures"]:
-            self._widgets["max_consecutive_failures"].connect(
-                "value-changed", self._on_max_consecutive_failures_changed
-            )
-
-        if self._widgets["backoff_base_seconds"]:
-            self._widgets["backoff_base_seconds"].connect("value-changed", self._on_backoff_base_seconds_changed)
-
-        if self._widgets["max_backoff_seconds"]:
-            self._widgets["max_backoff_seconds"].connect("value-changed", self._on_max_backoff_seconds_changed)
-
-        # Announce strategy
-        if self._widgets["announce_to_all_tiers"]:
-            self._widgets["announce_to_all_tiers"].connect("toggled", self._on_announce_to_all_tiers_toggled)
-
-        if self._widgets["announce_to_all_in_tier"]:
-            self._widgets["announce_to_all_in_tier"].connect("toggled", self._on_announce_to_all_in_tier_toggled)
-
-        # Health monitoring
+        # Health monitoring enabled (has dependencies - controls health monitoring widgets)
         if self._widgets["health_monitoring_enabled"]:
             self._widgets["health_monitoring_enabled"].connect("toggled", self._on_health_monitoring_enabled_toggled)
 
-        if self._widgets["response_time_tracking"]:
-            self._widgets["response_time_tracking"].connect("toggled", self._on_response_time_tracking_toggled)
-
-        if self._widgets["response_time_smoothing"]:
-            self._widgets["response_time_smoothing"].connect("value-changed", self._on_response_time_smoothing_changed)
-
-        # Advanced settings
-        if self._widgets["auto_disable_failed_trackers"]:
-            self._widgets["auto_disable_failed_trackers"].connect(
-                "toggled", self._on_auto_disable_failed_trackers_toggled
-            )
-
+        # Tracker rotation enabled (has dependencies - controls rotation interval widget)
         if self._widgets["tracker_rotation_enabled"]:
             self._widgets["tracker_rotation_enabled"].connect("toggled", self._on_tracker_rotation_enabled_toggled)
-
-        if self._widgets["rotation_interval_seconds"]:
-            self._widgets["rotation_interval_seconds"].connect(
-                "value-changed", self._on_rotation_interval_seconds_changed
-            )
-
-        # Statistics settings
-        if self._widgets["track_tier_statistics"]:
-            self._widgets["track_tier_statistics"].connect("toggled", self._on_track_tier_statistics_toggled)
-
-        if self._widgets["log_tracker_failures"]:
-            self._widgets["log_tracker_failures"].connect("toggled", self._on_log_tracker_failures_toggled)
-
-        if self._widgets["log_tier_changes"]:
-            self._widgets["log_tier_changes"].connect("toggled", self._on_log_tier_changes_toggled)
 
         self.logger.trace(
             "Multi-Tracker tab signals connected",
@@ -238,81 +280,98 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
             )
 
     def _collect_settings(self) -> Dict[str, Any]:
-        """Collect current settings from UI widgets"""
-        settings = {}
+        """Collect current settings from UI widgets.
+
+        Returns:
+            Dictionary of setting_key -> value pairs for all widgets
+        """
+        # Collect from WIDGET_MAPPINGS
+        settings = self._collect_mapped_settings()
 
         try:
-            # Get current protocols config
-            protocols_config = getattr(self.app_settings, "protocols", {})
-            mt_config = protocols_config.get("multi_tracker", {})
-
             # Basic settings
-            if self._widgets["multi_tracker_enabled"]:
-                mt_config["enabled"] = self._widgets["multi_tracker_enabled"].get_state()
+            if self._widgets.get("multi_tracker_enabled"):
+                settings["protocols.multi_tracker.enabled"] = self._widgets["multi_tracker_enabled"].get_state()
 
             # Failover settings
-            if self._widgets["failover_enabled"]:
-                mt_config["failover_enabled"] = self._widgets["failover_enabled"].get_active()
+            if self._widgets.get("failover_enabled"):
+                settings["protocols.multi_tracker.failover_enabled"] = self._widgets["failover_enabled"].get_active()
 
-            failover_config = mt_config.setdefault("failover", {})
+            if self._widgets.get("max_consecutive_failures"):
+                settings["protocols.multi_tracker.failover.max_consecutive_failures"] = int(
+                    self._widgets["max_consecutive_failures"].get_value()
+                )
 
-            if self._widgets["max_consecutive_failures"]:
-                failover_config["max_consecutive_failures"] = int(self._widgets["max_consecutive_failures"].get_value())
+            if self._widgets.get("backoff_base_seconds"):
+                settings["protocols.multi_tracker.failover.backoff_base_seconds"] = int(
+                    self._widgets["backoff_base_seconds"].get_value()
+                )
 
-            if self._widgets["backoff_base_seconds"]:
-                failover_config["backoff_base_seconds"] = int(self._widgets["backoff_base_seconds"].get_value())
-
-            if self._widgets["max_backoff_seconds"]:
-                failover_config["max_backoff_seconds"] = int(self._widgets["max_backoff_seconds"].get_value())
+            if self._widgets.get("max_backoff_seconds"):
+                settings["protocols.multi_tracker.failover.max_backoff_seconds"] = int(
+                    self._widgets["max_backoff_seconds"].get_value()
+                )
 
             # Announce strategy
-            if self._widgets["announce_to_all_tiers"]:
-                mt_config["announce_to_all_tiers"] = self._widgets["announce_to_all_tiers"].get_active()
+            if self._widgets.get("announce_to_all_tiers"):
+                settings["protocols.multi_tracker.announce_to_all_tiers"] = self._widgets[
+                    "announce_to_all_tiers"
+                ].get_active()
 
-            if self._widgets["announce_to_all_in_tier"]:
-                mt_config["announce_to_all_in_tier"] = self._widgets["announce_to_all_in_tier"].get_active()
+            if self._widgets.get("announce_to_all_in_tier"):
+                settings["protocols.multi_tracker.announce_to_all_in_tier"] = self._widgets[
+                    "announce_to_all_in_tier"
+                ].get_active()
 
             # Health monitoring
-            health_config = mt_config.setdefault("health_monitoring", {})
+            if self._widgets.get("health_monitoring_enabled"):
+                settings["protocols.multi_tracker.health_monitoring.enabled"] = self._widgets[
+                    "health_monitoring_enabled"
+                ].get_active()
 
-            if self._widgets["health_monitoring_enabled"]:
-                health_config["enabled"] = self._widgets["health_monitoring_enabled"].get_active()
+            if self._widgets.get("response_time_tracking"):
+                settings["protocols.multi_tracker.health_monitoring.track_response_time"] = self._widgets[
+                    "response_time_tracking"
+                ].get_active()
 
-            if self._widgets["response_time_tracking"]:
-                health_config["track_response_time"] = self._widgets["response_time_tracking"].get_active()
-
-            if self._widgets["response_time_smoothing"]:
-                health_config["response_time_smoothing"] = self._widgets["response_time_smoothing"].get_value()
+            if self._widgets.get("response_time_smoothing"):
+                settings["protocols.multi_tracker.health_monitoring.response_time_smoothing"] = self._widgets[
+                    "response_time_smoothing"
+                ].get_value()
 
             # Advanced settings
-            advanced_config = mt_config.setdefault("advanced", {})
+            if self._widgets.get("auto_disable_failed_trackers"):
+                settings["protocols.multi_tracker.advanced.auto_disable_failed"] = self._widgets[
+                    "auto_disable_failed_trackers"
+                ].get_active()
 
-            if self._widgets["auto_disable_failed_trackers"]:
-                advanced_config["auto_disable_failed"] = self._widgets["auto_disable_failed_trackers"].get_active()
+            if self._widgets.get("tracker_rotation_enabled"):
+                settings["protocols.multi_tracker.advanced.rotation_enabled"] = self._widgets[
+                    "tracker_rotation_enabled"
+                ].get_active()
 
-            if self._widgets["tracker_rotation_enabled"]:
-                advanced_config["rotation_enabled"] = self._widgets["tracker_rotation_enabled"].get_active()
-
-            if self._widgets["rotation_interval_seconds"]:
-                advanced_config["rotation_interval_seconds"] = int(
+            if self._widgets.get("rotation_interval_seconds"):
+                settings["protocols.multi_tracker.advanced.rotation_interval_seconds"] = int(
                     self._widgets["rotation_interval_seconds"].get_value()
                 )
 
             # Statistics settings
-            stats_config = mt_config.setdefault("statistics", {})
+            if self._widgets.get("track_tier_statistics"):
+                settings["protocols.multi_tracker.statistics.track_tier_stats"] = self._widgets[
+                    "track_tier_statistics"
+                ].get_active()
 
-            if self._widgets["track_tier_statistics"]:
-                stats_config["track_tier_stats"] = self._widgets["track_tier_statistics"].get_active()
+            if self._widgets.get("log_tracker_failures"):
+                settings["protocols.multi_tracker.statistics.log_failures"] = self._widgets[
+                    "log_tracker_failures"
+                ].get_active()
 
-            if self._widgets["log_tracker_failures"]:
-                stats_config["log_failures"] = self._widgets["log_tracker_failures"].get_active()
+            if self._widgets.get("log_tier_changes"):
+                settings["protocols.multi_tracker.statistics.log_tier_changes"] = self._widgets[
+                    "log_tier_changes"
+                ].get_active()
 
-            if self._widgets["log_tier_changes"]:
-                stats_config["log_tier_changes"] = self._widgets["log_tier_changes"].get_active()
-
-            # Update the protocols config
-            protocols_config["multi_tracker"] = mt_config
-            settings["protocols"] = protocols_config
+            self.logger.trace(f"Collected {len(settings)} settings from Multi-Tracker tab")
 
         except Exception as e:
             self.logger.error(
@@ -462,46 +521,6 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
         )
         self.update_dependencies()
 
-    def _on_max_consecutive_failures_changed(self, spin_button):
-        """Handle max consecutive failures changes"""
-        failures = spin_button.get_value()
-        self.logger.trace(
-            f"Max consecutive failures: {failures}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_backoff_base_seconds_changed(self, spin_button):
-        """Handle backoff base seconds changes"""
-        seconds = spin_button.get_value()
-        self.logger.trace(
-            f"Backoff base seconds: {seconds}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_max_backoff_seconds_changed(self, spin_button):
-        """Handle max backoff seconds changes"""
-        seconds = spin_button.get_value()
-        self.logger.trace(
-            f"Max backoff seconds: {seconds}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_announce_to_all_tiers_toggled(self, check_button):
-        """Handle announce to all tiers toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(
-            f"Announce to all tiers: {enabled}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_announce_to_all_in_tier_toggled(self, check_button):
-        """Handle announce to all in tier toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(
-            f"Announce to all in tier: {enabled}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
     def _on_health_monitoring_enabled_toggled(self, check_button):
         """Handle health monitoring enable toggle"""
         enabled = check_button.get_active()
@@ -511,30 +530,6 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
         )
         self.update_dependencies()
 
-    def _on_response_time_tracking_toggled(self, check_button):
-        """Handle response time tracking toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(
-            f"Response time tracking: {enabled}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_response_time_smoothing_changed(self, spin_button):
-        """Handle response time smoothing changes"""
-        smoothing = spin_button.get_value()
-        self.logger.trace(
-            f"Response time smoothing: {smoothing}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_auto_disable_failed_trackers_toggled(self, check_button):
-        """Handle auto disable failed trackers toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(
-            f"Auto disable failed trackers: {enabled}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
     def _on_tracker_rotation_enabled_toggled(self, check_button):
         """Handle tracker rotation enable toggle"""
         enabled = check_button.get_active()
@@ -543,59 +538,6 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
             extra={"class_name": self.__class__.__name__},
         )
         self.update_dependencies()
-
-    def _on_rotation_interval_seconds_changed(self, spin_button):
-        """Handle rotation interval seconds changes"""
-        seconds = spin_button.get_value()
-        self.logger.trace(
-            f"Rotation interval seconds: {seconds}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_track_tier_statistics_toggled(self, check_button):
-        """Handle track tier statistics toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(
-            f"Track tier statistics: {enabled}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_log_tracker_failures_toggled(self, check_button):
-        """Handle log tracker failures toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(
-            f"Log tracker failures: {enabled}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_log_tier_changes_toggled(self, check_button):
-        """Handle log tier changes toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(
-            f"Log tier changes: {enabled}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_model_changed(self, source, data_obj, _data_changed):
-        """Handle model change events."""
-        self.logger.trace(
-            "MultiTrackerTab model changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_attribute_changed(self, source, key, value):
-        """Handle attribute change events."""
-        self.logger.trace(
-            "MultiTrackerTab attribute changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_settings_changed(self, source, data_obj, _data_changed):
-        """Handle settings change events."""
-        self.logger.trace(
-            "MultiTrackerTab settings changed",
-            extra={"class_name": self.__class__.__name__},
-        )
 
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes."""

@@ -140,6 +140,9 @@ msgstr "<b>Профили сидирования</b>"
 msgid "<b>Settings Search</b>"
 msgstr "<b>Поиск настроек</b>"
 
+msgid "<b>Speed Distribution</b>"
+msgstr "<b>Распределение Скорости</b>"
+
 msgid "<b>Speed Scheduler</b>"
 msgstr "<b>Планировщик скорости</b>"
 
@@ -212,8 +215,17 @@ msgstr "Скорость загрузки агрессивного профил�
 msgid "Aggressive profile upload speed (0 = unlimited)"
 msgstr "Скорость отдачи агрессивного профиля (0 = неограничено)"
 
+msgid "Algorithm-specific spread parameter (0-100)"
+msgstr "Специфичный для алгоритма параметр разброса (0-100)"
+
+msgid "Algorithm:"
+msgstr "Алгоритм:"
+
 msgid "All"
 msgstr "Все"
+
+msgid "All settings reset to defaults"
+msgstr "Все настройки сброшены к значениям по умолчанию"
 
 msgid "Alt download limit (KB/s):"
 msgstr "Альт. лимит загрузки (КБ/с):"
@@ -247,6 +259,9 @@ msgstr "Интервал анонсов (сек):"
 
 msgid "Announcement Interval:"
 msgstr "Интервал объявлений:"
+
+msgid "Apply"
+msgstr "Применить"
 
 msgid "Arabic"
 msgstr "Арабский"
@@ -398,6 +413,9 @@ msgstr "Клиент"
 msgid "Client Switch Probability:"
 msgstr "Вероятность переключения клиента:"
 
+msgid "Close without saving"
+msgstr "Закрыть без сохранения"
+
 msgid "Color Scheme:"
 msgstr "Цветовая схема:"
 
@@ -482,6 +500,9 @@ msgstr "Копировать URL трекера"
 msgid "Country"
 msgstr "Страна"
 
+msgid "Create notification overlay for this tab."
+msgstr "Создать оверлей уведомлений для этой вкладки."
+
 msgid "Created"
 msgstr "Создан"
 
@@ -506,8 +527,14 @@ msgstr "Пользовательский агент:"
 msgid "Custom Node ID:"
 msgstr "Пользовательский ID узла:"
 
+msgid "Custom interval (minutes):"
+msgstr "Пользовательский интервал (минуты):"
+
 msgid "Custom node ID (40 hex characters)"
 msgstr "Пользовательский ID узла (40 hex символов)"
+
+msgid "Custom redistribution interval in minutes"
+msgstr "Пользовательский интервал перераспределения в минутах"
 
 msgid "Custom user agent string"
 msgstr "Пользовательская строка агента"
@@ -571,6 +598,9 @@ msgstr "Ниже"
 
 msgid "Down Speed"
 msgstr "Скор. загрузки"
+
+msgid "Download Distribution"
+msgstr "Распределение Загрузки"
 
 msgid "Download Limit"
 msgstr "Лимит Загрузки"
@@ -959,6 +989,9 @@ msgstr "Как часто анонсировать трекерам (60-7200 с�
 msgid "How often to check for new torrent files (in seconds)"
 msgstr "Как часто проверять новые торрент-файлы (в секундах)"
 
+msgid "How often to redistribute speeds"
+msgstr "Как часто перераспределять скорости"
+
 msgid "How often to scrape tracker for swarm statistics"
 msgstr "Как часто опрашивать трекер для статистики роя"
 
@@ -1091,6 +1124,9 @@ msgstr "Уровень логирования:"
 msgid "Log to file"
 msgstr "Логировать в файл"
 
+msgid "Log-Normal"
+msgstr "Лог-нормальное"
+
 msgid "Low Priority"
 msgstr "Низкий приоритет"
 
@@ -1169,6 +1205,9 @@ msgstr "Максимальное количество одновременных
 msgid "Maximum peers to include in a PEX message"
 msgstr "Максимум пиров для включения в сообщение PEX"
 
+msgid "Maximum percentage of torrents to stop completely"
+msgstr "Максимальный процент торрентов для полной остановки"
+
 msgid "Maximum port for seeder connections"
 msgstr "Максимальный порт для соединений сидера"
 
@@ -1201,6 +1240,9 @@ msgstr "Свернуть в системный трей"
 
 msgid "Minimum log level to record"
 msgstr "Минимальный уровень логирования для записи"
+
+msgid "Minimum percentage of torrents to stop completely"
+msgstr "Минимальный процент торрентов для полной остановки"
 
 msgid "Minimum port for seeder connections"
 msgstr "Минимальный порт для соединений сидера"
@@ -1262,6 +1304,12 @@ msgstr "Нет"
 msgid "Normal Priority"
 msgstr "Обычный приоритет"
 
+msgid "Note: Choosing \\\\"
+msgstr "Примечание: Выбор \\\\"
+
+msgid "Note: Choosing \\\\\\\\"
+msgstr "Note: Choosing \\\\\\\\"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Количество пиров для анализа поведенческих шаблонов"
 
@@ -1273,6 +1321,9 @@ msgstr "Количество синтетических пиров для ген
 
 msgid "OK"
 msgstr "ОК"
+
+msgid "Off"
+msgstr "Выкл"
 
 msgid "Only allow connections from localhost (more secure)"
 msgstr "Разрешить соединения только с localhost (более безопасно)"
@@ -1297,6 +1348,9 @@ msgstr "Уведомление наложения"
 
 msgid "PEX Interval:"
 msgstr "Интервал PEX:"
+
+msgid "Pareto"
+msgstr "Pareto"
 
 msgid "Password for web interface login"
 msgstr "Пароль для входа в веб-интерфейс"
@@ -1393,6 +1447,9 @@ msgstr "Порт:"
 
 msgid "Portuguese"
 msgstr "Португальский"
+
+msgid "Power-Law"
+msgstr "Степенной закон"
 
 msgid "Preference 1:"
 msgstr "Предпочтение 1:"
@@ -1535,6 +1592,9 @@ msgstr "Реалистичные вариации"
 msgid "Received"
 msgstr "Получено"
 
+msgid "Redistribution mode:"
+msgstr "Режим перераспределения:"
+
 msgid "Relaxed"
 msgstr "Расслабленный"
 
@@ -1598,6 +1658,9 @@ msgstr "Сброс всех настроек еще не реализован"
 msgid "Reset all settings to default values"
 msgstr "Сбросить все настройки к значениям по умолчанию"
 
+msgid "Reset current tab to default values"
+msgstr "Сбросить текущую вкладку к значениям по умолчанию"
+
 msgid "Reset to Defaults"
 msgstr "Сброс к умолчанию"
 
@@ -1639,6 +1702,12 @@ msgstr "Сохранить"
 
 msgid "Save logs to file in addition to console"
 msgstr "Сохранять логи в файл в дополнение к консоли"
+
+msgid "Save settings"
+msgstr "Сохранить настройки"
+
+msgid "Save settings and close"
+msgstr "Сохранить настройки и закрыть"
 
 msgid "Scan interval:"
 msgstr "Интервал сканирования:"
@@ -1763,6 +1832,9 @@ msgstr "Установить лимит отдачи"
 msgid "Set Upload Limit..."
 msgstr "Установить лимит отдачи..."
 
+msgid "Settings saved successfully"
+msgstr "Настройки успешно сохранены"
+
 msgid "Shortcuts configuration not yet implemented"
 msgstr "Настройка горячих клавиш еще не реализована"
 
@@ -1796,8 +1868,17 @@ msgstr "Контроль Скорости"
 msgid "Speed Limits"
 msgstr "Ограничения скорости"
 
+msgid "Speed distribution algorithm for downloads"
+msgstr "Алгоритм распределения скорости для загрузок"
+
+msgid "Speed distribution algorithm for uploads"
+msgstr "Алгоритм распределения скорости для отдачи"
+
 msgid "Speed settings reset to defaults"
 msgstr "Настройки скорости сброшены по умолчанию"
+
+msgid "Spread percentage:"
+msgstr "Процент разброса:"
 
 msgid "Standard"
 msgstr "Стандартный"
@@ -1837,6 +1918,12 @@ msgstr "Статус"
 
 msgid "Status change probability:"
 msgstr "Вероятность изменения статуса:"
+
+msgid "Stopped max %:"
+msgstr "Остановлено макс %:"
+
+msgid "Stopped min %:"
+msgstr "Остановлено мин %:"
 
 msgid "Strict"
 msgstr "Строгий"
@@ -1886,8 +1973,14 @@ msgstr "Чт"
 msgid "Thursday"
 msgstr "Четверг"
 
+msgid "Tick speed"
+msgstr "Скорость тика"
+
 msgid "Tier"
 msgstr "Уровень"
+
+msgid "Time Interval"
+msgstr "Временной интервал"
 
 msgid "Time-based patterns"
 msgstr "Временные шаблоны"
@@ -2023,6 +2116,9 @@ msgstr "Скор. отдачи"
 
 msgid "Update Tracker"
 msgstr "Обновить трекер"
+
+msgid "Upload Distribution"
+msgstr "Распределение Отдачи"
 
 msgid "Upload Limit"
 msgstr "Лимит Отдачи"
@@ -2162,6 +2258,9 @@ msgstr "Байт загружено"
 msgid "bytes_uploaded"
 msgstr "Байт отправлено"
 
+msgid "changed"
+msgstr "изменено"
+
 msgid "class_name"
 msgstr "Название класса"
 
@@ -2202,7 +2301,7 @@ msgid "lt_donthave (Piece Availability)"
 msgstr "lt_donthave (доступность частей)"
 
 msgid "monitoring_tab"
-msgstr "monitoring_tab"
+msgstr "вкладка_мониторинг"
 
 msgid "name"
 msgstr "Имя"
@@ -2311,6 +2410,9 @@ msgstr "ut_pex (обмен пирами)"
 
 msgid "µTorrent"
 msgstr "µTorrent"
+
+msgid "ℹ️"
+msgstr "ℹ️"
 
 msgid "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability."
 msgstr "⚠️ Расширенные настройки - изменяйте с осторожностью. Неправильные значения могут повлиять на производительность или стабильность."
