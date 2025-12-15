@@ -26,6 +26,191 @@ from .settings_mixins import (  # noqa: E402
 class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
     """Advanced Simulation configuration tab"""
 
+    # Auto-connect simple widgets with WIDGET_MAPPINGS
+    WIDGET_MAPPINGS = [
+        # Behavior settings (no dependencies)
+        {
+            "id": "behavior_variation_spin",
+            "name": "behavior_variation",
+            "setting_key": "simulation.behavior_variation",
+            "type": float,
+        },
+        {
+            "id": "switch_client_probability_spin",
+            "name": "switch_client_probability",
+            "setting_key": "simulation.switch_client_probability",
+            "type": float,
+        },
+        # Traffic pattern settings
+        {
+            "id": "realistic_variations_check",
+            "name": "realistic_variations",
+            "setting_key": "simulation.realistic_variations",
+            "type": bool,
+        },
+        {
+            "id": "time_based_patterns_check",
+            "name": "time_based_patterns",
+            "setting_key": "simulation.time_based_patterns",
+            "type": bool,
+        },
+        # Conservative profile settings (7 widgets)
+        {
+            "id": "conservative_upload_speed_spin",
+            "name": "conservative_upload_speed",
+            "setting_key": "simulation.profiles.conservative.upload_speed",
+            "type": int,
+        },
+        {
+            "id": "conservative_download_speed_spin",
+            "name": "conservative_download_speed",
+            "setting_key": "simulation.profiles.conservative.download_speed",
+            "type": int,
+        },
+        {
+            "id": "conservative_upload_variance_spin",
+            "name": "conservative_upload_variance",
+            "setting_key": "simulation.profiles.conservative.upload_variance",
+            "type": float,
+        },
+        {
+            "id": "conservative_download_variance_spin",
+            "name": "conservative_download_variance",
+            "setting_key": "simulation.profiles.conservative.download_variance",
+            "type": float,
+        },
+        {
+            "id": "conservative_max_connections_spin",
+            "name": "conservative_max_connections",
+            "setting_key": "simulation.profiles.conservative.max_connections",
+            "type": int,
+        },
+        {
+            "id": "conservative_burst_probability_spin",
+            "name": "conservative_burst_probability",
+            "setting_key": "simulation.profiles.conservative.burst_probability",
+            "type": float,
+        },
+        {
+            "id": "conservative_idle_probability_spin",
+            "name": "conservative_idle_probability",
+            "setting_key": "simulation.profiles.conservative.idle_probability",
+            "type": float,
+        },
+        # Balanced profile settings (7 widgets)
+        {
+            "id": "balanced_upload_speed_spin",
+            "name": "balanced_upload_speed",
+            "setting_key": "simulation.profiles.balanced.upload_speed",
+            "type": int,
+        },
+        {
+            "id": "balanced_download_speed_spin",
+            "name": "balanced_download_speed",
+            "setting_key": "simulation.profiles.balanced.download_speed",
+            "type": int,
+        },
+        {
+            "id": "balanced_upload_variance_spin",
+            "name": "balanced_upload_variance",
+            "setting_key": "simulation.profiles.balanced.upload_variance",
+            "type": float,
+        },
+        {
+            "id": "balanced_download_variance_spin",
+            "name": "balanced_download_variance",
+            "setting_key": "simulation.profiles.balanced.download_variance",
+            "type": float,
+        },
+        {
+            "id": "balanced_max_connections_spin",
+            "name": "balanced_max_connections",
+            "setting_key": "simulation.profiles.balanced.max_connections",
+            "type": int,
+        },
+        {
+            "id": "balanced_burst_probability_spin",
+            "name": "balanced_burst_probability",
+            "setting_key": "simulation.profiles.balanced.burst_probability",
+            "type": float,
+        },
+        {
+            "id": "balanced_idle_probability_spin",
+            "name": "balanced_idle_probability",
+            "setting_key": "simulation.profiles.balanced.idle_probability",
+            "type": float,
+        },
+        # Aggressive profile settings (7 widgets)
+        {
+            "id": "aggressive_upload_speed_spin",
+            "name": "aggressive_upload_speed",
+            "setting_key": "simulation.profiles.aggressive.upload_speed",
+            "type": int,
+        },
+        {
+            "id": "aggressive_download_speed_spin",
+            "name": "aggressive_download_speed",
+            "setting_key": "simulation.profiles.aggressive.download_speed",
+            "type": int,
+        },
+        {
+            "id": "aggressive_upload_variance_spin",
+            "name": "aggressive_upload_variance",
+            "setting_key": "simulation.profiles.aggressive.upload_variance",
+            "type": float,
+        },
+        {
+            "id": "aggressive_download_variance_spin",
+            "name": "aggressive_download_variance",
+            "setting_key": "simulation.profiles.aggressive.download_variance",
+            "type": float,
+        },
+        {
+            "id": "aggressive_max_connections_spin",
+            "name": "aggressive_max_connections",
+            "setting_key": "simulation.profiles.aggressive.max_connections",
+            "type": int,
+        },
+        {
+            "id": "aggressive_burst_probability_spin",
+            "name": "aggressive_burst_probability",
+            "setting_key": "simulation.profiles.aggressive.burst_probability",
+            "type": float,
+        },
+        {
+            "id": "aggressive_idle_probability_spin",
+            "name": "aggressive_idle_probability",
+            "setting_key": "simulation.profiles.aggressive.idle_probability",
+            "type": float,
+        },
+        # Swarm intelligence settings
+        {
+            "id": "adaptation_rate_spin",
+            "name": "adaptation_rate",
+            "setting_key": "simulation.adaptation_rate",
+            "type": float,
+        },
+        {
+            "id": "peer_analysis_depth_spin",
+            "name": "peer_analysis_depth",
+            "setting_key": "simulation.peer_analysis_depth",
+            "type": int,
+        },
+        # Advanced settings
+        {
+            "id": "client_profile_switching_check",
+            "name": "client_profile_switching",
+            "setting_key": "simulation.client_profile_switching",
+            "type": bool,
+        },
+        {
+            "id": "behavior_randomization_check",
+            "name": "behavior_randomization",
+            "setting_key": "simulation.behavior_randomization",
+            "type": bool,
+        },
+    ]
+
     @property
     def tab_name(self) -> str:
         """Return the name of this tab."""
@@ -88,94 +273,29 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
     def _connect_signals(self):
         """Connect Advanced Simulation signals"""
-        # Client Behavior Engine
+        # Simple widgets (behavior_variation, switch_client_probability, realistic_variations,
+        # time_based_patterns, all profile settings, adaptation_rate, peer_analysis_depth,
+        # client_profile_switching, behavior_randomization) are now auto-connected via WIDGET_MAPPINGS
+
+        # Client Behavior Engine (has dependencies - controls child widget sensitivity)
         if self._widgets["client_behavior_enabled"]:
             self._widgets["client_behavior_enabled"].connect("state-set", self._on_client_behavior_enabled_changed)
 
+        # Dropdown widgets with custom text extraction (uses _get_combo_active_text helper)
         if self._widgets["primary_client"]:
             self._widgets["primary_client"].connect("notify::selected", self._on_primary_client_changed)
 
-        if self._widgets["behavior_variation"]:
-            self._widgets["behavior_variation"].connect("value-changed", self._on_behavior_variation_changed)
-
-        if self._widgets["switch_client_probability"]:
-            self._widgets["switch_client_probability"].connect(
-                "value-changed", self._on_switch_client_probability_changed
-            )
-
-        # Traffic Pattern Settings
         if self._widgets["traffic_profile"]:
             self._widgets["traffic_profile"].connect("notify::selected", self._on_traffic_profile_changed)
 
-        if self._widgets["realistic_variations"]:
-            self._widgets["realistic_variations"].connect("toggled", self._on_realistic_variations_toggled)
-
-        if self._widgets["time_based_patterns"]:
-            self._widgets["time_based_patterns"].connect("toggled", self._on_time_based_patterns_toggled)
-
-        # Conservative Profile
-        conservative_widgets = [
-            "conservative_upload_speed",
-            "conservative_download_speed",
-            "conservative_upload_variance",
-            "conservative_download_variance",
-            "conservative_max_connections",
-            "conservative_burst_probability",
-            "conservative_idle_probability",
-        ]
-        for widget_name in conservative_widgets:
-            if self._widgets[widget_name]:
-                self._widgets[widget_name].connect("value-changed", getattr(self, f"_on_{widget_name}_changed"))
-
-        # Balanced Profile
-        balanced_widgets = [
-            "balanced_upload_speed",
-            "balanced_download_speed",
-            "balanced_upload_variance",
-            "balanced_download_variance",
-            "balanced_max_connections",
-            "balanced_burst_probability",
-            "balanced_idle_probability",
-        ]
-        for widget_name in balanced_widgets:
-            if self._widgets[widget_name]:
-                self._widgets[widget_name].connect("value-changed", getattr(self, f"_on_{widget_name}_changed"))
-
-        # Aggressive Profile
-        aggressive_widgets = [
-            "aggressive_upload_speed",
-            "aggressive_download_speed",
-            "aggressive_upload_variance",
-            "aggressive_download_variance",
-            "aggressive_max_connections",
-            "aggressive_burst_probability",
-            "aggressive_idle_probability",
-        ]
-        for widget_name in aggressive_widgets:
-            if self._widgets[widget_name]:
-                self._widgets[widget_name].connect("value-changed", getattr(self, f"_on_{widget_name}_changed"))
-
-        # Swarm Intelligence
+        # Swarm Intelligence (has dependencies - controls adaptation_rate/peer_analysis_depth sensitivity)
         if self._widgets["swarm_intelligence_enabled"]:
             self._widgets["swarm_intelligence_enabled"].connect("toggled", self._on_swarm_intelligence_enabled_toggled)
-
-        if self._widgets["adaptation_rate"]:
-            self._widgets["adaptation_rate"].connect("value-changed", self._on_adaptation_rate_changed)
-
-        if self._widgets["peer_analysis_depth"]:
-            self._widgets["peer_analysis_depth"].connect("value-changed", self._on_peer_analysis_depth_changed)
-
-        # Advanced Settings
-        if self._widgets["client_profile_switching"]:
-            self._widgets["client_profile_switching"].connect("toggled", self._on_client_profile_switching_toggled)
 
         if self._widgets["protocol_compliance_level"]:
             self._widgets["protocol_compliance_level"].connect(
                 "notify::selected", self._on_protocol_compliance_level_changed
             )
-
-        if self._widgets["behavior_randomization"]:
-            self._widgets["behavior_randomization"].connect("toggled", self._on_behavior_randomization_toggled)
 
         self.logger.trace(
             "Advanced Simulation tab signals connected",
@@ -315,121 +435,54 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def save_settings(self):
-        """Save Advanced Simulation settings to configuration"""
-        try:
-            # Get current simulation config
-            simulation_config = getattr(self.app_settings, "simulation", {})
-
-            # Client Behavior Engine Settings
-            client_config = simulation_config.setdefault("client_behavior_engine", {})
-
-            if self._widgets["client_behavior_enabled"]:
-                client_config["enabled"] = self._widgets["client_behavior_enabled"].get_state()
-
-            if self._widgets["primary_client"]:
-                client_config["primary_client"] = self._get_combo_active_text(self._widgets["primary_client"])
-
-            if self._widgets["behavior_variation"]:
-                client_config["behavior_variation"] = self._widgets["behavior_variation"].get_value()
-
-            if self._widgets["switch_client_probability"]:
-                client_config["switch_client_probability"] = self._widgets["switch_client_probability"].get_value()
-
-            # Traffic Pattern Settings
-            traffic_config = simulation_config.setdefault("traffic_patterns", {})
-
-            if self._widgets["traffic_profile"]:
-                traffic_config["profile"] = self._get_combo_active_text(self._widgets["traffic_profile"])
-
-            if self._widgets["realistic_variations"]:
-                traffic_config["realistic_variations"] = self._widgets["realistic_variations"].get_active()
-
-            if self._widgets["time_based_patterns"]:
-                traffic_config["time_based_patterns"] = self._widgets["time_based_patterns"].get_active()
-
-            # Swarm Intelligence Settings
-            swarm_config = simulation_config.setdefault("swarm_intelligence", {})
-
-            if self._widgets["swarm_intelligence_enabled"]:
-                swarm_config["enabled"] = self._widgets["swarm_intelligence_enabled"].get_active()
-
-            if self._widgets["adaptation_rate"]:
-                swarm_config["adaptation_rate"] = self._widgets["adaptation_rate"].get_value()
-
-            if self._widgets["peer_analysis_depth"]:
-                swarm_config["peer_analysis_depth"] = int(self._widgets["peer_analysis_depth"].get_value())
-
-            # Save simulation config back
-            self.app_settings.set("simulation", simulation_config)
-
-            # Update seeding profiles
-            seeding_profiles = getattr(self.app_settings, "seeding_profiles", {})
-
-            # Conservative Profile
-            conservative = seeding_profiles.setdefault("conservative", {})
-            if self._widgets["conservative_upload_speed"]:
-                conservative["upload_limit"] = int(self._widgets["conservative_upload_speed"].get_value())
-            if self._widgets["conservative_download_speed"]:
-                conservative["download_limit"] = int(self._widgets["conservative_download_speed"].get_value())
-            if self._widgets["conservative_max_connections"]:
-                conservative["max_connections"] = int(self._widgets["conservative_max_connections"].get_value())
-
-            # Balanced Profile
-            balanced = seeding_profiles.setdefault("balanced", {})
-            if self._widgets["balanced_upload_speed"]:
-                balanced["upload_limit"] = int(self._widgets["balanced_upload_speed"].get_value())
-            if self._widgets["balanced_download_speed"]:
-                balanced["download_limit"] = int(self._widgets["balanced_download_speed"].get_value())
-            if self._widgets["balanced_max_connections"]:
-                balanced["max_connections"] = int(self._widgets["balanced_max_connections"].get_value())
-
-            # Aggressive Profile
-            aggressive = seeding_profiles.setdefault("aggressive", {})
-            if self._widgets["aggressive_upload_speed"]:
-                aggressive["upload_limit"] = int(self._widgets["aggressive_upload_speed"].get_value())
-            if self._widgets["aggressive_download_speed"]:
-                aggressive["download_limit"] = int(self._widgets["aggressive_download_speed"].get_value())
-            if self._widgets["aggressive_max_connections"]:
-                aggressive["max_connections"] = int(self._widgets["aggressive_max_connections"].get_value())
-
-            # Save seeding profiles back
-            self.app_settings.set("seeding_profiles", seeding_profiles)
-
-            self.logger.trace(
-                "Advanced Simulation settings saved successfully",
-                extra={"class_name": self.__class__.__name__},
-            )
-
-            # Return the settings dict (required by base class)
-            return {"simulation": simulation_config, "seeding_profiles": seeding_profiles}
-
-        except Exception as e:
-            self.logger.error(
-                f"Failed to save Advanced Simulation settings: {e}",
-                extra={"class_name": self.__class__.__name__},
-            )
-            return {}
-
     def _setup_dependencies(self) -> None:
         """Set up dependencies for Simulation tab."""
-        # Enable/disable behavior widgets based on client behavior enabled
+        # Enable/disable ALL simulation widgets based on client behavior enabled
         try:
             if self._widgets.get("client_behavior_enabled"):
                 enabled = self._widgets["client_behavior_enabled"].get_state()
                 behavior_widgets = [
+                    # Client behavior settings
                     "primary_client",
                     "behavior_variation",
                     "switch_client_probability",
                     "client_profile_switching",
                     "protocol_compliance_level",
                     "behavior_randomization",
+                    # Traffic pattern settings
+                    "traffic_profile",
+                    "realistic_variations",
+                    "time_based_patterns",
+                    # Conservative profile widgets
+                    "conservative_upload_speed",
+                    "conservative_download_speed",
+                    "conservative_upload_variance",
+                    "conservative_download_variance",
+                    "conservative_max_connections",
+                    "conservative_burst_probability",
+                    "conservative_idle_probability",
+                    # Balanced profile widgets
+                    "balanced_upload_speed",
+                    "balanced_download_speed",
+                    "balanced_upload_variance",
+                    "balanced_download_variance",
+                    "balanced_max_connections",
+                    "balanced_burst_probability",
+                    "balanced_idle_probability",
+                    # Aggressive profile widgets
+                    "aggressive_upload_speed",
+                    "aggressive_download_speed",
+                    "aggressive_upload_variance",
+                    "aggressive_download_variance",
+                    "aggressive_max_connections",
+                    "aggressive_burst_probability",
+                    "aggressive_idle_probability",
                 ]
                 for widget_name in behavior_widgets:
                     if self._widgets.get(widget_name):
                         self._widgets[widget_name].set_sensitive(enabled)
 
-            # Enable/disable swarm intelligence widgets
+            # Enable/disable swarm intelligence widgets (independent of client_behavior_enabled)
             if self._widgets.get("swarm_intelligence_enabled"):
                 enabled = self._widgets["swarm_intelligence_enabled"].get_active()
                 swarm_widgets = ["adaptation_rate", "peer_analysis_depth"]
@@ -440,40 +493,137 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             self.logger.error(f"Error setting up Simulation tab dependencies: {e}")
 
     def _collect_settings(self) -> Dict[str, Any]:
-        """Collect current settings from Simulation tab widgets."""
-        # Simulation tab has its own save_settings() override that handles saving directly
-        # Return empty dict here to avoid circular call, since save_settings() doesn't use _collect_settings()
-        return {}
+        """Collect current settings from Simulation tab widgets.
 
-    def validate_settings(self) -> Dict[str, Any]:
-        """Validate Advanced Simulation settings"""
-        validation_result: Dict[str, Any] = {
-            "valid": True,
-            "errors": [],
-            "warnings": [],
-        }
+        Returns:
+            Dictionary of setting_key -> value pairs for all widgets
+        """
+        # Collect from WIDGET_MAPPINGS
+        settings = self._collect_mapped_settings()
+
+        try:
+            # Client Behavior Engine Settings
+            if self._widgets.get("client_behavior_enabled"):
+                settings["simulation.client_behavior_engine.enabled"] = self._widgets[
+                    "client_behavior_enabled"
+                ].get_state()
+
+            if self._widgets.get("primary_client"):
+                settings["simulation.client_behavior_engine.primary_client"] = self._get_combo_active_text(
+                    self._widgets["primary_client"]
+                )
+
+            if self._widgets.get("behavior_variation"):
+                settings["simulation.client_behavior_engine.behavior_variation"] = self._widgets[
+                    "behavior_variation"
+                ].get_value()
+
+            if self._widgets.get("switch_client_probability"):
+                settings["simulation.client_behavior_engine.switch_client_probability"] = self._widgets[
+                    "switch_client_probability"
+                ].get_value()
+
+            # Traffic Pattern Settings
+            if self._widgets.get("traffic_profile"):
+                settings["simulation.traffic_patterns.profile"] = self._get_combo_active_text(
+                    self._widgets["traffic_profile"]
+                )
+
+            if self._widgets.get("realistic_variations"):
+                settings["simulation.traffic_patterns.realistic_variations"] = self._widgets[
+                    "realistic_variations"
+                ].get_active()
+
+            if self._widgets.get("time_based_patterns"):
+                settings["simulation.traffic_patterns.time_based_patterns"] = self._widgets[
+                    "time_based_patterns"
+                ].get_active()
+
+            # Swarm Intelligence Settings
+            if self._widgets.get("swarm_intelligence_enabled"):
+                settings["simulation.swarm_intelligence.enabled"] = self._widgets[
+                    "swarm_intelligence_enabled"
+                ].get_active()
+
+            if self._widgets.get("adaptation_rate"):
+                settings["simulation.swarm_intelligence.adaptation_rate"] = self._widgets["adaptation_rate"].get_value()
+
+            if self._widgets.get("peer_analysis_depth"):
+                settings["simulation.swarm_intelligence.peer_analysis_depth"] = int(
+                    self._widgets["peer_analysis_depth"].get_value()
+                )
+
+            # Seeding Profiles - Conservative
+            if self._widgets.get("conservative_upload_speed"):
+                settings["seeding_profiles.conservative.upload_limit"] = int(
+                    self._widgets["conservative_upload_speed"].get_value()
+                )
+            if self._widgets.get("conservative_download_speed"):
+                settings["seeding_profiles.conservative.download_limit"] = int(
+                    self._widgets["conservative_download_speed"].get_value()
+                )
+            if self._widgets.get("conservative_max_connections"):
+                settings["seeding_profiles.conservative.max_connections"] = int(
+                    self._widgets["conservative_max_connections"].get_value()
+                )
+
+            # Seeding Profiles - Balanced
+            if self._widgets.get("balanced_upload_speed"):
+                settings["seeding_profiles.balanced.upload_limit"] = int(
+                    self._widgets["balanced_upload_speed"].get_value()
+                )
+            if self._widgets.get("balanced_download_speed"):
+                settings["seeding_profiles.balanced.download_limit"] = int(
+                    self._widgets["balanced_download_speed"].get_value()
+                )
+            if self._widgets.get("balanced_max_connections"):
+                settings["seeding_profiles.balanced.max_connections"] = int(
+                    self._widgets["balanced_max_connections"].get_value()
+                )
+
+            # Seeding Profiles - Aggressive
+            if self._widgets.get("aggressive_upload_speed"):
+                settings["seeding_profiles.aggressive.upload_limit"] = int(
+                    self._widgets["aggressive_upload_speed"].get_value()
+                )
+            if self._widgets.get("aggressive_download_speed"):
+                settings["seeding_profiles.aggressive.download_limit"] = int(
+                    self._widgets["aggressive_download_speed"].get_value()
+                )
+            if self._widgets.get("aggressive_max_connections"):
+                settings["seeding_profiles.aggressive.max_connections"] = int(
+                    self._widgets["aggressive_max_connections"].get_value()
+                )
+
+            self.logger.trace(f"Collected {len(settings)} settings from Simulation tab")
+
+        except Exception as e:
+            self.logger.error(f"Error collecting Simulation tab settings: {e}")
+
+        return settings
+
+    def _validate_tab_settings(self) -> Dict[str, str]:
+        """Validate Advanced Simulation settings. Returns dict of field_name -> error_message."""
+        errors: Dict[str, str] = {}
 
         try:
             # Validate behavior variation range
-            if self._widgets["behavior_variation"]:
+            if self._widgets.get("behavior_variation"):
                 variation = self._widgets["behavior_variation"].get_value()
                 if variation < 0 or variation > 1:
-                    validation_result["errors"].append("Behavior variation must be between 0.0 and 1.0")
-                    validation_result["valid"] = False
+                    errors["behavior_variation"] = "Behavior variation must be between 0.0 and 1.0"
 
             # Validate switch client probability
-            if self._widgets["switch_client_probability"]:
+            if self._widgets.get("switch_client_probability"):
                 probability = self._widgets["switch_client_probability"].get_value()
                 if probability < 0 or probability > 1:
-                    validation_result["errors"].append("Switch client probability must be between 0.0 and 1.0")
-                    validation_result["valid"] = False
+                    errors["switch_client_probability"] = "Switch client probability must be between 0.0 and 1.0"
 
             # Validate adaptation rate
-            if self._widgets["adaptation_rate"]:
+            if self._widgets.get("adaptation_rate"):
                 rate = self._widgets["adaptation_rate"].get_value()
                 if rate < 0 or rate > 1:
-                    validation_result["errors"].append("Adaptation rate must be between 0.0 and 1.0")
-                    validation_result["valid"] = False
+                    errors["adaptation_rate"] = "Adaptation rate must be between 0.0 and 1.0"
 
             # Validate variance values for all profiles
             variance_widgets = [
@@ -486,13 +636,10 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             ]
 
             for widget_name in variance_widgets:
-                if self._widgets[widget_name]:
+                if self._widgets.get(widget_name):
                     variance = self._widgets[widget_name].get_value()
                     if variance < 0 or variance > 1:
-                        validation_result["errors"].append(
-                            f"{widget_name.replace('_', ' ').title()} must be between 0.0 and 1.0"
-                        )
-                        validation_result["valid"] = False
+                        errors[widget_name] = f"{widget_name.replace('_', ' ').title()} must be between 0.0 and 1.0"
 
             # Validate probability values
             probability_widgets = [
@@ -505,32 +652,28 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             ]
 
             for widget_name in probability_widgets:
-                if self._widgets[widget_name]:
+                if self._widgets.get(widget_name):
                     probability = self._widgets[widget_name].get_value()
                     if probability < 0 or probability > 1:
-                        validation_result["errors"].append(
-                            f"{widget_name.replace('_', ' ').title()} must be between 0.0 and 1.0"
-                        )
-                        validation_result["valid"] = False
+                        errors[widget_name] = f"{widget_name.replace('_', ' ').title()} must be between 0.0 and 1.0"
 
             # Warning for aggressive settings
             if (
-                self._widgets["aggressive_max_connections"]
+                self._widgets.get("aggressive_max_connections")
                 and self._widgets["aggressive_max_connections"].get_value() > 1000
             ):
-                validation_result["warnings"].append(
+                errors["aggressive_max_connections"] = (
                     "Aggressive profile with >1000 connections may cause high resource usage"
                 )
 
         except Exception as e:
-            validation_result["errors"].append(f"Validation error: {str(e)}")
-            validation_result["valid"] = False
+            errors["general"] = f"Validation error: {str(e)}"
             self.logger.error(
                 f"Advanced Simulation settings validation failed: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-        return validation_result
+        return errors
 
     # Helper methods
     def _set_combo_active_text(self, dropdown, text):
@@ -570,15 +713,45 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             f"Client behavior engine enabled: {state}",
             extra={"class_name": self.__class__.__name__},
         )
+        # NOTE: Setting will be saved in batch via _collect_settings()
 
-        # Enable/disable related widgets
+        # Enable/disable ALL simulation-related widgets
         behavior_widgets = [
+            # Client behavior settings
             "primary_client",
             "behavior_variation",
             "switch_client_probability",
             "client_profile_switching",
             "protocol_compliance_level",
             "behavior_randomization",
+            # Traffic pattern settings
+            "traffic_profile",
+            "realistic_variations",
+            "time_based_patterns",
+            # Conservative profile widgets
+            "conservative_upload_speed",
+            "conservative_download_speed",
+            "conservative_upload_variance",
+            "conservative_download_variance",
+            "conservative_max_connections",
+            "conservative_burst_probability",
+            "conservative_idle_probability",
+            # Balanced profile widgets
+            "balanced_upload_speed",
+            "balanced_download_speed",
+            "balanced_upload_variance",
+            "balanced_download_variance",
+            "balanced_max_connections",
+            "balanced_burst_probability",
+            "balanced_idle_probability",
+            # Aggressive profile widgets
+            "aggressive_upload_speed",
+            "aggressive_download_speed",
+            "aggressive_upload_variance",
+            "aggressive_download_variance",
+            "aggressive_max_connections",
+            "aggressive_burst_probability",
+            "aggressive_idle_probability",
         ]
 
         for widget_name in behavior_widgets:
@@ -588,48 +761,18 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _on_primary_client_changed(self, combo_box, _param):
         """Handle primary client changes"""
         client = self._get_combo_active_text(combo_box)
+        # NOTE: Setting will be saved in batch via _collect_settings()
         self.logger.trace(
-            f"Primary client changed to: {client}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_behavior_variation_changed(self, spin_button):
-        """Handle behavior variation changes"""
-        variation = spin_button.get_value()
-        self.logger.trace(
-            f"Behavior variation: {variation}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_switch_client_probability_changed(self, spin_button):
-        """Handle switch client probability changes"""
-        probability = spin_button.get_value()
-        self.logger.trace(
-            f"Switch client probability: {probability}",
+            f"Primary client will change to: {client}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_traffic_profile_changed(self, combo_box, _param):
         """Handle traffic profile changes"""
         profile = self._get_combo_active_text(combo_box)
+        # NOTE: Setting will be saved in batch via _collect_settings()
         self.logger.trace(
-            f"Traffic profile changed to: {profile}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_realistic_variations_toggled(self, check_button):
-        """Handle realistic variations toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(
-            f"Realistic variations: {enabled}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_time_based_patterns_toggled(self, check_button):
-        """Handle time-based patterns toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(
-            f"Time-based patterns: {enabled}",
+            f"Traffic profile will change to: {profile}",
             extra={"class_name": self.__class__.__name__},
         )
 
@@ -640,172 +783,18 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             self._widgets["adaptation_rate"].set_sensitive(enabled)
         if self._widgets["peer_analysis_depth"]:
             self._widgets["peer_analysis_depth"].set_sensitive(enabled)
+        # NOTE: Setting will be saved in batch via _collect_settings()
         self.logger.trace(
-            f"Swarm intelligence enabled: {enabled}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_adaptation_rate_changed(self, spin_button):
-        """Handle adaptation rate changes"""
-        rate = spin_button.get_value()
-        self.logger.trace(f"Adaptation rate: {rate}", extra={"class_name": self.__class__.__name__})
-
-    def _on_peer_analysis_depth_changed(self, spin_button):
-        """Handle peer analysis depth changes"""
-        depth = spin_button.get_value()
-        self.logger.trace(
-            f"Peer analysis depth: {depth}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_client_profile_switching_toggled(self, check_button):
-        """Handle client profile switching toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(
-            f"Client profile switching: {enabled}",
+            f"Swarm intelligence will be {'enabled' if enabled else 'disabled'}",
             extra={"class_name": self.__class__.__name__},
         )
 
     def _on_protocol_compliance_level_changed(self, combo_box, _param):
         """Handle protocol compliance level changes"""
         level = self._get_combo_active_text(combo_box)
+        # NOTE: Setting will be saved in batch via _collect_settings()
         self.logger.trace(
-            f"Protocol compliance level: {level}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_behavior_randomization_toggled(self, check_button):
-        """Handle behavior randomization toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(
-            f"Behavior randomization: {enabled}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    # Dynamic signal handlers for profile settings
-    def _on_conservative_upload_speed_changed(self, spin_button):
-        self.logger.trace(
-            f"Conservative upload speed: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_conservative_download_speed_changed(self, spin_button):
-        self.logger.trace(
-            f"Conservative download speed: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_conservative_upload_variance_changed(self, spin_button):
-        self.logger.trace(
-            f"Conservative upload variance: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_conservative_download_variance_changed(self, spin_button):
-        self.logger.trace(
-            f"Conservative download variance: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_conservative_max_connections_changed(self, spin_button):
-        self.logger.trace(
-            f"Conservative max connections: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_conservative_burst_probability_changed(self, spin_button):
-        self.logger.trace(
-            f"Conservative burst probability: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_conservative_idle_probability_changed(self, spin_button):
-        self.logger.trace(
-            f"Conservative idle probability: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_balanced_upload_speed_changed(self, spin_button):
-        self.logger.trace(
-            f"Balanced upload speed: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_balanced_download_speed_changed(self, spin_button):
-        self.logger.trace(
-            f"Balanced download speed: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_balanced_upload_variance_changed(self, spin_button):
-        self.logger.trace(
-            f"Balanced upload variance: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_balanced_download_variance_changed(self, spin_button):
-        self.logger.trace(
-            f"Balanced download variance: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_balanced_max_connections_changed(self, spin_button):
-        self.logger.trace(
-            f"Balanced max connections: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_balanced_burst_probability_changed(self, spin_button):
-        self.logger.trace(
-            f"Balanced burst probability: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_balanced_idle_probability_changed(self, spin_button):
-        self.logger.trace(
-            f"Balanced idle probability: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_aggressive_upload_speed_changed(self, spin_button):
-        self.logger.trace(
-            f"Aggressive upload speed: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_aggressive_download_speed_changed(self, spin_button):
-        self.logger.trace(
-            f"Aggressive download speed: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_aggressive_upload_variance_changed(self, spin_button):
-        self.logger.trace(
-            f"Aggressive upload variance: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_aggressive_download_variance_changed(self, spin_button):
-        self.logger.trace(
-            f"Aggressive download variance: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_aggressive_max_connections_changed(self, spin_button):
-        self.logger.trace(
-            f"Aggressive max connections: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_aggressive_burst_probability_changed(self, spin_button):
-        self.logger.trace(
-            f"Aggressive burst probability: {spin_button.get_value()}",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def _on_aggressive_idle_probability_changed(self, spin_button):
-        self.logger.trace(
-            f"Aggressive idle probability: {spin_button.get_value()}",
+            f"Protocol compliance level will change to: {level}",
             extra={"class_name": self.__class__.__name__},
         )
 
@@ -830,24 +819,3 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         overlay = gi.repository.Gtk.Overlay()
         self._notification_overlay = overlay
         return overlay
-
-    def handle_model_changed(self, source, data_obj, _data_changed):
-        """Handle model change events."""
-        self.logger.trace(
-            "SimulationTab model changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_attribute_changed(self, source, key, value):
-        """Handle attribute change events."""
-        self.logger.trace(
-            "SimulationTab attribute changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_settings_changed(self, source, data_obj, _data_changed):
-        """Handle settings change events."""
-        self.logger.trace(
-            "SimulationTab settings changed",
-            extra={"class_name": self.__class__.__name__},
-        )

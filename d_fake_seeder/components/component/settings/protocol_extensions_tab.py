@@ -20,6 +20,30 @@ from .base_tab import BaseSettingsTab  # noqa: E402
 class ProtocolExtensionsTab(BaseSettingsTab):
     """Protocol Extensions configuration tab"""
 
+    # Auto-connect simple widgets with WIDGET_MAPPINGS
+    # Note: Most widgets in this tab use batch save via save_settings() method,
+    # only these 3 extension toggles save in real-time
+    WIDGET_MAPPINGS = [
+        {
+            "id": "lt_donthave_check",
+            "name": "lt_donthave",
+            "setting_key": "lt_donthave_enabled",
+            "type": bool,
+        },
+        {
+            "id": "fast_extension_check",
+            "name": "fast_extension",
+            "setting_key": "fast_extension_enabled",
+            "type": bool,
+        },
+        {
+            "id": "ut_holepunch_check",
+            "name": "ut_holepunch",
+            "setting_key": "ut_holepunch_enabled",
+            "type": bool,
+        },
+    ]
+
     @property
     def tab_name(self) -> str:
         """Return the name of this tab."""
@@ -76,21 +100,18 @@ class ProtocolExtensionsTab(BaseSettingsTab):
 
     def _connect_signals(self):
         """Connect Protocol Extensions signals"""
-        # Extension Protocol Enable/Disable
+        # Simple widgets (lt_donthave, fast_extension, ut_holepunch) are now auto-connected via WIDGET_MAPPINGS
+
+        # Extension Protocol Enable/Disable (has dependencies - controls child widget sensitivity)
         if self._widgets["extensions_enabled"]:
             self._widgets["extensions_enabled"].connect("state-set", self._on_extensions_enabled_changed)
 
-        # Individual Extension Toggles
-        extension_toggles = [
-            "ut_metadata",
-            "ut_pex",
-            "lt_donthave",
-            "fast_extension",
-            "ut_holepunch",
-        ]
-        for toggle in extension_toggles:
-            if self._widgets[toggle]:
-                self._widgets[toggle].connect("toggled", getattr(self, f"_on_{toggle}_toggled"))
+        # Individual Extension Toggles (have dependencies - control related widget sensitivity)
+        if self._widgets["ut_metadata"]:
+            self._widgets["ut_metadata"].connect("toggled", self._on_ut_metadata_toggled)
+
+        if self._widgets["ut_pex"]:
+            self._widgets["ut_pex"].connect("toggled", self._on_ut_pex_toggled)
 
         # PEX Settings
         if self._widgets["pex_interval"]:
@@ -175,13 +196,168 @@ class ProtocolExtensionsTab(BaseSettingsTab):
 
     def _setup_dependencies(self) -> None:
         """Set up dependencies between UI elements (implements abstract method)."""
-        # No complex dependencies in this tab
-        pass
+        try:
+            # Set up initial state based on extensions_enabled
+            if self._widgets.get("extensions_enabled"):
+                enabled = self._widgets["extensions_enabled"].get_state()
+                # Control ALL extension widgets based on extensions_enabled state
+                extension_widgets = [
+                    # Extension Protocol toggles
+                    "ut_metadata",
+                    "ut_pex",
+                    "lt_donthave",
+                    "fast_extension",
+                    "ut_holepunch",
+                    # PEX settings
+                    "pex_interval",
+                    "pex_max_peers",
+                    "pex_max_dropped",
+                    "pex_synthetic_peers",
+                    "pex_synthetic_count",
+                    # Metadata settings
+                    "metadata_enabled",
+                    "metadata_piece_size",
+                    "metadata_timeout",
+                    "metadata_synthetic",
+                    # Transport protocol settings
+                    "utp_enabled",
+                    "tcp_fallback",
+                    "connection_timeout",
+                    "keep_alive_interval",
+                    # Advanced extension settings
+                    "nagle_algorithm",
+                    "tcp_keepalive",
+                    "extension_timeout",
+                    "max_extension_msg_size",
+                    # Extension statistics
+                    "track_extension_stats",
+                    "stats_update_interval",
+                    # Security settings
+                    "validate_extensions",
+                    "limit_extension_msgs",
+                    "max_msgs_per_second",
+                ]
+                for widget_name in extension_widgets:
+                    if self._widgets.get(widget_name):
+                        self._widgets[widget_name].set_sensitive(enabled)
+
+            # Set up PEX-specific dependencies (only if extensions are enabled AND ut_pex is enabled)
+            if self._widgets.get("ut_pex"):
+                pex_enabled = self._widgets["ut_pex"].get_active()
+                extensions_enabled = (
+                    self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_state()
+                )
+                pex_widgets = [
+                    "pex_interval",
+                    "pex_max_peers",
+                    "pex_max_dropped",
+                    "pex_synthetic_peers",
+                    "pex_synthetic_count",
+                ]
+                for widget_name in pex_widgets:
+                    if self._widgets.get(widget_name):
+                        self._widgets[widget_name].set_sensitive(extensions_enabled and pex_enabled)
+
+            # Set up metadata-specific dependencies (only if extensions are enabled AND ut_metadata is enabled)
+            if self._widgets.get("ut_metadata"):
+                metadata_enabled = self._widgets["ut_metadata"].get_active()
+                extensions_enabled = (
+                    self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_state()
+                )
+                metadata_widgets = ["metadata_piece_size", "metadata_timeout", "metadata_synthetic"]
+                for widget_name in metadata_widgets:
+                    if self._widgets.get(widget_name):
+                        self._widgets[widget_name].set_sensitive(extensions_enabled and metadata_enabled)
+
+            # Set up PEX synthetic count dependency
+            if self._widgets.get("pex_synthetic_peers") and self._widgets.get("pex_synthetic_count"):
+                synthetic_enabled = self._widgets["pex_synthetic_peers"].get_active()
+                pex_enabled = self._widgets.get("ut_pex") and self._widgets["ut_pex"].get_active()
+                extensions_enabled = (
+                    self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_state()
+                )
+                self._widgets["pex_synthetic_count"].set_sensitive(
+                    extensions_enabled and pex_enabled and synthetic_enabled
+                )
+
+        except Exception as e:
+            self.logger.error(f"Error setting up Protocol Extensions dependencies: {e}")
 
     def _collect_settings(self) -> Dict[str, Any]:
-        """Collect current settings from UI widgets (implements abstract method)."""
-        # Return empty dict - save_settings() method handles the actual saving
-        return {}
+        """Collect current settings from Protocol Extensions tab widgets.
+
+        Returns:
+            Dictionary of setting_key -> value pairs for all widgets
+        """
+        # Collect from WIDGET_MAPPINGS
+        settings = self._collect_mapped_settings()
+
+        # Collect extension protocol settings
+        for widget_name, setting_key in [
+            ("ut_metadata", "protocols.extensions.ut_metadata"),
+            ("ut_pex", "protocols.extensions.ut_pex"),
+            ("lt_donthave", "protocols.extensions.lt_donthave"),
+            ("fast_extension", "protocols.extensions.fast_extension"),
+            ("ut_holepunch", "protocols.extensions.ut_holepunch"),
+        ]:
+            widget = self._widgets.get(widget_name)
+            if widget:
+                settings[setting_key] = widget.get_active()
+
+        # Collect PEX settings
+        for widget_name, setting_key, value_type in [
+            ("pex_interval", "protocols.pex.interval", int),
+            ("pex_max_peers", "protocols.pex.max_peers_per_message", int),
+            ("pex_max_dropped", "protocols.pex.max_dropped_peers", int),
+            ("pex_synthetic_peers", "protocols.pex.generate_synthetic_peers", bool),
+            ("pex_synthetic_count", "protocols.pex.synthetic_peer_count", int),
+        ]:
+            widget = self._widgets.get(widget_name)
+            if widget:
+                if value_type == int:
+                    settings[setting_key] = int(widget.get_value())
+                else:
+                    settings[setting_key] = widget.get_active()
+
+        # Collect Transport settings
+        for widget_name, setting_key, value_type in [
+            ("utp_enabled", "protocols.transport.utp_enabled", bool),
+            ("tcp_fallback", "protocols.transport.tcp_fallback", bool),
+            ("connection_timeout", "protocols.transport.connection_timeout", int),
+            ("keep_alive_interval", "protocols.transport.keep_alive_interval", int),
+            ("nagle_algorithm", "protocols.transport.nagle_algorithm", bool),
+            ("tcp_keepalive", "protocols.transport.tcp_keepalive", bool),
+        ]:
+            widget = self._widgets.get(widget_name)
+            if widget:
+                if value_type == int:
+                    settings[setting_key] = int(widget.get_value())
+                else:
+                    settings[setting_key] = widget.get_active()
+
+        # Collect Extended settings
+        for widget_name, setting_key, value_type in [
+            ("metadata_enabled", "protocols.extended.metadata_enabled", bool),
+            ("metadata_piece_size", "protocols.extended.metadata_piece_size", int),
+            ("metadata_timeout", "protocols.extended.metadata_timeout", int),
+            ("metadata_synthetic", "protocols.extended.metadata_synthetic", bool),
+            ("extension_timeout", "protocols.extended.extension_timeout", int),
+            ("max_extension_msg_size", "protocols.extended.max_extension_msg_size", int),
+            ("track_extension_stats", "protocols.extended.track_extension_stats", bool),
+            ("stats_update_interval", "protocols.extended.stats_update_interval", int),
+            ("validate_extensions", "protocols.extended.validate_extensions", bool),
+            ("limit_extension_msgs", "protocols.extended.limit_extension_msgs", bool),
+            ("max_msgs_per_second", "protocols.extended.max_msgs_per_second", int),
+        ]:
+            widget = self._widgets.get(widget_name)
+            if widget:
+                if value_type == int:
+                    settings[setting_key] = int(widget.get_value())
+                else:
+                    settings[setting_key] = widget.get_active()
+
+        self.logger.trace(f"Collected {len(settings)} settings from Protocol Extensions tab")
+        return settings
 
     def update_view(self, model, torrent, attribute):
         """Update view based on model changes."""
@@ -195,27 +371,6 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         # Translate dropdown items now that we have the model
         # But prevent TranslationMixin from connecting to language-changed signal to avoid loops
         self._language_change_connected = True  # Block TranslationMixin from connecting
-
-    def handle_model_changed(self, source, data_obj, _data_changed):
-        """Handle model change events."""
-        self.logger.trace(
-            "Protocol Extensions tab model changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_attribute_changed(self, source, key, value):
-        """Handle attribute change events."""
-        self.logger.trace(
-            "Protocol Extensions tab attribute changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_settings_changed(self, source, data_obj, _data_changed):
-        """Handle settings change events."""
-        self.logger.trace(
-            "Protocol Extensions tab settings changed",
-            extra={"class_name": self.__class__.__name__},
-        )
 
     def load_settings(self):
         """Load Protocol Extensions settings from configuration"""
@@ -344,209 +499,110 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def save_settings(self):
-        """Save Protocol Extensions settings to configuration"""
-        try:
-            # Get current protocols config
-            protocols_config = getattr(self.app_settings, "protocols", {})
+    # Removed custom save_settings() - now using base class implementation with _collect_settings()
 
-            # Extension Protocol Settings
-            extensions_config = protocols_config.setdefault("extensions", {})
-
-            if self._widgets["ut_metadata"]:
-                extensions_config["ut_metadata"] = self._widgets["ut_metadata"].get_active()
-
-            if self._widgets["ut_pex"]:
-                extensions_config["ut_pex"] = self._widgets["ut_pex"].get_active()
-
-            if self._widgets["lt_donthave"]:
-                extensions_config["lt_donthave"] = self._widgets["lt_donthave"].get_active()
-
-            if self._widgets["fast_extension"]:
-                extensions_config["fast_extension"] = self._widgets["fast_extension"].get_active()
-
-            if self._widgets["ut_holepunch"]:
-                extensions_config["ut_holepunch"] = self._widgets["ut_holepunch"].get_active()
-
-            # PEX Settings
-            pex_config = protocols_config.setdefault("pex", {})
-
-            if self._widgets["pex_interval"]:
-                pex_config["interval"] = int(self._widgets["pex_interval"].get_value())
-
-            if self._widgets["pex_max_peers"]:
-                pex_config["max_peers_per_message"] = int(self._widgets["pex_max_peers"].get_value())
-
-            if self._widgets["pex_max_dropped"]:
-                pex_config["max_dropped_peers"] = int(self._widgets["pex_max_dropped"].get_value())
-
-            if self._widgets["pex_synthetic_peers"]:
-                pex_config["generate_synthetic_peers"] = self._widgets["pex_synthetic_peers"].get_active()
-
-            if self._widgets["pex_synthetic_count"]:
-                pex_config["synthetic_peer_count"] = int(self._widgets["pex_synthetic_count"].get_value())
-
-            # Transport Settings
-            transport_config = protocols_config.setdefault("transport", {})
-
-            if self._widgets["utp_enabled"]:
-                transport_config["utp_enabled"] = self._widgets["utp_enabled"].get_active()
-
-            if self._widgets["tcp_fallback"]:
-                transport_config["tcp_fallback"] = self._widgets["tcp_fallback"].get_active()
-
-            if self._widgets["connection_timeout"]:
-                transport_config["connection_timeout"] = int(self._widgets["connection_timeout"].get_value())
-
-            if self._widgets["keep_alive_interval"]:
-                transport_config["keep_alive_interval"] = int(self._widgets["keep_alive_interval"].get_value())
-
-            if self._widgets["nagle_algorithm"]:
-                transport_config["nagle_algorithm"] = self._widgets["nagle_algorithm"].get_active()
-
-            if self._widgets["tcp_keepalive"]:
-                transport_config["tcp_keepalive"] = self._widgets["tcp_keepalive"].get_active()
-
-            # Extended Settings
-            extended_config = protocols_config.setdefault("extended", {})
-
-            if self._widgets["metadata_enabled"]:
-                extended_config["metadata_enabled"] = self._widgets["metadata_enabled"].get_active()
-
-            if self._widgets["metadata_piece_size"]:
-                extended_config["metadata_piece_size"] = int(self._widgets["metadata_piece_size"].get_value())
-
-            if self._widgets["metadata_timeout"]:
-                extended_config["metadata_timeout"] = int(self._widgets["metadata_timeout"].get_value())
-
-            if self._widgets["metadata_synthetic"]:
-                extended_config["metadata_synthetic"] = self._widgets["metadata_synthetic"].get_active()
-
-            if self._widgets["extension_timeout"]:
-                extended_config["extension_timeout"] = int(self._widgets["extension_timeout"].get_value())
-
-            if self._widgets["max_extension_msg_size"]:
-                extended_config["max_extension_msg_size"] = int(self._widgets["max_extension_msg_size"].get_value())
-
-            if self._widgets["track_extension_stats"]:
-                extended_config["track_extension_stats"] = self._widgets["track_extension_stats"].get_active()
-
-            if self._widgets["stats_update_interval"]:
-                extended_config["stats_update_interval"] = int(self._widgets["stats_update_interval"].get_value())
-
-            if self._widgets["validate_extensions"]:
-                extended_config["validate_extensions"] = self._widgets["validate_extensions"].get_active()
-
-            if self._widgets["limit_extension_msgs"]:
-                extended_config["limit_extension_msgs"] = self._widgets["limit_extension_msgs"].get_active()
-
-            if self._widgets["max_msgs_per_second"]:
-                extended_config["max_msgs_per_second"] = int(self._widgets["max_msgs_per_second"].get_value())
-
-            # Save back to settings
-            self.app_settings.set("protocols", protocols_config)
-
-            self.logger.trace(
-                "Protocol Extensions settings saved successfully",
-                extra={"class_name": self.__class__.__name__},
-            )
-
-            # Return the settings dict (required by base class)
-            return {"protocols": protocols_config}
-
-        except Exception as e:
-            self.logger.error(
-                f"Failed to save Protocol Extensions settings: {e}",
-                extra={"class_name": self.__class__.__name__},
-            )
-            return {}
-
-    def validate_settings(self) -> Dict[str, Any]:
-        """Validate Protocol Extensions settings"""
-        validation_result: Dict[str, Any] = {
-            "valid": True,
-            "errors": [],
-            "warnings": [],
-        }
+    def _validate_tab_settings(self) -> Dict[str, str]:
+        """Validate Protocol Extensions settings. Returns dict of field_name -> error_message."""
+        errors: Dict[str, str] = {}
 
         try:
             # Validate PEX interval
-            if self._widgets["pex_interval"]:
+            if self._widgets.get("pex_interval"):
                 interval = self._widgets["pex_interval"].get_value()
                 if interval < 30:
-                    validation_result["warnings"].append("PEX interval below 30 seconds may cause high network load")
+                    errors["pex_interval"] = "PEX interval below 30 seconds may cause high network load"
                 elif interval > 300:
-                    validation_result["warnings"].append(
-                        "PEX interval above 5 minutes may reduce peer discovery effectiveness"
-                    )
+                    errors["pex_interval"] = "PEX interval above 5 minutes may reduce peer discovery effectiveness"
 
             # Validate metadata piece size
-            if self._widgets["metadata_piece_size"]:
+            if self._widgets.get("metadata_piece_size"):
                 piece_size = self._widgets["metadata_piece_size"].get_value()
                 if piece_size < 1024 or piece_size > 65536:
-                    validation_result["errors"].append("Metadata piece size must be between 1KB and 64KB")
-                    validation_result["valid"] = False
+                    errors["metadata_piece_size"] = "Metadata piece size must be between 1KB and 64KB"
 
             # Validate connection timeout
-            if self._widgets["connection_timeout"]:
+            if self._widgets.get("connection_timeout"):
                 timeout = self._widgets["connection_timeout"].get_value()
                 if timeout < 5:
-                    validation_result["warnings"].append(
-                        "Connection timeout below 5 seconds may cause frequent timeouts"
-                    )
+                    errors["connection_timeout"] = "Connection timeout below 5 seconds may cause frequent timeouts"
                 elif timeout > 120:
-                    validation_result["warnings"].append(
+                    errors["connection_timeout"] = (
                         "Connection timeout above 2 minutes may cause slow connection establishment"
                     )
 
             # Validate extension message size
-            if self._widgets["max_extension_msg_size"]:
+            if self._widgets.get("max_extension_msg_size"):
                 max_size = self._widgets["max_extension_msg_size"].get_value()
                 if max_size < 1024:
-                    validation_result["errors"].append("Maximum extension message size cannot be less than 1KB")
-                    validation_result["valid"] = False
+                    errors["max_extension_msg_size"] = "Maximum extension message size cannot be less than 1KB"
                 elif max_size > 10485760:  # 10MB
-                    validation_result["warnings"].append(
+                    errors["max_extension_msg_size"] = (
                         "Maximum extension message size above 10MB may cause memory issues"
                     )
 
             # Check for conflicting settings
             if (
-                self._widgets["utp_enabled"]
+                self._widgets.get("utp_enabled")
                 and self._widgets["utp_enabled"].get_active()
-                and self._widgets["tcp_fallback"]
+                and self._widgets.get("tcp_fallback")
                 and not self._widgets["tcp_fallback"].get_active()
             ):
-                validation_result["warnings"].append("µTP enabled without TCP fallback may cause connection issues")
+                errors["tcp_fallback"] = "µTP enabled without TCP fallback may cause connection issues"
 
         except Exception as e:
-            validation_result["errors"].append(f"Validation error: {str(e)}")
-            validation_result["valid"] = False
+            errors["general"] = f"Validation error: {str(e)}"
             self.logger.error(
                 f"Protocol Extensions settings validation failed: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-        return validation_result
+        return errors
 
     # Signal handlers
     def _on_extensions_enabled_changed(self, switch, state):
         """Handle overall extensions enable/disable"""
+        # NOTE: Setting will be saved in batch via _collect_settings()
         self.logger.trace(
             f"Extensions enabled changed: {state}",
             extra={"class_name": self.__class__.__name__},
         )
 
-        # Enable/disable all extension-related widgets
+        # Enable/disable ALL extension-related widgets
         extension_widgets = [
+            # Extension Protocol toggles
             "ut_metadata",
             "ut_pex",
             "lt_donthave",
             "fast_extension",
             "ut_holepunch",
+            # PEX settings
             "pex_interval",
             "pex_max_peers",
+            "pex_max_dropped",
+            "pex_synthetic_peers",
+            "pex_synthetic_count",
+            # Metadata settings
             "metadata_enabled",
+            "metadata_piece_size",
+            "metadata_timeout",
+            "metadata_synthetic",
+            # Transport protocol settings
+            "utp_enabled",
+            "tcp_fallback",
+            "connection_timeout",
+            "keep_alive_interval",
+            # Advanced extension settings
+            "nagle_algorithm",
+            "tcp_keepalive",
+            "extension_timeout",
+            "max_extension_msg_size",
+            # Extension statistics
+            "track_extension_stats",
+            "stats_update_interval",
+            # Security settings
+            "validate_extensions",
+            "limit_extension_msgs",
+            "max_msgs_per_second",
         ]
 
         for widget_name in extension_widgets:
@@ -555,7 +611,10 @@ class ProtocolExtensionsTab(BaseSettingsTab):
 
     def _on_ut_metadata_toggled(self, check_button):
         """Handle ut_metadata toggle"""
+        # NOTE: Setting will be saved in batch via _collect_settings()
         enabled = check_button.get_active()
+        # Only enable metadata widgets if extensions are globally enabled
+        extensions_enabled = self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_state()
         # Enable/disable metadata-related widgets
         metadata_widgets = [
             "metadata_piece_size",
@@ -564,12 +623,15 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         ]
         for widget_name in metadata_widgets:
             if self._widgets.get(widget_name):
-                self._widgets[widget_name].set_sensitive(enabled)
+                self._widgets[widget_name].set_sensitive(extensions_enabled and enabled)
         self.logger.trace(f"ut_metadata: {enabled}", extra={"class_name": self.__class__.__name__})
 
     def _on_ut_pex_toggled(self, check_button):
         """Handle ut_pex toggle"""
+        # NOTE: Setting will be saved in batch via _collect_settings()
         enabled = check_button.get_active()
+        # Only enable PEX widgets if extensions are globally enabled
+        extensions_enabled = self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_state()
         # Enable/disable PEX-related widgets
         pex_widgets = [
             "pex_interval",
@@ -580,23 +642,8 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         ]
         for widget_name in pex_widgets:
             if self._widgets.get(widget_name):
-                self._widgets[widget_name].set_sensitive(enabled)
+                self._widgets[widget_name].set_sensitive(extensions_enabled and enabled)
         self.logger.trace(f"ut_pex: {enabled}", extra={"class_name": self.__class__.__name__})
-
-    def _on_lt_donthave_toggled(self, check_button):
-        """Handle lt_donthave toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(f"lt_donthave: {enabled}", extra={"class_name": self.__class__.__name__})
-
-    def _on_fast_extension_toggled(self, check_button):
-        """Handle fast_extension toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(f"fast_extension: {enabled}", extra={"class_name": self.__class__.__name__})
-
-    def _on_ut_holepunch_toggled(self, check_button):
-        """Handle ut_holepunch toggle"""
-        enabled = check_button.get_active()
-        self.logger.trace(f"ut_holepunch: {enabled}", extra={"class_name": self.__class__.__name__})
 
     def _on_pex_interval_changed(self, spin_button):
         """Handle PEX interval changes"""
@@ -619,8 +666,11 @@ class ProtocolExtensionsTab(BaseSettingsTab):
     def _on_pex_synthetic_peers_toggled(self, check_button):
         """Handle PEX synthetic peers toggle"""
         enabled = check_button.get_active()
+        # Only enable synthetic count if extensions AND ut_pex AND synthetic_peers are all enabled
+        extensions_enabled = self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_state()
+        pex_enabled = self._widgets.get("ut_pex") and self._widgets["ut_pex"].get_active()
         if self._widgets["pex_synthetic_count"]:
-            self._widgets["pex_synthetic_count"].set_sensitive(enabled)
+            self._widgets["pex_synthetic_count"].set_sensitive(extensions_enabled and pex_enabled and enabled)
         self.logger.trace(
             f"PEX synthetic peers: {enabled}",
             extra={"class_name": self.__class__.__name__},

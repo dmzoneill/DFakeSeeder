@@ -164,6 +164,18 @@ columnview listitem > * {
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Notebook Tab Styles (Deluge-style chunky tabs) */
+notebook > header > tabs > tab {
+    padding: 8px 16px;
+    min-height: 36px;
+    font-size: 13px;
+}
+
+notebook > header > tabs > tab label {
+    font-size: 13px;
+    font-weight: normal;
+}
+
 /* Sidebar Filter Styles (Deluge-style) */
 .sidebar {
     min-width: 200px;
