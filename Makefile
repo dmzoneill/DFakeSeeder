@@ -24,7 +24,7 @@ RPM_FILENAME := $(rpm_package_name)-$(package_version)
 .PHONY: docker docker-hub docker-ghcr xhosts
 .PHONY: flatpak
 .PHONY: pypi-build pypi-test-upload pypi-upload pypi-check
-.PHONY: translate-build translate-extract translate-clean
+.PHONY: translate-build translate-extract translate-clean translate-check translate-workflow
 .PHONY: valgrind xprod-wmclass
 
 # ============================================================================
@@ -255,7 +255,7 @@ run: ui-build
 	}
 	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
 
-run-debug: ui-build
+run-debug: translate-check ui-build
 	@echo "Running application with Pipenv and debug output..."
 	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
 	-rm -rf ~/.cache/gnome-shell/
@@ -266,7 +266,7 @@ run-debug: ui-build
 	}
 	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
 
-run-debug-venv: ui-build
+run-debug-venv: translate-check ui-build
 	@echo "Running application with Pipenv and debug output..."
 	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
 	-rm -rf ~/.cache/gnome-shell/
@@ -771,6 +771,70 @@ pypi-check:
 # Translation Management
 # ============================================================================
 
+# Check if translations need updating (compares POT file line count)
+translate-check:
+	@if [ -f d_fake_seeder/components/locale/dfakeseeder.pot ]; then \
+		CURRENT_LINES=$$(wc -l < d_fake_seeder/components/locale/dfakeseeder.pot); \
+		if [ -f .pot_linecount ]; then \
+			SAVED_LINES=$$(cat .pot_linecount); \
+			if [ "$$CURRENT_LINES" != "$$SAVED_LINES" ]; then \
+				echo "🔄 POT file changed ($$SAVED_LINES → $$CURRENT_LINES lines)"; \
+				echo "   Running full translation workflow..."; \
+				$(MAKE) translate-workflow; \
+			else \
+				echo "✅ Translations up to date ($$CURRENT_LINES lines)"; \
+			fi; \
+		else \
+			echo "$$CURRENT_LINES" > .pot_linecount; \
+			echo "📝 Saved initial POT line count: $$CURRENT_LINES"; \
+		fi; \
+	else \
+		echo "⚠️  POT file not found, running initial extraction..."; \
+		$(MAKE) translate-workflow; \
+	fi
+
+# Full translation workflow: extract → sync → identify fallbacks → validate
+translate-workflow:
+	@echo ""
+	@echo "🌐 ================================================================"
+	@echo "   DFakeSeeder Translation Workflow"
+	@echo "   ================================================================"
+	@echo ""
+	@echo "📝 Step 1/7: Extracting translatable strings..."
+	@python3 tools/translation_build_manager.py extract
+	@echo ""
+	@echo "🔄 Step 2/7: Syncing extracted strings to JSON..."
+	@python3 tools/translation_build_manager.py sync
+	@echo ""
+	@echo "🔑 Step 3/7: Syncing missing keys across languages..."
+	@python3 tools/translation_build_manager.py sync-keys
+	@echo ""
+	@echo "🔍 Step 4/7: Identifying English fallbacks..."
+	@python3 tools/translation_build_manager.py identify-fallbacks
+	@echo ""
+	@echo "⏭️  Step 5/7: Skipping auto-translation (manual step)"
+	@echo "   ℹ️  Fallback files created in tools/translations/*_fallbacks_to_translate.json"
+	@echo "   ℹ️  To translate manually, edit these files and run:"
+	@echo "      python3 tools/translation_build_manager.py update-from-fallbacks"
+	@echo ""
+	@echo "📊 Step 6/7: Analyzing translation coverage..."
+	@python3 tools/translation_build_manager.py analyze
+	@echo ""
+	@echo "✅ Step 7/7: Validating translations..."
+	@python3 tools/translation_build_manager.py validate
+	@echo ""
+	@echo "🧹 Cleaning up temporary files..."
+	@python3 tools/translation_build_manager.py cleanup
+	@echo ""
+	@if [ -f d_fake_seeder/components/locale/dfakeseeder.pot ]; then \
+		LINES=$$(wc -l < d_fake_seeder/components/locale/dfakeseeder.pot); \
+		echo "$$LINES" > .pot_linecount; \
+		echo "💾 Saved POT line count: $$LINES"; \
+	fi
+	@echo ""
+	@echo "✅ Translation workflow complete!"
+	@echo ""
+
 translate-build:
 	@echo "Building translations using translation manager..."
 	python3 tools/translation_build_manager.py build
@@ -778,12 +842,12 @@ translate-build:
 
 translate-extract:
 	@echo "Extracting translatable strings..."
-	python3 tools/translation_build_manager.py --extract
+	python3 tools/translation_build_manager.py extract
 	@echo "✅ Strings extracted!"
 
 translate-clean:
 	@echo "Cleaning translation files..."
-	python3 tools/translation_build_manager.py --clean
+	python3 tools/translation_build_manager.py cleanup
 	@echo "✅ Translation files cleaned!"
 
 # ============================================================================

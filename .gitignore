@@ -36,3 +36,4 @@ snippets/**
 # Translation build artifacts
 tools/translations/*.backup
 tools/translations/*_fallbacks_to_translate.json
+.pot_linecount
