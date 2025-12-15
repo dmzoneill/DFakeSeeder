@@ -246,3 +246,170 @@ notebook > header > tabs > tab label {
     opacity: 0.9;
 }
 
+
+/* ===================================================================
+   Paned Separator Styling - Enhanced Visibility and Usability
+   ================================================================ */
+
+/* Base separator styling for all paned widgets */
+paned > separator {
+    min-width: 5px;
+    min-height: 5px;
+    background-color: @theme_bg_color;
+    background-image: linear-gradient(
+        to bottom,
+        shade(@theme_bg_color, 0.9),
+        shade(@theme_bg_color, 1.1)
+    );
+    border-left: 1px solid shade(@theme_bg_color, 0.8);
+    border-right: 1px solid shade(@theme_bg_color, 0.8);
+}
+
+/* Horizontal paned separator (for sidebar split) */
+paned.horizontal > separator {
+    min-width: 6px;
+    background-image: linear-gradient(
+        to right,
+        shade(@theme_bg_color, 0.85),
+        shade(@theme_bg_color, 0.95),
+        shade(@theme_bg_color, 0.85)
+    );
+    border-left: 1px solid shade(@theme_bg_color, 0.75);
+    border-right: 1px solid shade(@theme_bg_color, 0.75);
+}
+
+/* Vertical paned separator (for top/bottom split) */
+paned.vertical > separator {
+    min-height: 6px;
+    background-image: linear-gradient(
+        to bottom,
+        shade(@theme_bg_color, 0.85),
+        shade(@theme_bg_color, 0.95),
+        shade(@theme_bg_color, 0.85)
+    );
+    border-top: 1px solid shade(@theme_bg_color, 0.75);
+    border-bottom: 1px solid shade(@theme_bg_color, 0.75);
+}
+
+/* Hover effect for better discoverability */
+paned > separator:hover {
+    background-color: shade(@theme_bg_color, 0.95);
+    border-color: shade(@theme_selected_bg_color, 0.7);
+}
+
+/* Visual grip/handle indicator in the middle of separator */
+paned.horizontal > separator:hover {
+    background-image: linear-gradient(
+        to right,
+        shade(@theme_bg_color, 0.85),
+        shade(@theme_selected_bg_color, 0.3) 45%,
+        shade(@theme_selected_bg_color, 0.5) 50%,
+        shade(@theme_selected_bg_color, 0.3) 55%,
+        shade(@theme_bg_color, 0.85)
+    );
+}
+
+paned.vertical > separator:hover {
+    background-image: linear-gradient(
+        to bottom,
+        shade(@theme_bg_color, 0.85),
+        shade(@theme_selected_bg_color, 0.3) 45%,
+        shade(@theme_selected_bg_color, 0.5) 50%,
+        shade(@theme_selected_bg_color, 0.3) 55%,
+        shade(@theme_bg_color, 0.85)
+    );
+}
+
+/* Active (dragging) state */
+paned > separator:active {
+    background-color: @theme_selected_bg_color;
+}
+
+/* Enhanced cursor indication */
+paned.horizontal > separator {
+    cursor: col-resize;
+}
+
+paned.vertical > separator {
+    cursor: row-resize;
+}
+
+/* Alternative approach: Add subtle dots/grip pattern using background */
+paned.horizontal > separator::after {
+    content: '';
+    display: block;
+    width: 2px;
+    height: 20px;
+    margin: auto;
+    background-image: radial-gradient(
+        circle,
+        shade(@theme_fg_color, 1.5) 1px,
+        transparent 1px
+    );
+    background-size: 2px 4px;
+    background-repeat: repeat-y;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+}
+
+paned.vertical > separator::after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    margin: auto;
+    background-image: radial-gradient(
+        circle,
+        shade(@theme_fg_color, 1.5) 1px,
+        transparent 1px
+    );
+    background-size: 4px 2px;
+    background-repeat: repeat-x;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+}
+
+paned > separator:hover::after {
+    opacity: 0.6;
+}
+
+/* ===================================================================
+   Notebook Tab Scrolling - Enhanced when tabs overflow
+   ================================================================ */
+
+/* Style the scroll arrows that appear when notebook is scrollable */
+notebook > header > tabs > arrow {
+    min-width: 20px;
+    min-height: 20px;
+    padding: 4px;
+    background-color: @theme_bg_color;
+    border: 1px solid shade(@theme_bg_color, 0.8);
+    border-radius: 3px;
+}
+
+notebook > header > tabs > arrow:hover {
+    background-color: shade(@theme_bg_color, 0.95);
+    border-color: @theme_selected_bg_color;
+}
+
+notebook > header > tabs > arrow:active {
+    background-color: shade(@theme_bg_color, 0.9);
+}
+
+notebook > header > tabs > arrow:disabled {
+    opacity: 0.3;
+}
+
+/* Ensure tabs container scrolls smoothly */
+notebook > header > tabs {
+    transition: margin 0.2s ease-in-out;
+}
+
+/* Add subtle shadow when tabs are scrolled */
+notebook > header.left > tabs:not(:first-child) {
+    box-shadow: inset 0 10px 10px -10px rgba(0, 0, 0, 0.2);
+}
+
+notebook > header.left > tabs:not(:last-child) {
+    box-shadow: inset 0 -10px 10px -10px rgba(0, 0, 0, 0.2);
+}
