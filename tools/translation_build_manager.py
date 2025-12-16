@@ -1163,6 +1163,75 @@ msgstr ""
 
         return True
 
+    def translate_fallbacks_with_claude(self, target_lang: Optional[str] = None) -> bool:
+        """
+        Translate fallback files using Claude Code Agent.
+
+        This method creates translation prompts and expects Claude Code to process them
+        via the Task tool, generating translated JSON files.
+        """
+        print("🤖 TRANSLATING FALLBACKS WITH CLAUDE CODE AGENT")
+        print("=" * 70)
+
+        languages = [target_lang] if target_lang else [lang for lang in LANGUAGES.keys() if lang != "en"]
+        tasks_created = 0
+
+        for lang_code in languages:
+            if lang_code not in LANGUAGES:
+                continue
+
+            lang_config = LANGUAGES[lang_code]
+            fallback_file = self.translations_dir / f"{lang_code}_fallbacks_to_translate.json"
+
+            if not fallback_file.exists():
+                continue
+
+            # Load fallback file
+            try:
+                with open(fallback_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+            except Exception as e:
+                print(f"❌ {lang_config['name']} ({lang_code}): Error reading file - {e}")
+                continue
+
+            # Count translatable strings
+            translatable_keys = [k for k in data.keys() if not k.startswith("_")]
+            if not translatable_keys:
+                continue
+
+            print(f"\n📝 {lang_config['name']} ({lang_code}): {len(translatable_keys)} strings")
+
+            # Create translation request
+            translation_request = {
+                "lang_code": lang_code,
+                "lang_name": lang_config["name"],
+                "string_count": len(translatable_keys),
+                "input_file": str(fallback_file),
+                "output_file": str(self.translations_dir / f"{lang_code}_translated.json"),
+                "strings": {k: data[k] for k in translatable_keys},
+            }
+
+            # Save request file
+            request_file = self.translations_dir / f"{lang_code}_translation_request.json"
+            with open(request_file, "w", encoding="utf-8") as f:
+                json.dump(translation_request, f, ensure_ascii=False, indent=2)
+
+            print(f"   💾 Created: {request_file.name}")
+            tasks_created += 1
+
+        if tasks_created == 0:
+            print("\n✅ No translation tasks needed")
+            return True
+
+        print("\n" + "=" * 70)
+        print(f"✅ Created {tasks_created} translation request files")
+        print("\n📋 NEXT STEPS FOR CLAUDE CODE:")
+        print("   The Makefile will invoke Claude Code Agent to process these")
+        print("   translation requests using the Task tool.")
+        print("=" * 70)
+
+        return True
+
     def update_translations_from_fallbacks(self, target_lang: Optional[str] = None) -> bool:
         """Update translations from edited fallback files"""
         print("🔄 UPDATING TRANSLATIONS FROM FALLBACK FILES")
@@ -1641,7 +1710,8 @@ Commands:
   enhance               Enhance translations (add missing strings/attributes)
   analyze               Analyze translation coverage and quality
   identify-fallbacks    Identify English fallbacks that need translation
-  update-from-fallbacks Update translations from edited fallback files
+  translate-fallbacks   Translate fallbacks using Claude Code Agent (auto-translation)
+  update-from-fallbacks Update translations from edited/translated fallback files
   sync-keys             Sync missing keys from English template to all language files
   workflow              Complete fallback translation workflow (identify → edit → update)
   comprehensive         Full extraction + sync + build cycle for comprehensive coverage
@@ -1669,6 +1739,7 @@ Examples:
             "analyze",
             "comprehensive",
             "identify-fallbacks",
+            "translate-fallbacks",
             "update-from-fallbacks",
             "sync-keys",
             "workflow",
@@ -1711,6 +1782,8 @@ Examples:
         success = manager.comprehensive_extraction_and_build(args.lang)
     elif args.command == "identify-fallbacks":
         success = manager.identify_fallbacks_for_translation(args.lang)
+    elif args.command == "translate-fallbacks":
+        success = manager.translate_fallbacks_with_claude(args.lang)
     elif args.command == "update-from-fallbacks":
         success = manager.update_translations_from_fallbacks(args.lang)
     elif args.command == "sync-keys":

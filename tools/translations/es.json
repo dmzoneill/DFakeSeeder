@@ -756,7 +756,7 @@
   "filepath": "Ruta del Archivo",
   "files_tab": "Pestaña Archivos",
   "handshake_complete": "Saludo Completo",
-  "id": "#",
+  "id": "id",
   "leechers": "Descargadores",
   "log_tab": "Pestaña Registro",
   "lt_donthave (Piece Availability)": "lt_donthave (Disponibilidad de Piezas)",

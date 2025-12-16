@@ -812,10 +812,12 @@ translate-workflow:
 	@echo "🔍 Step 4/7: Identifying English fallbacks..."
 	@python3 tools/translation_build_manager.py identify-fallbacks
 	@echo ""
-	@echo "⏭️  Step 5/7: Skipping auto-translation (manual step)"
-	@echo "   ℹ️  Fallback files created in tools/translations/*_fallbacks_to_translate.json"
-	@echo "   ℹ️  To translate manually, edit these files and run:"
-	@echo "      python3 tools/translation_build_manager.py update-from-fallbacks"
+	@echo "🤖 Step 5/7: Creating translation requests for Claude..."
+	@python3 tools/translation_build_manager.py translate-fallbacks
+	@echo ""
+	@echo "⚠️  NOTE: Translation requests created but not yet processed"
+	@echo "   Translation processing requires Claude Code Agent integration"
+	@echo "   Fallback files remain in tools/translations/ for manual translation if needed"
 	@echo ""
 	@echo "📊 Step 6/7: Analyzing translation coverage..."
 	@python3 tools/translation_build_manager.py analyze
