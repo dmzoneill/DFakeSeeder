@@ -977,6 +977,9 @@ msgstr "Ẩn Cửa sổ Chính"
 msgid "Hide to system tray when window is minimized"
 msgstr "Ẩn vào khay hệ thống khi cửa sổ được thu nhỏ"
 
+msgid "High"
+msgstr "Cao"
+
 msgid "High Priority"
 msgstr "Ưu tiên cao"
 
@@ -1126,6 +1129,9 @@ msgstr "Ghi vào tệp"
 
 msgid "Log-Normal"
 msgstr "Log-Chuẩn"
+
+msgid "Low"
+msgstr "Thấp"
 
 msgid "Low Priority"
 msgstr "Ưu tiên thấp"
@@ -1301,14 +1307,17 @@ msgstr "Không có tùy chọn có thể chỉnh sửa cho torrent này."
 msgid "None"
 msgstr "Không có"
 
+msgid "Normal"
+msgstr "Bình thường"
+
 msgid "Normal Priority"
 msgstr "Ưu tiên bình thường"
 
-msgid "Note: Choosing \\\\"
-msgstr "Lưu ý: Chọn \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Số lượng ngang hàng để phân tích mẫu hành vi"

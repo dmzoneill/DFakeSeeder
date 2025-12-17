@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "ハンドシェイクタイムアウト (秒):",
   "Hide Main Window": "メインウィンドウを非表示",
   "Hide to system tray when window is minimized": "ウィンドウが最小化されたときにシステムトレイに隠す",
+  "High": "高",
   "High Priority": "高優先度",
   "Hindi": "ヒンディー語",
   "How often to announce to trackers (60-7200 seconds)": "トラッカーにアナウンスする頻度 (60-7200秒)",
@@ -369,6 +370,7 @@
   "Log Level:": "ログレベル:",
   "Log to file": "ファイルにログ",
   "Log-Normal": "対数正規",
+  "Low": "低",
   "Low Priority": "低優先度",
   "Max Connections:": "最大接続数:",
   "Max Dropped Peers:": "最大ドロップピア数:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "トレント未選択",
   "No editable options available for this torrent.": "このトレントには編集可能なオプションがありません。",
   "None": "なし",
+  "Normal": "通常",
   "Normal Priority": "通常優先度",
-  "Note: Choosing \\": "注意：選択 \\",
-  "Note: Choosing \\\\": "注意：選択 \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "注意：「ティック速度」再配分を選択すると、大数の法則により、トラッカーに平均値が表示される場合があります。トラッカーのアナウンス間で複数の再配分が発生し、個々のトレントの速度が時間とともに均一化されます。不均一なトラッカー統計には、「アナウンス間隔」再配分モードを使用してください。",
   "Number of peers to analyze for behavior patterns": "動作パターン分析用ピア数",
   "Number of peers to request from tracker": "トラッカーから要求するピア数",
   "Number of synthetic peers to generate": "生成する合成ピア数",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ 詳細設定 - 注意して変更してください。誤った値はパフォーマンスや安定性に影響する可能性があります。",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Web UIはアプリケーションのリモート制御を可能にします。強力な認証を使用してください。"
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Web UIはアプリケーションのリモート制御を可能にします。強力な認証を使用してください。",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

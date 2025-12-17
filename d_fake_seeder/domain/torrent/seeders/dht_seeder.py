@@ -147,7 +147,7 @@ class DHTSeeder(BaseSeeder):
                     self.last_announce_time = current_time
 
                 # Wait before next check
-                await asyncio.sleep(60)  # Check every minute
+                await asyncio.sleep(self._get_check_interval())
 
             except asyncio.CancelledError:
                 break
@@ -156,7 +156,7 @@ class DHTSeeder(BaseSeeder):
                     f"DHT announce loop error: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                await asyncio.sleep(60)
+                await asyncio.sleep(self._get_announce_sleep())
 
     async def _announce_to_dht(self):
         """Announce this torrent to the DHT network"""

@@ -977,6 +977,9 @@ msgstr "Folaigh Príomhfhuinneog"
 msgid "Hide to system tray when window is minimized"
 msgstr "Folaigh go tráidire an chórais nuair a íoslaghdaítear an fhuinneog"
 
+msgid "High"
+msgstr "Ard"
+
 msgid "High Priority"
 msgstr "Tosaíocht Ard"
 
@@ -1126,6 +1129,9 @@ msgstr "Logáil chuig comhad"
 
 msgid "Log-Normal"
 msgstr "Log-Gnáth"
+
+msgid "Low"
+msgstr "Íseal"
 
 msgid "Low Priority"
 msgstr "Tosaíocht Íseal"
@@ -1301,14 +1307,17 @@ msgstr "Níl roghanna ineagarthóireachta ar fáil don torrent seo."
 msgid "None"
 msgstr "Dada"
 
+msgid "Normal"
+msgstr "Gnáth"
+
 msgid "Normal Priority"
 msgstr "Gnáth-Thosaíocht"
 
-msgid "Note: Choosing \\\\"
-msgstr "Nóta: Ag roghnú \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Líon na bpiaraí le hanailísiú le haghaidh patrúin iompair"

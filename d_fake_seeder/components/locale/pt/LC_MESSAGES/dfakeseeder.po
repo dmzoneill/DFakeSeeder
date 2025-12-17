@@ -977,6 +977,9 @@ msgstr "Ocultar Janela Principal"
 msgid "Hide to system tray when window is minimized"
 msgstr "Ocultar na bandeja sistema quando janela minimizada"
 
+msgid "High"
+msgstr "Alto"
+
 msgid "High Priority"
 msgstr "Prioridade Alta"
 
@@ -1126,6 +1129,9 @@ msgstr "Log para arquivo"
 
 msgid "Log-Normal"
 msgstr "Log-Normal"
+
+msgid "Low"
+msgstr "Baixo"
 
 msgid "Low Priority"
 msgstr "Prioridade Baixa"
@@ -1301,14 +1307,17 @@ msgstr "Nenhuma opção editável disponível para este torrent."
 msgid "None"
 msgstr "Nenhum"
 
+msgid "Normal"
+msgstr "Normal"
+
 msgid "Normal Priority"
 msgstr "Prioridade Normal"
 
-msgid "Note: Choosing \\\\"
-msgstr "Nota: Escolhendo \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Número de peers para analisar padrões de comportamento"

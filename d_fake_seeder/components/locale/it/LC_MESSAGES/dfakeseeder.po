@@ -977,6 +977,9 @@ msgstr "Nascondi Finestra Principale"
 msgid "Hide to system tray when window is minimized"
 msgstr "Nascondi nel vassoio sistema quando finestra minimizzata"
 
+msgid "High"
+msgstr "Alto"
+
 msgid "High Priority"
 msgstr "Priorità Alta"
 
@@ -1126,6 +1129,9 @@ msgstr "Log su file"
 
 msgid "Log-Normal"
 msgstr "Log-Normale"
+
+msgid "Low"
+msgstr "Basso"
 
 msgid "Low Priority"
 msgstr "Priorità Bassa"
@@ -1301,14 +1307,17 @@ msgstr "Nessuna opzione modificabile disponibile per questo torrent."
 msgid "None"
 msgstr "Nessuno"
 
+msgid "Normal"
+msgstr "Normale"
+
 msgid "Normal Priority"
 msgstr "Priorità Normale"
 
-msgid "Note: Choosing \\\\"
-msgstr "Nota: Scegliendo \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Numero di peer da analizzare per pattern comportamentali"

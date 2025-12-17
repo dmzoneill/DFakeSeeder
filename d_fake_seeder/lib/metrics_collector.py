@@ -170,7 +170,7 @@ class MetricsCollector:
         """Collect CPU usage metrics."""
         try:
             cpu_times = self.process.cpu_times()
-            cpu_percent = self.process.cpu_percent(interval=0.1)
+            cpu_percent = self.process.cpu_percent(interval=self._get_cpu_sample_interval())
 
             return {
                 "cpu_percent": cpu_percent,

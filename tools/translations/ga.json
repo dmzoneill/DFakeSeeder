@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "Teorainn ama croitheadh láimhe (soicindí):",
   "Hide Main Window": "Folaigh Príomhfhuinneog",
   "Hide to system tray when window is minimized": "Folaigh go tráidire an chórais nuair a íoslaghdaítear an fhuinneog",
+  "High": "Ard",
   "High Priority": "Tosaíocht Ard",
   "Hindi": "Hiondúis",
   "How often to announce to trackers (60-7200 seconds)": "Cé chomh minic le fógairt do lorgairí (60-7200 soicind)",
@@ -369,6 +370,7 @@
   "Log Level:": "Leibhéal Loga:",
   "Log to file": "Logáil chuig comhad",
   "Log-Normal": "Log-Gnáth",
+  "Low": "Íseal",
   "Low Priority": "Tosaíocht Íseal",
   "Max Connections:": "Uasmhéid Ceangail:",
   "Max Dropped Peers:": "Uasmhéid Piaraí Titithe:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "Níl aon Torrent Roghnaithe",
   "No editable options available for this torrent.": "Níl roghanna ineagarthóireachta ar fáil don torrent seo.",
   "None": "Dada",
+  "Normal": "Gnáth",
   "Normal Priority": "Gnáth-Thosaíocht",
-  "Note: Choosing \\": "Nóta: Ag roghnú \\",
-  "Note: Choosing \\\\": "Nóta: Ag roghnú \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "Nóta: D'fhéadfadh luachanna meánaithe a bheith le feiceáil ar an rianaitheoir mar gheall ar dhlí na n-uimhreacha móra má roghnaítear athdháileadh \"Luas tic\". Tarlaíonn athdháiltí iolracha idir fógraí rianaitheora, rud a fhágann go gcothromóidh luasanna torrent aonair le himeacht ama. Le haghaidh staitisticí rianaitheora neamh-aonfhoirmeacha, úsáid mód athdháilte \"Eatramh Fógra\".",
   "Number of peers to analyze for behavior patterns": "Líon na bpiaraí le hanailísiú le haghaidh patrúin iompair",
   "Number of peers to request from tracker": "Líon na bpiaraí le hiarraidh ón lorgaire",
   "Number of synthetic peers to generate": "Líon na bpiaraí sintéiseacha le giniúint",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Socruithe ardleibhéil - athraigh le hairdeall. D'fhéadfadh luachanna mícheart difear a dhéanamh d'fheidhmíocht nó do chobhsaíocht.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Ceadaíonn Comhéadan Gréasáin cianchúram an fheidhmchláir. Úsáid fíordheimhniú láidir."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Ceadaíonn Comhéadan Gréasáin cianchúram an fheidhmchláir. Úsáid fíordheimhniú láidir.",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

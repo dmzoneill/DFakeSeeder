@@ -977,6 +977,9 @@ msgstr "Sembunyikan Jendela Utama"
 msgid "Hide to system tray when window is minimized"
 msgstr "Sembunyikan ke system tray saat jendela diminimalkan"
 
+msgid "High"
+msgstr "Tinggi"
+
 msgid "High Priority"
 msgstr "Prioritas Tinggi"
 
@@ -1126,6 +1129,9 @@ msgstr "Log ke file"
 
 msgid "Log-Normal"
 msgstr "Log-Normal"
+
+msgid "Low"
+msgstr "Rendah"
 
 msgid "Low Priority"
 msgstr "Prioritas Rendah"
@@ -1301,14 +1307,17 @@ msgstr "Tidak ada opsi yang dapat diedit untuk torrent ini."
 msgid "None"
 msgstr "Tidak Ada"
 
+msgid "Normal"
+msgstr "Normal"
+
 msgid "Normal Priority"
 msgstr "Prioritas Normal"
 
-msgid "Note: Choosing \\\\"
-msgstr "Catatan: Memilih \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Jumlah peer untuk dianalisis pola perilaku"

@@ -181,7 +181,7 @@ class UTPManager:
                     f"µTP listen error: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(self._get_poll_interval())
 
     async def _route_packet(self, data: bytes, addr: Tuple[str, int]):
         """

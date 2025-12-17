@@ -132,7 +132,7 @@ class TorrentFolderWatcher:
         if self.observer and self.is_running:
             try:
                 self.observer.stop()
-                self.observer.join(timeout=5.0)
+                self.observer.join(timeout=self._get_join_timeout())
                 self.is_running = False
                 logger.info(
                     "Stopped watching torrent folder",
@@ -196,7 +196,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
 
         if event.src_path.lower().endswith(".torrent"):
             # Small delay to ensure file is fully written
-            time.sleep(0.5)
+            time.sleep(self._get_poll_interval())
             self.process_torrent_file(event.src_path)
 
     def on_moved(self, event):
@@ -206,7 +206,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
 
         if event.dest_path.lower().endswith(".torrent"):
             # Small delay to ensure file is fully written
-            time.sleep(0.5)
+            time.sleep(self._get_poll_interval())
             self.process_torrent_file(event.dest_path)
 
     def process_torrent_file(self, file_path):

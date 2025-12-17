@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "핸드셰이크 타임아웃 (초):",
   "Hide Main Window": "메인 창 숨기기",
   "Hide to system tray when window is minimized": "창이 최소화되면 시스템 트레이로 숨기기",
+  "High": "높음",
   "High Priority": "높은 우선순위",
   "Hindi": "힌디어",
   "How often to announce to trackers (60-7200 seconds)": "트래커에 알림 빈도 (60-7200초)",
@@ -369,6 +370,7 @@
   "Log Level:": "로그 레벨:",
   "Log to file": "파일에 로그",
   "Log-Normal": "로그 정규",
+  "Low": "낮음",
   "Low Priority": "낮은 우선순위",
   "Max Connections:": "최대 연결:",
   "Max Dropped Peers:": "최대 중단된 피어:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "선택된 토렌트 없음",
   "No editable options available for this torrent.": "이 토렌트에 사용할 수 있는 편집 가능한 옵션이 없습니다.",
   "None": "없음",
+  "Normal": "보통",
   "Normal Priority": "보통 우선순위",
-  "Note: Choosing \\": "참고: 선택 \\",
-  "Note: Choosing \\\\": "참고: 선택 \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "참고: \"틱 속도\" 재분배를 선택하면 큰 수의 법칙으로 인해 트래커에 평균값이 나타날 수 있습니다. 트래커 공지 사이에 여러 번의 재분배가 발생하여 개별 토렌트 속도가 시간이 지남에 따라 균형을 이룹니다. 균일하지 않은 트래커 통계의 경우 \"공지 간격\" 재분배 모드를 사용하세요.",
   "Number of peers to analyze for behavior patterns": "동작 패턴 분석을 위한 피어 수",
   "Number of peers to request from tracker": "트래커에서 요청할 피어 수",
   "Number of synthetic peers to generate": "생성할 합성 피어 수",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ 고급 설정 - 주의하여 수정하세요. 잘못된 값은 성능이나 안정성에 영향을 줄 수 있습니다.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ 웹 UI는 애플리케이션의 원격 제어를 허용합니다. 강력한 인증을 사용하세요."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ 웹 UI는 애플리케이션의 원격 제어를 허용합니다. 강력한 인증을 사용하세요.",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

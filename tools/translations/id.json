@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "Batas waktu jabat tangan (detik):",
   "Hide Main Window": "Sembunyikan Jendela Utama",
   "Hide to system tray when window is minimized": "Sembunyikan ke system tray saat jendela diminimalkan",
+  "High": "Tinggi",
   "High Priority": "Prioritas Tinggi",
   "Hindi": "Hindi",
   "How often to announce to trackers (60-7200 seconds)": "Seberapa sering mengumumkan ke tracker (60-7200 detik)",
@@ -369,6 +370,7 @@
   "Log Level:": "Tingkat Log:",
   "Log to file": "Log ke file",
   "Log-Normal": "Log-Normal",
+  "Low": "Rendah",
   "Low Priority": "Prioritas Rendah",
   "Max Connections:": "Koneksi Maks:",
   "Max Dropped Peers:": "Peer Terputus Maks:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "Tidak Ada Torrent Dipilih",
   "No editable options available for this torrent.": "Tidak ada opsi yang dapat diedit untuk torrent ini.",
   "None": "Tidak Ada",
+  "Normal": "Normal",
   "Normal Priority": "Prioritas Normal",
-  "Note: Choosing \\": "Catatan: Memilih \\",
-  "Note: Choosing \\\\": "Catatan: Memilih \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "Catatan: Memilih redistribusi \"Kecepatan tick\" dapat menghasilkan nilai rata-rata yang muncul di tracker karena hukum bilangan besar. Beberapa redistribusi terjadi antara pengumuman tracker, menyebabkan kecepatan torrent individu menyeimbang seiring waktu. Untuk statistik tracker yang tidak seragam, gunakan mode redistribusi \"Interval Pengumuman\".",
   "Number of peers to analyze for behavior patterns": "Jumlah peer untuk dianalisis pola perilaku",
   "Number of peers to request from tracker": "Jumlah peer untuk diminta dari tracker",
   "Number of synthetic peers to generate": "Jumlah peer sintetis untuk dibuat",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Pengaturan lanjutan - ubah dengan hati-hati. Nilai yang salah dapat memengaruhi kinerja atau stabilitas.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ UI Web memungkinkan kontrol jarak jauh aplikasi. Gunakan autentikasi yang kuat."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ UI Web memungkinkan kontrol jarak jauh aplikasi. Gunakan autentikasi yang kuat.",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

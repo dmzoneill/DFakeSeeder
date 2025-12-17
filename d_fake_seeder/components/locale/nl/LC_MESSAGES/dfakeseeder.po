@@ -977,6 +977,9 @@ msgstr "Verberg Hoofdvenster"
 msgid "Hide to system tray when window is minimized"
 msgstr "Verbergen in systeemvak wanneer venster geminimaliseerd is"
 
+msgid "High"
+msgstr "Hoog"
+
 msgid "High Priority"
 msgstr "Hoge prioriteit"
 
@@ -1126,6 +1129,9 @@ msgstr "Naar bestand loggen"
 
 msgid "Log-Normal"
 msgstr "Log-Normaal"
+
+msgid "Low"
+msgstr "Laag"
 
 msgid "Low Priority"
 msgstr "Lage prioriteit"
@@ -1301,14 +1307,17 @@ msgstr "Geen bewerkbare opties beschikbaar voor deze torrent."
 msgid "None"
 msgstr "Geen"
 
+msgid "Normal"
+msgstr "Normaal"
+
 msgid "Normal Priority"
 msgstr "Normale prioriteit"
 
-msgid "Note: Choosing \\\\"
-msgstr "Opmerking: Kiezen \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Aantal peers om te analyseren voor gedragspatronen"

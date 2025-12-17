@@ -977,6 +977,9 @@ msgstr "Ana Pencereyi Gizle"
 msgid "Hide to system tray when window is minimized"
 msgstr "Pencere küçültüldüğünde sistem tepsisine gizle"
 
+msgid "High"
+msgstr "Yüksek"
+
 msgid "High Priority"
 msgstr "Yüksek Öncelik"
 
@@ -1126,6 +1129,9 @@ msgstr "Dosyaya günlüğe kaydet"
 
 msgid "Log-Normal"
 msgstr "Log-Normal"
+
+msgid "Low"
+msgstr "Düşük"
 
 msgid "Low Priority"
 msgstr "Düşük Öncelik"
@@ -1301,14 +1307,17 @@ msgstr "Bu torrent için düzenlenebilir seçenek yok."
 msgid "None"
 msgstr "Yok"
 
+msgid "Normal"
+msgstr "Normal"
+
 msgid "Normal Priority"
 msgstr "Normal Öncelik"
 
-msgid "Note: Choosing \\\\"
-msgstr "Not: Seçim \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Davranış kalıpları için analiz edilecek eş sayısı"

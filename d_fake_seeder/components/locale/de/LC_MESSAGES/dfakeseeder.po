@@ -977,6 +977,9 @@ msgstr "Hauptfenster Ausblenden"
 msgid "Hide to system tray when window is minimized"
 msgstr "In Systemleiste ausblenden wenn Fenster minimiert"
 
+msgid "High"
+msgstr "Hoch"
+
 msgid "High Priority"
 msgstr "Hohe Priorität"
 
@@ -1126,6 +1129,9 @@ msgstr "In Datei protokollieren"
 
 msgid "Log-Normal"
 msgstr "Log-Normal"
+
+msgid "Low"
+msgstr "Niedrig"
 
 msgid "Low Priority"
 msgstr "Niedrige Priorität"
@@ -1301,14 +1307,17 @@ msgstr "Keine bearbeitbaren Optionen für diesen Torrent verfügbar."
 msgid "None"
 msgstr "Keine"
 
+msgid "Normal"
+msgstr "Normal"
+
 msgid "Normal Priority"
 msgstr "Normale Priorität"
 
-msgid "Note: Choosing \\\\"
-msgstr "Hinweis: Wählen \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Anzahl der Peers für Verhaltensmuster-Analyse"

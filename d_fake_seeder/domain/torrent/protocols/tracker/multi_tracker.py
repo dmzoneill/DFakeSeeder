@@ -435,7 +435,7 @@ class MultiTrackerManager:
             # Perform announce
             await seeder.start()
             # Note: Real implementation would wait for announce response
-            await asyncio.sleep(0.1)  # Simulate announce delay
+            await asyncio.sleep(self._get_announce_delay())  # Configurable announce delay
 
             # For now, simulate success (real implementation would check actual response)
             response_time = time.time() - start_time

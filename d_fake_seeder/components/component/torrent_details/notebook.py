@@ -602,11 +602,38 @@ class TorrentDetailsNotebook(Component):
             torrent: Selected torrent
         """
         try:
+            # Disconnect from previous torrent's notify signal
+            if hasattr(self, "_torrent_notify_handler") and self._torrent_notify_handler:
+                try:
+                    if self._current_torrent:
+                        self._current_torrent.disconnect(self._torrent_notify_handler)
+                except Exception:
+                    pass
+                self._torrent_notify_handler = None
+
+            # Connect to new torrent's notify signal for property changes
+            if torrent:
+                self._torrent_notify_handler = torrent.connect("notify", self._on_torrent_property_changed)
+
             # Always update tabs - let the individual tabs handle initialization
             self.update_all_tabs(torrent)
             self._startup_selection_processed = True  # Mark as processed
         except Exception as e:
             logger.error(f"Error handling model selection changed: {e}")
+
+    def _on_torrent_property_changed(self, torrent, pspec):
+        """Handle torrent property changes and refresh tabs."""
+        try:
+            property_name = pspec.name
+            # Notify tabs about attribute changes
+            for tab in self.tabs:
+                try:
+                    if hasattr(tab, "on_torrent_data_changed"):
+                        tab.on_torrent_data_changed(torrent, property_name)
+                except Exception as e:
+                    logger.trace(f"Error notifying tab of property change: {e}")
+        except Exception as e:
+            logger.trace(f"Error handling torrent property change: {e}")
 
     def update_connection_counts(self) -> None:
         """Update connection counts (called by connection components)."""

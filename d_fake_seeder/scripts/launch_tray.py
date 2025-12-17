@@ -108,7 +108,7 @@ class TrayLauncher:
             )
 
             # Wait a moment to see if it starts successfully
-            time.sleep(1)
+            time.sleep(self._get_startup_delay())
 
             if self.process.poll() is None:
                 # Process is still running, wait for it to complete
@@ -188,7 +188,7 @@ class TrayLauncher:
             try:
                 self.process.terminate()
                 # Give it time to terminate gracefully
-                time.sleep(2)
+                time.sleep(self._get_retry_delay())
                 if self.process.poll() is None:
                     self.process.kill()
             except Exception as e:

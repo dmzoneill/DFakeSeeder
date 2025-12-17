@@ -191,7 +191,7 @@ class UDPSeeder(BaseSeeder):
                             b"leechers": leechers,
                             b"seeders": seeders,
                         }
-                        self.update_interval = self.info[b"interval"]
+                        self.update_interval = self._apply_announce_jitter(self.info[b"interval"])
                     return True
                 except socket.timeout:
                     # Update tracker model with timeout failure

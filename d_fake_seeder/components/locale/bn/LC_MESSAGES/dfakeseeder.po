@@ -977,6 +977,9 @@ msgstr "প্রধান উইন্ডো লুকান"
 msgid "Hide to system tray when window is minimized"
 msgstr "উইন্ডো ছোট করা হলে সিস্টেম ট্রেতে লুকান"
 
+msgid "High"
+msgstr "উচ্চ"
+
 msgid "High Priority"
 msgstr "উচ্চ অগ্রাধিকার"
 
@@ -1126,6 +1129,9 @@ msgstr "ফাইলে লগ করুন"
 
 msgid "Log-Normal"
 msgstr "লগ-নরমাল"
+
+msgid "Low"
+msgstr "কম"
 
 msgid "Low Priority"
 msgstr "নিম্ন অগ্রাধিকার"
@@ -1301,14 +1307,17 @@ msgstr "এই টরেন্টের জন্য কোন সম্পা�
 msgid "None"
 msgstr "কিছুই নয়"
 
+msgid "Normal"
+msgstr "স্বাভাবিক"
+
 msgid "Normal Priority"
 msgstr "স্বাভাবিক অগ্রাধিকার"
 
-msgid "Note: Choosing \\\\"
-msgstr "দ্রষ্টব্য: নির্বাচন \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "আচরণ প্যাটার্ন বিশ্লেষণের জন্য পিয়ার সংখ্যা"

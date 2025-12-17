@@ -977,6 +977,9 @@ msgstr "Скрыть Главное Окно"
 msgid "Hide to system tray when window is minimized"
 msgstr "Скрывать в системный трей при сворачивании окна"
 
+msgid "High"
+msgstr "Высокий"
+
 msgid "High Priority"
 msgstr "Высокий приоритет"
 
@@ -1126,6 +1129,9 @@ msgstr "Логировать в файл"
 
 msgid "Log-Normal"
 msgstr "Лог-нормальное"
+
+msgid "Low"
+msgstr "Низкий"
 
 msgid "Low Priority"
 msgstr "Низкий приоритет"
@@ -1301,14 +1307,17 @@ msgstr "Нет редактируемых опций для этого торр�
 msgid "None"
 msgstr "Нет"
 
+msgid "Normal"
+msgstr "Обычный"
+
 msgid "Normal Priority"
 msgstr "Обычный приоритет"
 
-msgid "Note: Choosing \\\\"
-msgstr "Примечание: Выбор \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Количество пиров для анализа поведенческих шаблонов"

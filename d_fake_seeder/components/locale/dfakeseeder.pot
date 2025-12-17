@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DFakeSeeder 1.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/username/dfakeseeder/issues\n"
-"POT-Creation-Date: 2025-12-15 22:34+0000\n"
+"POT-Creation-Date: 2025-12-17 21:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,26 +23,26 @@ msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:84
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/sidebar.py:114
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:348
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:398
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:200
 msgid "Active"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/toolbar.py:599
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1338
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1522
 msgid "Add"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1336
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1520
 msgid "Add Tracker"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:162
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:158
 msgid "Add Tracker..."
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:111
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:352
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:402
 msgid "Added"
 msgstr ""
 
@@ -74,7 +74,7 @@ msgid "Am Interested"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:78
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:343
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:393
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:195
 msgid "Announce Interval"
 msgstr ""
@@ -85,7 +85,7 @@ msgid "Auto Detect"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:114
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:350
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:400
 msgid "Availability"
 msgstr ""
 
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Balanced"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:172
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:168
 msgid "Bottom"
 msgstr ""
 
@@ -106,13 +106,13 @@ msgid "Bytes Uploaded"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/toolbar.py:598
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1237
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1275
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1337
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1373
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1503
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1537
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1573
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1421
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1459
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1521
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1557
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1687
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1721
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1757
 msgid "Cancel"
 msgstr ""
 
@@ -126,18 +126,18 @@ msgstr ""
 msgid "Client"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:242
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:238
 msgid "Columns"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:98
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:329
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:379
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:181
 msgid "Comment"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:112
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:353
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:403
 msgid "Completed"
 msgstr ""
 
@@ -158,23 +158,23 @@ msgstr ""
 msgid "Conservative"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:144
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:140
 msgid "Copy"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:141
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:137
 msgid "Copy Info Hash"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:142
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:138
 msgid "Copy Magnet Link"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:140
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:136
 msgid "Copy Name"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:143
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:139
 msgid "Copy Tracker URL"
 msgstr ""
 
@@ -184,13 +184,13 @@ msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:96
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:97
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:328
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:378
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:180
 msgid "Created"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:99
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:330
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:380
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:182
 msgid "Created By"
 msgstr ""
@@ -200,16 +200,16 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/view.py:194
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/view.py:270
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/view.py:200
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/view.py:279
 msgid "D' Fake Seeder"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:187
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:183
 msgid "Disable Sequential Download"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:182
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:178
 msgid "Disable Super Seeding"
 msgstr ""
 
@@ -217,7 +217,7 @@ msgstr ""
 msgid "Disconnected from DFakeSeeder"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:171
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:167
 msgid "Down"
 msgstr ""
 
@@ -227,7 +227,7 @@ msgid "Down Speed"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:85
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:359
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:409
 msgid "Download Limit"
 msgstr ""
 
@@ -236,12 +236,12 @@ msgid "Download Rate"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:75
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:340
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:390
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:192
 msgid "Download Speed"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1279
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1463
 msgid "Download limit (KB/s, 0 = unlimited):"
 msgstr ""
 
@@ -257,23 +257,23 @@ msgid "Downloading"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:107
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:355
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:405
 msgid "ETA"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1372
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1556
 msgid "Edit Tracker"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:163
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:159
 msgid "Edit Tracker..."
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:189
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:185
 msgid "Enable Sequential Download"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:184
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:180
 msgid "Enable Super Seeding"
 msgstr ""
 
@@ -288,7 +288,7 @@ msgid "Failure Reason"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:80
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:325
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:375
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/details_tab.py:125
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:177
 msgid "File Path"
@@ -298,21 +298,21 @@ msgstr ""
 msgid "Flags"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:134
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:130
 msgid "Force Complete"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:130
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:126
 msgid "Force Recheck"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:89
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:127
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:363
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:123
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:413
 msgid "Force Start"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/view.py:276
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/view.py:285
 msgid "Github - D' Fake Seeder"
 msgstr ""
 
@@ -326,12 +326,12 @@ msgstr ""
 msgid "Hide Main Window"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:148
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:144
 msgid "High Priority"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:66
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:333
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:383
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/details_tab.py:121
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:185
 msgid "ID"
@@ -342,11 +342,11 @@ msgid "IP Address"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:113
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:354
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:404
 msgid "Label"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1541
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1725
 msgid "Label:"
 msgstr ""
 
@@ -365,13 +365,13 @@ msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:77
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:225
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:342
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:392
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/trackers_tab.py:300
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:194
 msgid "Leechers"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:150
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:146
 msgid "Low Priority"
 msgstr ""
 
@@ -381,13 +381,13 @@ msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:67
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:204
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:324
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:374
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/details_tab.py:119
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:176
 msgid "Name"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1507
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1691
 msgid "New name:"
 msgstr ""
 
@@ -396,7 +396,7 @@ msgid "Next Announce"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:79
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:344
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:394
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:196
 msgid "Next Update"
 msgstr ""
@@ -405,20 +405,20 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:393
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:443
 msgid "No editable options available for this torrent."
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:149
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:145
 msgid "Normal Priority"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1238
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1276
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1422
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1460
 msgid "OK"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/view.py:146
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/view.py:150
 msgid "Overlay Notification"
 msgstr ""
 
@@ -426,7 +426,7 @@ msgstr ""
 msgid "Path"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:122
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:118
 msgid "Pause"
 msgstr ""
 
@@ -456,14 +456,14 @@ msgid "Peers"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:100
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:331
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:381
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:183
 msgid "Piece Length"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:101
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:102
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:332
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:382
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:184
 msgid "Pieces"
 msgstr ""
@@ -486,30 +486,30 @@ msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:108
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:207
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:151
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:356
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:147
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:406
 msgid "Priority"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:115
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:351
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:401
 msgid "Private"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:68
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:141
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:206
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:327
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:377
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/details_tab.py:133
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:179
 msgid "Progress"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:192
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:188
 msgid "Properties"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:173
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:169
 msgid "Queue"
 msgstr ""
 
@@ -523,45 +523,45 @@ msgid "Quit DFakeSeeder"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:94
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:349
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:399
 msgid "Ratio"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:198
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1656
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1691
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:194
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1840
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1875
 msgid "Remove"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:196
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:192
 msgid "Remove Torrent"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:197
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:193
 msgid "Remove Torrent and Data"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1688
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1872
 msgid "Remove Torrent and Data?"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1654
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1838
 msgid "Remove Torrent?"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:164
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:160
 msgid "Remove Tracker..."
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1504
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1688
 msgid "Rename"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1502
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1686
 msgid "Rename Torrent"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:176
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:172
 msgid "Rename..."
 msgstr ""
 
@@ -573,11 +573,11 @@ msgstr ""
 msgid "Requests Sent"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:157
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:153
 msgid "Reset to Global Limits"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:124
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:120
 msgid "Resume"
 msgstr ""
 
@@ -586,7 +586,7 @@ msgstr ""
 msgid "Resume All Torrents"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1374
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1558
 msgid "Save"
 msgstr ""
 
@@ -595,7 +595,7 @@ msgid "Seed"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:76
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:341
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:391
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/trackers_tab.py:299
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:193
 msgid "Seeders"
@@ -614,7 +614,7 @@ msgstr ""
 msgid "Seeds"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1574
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1758
 msgid "Select"
 msgstr ""
 
@@ -623,59 +623,59 @@ msgid "Select torrent"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:87
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:361
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:411
 msgid "Sequential Download"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:70
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:335
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:385
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:187
 msgid "Session Downloaded"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:71
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:336
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:386
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:188
 msgid "Session Uploaded"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1538
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1722
 msgid "Set"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1274
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1458
 msgid "Set Download Limit"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:156
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:152
 msgid "Set Download Limit..."
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1536
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1720
 msgid "Set Label"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:177
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:173
 msgid "Set Label..."
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1569
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1753
 msgid "Set Location"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:178
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:174
 msgid "Set Location..."
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:136
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:132
 msgid "Set Random Progress"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1236
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1420
 msgid "Set Upload Limit"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:155
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:151
 msgid "Set Upload Limit..."
 msgstr ""
 
@@ -686,13 +686,13 @@ msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:91
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:205
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:334
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:384
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:186
 msgid "Size"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:82
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:346
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:396
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:198
 msgid "Small Torrent Limit"
 msgstr ""
@@ -701,7 +701,7 @@ msgstr ""
 msgid "Speed Control"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:158
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:154
 msgid "Speed Limits"
 msgstr ""
 
@@ -716,25 +716,25 @@ msgstr ""
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:163
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:184
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:220
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:357
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:407
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/trackers_tab.py:298
 msgid "Status"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:88
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:362
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:412
 msgid "Super Seeding"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1691
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1875
 msgid "The .torrent file will be DELETED."
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1656
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1840
 msgid "The .torrent file will be kept."
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/view.py:281
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/view.py:290
 msgid ""
 "The name \"D' Fake Seeder\" is a playful nod to the Irish English accent. In "
 "Irish pronunciation, the \"th\" sound in \"the\" is often rendered as a hard "
@@ -745,7 +745,7 @@ msgid ""
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:81
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:345
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:395
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:197
 msgid "Threshold"
 msgstr ""
@@ -755,7 +755,7 @@ msgstr ""
 msgid "Tier"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:169
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:165
 msgid "Top"
 msgstr ""
 
@@ -768,39 +768,39 @@ msgid "Torrents"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:72
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:337
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:387
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:189
 msgid "Total Downloaded"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:69
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:326
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:376
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/details_tab.py:129
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:178
 msgid "Total Size"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:73
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:338
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:388
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:190
 msgid "Total Uploaded"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:110
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:125
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:358
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:408
 msgid "Tracker"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1341
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1377
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1525
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1561
 msgid "Tracker URL:"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/sidebar.py:151
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/sidebar.py:395
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/sidebar.py:439
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:165
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:161
 msgid "Trackers"
 msgstr ""
 
@@ -813,7 +813,7 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:170
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:166
 msgid "Up"
 msgstr ""
 
@@ -822,12 +822,12 @@ msgstr ""
 msgid "Up Speed"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:129
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:125
 msgid "Update Tracker"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:86
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:360
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:410
 msgid "Upload Limit"
 msgstr ""
 
@@ -836,12 +836,12 @@ msgid "Upload Rate"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:74
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:339
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:389
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:191
 msgid "Upload Speed"
 msgstr ""
 
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1241
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrents.py:1425
 msgid "Upload limit (KB/s, 0 = unlimited):"
 msgstr ""
 
@@ -851,7 +851,7 @@ msgid "Uploaded"
 msgstr ""
 
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/lib/util/column_translations.py:83
-#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:347
+#: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/options_tab.py:397
 #: /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/component/torrent_details/status_tab.py:199
 msgid "Uploading"
 msgstr ""

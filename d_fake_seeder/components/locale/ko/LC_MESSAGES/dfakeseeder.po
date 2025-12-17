@@ -977,6 +977,9 @@ msgstr "메인 창 숨기기"
 msgid "Hide to system tray when window is minimized"
 msgstr "창이 최소화되면 시스템 트레이로 숨기기"
 
+msgid "High"
+msgstr "높음"
+
 msgid "High Priority"
 msgstr "높은 우선순위"
 
@@ -1126,6 +1129,9 @@ msgstr "파일에 로그"
 
 msgid "Log-Normal"
 msgstr "로그 정규"
+
+msgid "Low"
+msgstr "낮음"
 
 msgid "Low Priority"
 msgstr "낮은 우선순위"
@@ -1301,14 +1307,17 @@ msgstr "이 토렌트에 사용할 수 있는 편집 가능한 옵션이 없습�
 msgid "None"
 msgstr "없음"
 
+msgid "Normal"
+msgstr "보통"
+
 msgid "Normal Priority"
 msgstr "보통 우선순위"
 
-msgid "Note: Choosing \\\\"
-msgstr "참고: 선택 \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "동작 패턴 분석을 위한 피어 수"

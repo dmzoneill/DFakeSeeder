@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "हैंडशेक टाइमआउट (सेकंड):",
   "Hide Main Window": "मुख्य विंडो छुपाएं",
   "Hide to system tray when window is minimized": "विंडो छोटी करने पर सिस्टम ट्रे में छुपाएं",
+  "High": "उच्च",
   "High Priority": "उच्च प्राथमिकता",
   "Hindi": "हिंदी",
   "How often to announce to trackers (60-7200 seconds)": "ट्रैकर्स को कितनी बार घोषणा करें (60-7200 सेकंड)",
@@ -369,6 +370,7 @@
   "Log Level:": "लॉग स्तर:",
   "Log to file": "फ़ाइल में लॉग करें",
   "Log-Normal": "लॉग-नॉर्मल",
+  "Low": "कम",
   "Low Priority": "निम्न प्राथमिकता",
   "Max Connections:": "अधिकतम कनेक्शन:",
   "Max Dropped Peers:": "अधिकतम छोड़े गए पीयर्स:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "कोई टॉरेंट चयनित नहीं",
   "No editable options available for this torrent.": "इस टॉरेंट के लिए कोई संपादन योग्य विकल्प उपलब्ध नहीं।",
   "None": "कोई नहीं",
+  "Normal": "सामान्य",
   "Normal Priority": "सामान्य प्राथमिकता",
-  "Note: Choosing \\": "नोट: चुनना \\",
-  "Note: Choosing \\\\": "नोट: चुनना \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "नोट: \"टिक स्पीड\" पुनर्वितरण चुनने से बड़ी संख्या के नियम के कारण ट्रैकर पर औसत मान दिखाई दे सकते हैं। ट्रैकर घोषणाओं के बीच कई पुनर्वितरण होते हैं, जिससे समय के साथ व्यक्तिगत टोरेंट गति संतुलित होती है। गैर-समान ट्रैकर आंकड़ों के लिए, \"घोषणा अंतराल\" पुनर्वितरण मोड का उपयोग करें।",
   "Number of peers to analyze for behavior patterns": "व्यवहार पैटर्न के लिए विश्लेषण करने वाले पीयर्स की संख्या",
   "Number of peers to request from tracker": "ट्रैकर से अनुरोध करने वाले पीअर्स की संख्या",
   "Number of synthetic peers to generate": "जेनरेट करने के लिए सिंथेटिक पीयर्स की संख्या",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ उन्नत सेटिंग्स - सावधानी से संशोधित करें। गलत मूल्य प्रदर्शन या स्थिरता को प्रभावित कर सकते हैं।",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ वेब UI एप्लिकेशन के रिमोट कंट्रोल की अनुमति देता है। मजबूत प्रमाणीकरण का उपयोग करें।"
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ वेब UI एप्लिकेशन के रिमोट कंट्रोल की अनुमति देता है। मजबूत प्रमाणीकरण का उपयोग करें।",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

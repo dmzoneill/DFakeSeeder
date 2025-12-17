@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "Timeout handshake (sekundy):",
   "Hide Main Window": "Ukryj Główne Okno",
   "Hide to system tray when window is minimized": "Ukryj w zasobniku systemowym gdy okno jest zminimalizowane",
+  "High": "Wysoki",
   "High Priority": "Wysoki Priorytet",
   "Hindi": "Hindi",
   "How often to announce to trackers (60-7200 seconds)": "Jak często ogłaszać się trackerom (60-7200 sekund)",
@@ -369,6 +370,7 @@
   "Log Level:": "Poziom logowania:",
   "Log to file": "Loguj do pliku",
   "Log-Normal": "Log-normalny",
+  "Low": "Niski",
   "Low Priority": "Niski Priorytet",
   "Max Connections:": "Maks. połączeń:",
   "Max Dropped Peers:": "Max porzuconych peerów:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "Nie wybrano torrenta",
   "No editable options available for this torrent.": "Brak edytowalnych opcji dla tego torrenta.",
   "None": "Brak",
+  "Normal": "Normalny",
   "Normal Priority": "Normalny Priorytet",
-  "Note: Choosing \\": "Uwaga: Wybierając \\",
-  "Note: Choosing \\\\": "Uwaga: Wybierając \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "Uwaga: Wybór redystrybucji \"Szybkość ticka\" może skutkować uśrednionymi wartościami pojawiającymi się na trackerze z powodu prawa wielkich liczb. Pomiędzy ogłoszeniami trackera występuje wiele redystrybucji, co powoduje, że prędkości poszczególnych torrentów wyrównują się z czasem. Dla niejednolitych statystyk trackera użyj trybu redystrybucji \"Interwał ogłoszeń\".",
   "Number of peers to analyze for behavior patterns": "Liczba peerów do analizy wzorców zachowania",
   "Number of peers to request from tracker": "Liczba peerów do żądania od trackera",
   "Number of synthetic peers to generate": "Liczba syntetycznych peerów do wygenerowania",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Ustawienia zaawansowane - modyfikuj ostrożnie. Nieprawidłowe wartości mogą wpłynąć na wydajność lub stabilność.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Interfejs WWW umożliwia zdalne sterowanie aplikacją. Używaj silnego uwierzytelnienia."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Interfejs WWW umożliwia zdalne sterowanie aplikacją. Używaj silnego uwierzytelnienia.",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

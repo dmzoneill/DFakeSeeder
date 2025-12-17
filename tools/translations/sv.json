@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "Handskaknings timeout (sekunder):",
   "Hide Main Window": "Dölj Huvudfönster",
   "Hide to system tray when window is minimized": "Dölj i systemfältet när fönstret minimeras",
+  "High": "Hög",
   "High Priority": "Hög prioritet",
   "Hindi": "Hindi",
   "How often to announce to trackers (60-7200 seconds)": "Hur ofta annonsera till spårare (60-7200 sekunder)",
@@ -369,6 +370,7 @@
   "Log Level:": "Loggnivå:",
   "Log to file": "Logga till fil",
   "Log-Normal": "Log-Normal",
+  "Low": "Låg",
   "Low Priority": "Låg prioritet",
   "Max Connections:": "Max anslutningar:",
   "Max Dropped Peers:": "Max tappade peers:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "Ingen Torrent Vald",
   "No editable options available for this torrent.": "Inga redigerbara alternativ tillgängliga för denna torrent.",
   "None": "Ingen",
+  "Normal": "Normal",
   "Normal Priority": "Normal prioritet",
-  "Note: Choosing \\": "Notera: Välja \\",
-  "Note: Choosing \\\\": "Notera: Välja \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "Obs: Att välja \"Tick-hastighet\" omfördelning kan resultera i genomsnittsvärden som visas på trackern på grund av stora talens lag. Flera omfördelningar sker mellan tracker-annonseringar, vilket gör att individuella torrent-hastigheter balanseras ut över tid. För ojämn tracker-statistik, använd \"Annonseringsintervall\" omfördelningsläge.",
   "Number of peers to analyze for behavior patterns": "Antal peers att analysera för beteendemönster",
   "Number of peers to request from tracker": "Antal peers att begära från spårare",
   "Number of synthetic peers to generate": "Antal syntetiska peers att generera",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Avancerade inställningar - modifiera försiktigt. Felaktiga värden kan påverka prestanda eller stabilitet.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Webb-UI tillåter fjärrkontroll av applikationen. Använd stark autentisering."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Webb-UI tillåter fjärrkontroll av applikationen. Använd stark autentisering.",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

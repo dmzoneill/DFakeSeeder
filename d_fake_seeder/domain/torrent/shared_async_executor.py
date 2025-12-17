@@ -80,6 +80,20 @@ class SharedAsyncExecutor:
             extra={"class_name": self.__class__.__name__},
         )
 
+    def _get_event_loop_sleep(self):
+        """Get event loop sleep interval from settings."""
+        executor_config = getattr(self.settings, "shared_async_executor", {})
+        if isinstance(executor_config, dict):
+            return executor_config.get("event_loop_sleep_seconds", 0.1)
+        return 0.1
+
+    def _get_startup_poll_interval(self):
+        """Get startup poll interval from settings."""
+        executor_config = getattr(self.settings, "shared_async_executor", {})
+        if isinstance(executor_config, dict):
+            return executor_config.get("startup_poll_interval_seconds", 0.01)
+        return 0.01
+
     @classmethod
     def get_instance(cls) -> "SharedAsyncExecutor":
         """Get singleton instance (thread-safe)"""
@@ -113,7 +127,7 @@ class SharedAsyncExecutor:
             max_wait = AsyncConstants.EXECUTOR_SHUTDOWN_TIMEOUT  # 2 second timeout
             start_time = time.time()
             while self.event_loop is None and time.time() - start_time < max_wait:
-                time.sleep(0.01)
+                time.sleep(self._get_startup_poll_interval())
 
             if self.event_loop is None:
                 logger.error(
@@ -196,7 +210,7 @@ class SharedAsyncExecutor:
             while self.running and not self.shutdown_event.is_set():
                 try:
                     # Run loop for short intervals to allow shutdown checks
-                    self.event_loop.run_until_complete(asyncio.sleep(0.1))
+                    self.event_loop.run_until_complete(asyncio.sleep(self._get_event_loop_sleep()))
                 except Exception as e:
                     if self.running:
                         logger.error(
