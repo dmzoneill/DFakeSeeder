@@ -256,7 +256,7 @@
       "splash_display_duration_seconds": 2,
       "splash_fade_interval_ms": 75,
       "splash_fade_step": 0.025,
-      "splash_image_size_pixels": 100,
+      "splash_image_size_pixels": 300,
       "notification_timeout_min_ms": 2000,
       "notification_timeout_multiplier": 500,
       "random_port_range_min": 49152,

@@ -466,9 +466,6 @@ class AppSettings(GObject.GObject):
             # Update last modified timestamp to prevent unnecessary reloads
             self._last_modified = os.path.getmtime(self._file_path)
 
-            # Console output for save confirmation
-            print(f"💾 SETTINGS SAVED to {self._file_path}")
-
             self.logger.info("Settings saved successfully with atomic write")
 
         except Exception as write_error:
@@ -499,8 +496,6 @@ class AppSettings(GObject.GObject):
         Merges transient data (torrents) into user_settings before final write.
         This is the ONLY place where transient data is persisted to disk.
         """
-        print(f"🔄 save_quit() called - transient torrents count: {len(self._transient_data)}")
-
         # Cancel any pending debounced save timer
         if self._save_timer is not None:
             GLib.source_remove(self._save_timer)
@@ -511,18 +506,13 @@ class AppSettings(GObject.GObject):
         with AppSettings._lock:
             if self._transient_data:
                 self._user_settings["torrents"] = self._transient_data
-                print(f"✅ Merged {len(self._transient_data)} torrents into user_settings")
-            else:
-                print("⚠️  No transient data to merge (torrents dict is empty or falsy)")
 
         # Stop file watching
         if hasattr(self, "_observer"):
             self._observer.stop()
 
         # Save merged settings to disk (includes torrents)
-        print("💾 Calling save_settings() to write to disk")
         self.save_settings()
-        print("✅ save_quit() completed")
 
     def get(self, key, default=None):
         """Get a setting value (supports dot notation for nested values)"""

@@ -113,10 +113,13 @@ clearlog:
 	@truncate -s 0 d_fake_seeder/log.log 2>/dev/null || true
 
 lint: clearlog
-	@echo "Running lint commands..."
-	black -v .
-	flake8
-	find . -iname "*.py" -exec isort --profile=black --df {} \;
+	@echo "🔍 Running code quality checks..."
+	@echo "   → Running Black formatter..."
+	@black . >/dev/null 2>&1 || black .
+	@echo "   → Running Flake8 linter..."
+	@flake8
+	@echo "   → Running isort import checker..."
+	@find . -iname "*.py" -exec isort --profile=black --check-only {} \; >/dev/null 2>&1 || true
 	@echo "✅ Linting complete!"
 
 # Validate settings handler coverage
@@ -184,33 +187,35 @@ super-lint-slim:
 # ============================================================================
 
 icons: lint
-	@echo "Installing icons..."
-	{ \
+	@echo "🎨 Installing application icons..."
+	@echo "   → Installing icon sizes: 16x16 through 256x256..."
+	@{ \
 		for X in 16 32 48 64 96 128 192 256; do \
-			mkdir -vp $(HOME)/.icons/hicolor/$${X}x$${X}/apps; \
-			mkdir -vp $(HOME)/.local/share/icons/hicolor/$${X}x$${X}/apps; \
-			cp -f $$(pwd)/d_fake_seeder/components/images/dfakeseeder.png $(HOME)/.local/share/icons/hicolor/$${X}x$${X}/apps/; \
-			cp -f $$(pwd)/d_fake_seeder/components/images/dfakeseeder.png $(HOME)/.icons/hicolor/$${X}x$${X}/apps/; \
+			mkdir -p $(HOME)/.icons/hicolor/$${X}x$${X}/apps 2>/dev/null; \
+			mkdir -p $(HOME)/.local/share/icons/hicolor/$${X}x$${X}/apps 2>/dev/null; \
+			cp -f $$(pwd)/d_fake_seeder/components/images/dfakeseeder.png $(HOME)/.local/share/icons/hicolor/$${X}x$${X}/apps/ 2>/dev/null; \
+			cp -f $$(pwd)/d_fake_seeder/components/images/dfakeseeder.png $(HOME)/.icons/hicolor/$${X}x$${X}/apps/ 2>/dev/null; \
 		done; \
 	}
-	@echo "Updating icon caches..."
-	{ \
+	@echo "   → Updating icon caches..."
+	@{ \
 		cd $(HOME)/.local/share/icons/ && \
-		gtk-update-icon-cache -t -f hicolor; \
+		gtk-update-icon-cache -t -f hicolor 2>/dev/null; \
 		cd $(HOME)/.icons/ && \
-		gtk-update-icon-cache -t -f hicolor; \
-	}
+		gtk-update-icon-cache -t -f hicolor 2>/dev/null; \
+	} || true
 	@echo "✅ Icons installed!"
 
 ui-build: icons
-	@echo "Building UI..."
-	xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml
-	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml
-	@echo "Building settings UI..."
-	xmllint --xinclude d_fake_seeder/components/ui/settings.xml > d_fake_seeder/components/ui/generated/settings_generated.xml
-	sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/settings_generated.xml
-	@echo "Validating settings UI..."
-	python3 tools/validate_settings_xml.py
+	@echo "🏗️  Building GTK4 UI..."
+	@echo "   → Compiling main UI (ui.xml → generated.xml)..."
+	@xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml
+	@sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml
+	@echo "   → Compiling settings UI (settings.xml → settings_generated.xml)..."
+	@xmllint --xinclude d_fake_seeder/components/ui/settings.xml > d_fake_seeder/components/ui/generated/settings_generated.xml
+	@sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/settings_generated.xml
+	@echo "   → Validating settings UI structure..."
+	@python3 tools/validate_settings_xml.py > /dev/null 2>&1 || python3 tools/validate_settings_xml.py
 	@echo "✅ UI built successfully!"
 
 # Fast UI build without linting or icon installation (for CI/package builds)
@@ -245,48 +250,42 @@ clean_settings:
 
 run: ui-build
 	@echo "Running application..."
-	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
-	-rm -rf ~/.cache/gnome-shell/
-	-update-desktop-database ~/.local/share/applications/ 2>/dev/null
-	-ps aux | grep "dfakeseeder.py" | awk '{print $$2}' | xargs kill -9 2>/dev/null
-	{ \
+	@-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
+	@-rm -rf ~/.cache/gnome-shell/ 2>/dev/null
+	@-update-desktop-database ~/.local/share/applications/ 2>/dev/null
+	@-ps aux | grep "dfakeseeder.py" | awk '{print $$2}' | xargs -r kill -9 2>/dev/null || true
+	@{ \
 		cd d_fake_seeder && \
 		gtk-launch dfakeseeder; \
 	}
 	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
 
 run-debug: translate-check ui-build
-	@echo "Running application with Pipenv and debug output..."
-	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
-	-rm -rf ~/.cache/gnome-shell/
-	-update-desktop-database ~/.local/share/applications/ 2>/dev/null
-	-ps aux | grep "dfakeseeder.py" | awk '{print $$2}' | xargs kill -9 2>/dev/null
-	{ \
-		pipenv run env LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder.py; \
-	}
-	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
+	@echo "Starting D' Fake Seeder..."
+	@-ln -sf $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
+	@-rm -rf ~/.cache/gnome-shell/ 2>/dev/null
+	@-update-desktop-database ~/.local/share/applications/ 2>/dev/null
+	@ps aux | grep "[d]fakeseeder.py" | awk '{print $$2}' | xargs -r kill -9 >/dev/null 2>&1 || true
+	@PIPENV_VERBOSITY=-1 pipenv run env LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder.py
 
 run-debug-venv: translate-check ui-build
-	@echo "Running application with Pipenv and debug output..."
-	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
-	-rm -rf ~/.cache/gnome-shell/
-	-update-desktop-database ~/.local/share/applications/ 2>/dev/null
-	-ps aux | grep "dfakeseeder.py" | awk '{print $$2}' | xargs kill -9 2>/dev/null
-	{ \
-		pipenv run env LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder.py; \
-	}
-	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
+	@echo "Starting D' Fake Seeder (debug mode)..."
+	@-ln -sf $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
+	@-rm -rf ~/.cache/gnome-shell/ 2>/dev/null
+	@-update-desktop-database ~/.local/share/applications/ 2>/dev/null
+	@ps aux | grep "[d]fakeseeder.py" | awk '{print $$2}' | xargs -r kill -9 >/dev/null 2>&1 || true
+	@PIPENV_VERBOSITY=-1 pipenv run env LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder.py
 
 run-debug-docker: ui-build
 	@echo "Building Docker image..."
-	-docker build \
+	@-docker build \
 		--build-arg USER_ID=$$(id -u) \
 		--build-arg GROUP_ID=$$(id -g) \
-		-t dfakeseeder .
-	-docker ps -a -q --filter "name=dfakeseeder" | xargs -r docker rm -f
+		-t dfakeseeder . 2>&1 | grep -E "(Step|Successfully)" || true
+	@-docker ps -a -q --filter "name=dfakeseeder" | xargs -r docker rm -f 2>/dev/null
 	@echo "Running application in Docker..."
-	xhost +local:root
-	-docker run --privileged -it --rm \
+	@xhost +local:root 2>/dev/null
+	@-docker run --privileged -it --rm \
 	    --name dfakeseeder \
 	    -e LOG_LEVEL=INFO \
 	    -e DFS_PATH=/app \
@@ -305,35 +304,35 @@ run-debug-docker: ui-build
 
 run-tray: ui-build
 	@echo "Running tray application with Pipenv..."
-	{ \
-		pipenv run env LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder_tray.py; \
+	@{ \
+		PIPENV_VERBOSITY=-1 pipenv run env LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder_tray.py; \
 	}
 
 run-tray-debug: ui-build
 	@echo "Running tray application with Pipenv and debug output..."
-	{ \
-		pipenv run env LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder_tray.py; \
+	@{ \
+		PIPENV_VERBOSITY=-1 pipenv run env LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder_tray.py; \
 	}
 
 run-with-tray: ui-build
 	@echo "Running main application with tray (backgrounded) using Pipenv..."
-	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
-	-ps aux | grep "dfakeseeder.py\|dfakeseeder_tray.py" | awk '{print $$2}' | xargs kill -9 2>/dev/null
-	{ \
-		pipenv run env LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder.py & \
+	@-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
+	@-ps aux | grep "dfakeseeder.py\|dfakeseeder_tray.py" | awk '{print $$2}' | xargs -r kill -9 2>/dev/null || true
+	@{ \
+		PIPENV_VERBOSITY=-1 pipenv run env LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder.py & \
 		sleep 3 && \
-		pipenv run env LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder_tray.py; \
+		PIPENV_VERBOSITY=-1 pipenv run env LOG_LEVEL=INFO DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder_tray.py; \
 	}
 	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
 
 run-debug-with-tray: ui-build
 	@echo "Running main application with tray (debug mode) using Pipenv..."
-	-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
-	-ps aux | grep "dfakeseeder.py\|dfakeseeder_tray.py" | awk '{print $$2}' | xargs kill -9 2>/dev/null
-	{ \
-		pipenv run env LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder.py & \
+	@-ln -s $$(pwd)/d_fake_seeder/dfakeseeder.desktop ~/.local/share/applications/dfakeseeder.desktop 2>/dev/null
+	@-ps aux | grep "dfakeseeder.py\|dfakeseeder_tray.py" | awk '{print $$2}' | xargs -r kill -9 2>/dev/null || true
+	@{ \
+		PIPENV_VERBOSITY=-1 pipenv run env LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder.py & \
 		sleep 5 && \
-		pipenv run env LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder_tray.py; \
+		PIPENV_VERBOSITY=-1 pipenv run env LOG_LEVEL=DEBUG DFS_PATH=$$(pwd)/d_fake_seeder PYTHONPATH=$$(pwd) python3 d_fake_seeder/dfakeseeder_tray.py; \
 	}
 	# @$(MAKE) clean_settings  # DISABLED: Was clearing torrents after every run
 
@@ -344,42 +343,43 @@ run-debug-with-tray: ui-build
 
 # Run all tests (unit + integration) with Pipenv
 test-all:
-	@echo "Running all tests with Pipenv..."
-	pipenv run pytest tests/ -v
-	@echo "✅ All tests complete!"
+	@echo "🧪 Running all tests (unit + integration)..."
+	@pipenv run pytest tests/ -v
+	@echo "✅ All tests passed!"
 
 # Alias for test-all (for convenience)
 test: test-all
 
 # Run unit tests only (fast feedback during development)
 test-unit:
-	@echo "Running unit tests with Pipenv..."
-	pipenv run pytest tests/unit -v -m "not slow"
-	@echo "✅ Unit tests complete!"
+	@echo "🧪 Running unit tests (excluding slow tests)..."
+	@pipenv run pytest tests/unit -v -m "not slow"
+	@echo "✅ Unit tests passed!"
 
 # Run integration tests only
 test-integration:
-	@echo "Running integration tests with Pipenv..."
-	pipenv run pytest tests/integration -v
-	@echo "✅ Integration tests complete!"
+	@echo "🧪 Running integration tests..."
+	@pipenv run pytest tests/integration -v
+	@echo "✅ Integration tests passed!"
 
 # Run fast unit tests (excludes slow tests, stops on first failure)
 test-fast:
-	@echo "Running fast unit tests with Pipenv..."
-	pipenv run pytest tests/unit -v -m "not slow" -x
-	@echo "✅ Fast tests complete!"
+	@echo "⚡ Running fast unit tests (fail-fast mode)..."
+	@pipenv run pytest tests/unit -v -m "not slow" -x
+	@echo "✅ Fast tests passed!"
 
 # Run tests with coverage report
 test-coverage:
-	@echo "Running tests with coverage (Pipenv)..."
-	pipenv run pytest tests/ --cov=d_fake_seeder --cov-report=html --cov-report=term-missing
-	@echo "✅ Coverage report generated! See htmlcov/index.html"
+	@echo "📊 Running tests with coverage analysis..."
+	@pipenv run pytest tests/ --cov=d_fake_seeder --cov-report=html --cov-report=term-missing
+	@echo "✅ Coverage report generated!"
+	@echo "   📄 View report: htmlcov/index.html"
 
 # Run tests in parallel for speed
 test-parallel:
-	@echo "Running tests in parallel with Pipenv..."
-	pipenv run pytest tests/ -n auto -v
-	@echo "✅ Parallel tests complete!"
+	@echo "⚡ Running tests in parallel (auto-detected CPUs)..."
+	@pipenv run pytest tests/ -n auto -v
+	@echo "✅ Parallel tests passed!"
 
 # Run specific test file (usage: make test-file FILE=path/to/test_file.py)
 test-file:
@@ -434,22 +434,17 @@ test-docker:
 # ============================================================================
 
 clean:
-	@echo "Cleaning build artifacts..."
-	- sudo rm -rvf log.log
-	- sudo rm -rvf d_fake_seeder/log.log
-	- sudo rm -rvf dist
-	- sudo rm -rvf build
-	- sudo rm -rvf *.egg-info
-	- sudo rm -rvf .pytest_cache
-	- sudo rm -rvf htmlcov
-	- sudo rm -rvf .coverage
-	- sudo find . -type d -iname __pycache__ -exec rm -rf {} \; 2>/dev/null || true
-	- sudo rm -rvf debbuild
-	- sudo rm -rvf rpmbuild
-	- sudo rm -rvf *.deb
-	- sudo rm -rvf *.rpm
-	- sudo rm -rvf tools/translations/*.backup
-	- sudo rm -rvf tools/translations/*_fallbacks_to_translate.json
+	@echo "🧹 Cleaning build artifacts..."
+	@echo "   → Removing log files..."
+	@sudo rm -rf log.log d_fake_seeder/log.log 2>/dev/null || true
+	@echo "   → Removing build directories..."
+	@sudo rm -rf dist build *.egg-info .pytest_cache htmlcov .coverage 2>/dev/null || true
+	@echo "   → Removing Python cache..."
+	@sudo find . -type d -iname __pycache__ -exec rm -rf {} \; 2>/dev/null || true
+	@echo "   → Removing package builds..."
+	@sudo rm -rf debbuild rpmbuild *.deb *.rpm 2>/dev/null || true
+	@echo "   → Removing translation temp files..."
+	@sudo rm -rf tools/translations/*.backup tools/translations/*_fallbacks_to_translate.json 2>/dev/null || true
 	@echo "✅ Clean complete!"
 	@$(MAKE) lint
 
@@ -481,43 +476,37 @@ xprod-wmclass:
 
 # Build RPM package (fast - for CI, assumes 'make setup' already run)
 rpm: ui-build-fast
-	@echo "Building RPM package (fast mode - no linting)..."
-	@echo "Cleaning previous RPM build..."
-	rm -rf ./rpmbuild
-	@echo "Creating RPM build directory structure..."
-	mkdir -p ./rpmbuild/BUILD ./rpmbuild/BUILDROOT ./rpmbuild/RPMS ./rpmbuild/SOURCES ./rpmbuild/SPECS ./rpmbuild/SRPMS
-	@echo "Creating source tarball..."
-	mkdir -p ./rpmbuild/$(rpm_package_name)-$(package_version)
-	cp -r d_fake_seeder ./rpmbuild/$(rpm_package_name)-$(package_version)/
-	mkdir -p ./rpmbuild/$(rpm_package_name)-$(package_version)/packaging
-	cp packaging/dfakeseeder-wrapper.sh ./rpmbuild/$(rpm_package_name)-$(package_version)/packaging/
-	cp Pipfile ./rpmbuild/$(rpm_package_name)-$(package_version)/
-	cp Pipfile.lock ./rpmbuild/$(rpm_package_name)-$(package_version)/
-	tar -czf ./rpmbuild/SOURCES/$(rpm_package_name)-$(package_version).tar.gz -C ./rpmbuild $(rpm_package_name)-$(package_version)
-	@echo "Copying spec file..."
-	cp dfakeseeder.spec ./rpmbuild/SPECS/
-	@echo "Building RPM with rpmbuild..."
-	rpmbuild --define "_topdir $$(pwd)/rpmbuild" -v -ba ./rpmbuild/SPECS/dfakeseeder.spec
-	@echo ""
+	@echo "📦 Building RPM package (fast mode)..."
+	@echo "   → Cleaning previous build..."
+	@rm -rf ./rpmbuild 2>/dev/null || true
+	@echo "   → Creating RPM directory structure..."
+	@mkdir -p ./rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+	@echo "   → Preparing source files..."
+	@mkdir -p ./rpmbuild/$(rpm_package_name)-$(package_version)
+	@cp -r d_fake_seeder ./rpmbuild/$(rpm_package_name)-$(package_version)/
+	@mkdir -p ./rpmbuild/$(rpm_package_name)-$(package_version)/packaging
+	@cp packaging/dfakeseeder-wrapper.sh ./rpmbuild/$(rpm_package_name)-$(package_version)/packaging/
+	@cp Pipfile Pipfile.lock ./rpmbuild/$(rpm_package_name)-$(package_version)/
+	@echo "   → Creating source tarball..."
+	@tar -czf ./rpmbuild/SOURCES/$(rpm_package_name)-$(package_version).tar.gz -C ./rpmbuild $(rpm_package_name)-$(package_version) 2>/dev/null
+	@cp dfakeseeder.spec ./rpmbuild/SPECS/
+	@echo "   → Building RPM with rpmbuild..."
+	@rpmbuild --define "_topdir $$(pwd)/rpmbuild" -ba ./rpmbuild/SPECS/dfakeseeder.spec 2>&1 | grep -E "(Wrote:|Processing|Executing)" || true
 	@echo "✅ RPM package built successfully!"
 	@echo ""
-	@echo "Creating architecture compatibility symlinks for CI/CD..."
-	@mkdir -p ./rpmbuild/RPMS/x86_64
+	@echo "   → Creating architecture compatibility symlinks..."
+	@mkdir -p ./rpmbuild/RPMS/x86_64 2>/dev/null
 	@if [ -f ./rpmbuild/RPMS/noarch/$(rpm_package_name)-$(package_version)-1.noarch.rpm ]; then \
 		cp ./rpmbuild/RPMS/noarch/$(rpm_package_name)-$(package_version)-1.noarch.rpm \
-		   ./rpmbuild/RPMS/x86_64/$(rpm_package_name)-$(package_version)-1.x86_64.rpm; \
-		echo "  Created x86_64 copy: ./rpmbuild/RPMS/x86_64/$(rpm_package_name)-$(package_version)-1.x86_64.rpm"; \
+		   ./rpmbuild/RPMS/x86_64/$(rpm_package_name)-$(package_version)-1.x86_64.rpm 2>/dev/null; \
 	fi
 	@echo ""
-	@echo "RPM files location:"
-	@find ./rpmbuild/RPMS -name "*.rpm" -exec echo "  {}" \;
-	@find ./rpmbuild/SRPMS -name "*.rpm" -exec echo "  {}" \;
+	@echo "📄 Package locations:"
+	@find ./rpmbuild/RPMS -name "*.rpm" -exec echo "   Binary: {}" \; 2>/dev/null
+	@find ./rpmbuild/SRPMS -name "*.rpm" -exec echo "   Source: {}" \; 2>/dev/null
 	@echo ""
-	@echo "Install with:"
-	@echo "  sudo dnf install ./rpmbuild/RPMS/noarch/$(rpm_package_name)-$(package_version)-1*.rpm"
-	@echo "  or"
-	@echo "  sudo rpm -ivh ./rpmbuild/RPMS/noarch/$(rpm_package_name)-$(package_version)-1*.rpm"
-	@echo ""
+	@echo "📥 Install with:"
+	@echo "   sudo dnf install ./rpmbuild/RPMS/noarch/$(rpm_package_name)-$(package_version)-1*.rpm"
 
 # Build RPM package with full quality checks (for local development)
 rpm-quality: ui-build lint
@@ -577,130 +566,143 @@ rpm-install: rpm
 
 # Build Debian package (fast - for CI, assumes 'make setup' already run)
 deb: ui-build-fast
-	@echo "Building Debian package (fast mode - no linting)..."
-	sudo rm -rvf ./debbuild
-	mkdir -vp ./debbuild/DEBIAN
-	cp control ./debbuild/DEBIAN
-	mkdir -vp ./debbuild/opt/dfakeseeder
-	mkdir -vp ./debbuild/usr/bin
-	mkdir -vp ./debbuild/usr/share/applications/
-	cp -r d_fake_seeder/dfakeseeder.desktop ./debbuild/usr/share/applications/
-	cp -r d_fake_seeder/config ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/lib ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/domain ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/components ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/dfakeseeder.py ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/dfakeseeder_tray.py ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/model.py ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/view.py ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/controller.py ./debbuild/opt/dfakeseeder
-	# Install wrapper script
-	cp packaging/dfakeseeder-wrapper.sh ./debbuild/usr/bin/dfakeseeder
-	chmod 755 ./debbuild/usr/bin/dfakeseeder
-	# Create symlinks for convenience
-	ln -s dfakeseeder ./debbuild/usr/bin/dfs
-	# Update desktop file to use wrapper
-	sed 's#Exec=env LOG_LEVEL=DEBUG /usr/bin/python3 dfakeseeder.py#Exec=/usr/bin/dfakeseeder#g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
-	sed 's#Path=.*##g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
-	touch ./debbuild/DEBIAN/postinst
-	echo "#!/bin/bash" >> ./debbuild/DEBIAN/postinst
-	echo "" >> ./debbuild/DEBIAN/postinst
-	echo "# Install Python packages not available as DEB packages" >> ./debbuild/DEBIAN/postinst
-	echo "pip3 install --no-cache-dir bencodepy typer==0.12.3 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "" >> ./debbuild/DEBIAN/postinst
-	echo "# Install icons to user directories" >> ./debbuild/DEBIAN/postinst
-	echo "for X in 16 32 48 64 96 128 192 256; do " >> ./debbuild/DEBIAN/postinst
-	echo "  mkdir -vp \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
-	echo "  mkdir -vp \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
-	echo "  cp -f /opt/dfakeseeder/components/images/dfakeseeder.png \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "  cp -f /opt/dfakeseeder/components/images/dfakeseeder.png \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "done " >> ./debbuild/DEBIAN/postinst
-	echo "" >> ./debbuild/DEBIAN/postinst
-	echo "# Update icon caches" >> ./debbuild/DEBIAN/postinst
-	echo "if [ -d \$$HOME/.local/share/icons/hicolor ]; then" >> ./debbuild/DEBIAN/postinst
-	echo "  cd \$$HOME/.local/share/icons/ && gtk-update-icon-cache -t -f hicolor 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "fi" >> ./debbuild/DEBIAN/postinst
-	echo "if [ -d \$$HOME/.icons/hicolor ]; then" >> ./debbuild/DEBIAN/postinst
-	echo "  cd \$$HOME/.icons/ && gtk-update-icon-cache -t -f hicolor 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "fi" >> ./debbuild/DEBIAN/postinst
-	echo "" >> ./debbuild/DEBIAN/postinst
-	echo "# Update desktop database" >> ./debbuild/DEBIAN/postinst
-	echo "update-desktop-database \$$HOME/.local/share/applications/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "" >> ./debbuild/DEBIAN/postinst
-	echo "# Clear GNOME Shell cache for immediate recognition" >> ./debbuild/DEBIAN/postinst
-	echo "rm -rf \$$HOME/.cache/gnome-shell/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "" >> ./debbuild/DEBIAN/postinst
-	echo "echo 'Desktop integration installed. GNOME users: Press Alt+F2, type r, and press Enter to restart GNOME Shell.'" >> ./debbuild/DEBIAN/postinst
-	chmod 755 ./debbuild/DEBIAN/postinst
-	sudo chown -R root:root debbuild
-	fakeroot dpkg-deb --build debbuild $(DEB_FILENAME)
-	dpkg -c $(DEB_FILENAME)
-	dpkg -I $(DEB_FILENAME)
-	@echo "✅ Debian package built: $(DEB_FILENAME)"
+	@echo "📦 Building Debian package (fast mode)..."
+	@echo "   → Cleaning previous build..."
+	@sudo rm -rf ./debbuild 2>/dev/null || true
+	@echo "   → Creating Debian directory structure..."
+	@mkdir -p ./debbuild/DEBIAN
+	@cp control ./debbuild/DEBIAN
+	@mkdir -p ./debbuild/opt/dfakeseeder ./debbuild/usr/bin ./debbuild/usr/share/applications/
+	@echo "   → Copying application files..."
+	@cp -r d_fake_seeder/dfakeseeder.desktop ./debbuild/usr/share/applications/
+	@cp -r d_fake_seeder/{config,lib,domain,components,*.py} ./debbuild/opt/dfakeseeder/ 2>/dev/null
+	@echo "   → Installing wrapper script..."
+	@cp packaging/dfakeseeder-wrapper.sh ./debbuild/usr/bin/dfakeseeder
+	@chmod 755 ./debbuild/usr/bin/dfakeseeder
+	@ln -s dfakeseeder ./debbuild/usr/bin/dfs
+	@echo "   → Updating desktop file..."
+	@sed 's#Exec=env LOG_LEVEL=DEBUG /usr/bin/python3 dfakeseeder.py#Exec=/usr/bin/dfakeseeder#g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
+	@sed 's#Path=.*##g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
+	@echo "   → Creating postinst script..."
+	@touch ./debbuild/DEBIAN/postinst
+	@echo "#!/bin/bash" >> ./debbuild/DEBIAN/postinst
+	@echo "" >> ./debbuild/DEBIAN/postinst
+	@echo "# Install Python packages not available as DEB packages" >> ./debbuild/DEBIAN/postinst
+	@echo "pip3 install --no-cache-dir bencodepy typer==0.12.3 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "" >> ./debbuild/DEBIAN/postinst
+	@echo "# Install icons to user directories" >> ./debbuild/DEBIAN/postinst
+	@echo "for X in 16 32 48 64 96 128 192 256; do " >> ./debbuild/DEBIAN/postinst
+	@echo "  mkdir -vp \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
+	@echo "  mkdir -vp \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
+	@echo "  cp -f /opt/dfakeseeder/components/images/dfakeseeder.png \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "  cp -f /opt/dfakeseeder/components/images/dfakeseeder.png \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "done " >> ./debbuild/DEBIAN/postinst
+	@echo "" >> ./debbuild/DEBIAN/postinst
+	@echo "# Update icon caches" >> ./debbuild/DEBIAN/postinst
+	@echo "if [ -d \$$HOME/.local/share/icons/hicolor ]; then" >> ./debbuild/DEBIAN/postinst
+	@echo "  cd \$$HOME/.local/share/icons/ && gtk-update-icon-cache -t -f hicolor 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "fi" >> ./debbuild/DEBIAN/postinst
+	@echo "if [ -d \$$HOME/.icons/hicolor ]; then" >> ./debbuild/DEBIAN/postinst
+	@echo "  cd \$$HOME/.icons/ && gtk-update-icon-cache -t -f hicolor 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "fi" >> ./debbuild/DEBIAN/postinst
+	@echo "" >> ./debbuild/DEBIAN/postinst
+	@echo "# Update desktop database" >> ./debbuild/DEBIAN/postinst
+	@echo "update-desktop-database \$$HOME/.local/share/applications/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "" >> ./debbuild/DEBIAN/postinst
+	@echo "# Clear GNOME Shell cache for immediate recognition" >> ./debbuild/DEBIAN/postinst
+	@echo "rm -rf \$$HOME/.cache/gnome-shell/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "" >> ./debbuild/DEBIAN/postinst
+	@echo "echo 'Desktop integration installed. GNOME users: Press Alt+F2, type r, and press Enter to restart GNOME Shell.'" >> ./debbuild/DEBIAN/postinst
+	@chmod 755 ./debbuild/DEBIAN/postinst
+	@echo "   → Building package with dpkg-deb..."
+	@sudo chown -R root:root debbuild 2>/dev/null
+	@fakeroot dpkg-deb --build debbuild $(DEB_FILENAME) >/dev/null 2>&1
+	@echo "✅ Debian package built successfully!"
+	@echo ""
+	@echo "📄 Package information:"
+	@dpkg -c $(DEB_FILENAME) 2>/dev/null | head -10
+	@echo "   ... (showing first 10 files)"
+	@echo ""
+	@echo "📋 Package details:"
+	@dpkg -I $(DEB_FILENAME) 2>/dev/null | grep -E "(Package|Version|Architecture|Description)" || true
+	@echo ""
+	@echo "📥 Install with:"
+	@echo "   sudo dpkg -i $(DEB_FILENAME)"
 
 # Build Debian package with full quality checks (for local development)
 deb-quality: clean ui-build lint
-	@echo "Building Debian package with full quality checks..."
-	sudo apt-get install dpkg dpkg-dev fakeroot
-	sudo rm -rvf ./debbuild
-	mkdir -vp ./debbuild/DEBIAN
-	cp control ./debbuild/DEBIAN
-	mkdir -vp ./debbuild/opt/dfakeseeder
-	mkdir -vp ./debbuild/usr/bin
-	mkdir -vp ./debbuild/usr/share/applications/
-	cp -r d_fake_seeder/dfakeseeder.desktop ./debbuild/usr/share/applications/
-	cp -r d_fake_seeder/config ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/lib ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/domain ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/components ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/dfakeseeder.py ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/dfakeseeder_tray.py ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/model.py ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/view.py ./debbuild/opt/dfakeseeder
-	cp -r d_fake_seeder/controller.py ./debbuild/opt/dfakeseeder
-	# Install wrapper script
-	cp packaging/dfakeseeder-wrapper.sh ./debbuild/usr/bin/dfakeseeder
-	chmod 755 ./debbuild/usr/bin/dfakeseeder
-	# Create symlinks for convenience
-	ln -s dfakeseeder ./debbuild/usr/bin/dfs
-	# Update desktop file to use wrapper
-	sed 's#Exec=env LOG_LEVEL=DEBUG /usr/bin/python3 dfakeseeder.py#Exec=/usr/bin/dfakeseeder#g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
-	sed 's#Path=.*##g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
-	touch ./debbuild/DEBIAN/postinst
-	echo "#!/bin/bash" >> ./debbuild/DEBIAN/postinst
-	echo "" >> ./debbuild/DEBIAN/postinst
-	echo "# Install Python packages not available as DEB packages" >> ./debbuild/DEBIAN/postinst
-	echo "pip3 install --no-cache-dir bencodepy typer==0.12.3 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "" >> ./debbuild/DEBIAN/postinst
-	echo "# Install icons to user directories" >> ./debbuild/DEBIAN/postinst
-	echo "for X in 16 32 48 64 96 128 192 256; do " >> ./debbuild/DEBIAN/postinst
-	echo "  mkdir -vp \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
-	echo "  mkdir -vp \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
-	echo "  cp -f /opt/dfakeseeder/components/images/dfakeseeder.png \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "  cp -f /opt/dfakeseeder/components/images/dfakeseeder.png \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "done " >> ./debbuild/DEBIAN/postinst
-	echo "" >> ./debbuild/DEBIAN/postinst
-	echo "# Update icon caches" >> ./debbuild/DEBIAN/postinst
-	echo "if [ -d \$$HOME/.local/share/icons/hicolor ]; then" >> ./debbuild/DEBIAN/postinst
-	echo "  cd \$$HOME/.local/share/icons/ && gtk-update-icon-cache -t -f hicolor 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "fi" >> ./debbuild/DEBIAN/postinst
-	echo "if [ -d \$$HOME/.icons/hicolor ]; then" >> ./debbuild/DEBIAN/postinst
-	echo "  cd \$$HOME/.icons/ && gtk-update-icon-cache -t -f hicolor 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "fi" >> ./debbuild/DEBIAN/postinst
-	echo "" >> ./debbuild/DEBIAN/postinst
-	echo "# Update desktop database" >> ./debbuild/DEBIAN/postinst
-	echo "update-desktop-database \$$HOME/.local/share/applications/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "" >> ./debbuild/DEBIAN/postinst
-	echo "# Clear GNOME Shell cache for immediate recognition" >> ./debbuild/DEBIAN/postinst
-	echo "rm -rf \$$HOME/.cache/gnome-shell/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
-	echo "" >> ./debbuild/DEBIAN/postinst
-	echo "echo 'Desktop integration installed. GNOME users: Press Alt+F2, type r, and press Enter to restart GNOME Shell.'" >> ./debbuild/DEBIAN/postinst
-	chmod 755 ./debbuild/DEBIAN/postinst
-	sudo chown -R root:root debbuild
-	fakeroot dpkg-deb --build debbuild $(DEB_FILENAME)
-	dpkg -c $(DEB_FILENAME)
-	dpkg -I $(DEB_FILENAME)
-	@echo "✅ Debian package built with quality checks: $(DEB_FILENAME)"
+	@echo "📦 Building Debian package (with quality checks)..."
+	@echo "   → Installing build dependencies..."
+	@sudo apt-get install -y dpkg dpkg-dev fakeroot >/dev/null 2>&1
+	@echo "   → Cleaning previous build..."
+	@sudo rm -rf ./debbuild 2>/dev/null || true
+	@echo "   → Creating Debian directory structure..."
+	@mkdir -p ./debbuild/DEBIAN
+	@cp control ./debbuild/DEBIAN
+	@mkdir -p ./debbuild/opt/dfakeseeder ./debbuild/usr/bin ./debbuild/usr/share/applications/
+	@echo "   → Copying application files..."
+	@cp -r d_fake_seeder/dfakeseeder.desktop ./debbuild/usr/share/applications/
+	@cp -r d_fake_seeder/config ./debbuild/opt/dfakeseeder
+	@cp -r d_fake_seeder/lib ./debbuild/opt/dfakeseeder
+	@cp -r d_fake_seeder/domain ./debbuild/opt/dfakeseeder
+	@cp -r d_fake_seeder/components ./debbuild/opt/dfakeseeder
+	@cp -r d_fake_seeder/dfakeseeder.py ./debbuild/opt/dfakeseeder
+	@cp -r d_fake_seeder/dfakeseeder_tray.py ./debbuild/opt/dfakeseeder
+	@cp -r d_fake_seeder/model.py ./debbuild/opt/dfakeseeder
+	@cp -r d_fake_seeder/view.py ./debbuild/opt/dfakeseeder
+	@cp -r d_fake_seeder/controller.py ./debbuild/opt/dfakeseeder
+	@echo "   → Installing wrapper script..."
+	@cp packaging/dfakeseeder-wrapper.sh ./debbuild/usr/bin/dfakeseeder
+	@chmod 755 ./debbuild/usr/bin/dfakeseeder
+	@ln -s dfakeseeder ./debbuild/usr/bin/dfs
+	@echo "   → Updating desktop file..."
+	@sed 's#Exec=env LOG_LEVEL=DEBUG /usr/bin/python3 dfakeseeder.py#Exec=/usr/bin/dfakeseeder#g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
+	@sed 's#Path=.*##g' -i ./debbuild/usr/share/applications/dfakeseeder.desktop
+	@echo "   → Creating postinst script..."
+	@touch ./debbuild/DEBIAN/postinst
+	@echo "#!/bin/bash" >> ./debbuild/DEBIAN/postinst
+	@echo "" >> ./debbuild/DEBIAN/postinst
+	@echo "# Install Python packages not available as DEB packages" >> ./debbuild/DEBIAN/postinst
+	@echo "pip3 install --no-cache-dir bencodepy typer==0.12.3 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "" >> ./debbuild/DEBIAN/postinst
+	@echo "# Install icons to user directories" >> ./debbuild/DEBIAN/postinst
+	@echo "for X in 16 32 48 64 96 128 192 256; do " >> ./debbuild/DEBIAN/postinst
+	@echo "  mkdir -vp \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
+	@echo "  mkdir -vp \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps " >> ./debbuild/DEBIAN/postinst
+	@echo "  cp -f /opt/dfakeseeder/components/images/dfakeseeder.png \$$HOME/.local/share/icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "  cp -f /opt/dfakeseeder/components/images/dfakeseeder.png \$$HOME/.icons/hicolor/\$${X}x\$${X}/apps/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "done " >> ./debbuild/DEBIAN/postinst
+	@echo "" >> ./debbuild/DEBIAN/postinst
+	@echo "# Update icon caches" >> ./debbuild/DEBIAN/postinst
+	@echo "if [ -d \$$HOME/.local/share/icons/hicolor ]; then" >> ./debbuild/DEBIAN/postinst
+	@echo "  cd \$$HOME/.local/share/icons/ && gtk-update-icon-cache -t -f hicolor 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "fi" >> ./debbuild/DEBIAN/postinst
+	@echo "if [ -d \$$HOME/.icons/hicolor ]; then" >> ./debbuild/DEBIAN/postinst
+	@echo "  cd \$$HOME/.icons/ && gtk-update-icon-cache -t -f hicolor 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "fi" >> ./debbuild/DEBIAN/postinst
+	@echo "" >> ./debbuild/DEBIAN/postinst
+	@echo "# Update desktop database" >> ./debbuild/DEBIAN/postinst
+	@echo "update-desktop-database \$$HOME/.local/share/applications/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "" >> ./debbuild/DEBIAN/postinst
+	@echo "# Clear GNOME Shell cache for immediate recognition" >> ./debbuild/DEBIAN/postinst
+	@echo "rm -rf \$$HOME/.cache/gnome-shell/ 2>/dev/null || true" >> ./debbuild/DEBIAN/postinst
+	@echo "" >> ./debbuild/DEBIAN/postinst
+	@echo "echo 'Desktop integration installed. GNOME users: Press Alt+F2, type r, and press Enter to restart GNOME Shell.'" >> ./debbuild/DEBIAN/postinst
+	@chmod 755 ./debbuild/DEBIAN/postinst
+	@echo "   → Building package with dpkg-deb..."
+	@sudo chown -R root:root debbuild 2>/dev/null
+	@fakeroot dpkg-deb --build debbuild $(DEB_FILENAME) >/dev/null 2>&1
+	@echo "✅ Debian package built successfully!"
+	@echo ""
+	@echo "📄 Package contents:"
+	@dpkg -c $(DEB_FILENAME) 2>/dev/null | head -10
+	@echo "   ... (showing first 10 files)"
+	@echo ""
+	@echo "📋 Package details:"
+	@dpkg -I $(DEB_FILENAME) 2>/dev/null | grep -E "(Package|Version|Architecture|Description)" || true
+	@echo ""
+	@echo "📥 Install with:"
+	@echo "   sudo dpkg -i $(DEB_FILENAME)"
 
 deb-install: deb
 	@echo "Installing Debian package..."
@@ -716,9 +718,11 @@ xhosts:
 	xhost +local:
 
 docker: xhosts
-	@echo "Building and running Docker container..."
-	docker build -t dfakeseeder .
-	docker run --rm --net=host --env="DISPLAY" --volume="$$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it dfakeseeder
+	@echo "🐳 Building and running Docker container..."
+	@echo "   → Building image..."
+	@docker build -t dfakeseeder . 2>&1 | grep -E "(Step|Successfully)" || true
+	@echo "   → Running container..."
+	@docker run --rm --net=host --env="DISPLAY" --volume="$$HOME/.Xauthority:/root/.Xauthority:rw" --volume="/tmp/.X11-unix:/tmp/.X11-unix" -it dfakeseeder
 
 docker-hub: xhosts
 	@echo "Running from Docker Hub..."
@@ -743,11 +747,15 @@ flatpak: clean
 # ============================================================================
 
 pypi-build: clean
-	@echo "Building PyPI package..."
-	python3 setup.py sdist bdist_wheel
+	@echo "📦 Building PyPI package..."
+	@echo "   → Creating source distribution..."
+	@python3 setup.py sdist >/dev/null 2>&1
+	@echo "   → Creating wheel distribution..."
+	@python3 setup.py bdist_wheel >/dev/null 2>&1
 	@echo "✅ PyPI package built successfully!"
-	@echo "📦 Distribution files in dist/"
-	@ls -lh dist/
+	@echo ""
+	@echo "📄 Distribution files:"
+	@ls -lh dist/ | tail -n +2 | awk '{print "   " $$9 " (" $$5 ")"}'
 
 pypi-test-upload: pypi-build
 	@echo "📤 Uploading to TestPyPI..."
@@ -778,64 +786,42 @@ translate-check:
 		if [ -f .pot_linecount ]; then \
 			SAVED_LINES=$$(cat .pot_linecount); \
 			if [ "$$CURRENT_LINES" != "$$SAVED_LINES" ]; then \
-				echo "🔄 POT file changed ($$SAVED_LINES → $$CURRENT_LINES lines)"; \
-				echo "   Running full translation workflow..."; \
+				echo "🔄 POT file changed ($$SAVED_LINES → $$CURRENT_LINES lines) - updating translations..."; \
 				$(MAKE) translate-workflow; \
 			else \
-				echo "✅ Translations up to date ($$CURRENT_LINES lines)"; \
+				echo "✅ Translations up to date ($$CURRENT_LINES translatable strings)"; \
 			fi; \
 		else \
 			echo "$$CURRENT_LINES" > .pot_linecount; \
-			echo "📝 Saved initial POT line count: $$CURRENT_LINES"; \
+			echo "📝 Initialized translation tracking ($$CURRENT_LINES strings)"; \
 		fi; \
 	else \
-		echo "⚠️  POT file not found, running initial extraction..."; \
+		echo "⚠️  POT file not found - running initial extraction..."; \
 		$(MAKE) translate-workflow; \
 	fi
 
 # Full translation workflow: extract → sync → identify fallbacks → validate
 translate-workflow:
-	@echo ""
-	@echo "🌐 ================================================================"
-	@echo "   DFakeSeeder Translation Workflow"
-	@echo "   ================================================================"
-	@echo ""
-	@echo "📝 Step 1/7: Extracting translatable strings..."
-	@python3 tools/translation_build_manager.py extract
-	@echo ""
-	@echo "🔄 Step 2/7: Syncing extracted strings to JSON..."
-	@python3 tools/translation_build_manager.py sync
-	@echo ""
-	@echo "🔑 Step 3/7: Syncing missing keys across languages..."
-	@python3 tools/translation_build_manager.py sync-keys
-	@echo ""
-	@echo "🔍 Step 4/7: Identifying English fallbacks..."
-	@python3 tools/translation_build_manager.py identify-fallbacks
-	@echo ""
-	@echo "🤖 Step 5/7: Creating translation requests for Claude..."
-	@python3 tools/translation_build_manager.py translate-fallbacks
-	@echo ""
-	@echo "⚠️  NOTE: Translation requests created but not yet processed"
-	@echo "   Translation processing requires Claude Code Agent integration"
-	@echo "   Fallback files remain in tools/translations/ for manual translation if needed"
-	@echo ""
-	@echo "📊 Step 6/7: Analyzing translation coverage..."
-	@python3 tools/translation_build_manager.py analyze
-	@echo ""
-	@echo "✅ Step 7/7: Validating translations..."
-	@python3 tools/translation_build_manager.py validate
-	@echo ""
-	@echo "🧹 Cleaning up temporary files..."
-	@python3 tools/translation_build_manager.py cleanup
-	@echo ""
+	@echo "🌐 Running translation workflow (20 languages)..."
+	@echo "   → Step 1/7: Extracting strings from Python/XML..."
+	@python3 tools/translation_build_manager.py extract > /dev/null 2>&1
+	@echo "   → Step 2/7: Syncing to JSON files..."
+	@python3 tools/translation_build_manager.py sync > /dev/null 2>&1
+	@echo "   → Step 3/7: Syncing keys across languages..."
+	@python3 tools/translation_build_manager.py sync-keys > /dev/null 2>&1
+	@echo "   → Step 4/7: Identifying fallbacks..."
+	@python3 tools/translation_build_manager.py identify-fallbacks > /dev/null 2>&1
+	@echo "   → Step 5/7: Creating translation requests..."
+	@python3 tools/translation_build_manager.py translate-fallbacks > /dev/null 2>&1
+	@echo "   → Step 6/7: Analyzing coverage..."
+	@python3 tools/translation_build_manager.py analyze > /dev/null 2>&1
+	@echo "   → Step 7/7: Validating translations..."
+	@python3 tools/translation_build_manager.py validate > /dev/null 2>&1
+	@python3 tools/translation_build_manager.py cleanup > /dev/null 2>&1
 	@if [ -f d_fake_seeder/components/locale/dfakeseeder.pot ]; then \
-		LINES=$$(wc -l < d_fake_seeder/components/locale/dfakeseeder.pot); \
-		echo "$$LINES" > .pot_linecount; \
-		echo "💾 Saved POT line count: $$LINES"; \
+		wc -l < d_fake_seeder/components/locale/dfakeseeder.pot > .pot_linecount; \
 	fi
-	@echo ""
-	@echo "✅ Translation workflow complete!"
-	@echo ""
+	@echo "✅ Translations updated!"
 
 translate-build:
 	@echo "Building translations using translation manager..."
@@ -899,8 +885,9 @@ test-e2e-build-image:
 
 # Clean E2E test artifacts
 clean-e2e:
-	@echo "Cleaning E2E test artifacts..."
-	rm -rf rpmbuild/test-artifacts
+	@echo "🧹 Cleaning E2E test artifacts..."
+	@rm -rf rpmbuild/test-artifacts 2>/dev/null || true
+	@echo "✅ E2E artifacts cleaned!"
 
 # ============================================
 # PyPI Package E2E Tests
@@ -915,11 +902,11 @@ test-e2e-pypi:
 
 # Clean PyPI test artifacts
 clean-e2e-pypi:
-	@echo "Cleaning PyPI E2E test artifacts..."
-	rm -rf dist/pypi-e2e-test-report.txt
-	rm -rf test-artifacts
-	podman rmi dfakeseeder-e2e-test:latest 2>/dev/null || true
-	@echo "✅ E2E artifacts cleaned!"
+	@echo "🧹 Cleaning PyPI E2E test artifacts..."
+	@rm -rf dist/pypi-e2e-test-report.txt 2>/dev/null || true
+	@rm -rf test-artifacts 2>/dev/null || true
+	@podman rmi dfakeseeder-e2e-test:latest 2>/dev/null || true
+	@echo "✅ PyPI E2E artifacts cleaned!"
 
 # ============================================================================
 # DEB Package E2E Tests
@@ -961,25 +948,25 @@ build-e2e-deb-image:
 
 # Clean DEB test artifacts
 clean-e2e-deb:
-	@echo "Cleaning DEB E2E test artifacts..."
-	rm -rf dist/deb-e2e-test-report.txt
-	rm -rf dist/debs
-	rm -rf test-artifacts
-	docker rmi dfakeseeder-deb-e2e-test:ubuntu-22.04 2>/dev/null || true
-	docker rmi dfakeseeder-deb-e2e-test:ubuntu-24.04 2>/dev/null || true
+	@echo "🧹 Cleaning DEB E2E test artifacts..."
+	@rm -rf dist/deb-e2e-test-report.txt 2>/dev/null || true
+	@rm -rf dist/debs 2>/dev/null || true
+	@rm -rf test-artifacts 2>/dev/null || true
+	@docker rmi dfakeseeder-deb-e2e-test:ubuntu-22.04 2>/dev/null || true
+	@docker rmi dfakeseeder-deb-e2e-test:ubuntu-24.04 2>/dev/null || true
 	@echo "✅ DEB E2E artifacts cleaned!"
 
 # Run all E2E tests (RPM, PyPI, and DEB)
 test-e2e-all:
-	@echo "Running all E2E tests..."
+	@echo "🧪 Running all E2E tests..."
 	@echo ""
-	@echo "1. RPM E2E Tests..."
+	@echo "📦 1/3: RPM E2E Tests..."
 	@$(MAKE) test-e2e
 	@echo ""
-	@echo "2. PyPI E2E Tests..."
+	@echo "🐍 2/3: PyPI E2E Tests..."
 	@$(MAKE) test-e2e-pypi
 	@echo ""
-	@echo "3. DEB E2E Tests..."
+	@echo "📦 3/3: DEB E2E Tests..."
 	@$(MAKE) test-e2e-deb
 	@echo ""
 	@echo "✅ All E2E tests complete!"

@@ -77,13 +77,6 @@ class Torrents(Component, ColumnTranslationMixin):
         # Enable keyboard navigation
         self.torrents_columnview.set_can_focus(True)
         self.torrents_columnview.set_focusable(True)
-        # Add keyboard event controller for arrow key navigation
-        self.keyboard_controller = Gtk.EventControllerKey.new()
-        self.track_signal(
-            self.keyboard_controller,
-            self.keyboard_controller.connect("key-pressed", self.on_key_pressed),
-        )
-        self.torrents_columnview.add_controller(self.keyboard_controller)
         logger.trace("UI setup completed (took ms)", "Torrents")
         logger.trace("About to call update_columns()", "Torrents")
         self.update_columns()
@@ -567,6 +560,7 @@ class Torrents(Component, ColumnTranslationMixin):
         # Create and configure the appropriate widget based on the attribute
         renderers = self.settings.cellrenderers
         widget = None
+
         if attribute in renderers:
             # If using a custom renderer
             widget_string = renderers[attribute]
@@ -599,10 +593,12 @@ class Torrents(Component, ColumnTranslationMixin):
     def bind_column_factory(self, factory, item, attribute):
         # PERFORMANCE FIX: Remove GLib.idle_add() bottleneck - execute immediately
         textrenderers = self.settings.textrenderers
+
         # Get the widget associated with the item
         widget = item.get_child()
         # Get the item's data
         item_data = item.get_item()
+
         # Use appropriate widget based on the attribute
         if attribute in textrenderers:
             # If the attribute has a text renderer defined
@@ -831,34 +827,6 @@ class Torrents(Component, ColumnTranslationMixin):
             "🔴 ATTRIBUTE CHANGED: COMPLETE",
             extra={"class_name": self.__class__.__name__},
         )
-
-    def on_key_pressed(self, controller, keyval, keycode, state):
-        """Handle keyboard events for navigation"""
-        # Get current selection
-        current_position = self.selection.get_selected()
-        total_items = self.sort_model.get_n_items()
-        if total_items == 0:
-            return False
-        # Handle Up arrow key
-        if keyval == Gdk.KEY_Up:
-            if current_position > 0:
-                self.selection.set_selected(current_position - 1)
-            return True  # Event handled
-        # Handle Down arrow key
-        elif keyval == Gdk.KEY_Down:
-            if current_position < total_items - 1:
-                self.selection.set_selected(current_position + 1)
-            return True  # Event handled
-        # Handle Home key
-        elif keyval == Gdk.KEY_Home:
-            self.selection.set_selected(0)
-            return True  # Event handled
-        # Handle End key
-        elif keyval == Gdk.KEY_End:
-            self.selection.set_selected(total_items - 1)
-            return True  # Event handled
-        # Let other keys pass through
-        return False
 
     def _register_menu_actions(self):
         """Register all context menu actions if they don't exist"""

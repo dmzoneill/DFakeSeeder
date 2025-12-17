@@ -61,7 +61,7 @@ class MetricsCollector:
 
                 for proc in psutil.process_iter(["pid", "name", "cmdline"]):
                     try:
-                        cmdline = proc.info.get("cmdline", [])
+                        cmdline = proc.info.get("cmdline") or []  # Handle None
                         cmdline_str = " ".join(str(arg) for arg in cmdline).lower()
 
                         # Must contain dfakeseeder

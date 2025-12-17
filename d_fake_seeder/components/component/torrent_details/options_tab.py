@@ -49,6 +49,11 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         # Cache the options grid widget
         self._options_grid = self.get_widget("options_grid")
 
+        # CRITICAL: Grid defaults to focusable=False, blocking keyboard
+        if self._options_grid:
+            self._options_grid.set_focusable(True)
+            self._options_grid.set_can_focus(True)
+
     def clear_content(self) -> None:
         """Clear the options tab content."""
         try:
@@ -149,10 +154,32 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 # Create label
                 label = self._create_option_label(attribute)
 
-                # Add to grid
+                # Add to grid - Simple like XML!
                 if self._options_grid is not None:
                     self._options_grid.attach(label, col, row, 1, 1)
                     self._options_grid.attach(dynamic_widget, col + 1, row, 1, 1)
+
+                    # Ensure widgets are visible and properly configured after attachment
+                    label.set_visible(True)
+                    dynamic_widget.set_visible(True)
+
+                    # For SpinButton, ensure it's properly configured for keyboard input
+                    # CRITICAL: Match the working Settings dialog SpinButton configuration
+                    if isinstance(dynamic_widget, Gtk.SpinButton):
+                        # Settings dialog SpinButtons work without explicit can-focus/editable
+                        # But we need to ensure they're in the focus chain
+                        # The key difference: Settings dialog is a Window, Options tab is in a Notebook
+                        # So we need to be more explicit about focus handling
+                        dynamic_widget.set_editable(True)
+                        dynamic_widget.set_can_focus(True)
+                        dynamic_widget.set_focusable(True)
+
+                        # CRITICAL: Ensure the widget is realized before trying to focus
+                        # This might be the issue - dynamically created widgets need to be realized
+                        if not dynamic_widget.get_realized():
+                            # Widget will be realized when parent is shown
+                            # But we can ensure it's properly set up
+                            pass
 
                 # Track children for cleanup
                 self._options_grid_children.append(label)
@@ -183,27 +210,47 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if not widget_class:
                 return None
 
-            # Create widget instance
-            dynamic_widget = widget_class()
-            dynamic_widget.set_visible(True)
-            dynamic_widget.set_hexpand(True)
+            # Get current value
+            current_value = self.safe_get_property(torrent, attribute, 0)
 
-            # Configure spinbutton-specific properties
-            if isinstance(dynamic_widget, Gtk.SpinButton):
-                dynamic_widget.set_numeric(True)  # Filter non-numeric input
-                dynamic_widget.set_can_focus(True)  # Enable keyboard focus
-                dynamic_widget.set_editable(True)  # Allow text editing
-
-            # Configure entry-specific properties
-            if isinstance(dynamic_widget, Gtk.Entry):
-                dynamic_widget.set_can_focus(True)  # Enable keyboard focus
-                dynamic_widget.set_editable(True)  # Allow text editing
-
-            # Configure widget based on type
-            if isinstance(dynamic_widget, Gtk.Switch):
+            # Create widget instance - Keep it simple like XML!
+            # Let GTK4 handle ALL focus/input behavior automatically
+            if widget_class == Gtk.Switch:
+                dynamic_widget = widget_class()
+                dynamic_widget.set_hexpand(False)
                 self._configure_switch_widget(dynamic_widget, torrent, attribute)
-            else:
+            elif widget_class in (Gtk.SpinButton, Gtk.Scale):
+                # Create adjustment first for numeric widgets
+                upper_val = max(100.0, float(current_value) * 10) if current_value >= 0 else 100.0
+                adjustment = Gtk.Adjustment(
+                    value=float(current_value),
+                    lower=0.0,
+                    upper=upper_val,
+                    step_increment=1.0,
+                    page_increment=10.0,
+                    page_size=0.0,
+                )
+
+                # Create spinbutton/scale
+                if widget_class == Gtk.SpinButton:
+                    dynamic_widget = Gtk.SpinButton(adjustment=adjustment)
+                    dynamic_widget.set_hexpand(False)
+                    dynamic_widget.set_width_chars(8)
+                    dynamic_widget.set_numeric(True)
+                    # Make the SpinButton editable and focusable so users can click and type
+                    dynamic_widget.set_editable(True)
+                    dynamic_widget.set_can_focus(True)
+                    dynamic_widget.set_focusable(True)  # Ensure widget is in focus chain
+                    dynamic_widget.set_visible(True)  # Ensure widget is visible
+                else:
+                    dynamic_widget = Gtk.Scale(adjustment=adjustment)
+                    dynamic_widget.set_hexpand(False)
+
                 self._configure_adjustment_widget(dynamic_widget, torrent, attribute)
+            else:
+                # Entry or other widgets
+                dynamic_widget = widget_class()
+                dynamic_widget.set_hexpand(False)
 
             return dynamic_widget
 
@@ -264,31 +311,13 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         Configure an adjustment-based widget (SpinButton, Scale).
 
         Args:
-            widget: Widget with adjustment
+            widget: Widget with adjustment (already set during construction)
             torrent: Torrent object
             attribute: Attribute name
         """
         try:
-            # Get current value
-            current_value = self.safe_get_property(torrent, attribute, 0)
-
-            # Create adjustment
-            adjustment = Gtk.Adjustment(
-                value=float(current_value),
-                upper=float(current_value) * 10 if current_value > 0 else 100,
-                lower=0,
-                step_increment=1,
-                page_increment=10,
-            )
-
-            # Set adjustment
-            widget.set_adjustment(adjustment)
-
-            # Configure additional properties
-            if hasattr(widget, "set_wrap"):
-                widget.set_wrap(True)
-
-            # Connect signal
+            # Properties already set in _create_dynamic_widget to match XML
+            # Just connect the signal for value changes
             self.track_signal(
                 widget,
                 widget.connect(
@@ -298,6 +327,27 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                     attribute,
                 ),
             )
+
+            # CRITICAL FIX: For SpinButton, add click handler to explicitly grab focus
+            # This ensures the SpinButton gets focus when clicked, enabling keyboard input
+            if isinstance(widget, Gtk.SpinButton):
+                # Use activate signal to grab focus when SpinButton is activated/clicked
+                def on_spinbutton_activate(spinbutton):
+                    """Handle SpinButton activation - explicitly grab focus."""
+                    try:
+                        # Get the window to set focus
+                        window = spinbutton.get_root()
+                        if window and isinstance(window, Gtk.Window):
+                            window.set_focus(spinbutton)
+                        spinbutton.grab_focus()
+                        self.logger.trace(f"SpinButton {attribute} focused on activate")
+                    except Exception as e:
+                        self.logger.error(f"Error focusing SpinButton on activate: {e}")
+
+                self.track_signal(
+                    widget,
+                    widget.connect("activate", on_spinbutton_activate),
+                )
 
         except Exception as e:
             self.logger.error(f"Error configuring adjustment widget for {attribute}: {e}")
