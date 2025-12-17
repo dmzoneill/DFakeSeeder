@@ -456,7 +456,7 @@ class PeerDiscovery:
                 # This would be handled by the main message processing loop
                 break
 
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(self._get_poll_interval())
 
         # Clean up pending query
         if transaction_id in self.pending_queries:

@@ -977,6 +977,9 @@ msgstr "मुख्य विंडो छुपाएं"
 msgid "Hide to system tray when window is minimized"
 msgstr "विंडो छोटी करने पर सिस्टम ट्रे में छुपाएं"
 
+msgid "High"
+msgstr "उच्च"
+
 msgid "High Priority"
 msgstr "उच्च प्राथमिकता"
 
@@ -1126,6 +1129,9 @@ msgstr "फ़ाइल में लॉग करें"
 
 msgid "Log-Normal"
 msgstr "लॉग-नॉर्मल"
+
+msgid "Low"
+msgstr "कम"
 
 msgid "Low Priority"
 msgstr "निम्न प्राथमिकता"
@@ -1301,14 +1307,17 @@ msgstr "इस टॉरेंट के लिए कोई संपादन 
 msgid "None"
 msgstr "कोई नहीं"
 
+msgid "Normal"
+msgstr "सामान्य"
+
 msgid "Normal Priority"
 msgstr "सामान्य प्राथमिकता"
 
-msgid "Note: Choosing \\\\"
-msgstr "नोट: चुनना \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "व्यवहार पैटर्न के लिए विश्लेषण करने वाले पीयर्स की संख्या"

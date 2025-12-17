@@ -234,7 +234,7 @@ class DHTNode:
                     f"DHT listen error: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                await asyncio.sleep(1)
+                await asyncio.sleep(self._get_sleep_interval())
 
     async def _handle_message(self, data: bytes, addr: Tuple[str, int]):
         """Handle incoming DHT message"""

@@ -977,6 +977,9 @@ msgstr "Dölj Huvudfönster"
 msgid "Hide to system tray when window is minimized"
 msgstr "Dölj i systemfältet när fönstret minimeras"
 
+msgid "High"
+msgstr "Hög"
+
 msgid "High Priority"
 msgstr "Hög prioritet"
 
@@ -1126,6 +1129,9 @@ msgstr "Logga till fil"
 
 msgid "Log-Normal"
 msgstr "Log-Normal"
+
+msgid "Low"
+msgstr "Låg"
 
 msgid "Low Priority"
 msgstr "Låg prioritet"
@@ -1301,14 +1307,17 @@ msgstr "Inga redigerbara alternativ tillgängliga för denna torrent."
 msgid "None"
 msgstr "Ingen"
 
+msgid "Normal"
+msgstr "Normal"
+
 msgid "Normal Priority"
 msgstr "Normal prioritet"
 
-msgid "Note: Choosing \\\\"
-msgstr "Notera: Välja \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Antal peers att analysera för beteendemönster"

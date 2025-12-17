@@ -977,6 +977,9 @@ msgstr "隐藏主窗口"
 msgid "Hide to system tray when window is minimized"
 msgstr "窗口最小化时隐藏到系统托盘"
 
+msgid "High"
+msgstr "高"
+
 msgid "High Priority"
 msgstr "高优先级"
 
@@ -1126,6 +1129,9 @@ msgstr "记录到文件"
 
 msgid "Log-Normal"
 msgstr "对数正态"
+
+msgid "Low"
+msgstr "低"
 
 msgid "Low Priority"
 msgstr "低优先级"
@@ -1301,14 +1307,17 @@ msgstr "此种子没有可编辑的选项。"
 msgid "None"
 msgstr "无"
 
+msgid "Normal"
+msgstr "普通"
+
 msgid "Normal Priority"
 msgstr "普通优先级"
 
-msgid "Note: Choosing \\\\"
-msgstr "注意：选择 \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "要分析行为模式的节点数量"

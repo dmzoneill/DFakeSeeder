@@ -89,6 +89,20 @@ class DHTManager:
 
         logger.trace(f"DHT Manager initialized on port {port} with node ID: {self.node_id.hex()[:16]}...")
 
+    def _get_poll_interval(self):
+        """Get poll interval from settings."""
+        dht_config = getattr(self.settings, "dht_manager", {})
+        if isinstance(dht_config, dict):
+            return dht_config.get("poll_interval_seconds", 0.1)
+        return 0.1
+
+    def _get_error_retry_interval(self):
+        """Get error retry interval from settings."""
+        dht_config = getattr(self.settings, "dht_manager", {})
+        if isinstance(dht_config, dict):
+            return dht_config.get("error_retry_interval_seconds", 1.0)
+        return 1.0
+
     def _generate_node_id(self) -> bytes:
         """Generate random 20-byte node ID"""
         return hashlib.sha1(str(random.random()).encode()).digest()
@@ -186,11 +200,11 @@ class DHTManager:
                 self._receive_messages()
 
                 # Small sleep to prevent CPU spinning
-                time.sleep(0.1)
+                time.sleep(self._get_poll_interval())
 
             except Exception as e:
                 logger.error(f"Error in DHT loop: {e}", exc_info=True)
-                time.sleep(1.0)
+                time.sleep(self._get_error_retry_interval())
 
         logger.trace("DHT loop stopped")
 

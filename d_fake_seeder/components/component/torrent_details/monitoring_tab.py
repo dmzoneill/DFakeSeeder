@@ -61,6 +61,47 @@ class MonitoringTab(BaseTorrentTab):
             extra={"class_name": self.__class__.__name__},
         )
 
+        # Get refresh interval from settings (default 2 seconds)
+        self.refresh_interval = 2
+        if hasattr(self, "app_settings") and self.app_settings:
+            ui_settings = getattr(self.app_settings, "ui_settings", {})
+            if isinstance(ui_settings, dict):
+                self.refresh_interval = ui_settings.get("monitoring_refresh_interval", 2)
+
+        # Create main vertical box
+        self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        self.main_box.set_vexpand(True)
+        self.main_box.set_hexpand(True)
+
+        # Create header bar with refresh interval slider
+        header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        header_box.set_margin_start(12)
+        header_box.set_margin_end(12)
+        header_box.set_margin_top(6)
+
+        # Refresh label
+        refresh_label = Gtk.Label(label="Refresh Interval:")
+        header_box.append(refresh_label)
+
+        # Refresh slider (1-10 seconds)
+        self.refresh_adjustment = Gtk.Adjustment(
+            value=self.refresh_interval, lower=1, upper=10, step_increment=1, page_increment=1, page_size=0
+        )
+        self.refresh_slider = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=self.refresh_adjustment)
+        self.refresh_slider.set_digits(0)
+        self.refresh_slider.set_draw_value(True)
+        self.refresh_slider.set_value_pos(Gtk.PositionType.RIGHT)
+        self.refresh_slider.set_hexpand(False)
+        self.refresh_slider.set_size_request(150, -1)
+        self.refresh_slider.connect("value-changed", self._on_refresh_interval_changed)
+        header_box.append(self.refresh_slider)
+
+        # Seconds label
+        seconds_label = Gtk.Label(label="seconds")
+        header_box.append(seconds_label)
+
+        self.main_box.append(header_box)
+
         # Create main container as a scrolled window
         self.scrolled_window = Gtk.ScrolledWindow()
         self.scrolled_window.set_vexpand(True)
@@ -76,6 +117,7 @@ class MonitoringTab(BaseTorrentTab):
         self.grid.set_margin_bottom(12)
 
         self.scrolled_window.set_child(self.grid)
+        self.main_box.append(self.scrolled_window)
 
         # Initialize metrics collector
         try:
@@ -126,30 +168,31 @@ class MonitoringTab(BaseTorrentTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-        # Start update timer (update every 2 seconds)
-        self.update_timer = GLib.timeout_add_seconds(2, self._update_metrics)
+        # Start update timer using configured refresh interval
+        self.update_timer = GLib.timeout_add_seconds(self.refresh_interval, self._update_metrics)
         self.track_timeout(self.update_timer)
         logger.trace(
-            "⏱️ MONITORING TAB: Started update timer (2 second interval)",
+            f"⏱️ MONITORING TAB: Started update timer ({self.refresh_interval} second interval)",
             extra={"class_name": self.__class__.__name__},
         )
 
-        # Get the monitoring_tab container from the builder and add our scrolled window to it
+        # Get the monitoring_tab container from the builder and add our main box to it
         monitoring_container = self.builder.get_object("monitoring_tab")
         if monitoring_container:
             # Make sure widgets are visible
+            self.main_box.set_visible(True)
             self.scrolled_window.set_visible(True)
             self.grid.set_visible(True)
 
-            monitoring_container.append(self.scrolled_window)
+            monitoring_container.append(self.main_box)
             self._tab_widget = monitoring_container
             logger.trace(
                 "✅ MONITORING TAB: Added monitoring widgets to container",
                 extra={"class_name": self.__class__.__name__},
             )
         else:
-            # Fallback: just use the scrolled window directly
-            self._tab_widget = self.scrolled_window
+            # Fallback: just use the main box directly
+            self._tab_widget = self.main_box
             logger.warning(
                 "⚠️ MONITORING TAB: monitoring_tab container not found, using scrolled window directly",
                 extra={"class_name": self.__class__.__name__},
@@ -159,6 +202,34 @@ class MonitoringTab(BaseTorrentTab):
             "✅ MONITORING TAB: Initialization complete - monitoring tab is ready",
             extra={"class_name": self.__class__.__name__},
         )
+
+    def _on_refresh_interval_changed(self, slider):
+        """Handle refresh interval slider change."""
+        new_interval = int(slider.get_value())
+        if new_interval != self.refresh_interval:
+            self.refresh_interval = new_interval
+
+            # Cancel existing timer
+            if hasattr(self, "update_timer") and self.update_timer:
+                GLib.source_remove(self.update_timer)
+
+            # Start new timer with updated interval
+            self.update_timer = GLib.timeout_add_seconds(self.refresh_interval, self._update_metrics)
+            self.track_timeout(self.update_timer)
+
+            # Save to settings if available
+            if hasattr(self, "app_settings") and self.app_settings:
+                ui_settings = getattr(self.app_settings, "ui_settings", {})
+                if isinstance(ui_settings, dict):
+                    ui_settings["monitoring_refresh_interval"] = new_interval
+                    self.app_settings.ui_settings = ui_settings
+                    if hasattr(self.app_settings, "save"):
+                        self.app_settings.save()
+
+            logger.trace(
+                f"⏱️ MONITORING TAB: Refresh interval changed to {new_interval} seconds",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def _create_metric_tiles(self):
         """Create all metric visualization tiles in 4x2 layout."""

@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "زمان انقضای دست‌دهی (ثانیه):",
   "Hide Main Window": "مخفی کردن پنجره اصلی",
   "Hide to system tray when window is minimized": "مخفی کردن در سینی سیستم هنگام کوچک کردن پنجره",
+  "High": "زیاد",
   "High Priority": "اولویت بالا",
   "Hindi": "هندی",
   "How often to announce to trackers (60-7200 seconds)": "فاصله زمانی اعلام به ردیاب‌ها (۶۰-۷۲۰۰ ثانیه)",
@@ -369,6 +370,7 @@
   "Log Level:": "سطح گزارش:",
   "Log to file": "ثبت در فایل",
   "Log-Normal": "لگاریتم نرمال",
+  "Low": "کم",
   "Low Priority": "اولویت پایین",
   "Max Connections:": "حداکثر اتصالات:",
   "Max Dropped Peers:": "حداکثر همتاهای ریخته:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "هیچ تورنتی انتخاب نشده",
   "No editable options available for this torrent.": "هیچ گزینه قابل ویرایشی برای این تورنت در دسترس نیست.",
   "None": "هیچ",
+  "Normal": "معمولی",
   "Normal Priority": "اولویت عادی",
-  "Note: Choosing \\": "توجه: انتخاب \\",
-  "Note: Choosing \\\\": "توجه: انتخاب \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "توجه: انتخاب توزیع مجدد \"سرعت تیک\" ممکن است به دلیل قانون اعداد بزرگ منجر به نمایش مقادیر میانگین در ردیاب شود. توزیع‌های مجدد متعددی بین اعلان‌های ردیاب رخ می‌دهد که باعث می‌شود سرعت‌های تورنت فردی با گذشت زمان متعادل شوند. برای آمار ردیاب غیریکنواخت، از حالت توزیع مجدد \"فاصله اعلان\" استفاده کنید.",
   "Number of peers to analyze for behavior patterns": "تعداد همتاها برای تحلیل الگوهای رفتار",
   "Number of peers to request from tracker": "تعداد همتاها برای درخواست از ردیاب",
   "Number of synthetic peers to generate": "تعداد همتاهای مصنوعی برای تولید",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ تنظیمات پیشرفته - با احتیاط تغییر دهید. مقادیر نادرست ممکن است بر کارایی یا پایداری تأثیر بگذارد.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ رابط وب اجازه کنترل از راه دور برنامه را می‌دهد. از احراز هویت قوی استفاده کنید."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ رابط وب اجازه کنترل از راه دور برنامه را می‌دهد. از احراز هویت قوی استفاده کنید.",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

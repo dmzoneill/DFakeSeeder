@@ -111,7 +111,7 @@ class UTPConnection:
             # Wait for STATE packet (ACK of SYN)
             start_time = time.time()
             while self.state != "CONNECTED" and time.time() - start_time < timeout:
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(self._get_poll_interval())
 
                 # Retransmit SYN if needed
                 if time.time() - self.last_packet_time > self.timeout:
@@ -186,7 +186,7 @@ class UTPConnection:
             await self._send_fin()
 
             # Wait briefly for ACK
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(self._get_retry_interval())
 
             self.state = "CLOSED"
 

@@ -84,3 +84,17 @@ def add_kb(kb):
 
 def add_percent(percent):
     return "{} %".format(str(percent))
+
+
+def format_timestamp(timestamp):
+    """Convert Unix timestamp to readable date string. Uses current time if blank/invalid."""
+    from datetime import datetime
+
+    try:
+        ts = int(timestamp) if timestamp else 0
+        if ts == 0:
+            ts = int(datetime.now().timestamp())
+        dt = datetime.fromtimestamp(ts)
+        return dt.strftime("%Y-%m-%d %H:%M")
+    except (ValueError, OSError, TypeError):
+        return datetime.now().strftime("%Y-%m-%d %H:%M")

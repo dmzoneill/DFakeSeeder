@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "握手超时 (秒):",
   "Hide Main Window": "隐藏主窗口",
   "Hide to system tray when window is minimized": "窗口最小化时隐藏到系统托盘",
+  "High": "高",
   "High Priority": "高优先级",
   "Hindi": "印地语",
   "How often to announce to trackers (60-7200 seconds)": "向 Tracker 通告的频率 (60-7200 秒)",
@@ -369,6 +370,7 @@
   "Log Level:": "日志级别:",
   "Log to file": "记录到文件",
   "Log-Normal": "对数正态",
+  "Low": "低",
   "Low Priority": "低优先级",
   "Max Connections:": "最大连接数:",
   "Max Dropped Peers:": "最大丢弃节点数:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "未选择种子",
   "No editable options available for this torrent.": "此种子没有可编辑的选项。",
   "None": "无",
+  "Normal": "普通",
   "Normal Priority": "普通优先级",
-  "Note: Choosing \\": "注意：选择 \\",
-  "Note: Choosing \\\\": "注意：选择 \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "注意：选择\"刻度速度\"重新分配可能会导致由于大数定律而在跟踪器上显示平均值。在跟踪器公告之间会发生多次重新分配，导致各个种子的速度随时间趋于平衡。对于非均匀的跟踪器统计，请使用\"公告间隔\"重新分配模式。",
   "Number of peers to analyze for behavior patterns": "要分析行为模式的节点数量",
   "Number of peers to request from tracker": "从 Tracker 请求的节点数量",
   "Number of synthetic peers to generate": "要生成的合成节点数量",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ 高级设置 - 请谨慎修改。错误的值可能影响性能或稳定性。",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ 网页界面允许远程控制应用程序。请使用强身份验证。"
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ 网页界面允许远程控制应用程序。请使用强身份验证。",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

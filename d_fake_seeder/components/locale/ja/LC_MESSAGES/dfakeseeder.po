@@ -977,6 +977,9 @@ msgstr "メインウィンドウを非表示"
 msgid "Hide to system tray when window is minimized"
 msgstr "ウィンドウが最小化されたときにシステムトレイに隠す"
 
+msgid "High"
+msgstr "高"
+
 msgid "High Priority"
 msgstr "高優先度"
 
@@ -1126,6 +1129,9 @@ msgstr "ファイルにログ"
 
 msgid "Log-Normal"
 msgstr "対数正規"
+
+msgid "Low"
+msgstr "低"
 
 msgid "Low Priority"
 msgstr "低優先度"
@@ -1301,14 +1307,17 @@ msgstr "このトレントには編集可能なオプションがありません
 msgid "None"
 msgstr "なし"
 
+msgid "Normal"
+msgstr "通常"
+
 msgid "Normal Priority"
 msgstr "通常優先度"
 
-msgid "Note: Choosing \\\\"
-msgstr "注意：選択 \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "動作パターン分析用ピア数"

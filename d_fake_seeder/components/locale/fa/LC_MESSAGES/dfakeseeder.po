@@ -977,6 +977,9 @@ msgstr "مخفی کردن پنجره اصلی"
 msgid "Hide to system tray when window is minimized"
 msgstr "مخفی کردن در سینی سیستم هنگام کوچک کردن پنجره"
 
+msgid "High"
+msgstr "زیاد"
+
 msgid "High Priority"
 msgstr "اولویت بالا"
 
@@ -1126,6 +1129,9 @@ msgstr "ثبت در فایل"
 
 msgid "Log-Normal"
 msgstr "لگاریتم نرمال"
+
+msgid "Low"
+msgstr "کم"
 
 msgid "Low Priority"
 msgstr "اولویت پایین"
@@ -1301,14 +1307,17 @@ msgstr "هیچ گزینه قابل ویرایشی برای این تورنت د�
 msgid "None"
 msgstr "هیچ"
 
+msgid "Normal"
+msgstr "معمولی"
+
 msgid "Normal Priority"
 msgstr "اولویت عادی"
 
-msgid "Note: Choosing \\\\"
-msgstr "توجه: انتخاب \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "تعداد همتاها برای تحلیل الگوهای رفتار"

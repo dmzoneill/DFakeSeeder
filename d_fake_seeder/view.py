@@ -576,6 +576,16 @@ class View(CleanupMixin):
             extra={"class_name": self.__class__.__name__},
         )
 
+    def _get_shutdown_kill_timeout(self):
+        """Get shutdown kill timeout from settings."""
+        ui = getattr(self.settings, "ui_settings", {})
+        return ui.get("shutdown_kill_timeout_seconds", 0.1) if isinstance(ui, dict) else 0.1
+
+    def _get_shutdown_backup_timeout(self):
+        """Get shutdown backup timeout from settings."""
+        ui = getattr(self.settings, "ui_settings", {})
+        return ui.get("shutdown_backup_timeout_seconds", 0.25) if isinstance(ui, dict) else 0.25
+
     # Function to quit the application with consolidated shutdown procedure
     def quit(self, widget=None, event=None, fast_shutdown=False):
         """
@@ -623,7 +633,7 @@ class View(CleanupMixin):
         import threading
 
         def ultra_aggressive_watchdog():
-            time.sleep(0.1)  # 100ms - kill if ANYTHING blocks
+            time.sleep(self._get_shutdown_kill_timeout())  # Configurable kill timeout
             logger.error(
                 "⚠️⚠️⚠️ ULTRA WATCHDOG: Shutdown blocked for 100ms - FORCE KILLING NOW",
                 extra={"class_name": self.__class__.__name__},
@@ -631,7 +641,7 @@ class View(CleanupMixin):
             os._exit(0)
 
         def backup_watchdog():
-            time.sleep(0.25)  # 250ms backup
+            time.sleep(self._get_shutdown_backup_timeout())  # Configurable backup timeout
             logger.warning(
                 "⚠️ BACKUP WATCHDOG: Force exit",
                 extra={"class_name": self.__class__.__name__},

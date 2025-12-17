@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "انتهاء مهلة المصافحة (ثواني):",
   "Hide Main Window": "إخفاء النافذة الرئيسية",
   "Hide to system tray when window is minimized": "إخفاء إلى شريط النظام عند تصغير النافذة",
+  "High": "مرتفع",
   "High Priority": "أولوية عالية",
   "Hindi": "الهندية",
   "How often to announce to trackers (60-7200 seconds)": "كم مرة للإعلان للمتتبعات (60-7200 ثانية)",
@@ -369,6 +370,7 @@
   "Log Level:": "مستوى السجل:",
   "Log to file": "تسجيل في ملف",
   "Log-Normal": "لوغاريتمي طبيعي",
+  "Low": "منخفض",
   "Low Priority": "أولوية منخفضة",
   "Max Connections:": "أقصى عدد اتصالات:",
   "Max Dropped Peers:": "الحد الأقصى للأقران المنقطعين:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "لم يتم تحديد تورنت",
   "No editable options available for this torrent.": "لا توجد خيارات قابلة للتحرير متاحة لهذا التورنت.",
   "None": "لا شيء",
+  "Normal": "عادي",
   "Normal Priority": "أولوية عادية",
-  "Note: Choosing \\": "ملاحظة: اختيار \\",
-  "Note: Choosing \\\\": "ملاحظة: اختيار \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "ملاحظة: قد يؤدي اختيار إعادة توزيع \"سرعة التكتك\" إلى ظهور قيم متوسطة على المتتبع بسبب قانون الأعداد الكبيرة. تحدث عمليات إعادة توزيع متعددة بين إعلانات المتتبع، مما يتسبب في توازن سرعات التورنت الفردية بمرور الوقت. للحصول على إحصائيات متتبع غير موحدة، استخدم وضع إعادة توزيع \"فترة الإعلان\".",
   "Number of peers to analyze for behavior patterns": "عدد الأقران للتحليل لأنماط السلوك",
   "Number of peers to request from tracker": "عدد الأقران للطلب من المتتبع",
   "Number of synthetic peers to generate": "عدد الأقران الاصطناعيين لإنشائهم",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ إعدادات متقدمة - عدل بحذر. القيم غير الصحيحة قد تؤثر على الأداء أو الاستقرار.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ واجهة الويب تسمح بالتحكم عن بُعد في التطبيق. استخدم مصادقة قوية."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ واجهة الويب تسمح بالتحكم عن بُعد في التطبيق. استخدم مصادقة قوية.",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

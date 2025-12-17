@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "Handshake timeout (seconden):",
   "Hide Main Window": "Verberg Hoofdvenster",
   "Hide to system tray when window is minimized": "Verbergen in systeemvak wanneer venster geminimaliseerd is",
+  "High": "Hoog",
   "High Priority": "Hoge prioriteit",
   "Hindi": "Hindi",
   "How often to announce to trackers (60-7200 seconds)": "Hoe vaak aankondigen bij trackers (60-7200 seconden)",
@@ -369,6 +370,7 @@
   "Log Level:": "Log Niveau:",
   "Log to file": "Naar bestand loggen",
   "Log-Normal": "Log-Normaal",
+  "Low": "Laag",
   "Low Priority": "Lage prioriteit",
   "Max Connections:": "Max Verbindingen:",
   "Max Dropped Peers:": "Max Weggevallen Peers:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "Geen Torrent Geselecteerd",
   "No editable options available for this torrent.": "Geen bewerkbare opties beschikbaar voor deze torrent.",
   "None": "Geen",
+  "Normal": "Normaal",
   "Normal Priority": "Normale prioriteit",
-  "Note: Choosing \\": "Opmerking: Kiezen \\",
-  "Note: Choosing \\\\": "Opmerking: Kiezen \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "Opmerking: Het kiezen van \"Tick-snelheid\" herverdeling kan leiden tot gemiddelde waarden op de tracker vanwege de wet van grote getallen. Er vinden meerdere herverdelingen plaats tussen tracker-aankondigingen, waardoor individuele torrent-snelheden na verloop van tijd in evenwicht komen. Gebruik voor niet-uniforme tracker-statistieken de \"Aankondigingsinterval\" herverdelingsmodus.",
   "Number of peers to analyze for behavior patterns": "Aantal peers om te analyseren voor gedragspatronen",
   "Number of peers to request from tracker": "Aantal peers om aan te vragen bij tracker",
   "Number of synthetic peers to generate": "Aantal synthetische peers om te genereren",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Geavanceerde instellingen - wijzig met voorzichtigheid. Onjuiste waarden kunnen prestaties of stabiliteit beïnvloeden.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Web UI maakt externe bediening van de applicatie mogelijk. Gebruik sterke authenticatie."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Web UI maakt externe bediening van de applicatie mogelijk. Gebruik sterke authenticatie.",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

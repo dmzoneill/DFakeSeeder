@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "হ্যান্ডশেক টাইমআউট (সেকেন্ড):",
   "Hide Main Window": "প্রধান উইন্ডো লুকান",
   "Hide to system tray when window is minimized": "উইন্ডো ছোট করা হলে সিস্টেম ট্রেতে লুকান",
+  "High": "উচ্চ",
   "High Priority": "উচ্চ অগ্রাধিকার",
   "Hindi": "হিন্দি",
   "How often to announce to trackers (60-7200 seconds)": "ট্র্যাকারে কত ঘন ঘন ঘোষণা করবেন (৬০-৭২০০ সেকেন্ড)",
@@ -369,6 +370,7 @@
   "Log Level:": "লগ স্তর:",
   "Log to file": "ফাইলে লগ করুন",
   "Log-Normal": "লগ-নরমাল",
+  "Low": "কম",
   "Low Priority": "নিম্ন অগ্রাধিকার",
   "Max Connections:": "সর্বোচ্চ সংযোগ:",
   "Max Dropped Peers:": "সর্বোচ্চ বাদ পড়া পিয়ার:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "কোনও টরেন্ট নির্বাচিত নেই",
   "No editable options available for this torrent.": "এই টরেন্টের জন্য কোন সম্পাদনাযোগ্য বিকল্প উপলব্ধ নেই।",
   "None": "কিছুই নয়",
+  "Normal": "স্বাভাবিক",
   "Normal Priority": "স্বাভাবিক অগ্রাধিকার",
-  "Note: Choosing \\": "দ্রষ্টব্য: নির্বাচন \\",
-  "Note: Choosing \\\\": "দ্রষ্টব্য: নির্বাচন \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "দ্রষ্টব্য: \"টিক স্পিড\" পুনর্বণ্টন নির্বাচন করলে বৃহৎ সংখ্যার নিয়মের কারণে ট্র্যাকারে গড় মান দেখা যেতে পারে। ট্র্যাকার ঘোষণার মধ্যে একাধিক পুনর্বণ্টন ঘটে, যার ফলে সময়ের সাথে সাথে পৃথক টরেন্ট গতি ভারসাম্যপূর্ণ হয়। অ-অভিন্ন ট্র্যাকার পরিসংখ্যানের জন্য, \"ঘোষণা ব্যবধান\" পুনর্বণ্টন মোড ব্যবহার করুন।",
   "Number of peers to analyze for behavior patterns": "আচরণ প্যাটার্ন বিশ্লেষণের জন্য পিয়ার সংখ্যা",
   "Number of peers to request from tracker": "ট্র্যাকার থেকে অনুরোধ করার জন্য পিয়ার সংখ্যা",
   "Number of synthetic peers to generate": "তৈরি করার জন্য সিনথেটিক পিয়ার সংখ্যা",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ উন্নত সেটিংস - সতর্কতার সাথে পরিবর্তন করুন। ভুল মান কর্মক্ষমতা বা স্থিতিশীলতা প্রভাবিত করতে পারে।",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ ওয়েব UI অ্যাপ্লিকেশনের দূরবর্তী নিয়ন্ত্রণের অনুমতি দেয়। শক্তিশালী প্রমাণীকরণ ব্যবহার করুন।"
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ ওয়েব UI অ্যাপ্লিকেশনের দূরবর্তী নিয়ন্ত্রণের অনুমতি দেয়। শক্তিশালী প্রমাণীকরণ ব্যবহার করুন।",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "Таймаут рукопожатия (секунды):",
   "Hide Main Window": "Скрыть Главное Окно",
   "Hide to system tray when window is minimized": "Скрывать в системный трей при сворачивании окна",
+  "High": "Высокий",
   "High Priority": "Высокий приоритет",
   "Hindi": "Хинди",
   "How often to announce to trackers (60-7200 seconds)": "Как часто анонсировать трекерам (60-7200 секунд)",
@@ -369,6 +370,7 @@
   "Log Level:": "Уровень логирования:",
   "Log to file": "Логировать в файл",
   "Log-Normal": "Лог-нормальное",
+  "Low": "Низкий",
   "Low Priority": "Низкий приоритет",
   "Max Connections:": "Макс. соединений:",
   "Max Dropped Peers:": "Макс. отключенных пиров:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "Торрент не выбран",
   "No editable options available for this torrent.": "Нет редактируемых опций для этого торрента.",
   "None": "Нет",
+  "Normal": "Обычный",
   "Normal Priority": "Обычный приоритет",
-  "Note: Choosing \\": "Примечание: Выбор \\",
-  "Note: Choosing \\\\": "Примечание: Выбор \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "Примечание: Выбор перераспределения \"Скорость тика\" может привести к появлению усреднённых значений на трекере из-за закона больших чисел. Между объявлениями трекера происходит несколько перераспределений, из-за чего скорости отдельных торрентов выравниваются со временем. Для неравномерной статистики трекера используйте режим перераспределения \"Интервал объявления\".",
   "Number of peers to analyze for behavior patterns": "Количество пиров для анализа поведенческих шаблонов",
   "Number of peers to request from tracker": "Количество пиров для запроса у трекера",
   "Number of synthetic peers to generate": "Количество синтетических пиров для генерации",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Расширенные настройки - изменяйте с осторожностью. Неправильные значения могут повлиять на производительность или стабильность.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Веб-интерфейс позволяет удалённо управлять приложением. Используйте надёжную аутентификацию."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Веб-интерфейс позволяет удалённо управлять приложением. Используйте надёжную аутентификацию.",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

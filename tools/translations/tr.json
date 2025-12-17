@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "El sıkışma zaman aşımı (saniye):",
   "Hide Main Window": "Ana Pencereyi Gizle",
   "Hide to system tray when window is minimized": "Pencere küçültüldüğünde sistem tepsisine gizle",
+  "High": "Yüksek",
   "High Priority": "Yüksek Öncelik",
   "Hindi": "Hintçe",
   "How often to announce to trackers (60-7200 seconds)": "İzleyicilere duyuru yapma sıklığı (60-7200 saniye)",
@@ -369,6 +370,7 @@
   "Log Level:": "Günlük Seviyesi:",
   "Log to file": "Dosyaya günlüğe kaydet",
   "Log-Normal": "Log-Normal",
+  "Low": "Düşük",
   "Low Priority": "Düşük Öncelik",
   "Max Connections:": "Maksimum Bağlantı:",
   "Max Dropped Peers:": "Maksimum Düşen Eşler:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "Torrent Seçilmedi",
   "No editable options available for this torrent.": "Bu torrent için düzenlenebilir seçenek yok.",
   "None": "Yok",
+  "Normal": "Normal",
   "Normal Priority": "Normal Öncelik",
-  "Note: Choosing \\": "Not: Seçim \\",
-  "Note: Choosing \\\\": "Not: Seçim \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "Not: \"Tick hızı\" yeniden dağıtımını seçmek, büyük sayılar yasası nedeniyle izleyicide ortalama değerlerin görünmesine neden olabilir. İzleyici duyuruları arasında birden fazla yeniden dağıtım gerçekleşir ve bu, bireysel torrent hızlarının zaman içinde dengelenmesine neden olur. Düzensiz izleyici istatistikleri için \"Duyuru Aralığı\" yeniden dağıtım modunu kullanın.",
   "Number of peers to analyze for behavior patterns": "Davranış kalıpları için analiz edilecek eş sayısı",
   "Number of peers to request from tracker": "İzleyiciden istenecek eş sayısı",
   "Number of synthetic peers to generate": "Oluşturulacak sentetik eş sayısı",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Advanced ayarlar - modify with caution. Incorrect values may affect performance or stability.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Web arayüzü uygulamanın uzaktan kontrolüne izin verir. Güçlü kimlik doğrulama kullanın."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Web arayüzü uygulamanın uzaktan kontrolüne izin verir. Güçlü kimlik doğrulama kullanın.",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

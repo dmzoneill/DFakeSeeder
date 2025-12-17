@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "Timeout handshake (segundos):",
   "Hide Main Window": "Ocultar Ventana Principal",
   "Hide to system tray when window is minimized": "Ocultar en bandeja sistema cuando ventana esté minimizada",
+  "High": "Alto",
   "High Priority": "Prioridad Alta",
   "Hindi": "Hindi",
   "How often to announce to trackers (60-7200 seconds)": "Frecuencia anuncios a trackers (60-7200 segundos)",
@@ -369,6 +370,7 @@
   "Log Level:": "Nivel Registro:",
   "Log to file": "Registrar a archivo",
   "Log-Normal": "Log-Normal",
+  "Low": "Bajo",
   "Low Priority": "Prioridad Baja",
   "Max Connections:": "Máx. conexiones:",
   "Max Dropped Peers:": "Máx. pares desconectados:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "Ningún Torrent Seleccionado",
   "No editable options available for this torrent.": "No hay opciones editables disponibles para este torrent.",
   "None": "Ninguno",
+  "Normal": "Normal",
   "Normal Priority": "Prioridad Normal",
-  "Note: Choosing \\": "Nota: Elegir \\",
-  "Note: Choosing \\\\": "Nota: Elegir \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "Nota: Elegir la redistribución de \"Velocidad de tick\" puede resultar en valores promediados que aparecen en el tracker debido a la ley de los grandes números. Se producen múltiples redistribuciones entre los anuncios del tracker, causando que las velocidades individuales de los torrents se equilibren con el tiempo. Para estadísticas de tracker no uniformes, use el modo de redistribución \"Intervalo de anuncio\".",
   "Number of peers to analyze for behavior patterns": "Número de pares a analizar para patrones de comportamiento",
   "Number of peers to request from tracker": "Número pares solicitar del tracker",
   "Number of synthetic peers to generate": "Número de pares sintéticos a generar",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Configuración avanzada - modificar con precaución. Valores incorrectos pueden afectar el rendimiento o estabilidad.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ La interfaz Web permite control remoto de la aplicación. Use autenticación fuerte."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ La interfaz Web permite control remoto de la aplicación. Use autenticación fuerte.",
+  "Note: Choosing \\": "Note: Choosing \\"
 }

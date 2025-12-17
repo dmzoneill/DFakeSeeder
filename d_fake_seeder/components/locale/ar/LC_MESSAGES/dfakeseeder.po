@@ -977,6 +977,9 @@ msgstr "إخفاء النافذة الرئيسية"
 msgid "Hide to system tray when window is minimized"
 msgstr "إخفاء إلى شريط النظام عند تصغير النافذة"
 
+msgid "High"
+msgstr "مرتفع"
+
 msgid "High Priority"
 msgstr "أولوية عالية"
 
@@ -1126,6 +1129,9 @@ msgstr "تسجيل في ملف"
 
 msgid "Log-Normal"
 msgstr "لوغاريتمي طبيعي"
+
+msgid "Low"
+msgstr "منخفض"
 
 msgid "Low Priority"
 msgstr "أولوية منخفضة"
@@ -1301,14 +1307,17 @@ msgstr "لا توجد خيارات قابلة للتحرير متاحة لهذا
 msgid "None"
 msgstr "لا شيء"
 
+msgid "Normal"
+msgstr "عادي"
+
 msgid "Normal Priority"
 msgstr "أولوية عادية"
 
-msgid "Note: Choosing \\\\"
-msgstr "ملاحظة: اختيار \\\\"
+msgid "Note: Choosing \\"
+msgstr "Note: Choosing \\"
 
-msgid "Note: Choosing \\\\\\\\"
-msgstr "Note: Choosing \\\\\\\\"
+msgid "Note: Choosing \\\\"
+msgstr "Note: Choosing \\\\"
 
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "عدد الأقران للتحليل لأنماط السلوك"

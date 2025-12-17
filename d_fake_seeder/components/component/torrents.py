@@ -14,6 +14,7 @@ from d_fake_seeder.lib.util.helpers import (
     add_kb,
     add_percent,
     convert_seconds_to_hours_mins_seconds,
+    format_timestamp,
     humanbytes,
 )
 
@@ -36,6 +37,8 @@ class Torrents(Component, ColumnTranslationMixin):
         )
         self.builder = builder
         self.model = model
+        # Track selected item ID for inline editing
+        self._selected_item_id = None
         self.store = Gio.ListStore.new(Attributes)
         self.track_store(self.store)  # Track for automatic cleanup
         # window
@@ -555,11 +558,116 @@ class Torrents(Component, ColumnTranslationMixin):
             logger.error("Background column creation error:", "Torrents")
         return False  # Don't repeat this idle task
 
+    def _create_edit_widget(self, attribute, widget_type_str):
+        """Create an edit widget based on type string."""
+        if widget_type_str == "Gtk.SpinButton":
+            adj = Gtk.Adjustment(value=0, lower=0, upper=999999, step_increment=1, page_increment=10, page_size=0)
+            widget = Gtk.SpinButton(adjustment=adj)
+            widget.set_editable(True)
+            widget.set_can_focus(True)
+            return widget
+        elif widget_type_str == "Gtk.Switch":
+            widget = Gtk.Switch()
+            widget.set_can_focus(True)
+            return widget
+        elif widget_type_str == "Gtk.Entry":
+            widget = Gtk.Entry()
+            widget.set_can_focus(True)
+            return widget
+        elif widget_type_str == "Gtk.DropDown":
+            options = self._get_dropdown_options(attribute)
+            translated_options = self._get_translated_dropdown_options(attribute)
+            string_list = Gtk.StringList.new(translated_options)
+            widget = Gtk.DropDown(model=string_list)
+            widget.set_can_focus(True)
+            widget._options = options  # Store original English options for saving
+            widget._translated_options = translated_options
+            return widget
+        return None
+
+    def _get_dropdown_options(self, attribute):
+        """Return dropdown options for a given attribute."""
+        # Base English options (used as keys)
+        options_map = {
+            "priority": ["low", "normal", "high"],
+        }
+        return options_map.get(attribute, ["option1", "option2"])
+
+    def _get_translated_dropdown_options(self, attribute):
+        """Return translated dropdown options for display."""
+        options = self._get_dropdown_options(attribute)
+        # Use model's translation function if available
+        translate = self._get_translate_func()
+        # Translation map for dropdown options
+        translation_map = {
+            "low": translate("Low"),
+            "normal": translate("Normal"),
+            "high": translate("High"),
+        }
+        return [translation_map.get(opt, opt) for opt in options]
+
+    def _get_translate_func(self):
+        """Get the translation function from model or return identity."""
+        if hasattr(self, "model") and self.model:
+            if hasattr(self.model, "translation_manager"):
+                return self.model.translation_manager.translate_func
+        return lambda x: x
+
+    def _create_inline_stack(self, attribute, display_widget, edit_widget):
+        """Create a Stack with display and edit children."""
+        stack = Gtk.Stack()
+        stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
+        stack.set_transition_duration(100)
+        stack.add_named(display_widget, "display")
+        stack.add_named(edit_widget, "edit")
+        stack.set_visible_child_name("display")
+        stack._display_widget = display_widget
+        stack._edit_widget = edit_widget
+        stack._attribute = attribute
+        return stack
+
+    def _update_visible_stacks(self, selected_id):
+        """Update all visible Stack widgets based on selection."""
+
+        # Iterate through all ListItem children to find Stacks
+        def update_child(widget):
+            if isinstance(widget, Gtk.Stack) and hasattr(widget, "_bound_item_id"):
+                if widget._bound_item_id == selected_id:
+                    widget.set_visible_child_name("edit")
+                else:
+                    widget.set_visible_child_name("display")
+            # Recurse into containers
+            if hasattr(widget, "get_first_child"):
+                child = widget.get_first_child()
+                while child:
+                    update_child(child)
+                    child = child.get_next_sibling()
+
+        # Start from the ColumnView
+        update_child(self.torrents_columnview)
+
     def setup_column_factory(self, factory, item, attribute):
         # PERFORMANCE FIX: Remove GLib.idle_add() bottleneck - execute immediately
         # Create and configure the appropriate widget based on the attribute
         renderers = self.settings.cellrenderers
+        editwidgets = getattr(self.settings, "editwidgets", {})
         widget = None
+
+        # Create Stack for editable columns
+        if attribute in editwidgets:
+            widget_type = editwidgets[attribute]
+            display_widget = Gtk.Label()
+            display_widget.set_hexpand(True)
+            display_widget.set_halign(Gtk.Align.START)
+            edit_widget = self._create_edit_widget(attribute, widget_type)
+            if edit_widget:
+                widget = self._create_inline_stack(attribute, display_widget, edit_widget)
+                widget.set_margin_top(self.ui_margin_small)
+                widget.set_margin_bottom(self.ui_margin_small)
+                widget.set_margin_start(self.ui_margin_small)
+                widget.set_margin_end(self.ui_margin_small)
+                item.set_child(widget)
+                return
 
         if attribute in renderers:
             # If using a custom renderer
@@ -593,11 +701,24 @@ class Torrents(Component, ColumnTranslationMixin):
     def bind_column_factory(self, factory, item, attribute):
         # PERFORMANCE FIX: Remove GLib.idle_add() bottleneck - execute immediately
         textrenderers = self.settings.textrenderers
+        editwidgets = getattr(self.settings, "editwidgets", {})
 
         # Get the widget associated with the item
         widget = item.get_child()
         # Get the item's data
         item_data = item.get_item()
+
+        # Handle Stack widgets for inline editing
+        if isinstance(widget, Gtk.Stack) and attribute in editwidgets:
+            self._bind_inline_stack(widget, item_data, attribute, textrenderers)
+            # Store bound item ID and set correct mode
+            item_id = getattr(item_data, "id", None)
+            widget._bound_item_id = item_id
+            if item_id == self._selected_item_id:
+                widget.set_visible_child_name("edit")
+            else:
+                widget.set_visible_child_name("display")
+            return
 
         # Use appropriate widget based on the attribute
         if attribute in textrenderers:
@@ -634,6 +755,118 @@ class Torrents(Component, ColumnTranslationMixin):
                 self.track_binding(binding)
             # Add more cases for other widget types as needed
 
+    def _bind_inline_stack(self, stack, item_data, attribute, textrenderers):
+        """Bind data to both display and edit widgets in a Stack."""
+        if item_data is None:
+            return
+
+        display_widget = stack._display_widget
+        edit_widget = stack._edit_widget
+
+        # Disconnect old handlers to prevent stale closures from widget recycling
+        if hasattr(edit_widget, "_handler_id") and edit_widget._handler_id:
+            try:
+                edit_widget.disconnect(edit_widget._handler_id)
+            except Exception:
+                pass
+            edit_widget._handler_id = None
+
+        # Store reference to current item for handler
+        edit_widget._bound_item = item_data
+        edit_widget._bound_attribute = attribute
+
+        # Get current value
+        try:
+            current_value = getattr(item_data, attribute, 0)
+        except Exception:
+            current_value = 0
+
+        # Bind display widget
+        if attribute in textrenderers:
+            text_renderer_func_name = textrenderers[attribute]
+            binding = item_data.bind_property(
+                attribute,
+                display_widget,
+                "label",
+                GObject.BindingFlags.SYNC_CREATE,
+                self.get_text_renderer(text_renderer_func_name),
+            )
+            self.track_binding(binding)
+        else:
+            binding = item_data.bind_property(
+                attribute,
+                display_widget,
+                "label",
+                GObject.BindingFlags.SYNC_CREATE,
+                self.to_str,
+            )
+            self.track_binding(binding)
+
+        # Set initial value on edit widget and connect handlers
+        if isinstance(edit_widget, Gtk.SpinButton):
+            try:
+                edit_widget.set_value(float(current_value))
+            except (ValueError, TypeError):
+                edit_widget.set_value(0.0)
+
+            def on_value_changed(sb):
+                item = getattr(sb, "_bound_item", None)
+                attr = getattr(sb, "_bound_attribute", None)
+                if item and attr:
+                    try:
+                        setattr(item, attr, sb.get_value())
+                    except Exception:
+                        pass
+
+            edit_widget._handler_id = edit_widget.connect("value-changed", on_value_changed)
+        elif isinstance(edit_widget, Gtk.Switch):
+            edit_widget.set_active(bool(current_value))
+
+            def on_switch_changed(sw, pspec):
+                item = getattr(sw, "_bound_item", None)
+                attr = getattr(sw, "_bound_attribute", None)
+                if item and attr:
+                    try:
+                        setattr(item, attr, sw.get_active())
+                    except Exception:
+                        pass
+
+            edit_widget._handler_id = edit_widget.connect("notify::active", on_switch_changed)
+        elif isinstance(edit_widget, Gtk.Entry):
+            edit_widget.set_text(str(current_value) if current_value else "")
+
+            def on_entry_changed(entry):
+                item = getattr(entry, "_bound_item", None)
+                attr = getattr(entry, "_bound_attribute", None)
+                if item and attr:
+                    try:
+                        setattr(item, attr, entry.get_text())
+                    except Exception:
+                        pass
+
+            edit_widget._handler_id = edit_widget.connect("changed", on_entry_changed)
+        elif isinstance(edit_widget, Gtk.DropDown):
+            options = getattr(edit_widget, "_options", [])
+            try:
+                idx = options.index(str(current_value)) if current_value else 0
+            except ValueError:
+                idx = 0
+            edit_widget.set_selected(idx)
+
+            def on_dropdown_changed(dropdown, pspec):
+                item = getattr(dropdown, "_bound_item", None)
+                attr = getattr(dropdown, "_bound_attribute", None)
+                opts = getattr(dropdown, "_options", [])
+                if item and attr:
+                    try:
+                        selected_idx = dropdown.get_selected()
+                        if 0 <= selected_idx < len(opts):
+                            setattr(item, attr, opts[selected_idx])
+                    except Exception:
+                        pass
+
+            edit_widget._handler_id = edit_widget.connect("notify::selected", on_dropdown_changed)
+
     def get_text_renderer(self, func_name):
         # Map function names to functions
         # fmt: off
@@ -642,6 +875,7 @@ class Torrents(Component, ColumnTranslationMixin):
             "add_percent": add_percent,
             "convert_seconds_to_hours_mins_seconds":
                 convert_seconds_to_hours_mins_seconds,
+            "format_timestamp": format_timestamp,
             "humanbytes": humanbytes,
         }
 
@@ -752,6 +986,13 @@ class Torrents(Component, ColumnTranslationMixin):
         logger.debug(f"Torrent selection changed to position {selected_position}")
         # Get the selected item from SingleSelection
         selected_item = selection.get_selected_item()
+
+        # Update selected ID and visible stacks
+        new_id = getattr(selected_item, "id", None) if selected_item else None
+        if new_id != self._selected_item_id:
+            self._selected_item_id = new_id
+            self._update_visible_stacks(new_id)
+
         if selected_item is not None:
             self.model.emit(
                 "selection-changed",

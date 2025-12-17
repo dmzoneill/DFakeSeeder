@@ -319,6 +319,7 @@
   "Handshake timeout (seconds):": "Hết thời gian bắt tay (giây):",
   "Hide Main Window": "Ẩn Cửa sổ Chính",
   "Hide to system tray when window is minimized": "Ẩn vào khay hệ thống khi cửa sổ được thu nhỏ",
+  "High": "Cao",
   "High Priority": "Ưu tiên cao",
   "Hindi": "Tiếng Hindi",
   "How often to announce to trackers (60-7200 seconds)": "Tần suất thông báo cho tracker (60-7200 giây)",
@@ -369,6 +370,7 @@
   "Log Level:": "Mức Nhật ký:",
   "Log to file": "Ghi vào tệp",
   "Log-Normal": "Log-Chuẩn",
+  "Low": "Thấp",
   "Low Priority": "Ưu tiên thấp",
   "Max Connections:": "Kết nối Tối đa:",
   "Max Dropped Peers:": "Ngang hàng Bỏ Tối đa:",
@@ -427,9 +429,9 @@
   "No Torrent Selected": "Không có Torrent được chọn",
   "No editable options available for this torrent.": "Không có tùy chọn có thể chỉnh sửa cho torrent này.",
   "None": "Không có",
+  "Normal": "Bình thường",
   "Normal Priority": "Ưu tiên bình thường",
-  "Note: Choosing \\": "Lưu ý: Chọn \\",
-  "Note: Choosing \\\\": "Lưu ý: Chọn \\\\",
+  "Note: Choosing \"Tick speed\" redistribution may result in averaged values appearing on the tracker due to the law of large numbers. Multiple redistributions occur between tracker announces, causing individual torrent speeds to balance out over time. For non-uniform tracker statistics, use \"Announce Interval\" redistribution mode.": "Lưu ý: Chọn phân phối lại \"Tốc độ tick\" có thể dẫn đến các giá trị trung bình xuất hiện trên tracker do quy luật số lớn. Nhiều lần phân phối lại xảy ra giữa các thông báo tracker, khiến tốc độ torrent riêng lẻ cân bằng theo thời gian. Để có thống kê tracker không đồng nhất, hãy sử dụng chế độ phân phối lại \"Khoảng thời gian thông báo\".",
   "Number of peers to analyze for behavior patterns": "Số lượng ngang hàng để phân tích mẫu hành vi",
   "Number of peers to request from tracker": "Số lượng ngang hàng để yêu cầu từ tracker",
   "Number of synthetic peers to generate": "Số lượng ngang hàng tổng hợp để tạo",
@@ -799,5 +801,6 @@
   "µTorrent": "µTorrent",
   "ℹ️": "ℹ️",
   "⚠️ Advanced settings - modify with caution. Incorrect values may affect performance or stability.": "⚠️ Cài đặt nâng cao - chỉnh sửa cẩn thận. Giá trị không chính xác có thể ảnh hưởng đến hiệu suất hoặc độ ổn định.",
-  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Giao diện Web cho phép điều khiển từ xa ứng dụng. Sử dụng xác thực mạnh."
+  "⚠️ Web UI allows remote control of the application. Use strong authentication.": "⚠️ Giao diện Web cho phép điều khiển từ xa ứng dụng. Sử dụng xác thực mạnh.",
+  "Note: Choosing \\": "Note: Choosing \\"
 }
