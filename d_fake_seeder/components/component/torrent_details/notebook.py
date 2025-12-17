@@ -58,6 +58,7 @@ class TorrentDetailsNotebook(Component):
                 self.settings = AppSettings.get_instance()
                 # Get main notebook widget
                 self.notebook = self.builder.get_object("notebook1")
+
                 # Get UI settings
                 ui_settings = getattr(self.settings, "ui_settings", {})
                 self.ui_margin_large = ui_settings.get("ui_margin_large", 10)

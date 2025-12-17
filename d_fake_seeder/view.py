@@ -78,6 +78,10 @@ class View(CleanupMixin):
             # Get window object
             with logger.performance.operation_context("window_setup", self.__class__.__name__):
                 self.window = self.builder.get_object("main_window")
+
+                # TEMPORARILY DISABLED: Window keyboard controller for debugging
+                # print("✅ Keyboard controller disabled - testing natural GTK focus")
+
                 # Set window icon using icon name
                 self.window.set_icon_name("dfakeseeder")
                 # Also set the application ID to match desktop file
@@ -149,20 +153,22 @@ class View(CleanupMixin):
         self.notify_label.hide()
         self.notify_label.set_valign(Gtk.Align.CENTER)
         self.notify_label.set_halign(Gtk.Align.CENTER)
+        # CRITICAL: Prevent overlay from blocking keyboard events
+        self.notify_label.set_can_target(False)
+        self.notify_label.set_can_focus(False)
         self.overlay.add_overlay(self.notify_label)
         logger.trace(
             "Notification overlay setup completed (took {(overlay_end - overlay_start)*1000:.1f}ms)",
             "View",
         )
-        # Get UI settings for configurable timeouts
-        ui_settings = getattr(self.settings, "ui_settings", {})
-        self.resize_delay = ui_settings.get("resize_delay_seconds", 1.0)
-        self.splash_display_duration = ui_settings.get("splash_display_duration_seconds", 2)
-        self.splash_fade_interval = ui_settings.get("splash_fade_interval_ms", 75)
-        self.splash_fade_step = ui_settings.get("splash_fade_step", 0.025)
-        self.splash_image_size = ui_settings.get("splash_image_size_pixels", 100)
-        self.notification_timeout_min = ui_settings.get("notification_timeout_min_ms", 2000)
-        self.notification_timeout_multiplier = ui_settings.get("notification_timeout_multiplier", 500)
+        # Get UI settings for configurable timeouts using proper AppSettings API
+        self.resize_delay = self.settings.get("ui_settings.resize_delay_seconds", 1.0)
+        self.splash_display_duration = self.settings.get("ui_settings.splash_display_duration_seconds", 2)
+        self.splash_fade_interval = self.settings.get("ui_settings.splash_fade_interval_ms", 75)
+        self.splash_fade_step = self.settings.get("ui_settings.splash_fade_step", 0.025)
+        self.splash_image_size = self.settings.get("ui_settings.splash_image_size_pixels", 300)
+        self.notification_timeout_min = self.settings.get("ui_settings.notification_timeout_min_ms", 2000)
+        self.notification_timeout_multiplier = self.settings.get("ui_settings.notification_timeout_multiplier", 500)
         logger.trace(
             "UI settings configuration completed (took {(ui_settings_end - ui_settings_start)*1000:.1f}ms)",
             "View",
@@ -198,9 +204,8 @@ class View(CleanupMixin):
         self.display = self.window.get_display()
         self.css_provider = None
         # Get theme style and color scheme from ui_settings
-        ui_settings = app_settings.get("ui_settings", {})
-        theme_style = ui_settings.get("theme_style", "classic")
-        color_scheme = ui_settings.get("color_scheme", "auto")
+        theme_style = app_settings.get("ui_settings.theme_style", "classic")
+        color_scheme = app_settings.get("ui_settings.color_scheme", "auto")
         logger.trace(f"Initial theme from settings: style={theme_style}, color={color_scheme}")
         # Apply initial theme (will load appropriate CSS file and color scheme)
         self.apply_theme(theme_style, color_scheme)
@@ -258,14 +263,18 @@ class View(CleanupMixin):
         self.splash_image.show()
         self.splash_image.set_valign(Gtk.Align.CENTER)
         self.splash_image.set_halign(Gtk.Align.CENTER)
-        self.splash_image.set_size_request(self.splash_image_size, self.splash_image_size)
+        # Use set_pixel_size() to actually scale the image, not just set widget size
+        self.splash_image.set_pixel_size(self.splash_image_size)
+        # CRITICAL: Prevent splash from blocking keyboard events
+        self.splash_image.set_can_target(False)
+        self.splash_image.set_can_focus(False)
         self.overlay.add_overlay(self.splash_image)
         self.track_timeout(GLib.timeout_add_seconds(self.splash_display_duration, self.fade_out_image))
 
     def show_about(self, action, _param):
         self.window.about = Gtk.AboutDialog()
         self.window.about.set_transient_for(self.window)
-        self.window.about.set_modal(self)
+        self.window.about.set_modal(True)
         app_settings = AppSettings.get_instance()
         app_title = app_settings.get("application", {}).get("title", self._("D' Fake Seeder"))
         self.window.about.set_program_name(app_title)
@@ -597,11 +606,8 @@ class View(CleanupMixin):
 
         # ========== SAVE SETTINGS IMMEDIATELY (BEFORE WATCHDOGS OR CLEANUP) ==========
         try:
-            print(f"🔄 Calling save_quit() - torrents count: {len(self.settings.torrents)}")
             self.settings.save_quit()
-            print("✅ save_quit() completed successfully")
         except Exception as e:
-            print(f"Error saving settings: {e}")
             logger.warning(
                 f"Error saving settings: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -967,8 +973,7 @@ class View(CleanupMixin):
             )
             # Get current color scheme
             app_settings = AppSettings.get_instance()
-            ui_settings = app_settings.get("ui_settings", {})
-            color_scheme = ui_settings.get("color_scheme", "auto")
+            color_scheme = app_settings.get("ui_settings.color_scheme", "auto")
             self.apply_theme(value, color_scheme)
 
         # Handle color scheme changes
@@ -979,8 +984,7 @@ class View(CleanupMixin):
             )
             # Get current theme style
             app_settings = AppSettings.get_instance()
-            ui_settings = app_settings.get("ui_settings", {})
-            theme_style = ui_settings.get("theme_style", "classic")
+            theme_style = app_settings.get("ui_settings.theme_style", "classic")
             self.apply_theme(theme_style, value)
 
     def apply_theme(self, theme_style: str, color_scheme: str = "auto") -> None:

@@ -2,17 +2,17 @@
 <interface>
   <requires lib="gtk+" version="4.0"/>
   <object class="GtkWindow" id="main_window">
-    <property name="can-focus">False</property>
+    <property name="can-focus">True</property>
     <property name="title" translatable="yes">D' Fake Seeder</property>
     <property name="default-width">1024</property>
     <property name="default-height">600</property>
     <property name="icon-name">../images/dfakeseeder</property>
     <child>
       <object class="GtkOverlay" id="overlay">
-        <property name="can-focus">False</property>
+        <property name="can-focus">True</property>
         <child>
           <object class="GtkBox" id="main_box">
-            <property name="can-focus">False</property>
+            <property name="can-focus">True</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
             <property name="orientation">vertical</property>
@@ -176,14 +176,14 @@
             </child>
             <child>
               <object class="GtkPaned" id="main_paned">
-                <property name="can-focus">False</property>
+                <property name="can-focus">True</property>
                 <property name="orientation">vertical</property>
                 <child>                  
                   <object class="GtkPaned" id="paned">
-                    <property name="can-focus">False</property>
+                    <property name="can-focus">True</property>
                     <child>
                       <object class="GtkScrolledWindow">
-                        <property name="can-focus">False</property>
+                        <property name="can-focus">True</property>
                         <child>
                           <object class="GtkColumnView" id="states_columnview" >
     <property name="name">states_columnview</property>
@@ -197,7 +197,7 @@
                     </child>
                     <child>
                       <object class="GtkScrolledWindow">
-                        <property name="can-focus">False</property>
+                        <property name="can-focus">True</property>
                         <child>
                           <object class="GtkColumnView" id="columnview1" >
     <property name="name">columnview1</property>
@@ -378,6 +378,8 @@
     <child>
         <object class="GtkScrolledWindow">
             <property name="can-focus">True</property>
+            <property name="focusable">True</property>
+            <property name="kinetic-scrolling">True</property>
             <child>
                 <object class="GtkBox" id="options_tab">
                     <property name="visible">True</property>
@@ -432,6 +434,7 @@
                         <interface>
   <object class="GtkGrid" id="options_grid">
     <property name="visible">True</property>
+    <property name="can-focus">True</property>
     <property name="row-spacing">10</property>
     <property name="column-spacing">10</property>
     <property name="hexpand">False</property>

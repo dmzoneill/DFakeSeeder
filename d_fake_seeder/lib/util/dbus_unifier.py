@@ -601,7 +601,7 @@ class DBusUnifier:
     def _on_name_lost(self, connection, name):
         """Callback when service name is lost"""
         self._is_service_owner = False
-        logger.warning(
+        logger.debug(
             f"D-Bus service name lost: {name}",
             extra={"class_name": self.__class__.__name__},
         )

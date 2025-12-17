@@ -202,7 +202,7 @@ class Toolbar(Component):
         self.toolbar_refresh_rate = self.builder.get_object("toolbar_refresh_rate")
         logger.info("Got toolbar_refresh_rate successfully", "Toolbar")
         logger.trace("About to create Gtk.Adjustment", "Toolbar")
-        adjustment = Gtk.Adjustment.new(0, 1, 60, 1, 1, 1)
+        adjustment = Gtk.Adjustment.new(1, 1, 60, 1, 10, 0)  # Fixed: value=1 (was 0), page_size=0
         logger.info("Gtk.Adjustment created successfully", "Toolbar")
         logger.trace("About to set step increment", "Toolbar")
         adjustment.set_step_increment(1)

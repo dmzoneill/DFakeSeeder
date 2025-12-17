@@ -32,6 +32,7 @@ Usage:
 # isort: skip_file
 
 # fmt: off
+import warnings
 import weakref
 from typing import Any, List, Tuple
 
@@ -267,19 +268,23 @@ class CleanupMixin:
         removed = 0
         failed = 0
 
-        for source_id in self._tracked_timeouts:
-            try:
-                if GLib.source_remove(source_id):
-                    removed += 1
-                else:
-                    # Source already removed or invalid
-                    pass
-            except Exception as e:
-                logger.trace(
-                    f"Failed to remove timeout source {source_id}: {e}",
-                    extra={"class_name": self.__class__.__name__},
-                )
-                failed += 1
+        # Suppress GLib warnings about non-existent source IDs during cleanup
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", message=".*Source ID.*was not found.*")
+
+            for source_id in self._tracked_timeouts:
+                try:
+                    if GLib.source_remove(source_id):
+                        removed += 1
+                    else:
+                        # Source already removed or invalid
+                        pass
+                except Exception as e:
+                    logger.trace(
+                        f"Failed to remove timeout source {source_id}: {e}",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                    failed += 1
 
         self._tracked_timeouts.clear()
 
