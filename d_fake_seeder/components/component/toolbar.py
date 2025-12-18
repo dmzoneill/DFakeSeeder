@@ -615,9 +615,27 @@ class Toolbar(Component):
 
     def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         logger.trace(
-            "Torrents view settings changed",
+            f"Toolbar settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},
         )
+
+        # Update refresh rate slider when tickspeed changes
+        if key == "tickspeed" and hasattr(self, "toolbar_refresh_rate"):
+            try:
+                current_value = int(self.toolbar_refresh_rate.get_value())
+                new_value = int(value)
+                if current_value != new_value:
+                    # Block signal to avoid feedback loop
+                    self.toolbar_refresh_rate.set_value(new_value)
+                    logger.trace(
+                        f"Updated refresh rate slider to {new_value}",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+            except (ValueError, TypeError) as e:
+                logger.error(
+                    f"Failed to update refresh rate slider: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
 
     def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
         logger.trace(
