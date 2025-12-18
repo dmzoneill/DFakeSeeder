@@ -69,8 +69,8 @@ class LiveGraph(Gtk.DrawingArea):
         # Set up drawing callback
         self.set_draw_func(self._on_draw)
 
-        # Set minimum size
-        self.set_size_request(200, 80)
+        # Set minimum size - use -1 for width to allow shrinking
+        self.set_size_request(-1, 80)
 
         # Set background color
         self.set_css_classes(["live-graph"])

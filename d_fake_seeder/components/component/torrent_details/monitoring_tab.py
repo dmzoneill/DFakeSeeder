@@ -103,6 +103,8 @@ class MonitoringTab(BaseTorrentTab):
         self.scrolled_window = Gtk.ScrolledWindow()
         self.scrolled_window.set_vexpand(True)
         self.scrolled_window.set_hexpand(True)
+        # Allow horizontal scrolling if needed, but prefer shrinking
+        self.scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
 
         # Responsive layout configuration
         self.TILE_MIN_WIDTH = 200  # Minimum width per tile in pixels (allows narrower windows)
@@ -290,10 +292,10 @@ class MonitoringTab(BaseTorrentTab):
         Returns:
             Dictionary with tile widgets
         """
-        # Tile frame with minimum width for responsive layout
+        # Tile frame - no minimum width set, FlowBox controls layout
         frame = Gtk.Frame()
         frame.set_css_classes(["metric-tile"])
-        frame.set_size_request(self.TILE_MIN_WIDTH, -1)  # Min width, natural height
+        # Don't set size_request - let FlowBox distribute width evenly
         frame.set_hexpand(True)  # Allow horizontal expansion
 
         # Add CSS class for smooth transitions
