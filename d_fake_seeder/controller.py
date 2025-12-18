@@ -35,17 +35,17 @@ class Controller:
         self.global_peer_manager = GlobalPeerManager()
 
         # Initialize DHT manager
-        dht_enabled = getattr(self.settings, "dht_enabled", False)
+        dht_enabled = self.settings.get("protocols.dht.enabled", False)
         self.dht_manager = None
         if dht_enabled:
-            dht_port = getattr(self.settings, "dht_port", 6881)
+            dht_port = self.settings.get("connection.listening_port", 6881)
             self.dht_manager = DHTManager(port=dht_port)
 
         # Initialize speed distribution manager
         self.speed_distribution_manager = SpeedDistributionManager(model)
 
         # Initialize client behavior simulator
-        behavior_profile = getattr(self.settings, "client_behavior_profile", "balanced")
+        behavior_profile = self.settings.get("simulation.client_behavior_engine.primary_client", "balanced")
         self.client_behavior_simulator = ClientBehaviorSimulator(behavior_profile)
 
         # Tick timer for speed distribution and behavior simulation

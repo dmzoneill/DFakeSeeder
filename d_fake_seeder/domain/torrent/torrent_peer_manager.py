@@ -70,7 +70,7 @@ class TorrentPeerManager:
                 our_peer_id = self._get_our_peer_id(torrent)
 
                 # Create new peer protocol manager
-                max_connections = getattr(self.settings, "max_connections_per_torrent", 50)
+                max_connections = self.settings.get("connection.max_per_torrent", 50)
                 self.current_manager = PeerProtocolManager(
                     info_hash=info_hash,
                     our_peer_id=our_peer_id,
