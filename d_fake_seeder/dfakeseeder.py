@@ -115,9 +115,7 @@ class DFakeSeeder(Gtk.Application):
 
                 # Check if we should start minimized
                 if self.settings.start_minimized:
-                    logger.info(
-                        "Starting minimized as per settings", self.__class__.__name__
-                    )
+                    logger.info("Starting minimized as per settings", self.__class__.__name__)
                     self.view.window.minimize()
                     # If minimize_to_tray is also enabled, hide the window
                     if self.settings.minimize_to_tray:
