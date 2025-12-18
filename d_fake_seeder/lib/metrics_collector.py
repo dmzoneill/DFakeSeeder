@@ -68,6 +68,9 @@ class MetricsCollector:
 
             if self.process:
                 logger.trace(f"Monitoring process: {self.process.name()} (PID: {self.pid})")
+                # Prime the cpu_percent() call - first call always returns 0
+                # Subsequent calls with interval=None return CPU since last call
+                self.process.cpu_percent(interval=None)
                 # Capture baseline metrics
                 self.baseline_metrics = self.collect_metrics()
             else:
@@ -137,7 +140,9 @@ class MetricsCollector:
         """Collect CPU usage metrics."""
         try:
             cpu_times = self.process.cpu_times()  # type: ignore[union-attr]
-            cpu_percent = self.process.cpu_percent(interval=self._get_cpu_sample_interval())  # type: ignore[attr-defined, union-attr]  # noqa: E501
+            # interval=None returns CPU since last call (non-blocking)
+            # The first call is primed in _initialize_process()
+            cpu_percent = self.process.cpu_percent(interval=None)  # type: ignore[union-attr]
 
             return {
                 "cpu_percent": cpu_percent,
