@@ -20,87 +20,8 @@ from .base_tab import BaseSettingsTab  # noqa: E402
 class DHTTab(BaseSettingsTab):
     """DHT configuration tab"""
 
-    # Auto-connect simple widgets with WIDGET_MAPPINGS
-    WIDGET_MAPPINGS = [
-        # Custom node ID
-        {
-            "id": "node_id_custom_entry",
-            "name": "node_id_custom",
-            "setting_key": "dht_node_id_custom",
-            "type": str,
-        },
-        # Timing settings
-        {
-            "id": "dht_announcement_interval_spin",
-            "name": "announcement_interval",
-            "setting_key": "dht_announcement_interval",
-            "type": int,
-        },
-        {
-            "id": "bootstrap_timeout_spin",
-            "name": "bootstrap_timeout",
-            "setting_key": "dht_bootstrap_timeout",
-            "type": int,
-        },
-        {
-            "id": "dht_query_timeout_spin",
-            "name": "query_timeout",
-            "setting_key": "dht_query_timeout",
-            "type": int,
-        },
-        # Network settings
-        {
-            "id": "routing_table_size_spin",
-            "name": "routing_table_size",
-            "setting_key": "dht_routing_table_size",
-            "type": int,
-        },
-        {
-            "id": "dht_max_nodes_spin",
-            "name": "max_nodes",
-            "setting_key": "dht_max_nodes",
-            "type": int,
-        },
-        {
-            "id": "dht_bucket_size_spin",
-            "name": "bucket_size",
-            "setting_key": "dht_bucket_size",
-            "type": int,
-        },
-        {
-            "id": "dht_concurrent_queries_spin",
-            "name": "concurrent_queries",
-            "setting_key": "dht_concurrent_queries",
-            "type": int,
-        },
-        # Bootstrap settings
-        {
-            "id": "auto_bootstrap_check",
-            "name": "auto_bootstrap",
-            "setting_key": "dht_auto_bootstrap",
-            "type": bool,
-        },
-        # Statistics settings
-        {
-            "id": "dht_stats_interval_spin",
-            "name": "stats_interval",
-            "setting_key": "dht_stats_interval",
-            "type": int,
-        },
-        # Security settings
-        {
-            "id": "dht_validate_tokens_check",
-            "name": "validate_tokens",
-            "setting_key": "dht_validate_tokens",
-            "type": bool,
-        },
-        {
-            "id": "dht_max_queries_spin",
-            "name": "max_queries_per_second",
-            "setting_key": "dht_max_queries_per_second",
-            "type": int,
-        },
-    ]
+    # Note: DHT settings use manual loading/saving due to nested structure (protocols.dht.*)
+    WIDGET_MAPPINGS: list = []
 
     @property
     def tab_name(self) -> str:
@@ -167,18 +88,17 @@ class DHTTab(BaseSettingsTab):
         self.logger.trace("DHT tab signals connected", extra={"class_name": self.__class__.__name__})
 
     def _load_settings(self) -> None:
-        """Load DHT settings from configuration"""
+        """Load DHT settings from configuration using nested keys."""
         try:
-            dht_config = getattr(self.app_settings, "protocols", {}).get("dht", {})
-
             # Basic DHT settings
             if self._widgets["dht_enabled"]:
-                self._widgets["dht_enabled"].set_state(dht_config.get("enabled", True))
+                value = self.app_settings.get("protocols.dht.enabled", True)
+                self._widgets["dht_enabled"].set_state(value)
 
             # Node configuration
-            node_id_setting = dht_config.get("node_id", "auto_generate")
+            node_id_setting = self.app_settings.get("protocols.dht.node_id", "auto_generate")
             if self._widgets["node_id_auto"]:
-                self.set_switch_state(self._widgets["node_id_auto"], node_id_setting == "auto_generate")  # type: ignore[attr-defined]  # noqa: E501
+                self._widgets["node_id_auto"].set_active(node_id_setting == "auto_generate")
 
             if self._widgets["node_id_custom"]:
                 if node_id_setting != "auto_generate":
@@ -187,38 +107,44 @@ class DHTTab(BaseSettingsTab):
 
             # Network settings
             if self._widgets["routing_table_size"]:
-                self._widgets["routing_table_size"].set_value(dht_config.get("routing_table_size", 160))
+                value = self.app_settings.get("protocols.dht.routing_table_size", 160)
+                self._widgets["routing_table_size"].set_value(value)
 
             if self._widgets["announcement_interval"]:
-                self._widgets["announcement_interval"].set_value(dht_config.get("announcement_interval", 1800))
+                value = self.app_settings.get("protocols.dht.announcement_interval", 1800)
+                self._widgets["announcement_interval"].set_value(value)
 
-            # Extended settings from configuration
-            extended_config = dht_config.get("extended", {})
-
+            # Extended settings (now directly in protocols.dht.*)
             if self._widgets["bootstrap_timeout"]:
-                self._widgets["bootstrap_timeout"].set_value(extended_config.get("bootstrap_timeout", 30))
+                value = self.app_settings.get("protocols.dht.bootstrap_timeout", 30)
+                self._widgets["bootstrap_timeout"].set_value(value)
 
             if self._widgets["query_timeout"]:
-                self._widgets["query_timeout"].set_value(extended_config.get("query_timeout", 10))
+                value = self.app_settings.get("protocols.dht.query_timeout", 10)
+                self._widgets["query_timeout"].set_value(value)
 
             if self._widgets["max_nodes"]:
-                self._widgets["max_nodes"].set_value(extended_config.get("max_nodes", 1000))
+                value = self.app_settings.get("protocols.dht.max_nodes", 1000)
+                self._widgets["max_nodes"].set_value(value)
 
             if self._widgets["bucket_size"]:
-                self._widgets["bucket_size"].set_value(extended_config.get("bucket_size", 8))
+                value = self.app_settings.get("protocols.dht.bucket_size", 8)
+                self._widgets["bucket_size"].set_value(value)
 
             if self._widgets["concurrent_queries"]:
-                self._widgets["concurrent_queries"].set_value(extended_config.get("concurrent_queries", 3))
+                value = self.app_settings.get("protocols.dht.concurrent_queries", 3)
+                self._widgets["concurrent_queries"].set_value(value)
 
             # Bootstrap settings
             if self._widgets["auto_bootstrap"]:
-                self.set_switch_state(self._widgets["auto_bootstrap"], extended_config.get("auto_bootstrap", True))  # type: ignore[attr-defined]  # noqa: E501
+                value = self.app_settings.get("protocols.dht.auto_bootstrap", True)
+                self._widgets["auto_bootstrap"].set_active(value)
 
             # Bootstrap nodes text
             if self._widgets["bootstrap_nodes"]:
                 buffer = self._widgets["bootstrap_nodes"].get_buffer()
-                bootstrap_list = extended_config.get(
-                    "bootstrap_nodes",
+                bootstrap_list = self.app_settings.get(
+                    "protocols.dht.bootstrap_nodes",
                     [
                         "router.bittorrent.com:6881",
                         "dht.transmissionbt.com:6881",
@@ -229,22 +155,25 @@ class DHTTab(BaseSettingsTab):
 
             # Statistics settings
             if self._widgets["enable_stats"]:
-                self.set_switch_state(self._widgets["enable_stats"], extended_config.get("enable_stats", True))  # type: ignore[attr-defined]  # noqa: E501
+                value = self.app_settings.get("protocols.dht.enable_stats", True)
+                self._widgets["enable_stats"].set_active(value)
 
             if self._widgets["stats_interval"]:
-                self._widgets["stats_interval"].set_value(extended_config.get("stats_interval", 60))
+                value = self.app_settings.get("protocols.dht.stats_interval", 60)
+                self._widgets["stats_interval"].set_value(value)
 
             # Security settings
             if self._widgets["validate_tokens"]:
-                self.set_switch_state(self._widgets["validate_tokens"], extended_config.get("validate_tokens", True))  # type: ignore[attr-defined]  # noqa: E501
+                value = self.app_settings.get("protocols.dht.validate_tokens", True)
+                self._widgets["validate_tokens"].set_active(value)
 
             if self._widgets["rate_limit_enabled"]:
-                self.set_switch_state(  # type: ignore[attr-defined]
-                    self._widgets["rate_limit_enabled"], extended_config.get("rate_limit_enabled", True)
-                )
+                value = self.app_settings.get("protocols.dht.rate_limit_enabled", True)
+                self._widgets["rate_limit_enabled"].set_active(value)
 
             if self._widgets["max_queries_per_second"]:
-                self._widgets["max_queries_per_second"].set_value(extended_config.get("max_queries_per_second", 10))
+                value = self.app_settings.get("protocols.dht.max_queries_per_second", 10)
+                self._widgets["max_queries_per_second"].set_value(value)
 
             self.logger.trace(
                 "DHT settings loaded successfully",
@@ -263,8 +192,7 @@ class DHTTab(BaseSettingsTab):
         Returns:
             Dictionary of setting_key -> value pairs for all widgets
         """
-        # Collect from WIDGET_MAPPINGS
-        settings = self._collect_mapped_settings()
+        settings: Dict[str, Any] = {}
 
         try:
             # Basic settings
@@ -288,29 +216,25 @@ class DHTTab(BaseSettingsTab):
                     self._widgets["announcement_interval"].get_value()
                 )
 
-            # Extended settings
+            # Extended settings (now directly in protocols.dht.*)
             if self._widgets.get("bootstrap_timeout"):
-                settings["protocols.dht.extended.bootstrap_timeout"] = int(
-                    self._widgets["bootstrap_timeout"].get_value()
-                )
+                settings["protocols.dht.bootstrap_timeout"] = int(self._widgets["bootstrap_timeout"].get_value())
 
             if self._widgets.get("query_timeout"):
-                settings["protocols.dht.extended.query_timeout"] = int(self._widgets["query_timeout"].get_value())
+                settings["protocols.dht.query_timeout"] = int(self._widgets["query_timeout"].get_value())
 
             if self._widgets.get("max_nodes"):
-                settings["protocols.dht.extended.max_nodes"] = int(self._widgets["max_nodes"].get_value())
+                settings["protocols.dht.max_nodes"] = int(self._widgets["max_nodes"].get_value())
 
             if self._widgets.get("bucket_size"):
-                settings["protocols.dht.extended.bucket_size"] = int(self._widgets["bucket_size"].get_value())
+                settings["protocols.dht.bucket_size"] = int(self._widgets["bucket_size"].get_value())
 
             if self._widgets.get("concurrent_queries"):
-                settings["protocols.dht.extended.concurrent_queries"] = int(
-                    self._widgets["concurrent_queries"].get_value()
-                )
+                settings["protocols.dht.concurrent_queries"] = int(self._widgets["concurrent_queries"].get_value())
 
             # Bootstrap settings
             if self._widgets.get("auto_bootstrap"):
-                settings["protocols.dht.extended.auto_bootstrap"] = self._widgets["auto_bootstrap"].get_active()
+                settings["protocols.dht.auto_bootstrap"] = self._widgets["auto_bootstrap"].get_active()
 
             # Bootstrap nodes
             if self._widgets.get("bootstrap_nodes"):
@@ -318,24 +242,24 @@ class DHTTab(BaseSettingsTab):
                 start, end = buffer.get_bounds()
                 text = buffer.get_text(start, end, False)
                 nodes = [line.strip() for line in text.split("\n") if line.strip()]
-                settings["protocols.dht.extended.bootstrap_nodes"] = nodes
+                settings["protocols.dht.bootstrap_nodes"] = nodes
 
             # Statistics settings
             if self._widgets.get("enable_stats"):
-                settings["protocols.dht.extended.enable_stats"] = self._widgets["enable_stats"].get_active()
+                settings["protocols.dht.enable_stats"] = self._widgets["enable_stats"].get_active()
 
             if self._widgets.get("stats_interval"):
-                settings["protocols.dht.extended.stats_interval"] = int(self._widgets["stats_interval"].get_value())
+                settings["protocols.dht.stats_interval"] = int(self._widgets["stats_interval"].get_value())
 
             # Security settings
             if self._widgets.get("validate_tokens"):
-                settings["protocols.dht.extended.validate_tokens"] = self._widgets["validate_tokens"].get_active()
+                settings["protocols.dht.validate_tokens"] = self._widgets["validate_tokens"].get_active()
 
             if self._widgets.get("rate_limit_enabled"):
-                settings["protocols.dht.extended.rate_limit_enabled"] = self._widgets["rate_limit_enabled"].get_active()
+                settings["protocols.dht.rate_limit_enabled"] = self._widgets["rate_limit_enabled"].get_active()
 
             if self._widgets.get("max_queries_per_second"):
-                settings["protocols.dht.extended.max_queries_per_second"] = int(
+                settings["protocols.dht.max_queries_per_second"] = int(
                     self._widgets["max_queries_per_second"].get_value()
                 )
 
