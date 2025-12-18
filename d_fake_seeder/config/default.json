@@ -121,7 +121,20 @@
         "port_range_max": 65000,
         "udp_timeout_seconds": 5,
         "http_timeout_seconds": 10,
-        "peer_request_count": 200
+        "peer_request_count": 200,
+        "transaction_id_min": 0,
+        "transaction_id_max": 255
+    },
+    "peer_behavior": {
+        "seeder_upload_activity_probability": 0.3,
+        "peer_idle_chance": 0.3,
+        "progress_distribution_start": 0.1,
+        "progress_distribution_middle": 0.3,
+        "progress_distribution_almost_done": 0.7,
+        "peer_behavior_analysis_probability": 0.2,
+        "peer_status_change_probability": 0.4,
+        "peer_dropout_probability": 0.1,
+        "connection_rotation_percentage": 0.25
     },
     "shared_async_executor": {
         "max_workers": 100,
