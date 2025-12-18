@@ -353,9 +353,7 @@ class MonitoringTab(BaseTorrentTab):
 
     def _create_cpu_tile(self) -> None:
         """Create CPU usage tile."""
-        self.cpu_tile = self._create_metric_tile(
-            "CPU Usage", [("CPU %", (0.2, 0.8, 0.2))]  # Green
-        )
+        self.cpu_tile = self._create_metric_tile("CPU Usage", [("CPU %", (0.2, 0.8, 0.2))])  # Green
 
     def _create_memory_tile(self) -> None:
         """Create memory usage tile."""
@@ -413,9 +411,7 @@ class MonitoringTab(BaseTorrentTab):
 
     def _create_threads_tile(self) -> None:
         """Create threads count tile."""
-        self.threads_tile = self._create_metric_tile(
-            "Threads", [("Thread Count", (0.8, 0.4, 0.2))]  # Orange
-        )
+        self.threads_tile = self._create_metric_tile("Threads", [("Thread Count", (0.8, 0.4, 0.2))])  # Orange
         self.threads_tile["graph"].max_value = 100
 
     def _create_disk_io_tile(self) -> None:
