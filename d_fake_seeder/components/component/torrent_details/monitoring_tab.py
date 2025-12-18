@@ -38,7 +38,7 @@ class MonitoringTab(BaseTorrentTab):
 
     Displays:
     - CPU usage
-    - Memory (RSS/USS/VMS)
+    - Memory (RSS/USS)
     - File descriptors
     - Network connections
     - Threads
@@ -315,11 +315,28 @@ class MonitoringTab(BaseTorrentTab):
             [
                 ("RSS", (0.8, 0.2, 0.2)),  # Red
                 ("USS", (0.2, 0.2, 0.8)),  # Blue
-                ("VMS", (0.8, 0.6, 0.2)),  # Orange
             ],
         )
         # Memory uses auto-scale and MB units
         self.memory_tile["graph"].auto_scale = True
+
+        # Add VMS as text-only label (not graphed - too large compared to RSS/USS)
+        vms_label = Gtk.Label()
+        vms_label.set_xalign(0)
+        vms_label.set_markup("<small>VMS: --</small>")
+        # Find the values_box and append the VMS label
+        frame_child = self.memory_tile["frame"].get_child()
+        if frame_child:
+            # Get the last child (values_box)
+            child = frame_child.get_first_child()
+            while child:
+                next_child = child.get_next_sibling()
+                if next_child is None:
+                    # This is the values_box
+                    child.append(vms_label)
+                    break
+                child = next_child
+        self.memory_tile["value_labels"]["VMS"] = vms_label
 
     def _create_fd_tile(self, row: Any, col: Any) -> None:
         """Create file descriptors tile."""
@@ -464,7 +481,7 @@ class MonitoringTab(BaseTorrentTab):
 
             self.memory_tile["graph"].update_series("RSS", rss_mb)
             self.memory_tile["graph"].update_series("USS", uss_mb)
-            self.memory_tile["graph"].update_series("VMS", vms_mb)
+            # VMS is text-only (not graphed - too large compared to RSS/USS)
 
             self.memory_tile["value_labels"]["RSS"].set_markup(f"<small>RSS: <b>{rss_mb:.1f} MB</b></small>")
             self.memory_tile["value_labels"]["USS"].set_markup(f"<small>USS: <b>{uss_mb:.1f} MB</b></small>")
