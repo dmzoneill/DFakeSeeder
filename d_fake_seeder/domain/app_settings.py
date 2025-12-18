@@ -1024,6 +1024,45 @@ class AppSettings(GObject.GObject):
     def proxy_password(self, value: Any) -> Any:
         self.set("proxy.password", value)
 
+    @property
+    def proxies(self) -> dict:
+        """
+        Get proxy configuration in requests library format.
+        
+        Returns:
+            Dictionary with http/https proxy URLs, or empty dict if no proxy configured.
+        """
+        proxy_type = self.get("proxy.type", "none")
+        if proxy_type == "none":
+            return {}
+        
+        server = self.get("proxy.server", "")
+        port = self.get("proxy.port", 8080)
+        
+        if not server:
+            return {}
+        
+        # Build auth string if enabled
+        auth = ""
+        if self.get("proxy.auth_enabled", False):
+            username = self.get("proxy.username", "")
+            password = self.get("proxy.password", "")
+            if username:
+                auth = f"{username}:{password}@"
+        
+        # Build proxy URL based on type
+        if proxy_type == "http":
+            proxy_url = f"http://{auth}{server}:{port}"
+        elif proxy_type in ("socks4", "socks5"):
+            proxy_url = f"{proxy_type}://{auth}{server}:{port}"
+        else:
+            return {}
+        
+        return {
+            "http": proxy_url,
+            "https": proxy_url,
+        }
+
     # BitTorrent settings
     @property
     def enable_dht(self) -> Any:
