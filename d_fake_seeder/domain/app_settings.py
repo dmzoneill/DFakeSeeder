@@ -119,7 +119,7 @@ class AppSettings(GObject.GObject):
         self._file_path = file_path
         self.config_dir = Path(file_path).parent
         self.config_file = Path(file_path)
-        self.default_config_file = Path(__file__).parent / "config" / "default.json"
+        self.default_config_file = Path(__file__).parent.parent / "config" / "default.json"
 
         # Three-layer data structure:
         # 1. _defaults: Loaded from default.json, never changes

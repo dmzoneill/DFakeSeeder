@@ -44,8 +44,8 @@ class GlobalPeerManager:
         self.peer_managers: Dict[str, PeerProtocolManager] = {}  # info_hash -> manager
 
         # Peer server for incoming connections - use configured values
-        port = getattr(self.settings, "listening_port", NetworkConstants.DEFAULT_PORT)
-        max_connections = getattr(self.settings, "max_incoming_connections", 200)
+        port = self.settings.get("connection.listening_port", NetworkConstants.DEFAULT_PORT)
+        max_connections = self.settings.get("connection.max_global_connections", 200)
         self.peer_server = PeerServer(port=port, max_connections=max_connections)
 
         # Shared async executor for all peer protocol managers
@@ -267,7 +267,7 @@ class GlobalPeerManager:
                     our_peer_id = self._generate_peer_id()
 
                     # Use configured max connections
-                    max_peer_connections = getattr(self.settings, "max_connections_per_torrent", 50)
+                    max_peer_connections = self.settings.get("connection.max_per_torrent", 50)
                     manager = PeerProtocolManager(
                         info_hash,
                         our_peer_id,
