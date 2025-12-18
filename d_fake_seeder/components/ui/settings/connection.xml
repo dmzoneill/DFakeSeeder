@@ -75,7 +75,7 @@
                                     <property name="spacing">12</property>
                                     <property name="halign">start</property>
                                     <child>
-                                        <object class="GtkSwitch" id="settings_enable_upnp">
+                                        <object class="GtkSwitch" id="settings_upnp_enabled">
                                             <property name="valign">center</property>
                                             <property name="tooltip-text" translatable="yes">Automatically configure router port forwarding using UPnP/NAT-PMP</property>
                                         </object>
@@ -127,7 +127,7 @@
                                         </object>
                                     </child>
                                     <child>
-                                        <object class="GtkSpinButton" id="settings_max_connections">
+                                        <object class="GtkSpinButton" id="settings_max_global_connections">
                                             <property name="adjustment">
                                                 <object class="GtkAdjustment">
                                                     <property name="lower">1</property>
@@ -161,7 +161,7 @@
                                         </object>
                                     </child>
                                     <child>
-                                        <object class="GtkSpinButton" id="settings_max_connections_per_torrent">
+                                        <object class="GtkSpinButton" id="settings_max_per_torrent">
                                             <property name="adjustment">
                                                 <object class="GtkAdjustment">
                                                     <property name="lower">1</property>
@@ -284,7 +284,7 @@
                                         </object>
                                     </child>
                                     <child>
-                                        <object class="GtkEntry" id="settings_proxy_host">
+                                        <object class="GtkEntry" id="settings_proxy_server">
                                             <property name="placeholder-text" translatable="yes">proxy.example.com</property>
                                             <property name="tooltip-text" translatable="yes">Proxy server hostname or IP address</property>
                                             <property name="hexpand">True</property>
@@ -333,7 +333,7 @@
                                     <property name="spacing">12</property>
                                     <property name="halign">start</property>
                                     <child>
-                                        <object class="GtkSwitch" id="settings_proxy_auth">
+                                        <object class="GtkSwitch" id="settings_proxy_auth_enabled">
                                             <property name="valign">center</property>
                                             <property name="tooltip-text" translatable="yes">Enable proxy authentication</property>
                                         </object>

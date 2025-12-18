@@ -17,6 +17,21 @@
     ],
     "agent": 0,
     "proxies": {"http": "", "https": ""},
+    "connection": {
+        "listening_port": 6881,
+        "upnp_enabled": true,
+        "max_global_connections": 200,
+        "max_per_torrent": 50,
+        "max_upload_slots": 4
+    },
+    "proxy": {
+        "type": "none",
+        "server": "",
+        "port": 8080,
+        "auth_enabled": false,
+        "username": "",
+        "password": ""
+    },
     "columns": "",
     "concurrent_http_connections": 2,
     "concurrent_peer_connections": 10,

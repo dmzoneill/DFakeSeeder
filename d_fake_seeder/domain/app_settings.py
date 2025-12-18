@@ -921,19 +921,100 @@ class AppSettings(GObject.GObject):
     # Connection settings
     @property
     def listening_port(self) -> Any:
-        return self.get("listening_port", NetworkConstants.DEFAULT_PORT)
+        return self.get("connection.listening_port", NetworkConstants.DEFAULT_PORT)
 
     @listening_port.setter
     def listening_port(self, value: Any) -> Any:
-        self.set("listening_port", value)
+        self.set("connection.listening_port", value)
 
     @property
     def enable_upnp(self) -> None:
-        return self.get("enable_upnp", True)  # type: ignore[no-any-return]
+        return self.get("connection.upnp_enabled", True)  # type: ignore[no-any-return]
 
     @enable_upnp.setter
     def enable_upnp(self, value: Any) -> None:
-        self.set("enable_upnp", value)
+        self.set("connection.upnp_enabled", value)
+
+    @property
+    def upnp_enabled(self) -> Any:
+        return self.get("connection.upnp_enabled", True)
+
+    @upnp_enabled.setter
+    def upnp_enabled(self, value: Any) -> Any:
+        self.set("connection.upnp_enabled", value)
+
+    @property
+    def max_global_connections(self) -> Any:
+        return self.get("connection.max_global_connections", 200)
+
+    @max_global_connections.setter
+    def max_global_connections(self, value: Any) -> Any:
+        self.set("connection.max_global_connections", value)
+
+    @property
+    def max_per_torrent(self) -> Any:
+        return self.get("connection.max_per_torrent", 50)
+
+    @max_per_torrent.setter
+    def max_per_torrent(self, value: Any) -> Any:
+        self.set("connection.max_per_torrent", value)
+
+    @property
+    def max_upload_slots(self) -> Any:
+        return self.get("connection.max_upload_slots", 4)
+
+    @max_upload_slots.setter
+    def max_upload_slots(self, value: Any) -> Any:
+        self.set("connection.max_upload_slots", value)
+
+    # Proxy settings
+    @property
+    def proxy_type(self) -> Any:
+        return self.get("proxy.type", "none")
+
+    @proxy_type.setter
+    def proxy_type(self, value: Any) -> Any:
+        self.set("proxy.type", value)
+
+    @property
+    def proxy_server(self) -> Any:
+        return self.get("proxy.server", "")
+
+    @proxy_server.setter
+    def proxy_server(self, value: Any) -> Any:
+        self.set("proxy.server", value)
+
+    @property
+    def proxy_port(self) -> Any:
+        return self.get("proxy.port", 8080)
+
+    @proxy_port.setter
+    def proxy_port(self, value: Any) -> Any:
+        self.set("proxy.port", value)
+
+    @property
+    def proxy_auth_enabled(self) -> Any:
+        return self.get("proxy.auth_enabled", False)
+
+    @proxy_auth_enabled.setter
+    def proxy_auth_enabled(self, value: Any) -> Any:
+        self.set("proxy.auth_enabled", value)
+
+    @property
+    def proxy_username(self) -> Any:
+        return self.get("proxy.username", "")
+
+    @proxy_username.setter
+    def proxy_username(self, value: Any) -> Any:
+        self.set("proxy.username", value)
+
+    @property
+    def proxy_password(self) -> Any:
+        return self.get("proxy.password", "")
+
+    @proxy_password.setter
+    def proxy_password(self, value: Any) -> Any:
+        self.set("proxy.password", value)
 
     @property
     def enable_dht(self) -> None:

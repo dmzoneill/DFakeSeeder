@@ -37,25 +37,9 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     """
 
     # Auto-connect simple widgets with WIDGET_MAPPINGS
-    WIDGET_MAPPINGS = [
-        # UPnP setting
-        {
-            "id": "settings_upnp_enabled",
-            "name": "upnp_enabled",
-            "setting_key": "connection.upnp_enabled",
-            "type": bool,
-            "on_change": lambda self, value: self.show_notification(
-                f"UPnP {'enabled' if value else 'disabled'}", "success"
-            ),
-        },
-        # Proxy server
-        {
-            "id": "settings_proxy_server",
-            "name": "proxy_server",
-            "setting_key": "proxy.server",
-            "type": str,
-        },
-    ]
+    # Note: Most connection settings are handled manually in _load_settings/_collect_settings
+    # for better control over nested settings structure
+    WIDGET_MAPPINGS: list = []
 
     @property
     def tab_name(self) -> str:
@@ -89,8 +73,6 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
     def _connect_signals(self) -> None:
         """Connect signal handlers for Connection tab."""
-        # Simple widgets (upnp_enabled, proxy_server) are now auto-connected via WIDGET_MAPPINGS
-
         # Listening port
         listening_port = self.get_widget("listening_port")
         if listening_port:
@@ -105,6 +87,14 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             self.track_signal(
                 random_port_button,
                 random_port_button.connect("clicked", self.on_random_port_clicked),
+            )
+
+        # UPnP switch
+        upnp_enabled = self.get_widget("upnp_enabled")
+        if upnp_enabled:
+            self.track_signal(
+                upnp_enabled,
+                upnp_enabled.connect("state-set", self.on_upnp_changed),
             )
 
         # Connection limits
@@ -152,8 +142,10 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _load_settings(self) -> None:
         """Load current settings into Connection tab widgets."""
         try:
-            # Get connection settings
-            connection_settings = getattr(self.app_settings, "connection", {})
+            # Get connection settings from nested structure
+            connection_settings = self.app_settings.get("connection", {})
+            if connection_settings is None:
+                connection_settings = {}
 
             # Listening port
             listening_port = self.get_widget("listening_port")
@@ -179,8 +171,10 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if max_upload_slots:
                 max_upload_slots.set_value(connection_settings.get("max_upload_slots", 4))
 
-            # Proxy settings
-            proxy_settings = getattr(self.app_settings, "proxy", {})
+            # Proxy settings from nested structure
+            proxy_settings = self.app_settings.get("proxy", {})
+            if proxy_settings is None:
+                proxy_settings = {}
             self._load_proxy_settings(proxy_settings)
 
             # Update widget dependencies after loading (enable/disable based on loaded state)
@@ -272,22 +266,26 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         Returns:
             Dictionary of setting_key -> value pairs for all widgets
         """
-        # Collect from WIDGET_MAPPINGS (upnp_enabled, proxy_server)
-        settings = self._collect_mapped_settings()
+        settings: Dict[str, Any] = {}
 
         # Collect listening port
         listening_port = self.get_widget("listening_port")
         if listening_port:
             settings["connection.listening_port"] = int(listening_port.get_value())
 
+        # Collect UPnP setting
+        upnp_enabled = self.get_widget("upnp_enabled")
+        if upnp_enabled:
+            settings["connection.upnp_enabled"] = upnp_enabled.get_active()
+
         # Collect connection limits
         max_global = self.get_widget("max_global_connections")
         if max_global:
-            settings["connection.max_connections"] = int(max_global.get_value())
+            settings["connection.max_global_connections"] = int(max_global.get_value())
 
         max_per_torrent = self.get_widget("max_per_torrent")
         if max_per_torrent:
-            settings["connection.max_connections_per_torrent"] = int(max_per_torrent.get_value())
+            settings["connection.max_per_torrent"] = int(max_per_torrent.get_value())
 
         max_upload_slots = self.get_widget("max_upload_slots")
         if max_upload_slots:
@@ -383,7 +381,9 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         """Generate and set a random port."""
         try:
             # Get configured port range or use defaults
-            ui_settings = getattr(self.app_settings, "ui_settings", {})
+            ui_settings = self.app_settings.get("ui_settings", {})
+            if ui_settings is None:
+                ui_settings = {}
             min_port = ui_settings.get("random_port_range_min", 49152)
             max_port = ui_settings.get("random_port_range_max", 65535)
 
@@ -396,6 +396,18 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
         except Exception as e:
             self.logger.error(f"Error generating random port: {e}")
+
+    def on_upnp_changed(self, switch: Gtk.Switch, state: bool) -> None:
+        """Handle UPnP toggle."""
+        if self._loading_settings:
+            return
+        try:
+            # NOTE: Setting will be saved in batch via _collect_settings()
+            status = "enabled" if state else "disabled"
+            self.logger.trace(f"UPnP {status}")
+            self.show_notification(f"UPnP {status}", "success")
+        except Exception as e:
+            self.logger.error(f"Error changing UPnP setting: {e}")
 
     def on_connection_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle connection limit changes."""
