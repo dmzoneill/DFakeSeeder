@@ -108,7 +108,9 @@ logger.warning("Performance: Operation took longer than expected")
 logger.warning("Unexpected value, using default")
 ```
 
+
 #### ERROR (Failures)
+
 - Failed operations
 - Caught exceptions
 - Invalid input/data
@@ -200,6 +202,7 @@ The recategorization used pattern matching on message content:
 - `Performance`, `not recommended`
 
 **ERROR patterns:**
+
 - `Error`, `Exception`, `Failed`
 - `Cannot`, `Unable to`, `Invalid`
 - `not found`, `traceback`

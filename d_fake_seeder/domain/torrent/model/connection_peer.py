@@ -5,9 +5,10 @@ GObject model for tracking individual peer connections with their
 status, statistics, and protocol information.
 """
 
+import time
+
 # fmt: off
 from typing import Any
-import time
 
 import gi
 

@@ -6,14 +6,15 @@ Launches the system tray application with connection management and error handli
 Provides automatic retry logic and graceful error recovery.
 """
 
-# fmt: off
-from typing import Any
 import os
 import signal
 import subprocess
 import sys
 import time
 from pathlib import Path
+
+# fmt: off
+from typing import Any
 
 # Add the parent directory to Python path for imports
 parent_dir = Path(__file__).parent.parent

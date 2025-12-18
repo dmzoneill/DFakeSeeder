@@ -1,6 +1,6 @@
 # fmt: off
-from typing import Any
 import os
+from typing import Any
 
 from gi.repository import GLib
 

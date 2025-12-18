@@ -8,6 +8,7 @@ support runtime language switching for column headers.
 
 # fmt: off
 from typing import Any
+
 from d_fake_seeder.lib.logger import logger
 
 # fmt: on

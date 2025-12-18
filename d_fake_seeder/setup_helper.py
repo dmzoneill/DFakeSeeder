@@ -1,9 +1,9 @@
 """Setup helper for post-installation tasks."""
 
-from typing import Any
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
 
 
 def check_system_dependencies() -> Any:

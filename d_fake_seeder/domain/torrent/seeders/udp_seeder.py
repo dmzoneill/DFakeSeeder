@@ -1,11 +1,11 @@
 # fmt: off
-from typing import Any
 import random
 
 # import select  # Replaced with socket timeout for PyPy compatibility
 import socket
 import struct
 import time
+from typing import Any
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.model.tracker import Tracker

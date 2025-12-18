@@ -4,13 +4,14 @@ Post-install script for D' Fake Seeder desktop integration.
 This script installs desktop files and icons to provide proper
 desktop environment integration after PyPI installation.
 """
-# fmt: off
-from typing import Any
 import os
 import shutil
 import subprocess
 import sys
 from pathlib import Path
+
+# fmt: off
+from typing import Any
 
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import DEFAULT_ICON_SIZES

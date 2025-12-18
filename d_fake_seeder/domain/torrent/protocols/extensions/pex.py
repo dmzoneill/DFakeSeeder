@@ -10,7 +10,7 @@ import random
 import socket
 import struct
 import time
-from typing import Dict,  Any, List, Set, Tuple
+from typing import Any, Dict, List, Set, Tuple
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger

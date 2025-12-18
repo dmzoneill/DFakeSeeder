@@ -1,7 +1,7 @@
 # fmt: off
-from typing import Any
 import hashlib
 from datetime import datetime
+from typing import Any
 
 import d_fake_seeder.domain.torrent.bencoding as bencoding
 import d_fake_seeder.lib.util.helpers as helpers
