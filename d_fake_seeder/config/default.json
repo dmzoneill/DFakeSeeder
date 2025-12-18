@@ -163,10 +163,10 @@
         "connection_rotation_percentage": 0.25
     },
     "shared_async_executor": {
-        "max_workers": 100,
+        "max_workers": 50,
         "task_timeout_seconds": 30.0,
         "shutdown_timeout_seconds": 5.0,
-        "stats_enabled": true
+        "stats_enabled": false
     },
     "bittorrent": {
         "enable_dht": true,
