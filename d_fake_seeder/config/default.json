@@ -181,7 +181,23 @@
             "enabled": true,
             "node_id": "auto_generate",
             "routing_table_size": 160,
-            "announcement_interval": 1800
+            "announcement_interval": 1800,
+            "bootstrap_timeout": 30,
+            "query_timeout": 10,
+            "max_nodes": 1000,
+            "bucket_size": 8,
+            "concurrent_queries": 3,
+            "auto_bootstrap": true,
+            "bootstrap_nodes": [
+                "router.bittorrent.com:6881",
+                "dht.transmissionbt.com:6881",
+                "router.utorrent.com:6881"
+            ],
+            "enable_stats": true,
+            "stats_interval": 60,
+            "validate_tokens": true,
+            "rate_limit_enabled": true,
+            "max_queries_per_second": 10
         },
         "extensions": {
             "ut_metadata": true,
