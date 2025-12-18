@@ -412,8 +412,10 @@ class PerformanceMixin:
         """
         self._update_queue.append((update_func, args, kwargs))
 
-        # Process queue on next idle
-        GLib.idle_add(self._process_update_queue)
+        # Only schedule one idle callback - avoid multiple pending callbacks
+        if not hasattr(self, "_queue_idle_pending") or not self._queue_idle_pending:
+            self._queue_idle_pending = True
+            GLib.idle_add(self._process_update_queue)
 
     def _process_update_queue(self) -> bool:
         """Process queued updates."""
@@ -423,6 +425,8 @@ class PerformanceMixin:
                 update_func(*args, **kwargs)
         except Exception as e:
             logger.error(f"Error processing update queue: {e}")
+        finally:
+            self._queue_idle_pending = False
 
         return False  # Don't repeat
 
