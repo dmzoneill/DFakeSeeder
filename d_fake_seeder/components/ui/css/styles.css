@@ -182,15 +182,17 @@ notebook > header > tabs > tab label {
 }
 
 .sidebar-expander {
-    padding: 4px 8px;
+    padding: 10px 12px;
+    min-height: 36px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.sidebar-expander > label {
+.sidebar-expander > title {
     font-weight: bold;
-    font-size: 11px;
+    font-size: 12px;
     text-transform: uppercase;
     opacity: 0.9;
+    padding: 4px 0;
 }
 
 .sidebar-listbox {
