@@ -15,6 +15,30 @@ install_requires = [
     "bencodepy>=0.9.5",
 ]
 
+# Optional dependencies for advanced features
+extras_require = {
+    # Web UI server for remote management
+    "webui": [
+        "aiohttp>=3.8.0",
+        "aiohttp-session>=2.12.0",
+    ],
+    # UPnP port forwarding
+    "upnp": [
+        "miniupnpc>=2.2.0",
+    ],
+    # Protocol encryption (MSE/PE)
+    "encryption": [
+        "pycryptodome>=3.15.0",
+    ],
+    # All optional features
+    "all": [
+        "aiohttp>=3.8.0",
+        "aiohttp-session>=2.12.0",
+        "miniupnpc>=2.2.0",
+        "pycryptodome>=3.15.0",
+    ],
+}
+
 # Read long description from README
 try:
     with open("README.md", "r", encoding="utf-8") as f:
@@ -99,6 +123,7 @@ setup_kwargs = {
     "packages": packages,
     "package_data": package_data,
     "install_requires": install_requires,
+    "extras_require": extras_require,
     "entry_points": entry_points,
     "cmdclass": {"install": PostInstallCommand},
     "include_package_data": True,
