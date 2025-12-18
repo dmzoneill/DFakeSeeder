@@ -1,6 +1,7 @@
 # fmt: off
+import asyncio
 import os
-from typing import Any
+from typing import Any, Optional
 
 from gi.repository import GLib
 
@@ -15,7 +16,24 @@ from d_fake_seeder.lib.util.autostart_manager import sync_autostart
 from d_fake_seeder.lib.util.client_behavior_simulator import ClientBehaviorSimulator
 from d_fake_seeder.lib.util.dbus_unifier import DBusUnifier
 from d_fake_seeder.lib.util.speed_distribution_manager import SpeedDistributionManager
+from d_fake_seeder.lib.util.speed_scheduler import SpeedScheduler
+from d_fake_seeder.lib.util.upnp_manager import UPnPManager
 from d_fake_seeder.lib.util.window_manager import WindowManager
+
+# Optional imports for features that may not be available
+try:
+    from d_fake_seeder.webui import WebUIServer
+    WEBUI_AVAILABLE = True
+except ImportError:
+    WEBUI_AVAILABLE = False
+    WebUIServer = None  # type: ignore[assignment, misc]
+
+try:
+    from d_fake_seeder.domain.torrent.protocols.lpd import LocalPeerDiscovery
+    LPD_AVAILABLE = True
+except ImportError:
+    LPD_AVAILABLE = False
+    LocalPeerDiscovery = None  # type: ignore[assignment, misc]
 
 # fmt: on
 
@@ -50,6 +68,23 @@ class Controller:
 
         # Tick timer for speed distribution and behavior simulation
         self.tick_timer_id = None
+
+        # Initialize speed scheduler for automatic alternative speed switching
+        self.speed_scheduler = SpeedScheduler()
+
+        # Initialize UPnP manager for port forwarding
+        self.upnp_manager = UPnPManager()
+
+        # Initialize Web UI server (if available)
+        self.webui_server: Optional[Any] = None
+        if WEBUI_AVAILABLE and WebUIServer is not None:
+            self.webui_server = WebUIServer(model)
+
+        # Initialize Local Peer Discovery (if available)
+        self.lpd_manager: Optional[Any] = None
+        if LPD_AVAILABLE and LocalPeerDiscovery is not None:
+            port = self.settings.get("connection.listening_port", 6881)
+            self.lpd_manager = LocalPeerDiscovery(port, self._on_lpd_peer_discovered)
 
         # Initialize window manager with main window
         self.window_manager = None  # Will be set after view initialization
@@ -145,6 +180,26 @@ class Controller:
         auto_start_enabled = getattr(self.settings, "auto_start", False)
         sync_autostart(auto_start_enabled)
 
+        # Start speed scheduler for automatic alternative speed switching
+        if hasattr(self, "speed_scheduler") and self.speed_scheduler:
+            self.speed_scheduler.start()
+            logger.info("Speed scheduler started", "Controller")
+
+        # Start UPnP port forwarding
+        if hasattr(self, "upnp_manager") and self.upnp_manager:
+            if self.upnp_manager.start():
+                logger.info("UPnP port forwarding enabled", "Controller")
+            else:
+                logger.debug("UPnP port forwarding not available", "Controller")
+
+        # Start Web UI server (async)
+        if hasattr(self, "webui_server") and self.webui_server:
+            self._start_webui_async()
+
+        # Start Local Peer Discovery (async)
+        if hasattr(self, "lpd_manager") and self.lpd_manager:
+            self._start_lpd_async()
+
     def stop(self, shutdown_tracker: Any = None) -> Any:
         """Stop the controller and cleanup all background processes"""
         logger.trace("Controller stopping", extra={"class_name": self.__class__.__name__})
@@ -153,6 +208,26 @@ class Controller:
         if hasattr(self, "tick_timer_id") and self.tick_timer_id:
             GLib.source_remove(self.tick_timer_id)
             self.tick_timer_id = None
+
+        # Stop speed scheduler
+        if hasattr(self, "speed_scheduler") and self.speed_scheduler:
+            self.speed_scheduler.stop()
+            logger.trace("Speed scheduler stopped", extra={"class_name": self.__class__.__name__})
+
+        # Stop Web UI server (async)
+        if hasattr(self, "webui_server") and self.webui_server:
+            self._stop_webui_async()
+            logger.trace("Web UI server stopped", extra={"class_name": self.__class__.__name__})
+
+        # Stop Local Peer Discovery (async)
+        if hasattr(self, "lpd_manager") and self.lpd_manager:
+            self._stop_lpd_async()
+            logger.trace("Local Peer Discovery stopped", extra={"class_name": self.__class__.__name__})
+
+        # Stop UPnP port forwarding
+        if hasattr(self, "upnp_manager") and self.upnp_manager:
+            self.upnp_manager.stop()
+            logger.trace("UPnP port forwarding stopped", extra={"class_name": self.__class__.__name__})
 
         # Stop speed distribution manager
         if hasattr(self, "speed_distribution_manager") and self.speed_distribution_manager:
@@ -254,6 +329,35 @@ class Controller:
                 else:
                     self.window_manager.hide()
 
+        # Handle scheduler settings changes
+        if key.startswith("scheduler."):
+            if hasattr(self, "speed_scheduler") and self.speed_scheduler:
+                self.speed_scheduler.force_check()
+
+        # Handle UPnP settings changes
+        if key == "connection.upnp_enabled":
+            if hasattr(self, "upnp_manager") and self.upnp_manager:
+                if value:
+                    self.upnp_manager.start()
+                else:
+                    self.upnp_manager.stop()
+
+        # Handle Web UI settings changes
+        if key == "webui.enabled":
+            if hasattr(self, "webui_server") and self.webui_server:
+                if value:
+                    self._start_webui_async()
+                else:
+                    self._stop_webui_async()
+
+        # Handle LPD settings changes
+        if key == "bittorrent.enable_lpd":
+            if hasattr(self, "lpd_manager") and self.lpd_manager:
+                if value:
+                    self._start_lpd_async()
+                else:
+                    self._stop_lpd_async()
+
         # Handle application quit request
         if key == "application_quit_requested" and value:
             logger.trace(
@@ -313,3 +417,107 @@ class Controller:
                     "❌ QUIT SEQUENCE: No view or app found - cannot quit!",
                     extra={"class_name": self.__class__.__name__},
                 )
+
+    # Helper methods for async feature management
+
+    def _start_webui_async(self) -> None:
+        """Start Web UI server asynchronously."""
+        if not self.webui_server:
+            return
+
+        async def _start() -> None:
+            try:
+                if await self.webui_server.start():
+                    logger.info("Web UI server started", "Controller")
+            except Exception as e:
+                logger.error(f"Failed to start Web UI: {e}", "Controller")
+
+        # Run in existing event loop or create new one
+        try:
+            loop = asyncio.get_running_loop()
+            asyncio.create_task(_start())
+        except RuntimeError:
+            # No running loop - use GLib to schedule
+            GLib.idle_add(lambda: asyncio.run(_start()) or False)
+
+    def _stop_webui_async(self) -> None:
+        """Stop Web UI server asynchronously."""
+        if not self.webui_server:
+            return
+
+        async def _stop() -> None:
+            try:
+                await self.webui_server.stop()
+            except Exception as e:
+                logger.error(f"Error stopping Web UI: {e}", "Controller")
+
+        try:
+            loop = asyncio.get_running_loop()
+            asyncio.create_task(_stop())
+        except RuntimeError:
+            GLib.idle_add(lambda: asyncio.run(_stop()) or False)
+
+    def _start_lpd_async(self) -> None:
+        """Start Local Peer Discovery asynchronously."""
+        if not self.lpd_manager:
+            return
+
+        async def _start() -> None:
+            try:
+                if await self.lpd_manager.start():
+                    logger.info("Local Peer Discovery started", "Controller")
+            except Exception as e:
+                logger.error(f"Failed to start LPD: {e}", "Controller")
+
+        try:
+            loop = asyncio.get_running_loop()
+            asyncio.create_task(_start())
+        except RuntimeError:
+            GLib.idle_add(lambda: asyncio.run(_start()) or False)
+
+    def _stop_lpd_async(self) -> None:
+        """Stop Local Peer Discovery asynchronously."""
+        if not self.lpd_manager:
+            return
+
+        async def _stop() -> None:
+            try:
+                await self.lpd_manager.stop()
+            except Exception as e:
+                logger.error(f"Error stopping LPD: {e}", "Controller")
+
+        try:
+            loop = asyncio.get_running_loop()
+            asyncio.create_task(_stop())
+        except RuntimeError:
+            GLib.idle_add(lambda: asyncio.run(_stop()) or False)
+
+    def _on_lpd_peer_discovered(self, ip: str, port: int, info_hash: bytes) -> None:
+        """Callback when a peer is discovered via LPD."""
+        logger.debug(
+            f"LPD peer discovered: {ip}:{port} for {info_hash.hex()[:16]}...",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+        # Add peer to the appropriate torrent's peer list
+        if hasattr(self, "global_peer_manager") and self.global_peer_manager:
+            # Find torrent with matching info_hash
+            for torrent in self.model.get_torrents():
+                if hasattr(torrent, "torrent_file") and hasattr(torrent.torrent_file, "info_hash"):
+                    if torrent.torrent_file.info_hash == info_hash:
+                        # Add peer to global peer manager for this torrent
+                        try:
+                            info_hash_hex = info_hash.hex()
+                            if info_hash_hex in self.global_peer_manager.peer_managers:
+                                manager = self.global_peer_manager.peer_managers[info_hash_hex]
+                                manager.add_peer(ip, port)
+                                logger.trace(
+                                    f"Added LPD peer {ip}:{port} to torrent {torrent.name}",
+                                    extra={"class_name": self.__class__.__name__},
+                                )
+                        except Exception as e:
+                            logger.warning(
+                                f"Failed to add LPD peer: {e}",
+                                extra={"class_name": self.__class__.__name__},
+                            )
+                        break
