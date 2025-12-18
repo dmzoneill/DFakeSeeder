@@ -358,6 +358,61 @@ class Controller:
                 else:
                     self._stop_lpd_async()
 
+        # Sync bittorrent.enable_dht to protocols.dht.enabled (they control the same feature)
+        if key == "bittorrent.enable_dht":
+            # Sync to the protocol-level setting
+            current_protocol = self.settings.get("protocols.dht.enabled", True)
+            if current_protocol != value:
+                self.settings.set("protocols.dht.enabled", value)
+            # Also restart/stop DHT manager
+            if hasattr(self, "dht_manager"):
+                if value and not self.dht_manager:
+                    dht_port = self.settings.get("connection.listening_port", 6881)
+                    from d_fake_seeder.domain.torrent.dht_manager import DHTManager
+                    self.dht_manager = DHTManager(port=dht_port)
+                    self.dht_manager.start()
+                    logger.info("DHT Manager started", "Controller")
+                elif not value and self.dht_manager:
+                    self.dht_manager.stop()
+                    self.dht_manager = None
+                    logger.info("DHT Manager stopped", "Controller")
+
+        # Sync protocols.dht.enabled back to bittorrent.enable_dht
+        if key == "protocols.dht.enabled":
+            current_bt = self.settings.get("bittorrent.enable_dht", True)
+            if current_bt != value:
+                self.settings.set("bittorrent.enable_dht", value)
+
+        # Sync bittorrent.enable_pex to protocols.extensions.ut_pex
+        if key == "bittorrent.enable_pex":
+            current_protocol = self.settings.get("protocols.extensions.ut_pex", True)
+            if current_protocol != value:
+                self.settings.set("protocols.extensions.ut_pex", value)
+
+        # Sync protocols.extensions.ut_pex back to bittorrent.enable_pex
+        if key == "protocols.extensions.ut_pex":
+            current_bt = self.settings.get("bittorrent.enable_pex", True)
+            if current_bt != value:
+                self.settings.set("bittorrent.enable_pex", value)
+
+        # Handle debug mode - switch logging to DEBUG level
+        if key == "expert.debug_mode":
+            from d_fake_seeder.lib.logger import reconfigure_logger
+            if value:
+                # Set logging level to DEBUG when debug mode enabled
+                self.settings.set("logging.level", "DEBUG")
+            else:
+                # Restore to INFO when debug mode disabled
+                self.settings.set("logging.level", "INFO")
+            reconfigure_logger()
+            logger.info(f"Debug mode {'enabled' if value else 'disabled'}, logging level changed")
+
+        # Handle logging level changes
+        if key == "logging.level":
+            from d_fake_seeder.lib.logger import reconfigure_logger
+            reconfigure_logger()
+            logger.info(f"Logging level changed to {value}")
+
         # Handle application quit request
         if key == "application_quit_requested" and value:
             logger.trace(

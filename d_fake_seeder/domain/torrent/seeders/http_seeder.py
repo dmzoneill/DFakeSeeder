@@ -435,3 +435,104 @@ class HTTPSeeder(BaseSeeder):
                 f"Failed to update tracker failure: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
+
+    def scrape(self) -> dict:
+        """
+        Perform a tracker scrape request to get torrent statistics.
+        
+        Uses the bittorrent.scrape_interval_seconds setting to limit scrape frequency.
+        
+        Returns:
+            Dictionary with scrape data or empty dict on failure
+        """
+        # Check if enough time has passed since last scrape
+        tracker = self._get_tracker_model()
+        last_scrape = tracker.get_property("last_scrape")
+        scrape_interval = self.settings.get("bittorrent.scrape_interval_seconds", 900)
+        
+        current_time = time.time()
+        if last_scrape and (current_time - last_scrape) < scrape_interval:
+            logger.trace(
+                f"Skipping scrape - last scrape was {current_time - last_scrape:.0f}s ago (interval: {scrape_interval}s)",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return {}
+        
+        # Convert announce URL to scrape URL
+        scrape_url = self._get_scrape_url()
+        if not scrape_url:
+            logger.trace(
+                "Tracker does not support scrape (no scrape URL)",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return {}
+        
+        try:
+            logger.trace(
+                f"🔍 Performing scrape request: {scrape_url}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            
+            http_agent_headers = self.settings.http_headers.copy()
+            http_agent_headers["User-Agent"] = self.settings.agents[self.settings.agent].split(",")[0]
+            
+            # Scrape with info_hash parameter
+            params = {"info_hash": self.torrent.file_hash}
+            
+            req = requests.get(
+                scrape_url,
+                params=params,
+                proxies=self.settings.proxies,
+                headers=http_agent_headers,
+                timeout=getattr(self.settings, "seeders", {}).get("http_timeout_seconds", 10),
+            )
+            
+            if req.status_code == 200:
+                data = bencoding.decode(req.content)
+                
+                if b"files" in data:
+                    # Get stats for our torrent's info_hash
+                    files = data[b"files"]
+                    if self.torrent.file_hash in files:
+                        stats = files[self.torrent.file_hash]
+                        scrape_data = {
+                            "complete": stats.get(b"complete", 0),
+                            "incomplete": stats.get(b"incomplete", 0),
+                            "downloaded": stats.get(b"downloaded", 0),
+                        }
+                        
+                        # Update tracker model with scrape data
+                        tracker.update_scrape_response(scrape_data)
+                        
+                        logger.trace(
+                            f"📊 Scrape result: {scrape_data['complete']} seeders, {scrape_data['incomplete']} leechers",
+                            extra={"class_name": self.__class__.__name__},
+                        )
+                        
+                        return scrape_data
+            
+            logger.trace(
+                f"Scrape failed: HTTP {req.status_code}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return {}
+            
+        except Exception as e:
+            logger.trace(
+                f"Scrape error: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return {}
+    
+    def _get_scrape_url(self) -> str:
+        """
+        Convert announce URL to scrape URL.
+        
+        Standard BEP convention: replace 'announce' with 'scrape' in path.
+        
+        Returns:
+            Scrape URL or empty string if not supported
+        """
+        if "/announce" in self.tracker_url:
+            return self.tracker_url.replace("/announce", "/scrape")
+        return ""

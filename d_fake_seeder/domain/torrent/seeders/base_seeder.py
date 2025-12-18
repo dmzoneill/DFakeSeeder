@@ -106,13 +106,17 @@ class BaseSeeder:
 
         Adds ±10% randomization to the interval to stagger announces across torrents.
         This prevents all torrents from announcing simultaneously and overwhelming trackers.
+        Also enforces the minimum announce interval setting.
 
         Args:
             interval: Base announce interval in seconds
 
         Returns:
-            Interval with random jitter applied
+            Interval with random jitter applied, respecting minimum interval
         """
+        # Get minimum announce interval from settings
+        min_interval = self.settings.get("bittorrent.min_announce_interval_seconds", 300)
+        
         jitter_percent = CalculationConstants.ANNOUNCE_JITTER_PERCENT  # ±10% jitter
         jitter = (
             interval
@@ -123,9 +127,17 @@ class BaseSeeder:
             )
         )  # Random value between -10% and +10%
         jittered_interval = interval + jitter
+        
+        # Enforce minimum interval
+        if jittered_interval < min_interval:
+            logger.trace(
+                f"Interval {jittered_interval:.1f}s is below minimum {min_interval}s, using minimum",
+                self.__class__.__name__,
+            )
+            jittered_interval = min_interval
 
         logger.trace(
-            f"Applied jitter to interval: {interval:.1f}s -> {jittered_interval:.1f}s (jitter: {jitter:+.1f}s)",
+            f"Applied jitter to interval: {interval:.1f}s -> {jittered_interval:.1f}s (jitter: {jitter:+.1f}s, min: {min_interval}s)",
             self.__class__.__name__,
         )
 
