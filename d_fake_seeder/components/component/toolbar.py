@@ -261,9 +261,7 @@ class Toolbar(Component):
             self._tickspeed_save_source_id = None
 
         # Schedule a debounced save after 500ms of no changes
-        self._tickspeed_save_source_id = GLib.timeout_add(
-            500, self._save_tickspeed_debounced
-        )
+        self._tickspeed_save_source_id = GLib.timeout_add(500, self._save_tickspeed_debounced)
 
     def _save_tickspeed_debounced(self) -> bool:
         """Actually save the tickspeed setting after debounce delay."""
@@ -628,13 +626,9 @@ class Toolbar(Component):
                 new_value = int(value)
                 if current_value != new_value:
                     # Block the value-changed handler temporarily to avoid feedback loop
-                    self.toolbar_refresh_rate.handler_block_by_func(
-                        self.on_toolbar_refresh_rate_changed
-                    )
+                    self.toolbar_refresh_rate.handler_block_by_func(self.on_toolbar_refresh_rate_changed)
                     self.toolbar_refresh_rate.set_value(new_value)
-                    self.toolbar_refresh_rate.handler_unblock_by_func(
-                        self.on_toolbar_refresh_rate_changed
-                    )
+                    self.toolbar_refresh_rate.handler_unblock_by_func(self.on_toolbar_refresh_rate_changed)
                     logger.trace(
                         f"Updated refresh rate slider to {new_value}",
                         extra={"class_name": self.__class__.__name__},
