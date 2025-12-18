@@ -1034,20 +1034,104 @@ class AppSettings(GObject.GObject):
 
     # Speed settings
     @property
-    def global_upload_limit(self) -> Any:
-        return self.get("global_upload_limit", 0)  # 0 = unlimited
+    def upload_limit_kbps(self) -> Any:
+        return self.get("speed.upload_limit_kbps", 0)  # 0 = unlimited
 
-    @global_upload_limit.setter
-    def global_upload_limit(self, value: Any) -> Any:
-        self.set("global_upload_limit", value)
+    @upload_limit_kbps.setter
+    def upload_limit_kbps(self, value: Any) -> None:
+        self.set("speed.upload_limit_kbps", value)
 
     @property
-    def global_download_limit(self) -> Any:
-        return self.get("global_download_limit", 0)  # 0 = unlimited
+    def download_limit_kbps(self) -> Any:
+        return self.get("speed.download_limit_kbps", 0)  # 0 = unlimited
 
-    @global_download_limit.setter
-    def global_download_limit(self, value: Any) -> Any:
-        self.set("global_download_limit", value)
+    @download_limit_kbps.setter
+    def download_limit_kbps(self, value: Any) -> None:
+        self.set("speed.download_limit_kbps", value)
+
+    @property
+    def enable_alternative_speeds(self) -> Any:
+        return self.get("speed.enable_alternative_speeds", False)
+
+    @enable_alternative_speeds.setter
+    def enable_alternative_speeds(self, value: Any) -> None:
+        self.set("speed.enable_alternative_speeds", value)
+
+    @property
+    def alt_upload_limit_kbps(self) -> Any:
+        return self.get("speed.alt_upload_limit_kbps", 50)
+
+    @alt_upload_limit_kbps.setter
+    def alt_upload_limit_kbps(self, value: Any) -> None:
+        self.set("speed.alt_upload_limit_kbps", value)
+
+    @property
+    def alt_download_limit_kbps(self) -> Any:
+        return self.get("speed.alt_download_limit_kbps", 100)
+
+    @alt_download_limit_kbps.setter
+    def alt_download_limit_kbps(self, value: Any) -> None:
+        self.set("speed.alt_download_limit_kbps", value)
+
+    # Scheduler settings
+    @property
+    def scheduler_enabled(self) -> Any:
+        return self.get("scheduler.enabled", False)
+
+    @scheduler_enabled.setter
+    def scheduler_enabled(self, value: Any) -> None:
+        self.set("scheduler.enabled", value)
+
+    @property
+    def scheduler_start_hour(self) -> Any:
+        return self.get("scheduler.start_hour", 22)
+
+    @scheduler_start_hour.setter
+    def scheduler_start_hour(self, value: Any) -> None:
+        self.set("scheduler.start_hour", value)
+
+    @property
+    def scheduler_start_minute(self) -> Any:
+        return self.get("scheduler.start_minute", 0)
+
+    @scheduler_start_minute.setter
+    def scheduler_start_minute(self, value: Any) -> None:
+        self.set("scheduler.start_minute", value)
+
+    @property
+    def scheduler_end_hour(self) -> Any:
+        return self.get("scheduler.end_hour", 6)
+
+    @scheduler_end_hour.setter
+    def scheduler_end_hour(self, value: Any) -> None:
+        self.set("scheduler.end_hour", value)
+
+    @property
+    def scheduler_end_minute(self) -> Any:
+        return self.get("scheduler.end_minute", 0)
+
+    @scheduler_end_minute.setter
+    def scheduler_end_minute(self, value: Any) -> None:
+        self.set("scheduler.end_minute", value)
+
+    @property
+    def scheduler_days(self) -> Any:
+        return self.get(
+            "scheduler.days",
+            {
+                "monday": True,
+                "tuesday": True,
+                "wednesday": True,
+                "thursday": True,
+                "friday": True,
+                "saturday": True,
+                "sunday": True,
+            },
+        )
+
+    @scheduler_days.setter
+    def scheduler_days(self, value: Any) -> None:
+        self.set("scheduler.days", value)
 
     # Web UI settings
     @property

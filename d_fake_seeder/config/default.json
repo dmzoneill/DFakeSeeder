@@ -50,6 +50,29 @@
     },
     "threshold": 30,
     "tickspeed": 9,
+    "speed": {
+        "upload_limit_kbps": 0,
+        "download_limit_kbps": 0,
+        "enable_alternative_speeds": false,
+        "alt_upload_limit_kbps": 50,
+        "alt_download_limit_kbps": 100
+    },
+    "scheduler": {
+        "enabled": false,
+        "start_hour": 22,
+        "start_minute": 0,
+        "end_hour": 6,
+        "end_minute": 0,
+        "days": {
+            "monday": true,
+            "tuesday": true,
+            "wednesday": true,
+            "thursday": true,
+            "friday": true,
+            "saturday": true,
+            "sunday": true
+        }
+    },
     "alternative_speed_enabled": false,
     "alternative_upload_speed": 25,
     "alternative_download_speed": 100,

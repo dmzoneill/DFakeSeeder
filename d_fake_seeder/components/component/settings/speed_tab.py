@@ -31,35 +31,9 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
     - Speed scheduler configuration
     """
 
-    # Auto-connect simple widgets with WIDGET_MAPPINGS
-    WIDGET_MAPPINGS = [
-        # Global speed limits
-        {
-            "id": "settings_upload_limit",
-            "name": "upload_limit",
-            "setting_key": "speed.upload_limit_kbps",
-            "type": int,
-        },
-        {
-            "id": "settings_download_limit",
-            "name": "download_limit",
-            "setting_key": "speed.download_limit_kbps",
-            "type": int,
-        },
-        # Alternative speed limits
-        {
-            "id": "settings_alt_upload_limit",
-            "name": "alt_upload_limit",
-            "setting_key": "speed.alt_upload_limit_kbps",
-            "type": int,
-        },
-        {
-            "id": "settings_alt_download_limit",
-            "name": "alt_download_limit",
-            "setting_key": "speed.alt_download_limit_kbps",
-            "type": int,
-        },
-    ]
+    # Note: Most speed settings use manual loading/saving due to nested structure
+    # and scheduler uses individual widgets for hours/minutes/days
+    WIDGET_MAPPINGS: list = []
 
     @property
     def tab_name(self) -> str:
@@ -71,18 +45,29 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         logger.trace("Starting widget initialization", "SpeedTab")
         # Cache commonly used widgets
         widgets_to_get = [
+            # Global speed limits
             ("upload_limit", "settings_upload_limit"),
             ("download_limit", "settings_download_limit"),
+            # Alternative speed settings
             ("enable_alt_speeds", "settings_enable_alt_speeds"),
-            # Section containers (hardcoded to sensitive=False in XML)
             ("alt_speed_box", "settings_alt_speed_box"),
-            ("scheduler_box", "settings_scheduler_box"),
             ("alt_upload_limit", "settings_alt_upload_limit"),
             ("alt_download_limit", "settings_alt_download_limit"),
+            # Scheduler settings
             ("enable_scheduler", "settings_enable_scheduler"),
-            ("scheduler_start_time", "settings_scheduler_start_time"),
-            ("scheduler_end_time", "settings_scheduler_end_time"),
-            ("scheduler_days", "settings_scheduler_days"),
+            ("scheduler_box", "settings_scheduler_box"),
+            ("scheduler_start_hour", "settings_scheduler_start_hour"),
+            ("scheduler_start_minute", "settings_scheduler_start_minute"),
+            ("scheduler_end_hour", "settings_scheduler_end_hour"),
+            ("scheduler_end_minute", "settings_scheduler_end_minute"),
+            # Scheduler day checkbuttons
+            ("scheduler_mon", "settings_scheduler_mon"),
+            ("scheduler_tue", "settings_scheduler_tue"),
+            ("scheduler_wed", "settings_scheduler_wed"),
+            ("scheduler_thu", "settings_scheduler_thu"),
+            ("scheduler_fri", "settings_scheduler_fri"),
+            ("scheduler_sat", "settings_scheduler_sat"),
+            ("scheduler_sun", "settings_scheduler_sun"),
             # Upload speed distribution
             ("upload_dist_algorithm", "settings_upload_dist_algorithm"),
             ("upload_dist_percentage", "settings_upload_dist_percentage"),
@@ -101,21 +86,36 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             ("download_dist_stopped_max", "settings_download_dist_stopped_max"),
         ]
         for widget_name, object_id in widgets_to_get:
-            logger.trace("Getting widget:", "SpeedTab")
+            logger.trace(f"Getting widget: {object_id}", "SpeedTab")
             try:
                 widget = self.builder.get_object(object_id)
                 self._widgets[widget_name] = widget
-                logger.info("Successfully got widget:", "SpeedTab")
-            except Exception:
-                logger.error("ERROR getting widget :", "SpeedTab")
+                if widget:
+                    logger.trace(f"Successfully got widget: {object_id}", "SpeedTab")
+                else:
+                    logger.warning(f"Widget not found: {object_id}", "SpeedTab")
+            except Exception as e:
+                logger.error(f"ERROR getting widget {object_id}: {e}", "SpeedTab")
         logger.trace("Completed widget initialization", "SpeedTab")
 
     def _connect_signals(self) -> None:
         """Connect signal handlers for Speed tab."""
-        # Simple widgets (upload_limit, download_limit, alt_upload_limit, alt_download_limit)
-        # are now auto-connected via WIDGET_MAPPINGS
+        # Global speed limits
+        upload_limit = self.get_widget("upload_limit")
+        if upload_limit:
+            self.track_signal(
+                upload_limit,
+                upload_limit.connect("value-changed", self.on_upload_limit_changed),
+            )
 
-        # Alternative speeds enable (has dependencies)
+        download_limit = self.get_widget("download_limit")
+        if download_limit:
+            self.track_signal(
+                download_limit,
+                download_limit.connect("value-changed", self.on_download_limit_changed),
+            )
+
+        # Alternative speeds
         enable_alt = self.get_widget("enable_alt_speeds")
         if enable_alt:
             self.track_signal(
@@ -123,7 +123,21 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
                 enable_alt.connect("state-set", self.on_enable_alt_speeds_changed),
             )
 
-        # Scheduler
+        alt_upload_limit = self.get_widget("alt_upload_limit")
+        if alt_upload_limit:
+            self.track_signal(
+                alt_upload_limit,
+                alt_upload_limit.connect("value-changed", self.on_alt_upload_limit_changed),
+            )
+
+        alt_download_limit = self.get_widget("alt_download_limit")
+        if alt_download_limit:
+            self.track_signal(
+                alt_download_limit,
+                alt_download_limit.connect("value-changed", self.on_alt_download_limit_changed),
+            )
+
+        # Scheduler enable
         enable_scheduler = self.get_widget("enable_scheduler")
         if enable_scheduler:
             self.track_signal(
@@ -131,26 +145,52 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
                 enable_scheduler.connect("state-set", self.on_enable_scheduler_changed),
             )
 
-        scheduler_start_time = self.get_widget("scheduler_start_time")
-        if scheduler_start_time:
+        # Scheduler time widgets (hour/minute spinbuttons)
+        scheduler_start_hour = self.get_widget("scheduler_start_hour")
+        if scheduler_start_hour:
             self.track_signal(
-                scheduler_start_time,
-                scheduler_start_time.connect("notify::time", self.on_scheduler_start_time_changed),
+                scheduler_start_hour,
+                scheduler_start_hour.connect("value-changed", self.on_scheduler_time_changed),
             )
 
-        scheduler_end_time = self.get_widget("scheduler_end_time")
-        if scheduler_end_time:
+        scheduler_start_minute = self.get_widget("scheduler_start_minute")
+        if scheduler_start_minute:
             self.track_signal(
-                scheduler_end_time,
-                scheduler_end_time.connect("notify::time", self.on_scheduler_end_time_changed),
+                scheduler_start_minute,
+                scheduler_start_minute.connect("value-changed", self.on_scheduler_time_changed),
             )
 
-        scheduler_days = self.get_widget("scheduler_days")
-        if scheduler_days:
+        scheduler_end_hour = self.get_widget("scheduler_end_hour")
+        if scheduler_end_hour:
             self.track_signal(
-                scheduler_days,
-                scheduler_days.connect("changed", self.on_scheduler_days_changed),
+                scheduler_end_hour,
+                scheduler_end_hour.connect("value-changed", self.on_scheduler_time_changed),
             )
+
+        scheduler_end_minute = self.get_widget("scheduler_end_minute")
+        if scheduler_end_minute:
+            self.track_signal(
+                scheduler_end_minute,
+                scheduler_end_minute.connect("value-changed", self.on_scheduler_time_changed),
+            )
+
+        # Scheduler day checkbuttons
+        day_widgets = [
+            "scheduler_mon",
+            "scheduler_tue",
+            "scheduler_wed",
+            "scheduler_thu",
+            "scheduler_fri",
+            "scheduler_sat",
+            "scheduler_sun",
+        ]
+        for day_widget_name in day_widgets:
+            day_widget = self.get_widget(day_widget_name)
+            if day_widget:
+                self.track_signal(
+                    day_widget,
+                    day_widget.connect("toggled", self.on_scheduler_day_changed),
+                )
 
         # Upload speed distribution
         upload_dist_algorithm = self.get_widget("upload_dist_algorithm")
@@ -244,20 +284,16 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         """Load current settings into Speed tab widgets."""
         logger.trace("Starting _load_settings", "SpeedTab")
         try:
-            # Load speed settings
-            logger.trace("Getting speed settings from app_settings", "SpeedTab")
-            speed_settings = getattr(self.app_settings, "speed", {})
-            logger.trace("Got speed settings:", "SpeedTab")
-            logger.trace("About to call _load_speed_settings", "SpeedTab")
-            self._load_speed_settings(speed_settings)
+            # Load speed settings using nested keys
+            logger.trace("Loading speed settings from app_settings", "SpeedTab")
+            self._load_speed_settings()
             logger.trace("Completed _load_speed_settings", "SpeedTab")
-            # Load scheduler settings
-            logger.trace("Getting scheduler settings from app_settings", "SpeedTab")
-            scheduler_settings = getattr(self.app_settings, "scheduler", {})
-            logger.trace("Got scheduler settings:", "SpeedTab")
-            logger.trace("About to call _load_scheduler_settings", "SpeedTab")
-            self._load_scheduler_settings(scheduler_settings)
+
+            # Load scheduler settings using nested keys
+            logger.trace("Loading scheduler settings from app_settings", "SpeedTab")
+            self._load_scheduler_settings()
             logger.trace("Completed _load_scheduler_settings", "SpeedTab")
+
             # Load speed distribution settings
             logger.trace("About to call _load_distribution_settings", "SpeedTab")
             self._load_distribution_settings()
@@ -271,76 +307,106 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             self.logger.info("Speed tab settings loaded")
             logger.info("Completed _load_settings successfully", "SpeedTab")
         except Exception as e:
-            logger.error("ERROR in _load_settings:", "SpeedTab")
+            logger.error(f"ERROR in _load_settings: {e}", "SpeedTab")
             self.logger.error(f"Error loading Speed tab settings: {e}")
 
-    def _load_speed_settings(self, speed_settings: Dict[str, Any]) -> None:
-        """Load speed-related settings."""
+    def _load_speed_settings(self) -> None:
+        """Load speed-related settings using nested keys."""
         logger.trace("Starting _load_speed_settings", "SpeedTab")
         try:
             # Global limits (0 = unlimited)
-            logger.trace("Getting upload_limit widget", "SpeedTab")
             upload_limit = self.get_widget("upload_limit")
             if upload_limit:
-                logger.debug("Setting upload_limit value to", "SpeedTab")
-                upload_limit.set_value(speed_settings.get("upload_limit_kbps", 0))
-                logger.info("Upload limit value set successfully", "SpeedTab")
-            logger.trace("Getting download_limit widget", "SpeedTab")
+                value = self.app_settings.get("speed.upload_limit_kbps", 0)
+                upload_limit.set_value(value)
+                logger.trace(f"Upload limit set to: {value}", "SpeedTab")
+
             download_limit = self.get_widget("download_limit")
             if download_limit:
-                logger.debug("Setting download_limit value to", "SpeedTab")
-                download_limit.set_value(speed_settings.get("download_limit_kbps", 0))
-                logger.info("Download limit value set successfully", "SpeedTab")
+                value = self.app_settings.get("speed.download_limit_kbps", 0)
+                download_limit.set_value(value)
+                logger.trace(f"Download limit set to: {value}", "SpeedTab")
+
             # Alternative speeds
-            logger.trace("Getting enable_alt_speeds widget", "SpeedTab")
             enable_alt = self.get_widget("enable_alt_speeds")
             if enable_alt:
-                logger.debug("Setting enable_alt_speeds active to", "SpeedTab")
-                self.set_switch_state(enable_alt, speed_settings.get("enable_alternative_speeds", False))
-                logger.info("Enable alt speeds set successfully", "SpeedTab")
-            logger.trace("Getting alt_upload_limit widget", "SpeedTab")
+                value = self.app_settings.get("speed.enable_alternative_speeds", False)
+                self.set_switch_state(enable_alt, value)
+                logger.trace(f"Enable alt speeds set to: {value}", "SpeedTab")
+
             alt_upload_limit = self.get_widget("alt_upload_limit")
             if alt_upload_limit:
-                logger.debug("Setting alt_upload_limit value to", "SpeedTab")
-                alt_upload_limit.set_value(speed_settings.get("alt_upload_limit_kbps", 0))
-                logger.info("Alt upload limit value set successfully", "SpeedTab")
-            logger.trace("Getting alt_download_limit widget", "SpeedTab")
+                value = self.app_settings.get("speed.alt_upload_limit_kbps", 50)
+                alt_upload_limit.set_value(value)
+                logger.trace(f"Alt upload limit set to: {value}", "SpeedTab")
+
             alt_download_limit = self.get_widget("alt_download_limit")
             if alt_download_limit:
-                logger.trace(
-                    "Setting alt_download_limit value to {speed_settings.get('alt_download_limit_kbps', 0)}",
-                    "UnknownClass",
-                )
-                alt_download_limit.set_value(speed_settings.get("alt_download_limit_kbps", 0))
-                logger.info("Alt download limit value set successfully", "SpeedTab")
+                value = self.app_settings.get("speed.alt_download_limit_kbps", 100)
+                alt_download_limit.set_value(value)
+                logger.trace(f"Alt download limit set to: {value}", "SpeedTab")
+
             logger.info("Completed _load_speed_settings successfully", "SpeedTab")
         except Exception as e:
-            logger.error("ERROR in _load_speed_settings:", "SpeedTab")
+            logger.error(f"ERROR in _load_speed_settings: {e}", "SpeedTab")
             self.logger.error(f"Error loading speed settings: {e}")
 
-    def _load_scheduler_settings(self, scheduler_settings: Dict[str, Any]) -> None:
-        """Load scheduler settings."""
+    def _load_scheduler_settings(self) -> None:
+        """Load scheduler settings using nested keys."""
         try:
+            # Scheduler enabled
             enable_scheduler = self.get_widget("enable_scheduler")
             if enable_scheduler:
-                self.set_switch_state(enable_scheduler, scheduler_settings.get("enabled", False))
-            # Time settings (these would need specific widget implementations)
-            scheduler_start_time = self.get_widget("scheduler_start_time")
-            if scheduler_start_time:
-                # Set time on widget (implementation depends on widget type)
-                # start_time = scheduler_settings.get("start_time", "22:00")
-                pass
-            scheduler_end_time = self.get_widget("scheduler_end_time")
-            if scheduler_end_time:
-                # Set time on widget (implementation depends on widget type)
-                # end_time = scheduler_settings.get("end_time", "06:00")
-                pass
-            scheduler_days = self.get_widget("scheduler_days")
-            if scheduler_days:
-                # Set selected days (implementation depends on widget type)
-                # days = scheduler_settings.get("days", [])
-                pass
+                value = self.app_settings.get("scheduler.enabled", False)
+                self.set_switch_state(enable_scheduler, value)
+                logger.trace(f"Scheduler enabled set to: {value}", "SpeedTab")
+
+            # Start time (hour and minute)
+            scheduler_start_hour = self.get_widget("scheduler_start_hour")
+            if scheduler_start_hour:
+                value = self.app_settings.get("scheduler.start_hour", 22)
+                scheduler_start_hour.set_value(value)
+                logger.trace(f"Scheduler start hour set to: {value}", "SpeedTab")
+
+            scheduler_start_minute = self.get_widget("scheduler_start_minute")
+            if scheduler_start_minute:
+                value = self.app_settings.get("scheduler.start_minute", 0)
+                scheduler_start_minute.set_value(value)
+                logger.trace(f"Scheduler start minute set to: {value}", "SpeedTab")
+
+            # End time (hour and minute)
+            scheduler_end_hour = self.get_widget("scheduler_end_hour")
+            if scheduler_end_hour:
+                value = self.app_settings.get("scheduler.end_hour", 6)
+                scheduler_end_hour.set_value(value)
+                logger.trace(f"Scheduler end hour set to: {value}", "SpeedTab")
+
+            scheduler_end_minute = self.get_widget("scheduler_end_minute")
+            if scheduler_end_minute:
+                value = self.app_settings.get("scheduler.end_minute", 0)
+                scheduler_end_minute.set_value(value)
+                logger.trace(f"Scheduler end minute set to: {value}", "SpeedTab")
+
+            # Scheduler days (individual checkbuttons)
+            days = self.app_settings.get("scheduler.days", {})
+            day_mapping = [
+                ("scheduler_mon", "monday"),
+                ("scheduler_tue", "tuesday"),
+                ("scheduler_wed", "wednesday"),
+                ("scheduler_thu", "thursday"),
+                ("scheduler_fri", "friday"),
+                ("scheduler_sat", "saturday"),
+                ("scheduler_sun", "sunday"),
+            ]
+            for widget_name, day_key in day_mapping:
+                day_widget = self.get_widget(widget_name)
+                if day_widget:
+                    value = days.get(day_key, True)
+                    day_widget.set_active(value)
+                    logger.trace(f"Scheduler {day_key} set to: {value}", "SpeedTab")
+
         except Exception as e:
+            logger.error(f"Error loading scheduler settings: {e}", "SpeedTab")
             self.logger.error(f"Error loading scheduler settings: {e}")
 
     def _load_distribution_settings(self) -> None:
@@ -447,9 +513,22 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             scheduler_enabled = enable_scheduler and enable_scheduler.get_active()
             # IMPORTANT: Enable the parent box first (hardcoded to sensitive=False in XML)
             self.update_widget_sensitivity("scheduler_box", scheduler_enabled)
-            self.update_widget_sensitivity("scheduler_start_time", scheduler_enabled)
-            self.update_widget_sensitivity("scheduler_end_time", scheduler_enabled)
-            self.update_widget_sensitivity("scheduler_days", scheduler_enabled)
+            # Individual scheduler widgets
+            self.update_widget_sensitivity("scheduler_start_hour", scheduler_enabled)
+            self.update_widget_sensitivity("scheduler_start_minute", scheduler_enabled)
+            self.update_widget_sensitivity("scheduler_end_hour", scheduler_enabled)
+            self.update_widget_sensitivity("scheduler_end_minute", scheduler_enabled)
+            # Day checkbuttons
+            for day in [
+                "scheduler_mon",
+                "scheduler_tue",
+                "scheduler_wed",
+                "scheduler_thu",
+                "scheduler_fri",
+                "scheduler_sat",
+                "scheduler_sun",
+            ]:
+                self.update_widget_sensitivity(day, scheduler_enabled)
         except Exception as e:
             self.logger.error(f"Error updating speed dependencies: {e}")
 
@@ -513,19 +592,16 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         Returns:
             Dictionary of setting_key -> value pairs for all widgets
         """
-        # Collect from WIDGET_MAPPINGS
-        settings = self._collect_mapped_settings()
+        settings: Dict[str, Any] = {}
 
         try:
-            # Collect speed settings with proper key prefixes
+            # Collect speed settings (already uses nested keys like "speed.upload_limit_kbps")
             speed_settings = self._collect_speed_settings()
-            for key, value in speed_settings.items():
-                settings[f"speed.{key}"] = value
+            settings.update(speed_settings)
 
-            # Collect scheduler settings with proper key prefixes
+            # Collect scheduler settings (already uses nested keys like "scheduler.enabled")
             scheduler_settings = self._collect_scheduler_settings()
-            for key, value in scheduler_settings.items():
-                settings[f"scheduler.{key}"] = value
+            settings.update(scheduler_settings)
 
             # Collect distribution settings with proper key prefixes
             distribution_settings = self._collect_distribution_settings()
@@ -541,48 +617,75 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         return settings
 
     def _collect_speed_settings(self) -> Dict[str, Any]:
-        """Collect speed-related settings."""
-        speed_settings = {}
+        """Collect speed-related settings with nested keys."""
+        speed_settings: Dict[str, Any] = {}
         try:
             upload_limit = self.get_widget("upload_limit")
             if upload_limit:
-                speed_settings["upload_limit_kbps"] = int(upload_limit.get_value())
+                speed_settings["speed.upload_limit_kbps"] = int(upload_limit.get_value())
+
             download_limit = self.get_widget("download_limit")
             if download_limit:
-                speed_settings["download_limit_kbps"] = int(download_limit.get_value())
+                speed_settings["speed.download_limit_kbps"] = int(download_limit.get_value())
+
             enable_alt = self.get_widget("enable_alt_speeds")
             if enable_alt:
-                speed_settings["enable_alternative_speeds"] = enable_alt.get_active()
+                speed_settings["speed.enable_alternative_speeds"] = enable_alt.get_active()
+
             alt_upload_limit = self.get_widget("alt_upload_limit")
             if alt_upload_limit:
-                speed_settings["alt_upload_limit_kbps"] = int(alt_upload_limit.get_value())
+                speed_settings["speed.alt_upload_limit_kbps"] = int(alt_upload_limit.get_value())
+
             alt_download_limit = self.get_widget("alt_download_limit")
             if alt_download_limit:
-                speed_settings["alt_download_limit_kbps"] = int(alt_download_limit.get_value())
+                speed_settings["speed.alt_download_limit_kbps"] = int(alt_download_limit.get_value())
         except Exception as e:
             self.logger.error(f"Error collecting speed settings: {e}")
         return speed_settings
 
     def _collect_scheduler_settings(self) -> Dict[str, Any]:
-        """Collect scheduler settings."""
-        scheduler_settings = {}
+        """Collect scheduler settings with nested keys."""
+        scheduler_settings: Dict[str, Any] = {}
         try:
             enable_scheduler = self.get_widget("enable_scheduler")
             if enable_scheduler:
-                scheduler_settings["enabled"] = enable_scheduler.get_active()
-            # Time and day settings would need specific widget implementations
-            scheduler_start_time = self.get_widget("scheduler_start_time")
-            if scheduler_start_time:
-                # Get time from widget (implementation depends on widget type)
-                scheduler_settings["start_time"] = "22:00"  # Default/placeholder
-            scheduler_end_time = self.get_widget("scheduler_end_time")
-            if scheduler_end_time:
-                # Get time from widget (implementation depends on widget type)
-                scheduler_settings["end_time"] = "06:00"  # Default/placeholder
-            scheduler_days = self.get_widget("scheduler_days")
-            if scheduler_days:
-                # Get selected days (implementation depends on widget type)
-                scheduler_settings["days"] = []  # Default/placeholder
+                scheduler_settings["scheduler.enabled"] = enable_scheduler.get_active()
+
+            # Start time (hour and minute)
+            scheduler_start_hour = self.get_widget("scheduler_start_hour")
+            if scheduler_start_hour:
+                scheduler_settings["scheduler.start_hour"] = int(scheduler_start_hour.get_value())
+
+            scheduler_start_minute = self.get_widget("scheduler_start_minute")
+            if scheduler_start_minute:
+                scheduler_settings["scheduler.start_minute"] = int(scheduler_start_minute.get_value())
+
+            # End time (hour and minute)
+            scheduler_end_hour = self.get_widget("scheduler_end_hour")
+            if scheduler_end_hour:
+                scheduler_settings["scheduler.end_hour"] = int(scheduler_end_hour.get_value())
+
+            scheduler_end_minute = self.get_widget("scheduler_end_minute")
+            if scheduler_end_minute:
+                scheduler_settings["scheduler.end_minute"] = int(scheduler_end_minute.get_value())
+
+            # Collect day settings
+            days = {}
+            day_mapping = [
+                ("scheduler_mon", "monday"),
+                ("scheduler_tue", "tuesday"),
+                ("scheduler_wed", "wednesday"),
+                ("scheduler_thu", "thursday"),
+                ("scheduler_fri", "friday"),
+                ("scheduler_sat", "saturday"),
+                ("scheduler_sun", "sunday"),
+            ]
+            for widget_name, day_key in day_mapping:
+                day_widget = self.get_widget(widget_name)
+                if day_widget:
+                    days[day_key] = day_widget.get_active()
+            scheduler_settings["scheduler.days"] = days
+
         except Exception as e:
             self.logger.error(f"Error collecting scheduler settings: {e}")
         return scheduler_settings
@@ -707,35 +810,96 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         except Exception as e:
             self.logger.error(f"Error changing scheduler setting: {e}")
 
-    def on_scheduler_start_time_changed(self, widget: Any, param: Any) -> None:
-        """Handle scheduler start time change."""
+    def on_upload_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
+        """Handle upload limit change."""
         if self._loading_settings:
             return
         try:
-            # NOTE: Setting will be saved in batch via _collect_settings()
-            # Implementation depends on the specific time widget used
-            self.logger.trace("Scheduler start time changed")
+            value = int(spin_button.get_value())
+            self.app_settings.set("speed.upload_limit_kbps", value)
+            self.logger.trace(f"Upload limit changed to: {value} KB/s")
         except Exception as e:
-            self.logger.error(f"Error changing scheduler start time: {e}")
+            self.logger.error(f"Error changing upload limit: {e}")
 
-    def on_scheduler_end_time_changed(self, widget: Any, param: Any) -> None:
-        """Handle scheduler end time change."""
+    def on_download_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
+        """Handle download limit change."""
         if self._loading_settings:
             return
         try:
-            # NOTE: Setting will be saved in batch via _collect_settings()
-            # Implementation depends on the specific time widget used
-            self.logger.trace("Scheduler end time changed")
+            value = int(spin_button.get_value())
+            self.app_settings.set("speed.download_limit_kbps", value)
+            self.logger.trace(f"Download limit changed to: {value} KB/s")
         except Exception as e:
-            self.logger.error(f"Error changing scheduler end time: {e}")
+            self.logger.error(f"Error changing download limit: {e}")
 
-    def on_scheduler_days_changed(self, widget: Any) -> None:
-        """Handle scheduler days change."""
+    def on_alt_upload_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
+        """Handle alternative upload limit change."""
         if self._loading_settings:
             return
         try:
-            # NOTE: Setting will be saved in batch via _collect_settings()
-            # Implementation depends on the specific days selection widget used
+            value = int(spin_button.get_value())
+            self.app_settings.set("speed.alt_upload_limit_kbps", value)
+            self.logger.trace(f"Alt upload limit changed to: {value} KB/s")
+        except Exception as e:
+            self.logger.error(f"Error changing alt upload limit: {e}")
+
+    def on_alt_download_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
+        """Handle alternative download limit change."""
+        if self._loading_settings:
+            return
+        try:
+            value = int(spin_button.get_value())
+            self.app_settings.set("speed.alt_download_limit_kbps", value)
+            self.logger.trace(f"Alt download limit changed to: {value} KB/s")
+        except Exception as e:
+            self.logger.error(f"Error changing alt download limit: {e}")
+
+    def on_scheduler_time_changed(self, spin_button: Gtk.SpinButton) -> None:
+        """Handle scheduler time change (hour or minute)."""
+        if self._loading_settings:
+            return
+        try:
+            # Collect all time values and save
+            start_hour = self.get_widget("scheduler_start_hour")
+            start_minute = self.get_widget("scheduler_start_minute")
+            end_hour = self.get_widget("scheduler_end_hour")
+            end_minute = self.get_widget("scheduler_end_minute")
+
+            if start_hour:
+                self.app_settings.set("scheduler.start_hour", int(start_hour.get_value()))
+            if start_minute:
+                self.app_settings.set("scheduler.start_minute", int(start_minute.get_value()))
+            if end_hour:
+                self.app_settings.set("scheduler.end_hour", int(end_hour.get_value()))
+            if end_minute:
+                self.app_settings.set("scheduler.end_minute", int(end_minute.get_value()))
+
+            self.logger.trace("Scheduler time changed")
+        except Exception as e:
+            self.logger.error(f"Error changing scheduler time: {e}")
+
+    def on_scheduler_day_changed(self, check_button: Gtk.CheckButton) -> None:
+        """Handle scheduler day checkbox change."""
+        if self._loading_settings:
+            return
+        try:
+            # Collect all day values and save
+            days = {}
+            day_mapping = [
+                ("scheduler_mon", "monday"),
+                ("scheduler_tue", "tuesday"),
+                ("scheduler_wed", "wednesday"),
+                ("scheduler_thu", "thursday"),
+                ("scheduler_fri", "friday"),
+                ("scheduler_sat", "saturday"),
+                ("scheduler_sun", "sunday"),
+            ]
+            for widget_name, day_key in day_mapping:
+                day_widget = self.get_widget(widget_name)
+                if day_widget:
+                    days[day_key] = day_widget.get_active()
+
+            self.app_settings.set("scheduler.days", days)
             self.logger.trace("Scheduler days changed")
         except Exception as e:
             self.logger.error(f"Error changing scheduler days: {e}")
@@ -750,20 +914,90 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             download_limit = self.get_widget("download_limit")
             if download_limit:
                 download_limit.set_value(0)
+
             # Reset alternative speeds
             enable_alt = self.get_widget("enable_alt_speeds")
             if enable_alt:
                 self.set_switch_state(enable_alt, False)
             alt_upload_limit = self.get_widget("alt_upload_limit")
             if alt_upload_limit:
-                alt_upload_limit.set_value(0)
+                alt_upload_limit.set_value(50)
             alt_download_limit = self.get_widget("alt_download_limit")
             if alt_download_limit:
-                alt_download_limit.set_value(0)
+                alt_download_limit.set_value(100)
+
             # Reset scheduler
             enable_scheduler = self.get_widget("enable_scheduler")
             if enable_scheduler:
                 self.set_switch_state(enable_scheduler, False)
+
+            # Reset scheduler time
+            scheduler_start_hour = self.get_widget("scheduler_start_hour")
+            if scheduler_start_hour:
+                scheduler_start_hour.set_value(22)
+            scheduler_start_minute = self.get_widget("scheduler_start_minute")
+            if scheduler_start_minute:
+                scheduler_start_minute.set_value(0)
+            scheduler_end_hour = self.get_widget("scheduler_end_hour")
+            if scheduler_end_hour:
+                scheduler_end_hour.set_value(6)
+            scheduler_end_minute = self.get_widget("scheduler_end_minute")
+            if scheduler_end_minute:
+                scheduler_end_minute.set_value(0)
+
+            # Reset scheduler days (all enabled by default)
+            for day in [
+                "scheduler_mon",
+                "scheduler_tue",
+                "scheduler_wed",
+                "scheduler_thu",
+                "scheduler_fri",
+                "scheduler_sat",
+                "scheduler_sun",
+            ]:
+                day_widget = self.get_widget(day)
+                if day_widget:
+                    day_widget.set_active(True)
+
+            # Reset speed distribution settings
+            upload_dist_algorithm = self.get_widget("upload_dist_algorithm")
+            if upload_dist_algorithm:
+                upload_dist_algorithm.set_selected(0)  # Off
+            upload_dist_percentage = self.get_widget("upload_dist_percentage")
+            if upload_dist_percentage:
+                upload_dist_percentage.set_value(50)
+            upload_dist_mode = self.get_widget("upload_dist_mode")
+            if upload_dist_mode:
+                upload_dist_mode.set_selected(0)  # Tick
+            upload_dist_interval = self.get_widget("upload_dist_interval")
+            if upload_dist_interval:
+                upload_dist_interval.set_value(5)
+            upload_dist_stopped_min = self.get_widget("upload_dist_stopped_min")
+            if upload_dist_stopped_min:
+                upload_dist_stopped_min.set_value(20)
+            upload_dist_stopped_max = self.get_widget("upload_dist_stopped_max")
+            if upload_dist_stopped_max:
+                upload_dist_stopped_max.set_value(40)
+
+            download_dist_algorithm = self.get_widget("download_dist_algorithm")
+            if download_dist_algorithm:
+                download_dist_algorithm.set_selected(0)  # Off
+            download_dist_percentage = self.get_widget("download_dist_percentage")
+            if download_dist_percentage:
+                download_dist_percentage.set_value(50)
+            download_dist_mode = self.get_widget("download_dist_mode")
+            if download_dist_mode:
+                download_dist_mode.set_selected(0)  # Tick
+            download_dist_interval = self.get_widget("download_dist_interval")
+            if download_dist_interval:
+                download_dist_interval.set_value(5)
+            download_dist_stopped_min = self.get_widget("download_dist_stopped_min")
+            if download_dist_stopped_min:
+                download_dist_stopped_min.set_value(20)
+            download_dist_stopped_max = self.get_widget("download_dist_stopped_max")
+            if download_dist_stopped_max:
+                download_dist_stopped_max.set_value(40)
+
             self.update_dependencies()
             self.show_notification("Speed settings reset to defaults", "success")
         except Exception as e:
