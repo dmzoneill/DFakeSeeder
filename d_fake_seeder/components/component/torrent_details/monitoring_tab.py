@@ -387,6 +387,8 @@ class MonitoringTab(BaseTorrentTab):
             ],
         )
         self.network_io_tile["graph"].max_value = 100
+        self.net_io_last_recv = 0
+        self.net_io_last_sent = 0
 
     def _create_torrent_stats_tile(self, row: Any, col: Any) -> None:
         """Create torrent statistics tile."""
@@ -511,9 +513,10 @@ class MonitoringTab(BaseTorrentTab):
             io_read_bytes = metrics.get("io_read_bytes", 0)
             io_write_bytes = metrics.get("io_write_bytes", 0)
 
-            # Calculate MB/s (2 second interval)
-            read_rate = (io_read_bytes - self.disk_io_last_read) / (1024 * 1024 * 2)
-            write_rate = (io_write_bytes - self.disk_io_last_write) / (1024 * 1024 * 2)
+            # Calculate MB/s using actual refresh interval
+            interval = self.refresh_interval if self.refresh_interval > 0 else 2
+            read_rate = (io_read_bytes - self.disk_io_last_read) / (1024 * 1024 * interval)
+            write_rate = (io_write_bytes - self.disk_io_last_write) / (1024 * 1024 * interval)
 
             self.disk_io_tile["graph"].update_series("Read", max(0, read_rate))
             self.disk_io_tile["graph"].update_series("Write", max(0, write_rate))
@@ -527,6 +530,28 @@ class MonitoringTab(BaseTorrentTab):
 
             self.disk_io_last_read = io_read_bytes
             self.disk_io_last_write = io_write_bytes
+
+            # Update Network I/O tile (calculate rate)
+            net_bytes_recv = metrics.get("net_bytes_recv", 0)
+            net_bytes_sent = metrics.get("net_bytes_sent", 0)
+
+            # Calculate KB/s using actual refresh interval
+            interval = self.refresh_interval if self.refresh_interval > 0 else 2
+            recv_rate = (net_bytes_recv - self.net_io_last_recv) / (1024 * interval)
+            send_rate = (net_bytes_sent - self.net_io_last_sent) / (1024 * interval)
+
+            self.network_io_tile["graph"].update_series("Receiving", max(0, recv_rate))
+            self.network_io_tile["graph"].update_series("Sending", max(0, send_rate))
+
+            self.network_io_tile["value_labels"]["Receiving"].set_markup(
+                f"<small>Receiving: <b>{max(0, recv_rate):.1f} KB/s</b></small>"
+            )
+            self.network_io_tile["value_labels"]["Sending"].set_markup(
+                f"<small>Sending: <b>{max(0, send_rate):.1f} KB/s</b></small>"
+            )
+
+            self.net_io_last_recv = net_bytes_recv
+            self.net_io_last_sent = net_bytes_sent
 
             # Update Torrent Statistics tile
             if self.model:
