@@ -63,11 +63,9 @@ class MonitoringTab(BaseTorrentTab):
         )
 
         # Get refresh interval from settings (default 2 seconds)
-        self.refresh_interval = 2
-        if hasattr(self, "app_settings") and self.app_settings:
-            ui_settings = getattr(self.app_settings, "ui_settings", {})
-            if isinstance(ui_settings, dict):
-                self.refresh_interval = ui_settings.get("monitoring_refresh_interval", 2)
+        self.refresh_interval = self.app_settings.get(
+            "ui_settings.monitoring_refresh_interval", 2
+        ) if self.app_settings else 2
 
         # Create main vertical box
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -218,14 +216,11 @@ class MonitoringTab(BaseTorrentTab):
             self.update_timer = GLib.timeout_add_seconds(self.refresh_interval, self._update_metrics)
             self.track_timeout(self.update_timer)
 
-            # Save to settings if available
-            if hasattr(self, "app_settings") and self.app_settings:
-                ui_settings = getattr(self.app_settings, "ui_settings", {})
-                if isinstance(ui_settings, dict):
-                    ui_settings["monitoring_refresh_interval"] = new_interval
-                    self.app_settings.ui_settings = ui_settings
-                    if hasattr(self.app_settings, "save"):
-                        self.app_settings.save()
+            # Save to settings using proper settings API
+            if self.app_settings:
+                self.app_settings.set(
+                    "ui_settings.monitoring_refresh_interval", new_interval
+                )
 
             logger.trace(
                 f"⏱️ MONITORING TAB: Refresh interval changed to {new_interval} seconds",

@@ -140,7 +140,8 @@
         "speed_calculation_multiplier": 1000,
         "log_buffer_max_lines": 1000,
         "theme_style": "classic",
-        "color_scheme": "auto"
+        "color_scheme": "auto",
+        "monitoring_refresh_interval": 2
     },
     "seeders": {
         "port_range_min": 1025,
