@@ -8,6 +8,8 @@ Replaces external window manipulation tools with native GTK4 functionality.
 # isort: skip_file
 
 # fmt: off
+import os
+from pathlib import Path
 from typing import Any, Optional
 
 import gi
@@ -30,6 +32,9 @@ class WindowManager:
     Provides clean window operations without external dependencies.
     Integrates with AppSettings for persistent window state management.
     """
+
+    # Path to tray PID lock file
+    TRAY_LOCK_FILE = "~/.config/dfakeseeder/dfakeseeder-tray.lock"
 
     def __init__(self, window: Optional[Gtk.Window] = None) -> None:
         """
@@ -65,6 +70,56 @@ class WindowManager:
         self._setup_window_handlers()
         self._load_window_state()
         logger.trace("Window set for management", extra={"class_name": self.__class__.__name__})
+
+    def is_tray_running(self) -> bool:
+        """
+        Check if the tray application is running.
+
+        Uses PID file lock to detect if tray is alive.
+        Returns True if tray is running and responsive, False otherwise.
+        """
+        try:
+            lock_path = Path(os.path.expanduser(self.TRAY_LOCK_FILE))
+
+            if not lock_path.exists():
+                logger.trace(
+                    "Tray lock file does not exist - tray not running",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                return False
+
+            # Read PID from lock file
+            try:
+                pid_str = lock_path.read_text().strip()
+                pid = int(pid_str)
+            except (ValueError, OSError) as e:
+                logger.trace(
+                    f"Could not read tray PID from lock file: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                return False
+
+            # Check if the process is actually running
+            try:
+                os.kill(pid, 0)  # Signal 0 just checks if process exists
+                logger.trace(
+                    f"Tray process is running (PID: {pid})",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                return True
+            except OSError:
+                logger.trace(
+                    f"Tray process not found (stale PID: {pid})",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                return False
+
+        except Exception as e:
+            logger.error(
+                f"Error checking if tray is running: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return False
 
     def _setup_window_handlers(self) -> None:
         """Setup window event handlers for state tracking"""
@@ -270,7 +325,18 @@ class WindowManager:
             # Check if we should minimize to tray
             minimize_to_tray = self.app_settings.get("minimize_to_tray", True)
             if minimize_to_tray:
-                self.hide()
+                # Only hide to tray if tray is actually running
+                if self.is_tray_running():
+                    self.hide()
+                    logger.trace(
+                        "Window minimized to tray",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                else:
+                    logger.trace(
+                        "minimize_to_tray enabled but tray not running - just minimizing",
+                        extra={"class_name": self.__class__.__name__},
+                    )
 
             logger.trace("Window minimized", extra={"class_name": self.__class__.__name__})
             return True
@@ -501,13 +567,23 @@ class WindowManager:
             )
 
             if close_to_tray:
-                # Hide instead of closing
-                logger.info(
-                    "Hiding window to tray instead of quitting",
-                    extra={"class_name": self.__class__.__name__},
-                )
-                self.hide()
-                return True  # Prevent default close behavior  # type: ignore
+                # Check if tray is actually running before hiding
+                if self.is_tray_running():
+                    # Hide instead of closing
+                    logger.info(
+                        "Hiding window to tray instead of quitting",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                    self.hide()
+                    return True  # Prevent default close behavior  # type: ignore
+                else:
+                    # Tray is not running - close the app instead of hiding
+                    logger.warning(
+                        "close_to_tray enabled but tray is not running - closing app instead",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                    self._save_window_state()
+                    return False  # Allow normal close  # type: ignore
             else:
                 # Allow normal close behavior - let view.quit() handle it
                 logger.trace(
