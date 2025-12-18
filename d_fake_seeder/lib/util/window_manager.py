@@ -93,29 +93,46 @@ class WindowManager:
     def _load_window_state(self) -> None:
         """Load saved window state from AppSettings"""
         try:
-            # Load window dimensions
-            width = self.app_settings.get("window_width", 1024)
-            height = self.app_settings.get("window_height", 600)
-            self._last_size = (width, height)
+            # Check if we should remember window size
+            remember_size = self.app_settings.get("remember_window_size", True)
 
-            # Load window position if saved
-            pos_x = self.app_settings.get("window_pos_x", 0)
-            pos_y = self.app_settings.get("window_pos_y", 0)
-            self._last_position = (pos_x, pos_y)
+            if remember_size:
+                # Load window dimensions from saved settings
+                width = self.app_settings.get("window_width", 1024)
+                height = self.app_settings.get("window_height", 600)
+                self._last_size = (width, height)
 
-            # Load window visibility state
+                # Load window position if saved
+                pos_x = self.app_settings.get("window_pos_x", 0)
+                pos_y = self.app_settings.get("window_pos_y", 0)
+                self._last_position = (pos_x, pos_y)
+
+                # Apply saved state if window is available
+                if self.window:
+                    self.window.set_default_size(width, height)
+
+                logger.trace(
+                    f"Loaded window state: size={self._last_size}, pos={self._last_position}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+            else:
+                # Use default size
+                self._last_size = (1024, 600)
+                self._last_position = (0, 0)
+
+                if self.window:
+                    self.window.set_default_size(1024, 600)
+
+                logger.trace(
+                    "Remember window size disabled - using defaults",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+            # Load window visibility state (always respected)
             visible = self.app_settings.get("window_visible", True)
-
-            # Apply saved state if window is available
             if self.window:
-                self.window.set_default_size(width, height)
                 # Set visibility directly without calling show()/hide() to avoid side effects during init
                 self.window.set_visible(visible)
-
-            logger.trace(
-                f"Loaded window state: size={self._last_size}, pos={self._last_position}, visible={visible}",
-                extra={"class_name": self.__class__.__name__},
-            )
 
         except Exception as e:
             logger.error(
@@ -138,47 +155,41 @@ class WindowManager:
                 )
                 return
 
-            logger.trace(
-                "Getting window dimensions",
-                extra={"class_name": self.__class__.__name__},
-            )
-            # Save window size
-            width = self.window.get_width()
-            height = self.window.get_height()
-            logger.trace(
-                f"Window dimensions: {width}x{height}",
-                extra={"class_name": self.__class__.__name__},
-            )
+            # Check if we should remember window size
+            remember_size = self.app_settings.get("remember_window_size", True)
 
-            if width > 0 and height > 0:
+            if remember_size:
                 logger.trace(
-                    "Setting window_width",
+                    "Getting window dimensions",
                     extra={"class_name": self.__class__.__name__},
                 )
-                self.app_settings.set("window_width", width)
+                # Save window size
+                width = self.window.get_width()
+                height = self.window.get_height()
                 logger.trace(
-                    "Setting window_height",
+                    f"Window dimensions: {width}x{height}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                self.app_settings.set("window_height", height)
-                self._last_size = (width, height)
-                logger.trace("Window size saved", extra={"class_name": self.__class__.__name__})
 
-            # Save visibility state
-            logger.trace(
-                "Getting window visibility",
-                extra={"class_name": self.__class__.__name__},
-            )
+                if width > 0 and height > 0:
+                    self.app_settings.set("window_width", width)
+                    self.app_settings.set("window_height", height)
+                    self._last_size = (width, height)
+                    logger.trace(
+                        "Window size saved",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+            else:
+                logger.trace(
+                    "Remember window size disabled - skipping size save",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+            # Save visibility state (always saved, not affected by remember_window_size)
             visible = self.window.get_visible()
-            logger.trace(
-                f"Setting window_visible={visible}",
-                extra={"class_name": self.__class__.__name__},
-            )
             self.app_settings.set("window_visible", visible)
-            logger.trace("Window visibility saved", extra={"class_name": self.__class__.__name__})
-
             logger.trace(
-                f"Saved window state: size=({width}, {height}), visible={visible}",
+                f"Window visibility saved: {visible}",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -436,8 +447,12 @@ class WindowManager:
 
                 # Note: GTK4 doesn't have set_position, but we can save the position
                 self._last_position = (center_x, center_y)
-                self.app_settings.set("window_pos_x", center_x)
-                self.app_settings.set("window_pos_y", center_y)
+
+                # Only save position if remember_window_size is enabled
+                remember_size = self.app_settings.get("remember_window_size", True)
+                if remember_size:
+                    self.app_settings.set("window_pos_x", center_x)
+                    self.app_settings.set("window_pos_y", center_y)
 
                 logger.trace(
                     f"Window position set to center: ({center_x}, {center_y})",

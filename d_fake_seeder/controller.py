@@ -11,6 +11,7 @@ from d_fake_seeder.lib.handlers.torrent_folder_watcher import TorrentFolderWatch
 
 # from domain.torrent.listener import Listener
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.autostart_manager import sync_autostart
 from d_fake_seeder.lib.util.client_behavior_simulator import ClientBehaviorSimulator
 from d_fake_seeder.lib.util.dbus_unifier import DBusUnifier
 from d_fake_seeder.lib.util.speed_distribution_manager import SpeedDistributionManager
@@ -140,6 +141,10 @@ class Controller:
         # Start watching folder for new torrents
         self.torrent_watcher.start()
 
+        # Sync autostart state with current setting
+        auto_start_enabled = getattr(self.settings, "auto_start", False)
+        sync_autostart(auto_start_enabled)
+
     def stop(self, shutdown_tracker: Any = None) -> Any:
         """Stop the controller and cleanup all background processes"""
         logger.trace("Controller stopping", extra={"class_name": self.__class__.__name__})
@@ -225,6 +230,10 @@ class Controller:
             f"Controller settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},
         )
+
+        # Handle auto_start setting change
+        if key == "auto_start":
+            sync_autostart(value)
 
         # Handle watch folder settings changes
         if key.startswith("watch_folder"):

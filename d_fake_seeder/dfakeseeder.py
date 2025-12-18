@@ -112,6 +112,17 @@ class DFakeSeeder(Gtk.Application):
             with logger.performance.operation_context("window_show", self.__class__.__name__):
                 logger.trace("About to show window", self.__class__.__name__)
                 self.view.window.show()
+
+                # Check if we should start minimized
+                if self.settings.start_minimized:
+                    logger.info(
+                        "Starting minimized as per settings", self.__class__.__name__
+                    )
+                    self.view.window.minimize()
+                    # If minimize_to_tray is also enabled, hide the window
+                    if self.settings.minimize_to_tray:
+                        self.view.window.hide()
+
                 logger.trace("Window shown", self.__class__.__name__)
 
             # Mark UI as initialized
