@@ -199,16 +199,22 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
     def _load_settings(self) -> None:
         """Load current settings into Peer Protocol tab widgets."""
         try:
-            # Load peer protocol settings
-            peer_protocol = getattr(self.app_settings, "peer_protocol", {})
+            # Load peer protocol settings from nested structure
+            peer_protocol = self.app_settings.get("peer_protocol", {})
+            if peer_protocol is None:
+                peer_protocol = {}
             self._load_peer_protocol_settings(peer_protocol)
 
-            # Load seeder settings
-            seeders = getattr(self.app_settings, "seeders", {})
+            # Load seeder settings from nested structure
+            seeders = self.app_settings.get("seeders", {})
+            if seeders is None:
+                seeders = {}
             self._load_seeder_settings(seeders)
 
-            # Load peer behavior settings
-            peer_behavior = getattr(self.app_settings, "peer_behavior", {})
+            # Load peer behavior settings from nested structure
+            peer_behavior = self.app_settings.get("peer_behavior", {})
+            if peer_behavior is None:
+                peer_behavior = {}
             self._load_peer_behavior_settings(peer_behavior)
 
             self.logger.info("Peer Protocol tab settings loaded")
