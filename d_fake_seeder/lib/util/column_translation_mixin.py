@@ -7,7 +7,8 @@ language switching for column headers.
 """
 
 # fmt: off
-from typing import Dict,  Any
+from typing import Any, Dict
+
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.column_translations import ColumnTranslations

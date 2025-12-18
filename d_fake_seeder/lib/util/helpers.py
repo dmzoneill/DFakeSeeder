@@ -1,7 +1,7 @@
 # fmt: off
-from typing import Any
 import random
 import string
+from typing import Any
 
 # fmt: on
 

@@ -1,6 +1,6 @@
 # fmt: off
-from typing import Any
 from abc import abstractmethod
+from typing import Any
 
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.cleanup_mixin import CleanupMixin

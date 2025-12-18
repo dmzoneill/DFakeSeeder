@@ -4,11 +4,12 @@ Torrent Watch Folder Handler
 Monitors a specified folder for new torrent files and automatically adds them to DFakeSeeder.
 """
 
-# fmt: off
-from typing import Dict, Set,  Any
 import os
 import shutil
 import time
+
+# fmt: off
+from typing import Any, Dict, Set
 
 from d_fake_seeder.lib.logger import logger
 

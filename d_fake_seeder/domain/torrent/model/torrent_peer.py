@@ -1,6 +1,6 @@
 # fmt: off
-from typing import Any
 import uuid
+from typing import Any
 
 import gi
 
