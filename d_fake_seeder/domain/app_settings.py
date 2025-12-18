@@ -1192,36 +1192,116 @@ class AppSettings(GObject.GObject):
 
     # Web UI settings
     @property
-    def enable_webui(self) -> None:
-        return self.get("enable_webui", False)  # type: ignore[no-any-return]
+    def webui_enabled(self) -> Any:
+        return self.get("webui.enabled", False)
 
-    @enable_webui.setter
-    def enable_webui(self, value: Any) -> None:
-        self.set("enable_webui", value)
+    @webui_enabled.setter
+    def webui_enabled(self, value: Any) -> None:
+        self.set("webui.enabled", value)
 
     @property
     def webui_port(self) -> Any:
-        return self.get("webui_port", 8080)
+        return self.get("webui.port", 8080)
 
     @webui_port.setter
-    def webui_port(self, value: Any) -> Any:
-        self.set("webui_port", value)
+    def webui_port(self, value: Any) -> None:
+        self.set("webui.port", value)
+
+    @property
+    def webui_interface(self) -> Any:
+        return self.get("webui.interface", "127.0.0.1")
+
+    @webui_interface.setter
+    def webui_interface(self, value: Any) -> None:
+        self.set("webui.interface", value)
+
+    @property
+    def webui_localhost_only(self) -> Any:
+        return self.get("webui.localhost_only", True)
+
+    @webui_localhost_only.setter
+    def webui_localhost_only(self, value: Any) -> None:
+        self.set("webui.localhost_only", value)
+
+    @property
+    def webui_https_enabled(self) -> Any:
+        return self.get("webui.https_enabled", False)
+
+    @webui_https_enabled.setter
+    def webui_https_enabled(self, value: Any) -> None:
+        self.set("webui.https_enabled", value)
+
+    @property
+    def webui_auth_enabled(self) -> Any:
+        return self.get("webui.auth_enabled", True)
+
+    @webui_auth_enabled.setter
+    def webui_auth_enabled(self, value: Any) -> None:
+        self.set("webui.auth_enabled", value)
 
     @property
     def webui_username(self) -> Any:
-        return self.get("webui_username", "admin")
+        return self.get("webui.username", "admin")
 
     @webui_username.setter
-    def webui_username(self, value: Any) -> Any:
-        self.set("webui_username", value)
+    def webui_username(self, value: Any) -> None:
+        self.set("webui.username", value)
 
     @property
     def webui_password(self) -> Any:
-        return self.get("webui_password", "")
+        return self.get("webui.password", "")
 
     @webui_password.setter
-    def webui_password(self, value: Any) -> Any:
-        self.set("webui_password", value)
+    def webui_password(self, value: Any) -> None:
+        self.set("webui.password", value)
+
+    @property
+    def webui_session_timeout(self) -> Any:
+        return self.get("webui.session_timeout_minutes", 60)
+
+    @webui_session_timeout.setter
+    def webui_session_timeout(self, value: Any) -> None:
+        self.set("webui.session_timeout_minutes", value)
+
+    @property
+    def webui_csrf_protection(self) -> Any:
+        return self.get("webui.csrf_protection", True)
+
+    @webui_csrf_protection.setter
+    def webui_csrf_protection(self, value: Any) -> None:
+        self.set("webui.csrf_protection", value)
+
+    @property
+    def webui_clickjacking_protection(self) -> Any:
+        return self.get("webui.clickjacking_protection", True)
+
+    @webui_clickjacking_protection.setter
+    def webui_clickjacking_protection(self, value: Any) -> None:
+        self.set("webui.clickjacking_protection", value)
+
+    @property
+    def webui_secure_headers(self) -> Any:
+        return self.get("webui.secure_headers", True)
+
+    @webui_secure_headers.setter
+    def webui_secure_headers(self, value: Any) -> None:
+        self.set("webui.secure_headers", value)
+
+    @property
+    def webui_host_header_validation(self) -> Any:
+        return self.get("webui.host_header_validation", True)
+
+    @webui_host_header_validation.setter
+    def webui_host_header_validation(self, value: Any) -> None:
+        self.set("webui.host_header_validation", value)
+
+    @property
+    def webui_ban_after_failures(self) -> Any:
+        return self.get("webui.ban_after_failures", 5)
+
+    @webui_ban_after_failures.setter
+    def webui_ban_after_failures(self, value: Any) -> None:
+        self.set("webui.ban_after_failures", value)
 
     # Advanced settings
     @property
