@@ -410,28 +410,28 @@ class MonitoringTab(BaseTorrentTab):
             )
             return True  # Keep timer running  # type: ignore
 
-        # Retry finding process if not found initially
+        # Retry initializing process if not found initially
         if not self.metrics_collector.process:
             logger.trace(
-                "🔍 MONITORING TAB: Attempting to find DFakeSeeder process...",
+                "🔍 MONITORING TAB: Attempting to initialize process...",
                 extra={"class_name": self.__class__.__name__},
             )
             try:
-                self.metrics_collector._find_dfakeseeder_process()  # type: ignore[attr-defined]
+                self.metrics_collector._initialize_process()
                 if self.metrics_collector.process:
                     logger.trace(
-                        f"✅ MONITORING TAB: Found DFakeSeeder process (PID: {self.metrics_collector.process.pid})",
+                        f"✅ MONITORING TAB: Initialized process (PID: {self.metrics_collector.process.pid})",
                         extra={"class_name": self.__class__.__name__},
                     )
                 else:
                     logger.trace(
-                        "🔍 MONITORING TAB: Process not found yet, will retry in 2 seconds",
+                        "🔍 MONITORING TAB: Process not initialized yet, will retry",
                         extra={"class_name": self.__class__.__name__},
                     )
                     return True  # Keep trying  # type: ignore
             except Exception as e:
                 logger.trace(
-                    f"⚠️ MONITORING TAB: Error finding process: {e}",
+                    f"⚠️ MONITORING TAB: Error initializing process: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
                 return True  # Keep trying  # type: ignore
