@@ -40,7 +40,7 @@ class MetricsCollector:
         Initialize metrics collector.
 
         Args:
-            pid: Process ID to monitor (if None, finds dfakeseeder process)
+            pid: Process ID to monitor (if None, monitors current process)
         """
         self.pid = pid
         self.process: Optional[psutil.Process] = None
@@ -55,52 +55,15 @@ class MetricsCollector:
             if self.pid:
                 self.process = psutil.Process(self.pid)
             else:
-                # Find main dfakeseeder process (not tray, not monitoring tools)
-                # Prefer Python processes over shell wrappers
-                candidates = []
-
-                for proc in psutil.process_iter(["pid", "name", "cmdline"]):
-                    try:
-                        cmdline = proc.info.get("cmdline") or []  # Handle None
-                        cmdline_str = " ".join(str(arg) for arg in cmdline).lower()
-
-                        # Must contain dfakeseeder
-                        if "dfakeseeder" not in cmdline_str:
-                            continue
-
-                        # Exclude tray app
-                        if "dfakeseeder_tray" in cmdline_str or "tray" in cmdline_str:
-                            continue
-
-                        # Exclude monitoring tools
-                        if "monitor" in cmdline_str or "metrics" in cmdline_str:
-                            continue
-
-                        # Add to candidates with priority
-                        # Prefer python/python3 processes over shell wrappers
-                        priority = 0
-                        proc_name = proc.info.get("name", "").lower()
-                        if "python" in proc_name:
-                            priority = 10  # Highest priority for Python processes
-                        elif proc_name in ["sh", "bash", "zsh"]:
-                            priority = 1  # Low priority for shell wrappers
-
-                        candidates.append((priority, proc))
-
-                    except (psutil.NoSuchProcess, psutil.AccessDenied):
-                        continue
-
-                # Sort by priority (highest first) and pick the best candidate
-                if candidates:
-                    candidates.sort(key=lambda x: x[0], reverse=True)
-                    self.process = candidates[0][1]
-                    self.pid = self.process.pid
-                    cmdline = self.process.cmdline()
-                    logger.trace(f"Found DFakeSeeder main app: PID {self.pid}")
-                    logger.trace(f"Process: {self.process.name()}")
-                    logger.trace(f"Command: {' '.join(cmdline[:3])}")
-                    if len(candidates) > 1:
-                        logger.trace(f"Note: Found {len(candidates)} candidates, selected Python process")
+                # Monitor the current process (DFakeSeeder itself)
+                # This is the correct approach since MetricsCollector runs inside the app
+                import os
+                self.pid = os.getpid()
+                self.process = psutil.Process(self.pid)
+                logger.trace(f"Monitoring current process: PID {self.pid}")
+                logger.trace(f"Process: {self.process.name()}")
+                cmdline = self.process.cmdline()
+                logger.trace(f"Command: {' '.join(cmdline[:3] if cmdline else ['unknown'])}")
 
             if self.process:
                 logger.trace(f"Monitoring process: {self.process.name()} (PID: {self.pid})")
