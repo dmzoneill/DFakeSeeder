@@ -159,6 +159,22 @@ class LiveGraph(Gtk.DrawingArea):
 
         return self.min_value, self.max_value
 
+    def _draw_rounded_rect(self, ctx: Any, x: Any, y: Any, width: Any, height: Any, radius: Any) -> None:
+        """Draw a rounded rectangle path for clipping or filling."""
+        # Ensure radius doesn't exceed half of width/height
+        radius = min(radius, width / 2, height / 2)
+
+        ctx.new_path()
+        # Top-left corner
+        ctx.arc(x + radius, y + radius, radius, 3.14159, 3.14159 * 1.5)
+        # Top-right corner
+        ctx.arc(x + width - radius, y + radius, radius, 3.14159 * 1.5, 0)
+        # Bottom-right corner
+        ctx.arc(x + width - radius, y + height - radius, radius, 0, 3.14159 * 0.5)
+        # Bottom-left corner
+        ctx.arc(x + radius, y + height - radius, radius, 3.14159 * 0.5, 3.14159)
+        ctx.close_path()
+
     def _on_draw(self, area: Any, ctx: Any, width: Any, height: Any) -> None:
         """
         Cairo drawing callback.
@@ -169,6 +185,10 @@ class LiveGraph(Gtk.DrawingArea):
             width: Widget width in pixels
             height: Widget height in pixels
         """
+        # Clip to rounded rectangle (4px radius matches CSS)
+        self._draw_rounded_rect(ctx, 0, 0, width, height, 4)
+        ctx.clip()
+
         # Clear background (dark gray)
         ctx.set_source_rgb(0.12, 0.12, 0.12)
         ctx.rectangle(0, 0, width, height)
