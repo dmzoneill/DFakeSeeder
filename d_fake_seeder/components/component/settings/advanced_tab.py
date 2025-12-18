@@ -43,73 +43,8 @@ class AdvancedTab(
     - Keyboard shortcuts
     """
 
-    # Auto-connect simple widgets with WIDGET_MAPPINGS
-    WIDGET_MAPPINGS = [
-        # Search settings
-        {
-            "id": "settings_search_threshold",
-            "name": "search_threshold",
-            "setting_key": "search.threshold",
-            "type": float,
-        },
-        # Logging settings
-        {
-            "id": "settings_log_file_path",
-            "name": "log_file_path",
-            "setting_key": "logging.log_file_path",
-            "type": str,
-        },
-        {
-            "id": "settings_log_max_size",
-            "name": "log_max_size",
-            "setting_key": "logging.max_size_mb",
-            "type": int,
-        },
-        {
-            "id": "settings_log_backup_count",
-            "name": "log_backup_count",
-            "setting_key": "logging.backup_count",
-            "type": int,
-        },
-        # Performance settings
-        {
-            "id": "settings_disk_cache_size",
-            "name": "disk_cache_size",
-            "setting_key": "performance.disk_cache_size_mb",
-            "type": int,
-        },
-        {
-            "id": "settings_memory_limit",
-            "name": "memory_limit",
-            "setting_key": "performance.memory_limit_mb",
-            "type": int,
-        },
-        {
-            "id": "settings_worker_threads",
-            "name": "worker_threads",
-            "setting_key": "performance.worker_threads",
-            "type": int,
-        },
-        # Expert settings
-        {
-            "id": "settings_enable_debug_mode",
-            "name": "enable_debug_mode",
-            "setting_key": "expert.debug_mode",
-            "type": bool,
-            "on_change": lambda self, value: self.show_notification(
-                f"Debug mode {'enabled' if value else 'disabled'}", "success"
-            ),
-        },
-        {
-            "id": "settings_enable_experimental",
-            "name": "enable_experimental",
-            "setting_key": "expert.experimental_features",
-            "type": bool,
-            "on_change": lambda self, value: self.show_notification(
-                f"Experimental features {'enabled' if value else 'disabled'}", "warning" if value else "success"
-            ),
-        },
-    ]
+    # Note: Advanced settings use manual loading/saving with nested keys
+    WIDGET_MAPPINGS: list = []
 
     @property
     def tab_name(self) -> str:
@@ -117,43 +52,35 @@ class AdvancedTab(
         return "Advanced"
 
     def _init_widgets(self) -> None:
-        """Initialize Advanced tab widgets."""
+        """Initialize Advanced tab widgets using correct XML IDs."""
         # Cache commonly used widgets
         self._widgets.update(
             {
                 # Search functionality
                 "search_entry": self.builder.get_object("settings_search_entry"),
                 "search_clear": self.builder.get_object("settings_search_clear"),
-                "search_threshold": self.builder.get_object("settings_search_threshold"),
-                # Logging
+                # Logging (use correct XML IDs)
                 "log_level": self.builder.get_object("settings_log_level"),
                 "log_to_file": self.builder.get_object("settings_log_to_file"),
-                "log_to_console": self.builder.get_object("settings_log_to_console"),
-                "log_to_systemd": self.builder.get_object("settings_log_to_systemd"),
-                # Section container (hardcoded to sensitive=False in XML)
                 "log_file_box": self.builder.get_object("settings_log_file_box"),
-                "log_file_path": self.builder.get_object("settings_log_file_path"),
-                "log_file_browse": self.builder.get_object("settings_log_file_browse"),
-                "log_max_size": self.builder.get_object("settings_log_max_size"),
-                "log_backup_count": self.builder.get_object("settings_log_backup_count"),
-                # Performance
+                "log_max_size": self.builder.get_object("settings_max_log_size"),
+                # Performance (use correct XML IDs)
                 "disk_cache_size": self.builder.get_object("settings_disk_cache_size"),
-                "memory_limit": self.builder.get_object("settings_memory_limit"),
-                "worker_threads": self.builder.get_object("settings_worker_threads"),
-                # Expert settings
-                "enable_debug_mode": self.builder.get_object("settings_enable_debug_mode"),
-                "enable_experimental": self.builder.get_object("settings_enable_experimental"),
-                "config_export": self.builder.get_object("settings_config_export"),
-                "config_import": self.builder.get_object("settings_config_import"),
-                "reset_all_settings": self.builder.get_object("settings_reset_all"),
-                # Keyboard shortcuts
-                "enable_shortcuts": self.builder.get_object("settings_enable_shortcuts"),
-                "shortcuts_config": self.builder.get_object("settings_shortcuts_config"),
+                "ui_refresh_rate": self.builder.get_object("settings_ui_refresh_rate"),
+                "network_interface": self.builder.get_object("settings_network_interface"),
+                # Expert settings (use correct XML IDs)
+                "debug_mode": self.builder.get_object("settings_debug_mode"),
+                "validate_settings": self.builder.get_object("settings_validate_settings"),
+                "auto_save": self.builder.get_object("settings_auto_save"),
+                # Keyboard shortcuts list (display only)
+                "shortcuts_list": self.builder.get_object("settings_shortcuts_list"),
             }
         )
 
-        # Initialize dropdowns
-        self._setup_log_level_dropdown()
+        self.logger.trace(
+            "Advanced tab widgets initialized",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _connect_signals(self) -> None:
         """Connect signal handlers for Advanced tab."""
@@ -247,25 +174,49 @@ class AdvancedTab(
             )
 
     def _load_settings(self) -> None:
-        """Load current settings into Advanced tab widgets."""
+        """Load current settings into Advanced tab widgets using nested keys."""
         try:
-            # Load search settings
-            search_settings = getattr(self.app_settings, "search", {})
-            self._load_search_settings(search_settings)
-
             # Load logging settings
-            logging_settings = getattr(self.app_settings, "logging", {})
-            self._load_logging_settings(logging_settings)
+            if self._widgets.get("log_level"):
+                level = self.app_settings.get("logging.level", "INFO")
+                level_mapping = {"DEBUG": 0, "INFO": 1, "WARNING": 2, "ERROR": 3, "CRITICAL": 4}
+                self._widgets["log_level"].set_selected(level_mapping.get(level, 1))
+
+            if self._widgets.get("log_to_file"):
+                value = self.app_settings.get("logging.log_to_file", False)
+                self._widgets["log_to_file"].set_state(value)
+
+            if self._widgets.get("log_max_size"):
+                value = self.app_settings.get("logging.max_size_mb", 10)
+                self._widgets["log_max_size"].set_value(value)
 
             # Load performance settings
-            performance_settings = getattr(self.app_settings, "performance", {})
-            self._load_performance_settings(performance_settings)
+            if self._widgets.get("disk_cache_size"):
+                value = self.app_settings.get("performance.disk_cache_size_mb", 64)
+                self._widgets["disk_cache_size"].set_value(value)
+
+            if self._widgets.get("ui_refresh_rate"):
+                value = self.app_settings.get("performance.ui_refresh_rate_sec", 9)
+                self._widgets["ui_refresh_rate"].set_value(value)
+
+            if self._widgets.get("network_interface"):
+                value = self.app_settings.get("performance.network_interface", "")
+                self._widgets["network_interface"].set_text(value)
 
             # Load expert settings
-            expert_settings = getattr(self.app_settings, "expert", {})
-            self._load_expert_settings(expert_settings)
+            if self._widgets.get("debug_mode"):
+                value = self.app_settings.get("expert.debug_mode", False)
+                self._widgets["debug_mode"].set_state(value)
 
-            self.logger.info("Advanced tab settings loaded")
+            if self._widgets.get("validate_settings"):
+                value = self.app_settings.get("expert.validate_settings", True)
+                self._widgets["validate_settings"].set_state(value)
+
+            if self._widgets.get("auto_save"):
+                value = self.app_settings.get("expert.auto_save", True)
+                self._widgets["auto_save"].set_state(value)
+
+            self.logger.trace("Advanced tab settings loaded")
 
         except Exception as e:
             self.logger.error(f"Error loading Advanced tab settings: {e}")
@@ -431,20 +382,45 @@ class AdvancedTab(
         Returns:
             Dictionary of setting_key -> value pairs for all widgets
         """
-        # Collect from WIDGET_MAPPINGS (search, logging file settings, performance, expert)
-        settings = self._collect_mapped_settings()
+        settings: Dict[str, Any] = {}
 
-        # Collect logging settings (includes log_level dropdown and toggle switches)
-        logging_settings = self._collect_logging_settings()
-        for key, value in logging_settings.items():
-            settings[f"logging.{key}"] = value
+        try:
+            # Collect logging settings
+            if self._widgets.get("log_level"):
+                level_mapping = {0: "DEBUG", 1: "INFO", 2: "WARNING", 3: "ERROR", 4: "CRITICAL"}
+                settings["logging.level"] = level_mapping.get(self._widgets["log_level"].get_selected(), "INFO")
 
-        # Collect expert settings (includes enable_shortcuts not in WIDGET_MAPPINGS)
-        expert_settings = self._collect_expert_settings()
-        for key, value in expert_settings.items():
-            settings[f"expert.{key}"] = value
+            if self._widgets.get("log_to_file"):
+                settings["logging.log_to_file"] = self._widgets["log_to_file"].get_state()
 
-        self.logger.trace(f"Collected {len(settings)} settings from Advanced tab")
+            if self._widgets.get("log_max_size"):
+                settings["logging.max_size_mb"] = int(self._widgets["log_max_size"].get_value())
+
+            # Collect performance settings
+            if self._widgets.get("disk_cache_size"):
+                settings["performance.disk_cache_size_mb"] = int(self._widgets["disk_cache_size"].get_value())
+
+            if self._widgets.get("ui_refresh_rate"):
+                settings["performance.ui_refresh_rate_sec"] = int(self._widgets["ui_refresh_rate"].get_value())
+
+            if self._widgets.get("network_interface"):
+                settings["performance.network_interface"] = self._widgets["network_interface"].get_text()
+
+            # Collect expert settings
+            if self._widgets.get("debug_mode"):
+                settings["expert.debug_mode"] = self._widgets["debug_mode"].get_state()
+
+            if self._widgets.get("validate_settings"):
+                settings["expert.validate_settings"] = self._widgets["validate_settings"].get_state()
+
+            if self._widgets.get("auto_save"):
+                settings["expert.auto_save"] = self._widgets["auto_save"].get_state()
+
+            self.logger.trace(f"Collected {len(settings)} settings from Advanced tab")
+
+        except Exception as e:
+            self.logger.error(f"Error collecting Advanced tab settings: {e}")
+
         return settings
 
     def _collect_search_settings(self) -> Dict[str, Any]:

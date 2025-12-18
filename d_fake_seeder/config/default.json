@@ -298,6 +298,21 @@
         "auto_start_torrents": true,
         "delete_added_torrents": false
     },
+    "logging": {
+        "level": "INFO",
+        "log_to_file": false,
+        "max_size_mb": 10
+    },
+    "performance": {
+        "disk_cache_size_mb": 64,
+        "ui_refresh_rate_sec": 9,
+        "network_interface": ""
+    },
+    "expert": {
+        "debug_mode": false,
+        "validate_settings": true,
+        "auto_save": true
+    },
     "speed_distribution": {
         "upload": {
             "algorithm": "off",
