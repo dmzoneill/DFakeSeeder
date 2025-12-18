@@ -1016,21 +1016,78 @@ class AppSettings(GObject.GObject):
     def proxy_password(self, value: Any) -> Any:
         self.set("proxy.password", value)
 
+    # BitTorrent settings
     @property
-    def enable_dht(self) -> None:
-        return self.get("enable_dht", True)  # type: ignore[no-any-return]
+    def enable_dht(self) -> Any:
+        return self.get("bittorrent.enable_dht", True)
 
     @enable_dht.setter
     def enable_dht(self, value: Any) -> None:
-        self.set("enable_dht", value)
+        self.set("bittorrent.enable_dht", value)
 
     @property
-    def enable_pex(self) -> None:
-        return self.get("enable_pex", True)  # type: ignore[no-any-return]
+    def enable_pex(self) -> Any:
+        return self.get("bittorrent.enable_pex", True)
 
     @enable_pex.setter
     def enable_pex(self, value: Any) -> None:
-        self.set("enable_pex", value)
+        self.set("bittorrent.enable_pex", value)
+
+    @property
+    def enable_lpd(self) -> Any:
+        return self.get("bittorrent.enable_lpd", True)
+
+    @enable_lpd.setter
+    def enable_lpd(self, value: Any) -> None:
+        self.set("bittorrent.enable_lpd", value)
+
+    @property
+    def encryption_mode(self) -> Any:
+        return self.get("bittorrent.encryption_mode", "enabled")
+
+    @encryption_mode.setter
+    def encryption_mode(self, value: Any) -> None:
+        self.set("bittorrent.encryption_mode", value)
+
+    @property
+    def bittorrent_user_agent(self) -> Any:
+        return self.get("bittorrent.user_agent", "Deluge/2.0.3 libtorrent/2.0.5.0")
+
+    @bittorrent_user_agent.setter
+    def bittorrent_user_agent(self, value: Any) -> None:
+        self.set("bittorrent.user_agent", value)
+
+    @property
+    def peer_id_prefix(self) -> Any:
+        return self.get("bittorrent.peer_id_prefix", "-DE2003-")
+
+    @peer_id_prefix.setter
+    def peer_id_prefix(self, value: Any) -> None:
+        self.set("bittorrent.peer_id_prefix", value)
+
+    @property
+    def bittorrent_announce_interval(self) -> Any:
+        return self.get("bittorrent.announce_interval_seconds", 1800)
+
+    @bittorrent_announce_interval.setter
+    def bittorrent_announce_interval(self, value: Any) -> None:
+        self.set("bittorrent.announce_interval_seconds", value)
+
+    @property
+    def bittorrent_min_announce_interval(self) -> Any:
+        return self.get("bittorrent.min_announce_interval_seconds", 300)
+
+    @bittorrent_min_announce_interval.setter
+    def bittorrent_min_announce_interval(self, value: Any) -> None:
+        self.set("bittorrent.min_announce_interval_seconds", value)
+
+    @property
+    def bittorrent_scrape_interval(self) -> Any:
+        return self.get("bittorrent.scrape_interval_seconds", 900)
+
+    @bittorrent_scrape_interval.setter
+    def bittorrent_scrape_interval(self, value: Any) -> None:
+        self.set("bittorrent.scrape_interval_seconds", value)
 
     # Speed settings
     @property
