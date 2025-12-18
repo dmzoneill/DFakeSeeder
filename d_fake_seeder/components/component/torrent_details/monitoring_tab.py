@@ -105,7 +105,7 @@ class MonitoringTab(BaseTorrentTab):
         self.scrolled_window.set_hexpand(True)
 
         # Responsive layout configuration
-        self.TILE_MIN_WIDTH = 250  # Minimum width per tile in pixels
+        self.TILE_MIN_WIDTH = 200  # Minimum width per tile in pixels (allows narrower windows)
         self.TILE_SPACING = 12  # Gap between tiles
         self.current_columns = 4  # Track current column count for change detection
 

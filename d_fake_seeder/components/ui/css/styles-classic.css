@@ -154,8 +154,8 @@ columnview listitem > * {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.03);
-    min-width: 320px;
-    min-height: 200px;
+    /* Removed min-width: 320px - now controlled by FlowBox responsive layout */
+    min-height: 180px;
 }
 
 .live-graph {
