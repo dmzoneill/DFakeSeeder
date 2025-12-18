@@ -444,5 +444,5 @@ notebook > header.left > tabs:not(:last-child) {
 
 .metric-tile:hover {
     background: shade(@theme_bg_color, 0.85);
-    border-color: shade(@theme_selected_bg_color, 0.8);
+    border-color: rgba(255, 255, 255, 0.5);
 }
