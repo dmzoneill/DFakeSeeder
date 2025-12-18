@@ -104,16 +104,35 @@ class MonitoringTab(BaseTorrentTab):
         self.scrolled_window.set_vexpand(True)
         self.scrolled_window.set_hexpand(True)
 
-        # Create grid for tiles
-        self.grid = Gtk.Grid()
-        self.grid.set_row_spacing(12)
-        self.grid.set_column_spacing(12)
-        self.grid.set_margin_start(12)
-        self.grid.set_margin_end(12)
-        self.grid.set_margin_top(12)
-        self.grid.set_margin_bottom(12)
+        # Responsive layout configuration
+        self.TILE_MIN_WIDTH = 250  # Minimum width per tile in pixels
+        self.TILE_SPACING = 12  # Gap between tiles
+        self.current_columns = 4  # Track current column count for change detection
 
-        self.scrolled_window.set_child(self.grid)
+        # Create FlowBox for responsive tile layout
+        self.flowbox = Gtk.FlowBox()
+        self.flowbox.set_homogeneous(True)  # All tiles same size
+        self.flowbox.set_row_spacing(self.TILE_SPACING)
+        self.flowbox.set_column_spacing(self.TILE_SPACING)
+        self.flowbox.set_margin_start(12)
+        self.flowbox.set_margin_end(12)
+        self.flowbox.set_margin_top(12)
+        self.flowbox.set_margin_bottom(12)
+        self.flowbox.set_selection_mode(Gtk.SelectionMode.NONE)
+        self.flowbox.set_max_children_per_line(4)
+        self.flowbox.set_min_children_per_line(2)
+        self.flowbox.set_valign(Gtk.Align.START)
+
+        # Add CSS class for animations
+        self.flowbox.add_css_class("monitoring-flowbox")
+
+        # Track tile frames for responsive adjustments
+        self.tile_frames: list = []
+
+        # Connect to size-allocate to dynamically adjust columns
+        self.flowbox.connect("notify::allocation", self._on_flowbox_size_changed)
+
+        self.scrolled_window.set_child(self.flowbox)
         self.main_box.append(self.scrolled_window)
 
         # Initialize metrics collector
@@ -157,11 +176,9 @@ class MonitoringTab(BaseTorrentTab):
             extra={"class_name": self.__class__.__name__},
         )
         self._create_metric_tiles()
-        grid_children = (
-            self.grid.observe_children().get_n_items() if hasattr(self.grid, "observe_children") else "unknown"
-        )
+        tile_count = len(self.tile_frames)
         logger.trace(
-            f"✅ MONITORING TAB: Created all metric tiles - grid has {grid_children} children",
+            f"✅ MONITORING TAB: Created all metric tiles - flowbox has {tile_count} tiles",
             extra={"class_name": self.__class__.__name__},
         )
 
@@ -179,7 +196,7 @@ class MonitoringTab(BaseTorrentTab):
             # Make sure widgets are visible
             self.main_box.set_visible(True)
             self.scrolled_window.set_visible(True)
-            self.grid.set_visible(True)
+            self.flowbox.set_visible(True)
 
             monitoring_container.append(self.main_box)
             self._tab_widget = monitoring_container
@@ -224,35 +241,63 @@ class MonitoringTab(BaseTorrentTab):
             )
 
     def _create_metric_tiles(self) -> None:
-        """Create all metric visualization tiles in 4x2 layout."""
-        # Row 0: CPU, Memory, File Descriptors, Network Connections
-        self._create_cpu_tile(0, 0)
-        self._create_memory_tile(0, 1)
-        self._create_fd_tile(0, 2)
-        self._create_connections_tile(0, 3)
+        """Create all 8 metric visualization tiles (responsive layout: 4x2, 3x3, or 2x4)."""
+        # Create tiles in order - FlowBox will handle layout
+        self._create_cpu_tile()
+        self._create_memory_tile()
+        self._create_fd_tile()
+        self._create_connections_tile()
+        self._create_threads_tile()
+        self._create_disk_io_tile()
+        self._create_network_io_tile()
+        self._create_torrent_stats_tile()
 
-        # Row 1: Threads, Disk I/O, Network I/O, Torrent Stats
-        self._create_threads_tile(1, 0)
-        self._create_disk_io_tile(1, 1)
-        self._create_network_io_tile(1, 2)
-        self._create_torrent_stats_tile(1, 3)
+    def _on_flowbox_size_changed(self, flowbox: Any, param: Any) -> None:
+        """Handle flowbox size changes to adjust column count."""
+        allocation = flowbox.get_allocation()
+        if allocation.width <= 0:
+            return
 
-    def _create_metric_tile(self, row: Any, col: Any, title: Any, graph_series: Any) -> Any:
+        # Calculate available width (minus margins)
+        available_width = allocation.width - 24  # 12px margin on each side
+
+        # Calculate how many tiles can fit
+        # Each tile needs TILE_MIN_WIDTH + spacing
+        tile_with_spacing = self.TILE_MIN_WIDTH + self.TILE_SPACING
+        possible_columns = max(2, available_width // tile_with_spacing)
+
+        # Clamp to valid range (2-4 columns)
+        new_columns = min(4, max(2, possible_columns))
+
+        # Only update if changed (prevents unnecessary reflows)
+        if new_columns != self.current_columns:
+            self.current_columns = new_columns
+            self.flowbox.set_max_children_per_line(new_columns)
+            logger.trace(
+                f"📐 MONITORING TAB: Responsive layout changed to {new_columns} columns "
+                f"(width: {available_width}px)",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+    def _create_metric_tile(self, title: Any, graph_series: Any) -> Any:
         """
         Create a metric tile with graph and value labels.
 
         Args:
-            row: Grid row position
-            col: Grid column position
             title: Tile title
             graph_series: List of (series_name, color) tuples
 
         Returns:
             Dictionary with tile widgets
         """
-        # Tile frame
+        # Tile frame with minimum width for responsive layout
         frame = Gtk.Frame()
         frame.set_css_classes(["metric-tile"])
+        frame.set_size_request(self.TILE_MIN_WIDTH, -1)  # Min width, natural height
+        frame.set_hexpand(True)  # Allow horizontal expansion
+
+        # Add CSS class for smooth transitions
+        frame.add_css_class("monitoring-tile")
 
         # Vertical box for tile content
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
@@ -267,9 +312,10 @@ class MonitoringTab(BaseTorrentTab):
         title_label.set_xalign(0)
         vbox.append(title_label)
 
-        # Live graph
+        # Live graph - use -1 for width to allow expansion
         graph = LiveGraph(max_samples=30, auto_scale=False, show_grid=True)
-        graph.set_size_request(300, 100)
+        graph.set_size_request(-1, 100)  # Natural width, fixed height
+        graph.set_hexpand(True)  # Allow horizontal expansion
 
         # Add series to graph
         for series_name, color in graph_series:
@@ -292,7 +338,12 @@ class MonitoringTab(BaseTorrentTab):
         vbox.append(values_box)
 
         frame.set_child(vbox)
-        self.grid.attach(frame, col, row, 1, 1)
+
+        # Add to flowbox (FlowBox requires FlowBoxChild wrapper)
+        self.flowbox.append(frame)
+
+        # Track frame for later reference
+        self.tile_frames.append(frame)
 
         return {
             "frame": frame,
@@ -300,17 +351,15 @@ class MonitoringTab(BaseTorrentTab):
             "value_labels": value_labels,
         }
 
-    def _create_cpu_tile(self, row: Any, col: Any) -> None:
+    def _create_cpu_tile(self) -> None:
         """Create CPU usage tile."""
         self.cpu_tile = self._create_metric_tile(
-            row, col, "CPU Usage", [("CPU %", (0.2, 0.8, 0.2))]
-        )  # Green  # type: ignore  # noqa: E501
+            "CPU Usage", [("CPU %", (0.2, 0.8, 0.2))]  # Green
+        )
 
-    def _create_memory_tile(self, row: Any, col: Any) -> None:
+    def _create_memory_tile(self) -> None:
         """Create memory usage tile."""
         self.memory_tile = self._create_metric_tile(
-            row,
-            col,
             "Memory Usage",
             [
                 ("RSS", (0.8, 0.2, 0.2)),  # Red
@@ -338,11 +387,9 @@ class MonitoringTab(BaseTorrentTab):
                 child = next_child
         self.memory_tile["value_labels"]["VMS"] = vms_label
 
-    def _create_fd_tile(self, row: Any, col: Any) -> None:
+    def _create_fd_tile(self) -> None:
         """Create file descriptors tile."""
         self.fd_tile = self._create_metric_tile(
-            row,
-            col,
             "File Descriptors",
             [
                 ("Total FDs", (0.6, 0.4, 0.8)),  # Purple
@@ -352,11 +399,9 @@ class MonitoringTab(BaseTorrentTab):
         )
         self.fd_tile["graph"].max_value = 200
 
-    def _create_connections_tile(self, row: Any, col: Any) -> None:
+    def _create_connections_tile(self) -> None:
         """Create network connections tile."""
         self.connections_tile = self._create_metric_tile(
-            row,
-            col,
             "Network Connections",
             [
                 ("Total", (0.2, 0.8, 0.2)),  # Green
@@ -366,18 +411,16 @@ class MonitoringTab(BaseTorrentTab):
         )
         self.connections_tile["graph"].max_value = 50
 
-    def _create_threads_tile(self, row: Any, col: Any) -> None:
+    def _create_threads_tile(self) -> None:
         """Create threads count tile."""
         self.threads_tile = self._create_metric_tile(
-            row, col, "Threads", [("Thread Count", (0.8, 0.4, 0.2))]
-        )  # Orange  # type: ignore  # noqa: E501
+            "Threads", [("Thread Count", (0.8, 0.4, 0.2))]  # Orange
+        )
         self.threads_tile["graph"].max_value = 100
 
-    def _create_disk_io_tile(self, row: Any, col: Any) -> None:
+    def _create_disk_io_tile(self) -> None:
         """Create disk I/O tile."""
         self.disk_io_tile = self._create_metric_tile(
-            row,
-            col,
             "Disk I/O (MB/s)",
             [
                 ("Read", (0.2, 0.8, 0.2)),  # Green
@@ -388,11 +431,9 @@ class MonitoringTab(BaseTorrentTab):
         self.disk_io_last_read = 0
         self.disk_io_last_write = 0
 
-    def _create_network_io_tile(self, row: Any, col: Any) -> None:
+    def _create_network_io_tile(self) -> None:
         """Create network I/O tile."""
         self.network_io_tile = self._create_metric_tile(
-            row,
-            col,
             "Network I/O (KB/s)",
             [
                 ("Receiving", (0.2, 0.2, 0.8)),  # Blue
@@ -403,11 +444,9 @@ class MonitoringTab(BaseTorrentTab):
         self.net_io_last_recv = 0
         self.net_io_last_sent = 0
 
-    def _create_torrent_stats_tile(self, row: Any, col: Any) -> None:
+    def _create_torrent_stats_tile(self) -> None:
         """Create torrent statistics tile."""
         self.torrent_tile = self._create_metric_tile(
-            row,
-            col,
             "Torrent Statistics",
             [
                 ("Total Torrents", (0.6, 0.2, 0.8)),  # Purple
