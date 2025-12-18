@@ -66,6 +66,9 @@ class Torrent(GObject.GObject):
         self.tracker_update_threads: List[Any] = []  # Track force tracker update threads
         self.is_stopping = False  # Flag to prevent new threads during shutdown
 
+        # Coalescing flag to prevent duplicate UI update callbacks
+        self._ui_update_pending = False
+
         # DEBUG: Check if torrent exists in settings
         torrent_exists = self.file_path in self.settings.torrents
         logger.trace(
@@ -251,12 +254,15 @@ class Torrent(GObject.GObject):
                     extra={"class_name": self.__class__.__name__},
                 )
                 if ticker >= self.settings.tickspeed and self.active:
-                    logger.trace(
-                        f"🔄 WORKER: Adding update callback to UI thread for {self.name} "  # type: ignore[has-type]
-                        f"(ticker={ticker}, tickspeed={self.settings.tickspeed})",
-                        extra={"class_name": self.__class__.__name__},
-                    )
-                    GLib.idle_add(self.update_torrent_callback)
+                    # Coalesce updates: skip if an update is already pending
+                    if not self._ui_update_pending:
+                        self._ui_update_pending = True
+                        logger.trace(
+                            f"🔄 WORKER: Adding update callback to UI thread for {self.name} "  # type: ignore[has-type]
+                            f"(ticker={ticker}, tickspeed={self.settings.tickspeed})",
+                            extra={"class_name": self.__class__.__name__},
+                        )
+                        GLib.idle_add(self.update_torrent_callback)
                 if ticker >= self.settings.tickspeed:
                     ticker = 0.0
                 ticker += self.worker_sleep_interval
@@ -268,6 +274,9 @@ class Torrent(GObject.GObject):
             )
 
     def update_torrent_callback(self) -> None:
+        # Clear pending flag - this callback is now executing
+        self._ui_update_pending = False
+
         logger.trace(
             f"📊 TORRENT UPDATE CALLBACK STARTED for {self.name} - updating values",  # type: ignore[has-type]
             extra={"class_name": self.__class__.__name__},
