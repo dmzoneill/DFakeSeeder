@@ -4,6 +4,7 @@ This module handles the creation and removal of the autostart desktop entry
 file in ~/.config/autostart/ to enable/disable automatic application startup
 when the user logs in.
 """
+
 import os
 from pathlib import Path
 from typing import Any
@@ -104,4 +105,3 @@ def sync_autostart_with_settings(settings: Any) -> bool:
     """
     enabled = getattr(settings, "auto_start", False)
     return sync_autostart(enabled)
-
