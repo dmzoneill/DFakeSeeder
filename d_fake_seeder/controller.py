@@ -284,22 +284,18 @@ class Controller:
                     torrents = self.model.get_torrents()
                     self.client_behavior_simulator.simulate_tick(torrents)
 
-            # Save dirty torrent states to transient storage (in-memory only)
-            # Only saves torrents that have actually changed since last save
+            # Save all torrent states to transient storage (in-memory only)
+            # This ensures torrent progress is always up-to-date when save_quit() is called
             if hasattr(self, "model") and self.model:
-                saved_count = 0
                 for torrent in self.model.get_torrents():
                     try:
-                        if torrent.save_to_transient():
-                            saved_count += 1
+                        torrent.save_to_transient()
                     except Exception as e:
                         logger.error(
                             f"Error saving torrent {getattr(torrent, 'name', 'unknown')} to transient: {e}",
                             "Controller",
                             exc_info=True,
                         )
-                if saved_count > 0:
-                    logger.trace(f"Saved {saved_count} dirty torrents to transient", "Controller")
         except Exception as e:
             logger.error(f"Error in tick callback: {e}", "Controller", exc_info=True)
         return True  # Keep timer running

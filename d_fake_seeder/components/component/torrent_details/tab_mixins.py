@@ -379,6 +379,7 @@ class PerformanceMixin:
         self._update_pending = False
         self._last_update_time = 0
         self._update_queue = []  # type: ignore[var-annotated]
+        self._queue_idle_pending = False
 
     def debounced_update(self, update_func: Callable, delay_ms: int = 100) -> Any:
         """
@@ -413,7 +414,7 @@ class PerformanceMixin:
         self._update_queue.append((update_func, args, kwargs))
 
         # Only schedule one idle callback - avoid multiple pending callbacks
-        if not hasattr(self, "_queue_idle_pending") or not self._queue_idle_pending:
+        if not self._queue_idle_pending:
             self._queue_idle_pending = True
             GLib.idle_add(self._process_update_queue)
 
