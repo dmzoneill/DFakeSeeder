@@ -4,8 +4,7 @@ Web UI API Routes.
 Defines the REST API endpoints for the Web UI server.
 """
 
-import json
-from typing import Any, Callable
+from typing import Any
 
 from d_fake_seeder.lib.logger import logger
 
@@ -16,7 +15,7 @@ try:
     AIOHTTP_AVAILABLE = True
 except ImportError:
     AIOHTTP_AVAILABLE = False
-    web = None  # type: ignore[assignment]
+    web = None
 
 
 def setup_routes(app: Any) -> None:
@@ -85,9 +84,7 @@ async def handle_login(request: Any) -> Any:
             response = web.json_response({"success": True, "username": username})
             return response
 
-        return web.json_response(
-            {"success": False, "error": "Invalid credentials"}, status=401
-        )
+        return web.json_response({"success": False, "error": "Invalid credentials"}, status=401)
     except Exception as e:
         logger.error(f"Login error: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
@@ -282,13 +279,9 @@ async def handle_get_settings(request: Any) -> Any:
             "speed": {
                 "upload_limit_kbps": settings.get("speed.upload_limit_kbps", 0),
                 "download_limit_kbps": settings.get("speed.download_limit_kbps", 0),
-                "enable_alternative_speeds": settings.get(
-                    "speed.enable_alternative_speeds", False
-                ),
+                "enable_alternative_speeds": settings.get("speed.enable_alternative_speeds", False),
                 "alt_upload_limit_kbps": settings.get("speed.alt_upload_limit_kbps", 50),
-                "alt_download_limit_kbps": settings.get(
-                    "speed.alt_download_limit_kbps", 100
-                ),
+                "alt_download_limit_kbps": settings.get("speed.alt_download_limit_kbps", 100),
             },
             "scheduler": {
                 "enabled": settings.get("scheduler.enabled", False),
@@ -389,7 +382,8 @@ async def handle_dashboard(request: Any) -> Any:
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
         h1 { font-size: 1.8rem; }
         h1 span { color: var(--accent); }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .stats-grid { display: grid; gap: 1rem; margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
         .stat-card {
             background: var(--bg-secondary);
             padding: 1.5rem;
@@ -428,7 +422,7 @@ async def handle_dashboard(request: Any) -> Any:
             <h1>DFake<span>Seeder</span></h1>
             <button id="altSpeedBtn" class="alt-speed-btn" onclick="toggleAltSpeed()">Alt Speed: OFF</button>
         </header>
-        
+
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>Total Torrents</h3>
@@ -447,7 +441,7 @@ async def handle_dashboard(request: Any) -> Any:
                 <div class="value" id="downloadSpeed">-</div>
             </div>
         </div>
-        
+
         <div class="torrents-table">
             <table>
                 <thead>
@@ -463,19 +457,19 @@ async def handle_dashboard(request: Any) -> Any:
             </table>
         </div>
     </div>
-    
+
     <script>
         function formatSpeed(kbps) {
             if (kbps >= 1024) return (kbps / 1024).toFixed(1) + ' MB/s';
             return kbps + ' KB/s';
         }
-        
+
         function formatBytes(bytes) {
             if (bytes >= 1073741824) return (bytes / 1073741824).toFixed(2) + ' GB';
             if (bytes >= 1048576) return (bytes / 1048576).toFixed(2) + ' MB';
             return (bytes / 1024).toFixed(2) + ' KB';
         }
-        
+
         async function fetchData() {
             try {
                 const [statsRes, speedRes, torrentsRes] = await Promise.all([
@@ -483,16 +477,16 @@ async def handle_dashboard(request: Any) -> Any:
                     fetch('/api/stats/speed'),
                     fetch('/api/torrents')
                 ]);
-                
+
                 const stats = await statsRes.json();
                 const speed = await speedRes.json();
                 const torrents = await torrentsRes.json();
-                
+
                 document.getElementById('totalTorrents').textContent = stats.total_torrents;
                 document.getElementById('activeTorrents').textContent = stats.active_torrents;
                 document.getElementById('uploadSpeed').textContent = formatSpeed(speed.upload_speed);
                 document.getElementById('downloadSpeed').textContent = formatSpeed(speed.download_speed);
-                
+
                 const btn = document.getElementById('altSpeedBtn');
                 if (speed.alt_speed_enabled) {
                     btn.textContent = 'Alt Speed: ON';
@@ -501,12 +495,13 @@ async def handle_dashboard(request: Any) -> Any:
                     btn.textContent = 'Alt Speed: OFF';
                     btn.classList.remove('active');
                 }
-                
+
                 const tbody = document.getElementById('torrentsList');
                 tbody.innerHTML = torrents.torrents.map(t => `
                     <tr>
                         <td>${t.name}</td>
-                        <td class="${t.active ? 'status-active' : 'status-inactive'}">${t.active ? 'Active' : 'Inactive'}</td>
+                        <td class="${t.active ? 'status-active' : 'status-inactive'}">
+                            ${t.active ? 'Active' : 'Inactive'}</td>
                         <td>${formatSpeed(t.upload_speed)}</td>
                         <td>${formatSpeed(t.download_speed)}</td>
                         <td>${t.ratio.toFixed(2)}</td>
@@ -516,7 +511,7 @@ async def handle_dashboard(request: Any) -> Any:
                 console.error('Error fetching data:', e);
             }
         }
-        
+
         async function toggleAltSpeed() {
             try {
                 await fetch('/api/alt-speed/toggle', { method: 'POST' });
@@ -525,11 +520,10 @@ async def handle_dashboard(request: Any) -> Any:
                 console.error('Error toggling alt speed:', e);
             }
         }
-        
+
         fetchData();
         setInterval(fetchData, 5000);
     </script>
 </body>
 </html>"""
     return web.Response(text=html, content_type="text/html")
-

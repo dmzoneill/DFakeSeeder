@@ -13,7 +13,7 @@ Note: This requires the pycryptodome package for RC4 cipher.
 import enum
 import hashlib
 import os
-from typing import Any, Optional, Tuple
+from typing import Any, Optional
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -25,7 +25,7 @@ try:
     CRYPTO_AVAILABLE = True
 except ImportError:
     CRYPTO_AVAILABLE = False
-    ARC4 = None  # type: ignore[assignment, misc]
+    ARC4 = None
 
 
 # Diffie-Hellman parameters (standard for BitTorrent MSE)
@@ -103,8 +103,7 @@ class MSEHandler:
 
         if not CRYPTO_AVAILABLE:
             logger.warning(
-                "pycryptodome not installed - MSE encryption disabled. "
-                "Install with: pip install pycryptodome",
+                "pycryptodome not installed - MSE encryption disabled. " "Install with: pip install pycryptodome",
                 extra={"class_name": self.__class__.__name__},
             )
         else:
@@ -112,8 +111,7 @@ class MSEHandler:
             self._generate_dh_keypair()
 
             logger.trace(
-                f"MSEHandler initialized (mode: {encryption_mode}, "
-                f"initiator: {is_initiator})",
+                f"MSEHandler initialized (mode: {encryption_mode}, " f"initiator: {is_initiator})",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -210,20 +208,12 @@ class MSEHandler:
 
             if self.is_initiator:
                 # Initiator uses keyA for encryption, keyB for decryption
-                enc_key = hashlib.sha1(
-                    b"keyA" + self.shared_secret + self.info_hash
-                ).digest()
-                dec_key = hashlib.sha1(
-                    b"keyB" + self.shared_secret + self.info_hash
-                ).digest()
+                enc_key = hashlib.sha1(b"keyA" + self.shared_secret + self.info_hash).digest()
+                dec_key = hashlib.sha1(b"keyB" + self.shared_secret + self.info_hash).digest()
             else:
                 # Responder uses keyB for encryption, keyA for decryption
-                enc_key = hashlib.sha1(
-                    b"keyB" + self.shared_secret + self.info_hash
-                ).digest()
-                dec_key = hashlib.sha1(
-                    b"keyA" + self.shared_secret + self.info_hash
-                ).digest()
+                enc_key = hashlib.sha1(b"keyB" + self.shared_secret + self.info_hash).digest()
+                dec_key = hashlib.sha1(b"keyA" + self.shared_secret + self.info_hash).digest()
 
             # Create RC4 ciphers
             self.encrypt_cipher = ARC4.new(enc_key)
@@ -262,7 +252,8 @@ class MSEHandler:
             Encrypted data, or original data if encryption not active.
         """
         if self.encrypted and self.encrypt_cipher:
-            return self.encrypt_cipher.encrypt(data)
+            result: bytes = self.encrypt_cipher.encrypt(data)
+            return result
         return data
 
     def decrypt(self, data: bytes) -> bytes:
@@ -276,7 +267,8 @@ class MSEHandler:
             Decrypted data, or original data if encryption not active.
         """
         if self.encrypted and self.decrypt_cipher:
-            return self.decrypt_cipher.decrypt(data)
+            result: bytes = self.decrypt_cipher.decrypt(data)
+            return result
         return data
 
     def get_sync_hash(self) -> bytes:
@@ -382,4 +374,3 @@ class MSEHandler:
             "encrypted": self.encrypted,
             "is_initiator": self.is_initiator,
         }
-
