@@ -20,29 +20,8 @@ from .base_tab import BaseSettingsTab  # noqa: E402
 class ProtocolExtensionsTab(BaseSettingsTab):
     """Protocol Extensions configuration tab"""
 
-    # Auto-connect simple widgets with WIDGET_MAPPINGS
-    # Note: Most widgets in this tab use batch save via save_settings() method,
-    # only these 3 extension toggles save in real-time
-    WIDGET_MAPPINGS = [
-        {
-            "id": "lt_donthave_check",
-            "name": "lt_donthave",
-            "setting_key": "lt_donthave_enabled",
-            "type": bool,
-        },
-        {
-            "id": "fast_extension_check",
-            "name": "fast_extension",
-            "setting_key": "fast_extension_enabled",
-            "type": bool,
-        },
-        {
-            "id": "ut_holepunch_check",
-            "name": "ut_holepunch",
-            "setting_key": "ut_holepunch_enabled",
-            "type": bool,
-        },
-    ]
+    # Note: Protocol Extensions settings use manual loading/saving with nested keys
+    WIDGET_MAPPINGS: list = []
 
     @property
     def tab_name(self) -> str:
@@ -289,8 +268,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         Returns:
             Dictionary of setting_key -> value pairs for all widgets
         """
-        # Collect from WIDGET_MAPPINGS
-        settings = self._collect_mapped_settings()
+        settings: Dict[str, Any] = {}
 
         # Collect extension protocol settings
         for widget_name, setting_key in [
@@ -373,120 +351,103 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         self._language_change_connected = True  # Block TranslationMixin from connecting
 
     def load_settings(self) -> None:
-        """Load Protocol Extensions settings from configuration"""
+        """Load Protocol Extensions settings from configuration using nested keys."""
         try:
-            protocols_config = getattr(self.app_settings, "protocols", {})
-
             # Extension Protocol Settings
-            extensions_config = protocols_config.get("extensions", {})
+            ut_metadata = self.app_settings.get("protocols.extensions.ut_metadata", True)
+            ut_pex = self.app_settings.get("protocols.extensions.ut_pex", True)
+            lt_donthave = self.app_settings.get("protocols.extensions.lt_donthave", True)
+            fast_ext = self.app_settings.get("protocols.extensions.fast_extension", True)
+            ut_holepunch = self.app_settings.get("protocols.extensions.ut_holepunch", False)
 
-            # Overall extensions enabled
-            extensions_enabled = any(extensions_config.values()) if extensions_config else True
+            # Overall extensions enabled (any extension is enabled)
+            extensions_enabled = any([ut_metadata, ut_pex, lt_donthave, fast_ext, ut_holepunch])
             if self._widgets["extensions_enabled"]:
                 self._widgets["extensions_enabled"].set_state(extensions_enabled)
 
             # Individual extensions
             if self._widgets["ut_metadata"]:
-                self.set_switch_state(self._widgets["ut_metadata"], extensions_config.get("ut_metadata", True))  # type: ignore[attr-defined]  # noqa: E501
-
+                self._widgets["ut_metadata"].set_active(ut_metadata)
             if self._widgets["ut_pex"]:
-                self.set_switch_state(self._widgets["ut_pex"], extensions_config.get("ut_pex", True))  # type: ignore[attr-defined]  # noqa: E501
-
+                self._widgets["ut_pex"].set_active(ut_pex)
             if self._widgets["lt_donthave"]:
-                self.set_switch_state(self._widgets["lt_donthave"], extensions_config.get("lt_donthave", True))  # type: ignore[attr-defined]  # noqa: E501
-
+                self._widgets["lt_donthave"].set_active(lt_donthave)
             if self._widgets["fast_extension"]:
-                self.set_switch_state(self._widgets["fast_extension"], extensions_config.get("fast_extension", True))  # type: ignore[attr-defined]  # noqa: E501
-
+                self._widgets["fast_extension"].set_active(fast_ext)
             if self._widgets["ut_holepunch"]:
-                self.set_switch_state(self._widgets["ut_holepunch"], extensions_config.get("ut_holepunch", False))  # type: ignore[attr-defined]  # noqa: E501
+                self._widgets["ut_holepunch"].set_active(ut_holepunch)
 
             # PEX Settings
-            pex_config = protocols_config.get("pex", {})
-
             if self._widgets["pex_interval"]:
-                self._widgets["pex_interval"].set_value(pex_config.get("interval", 60))
-
+                value = self.app_settings.get("protocols.pex.interval", 60)
+                self._widgets["pex_interval"].set_value(value)
             if self._widgets["pex_max_peers"]:
-                self._widgets["pex_max_peers"].set_value(pex_config.get("max_peers_per_message", 50))
-
+                value = self.app_settings.get("protocols.pex.max_peers_per_message", 50)
+                self._widgets["pex_max_peers"].set_value(value)
             if self._widgets["pex_max_dropped"]:
-                self._widgets["pex_max_dropped"].set_value(pex_config.get("max_dropped_peers", 20))
-
+                value = self.app_settings.get("protocols.pex.max_dropped_peers", 20)
+                self._widgets["pex_max_dropped"].set_value(value)
             if self._widgets["pex_synthetic_peers"]:
-                self.set_switch_state(  # type: ignore[attr-defined]
-                    self._widgets["pex_synthetic_peers"], pex_config.get("generate_synthetic_peers", True)
-                )
-
+                value = self.app_settings.get("protocols.pex.generate_synthetic_peers", True)
+                self._widgets["pex_synthetic_peers"].set_active(value)
             if self._widgets["pex_synthetic_count"]:
-                self._widgets["pex_synthetic_count"].set_value(pex_config.get("synthetic_peer_count", 20))
+                value = self.app_settings.get("protocols.pex.synthetic_peer_count", 20)
+                self._widgets["pex_synthetic_count"].set_value(value)
 
             # Transport Settings
-            transport_config = protocols_config.get("transport", {})
-
             if self._widgets["utp_enabled"]:
-                self.set_switch_state(self._widgets["utp_enabled"], transport_config.get("utp_enabled", False))  # type: ignore[attr-defined]  # noqa: E501
-
+                value = self.app_settings.get("protocols.transport.utp_enabled", False)
+                self._widgets["utp_enabled"].set_active(value)
             if self._widgets["tcp_fallback"]:
-                self.set_switch_state(self._widgets["tcp_fallback"], transport_config.get("tcp_fallback", True))  # type: ignore[attr-defined]  # noqa: E501
-
+                value = self.app_settings.get("protocols.transport.tcp_fallback", True)
+                self._widgets["tcp_fallback"].set_active(value)
             if self._widgets["connection_timeout"]:
-                self._widgets["connection_timeout"].set_value(transport_config.get("connection_timeout", 30))
-
+                value = self.app_settings.get("protocols.transport.connection_timeout", 30)
+                self._widgets["connection_timeout"].set_value(value)
             if self._widgets["keep_alive_interval"]:
-                self._widgets["keep_alive_interval"].set_value(transport_config.get("keep_alive_interval", 120))
-
+                value = self.app_settings.get("protocols.transport.keep_alive_interval", 120)
+                self._widgets["keep_alive_interval"].set_value(value)
             if self._widgets["nagle_algorithm"]:
-                self.set_switch_state(self._widgets["nagle_algorithm"], transport_config.get("nagle_algorithm", False))  # type: ignore[attr-defined]  # noqa: E501
-
+                value = self.app_settings.get("protocols.transport.nagle_algorithm", False)
+                self._widgets["nagle_algorithm"].set_active(value)
             if self._widgets["tcp_keepalive"]:
-                self.set_switch_state(self._widgets["tcp_keepalive"], transport_config.get("tcp_keepalive", True))  # type: ignore[attr-defined]  # noqa: E501
+                value = self.app_settings.get("protocols.transport.tcp_keepalive", True)
+                self._widgets["tcp_keepalive"].set_active(value)
 
             # Extended settings
-            extended_config = protocols_config.get("extended", {})
-
             if self._widgets["metadata_enabled"]:
-                self.set_switch_state(self._widgets["metadata_enabled"], extended_config.get("metadata_enabled", True))  # type: ignore[attr-defined]  # noqa: E501
-
+                value = self.app_settings.get("protocols.extended.metadata_enabled", True)
+                self._widgets["metadata_enabled"].set_active(value)
             if self._widgets["metadata_piece_size"]:
-                self._widgets["metadata_piece_size"].set_value(extended_config.get("metadata_piece_size", 16384))
-
+                value = self.app_settings.get("protocols.extended.metadata_piece_size", 16384)
+                self._widgets["metadata_piece_size"].set_value(value)
             if self._widgets["metadata_timeout"]:
-                self._widgets["metadata_timeout"].set_value(extended_config.get("metadata_timeout", 60))
-
+                value = self.app_settings.get("protocols.extended.metadata_timeout", 60)
+                self._widgets["metadata_timeout"].set_value(value)
             if self._widgets["metadata_synthetic"]:
-                self.set_switch_state(  # type: ignore[attr-defined]
-                    self._widgets["metadata_synthetic"], extended_config.get("metadata_synthetic", True)
-                )
-
+                value = self.app_settings.get("protocols.extended.metadata_synthetic", True)
+                self._widgets["metadata_synthetic"].set_active(value)
             if self._widgets["extension_timeout"]:
-                self._widgets["extension_timeout"].set_value(extended_config.get("extension_timeout", 30))
-
+                value = self.app_settings.get("protocols.extended.extension_timeout", 30)
+                self._widgets["extension_timeout"].set_value(value)
             if self._widgets["max_extension_msg_size"]:
-                self._widgets["max_extension_msg_size"].set_value(
-                    extended_config.get("max_extension_msg_size", 1048576)
-                )
-
+                value = self.app_settings.get("protocols.extended.max_extension_msg_size", 1048576)
+                self._widgets["max_extension_msg_size"].set_value(value)
             if self._widgets["track_extension_stats"]:
-                self.set_switch_state(  # type: ignore[attr-defined]
-                    self._widgets["track_extension_stats"], extended_config.get("track_extension_stats", True)
-                )
-
+                value = self.app_settings.get("protocols.extended.track_extension_stats", True)
+                self._widgets["track_extension_stats"].set_active(value)
             if self._widgets["stats_update_interval"]:
-                self._widgets["stats_update_interval"].set_value(extended_config.get("stats_update_interval", 60))
-
+                value = self.app_settings.get("protocols.extended.stats_update_interval", 60)
+                self._widgets["stats_update_interval"].set_value(value)
             if self._widgets["validate_extensions"]:
-                self.set_switch_state(  # type: ignore[attr-defined]
-                    self._widgets["validate_extensions"], extended_config.get("validate_extensions", True)
-                )
-
+                value = self.app_settings.get("protocols.extended.validate_extensions", True)
+                self._widgets["validate_extensions"].set_active(value)
             if self._widgets["limit_extension_msgs"]:
-                self.set_switch_state(  # type: ignore[attr-defined]
-                    self._widgets["limit_extension_msgs"], extended_config.get("limit_extension_msgs", True)
-                )
-
+                value = self.app_settings.get("protocols.extended.limit_extension_msgs", True)
+                self._widgets["limit_extension_msgs"].set_active(value)
             if self._widgets["max_msgs_per_second"]:
-                self._widgets["max_msgs_per_second"].set_value(extended_config.get("max_msgs_per_second", 50))
+                value = self.app_settings.get("protocols.extended.max_msgs_per_second", 50)
+                self._widgets["max_msgs_per_second"].set_value(value)
 
             self.logger.trace(
                 "Protocol Extensions settings loaded successfully",
