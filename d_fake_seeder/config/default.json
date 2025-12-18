@@ -203,18 +203,36 @@
             "ut_metadata": true,
             "ut_pex": true,
             "lt_donthave": true,
-            "fast_extension": true
+            "fast_extension": true,
+            "ut_holepunch": false
+        },
+        "pex": {
+            "interval": 60,
+            "max_peers_per_message": 50,
+            "max_dropped_peers": 20,
+            "generate_synthetic_peers": true,
+            "synthetic_peer_count": 20
         },
         "transport": {
-            "utp": {
-                "enabled": true,
-                "max_connections": 100,
-                "max_window_size": 4194304,
-                "min_window_size": 65536,
-                "target_delay_ms": 100
-            },
+            "utp_enabled": false,
             "tcp_fallback": true,
-            "connection_timeout": 30
+            "connection_timeout": 30,
+            "keep_alive_interval": 120,
+            "nagle_algorithm": false,
+            "tcp_keepalive": true
+        },
+        "extended": {
+            "metadata_enabled": true,
+            "metadata_piece_size": 16384,
+            "metadata_timeout": 60,
+            "metadata_synthetic": true,
+            "extension_timeout": 30,
+            "max_extension_msg_size": 1048576,
+            "track_extension_stats": true,
+            "stats_update_interval": 60,
+            "validate_extensions": true,
+            "limit_extension_msgs": true,
+            "max_msgs_per_second": 50
         },
         "multi_tracker": {
             "enabled": true,
