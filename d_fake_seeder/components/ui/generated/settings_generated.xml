@@ -6154,7 +6154,7 @@
                                     <property name="spacing">12</property>
                                     <property name="halign">start</property>
                                     <child>
-                                        <object class="GtkSwitch" id="settings_webui_https">
+                                        <object class="GtkSwitch" id="settings_webui_https_enabled">
                                             <property name="valign">center</property>
                                             <property name="tooltip-text" translatable="yes">Use HTTPS for secure connections (requires SSL certificate)</property>
                                         </object>
@@ -6186,6 +6186,32 @@
                                             <property name="label" translatable="yes">Bind to localhost only</property>
                                             <property name="halign">start</property>
                                             <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Interface/IP Address -->
+                            <child>
+                                <object class="GtkBox" id="settings_webui_interface_box">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <property name="sensitive">False</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Bind IP Address:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">15</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkEntry" id="settings_webui_interface">
+                                            <property name="text">0.0.0.0</property>
+                                            <property name="placeholder-text" translatable="yes">0.0.0.0</property>
+                                            <property name="tooltip-text" translatable="yes">IP address to bind to (0.0.0.0 for all interfaces)</property>
+                                            <property name="hexpand">True</property>
                                         </object>
                                     </child>
                                 </object>
@@ -6439,6 +6465,62 @@
                                             <property name="label" translatable="yes">Enable secure HTTP headers</property>
                                             <property name="halign">start</property>
                                             <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Host header validation -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="settings_webui_host_header_validation">
+                                            <property name="valign">center</property>
+                                            <property name="active">True</property>
+                                            <property name="tooltip-text" translatable="yes">Validate HTTP Host header to prevent DNS rebinding attacks</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable host header validation</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Ban after failures -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">fill</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Ban after failed logins:</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">20</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="settings_webui_ban_after_failures">
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1</property>
+                                                    <property name="upper">100</property>
+                                                    <property name="value">5</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">5</property>
+                                                </object>
+                                            </property>
+                                            <property name="tooltip-text" translatable="yes">Number of failed login attempts before temporarily banning IP</property>
+                                            <property name="hexpand">False</property>
+                                            <property name="width-chars">8</property>
+                                            <property name="numeric">True</property>
                                         </object>
                                     </child>
                                 </object>

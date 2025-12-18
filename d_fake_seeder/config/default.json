@@ -291,6 +291,22 @@
             }
         }
     },
+    "webui": {
+        "enabled": false,
+        "port": 8080,
+        "interface": "127.0.0.1",
+        "localhost_only": true,
+        "https_enabled": false,
+        "auth_enabled": true,
+        "username": "admin",
+        "password": "",
+        "session_timeout_minutes": 60,
+        "csrf_protection": true,
+        "clickjacking_protection": true,
+        "secure_headers": true,
+        "host_header_validation": true,
+        "ban_after_failures": 5
+    },
     "watch_folder": {
         "enabled": false,
         "path": "",
