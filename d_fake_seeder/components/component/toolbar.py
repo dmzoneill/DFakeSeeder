@@ -218,38 +218,27 @@ class Toolbar(Component):
         logger.info("Signal connected successfully", "Toolbar")
         logger.trace("About to access self.settings.tickspeed:", "Toolbar")
 
-        # Add event controller for button release to avoid continuous updates during drag
-        from gi.repository import Gtk
-
-        button_controller = Gtk.GestureClick()
-        self.track_signal(
-            button_controller,
-            button_controller.connect("released", self.on_toolbar_refresh_rate_released),
-        )
-        self.toolbar_refresh_rate.add_controller(button_controller)
+        # Track pending save for debounced saving
+        self._tickspeed_save_pending = False
+        self._tickspeed_save_source_id = None
 
         try:
             logger.trace("Trying to access self.settings.tickspeed", "Toolbar")
-            tickspeed_value = self.settings.tickspeed
-            logger.trace("self.settings.tickspeed =", "Toolbar")
-            logger.trace("About to call set_value (without signal)", "Toolbar")
-            # Set value first without triggering signal to avoid initialization deadlock
+            tickspeed_value = self.settings.get("tickspeed", 9)
+            logger.trace(f"self.settings.tickspeed = {tickspeed_value}", "Toolbar")
+            logger.trace("About to call set_value", "Toolbar")
             self.toolbar_refresh_rate.set_value(int(tickspeed_value))
             logger.trace("set_value completed, now connecting signal", "Toolbar")
-            # Connect value-changed for real-time visual feedback but don't save to settings yet
-            self.track_signal(
-                self.toolbar_refresh_rate,
-                self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_preview),
-            )
-        except Exception:
-            logger.error("ERROR accessing tickspeed:", "Toolbar")
+        except Exception as e:
+            logger.error(f"ERROR accessing tickspeed: {e}", "Toolbar")
             logger.trace("Using default value of 9", "Toolbar")
             self.toolbar_refresh_rate.set_value(9)
-            # Connect signal even on error
-            self.track_signal(
-                self.toolbar_refresh_rate,
-                self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_preview),
-            )
+
+        # Connect value-changed signal - use debounced save to avoid excessive writes
+        self.track_signal(
+            self.toolbar_refresh_rate,
+            self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_changed),
+        )
         logger.info("set_value completed successfully", "Toolbar")
         logger.trace("About to set size request", "Toolbar")
         self.toolbar_refresh_rate.set_size_request(150, -1)
@@ -262,19 +251,32 @@ class Toolbar(Component):
             return self.model.translation_manager.translate_func(text)
         return text  # Fallback if model not set yet
 
-    def on_toolbar_refresh_rate_preview(self, scale: Any) -> None:
-        """Preview changes without saving to settings to avoid UI hanging during drag"""
-        # This method is called continuously during drag for visual feedback
-        # but doesn't save to settings to prevent UI freezing
-        pass
+    def on_toolbar_refresh_rate_changed(self, scale: Any) -> None:
+        """Handle refresh rate slider value change with debounced save."""
+        from gi.repository import GLib
 
-    def on_toolbar_refresh_rate_released(self, gesture: Any, n_press: Any, x: Any, y: Any) -> None:
-        """Save settings only when user releases the mouse button"""
+        # Cancel any pending save
+        if self._tickspeed_save_source_id:
+            GLib.source_remove(self._tickspeed_save_source_id)
+            self._tickspeed_save_source_id = None
+
+        # Schedule a debounced save after 500ms of no changes
+        self._tickspeed_save_source_id = GLib.timeout_add(
+            500, self._save_tickspeed_debounced
+        )
+
+    def _save_tickspeed_debounced(self) -> bool:
+        """Actually save the tickspeed setting after debounce delay."""
+        self._tickspeed_save_source_id = None
         value = self.toolbar_refresh_rate.get_value()
-        logger.trace(f"Slider released with value: {value}", "Toolbar")
         tickspeed = math.ceil(float(value))
-        self.settings.set("tickspeed", tickspeed)
-        logger.trace(f"Saved tickspeed to settings: {tickspeed}", "Toolbar")
+        current = self.settings.get("tickspeed", 9)
+
+        if tickspeed != current:
+            self.settings.set("tickspeed", tickspeed)
+            logger.trace(f"Saved tickspeed to settings: {tickspeed}", "Toolbar")
+
+        return False  # Don't repeat
 
     def on_toolbar_add_clicked(self, button: Any) -> None:
         logger.trace(
@@ -619,14 +621,20 @@ class Toolbar(Component):
             extra={"class_name": self.__class__.__name__},
         )
 
-        # Update refresh rate slider when tickspeed changes
+        # Update refresh rate slider when tickspeed changes (from external source)
         if key == "tickspeed" and hasattr(self, "toolbar_refresh_rate"):
             try:
                 current_value = int(self.toolbar_refresh_rate.get_value())
                 new_value = int(value)
                 if current_value != new_value:
-                    # Block signal to avoid feedback loop
+                    # Block the value-changed handler temporarily to avoid feedback loop
+                    self.toolbar_refresh_rate.handler_block_by_func(
+                        self.on_toolbar_refresh_rate_changed
+                    )
                     self.toolbar_refresh_rate.set_value(new_value)
+                    self.toolbar_refresh_rate.handler_unblock_by_func(
+                        self.on_toolbar_refresh_rate_changed
+                    )
                     logger.trace(
                         f"Updated refresh rate slider to {new_value}",
                         extra={"class_name": self.__class__.__name__},
