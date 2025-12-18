@@ -13,30 +13,23 @@ install_requires = [
     "PyGObject>=3.42.0",
     "watchdog>=4.0.0",
     "bencodepy>=0.9.5",
+    # Web UI server
+    "aiohttp>=3.8.0",
+    "aiohttp-session>=2.12.0",
+    # UPnP port forwarding
+    "miniupnpc>=2.2.0",
+    # Protocol encryption (MSE/PE)
+    "pycryptodome>=3.15.0",
+    # Process monitoring
+    "psutil>=5.9.0",
 ]
 
-# Optional dependencies for advanced features
+# Optional dependencies (kept for backwards compatibility with pip install d-fake-seeder[all])
 extras_require = {
-    # Web UI server for remote management
-    "webui": [
-        "aiohttp>=3.8.0",
-        "aiohttp-session>=2.12.0",
-    ],
-    # UPnP port forwarding
-    "upnp": [
-        "miniupnpc>=2.2.0",
-    ],
-    # Protocol encryption (MSE/PE)
-    "encryption": [
-        "pycryptodome>=3.15.0",
-    ],
-    # All optional features
-    "all": [
-        "aiohttp>=3.8.0",
-        "aiohttp-session>=2.12.0",
-        "miniupnpc>=2.2.0",
-        "pycryptodome>=3.15.0",
-    ],
+    "webui": [],  # Now included by default
+    "upnp": [],  # Now included by default
+    "encryption": [],  # Now included by default
+    "all": [],  # All features now included by default
 }
 
 # Read long description from README
