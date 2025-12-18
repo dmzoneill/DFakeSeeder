@@ -165,6 +165,17 @@
         "shutdown_timeout_seconds": 5.0,
         "stats_enabled": true
     },
+    "bittorrent": {
+        "enable_dht": true,
+        "enable_pex": true,
+        "enable_lpd": true,
+        "encryption_mode": "enabled",
+        "user_agent": "Deluge/2.0.3 libtorrent/2.0.5.0",
+        "peer_id_prefix": "-DE2003-",
+        "announce_interval_seconds": 1800,
+        "min_announce_interval_seconds": 300,
+        "scrape_interval_seconds": 900
+    },
     "protocols": {
         "dht": {
             "enabled": true,

@@ -31,106 +31,9 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     - BitTorrent-specific behavior
     """
 
-    # Auto-connect simple widgets with WIDGET_MAPPINGS
-    WIDGET_MAPPINGS = [
-        # Protocol features
-        {
-            "id": "settings_enable_dht",
-            "name": "enable_dht",
-            "setting_key": "bittorrent.enable_dht",
-            "type": bool,
-            "on_change": lambda self, value: self.show_notification(
-                f"DHT {'enabled' if value else 'disabled'}", "success"
-            ),
-        },
-        {
-            "id": "settings_enable_pex",
-            "name": "enable_pex",
-            "setting_key": "bittorrent.enable_pex",
-            "type": bool,
-            "on_change": lambda self, value: self.show_notification(
-                f"PEX {'enabled' if value else 'disabled'}", "success"
-            ),
-        },
-        {
-            "id": "settings_enable_lsd",
-            "name": "enable_lsd",
-            "setting_key": "bittorrent.enable_lsd",
-            "type": bool,
-            "on_change": lambda self, value: self.show_notification(
-                f"LSD {'enabled' if value else 'disabled'}", "success"
-            ),
-        },
-        {
-            "id": "settings_enable_utp",
-            "name": "enable_utp",
-            "setting_key": "bittorrent.enable_utp",
-            "type": bool,
-            "on_change": lambda self, value: self.show_notification(
-                f"uTP {'enabled' if value else 'disabled'}", "success"
-            ),
-        },
-        # Custom user agent
-        {
-            "id": "settings_custom_user_agent",
-            "name": "custom_user_agent",
-            "setting_key": "bittorrent.user_agent",
-            "type": str,
-        },
-        # Announce intervals
-        {
-            "id": "settings_announce_interval",
-            "name": "announce_interval",
-            "setting_key": "bittorrent.announce_interval_seconds",
-            "type": int,
-        },
-        {
-            "id": "settings_min_announce_interval",
-            "name": "min_announce_interval",
-            "setting_key": "bittorrent.min_announce_interval_seconds",
-            "type": int,
-        },
-        # Peer settings
-        {
-            "id": "settings_max_peers_global",
-            "name": "max_peers_global",
-            "setting_key": "bittorrent.max_peers_global",
-            "type": int,
-        },
-        {
-            "id": "settings_max_peers_torrent",
-            "name": "max_peers_torrent",
-            "setting_key": "bittorrent.max_peers_per_torrent",
-            "type": int,
-        },
-        {
-            "id": "settings_max_upload_slots_global",
-            "name": "max_upload_slots_global",
-            "setting_key": "bittorrent.max_upload_slots_global",
-            "type": int,
-        },
-        {
-            "id": "settings_max_upload_slots_torrent",
-            "name": "max_upload_slots_torrent",
-            "setting_key": "bittorrent.max_upload_slots_per_torrent",
-            "type": int,
-        },
-        # Encryption mode with transform
-        {
-            "id": "settings_encryption_mode",
-            "name": "encryption_mode",
-            "setting_key": "bittorrent.encryption_mode",
-            "transform": lambda index: {0: "disabled", 1: "prefer", 2: "require"}.get(index, "prefer"),
-            "on_change": lambda self, value: self.show_notification(f"Encryption mode: {value}", "success"),
-        },
-        # Scrape interval
-        {
-            "id": "settings_scrape_interval",
-            "name": "scrape_interval",
-            "setting_key": "bittorrent.scrape_interval_seconds",
-            "type": int,
-        },
-    ]
+    # Note: Most BitTorrent settings use manual loading/saving due to nested structure
+    # and custom user agent logic
+    WIDGET_MAPPINGS: list = []
 
     @property
     def tab_name(self) -> str:
@@ -145,23 +48,19 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 # Protocol features
                 "enable_dht": self.builder.get_object("settings_enable_dht"),
                 "enable_pex": self.builder.get_object("settings_enable_pex"),
-                "enable_lsd": self.builder.get_object("settings_enable_lsd"),
-                "enable_utp": self.builder.get_object("settings_enable_utp"),
+                "enable_lpd": self.builder.get_object("settings_enable_lpd"),
+                # Encryption
+                "encryption_mode": self.builder.get_object("settings_encryption_mode"),
                 # User agent
                 "user_agent": self.builder.get_object("settings_user_agent"),
                 # Section container (hardcoded to sensitive=False in XML)
                 "custom_agent_box": self.builder.get_object("settings_custom_agent_box"),
                 "custom_user_agent": self.builder.get_object("settings_custom_user_agent"),
+                # Peer ID prefix
+                "peer_id_prefix": self.builder.get_object("settings_peer_id_prefix"),
                 # Announce intervals
                 "announce_interval": self.builder.get_object("settings_announce_interval"),
                 "min_announce_interval": self.builder.get_object("settings_min_announce_interval"),
-                # Peer settings
-                "max_peers_global": self.builder.get_object("settings_max_peers_global"),
-                "max_peers_torrent": self.builder.get_object("settings_max_peers_torrent"),
-                "max_upload_slots_global": self.builder.get_object("settings_max_upload_slots_global"),
-                "max_upload_slots_torrent": self.builder.get_object("settings_max_upload_slots_torrent"),
-                # Encryption and scrape
-                "encryption_mode": self.builder.get_object("settings_encryption_mode"),
                 "scrape_interval": self.builder.get_object("settings_scrape_interval"),
             }
         )
@@ -185,153 +84,113 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _load_settings(self) -> None:
         """Load current settings into BitTorrent tab widgets."""
         try:
-            # Load BitTorrent protocol settings
-            bittorrent_settings = getattr(self.app_settings, "bittorrent", {})
-            self._load_bittorrent_settings(bittorrent_settings)
-
+            # Load BitTorrent protocol settings using nested keys
+            self._load_bittorrent_settings()
             self.logger.info("BitTorrent tab settings loaded")
-
         except Exception as e:
             self.logger.error(f"Error loading BitTorrent tab settings: {e}")
 
-    def _load_bittorrent_settings(self, bittorrent_settings: Dict[str, Any]) -> None:
-        """Load BitTorrent protocol settings."""
+    def _load_bittorrent_settings(self) -> None:
+        """Load BitTorrent protocol settings using nested keys."""
         try:
             # Protocol features - use set_switch_state for proper visual sync
             dht = self.get_widget("enable_dht")
             if dht:
-                self.set_switch_state(dht, bittorrent_settings.get("enable_dht", True))
+                value = self.app_settings.get("bittorrent.enable_dht", True)
+                self.set_switch_state(dht, value)
 
             pex = self.get_widget("enable_pex")
             if pex:
-                self.set_switch_state(pex, bittorrent_settings.get("enable_pex", True))
+                value = self.app_settings.get("bittorrent.enable_pex", True)
+                self.set_switch_state(pex, value)
 
-            lsd = self.get_widget("enable_lsd")
-            if lsd:
-                self.set_switch_state(lsd, bittorrent_settings.get("enable_lsd", True))
-
-            utp = self.get_widget("enable_utp")
-            if utp:
-                self.set_switch_state(utp, bittorrent_settings.get("enable_utp", True))
-
-            # User agent
-            self._update_user_agent_dropdown(bittorrent_settings)
-
-            # Announce intervals
-            announce = self.get_widget("announce_interval")
-            if announce:
-                announce.set_value(bittorrent_settings.get("announce_interval_seconds", 1800))
-
-            min_announce = self.get_widget("min_announce_interval")
-            if min_announce:
-                min_announce.set_value(bittorrent_settings.get("min_announce_interval_seconds", 300))
-
-            # Peer settings
-            max_peers_global = self.get_widget("max_peers_global")
-            if max_peers_global:
-                max_peers_global.set_value(bittorrent_settings.get("max_peers_global", 200))
-
-            max_peers_torrent = self.get_widget("max_peers_torrent")
-            if max_peers_torrent:
-                max_peers_torrent.set_value(bittorrent_settings.get("max_peers_per_torrent", 50))
-
-            max_upload_slots_global = self.get_widget("max_upload_slots_global")
-            if max_upload_slots_global:
-                max_upload_slots_global.set_value(bittorrent_settings.get("max_upload_slots_global", 4))
-
-            max_upload_slots_torrent = self.get_widget("max_upload_slots_torrent")
-            if max_upload_slots_torrent:
-                max_upload_slots_torrent.set_value(bittorrent_settings.get("max_upload_slots_per_torrent", 2))
+            lpd = self.get_widget("enable_lpd")
+            if lpd:
+                value = self.app_settings.get("bittorrent.enable_lpd", True)
+                self.set_switch_state(lpd, value)
 
             # Encryption mode
             encryption_mode = self.get_widget("encryption_mode")
             if encryption_mode:
-                encryption_value = bittorrent_settings.get("encryption_mode", "prefer")
-                # Map encryption modes to dropdown index: disabled=0, prefer=1, require=2
-                encryption_mapping = {"disabled": 0, "prefer": 1, "require": 2}
+                encryption_value = self.app_settings.get("bittorrent.encryption_mode", "enabled")
+                # Map encryption modes to dropdown index: disabled=0, enabled=1, forced=2
+                encryption_mapping = {"disabled": 0, "enabled": 1, "forced": 2}
                 encryption_mode.set_selected(encryption_mapping.get(encryption_value, 1))
 
-            # Scrape interval
+            # User agent dropdown
+            self._update_user_agent_dropdown()
+
+            # Peer ID prefix
+            peer_id_prefix = self.get_widget("peer_id_prefix")
+            if peer_id_prefix:
+                value = self.app_settings.get("bittorrent.peer_id_prefix", "-DE2003-")
+                peer_id_prefix.set_text(value)
+
+            # Announce intervals
+            announce = self.get_widget("announce_interval")
+            if announce:
+                value = self.app_settings.get("bittorrent.announce_interval_seconds", 1800)
+                announce.set_value(value)
+
+            min_announce = self.get_widget("min_announce_interval")
+            if min_announce:
+                value = self.app_settings.get("bittorrent.min_announce_interval_seconds", 300)
+                min_announce.set_value(value)
+
             scrape_interval = self.get_widget("scrape_interval")
             if scrape_interval:
-                scrape_interval.set_value(bittorrent_settings.get("scrape_interval_seconds", 1800))
+                value = self.app_settings.get("bittorrent.scrape_interval_seconds", 900)
+                scrape_interval.set_value(value)
 
         except Exception as e:
             self.logger.error(f"Error loading BitTorrent settings: {e}")
 
     def _setup_user_agent_dropdown(self) -> None:
-        """Set up the user agent dropdown with common clients."""
+        """Set up the user agent dropdown.
+
+        Note: The dropdown model is already defined in the XML with predefined agents.
+        This method just logs that setup is complete.
+        """
         try:
             user_agent_dropdown = self.get_widget("user_agent")
             if not user_agent_dropdown:
                 return
 
-            # Common BitTorrent clients
-            # Get translation function if available
-            translate_func = (
-                self.model.get_translate_func()  # type: ignore[attr-defined]
-                if hasattr(self, "model") and hasattr(self.model, "get_translate_func")
-                else lambda x: x
-            )
-
-            user_agents = [
-                "DFakeSeeder/1.0",
-                "µTorrent/3.5.5",
-                "BitTorrent/7.10.5",
-                "qBittorrent/4.5.0",
-                "Deluge/2.1.1",
-                "Transmission/3.00",
-                "libtorrent/2.0.6",
-                translate_func("Custom"),
-            ]
-
-            # Create string list model
-            string_list = Gtk.StringList()
-            for agent in user_agents:
-                string_list.append(agent)
-
-            # Set model
-            user_agent_dropdown.set_model(string_list)
-
-            self.logger.trace(f"User agent dropdown set up with {len(user_agents)} options")
+            # The XML already defines the dropdown model with these agents:
+            # Deluge, qBittorrent, Transmission, uTorrent, Vuze, BitTorrent, rTorrent, Custom
+            self.logger.trace("User agent dropdown initialized from XML model")
 
         except Exception as e:
             self.logger.error(f"Error setting up user agent dropdown: {e}")
 
-    def _update_user_agent_dropdown(self, bittorrent_settings: Dict[str, Any]) -> None:
+    def _update_user_agent_dropdown(self) -> None:
         """Update user agent dropdown selection."""
         try:
             user_agent_dropdown = self.get_widget("user_agent")
             if not user_agent_dropdown:
                 return
 
-            current_user_agent = bittorrent_settings.get("user_agent", "DFakeSeeder/1.0")
+            current_user_agent = self.app_settings.get("bittorrent.user_agent", "Deluge/2.0.3 libtorrent/2.0.5.0")
 
-            # Get translation function if available
-            translate_func = (
-                self.model.get_translate_func()  # type: ignore[attr-defined]
-                if hasattr(self, "model") and hasattr(self.model, "get_translate_func")
-                else lambda x: x
-            )
-
-            # Find index of current user agent
+            # The XML dropdown has these predefined agents:
+            # Deluge/2.0.3, qBittorrent/4.3.1, Transmission/3.00, uTorrent/3.5.5,
+            # Vuze/5.7.6.0, BitTorrent/7.10.5, rTorrent/0.9.6, Custom
             predefined_agents = [
-                "DFakeSeeder/1.0",
-                "µTorrent/3.5.5",
-                "BitTorrent/7.10.5",
-                "qBittorrent/4.5.0",
-                "Deluge/2.1.1",
+                "Deluge/2.0.3 libtorrent/2.0.5.0",
+                "qBittorrent/4.3.1",
                 "Transmission/3.00",
-                "libtorrent/2.0.6",
-                translate_func("Custom"),
+                "uTorrent/3.5.5",
+                "Vuze/5.7.6.0",
+                "BitTorrent/7.10.5",
+                "rTorrent/0.9.6",
             ]
 
             try:
                 current_index = predefined_agents.index(current_user_agent)
                 user_agent_dropdown.set_selected(current_index)
             except ValueError:
-                # Custom user agent
-                user_agent_dropdown.set_selected(len(predefined_agents) - 1)  # Custom option
+                # Custom user agent - select "Custom" option (index 7)
+                user_agent_dropdown.set_selected(7)
                 custom_user_agent = self.get_widget("custom_user_agent")
                 if custom_user_agent:
                     custom_user_agent.set_text(current_user_agent)
@@ -371,38 +230,40 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         Returns:
             Dictionary of setting_key -> value pairs for all widgets
         """
-        # Collect from WIDGET_MAPPINGS
-        settings = self._collect_mapped_settings()
+        settings: Dict[str, Any] = {}
 
-        # Collect BitTorrent settings with proper key prefixes
+        # Collect BitTorrent settings with nested keys
         bittorrent_settings = self._collect_bittorrent_settings()
-        for key, value in bittorrent_settings.items():
-            settings[f"bittorrent.{key}"] = value
+        settings.update(bittorrent_settings)
 
         self.logger.trace(f"Collected {len(settings)} settings from BitTorrent tab")
         return settings
 
     def _collect_bittorrent_settings(self) -> Dict[str, Any]:
-        """Collect BitTorrent protocol settings."""
-        bittorrent_settings = {}
+        """Collect BitTorrent protocol settings with nested keys."""
+        settings: Dict[str, Any] = {}
 
         try:
             # Protocol features
             dht = self.get_widget("enable_dht")
             if dht:
-                bittorrent_settings["enable_dht"] = dht.get_active()
+                settings["bittorrent.enable_dht"] = dht.get_active()
 
             pex = self.get_widget("enable_pex")
             if pex:
-                bittorrent_settings["enable_pex"] = pex.get_active()
+                settings["bittorrent.enable_pex"] = pex.get_active()
 
-            lsd = self.get_widget("enable_lsd")
-            if lsd:
-                bittorrent_settings["enable_lsd"] = lsd.get_active()
+            lpd = self.get_widget("enable_lpd")
+            if lpd:
+                settings["bittorrent.enable_lpd"] = lpd.get_active()
 
-            utp = self.get_widget("enable_utp")
-            if utp:
-                bittorrent_settings["enable_utp"] = utp.get_active()
+            # Encryption mode
+            encryption_mode = self.get_widget("encryption_mode")
+            if encryption_mode:
+                selected = encryption_mode.get_selected()
+                encryption_modes = ["disabled", "enabled", "forced"]
+                if selected < len(encryption_modes):
+                    settings["bittorrent.encryption_mode"] = encryption_modes[selected]
 
             # User agent
             user_agent_dropdown = self.get_widget("user_agent")
@@ -411,50 +272,42 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 if selected_index == 7:  # Custom
                     custom_user_agent = self.get_widget("custom_user_agent")
                     if custom_user_agent:
-                        bittorrent_settings["user_agent"] = custom_user_agent.get_text()
+                        settings["bittorrent.user_agent"] = custom_user_agent.get_text()
                 else:
                     predefined_agents = [
-                        "DFakeSeeder/1.0",
-                        "µTorrent/3.5.5",
-                        "BitTorrent/7.10.5",
-                        "qBittorrent/4.5.0",
-                        "Deluge/2.1.1",
+                        "Deluge/2.0.3 libtorrent/2.0.5.0",
+                        "qBittorrent/4.3.1",
                         "Transmission/3.00",
-                        "libtorrent/2.0.6",
+                        "uTorrent/3.5.5",
+                        "Vuze/5.7.6.0",
+                        "BitTorrent/7.10.5",
+                        "rTorrent/0.9.6",
                     ]
                     if selected_index < len(predefined_agents):
-                        bittorrent_settings["user_agent"] = predefined_agents[selected_index]
+                        settings["bittorrent.user_agent"] = predefined_agents[selected_index]
+
+            # Peer ID prefix
+            peer_id_prefix = self.get_widget("peer_id_prefix")
+            if peer_id_prefix:
+                settings["bittorrent.peer_id_prefix"] = peer_id_prefix.get_text()
 
             # Announce intervals
             announce = self.get_widget("announce_interval")
             if announce:
-                bittorrent_settings["announce_interval_seconds"] = int(announce.get_value())
+                settings["bittorrent.announce_interval_seconds"] = int(announce.get_value())
 
             min_announce = self.get_widget("min_announce_interval")
             if min_announce:
-                bittorrent_settings["min_announce_interval_seconds"] = int(min_announce.get_value())
+                settings["bittorrent.min_announce_interval_seconds"] = int(min_announce.get_value())
 
-            # Peer settings
-            max_peers_global = self.get_widget("max_peers_global")
-            if max_peers_global:
-                bittorrent_settings["max_peers_global"] = int(max_peers_global.get_value())
-
-            max_peers_torrent = self.get_widget("max_peers_torrent")
-            if max_peers_torrent:
-                bittorrent_settings["max_peers_per_torrent"] = int(max_peers_torrent.get_value())
-
-            max_upload_slots_global = self.get_widget("max_upload_slots_global")
-            if max_upload_slots_global:
-                bittorrent_settings["max_upload_slots_global"] = int(max_upload_slots_global.get_value())
-
-            max_upload_slots_torrent = self.get_widget("max_upload_slots_torrent")
-            if max_upload_slots_torrent:
-                bittorrent_settings["max_upload_slots_per_torrent"] = int(max_upload_slots_torrent.get_value())
+            scrape_interval = self.get_widget("scrape_interval")
+            if scrape_interval:
+                settings["bittorrent.scrape_interval_seconds"] = int(scrape_interval.get_value())
 
         except Exception as e:
             self.logger.error(f"Error collecting BitTorrent settings: {e}")
 
-        return bittorrent_settings
+        return settings
 
     def _validate_tab_settings(self) -> Dict[str, str]:
         """Validate BitTorrent tab settings."""
@@ -494,19 +347,22 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             selected_index = dropdown.get_selected()
 
             # NOTE: Setting will be saved in batch via _collect_settings()
-            if selected_index < 7:  # Not custom
-                predefined_agents = [
-                    "DFakeSeeder/1.0",
-                    "µTorrent/3.5.5",
-                    "BitTorrent/7.10.5",
-                    "qBittorrent/4.5.0",
-                    "Deluge/2.1.1",
-                    "Transmission/3.00",
-                    "libtorrent/2.0.6",
-                ]
-                if selected_index < len(predefined_agents):
-                    user_agent = predefined_agents[selected_index]
-                    self.logger.trace(f"User agent will change to: {user_agent}")
+            predefined_agents = [
+                "Deluge/2.0.3 libtorrent/2.0.5.0",
+                "qBittorrent/4.3.1",
+                "Transmission/3.00",
+                "uTorrent/3.5.5",
+                "Vuze/5.7.6.0",
+                "BitTorrent/7.10.5",
+                "rTorrent/0.9.6",
+            ]
+
+            if selected_index < len(predefined_agents):
+                user_agent = predefined_agents[selected_index]
+                self.app_settings.set("bittorrent.user_agent", user_agent)
+                self.logger.trace(f"User agent changed to: {user_agent}")
+            elif selected_index == 7:  # Custom
+                self.logger.trace("Custom user agent selected")
 
         except Exception as e:
             self.logger.error(f"Error changing user agent: {e}")
@@ -523,18 +379,24 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if pex:
                 self.set_switch_state(pex, True)
 
-            lsd = self.get_widget("enable_lsd")
-            if lsd:
-                self.set_switch_state(lsd, True)
+            lpd = self.get_widget("enable_lpd")
+            if lpd:
+                self.set_switch_state(lpd, True)
 
-            utp = self.get_widget("enable_utp")
-            if utp:
-                self.set_switch_state(utp, True)
+            # Reset encryption mode to "Enabled" (index 1)
+            encryption_mode = self.get_widget("encryption_mode")
+            if encryption_mode:
+                encryption_mode.set_selected(1)
 
-            # Reset user agent to default
+            # Reset user agent to default (index 0 = Deluge)
             user_agent = self.get_widget("user_agent")
             if user_agent:
-                user_agent.set_selected(0)  # DFakeSeeder/1.0
+                user_agent.set_selected(0)
+
+            # Reset peer ID prefix
+            peer_id_prefix = self.get_widget("peer_id_prefix")
+            if peer_id_prefix:
+                peer_id_prefix.set_text("-DE2003-")
 
             # Reset announce intervals
             announce = self.get_widget("announce_interval")
@@ -545,14 +407,9 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if min_announce:
                 min_announce.set_value(300)  # 5 minutes
 
-            # Reset peer settings
-            max_peers_global = self.get_widget("max_peers_global")
-            if max_peers_global:
-                max_peers_global.set_value(200)
-
-            max_peers_torrent = self.get_widget("max_peers_torrent")
-            if max_peers_torrent:
-                max_peers_torrent.set_value(50)
+            scrape_interval = self.get_widget("scrape_interval")
+            if scrape_interval:
+                scrape_interval.set_value(900)  # 15 minutes
 
             self.update_dependencies()
             self.show_notification("BitTorrent settings reset to defaults", "success")
