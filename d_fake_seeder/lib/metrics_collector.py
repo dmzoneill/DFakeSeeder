@@ -58,6 +58,7 @@ class MetricsCollector:
                 # Monitor the current process (DFakeSeeder itself)
                 # This is the correct approach since MetricsCollector runs inside the app
                 import os
+
                 self.pid = os.getpid()
                 self.process = psutil.Process(self.pid)
                 logger.trace(f"Monitoring current process: PID {self.pid}")
