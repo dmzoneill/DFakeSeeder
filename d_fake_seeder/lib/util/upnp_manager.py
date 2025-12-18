@@ -18,7 +18,7 @@ try:
     UPNP_AVAILABLE = True
 except ImportError:
     UPNP_AVAILABLE = False
-    miniupnpc = None  # type: ignore[assignment]
+    miniupnpc = None
 
 
 class UPnPManager:
@@ -40,8 +40,7 @@ class UPnPManager:
 
         if not UPNP_AVAILABLE:
             logger.warning(
-                "miniupnpc not installed - UPnP port forwarding disabled. "
-                "Install with: pip install miniupnpc",
+                "miniupnpc not installed - UPnP port forwarding disabled. " "Install with: pip install miniupnpc",
                 extra={"class_name": self.__class__.__name__},
             )
         else:
@@ -95,8 +94,7 @@ class UPnPManager:
                 local_ip = self.upnp.lanaddr
 
                 logger.debug(
-                    f"UPnP: Found IGD, external IP: {self.external_ip}, "
-                    f"local IP: {local_ip}",
+                    f"UPnP: Found IGD, external IP: {self.external_ip}, " f"local IP: {local_ip}",
                     extra={"class_name": self.__class__.__name__},
                 )
 
@@ -144,8 +142,7 @@ class UPnPManager:
                 self._started = True
 
                 logger.info(
-                    f"UPnP: Successfully mapped port {port} "
-                    f"(external IP: {self.external_ip})",
+                    f"UPnP: Successfully mapped port {port} " f"(external IP: {self.external_ip})",
                     extra={"class_name": self.__class__.__name__},
                 )
                 return True
@@ -251,4 +248,3 @@ def get_upnp_manager() -> UPnPManager:
     if _instance is None:
         _instance = UPnPManager()
     return _instance
-

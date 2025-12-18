@@ -153,6 +153,7 @@ class PeerServer:
         """Main async server loop"""
         try:
             from d_fake_seeder.lib.util.network import get_bind_address
+
             bind_address = get_bind_address()
 
             self.server = await asyncio.start_server(self._handle_client, bind_address, self.port)

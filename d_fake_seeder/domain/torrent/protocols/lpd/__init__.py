@@ -8,4 +8,3 @@ via multicast announcements.
 from .discovery import LocalPeerDiscovery, get_lpd_manager
 
 __all__ = ["LocalPeerDiscovery", "get_lpd_manager"]
-

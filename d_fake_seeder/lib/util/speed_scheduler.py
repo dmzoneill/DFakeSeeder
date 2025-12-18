@@ -6,7 +6,7 @@ automatically enabling/disabling alternative speeds during configured time windo
 """
 
 from datetime import datetime
-from typing import Any, Optional
+from typing import Optional
 
 from gi.repository import GLib
 
@@ -103,9 +103,7 @@ class SpeedScheduler:
         end_minute = self.settings.get("scheduler.end_minute", 0)
 
         # Check if current time is within the scheduled window
-        in_window = self._is_in_time_window(
-            now, start_hour, start_minute, end_hour, end_minute
-        )
+        in_window = self._is_in_time_window(now, start_hour, start_minute, end_hour, end_minute)
         self._set_alt_speeds(in_window)
 
         return True  # Keep timer running
@@ -195,4 +193,3 @@ def get_speed_scheduler() -> SpeedScheduler:
     if _instance is None:
         _instance = SpeedScheduler()
     return _instance
-

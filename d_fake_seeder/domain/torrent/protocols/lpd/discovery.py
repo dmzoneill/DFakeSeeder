@@ -6,10 +6,9 @@ This allows finding peers without relying on trackers or DHT.
 """
 
 import asyncio
-import re
 import socket
 import struct
-from typing import Any, Callable, Dict, Optional, Set, Tuple
+from typing import Callable, Dict, Optional, Set, Tuple
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -22,11 +21,7 @@ LPD_ANNOUNCE_INTERVAL = 300  # 5 minutes between announcements per torrent
 
 # BEP-014 message format
 LPD_MESSAGE_TEMPLATE = (
-    "BT-SEARCH * HTTP/1.1\r\n"
-    "Host: {addr}:{port}\r\n"
-    "Port: {listen_port}\r\n"
-    "Infohash: {infohash}\r\n"
-    "\r\n"
+    "BT-SEARCH * HTTP/1.1\r\n" "Host: {addr}:{port}\r\n" "Port: {listen_port}\r\n" "Infohash: {infohash}\r\n" "\r\n"
 )
 
 
@@ -90,9 +85,7 @@ class LocalPeerDiscovery:
 
         try:
             # Create UDP socket for multicast
-            self.socket = socket.socket(
-                socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP
-            )
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
             # Try to set SO_REUSEPORT if available (Linux)
@@ -105,9 +98,7 @@ class LocalPeerDiscovery:
             self.socket.bind(("", LPD_PORT))
 
             # Join the multicast group
-            mreq = struct.pack(
-                "4sl", socket.inet_aton(LPD_MULTICAST_ADDR_V4), socket.INADDR_ANY
-            )
+            mreq = struct.pack("4sl", socket.inet_aton(LPD_MULTICAST_ADDR_V4), socket.INADDR_ANY)
             self.socket.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
             # Set multicast TTL (1 = local network only)
@@ -174,12 +165,8 @@ class LocalPeerDiscovery:
         if self.socket:
             try:
                 # Leave multicast group
-                mreq = struct.pack(
-                    "4sl", socket.inet_aton(LPD_MULTICAST_ADDR_V4), socket.INADDR_ANY
-                )
-                self.socket.setsockopt(
-                    socket.IPPROTO_IP, socket.IP_DROP_MEMBERSHIP, mreq
-                )
+                mreq = struct.pack("4sl", socket.inet_aton(LPD_MULTICAST_ADDR_V4), socket.INADDR_ANY)
+                self.socket.setsockopt(socket.IPPROTO_IP, socket.IP_DROP_MEMBERSHIP, mreq)
             except Exception:
                 pass
 
@@ -247,9 +234,9 @@ class LocalPeerDiscovery:
 
         while self.running and self.socket:
             try:
-                # Wait for data with timeout
+                # Wait for data with timeout using run_in_executor for blocking recv
                 data, addr = await asyncio.wait_for(
-                    loop.sock_recvfrom(self.socket, 1024),
+                    loop.run_in_executor(None, self.socket.recvfrom, 1024),
                     timeout=1.0,
                 )
                 self._parse_announcement(data, addr)
@@ -327,8 +314,7 @@ class LocalPeerDiscovery:
                     )
 
             logger.debug(
-                f"LPD: Discovered peer {peer_ip}:{peer_port} for "
-                f"{info_hash_hex[:16]}...",
+                f"LPD: Discovered peer {peer_ip}:{peer_port} for " f"{info_hash_hex[:16]}...",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -394,4 +380,3 @@ def get_lpd_manager(
     if _instance is None:
         _instance = LocalPeerDiscovery(port, peer_callback)
     return _instance
-

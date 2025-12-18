@@ -116,7 +116,7 @@ class BaseSeeder:
         """
         # Get minimum announce interval from settings
         min_interval = self.settings.get("bittorrent.min_announce_interval_seconds", 300)
-        
+
         jitter_percent = CalculationConstants.ANNOUNCE_JITTER_PERCENT  # ±10% jitter
         jitter = (
             interval
@@ -127,7 +127,7 @@ class BaseSeeder:
             )
         )  # Random value between -10% and +10%
         jittered_interval = interval + jitter
-        
+
         # Enforce minimum interval
         if jittered_interval < min_interval:
             logger.trace(
@@ -137,7 +137,7 @@ class BaseSeeder:
             jittered_interval = min_interval
 
         logger.trace(
-            f"Applied jitter to interval: {interval:.1f}s -> {jittered_interval:.1f}s (jitter: {jitter:+.1f}s, min: {min_interval}s)",
+            f"Jittered interval: {interval:.1f}s -> {jittered_interval:.1f}s (min: {min_interval}s)",
             self.__class__.__name__,
         )
 

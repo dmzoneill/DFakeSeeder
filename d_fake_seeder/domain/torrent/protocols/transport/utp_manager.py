@@ -66,6 +66,7 @@ class UTPManager:
 
             # Create UDP socket
             from d_fake_seeder.lib.util.network import get_bind_tuple
+
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # type: ignore[assignment]
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # type: ignore[attr-defined]
             self.socket.bind(get_bind_tuple(self.port))  # type: ignore[attr-defined]

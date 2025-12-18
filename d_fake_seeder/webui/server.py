@@ -19,7 +19,7 @@ try:
     AIOHTTP_AVAILABLE = True
 except ImportError:
     AIOHTTP_AVAILABLE = False
-    web = None  # type: ignore[assignment]
+    web = None
 
 from .auth import create_auth_middleware, create_security_middleware
 from .routes import setup_routes
@@ -50,8 +50,7 @@ class WebUIServer:
 
         if not AIOHTTP_AVAILABLE:
             logger.warning(
-                "aiohttp not installed - Web UI disabled. "
-                "Install with: pip install aiohttp",
+                "aiohttp not installed - Web UI disabled. " "Install with: pip install aiohttp",
                 extra={"class_name": self.__class__.__name__},
             )
         else:
@@ -119,9 +118,7 @@ class WebUIServer:
             # Start the server
             self.runner = web.AppRunner(self.app)
             await self.runner.setup()
-            self.site = web.TCPSite(
-                self.runner, bind_addr, port, ssl_context=ssl_ctx
-            )
+            self.site = web.TCPSite(self.runner, bind_addr, port, ssl_context=ssl_ctx)
             await self.site.start()
 
             self._started = True
@@ -251,4 +248,3 @@ def get_webui_server(model: Any = None) -> WebUIServer:
     elif model is not None:
         _instance.set_model(model)
     return _instance
-

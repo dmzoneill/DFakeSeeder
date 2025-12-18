@@ -5,7 +5,6 @@ Provides authentication middleware and utilities for the Web UI server.
 """
 
 import base64
-import hashlib
 import secrets
 import time
 from typing import Any, Callable, Dict, Optional, Set
@@ -19,7 +18,7 @@ try:
     AIOHTTP_AVAILABLE = True
 except ImportError:
     AIOHTTP_AVAILABLE = False
-    web = None  # type: ignore[assignment]
+    web = None
 
 
 class SessionStore:
@@ -74,7 +73,8 @@ class SessionStore:
 
         # Update last access time
         session["last_access"] = time.time()
-        return session["username"]
+        username: str = session["username"]
+        return username
 
     def destroy_session(self, token: str) -> None:
         """
@@ -127,9 +127,7 @@ class FailedLoginTracker:
 
         # Clean old attempts
         if ip in self.failed_attempts:
-            self.failed_attempts[ip] = [
-                t for t in self.failed_attempts[ip] if current_time - t < self.ban_duration
-            ]
+            self.failed_attempts[ip] = [t for t in self.failed_attempts[ip] if current_time - t < self.ban_duration]
 
         # Add new attempt
         if ip not in self.failed_attempts:
@@ -169,7 +167,7 @@ class FailedLoginTracker:
         self.failed_attempts.pop(ip, None)
 
 
-def create_auth_middleware(settings: Any) -> Callable:
+def create_auth_middleware(settings: Any) -> Any:
     """
     Create authentication middleware for aiohttp.
 
@@ -192,9 +190,7 @@ def create_auth_middleware(settings: Any) -> Callable:
     public_routes: Set[str] = {"/api/login", "/api/health", "/"}
 
     @web.middleware
-    async def auth_middleware(
-        request: web.Request, handler: Callable
-    ) -> web.Response:
+    async def auth_middleware(request: web.Request, handler: Callable) -> web.Response:
         """Authentication middleware."""
         # Check if auth is enabled
         if not settings.get("webui.auth_enabled", True):
@@ -217,9 +213,7 @@ def create_auth_middleware(settings: Any) -> Callable:
             )
 
         # Check for session token in cookie or header
-        token = request.cookies.get("session") or request.headers.get(
-            "X-Session-Token"
-        )
+        token = request.cookies.get("session") or request.headers.get("X-Session-Token")
 
         if token:
             username = session_store.validate_session(token)
@@ -260,7 +254,7 @@ def create_auth_middleware(settings: Any) -> Callable:
     return auth_middleware
 
 
-def create_security_middleware(settings: Any) -> Callable:
+def create_security_middleware(settings: Any) -> Any:
     """
     Create security headers middleware.
 
@@ -274,9 +268,7 @@ def create_security_middleware(settings: Any) -> Callable:
         raise ImportError("aiohttp is required for Web UI")
 
     @web.middleware
-    async def security_middleware(
-        request: web.Request, handler: Callable
-    ) -> web.Response:
+    async def security_middleware(request: web.Request, handler: Callable) -> web.Response:
         """Add security headers to responses."""
         response = await handler(request)
 
@@ -295,4 +287,3 @@ def create_security_middleware(settings: Any) -> Callable:
         return response
 
     return security_middleware
-

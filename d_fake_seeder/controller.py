@@ -369,6 +369,7 @@ class Controller:
                 if value and not self.dht_manager:
                     dht_port = self.settings.get("connection.listening_port", 6881)
                     from d_fake_seeder.domain.torrent.dht_manager import DHTManager
+
                     self.dht_manager = DHTManager(port=dht_port)
                     self.dht_manager.start()
                     logger.info("DHT Manager started", "Controller")
@@ -398,6 +399,7 @@ class Controller:
         # Handle debug mode - switch logging to DEBUG level
         if key == "expert.debug_mode":
             from d_fake_seeder.lib.logger import reconfigure_logger
+
             if value:
                 # Set logging level to DEBUG when debug mode enabled
                 self.settings.set("logging.level", "DEBUG")
@@ -410,6 +412,7 @@ class Controller:
         # Handle logging level changes
         if key == "logging.level":
             from d_fake_seeder.lib.logger import reconfigure_logger
+
             reconfigure_logger()
             logger.info(f"Logging level changed to {value}")
 
@@ -477,19 +480,20 @@ class Controller:
 
     def _start_webui_async(self) -> None:
         """Start Web UI server asynchronously."""
-        if not self.webui_server:
+        server = self.webui_server
+        if not server:
             return
 
         async def _start() -> None:
             try:
-                if await self.webui_server.start():
+                if await server.start():
                     logger.info("Web UI server started", "Controller")
             except Exception as e:
                 logger.error(f"Failed to start Web UI: {e}", "Controller")
 
         # Run in existing event loop or create new one
         try:
-            loop = asyncio.get_running_loop()
+            asyncio.get_running_loop()
             asyncio.create_task(_start())
         except RuntimeError:
             # No running loop - use GLib to schedule
@@ -497,52 +501,55 @@ class Controller:
 
     def _stop_webui_async(self) -> None:
         """Stop Web UI server asynchronously."""
-        if not self.webui_server:
+        server = self.webui_server
+        if not server:
             return
 
         async def _stop() -> None:
             try:
-                await self.webui_server.stop()
+                await server.stop()
             except Exception as e:
                 logger.error(f"Error stopping Web UI: {e}", "Controller")
 
         try:
-            loop = asyncio.get_running_loop()
+            asyncio.get_running_loop()
             asyncio.create_task(_stop())
         except RuntimeError:
             GLib.idle_add(lambda: asyncio.run(_stop()) or False)
 
     def _start_lpd_async(self) -> None:
         """Start Local Peer Discovery asynchronously."""
-        if not self.lpd_manager:
+        lpd = self.lpd_manager
+        if not lpd:
             return
 
         async def _start() -> None:
             try:
-                if await self.lpd_manager.start():
+                if await lpd.start():
                     logger.info("Local Peer Discovery started", "Controller")
             except Exception as e:
                 logger.error(f"Failed to start LPD: {e}", "Controller")
 
         try:
-            loop = asyncio.get_running_loop()
+            asyncio.get_running_loop()
             asyncio.create_task(_start())
         except RuntimeError:
             GLib.idle_add(lambda: asyncio.run(_start()) or False)
 
     def _stop_lpd_async(self) -> None:
         """Stop Local Peer Discovery asynchronously."""
-        if not self.lpd_manager:
+        lpd = self.lpd_manager
+        if not lpd:
             return
 
         async def _stop() -> None:
             try:
-                await self.lpd_manager.stop()
+                await lpd.stop()
             except Exception as e:
                 logger.error(f"Error stopping LPD: {e}", "Controller")
 
         try:
-            loop = asyncio.get_running_loop()
+            asyncio.get_running_loop()
             asyncio.create_task(_stop())
         except RuntimeError:
             GLib.idle_add(lambda: asyncio.run(_stop()) or False)
@@ -565,7 +572,7 @@ class Controller:
                             info_hash_hex = info_hash.hex()
                             if info_hash_hex in self.global_peer_manager.peer_managers:
                                 manager = self.global_peer_manager.peer_managers[info_hash_hex]
-                                manager.add_peer(ip, port)
+                                manager.add_peers([f"{ip}:{port}"])
                                 logger.trace(
                                     f"Added LPD peer {ip}:{port} to torrent {torrent.name}",
                                     extra={"class_name": self.__class__.__name__},
