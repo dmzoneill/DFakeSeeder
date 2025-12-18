@@ -7,6 +7,7 @@ Provides automatic retry logic and graceful error recovery.
 """
 
 # fmt: off
+from typing import Any
 import os
 import signal
 import subprocess
@@ -38,7 +39,7 @@ class TrayLauncher:
     and graceful error handling for improved reliability.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.max_retries = 5
         self.retry_delay = 3  # seconds
         self.process = None
@@ -48,7 +49,7 @@ class TrayLauncher:
         signal.signal(signal.SIGINT, self._signal_handler)
         signal.signal(signal.SIGTERM, self._signal_handler)
 
-    def launch(self):
+    def launch(self) -> Any:
         """Launch the tray application with retry logic"""
         logger.info("Starting DFakeSeeder tray launcher")
 
@@ -84,7 +85,7 @@ class TrayLauncher:
 
         return True
 
-    def _launch_tray(self):
+    def _launch_tray(self) -> Any:
         """Launch the actual tray application"""
         try:
             # Get the path to the tray application
@@ -99,7 +100,7 @@ class TrayLauncher:
             env["PYTHONPATH"] = str(parent_dir)
 
             # Launch the tray application
-            self.process = subprocess.Popen(
+            self.process = subprocess.Popen(  # type: ignore[assignment]
                 [sys.executable, str(tray_script)],
                 env=env,
                 stdout=subprocess.PIPE,
@@ -108,17 +109,17 @@ class TrayLauncher:
             )
 
             # Wait a moment to see if it starts successfully
-            time.sleep(self._get_startup_delay())
+            time.sleep(self._get_startup_delay())  # type: ignore[attr-defined]
 
-            if self.process.poll() is None:
+            if self.process.poll() is None:  # type: ignore[attr-defined]
                 # Process is still running, wait for it to complete
-                stdout, stderr = self.process.communicate()
+                stdout, stderr = self.process.communicate()  # type: ignore[attr-defined]
 
-                if self.process.returncode == 0:
+                if self.process.returncode == 0:  # type: ignore[attr-defined]
                     logger.info("Tray application completed successfully")
                     return True
                 else:
-                    logger.error(f"Tray application failed with code {self.process.returncode}")
+                    logger.error(f"Tray application failed with code {self.process.returncode}")  # type: ignore[attr-defined]  # noqa: E501
                     if stderr:
                         logger.error(f"Error output: {stderr}")
                     return False
@@ -131,7 +132,7 @@ class TrayLauncher:
             logger.error(f"Failed to launch tray application: {e}")
             return False
 
-    def _check_dependencies(self):
+    def _check_dependencies(self) -> Any:
         """Check if required dependencies are available"""
         try:
             import gi
@@ -148,7 +149,7 @@ class TrayLauncher:
             logger.error("Please install: gir1.2-appindicator3-0.1 gir1.2-notify-0.7")
             return False
 
-    def _check_dbus_service(self):
+    def _check_dbus_service(self) -> Any:
         """Check if main DFakeSeeder application is running"""
         try:
             import gi
@@ -179,7 +180,7 @@ class TrayLauncher:
             logger.error(f"D-Bus service check failed: {e}")
             return False
 
-    def _signal_handler(self, signum, frame):
+    def _signal_handler(self, signum: Any, frame: Any) -> Any:
         """Handle shutdown signals"""
         logger.info(f"Received signal {signum}, shutting down")
         self.running = False
@@ -194,7 +195,7 @@ class TrayLauncher:
             except Exception as e:
                 logger.error(f"Error terminating tray process: {e}")
 
-    def run_diagnostics(self):
+    def run_diagnostics(self) -> None:
         """Run diagnostic checks"""
         logger.info("Running tray launcher diagnostics...")
 
@@ -211,10 +212,10 @@ class TrayLauncher:
         script_ok = tray_script.exists()
         logger.info(f"Tray script exists: {script_ok}")
 
-        return deps_ok and script_ok
+        return deps_ok and script_ok  # type: ignore[return-value]
 
 
-def main():
+def main() -> Any:
     """Main entry point"""
     launcher = TrayLauncher()
 

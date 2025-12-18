@@ -1,4 +1,5 @@
 # fmt: off
+from typing import Any
 import uuid
 
 import gi
@@ -14,7 +15,7 @@ class TorrentState(GObject.Object):
     tracker = GObject.Property(type=GObject.TYPE_STRING, default="")
     count = GObject.Property(type=GObject.TYPE_INT, default=0)
 
-    def __init__(self, tracker, count):
+    def __init__(self, tracker: Any, count: Any) -> None:
         super().__init__()
         self.uuid = str(uuid.uuid4())
         self.tracker = tracker

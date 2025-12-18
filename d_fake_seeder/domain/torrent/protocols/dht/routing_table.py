@@ -8,7 +8,7 @@ Manages node contacts and distance calculations for efficient peer discovery.
 # fmt: off
 import time
 from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import DHTConstants
@@ -37,13 +37,13 @@ class NodeContact:
         """Check if node is questionable"""
         return self.fail_count >= 3 or (time.time() - self.last_seen) >= 3600
 
-    def mark_good(self):
+    def mark_good(self) -> Any:
         """Mark node as responding properly"""
         self.good_count += 1
         self.fail_count = 0
         self.last_seen = time.time()
 
-    def mark_bad(self):
+    def mark_bad(self) -> Any:
         """Mark node as failing"""
         self.fail_count += 1
 
@@ -51,7 +51,7 @@ class NodeContact:
 class KBucket:
     """K-bucket for storing node contacts"""
 
-    def __init__(self, k: int = 8):
+    def __init__(self, k: int = 8) -> None:
         """
         Initialize K-bucket
 
@@ -140,7 +140,7 @@ class KBucket:
 class RoutingTable:
     """DHT Routing table implementation"""
 
-    def __init__(self, node_id: bytes, k: int = 8):
+    def __init__(self, node_id: bytes, k: int = 8) -> None:
         """
         Initialize routing table
 
@@ -234,7 +234,7 @@ class RoutingTable:
             )
         return info
 
-    def mark_node_good(self, node_id: bytes):
+    def mark_node_good(self, node_id: bytes) -> Any:
         """Mark node as good (responding)"""
         bucket_index = self._get_bucket_index(node_id)
         if bucket_index < len(self.buckets):
@@ -242,7 +242,7 @@ class RoutingTable:
             if node:
                 node.mark_good()
 
-    def mark_node_bad(self, node_id: bytes):
+    def mark_node_bad(self, node_id: bytes) -> Any:
         """Mark node as bad (not responding)"""
         bucket_index = self._get_bucket_index(node_id)
         if bucket_index < len(self.buckets):
@@ -253,7 +253,7 @@ class RoutingTable:
                 if node.fail_count >= DHTConstants.MAX_FAIL_COUNT:
                     self.buckets[bucket_index].remove_node(node_id)
 
-    def cleanup_stale_nodes(self, max_age: int = 3600):
+    def cleanup_stale_nodes(self, max_age: int = 3600) -> None:
         """
         Remove stale nodes from routing table
 
@@ -295,7 +295,7 @@ class RoutingTable:
         # Only split if this bucket contains our node ID range
         return bucket_index == len(self.buckets) - 1 and len(self.buckets) < 160
 
-    def _split_bucket(self, bucket_index: int):
+    def _split_bucket(self, bucket_index: int) -> Any:
         """Split bucket into two buckets"""
         old_bucket = self.buckets[bucket_index]
         new_bucket = KBucket(self.k)

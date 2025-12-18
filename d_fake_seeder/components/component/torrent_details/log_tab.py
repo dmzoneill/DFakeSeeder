@@ -8,7 +8,7 @@ Displays application log messages in a scrollable text view with batched updates
 
 # fmt: off
 import logging
-from typing import List, Optional
+from typing import Any, List, Optional
 
 import gi
 
@@ -31,7 +31,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
     Captures log messages and displays them in a text view with performance optimizations.
     """
 
-    def __init__(self, builder: Gtk.Builder, model):
+    def __init__(self, builder: Gtk.Builder, model: Any) -> None:
         """Initialize the log tab."""
         super().__init__(builder, model)
         PerformanceMixin.__init__(self)
@@ -74,7 +74,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
         except Exception as e:
             self.logger.error(f"Error clearing log tab content: {e}")
 
-    def update_content(self, torrent) -> None:
+    def update_content(self, torrent: Any) -> None:
         """
         Update log tab content.
 
@@ -92,7 +92,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
         """Set up log handler to capture messages for the log viewer."""
         try:
 
-            def update_textview(record):
+            def update_textview(record: Any) -> None:
                 """Update text view with log record."""
                 msg = f"{record.levelname}: {record.getMessage()}\n"
                 self._queue_log_message(msg)
@@ -262,7 +262,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
 
             buffer = self._log_viewer.get_buffer()
             start_iter, end_iter = buffer.get_bounds()
-            return buffer.get_text(start_iter, end_iter, False)
+            return buffer.get_text(start_iter, end_iter, False)  # type: ignore[no-any-return]
 
         except Exception as e:
             self.logger.error(f"Error getting log content: {e}")
@@ -280,7 +280,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
                 return 0
 
             buffer = self._log_viewer.get_buffer()
-            return buffer.get_line_count()
+            return buffer.get_line_count()  # type: ignore[no-any-return]
 
         except Exception as e:
             self.logger.error(f"Error getting line count: {e}")

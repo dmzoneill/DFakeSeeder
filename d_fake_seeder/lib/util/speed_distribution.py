@@ -16,7 +16,7 @@ from d_fake_seeder.lib.logger import logger
 class SpeedDistributor(ABC):
     """Base class for speed distribution algorithms."""
 
-    def __init__(self, percentage: float = 50.0, stopped_percentage: float = 0.0):
+    def __init__(self, percentage: float = 50.0, stopped_percentage: float = 0.0) -> None:
         """
         Initialize distributor.
 
@@ -128,7 +128,7 @@ class ParetoDistributor(SpeedDistributor):
         speeds = {}
         for tid in stopped_ids:
             speeds[tid] = 0.0
-            speeds[tid + "_category"] = "Stopped"
+            speeds[tid + "_category"] = "Stopped"  # type: ignore[assignment]
 
         # If all torrents are stopped, return early
         if not active_ids:
@@ -185,7 +185,7 @@ class ParetoDistributor(SpeedDistributor):
         speeds = {}
         for tid, weight in zip(torrent_ids, weights):
             speeds[tid] = (weight / total_weight) * bandwidth
-            speeds[tid + "_category"] = tier  # Store category for debug output
+            speeds[tid + "_category"] = tier  # type: ignore[assignment]
 
         return speeds
 
@@ -380,15 +380,10 @@ def create_distributor(algorithm: str, percentage: float = 50.0, stopped_percent
     }
 
     distributor_class = distributors.get(algorithm, OffDistributor)
-    return distributor_class(percentage, stopped_percentage)
+    return distributor_class(percentage, stopped_percentage)  # type: ignore[abstract]
 
 
-def format_debug_output(
-    torrent_name: str,
-    algorithm: str,
-    speed: float,
-    category: str = None,
-) -> str:
+def format_debug_output(torrent_name: str, algorithm: str, speed: float, category: str = None) -> str:  # type: ignore[assignment]  # noqa: E501
     """
     Format debug output for a torrent's distributed speed.
 

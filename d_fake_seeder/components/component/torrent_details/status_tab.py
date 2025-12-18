@@ -7,6 +7,7 @@ Displays torrent attributes and status information in a grid layout.
 # isort: skip_file
 
 # fmt: off
+from typing import Any
 import gi
 
 from d_fake_seeder.domain.torrent.model.attributes import Attributes
@@ -71,7 +72,7 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error removing status grid child: {e}")
 
-    def update_content(self, torrent) -> None:
+    def update_content(self, torrent: Any) -> None:
         """
         Update status tab content with torrent data.
 
@@ -135,7 +136,7 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             self.logger.error(f"Error getting compatible attributes: {e}")
             return []
 
-    def _create_attribute_row(self, torrent, attribute: str, row: int) -> None:
+    def _create_attribute_row(self, torrent: Any, attribute: str, row: int) -> None:
         """
         Create a row in the grid for a torrent attribute.
 
@@ -203,7 +204,7 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
         # Return the mapped display name or a formatted version of the attribute
         if attribute in attribute_display_map:
-            return attribute_display_map[attribute]
+            return attribute_display_map[attribute]  # type: ignore[no-any-return]
         else:
             # Fallback: convert underscore_case to Title Case
             return attribute.replace("_", " ").title()

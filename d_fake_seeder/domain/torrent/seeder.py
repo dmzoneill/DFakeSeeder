@@ -5,6 +5,7 @@ RFC: https://wiki.theory.org/index.php/BitTorrentSpecification
 # isort: skip_file
 
 # fmt: off
+from typing import Any
 from urllib.parse import urlparse
 
 import gi
@@ -22,21 +23,21 @@ from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 
 class Seeder:
-    def __init__(self, torrent):
+    def __init__(self, torrent: Any) -> None:
         logger.trace("Startup", extra={"class_name": self.__class__.__name__})
-        self.ready = False
+        self.ready = False  # type: ignore[method-assign, assignment]
         self.seeder = None
         self.settings = AppSettings.get_instance()
         self.check_announce_attribute(torrent)
 
-    def check_announce_attribute(self, torrent, attempts=3):
+    def check_announce_attribute(self, torrent: Any, attempts: Any = 3) -> Any:
         if hasattr(torrent, "announce"):
-            self.ready = True
+            self.ready = True  # type: ignore[method-assign, assignment]
             parsed_url = urlparse(torrent.announce)
             if parsed_url.scheme == "http" or parsed_url.scheme == "https":
-                self.seeder = HTTPSeeder(torrent)
+                self.seeder = HTTPSeeder(torrent)  # type: ignore[assignment]
             elif parsed_url.scheme == "udp":
-                self.seeder = UDPSeeder(torrent)
+                self.seeder = UDPSeeder(torrent)  # type: ignore[assignment]
             else:
                 logger.error(
                     f"Unsupported tracker scheme: {parsed_url.scheme}",
@@ -53,52 +54,52 @@ class Seeder:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-    def load_peers(self):
+    def load_peers(self) -> None:
         if self.seeder:
             return self.seeder.load_peers()
         else:
-            return False
+            return False  # type: ignore[return-value]
 
-    def upload(self, uploaded_bytes, downloaded_bytes, download_left):
+    def upload(self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any) -> Any:
         if self.seeder:
             self.seeder.upload(uploaded_bytes, downloaded_bytes, download_left)
         else:
             return False
 
     @property
-    def peers(self):
+    def peers(self) -> Any:
         return self.seeder.peers if self.seeder is not None else 0
 
     @property
-    def clients(self):
+    def clients(self) -> Any:
         return self.seeder.clients if self.seeder is not None else 0
 
     @property
-    def seeders(self):
+    def seeders(self) -> Any:
         return self.seeder.seeders if self.seeder is not None else 0
 
     @property
-    def tracker(self):
+    def tracker(self) -> Any:
         return self.seeder.tracker if self.seeder is not None else ""
 
     @property
-    def leechers(self):
+    def leechers(self) -> Any:
         return self.seeder.leechers if self.seeder is not None else 0
 
-    def get_peer_data(self, peer_address):
+    def get_peer_data(self, peer_address: Any) -> Any:
         """Get comprehensive peer data for a specific peer"""
         return self.seeder.get_peer_data(peer_address) if self.seeder is not None else {}
 
-    def ready(self):
-        return self.ready and self.seeder is not None
+    def ready(self) -> Any:
+        return self.ready and self.seeder is not None  # type: ignore[truthy-function]
 
-    def request_shutdown(self):
+    def request_shutdown(self) -> Any:
         """Request graceful shutdown of the seeder"""
         if self.seeder:
             self.seeder.request_shutdown()
 
-    def handle_settings_changed(self, source, key, value):
-        self.seeder.handle_settings_changed(source, key, value)
+    def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
+        self.seeder.handle_settings_changed(source, key, value)  # type: ignore[attr-defined]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.seeder)

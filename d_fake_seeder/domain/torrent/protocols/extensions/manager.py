@@ -24,7 +24,7 @@ except ImportError:
 class ExtensionManager:
     """Manages BitTorrent protocol extensions"""
 
-    def __init__(self, peer_connection):
+    def __init__(self, peer_connection: Any) -> None:
         """
         Initialize extension manager
 
@@ -41,13 +41,13 @@ class ExtensionManager:
         self.lt_donthave_enabled = extensions_config.get("lt_donthave", True)
 
         # Extension registry
-        self.supported_extensions = {}
-        self.peer_extensions = {}  # Extensions supported by peer
-        self.extension_instances = {}  # Active extension instances
+        self.supported_extensions = {}  # type: ignore[var-annotated]
+        self.peer_extensions: Dict[str, Any] = {}  # Extensions supported by peer
+        self.extension_instances: Dict[str, Any] = {}  # Active extension instances
 
         # Extension message IDs (negotiated during handshake)
-        self.local_extension_ids = {}  # Our extension name -> message ID
-        self.remote_extension_ids = {}  # Peer's extension name -> message ID
+        self.local_extension_ids: Dict[str, Any] = {}  # Our extension name -> message ID
+        self.remote_extension_ids: Dict[str, Any] = {}  # Peer's extension name -> message ID
 
         self._register_extensions()
 
@@ -59,7 +59,7 @@ class ExtensionManager:
             },
         )
 
-    def _register_extensions(self):
+    def _register_extensions(self) -> Any:
         """Register supported extensions"""
         if self.ut_metadata_enabled:
             from .metadata import MetadataExtension
@@ -136,7 +136,7 @@ class ExtensionManager:
                 },
             )
 
-            return message
+            return message  # type: ignore[no-any-return]
 
         except Exception as e:
             logger.error(
@@ -145,7 +145,7 @@ class ExtensionManager:
             )
             return b""
 
-    def handle_extended_handshake(self, payload: bytes):
+    def handle_extended_handshake(self, payload: bytes) -> None:
         """
         Handle extended handshake from peer
 
@@ -191,7 +191,7 @@ class ExtensionManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def handle_extended_message(self, extension_id: int, payload: bytes):
+    def handle_extended_message(self, extension_id: int, payload: bytes) -> None:
         """
         Handle extended message from peer
 
@@ -235,7 +235,7 @@ class ExtensionManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def send_extended_message(self, extension_name: str, payload: bytes):
+    def send_extended_message(self, extension_name: str, payload: bytes) -> Any:
         """
         Send extended message to peer
 
@@ -278,7 +278,7 @@ class ExtensionManager:
             )
             return False
 
-    def _initialize_extension(self, extension_name: str):
+    def _initialize_extension(self, extension_name: str) -> Any:
         """
         Initialize extension instance
 
@@ -312,7 +312,7 @@ class ExtensionManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def get_extension(self, extension_name: str):
+    def get_extension(self, extension_name: str) -> Any:
         """
         Get extension instance
 
@@ -350,7 +350,7 @@ class ExtensionManager:
             "extensions": list(self.peer_extensions.keys()),
         }
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up extension instances"""
         for extension_name, extension in self.extension_instances.items():
             try:

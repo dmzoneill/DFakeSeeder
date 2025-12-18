@@ -417,7 +417,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         except Exception as e:
             self.logger.error(f"Error handling connection limit change: {e}", exc_info=True)
 
-    def on_proxy_type_changed(self, dropdown: Gtk.DropDown, param) -> None:
+    def on_proxy_type_changed(self, dropdown: Gtk.DropDown, param: Any) -> None:
         """Handle proxy type change."""
         if self._loading_settings:
             return
@@ -517,7 +517,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         except Exception as e:
             self.logger.error(f"Error resetting Connection tab to defaults: {e}")
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update view based on model changes."""
         self.logger.trace(
             "ConnectionTab update view",

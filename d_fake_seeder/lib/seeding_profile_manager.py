@@ -33,7 +33,7 @@ class SeedingProfileManager:
     # Dropdown index to profile name mapping
     PROFILE_INDEX_MAP = {0: "conservative", 1: "balanced", 2: "aggressive", 3: "custom"}
 
-    def __init__(self, app_settings):
+    def __init__(self, app_settings: Any) -> None:
         """
         Initialize the profile manager.
 
@@ -56,7 +56,7 @@ class SeedingProfileManager:
                 f"Loaded current profile: {current}",
                 extra={"class_name": self.__class__.__name__},
             )
-            return current
+            return current  # type: ignore[no-any-return]
         except Exception as e:
             self.logger.error(
                 f"Error loading current profile: {e}",
@@ -141,7 +141,7 @@ class SeedingProfileManager:
                     "custom_seeding_profile", predefined_profiles["balanced"].copy()
                 )
                 custom_settings["description"] = "User-defined custom settings"
-                return custom_settings
+                return custom_settings  # type: ignore[no-any-return]
             elif profile_name in predefined_profiles:
                 return predefined_profiles[profile_name]
             else:

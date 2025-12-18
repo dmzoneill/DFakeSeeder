@@ -45,7 +45,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
         supported_languages: Optional[Set[str]] = None,
         config_file: Optional[str] = None,
         fallback_language: str = "en",
-    ):
+    ) -> None:  # noqa: E501
         """Initialize the GTK4 translation manager"""
         self._domain = domain
         self._localedir = localedir or os.path.join(os.getcwd(), "locale")
@@ -237,12 +237,8 @@ class TranslationManagerGTK4(TranslationManagerBase):
         self.register_widget(widget, translation_key, property_name, widget_id)
 
     def register_widget(
-        self,
-        widget: Gtk.Widget,
-        translation_key: str,
-        property_name: str = "label",
-        widget_id: Optional[str] = None,
-    ):
+        self, widget: Gtk.Widget, translation_key: str, property_name: str = "label", widget_id: Optional[str] = None
+    ) -> None:  # noqa: E501
         """Manually register a widget for translation"""
         # Check if already registered
         for existing_widget in self.translatable_widgets:
@@ -263,7 +259,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
         """Update all registered translation functions"""
         self._refresh_translations_immediate()
 
-    def _refresh_translations_immediate(self):
+    def _refresh_translations_immediate(self) -> None:
         """Update all widget translations immediately"""
         if self._updating:
             return
@@ -287,7 +283,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
         finally:
             self._updating = False
 
-    def _set_widget_property(self, widget: Gtk.Widget, property_name: str, value: str):
+    def _set_widget_property(self, widget: Gtk.Widget, property_name: str, value: str) -> Any:
         """Set a property on a widget with appropriate method"""
         if property_name == "label":
             if hasattr(widget, "set_label"):
@@ -317,7 +313,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
             from lib.util.language_config import get_language_display_names
 
             language_names = get_language_display_names()
-            return language_names.get(language_code, language_code.upper())
+            return language_names.get(language_code, language_code.upper())  # type: ignore[no-any-return]
         except Exception as e:
             logger.trace(
                 f"Could not load language names from config: {e}",
@@ -347,7 +343,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
             return {"translated_count": 0, "total_count": 1, "coverage_percent": 0}
 
     # GTK4-specific methods for advanced functionality
-    def scan_builder_widgets(self, builder: Gtk.Builder):
+    def scan_builder_widgets(self, builder: Gtk.Builder) -> Any:
         """
         Scan all widgets from a Gtk.Builder and register those marked as translatable.
         This method finds widgets that were marked with translatable="yes" in the UI file
@@ -389,15 +385,15 @@ class TranslationManagerGTK4(TranslationManagerBase):
         """Try to find the ID of a widget from the builder."""
         # Try to get the buildable name (the ID from the UI file)
         if hasattr(widget, "get_buildable_id"):
-            return widget.get_buildable_id()
+            return widget.get_buildable_id()  # type: ignore[no-any-return]
         # Fallback: check all objects to find matching widget
         objects = builder.get_objects()
         for obj in objects:
             if obj is widget and hasattr(obj, "get_name"):
-                return obj.get_name()
+                return obj.get_name()  # type: ignore[no-any-return]
         return None
 
-    def _check_and_register_widget(self, widget: Gtk.Widget, widget_id: Optional[str]):
+    def _check_and_register_widget(self, widget: Gtk.Widget, widget_id: Optional[str]) -> Any:
         """Check if a widget should be registered for translation and register it."""
         # List to store multiple translatable properties for this widget
         translatable_properties = []
@@ -493,11 +489,8 @@ class TranslationManagerGTK4(TranslationManagerBase):
                 )
 
     def register_menu(
-        self,
-        menu: Gio.Menu,
-        menu_items: List[Dict[str, str]],
-        popover: Optional[Gtk.PopoverMenu] = None,
-    ):
+        self, menu: Gio.Menu, menu_items: List[Dict[str, str]], popover: Optional[Gtk.PopoverMenu] = None
+    ) -> None:  # noqa: E501
         """Register a menu for translation updates"""
         for existing_menu in self.translatable_menus:
             if existing_menu["menu"] is menu:
@@ -506,7 +499,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
         menu_info = {"menu": menu, "items": menu_items, "popover": popover}
         self.translatable_menus.append(menu_info)
 
-    def refresh_menu_translations(self):
+    def refresh_menu_translations(self) -> None:
         """Recreate all registered menus with translated text"""
         for menu_info in self.translatable_menus:
             try:
@@ -514,7 +507,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
             except Exception as e:
                 logger.warning(f"Warning: Could not refresh menu translations: {e}")
 
-    def _recreate_menu(self, menu_info: Dict[str, Any]):
+    def _recreate_menu(self, menu_info: Dict[str, Any]) -> Any:
         """Recreate a menu with translated text"""
         menu = menu_info["menu"]
         items = menu_info["items"]
@@ -587,7 +580,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
                     f"_get_target_language() final target: {language}",
                     "TranslationManagerGTK4",
                 )
-                return language
+                return language  # type: ignore[no-any-return]
             except Exception as e:
                 logger.trace(
                     f"Could not get language from AppSettings: {e}",
@@ -605,7 +598,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
         """Get the set of supported language codes"""
         return self.supported_languages.copy()
 
-    def set_widget_state(self, widget_id: str, key: str, value: Any):
+    def set_widget_state(self, widget_id: str, key: str, value: Any) -> None:
         """Store state for a widget (e.g., whether button was clicked)"""
         if not hasattr(self, "state_storage"):
             self.state_storage = {}
@@ -619,14 +612,14 @@ class TranslationManagerGTK4(TranslationManagerBase):
             self.state_storage = {}
         return self.state_storage.get(widget_id, {}).get(key, default)
 
-    def update_translation_key(self, widget_id: str, new_key: str):
+    def update_translation_key(self, widget_id: str, new_key: str) -> None:
         """Update the translation key for a specific widget"""
         for widget_info in self.translatable_widgets:
             if widget_info.get("widget_id") == widget_id:
                 widget_info["translation_key"] = new_key
                 break
 
-    def refresh_all_translations(self):
+    def refresh_all_translations(self) -> None:
         """Refresh translations for all registered widgets immediately"""
         self._refresh_translations_immediate()
 
@@ -634,7 +627,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
         """Get list of all registered translatable widgets"""
         return self.translatable_widgets.copy()
 
-    def clear_registrations(self):
+    def clear_registrations(self) -> None:
         """Clear all registered widgets and menus"""
         self.translatable_widgets.clear()
         self.translatable_menus.clear()
@@ -643,7 +636,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
         if hasattr(self, "_scanned_builders"):
             self._scanned_builders.clear()
 
-    def print_discovered_widgets(self):
+    def print_discovered_widgets(self) -> Any:
         """Debug method to print all discovered translatable widgets"""
         logger.trace("Discovered translatable widgets:", "TranslationManagerGTK4")
         for widget_info in self.translatable_widgets:

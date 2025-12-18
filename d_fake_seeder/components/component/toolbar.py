@@ -1,5 +1,6 @@
 # fmt: off
 # isort: skip_file
+from typing import Any
 import math
 import os
 import shutil
@@ -21,7 +22,7 @@ from gi.repository import Gtk  # noqa
 
 
 class Toolbar(Component):
-    def __init__(self, builder, model, app):
+    def __init__(self, builder: Any, model: Any, app: Any) -> None:
         super().__init__()
         with logger.performance.operation_context("toolbar_init", self.__class__.__name__):
             logger.trace("Toolbar.__init__ START", self.__class__.__name__)
@@ -255,19 +256,19 @@ class Toolbar(Component):
         logger.trace("toolbar_refresh_rate setup completed", "Toolbar")
         logger.trace("===== Toolbar.__init__ COMPLETE =====", "Toolbar")
 
-    def _(self, text):
+    def _(self, text: Any) -> Any:
         """Get translation function from model's TranslationManager"""
         if hasattr(self, "model") and self.model and hasattr(self.model, "translation_manager"):
             return self.model.translation_manager.translate_func(text)
         return text  # Fallback if model not set yet
 
-    def on_toolbar_refresh_rate_preview(self, scale):
+    def on_toolbar_refresh_rate_preview(self, scale: Any) -> None:
         """Preview changes without saving to settings to avoid UI hanging during drag"""
         # This method is called continuously during drag for visual feedback
         # but doesn't save to settings to prevent UI freezing
         pass
 
-    def on_toolbar_refresh_rate_released(self, gesture, n_press, x, y):
+    def on_toolbar_refresh_rate_released(self, gesture: Any, n_press: Any, x: Any, y: Any) -> None:
         """Save settings only when user releases the mouse button"""
         value = self.toolbar_refresh_rate.get_value()
         logger.trace(f"Slider released with value: {value}", "Toolbar")
@@ -275,14 +276,14 @@ class Toolbar(Component):
         self.settings.set("tickspeed", tickspeed)
         logger.trace(f"Saved tickspeed to settings: {tickspeed}", "Toolbar")
 
-    def on_toolbar_add_clicked(self, button):
+    def on_toolbar_add_clicked(self, button: Any) -> None:
         logger.trace(
             "Toolbar add button clicked",
             extra={"class_name": self.__class__.__name__},
         )
         self.show_file_selection_dialog()
 
-    def on_toolbar_remove_clicked(self, button):
+    def on_toolbar_remove_clicked(self, button: Any) -> None:
         logger.trace(
             "Toolbar remove button clicked",
             extra={"class_name": self.__class__.__name__},
@@ -306,9 +307,9 @@ class Toolbar(Component):
                 extra={"class_name": self.__class__.__name__},
             )
             pass
-        self.model.remove_torrent(selected.filepath)
+        self.model.remove_torrent(selected.filepath)  # type: ignore[attr-defined]
 
-    def on_toolbar_pause_clicked(self, button):
+    def on_toolbar_pause_clicked(self, button: Any) -> None:
         logger.trace(
             "Toolbar pause button clicked",
             extra={"class_name": self.__class__.__name__},
@@ -317,9 +318,9 @@ class Toolbar(Component):
         if not selected:
             return
         selected.active = False
-        self.model.emit("data-changed", self.model, selected)
+        self.model.emit("data-changed", self.model, selected)  # type: ignore[attr-defined]
 
-    def on_toolbar_resume_clicked(self, button):
+    def on_toolbar_resume_clicked(self, button: Any) -> None:
         logger.trace(
             "Toolbar resume button clicked",
             extra={"class_name": self.__class__.__name__},
@@ -328,9 +329,9 @@ class Toolbar(Component):
         if not selected:
             return
         selected.active = True
-        self.model.emit("data-changed", self.model, selected)
+        self.model.emit("data-changed", self.model, selected)  # type: ignore[attr-defined]
 
-    def on_toolbar_up_clicked(self, button):
+    def on_toolbar_up_clicked(self, button: Any) -> None:
         logger.trace(
             "Toolbar up button clicked",
             extra={"class_name": self.__class__.__name__},
@@ -340,15 +341,15 @@ class Toolbar(Component):
             return
         if not selected or selected.id == 1:
             return
-        for torrent in self.model.torrent_list:
+        for torrent in self.model.torrent_list:  # type: ignore[attr-defined]
             if torrent.id == selected.id - 1:
                 torrent.id = selected.id
                 selected.id -= 1
-                self.model.emit("data-changed", self.model, selected)
-                self.model.emit("data-changed", self.model, torrent)
+                self.model.emit("data-changed", self.model, selected)  # type: ignore[attr-defined]
+                self.model.emit("data-changed", self.model, torrent)  # type: ignore[attr-defined]
                 break
 
-    def on_toolbar_down_clicked(self, button):
+    def on_toolbar_down_clicked(self, button: Any) -> None:
         logger.trace(
             "Toolbar down button clicked",
             extra={"class_name": self.__class__.__name__},
@@ -356,24 +357,24 @@ class Toolbar(Component):
         selected = self.get_selected_torrent()
         if not selected:
             return
-        if not selected or selected.id == len(self.model.torrent_list):
+        if not selected or selected.id == len(self.model.torrent_list):  # type: ignore[attr-defined]
             return
-        for torrent in self.model.torrent_list:
+        for torrent in self.model.torrent_list:  # type: ignore[attr-defined]
             if torrent.id == selected.id + 1:
                 torrent.id = selected.id
                 selected.id += 1
-                self.model.emit("data-changed", self.model, selected)
-                self.model.emit("data-changed", self.model, torrent)
+                self.model.emit("data-changed", self.model, selected)  # type: ignore[attr-defined]
+                self.model.emit("data-changed", self.model, torrent)  # type: ignore[attr-defined]
                 break
 
-    def on_toolbar_search_clicked(self, button):
+    def on_toolbar_search_clicked(self, button: Any) -> None:
         logger.trace(
             "Toolbar search button clicked",
             extra={"class_name": self.__class__.__name__},
         )
         self.toggle_search_entry()
 
-    def on_toolbar_settings_clicked(self, button):
+    def on_toolbar_settings_clicked(self, button: Any) -> None:
         logger.debug("===== SETTINGS BUTTON CLICKED =====", "Toolbar")
         logger.trace("Button clicked:", "Toolbar")
         logger.trace("Button type:", "Toolbar")
@@ -418,7 +419,7 @@ class Toolbar(Component):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def show_settings_dialog(self):
+    def show_settings_dialog(self) -> None:
         """Show the application settings dialog"""
         logger.trace("===== ENTERING show_settings_dialog =====", "Toolbar")
         logger.trace(
@@ -526,8 +527,8 @@ class Toolbar(Component):
                     extra={"class_name": self.__class__.__name__},
                 )
                 self.track_signal(
-                    self.settings_dialog.window,
-                    self.settings_dialog.window.connect("close-request", self._on_settings_dialog_closed),
+                    self.settings_dialog.window,  # type: ignore[attr-defined]
+                    self.settings_dialog.window.connect("close-request", self._on_settings_dialog_closed),  # type: ignore[attr-defined]  # noqa: E501
                 )
                 logger.info("Close-request signal connected successfully", "Toolbar")
             else:
@@ -541,7 +542,7 @@ class Toolbar(Component):
                 "About to call settings_dialog.show()",
                 extra={"class_name": self.__class__.__name__},
             )
-            self.settings_dialog.show()
+            self.settings_dialog.show()  # type: ignore[attr-defined]
             logger.info("Settings dialog show() called successfully", "Toolbar")
             logger.trace(
                 "Settings dialog show() called successfully",
@@ -560,16 +561,16 @@ class Toolbar(Component):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _on_settings_dialog_closed(self, window):
+    def _on_settings_dialog_closed(self, window: Any) -> Any:
         """Clean up settings dialog reference when closed"""
         logger.trace(
             "Settings dialog closed, cleaning up reference",
             extra={"class_name": self.__class__.__name__},
         )
         self.settings_dialog = None
-        return False  # Allow the window to close
+        return False  # Allow the window to close  # type: ignore
 
-    def on_dialog_response(self, dialog, response_id):
+    def on_dialog_response(self, dialog: Any, response_id: Any) -> None:
         if response_id == Gtk.ResponseType.OK:
             logger.trace(
                 "Toolbar file added",
@@ -581,12 +582,12 @@ class Toolbar(Component):
             shutil.copy(os.path.abspath(selected_file.get_path()), torrents_path)
             file_path = selected_file.get_path()
             copied_torrent_path = os.path.join(torrents_path, os.path.basename(file_path))
-            self.model.add_torrent(copied_torrent_path)
+            self.model.add_torrent(copied_torrent_path)  # type: ignore[attr-defined]
             dialog.destroy()
         else:
             dialog.destroy()
 
-    def show_file_selection_dialog(self):
+    def show_file_selection_dialog(self) -> None:
         logger.trace("Toolbar file dialog", extra={"class_name": self.__class__.__name__})
         # Create a new file chooser dialog
         dialog = Gtk.FileChooserDialog(
@@ -606,38 +607,38 @@ class Toolbar(Component):
         # Run the dialog
         dialog.show()
 
-    def get_selected_torrent(self):
+    def get_selected_torrent(self) -> Any:
         return self.selection
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         pass
 
-    def handle_settings_changed(self, source, key, value):
+    def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         logger.trace(
             "Torrents view settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_model_changed(self, source, data_obj, data_changed):
+    def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
         logger.trace(
             "Toolbar settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_attribute_changed(self, source, key, value):
+    def handle_attribute_changed(self, source: Any, key: Any, value: Any) -> None:
         logger.trace(
             "Attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def model_selection_changed(self, source, model, torrent):
+    def model_selection_changed(self, source: Any, model: Any, torrent: Any) -> Any:
         logger.trace(
             "Model selection changed",
             extra={"class_name": self.__class__.__name__},
         )
         self.selection = torrent
 
-    def toggle_search_entry(self):
+    def toggle_search_entry(self) -> Any:
         """Toggle the visibility of the search entry and handle focus"""
         self.search_visible = not self.search_visible
         self.toolbar_search_entry.set_visible(self.search_visible)
@@ -650,7 +651,7 @@ class Toolbar(Component):
             # Trigger search clear to show all torrents
             self.on_search_entry_changed(self.toolbar_search_entry)
 
-    def on_search_entry_changed(self, entry):
+    def on_search_entry_changed(self, entry: Any) -> None:
         """Handle real-time search as user types"""
         search_text = entry.get_text().strip()
         logger.trace(
@@ -659,9 +660,9 @@ class Toolbar(Component):
         )
         # Emit search signal to update torrent filtering
         if hasattr(self.model, "set_search_filter"):
-            self.model.set_search_filter(search_text)
+            self.model.set_search_filter(search_text)  # type: ignore[attr-defined]
 
-    def on_search_entry_focus_out(self, controller):
+    def on_search_entry_focus_out(self, controller: Any) -> Any:
         """Hide search entry when it loses focus"""
         logger.trace(
             "Search entry lost focus",
@@ -676,14 +677,14 @@ class Toolbar(Component):
         return False
 
     @staticmethod
-    def levenshtein_distance(s1, s2):
+    def levenshtein_distance(s1: Any, s2: Any) -> Any:
         """Calculate Levenshtein distance between two strings"""
         from lib.util.helpers import levenshtein_distance as util_levenshtein_distance
 
         return util_levenshtein_distance(s1, s2)
 
     @staticmethod
-    def fuzzy_match(search_term, target_text, threshold=None):
+    def fuzzy_match(search_term: Any, target_text: Any, threshold: Any = None) -> Any:
         """
         Fuzzy match using Levenshtein distance
         Returns True if match is above threshold (0.0 to 1.0)

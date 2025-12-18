@@ -50,6 +50,6 @@ class Attributes(GObject.Object):
     piece_length = GObject.Property(type=GObject.TYPE_LONG, default=0)  # Bytes per piece
     piece_count = GObject.Property(type=GObject.TYPE_LONG, default=0)  # Total number of pieces
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.uuid = str(uuid.uuid4())

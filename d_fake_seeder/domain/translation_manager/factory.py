@@ -8,7 +8,7 @@ implementation based on GTK version requirements and auto-detection.
 
 # fmt: off
 import sys
-from typing import Optional, Set
+from typing import Any, Optional, Set
 
 from d_fake_seeder.lib.logger import logger
 
@@ -73,8 +73,8 @@ def create_translation_manager(
     localedir: Optional[str] = None,
     supported_languages: Optional[Set[str]] = None,
     fallback_language: str = "en",
-    **kwargs,
-) -> TranslationManagerBase:
+    **kwargs: Any,
+) -> TranslationManagerBase:  # noqa: E501
     """
     Factory function to create the appropriate TranslationManager implementation
 
@@ -188,8 +188,8 @@ def create_gtk3_translation_manager(
     localedir: Optional[str] = None,
     supported_languages: Optional[Set[str]] = None,
     fallback_language: str = "en",
-    **kwargs,
-) -> TranslationManagerBase:
+    **kwargs: Any,
+) -> TranslationManagerBase:  # noqa: E501
     """
     Convenience function to create a GTK3 TranslationManager
 
@@ -220,8 +220,8 @@ def create_gtk4_translation_manager(
     localedir: Optional[str] = None,
     supported_languages: Optional[Set[str]] = None,
     fallback_language: str = "en",
-    **kwargs,
-) -> TranslationManagerBase:
+    **kwargs: Any,
+) -> TranslationManagerBase:  # noqa: E501
     """
     Convenience function to create a GTK4 TranslationManager
 

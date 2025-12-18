@@ -98,7 +98,7 @@ class NotificationMixin:
         """
         # Check if we already have an overlay stored
         if hasattr(self, "_notification_overlay"):
-            return self._notification_overlay
+            return self._notification_overlay  # type: ignore[has-type]
 
         # Try to get the settings window from builder
         window = None
@@ -334,7 +334,7 @@ class UtilityMixin:
         try:
             from .util.format_helpers import format_size
 
-            return format_size(bytes_value)
+            return format_size(bytes_value)  # type: ignore[no-any-return]
         except Exception:
             # Fallback formatting
             units = SIZE_UNITS_BASIC
@@ -415,7 +415,7 @@ class TranslationMixin:
     logger: Any  # Expected to be provided by the class using this mixin
     builder: Any  # Expected to be provided by the class using this mixin
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the translation mixin."""
         super().__init__(*args, **kwargs)
         self._language_change_connected = False
@@ -505,7 +505,7 @@ class TranslationMixin:
         except Exception as e:
             self.logger.error(f"Error translating dropdown {dropdown_id}: {e}", exc_info=True)
 
-    def _extract_dropdown_items(self, dropdown) -> list:
+    def _extract_dropdown_items(self, dropdown: Any) -> list:
         """
         Extract the original string items from a dropdown widget.
 
@@ -660,7 +660,7 @@ class TranslationMixin:
         except Exception as e:
             logger.error(f"Error connecting to language change signal: {e}")
 
-    def _on_language_changed(self, source, new_language):
+    def _on_language_changed(self, source: Any, new_language: Any) -> None:
         """Handle language change events by refreshing dropdown translations."""
         try:
             logger.trace(f"Refreshing dropdown translations for language: {new_language}")

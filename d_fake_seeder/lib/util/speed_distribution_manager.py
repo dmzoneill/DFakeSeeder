@@ -6,7 +6,7 @@ Coordinates the application of speed distribution algorithms across all torrents
 
 import random
 import time
-from typing import List
+from typing import Any, List
 
 from gi.repository import GLib
 
@@ -22,7 +22,7 @@ class SpeedDistributionManager:
     Handles periodic redistribution based on user-configured settings and algorithms.
     """
 
-    def __init__(self, model):
+    def __init__(self, model: Any) -> None:
         """
         Initialize the Speed Distribution Manager.
 
@@ -45,7 +45,7 @@ class SpeedDistributionManager:
 
         logger.info("SpeedDistributionManager initialized", "SpeedDistributionManager")
 
-    def on_settings_changed(self, source, key, value):
+    def on_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         """Handle settings changes."""
         # Restart timers if redistribution mode or interval changed
         if "distribution" in key and "redistribution_mode" in key:
@@ -55,7 +55,7 @@ class SpeedDistributionManager:
             logger.debug(f"Custom interval changed: {key} = {value}", "SpeedDistributionManager")
             self._restart_timers()
 
-    def _restart_timers(self):
+    def _restart_timers(self) -> Any:
         """Restart custom interval timers if needed."""
         # Cancel existing timers
         if self.upload_timer_id:
@@ -99,7 +99,7 @@ class SpeedDistributionManager:
         self.redistribute_download_speeds()
         return True  # Keep timer running
 
-    def check_redistribution(self, event_type: str = "tick"):
+    def check_redistribution(self, event_type: str = "tick") -> Any:
         """
         Check if redistribution should occur based on event type.
 
@@ -120,7 +120,7 @@ class SpeedDistributionManager:
         elif download_mode == "announce" and event_type == "announce":
             self.redistribute_download_speeds()
 
-    def redistribute_upload_speeds(self):
+    def redistribute_upload_speeds(self) -> Any:
         """Redistribute upload speeds across all torrents."""
         try:
             algorithm = self.settings.upload_distribution_algorithm
@@ -220,7 +220,7 @@ class SpeedDistributionManager:
                     torrent.name,
                     distributor.get_algorithm_name(),
                     new_speed,
-                    category,
+                    category,  # type: ignore[arg-type]
                 )
                 logger.debug(debug_msg, "SpeedDist")
 
@@ -252,7 +252,7 @@ class SpeedDistributionManager:
         except Exception as e:
             logger.error(f"Error redistributing upload speeds: {e}", "SpeedDistributionManager", exc_info=True)
 
-    def redistribute_download_speeds(self):
+    def redistribute_download_speeds(self) -> Any:
         """Redistribute download speeds across all torrents."""
         try:
             algorithm = self.settings.download_distribution_algorithm
@@ -352,7 +352,7 @@ class SpeedDistributionManager:
                     torrent.name,
                     distributor.get_algorithm_name(),
                     new_speed,
-                    category,
+                    category,  # type: ignore[arg-type]
                 )
                 logger.debug(debug_msg, "SpeedDist")
 
@@ -423,12 +423,12 @@ class SpeedDistributionManager:
         # Fallback to legacy settings
         return float(getattr(self.settings, "total_download_speed", 0))
 
-    def start(self):
+    def start(self) -> Any:
         """Start the speed distribution manager."""
         logger.info("SpeedDistributionManager started", "SpeedDistributionManager")
         self._restart_timers()
 
-    def stop(self):
+    def stop(self) -> Any:
         """Stop the speed distribution manager."""
         # Cancel timers
         if self.upload_timer_id:

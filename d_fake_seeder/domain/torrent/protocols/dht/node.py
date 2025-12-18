@@ -32,7 +32,7 @@ except ImportError:
 class DHTNode:
     """DHT node implementation for peer discovery and announcement"""
 
-    def __init__(self, node_id: Optional[bytes] = None, port: int = 6881):
+    def __init__(self, node_id: Optional[bytes] = None, port: int = 6881) -> None:
         """
         Initialize DHT node
 
@@ -84,7 +84,7 @@ class DHTNode:
         """Generate a random 20-byte node ID"""
         return hashlib.sha1(str(random.getrandbits(DHTConstants.NODE_ID_BITS)).encode()).digest()
 
-    async def start(self):
+    async def start(self) -> Any:
         """Start the DHT node"""
         if not self.enabled:
             logger.info(
@@ -97,15 +97,15 @@ class DHTNode:
 
         try:
             # Create UDP socket
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            self.socket.bind(("0.0.0.0", self.port))
-            self.socket.setblocking(False)
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # type: ignore[assignment]
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # type: ignore[attr-defined]
+            self.socket.bind(("0.0.0.0", self.port))  # type: ignore[attr-defined]
+            self.socket.setblocking(False)  # type: ignore[attr-defined]
 
             self.running = True
 
             # Initialize peer discovery with socket
-            self.peer_discovery = PeerDiscovery(self.node_id, self.routing_table, self.socket)
+            self.peer_discovery = PeerDiscovery(self.node_id, self.routing_table, self.socket)  # type: ignore[assignment]  # noqa: E501
 
             # Start background tasks
             asyncio.create_task(self._listen_loop())
@@ -124,7 +124,7 @@ class DHTNode:
             )
             self.running = False
 
-    async def stop(self):
+    async def stop(self) -> Any:
         """Stop the DHT node"""
         logger.trace("Stopping DHT node", extra={"class_name": self.__class__.__name__})
         self.running = False
@@ -217,12 +217,12 @@ class DHTNode:
             )
             return []
 
-    async def _listen_loop(self):
+    async def _listen_loop(self) -> Any:
         """Main listening loop for DHT messages"""
         while self.running:
             try:
                 # Receive DHT message
-                data, addr = await asyncio.get_running_loop().sock_recvfrom(self.socket, 1024)
+                data, addr = await asyncio.get_running_loop().sock_recvfrom(self.socket, 1024)  # type: ignore[attr-defined]  # noqa: E501
 
                 # Process message in background
                 asyncio.create_task(self._handle_message(data, addr))
@@ -234,9 +234,9 @@ class DHTNode:
                     f"DHT listen error: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                await asyncio.sleep(self._get_sleep_interval())
+                await asyncio.sleep(self._get_sleep_interval())  # type: ignore[attr-defined]
 
-    async def _handle_message(self, data: bytes, addr: Tuple[str, int]):
+    async def _handle_message(self, data: bytes, addr: Tuple[str, int]) -> None:
         """Handle incoming DHT message"""
         try:
             message = bencode.bdecode(data)
@@ -259,7 +259,7 @@ class DHTNode:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _handle_query(self, message: dict, addr: Tuple[str, int]):
+    async def _handle_query(self, message: dict, addr: Tuple[str, int]) -> None:
         """Handle DHT query message"""
         try:
             query_type = message.get(b"q")
@@ -289,12 +289,12 @@ class DHTNode:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _send_ping_response(self, transaction_id: bytes, addr: Tuple[str, int]):
+    async def _send_ping_response(self, transaction_id: bytes, addr: Tuple[str, int]) -> Any:
         """Send ping response"""
         response = {b"t": transaction_id, b"y": b"r", b"r": {b"id": self.node_id}}
         await self._send_message(response, addr)
 
-    async def _send_message(self, message: dict, addr: Tuple[str, int]):
+    async def _send_message(self, message: dict, addr: Tuple[str, int]) -> Any:
         """Send DHT message"""
         try:
             if not self.socket:
@@ -307,7 +307,7 @@ class DHTNode:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _bootstrap(self):
+    async def _bootstrap(self) -> Any:
         """Bootstrap the DHT by connecting to known nodes"""
         logger.trace("Bootstrapping DHT", extra={"class_name": self.__class__.__name__})
 
@@ -323,7 +323,7 @@ class DHTNode:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-    async def _send_ping(self, addr: Tuple[str, int]):
+    async def _send_ping(self, addr: Tuple[str, int]) -> Any:
         """Send ping query to a node"""
         transaction_id = self._get_transaction_id()
         message = {
@@ -339,7 +339,7 @@ class DHTNode:
         self.transaction_id = (self.transaction_id + 1) % 65536
         return struct.pack(">H", self.transaction_id)
 
-    async def _maintenance_loop(self):
+    async def _maintenance_loop(self) -> Any:
         """Periodic maintenance tasks"""
         while self.running:
             try:
@@ -350,7 +350,7 @@ class DHTNode:
                 # Clean up old data
                 self._cleanup_old_data()
                 self.routing_table.cleanup_stale_nodes()
-                self.peer_discovery.cleanup_old_peers()
+                self.peer_discovery.cleanup_old_peers()  # type: ignore[attr-defined]
 
                 # Wait for next maintenance cycle
                 await asyncio.sleep(self.announcement_interval)
@@ -363,7 +363,7 @@ class DHTNode:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-    def _cleanup_old_data(self):
+    def _cleanup_old_data(self) -> Any:
         """Clean up old DHT data"""
         current_time = time.time()
 
@@ -417,7 +417,7 @@ class DHTNode:
             )
             return False
 
-    async def _handle_response(self, message: dict, addr: Tuple[str, int]):
+    async def _handle_response(self, message: dict, addr: Tuple[str, int]) -> None:
         """Handle DHT response message"""
         # Add to routing table
         response_data = message.get(b"r", {})
@@ -426,7 +426,7 @@ class DHTNode:
             self.routing_table.add_node(node_id, addr[0], addr[1])
             self.routing_table.mark_node_good(node_id)
 
-    async def _handle_error(self, message: dict, addr: Tuple[str, int]):
+    async def _handle_error(self, message: dict, addr: Tuple[str, int]) -> None:
         """Handle DHT error message"""
         error_info = message.get(b"e", [])
         if len(error_info) >= 2:
@@ -436,13 +436,13 @@ class DHTNode:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _add_node_to_routing_table(self, node_id: bytes, addr: Tuple[str, int]):
+    def _add_node_to_routing_table(self, node_id: bytes, addr: Tuple[str, int]) -> Any:
         """Add node to routing table"""
         # Simplified routing table - just store recent nodes
         if self.routing_table.get_node_count() < DHTConstants.ROUTING_TABLE_SIZE_LIMIT:  # Limit size
             self.routing_table.add_node(node_id, addr[0], addr[1])
 
-    async def _send_find_node_response(self, message: dict, transaction_id: bytes, addr: Tuple[str, int]):
+    async def _send_find_node_response(self, message: dict, transaction_id: bytes, addr: Tuple[str, int]) -> Any:
         """Send find_node response"""
         # Simplified implementation
         response = {
@@ -452,7 +452,7 @@ class DHTNode:
         }  # Empty nodes list
         await self._send_message(response, addr)
 
-    async def _send_get_peers_response(self, message: dict, transaction_id: bytes, addr: Tuple[str, int]):
+    async def _send_get_peers_response(self, message: dict, transaction_id: bytes, addr: Tuple[str, int]) -> Any:
         """Send get_peers response"""
         # Generate token for potential announce_peer
         token = hashlib.sha1(f"{addr[0]}{time.time()}".encode()).digest()[:8]
@@ -469,7 +469,7 @@ class DHTNode:
         }
         await self._send_message(response, addr)
 
-    async def _handle_announce_peer(self, message: dict, transaction_id: bytes, addr: Tuple[str, int]):
+    async def _handle_announce_peer(self, message: dict, transaction_id: bytes, addr: Tuple[str, int]) -> None:
         """Handle announce_peer query"""
         # Send success response
         response = {b"t": transaction_id, b"y": b"r", b"r": {b"id": self.node_id}}

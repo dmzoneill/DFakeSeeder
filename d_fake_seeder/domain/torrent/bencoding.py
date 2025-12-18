@@ -1,29 +1,31 @@
 """Helper methods to encode and decode Bencoding data."""
 
+from typing import Any
+
 
 class bencode:
     """Bencodepy-compatible interface wrapper."""
 
     @staticmethod
-    def bdecode(data):
+    def bdecode(data: Any) -> Any:
         """Decode bencode data (bencodepy-compatible name)."""
         return decode(data)
 
     @staticmethod
-    def bencode(data):
+    def bencode(data: Any) -> Any:
         """Encode data to bencode (bencodepy-compatible name)."""
         return encode(data)
 
 
-def _decode(raw_buffer, elements, index=0):
+def _decode(raw_buffer: Any, elements: Any, index: Any = 0) -> Any:
     if len(raw_buffer) == 0:
         return None
     if raw_buffer[index] == ord("d"):
         index += 1
         obj = {}
         while raw_buffer[index] != ord("e"):
-            key = []
-            value = []
+            key = []  # type: ignore[var-annotated]
+            value = []  # type: ignore[var-annotated]
             index = _decode(raw_buffer, key, index)
             index = _decode(raw_buffer, value, index)
             obj[key[0]] = value[0]
@@ -57,16 +59,16 @@ def _decode(raw_buffer, elements, index=0):
     return index
 
 
-def decode(raw_buffer):
+def decode(raw_buffer: Any) -> Any:
     """Decode a bytes string into its corresponding data via Bencoding."""
-    elements = []
+    elements = []  # type: ignore[var-annotated]
     _decode(raw_buffer, elements)
     if len(elements) == 0:
         return None
     return elements[0]
 
 
-def encode(data):
+def encode(data: Any) -> Any:
     """Encode data into a bytes string via Bencoding."""
     if isinstance(data, bytes):
         return str(len(data)).encode("ascii") + b":" + data

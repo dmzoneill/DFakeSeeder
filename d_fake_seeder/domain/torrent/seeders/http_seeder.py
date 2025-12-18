@@ -1,5 +1,6 @@
 # fmt: off
 # isort: skip_file
+from typing import Any
 import time
 from time import sleep
 
@@ -17,7 +18,7 @@ from d_fake_seeder.view import View
 
 
 class HTTPSeeder(BaseSeeder):
-    def __init__(self, torrent):
+    def __init__(self, torrent: Any) -> None:
         super().__init__(torrent)
 
         # Get configurable sleep interval
@@ -28,7 +29,7 @@ class HTTPSeeder(BaseSeeder):
             / 10
         )  # Much smaller for HTTP retries
 
-    def load_peers(self):
+    def load_peers(self) -> None:
         logger.trace("Seeder load peers", extra={"class_name": self.__class__.__name__})
 
         if self.shutdown_requested:
@@ -36,7 +37,7 @@ class HTTPSeeder(BaseSeeder):
                 "🛑 Shutdown requested, aborting load_peers",
                 extra={"class_name": self.__class__.__name__},
             )
-            return False
+            return False  # type: ignore[return-value]
 
         try:
             # Use timeout for semaphore acquisition
@@ -45,7 +46,7 @@ class HTTPSeeder(BaseSeeder):
                     "⏱️ Timeout acquiring tracker semaphore for load_peers",
                     extra={"class_name": self.__class__.__name__},
                 )
-                return False
+                return False  # type: ignore[return-value]
 
             # Only notify if view instance still exists (may be None during shutdown)
             if View.instance is not None:
@@ -189,14 +190,14 @@ class HTTPSeeder(BaseSeeder):
                 base_interval = self.info[b"interval"]
                 self.update_interval = self._apply_announce_jitter(base_interval)
                 self.get_tracker_semaphore().release()
-                return True
+                return True  # type: ignore[return-value]
 
             logger.error(
                 "❌ Failed to decode tracker response",
                 extra={"class_name": self.__class__.__name__},
             )
             self.get_tracker_semaphore().release()
-            return False
+            return False  # type: ignore[return-value]
         except Exception as e:
             # Update tracker model with failure
             if "request_start_time" in locals():
@@ -208,9 +209,9 @@ class HTTPSeeder(BaseSeeder):
 
             self.set_random_announce_url()
             self.handle_exception(e, "Seeder unknown error in load_peers_http")
-            return False
+            return False  # type: ignore[return-value]
 
-    def upload(self, uploaded_bytes, downloaded_bytes, download_left):
+    def upload(self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any) -> Any:
         logger.trace("Seeder upload", extra={"class_name": self.__class__.__name__})
 
         # Validate uploaded/downloaded bytes to prevent reporting unrealistic values
@@ -327,12 +328,8 @@ class HTTPSeeder(BaseSeeder):
             )
 
     def make_http_request(
-        self,
-        uploaded_bytes=0,
-        downloaded_bytes=0,
-        download_left=0,
-        num_want=None,
-    ):
+        self, uploaded_bytes: Any = 0, downloaded_bytes: Any = 0, download_left: Any = 0, num_want: Any = None
+    ) -> Any:  # noqa: E501
         if num_want is None:
             app_settings = AppSettings.get_instance()
             num_want = app_settings.get("seeders", {}).get("peer_request_count", 200)
@@ -388,7 +385,7 @@ class HTTPSeeder(BaseSeeder):
 
     def _get_tracker_model(self) -> Tracker:
         """Get or create tracker model for current tracker URL"""
-        if not hasattr(self, "_tracker_model") or self._tracker_model is None:
+        if not hasattr(self, "_tracker_model") or self._tracker_model is None:  # type: ignore[has-type]
             # Create tracker model with current URL and tier
             self._tracker_model = Tracker(url=self.tracker_url, tier=0)
         elif self._tracker_model.get_property("url") != self.tracker_url:
@@ -396,7 +393,7 @@ class HTTPSeeder(BaseSeeder):
             self._tracker_model = Tracker(url=self.tracker_url, tier=0)
         return self._tracker_model
 
-    def _set_tracker_announcing(self):
+    def _set_tracker_announcing(self) -> Any:
         """Mark tracker as currently announcing"""
         try:
             tracker = self._get_tracker_model()
@@ -407,7 +404,7 @@ class HTTPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _update_tracker_success(self, response_data: dict, response_time: float):
+    def _update_tracker_success(self, response_data: dict, response_time: float) -> None:
         """Update tracker model with successful response"""
         try:
             tracker = self._get_tracker_model()
@@ -428,7 +425,7 @@ class HTTPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _update_tracker_failure(self, error_message: str, response_time: float = None):
+    def _update_tracker_failure(self, error_message: str, response_time: float = None) -> None:  # type: ignore[assignment]  # noqa: E501
         """Update tracker model with failed response"""
         try:
             tracker = self._get_tracker_model()

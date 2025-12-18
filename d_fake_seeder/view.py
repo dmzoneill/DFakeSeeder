@@ -1,5 +1,6 @@
 # fmt: off
 # isort: skip_file
+from typing import Any
 import logging
 import os
 import signal
@@ -45,7 +46,7 @@ class View(CleanupMixin):
     torrents_columnview = None
     torrents_states = None
 
-    def __init__(self, app):
+    def __init__(self, app: Any) -> None:
         with logger.performance.operation_context("view_init", self.__class__.__name__):
             logger.info("View.__init__() started", self.__class__.__name__)
             logger.trace("View instantiate", self.__class__.__name__)
@@ -72,7 +73,7 @@ class View(CleanupMixin):
                 logger.info("Gtk.Builder created", self.__class__.__name__)
             with logger.performance.operation_context("xml_loading", self.__class__.__name__):
                 logger.trace("About to load XML file", self.__class__.__name__)
-                self.builder.add_from_file(os.environ.get("DFS_PATH") + "/components/ui/generated/generated.xml")
+                self.builder.add_from_file(os.environ.get("DFS_PATH") + "/components/ui/generated/generated.xml")  # type: ignore[operator]  # noqa: E501
                 logger.trace("XML file loaded", self.__class__.__name__)
             # CSS will be loaded and applied in setup_window() method
             # Get window object
@@ -108,7 +109,7 @@ class View(CleanupMixin):
             "View",
         )
         logger.trace("About to create Sidebar component", "View")
-        self.sidebar = Sidebar(self.builder, None)
+        self.sidebar = Sidebar(self.builder, None)  # type: ignore[abstract]
         logger.trace(
             "Sidebar component created successfully",
             "View",
@@ -188,13 +189,13 @@ class View(CleanupMixin):
         self.shutdown_overlay = None
         logger.trace("View.__init__() completed", "View")
 
-    def _(self, text):
+    def _(self, text: Any) -> Any:
         """Get translation function from model's TranslationManager"""
         if hasattr(self, "model") and self.model and hasattr(self.model, "translation_manager"):
             return self.model.translation_manager.translate_func(text)
         return text  # Fallback if model not set yet
 
-    def setup_window(self):
+    def setup_window(self) -> None:
         # Get application settings
         app_settings = AppSettings.get_instance()
         app_title = app_settings.get("application", {}).get("title", self._("D' Fake Seeder"))
@@ -254,10 +255,10 @@ class View(CleanupMixin):
             )
         self.window.present()
 
-    def show_splash_image(self):
+    def show_splash_image(self) -> None:
         # splash image
         self.splash_image = Gtk.Image()
-        self.splash_image.set_from_file(os.environ.get("DFS_PATH") + "/components/images/dfakeseeder.png")
+        self.splash_image.set_from_file(os.environ.get("DFS_PATH") + "/components/images/dfakeseeder.png")  # type: ignore[operator]  # noqa: E501
         # self.splash_image.set_no_show_all(False)
         self.splash_image.set_visible(True)
         self.splash_image.show()
@@ -271,7 +272,7 @@ class View(CleanupMixin):
         self.overlay.add_overlay(self.splash_image)
         self.track_timeout(GLib.timeout_add_seconds(self.splash_display_duration, self.fade_out_image))
 
-    def show_about(self, action, _param):
+    def show_about(self, action: Any, _param: Any) -> None:
         self.window.about = Gtk.AboutDialog()
         self.window.about.set_transient_for(self.window)
         self.window.about.set_modal(True)
@@ -295,16 +296,16 @@ class View(CleanupMixin):
         )
         self.window.about.set_comments(about_name_text)
 
-        file = Gio.File.new_for_path(os.environ.get("DFS_PATH") + "/" + self.settings.logo)
+        file = Gio.File.new_for_path(os.environ.get("DFS_PATH") + "/" + self.settings.logo)  # type: ignore[operator]
         texture = Gdk.Texture.new_from_file(file)
         self.window.about.set_logo(texture)
         self.window.about.show()
 
-    def fade_out_image(self):
+    def fade_out_image(self) -> Any:
         self.splash_image.fade_out = 1.0
         self.track_timeout(GLib.timeout_add(self.splash_fade_interval, self.fade_image))
 
-    def fade_image(self):
+    def fade_image(self) -> Any:
         self.splash_image.fade_out -= self.splash_fade_step
         if self.splash_image.fade_out > 0:
             self.splash_image.set_opacity(self.splash_image.fade_out)
@@ -315,7 +316,7 @@ class View(CleanupMixin):
             self.splash_image = None
             return False
 
-    def resize_panes(self):
+    def resize_panes(self) -> Any:
         logger.trace("View resize_panes", extra={"class_name": self.__class__.__name__})
         allocation = self.main_paned.get_allocation()
         available_height = allocation.height
@@ -327,7 +328,7 @@ class View(CleanupMixin):
         self.paned.set_position(position)
 
     # Setting model for the view
-    def notify(self, text):
+    def notify(self, text: Any) -> Any:
         logger.trace("View notify", extra={"class_name": self.__class__.__name__})
         # Cancel the previous timeout, if it exists
         if hasattr(self, "timeout_source") and self.timeout_source and not self.timeout_source.is_destroyed():
@@ -346,22 +347,22 @@ class View(CleanupMixin):
         )
         # Create timeout source and store reference
         self.timeout_source = GLib.timeout_source_new(notification_timeout)
-        self.timeout_source.set_callback(
+        self.timeout_source.set_callback(  # type: ignore[attr-defined]
             lambda user_data: self.notify_label.set_visible(False) or self.notify_label.hide()
         )
-        self.timeout_id = self.timeout_source.attach(GLib.MainContext.default())
+        self.timeout_id = self.timeout_source.attach(GLib.MainContext.default())  # type: ignore[attr-defined]
 
     # Setting model for the view
-    def set_model(self, model):
+    def set_model(self, model: Any) -> None:
         logger.trace("View set model", extra={"class_name": self.__class__.__name__})
         self.model = model
-        self.notebook.set_model(model)
-        self.toolbar.set_model(model)
+        self.notebook.set_model(model)  # type: ignore[union-attr]
+        self.toolbar.set_model(model)  # type: ignore[union-attr]
         self.torrents.set_model(model)
         self.sidebar.set_model(model)
         self.statusbar.set_model(model)
         # Pass view reference to statusbar so it can access connection components
-        self.statusbar.view = self
+        self.statusbar.view = self  # type: ignore[attr-defined]
         # Connect to language change signal
         self.model.connect("language-changed", self.on_language_changed)
         # Register widgets for translation after model is set
@@ -386,7 +387,7 @@ class View(CleanupMixin):
             self.model.translation_manager.refresh_all_translations()
         # Register notebook for translation updates
         if hasattr(self.notebook, "register_for_translation"):
-            self.notebook.register_for_translation()
+            self.notebook.register_for_translation()  # type: ignore[union-attr]
         # Register main menu for translation updates
         if hasattr(self, "main_menu") and hasattr(self, "main_menu_items"):
             self.model.translation_manager.register_menu(self.main_menu, self.main_menu_items, popover=self.popover)
@@ -396,7 +397,7 @@ class View(CleanupMixin):
             )
 
     # Connecting signals for different events
-    def connect_signals(self):
+    def connect_signals(self) -> None:
         logger.trace(
             "View connect signals",
             extra={"class_name": self.__class__.__name__},
@@ -404,37 +405,37 @@ class View(CleanupMixin):
         self.window.connect("destroy", self.quit)
         self.window.connect("close-request", self.quit)
         self.model.connect("data-changed", self.torrents.update_view)
-        self.model.connect("data-changed", self.notebook.update_view)
+        self.model.connect("data-changed", self.notebook.update_view)  # type: ignore[union-attr]
         self.model.connect("data-changed", self.sidebar.update_view)
         self.model.connect("data-changed", self.statusbar.update_view)
-        self.model.connect("data-changed", self.toolbar.update_view)
+        self.model.connect("data-changed", self.toolbar.update_view)  # type: ignore[union-attr]
         # LAZY LOADING FIX: Connect to connection components only if they exist
         # They will be connected later when created in background
-        incoming_connections = self.notebook.get_incoming_connections()
+        incoming_connections = self.notebook.get_incoming_connections()  # type: ignore[union-attr]
         if incoming_connections:
             self.model.connect("data-changed", incoming_connections.update_view)
-        outgoing_connections = self.notebook.get_outgoing_connections()
+        outgoing_connections = self.notebook.get_outgoing_connections()  # type: ignore[union-attr]
         if outgoing_connections:
             self.model.connect("data-changed", outgoing_connections.update_view)
         self.model.connect("selection-changed", self.torrents.model_selection_changed)
-        self.model.connect("selection-changed", self.notebook.model_selection_changed)
+        self.model.connect("selection-changed", self.notebook.model_selection_changed)  # type: ignore[union-attr]
         self.model.connect("selection-changed", self.sidebar.model_selection_changed)
         self.model.connect("selection-changed", self.statusbar.model_selection_changed)
-        self.model.connect("selection-changed", self.toolbar.model_selection_changed)
+        self.model.connect("selection-changed", self.toolbar.model_selection_changed)  # type: ignore[union-attr]
         signal.signal(signal.SIGINT, self.quit)
 
     # Connecting signals for different events
-    def remove_signals(self):
+    def remove_signals(self) -> None:
         logger.trace("Remove signals", extra={"class_name": self.__class__.__name__})
         self.model.disconnect_by_func(self.torrents.update_view)
-        self.model.disconnect_by_func(self.notebook.update_view)
+        self.model.disconnect_by_func(self.notebook.update_view)  # type: ignore[union-attr]
         self.model.disconnect_by_func(self.sidebar.update_view)
         self.model.disconnect_by_func(self.statusbar.update_view)
-        self.model.disconnect_by_func(self.notebook.get_incoming_connections().update_view)
-        self.model.disconnect_by_func(self.notebook.get_outgoing_connections().update_view)
+        self.model.disconnect_by_func(self.notebook.get_incoming_connections().update_view)  # type: ignore[union-attr]
+        self.model.disconnect_by_func(self.notebook.get_outgoing_connections().update_view)  # type: ignore[union-attr]
 
     # Event handler for clicking on quit - delegates to consolidated quit procedure
-    def on_quit_clicked(self, menu_item, fast_shutdown=False):
+    def on_quit_clicked(self, menu_item: Any, fast_shutdown: Any = False) -> None:
         """Handle quit menu click - delegates to consolidated quit procedure"""
         logger.trace(
             "🎯 QUIT MENU: Quit menu clicked, delegating to quit()",
@@ -443,14 +444,16 @@ class View(CleanupMixin):
         self.quit(fast_shutdown=fast_shutdown)
 
     # open github webpage
-    def on_help_clicked(self, menu_item):
+    def on_help_clicked(self, menu_item: Any) -> None:
         logger.trace(
             "Opening GitHub webpage",
             extra={"class_name": self.__class__.__name__},
         )
         webbrowser.open(self.settings.issues_page)
 
-    def handle_peer_connection_event(self, direction, action, address, port, data=None):
+    def handle_peer_connection_event(
+        self, direction: Any, action: Any, address: Any, port: Any, data: Any = None
+    ) -> None:  # noqa: E501
         """Handle peer connection events from peer server or connection manager"""
         torrent_hash = (data or {}).get("torrent_hash", "unknown") if data else "unknown"
         logger.trace(
@@ -459,7 +462,7 @@ class View(CleanupMixin):
         )
         try:
             if direction == "incoming":
-                component = self.notebook.get_incoming_connections()
+                component = self.notebook.get_incoming_connections()  # type: ignore[union-attr]
                 if action == "add":
                     component.add_incoming_connection(address, port, **(data or {}))
                     total_count = component.get_total_connection_count()
@@ -483,7 +486,7 @@ class View(CleanupMixin):
                         extra={"class_name": self.__class__.__name__},
                     )
             elif direction == "outgoing":
-                component = self.notebook.get_outgoing_connections()
+                component = self.notebook.get_outgoing_connections()  # type: ignore[union-attr]
                 if action == "add":
                     component.add_outgoing_connection(address, port, **(data or {}))
                     total_count = component.get_total_connection_count()
@@ -507,14 +510,14 @@ class View(CleanupMixin):
                         extra={"class_name": self.__class__.__name__},
                     )
             # Update connection counts
-            self.notebook.update_connection_counts()
+            self.notebook.update_connection_counts()  # type: ignore[union-attr]
         except Exception as e:
             logger.error(
                 f"Error handling peer connection event: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _cleanup_timers(self):
+    def _cleanup_timers(self) -> Any:
         """Cleanup all GLib timers and timeout sources"""
         logger.trace("🧹 Cleaning up GLib timers", extra={"class_name": self.__class__.__name__})
 
@@ -576,18 +579,18 @@ class View(CleanupMixin):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _get_shutdown_kill_timeout(self):
+    def _get_shutdown_kill_timeout(self) -> Any:
         """Get shutdown kill timeout from settings."""
         ui = getattr(self.settings, "ui_settings", {})
         return ui.get("shutdown_kill_timeout_seconds", 0.1) if isinstance(ui, dict) else 0.1
 
-    def _get_shutdown_backup_timeout(self):
+    def _get_shutdown_backup_timeout(self) -> Any:
         """Get shutdown backup timeout from settings."""
         ui = getattr(self.settings, "ui_settings", {})
         return ui.get("shutdown_backup_timeout_seconds", 0.25) if isinstance(ui, dict) else 0.25
 
     # Function to quit the application with consolidated shutdown procedure
-    def quit(self, widget=None, event=None, fast_shutdown=False):
+    def quit(self, widget: Any = None, event: Any = None, fast_shutdown: Any = False) -> Any:
         """
         Consolidated shutdown procedure for all application resources.
 
@@ -632,7 +635,7 @@ class View(CleanupMixin):
         # ========== START WATCHDOGS IMMEDIATELY (BEFORE ANY CLEANUP) ==========
         import threading
 
-        def ultra_aggressive_watchdog():
+        def ultra_aggressive_watchdog() -> Any:
             time.sleep(self._get_shutdown_kill_timeout())  # Configurable kill timeout
             logger.error(
                 "⚠️⚠️⚠️ ULTRA WATCHDOG: Shutdown blocked for 100ms - FORCE KILLING NOW",
@@ -640,7 +643,7 @@ class View(CleanupMixin):
             )
             os._exit(0)
 
-        def backup_watchdog():
+        def backup_watchdog() -> Any:
             time.sleep(self._get_shutdown_backup_timeout())  # Configurable backup timeout
             logger.warning(
                 "⚠️ BACKUP WATCHDOG: Force exit",
@@ -661,7 +664,7 @@ class View(CleanupMixin):
         )
 
         # Initialize shutdown tracking
-        self.shutdown_tracker = ShutdownProgressTracker()
+        self.shutdown_tracker = ShutdownProgressTracker()  # type: ignore[assignment]
         phase_times = {}
 
         # Configure shutdown timeout
@@ -670,15 +673,15 @@ class View(CleanupMixin):
                 "⚡ Using FAST shutdown mode (1s timeout)",
                 extra={"class_name": self.__class__.__name__},
             )
-            self.shutdown_tracker.force_shutdown_timer = 1.0
+            self.shutdown_tracker.force_shutdown_timer = 1.0  # type: ignore[attr-defined]
         else:
             logger.trace(
                 "🐌 Using NORMAL shutdown mode (2s timeout)",
                 extra={"class_name": self.__class__.__name__},
             )
-            self.shutdown_tracker.force_shutdown_timer = 2.0
+            self.shutdown_tracker.force_shutdown_timer = 2.0  # type: ignore[attr-defined]
 
-        self.shutdown_tracker.start_shutdown()
+        self.shutdown_tracker.start_shutdown()  # type: ignore[attr-defined]
 
         # ========== PHASE 0: IMMEDIATE UI CLEANUP (< 10ms) ==========
         step_start = time.time()
@@ -708,10 +711,10 @@ class View(CleanupMixin):
         model_torrent_count = len(self.model.torrent_list) if hasattr(self, "model") and self.model else 0
 
         # Register components
-        self.shutdown_tracker.register_component("model_torrents", model_torrent_count)
-        self.shutdown_tracker.register_component("peer_managers", 1)
-        self.shutdown_tracker.register_component("background_workers", 1)
-        self.shutdown_tracker.register_component("network_connections", 1)
+        self.shutdown_tracker.register_component("model_torrents", model_torrent_count)  # type: ignore[attr-defined]
+        self.shutdown_tracker.register_component("peer_managers", 1)  # type: ignore[attr-defined]
+        self.shutdown_tracker.register_component("background_workers", 1)  # type: ignore[attr-defined]
+        self.shutdown_tracker.register_component("network_connections", 1)  # type: ignore[attr-defined]
 
         # ========== PHASE 2: STOP MODEL (PARALLEL TORRENT SHUTDOWN) ==========
         step_start = time.time()
@@ -720,7 +723,7 @@ class View(CleanupMixin):
                 f"🛑 PHASE 2: Stopping {model_torrent_count} torrents (parallel)",
                 extra={"class_name": self.__class__.__name__},
             )
-            self.shutdown_tracker.start_component_shutdown("model_torrents")
+            self.shutdown_tracker.start_component_shutdown("model_torrents")  # type: ignore[attr-defined]
             try:
                 self.model.stop(shutdown_tracker=self.shutdown_tracker)
             except Exception as e:
@@ -728,7 +731,7 @@ class View(CleanupMixin):
                     f"Error stopping model: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                self.shutdown_tracker.mark_completed("model_torrents", model_torrent_count)
+                self.shutdown_tracker.mark_completed("model_torrents", model_torrent_count)  # type: ignore[attr-defined]  # noqa: E501
         phase_times["model_stop"] = time.time() - step_start
 
         # ========== PHASE 3: STOP CONTROLLER & NETWORK ==========
@@ -738,9 +741,9 @@ class View(CleanupMixin):
                 "🌐 PHASE 3: Stopping controller & network resources",
                 extra={"class_name": self.__class__.__name__},
             )
-            self.shutdown_tracker.start_component_shutdown("peer_managers")
-            self.shutdown_tracker.start_component_shutdown("background_workers")
-            self.shutdown_tracker.start_component_shutdown("network_connections")
+            self.shutdown_tracker.start_component_shutdown("peer_managers")  # type: ignore[attr-defined]
+            self.shutdown_tracker.start_component_shutdown("background_workers")  # type: ignore[attr-defined]
+            self.shutdown_tracker.start_component_shutdown("network_connections")  # type: ignore[attr-defined]
             try:
                 self.app.controller.stop(shutdown_tracker=self.shutdown_tracker)
             except Exception as e:
@@ -748,9 +751,9 @@ class View(CleanupMixin):
                     f"Error stopping controller: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                self.shutdown_tracker.mark_completed("peer_managers", 1)
-                self.shutdown_tracker.mark_completed("background_workers", 1)
-                self.shutdown_tracker.mark_completed("network_connections", 1)
+                self.shutdown_tracker.mark_completed("peer_managers", 1)  # type: ignore[attr-defined]
+                self.shutdown_tracker.mark_completed("background_workers", 1)  # type: ignore[attr-defined]
+                self.shutdown_tracker.mark_completed("network_connections", 1)  # type: ignore[attr-defined]
         phase_times["controller_stop"] = time.time() - step_start
 
         # ========== PHASE 4: SAVE SETTINGS (NOW DONE AT START) ==========
@@ -760,19 +763,19 @@ class View(CleanupMixin):
         phase_times["settings_save"] = 0  # Already done
 
         # ========== PHASE 5: CHECK TIMEOUT & LOG STATUS ==========
-        if self.shutdown_tracker.is_force_shutdown_time():
-            timeout_duration = self.shutdown_tracker.force_shutdown_timer
+        if self.shutdown_tracker.is_force_shutdown_time():  # type: ignore[attr-defined]
+            timeout_duration = self.shutdown_tracker.force_shutdown_timer  # type: ignore[attr-defined]
             logger.warning(
                 f"⏰ TIMEOUT: Shutdown exceeded {timeout_duration}s limit",
                 extra={"class_name": self.__class__.__name__},
             )
 
             pending_components = []
-            for component_type in self.shutdown_tracker.components:
-                status = self.shutdown_tracker.components[component_type]["status"]
+            for component_type in self.shutdown_tracker.components:  # type: ignore[attr-defined]
+                status = self.shutdown_tracker.components[component_type]["status"]  # type: ignore[attr-defined]
                 if status not in ["complete", "timeout"]:
                     pending_components.append(f"{component_type}({status})")
-                    self.shutdown_tracker.mark_component_timeout(component_type)
+                    self.shutdown_tracker.mark_component_timeout(component_type)  # type: ignore[attr-defined]
 
             if pending_components:
                 logger.warning(
@@ -895,7 +898,7 @@ class View(CleanupMixin):
 
         return False
 
-    def on_language_changed(self, model, lang_code):
+    def on_language_changed(self, model: Any, lang_code: Any) -> None:
         """Handle language change notification from model"""
         logger.trace("on_language_changed() called with:", "View")
         logger.trace(
@@ -921,7 +924,7 @@ class View(CleanupMixin):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_settings_changed(self, _source, key, value):  # noqa: ARG002
+    def handle_settings_changed(self, _source: Any, key: Any, value: Any) -> None:  # noqa: ARG002
         logger.trace(
             f"View settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},
@@ -968,7 +971,7 @@ class View(CleanupMixin):
             logger.trace("Calling show_about()", extra={"class_name": self.__class__.__name__})
             GLib.idle_add(self.show_about, None, None)
 
-    def handle_app_settings_changed(self, _source, key, value):  # noqa: ARG002
+    def handle_app_settings_changed(self, _source: Any, key: Any, value: Any) -> None:  # noqa: ARG002
         """Handle AppSettings changes."""
         logger.trace(
             f"AppSettings changed: {key} = {value}",

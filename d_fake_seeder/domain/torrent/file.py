@@ -1,4 +1,5 @@
 # fmt: off
+from typing import Any
 import hashlib
 from datetime import datetime
 
@@ -10,7 +11,7 @@ from d_fake_seeder.lib.logger import logger
 
 
 class File:
-    def __init__(self, filepath):
+    def __init__(self, filepath: Any) -> None:
         logger.trace("Startup", extra={"class_name": self.__class__.__name__})
         while True:
             try:
@@ -42,7 +43,7 @@ class File:
                 )
 
     @property
-    def total_size(self):
+    def total_size(self) -> Any:
         logger.trace("File size", extra={"class_name": self.__class__.__name__})
         size = 0
         torrent_info = self.torrent_header[b"info"]
@@ -57,12 +58,12 @@ class File:
         return size
 
     @property
-    def name(self):
+    def name(self) -> Any:
         logger.trace("File name", extra={"class_name": self.__class__.__name__})
         torrent_info = self.torrent_header[b"info"]
         return torrent_info[b"name"].decode("utf-8")
 
-    def __str__(self):
+    def __str__(self) -> str:
         logger.trace("File attribute", extra={"class_name": self.__class__.__name__})
         announce = self.torrent_header[b"announce"].decode("utf-8")
         result = "Announce: %s\n" % announce
@@ -111,10 +112,10 @@ class File:
 
         return result
 
-    def get_announce(self):
+    def get_announce(self) -> Any:
         return self.torrent_header[b"announce"].decode("utf-8")
 
-    def get_creation_date(self):
+    def get_creation_date(self) -> Any:
         if b"creation date" in self.torrent_header:
             try:
                 creation_date = self.torrent_header[b"creation date"]
@@ -125,44 +126,44 @@ class File:
                 return None
         return None
 
-    def get_created_by(self):
+    def get_created_by(self) -> Any:
         if b"created by" in self.torrent_header:
             return self.torrent_header[b"created by"].decode("utf-8")
         return None
 
-    def get_encoding(self):
+    def get_encoding(self) -> Any:
         if b"encoding" in self.torrent_header:
             return self.torrent_header[b"encoding"].decode("utf-8")
         return None
 
-    def get_comment(self):
+    def get_comment(self) -> Any:
         """Get torrent comment"""
         if b"comment" in self.torrent_header:
             return self.torrent_header[b"comment"].decode("utf-8", errors="ignore")
         return None
 
-    def get_piece_length(self):
+    def get_piece_length(self) -> Any:
         """Get piece length in bytes"""
         torrent_info = self.torrent_header[b"info"]
         return torrent_info.get(b"piece length", 0)
 
-    def get_piece_count(self):
+    def get_piece_count(self) -> Any:
         """Get total number of pieces"""
         torrent_info = self.torrent_header[b"info"]
         if b"pieces" in torrent_info:
             return len(torrent_info[b"pieces"]) // 20
         return 0
 
-    def get_info_hash_hex(self):
+    def get_info_hash_hex(self) -> Any:
         """Get info hash as hexadecimal string"""
         return self.file_hash.hex()
 
-    def is_private(self):
+    def is_private(self) -> Any:
         """Check if torrent is private"""
         torrent_info = self.torrent_header[b"info"]
         return torrent_info.get(b"private", 0) == 1
 
-    def get_file_list(self):
+    def get_file_list(self) -> Any:
         """Get list of files in the torrent"""
         torrent_info = self.torrent_header[b"info"]
         files = []
@@ -190,7 +191,7 @@ class File:
 
         return files
 
-    def get_trackers(self):
+    def get_trackers(self) -> Any:
         """Get all tracker URLs"""
         trackers = []
 
@@ -206,13 +207,13 @@ class File:
 
         return trackers
 
-    def get_num_pieces(self):
+    def get_num_pieces(self) -> Any:
         return len(self.torrent_header[b"info"][b"pieces"]) / 20
 
-    def get_torrent_name(self):
+    def get_torrent_name(self) -> Any:
         return self.torrent_header[b"info"][b"name"].decode("utf-8")
 
-    def get_files(self):
+    def get_files(self) -> Any:
         files = []
         if b"files" in self.torrent_header[b"info"]:
             for file_info in self.torrent_header[b"info"][b"files"]:
@@ -221,13 +222,13 @@ class File:
                 files.append((fullpath, file_info[b"length"]))
         return files
 
-    def get_single_file_info(self):
+    def get_single_file_info(self) -> Any:
         if b"files" not in self.torrent_header[b"info"]:
             # Return raw byte length for consistent formatting by UI components
             return self.torrent_header[b"info"][b"length"]
         return None
 
-    def get_md5sum(self):
+    def get_md5sum(self) -> Any:
         if b"md5sum" in self.torrent_header[b"info"]:
             return self.torrent_header[b"info"][b"md5sum"]
         return None

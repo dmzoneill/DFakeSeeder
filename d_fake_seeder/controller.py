@@ -1,4 +1,5 @@
 # fmt: off
+from typing import Any
 import os
 
 from gi.repository import GLib
@@ -20,7 +21,7 @@ from d_fake_seeder.lib.util.window_manager import WindowManager
 
 # Cont roller
 class Controller:
-    def __init__(self, view, model):
+    def __init__(self, view: Any, model: Any) -> None:
         logger.trace("Startup", extra={"class_name": self.__class__.__name__})
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
@@ -118,7 +119,7 @@ class Controller:
 
         self.view.connect_signals()
 
-    def run(self):
+    def run(self) -> Any:
         logger.trace("Controller Run", extra={"class_name": self.__class__.__name__})
         for filename in os.listdir(os.path.expanduser("~/.config/dfakeseeder/torrents")):
             if filename.endswith(".torrent"):
@@ -139,7 +140,7 @@ class Controller:
         # Start watching folder for new torrents
         self.torrent_watcher.start()
 
-    def stop(self, shutdown_tracker=None):
+    def stop(self, shutdown_tracker: Any = None) -> Any:
         """Stop the controller and cleanup all background processes"""
         logger.trace("Controller stopping", extra={"class_name": self.__class__.__name__})
 
@@ -219,7 +220,7 @@ class Controller:
             logger.error(f"Error in tick callback: {e}", "Controller", exc_info=True)
         return True  # Keep timer running
 
-    def handle_settings_changed(self, source, key, value):
+    def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         logger.trace(
             f"Controller settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},

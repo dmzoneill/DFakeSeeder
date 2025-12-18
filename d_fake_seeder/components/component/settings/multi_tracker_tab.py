@@ -110,7 +110,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
         """Return the name of this tab"""
         return "Multi-Tracker"
 
-    def _init_widgets(self):
+    def _init_widgets(self) -> None:
         """Initialize Multi-Tracker specific widgets"""
         # Multi-Tracker Enable/Disable
         self._widgets["multi_tracker_enabled"] = self.builder.get_object("multi_tracker_enabled_switch")
@@ -145,7 +145,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _connect_signals(self):
+    def _connect_signals(self) -> None:
         """Connect Multi-Tracker specific signals"""
         # Simple widgets (max_consecutive_failures, backoff_base_seconds, max_backoff_seconds,
         # announce_to_all_tiers, announce_to_all_in_tier, response_time_tracking,
@@ -173,7 +173,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _load_settings(self):
+    def _load_settings(self) -> None:
         """Load Multi-Tracker settings from configuration"""
         try:
             protocols_config = getattr(self.app_settings, "protocols", {})
@@ -267,7 +267,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
                 exc_info=True,
             )
 
-    def _setup_dependencies(self):
+    def _setup_dependencies(self) -> None:
         """Set up dependencies between UI elements"""
         try:
             # Update widget sensitivity based on current state
@@ -444,7 +444,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
 
         return errors
 
-    def _update_tab_dependencies(self):
+    def _update_tab_dependencies(self) -> None:
         """Update UI element dependencies"""
         try:
             # Multi-tracker enabled state
@@ -504,7 +504,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
             )
 
     # Signal handlers
-    def _on_multi_tracker_enabled_changed(self, switch, state):
+    def _on_multi_tracker_enabled_changed(self, switch: Any, state: Any) -> None:
         """Handle Multi-Tracker enable/disable toggle"""
         self.logger.trace(
             f"Multi-Tracker enabled changed: {state}",
@@ -512,7 +512,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
         )
         self.update_dependencies()
 
-    def _on_failover_enabled_toggled(self, check_button):
+    def _on_failover_enabled_toggled(self, check_button: Any) -> None:
         """Handle failover enable toggle"""
         enabled = check_button.get_active()
         self.logger.trace(
@@ -521,7 +521,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
         )
         self.update_dependencies()
 
-    def _on_health_monitoring_enabled_toggled(self, check_button):
+    def _on_health_monitoring_enabled_toggled(self, check_button: Any) -> None:
         """Handle health monitoring enable toggle"""
         enabled = check_button.get_active()
         self.logger.trace(
@@ -530,7 +530,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
         )
         self.update_dependencies()
 
-    def _on_tracker_rotation_enabled_toggled(self, check_button):
+    def _on_tracker_rotation_enabled_toggled(self, check_button: Any) -> None:
         """Handle tracker rotation enable toggle"""
         enabled = check_button.get_active()
         self.logger.trace(
@@ -539,7 +539,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
         )
         self.update_dependencies()
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update view based on model changes."""
         self.logger.trace(
             "MultiTrackerTab update view",

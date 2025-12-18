@@ -5,6 +5,7 @@ This script installs desktop files and icons to provide proper
 desktop environment integration after PyPI installation.
 """
 # fmt: off
+from typing import Any
 import os
 import shutil
 import subprocess
@@ -17,7 +18,7 @@ from d_fake_seeder.lib.util.constants import DEFAULT_ICON_SIZES
 # fmt: on
 
 
-def get_package_dir():
+def get_package_dir() -> Any:
     """Get the installed package directory."""
     try:
         import d_fake_seeder
@@ -31,7 +32,7 @@ def get_package_dir():
         sys.exit(1)
 
 
-def install_icons(package_dir, home_dir):
+def install_icons(package_dir: Any, home_dir: Any) -> Any:
     """Install application icons to user icon directories."""
     icon_source = package_dir / "components" / "images" / "dfakeseeder.png"
     if not icon_source.exists():
@@ -54,7 +55,7 @@ def install_icons(package_dir, home_dir):
     return installed_any
 
 
-def install_desktop_file(package_dir, home_dir):
+def install_desktop_file(package_dir: Any, home_dir: Any) -> Any:
     """Install desktop file to user applications directory."""
     # Try template file first (for PyPI installations), then fall back to dev desktop file
     desktop_template = package_dir / "dfakeseeder.desktop.template"
@@ -111,7 +112,7 @@ def install_desktop_file(package_dir, home_dir):
         return False
 
 
-def install_tray_desktop_file(package_dir, home_dir):
+def install_tray_desktop_file(package_dir: Any, home_dir: Any) -> Any:
     """Install tray autostart desktop file."""
     tray_desktop_source = package_dir / "desktop" / "dfakeseeder-tray.desktop"
     if not tray_desktop_source.exists():
@@ -134,7 +135,7 @@ def install_tray_desktop_file(package_dir, home_dir):
         return False
 
 
-def update_caches(home_dir):
+def update_caches(home_dir: Any) -> None:
     """Update desktop and icon caches."""
     icon_dir = home_dir / ".local" / "share" / "icons" / "hicolor"
     desktop_dir = home_dir / ".local" / "share" / "applications"
@@ -179,7 +180,7 @@ def update_caches(home_dir):
         logger.trace("Info: Could not update desktop database: ...", "UnknownClass")
 
 
-def install_desktop_integration():
+def install_desktop_integration() -> Any:
     """Main function to install desktop integration."""
     logger.trace("Installing D' Fake Seeder desktop integration...", "UnknownClass")
     try:
@@ -236,7 +237,7 @@ def install_desktop_integration():
         sys.exit(1)
 
 
-def uninstall_desktop_integration():
+def uninstall_desktop_integration() -> Any:
     """Remove desktop integration files."""
     logger.trace("Removing D' Fake Seeder desktop integration...", "UnknownClass")
     home_dir = Path.home()
@@ -279,7 +280,7 @@ def uninstall_desktop_integration():
         logger.trace("\n✓ No desktop integration files found to remove.", "UnknownClass")
 
 
-def main():
+def main() -> Any:
     """Command line interface."""
     import argparse
 

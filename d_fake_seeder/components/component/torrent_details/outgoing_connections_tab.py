@@ -8,6 +8,7 @@ about peers that we've initiated connections to.
 # isort: skip_file
 
 # fmt: off
+from typing import Dict,  Any
 import gi
 
 from d_fake_seeder.domain.app_settings import AppSettings
@@ -30,7 +31,7 @@ from gi.repository import GLib, GObject, Gtk  # noqa: E402
 class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
     """Component for managing outgoing connections display"""
 
-    def __init__(self, builder, model):
+    def __init__(self, builder: Any, model: Any) -> None:
         super().__init__()
         ColumnTranslationMixin.__init__(self)
 
@@ -52,7 +53,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
         self.connection_manager = get_connection_manager()
 
         # Data store for UI display (filtered view)
-        self.outgoing_connections = {}  # ip:port -> ConnectionPeer (filtered for display)
+        self.outgoing_connections: Dict[str, Any] = {}  # ip:port -> ConnectionPeer (filtered for display)
         self.selected_torrent = None
         self.count_update_callback = None  # Callback to update connection counts
 
@@ -76,7 +77,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
         if hasattr(self.model, "connect"):
             self.track_signal(
                 self.model,
-                self.model.connect("selection-changed", self.on_selection_changed),
+                self.model.connect("selection-changed", self.on_selection_changed),  # type: ignore[attr-defined]
             )
 
         # Connect to language change signals for column translation
@@ -96,7 +97,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
                     extra={"class_name": self.__class__.__name__},
                 )
 
-    def on_connections_updated(self):
+    def on_connections_updated(self) -> None:
         """Called when the connection manager updates connections"""
         # Update the display by reapplying the filter
         self.apply_filter()
@@ -104,17 +105,17 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
         # Notify count changed if callback is set
         self._notify_count_changed()
 
-    def set_count_update_callback(self, callback):
+    def set_count_update_callback(self, callback: Any) -> None:
         """Set the callback to be called when connection count changes"""
         self.count_update_callback = callback
 
-    def _notify_count_changed(self):
+    def _notify_count_changed(self) -> Any:
         """Notify connection count changed (handled by main data-changed signal)"""
         # Connection count updates now handled by main data-changed signal
         # to respect tickspeed intervals and prevent UI flooding
         pass
 
-    def init_outgoing_column_view(self):
+    def init_outgoing_column_view(self) -> None:
         """Initialize the outgoing connections column view"""
         logger.trace(
             "OutgoingConnections init columnview",
@@ -179,10 +180,10 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
         self.selection = Gtk.SingleSelection.new(self.sort_model)
         self.outgoing_columnview.set_model(self.selection)
 
-    def setup_cell(self, widget, item, property_name):
+    def setup_cell(self, widget: Any, item: Any, property_name: Any) -> None:
         """Setup cell widget based on property type"""
 
-        def setup_when_idle():
+        def setup_when_idle() -> None:
             obj = item.get_item()
             if obj is None:
                 return
@@ -204,10 +205,10 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
 
         GLib.idle_add(setup_when_idle)
 
-    def bind_cell(self, widget, item, property_name):
+    def bind_cell(self, widget: Any, item: Any, property_name: Any) -> None:
         """Bind cell data to widget"""
 
-        def bind_when_idle():
+        def bind_when_idle() -> None:
             try:
                 # Early validation - exit immediately if any required objects are None
                 if item is None:
@@ -391,7 +392,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
 
         GLib.idle_add(bind_when_idle)
 
-    def format_bytes(self, bytes_value):
+    def format_bytes(self, bytes_value: Any) -> Any:
         """Format bytes in human readable format using configurable thresholds"""
         if bytes_value < self.kb_threshold:
             return f"{bytes_value} B"
@@ -402,7 +403,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
         else:
             return f"{bytes_value / self.gb_threshold:.1f} GB"
 
-    def on_filter_toggled(self, checkbox):
+    def on_filter_toggled(self, checkbox: Any) -> None:
         """Handle filter checkbox toggle"""
         logger.trace(
             f"Outgoing connections filter toggled: {checkbox.get_active()}",
@@ -410,7 +411,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
         )
         self.apply_filter()
 
-    def on_selection_changed(self, source, model, torrent):
+    def on_selection_changed(self, source: Any, model: Any, torrent: Any) -> None:
         """Handle model selection change"""
         self.selected_torrent = torrent
         logger.trace(
@@ -419,7 +420,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
         )
         self.apply_filter()
 
-    def apply_filter(self):
+    def apply_filter(self) -> Any:
         """Apply the current filter to the connections"""
         try:
             filter_enabled = self.filter_checkbox.get_active()
@@ -441,7 +442,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
                     connections_to_show.append((connection_key, connection_peer))
 
             # Schedule the filter update in idle to avoid snapshot issues
-            def update_filter_when_idle():
+            def update_filter_when_idle() -> Any:
                 try:
                     # Clear current displayed connections
                     self.outgoing_connections.clear()
@@ -466,7 +467,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
                         f"Error updating filter in idle: {e}",
                         extra={"class_name": self.__class__.__name__},
                     )
-                return False  # Don't repeat
+                return False  # Don't repeat  # type: ignore
 
             GLib.idle_add(update_filter_when_idle)
 
@@ -479,7 +480,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def add_outgoing_connection(self, address: str, port: int, torrent_hash: str = "", **kwargs):
+    def add_outgoing_connection(self, address: str, port: int, torrent_hash: str = "", **kwargs: Any) -> None:
         """Add a new outgoing connection"""
         # Set defaults if not provided in kwargs
         connection_kwargs = {
@@ -494,7 +495,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
         # Apply current filter to update display
         self.apply_filter()
 
-    def update_outgoing_connection(self, address: str, port: int, **kwargs):
+    def update_outgoing_connection(self, address: str, port: int, **kwargs: Any) -> None:
         """Update an existing outgoing connection"""
         # Delegate to centralized connection manager
         self.connection_manager.update_outgoing_connection(address, port, **kwargs)
@@ -502,7 +503,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
         # Apply current filter to update display
         self.apply_filter()
 
-    def remove_outgoing_connection(self, address: str, port: int):
+    def remove_outgoing_connection(self, address: str, port: int) -> None:
         """Remove an outgoing connection"""
         # Delegate to centralized connection manager
         self.connection_manager.remove_outgoing_connection(address, port)
@@ -510,7 +511,7 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
         # Apply current filter to update display
         self.apply_filter()
 
-    def clear_connections(self):
+    def clear_connections(self) -> None:
         """Clear all outgoing connections"""
         self.outgoing_store.remove_all()
         self.outgoing_connections.clear()
@@ -525,39 +526,39 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
         return self.connection_manager.get_global_outgoing_count()
 
     @property
-    def all_connections(self):
+    def all_connections(self) -> Any:
         """Property for backward compatibility - delegates to connection manager"""
         return self.connection_manager.get_all_outgoing_connections()
 
-    def handle_model_changed(self, source, data_obj, data_changed):
+    def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
         """Handle model changes"""
         logger.trace(
             "OutgoingConnections model changed",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_attribute_changed(self, source, key, value):
+    def handle_attribute_changed(self, source: Any, key: Any, value: Any) -> None:
         """Handle attribute changes"""
         logger.trace(
             "OutgoingConnections attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_settings_changed(self, source, data_obj, data_changed):
+    def handle_settings_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
         """Handle settings changes"""
         logger.trace(
             "OutgoingConnections settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update view"""
         logger.trace(
             "OutgoingConnections update view",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def on_language_changed(self, source=None, new_language=None):
+    def on_language_changed(self, source: Any = None, new_language: Any = None) -> None:
         """Handle language change events for column translation."""
         try:
             logger.trace(

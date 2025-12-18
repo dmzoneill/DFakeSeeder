@@ -269,7 +269,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Common BitTorrent clients
             # Get translation function if available
             translate_func = (
-                self.model.get_translate_func()
+                self.model.get_translate_func()  # type: ignore[attr-defined]
                 if hasattr(self, "model") and hasattr(self.model, "get_translate_func")
                 else lambda x: x
             )
@@ -309,7 +309,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
             # Get translation function if available
             translate_func = (
-                self.model.get_translate_func()
+                self.model.get_translate_func()  # type: ignore[attr-defined]
                 if hasattr(self, "model") and hasattr(self.model, "get_translate_func")
                 else lambda x: x
             )
@@ -487,7 +487,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
     # Signal handlers
 
-    def on_user_agent_changed(self, dropdown: Gtk.DropDown, param) -> None:
+    def on_user_agent_changed(self, dropdown: Gtk.DropDown, param: Any) -> None:
         """Handle user agent selection change."""
         try:
             self.update_dependencies()
@@ -560,7 +560,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         except Exception as e:
             self.logger.error(f"Error resetting BitTorrent tab to defaults: {e}")
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update view based on model changes."""
         self.logger.trace(
             "BitTorrentTab update view",

@@ -23,7 +23,7 @@ class TranslationManagerBase(ABC):
     """
 
     @abstractmethod
-    def __init__(self, domain: str, localedir: str = "locale", **kwargs):
+    def __init__(self, domain: str, localedir: str = "locale", **kwargs: Any) -> None:
         """
         Initialize the translation manager
 

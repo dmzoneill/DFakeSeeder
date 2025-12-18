@@ -9,7 +9,7 @@ Extends BaseSeeder to provide DHT-based peer discovery and announcement.
 import asyncio
 import hashlib
 import time
-from typing import Optional
+from typing import Any, Optional
 
 from d_fake_seeder.domain.torrent.protocols.dht.node import DHTNode
 from d_fake_seeder.domain.torrent.seeders.base_seeder import BaseSeeder
@@ -21,7 +21,7 @@ from d_fake_seeder.lib.logger import logger
 class DHTSeeder(BaseSeeder):
     """DHT-based seeder for trackerless torrents"""
 
-    def __init__(self, torrent):
+    def __init__(self, torrent: Any) -> None:
         """
         Initialize DHT seeder
 
@@ -54,7 +54,7 @@ class DHTSeeder(BaseSeeder):
         """Calculate torrent info hash for DHT operations"""
         try:
             if hasattr(self.torrent, "info_hash"):
-                return self.torrent.info_hash
+                return self.torrent.info_hash  # type: ignore[no-any-return]
 
             # Calculate from torrent file if not available
             if hasattr(self.torrent, "torrent_file") and self.torrent.torrent_file:
@@ -78,7 +78,7 @@ class DHTSeeder(BaseSeeder):
             )
             return None
 
-    async def start(self):
+    async def start(self) -> Any:
         """Start DHT seeding"""
         if not self.dht_enabled:
             logger.info("DHT seeding disabled", extra={"class_name": self.__class__.__name__})
@@ -99,7 +99,7 @@ class DHTSeeder(BaseSeeder):
             await self.dht_node.start()
 
             # Start announcement loop
-            self.announce_task = asyncio.create_task(self._announce_loop())
+            self.announce_task = asyncio.create_task(self._announce_loop())  # type: ignore[assignment]
 
             self.active = True
             logger.info(
@@ -115,7 +115,7 @@ class DHTSeeder(BaseSeeder):
             )
             return False
 
-    async def stop(self):
+    async def stop(self) -> Any:
         """Stop DHT seeding"""
         logger.info("Stopping DHT seeder", extra={"class_name": self.__class__.__name__})
 
@@ -135,7 +135,7 @@ class DHTSeeder(BaseSeeder):
             await self.dht_node.stop()
             self.dht_node = None
 
-    async def _announce_loop(self):
+    async def _announce_loop(self) -> Any:
         """Periodic DHT announcement loop"""
         while self.active and not self.shutdown_requested:
             try:
@@ -144,10 +144,10 @@ class DHTSeeder(BaseSeeder):
                 # Check if it's time to announce
                 if current_time - self.last_announce_time >= self.announce_interval:
                     await self._announce_to_dht()
-                    self.last_announce_time = current_time
+                    self.last_announce_time = current_time  # type: ignore[assignment]
 
                 # Wait before next check
-                await asyncio.sleep(self._get_check_interval())
+                await asyncio.sleep(self._get_check_interval())  # type: ignore[attr-defined]
 
             except asyncio.CancelledError:
                 break
@@ -156,9 +156,9 @@ class DHTSeeder(BaseSeeder):
                     f"DHT announce loop error: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                await asyncio.sleep(self._get_announce_sleep())
+                await asyncio.sleep(self._get_announce_sleep())  # type: ignore[attr-defined]
 
-    async def _announce_to_dht(self):
+    async def _announce_to_dht(self) -> Any:
         """Announce this torrent to the DHT network"""
         if not self.dht_node or not self.info_hash:
             return
@@ -215,7 +215,7 @@ class DHTSeeder(BaseSeeder):
             )
             return []
 
-    def _update_stats(self, operation: str, success: bool):
+    def _update_stats(self, operation: str, success: bool) -> None:
         """Update DHT operation statistics"""
         try:
             # Get current stats from settings
@@ -258,7 +258,7 @@ class DHTSeeder(BaseSeeder):
 
         return status
 
-    def handle_settings_changed(self, source, key, value):
+    def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         """Handle settings changes"""
         super().handle_settings_changed(source, key, value)
 
@@ -279,12 +279,12 @@ class DHTSeeder(BaseSeeder):
                 self.announce_interval = self._apply_announce_jitter(value)
 
     # Implement required BaseSeeder methods for compatibility
-    def request_status(self):
+    def request_status(self) -> Any:
         """Request status from DHT network (compatibility method)"""
         # DHT doesn't have traditional tracker status
         return {"status": "DHT active" if self.active else "DHT inactive"}
 
-    def set_announce_url(self, url):
+    def set_announce_url(self, url: Any) -> None:
         """Set announce URL (not applicable for DHT)"""
         logger.trace(
             "DHT seeder ignoring announce URL setting",

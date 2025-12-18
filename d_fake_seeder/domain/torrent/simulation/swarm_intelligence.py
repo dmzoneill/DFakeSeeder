@@ -8,7 +8,7 @@ peer distribution, and network conditions for optimal fake seeding performance.
 # fmt: off
 import random
 import time
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -20,7 +20,7 @@ from d_fake_seeder.lib.util.constants import SwarmIntelligenceConstants
 class SwarmHealthMetrics:
     """Tracks and analyzes swarm health metrics"""
 
-    def __init__(self, info_hash: bytes):
+    def __init__(self, info_hash: bytes) -> None:
         """
         Initialize swarm health metrics
 
@@ -52,7 +52,7 @@ class SwarmHealthMetrics:
         self.health_score = 1.0  # 0.0 to 1.0
         self.recommendation = "normal"  # normal, boost, reduce, pause
 
-    def update_metrics(self, peers_data: List[Dict]):
+    def update_metrics(self, peers_data: List[Dict]) -> None:
         """
         Update metrics from peer data
 
@@ -96,7 +96,7 @@ class SwarmHealthMetrics:
 
         self.last_update_time = time.time()
 
-    def _calculate_health_score(self):
+    def _calculate_health_score(self) -> Any:
         """Calculate overall swarm health score"""
         score = 1.0
 
@@ -157,7 +157,7 @@ class SwarmHealthMetrics:
 class PieceSelectionStrategy:
     """Implements realistic piece selection algorithms"""
 
-    def __init__(self, total_pieces: int):
+    def __init__(self, total_pieces: int) -> None:
         """
         Initialize piece selection strategy
 
@@ -174,7 +174,7 @@ class PieceSelectionStrategy:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def update_availability(self, peer_bitfields: List[bytes]):
+    def update_availability(self, peer_bitfields: List[bytes]) -> None:
         """
         Update piece availability from peer bitfields
 
@@ -226,7 +226,7 @@ class PieceSelectionStrategy:
         """Select next sequential piece"""
         return min(available_pieces)
 
-    def mark_completed(self, piece_index: int):
+    def mark_completed(self, piece_index: int) -> Any:
         """Mark piece as completed"""
         if piece_index not in self.completed_pieces:
             self.completed_pieces.append(piece_index)
@@ -240,7 +240,7 @@ class PieceSelectionStrategy:
 class SwarmIntelligence:
     """Main swarm intelligence system"""
 
-    def __init__(self, torrent_manager=None):
+    def __init__(self, torrent_manager: Any = None) -> None:
         """
         Initialize swarm intelligence system
 
@@ -268,7 +268,7 @@ class SwarmIntelligence:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def register_torrent(self, info_hash: bytes, total_pieces: int):
+    def register_torrent(self, info_hash: bytes, total_pieces: int) -> None:
         """
         Register torrent for swarm intelligence
 
@@ -323,7 +323,7 @@ class SwarmIntelligence:
             )
             return {"error": str(e)}
 
-    def adapt_seeding_behavior(self, info_hash: bytes) -> Dict[str, any]:
+    def adapt_seeding_behavior(self, info_hash: bytes) -> Dict[str, any]:  # type: ignore[valid-type]
         """
         Adapt seeding behavior based on swarm analysis
 
@@ -423,7 +423,7 @@ class SwarmIntelligence:
         strategy = self.piece_strategies[info_hash]
         return strategy.select_piece()
 
-    def update_piece_availability(self, info_hash: bytes, peer_bitfields: List[bytes]):
+    def update_piece_availability(self, info_hash: bytes, peer_bitfields: List[bytes]) -> None:
         """
         Update piece availability information
 
@@ -448,7 +448,7 @@ class SwarmIntelligence:
             },
         }
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up swarm intelligence data"""
         self.swarm_metrics.clear()
         self.piece_strategies.clear()

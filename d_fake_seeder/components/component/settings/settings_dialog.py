@@ -45,7 +45,7 @@ class SettingsDialog:
     Uses composition pattern with specialized tab classes for maintainability.
     """
 
-    def __init__(self, parent_window, app=None, model=None):
+    def __init__(self, parent_window: Any, app: Any = None, model: Any = None) -> None:
         """Initialize the settings dialog."""
         logger.trace("===== SettingsDialog.__init__ START =====", "SettingsDialog")
         logger.trace("parent_window:", "SettingsDialog")
@@ -70,7 +70,7 @@ class SettingsDialog:
         logger.trace("Creating Gtk.Builder", "SettingsDialog")
         self.builder = Gtk.Builder()
         logger.trace("About to load UI file", "SettingsDialog")
-        ui_file_path = os.environ.get("DFS_PATH") + "/components/ui/generated/settings_generated.xml"
+        ui_file_path = os.environ.get("DFS_PATH") + "/components/ui/generated/settings_generated.xml"  # type: ignore[operator]  # noqa: E501
         logger.trace("UI file path:", "SettingsDialog")
         logger.trace("UI file exists:", "SettingsDialog")
         self.builder.add_from_file(ui_file_path)
@@ -242,7 +242,7 @@ class SettingsDialog:
         except Exception as e:
             logger.error(f"Error connecting button signals: {e}")
 
-    def on_window_shown(self, window) -> None:
+    def on_window_shown(self, window: Any) -> None:
         """Handle window shown event - perform deferred initialization."""
         if self._first_show_complete:
             return
@@ -252,7 +252,7 @@ class SettingsDialog:
         # Use idle_add to defer initialization until after window is rendered
         from gi.repository import GLib
 
-        def _deferred_init():
+        def _deferred_init() -> Any:
             try:
                 # Pass model to tabs BEFORE initialization so they can use it
                 if self._deferred_model:
@@ -287,7 +287,7 @@ class SettingsDialog:
 
         GLib.idle_add(_deferred_init)
 
-    def _on_app_settings_changed(self, app_settings, key: str, value: Any) -> None:
+    def _on_app_settings_changed(self, app_settings: Any, key: str, value: Any) -> None:
         """Handle AppSettings changes to update dialog theme."""
         try:
             # Only handle color scheme changes
@@ -522,7 +522,7 @@ class SettingsDialog:
             return False
 
     # Signal handlers
-    def on_window_close(self, window) -> bool:
+    def on_window_close(self, window: Any) -> bool:
         """Handle window close request (X button or Alt+F4)."""
         try:
             logger.trace("Settings window close requested via window controls")
@@ -532,7 +532,7 @@ class SettingsDialog:
                 # Show confirmation dialog for unsaved changes
                 from gi.repository import GLib
 
-                def _show_unsaved_dialog():
+                def _show_unsaved_dialog() -> Any:
                     dialog = Gtk.AlertDialog()
                     dialog.set_message("Unsaved Changes")
                     dialog.set_detail("You have unsaved changes. What would you like to do?")
@@ -540,7 +540,7 @@ class SettingsDialog:
                     dialog.set_cancel_button(0)
                     dialog.set_default_button(2)
 
-                    def on_response(dialog, result):
+                    def on_response(dialog: Any, result: Any) -> None:
                         try:
                             response = dialog.choose_finish(result)
                             if response == 2:  # Save
@@ -599,7 +599,7 @@ class SettingsDialog:
             logger.error(f"Error handling page switch: {e}")
 
     # Button signal handlers
-    def on_cancel_clicked(self, button) -> None:
+    def on_cancel_clicked(self, button: Any) -> None:
         """Handle Cancel button click - close without saving."""
         try:
             logger.trace("Cancel button clicked")
@@ -612,7 +612,7 @@ class SettingsDialog:
         except Exception as e:
             logger.error(f"Error handling cancel button: {e}")
 
-    def on_apply_clicked(self, button) -> None:
+    def on_apply_clicked(self, button: Any) -> None:
         """Handle Apply button click - save but keep dialog open."""
         try:
             logger.trace("Apply button clicked")
@@ -633,7 +633,7 @@ class SettingsDialog:
         except Exception as e:
             logger.error(f"Error handling apply button: {e}")
 
-    def on_ok_clicked(self, button) -> None:
+    def on_ok_clicked(self, button: Any) -> None:
         """Handle OK button click - save and close."""
         try:
             logger.trace("OK button clicked")
@@ -653,7 +653,7 @@ class SettingsDialog:
         except Exception as e:
             logger.error(f"Error handling OK button: {e}")
 
-    def on_reset_clicked(self, button) -> None:
+    def on_reset_clicked(self, button: Any) -> None:
         """Handle Reset button click - reset current tab to defaults."""
         try:
             logger.trace("Reset button clicked")
@@ -684,7 +684,7 @@ class SettingsDialog:
             dialog.set_buttons(["OK"])
             dialog.set_default_button(0)
 
-            def on_response(dialog, result):
+            def on_response(dialog: Any, result: Any) -> None:
                 try:
                     dialog.choose_finish(result)
                 except Exception as e:

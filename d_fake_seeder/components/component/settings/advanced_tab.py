@@ -597,7 +597,7 @@ class AdvancedTab(
         except Exception as e:
             self.logger.error(f"Error clearing search: {e}")
 
-    def on_log_level_changed(self, dropdown: Gtk.DropDown, _param) -> None:
+    def on_log_level_changed(self, dropdown: Gtk.DropDown, _param: Any) -> None:
         """Handle log level change."""
         try:
             level_mapping = {
@@ -760,7 +760,7 @@ class AdvancedTab(
         except Exception as e:
             self.logger.error(f"Error reconfiguring logger: {e}", exc_info=True)
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update view based on model changes."""
         self.logger.trace(
             "AdvancedTab update view",

@@ -77,7 +77,7 @@ class DBusUnifier:
     </node>
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize D-Bus unifier with AppSettings integration"""
         logger.trace("Initializing DBusUnifier", extra={"class_name": self.__class__.__name__})
 
@@ -169,14 +169,14 @@ class DBusUnifier:
 
     def _handle_method_call(
         self,
-        connection,
-        sender,
-        object_path,
-        interface_name,
-        method_name,
-        parameters,
-        invocation,
-    ):
+        connection: Any,
+        sender: Any,
+        object_path: Any,
+        interface_name: Any,
+        method_name: Any,
+        parameters: Any,
+        invocation: Any,
+    ) -> None:  # noqa: E501
         """Handle incoming D-Bus method calls"""
         try:
             self._message_count += 1
@@ -198,7 +198,7 @@ class DBusUnifier:
                 GLib.idle_add(lambda: (self._handle_update_settings(changes_json), False)[1])
 
             elif method_name == "Ping":
-                result = self._handle_ping()
+                result = self._handle_ping()  # type: ignore[assignment]
                 invocation.return_value(GLib.Variant("(b)", (result,)))
 
             elif method_name == "GetConnectionStatus":
@@ -210,11 +210,11 @@ class DBusUnifier:
                 invocation.return_value(GLib.Variant("(s)", (result,)))
 
             elif method_name == "ShowPreferences":
-                result = self._handle_show_preferences()
+                result = self._handle_show_preferences()  # type: ignore[assignment]
                 invocation.return_value(GLib.Variant("(b)", (result,)))
 
             elif method_name == "ShowAbout":
-                result = self._handle_show_about()
+                result = self._handle_show_about()  # type: ignore[assignment]
                 invocation.return_value(GLib.Variant("(b)", (result,)))
 
             else:
@@ -335,7 +335,7 @@ class DBusUnifier:
 
     def _handle_ping(self) -> bool:
         """Ping method for connection health checks"""
-        self._last_ping = time.time()
+        self._last_ping = time.time()  # type: ignore[assignment]
         return True
 
     def _handle_get_connection_status(self) -> str:
@@ -509,7 +509,7 @@ class DBusUnifier:
             )
             return False
 
-    def _emit_settings_changed_signal(self, changes: dict):
+    def _emit_settings_changed_signal(self, changes: dict) -> Any:
         """Emit D-Bus signal for settings changes (including language changes)"""
         try:
             if not self._connection:
@@ -534,7 +534,7 @@ class DBusUnifier:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def setup_settings_signal_forwarding(self):
+    def setup_settings_signal_forwarding(self) -> None:
         """Setup forwarding of AppSettings signals to D-Bus signals"""
         try:
             # Connect to AppSettings signals to forward them over D-Bus
@@ -550,7 +550,7 @@ class DBusUnifier:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _on_app_setting_changed(self, app_settings, key, value):
+    def _on_app_setting_changed(self, app_settings: Any, key: Any, value: Any) -> None:
         """Forward AppSettings changes to D-Bus signals"""
         try:
             # Create changes dictionary
@@ -572,7 +572,7 @@ class DBusUnifier:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _setup_connection_health_monitoring(self):
+    def _setup_connection_health_monitoring(self) -> None:
         """Setup connection health monitoring and debugging tools"""
         try:
             # Health monitoring is built into the existing methods
@@ -586,11 +586,11 @@ class DBusUnifier:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _on_bus_acquired(self, connection, name):
+    def _on_bus_acquired(self, connection: Any, name: Any) -> None:
         """Callback when D-Bus connection is acquired"""
         logger.trace(f"D-Bus bus acquired: {name}", extra={"class_name": self.__class__.__name__})
 
-    def _on_name_acquired(self, connection, name):
+    def _on_name_acquired(self, connection: Any, name: Any) -> None:
         """Callback when service name is acquired"""
         self._is_service_owner = True
         logger.trace(
@@ -598,7 +598,7 @@ class DBusUnifier:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_name_lost(self, connection, name):
+    def _on_name_lost(self, connection: Any, name: Any) -> None:
         """Callback when service name is lost"""
         self._is_service_owner = False
         logger.debug(
@@ -606,7 +606,7 @@ class DBusUnifier:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up D-Bus connection and resources"""
         try:
             if self._registration_id and self._connection:

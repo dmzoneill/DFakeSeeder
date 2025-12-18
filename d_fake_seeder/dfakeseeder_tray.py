@@ -12,7 +12,7 @@ import json
 import os
 import signal
 import sys
-from typing import Any
+from typing import Any, Callable
 
 import gi
 
@@ -46,7 +46,7 @@ from d_fake_seeder.lib.util.single_instance import MultiMethodSingleInstance  # 
 class TrayApplication:
     """Main tray application with comprehensive menu system"""
 
-    def __init__(self, instance_checker=None):
+    def __init__(self, instance_checker: Any = None) -> None:
         logger.trace(
             "Initializing TrayApplication",
             extra={"class_name": self.__class__.__name__},
@@ -60,11 +60,11 @@ class TrayApplication:
         self.menu = None
         self.dbus_client = None
         self.translation_manager = None
-        self._ = None
-        self.settings_cache = {}
+        self._: Callable[[str], str] | None = None
+        self.settings_cache = {}  # type: ignore[var-annotated]
 
         # Menu item references for dynamic updates
-        self.menu_items = {}
+        self.menu_items = {}  # type: ignore[var-annotated]
 
         # Connection state
         self.connected = False
@@ -82,7 +82,7 @@ class TrayApplication:
         # Initialize notification system
         Notify.init("DFakeSeeder")
 
-    def run(self):
+    def run(self) -> Any:
         """Start the tray application"""
         logger.info("Starting tray application", extra={"class_name": self.__class__.__name__})
 
@@ -144,12 +144,12 @@ class TrayApplication:
             )
             return False
 
-    def _setup_translations(self):
+    def _setup_translations(self) -> None:
         """Setup GTK3 TranslationManager for tray application"""
         try:
             # Create GTK3 translation manager
             localedir = os.path.join(os.environ.get("DFS_PATH", "."), "components", "locale")
-            self.translation_manager = TranslationManagerGTK3(
+            self.translation_manager = TranslationManagerGTK3(  # type: ignore[assignment]
                 domain="dfakeseeder",
                 localedir=localedir,
                 fallback_language="en",
@@ -179,8 +179,8 @@ class TrayApplication:
             )
 
             # Switch to the language from D-Bus settings (no auto-detect to avoid AppSettings)
-            self.translation_manager.switch_language(target_language)
-            self._ = self.translation_manager.get_translate_func()
+            self.translation_manager.switch_language(target_language)  # type: ignore[attr-defined]
+            self._ = self.translation_manager.get_translate_func()  # type: ignore[attr-defined]
 
             logger.trace(
                 "GTK3 TranslationManager initialized for tray",
@@ -191,9 +191,9 @@ class TrayApplication:
                 f"Could not setup GTK3 TranslationManager: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
-            self._ = lambda x: x  # Fallback function
+            self._ = lambda x: x  # Fallback function  # type: ignore
 
-    def _switch_language(self, language_code: str):
+    def _switch_language(self, language_code: str) -> Any:
         """Switch to a different language using GTK3 TranslationManager"""
         try:
             if self.translation_manager:
@@ -217,7 +217,7 @@ class TrayApplication:
             )
             return "en"
 
-    def _create_indicator(self):
+    def _create_indicator(self) -> None:
         """Create AppIndicator3 system tray indicator"""
         try:
             self.indicator = AppIndicator3.Indicator.new(
@@ -226,8 +226,8 @@ class TrayApplication:
                 AppIndicator3.IndicatorCategory.APPLICATION_STATUS,
             )
 
-            self.indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
-            self.indicator.set_title("DFakeSeeder")
+            self.indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)  # type: ignore[attr-defined]
+            self.indicator.set_title("DFakeSeeder")  # type: ignore[attr-defined]
             # Don't set label - we want only the icon to show
 
             # Set icon using absolute path to dfakeseeder.png
@@ -235,7 +235,7 @@ class TrayApplication:
             icon_path = os.path.join(dfs_path, "components", "images", "dfakeseeder.png")
 
             if os.path.exists(icon_path):
-                self.indicator.set_icon_full(icon_path, "DFakeSeeder")
+                self.indicator.set_icon_full(icon_path, "DFakeSeeder")  # type: ignore[attr-defined]
                 logger.trace(
                     f"Using tray icon from: {icon_path}",
                     extra={"class_name": self.__class__.__name__},
@@ -244,14 +244,14 @@ class TrayApplication:
                 # Try system icon theme as fallback
                 icon_theme = Gtk.IconTheme.get_default()
                 if icon_theme.has_icon("dfakeseeder"):
-                    self.indicator.set_icon("dfakeseeder")
+                    self.indicator.set_icon("dfakeseeder")  # type: ignore[attr-defined]
                     logger.trace(
                         "Using system theme dfakeseeder icon",
                         extra={"class_name": self.__class__.__name__},
                     )
                 else:
                     # Final fallback to generic icon
-                    self.indicator.set_icon("application-default-icon")
+                    self.indicator.set_icon("application-default-icon")  # type: ignore[attr-defined]
                     logger.warning(
                         "Using fallback icon - dfakeseeder icon not found",
                         extra={"class_name": self.__class__.__name__},
@@ -268,11 +268,11 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _connect_to_dbus(self):
+    def _connect_to_dbus(self) -> None:
         """Connect to D-Bus service (reconnection handled by periodic update)"""
         try:
-            self.dbus_client = DBusClient()
-            self.connected = self.dbus_client.connected
+            self.dbus_client = DBusClient()  # type: ignore[assignment]
+            self.connected = self.dbus_client.connected  # type: ignore[attr-defined]
 
             if self.connected:
                 logger.trace(
@@ -296,7 +296,7 @@ class TrayApplication:
             self.connected = False
             self._update_indicator_status(False)
 
-    def _update_indicator_status(self, connected: bool):
+    def _update_indicator_status(self, connected: bool) -> None:
         """Update indicator icon based on connection status"""
         try:
             if self.indicator:
@@ -329,7 +329,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _load_initial_settings(self):
+    def _load_initial_settings(self) -> None:
         """Load initial settings cache from main app"""
         try:
             if self.dbus_client:
@@ -346,12 +346,12 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _setup_dbus_handlers(self):
+    def _setup_dbus_handlers(self) -> None:
         """Set up D-Bus signal handlers (only once to avoid duplicate subscriptions)"""
         try:
             # Only subscribe once to avoid duplicate signal handlers
             if not self.dbus_handlers_setup:
-                self.dbus_client.subscribe("SettingsChanged", self._on_settings_changed)
+                self.dbus_client.subscribe("SettingsChanged", self._on_settings_changed)  # type: ignore[attr-defined]
                 self.dbus_handlers_setup = True
                 logger.trace(
                     "D-Bus signal handlers set up",
@@ -370,14 +370,14 @@ class TrayApplication:
 
     def _on_settings_changed(
         self,
-        connection,
-        sender,
-        object_path,
-        interface_name,
-        signal_name,
-        parameters,
-        user_data,
-    ):
+        connection: Any,
+        sender: Any,
+        object_path: Any,
+        interface_name: Any,
+        signal_name: Any,
+        parameters: Any,
+        user_data: Any,
+    ) -> None:  # noqa: E501
         """Handle settings changes from main app"""
         try:
             changes_json = parameters.unpack()[0] if parameters else "{}"
@@ -413,7 +413,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _update_cache_value(self, key: str, value: Any):
+    def _update_cache_value(self, key: str, value: Any) -> None:
         """Update a value in the settings cache"""
         if "." in key:
             # Handle nested keys
@@ -425,7 +425,7 @@ class TrayApplication:
         else:
             self.settings_cache[key] = value
 
-    def _handle_language_change(self, new_language: str):
+    def _handle_language_change(self, new_language: str) -> None:
         """Handle language change by updating translations and recreating menu"""
         try:
             logger.trace(
@@ -455,7 +455,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _recreate_menu_with_translations(self):
+    def _recreate_menu_with_translations(self) -> Any:
         """Recreate the entire menu with updated translations"""
         try:
             logger.trace(
@@ -486,7 +486,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _create_menu(self):
+    def _create_menu(self) -> None:
         """Create tray context menu with localized strings (minimal when disconnected)"""
         # Check if full rebuild is needed based on connection state change
         connection_state_changed = self.last_connection_state != self.connected
@@ -500,7 +500,7 @@ class TrayApplication:
             )
             self._rebuild_menu_structure()
             self.menu_structure_cached = True
-            self.last_connection_state = self.connected
+            self.last_connection_state = self.connected  # type: ignore[assignment]
         else:
             # Menu structure is cached, just update dynamic values
             logger.trace(
@@ -509,7 +509,7 @@ class TrayApplication:
             )
             self._update_menu()
 
-    def _rebuild_menu_structure(self):
+    def _rebuild_menu_structure(self) -> Any:
         """Rebuild the complete menu structure (expensive operation)"""
         self.menu = Gtk.Menu()
 
@@ -520,35 +520,35 @@ class TrayApplication:
         if self.connected:
             status_item = Gtk.MenuItem(label=_("Connected to DFakeSeeder"))
             status_item.set_sensitive(False)
-            self.menu.append(status_item)
+            self.menu.append(status_item)  # type: ignore[attr-defined]
 
             # When connected, show all menu sections
             # Separator
-            self.menu.append(Gtk.SeparatorMenuItem())
+            self.menu.append(Gtk.SeparatorMenuItem())  # type: ignore[attr-defined]
 
             # Speed control section
             self._create_speed_menu_section(_)
 
             # Separator
-            self.menu.append(Gtk.SeparatorMenuItem())
+            self.menu.append(Gtk.SeparatorMenuItem())  # type: ignore[attr-defined]
 
             # Seeding control section
             self._create_seeding_menu_section(_)
 
             # Separator
-            self.menu.append(Gtk.SeparatorMenuItem())
+            self.menu.append(Gtk.SeparatorMenuItem())  # type: ignore[attr-defined]
 
             # Window management section
             self._create_window_menu_section(_)
 
             # Separator
-            self.menu.append(Gtk.SeparatorMenuItem())
+            self.menu.append(Gtk.SeparatorMenuItem())  # type: ignore[attr-defined]
 
             # Language selection
             self._create_language_menu_section(_)
 
             # Separator
-            self.menu.append(Gtk.SeparatorMenuItem())
+            self.menu.append(Gtk.SeparatorMenuItem())  # type: ignore[attr-defined]
 
             # Application actions (includes preferences, about, quit)
             self._create_app_menu_section(_)
@@ -556,26 +556,26 @@ class TrayApplication:
             # When disconnected, show minimal menu
             status_item = Gtk.MenuItem(label=_("Disconnected from DFakeSeeder"))
             status_item.set_sensitive(False)
-            self.menu.append(status_item)
+            self.menu.append(status_item)  # type: ignore[attr-defined]
 
             # Separator
-            self.menu.append(Gtk.SeparatorMenuItem())
+            self.menu.append(Gtk.SeparatorMenuItem())  # type: ignore[attr-defined]
 
             # Launch Main App option
             launch_item = Gtk.MenuItem(label=_("Launch Main Application"))
             launch_item.connect("activate", self._launch_main_app)
-            self.menu.append(launch_item)
+            self.menu.append(launch_item)  # type: ignore[attr-defined]
 
             # Separator
-            self.menu.append(Gtk.SeparatorMenuItem())
+            self.menu.append(Gtk.SeparatorMenuItem())  # type: ignore[attr-defined]
 
             # Only show Quit option when disconnected
             quit_item = Gtk.MenuItem(label=_("Quit DFakeSeeder"))
             quit_item.connect("activate", self._on_quit_tray_only)
-            self.menu.append(quit_item)
+            self.menu.append(quit_item)  # type: ignore[attr-defined]
 
         # Show all menu items
-        self.menu.show_all()
+        self.menu.show_all()  # type: ignore[attr-defined]
 
         # Register menu items for translation if TranslationManager supports it
         if self.translation_manager and hasattr(self.translation_manager, "register_simple_text"):
@@ -588,7 +588,7 @@ class TrayApplication:
         if self.indicator:
             self.indicator.set_menu(self.menu)
 
-    def _create_speed_menu_section(self, _):
+    def _create_speed_menu_section(self, _: Any) -> None:
         """Create speed control menu section"""
         # Speed control submenu
         speed_item = Gtk.MenuItem(label=_("Speed Control"))
@@ -616,9 +616,9 @@ class TrayApplication:
         speed_submenu.append(speed_info)
 
         speed_item.set_submenu(speed_submenu)
-        self.menu.append(speed_item)
+        self.menu.append(speed_item)  # type: ignore[attr-defined]
 
-    def _create_seeding_menu_section(self, _):
+    def _create_seeding_menu_section(self, _: Any) -> None:
         """Create seeding control menu section"""
         # Pause/Resume all seeding
         seeding_paused = self.settings_cache.get("seeding_paused", False)
@@ -628,7 +628,7 @@ class TrayApplication:
             pause_item = Gtk.MenuItem(label=_("Pause All Torrents"))
         pause_item.connect("activate", self._on_pause_toggle)
         self.menu_items["pause_toggle"] = pause_item
-        self.menu.append(pause_item)
+        self.menu.append(pause_item)  # type: ignore[attr-defined]
 
         # Seeding profile submenu
         profile_item = Gtk.MenuItem(label=_("Seeding Profile"))
@@ -651,9 +651,9 @@ class TrayApplication:
             profile_submenu.append(profile_radio)
 
         profile_item.set_submenu(profile_submenu)
-        self.menu.append(profile_item)
+        self.menu.append(profile_item)  # type: ignore[attr-defined]
 
-    def _create_window_menu_section(self, _):
+    def _create_window_menu_section(self, _: Any) -> None:
         """Create window management menu section"""
         # Show/Hide main window
         window_visible = self.settings_cache.get("window_visible", True)
@@ -663,9 +663,9 @@ class TrayApplication:
             window_item = Gtk.MenuItem(label=_("Show Main Window"))
         window_item.connect("activate", self._on_window_toggle)
         self.menu_items["window_toggle"] = window_item
-        self.menu.append(window_item)
+        self.menu.append(window_item)  # type: ignore[attr-defined]
 
-    def _create_language_menu_section(self, _):
+    def _create_language_menu_section(self, _: Any) -> None:
         """Create language selection menu section"""
         lang_item = Gtk.MenuItem(label=_("Language"))
         lang_submenu = Gtk.Menu()
@@ -709,29 +709,29 @@ class TrayApplication:
             lang_submenu.append(lang_radio)
 
         lang_item.set_submenu(lang_submenu)
-        self.menu.append(lang_item)
+        self.menu.append(lang_item)  # type: ignore[attr-defined]
 
-    def _create_app_menu_section(self, _):
+    def _create_app_menu_section(self, _: Any) -> None:
         """Create application actions menu section"""
         # Preferences
         prefs_item = Gtk.MenuItem(label=_("Preferences"))
         prefs_item.connect("activate", self._on_show_preferences)
-        self.menu.append(prefs_item)
+        self.menu.append(prefs_item)  # type: ignore[attr-defined]
 
         # About
         about_item = Gtk.MenuItem(label=_("About"))
         about_item.connect("activate", self._on_show_about)
-        self.menu.append(about_item)
+        self.menu.append(about_item)  # type: ignore[attr-defined]
 
         # Separator
-        self.menu.append(Gtk.SeparatorMenuItem())
+        self.menu.append(Gtk.SeparatorMenuItem())  # type: ignore[attr-defined]
 
         # Quit
         quit_item = Gtk.MenuItem(label=_("Quit DFakeSeeder"))
         quit_item.connect("activate", self._on_quit_application)
-        self.menu.append(quit_item)
+        self.menu.append(quit_item)  # type: ignore[attr-defined]
 
-    def _update_menu(self):
+    def _update_menu(self) -> None:
         """Update menu items based on current settings"""
         try:
             # Update speed toggle
@@ -775,7 +775,7 @@ class TrayApplication:
             )
 
     # Menu event handlers
-    def _on_speed_toggle(self, menu_item):
+    def _on_speed_toggle(self, menu_item: Any) -> None:
         """Handle speed toggle"""
         try:
             enabled = menu_item.get_active()
@@ -788,7 +788,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _on_pause_toggle(self, menu_item):
+    def _on_pause_toggle(self, menu_item: Any) -> None:
         """Handle pause/resume toggle"""
         try:
             current_paused = self.settings_cache.get("seeding_paused", False)
@@ -801,7 +801,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _on_profile_change(self, menu_item, profile_id):
+    def _on_profile_change(self, menu_item: Any, profile_id: Any) -> None:
         """Handle seeding profile change"""
         try:
             if menu_item.get_active():
@@ -814,7 +814,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _on_window_toggle(self, menu_item):
+    def _on_window_toggle(self, menu_item: Any) -> None:
         """Handle window visibility toggle"""
         try:
             current_visible = self.settings_cache.get("window_visible", True)
@@ -827,7 +827,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _on_language_change(self, menu_item, language_code):
+    def _on_language_change(self, menu_item: Any, language_code: Any) -> None:
         """Handle language change"""
         try:
             if menu_item.get_active():
@@ -840,7 +840,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _on_show_preferences(self, menu_item):
+    def _on_show_preferences(self, menu_item: Any) -> None:
         """Handle show preferences"""
         try:
             if not self.dbus_client or not self.dbus_client.connected:
@@ -876,7 +876,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _on_show_about(self, menu_item):
+    def _on_show_about(self, menu_item: Any) -> None:
         """Handle show about"""
         try:
             if not self.dbus_client or not self.dbus_client.connected:
@@ -912,7 +912,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _launch_main_app(self, menu_item):
+    def _launch_main_app(self, menu_item: Any) -> Any:
         """Launch the main DFakeSeeder application"""
         try:
             import shutil
@@ -997,7 +997,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _try_reconnect_after_launch(self):
+    def _try_reconnect_after_launch(self) -> Any:
         """Try to reconnect after launching main app"""
         try:
             self._connect_to_dbus()
@@ -1009,7 +1009,7 @@ class TrayApplication:
             )
             return False
 
-    def _on_quit_application(self, menu_item):
+    def _on_quit_application(self, menu_item: Any) -> None:
         """Handle quit application"""
         try:
             changes = {"application_quit_requested": True}
@@ -1048,7 +1048,7 @@ class TrayApplication:
             # Fallback: quit tray anyway after a delay
             GLib.timeout_add_seconds(1, self.quit)
 
-    def _on_quit_tray_only(self, menu_item):
+    def _on_quit_tray_only(self, menu_item: Any) -> None:
         """Handle quit tray only (when main app is not running)"""
         try:
             logger.trace(
@@ -1063,11 +1063,11 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _start_update_timer(self):
+    def _start_update_timer(self) -> Any:
         """Start periodic update timer"""
         self.update_timer = GLib.timeout_add_seconds(10, self._periodic_update)
 
-    def _periodic_update(self):
+    def _periodic_update(self) -> Any:
         """Periodic update function"""
         try:
             # Check connection health
@@ -1119,7 +1119,7 @@ class TrayApplication:
             )
             return True
 
-    def quit(self):
+    def quit(self) -> Any:
         """Quit the tray application"""
         logger.trace(
             "Shutting down tray application",
@@ -1145,19 +1145,19 @@ class TrayApplication:
         # Quit GTK main loop
         Gtk.main_quit()
 
-    def _signal_handler(self, signum, frame):
+    def _signal_handler(self, signum: Any, frame: Any) -> Any:
         """Handle system signals"""
         logger.info(f"Received signal {signum}", extra={"class_name": self.__class__.__name__})
         GLib.idle_add(self.quit)
 
 
-def _show_tray_console_message(detection_method: str):
+def _show_tray_console_message(detection_method: str) -> Any:
     """Show console message when another tray instance is detected"""
     print(f"\nDFakeSeeder Tray is already running (detected via {detection_method})")
     print("Please check your system tray.\n")
 
 
-def main():
+def main() -> Any:
     """Main entry point for tray application"""
     # ========== MULTI-METHOD SINGLE INSTANCE CHECK ==========
     # GTK3 doesn't have built-in single instance support like GTK4
@@ -1179,7 +1179,7 @@ def main():
             f"Existing tray instance detected via {detected_by} - exiting",
             extra={"class_name": "TrayApplication"},
         )
-        _show_tray_console_message(detected_by)
+        _show_tray_console_message(detected_by)  # type: ignore[arg-type]
         instance_checker.cleanup()
         return False
 

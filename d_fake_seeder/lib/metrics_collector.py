@@ -14,7 +14,7 @@ import time
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import psutil
 
@@ -24,7 +24,7 @@ from d_fake_seeder.lib.logger import add_trace_to_logger
 # fmt: on
 
 
-logger = add_trace_to_logger(logging.getLogger(__name__))
+logger = add_trace_to_logger(logging.getLogger(__name__))  # type: ignore[func-returns-value]
 if not logger.handlers:
     handler = logging.StreamHandler()
     handler.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
@@ -35,7 +35,7 @@ if not logger.handlers:
 class MetricsCollector:
     """Collects comprehensive metrics about the DFakeSeeder process."""
 
-    def __init__(self, pid: Optional[int] = None):
+    def __init__(self, pid: Optional[int] = None) -> None:
         """
         Initialize metrics collector.
 
@@ -49,7 +49,7 @@ class MetricsCollector:
 
         self._initialize_process()
 
-    def _initialize_process(self):
+    def _initialize_process(self) -> Any:
         """Initialize the process object."""
         try:
             if self.pid:
@@ -169,14 +169,14 @@ class MetricsCollector:
     def _collect_cpu_metrics(self) -> Dict:
         """Collect CPU usage metrics."""
         try:
-            cpu_times = self.process.cpu_times()
-            cpu_percent = self.process.cpu_percent(interval=self._get_cpu_sample_interval())
+            cpu_times = self.process.cpu_times()  # type: ignore[union-attr]
+            cpu_percent = self.process.cpu_percent(interval=self._get_cpu_sample_interval())  # type: ignore[attr-defined, union-attr]  # noqa: E501
 
             return {
                 "cpu_percent": cpu_percent,
                 "cpu_user_time": cpu_times.user,
                 "cpu_system_time": cpu_times.system,
-                "cpu_num_threads": self.process.num_threads(),
+                "cpu_num_threads": self.process.num_threads(),  # type: ignore[union-attr]
             }
         except Exception as e:
             return {"cpu_error": str(e)}
@@ -184,12 +184,12 @@ class MetricsCollector:
     def _collect_memory_metrics(self) -> Dict:
         """Collect memory usage metrics."""
         try:
-            mem_info = self.process.memory_info()
-            mem_percent = self.process.memory_percent()
+            mem_info = self.process.memory_info()  # type: ignore[union-attr]
+            mem_percent = self.process.memory_percent()  # type: ignore[union-attr]
 
             # Try to get USS (Unique Set Size) - most accurate for memory leaks
             try:
-                mem_full = self.process.memory_full_info()
+                mem_full = self.process.memory_full_info()  # type: ignore[union-attr]
                 uss = mem_full.uss
                 pss = getattr(mem_full, "pss", None)
             except (AttributeError, psutil.AccessDenied):
@@ -215,15 +215,15 @@ class MetricsCollector:
     def _collect_fd_metrics(self) -> Dict:
         """Collect file descriptor metrics."""
         try:
-            num_fds = self.process.num_fds()
+            num_fds = self.process.num_fds()  # type: ignore[union-attr]
 
             # Get FD types
-            fd_types = Counter()
+            fd_types = Counter()  # type: ignore[var-annotated]
             try:
-                for item in self.process.open_files():
+                for item in self.process.open_files():  # type: ignore[union-attr]
                     fd_types["file"] += 1
 
-                for conn in self.process.connections():
+                for conn in self.process.connections():  # type: ignore[union-attr]
                     fd_types["socket"] += 1
             except (psutil.AccessDenied, AttributeError):
                 pass
@@ -251,10 +251,10 @@ class MetricsCollector:
     def _collect_connection_metrics(self) -> Dict:
         """Collect network connection metrics."""
         try:
-            connections = self.process.connections()
+            connections = self.process.connections()  # type: ignore[union-attr]
 
-            conn_states = Counter()
-            conn_types = Counter()
+            conn_states = Counter()  # type: ignore[var-annotated]
+            conn_types = Counter()  # type: ignore[var-annotated]
             local_ports = set()
             remote_ports = set()
 
@@ -284,7 +284,7 @@ class MetricsCollector:
     def _collect_thread_metrics(self) -> Dict:
         """Collect thread metrics."""
         try:
-            threads = self.process.threads()
+            threads = self.process.threads()  # type: ignore[union-attr]
             num_threads = len(threads)
 
             # Calculate total thread CPU time
@@ -302,7 +302,7 @@ class MetricsCollector:
     def _collect_io_metrics(self) -> Dict:
         """Collect I/O metrics."""
         try:
-            io_counters = self.process.io_counters()
+            io_counters = self.process.io_counters()  # type: ignore[union-attr]
 
             return {
                 "io_read_count": io_counters.read_count,
@@ -334,7 +334,7 @@ class MetricsCollector:
         except Exception as e:
             return {"gc_error": str(e)}
 
-    def get_metrics_delta(self, current: Dict, baseline: Dict = None) -> Dict:
+    def get_metrics_delta(self, current: Dict, baseline: Dict = None) -> Dict:  # type: ignore[assignment]
         """
         Calculate delta between current and baseline metrics.
 
@@ -375,7 +375,7 @@ class MetricsCollector:
 
         return delta
 
-    def is_healthy(self, metrics: Dict, thresholds: Dict = None) -> Tuple[bool, List[str]]:
+    def is_healthy(self, metrics: Dict, thresholds: Dict = None) -> Tuple[bool, List[str]]:  # type: ignore[assignment]
         """
         Check if metrics indicate healthy operation.
 

@@ -107,7 +107,7 @@ class DHTTab(BaseSettingsTab):
         """Return the name of this tab for identification."""
         return "DHT"
 
-    def _init_widgets(self):
+    def _init_widgets(self) -> None:
         """Initialize DHT-specific widgets"""
         # DHT Enable/Disable
         self._widgets["dht_enabled"] = self.builder.get_object("dht_enabled_switch")
@@ -142,7 +142,7 @@ class DHTTab(BaseSettingsTab):
 
         self.logger.info("DHT tab widgets initialized", extra={"class_name": self.__class__.__name__})
 
-    def _connect_signals(self):
+    def _connect_signals(self) -> None:
         """Connect DHT-specific signals"""
         # Simple widgets (node_id_custom, announcement_interval, bootstrap_timeout, query_timeout,
         # routing_table_size, max_nodes, bucket_size, concurrent_queries, auto_bootstrap,
@@ -166,7 +166,7 @@ class DHTTab(BaseSettingsTab):
 
         self.logger.trace("DHT tab signals connected", extra={"class_name": self.__class__.__name__})
 
-    def _load_settings(self):
+    def _load_settings(self) -> None:
         """Load DHT settings from configuration"""
         try:
             dht_config = getattr(self.app_settings, "protocols", {}).get("dht", {})
@@ -178,7 +178,7 @@ class DHTTab(BaseSettingsTab):
             # Node configuration
             node_id_setting = dht_config.get("node_id", "auto_generate")
             if self._widgets["node_id_auto"]:
-                self.set_switch_state(self._widgets["node_id_auto"], node_id_setting == "auto_generate")
+                self.set_switch_state(self._widgets["node_id_auto"], node_id_setting == "auto_generate")  # type: ignore[attr-defined]  # noqa: E501
 
             if self._widgets["node_id_custom"]:
                 if node_id_setting != "auto_generate":
@@ -212,7 +212,7 @@ class DHTTab(BaseSettingsTab):
 
             # Bootstrap settings
             if self._widgets["auto_bootstrap"]:
-                self.set_switch_state(self._widgets["auto_bootstrap"], extended_config.get("auto_bootstrap", True))
+                self.set_switch_state(self._widgets["auto_bootstrap"], extended_config.get("auto_bootstrap", True))  # type: ignore[attr-defined]  # noqa: E501
 
             # Bootstrap nodes text
             if self._widgets["bootstrap_nodes"]:
@@ -229,17 +229,17 @@ class DHTTab(BaseSettingsTab):
 
             # Statistics settings
             if self._widgets["enable_stats"]:
-                self.set_switch_state(self._widgets["enable_stats"], extended_config.get("enable_stats", True))
+                self.set_switch_state(self._widgets["enable_stats"], extended_config.get("enable_stats", True))  # type: ignore[attr-defined]  # noqa: E501
 
             if self._widgets["stats_interval"]:
                 self._widgets["stats_interval"].set_value(extended_config.get("stats_interval", 60))
 
             # Security settings
             if self._widgets["validate_tokens"]:
-                self.set_switch_state(self._widgets["validate_tokens"], extended_config.get("validate_tokens", True))
+                self.set_switch_state(self._widgets["validate_tokens"], extended_config.get("validate_tokens", True))  # type: ignore[attr-defined]  # noqa: E501
 
             if self._widgets["rate_limit_enabled"]:
-                self.set_switch_state(
+                self.set_switch_state(  # type: ignore[attr-defined]
                     self._widgets["rate_limit_enabled"], extended_config.get("rate_limit_enabled", True)
                 )
 
@@ -350,7 +350,7 @@ class DHTTab(BaseSettingsTab):
             )
             return {}
 
-    def _setup_dependencies(self):
+    def _setup_dependencies(self) -> None:
         """Set up dependencies between UI elements"""
         # Initial dependency state based on current settings
         try:
@@ -475,7 +475,7 @@ class DHTTab(BaseSettingsTab):
         return errors
 
     # Signal handlers
-    def _on_dht_enabled_changed(self, switch, state):
+    def _on_dht_enabled_changed(self, switch: Any, state: Any) -> None:
         """Handle DHT enable/disable toggle"""
         self.logger.trace(
             f"DHT enabled changed: {state}",
@@ -513,7 +513,7 @@ class DHTTab(BaseSettingsTab):
             if self._widgets.get(widget_name):
                 self._widgets[widget_name].set_sensitive(state)
 
-    def _on_node_id_auto_toggled(self, check_button):
+    def _on_node_id_auto_toggled(self, check_button: Any) -> None:
         """Handle automatic node ID toggle"""
         auto_enabled = check_button.get_active()
         # NOTE: Setting will be saved in batch via _collect_settings()
@@ -524,7 +524,7 @@ class DHTTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_enable_stats_toggled(self, check_button):
+    def _on_enable_stats_toggled(self, check_button: Any) -> None:
         """Handle enable stats toggle"""
         enabled = check_button.get_active()
         # NOTE: Setting will be saved in batch via _collect_settings()
@@ -535,7 +535,7 @@ class DHTTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_rate_limit_toggled(self, check_button):
+    def _on_rate_limit_toggled(self, check_button: Any) -> None:
         """Handle rate limit toggle"""
         enabled = check_button.get_active()
         # NOTE: Setting will be saved in batch via _collect_settings()

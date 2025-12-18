@@ -360,7 +360,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
     def _validate_tab_settings(self) -> Dict[str, str]:
         """Validate Web UI tab settings."""
-        errors = {}
+        errors = {}  # type: ignore[var-annotated]
 
         try:
             # Only validate WebUI settings when WebUI is actually enabled
@@ -531,7 +531,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         except Exception as e:
             self.logger.error(f"Error resetting Web UI tab to defaults: {e}")
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update view based on model changes."""
         self.logger.trace(
             "WebUITab update view",

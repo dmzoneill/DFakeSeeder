@@ -63,7 +63,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error removing trackers grid child: {e}")
 
-    def update_content(self, attributes) -> None:
+    def update_content(self, attributes: Any) -> None:
         """
         Update trackers tab content with torrent tracker data.
 
@@ -143,7 +143,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             self.logger.error(f"Error creating trackers grid: {e}")
             return self.create_grid()  # Fallback to base grid
 
-    def _get_tracker_data(self, attributes) -> list:
+    def _get_tracker_data(self, attributes: Any) -> list:
         """
         Get tracker data with live status from the torrent.
 

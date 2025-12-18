@@ -8,7 +8,7 @@ Allows peers to exchange torrent metadata for magnet links.
 # fmt: off
 import math
 import struct
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -33,7 +33,7 @@ class MetadataExtension:
     DATA = 1
     REJECT = 2
 
-    def __init__(self, extension_manager, peer_connection):
+    def __init__(self, extension_manager: Any, peer_connection: Any) -> None:
         """
         Initialize metadata extension
 
@@ -61,7 +61,7 @@ class MetadataExtension:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def initialize(self):
+    def initialize(self) -> Any:
         """Initialize metadata extension after handshake"""
         # Get metadata from peer handshake if available
         peer_info = self.extension_manager.get_peer_info()
@@ -78,7 +78,7 @@ class MetadataExtension:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_message(self, payload: bytes):
+    def handle_message(self, payload: bytes) -> None:
         """
         Handle incoming metadata message
 
@@ -110,7 +110,7 @@ class MetadataExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _handle_request(self, payload: bytes):
+    def _handle_request(self, payload: bytes) -> None:
         """
         Handle metadata request message
 
@@ -146,7 +146,7 @@ class MetadataExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _handle_data(self, payload: bytes):
+    def _handle_data(self, payload: bytes) -> None:
         """
         Handle metadata data message
 
@@ -191,7 +191,7 @@ class MetadataExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _handle_reject(self, payload: bytes):
+    def _handle_reject(self, payload: bytes) -> None:
         """
         Handle metadata reject message
 
@@ -216,7 +216,7 @@ class MetadataExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _send_metadata_piece(self, piece_index: int):
+    def _send_metadata_piece(self, piece_index: int) -> Any:
         """
         Send metadata piece to peer
 
@@ -265,7 +265,7 @@ class MetadataExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _send_reject(self, piece_index: int):
+    def _send_reject(self, piece_index: int) -> Any:
         """
         Send metadata reject message
 
@@ -291,7 +291,7 @@ class MetadataExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def request_metadata(self):
+    def request_metadata(self) -> Any:
         """Request metadata from peer"""
         if not self.metadata_size or self.pieces_count == 0:
             logger.trace(
@@ -305,7 +305,7 @@ class MetadataExtension:
             if piece_index not in self.received_pieces and piece_index not in self.requested_pieces:
                 self._request_piece(piece_index)
 
-    def _request_piece(self, piece_index: int):
+    def _request_piece(self, piece_index: int) -> Any:
         """
         Request specific metadata piece
 
@@ -333,7 +333,7 @@ class MetadataExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _assemble_metadata(self):
+    def _assemble_metadata(self) -> Any:
         """Assemble complete metadata from received pieces"""
         try:
             # Sort pieces by index and concatenate
@@ -373,7 +373,7 @@ class MetadataExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _generate_synthetic_metadata(self):
+    def _generate_synthetic_metadata(self) -> Any:
         """Generate synthetic metadata for fake seeding"""
         try:
             # Create minimal but valid torrent metadata
@@ -440,7 +440,7 @@ class MetadataExtension:
             "piece_size": self.piece_size,
         }
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up metadata extension"""
         self.received_pieces.clear()
         self.requested_pieces.clear()

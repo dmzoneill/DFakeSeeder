@@ -9,7 +9,7 @@ Implements the Fast Extension which adds four new message types:
 # fmt: off
 import random
 import struct
-from typing import Set
+from typing import Any, Set
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -28,7 +28,7 @@ class FastExtension:
     REJECT_REQUEST = 16
     ALLOWED_FAST = 17
 
-    def __init__(self, peer_connection):
+    def __init__(self, peer_connection: Any) -> None:
         """
         Initialize Fast Extension
 
@@ -64,9 +64,9 @@ class FastExtension:
 
     def supports_fast_extension(self) -> bool:
         """Check if Fast Extension is supported"""
-        return self.fast_extension_enabled
+        return self.fast_extension_enabled  # type: ignore[no-any-return]
 
-    def enable_peer_fast_support(self):
+    def enable_peer_fast_support(self) -> None:
         """Enable fast extension support for peer"""
         self.peer_supports_fast = True
         logger.trace(
@@ -74,7 +74,7 @@ class FastExtension:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_suggest_piece(self, payload: bytes):
+    def handle_suggest_piece(self, payload: bytes) -> None:
         """
         Handle SUGGEST_PIECE message
 
@@ -103,7 +103,7 @@ class FastExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def handle_have_all(self, payload: bytes):
+    def handle_have_all(self, payload: bytes) -> None:
         """
         Handle HAVE_ALL message
 
@@ -123,7 +123,7 @@ class FastExtension:
                 for piece_index in range(piece_count):
                     self._mark_peer_has_piece(piece_index)
 
-    def handle_have_none(self, payload: bytes):
+    def handle_have_none(self, payload: bytes) -> None:
         """
         Handle HAVE_NONE message
 
@@ -139,7 +139,7 @@ class FastExtension:
         if hasattr(self.peer_connection, "peer_pieces"):
             self.peer_connection.peer_pieces.clear()
 
-    def handle_reject_request(self, payload: bytes):
+    def handle_reject_request(self, payload: bytes) -> None:
         """
         Handle REJECT_REQUEST message
 
@@ -168,7 +168,7 @@ class FastExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def handle_allowed_fast(self, payload: bytes):
+    def handle_allowed_fast(self, payload: bytes) -> None:
         """
         Handle ALLOWED_FAST message
 
@@ -347,7 +347,7 @@ class FastExtension:
 
         return False
 
-    def generate_allowed_fast_set(self, info_hash: bytes, peer_ip: str, num_pieces: int):
+    def generate_allowed_fast_set(self, info_hash: bytes, peer_ip: str, num_pieces: int) -> Any:
         """
         Generate allowed fast set based on peer IP and info hash
 
@@ -391,7 +391,7 @@ class FastExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def suggest_pieces_to_peer(self, available_pieces: Set[int]):
+    def suggest_pieces_to_peer(self, available_pieces: Set[int]) -> Any:
         """
         Suggest pieces to peer for download
 
@@ -422,7 +422,7 @@ class FastExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _handle_suggested_piece(self, piece_index: int):
+    def _handle_suggested_piece(self, piece_index: int) -> None:
         """Handle a piece suggestion from peer"""
         # In fake seeding, we simulate considering the suggestion
         logger.trace(
@@ -430,7 +430,7 @@ class FastExtension:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _handle_allowed_fast_piece(self, piece_index: int):
+    def _handle_allowed_fast_piece(self, piece_index: int) -> None:
         """Handle an allowed fast piece from peer"""
         # In fake seeding, we could immediately "request" this piece
         logger.trace(
@@ -438,7 +438,7 @@ class FastExtension:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _mark_peer_has_piece(self, piece_index: int):
+    def _mark_peer_has_piece(self, piece_index: int) -> Any:
         """Mark that peer has a specific piece"""
         if hasattr(self.peer_connection, "peer_pieces"):
             if not hasattr(self.peer_connection.peer_pieces, "add"):
@@ -461,7 +461,7 @@ class FastExtension:
             "have_none": self.have_none,
         }
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up Fast Extension state"""
         self.allowed_fast_pieces.clear()
         self.suggested_pieces.clear()

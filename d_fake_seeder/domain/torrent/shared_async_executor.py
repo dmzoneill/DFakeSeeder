@@ -17,7 +17,7 @@ import asyncio
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
-from typing import Dict, Optional, Set
+from typing import Any, Dict, Optional, Set
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -40,7 +40,7 @@ class SharedAsyncExecutor:
     _instance: Optional["SharedAsyncExecutor"] = None
     _lock = threading.Lock()
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize shared executor (private - use get_instance())"""
         # Get settings instance
         self.settings = AppSettings.get_instance()
@@ -80,14 +80,14 @@ class SharedAsyncExecutor:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _get_event_loop_sleep(self):
+    def _get_event_loop_sleep(self) -> Any:
         """Get event loop sleep interval from settings."""
         executor_config = getattr(self.settings, "shared_async_executor", {})
         if isinstance(executor_config, dict):
             return executor_config.get("event_loop_sleep_seconds", 0.1)
         return 0.1
 
-    def _get_startup_poll_interval(self):
+    def _get_startup_poll_interval(self) -> Any:
         """Get startup poll interval from settings."""
         executor_config = getattr(self.settings, "shared_async_executor", {})
         if isinstance(executor_config, dict):
@@ -103,7 +103,7 @@ class SharedAsyncExecutor:
                     cls._instance = cls()
         return cls._instance
 
-    def start(self):
+    def start(self) -> Any:
         """Start the shared async executor"""
         if self.running:
             logger.trace(
@@ -142,7 +142,7 @@ class SharedAsyncExecutor:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def stop(self):
+    def stop(self) -> Any:
         """Stop the shared async executor with aggressive cleanup"""
         if not self.running:
             return
@@ -194,7 +194,7 @@ class SharedAsyncExecutor:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _run_event_loop(self):
+    def _run_event_loop(self) -> None:
         """Run the shared event loop in dedicated thread"""
         logger.trace(
             "🔄 SharedAsyncExecutor event loop thread started",
@@ -239,7 +239,7 @@ class SharedAsyncExecutor:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def submit_coroutine(self, coro, manager_id: str) -> Optional[asyncio.Task]:
+    def submit_coroutine(self, coro: Any, manager_id: str) -> Optional[asyncio.Task]:
         """
         Submit a coroutine to the shared event loop.
 
@@ -268,7 +268,7 @@ class SharedAsyncExecutor:
             with self.tasks_lock:
                 if manager_id not in self.active_tasks:
                     self.active_tasks[manager_id] = set()
-                self.active_tasks[manager_id].add(task)
+                self.active_tasks[manager_id].add(task)  # type: ignore[arg-type]
 
             # Update stats
             if self.stats_enabled:
@@ -277,14 +277,14 @@ class SharedAsyncExecutor:
                     self.task_stats["active_managers"] = len(self.active_tasks)
 
             # Add completion callback
-            task.add_done_callback(lambda t: self._task_completed(t, manager_id))
+            task.add_done_callback(lambda t: self._task_completed(t, manager_id))  # type: ignore[arg-type]
 
             logger.trace(
                 f"📤 Submitted task for manager {manager_id}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-            return task
+            return task  # type: ignore[return-value]
 
         except Exception as e:
             logger.error(
@@ -296,7 +296,7 @@ class SharedAsyncExecutor:
                     self.task_stats["total_failed"] += 1
             return None
 
-    def _task_completed(self, task: asyncio.Task, manager_id: str):
+    def _task_completed(self, task: asyncio.Task, manager_id: str) -> Any:
         """Callback when task completes"""
         # Remove from active tasks
         with self.tasks_lock:
@@ -321,7 +321,7 @@ class SharedAsyncExecutor:
 
                 self.task_stats["active_managers"] = len(self.active_tasks)
 
-    def cancel_manager_tasks(self, manager_id: str):
+    def cancel_manager_tasks(self, manager_id: str) -> None:
         """Cancel all tasks for a specific manager"""
         with self.tasks_lock:
             if manager_id not in self.active_tasks:
@@ -339,7 +339,7 @@ class SharedAsyncExecutor:
 
             # Tasks will be removed by completion callback
 
-    def _cancel_all_tasks(self):
+    def _cancel_all_tasks(self) -> None:
         """Cancel all active tasks"""
         with self.tasks_lock:
             total_tasks = sum(len(tasks) for tasks in self.active_tasks.values())

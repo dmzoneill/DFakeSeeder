@@ -5,7 +5,7 @@ Allows fetching torrent metadata from peers without requiring the .torrent file.
 """
 
 # fmt: off
-from typing import Optional
+from typing import Any, Optional
 
 try:
     import bencodepy
@@ -35,7 +35,7 @@ class UTMetadataExtension:
     # Maximum piece size (16KB as per BEP 9)
     PIECE_SIZE = 16384
 
-    def __init__(self, info_dict: Optional[dict] = None, metadata_size: Optional[int] = None):
+    def __init__(self, info_dict: Optional[dict] = None, metadata_size: Optional[int] = None) -> None:
         """
         Initialize ut_metadata extension.
 
@@ -45,7 +45,7 @@ class UTMetadataExtension:
         """
         self.info_dict = info_dict
         self.metadata_size = metadata_size
-        self.metadata_pieces = {}
+        self.metadata_pieces = {}  # type: ignore[var-annotated]
 
         # If we have the info dict, calculate metadata and split into pieces
         if info_dict and bencodepy:
@@ -57,16 +57,16 @@ class UTMetadataExtension:
                 logger.error(f"Failed to encode metadata: {e}", "UTMetadataExtension", exc_info=True)
                 self.metadata = None
 
-    def _split_metadata_into_pieces(self):
+    def _split_metadata_into_pieces(self) -> Any:
         """Split metadata into 16KB pieces"""
         if not hasattr(self, "metadata") or not self.metadata:
             return
 
-        num_pieces = (self.metadata_size + self.PIECE_SIZE - 1) // self.PIECE_SIZE
+        num_pieces = (self.metadata_size + self.PIECE_SIZE - 1) // self.PIECE_SIZE  # type: ignore[operator]
 
         for i in range(num_pieces):
             start = i * self.PIECE_SIZE
-            end = min(start + self.PIECE_SIZE, self.metadata_size)
+            end = min(start + self.PIECE_SIZE, self.metadata_size)  # type: ignore[type-var]
             self.metadata_pieces[i] = self.metadata[start:end]
 
         logger.trace(f"Split metadata into {num_pieces} pieces ({self.metadata_size} bytes)", "UTMetadataExtension")
@@ -91,18 +91,18 @@ class UTMetadataExtension:
                 b"msg_type": self.REJECT,
                 b"piece": piece_index,
             }
-            return bencodepy.encode(response)
+            return bencodepy.encode(response)  # type: ignore[no-any-return]
 
         # Send metadata piece
         response = {
             b"msg_type": self.DATA,
             b"piece": piece_index,
-            b"total_size": self.metadata_size,
+            b"total_size": self.metadata_size,  # type: ignore[dict-item]
         }
 
         # Bencode the response and append the piece data
         encoded_response = bencodepy.encode(response)
-        return encoded_response + self.metadata_pieces[piece_index]
+        return encoded_response + self.metadata_pieces[piece_index]  # type: ignore[no-any-return]
 
     def parse_message(self, payload: bytes) -> Optional[dict]:
         """
@@ -160,4 +160,4 @@ class UTMetadataExtension:
             b"piece": piece_index,
         }
 
-        return bencodepy.encode(request)
+        return bencodepy.encode(request)  # type: ignore[no-any-return]

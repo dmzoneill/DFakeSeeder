@@ -3,7 +3,7 @@ import functools
 import logging
 import sys
 import time
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 # Try to import systemd journal support
 try:
@@ -21,26 +21,26 @@ TRACE_LEVEL = 5
 logging.addLevelName(TRACE_LEVEL, "TRACE")
 
 
-def add_trace_to_logger(logger_instance):
+def add_trace_to_logger(logger_instance: Any) -> None:
     """
     Add trace() method to a standard Logger instance.
 
     This is used to add TRACE level support to fallback loggers
     that are created when the EnhancedLogger is not available.
     """
-    def trace(msg, *args, **kwargs):
+    def trace(msg: Any, *args: Any, **kwargs: Any) -> Any:
         if logger_instance.isEnabledFor(TRACE_LEVEL):
             logger_instance._log(TRACE_LEVEL, msg, args, **kwargs)
 
     logger_instance.trace = trace
-    return logger_instance
+    return logger_instance  # type: ignore[no-any-return]
 
 
 # fmt: on
 
 
 class ClassNameFilter(logging.Filter):
-    def filter(self, record):
+    def filter(self, record: Any) -> Any:
         record.class_name = record.name if not hasattr(record, "class_name") else record.class_name
         return True
 
@@ -48,7 +48,7 @@ class ClassNameFilter(logging.Filter):
 class TimingFilter(logging.Filter):
     """Filter that adds precise timing information to log records."""
 
-    def filter(self, record):
+    def filter(self, record: Any) -> Any:
         record.precise_time = time.time()
         record.timestamp_ms = f"{record.precise_time:.3f}"
         return True
@@ -65,7 +65,7 @@ class DuplicateFilter(logging.Filter):
     - Optionally flushes suppressed counts periodically
     """
 
-    def __init__(self, time_window=5.0, flush_interval=30.0):
+    def __init__(self, time_window: Any = 5.0, flush_interval: Any = 30.0) -> None:
         """
         Initialize the duplicate filter.
 
@@ -76,16 +76,16 @@ class DuplicateFilter(logging.Filter):
         super().__init__()
         self.time_window = time_window
         self.flush_interval = flush_interval
-        self.last_messages = {}  # message_key -> (count, first_time, last_time, record)
+        self.last_messages: Dict[str, Any] = {}  # message_key -> (count, first_time, last_time, record)
         self.last_flush = time.time()
 
-    def _get_message_key(self, record):
+    def _get_message_key(self, record: Any) -> Any:
         """Create a unique key for this log message."""
         # Use levelname, module, line number, and message content as key
         # This allows same message from different locations to be logged separately
         return (record.levelname, record.name, record.lineno, record.getMessage())
 
-    def _should_flush(self):
+    def _should_flush(self) -> Any:
         """Check if it's time to flush suppressed message counts."""
         current_time = time.time()
         if current_time - self.last_flush >= self.flush_interval:
@@ -93,7 +93,7 @@ class DuplicateFilter(logging.Filter):
             return True
         return False
 
-    def _flush_suppressed_counts(self):
+    def _flush_suppressed_counts(self) -> Any:
         """Log summary of all suppressed messages."""
         current_time = time.time()
         to_remove = []
@@ -122,7 +122,7 @@ class DuplicateFilter(logging.Filter):
         for key in to_remove:
             del self.last_messages[key]
 
-    def filter(self, record):
+    def filter(self, record: Any) -> Any:
         """
         Filter duplicate messages.
 
@@ -174,17 +174,14 @@ class DuplicateFilter(logging.Filter):
 class PerformanceLogger:
     """Enhanced logger with performance tracking and timing capabilities."""
 
-    def __init__(self, logger_instance):
+    def __init__(self, logger_instance: Any) -> None:
         self._logger = logger_instance
         self._timers: Dict[str, float] = {}
         self._operation_stack: list = []
 
     def timing_info(
-        self,
-        message: str,
-        class_name: Optional[str] = None,
-        operation_time_ms: Optional[float] = None,
-    ):
+        self, message: str, class_name: Optional[str] = None, operation_time_ms: Optional[float] = None
+    ) -> Any:  # noqa: E501
         """Log with timing information similar to the old print statements."""
         extra = {}
         if class_name:
@@ -196,11 +193,8 @@ class PerformanceLogger:
         self._logger.info(message, extra=extra)
 
     def timing_debug(
-        self,
-        message: str,
-        class_name: Optional[str] = None,
-        operation_time_ms: Optional[float] = None,
-    ):
+        self, message: str, class_name: Optional[str] = None, operation_time_ms: Optional[float] = None
+    ) -> Any:  # noqa: E501
         """Debug level timing information."""
         extra = {}
         if class_name:
@@ -218,12 +212,8 @@ class PerformanceLogger:
         return start_time
 
     def end_timer(
-        self,
-        operation_name: str,
-        message: Optional[str] = None,
-        class_name: Optional[str] = None,
-        level: str = "info",
-    ) -> float:
+        self, operation_name: str, message: Optional[str] = None, class_name: Optional[str] = None, level: str = "info"
+    ) -> float:  # noqa: E501
         """End a named timer and log the duration."""
         if operation_name not in self._timers:
             self._logger.info(f"Timer '{operation_name}' was not started")
@@ -244,11 +234,11 @@ class PerformanceLogger:
 
         return duration_ms
 
-    def operation_context(self, operation_name: str, class_name: Optional[str] = None):
+    def operation_context(self, operation_name: str, class_name: Optional[str] = None) -> Any:
         """Context manager for timing operations."""
         return OperationTimer(self, operation_name, class_name)
 
-    def performance_info(self, message: str, class_name: Optional[str] = None, **metrics):
+    def performance_info(self, message: str, class_name: Optional[str] = None, **metrics: Any) -> Any:
         """Log performance information with custom metrics."""
         extra = {"class_name": class_name} if class_name else {}
         extra.update(metrics)
@@ -262,31 +252,26 @@ class PerformanceLogger:
 class OperationTimer:
     """Context manager for timing operations."""
 
-    def __init__(
-        self,
-        perf_logger: PerformanceLogger,
-        operation_name: str,
-        class_name: Optional[str] = None,
-    ):
+    def __init__(self, perf_logger: PerformanceLogger, operation_name: str, class_name: Optional[str] = None) -> None:
         self.perf_logger = perf_logger
         self.operation_name = operation_name
         self.class_name = class_name
         self.start_time = None
 
-    def __enter__(self):
-        self.start_time = self.perf_logger.start_timer(self.operation_name)
+    def __enter__(self) -> Any:
+        self.start_time = self.perf_logger.start_timer(self.operation_name)  # type: ignore[assignment]
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
         self.perf_logger.end_timer(self.operation_name, class_name=self.class_name, level="debug")
 
 
-def timing_decorator(operation_name: Optional[str] = None, level: str = "debug"):
+def timing_decorator(operation_name: Optional[str] = None, level: str = "debug") -> Any:
     """Decorator to automatically time function execution."""
 
-    def decorator(func):
+    def decorator(func: Any) -> Any:
         @functools.wraps(func)
-        def wrapper(self, *args, **kwargs):
+        def wrapper(self, *args: Any, **kwargs: Any) -> Any:  # type: ignore[no-untyped-def]
             op_name = operation_name or func.__name__
             class_name = self.__class__.__name__ if hasattr(self, "__class__") else None
 
@@ -298,7 +283,7 @@ def timing_decorator(operation_name: Optional[str] = None, level: str = "debug")
     return decorator
 
 
-def get_logger_settings():
+def get_logger_settings() -> Any:
     """Get logger settings from AppSettings if available, otherwise use defaults"""
     try:
         from domain.app_settings import AppSettings
@@ -337,7 +322,7 @@ def get_logger_settings():
         }
 
 
-def setup_logger():
+def setup_logger() -> None:
     """Setup logger with current settings"""
     settings = get_logger_settings()
 
@@ -414,15 +399,15 @@ def setup_logger():
 
     # Create enhanced logger wrapper with performance tracking
     class EnhancedLogger:
-        def __init__(self, logger_instance):
+        def __init__(self, logger_instance: Any) -> None:
             self._logger = logger_instance
             self.performance = PerformanceLogger(logger_instance)
 
-        def __getattr__(self, name):
+        def __getattr__(self, name: Any) -> Any:
             # Delegate all other attributes to the underlying logger
             return getattr(self._logger, name)
 
-        def trace(self, message: str, class_name: Optional[str] = None, **kwargs):
+        def trace(self, message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
             """
             Ultra-verbose logging for detailed diagnostics.
             Use for: function entry/exit, loop iterations, internal state.
@@ -433,7 +418,7 @@ def setup_logger():
             kwargs["extra"] = extra
             return self._logger.log(TRACE_LEVEL, message, **kwargs)
 
-        def debug(self, message: str, class_name: Optional[str] = None, **kwargs):
+        def debug(self, message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
             """
             Verbose diagnostic logging.
             Use for: important state changes, control flow, variable values.
@@ -444,7 +429,7 @@ def setup_logger():
             kwargs["extra"] = extra
             return self._logger.debug(message, **kwargs)
 
-        def info(self, message: str, class_name: Optional[str] = None, **kwargs):
+        def info(self, message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
             """
             Important state changes and milestones.
             Use for: application lifecycle, major operations, user actions.
@@ -455,7 +440,7 @@ def setup_logger():
             kwargs["extra"] = extra
             return self._logger.info(message, **kwargs)
 
-        def warning(self, message: str, class_name: Optional[str] = None, **kwargs):
+        def warning(self, message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
             """
             Unexpected but recoverable situations.
             Use for: missing optional config, deprecated usage, performance issues.
@@ -466,7 +451,7 @@ def setup_logger():
             kwargs["extra"] = extra
             return self._logger.warning(message, **kwargs)
 
-        def error(self, message: str, class_name: Optional[str] = None, **kwargs):
+        def error(self, message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
             """
             Errors that need attention but don't crash the app.
             Use for: failed operations, exceptions caught, data errors.
@@ -477,7 +462,7 @@ def setup_logger():
             kwargs["extra"] = extra
             return self._logger.error(message, **kwargs)
 
-        def critical(self, message: str, class_name: Optional[str] = None, **kwargs):
+        def critical(self, message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
             """
             Fatal errors that prevent operation.
             Use for: cannot start app, critical resources missing, unrecoverable errors.
@@ -489,30 +474,30 @@ def setup_logger():
             return self._logger.critical(message, **kwargs)
 
     enhanced_logger = EnhancedLogger(logger_instance)
-    return enhanced_logger
+    return enhanced_logger  # type: ignore[return-value]
 
 
-def reconfigure_logger():
+def reconfigure_logger() -> Any:
     """Reconfigure logger with current settings - call when settings change"""
     global logger
-    logger = setup_logger()
+    logger = setup_logger()  # type: ignore[func-returns-value]
     return logger
 
 
-def get_performance_logger():
+def get_performance_logger() -> Any:
     """Get a performance logger instance for timing operations."""
     return logger.performance if hasattr(logger, "performance") else None
 
 
-def debug(message: str, class_name: Optional[str] = None, **kwargs):
+def debug(message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
     """Global convenience function for debug logs with class name."""
     logger.debug(message, class_name, **kwargs)
 
 
-def info(message: str, class_name: Optional[str] = None, **kwargs):
+def info(message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
     """Global convenience function for info logs with class name."""
     logger.info(message, class_name, **kwargs)
 
 
 # Initialize enhanced logger with defaults
-logger = setup_logger()
+logger = setup_logger()  # type: ignore[func-returns-value]

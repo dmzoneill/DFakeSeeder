@@ -1,5 +1,6 @@
 # fmt: off
 # isort: skip_file
+from typing import List,  Any
 import os
 from urllib.parse import urlparse
 
@@ -45,7 +46,7 @@ class Model(GObject.GObject):
         ),
     }
 
-    def __init__(self):
+    def __init__(self) -> None:
         GObject.GObject.__init__(self)
         logger.trace("===== Model.__init__ START =====", "Model")
         logger.trace("Model instantiate", extra={"class_name": self.__class__.__name__})
@@ -77,7 +78,7 @@ class Model(GObject.GObject):
         # Setup automatic translation
         logger.trace("About to call setup_translations()", "Model")
         try:
-            result = self.translation_manager.setup_translations(auto_detect=True)
+            result = self.translation_manager.setup_translations(auto_detect=True)  # type: ignore[attr-defined]
             logger.trace(f"setup_translations() returned: {result}", "Model")
         except Exception:
             logger.error("Exception in setup_translations()", "Model", exc_info=True)
@@ -85,7 +86,7 @@ class Model(GObject.GObject):
         if hasattr(self.translation_manager, "translate_func"):
             ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
             logger.trace("Registered translation function with ColumnTranslations", "Model")
-        self.torrent_list = []  # List to hold all torrent instances
+        self.torrent_list: List[Any] = []  # List to hold all torrent instances
         self.torrent_list_attributes = Gio.ListStore.new(Attributes)  # List to hold all Attributes instances
         # Multi-criteria filtering
         logger.trace("About to initialize filtering", "Model")
@@ -103,7 +104,7 @@ class Model(GObject.GObject):
         )
 
     # Method to add a new torrent
-    def add_torrent(self, filepath):
+    def add_torrent(self, filepath: Any) -> None:
         logger.trace("Model add torrent", extra={"class_name": self.__class__.__name__})
         # Create new Torrent instance
         torrent = Torrent(filepath)
@@ -122,7 +123,7 @@ class Model(GObject.GObject):
         self.emit("data-changed", torrent, "add")
 
     # Method to add a new torrent
-    def remove_torrent(self, filepath):
+    def remove_torrent(self, filepath: Any) -> None:
         logger.trace("Model add torrent", extra={"class_name": self.__class__.__name__})
         # Find the Torrent instance
         torrent = next((t for t in self.torrent_list if t.filepath == filepath), None)
@@ -145,20 +146,20 @@ class Model(GObject.GObject):
         self.emit("data-changed", torrent, "remove")
 
     # Method to get ListStore of torrents for Gtk.TreeView
-    def get_liststore(self):
+    def get_liststore(self) -> Any:
         logger.trace("Model get_liststore", extra={"class_name": self.__class__.__name__})
         return self.torrent_list_attributes
 
-    def get_torrents(self):
+    def get_torrents(self) -> Any:
         logger.trace("Model get_torrents", extra={"class_name": self.__class__.__name__})
         return self.torrent_list
 
-    def get_trackers_liststore(self):
+    def get_trackers_liststore(self) -> Any:
         logger.trace(
             "Model get trackers liststore",
             extra={"class_name": self.__class__.__name__},
         )
-        tracker_count = {}
+        tracker_count = {}  # type: ignore[var-annotated]
         for torrent in self.torrent_list:
             if torrent.is_ready():
                 # Get ALL trackers from the torrent file
@@ -184,7 +185,7 @@ class Model(GObject.GObject):
         logger.trace(f"Found {len(sorted_trackers)} unique trackers across all torrents")
         return list_store
 
-    def stop(self, shutdown_tracker=None):
+    def stop(self, shutdown_tracker: Any = None) -> Any:
         # Stopping all torrents before quitting - PARALLEL SHUTDOWN
         import time
 
@@ -393,14 +394,14 @@ class Model(GObject.GObject):
             )
 
     # Method to get ListStore of torrents for Gtk.TreeView
-    def get_liststore_item(self, index):
+    def get_liststore_item(self, index: Any) -> Any:
         logger.trace(
             "Model get list store item",
             extra={"class_name": self.__class__.__name__},
         )
         return self.torrent_list[index]
 
-    def get_torrent_by_attributes(self, attributes):
+    def get_torrent_by_attributes(self, attributes: Any) -> Any:
         """
         Get the Torrent object corresponding to the given Attributes object.
         Args:
@@ -443,7 +444,7 @@ class Model(GObject.GObject):
             )
             return None
 
-    def handle_settings_changed(self, source, key, value):
+    def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         logger.trace("===== handle_settings_changed() CALLED =====", "Model")
         logger.debug("DEBUG: Signal received - key='', value=''", "Model")
         logger.debug("DEBUG: Source object:", "Model")
@@ -470,7 +471,7 @@ class Model(GObject.GObject):
                     logger.info(f"Language switched via translation manager: {actual_lang}")
                     # Update translate function reference
                     logger.debug("Updating translate function reference...", "Model")
-                    self.translate_func = self.translation_manager.translate_func
+                    self.translate_func = self.translation_manager.translate_func  # type: ignore[attr-defined]
                     logger.trace("Translate function updated", "Model")
                     # CRITICAL: Re-register the NEW translation function with ColumnTranslations
                     # This must happen BEFORE emitting the signal so column components get the new function
@@ -506,18 +507,18 @@ class Model(GObject.GObject):
         # Handle other setting changes as needed
         # Add other key-specific handling here in the future
 
-    def handle_model_changed(self, source, data_obj, data_changed):
+    def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
         logger.trace(
             "Notebook settings changed",
             extra={"class_name": self.__class__.__name__},
         )
         self.emit("data-changed", data_obj, "attribute")
 
-    def _setup_filtering(self):
+    def _setup_filtering(self) -> None:
         """Setup the filtering system for search functionality"""
 
         # Create a custom filter function
-        def search_filter_func(item):
+        def search_filter_func(item: Any) -> Any:
             if not self.search_filter:
                 return True
             # Get torrent attributes
@@ -533,7 +534,7 @@ class Model(GObject.GObject):
         # We'll create the actual filter model when needed
         self.filter_func = search_filter_func
 
-    def set_search_filter(self, search_text):
+    def set_search_filter(self, search_text: Any) -> None:
         """Set the search filter and update the filtered list"""
         logger.trace(
             f"Setting search filter: '{search_text}'",
@@ -545,7 +546,7 @@ class Model(GObject.GObject):
         # Emit signal to notify views
         self.emit("data-changed", None, "filter")
 
-    def set_filter_criteria(self, filter_type, value):
+    def set_filter_criteria(self, filter_type: Any, value: Any) -> None:
         """
         Set a filter criterion and update the filtered list.
 
@@ -568,7 +569,7 @@ class Model(GObject.GObject):
         # Emit signal to notify views
         self.emit("data-changed", None, "filter")
 
-    def clear_filter(self, filter_type):
+    def clear_filter(self, filter_type: Any) -> None:
         """
         Clear a specific filter criterion.
 
@@ -592,7 +593,7 @@ class Model(GObject.GObject):
         # Emit signal to notify views
         self.emit("data-changed", None, "filter")
 
-    def _update_filtered_list(self):
+    def _update_filtered_list(self) -> None:
         """Update the filtered torrent list based on all active filters"""
         # Check if any filters are active
         has_filters = bool(self.search_filter or self.active_filter_state or self.active_filter_tracker)
@@ -634,17 +635,17 @@ class Model(GObject.GObject):
         for i in range(self.torrent_list_attributes.get_n_items()):
             item = self.torrent_list_attributes.get_item(i)
             if self._matches_all_filters(item):
-                self.filtered_torrent_list_attributes.append(item)
+                self.filtered_torrent_list_attributes.append(item)  # type: ignore[attr-defined]
 
         logger.trace(
             f"Filtered {self.torrent_list_attributes.get_n_items()} torrents to "
-            f"{self.filtered_torrent_list_attributes.get_n_items()} results "
+            f"{self.filtered_torrent_list_attributes.get_n_items()} results "  # type: ignore[attr-defined]
             f"(search='{self.search_filter}', state={self.active_filter_state}, "
             f"tracker={self.active_filter_tracker})",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _matches_all_filters(self, torrent_attributes):
+    def _matches_all_filters(self, torrent_attributes: Any) -> Any:
         """
         Check if a torrent matches all active filter criteria.
 
@@ -680,7 +681,7 @@ class Model(GObject.GObject):
 
         return True
 
-    def _matches_state_filter(self, torrent):
+    def _matches_state_filter(self, torrent: Any) -> Any:
         """Check if torrent matches the active state filter."""
         # Get torrent properties
         active = getattr(torrent, "active", True)
@@ -705,7 +706,7 @@ class Model(GObject.GObject):
 
         return True
 
-    def _matches_tracker_filter(self, torrent):
+    def _matches_tracker_filter(self, torrent: Any) -> Any:
         """Check if torrent matches the active tracker filter."""
         # Get trackers from torrent file
         if not torrent.is_ready():
@@ -730,13 +731,13 @@ class Model(GObject.GObject):
 
         return False
 
-    def get_filtered_liststore(self):
+    def get_filtered_liststore(self) -> Any:
         """Get the filtered ListStore for display"""
         if self.filtered_torrent_list_attributes is None:
             return self.torrent_list_attributes
         return self.filtered_torrent_list_attributes
 
-    def switch_language(self, lang_code: str):
+    def switch_language(self, lang_code: str) -> Any:
         """Switch language and notify views"""
         with logger.performance.operation_context("model_switch_language", "Model"):
             logger.trace(f"switch_language() called with: {lang_code}", "Model")
@@ -745,7 +746,7 @@ class Model(GObject.GObject):
                 extra={"class_name": self.__class__.__name__},
             )
             # Check widget registration before switching
-            widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0
+            widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0  # type: ignore[attr-defined]  # noqa: E501
             logger.trace(
                 f"TranslationManager has {widget_count} registered widgets before switch",
                 "Model",
@@ -763,7 +764,7 @@ class Model(GObject.GObject):
                     extra={"class_name": self.__class__.__name__},
                 )
             # Check widget registration after switching
-            widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0
+            widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0  # type: ignore[attr-defined]  # noqa: E501
             logger.trace(
                 f"TranslationManager has {widget_count} registered widgets after switch",
                 "Model",
@@ -794,14 +795,14 @@ class Model(GObject.GObject):
             )
             return actual_lang
 
-    def get_translate_func(self):
+    def get_translate_func(self) -> Any:
         """Get current translation function for manual translations"""
-        return self.translation_manager.translate_func
+        return self.translation_manager.translate_func  # type: ignore[attr-defined]
 
-    def get_supported_languages(self):
+    def get_supported_languages(self) -> Any:
         """Get set of supported language codes"""
-        return self.translation_manager.get_supported_languages()
+        return self.translation_manager.get_supported_languages()  # type: ignore[attr-defined]
 
-    def get_current_language(self):
+    def get_current_language(self) -> Any:
         """Get current language code"""
         return self.translation_manager.get_current_language()

@@ -7,6 +7,7 @@ language switching for column headers.
 """
 
 # fmt: off
+from typing import Dict,  Any
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.column_translations import ColumnTranslations
@@ -22,16 +23,16 @@ class ColumnTranslationMixin:
     and needs runtime column header translation support.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
 
         # Track columns for translation updates
-        self._translatable_columns = {}  # column_view -> [(column, property_name, column_type)]
+        self._translatable_columns: Dict[str, Any] = {}  # column_view -> [(column, property_name, column_type)]
 
         # Get settings instance for language access
         self.settings = AppSettings.get_instance()
 
-    def register_translatable_column(self, column_view, column, property_name, column_type):
+    def register_translatable_column(self, column_view: Any, column: Any, property_name: Any, column_type: Any) -> None:
         """
         Register a column for runtime translation
 
@@ -54,7 +55,7 @@ class ColumnTranslationMixin:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _update_column_title(self, column, property_name, column_type):
+    def _update_column_title(self, column: Any, property_name: Any, column_type: Any) -> None:
         """
         Update a single column's title with current translation
 
@@ -77,7 +78,7 @@ class ColumnTranslationMixin:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def refresh_column_translations(self):
+    def refresh_column_translations(self) -> None:
         """
         Refresh all registered column translations
 
@@ -107,7 +108,7 @@ class ColumnTranslationMixin:
 
         logger.trace("Column translations refresh completed", self.__class__.__name__)
 
-    def on_language_changed(self, model, lang_code):
+    def on_language_changed(self, model: Any, lang_code: Any) -> None:
         """
         Handle language change notification
 
@@ -136,7 +137,9 @@ class ColumnTranslationMixin:
         self.refresh_column_translations()
         logger.trace("Column translations refresh completed", self.__class__.__name__)
 
-    def create_translated_column(self, column_view, property_name, column_type, factory=None):
+    def create_translated_column(
+        self, column_view: Any, property_name: Any, column_type: Any, factory: Any = None
+    ) -> None:  # noqa: E501
         """
         Helper method to create a column with translation support
 
@@ -174,7 +177,7 @@ class ColumnTranslationMixin:
                 extra={"class_name": self.__class__.__name__},
             )
 
-            return column
+            return column  # type: ignore[no-any-return]
 
         except Exception as e:
             logger.error(
@@ -183,7 +186,7 @@ class ColumnTranslationMixin:
             )
             return None
 
-    def get_column_count(self, column_view):
+    def get_column_count(self, column_view: Any) -> Any:
         """
         Get the number of registered translatable columns for a column view
 
@@ -195,7 +198,7 @@ class ColumnTranslationMixin:
         """
         return len(self._translatable_columns.get(column_view, []))
 
-    def clear_translatable_columns(self, column_view=None):
+    def clear_translatable_columns(self, column_view: Any = None) -> None:
         """
         Clear translatable column registrations
 
@@ -216,7 +219,7 @@ class ColumnTranslationMixin:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def cleanup_column_translations(self):
+    def cleanup_column_translations(self) -> None:
         """
         Clean up column translation resources
 

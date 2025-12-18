@@ -10,7 +10,7 @@ import asyncio
 import hashlib
 import time
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -43,7 +43,7 @@ class PeerInfo:
 class PeerDiscovery:
     """DHT peer discovery manager"""
 
-    def __init__(self, node_id: bytes, routing_table: RoutingTable, socket):
+    def __init__(self, node_id: bytes, routing_table: RoutingTable, socket: Any) -> None:
         """
         Initialize peer discovery
 
@@ -177,7 +177,7 @@ class PeerDiscovery:
             )
             return False
 
-    def store_peer(self, info_hash: bytes, ip: str, port: int):
+    def store_peer(self, info_hash: bytes, ip: str, port: int) -> Any:
         """
         Store peer information for a torrent
 
@@ -207,7 +207,7 @@ class PeerDiscovery:
         """Get all stored peers for a torrent"""
         return self._get_stored_peers(info_hash, 1000)
 
-    def cleanup_old_peers(self, max_age: int = 3600):
+    def cleanup_old_peers(self, max_age: int = 3600) -> None:
         """
         Remove old peer information
 
@@ -251,7 +251,7 @@ class PeerDiscovery:
         # Prevent concurrent discoveries for same torrent
         if info_hash in self.active_discoveries:
             try:
-                return await self.active_discoveries[info_hash]
+                return await self.active_discoveries[info_hash]  # type: ignore[no-any-return]
             except asyncio.CancelledError:
                 pass
 
@@ -434,11 +434,11 @@ class PeerDiscovery:
 
         return peers
 
-    async def _send_dht_message(self, message: dict, addr: Tuple[str, int]):
+    async def _send_dht_message(self, message: dict, addr: Tuple[str, int]) -> Any:
         """Send DHT message"""
         try:
             data = bencode.bencode(message)
-            await asyncio.get_running_loop().sock_sendto(self.socket, data, addr)
+            await asyncio.get_running_loop().sock_sendto(self.socket, data, addr)  # type: ignore[attr-defined]
         except Exception as e:
             logger.trace(
                 f"Failed to send DHT message to {addr}: {e}",
@@ -456,7 +456,7 @@ class PeerDiscovery:
                 # This would be handled by the main message processing loop
                 break
 
-            await asyncio.sleep(self._get_poll_interval())
+            await asyncio.sleep(self._get_poll_interval())  # type: ignore[attr-defined]
 
         # Clean up pending query
         if transaction_id in self.pending_queries:

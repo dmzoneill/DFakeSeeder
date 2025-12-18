@@ -49,7 +49,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         """Return the name of this tab."""
         return "Protocol Extensions"
 
-    def _init_widgets(self):
+    def _init_widgets(self) -> None:
         """Initialize Protocol Extensions widgets"""
         # Extension Protocol (BEP-010) Settings
         self._widgets["extensions_enabled"] = self.builder.get_object("extensions_enabled_switch")
@@ -98,7 +98,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _connect_signals(self):
+    def _connect_signals(self) -> None:
         """Connect Protocol Extensions signals"""
         # Simple widgets (lt_donthave, fast_extension, ut_holepunch) are now auto-connected via WIDGET_MAPPINGS
 
@@ -359,7 +359,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         self.logger.trace(f"Collected {len(settings)} settings from Protocol Extensions tab")
         return settings
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update view based on model changes."""
         self.logger.trace(
             "Protocol Extensions tab update view",
@@ -372,7 +372,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         # But prevent TranslationMixin from connecting to language-changed signal to avoid loops
         self._language_change_connected = True  # Block TranslationMixin from connecting
 
-    def load_settings(self):
+    def load_settings(self) -> None:
         """Load Protocol Extensions settings from configuration"""
         try:
             protocols_config = getattr(self.app_settings, "protocols", {})
@@ -387,19 +387,19 @@ class ProtocolExtensionsTab(BaseSettingsTab):
 
             # Individual extensions
             if self._widgets["ut_metadata"]:
-                self.set_switch_state(self._widgets["ut_metadata"], extensions_config.get("ut_metadata", True))
+                self.set_switch_state(self._widgets["ut_metadata"], extensions_config.get("ut_metadata", True))  # type: ignore[attr-defined]  # noqa: E501
 
             if self._widgets["ut_pex"]:
-                self.set_switch_state(self._widgets["ut_pex"], extensions_config.get("ut_pex", True))
+                self.set_switch_state(self._widgets["ut_pex"], extensions_config.get("ut_pex", True))  # type: ignore[attr-defined]  # noqa: E501
 
             if self._widgets["lt_donthave"]:
-                self.set_switch_state(self._widgets["lt_donthave"], extensions_config.get("lt_donthave", True))
+                self.set_switch_state(self._widgets["lt_donthave"], extensions_config.get("lt_donthave", True))  # type: ignore[attr-defined]  # noqa: E501
 
             if self._widgets["fast_extension"]:
-                self.set_switch_state(self._widgets["fast_extension"], extensions_config.get("fast_extension", True))
+                self.set_switch_state(self._widgets["fast_extension"], extensions_config.get("fast_extension", True))  # type: ignore[attr-defined]  # noqa: E501
 
             if self._widgets["ut_holepunch"]:
-                self.set_switch_state(self._widgets["ut_holepunch"], extensions_config.get("ut_holepunch", False))
+                self.set_switch_state(self._widgets["ut_holepunch"], extensions_config.get("ut_holepunch", False))  # type: ignore[attr-defined]  # noqa: E501
 
             # PEX Settings
             pex_config = protocols_config.get("pex", {})
@@ -414,7 +414,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 self._widgets["pex_max_dropped"].set_value(pex_config.get("max_dropped_peers", 20))
 
             if self._widgets["pex_synthetic_peers"]:
-                self.set_switch_state(
+                self.set_switch_state(  # type: ignore[attr-defined]
                     self._widgets["pex_synthetic_peers"], pex_config.get("generate_synthetic_peers", True)
                 )
 
@@ -425,10 +425,10 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             transport_config = protocols_config.get("transport", {})
 
             if self._widgets["utp_enabled"]:
-                self.set_switch_state(self._widgets["utp_enabled"], transport_config.get("utp_enabled", False))
+                self.set_switch_state(self._widgets["utp_enabled"], transport_config.get("utp_enabled", False))  # type: ignore[attr-defined]  # noqa: E501
 
             if self._widgets["tcp_fallback"]:
-                self.set_switch_state(self._widgets["tcp_fallback"], transport_config.get("tcp_fallback", True))
+                self.set_switch_state(self._widgets["tcp_fallback"], transport_config.get("tcp_fallback", True))  # type: ignore[attr-defined]  # noqa: E501
 
             if self._widgets["connection_timeout"]:
                 self._widgets["connection_timeout"].set_value(transport_config.get("connection_timeout", 30))
@@ -437,16 +437,16 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 self._widgets["keep_alive_interval"].set_value(transport_config.get("keep_alive_interval", 120))
 
             if self._widgets["nagle_algorithm"]:
-                self.set_switch_state(self._widgets["nagle_algorithm"], transport_config.get("nagle_algorithm", False))
+                self.set_switch_state(self._widgets["nagle_algorithm"], transport_config.get("nagle_algorithm", False))  # type: ignore[attr-defined]  # noqa: E501
 
             if self._widgets["tcp_keepalive"]:
-                self.set_switch_state(self._widgets["tcp_keepalive"], transport_config.get("tcp_keepalive", True))
+                self.set_switch_state(self._widgets["tcp_keepalive"], transport_config.get("tcp_keepalive", True))  # type: ignore[attr-defined]  # noqa: E501
 
             # Extended settings
             extended_config = protocols_config.get("extended", {})
 
             if self._widgets["metadata_enabled"]:
-                self.set_switch_state(self._widgets["metadata_enabled"], extended_config.get("metadata_enabled", True))
+                self.set_switch_state(self._widgets["metadata_enabled"], extended_config.get("metadata_enabled", True))  # type: ignore[attr-defined]  # noqa: E501
 
             if self._widgets["metadata_piece_size"]:
                 self._widgets["metadata_piece_size"].set_value(extended_config.get("metadata_piece_size", 16384))
@@ -455,7 +455,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 self._widgets["metadata_timeout"].set_value(extended_config.get("metadata_timeout", 60))
 
             if self._widgets["metadata_synthetic"]:
-                self.set_switch_state(
+                self.set_switch_state(  # type: ignore[attr-defined]
                     self._widgets["metadata_synthetic"], extended_config.get("metadata_synthetic", True)
                 )
 
@@ -468,7 +468,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 )
 
             if self._widgets["track_extension_stats"]:
-                self.set_switch_state(
+                self.set_switch_state(  # type: ignore[attr-defined]
                     self._widgets["track_extension_stats"], extended_config.get("track_extension_stats", True)
                 )
 
@@ -476,12 +476,12 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 self._widgets["stats_update_interval"].set_value(extended_config.get("stats_update_interval", 60))
 
             if self._widgets["validate_extensions"]:
-                self.set_switch_state(
+                self.set_switch_state(  # type: ignore[attr-defined]
                     self._widgets["validate_extensions"], extended_config.get("validate_extensions", True)
                 )
 
             if self._widgets["limit_extension_msgs"]:
-                self.set_switch_state(
+                self.set_switch_state(  # type: ignore[attr-defined]
                     self._widgets["limit_extension_msgs"], extended_config.get("limit_extension_msgs", True)
                 )
 
@@ -559,7 +559,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         return errors
 
     # Signal handlers
-    def _on_extensions_enabled_changed(self, switch, state):
+    def _on_extensions_enabled_changed(self, switch: Any, state: Any) -> None:
         """Handle overall extensions enable/disable"""
         # NOTE: Setting will be saved in batch via _collect_settings()
         self.logger.trace(
@@ -609,7 +609,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             if self._widgets.get(widget_name):
                 self._widgets[widget_name].set_sensitive(state)
 
-    def _on_ut_metadata_toggled(self, check_button):
+    def _on_ut_metadata_toggled(self, check_button: Any) -> None:
         """Handle ut_metadata toggle"""
         # NOTE: Setting will be saved in batch via _collect_settings()
         enabled = check_button.get_active()
@@ -626,7 +626,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 self._widgets[widget_name].set_sensitive(extensions_enabled and enabled)
         self.logger.trace(f"ut_metadata: {enabled}", extra={"class_name": self.__class__.__name__})
 
-    def _on_ut_pex_toggled(self, check_button):
+    def _on_ut_pex_toggled(self, check_button: Any) -> None:
         """Handle ut_pex toggle"""
         # NOTE: Setting will be saved in batch via _collect_settings()
         enabled = check_button.get_active()
@@ -645,17 +645,17 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 self._widgets[widget_name].set_sensitive(extensions_enabled and enabled)
         self.logger.trace(f"ut_pex: {enabled}", extra={"class_name": self.__class__.__name__})
 
-    def _on_pex_interval_changed(self, spin_button):
+    def _on_pex_interval_changed(self, spin_button: Any) -> None:
         """Handle PEX interval changes"""
         interval = spin_button.get_value()
         self.logger.trace(f"PEX interval: {interval}", extra={"class_name": self.__class__.__name__})
 
-    def _on_pex_max_peers_changed(self, spin_button):
+    def _on_pex_max_peers_changed(self, spin_button: Any) -> None:
         """Handle PEX max peers changes"""
         max_peers = spin_button.get_value()
         self.logger.trace(f"PEX max peers: {max_peers}", extra={"class_name": self.__class__.__name__})
 
-    def _on_pex_max_dropped_changed(self, spin_button):
+    def _on_pex_max_dropped_changed(self, spin_button: Any) -> None:
         """Handle PEX max dropped changes"""
         max_dropped = spin_button.get_value()
         self.logger.trace(
@@ -663,7 +663,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_pex_synthetic_peers_toggled(self, check_button):
+    def _on_pex_synthetic_peers_toggled(self, check_button: Any) -> None:
         """Handle PEX synthetic peers toggle"""
         enabled = check_button.get_active()
         # Only enable synthetic count if extensions AND ut_pex AND synthetic_peers are all enabled
@@ -676,7 +676,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_pex_synthetic_count_changed(self, spin_button):
+    def _on_pex_synthetic_count_changed(self, spin_button: Any) -> None:
         """Handle PEX synthetic count changes"""
         count = spin_button.get_value()
         self.logger.trace(
@@ -684,7 +684,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_metadata_enabled_toggled(self, check_button):
+    def _on_metadata_enabled_toggled(self, check_button: Any) -> None:
         """Handle metadata enabled toggle"""
         enabled = check_button.get_active()
         self.logger.trace(
@@ -692,7 +692,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_metadata_piece_size_changed(self, spin_button):
+    def _on_metadata_piece_size_changed(self, spin_button: Any) -> None:
         """Handle metadata piece size changes"""
         size = spin_button.get_value()
         self.logger.trace(
@@ -700,7 +700,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_metadata_timeout_changed(self, spin_button):
+    def _on_metadata_timeout_changed(self, spin_button: Any) -> None:
         """Handle metadata timeout changes"""
         timeout = spin_button.get_value()
         self.logger.trace(
@@ -708,7 +708,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_metadata_synthetic_toggled(self, check_button):
+    def _on_metadata_synthetic_toggled(self, check_button: Any) -> None:
         """Handle metadata synthetic toggle"""
         enabled = check_button.get_active()
         self.logger.trace(
@@ -716,17 +716,17 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_utp_enabled_toggled(self, check_button):
+    def _on_utp_enabled_toggled(self, check_button: Any) -> None:
         """Handle µTP enabled toggle"""
         enabled = check_button.get_active()
         self.logger.trace(f"µTP enabled: {enabled}", extra={"class_name": self.__class__.__name__})
 
-    def _on_tcp_fallback_toggled(self, check_button):
+    def _on_tcp_fallback_toggled(self, check_button: Any) -> None:
         """Handle TCP fallback toggle"""
         enabled = check_button.get_active()
         self.logger.trace(f"TCP fallback: {enabled}", extra={"class_name": self.__class__.__name__})
 
-    def _on_connection_timeout_changed(self, spin_button):
+    def _on_connection_timeout_changed(self, spin_button: Any) -> None:
         """Handle connection timeout changes"""
         timeout = spin_button.get_value()
         self.logger.trace(
@@ -734,7 +734,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_keep_alive_interval_changed(self, spin_button):
+    def _on_keep_alive_interval_changed(self, spin_button: Any) -> None:
         """Handle keep alive interval changes"""
         interval = spin_button.get_value()
         self.logger.trace(
@@ -742,17 +742,17 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_nagle_algorithm_toggled(self, check_button):
+    def _on_nagle_algorithm_toggled(self, check_button: Any) -> None:
         """Handle Nagle algorithm toggle"""
         enabled = check_button.get_active()
         self.logger.trace(f"Nagle algorithm: {enabled}", extra={"class_name": self.__class__.__name__})
 
-    def _on_tcp_keepalive_toggled(self, check_button):
+    def _on_tcp_keepalive_toggled(self, check_button: Any) -> None:
         """Handle TCP keepalive toggle"""
         enabled = check_button.get_active()
         self.logger.trace(f"TCP keepalive: {enabled}", extra={"class_name": self.__class__.__name__})
 
-    def _on_extension_timeout_changed(self, spin_button):
+    def _on_extension_timeout_changed(self, spin_button: Any) -> None:
         """Handle extension timeout changes"""
         timeout = spin_button.get_value()
         self.logger.trace(
@@ -760,7 +760,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_max_extension_msg_size_changed(self, spin_button):
+    def _on_max_extension_msg_size_changed(self, spin_button: Any) -> None:
         """Handle max extension message size changes"""
         size = spin_button.get_value()
         self.logger.trace(
@@ -768,7 +768,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_track_extension_stats_toggled(self, check_button):
+    def _on_track_extension_stats_toggled(self, check_button: Any) -> None:
         """Handle track extension stats toggle"""
         enabled = check_button.get_active()
         if self._widgets["stats_update_interval"]:
@@ -778,7 +778,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_stats_update_interval_changed(self, spin_button):
+    def _on_stats_update_interval_changed(self, spin_button: Any) -> None:
         """Handle stats update interval changes"""
         interval = spin_button.get_value()
         self.logger.trace(
@@ -786,7 +786,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_validate_extensions_toggled(self, check_button):
+    def _on_validate_extensions_toggled(self, check_button: Any) -> None:
         """Handle validate extensions toggle"""
         enabled = check_button.get_active()
         self.logger.trace(
@@ -794,7 +794,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_limit_extension_msgs_toggled(self, check_button):
+    def _on_limit_extension_msgs_toggled(self, check_button: Any) -> None:
         """Handle limit extension messages toggle"""
         enabled = check_button.get_active()
         if self._widgets["max_msgs_per_second"]:
@@ -804,7 +804,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_max_msgs_per_second_changed(self, spin_button):
+    def _on_max_msgs_per_second_changed(self, spin_button: Any) -> None:
         """Handle max messages per second changes"""
         max_msgs = spin_button.get_value()
         self.logger.trace(

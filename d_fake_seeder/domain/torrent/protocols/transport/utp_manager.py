@@ -7,7 +7,7 @@ Manages multiple µTP connections and provides connection pooling.
 # fmt: off
 import asyncio
 import socket
-from typing import Dict, Optional, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -21,7 +21,7 @@ from .utp_connection import UTPConnection
 class UTPManager:
     """Manages µTP connections"""
 
-    def __init__(self, port: int = 0):
+    def __init__(self, port: int = 0) -> None:
         """
         Initialize µTP manager
 
@@ -65,14 +65,14 @@ class UTPManager:
             logger.trace("Starting µTP manager", extra={"class_name": self.__class__.__name__})
 
             # Create UDP socket
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            self.socket.bind(("0.0.0.0", self.port))
-            self.socket.setblocking(False)
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # type: ignore[assignment]
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # type: ignore[attr-defined]
+            self.socket.bind(("0.0.0.0", self.port))  # type: ignore[attr-defined]
+            self.socket.setblocking(False)  # type: ignore[attr-defined]
 
             # Get actual port if random was chosen
             if self.port == 0:
-                self.port = self.socket.getsockname()[1]
+                self.port = self.socket.getsockname()[1]  # type: ignore[attr-defined]
 
             self.running = True
 
@@ -92,7 +92,7 @@ class UTPManager:
             )
             return False
 
-    async def stop(self):
+    async def stop(self) -> Any:
         """Stop µTP manager"""
         logger.trace("Stopping µTP manager", extra={"class_name": self.__class__.__name__})
 
@@ -164,12 +164,12 @@ class UTPManager:
             )
             return None
 
-    async def _listen_loop(self):
+    async def _listen_loop(self) -> Any:
         """Main listening loop for incoming packets"""
         while self.running:
             try:
                 # Receive packet
-                data, addr = await asyncio.get_running_loop().sock_recvfrom(self.socket, UTPConstants.MAX_PACKET_SIZE)
+                data, addr = await asyncio.get_running_loop().sock_recvfrom(self.socket, UTPConstants.MAX_PACKET_SIZE)  # type: ignore[attr-defined]  # noqa: E501
 
                 # Route to appropriate connection
                 asyncio.create_task(self._route_packet(data, addr))
@@ -181,9 +181,9 @@ class UTPManager:
                     f"µTP listen error: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                await asyncio.sleep(self._get_poll_interval())
+                await asyncio.sleep(self._get_poll_interval())  # type: ignore[attr-defined]
 
-    async def _route_packet(self, data: bytes, addr: Tuple[str, int]):
+    async def _route_packet(self, data: bytes, addr: Tuple[str, int]) -> Any:
         """
         Route incoming packet to appropriate connection
 
@@ -215,7 +215,7 @@ class UTPManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _accept_connection(self, data: bytes, addr: Tuple[str, int], connection_id: int):
+    async def _accept_connection(self, data: bytes, addr: Tuple[str, int], connection_id: int) -> Any:
         """
         Accept incoming µTP connection
 
@@ -256,7 +256,7 @@ class UTPManager:
         self.next_connection_id = (self.next_connection_id + 1) % UTPConstants.MAX_SEQUENCE_NUMBER
         return connection_id
 
-    def remove_connection(self, connection_id: int):
+    def remove_connection(self, connection_id: int) -> None:
         """
         Remove connection from manager
 
@@ -286,7 +286,7 @@ class UTPManager:
 
     def is_enabled(self) -> bool:
         """Check if µTP is enabled"""
-        return self.enabled
+        return self.enabled  # type: ignore[no-any-return]
 
     def is_running(self) -> bool:
         """Check if µTP manager is running"""

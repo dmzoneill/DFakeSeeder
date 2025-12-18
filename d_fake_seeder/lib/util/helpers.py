@@ -1,11 +1,12 @@
 # fmt: off
+from typing import Any
 import random
 import string
 
 # fmt: on
 
 
-def sizeof_fmt(num, suffix="B"):
+def sizeof_fmt(num: Any, suffix: Any = "B") -> Any:
     """Format size of file in a readable format."""
     for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
         if abs(num) < 1024.0:
@@ -14,7 +15,7 @@ def sizeof_fmt(num, suffix="B"):
     return "%.1f%s%s" % (num, "Yi", suffix)
 
 
-def urlencode(bytes):
+def urlencode(bytes: Any) -> Any:
     """Encode a byte array in URL format."""
     result = ""
     valids = (string.ascii_letters + "_.").encode("ascii")
@@ -28,12 +29,12 @@ def urlencode(bytes):
     return result
 
 
-def random_id(length):
+def random_id(length: Any) -> Any:
     """Generate a random ID of given length."""
     return "".join(random.choices(string.ascii_letters + string.digits, k=length))
 
 
-def humanbytes(B):
+def humanbytes(B: Any) -> Any:
     """Return the given bytes as a human friendly KB, MB, GB, or TB string."""
     B = float(B)
     KB = float(1024)
@@ -61,7 +62,7 @@ def humanbytes(B):
         )
 
 
-def convert_seconds_to_hours_mins_seconds(seconds):
+def convert_seconds_to_hours_mins_seconds(seconds: Any) -> Any:
     hours = seconds // 3600
     remaining_seconds = seconds % 3600
     mins = remaining_seconds // 60
@@ -78,15 +79,15 @@ def convert_seconds_to_hours_mins_seconds(seconds):
     return time_str
 
 
-def add_kb(kb):
-    return "{} kb".format(str(kb))
+def add_kb(kb: Any) -> None:
+    return "{} kb".format(str(kb))  # type: ignore[return-value]
 
 
-def add_percent(percent):
-    return "{} %".format(str(percent))
+def add_percent(percent: Any) -> None:
+    return "{} %".format(str(percent))  # type: ignore[return-value]
 
 
-def format_timestamp(timestamp):
+def format_timestamp(timestamp: Any) -> Any:
     """Convert Unix timestamp to readable date string. Uses current time if blank/invalid."""
     from datetime import datetime
 

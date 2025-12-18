@@ -1,4 +1,5 @@
 # fmt: off
+from typing import Any
 import uuid
 
 import gi
@@ -31,15 +32,15 @@ class TorrentPeer(GObject.Object):
 
     def __init__(
         self,
-        address="",
-        client="",
-        country="",
-        progress=0.0,
-        down_speed=0.0,
-        up_speed=0.0,
-        seed=False,
-        peer_id="",
-    ):
+        address: Any = "",
+        client: Any = "",
+        country: Any = "",
+        progress: Any = 0.0,
+        down_speed: Any = 0.0,
+        up_speed: Any = 0.0,
+        seed: Any = False,
+        peer_id: Any = "",
+    ) -> None:  # noqa: E501
         super().__init__()
         self.uuid = str(uuid.uuid4())
         self.address = address
