@@ -113,6 +113,9 @@ class MetricsCollector:
             # I/O metrics
             metrics.update(self._collect_io_metrics())
 
+            # Network I/O metrics
+            metrics.update(self._collect_net_io_metrics())
+
             # GTK/GObject metrics (if accessible)
             metrics.update(self._collect_gtk_metrics())
 
@@ -275,6 +278,25 @@ class MetricsCollector:
             }
         except Exception as e:
             return {"io_error": str(e)}
+
+    def _collect_net_io_metrics(self) -> Dict:
+        """Collect network I/O metrics."""
+        try:
+            # Get network I/O counters for all interfaces
+            # Note: psutil doesn't provide per-process network I/O on Linux
+            # We use system-wide counters as a proxy
+            net_io = psutil.net_io_counters()
+
+            return {
+                "net_bytes_sent": net_io.bytes_sent,
+                "net_bytes_recv": net_io.bytes_recv,
+                "net_packets_sent": net_io.packets_sent,
+                "net_packets_recv": net_io.packets_recv,
+                "net_errin": net_io.errin,
+                "net_errout": net_io.errout,
+            }
+        except Exception as e:
+            return {"net_io_error": str(e)}
 
     def _collect_gtk_metrics(self) -> Dict:
         """Collect GTK/GObject metrics (if accessible)."""
