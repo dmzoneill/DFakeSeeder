@@ -827,6 +827,14 @@ class AppSettings(GObject.GObject):
         self.set("window_height", value)
 
     @property
+    def remember_window_size(self) -> Any:
+        return self.get("remember_window_size", True)
+
+    @remember_window_size.setter
+    def remember_window_size(self, value: Any) -> None:
+        self.set("remember_window_size", value)
+
+    @property
     def start_minimized(self) -> None:
         return self.get("start_minimized", False)  # type: ignore[no-any-return]
 

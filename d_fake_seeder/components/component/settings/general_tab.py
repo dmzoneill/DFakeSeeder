@@ -112,7 +112,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         {
             "id": "settings_watch_folder_delete_added",
             "name": "watch_folder_delete_added",
-            "setting_key": "watch_folder.delete_after_adding",
+            "setting_key": "watch_folder.delete_added_torrents",
             "type": bool,
         },
     ]

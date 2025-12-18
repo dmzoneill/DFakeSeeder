@@ -88,6 +88,9 @@
     "show_preferences": false,
     "show_about": false,
     "language": "auto",
+    "auto_start": false,
+    "start_minimized": false,
+    "remember_window_size": true,
     "application_quit_requested": false,
     "editwidgets": {
         "active": "Gtk.Switch",
