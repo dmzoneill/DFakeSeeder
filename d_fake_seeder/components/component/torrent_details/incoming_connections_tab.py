@@ -8,6 +8,7 @@ about peers that have connected to our peer server.
 # isort: skip_file
 
 # fmt: off
+from typing import Dict,  Any
 import gi
 
 from d_fake_seeder.domain.app_settings import AppSettings
@@ -30,7 +31,7 @@ from gi.repository import GLib, GObject, Gtk  # noqa: E402
 class IncomingConnectionsTab(Component, ColumnTranslationMixin):
     """Component for managing incoming connections display"""
 
-    def __init__(self, builder, model):
+    def __init__(self, builder: Any, model: Any) -> None:
         super().__init__()
         ColumnTranslationMixin.__init__(self)
 
@@ -52,7 +53,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         self.connection_manager = get_connection_manager()
 
         # Data store for UI display (filtered view)
-        self.incoming_connections = {}  # ip:port -> ConnectionPeer (filtered for display)
+        self.incoming_connections: Dict[str, Any] = {}  # ip:port -> ConnectionPeer (filtered for display)
         self.selected_torrent = None
         self.count_update_callback = None  # Callback to update connection counts
 
@@ -89,7 +90,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                     extra={"class_name": self.__class__.__name__},
                 )
 
-    def on_connections_updated(self):
+    def on_connections_updated(self) -> None:
         """Called when the connection manager updates connections"""
         # Update the display by reapplying the filter
         self.apply_filter()
@@ -101,20 +102,20 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         if hasattr(self.model, "connect"):
             self.track_signal(
                 self.model,
-                self.model.connect("selection-changed", self.on_selection_changed),
+                self.model.connect("selection-changed", self.on_selection_changed),  # type: ignore[attr-defined]
             )
 
-    def set_count_update_callback(self, callback):
+    def set_count_update_callback(self, callback: Any) -> None:
         """Set the callback to be called when connection count changes"""
         self.count_update_callback = callback
 
-    def _notify_count_changed(self):
+    def _notify_count_changed(self) -> Any:
         """Notify connection count changed (handled by main data-changed signal)"""
         # Connection count updates now handled by main data-changed signal
         # to respect tickspeed intervals and prevent UI flooding
         pass
 
-    def init_incoming_column_view(self):
+    def init_incoming_column_view(self) -> None:
         """Initialize the incoming connections column view"""
         logger.trace(
             "IncomingConnections init columnview",
@@ -179,10 +180,10 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         self.selection = Gtk.SingleSelection.new(self.sort_model)
         self.incoming_columnview.set_model(self.selection)
 
-    def setup_cell(self, widget, item, property_name):
+    def setup_cell(self, widget: Any, item: Any, property_name: Any) -> None:
         """Setup cell widget based on property type"""
 
-        def setup_when_idle():
+        def setup_when_idle() -> None:
             obj = item.get_item()
             if obj is None:
                 return
@@ -204,10 +205,10 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
 
         GLib.idle_add(setup_when_idle)
 
-    def bind_cell(self, widget, item, property_name):
+    def bind_cell(self, widget: Any, item: Any, property_name: Any) -> None:
         """Bind cell data to widget"""
 
-        def bind_when_idle():
+        def bind_when_idle() -> None:
             try:
                 # Early validation - exit immediately if any required objects are None
                 if item is None:
@@ -391,7 +392,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
 
         GLib.idle_add(bind_when_idle)
 
-    def format_bytes(self, bytes_value):
+    def format_bytes(self, bytes_value: Any) -> Any:
         """Format bytes in human readable format using configurable thresholds"""
         if bytes_value < self.kb_threshold:
             return f"{bytes_value} B"
@@ -402,7 +403,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         else:
             return f"{bytes_value / self.gb_threshold:.1f} GB"
 
-    def on_filter_toggled(self, checkbox):
+    def on_filter_toggled(self, checkbox: Any) -> None:
         """Handle filter checkbox toggle"""
         logger.trace(
             f"Incoming connections filter toggled: {checkbox.get_active()}",
@@ -410,7 +411,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         )
         self.apply_filter()
 
-    def on_selection_changed(self, source, model, torrent):
+    def on_selection_changed(self, source: Any, model: Any, torrent: Any) -> None:
         """Handle model selection change"""
         self.selected_torrent = torrent
         logger.trace(
@@ -419,7 +420,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         )
         self.apply_filter()
 
-    def apply_filter(self):
+    def apply_filter(self) -> Any:
         """Apply the current filter to the connections"""
         try:
             filter_enabled = self.filter_checkbox.get_active()
@@ -441,7 +442,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                     connections_to_show.append((connection_key, connection_peer))
 
             # Schedule the filter update in idle to avoid snapshot issues
-            def update_filter_when_idle():
+            def update_filter_when_idle() -> Any:
                 try:
                     # Clear current displayed connections
                     self.incoming_connections.clear()
@@ -466,7 +467,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                         f"Error updating filter in idle: {e}",
                         extra={"class_name": self.__class__.__name__},
                     )
-                return False  # Don't repeat
+                return False  # Don't repeat  # type: ignore
 
             GLib.idle_add(update_filter_when_idle)
 
@@ -479,7 +480,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def schedule_failed_connection_removal(self, connection_key, delay_seconds=None):
+    def schedule_failed_connection_removal(self, connection_key: Any, delay_seconds: Any = None) -> Any:
         # Get configurable delay if not provided
         if delay_seconds is None:
             from domain.app_settings import AppSettings
@@ -489,7 +490,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
             delay_seconds = ui_settings.get("failed_connection_removal_delay_seconds", 60)
         """Schedule removal of a failed connection after a delay"""
 
-        def remove_connection():
+        def remove_connection() -> Any:
             if connection_key in self.all_connections:
                 connection_peer = self.all_connections[connection_key]
                 if connection_peer.status == "failed":
@@ -500,31 +501,31 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                     self.remove_incoming_connection_by_key(connection_key)
 
             # Clean up timer reference
-            if connection_key in self.removal_timers:
-                del self.removal_timers[connection_key]
+            if connection_key in self.removal_timers:  # type: ignore[attr-defined]
+                del self.removal_timers[connection_key]  # type: ignore[attr-defined]
 
-            return False  # Don't repeat the timer
+            return False  # Don't repeat the timer  # type: ignore
 
         # Cancel existing timer if any
-        if connection_key in self.removal_timers:
-            GLib.source_remove(self.removal_timers[connection_key])
+        if connection_key in self.removal_timers:  # type: ignore[attr-defined]
+            GLib.source_remove(self.removal_timers[connection_key])  # type: ignore[attr-defined]
 
         # Schedule new removal
         timer_id = GLib.timeout_add_seconds(delay_seconds, remove_connection)
-        self.removal_timers[connection_key] = timer_id
+        self.removal_timers[connection_key] = timer_id  # type: ignore[attr-defined]
 
-    def schedule_connection_removal_after_display_time(self, connection_key):
+    def schedule_connection_removal_after_display_time(self, connection_key: Any) -> Any:
         """Schedule removal of a connection after minimum display time"""
 
-        def remove_after_display_time():
+        def remove_after_display_time() -> Any:
             if connection_key in self.all_connections:
                 import time
 
-                display_start = self.connection_display_timers.get(connection_key, time.time())
+                display_start = self.connection_display_timers.get(connection_key, time.time())  # type: ignore[attr-defined]  # noqa: E501
                 elapsed = time.time() - display_start
 
                 # Only remove if minimum display time has passed
-                if elapsed >= self.min_display_time:
+                if elapsed >= self.min_display_time:  # type: ignore[attr-defined]
                     logger.trace(
                         f"Auto-removing connection after {elapsed:.1f}s display: " f"{connection_key}",
                         extra={"class_name": self.__class__.__name__},
@@ -532,18 +533,18 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                     self.remove_incoming_connection_by_key(connection_key)
                 else:
                     # Schedule another check later
-                    remaining = self.min_display_time - elapsed
+                    remaining = self.min_display_time - elapsed  # type: ignore[attr-defined]
                     timer_id = GLib.timeout_add_seconds(int(remaining) + 1, remove_after_display_time)
-                    self.removal_timers[connection_key] = timer_id
+                    self.removal_timers[connection_key] = timer_id  # type: ignore[attr-defined]
                     return False
 
-            return False  # Don't repeat the timer
+            return False  # Don't repeat the timer  # type: ignore
 
         # Schedule initial check after minimum display time
-        timer_id = GLib.timeout_add_seconds(int(self.min_display_time), remove_after_display_time)
-        self.removal_timers[connection_key] = timer_id
+        timer_id = GLib.timeout_add_seconds(int(self.min_display_time), remove_after_display_time)  # type: ignore[attr-defined]  # noqa: E501
+        self.removal_timers[connection_key] = timer_id  # type: ignore[attr-defined]
 
-    def remove_incoming_connection_by_key(self, connection_key):
+    def remove_incoming_connection_by_key(self, connection_key: Any) -> Any:
         """Remove a connection by its key (internal method)"""
         if connection_key not in self.all_connections:
             return
@@ -552,16 +553,16 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
             connection_peer = self.all_connections[connection_key]
 
             # Cancel any pending removal timer first
-            if connection_key in self.removal_timers:
-                GLib.source_remove(self.removal_timers[connection_key])
-                del self.removal_timers[connection_key]
+            if connection_key in self.removal_timers:  # type: ignore[attr-defined]
+                GLib.source_remove(self.removal_timers[connection_key])  # type: ignore[attr-defined]
+                del self.removal_timers[connection_key]  # type: ignore[attr-defined]
 
             # Remove from displayed connections first
             if connection_key in self.incoming_connections:
                 del self.incoming_connections[connection_key]
 
             # Schedule the store removal in idle to avoid snapshot issues
-            def remove_from_store_when_idle():
+            def remove_from_store_when_idle() -> Any:
                 try:
                     for i in range(self.incoming_store.get_n_items()):
                         item = self.incoming_store.get_item(i)
@@ -573,7 +574,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                         f"Error removing item from store in idle: {e}",
                         extra={"class_name": self.__class__.__name__},
                     )
-                return False  # Don't repeat
+                return False  # Don't repeat  # type: ignore
 
             GLib.idle_add(remove_from_store_when_idle)
 
@@ -581,8 +582,8 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
             del self.all_connections[connection_key]
 
             # Clean up display timer
-            if connection_key in self.connection_display_timers:
-                del self.connection_display_timers[connection_key]
+            if connection_key in self.connection_display_timers:  # type: ignore[attr-defined]
+                del self.connection_display_timers[connection_key]  # type: ignore[attr-defined]
 
             # Notify that the count changed
             self._notify_count_changed()
@@ -593,7 +594,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def add_incoming_connection(self, address: str, port: int, torrent_hash: str = "", **kwargs):
+    def add_incoming_connection(self, address: str, port: int, torrent_hash: str = "", **kwargs: Any) -> None:
         """Add a new incoming connection"""
         # Set defaults if not provided in kwargs
         connection_kwargs = {
@@ -608,7 +609,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         # Apply current filter to update display
         self.apply_filter()
 
-    def update_incoming_connection(self, address: str, port: int, **kwargs):
+    def update_incoming_connection(self, address: str, port: int, **kwargs: Any) -> None:
         """Update an existing incoming connection"""
         # Delegate to centralized connection manager
         self.connection_manager.update_incoming_connection(address, port, **kwargs)
@@ -616,7 +617,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         # Apply current filter to update display
         self.apply_filter()
 
-    def remove_incoming_connection(self, address: str, port: int):
+    def remove_incoming_connection(self, address: str, port: int) -> None:
         """Remove an incoming connection"""
         # Delegate to centralized connection manager
         self.connection_manager.remove_incoming_connection(address, port)
@@ -624,7 +625,7 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         # Apply current filter to update display
         self.apply_filter()
 
-    def clear_connections(self):
+    def clear_connections(self) -> None:
         """Clear all incoming connections"""
         self.incoming_store.remove_all()
         self.incoming_connections.clear()
@@ -639,39 +640,39 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         return self.connection_manager.get_global_incoming_count()
 
     @property
-    def all_connections(self):
+    def all_connections(self) -> Any:
         """Property for backward compatibility - delegates to connection manager"""
         return self.connection_manager.get_all_incoming_connections()
 
-    def handle_model_changed(self, source, data_obj, data_changed):
+    def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
         """Handle model changes"""
         logger.trace(
             "IncomingConnections model changed",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_attribute_changed(self, source, key, value):
+    def handle_attribute_changed(self, source: Any, key: Any, value: Any) -> None:
         """Handle attribute changes"""
         logger.trace(
             "IncomingConnections attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_settings_changed(self, source, data_obj, data_changed):
+    def handle_settings_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
         """Handle settings changes"""
         logger.trace(
             "IncomingConnections settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update view"""
         logger.trace(
             "IncomingConnections update view",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def on_language_changed(self, source=None, new_language=None):
+    def on_language_changed(self, source: Any = None, new_language: Any = None) -> None:
         """Handle language change events for column translation."""
         try:
             logger.trace(

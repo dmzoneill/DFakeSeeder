@@ -10,7 +10,7 @@ Integrates with the seeding system to provide live tracker monitoring.
 
 # fmt: off
 import time
-from typing import Any, Dict, Optional
+from typing import List,  Any, Dict, Optional
 
 import gi
 
@@ -61,7 +61,7 @@ class Tracker(GObject.Object):
     tracker_name = GObject.Property(type=str, default="")  # Human-readable name
     warning_message = GObject.Property(type=str, default="")  # Non-fatal warnings
 
-    def __init__(self, url: str = "", tier: int = 0, **kwargs):
+    def __init__(self, url: str = "", tier: int = 0, **kwargs: Any) -> None:
         """
         Initialize tracker model
 
@@ -80,7 +80,7 @@ class Tracker(GObject.Object):
             self.set_property("last_announce", current_time)
 
         # Performance tracking
-        self._response_times = []  # Keep last 10 response times for averaging
+        self._response_times: List[Any] = []  # Keep last 10 response times for averaging
         self._last_update_time = current_time
 
         logger.trace(
@@ -92,7 +92,7 @@ class Tracker(GObject.Object):
     def time_since_last_announce(self) -> float:
         """Get time since last announce in seconds"""
         if self.get_property("last_announce") > 0:
-            return time.time() - self.get_property("last_announce")
+            return time.time() - self.get_property("last_announce")  # type: ignore[no-any-return]
         return 0.0
 
     @property
@@ -101,7 +101,7 @@ class Tracker(GObject.Object):
         next_announce = self.get_property("next_announce")
         if next_announce > 0:
             remaining = next_announce - time.time()
-            return max(0, remaining)
+            return max(0, remaining)  # type: ignore[no-any-return]
         return 0.0
 
     @property
@@ -111,12 +111,12 @@ class Tracker(GObject.Object):
         if total == 0:
             return 0.0
         successful = self.get_property("successful_announces")
-        return (successful / total) * 100.0
+        return (successful / total) * 100.0  # type: ignore[no-any-return]
 
     @property
     def is_healthy(self) -> bool:
         """Check if tracker is considered healthy"""
-        return (
+        return (  # type: ignore[no-any-return]
             self.get_property("status") == "working"
             and self.get_property("consecutive_failures") < 3
             and self.get_property("enabled")
@@ -330,7 +330,7 @@ class Tracker(GObject.Object):
         time_since = self.time_since_last_announce
         min_interval = self.get_property("min_announce_interval")
 
-        return time_since >= min_interval
+        return time_since >= min_interval  # type: ignore[no-any-return]
 
     def should_announce_now(self) -> bool:
         """Check if tracker should be announced to now (respecting schedule)"""
@@ -340,10 +340,10 @@ class Tracker(GObject.Object):
         # Check if it's time for scheduled announce
         next_announce = self.get_property("next_announce")
         if next_announce > 0:
-            return time.time() >= next_announce
+            return time.time() >= next_announce  # type: ignore[no-any-return]
 
         # If no schedule set, check normal interval
         time_since = self.time_since_last_announce
         interval = self.get_property("announce_interval")
 
-        return time_since >= interval
+        return time_since >= interval  # type: ignore[no-any-return]

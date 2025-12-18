@@ -120,6 +120,8 @@ lint: clearlog
 	@flake8
 	@echo "   → Running isort import checker..."
 	@find . -iname "*.py" -exec isort --profile=black --check-only {} \; >/dev/null 2>&1 || true
+	@echo "   → Running mypy type checker..."
+	@mypy d_fake_seeder
 	@echo "✅ Linting complete!"
 
 # Validate settings handler coverage

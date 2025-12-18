@@ -9,6 +9,7 @@ Provides collapsible sections for:
 # isort: skip_file
 
 # fmt: off
+from typing import Any
 import gi
 
 from d_fake_seeder.components.component.base_component import Component
@@ -24,7 +25,7 @@ from gi.repository import Gtk  # noqa: E402
 class FilterItem(Gtk.Box):
     """Single filter item with optional icon, label, and count badge."""
 
-    def __init__(self, filter_id, label, icon_name="", count=0):
+    def __init__(self, filter_id: Any, label: Any, icon_name: Any = "", count: Any = 0) -> None:
         super().__init__(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
 
         self.filter_id = filter_id
@@ -53,7 +54,7 @@ class FilterItem(Gtk.Box):
         self.set_margin_top(2)
         self.set_margin_bottom(2)
 
-    def update_count(self, count):
+    def update_count(self, count: Any) -> None:
         """Update the count badge."""
         self.count_label.set_label(str(count))
 
@@ -67,7 +68,7 @@ class Sidebar(Component):
     - Tracker (All, individual trackers)
     """
 
-    def __init__(self, builder, model):
+    def __init__(self, builder: Any, model: Any) -> None:
         super().__init__()
         logger.info("Sidebar.__init__() started", extra={"class_name": self.__class__.__name__})
 
@@ -98,13 +99,13 @@ class Sidebar(Component):
 
         logger.trace("Sidebar.__init__() completed", extra={"class_name": self.__class__.__name__})
 
-    def _(self, text):
+    def _(self, text: Any) -> Any:
         """Get translation function from model's TranslationManager"""
         if self.model and hasattr(self.model, "translation_manager"):
             return self.model.translation_manager.translate_func(text)
         return text  # Fallback if model not set yet
 
-    def get_state_filters(self):
+    def get_state_filters(self) -> Any:
         """Get state filter definitions with translated labels (id, label, icon)"""
         _ = self._
         return [
@@ -118,7 +119,7 @@ class Sidebar(Component):
             ("queued", _("Queued"), "view-list-symbolic"),
         ]
 
-    def _create_states_section(self):
+    def _create_states_section(self) -> None:
         """Create the collapsible States section."""
         # Expander for states
         self.states_expander = Gtk.Expander()
@@ -144,7 +145,7 @@ class Sidebar(Component):
         # Populate state items
         self._populate_states()
 
-    def _create_trackers_section(self):
+    def _create_trackers_section(self) -> None:
         """Create the collapsible Trackers section."""
         # Expander for trackers
         self.trackers_expander = Gtk.Expander()
@@ -167,7 +168,7 @@ class Sidebar(Component):
         self.trackers_expander.set_child(self.trackers_listbox)
         self.sidebar_box.append(self.trackers_expander)
 
-    def _populate_states(self):
+    def _populate_states(self) -> Any:
         """Populate the states list with filter items."""
         # Clear existing
         while True:
@@ -188,7 +189,7 @@ class Sidebar(Component):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _populate_trackers(self):
+    def _populate_trackers(self) -> Any:
         """Populate the trackers list with filter items."""
         if not self.model:
             return
@@ -219,7 +220,7 @@ class Sidebar(Component):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _get_state_count(self, state_id):
+    def _get_state_count(self, state_id: Any) -> Any:
         """Get count of torrents matching a state."""
         if not self.model or not hasattr(self.model, "torrent_list"):
             return 0
@@ -264,7 +265,7 @@ class Sidebar(Component):
 
         return count
 
-    def _get_tracker_stats(self):
+    def _get_tracker_stats(self) -> Any:
         """
         Get tracker statistics from model.
 
@@ -304,7 +305,7 @@ class Sidebar(Component):
 
         return sorted_stats
 
-    def _extract_domain(self, url):
+    def _extract_domain(self, url: Any) -> Any:
         """Extract domain from tracker URL."""
         from urllib.parse import urlparse
 
@@ -314,7 +315,7 @@ class Sidebar(Component):
         except Exception:
             return url
 
-    def _on_state_selected(self, listbox, row):
+    def _on_state_selected(self, listbox: Any, row: Any) -> None:
         """Handle state filter selection."""
         if row is None:
             return
@@ -332,14 +333,14 @@ class Sidebar(Component):
 
         # Apply filter
         if state_id == "all":
-            self.model.clear_filter("state")
+            self.model.clear_filter("state")  # type: ignore[attr-defined]
         else:
-            self.model.set_filter_criteria("state", state_id)
+            self.model.set_filter_criteria("state", state_id)  # type: ignore[attr-defined]
 
         self.selected_state = state_id
         self.selected_tracker = None
 
-    def _on_tracker_selected(self, listbox, row):
+    def _on_tracker_selected(self, listbox: Any, row: Any) -> None:
         """Handle tracker filter selection."""
         if row is None:
             return
@@ -357,14 +358,14 @@ class Sidebar(Component):
 
         # Apply filter
         if tracker_id == "all":
-            self.model.clear_filter("tracker")
+            self.model.clear_filter("tracker")  # type: ignore[attr-defined]
         else:
-            self.model.set_filter_criteria("tracker", tracker_id)
+            self.model.set_filter_criteria("tracker", tracker_id)  # type: ignore[attr-defined]
 
         self.selected_tracker = tracker_id
         self.selected_state = None
 
-    def update_counts(self):
+    def update_counts(self) -> None:
         """Update all filter item counts."""
         if not self.model:
             return
@@ -381,11 +382,11 @@ class Sidebar(Component):
         # Update tracker counts - full rebuild since trackers can be added/removed
         self._populate_trackers()
 
-    def refresh_trackers(self):
+    def refresh_trackers(self) -> None:
         """Rebuild tracker list (when trackers change)."""
         self._populate_trackers()
 
-    def set_model(self, model):
+    def set_model(self, model: Any) -> None:
         """Set the model and populate trackers."""
         logger.trace("Sidebar set_model", extra={"class_name": self.__class__.__name__})
         self.model = model
@@ -413,22 +414,22 @@ class Sidebar(Component):
                     extra={"class_name": self.__class__.__name__},
                 )
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update sidebar when torrents change."""
         self.update_counts()
 
-    def get_widget(self):
+    def get_widget(self) -> Any:
         """Get the main sidebar widget."""
         return self.sidebar_box
 
-    def handle_settings_changed(self, source, key, value):
+    def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         """Handle settings changes."""
         logger.trace(
             f"Sidebar settings changed: {key}",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def on_language_changed(self, model, lang_code):
+    def on_language_changed(self, model: Any, lang_code: Any) -> None:
         """Handle language changes."""
         logger.trace(
             f"Sidebar language changed: {lang_code}",
@@ -444,7 +445,7 @@ class Sidebar(Component):
         # Rebuild trackers list with translated "All" label
         self._populate_trackers()
 
-    def model_selection_changed(self, source, model, torrent):
+    def model_selection_changed(self, source: Any, model: Any, torrent: Any) -> Any:
         """Handle torrent selection changes (compatibility with States interface)."""
         # Sidebar doesn't need to respond to torrent selection
         pass

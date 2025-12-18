@@ -28,7 +28,7 @@ class DBusClient:
     OBJECT_PATH = "/ie/fio/dfakeseeder"
     INTERFACE_NAME = "ie.fio.dfakeseeder.Settings"
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.connection = None
         self.proxy = None
         self.connected = False
@@ -135,6 +135,7 @@ class DBusClient:
                 "Calling GetSettings via D-Bus proxy",
                 extra={"class_name": self.__class__.__name__},
             )
+            assert self.proxy is not None
             result = self.proxy.call_sync("GetSettings", None, Gio.DBusCallFlags.NONE, 5000, None)  # 5 second timeout
             logger.trace(
                 f"GetSettings result type: {type(result)}",
@@ -170,7 +171,7 @@ class DBusClient:
                 return False
 
             changes_json = json.dumps(changes)
-            result = self.proxy.call_sync(
+            result = self.proxy.call_sync(  # type: ignore[attr-defined]
                 "UpdateSettings",
                 GLib.Variant("(s)", (changes_json,)),
                 Gio.DBusCallFlags.NONE,
@@ -186,13 +187,13 @@ class DBusClient:
             )
             return False
 
-    def subscribe(self, signal_name: str, callback):
+    def subscribe(self, signal_name: str, callback: Any) -> Any:
         """Subscribe to D-Bus signal"""
         try:
             if not self.connected:
                 return False
 
-            self.connection.signal_subscribe(
+            self.connection.signal_subscribe(  # type: ignore[attr-defined]
                 self.SERVICE_NAME,
                 self.INTERFACE_NAME,
                 signal_name,
@@ -217,6 +218,7 @@ class DBusClient:
             if not self.connected:
                 return False
 
+            assert self.proxy is not None
             result = self.proxy.call_sync("Ping", None, Gio.DBusCallFlags.NONE, 1000, None)  # 1 second timeout
             return result.unpack()[0] if result else False
 
@@ -236,7 +238,7 @@ class DBusClient:
         # Try to connect again
         return self._connect()
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up D-Bus connection"""
         self.connected = False
         self.proxy = None

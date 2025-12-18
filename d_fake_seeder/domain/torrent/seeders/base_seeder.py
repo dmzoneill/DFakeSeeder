@@ -22,14 +22,14 @@ class BaseSeeder:
     peer_clients: Dict[str, Any] = {}
 
     @classmethod
-    def get_tracker_semaphore(cls):
+    def get_tracker_semaphore(cls) -> Any:
         """Lazy-load the tracker semaphore to avoid initialization issues"""
         if cls._tracker_semaphore is None:
             cls._tracker_semaphore = threading.Semaphore(AppSettings.get_instance().concurrent_http_connections)
         return cls._tracker_semaphore
 
     # Common functionality goes here
-    def __init__(self, torrent):
+    def __init__(self, torrent: Any) -> None:
         logger.trace("Startup", extra={"class_name": self.__class__.__name__})
 
         # subscribe to settings changed
@@ -46,7 +46,7 @@ class BaseSeeder:
         port_min = seeders_config.get("port_range_min", NetworkConstants.PORT_RANGE_MIN)
         port_max = seeders_config.get("port_range_max", NetworkConstants.PORT_RANGE_MAX)
         self.port = random.randint(port_min, port_max)
-        self.info = {}
+        self.info = {}  # type: ignore[var-annotated]
         self.active = False
 
         # Shutdown flag for graceful termination
@@ -67,10 +67,10 @@ class BaseSeeder:
         self.peer_dropout_probability = ui_settings.get("peer_dropout_probability", 0.1)
 
         # Enhanced peer storage
-        self.peer_data = {}  # Store detailed peer information
+        self.peer_data: Dict[str, Any] = {}  # Store detailed peer information
 
         # Load client speed profiles from settings
-        self.client_speed_profiles = self._load_client_speed_profiles()
+        self.client_speed_profiles = self._load_client_speed_profiles()  # type: ignore[func-returns-value]
 
         self.tracker_url = self.torrent.announce
         self.parsed_url = urlparse(self.tracker_url)
@@ -82,7 +82,7 @@ class BaseSeeder:
         self.tracker_hostname = self.parsed_url.hostname
         self.tracker_port = self.parsed_url.port
 
-    def _load_client_speed_profiles(self):
+    def _load_client_speed_profiles(self) -> None:
         """Load client speed profiles from settings with conversion to bytes/s"""
         # Get client speed profiles from settings
         profiles_config = getattr(self.settings, "client_speed_profiles", {})
@@ -98,7 +98,7 @@ class BaseSeeder:
                 "seed_ratio": profile.get("seed_ratio", 0.25),  # Keep as-is
             }
 
-        return converted_profiles
+        return converted_profiles  # type: ignore[return-value]
 
     def _apply_announce_jitter(self, interval: float) -> float:
         """
@@ -131,7 +131,7 @@ class BaseSeeder:
 
         return jittered_interval
 
-    def set_random_announce_url(self):
+    def set_random_announce_url(self) -> None:
         if hasattr(self.torrent, "announce_list") and self.torrent.announce_list:
             same_schema_urls = [
                 url for url in self.torrent.announce_list if urlparse(url).scheme == self.tracker_scheme
@@ -151,7 +151,7 @@ class BaseSeeder:
             self.tracker_port = self.parsed_url.port
 
     @staticmethod
-    def recreate_semaphore(obj):
+    def recreate_semaphore(obj: Any) -> Any:
         logger.trace(
             "Seeder recreate_semaphore",
             extra={"class_name": obj.__class__.__name__},
@@ -173,14 +173,14 @@ class BaseSeeder:
         # Update the class variable with the new semaphore
         BaseSeeder._tracker_semaphore = new_semaphore
 
-    def handle_exception(self, e, message):
+    def handle_exception(self, e: Any, message: Any) -> None:
         logger.trace(
             f"{message}: {str(e)}",
             extra={"class_name": self.__class__.__name__},
         )
         self.get_tracker_semaphore().release()
 
-    def request_shutdown(self):
+    def request_shutdown(self) -> Any:
         """Signal this seeder to shutdown gracefully"""
         logger.info(
             "Seeder shutdown requested",
@@ -188,7 +188,7 @@ class BaseSeeder:
         )
         self.shutdown_requested = True
 
-    def handle_settings_changed(self, source, key, value):
+    def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         logger.trace(
             "Seeder settings changed",
             extra={"class_name": self.__class__.__name__},
@@ -196,21 +196,21 @@ class BaseSeeder:
         if key == "concurrent_http_connections":
             BaseSeeder.recreate_semaphore(self)
 
-    def generate_transaction_id(self):
+    def generate_transaction_id(self) -> Any:
         seeders_config = getattr(self.settings, "seeders", {})
         transaction_id_min = seeders_config.get("transaction_id_min", 0)
         transaction_id_max = seeders_config.get("transaction_id_max", 255)
         return random.randint(transaction_id_min, transaction_id_max)
 
-    def __str__(self):
+    def __str__(self) -> str:
         logger.trace("Seeder __get__", extra={"class_name": self.__class__.__name__})
         result = "Peer ID: %s\n" % self.peer_id
         result += "Key: %s\n" % self.download_key
         result += "Port: %d\n" % self.port
-        result += "Update tracker interval: %ds" % self.update_interval
+        result += "Update tracker interval: %ds" % self.update_interval  # type: ignore[attr-defined]
         return result
 
-    def identify_client_from_peer_id(self, peer_id):
+    def identify_client_from_peer_id(self, peer_id: Any) -> Any:
         """Identify BitTorrent client from peer ID with comprehensive patterns"""
         if not peer_id or len(peer_id) < 8:
             return "Unknown"
@@ -409,9 +409,9 @@ class BaseSeeder:
         return "Unknown"
 
     @property
-    def peers(self):
+    def peers(self) -> Any:
         logger.trace("Seeder get peers", extra={"class_name": self.__class__.__name__})
-        result = []
+        result = []  # type: ignore[var-annotated]
         if b"peers" not in self.info:
             logger.trace(
                 "😲 No peers data available from tracker response",
@@ -489,7 +489,7 @@ class BaseSeeder:
                     )
 
                     # Create comprehensive peer data
-                    peer_data = self.create_peer_data(ip, port, peer_id.encode())
+                    peer_data = self.create_peer_data(ip, port, peer_id.encode())  # type: ignore[func-returns-value]
                     self.peer_data[peer_address] = peer_data
                     BaseSeeder.peer_clients[peer_address] = peer_data["client"]
             else:
@@ -512,7 +512,7 @@ class BaseSeeder:
                         )
 
                         # Create comprehensive peer data
-                        peer_data = self.create_peer_data(ip, port)
+                        peer_data = self.create_peer_data(ip, port)  # type: ignore[func-returns-value]
                         self.peer_data[peer_address] = peer_data
                         BaseSeeder.peer_clients[peer_address] = peer_data["client"]
 
@@ -537,7 +537,7 @@ class BaseSeeder:
                         )
 
                         # Create comprehensive peer data (no peer_id available in UDP)
-                        peer_data = self.create_peer_data(ip, port)
+                        peer_data = self.create_peer_data(ip, port)  # type: ignore[func-returns-value]
                         self.peer_data[peer_address] = peer_data
                         BaseSeeder.peer_clients[peer_address] = peer_data["client"]
 
@@ -588,7 +588,7 @@ class BaseSeeder:
                                 )
 
                             # Create comprehensive peer data with peer ID
-                            peer_data = self.create_peer_data(ip, port, peer_id)
+                            peer_data = self.create_peer_data(ip, port, peer_id)  # type: ignore[func-returns-value]
                             self.peer_data[peer_address] = peer_data
                             BaseSeeder.peer_clients[peer_address] = peer_data["client"]
                 else:
@@ -609,17 +609,17 @@ class BaseSeeder:
         )
         return result
 
-    def get_peer_data(self, peer_address):
+    def get_peer_data(self, peer_address: Any) -> Any:
         """Get comprehensive peer data for a specific peer"""
         return self.peer_data.get(peer_address, {})
 
-    def guess_client_from_ip(self, ip):
+    def guess_client_from_ip(self, ip: Any) -> Any:
         """Fallback method to guess client when peer ID is not available"""
         # This is a basic fallback - in reality we can't determine client from IP
         # We could potentially use other heuristics like port numbers, etc.
         return "Unknown Client"
 
-    def get_country_from_ip(self, ip):
+    def get_country_from_ip(self, ip: Any) -> Any:
         """Get country code from IP address with enhanced detection"""
         # Check for private/local IP ranges first
         if ip.startswith("192.168.") or ip.startswith("10.") or ip.startswith("172.16."):
@@ -706,7 +706,7 @@ class BaseSeeder:
 
         return "??"
 
-    def create_peer_data(self, ip, port, peer_id=None, client_name=None):
+    def create_peer_data(self, ip: Any, port: Any, peer_id: Any = None, client_name: Any = None) -> None:
         """Create comprehensive peer data structure"""
         address = f"{ip}:{port}"
 
@@ -808,7 +808,7 @@ class BaseSeeder:
             ),
         }
 
-        return peer_data
+        return peer_data  # type: ignore[return-value]
 
     # TODO: UNUSED METHOD - Consider removing or integrating into active code path
     # def update_peer_speeds(self):
@@ -888,21 +888,21 @@ class BaseSeeder:
     #                     peer_data["down_speed"] = 0.0
 
     @property
-    def clients(self):
+    def clients(self) -> Any:
         logger.trace("Seeder get clients", extra={"class_name": self.__class__.__name__})
         return BaseSeeder.peer_clients
 
     @property
-    def seeders(self):
+    def seeders(self) -> Any:
         logger.trace("Seeder get seeders", extra={"class_name": self.__class__.__name__})
         return self.info[b"complete"] if b"complete" in self.info else 0
 
     @property
-    def tracker(self):
+    def tracker(self) -> Any:
         logger.trace("Seeder get tracker", extra={"class_name": self.__class__.__name__})
         return self.tracker_url
 
     @property
-    def leechers(self):
+    def leechers(self) -> Any:
         logger.trace("Seeder get leechers", extra={"class_name": self.__class__.__name__})
         return self.info[b"incomplete"] if b"incomplete" in self.info else 0

@@ -10,7 +10,7 @@ import asyncio
 import socket
 import struct
 import time
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.peer_info import PeerInfo
@@ -24,12 +24,8 @@ class PeerConnection:
     """Represents a single peer connection"""
 
     def __init__(
-        self,
-        peer_info: PeerInfo,
-        info_hash: bytes,
-        our_peer_id: bytes,
-        connection_callback=None,
-    ):
+        self, peer_info: PeerInfo, info_hash: bytes, our_peer_id: bytes, connection_callback: Any = None
+    ) -> None:  # noqa: E501
         self.peer_info = peer_info
         self.info_hash = info_hash
         self.our_peer_id = our_peer_id
@@ -283,7 +279,7 @@ class PeerConnection:
         except Exception:
             return False
 
-    def close(self):
+    def close(self) -> Any:
         """Close the connection"""
         if self.socket:
             try:

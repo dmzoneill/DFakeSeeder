@@ -589,7 +589,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
     def _collect_distribution_settings(self) -> Dict[str, Any]:
         """Collect speed distribution settings from widgets."""
-        distribution_settings = {"upload": {}, "download": {}}
+        distribution_settings = {"upload": {}, "download": {}}  # type: ignore[var-annotated]
 
         try:
             # Map dropdown indices to algorithm names
@@ -707,7 +707,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         except Exception as e:
             self.logger.error(f"Error changing scheduler setting: {e}")
 
-    def on_scheduler_start_time_changed(self, widget, param) -> None:
+    def on_scheduler_start_time_changed(self, widget: Any, param: Any) -> None:
         """Handle scheduler start time change."""
         if self._loading_settings:
             return
@@ -718,7 +718,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         except Exception as e:
             self.logger.error(f"Error changing scheduler start time: {e}")
 
-    def on_scheduler_end_time_changed(self, widget, param) -> None:
+    def on_scheduler_end_time_changed(self, widget: Any, param: Any) -> None:
         """Handle scheduler end time change."""
         if self._loading_settings:
             return
@@ -729,7 +729,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         except Exception as e:
             self.logger.error(f"Error changing scheduler end time: {e}")
 
-    def on_scheduler_days_changed(self, widget) -> None:
+    def on_scheduler_days_changed(self, widget: Any) -> None:
         """Handle scheduler days change."""
         if self._loading_settings:
             return
@@ -769,7 +769,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         except Exception as e:
             self.logger.error(f"Error resetting Speed tab to defaults: {e}")
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update view based on model changes."""
         self.logger.trace(
             "SpeedTab update view",
@@ -777,7 +777,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         )
 
     # Speed distribution signal handlers
-    def on_upload_dist_algorithm_changed(self, dropdown, _param) -> None:
+    def on_upload_dist_algorithm_changed(self, dropdown: Any, _param: Any) -> None:
         """Handle upload distribution algorithm change."""
         if self._loading_settings:
             return
@@ -805,7 +805,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         except Exception as e:
             self.logger.error(f"Error changing upload distribution percentage: {e}")
 
-    def on_upload_dist_mode_changed(self, dropdown, _param) -> None:
+    def on_upload_dist_mode_changed(self, dropdown: Any, _param: Any) -> None:
         """Handle upload distribution mode change."""
         if self._loading_settings:
             return
@@ -835,7 +835,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         except Exception as e:
             self.logger.error(f"Error changing upload distribution interval: {e}")
 
-    def on_download_dist_algorithm_changed(self, dropdown, _param) -> None:
+    def on_download_dist_algorithm_changed(self, dropdown: Any, _param: Any) -> None:
         """Handle download distribution algorithm change."""
         if self._loading_settings:
             return
@@ -862,7 +862,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         except Exception as e:
             self.logger.error(f"Error changing download distribution percentage: {e}")
 
-    def on_download_dist_mode_changed(self, dropdown, _param) -> None:
+    def on_download_dist_mode_changed(self, dropdown: Any, _param: Any) -> None:
         """Handle download distribution mode change."""
         if self._loading_settings:
             return

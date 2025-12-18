@@ -7,7 +7,7 @@ Provides DHT-based peer discovery and announcement for torrents.
 
 # fmt: off
 import time
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -20,7 +20,7 @@ from .node import DHTNode
 class DHTSeeder:
     """DHT seeder for torrent peer discovery and announcement"""
 
-    def __init__(self, port: int = 6881):
+    def __init__(self, port: int = 6881) -> None:
         """
         Initialize DHT seeder
 
@@ -82,7 +82,7 @@ class DHTSeeder:
             )
             return False
 
-    async def stop(self):
+    async def stop(self) -> Any:
         """Stop DHT seeder"""
         logger.info("Stopping DHT seeder", extra={"class_name": self.__class__.__name__})
 
@@ -140,7 +140,7 @@ class DHTSeeder:
             )
             return False
 
-    async def remove_torrent(self, info_hash: bytes):
+    async def remove_torrent(self, info_hash: bytes) -> None:
         """
         Remove torrent from DHT seeding
 
@@ -305,7 +305,7 @@ class DHTSeeder:
             ),
         }
 
-    async def periodic_maintenance(self):
+    async def periodic_maintenance(self) -> Any:
         """
         Perform periodic DHT maintenance
 
@@ -353,12 +353,12 @@ class DHTSeeder:
         """Get number of active torrents in DHT"""
         return len(self.active_torrents)
 
-    def enable(self):
+    def enable(self) -> Any:
         """Enable DHT seeder"""
         self.enabled = True
         logger.info("DHT seeder enabled", extra={"class_name": self.__class__.__name__})
 
-    def disable(self):
+    def disable(self) -> Any:
         """Disable DHT seeder"""
         self.enabled = False
         logger.info("DHT seeder disabled", extra={"class_name": self.__class__.__name__})

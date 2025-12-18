@@ -8,7 +8,7 @@ Starts/stops peer communication when torrents are selected/deselected.
 # fmt: off
 import threading
 import time
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.peer_protocol_manager import PeerProtocolManager
@@ -20,7 +20,7 @@ from d_fake_seeder.lib.logger import logger
 class TorrentPeerManager:
     """Manages peer communication for the currently selected torrent"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.current_torrent_id: Optional[str] = None
         self.current_manager: Optional[PeerProtocolManager] = None
         self.lock = threading.Lock()
@@ -39,7 +39,7 @@ class TorrentPeerManager:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def select_torrent(self, torrent):
+    def select_torrent(self, torrent: Any) -> Any:
         """Called when a torrent is selected in the UI"""
         if not torrent or not hasattr(torrent, "id"):
             self.deselect_torrent()
@@ -105,7 +105,7 @@ class TorrentPeerManager:
                 self.current_manager = None
                 self.current_torrent_id = None
 
-    def deselect_torrent(self):
+    def deselect_torrent(self) -> Any:
         """Called when no torrent is selected"""
         with self.lock:
             if self.current_manager:
@@ -119,7 +119,7 @@ class TorrentPeerManager:
             self.current_torrent_id = None
             self.peer_stats_cache.clear()
 
-    def update_peers(self, peer_addresses: List[str]):
+    def update_peers(self, peer_addresses: List[str]) -> None:
         """Update the peer list for the current torrent"""
         with self.lock:
             if self.current_manager:
@@ -139,7 +139,7 @@ class TorrentPeerManager:
                 if self.current_manager:
                     try:
                         self.peer_stats_cache = self.current_manager.get_peer_stats()
-                        self.last_stats_update = current_time
+                        self.last_stats_update = current_time  # type: ignore[assignment]
 
                         # Log summary statistics
                         total_peers = len(self.peer_stats_cache)
@@ -174,7 +174,7 @@ class TorrentPeerManager:
 
         return summary
 
-    def _get_our_peer_id(self, torrent) -> bytes:
+    def _get_our_peer_id(self, torrent: Any) -> bytes:
         """Get our peer ID for this torrent"""
         try:
             # Try to get peer ID from torrent's seeder
@@ -213,7 +213,7 @@ class TorrentPeerManager:
             # Final fallback
             return b"-DF0100-abcdef123456"
 
-    def shutdown(self):
+    def shutdown(self) -> Any:
         """Shutdown the peer manager"""
         logger.info(
             "🛑 Shutting down TorrentPeerManager",
@@ -234,7 +234,7 @@ def get_torrent_peer_manager() -> TorrentPeerManager:
     return _torrent_peer_manager
 
 
-def shutdown_torrent_peer_manager():
+def shutdown_torrent_peer_manager() -> Any:
     """Shutdown the global torrent peer manager"""
     global _torrent_peer_manager
     if _torrent_peer_manager:

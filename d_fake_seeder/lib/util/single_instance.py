@@ -12,7 +12,7 @@ import atexit
 import os
 import socket
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 from d_fake_seeder.lib.logger import logger
 
@@ -20,7 +20,7 @@ from d_fake_seeder.lib.logger import logger
 class SingleInstanceChecker:
     """Base class for single instance checking"""
 
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         self.name = name
         self.locked = False
 
@@ -28,7 +28,7 @@ class SingleInstanceChecker:
         """Check if another instance is running"""
         raise NotImplementedError
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up resources"""
         pass
 
@@ -36,7 +36,7 @@ class SingleInstanceChecker:
 class DBusSingleInstance(SingleInstanceChecker):
     """D-Bus based single instance check"""
 
-    def __init__(self, service_name: str = "ie.fio.dfakeseeder"):
+    def __init__(self, service_name: str = "ie.fio.dfakeseeder") -> None:
         super().__init__("dbus")
         self.service_name = service_name
 
@@ -104,7 +104,7 @@ class DBusSingleInstance(SingleInstanceChecker):
 class PIDFileLock(SingleInstanceChecker):
     """PID file based single instance lock"""
 
-    def __init__(self, lockfile_path: str):
+    def __init__(self, lockfile_path: str) -> None:
         super().__init__("pidfile")
         self.lockfile = Path(lockfile_path)
         self.locked = False
@@ -176,7 +176,7 @@ class PIDFileLock(SingleInstanceChecker):
         except OSError:
             return False
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Remove lock file"""
         try:
             if self.locked and self.lockfile.exists():
@@ -195,7 +195,7 @@ class PIDFileLock(SingleInstanceChecker):
 class SocketLock(SingleInstanceChecker):
     """Unix socket based single instance lock (most robust)"""
 
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.socket: Optional[socket.socket] = None
         self.socket_address = f"\0dfakeseeder_{name}"  # Abstract namespace
@@ -238,7 +238,7 @@ class SocketLock(SingleInstanceChecker):
                 self.socket = None
             return False
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Close socket"""
         try:
             if self.locked and self.socket:
@@ -264,11 +264,11 @@ class MultiMethodSingleInstance:
     3. PID file (fallback)
     """
 
-    def __init__(self, app_name: str, dbus_service: Optional[str] = None, use_pidfile: bool = True):
+    def __init__(self, app_name: str, dbus_service: Optional[str] = None, use_pidfile: bool = True) -> None:
         self.app_name = app_name
         self.dbus_service = dbus_service
         self.use_pidfile = use_pidfile
-        self.locks = []
+        self.locks = []  # type: ignore[var-annotated]
         self.detected_by = None
 
     def is_already_running(self) -> tuple[bool, Optional[str]]:
@@ -308,7 +308,7 @@ class MultiMethodSingleInstance:
         # No other instance detected
         return False, None
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up all locks"""
         for lock in self.locks:
             lock.cleanup()

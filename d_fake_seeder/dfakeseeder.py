@@ -1,5 +1,6 @@
 # fmt: off
 # isort: skip_file
+from typing import Any
 import os
 import sys
 
@@ -28,7 +29,7 @@ from d_fake_seeder.view import View  # noqa: E402
 
 
 class DFakeSeeder(Gtk.Application):
-    def __init__(self):
+    def __init__(self) -> None:
         # Use default application ID to avoid AppSettings recursion during initialization
         application_id = "ie.fio.dfakeseeder"
 
@@ -47,7 +48,7 @@ class DFakeSeeder(Gtk.Application):
         self.settings = AppSettings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
 
-    def do_activate(self):
+    def do_activate(self) -> None:
         """
         GTK4 single-instance handler.
 
@@ -65,8 +66,8 @@ class DFakeSeeder(Gtk.Application):
                     extra={"class_name": self.__class__.__name__},
                 )
                 # Just present the existing window
-                if hasattr(self, "view") and self.view and hasattr(self.view, "window"):
-                    self.view.window.present()
+                if hasattr(self, "view") and self.view and hasattr(self.view, "window"):  # type: ignore[has-type]
+                    self.view.window.present()  # type: ignore[has-type]
                 return
 
             logger.trace("First instance - initializing UI", self.__class__.__name__)
@@ -116,21 +117,21 @@ class DFakeSeeder(Gtk.Application):
             # Mark UI as initialized
             self.ui_initialized = True
 
-    def handle_settings_changed(self, source, key, value):
+    def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         logger.trace("Settings changed", extra={"class_name": self.__class__.__name__})
 
 
 app = typer.Typer()
 
 
-def _show_console_message(detection_method: str):
+def _show_console_message(detection_method: str) -> Any:
     """Show console message when another instance is detected before GTK initialization"""
     print(f"\nDFakeSeeder is already running (detected via {detection_method})")
     print("Existing instance will be brought to front.\n")
 
 
 @app.command()
-def run():
+def run() -> Any:
     """Run the DFakeSeeder application with proper initialization."""
     try:
         # Perform full application initialization (locale, paths, settings)
@@ -152,7 +153,7 @@ def run():
                 f"Existing instance detected via {detected_by} - exiting",
                 extra={"class_name": "DFakeSeeder"},
             )
-            _show_console_message(detected_by)
+            _show_console_message(detected_by)  # type: ignore[arg-type]
             sys.exit(0)
 
         logger.trace(

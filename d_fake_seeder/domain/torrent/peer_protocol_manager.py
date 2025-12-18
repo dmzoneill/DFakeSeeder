@@ -11,7 +11,7 @@ import asyncio
 import struct
 import threading
 import time
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.bittorrent_message import BitTorrentMessage
@@ -38,8 +38,8 @@ class PeerProtocolManager:
         info_hash: bytes,
         our_peer_id: bytes,
         max_connections: int = ConnectionConstants.DEFAULT_MAX_PEER_CONNECTIONS,
-        connection_callback=None,
-    ):
+        connection_callback: Any = None,
+    ) -> None:  # noqa: E501
         self.info_hash = info_hash
         self.our_peer_id = our_peer_id
         self.max_connections = max_connections
@@ -95,7 +95,7 @@ class PeerProtocolManager:
         # Extension protocol support (BEP 9 - ut_metadata)
         self.ut_metadata = None  # Will be initialized when torrent info is available
 
-    def add_peers(self, peer_addresses: List[str]):
+    def add_peers(self, peer_addresses: List[str]) -> None:
         """Add peers from tracker response with rate limiting and max peer limits"""
         with self.lock:
             current_time = time.time()
@@ -157,7 +157,7 @@ class PeerProtocolManager:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-    def start(self):
+    def start(self) -> Any:
         """Start the peer protocol manager using shared executor"""
         if self.running:
             return
@@ -181,7 +181,7 @@ class PeerProtocolManager:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def stop(self):
+    def stop(self) -> Any:
         """Stop the peer protocol manager"""
         if not self.running:
             return
@@ -207,7 +207,7 @@ class PeerProtocolManager:
             extra={"class_name": self.__class__.__name__},
         )
 
-    async def _async_manager_loop(self):
+    async def _async_manager_loop(self) -> Any:
         """Async manager loop with proper cancellation"""
         logger.trace(
             "🔄 PeerProtocolManager loop started",
@@ -321,7 +321,7 @@ class PeerProtocolManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _manage_connections(self, current_time: float):
+    async def _manage_connections(self, current_time: float) -> Any:
         """Manage peer connections with rate limiting"""
         with self.lock:
             peers_list = list(self.peers.items())
@@ -398,7 +398,7 @@ class PeerProtocolManager:
                 if len(self.active_connections) >= self.max_connections:
                     break
 
-    async def _send_keep_alives(self, current_time: float):
+    async def _send_keep_alives(self, current_time: float) -> Any:
         """Send keep-alive messages to maintain connections"""
         with self.lock:
             connections_list = list(self.active_connections.items())
@@ -412,7 +412,7 @@ class PeerProtocolManager:
                             del self.active_connections[address]
                     connection.close()
 
-    async def _poll_peer_status(self):
+    async def _poll_peer_status(self) -> Any:
         """Poll peers for their status"""
         with self.lock:
             connections_list = list(self.active_connections.items())
@@ -453,7 +453,9 @@ class PeerProtocolManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _handle_peer_message(self, address: str, connection: PeerConnection, message_id: int, payload: bytes):
+    async def _handle_peer_message(
+        self, address: str, connection: PeerConnection, message_id: int, payload: bytes
+    ) -> None:  # noqa: E501
         """Handle incoming peer message"""
         if message_id == -1:  # Keep-alive
             logger.trace(f"💓 Keep-alive from {address}")
@@ -489,7 +491,7 @@ class PeerProtocolManager:
             # Extension protocol message (BEP 10)
             await self._handle_extended_message(address, connection, payload)
 
-    async def _handle_extended_message(self, address: str, connection: PeerConnection, payload: bytes):
+    async def _handle_extended_message(self, address: str, connection: PeerConnection, payload: bytes) -> None:
         """Handle BitTorrent extension protocol messages (BEP 10)"""
         if not payload:
             logger.trace(f"⚠️ Empty extended message from {address}")
@@ -544,7 +546,7 @@ class PeerProtocolManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _handle_ut_metadata_message(self, address: str, connection: PeerConnection, payload: bytes):
+    async def _handle_ut_metadata_message(self, address: str, connection: PeerConnection, payload: bytes) -> None:
         """Handle ut_metadata extension messages (BEP 9)"""
         if not self.ut_metadata:
             return
@@ -613,7 +615,7 @@ class PeerProtocolManager:
 
         return set_bits / total_bits if total_bits > 0 else 0.0
 
-    async def _cleanup_connections(self, current_time: float):
+    async def _cleanup_connections(self, current_time: float) -> Any:
         """Clean up dead or old connections, peers, and contact history"""
         to_remove_connections = []
         to_remove_peers = []
@@ -692,7 +694,7 @@ class PeerProtocolManager:
 
         return stats
 
-    async def _exchange_metadata(self, current_time: float):
+    async def _exchange_metadata(self, current_time: float) -> Any:
         """Exchange metadata with connected peers (simulate activity)"""
         if current_time - self.last_metadata_exchange < self.metadata_exchange_interval:
             return
@@ -733,7 +735,7 @@ class PeerProtocolManager:
 
         self.last_metadata_exchange = current_time
 
-    async def _rotate_connections(self, current_time: float):
+    async def _rotate_connections(self, current_time: float) -> Any:
         """Rotate connections periodically to simulate real peer behavior"""
         if current_time - self.last_connection_rotation < self.connection_duration:
             return

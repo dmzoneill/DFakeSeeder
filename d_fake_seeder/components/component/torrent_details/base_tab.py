@@ -33,7 +33,7 @@ class BaseTorrentTab(ABC, CleanupMixin):
     - Managing its UI state and visibility
     """
 
-    def __init__(self, builder: Gtk.Builder, model):
+    def __init__(self, builder: Gtk.Builder, model: Any) -> None:
         """
         Initialize the base tab.
 
@@ -117,7 +117,7 @@ class BaseTorrentTab(ABC, CleanupMixin):
         return self._widgets[widget_id]
 
     @abstractmethod
-    def update_content(self, torrent) -> None:
+    def update_content(self, torrent: Any) -> None:
         """
         Update tab content with new torrent data.
 
@@ -179,7 +179,7 @@ class BaseTorrentTab(ABC, CleanupMixin):
         except Exception as e:
             self.logger.error(f"Error registering {self.tab_name} tab for translation: {e}")
 
-    def on_language_changed(self, source, new_language):
+    def on_language_changed(self, source: Any, new_language: Any) -> None:
         """Handle language change events for this tab."""
         try:
             self.logger.trace(
@@ -194,7 +194,7 @@ class BaseTorrentTab(ABC, CleanupMixin):
         except Exception as e:
             self.logger.error(f"Error handling language change in {self.tab_name} tab: {e}")
 
-    def on_torrent_selection_changed(self, torrent) -> None:
+    def on_torrent_selection_changed(self, torrent: Any) -> None:
         """
         Handle torrent selection change.
 
@@ -211,7 +211,7 @@ class BaseTorrentTab(ABC, CleanupMixin):
         except Exception as e:
             self.logger.error(f"Error handling torrent selection change in {self.tab_name} tab: {e}")
 
-    def on_torrent_data_changed(self, torrent, attribute: Optional[str] = None) -> None:
+    def on_torrent_data_changed(self, torrent: Any, attribute: Optional[str] = None) -> None:
         """
         Handle torrent data change.
 
@@ -251,7 +251,7 @@ class BaseTorrentTab(ABC, CleanupMixin):
         except Exception as e:
             self.logger.error(f"Error handling settings change in {self.tab_name} tab: {e}")
 
-    def get_current_torrent(self):
+    def get_current_torrent(self) -> Any:
         """Get the currently displayed torrent."""
         return self._current_torrent
 

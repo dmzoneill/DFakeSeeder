@@ -21,7 +21,7 @@ from d_fake_seeder.lib.logger import logger
 class ClientBehaviorSimulator:
     """Simulates realistic torrent client behavior"""
 
-    def __init__(self, behavior_profile: Optional[str] = "balanced"):
+    def __init__(self, behavior_profile: Optional[str] = "balanced") -> None:
         """
         Initialize behavior simulator.
 
@@ -55,7 +55,7 @@ class ClientBehaviorSimulator:
         }
 
         # Load profile settings
-        profile_settings = self.profiles.get(behavior_profile, self.profiles["balanced"])
+        profile_settings = self.profiles.get(behavior_profile, self.profiles["balanced"])  # type: ignore[arg-type]
         self.max_unchoked_peers = profile_settings["max_unchoked_peers"]
         self.optimistic_unchoke_probability = profile_settings["optimistic_unchoke_probability"]
         self.interest_change_probability = profile_settings["interest_change_probability"]

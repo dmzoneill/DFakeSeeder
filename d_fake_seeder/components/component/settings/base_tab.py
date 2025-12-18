@@ -76,7 +76,7 @@ class BaseSettingsTab(Component):
         Gtk.FontButton,
     )
 
-    def __init__(self, builder: Gtk.Builder, app_settings: AppSettings):
+    def __init__(self, builder: Gtk.Builder, app_settings: AppSettings) -> None:
         """
         Initialize the base tab.
 
@@ -367,7 +367,7 @@ class BaseSettingsTab(Component):
         """Tab-specific reset logic. Override in subclasses."""
         pass
 
-    def on_setting_changed(self, widget: Gtk.Widget, *args) -> None:
+    def on_setting_changed(self, widget: Gtk.Widget, *args: Any) -> None:
         """
         Generic setting change handler.
 
@@ -421,8 +421,8 @@ class BaseSettingsTab(Component):
         signal = mapping.get("signal") or self._auto_detect_signal(widget)
 
         # Create handler for dependencies and callbacks ONLY (no real-time save)
-        def make_handler(m):
-            def handler(w, *args):
+        def make_handler(m: Any) -> Any:
+            def handler(w: Any, *args: Any) -> Any:
                 # Skip event handling during settings load to prevent unnecessary change events
                 if self._loading_settings:
                     return
@@ -565,7 +565,7 @@ class BaseSettingsTab(Component):
             if not isinstance(obj, Gtk.Widget):
                 continue
 
-            report["total_widgets"] += 1
+            report["total_widgets"] += 1  # type: ignore[operator]
 
             # Skip container/display-only widgets
             if isinstance(obj, self.IGNORE_WIDGET_TYPES):
@@ -573,7 +573,7 @@ class BaseSettingsTab(Component):
 
             # Check if it's an interactive widget
             if isinstance(obj, self.INTERACTIVE_WIDGET_TYPES):
-                report["interactive_widgets"] += 1
+                report["interactive_widgets"] += 1  # type: ignore[operator]
 
                 try:
                     widget_id = Gtk.Buildable.get_buildable_id(obj)
@@ -585,15 +585,15 @@ class BaseSettingsTab(Component):
 
                 # Check if widget has a handler
                 if self._has_handler(obj, widget_id):
-                    report["connected_widgets"] += 1
+                    report["connected_widgets"] += 1  # type: ignore[operator]
                 else:
-                    report["missing_handlers"].append(
+                    report["missing_handlers"].append(  # type: ignore[attr-defined]
                         {"id": widget_id, "type": type(obj).__name__, "expected_signal": self._auto_detect_signal(obj)}
                     )
 
         # Calculate coverage
-        if report["interactive_widgets"] > 0:
-            report["coverage_percent"] = (report["connected_widgets"] / report["interactive_widgets"]) * 100
+        if report["interactive_widgets"] > 0:  # type: ignore[operator]
+            report["coverage_percent"] = (report["connected_widgets"] / report["interactive_widgets"]) * 100  # type: ignore[operator]  # noqa: E501
 
         return report
 

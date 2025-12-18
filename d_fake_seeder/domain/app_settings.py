@@ -1,5 +1,6 @@
 # fmt: off
 # isort: skip_file
+from typing import Dict,  Any
 import json
 import os
 import shutil
@@ -25,17 +26,17 @@ if WATCHDOG_AVAILABLE:
     from watchdog.observers import Observer  # noqa: E402
 else:
     # Fallback if watchdog is not available
-    class Observer:
-        def __init__(self):
+    class Observer:  # type: ignore[no-redef]
+        def __init__(self) -> None:
             pass
 
-        def schedule(self, *args, **kwargs):
+        def schedule(self, *args: Any, **kwargs: Any) -> Any:
             pass
 
-        def start(self):
+        def start(self) -> Any:
             pass
 
-        def stop(self):
+        def stop(self) -> Any:
             pass
 
 # fmt: on
@@ -76,29 +77,29 @@ class AppSettings(GObject.GObject):
     _lock = Lock()  # Thread safety
     _logger = None  # Lazy logger instance
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, *args: Any, **kwargs: Any) -> Any:
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             # Initialize GObject early to avoid "not initialized" errors
             GObject.GObject.__init__(cls._instance)
         return cls._instance
 
-    def __init__(self, file_path=None):
+    def __init__(self, file_path: Any = None) -> None:
         # Check if already initialized AND file_path matches
         # This allows re-initialization when file_path changes (e.g., in tests)
         if hasattr(self, "_initialized") and hasattr(self, "_file_path"):
             # If file_path is changing, we need to reinitialize
-            if file_path is not None and str(file_path) != str(self._file_path):
+            if file_path is not None and str(file_path) != str(self._file_path):  # type: ignore[has-type]
                 # Stop existing observer before reinitializing
-                if hasattr(self, "_observer") and self._observer:
+                if hasattr(self, "_observer") and self._observer:  # type: ignore[has-type]
                     try:
-                        self._observer.stop()
-                        self._observer.join(timeout=1.0)
+                        self._observer.stop()  # type: ignore[has-type]
+                        self._observer.join(timeout=1.0)  # type: ignore[has-type]
                     except Exception:
                         pass
                 # Clear initialization flag to allow reinitialization
                 delattr(self, "_initialized")
-            elif file_path is None or str(file_path) == str(self._file_path):
+            elif file_path is None or str(file_path) == str(self._file_path):  # type: ignore[has-type]
                 # Same file path or no file path specified, skip reinitialization
                 return
 
@@ -124,12 +125,12 @@ class AppSettings(GObject.GObject):
         # 1. _defaults: Loaded from default.json, never changes
         # 2. _user_settings: Persistent user preferences (everything except torrents)
         # 3. _transient_data: Runtime-only data (ENTIRE torrents dictionary)
-        self._defaults = {}
-        self._user_settings = {}
-        self._transient_data = {}  # ENTIRE torrents dictionary stored here
+        self._defaults = {}  # type: ignore[var-annotated]
+        self._user_settings = {}  # type: ignore[var-annotated]
+        self._transient_data: Dict[str, Any] = {}  # ENTIRE torrents dictionary stored here
 
         # Merged view for reading (rebuilt when any layer changes)
-        self._settings = {}  # Legacy compatibility - will be merged view
+        self._settings: Dict[str, Any] = {}  # Legacy compatibility - will be merged view
 
         # File watching state
         self._last_modified = 0
@@ -178,7 +179,7 @@ class AppSettings(GObject.GObject):
         self._observer.start()
 
     @property
-    def logger(self):
+    def logger(self) -> Any:
         """Get logger instance with lazy import to avoid circular dependency"""
         if AppSettings._logger is None:
             try:
@@ -190,11 +191,11 @@ class AppSettings(GObject.GObject):
                 import logging
                 from d_fake_seeder.lib.logger import add_trace_to_logger
 
-                AppSettings._logger = add_trace_to_logger(logging.getLogger(__name__))
+                AppSettings._logger = add_trace_to_logger(logging.getLogger(__name__))  # type: ignore[func-returns-value]  # noqa: E501
         return AppSettings._logger
 
     @property
-    def settings(self):
+    def settings(self) -> Any:
         """
         Backwards compatibility property.
         Returns merged view of all settings (defaults + user + transient).
@@ -203,14 +204,14 @@ class AppSettings(GObject.GObject):
         return self._settings
 
     @property
-    def torrents(self):
+    def torrents(self) -> Any:
         """
         Convenience property for accessing torrents dictionary.
         Returns transient data directly.
         """
         return self._transient_data
 
-    def _load_defaults(self):
+    def _load_defaults(self) -> None:
         """Load default settings from config/default.json"""
         try:
             with open(self.default_config_file, "r") as f:
@@ -227,10 +228,10 @@ class AppSettings(GObject.GObject):
                 "language": "auto",
             }
 
-    def _merge_with_defaults(self, user_settings):
+    def _merge_with_defaults(self, user_settings: Any) -> Any:
         """Recursively merge user settings with defaults"""
 
-        def deep_merge(default_dict, user_dict):
+        def deep_merge(default_dict: Any, user_dict: Any) -> Any:
             result = default_dict.copy()
             for key, value in user_dict.items():
                 if key in result and isinstance(result[key], dict) and isinstance(value, dict):
@@ -241,7 +242,7 @@ class AppSettings(GObject.GObject):
 
         return deep_merge(self._defaults, user_settings)
 
-    def _build_merged_view(self):
+    def _build_merged_view(self) -> None:
         """
         Build merged settings view from three layers:
         1. Defaults (from default.json)
@@ -257,9 +258,9 @@ class AppSettings(GObject.GObject):
         if self._transient_data:
             merged["torrents"] = self._transient_data
 
-        return merged
+        return merged  # type: ignore[no-any-return]
 
-    def _get_nested_value(self, data, key):
+    def _get_nested_value(self, data: Any, key: Any) -> Any:
         """Get value from nested dictionary using dot notation"""
         keys = key.split(".")
         for k in keys:
@@ -269,14 +270,14 @@ class AppSettings(GObject.GObject):
                 return None
         return data
 
-    def _set_nested_value(self, data, key, value):
+    def _set_nested_value(self, data: Any, key: Any, value: Any) -> Any:
         """Set value in nested dictionary using dot notation"""
         keys = key.split(".")
         for k in keys[:-1]:
             data = data.setdefault(k, {})
         data[keys[-1]] = value
 
-    def load_settings(self):
+    def load_settings(self) -> None:
         """
         Load settings from disk with three-layer architecture:
         1. Load file from disk
@@ -287,7 +288,7 @@ class AppSettings(GObject.GObject):
         self.logger.trace("Settings load", extra={"class_name": self.__class__.__name__})
         try:
             # Skip reload if we're currently saving (prevents file watch feedback loop)
-            if hasattr(self, "_saving") and self._saving:
+            if hasattr(self, "_saving") and self._saving:  # type: ignore[has-type]
                 self.logger.trace(
                     "Skipping load_settings - save in progress", extra={"class_name": self.__class__.__name__}
                 )
@@ -328,8 +329,8 @@ class AppSettings(GObject.GObject):
                 self._user_settings = loaded_data
 
                 # Rebuild merged view
-                self._settings = self._build_merged_view()
-                self._last_modified = modified
+                self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
+                self._last_modified = modified  # type: ignore[assignment]
 
                 self.logger.debug(
                     f"Settings loaded - {len(self._user_settings)} user settings, "
@@ -341,7 +342,7 @@ class AppSettings(GObject.GObject):
             self.logger.warning("Settings file not found, creating from defaults")
             self._user_settings = {}
             self._transient_data = {}
-            self._settings = self._build_merged_view()
+            self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
 
             if not os.path.exists(self._file_path):
                 # Create the JSON file with default contents (no torrents yet)
@@ -354,12 +355,12 @@ class AppSettings(GObject.GObject):
             self.logger.error(f"Settings file contains invalid JSON, using defaults: {e}")
             self._user_settings = {}
             self._transient_data = {}
-            self._settings = self._build_merged_view()
+            self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
 
         except Exception as e:
             self.logger.error(f"Error loading settings: {e}", exc_info=True)
 
-    def _queue_save(self):
+    def _queue_save(self) -> Any:
         """
         Queue a debounced save operation.
 
@@ -381,7 +382,7 @@ class AppSettings(GObject.GObject):
         self._save_timer = GLib.timeout_add(1000, self._debounced_save_callback)
         logger.trace(f"Save timer created: {self._save_timer}", "AppSettings")
 
-    def _debounced_save_callback(self):
+    def _debounced_save_callback(self) -> Any:
         """
         Callback for debounced save timer.
         Saves settings and clears the pending flag.
@@ -405,7 +406,7 @@ class AppSettings(GObject.GObject):
         # Return False to remove the timer source (one-shot timer)
         return False
 
-    def save_settings(self):
+    def save_settings(self) -> None:
         """Save current settings to user config file (thread-safe with atomic writes)"""
         self.logger.trace("Settings save", extra={"class_name": self.__class__.__name__})
         try:
@@ -428,7 +429,7 @@ class AppSettings(GObject.GObject):
         except Exception as e:
             self.logger.error(f"Failed to save settings: {e}", exc_info=True)
 
-    def _save_settings_unlocked(self):
+    def _save_settings_unlocked(self) -> None:
         """
         Save current settings without acquiring lock (for internal use when lock already held).
 
@@ -464,7 +465,7 @@ class AppSettings(GObject.GObject):
             temp_path = None  # Successfully moved, don't clean up
 
             # Update last modified timestamp to prevent unnecessary reloads
-            self._last_modified = os.path.getmtime(self._file_path)
+            self._last_modified = os.path.getmtime(self._file_path)  # type: ignore[assignment]
 
             self.logger.info("Settings saved successfully with atomic write")
 
@@ -489,7 +490,7 @@ class AppSettings(GObject.GObject):
             self._saving = False
             self.logger.trace("Save flag cleared, file watch can reload", extra={"class_name": self.__class__.__name__})
 
-    def save_quit(self):
+    def save_quit(self) -> None:
         """
         Save settings and stop file watching (Settings API compatibility).
 
@@ -514,7 +515,7 @@ class AppSettings(GObject.GObject):
         # Save merged settings to disk (includes torrents)
         self.save_settings()
 
-    def get(self, key, default=None):
+    def get(self, key: Any, default: Any = None) -> Any:
         """Get a setting value (supports dot notation for nested values)"""
         # Try nested access first for dot notation keys (e.g., "watch_folder.enabled")
         value = self._get_nested_value(self._settings, key)
@@ -523,7 +524,7 @@ class AppSettings(GObject.GObject):
         # Fallback to direct key access for backward compatibility
         return self._settings.get(key, default)
 
-    def set(self, key, value):
+    def set(self, key: Any, value: Any) -> Any:
         """
         Set a setting value with automatic transient/persistent routing.
 
@@ -560,7 +561,7 @@ class AppSettings(GObject.GObject):
                     # Check if we're setting the entire torrent entry or a nested field
                     if torrent_path and "." not in torrent_path:
                         # Setting entire torrent entry: torrents.<filepath>
-                        old_value = self._transient_data.get(torrent_path)
+                        old_value = self._transient_data.get(torrent_path)  # type: ignore[assignment]
                         if old_value != value:
                             self._transient_data[torrent_path] = value
                             should_emit = True
@@ -576,7 +577,7 @@ class AppSettings(GObject.GObject):
                             logger.debug(f"Updated transient field: {key} (NO disk write)", "AppSettings")
 
                 # Rebuild merged view to include updated transient data
-                self._settings = self._build_merged_view()
+                self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
 
             else:
                 # PERSISTENT DATA: Update user_settings and queue save
@@ -592,7 +593,7 @@ class AppSettings(GObject.GObject):
                     print(f"⚙️  SETTING CHANGED: {key} = {value}")
 
                     # Rebuild merged view
-                    self._settings = self._build_merged_view()
+                    self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
 
                     # Queue debounced save (1 second delay)
                     self._queue_save()
@@ -611,7 +612,7 @@ class AppSettings(GObject.GObject):
 
         logger.trace("set() completed", "AppSettings")
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: Any) -> Any:
         """Dynamic attribute access (Settings API compatibility)"""
         if name == "settings":
             try:
@@ -651,7 +652,7 @@ class AppSettings(GObject.GObject):
         else:
             raise AttributeError(f"Setting '{name}' not found in user settings or defaults.")
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: Any, value: Any) -> None:
         """
         Dynamic attribute setting (Settings API compatibility).
 
@@ -730,18 +731,18 @@ class AppSettings(GObject.GObject):
             self.emit("attribute-changed", name, value)
             self.emit("setting-changed", name, value)
 
-    def get_all(self):
+    def get_all(self) -> Any:
         """Get all settings as a dict"""
         return self._settings.copy()
 
-    def reset_to_defaults(self):
+    def reset_to_defaults(self) -> None:
         """Reset all settings to defaults"""
         try:
             with self._lock:
                 # Load defaults
                 self._user_settings = self._defaults.copy()
                 # Rebuild merged view
-                self._settings = self._build_merged_view()
+                self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
                 # Save to disk
                 self._save_settings_unlocked()
                 self.logger.debug("Settings reset to defaults")
@@ -756,7 +757,7 @@ class AppSettings(GObject.GObject):
         except Exception as e:
             self.logger.error(f"Failed to reset settings: {e}")
 
-    def export_settings(self, file_path: str):
+    def export_settings(self, file_path: str) -> Any:
         """Export current settings to a file"""
         try:
             with self._lock:
@@ -768,7 +769,7 @@ class AppSettings(GObject.GObject):
             self.logger.error(f"Failed to export settings: {e}", exc_info=True)
             raise
 
-    def import_settings(self, file_path: str):
+    def import_settings(self, file_path: str) -> Any:
         """Import settings from a file"""
         try:
             with self._lock:
@@ -778,7 +779,7 @@ class AppSettings(GObject.GObject):
                 # Update user settings
                 self._user_settings = imported_settings.copy()
                 # Rebuild merged view
-                self._settings = self._build_merged_view()
+                self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
                 # Save to disk
                 self._save_settings_unlocked()
                 self.logger.info(f"Settings imported from: {file_path}")
@@ -795,7 +796,7 @@ class AppSettings(GObject.GObject):
             raise
 
     @classmethod
-    def get_instance(cls, file_path=None):
+    def get_instance(cls, file_path: Any = None) -> Any:
         """Get singleton instance (Settings API compatibility)"""
         # Note: Can't use self.logger here since this is a class method
         try:
@@ -810,62 +811,62 @@ class AppSettings(GObject.GObject):
 
     # Application-specific setting accessors
     @property
-    def window_width(self):
+    def window_width(self) -> Any:
         return self.get("window_width", 1024)
 
     @window_width.setter
-    def window_width(self, value):
+    def window_width(self, value: Any) -> Any:
         self.set("window_width", value)
 
     @property
-    def window_height(self):
+    def window_height(self) -> Any:
         return self.get("window_height", 600)
 
     @window_height.setter
-    def window_height(self, value):
+    def window_height(self, value: Any) -> Any:
         self.set("window_height", value)
 
     @property
-    def start_minimized(self):
-        return self.get("start_minimized", False)
+    def start_minimized(self) -> None:
+        return self.get("start_minimized", False)  # type: ignore[no-any-return]
 
     @start_minimized.setter
-    def start_minimized(self, value):
+    def start_minimized(self, value: Any) -> None:
         self.set("start_minimized", value)
 
     @property
-    def minimize_to_tray(self):
+    def minimize_to_tray(self) -> Any:
         return self.get("minimize_to_tray", False)
 
     @minimize_to_tray.setter
-    def minimize_to_tray(self, value):
+    def minimize_to_tray(self, value: Any) -> Any:
         self.set("minimize_to_tray", value)
 
     @property
-    def auto_start(self):
+    def auto_start(self) -> Any:
         return self.get("auto_start", False)
 
     @auto_start.setter
-    def auto_start(self, value):
+    def auto_start(self, value: Any) -> Any:
         self.set("auto_start", value)
 
     @property
-    def theme(self):
+    def theme(self) -> Any:
         return self.get("theme", "system")
 
     @theme.setter
-    def theme(self, value):
+    def theme(self, value: Any) -> Any:
         self.set("theme", value)
 
     @property
-    def language(self):
+    def language(self) -> Any:
         return self.get("language", "auto")
 
     @language.setter
-    def language(self, value):
+    def language(self, value: Any) -> Any:
         self.set("language", value)
 
-    def get_language(self):
+    def get_language(self) -> Any:
         """
         Centralized language getter with proper fallback logic.
 
@@ -903,9 +904,9 @@ class AppSettings(GObject.GObject):
                     system_locale = current_locale
                 else:
                     # Fallback to deprecated method if getlocale returns None
-                    system_locale = locale.getdefaultlocale()[0]
+                    system_locale = locale.getdefaultlocale()[0]  # type: ignore[assignment]
             except Exception:
-                system_locale = locale.getdefaultlocale()[0]
+                system_locale = locale.getdefaultlocale()[0]  # type: ignore[assignment]
 
             if system_locale:
                 # Extract language code (e.g., 'en_US' -> 'en')
@@ -919,107 +920,107 @@ class AppSettings(GObject.GObject):
 
     # Connection settings
     @property
-    def listening_port(self):
+    def listening_port(self) -> Any:
         return self.get("listening_port", NetworkConstants.DEFAULT_PORT)
 
     @listening_port.setter
-    def listening_port(self, value):
+    def listening_port(self, value: Any) -> Any:
         self.set("listening_port", value)
 
     @property
-    def enable_upnp(self):
-        return self.get("enable_upnp", True)
+    def enable_upnp(self) -> None:
+        return self.get("enable_upnp", True)  # type: ignore[no-any-return]
 
     @enable_upnp.setter
-    def enable_upnp(self, value):
+    def enable_upnp(self, value: Any) -> None:
         self.set("enable_upnp", value)
 
     @property
-    def enable_dht(self):
-        return self.get("enable_dht", True)
+    def enable_dht(self) -> None:
+        return self.get("enable_dht", True)  # type: ignore[no-any-return]
 
     @enable_dht.setter
-    def enable_dht(self, value):
+    def enable_dht(self, value: Any) -> None:
         self.set("enable_dht", value)
 
     @property
-    def enable_pex(self):
-        return self.get("enable_pex", True)
+    def enable_pex(self) -> None:
+        return self.get("enable_pex", True)  # type: ignore[no-any-return]
 
     @enable_pex.setter
-    def enable_pex(self, value):
+    def enable_pex(self, value: Any) -> None:
         self.set("enable_pex", value)
 
     # Speed settings
     @property
-    def global_upload_limit(self):
+    def global_upload_limit(self) -> Any:
         return self.get("global_upload_limit", 0)  # 0 = unlimited
 
     @global_upload_limit.setter
-    def global_upload_limit(self, value):
+    def global_upload_limit(self, value: Any) -> Any:
         self.set("global_upload_limit", value)
 
     @property
-    def global_download_limit(self):
+    def global_download_limit(self) -> Any:
         return self.get("global_download_limit", 0)  # 0 = unlimited
 
     @global_download_limit.setter
-    def global_download_limit(self, value):
+    def global_download_limit(self, value: Any) -> Any:
         self.set("global_download_limit", value)
 
     # Web UI settings
     @property
-    def enable_webui(self):
-        return self.get("enable_webui", False)
+    def enable_webui(self) -> None:
+        return self.get("enable_webui", False)  # type: ignore[no-any-return]
 
     @enable_webui.setter
-    def enable_webui(self, value):
+    def enable_webui(self, value: Any) -> None:
         self.set("enable_webui", value)
 
     @property
-    def webui_port(self):
+    def webui_port(self) -> Any:
         return self.get("webui_port", 8080)
 
     @webui_port.setter
-    def webui_port(self, value):
+    def webui_port(self, value: Any) -> Any:
         self.set("webui_port", value)
 
     @property
-    def webui_username(self):
+    def webui_username(self) -> Any:
         return self.get("webui_username", "admin")
 
     @webui_username.setter
-    def webui_username(self, value):
+    def webui_username(self, value: Any) -> Any:
         self.set("webui_username", value)
 
     @property
-    def webui_password(self):
+    def webui_password(self) -> Any:
         return self.get("webui_password", "")
 
     @webui_password.setter
-    def webui_password(self, value):
+    def webui_password(self, value: Any) -> Any:
         self.set("webui_password", value)
 
     # Advanced settings
     @property
-    def log_level(self):
-        return self.get("log_level", "INFO")
+    def log_level(self) -> None:
+        return self.get("log_level", "INFO")  # type: ignore[no-any-return]
 
     @log_level.setter
-    def log_level(self, value):
+    def log_level(self, value: Any) -> None:
         self.set("log_level", value)
 
     @property
-    def disk_cache_size(self):
+    def disk_cache_size(self) -> Any:
         return self.get("disk_cache_size", 64)  # MB
 
     @disk_cache_size.setter
-    def disk_cache_size(self, value):
+    def disk_cache_size(self, value: Any) -> Any:
         self.set("disk_cache_size", value)
 
     # Speed distribution settings - Upload
     @property
-    def upload_distribution_algorithm(self):
+    def upload_distribution_algorithm(self) -> Any:
         speed_dist = self.get("speed_distribution", {})
         if speed_dist is None or not isinstance(speed_dist, dict):
             return "off"
@@ -1030,7 +1031,7 @@ class AppSettings(GObject.GObject):
         return algorithm
 
     @upload_distribution_algorithm.setter
-    def upload_distribution_algorithm(self, value):
+    def upload_distribution_algorithm(self, value: Any) -> Any:
         import copy
 
         self.logger.info(f"🔧 SETTER CALLED: upload_distribution_algorithm = {value}")
@@ -1056,11 +1057,11 @@ class AppSettings(GObject.GObject):
         self.logger.info("   ✅ self.set() completed")
 
     @property
-    def upload_distribution_spread_percentage(self):
+    def upload_distribution_spread_percentage(self) -> Any:
         return self.get("speed_distribution", {}).get("upload", {}).get("spread_percentage", 50)
 
     @upload_distribution_spread_percentage.setter
-    def upload_distribution_spread_percentage(self, value):
+    def upload_distribution_spread_percentage(self, value: Any) -> Any:
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1072,11 +1073,11 @@ class AppSettings(GObject.GObject):
         self.set("speed_distribution", speed_dist)
 
     @property
-    def upload_distribution_redistribution_mode(self):
+    def upload_distribution_redistribution_mode(self) -> Any:
         return self.get("speed_distribution", {}).get("upload", {}).get("redistribution_mode", "tick")
 
     @upload_distribution_redistribution_mode.setter
-    def upload_distribution_redistribution_mode(self, value):
+    def upload_distribution_redistribution_mode(self, value: Any) -> Any:
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1088,11 +1089,11 @@ class AppSettings(GObject.GObject):
         self.set("speed_distribution", speed_dist)
 
     @property
-    def upload_distribution_custom_interval_minutes(self):
+    def upload_distribution_custom_interval_minutes(self) -> Any:
         return self.get("speed_distribution", {}).get("upload", {}).get("custom_interval_minutes", 5)
 
     @upload_distribution_custom_interval_minutes.setter
-    def upload_distribution_custom_interval_minutes(self, value):
+    def upload_distribution_custom_interval_minutes(self, value: Any) -> Any:
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1105,11 +1106,11 @@ class AppSettings(GObject.GObject):
 
     # Speed distribution settings - Download
     @property
-    def download_distribution_algorithm(self):
+    def download_distribution_algorithm(self) -> Any:
         return self.get("speed_distribution", {}).get("download", {}).get("algorithm", "off")
 
     @download_distribution_algorithm.setter
-    def download_distribution_algorithm(self, value):
+    def download_distribution_algorithm(self, value: Any) -> Any:
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1121,11 +1122,11 @@ class AppSettings(GObject.GObject):
         self.set("speed_distribution", speed_dist)
 
     @property
-    def download_distribution_spread_percentage(self):
+    def download_distribution_spread_percentage(self) -> Any:
         return self.get("speed_distribution", {}).get("download", {}).get("spread_percentage", 50)
 
     @download_distribution_spread_percentage.setter
-    def download_distribution_spread_percentage(self, value):
+    def download_distribution_spread_percentage(self, value: Any) -> Any:
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1137,11 +1138,11 @@ class AppSettings(GObject.GObject):
         self.set("speed_distribution", speed_dist)
 
     @property
-    def download_distribution_redistribution_mode(self):
+    def download_distribution_redistribution_mode(self) -> Any:
         return self.get("speed_distribution", {}).get("download", {}).get("redistribution_mode", "tick")
 
     @download_distribution_redistribution_mode.setter
-    def download_distribution_redistribution_mode(self, value):
+    def download_distribution_redistribution_mode(self, value: Any) -> Any:
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1153,11 +1154,11 @@ class AppSettings(GObject.GObject):
         self.set("speed_distribution", speed_dist)
 
     @property
-    def download_distribution_custom_interval_minutes(self):
+    def download_distribution_custom_interval_minutes(self) -> Any:
         return self.get("speed_distribution", {}).get("download", {}).get("custom_interval_minutes", 5)
 
     @download_distribution_custom_interval_minutes.setter
-    def download_distribution_custom_interval_minutes(self, value):
+    def download_distribution_custom_interval_minutes(self, value: Any) -> Any:
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1170,11 +1171,11 @@ class AppSettings(GObject.GObject):
 
     # Upload stopped torrents percentage range
     @property
-    def upload_distribution_stopped_min_percentage(self):
+    def upload_distribution_stopped_min_percentage(self) -> Any:
         return self.get("speed_distribution", {}).get("upload", {}).get("stopped_min_percentage", 20)
 
     @upload_distribution_stopped_min_percentage.setter
-    def upload_distribution_stopped_min_percentage(self, value):
+    def upload_distribution_stopped_min_percentage(self, value: Any) -> Any:
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1186,11 +1187,11 @@ class AppSettings(GObject.GObject):
         self.set("speed_distribution", speed_dist)
 
     @property
-    def upload_distribution_stopped_max_percentage(self):
+    def upload_distribution_stopped_max_percentage(self) -> Any:
         return self.get("speed_distribution", {}).get("upload", {}).get("stopped_max_percentage", 40)
 
     @upload_distribution_stopped_max_percentage.setter
-    def upload_distribution_stopped_max_percentage(self, value):
+    def upload_distribution_stopped_max_percentage(self, value: Any) -> Any:
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1203,11 +1204,11 @@ class AppSettings(GObject.GObject):
 
     # Download stopped torrents percentage range
     @property
-    def download_distribution_stopped_min_percentage(self):
+    def download_distribution_stopped_min_percentage(self) -> Any:
         return self.get("speed_distribution", {}).get("download", {}).get("stopped_min_percentage", 20)
 
     @download_distribution_stopped_min_percentage.setter
-    def download_distribution_stopped_min_percentage(self, value):
+    def download_distribution_stopped_min_percentage(self, value: Any) -> Any:
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1219,11 +1220,11 @@ class AppSettings(GObject.GObject):
         self.set("speed_distribution", speed_dist)
 
     @property
-    def download_distribution_stopped_max_percentage(self):
+    def download_distribution_stopped_max_percentage(self) -> Any:
         return self.get("speed_distribution", {}).get("download", {}).get("stopped_max_percentage", 40)
 
     @download_distribution_stopped_max_percentage.setter
-    def download_distribution_stopped_max_percentage(self, value):
+    def download_distribution_stopped_max_percentage(self, value: Any) -> Any:
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1235,7 +1236,7 @@ class AppSettings(GObject.GObject):
         self.set("speed_distribution", speed_dist)
 
     # Client detection methods
-    def add_detected_client(self, user_agent):
+    def add_detected_client(self, user_agent: Any) -> None:
         """Add a newly detected client to the detected clients list"""
         if not user_agent or user_agent.strip() == "":
             return
@@ -1264,11 +1265,11 @@ class AppSettings(GObject.GObject):
         self.set("detected_clients", detected_clients)
         self.logger.trace(f"Added detected client: {user_agent}")
 
-    def get_detected_clients(self):
+    def get_detected_clients(self) -> Any:
         """Get list of detected clients"""
         return self.get("detected_clients", [])
 
-    def clear_detected_clients(self):
+    def clear_detected_clients(self) -> None:
         """Clear all detected clients"""
         self.set("detected_clients", [])
         self.logger.trace("Cleared all detected clients")

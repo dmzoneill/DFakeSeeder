@@ -9,7 +9,7 @@ Provides unified peer connection tracking and statistics aggregation.
 import hashlib
 import threading
 import time
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.peer_protocol_manager import PeerProtocolManager
@@ -24,7 +24,7 @@ from d_fake_seeder.lib.util.constants import NetworkConstants
 class GlobalPeerManager:
     """Global background worker managing peer connections for all torrents"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.running = False
         self.worker_thread = None
         self.lock = threading.Lock()
@@ -82,11 +82,11 @@ class GlobalPeerManager:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def set_connection_callback(self, callback):
+    def set_connection_callback(self, callback: Any) -> None:
         """Set callback for connection events (for UI updates)"""
         self.peer_server.set_connection_callback(callback)
 
-    def start(self):
+    def start(self) -> Any:
         """Start the global peer manager background worker"""
         if self.running:
             return
@@ -101,8 +101,8 @@ class GlobalPeerManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-            self.worker_thread = threading.Thread(target=self._worker_loop, daemon=True)
-            self.worker_thread.start()
+            self.worker_thread = threading.Thread(target=self._worker_loop, daemon=True)  # type: ignore[assignment]
+            self.worker_thread.start()  # type: ignore[attr-defined]
 
         # Start peer server for incoming connections
         self.peer_server.start()
@@ -112,7 +112,7 @@ class GlobalPeerManager:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def stop(self, shutdown_tracker=None):
+    def stop(self, shutdown_tracker: Any = None) -> Any:
         """Stop the global peer manager and cleanup all connections"""
         with self.lock:
             if not self.running:
@@ -199,7 +199,7 @@ class GlobalPeerManager:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def add_torrent(self, torrent):
+    def add_torrent(self, torrent: Any) -> None:
         """Add a torrent to be tracked by the global peer manager"""
         if not torrent or not hasattr(torrent, "id"):
             return
@@ -303,7 +303,7 @@ class GlobalPeerManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def remove_torrent(self, torrent_id: str):
+    def remove_torrent(self, torrent_id: str) -> None:
         """Remove a torrent from tracking"""
         torrent_id = str(torrent_id)
 
@@ -332,12 +332,12 @@ class GlobalPeerManager:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-    def _invalidate_manager_stats(self, info_hash_hex: str):
+    def _invalidate_manager_stats(self, info_hash_hex: str) -> Any:
         """Mark a peer manager's stats as dirty for recalculation"""
         self._dirty_managers.add(info_hash_hex)
         self._stats_cache_dirty = True
 
-    def update_torrent_peers(self, torrent_id: str, peer_addresses: List[str]):
+    def update_torrent_peers(self, torrent_id: str, peer_addresses: List[str]) -> None:
         """Update peer list for a specific torrent"""
         torrent_id = str(torrent_id)
 
@@ -392,7 +392,7 @@ class GlobalPeerManager:
 
             return peer_list
 
-    def _worker_loop(self):
+    def _worker_loop(self) -> Any:
         """Main worker loop that runs in background thread"""
         logger.trace(
             "🔄 Global peer manager worker loop started",
@@ -406,12 +406,12 @@ class GlobalPeerManager:
                 # Update peer connections periodically
                 if current_time - self.last_peer_update > self.peer_update_interval:
                     self._update_peer_connections()
-                    self.last_peer_update = current_time
+                    self.last_peer_update = current_time  # type: ignore[assignment]
 
                 # Update statistics more frequently
                 if current_time - self.last_stats_update > self.stats_update_interval:
                     self._update_global_stats()
-                    self.last_stats_update = current_time
+                    self.last_stats_update = current_time  # type: ignore[assignment]
 
                 # Calculate intelligent sleep interval - wait until next event
                 next_peer_update = self.last_peer_update + self.peer_update_interval
@@ -437,7 +437,7 @@ class GlobalPeerManager:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _update_peer_connections(self):
+    def _update_peer_connections(self) -> None:
         """Update peer connections for all active torrents"""
         with self.lock:
             if not self.peer_managers:
@@ -466,7 +466,7 @@ class GlobalPeerManager:
                         extra={"class_name": self.__class__.__name__},
                     )
 
-    def _update_global_stats(self):
+    def _update_global_stats(self) -> None:
         """Update global statistics from all peer managers (with dirty-tracking cache)"""
         with self.lock:
             # Only recalculate if something changed

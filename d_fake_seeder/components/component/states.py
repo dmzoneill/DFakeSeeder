@@ -1,5 +1,6 @@
 # fmt: off
 # isort: skip_file
+from typing import Any
 import gi
 
 from d_fake_seeder.components.component.base_component import Component
@@ -15,7 +16,7 @@ from gi.repository import Gtk  # noqa
 
 
 class States(Component, ColumnTranslationMixin):
-    def __init__(self, builder, model):
+    def __init__(self, builder: Any, model: Any) -> None:
 
         logger.info("States.__init__() started", "States")
         super().__init__()
@@ -42,7 +43,7 @@ class States(Component, ColumnTranslationMixin):
         )
         logger.trace("States.__init__() TOTAL TIME: ms", "States")
 
-    def create_columns(self):
+    def create_columns(self) -> None:
 
         # Create the column for the tracker name
         tracker_col = Gtk.ColumnViewColumn()
@@ -79,7 +80,7 @@ class States(Component, ColumnTranslationMixin):
             "UnknownClass",
         )
 
-    def create_essential_columns_only(self):
+    def create_essential_columns_only(self) -> None:
         """Create only the most essential column immediately for fast startup."""
         from gi.repository import GLib
 
@@ -108,7 +109,7 @@ class States(Component, ColumnTranslationMixin):
         # Schedule count column for background creation
         GLib.idle_add(self._create_count_column_background)
 
-    def _create_count_column_background(self):
+    def _create_count_column_background(self) -> Any:
         """Create count column in background to avoid blocking startup."""
 
         logger.trace("Starting background count column creation", "States")
@@ -130,28 +131,28 @@ class States(Component, ColumnTranslationMixin):
             logger.info("Background count column created successfully", "States")
         except Exception:
             logger.error("Background count column creation error:", "States")
-        return False  # Don't repeat this idle task
+        return False  # Don't repeat this idle task  # type: ignore
 
-    def setup_tracker_factory(self, factory, item):
+    def setup_tracker_factory(self, factory: Any, item: Any) -> None:
         item.set_child(Gtk.Label(halign=Gtk.Align.START))
 
-    def bind_tracker_factory(self, factory, item):
+    def bind_tracker_factory(self, factory: Any, item: Any) -> None:
         # Get the item from the factory
         torrent_state = item.get_item()
         # Update the label with just the tracker data
         tracker_name = torrent_state.tracker if torrent_state.tracker is not None else ""
         item.get_child().set_label(tracker_name)
 
-    def setup_count_factory(self, factory, item):
+    def setup_count_factory(self, factory: Any, item: Any) -> None:
         item.set_child(Gtk.Label(halign=Gtk.Align.START))
 
-    def bind_count_factory(self, factory, item):
+    def bind_count_factory(self, factory: Any, item: Any) -> None:
         # Get the item from the factory
         torrent_state = item.get_item()
         # Update the label with the count data
         item.get_child().set_label(str(torrent_state.count))
 
-    def set_model(self, model):
+    def set_model(self, model: Any) -> None:
         """Set the model for the states component."""
         logger.trace("States set_model", extra={"class_name": self.__class__.__name__})
         self.model = model
@@ -170,29 +171,29 @@ class States(Component, ColumnTranslationMixin):
                 )
 
     # Method to update the ColumnView with compatible attributes
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         selection_model = Gtk.SingleSelection.new(model.get_trackers_liststore())
         self.states_columnview.set_model(selection_model)
 
-    def handle_settings_changed(self, source, key, value):
+    def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         logger.trace(
             "Torrents view settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_model_changed(self, source, data_obj, data_changed):
+    def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
         logger.trace(
             "States settings update",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_attribute_changed(self, source, key, value):
+    def handle_attribute_changed(self, source: Any, key: Any, value: Any) -> None:
         logger.trace(
             "Attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def model_selection_changed(self, source, model, torrent):
+    def model_selection_changed(self, source: Any, model: Any, torrent: Any) -> Any:
         logger.trace(
             "Model selection changed",
             extra={"class_name": self.__class__.__name__},

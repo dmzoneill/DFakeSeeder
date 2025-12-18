@@ -6,6 +6,7 @@ status, statistics, and protocol information.
 """
 
 # fmt: off
+from typing import Any
 import time
 
 import gi
@@ -53,26 +54,26 @@ class ConnectionPeer(GObject.Object):
     requests_sent = GObject.Property(type=int, default=0)
     requests_received = GObject.Property(type=int, default=0)
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         if self.connection_time == 0.0:
             self.connection_time = time.time()
 
     @property
-    def connection_duration(self):
+    def connection_duration(self) -> Any:
         """Get connection duration in seconds"""
         if self.connected:
             return time.time() - self.connection_time
         return 0.0
 
     @property
-    def last_activity_age(self):
+    def last_activity_age(self) -> Any:
         """Get time since last message in seconds"""
         if self.last_message_time > 0:
             return time.time() - self.last_message_time
         return 0.0
 
-    def update_rates(self, upload_bytes_delta: int, download_bytes_delta: int, time_delta: float):
+    def update_rates(self, upload_bytes_delta: int, download_bytes_delta: int, time_delta: float) -> None:
         """Update transfer rates based on deltas with validation to prevent unrealistic values"""
         # Minimum time interval to prevent division by very small numbers
         MIN_TIME_DELTA = 0.5  # Half second minimum to avoid crazy rates on first update

@@ -1,11 +1,12 @@
 """Setup helper for post-installation tasks."""
 
+from typing import Any
 import subprocess
 import sys
 from pathlib import Path
 
 
-def check_system_dependencies():
+def check_system_dependencies() -> Any:
     """Check if required system dependencies are installed."""
     dependencies = {
         "GTK4": ["pkg-config", "--exists", "gtk4"],
@@ -17,13 +18,13 @@ def check_system_dependencies():
 
     # Check GTK4
     try:
-        subprocess.run(dependencies["GTK4"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(dependencies["GTK4"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # type: ignore[arg-type]  # noqa: E501
     except (subprocess.CalledProcessError, FileNotFoundError):
         missing.append("GTK4")
 
     # Check LibAdwaita
     try:
-        subprocess.run(dependencies["LibAdwaita"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(dependencies["LibAdwaita"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # type: ignore[arg-type]  # noqa: E501
     except (subprocess.CalledProcessError, FileNotFoundError):
         missing.append("LibAdwaita")
 
@@ -38,7 +39,7 @@ def check_system_dependencies():
     return missing
 
 
-def print_installation_guide(missing_deps):
+def print_installation_guide(missing_deps: Any) -> Any:
     """Print installation guide for missing dependencies."""
     print("\n" + "=" * 60)
     print("D' Fake Seeder - Post-Installation Setup")
@@ -76,7 +77,7 @@ def print_installation_guide(missing_deps):
         return True
 
 
-def offer_desktop_integration():
+def offer_desktop_integration() -> Any:
     """Offer to install desktop integration."""
     print("\n🖥️  DESKTOP INTEGRATION")
     print("\nWould you like to install desktop integration?")
@@ -101,7 +102,7 @@ def offer_desktop_integration():
     return False
 
 
-def run_desktop_integration():
+def run_desktop_integration() -> None:
     """Run desktop integration installation."""
     try:
         from d_fake_seeder.post_install import install_desktop_integration
@@ -109,14 +110,14 @@ def run_desktop_integration():
         print("\nInstalling desktop integration...")
         install_desktop_integration()
         print("✅ Desktop integration installed successfully!")
-        return True
+        return True  # type: ignore[return-value]
     except Exception as e:
         print(f"⚠️  Desktop integration failed: {e}")
         print("You can try again later with: dfs-install-desktop")
-        return False
+        return False  # type: ignore[return-value]
 
 
-def post_install_setup():
+def post_install_setup() -> Any:
     """Run post-installation setup tasks."""
     print("\n" + "=" * 60)
     print("Setting up D' Fake Seeder...")

@@ -12,7 +12,7 @@ import socket
 import struct
 import threading
 import time
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 try:
     import bencodepy
@@ -47,7 +47,7 @@ class DHTManager:
     ROUTING_TABLE_K = 8  # K-bucket size
     TOKEN_LENGTH = 4
 
-    def __init__(self, port: int = DHT_PORT, peer_callback: Optional[Callable] = None):
+    def __init__(self, port: int = DHT_PORT, peer_callback: Optional[Callable] = None) -> None:
         """
         Initialize DHT manager.
 
@@ -89,16 +89,16 @@ class DHTManager:
 
         logger.trace(f"DHT Manager initialized on port {port} with node ID: {self.node_id.hex()[:16]}...")
 
-    def _get_poll_interval(self):
+    def _get_poll_interval(self) -> Any:
         """Get poll interval from settings."""
-        dht_config = getattr(self.settings, "dht_manager", {})
+        dht_config = getattr(self.settings, "dht_manager", {})  # type: ignore[attr-defined]
         if isinstance(dht_config, dict):
             return dht_config.get("poll_interval_seconds", 0.1)
         return 0.1
 
-    def _get_error_retry_interval(self):
+    def _get_error_retry_interval(self) -> Any:
         """Get error retry interval from settings."""
-        dht_config = getattr(self.settings, "dht_manager", {})
+        dht_config = getattr(self.settings, "dht_manager", {})  # type: ignore[attr-defined]
         if isinstance(dht_config, dict):
             return dht_config.get("error_retry_interval_seconds", 1.0)
         return 1.0
@@ -107,7 +107,7 @@ class DHTManager:
         """Generate random 20-byte node ID"""
         return hashlib.sha1(str(random.random()).encode()).digest()
 
-    def start(self):
+    def start(self) -> Any:
         """Start DHT manager background thread"""
         if self.running:
             logger.warning("DHT Manager already running")
@@ -135,7 +135,7 @@ class DHTManager:
             logger.error(f"Failed to start DHT Manager: {e}", exc_info=True)
             self.running = False
 
-    def stop(self):
+    def stop(self) -> Any:
         """Stop DHT manager background thread"""
         if not self.running:
             return
@@ -159,7 +159,7 @@ class DHTManager:
 
         logger.info("DHT Manager stopped")
 
-    def register_torrent(self, info_hash: bytes, torrent: object):
+    def register_torrent(self, info_hash: bytes, torrent: object) -> None:
         """
         Register a torrent for DHT peer discovery.
 
@@ -171,14 +171,14 @@ class DHTManager:
             self.torrents[info_hash] = torrent
             logger.trace(f"Registered torrent {info_hash.hex()[:16]}... for DHT discovery")
 
-    def unregister_torrent(self, info_hash: bytes):
+    def unregister_torrent(self, info_hash: bytes) -> None:
         """Unregister a torrent from DHT discovery"""
         with self.lock:
             if info_hash in self.torrents:
                 del self.torrents[info_hash]
                 logger.trace(f"Unregistered torrent {info_hash.hex()[:16]}... from DHT")
 
-    def _dht_loop(self):
+    def _dht_loop(self) -> Any:
         """Main DHT thread loop"""
         logger.trace("DHT loop started")
 
@@ -208,7 +208,7 @@ class DHTManager:
 
         logger.trace("DHT loop stopped")
 
-    def _bootstrap(self):
+    def _bootstrap(self) -> Any:
         """Bootstrap DHT by contacting known nodes"""
         logger.trace("Bootstrapping DHT...")
 
@@ -219,7 +219,7 @@ class DHTManager:
             except Exception as e:
                 logger.trace(f"Failed to bootstrap from {host}:{port}: {e}")
 
-    def _announce_torrents(self):
+    def _announce_torrents(self) -> Any:
         """Announce all registered torrents to DHT"""
         with self.lock:
             torrent_count = len(self.torrents)
@@ -229,7 +229,7 @@ class DHTManager:
 
         # For now, just log - full implementation would send get_peers/announce_peer messages
 
-    def _receive_messages(self):
+    def _receive_messages(self) -> Any:
         """Receive and process DHT messages"""
         if not self.socket:
             return
@@ -242,7 +242,7 @@ class DHTManager:
         except Exception as e:
             logger.trace(f"Error receiving DHT message: {e}")
 
-    def _handle_message(self, data: bytes, addr: Tuple[str, int]):
+    def _handle_message(self, data: bytes, addr: Tuple[str, int]) -> None:
         """Handle incoming DHT message"""
         if not bencodepy:
             return
@@ -267,7 +267,7 @@ class DHTManager:
         except Exception as e:
             logger.trace(f"Failed to parse DHT message from {addr}: {e}")
 
-    def _handle_response(self, message: dict, addr: Tuple[str, int]):
+    def _handle_response(self, message: dict, addr: Tuple[str, int]) -> None:
         """Handle DHT response message"""
         # Add responding node to routing table
         if b"r" in message and b"id" in message[b"r"]:
@@ -281,13 +281,13 @@ class DHTManager:
 
             # TODO: Parse peer addresses and call peer_callback
 
-    def _handle_query(self, message: dict, addr: Tuple[str, int]):
+    def _handle_query(self, message: dict, addr: Tuple[str, int]) -> None:
         """Handle DHT query message"""
         # Respond to ping, find_node, get_peers queries
         # For now, just acknowledge
         pass
 
-    def _send_find_node(self, host: str, port: int, target: bytes):
+    def _send_find_node(self, host: str, port: int, target: bytes) -> Any:
         """Send find_node query"""
         if not bencodepy or not self.socket:
             return
@@ -311,7 +311,7 @@ class DHTManager:
         except Exception as e:
             logger.trace(f"Failed to send find_node to {host}:{port}: {e}")
 
-    def _add_node(self, node_id: bytes, ip: str, port: int):
+    def _add_node(self, node_id: bytes, ip: str, port: int) -> Any:
         """Add node to routing table"""
         with self.routing_table_lock:
             # Simple implementation: keep last N nodes

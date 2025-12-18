@@ -9,7 +9,7 @@ Provides automatic tracking and cleanup of:
 
 Usage:
     class MyComponent(CleanupMixin):
-        def __init__(self):
+        def __init__(self) -> None:
             CleanupMixin.__init__(self)
 
             # Track signal connections
@@ -24,7 +24,7 @@ Usage:
             timeout_id = GLib.timeout_add(1000, self.callback)
             self.track_timeout(timeout_id)
 
-        def cleanup(self):
+        def cleanup(self) -> Any:
             # Clean up all tracked resources
             super().cleanup()
 """
@@ -57,7 +57,7 @@ class CleanupMixin:
     - ListStore data
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize cleanup tracking structures."""
         # Track signal connections: [(weakref(object), handler_id), ...]
         self._tracked_signals: List[Tuple[Any, int]] = []
@@ -136,7 +136,7 @@ class CleanupMixin:
         )
         return source_id
 
-    def track_store(self, store) -> Any:
+    def track_store(self, store: Any) -> Any:
         """
         Track a ListStore/TreeStore for automatic cleanup.
 
@@ -163,7 +163,7 @@ class CleanupMixin:
 
         return store
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """
         Clean up all tracked resources.
 
@@ -204,7 +204,7 @@ class CleanupMixin:
         self._cleanup_done = True
         logger.trace("Cleanup completed", extra={"class_name": self.__class__.__name__})
 
-    def _cleanup_signals(self):
+    def _cleanup_signals(self) -> Any:
         """Disconnect all tracked signal handlers."""
         disconnected = 0
         failed = 0
@@ -239,7 +239,7 @@ class CleanupMixin:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _cleanup_bindings(self):
+    def _cleanup_bindings(self) -> Any:
         """Unbind all tracked property bindings."""
         unbound = 0
         failed = 0
@@ -263,7 +263,7 @@ class CleanupMixin:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _cleanup_timeouts(self):
+    def _cleanup_timeouts(self) -> Any:
         """Remove all tracked timeout/idle sources."""
         removed = 0
         failed = 0
@@ -294,7 +294,7 @@ class CleanupMixin:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _cleanup_stores(self):
+    def _cleanup_stores(self) -> Any:
         """Clear all tracked ListStore/TreeStore data."""
         cleared = 0
         failed = 0
@@ -333,7 +333,7 @@ class CleanupMixin:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def __del__(self):
+    def __del__(self) -> None:
         """Ensure cleanup is called when object is garbage collected."""
         if not self._cleanup_done:
             logger.warning(

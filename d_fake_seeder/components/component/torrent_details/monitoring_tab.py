@@ -8,6 +8,7 @@ CPU, memory, file descriptors, network, threads, and more.
 # isort: skip_file
 
 # fmt: off
+from typing import Any
 import gi
 
 gi.require_version("Gtk", "4.0")
@@ -26,7 +27,7 @@ except ImportError as e:
         f"MetricsCollector not available: {e}",
         extra={"class_name": "MonitoringTab"},
     )
-    MetricsCollector = None
+    MetricsCollector = None  # type: ignore[assignment, misc]
 
 # fmt: on
 
@@ -121,7 +122,7 @@ class MonitoringTab(BaseTorrentTab):
 
         # Initialize metrics collector
         try:
-            if MetricsCollector:
+            if MetricsCollector:  # type: ignore[truthy-function]
                 logger.trace(
                     "🔧 MONITORING TAB: Creating MetricsCollector instance",
                     extra={"class_name": self.__class__.__name__},
@@ -151,7 +152,7 @@ class MonitoringTab(BaseTorrentTab):
                 extra={"class_name": self.__class__.__name__},
                 exc_info=True,
             )
-            self.metrics_collector = None
+            self.metrics_collector = None  # type: ignore[assignment]
 
         # Create metric tiles
         logger.trace(
@@ -203,7 +204,7 @@ class MonitoringTab(BaseTorrentTab):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_refresh_interval_changed(self, slider):
+    def _on_refresh_interval_changed(self, slider: Any) -> None:
         """Handle refresh interval slider change."""
         new_interval = int(slider.get_value())
         if new_interval != self.refresh_interval:
@@ -231,7 +232,7 @@ class MonitoringTab(BaseTorrentTab):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _create_metric_tiles(self):
+    def _create_metric_tiles(self) -> None:
         """Create all metric visualization tiles in 4x2 layout."""
         # Row 0: CPU, Memory, File Descriptors, Network Connections
         self._create_cpu_tile(0, 0)
@@ -245,7 +246,7 @@ class MonitoringTab(BaseTorrentTab):
         self._create_network_io_tile(1, 2)
         self._create_torrent_stats_tile(1, 3)
 
-    def _create_metric_tile(self, row, col, title, graph_series):
+    def _create_metric_tile(self, row: Any, col: Any, title: Any, graph_series: Any) -> Any:
         """
         Create a metric tile with graph and value labels.
 
@@ -308,11 +309,13 @@ class MonitoringTab(BaseTorrentTab):
             "value_labels": value_labels,
         }
 
-    def _create_cpu_tile(self, row, col):
+    def _create_cpu_tile(self, row: Any, col: Any) -> None:
         """Create CPU usage tile."""
-        self.cpu_tile = self._create_metric_tile(row, col, "CPU Usage", [("CPU %", (0.2, 0.8, 0.2))])  # Green
+        self.cpu_tile = self._create_metric_tile(
+            row, col, "CPU Usage", [("CPU %", (0.2, 0.8, 0.2))]
+        )  # Green  # type: ignore  # noqa: E501
 
-    def _create_memory_tile(self, row, col):
+    def _create_memory_tile(self, row: Any, col: Any) -> None:
         """Create memory usage tile."""
         self.memory_tile = self._create_metric_tile(
             row,
@@ -327,7 +330,7 @@ class MonitoringTab(BaseTorrentTab):
         # Memory uses auto-scale and MB units
         self.memory_tile["graph"].auto_scale = True
 
-    def _create_fd_tile(self, row, col):
+    def _create_fd_tile(self, row: Any, col: Any) -> None:
         """Create file descriptors tile."""
         self.fd_tile = self._create_metric_tile(
             row,
@@ -341,7 +344,7 @@ class MonitoringTab(BaseTorrentTab):
         )
         self.fd_tile["graph"].max_value = 200
 
-    def _create_connections_tile(self, row, col):
+    def _create_connections_tile(self, row: Any, col: Any) -> None:
         """Create network connections tile."""
         self.connections_tile = self._create_metric_tile(
             row,
@@ -355,12 +358,14 @@ class MonitoringTab(BaseTorrentTab):
         )
         self.connections_tile["graph"].max_value = 50
 
-    def _create_threads_tile(self, row, col):
+    def _create_threads_tile(self, row: Any, col: Any) -> None:
         """Create threads count tile."""
-        self.threads_tile = self._create_metric_tile(row, col, "Threads", [("Thread Count", (0.8, 0.4, 0.2))])  # Orange
+        self.threads_tile = self._create_metric_tile(
+            row, col, "Threads", [("Thread Count", (0.8, 0.4, 0.2))]
+        )  # Orange  # type: ignore  # noqa: E501
         self.threads_tile["graph"].max_value = 100
 
-    def _create_disk_io_tile(self, row, col):
+    def _create_disk_io_tile(self, row: Any, col: Any) -> None:
         """Create disk I/O tile."""
         self.disk_io_tile = self._create_metric_tile(
             row,
@@ -375,7 +380,7 @@ class MonitoringTab(BaseTorrentTab):
         self.disk_io_last_read = 0
         self.disk_io_last_write = 0
 
-    def _create_network_io_tile(self, row, col):
+    def _create_network_io_tile(self, row: Any, col: Any) -> None:
         """Create network I/O tile."""
         self.network_io_tile = self._create_metric_tile(
             row,
@@ -388,7 +393,7 @@ class MonitoringTab(BaseTorrentTab):
         )
         self.network_io_tile["graph"].max_value = 100
 
-    def _create_torrent_stats_tile(self, row, col):
+    def _create_torrent_stats_tile(self, row: Any, col: Any) -> None:
         """Create torrent statistics tile."""
         self.torrent_tile = self._create_metric_tile(
             row,
@@ -401,14 +406,14 @@ class MonitoringTab(BaseTorrentTab):
         )
         self.torrent_tile["graph"].max_value = 20
 
-    def _update_metrics(self):
+    def _update_metrics(self) -> Any:
         """Update all metrics from collector."""
         if not self.metrics_collector:
             logger.trace(
                 "📊 MONITORING TAB: Update skipped - no metrics collector",
                 extra={"class_name": self.__class__.__name__},
             )
-            return True  # Keep timer running
+            return True  # Keep timer running  # type: ignore
 
         # Retry finding process if not found initially
         if not self.metrics_collector.process:
@@ -417,7 +422,7 @@ class MonitoringTab(BaseTorrentTab):
                 extra={"class_name": self.__class__.__name__},
             )
             try:
-                self.metrics_collector._find_dfakeseeder_process()
+                self.metrics_collector._find_dfakeseeder_process()  # type: ignore[attr-defined]
                 if self.metrics_collector.process:
                     logger.trace(
                         f"✅ MONITORING TAB: Found DFakeSeeder process (PID: {self.metrics_collector.process.pid})",
@@ -428,13 +433,13 @@ class MonitoringTab(BaseTorrentTab):
                         "🔍 MONITORING TAB: Process not found yet, will retry in 2 seconds",
                         extra={"class_name": self.__class__.__name__},
                     )
-                    return True  # Keep trying
+                    return True  # Keep trying  # type: ignore
             except Exception as e:
                 logger.trace(
                     f"⚠️ MONITORING TAB: Error finding process: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                return True  # Keep trying
+                return True  # Keep trying  # type: ignore
 
         try:
             metrics = self.metrics_collector.collect_metrics()
@@ -551,7 +556,7 @@ class MonitoringTab(BaseTorrentTab):
                 exc_info=True,
             )
 
-        return True  # Keep timer running
+        return True  # Keep timer running  # type: ignore
 
     def _connect_signals(self) -> None:
         """Connect monitoring tab signals."""
@@ -569,15 +574,15 @@ class MonitoringTab(BaseTorrentTab):
         """Show empty state (monitoring tab always shows data)."""
         pass  # Always show metrics
 
-    def update_view(self, *args) -> None:
+    def update_view(self, *args: Any) -> None:
         """Update view (called by notebook)."""
         pass  # Updates happen via timer
 
-    def model_selection_changed(self, *args) -> None:
+    def model_selection_changed(self, *args: Any) -> None:
         """Handle torrent selection change."""
         pass  # Monitoring tab doesn't depend on torrent selection
 
-    def update_content(self, torrent) -> None:
+    def update_content(self, torrent: Any) -> None:
         """
         Update tab content with torrent data.
 
@@ -588,6 +593,6 @@ class MonitoringTab(BaseTorrentTab):
         # system-wide metrics that are updated by timer, not per-torrent metrics
         self._current_torrent = torrent
 
-    def get_widget(self):
+    def get_widget(self) -> Any:  # type: ignore[override]
         """Get the main widget for this tab."""
         return self._tab_widget

@@ -197,7 +197,7 @@ class ClientBehaviorEngine:
         },
     }
 
-    def __init__(self, torrent_manager=None):
+    def __init__(self, torrent_manager: Any = None) -> None:
         """
         Initialize client behavior engine
 
@@ -220,7 +220,7 @@ class ClientBehaviorEngine:
         self.current_client_profile = self.CLIENT_PROFILES.get(self.primary_client)
         self.session_start_time = time.time()
         self.last_behavior_update = 0
-        self.behavior_state = {}
+        self.behavior_state = {}  # type: ignore[var-annotated]
 
         # Performance tracking
         self.behavior_stats = {
@@ -260,7 +260,7 @@ class ClientBehaviorEngine:
                 )
             )
 
-            return prefix + suffix
+            return prefix + suffix  # type: ignore[no-any-return, operator]
 
         except Exception as e:
             logger.error(
@@ -279,7 +279,7 @@ class ClientBehaviorEngine:
         if not self.enabled or not self.current_client_profile:
             return "DFakeSeeder/1.0"
 
-        return self.current_client_profile.get("user_agent", "DFakeSeeder/1.0")
+        return self.current_client_profile.get("user_agent", "DFakeSeeder/1.0")  # type: ignore[return-value]
 
     def get_supported_extensions(self) -> List[str]:
         """
@@ -291,9 +291,9 @@ class ClientBehaviorEngine:
         if not self.enabled or not self.current_client_profile:
             return ["ut_metadata", "ut_pex"]
 
-        return self.current_client_profile.get("extensions", [])
+        return self.current_client_profile.get("extensions", [])  # type: ignore[return-value]
 
-    def get_behavior_parameter(self, parameter: str, default=None):
+    def get_behavior_parameter(self, parameter: str, default: Any = None) -> Any:
         """
         Get behavior parameter with variation
 
@@ -309,7 +309,7 @@ class ClientBehaviorEngine:
 
         try:
             patterns = self.current_client_profile.get("behavior_patterns", {})
-            base_value = patterns.get(parameter, default)
+            base_value = patterns.get(parameter, default)  # type: ignore[attr-defined]
 
             if base_value is None:
                 return default
@@ -332,7 +332,7 @@ class ClientBehaviorEngine:
             )
             return default
 
-    def get_timing_parameter(self, parameter: str, default=None):
+    def get_timing_parameter(self, parameter: str, default: Any = None) -> Any:
         """
         Get timing parameter with realistic delays
 
@@ -348,7 +348,7 @@ class ClientBehaviorEngine:
 
         try:
             timing = self.current_client_profile.get("timing_patterns", {})
-            timing_value = timing.get(parameter, default)
+            timing_value = timing.get(parameter, default)  # type: ignore[attr-defined]
 
             if isinstance(timing_value, tuple) and len(timing_value) == 2:
                 # Return random value in range
@@ -481,7 +481,7 @@ class ClientBehaviorEngine:
             "context": context,
         }
 
-    def _maybe_update_behavior(self):
+    def _maybe_update_behavior(self) -> Any:
         """Possibly update client behavior based on time and probability"""
         current_time = time.time()
 
@@ -492,9 +492,9 @@ class ClientBehaviorEngine:
         ):
             self._switch_client_profile()
 
-        self.last_behavior_update = current_time
+        self.last_behavior_update = current_time  # type: ignore[assignment]
 
-    def _switch_client_profile(self):
+    def _switch_client_profile(self) -> Any:
         """Switch to a different client profile"""
         try:
             available_clients = list(self.CLIENT_PROFILES.keys())
@@ -563,7 +563,7 @@ class ClientBehaviorEngine:
             "supported_extensions": self.get_supported_extensions(),
         }
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up client behavior engine"""
         self.behavior_state.clear()
 

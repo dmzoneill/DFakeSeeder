@@ -7,6 +7,7 @@ Provides System Monitor-style live graphs for metrics visualization.
 # isort: skip_file
 
 # fmt: off
+from typing import Any
 import gi
 
 gi.require_version("Gtk", "4.0")
@@ -31,13 +32,13 @@ class LiveGraph(Gtk.DrawingArea):
 
     def __init__(
         self,
-        max_samples=60,
-        min_value=0.0,
-        max_value=100.0,
-        auto_scale=False,
-        show_grid=True,
-        grid_lines=5,
-    ):
+        max_samples: Any = 60,
+        min_value: Any = 0.0,
+        max_value: Any = 100.0,
+        auto_scale: Any = False,
+        show_grid: Any = True,
+        grid_lines: Any = 5,
+    ) -> None:  # noqa: E501
         """
         Initialize LiveGraph.
 
@@ -63,7 +64,7 @@ class LiveGraph(Gtk.DrawingArea):
         self.grid_lines = grid_lines
 
         # Data series: {name: {'data': [], 'color': (r,g,b), 'visible': bool}}
-        self.series = {}
+        self.series = {}  # type: ignore[var-annotated]
 
         # Set up drawing callback
         self.set_draw_func(self._on_draw)
@@ -79,7 +80,7 @@ class LiveGraph(Gtk.DrawingArea):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def add_series(self, name, color=(0.2, 0.8, 0.2), visible=True):
+    def add_series(self, name, color=(0.2, 0.8, 0.2), visible=True):  # type: ignore[no-untyped-def]
         """
         Add a new data series.
 
@@ -98,7 +99,7 @@ class LiveGraph(Gtk.DrawingArea):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def update_series(self, name, value):
+    def update_series(self, name: Any, value: Any) -> None:
         """
         Add a data point to a series.
 
@@ -123,13 +124,13 @@ class LiveGraph(Gtk.DrawingArea):
         # Trigger redraw
         self.queue_draw()
 
-    def set_series_visible(self, name, visible):
+    def set_series_visible(self, name: Any, visible: Any) -> None:
         """Toggle series visibility."""
         if name in self.series:
             self.series[name]["visible"] = visible
             self.queue_draw()
 
-    def clear_series(self, name=None):
+    def clear_series(self, name: Any = None) -> None:
         """
         Clear data from series.
 
@@ -145,7 +146,7 @@ class LiveGraph(Gtk.DrawingArea):
 
         self.queue_draw()
 
-    def _get_value_range(self):
+    def _get_value_range(self) -> Any:
         """Calculate current min/max values from all series."""
         if self.auto_scale:
             all_values = []
@@ -158,7 +159,7 @@ class LiveGraph(Gtk.DrawingArea):
 
         return self.min_value, self.max_value
 
-    def _on_draw(self, area, ctx, width, height):
+    def _on_draw(self, area: Any, ctx: Any, width: Any, height: Any) -> None:
         """
         Cairo drawing callback.
 
@@ -194,7 +195,7 @@ class LiveGraph(Gtk.DrawingArea):
 
             self._draw_series_line(ctx, width, height, data, series_data["color"], min_val, value_range)
 
-    def _draw_grid(self, ctx, width, height, min_val, max_val):
+    def _draw_grid(self, ctx: Any, width: Any, height: Any, min_val: Any, max_val: Any) -> Any:
         """Draw horizontal grid lines."""
         ctx.set_source_rgba(0.3, 0.3, 0.3, 0.5)
         ctx.set_line_width(1)
@@ -206,7 +207,9 @@ class LiveGraph(Gtk.DrawingArea):
 
         ctx.stroke()
 
-    def _draw_series_line(self, ctx, width, height, data, color, min_val, value_range):
+    def _draw_series_line(
+        self, ctx: Any, width: Any, height: Any, data: Any, color: Any, min_val: Any, value_range: Any
+    ) -> Any:  # noqa: E501
         """Draw a single data series as a line."""
         ctx.set_source_rgb(*color)
         ctx.set_line_width(2)
@@ -231,7 +234,7 @@ class LiveGraph(Gtk.DrawingArea):
 
         ctx.stroke()
 
-    def get_series_latest_value(self, name):
+    def get_series_latest_value(self, name: Any) -> Any:
         """Get the latest value from a series."""
         if name in self.series and self.series[name]["data"]:
             return self.series[name]["data"][-1]

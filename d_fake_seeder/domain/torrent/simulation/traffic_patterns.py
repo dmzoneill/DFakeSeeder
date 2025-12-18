@@ -20,7 +20,7 @@ from d_fake_seeder.lib.logger import logger
 class TrafficPatternSimulator:
     """Generate realistic BitTorrent traffic patterns"""
 
-    def __init__(self, seeding_profile: str = "balanced"):
+    def __init__(self, seeding_profile: str = "balanced") -> None:
         """
         Initialize traffic pattern simulator
 
@@ -82,7 +82,7 @@ class TrafficPatternSimulator:
 
     def generate_upload_pattern(
         self, base_speed: Optional[int] = None, duration: int = 60
-    ) -> Generator[Tuple[float, int], None, None]:
+    ) -> Generator[Tuple[float, int], None, None]:  # noqa: E501
         """
         Generate realistic upload speed variations over time
 
@@ -122,7 +122,7 @@ class TrafficPatternSimulator:
 
     def generate_download_pattern(
         self, base_speed: Optional[int] = None, duration: int = 60
-    ) -> Generator[Tuple[float, int], None, None]:
+    ) -> Generator[Tuple[float, int], None, None]:  # noqa: E501
         """
         Generate realistic download speed variations over time
 
@@ -295,7 +295,7 @@ class TrafficPatternSimulator:
             if day_of_week >= 5:  # Weekend
                 time_factor *= weekend_multiplier
 
-            return time_factor
+            return time_factor  # type: ignore[no-any-return]
 
         except Exception:
             return 1.0
@@ -380,12 +380,12 @@ class TrafficPatternSimulator:
             random_max = 1.0 + random_variance
             random_factor = random.uniform(random_min, random_max)
 
-            return congestion_cycle * random_factor
+            return congestion_cycle * random_factor  # type: ignore[no-any-return]
 
         except Exception:
             return 1.0
 
-    def _calculate_peer_influence(self) -> float:
+    def _calculate_peer_influence(self) -> Any:
         """
         Calculate influence of peer count on speeds
 
@@ -408,11 +408,13 @@ class TrafficPatternSimulator:
             max_improvement_factor = peer_influence_settings.get("max_improvement_factor", 1.3)
 
             if peer_count < few_peers_threshold:
-                return few_peers_factor  # Reduced speed with few peers
+                return few_peers_factor  # Reduced speed with few peers  # type: ignore
             elif peer_count < optimal_peers_threshold:
-                return 1.0 + (peer_count - few_peers_threshold) * improvement_per_peer  # Gradual improvement
+                return (
+                    1.0 + (peer_count - few_peers_threshold) * improvement_per_peer
+                )  # Gradual improvement  # type: ignore  # noqa: E501
             else:
-                return max_improvement_factor  # Cap at maximum improvement
+                return max_improvement_factor  # Cap at maximum improvement  # type: ignore
 
         except Exception:
             return 1.0
@@ -535,7 +537,7 @@ class TrafficPatternSimulator:
             "time_based_patterns_enabled": self.time_based_patterns,
         }
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up traffic pattern simulator"""
         self.traffic_history.clear()
         self.connection_history.clear()

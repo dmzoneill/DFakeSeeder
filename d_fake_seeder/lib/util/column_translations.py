@@ -7,6 +7,7 @@ support runtime language switching for column headers.
 """
 
 # fmt: off
+from typing import Any
 from d_fake_seeder.lib.logger import logger
 
 # fmt: on
@@ -22,12 +23,12 @@ class ColumnTranslations:
     _translation_function = None
 
     @staticmethod
-    def _fallback_function(x):
+    def _fallback_function(x: Any) -> Any:
         """Fallback function when no translation is available"""
         return x
 
     @classmethod
-    def register_translation_function(cls, translate_func):
+    def register_translation_function(cls, translate_func: Any) -> None:
         """
         Register the translation function from the main TranslationManager
 
@@ -47,12 +48,12 @@ class ColumnTranslations:
         logger.info("Translation function registered successfully", "ColumnTranslations")
 
     @classmethod
-    def _get_translation_function(cls):
+    def _get_translation_function(cls) -> Any:
         """Get the registered translation function"""
         return cls._translation_function or cls._fallback_function
 
     @classmethod
-    def get_torrent_column_translations(cls):
+    def get_torrent_column_translations(cls) -> Any:
         """
         Get column header translations for main torrent list
 
@@ -116,7 +117,7 @@ class ColumnTranslations:
         }
 
     @classmethod
-    def get_states_column_translations(cls):
+    def get_states_column_translations(cls) -> Any:
         """
         Get column header translations for states/trackers view
         """
@@ -128,7 +129,7 @@ class ColumnTranslations:
         }
 
     @classmethod
-    def get_peer_column_translations(cls):
+    def get_peer_column_translations(cls) -> Any:
         """
         Get column header translations for peer details
         """
@@ -153,7 +154,7 @@ class ColumnTranslations:
         }
 
     @classmethod
-    def get_incoming_connections_column_translations(cls):
+    def get_incoming_connections_column_translations(cls) -> Any:
         """
         Get column header translations for incoming connections
         """
@@ -174,7 +175,7 @@ class ColumnTranslations:
         }
 
     @classmethod
-    def get_outgoing_connections_column_translations(cls):
+    def get_outgoing_connections_column_translations(cls) -> Any:
         """
         Get column header translations for outgoing connections
         """
@@ -195,7 +196,7 @@ class ColumnTranslations:
         }
 
     @classmethod
-    def get_files_column_translations(cls):
+    def get_files_column_translations(cls) -> Any:
         """
         Get column header translations for torrent files view
         """
@@ -210,7 +211,7 @@ class ColumnTranslations:
         }
 
     @classmethod
-    def get_trackers_column_translations(cls):
+    def get_trackers_column_translations(cls) -> Any:
         """
         Get column header translations for torrent trackers view
         """
@@ -257,9 +258,9 @@ class ColumnTranslations:
 
         # If we have a specific mapping, use it (try underscore version first)
         if property_name_underscore in mapping:
-            return mapping[property_name_underscore]
+            return mapping[property_name_underscore]  # type: ignore[no-any-return]
         elif property_name in mapping:
-            return mapping[property_name]
+            return mapping[property_name]  # type: ignore[no-any-return]
 
         # Try to translate the property name directly (with underscores)
         _ = ColumnTranslations._get_translation_function()

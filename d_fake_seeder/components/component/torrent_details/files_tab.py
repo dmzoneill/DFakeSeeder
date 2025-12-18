@@ -7,6 +7,7 @@ Displays torrent file listing with file paths and sizes.
 # isort: skip_file
 
 # fmt: off
+from typing import Any
 import gi
 
 from d_fake_seeder.lib.util.constants import SIZE_UNITS_BASIC
@@ -64,7 +65,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error removing files grid child: {e}")
 
-    def update_content(self, attributes) -> None:
+    def update_content(self, attributes: Any) -> None:
         """
         Update files tab content with torrent file data.
 
@@ -125,7 +126,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error updating files tab content: {e}")
 
-    def _get_torrent_files(self, attributes) -> list:
+    def _get_torrent_files(self, attributes: Any) -> list:
         """
         Get files from the torrent.
 
@@ -304,7 +305,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             try:
                 from lib.util.format_helpers import format_size
 
-                return format_size(bytes_count)
+                return format_size(bytes_count)  # type: ignore[no-any-return]
             except ImportError:
                 pass
 

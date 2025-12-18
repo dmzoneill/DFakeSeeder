@@ -19,7 +19,7 @@ except ImportError:
 
     from d_fake_seeder.lib.logger import add_trace_to_logger
 
-    logger = add_trace_to_logger(logging.getLogger(__name__))
+    logger = add_trace_to_logger(logging.getLogger(__name__))  # type: ignore[func-returns-value]
 
 # fmt: on
 
@@ -50,7 +50,7 @@ def load_languages_config() -> Dict[str, Any]:
 
     try:
         with open(config_path, "r", encoding="utf-8") as f:
-            return json.load(f)
+            return json.load(f)  # type: ignore[no-any-return]
     except json.JSONDecodeError as e:
         raise json.JSONDecodeError(f"Invalid JSON in languages config: {e}", e.doc, e.pos)
 
@@ -111,7 +111,7 @@ def get_supported_languages() -> Dict[str, Dict[str, str]]:
     """
     try:
         config = load_languages_config()
-        return config.get("languages", {})
+        return config.get("languages", {})  # type: ignore[no-any-return]
     except (FileNotFoundError, json.JSONDecodeError) as e:
         # Fallback to dynamic discovery from locale directory if config loading fails
         logger.warning(f"Could not load languages config ({e}), falling back to locale directory scan")
@@ -185,6 +185,6 @@ def get_config_metadata() -> Dict[str, Any]:
     """
     try:
         config = load_languages_config()
-        return config.get("metadata", {})
+        return config.get("metadata", {})  # type: ignore[no-any-return]
     except (FileNotFoundError, json.JSONDecodeError):
         return {"version": "unknown", "description": "Fallback configuration"}

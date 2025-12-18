@@ -9,7 +9,7 @@ Responds with fake data that will be discarded by real clients due to hash verif
 import asyncio
 import struct
 import threading
-from typing import Dict, Optional, Set
+from typing import Any, Dict, Optional, Set
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.bittorrent_message import BitTorrentMessage
@@ -31,7 +31,7 @@ class PeerServer:
         self,
         port: int = NetworkConstants.DEFAULT_PORT,
         max_connections: int = ConnectionConstants.DEFAULT_MAX_INCOMING_CONNECTIONS,
-    ):
+    ) -> None:  # noqa: E501
         self.port = port
         self.max_connections = max_connections
         self.running = False
@@ -70,7 +70,7 @@ class PeerServer:
         # UI callback for connection updates
         self.connection_callback = None
 
-    def add_info_hash(self, info_hash: bytes):
+    def add_info_hash(self, info_hash: bytes) -> None:
         """Add an info hash that we should respond to"""
         self.known_info_hashes.add(info_hash)
         logger.trace(
@@ -78,11 +78,11 @@ class PeerServer:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def set_connection_callback(self, callback):
+    def set_connection_callback(self, callback: Any) -> None:
         """Set callback for connection updates"""
         self.connection_callback = callback
 
-    def start(self):
+    def start(self) -> Any:
         """Start the peer server"""
         if self.running:
             return
@@ -96,7 +96,7 @@ class PeerServer:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def stop(self):
+    def stop(self) -> Any:
         """Stop the peer server"""
         if not self.running:
             return
@@ -145,11 +145,11 @@ class PeerServer:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-    def _run_server(self):
+    def _run_server(self) -> None:
         """Run the async server in a thread"""
         asyncio.new_event_loop().run_until_complete(self._async_server())
 
-    async def _async_server(self):
+    async def _async_server(self) -> Any:
         """Main async server loop"""
         try:
             app_settings = AppSettings.get_instance()
@@ -171,7 +171,7 @@ class PeerServer:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _handle_client(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
+    async def _handle_client(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
         """Handle incoming peer connection"""
         client_addr = writer.get_extra_info("peername")
         client_key = f"{client_addr[0]}:{client_addr[1]}"
@@ -233,11 +233,8 @@ class PeerServer:
                 self.connection_callback("incoming", "remove", client_ip, client_port)
 
     async def _handle_peer_protocol(
-        self,
-        reader: asyncio.StreamReader,
-        writer: asyncio.StreamWriter,
-        client_key: str,
-    ):
+        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter, client_key: str
+    ) -> None:  # noqa: E501
         """Handle BitTorrent peer protocol messages"""
 
         # Wait for handshake
@@ -310,7 +307,7 @@ class PeerServer:
         except asyncio.TimeoutError:
             logger.trace(f"⏰ Handshake timeout from {client_key}")
 
-    async def _send_fake_bitfield(self, writer: asyncio.StreamWriter):
+    async def _send_fake_bitfield(self, writer: asyncio.StreamWriter) -> Any:
         """Send a fake bitfield claiming we have some pieces"""
         # Create a fake bitfield with configurable size
         bitfield = bytearray(self.bitfield_size)
@@ -330,12 +327,8 @@ class PeerServer:
         await writer.drain()
 
     async def _handle_peer_messages(
-        self,
-        reader: asyncio.StreamReader,
-        writer: asyncio.StreamWriter,
-        client_key: str,
-        info_hash: bytes,
-    ):
+        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter, client_key: str, info_hash: bytes
+    ) -> None:  # noqa: E501
         """Handle ongoing peer protocol messages"""
 
         while self.running:
@@ -376,12 +369,8 @@ class PeerServer:
                 break
 
     async def _handle_message(
-        self,
-        writer: asyncio.StreamWriter,
-        client_key: str,
-        message_type: int,
-        payload: bytes,
-    ):
+        self, writer: asyncio.StreamWriter, client_key: str, message_type: int, payload: bytes
+    ) -> None:  # noqa: E501
         """Handle specific peer protocol messages"""
 
         if message_type == BitTorrentMessage.INTERESTED:
@@ -415,7 +404,7 @@ class PeerServer:
         elif message_type == BitTorrentMessage.UNCHOKE:
             logger.trace(f"✅ Peer {client_key} unchoked us")
 
-    async def _send_fake_piece(self, writer: asyncio.StreamWriter, piece_index: int, offset: int, length: int):
+    async def _send_fake_piece(self, writer: asyncio.StreamWriter, piece_index: int, offset: int, length: int) -> Any:
         """Send fake piece data that will be rejected by hash verification"""
 
         # Limit length to prevent abuse

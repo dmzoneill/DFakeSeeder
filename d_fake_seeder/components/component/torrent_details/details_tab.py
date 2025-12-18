@@ -7,6 +7,7 @@ Displays key torrent information like name, ID, file path, size, and progress.
 # isort: skip_file
 
 # fmt: off
+from typing import Any
 import gi
 
 from d_fake_seeder.lib.util.constants import SIZE_UNITS_BASIC
@@ -58,7 +59,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         if self._details_grid:
             self.remove_all_children(self._details_grid)
 
-    def update_content(self, torrent) -> None:
+    def update_content(self, torrent: Any) -> None:
         """
         Update details tab content with torrent data.
 
@@ -88,7 +89,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error updating details tab content: {e}")
 
-    def _get_torrent_details(self, torrent) -> list:
+    def _get_torrent_details(self, torrent: Any) -> list:
         """
         Get key torrent details for display.
 
@@ -149,7 +150,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             )
             return [(translate_func("Error"), "Unable to load torrent details")]
 
-    def _get_additional_details(self, torrent) -> list:
+    def _get_additional_details(self, torrent: Any) -> list:
         """
         Get additional torrent details.
 
@@ -223,7 +224,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error creating detail row {label_text}={value_text}: {e}")
 
-    def _format_size(self, size_value) -> str:
+    def _format_size(self, size_value: Any) -> str:
         """
         Format size value for display.
 
@@ -243,7 +244,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except (ValueError, TypeError):
             return str(size_value)
 
-    def _format_progress(self, progress_value) -> str:
+    def _format_progress(self, progress_value: Any) -> str:
         """
         Format progress value for display.
 
@@ -263,7 +264,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except (ValueError, TypeError):
             return f"{progress_value}%"
 
-    def _format_date(self, date_value) -> str:
+    def _format_date(self, date_value: Any) -> str:
         """
         Format date value for display.
 
@@ -306,7 +307,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             try:
                 from .util.format_helpers import format_size
 
-                return format_size(bytes_count)
+                return format_size(bytes_count)  # type: ignore[no-any-return]
             except ImportError:
                 pass
 

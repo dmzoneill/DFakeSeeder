@@ -28,7 +28,7 @@ class DataUpdateMixin:
     Provides standardized data update patterns and change notifications.
     """
 
-    def setup_data_binding(self, model, callback: Callable) -> None:
+    def setup_data_binding(self, model: Any, callback: Callable) -> None:
         """
         Set up data binding to model changes.
 
@@ -89,7 +89,7 @@ class DataUpdateMixin:
                     if hasattr(self, "model") and hasattr(self.model, "get_translate_func")
                     else lambda x: x
                 )
-                return translate_func("Yes") if value else translate_func("No")
+                return translate_func("Yes") if value else translate_func("No")  # type: ignore[no-any-return]
             elif isinstance(value, (int, float)):
                 return str(value)
             else:
@@ -97,7 +97,7 @@ class DataUpdateMixin:
         except Exception:
             return "N/A"
 
-    def batch_update(self, update_func: Callable, *args, **kwargs) -> None:
+    def batch_update(self, update_func: Callable, *args: Any, **kwargs: Any) -> Any:
         """
         Perform batch update with idle scheduling for better performance.
 
@@ -107,12 +107,12 @@ class DataUpdateMixin:
             **kwargs: Keyword arguments for update function
         """
 
-        def update_when_idle():
+        def update_when_idle() -> Any:
             try:
                 update_func(*args, **kwargs)
             except Exception as e:
                 logger.error(f"Error in batch update: {e}")
-            return False  # Don't repeat
+            return False  # Don't repeat  # type: ignore
 
         GLib.idle_add(update_when_idle)
 
@@ -375,12 +375,12 @@ class PerformanceMixin:
     Provides methods for efficient updates and resource management.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._update_pending = False
         self._last_update_time = 0
-        self._update_queue = []
+        self._update_queue = []  # type: ignore[var-annotated]
 
-    def debounced_update(self, update_func: Callable, delay_ms: int = 100) -> None:
+    def debounced_update(self, update_func: Callable, delay_ms: int = 100) -> Any:
         """
         Perform debounced update to avoid excessive refreshes.
 
@@ -389,7 +389,7 @@ class PerformanceMixin:
             delay_ms: Delay in milliseconds
         """
 
-        def delayed_update():
+        def delayed_update() -> Any:
             try:
                 if self._update_pending:
                     update_func()
@@ -401,7 +401,7 @@ class PerformanceMixin:
         self._update_pending = True
         GLib.timeout_add(delay_ms, delayed_update)
 
-    def queue_update(self, update_func: Callable, *args, **kwargs) -> None:
+    def queue_update(self, update_func: Callable, *args: Any, **kwargs: Any) -> None:
         """
         Queue an update for batch processing.
 
@@ -447,7 +447,7 @@ class PerformanceMixin:
                 if isinstance(parent, Gtk.Notebook):
                     current_page = parent.get_current_page()
                     widget_page = parent.page_num(widget)
-                    return current_page == widget_page
+                    return current_page == widget_page  # type: ignore[no-any-return]
                 parent = parent.get_parent()
 
             return True

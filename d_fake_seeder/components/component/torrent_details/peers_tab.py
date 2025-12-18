@@ -38,7 +38,7 @@ class PeersTab(
     Shows peer data in a sortable column view with data from multiple sources.
     """
 
-    def __init__(self, builder: Gtk.Builder, model):
+    def __init__(self, builder: Gtk.Builder, model: Any) -> None:
         """Initialize the peers tab."""
         # Initialize mixins BEFORE calling super().__init__() because
         # BaseTorrentTab.__init__() calls _init_widgets() which needs
@@ -73,11 +73,8 @@ class PeersTab(
         self._init_peers_column_view()
 
     def set_connection_managers(
-        self,
-        incoming_connections=None,
-        outgoing_connections=None,
-        global_peer_manager=None,
-    ):
+        self, incoming_connections: Any = None, outgoing_connections: Any = None, global_peer_manager: Any = None
+    ) -> None:  # noqa: E501
         """
         Set connection managers for peer data sources.
 
@@ -128,7 +125,7 @@ class PeersTab(
         except Exception as e:
             self.logger.error(f"Error initializing peers column view: {e}", exc_info=True)
 
-    def on_language_changed(self, source=None, new_language=None):
+    def on_language_changed(self, source: Any = None, new_language: Any = None) -> None:
         """Handle language change events for column translation."""
         try:
             # Call parent method for general tab translation
@@ -168,7 +165,7 @@ class PeersTab(
 
             # Create sorter for the column
             property_expression = Gtk.PropertyExpression.new(TorrentPeer, None, property_name)
-            sorter = self._create_property_sorter(property_name, property_expression)
+            sorter = self._create_property_sorter(property_name, property_expression)  # type: ignore[func-returns-value]  # noqa: E501
             if sorter:
                 column.set_sorter(sorter)
 
@@ -180,7 +177,7 @@ class PeersTab(
         except Exception as e:
             self.logger.error(f"Error creating peer column {property_name}: {e}")
 
-    def _create_property_sorter(self, property_name: str, property_expression):
+    def _create_property_sorter(self, property_name: str, property_expression: Any) -> None:
         """
         Create appropriate sorter based on property type.
 
@@ -199,13 +196,13 @@ class PeersTab(
             property_type = property_spec.value_type.fundamental
 
             if property_type == GObject.TYPE_STRING:
-                return Gtk.StringSorter.new(property_expression)
+                return Gtk.StringSorter.new(property_expression)  # type: ignore[no-any-return]
             elif property_type in [GObject.TYPE_FLOAT, GObject.TYPE_DOUBLE]:
-                return Gtk.NumericSorter.new(property_expression)
+                return Gtk.NumericSorter.new(property_expression)  # type: ignore[no-any-return]
             elif property_type == GObject.TYPE_BOOLEAN:
-                return Gtk.NumericSorter.new(property_expression)
+                return Gtk.NumericSorter.new(property_expression)  # type: ignore[no-any-return]
             else:
-                return Gtk.StringSorter.new(property_expression)
+                return Gtk.StringSorter.new(property_expression)  # type: ignore[no-any-return]
 
         except Exception as e:
             self.logger.error(f"Error creating sorter for {property_name}: {e}")
@@ -250,7 +247,7 @@ class PeersTab(
         except Exception as e:
             self.logger.error(f"Error clearing peers tab content: {e}")
 
-    def update_content(self, torrent) -> None:
+    def update_content(self, torrent: Any) -> None:
         """
         Update peers tab content with torrent peer data.
 
@@ -285,7 +282,7 @@ class PeersTab(
         except Exception as e:
             self.logger.error(f"Error updating peers tab content: {e}", exc_info=True)
 
-    def _collect_peer_data(self, torrent) -> list:
+    def _collect_peer_data(self, torrent: Any) -> list:
         """
         Collect peer data from all available sources.
 
@@ -320,7 +317,7 @@ class PeersTab(
             self.logger.error(f"Error collecting peer data: {e}")
             return []
 
-    def _add_global_peer_data(self, torrent, peer_data: list) -> int:
+    def _add_global_peer_data(self, torrent: Any, peer_data: list) -> int:
         """
         Add peer data from global peer manager.
 
@@ -343,7 +340,7 @@ class PeersTab(
             self.logger.error(f"Error getting peers from global peer manager: {e}")
             return 0
 
-    def _add_legacy_peer_data(self, torrent, peer_data: list) -> int:
+    def _add_legacy_peer_data(self, torrent: Any, peer_data: list) -> int:
         """
         Add peer data from legacy seeder if no global data.
 
@@ -388,7 +385,7 @@ class PeersTab(
             self.logger.error(f"Error adding legacy peer data: {e}")
             return 0
 
-    def _add_connection_peer_data(self, torrent, peer_data: list) -> int:
+    def _add_connection_peer_data(self, torrent: Any, peer_data: list) -> int:
         """
         Add peer data from active connections.
 
@@ -493,10 +490,10 @@ class PeersTab(
             self.logger.error(f"Error updating peers store: {e}")
 
     # Column setup/bind callbacks
-    def _setup_column_item(self, widget, item, property_name: str) -> None:
+    def _setup_column_item(self, widget: Any, item: Any, property_name: str) -> None:
         """Setup callback for column items."""
 
-        def setup_when_idle():
+        def setup_when_idle() -> None:
             try:
                 label = Gtk.Label()
                 label.set_hexpand(True)
@@ -509,22 +506,22 @@ class PeersTab(
                 item.set_child(label)
             except Exception as e:
                 self.logger.error(f"Error in setup callback: {e}")
-            return False
+            return False  # type: ignore[return-value]
 
         self.batch_update(setup_when_idle)
 
-    def _bind_column_item(self, widget, item, property_name: str) -> None:
+    def _bind_column_item(self, widget: Any, item: Any, property_name: str) -> None:
         """Bind callback for column items."""
 
-        def bind_when_idle():
+        def bind_when_idle() -> None:
             try:
                 child = item.get_child()
                 if not child:
-                    return False
+                    return False  # type: ignore[return-value]
 
                 list_item = item.get_item()
                 if not list_item:
-                    return False
+                    return False  # type: ignore[return-value]
 
                 value = self.safe_get_property(list_item, property_name.replace("-", "_"), "")
                 formatted_value = self.format_property_value(value)
@@ -532,7 +529,7 @@ class PeersTab(
 
             except Exception as e:
                 self.logger.error(f"Error in bind callback: {e}")
-            return False
+            return False  # type: ignore[return-value]
 
         self.batch_update(bind_when_idle)
 

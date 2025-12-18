@@ -1,5 +1,6 @@
 # fmt: off
 # isort: skip_file
+from typing import Any
 import time
 
 import requests
@@ -14,7 +15,7 @@ from d_fake_seeder.lib.util.format_helpers import format_number, format_size
 
 
 class Statusbar(Component):
-    def __init__(self, builder, model):
+    def __init__(self, builder: Any, model: Any) -> None:
         super().__init__()
 
         logger.trace("startup", extra={"class_name": self.__class__.__name__})
@@ -58,7 +59,7 @@ class Statusbar(Component):
         connection_manager = get_connection_manager()
         connection_manager.add_update_callback(self.update_connection_status)
 
-    def get_ip(self):
+    def get_ip(self) -> Any:
         try:
             if self.ip != "0.0.0.0":
                 return self.ip
@@ -73,21 +74,21 @@ class Statusbar(Component):
             self.ip = ""
             return self.ip
 
-    def sum_column_values(self, column_name):
+    def sum_column_values(self, column_name: Any) -> Any:
         total_sum = 0
 
         # Get the list of attributes for each entry in the torrent_list
-        attribute_list = [getattr(entry, column_name) for entry in self.model.torrent_list]
+        attribute_list = [getattr(entry, column_name) for entry in self.model.torrent_list]  # type: ignore[attr-defined]  # noqa: E501
 
         # Sum the values based on the specified attribute
         total_sum = sum(attribute_list)
 
         return total_sum
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         current_time = time.time()
         if current_time < self.last_execution_time + self.settings.tickspeed:
-            return False
+            return False  # type: ignore[return-value]
 
         self.last_execution_time = current_time
 
@@ -139,7 +140,7 @@ class Statusbar(Component):
 
         self.status_ip.set_text("  " + self.get_ip())
 
-    def update_connection_status(self):
+    def update_connection_status(self) -> None:
         """Update only the connection status in the status bar"""
         try:
             connection_manager = get_connection_manager()
@@ -161,27 +162,27 @@ class Statusbar(Component):
             )
             self.status_peers.set_text("  0 / 250")
 
-    def handle_settings_changed(self, source, key, value):
+    def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         logger.trace(
             "Torrents view settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_model_changed(self, source, data_obj, data_changed):
+    def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
         logger.trace(
             "StatusBar settings changed",
             extra={"class_name": self.__class__.__name__},
         )
         self.update_view(None, None, None)
 
-    def handle_attribute_changed(self, source, key, value):
+    def handle_attribute_changed(self, source: Any, key: Any, value: Any) -> None:
         logger.trace(
             "Attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
         self.update_view(None, None, None)
 
-    def model_selection_changed(self, source, model, torrent):
+    def model_selection_changed(self, source: Any, model: Any, torrent: Any) -> Any:
         logger.trace(
             "Model selection changed",
             extra={"class_name": self.__class__.__name__},

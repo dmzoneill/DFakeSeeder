@@ -54,7 +54,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
         localedir: Optional[str] = None,
         supported_languages: Optional[Set[str]] = None,
         fallback_language: str = "en",
-    ):
+    ) -> None:  # noqa: E501
         """Initialize the GTK3 translation manager"""
         self._domain = domain
         self._localedir = localedir or os.path.join(os.getcwd(), "locale")
@@ -242,7 +242,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
         translation_key: str,
         property_name: str = "label",
         widget_id: Optional[str] = None,
-    ):
+    ) -> None:
         """Manually register a widget for translation"""
         # Check if already registered
         for existing_widget in self.translatable_widgets:
@@ -263,7 +263,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
         """Update all registered translation functions"""
         self._refresh_translations_immediate()
 
-    def _refresh_translations_immediate(self):
+    def _refresh_translations_immediate(self) -> None:
         """Update all widget translations immediately"""
         if self._updating:
             return
@@ -293,7 +293,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
         finally:
             self._updating = False
 
-    def _set_widget_property(self, widget: Any, property_name: str, value: str):
+    def _set_widget_property(self, widget: Any, property_name: str, value: str) -> Any:
         """Set a property on a widget with appropriate method"""
         try:
             if property_name == "label" and hasattr(widget, "set_label"):
@@ -357,7 +357,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
         This is a convenience method for tray applications that don't need
         complex widget management but need translation support.
         """
-        return self.translate_func(text_key)
+        return self.translate_func(text_key)  # type: ignore[no-any-return]
 
     def create_translated_menu_items(self, menu_items: List[Dict[str, str]]) -> List[Dict[str, str]]:
         """
@@ -430,7 +430,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
                 f"_get_target_language() final target: {language}",
                 "TranslationManagerGTK3",
             )
-            return language
+            return language  # type: ignore[no-any-return]
         except Exception as e:
             logger.trace(
                 f"Could not get language from AppSettings: {e}",
@@ -448,7 +448,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
         """Get the set of supported language codes"""
         return self.supported_languages.copy()
 
-    def set_widget_state(self, widget_id: str, key: str, value: Any):
+    def set_widget_state(self, widget_id: str, key: str, value: Any) -> None:
         """Store state for a widget (e.g., whether button was clicked)"""
         if not hasattr(self, "state_storage"):
             self.state_storage = {}
@@ -462,14 +462,14 @@ class TranslationManagerGTK3(TranslationManagerBase):
             self.state_storage = {}
         return self.state_storage.get(widget_id, {}).get(key, default)
 
-    def update_translation_key(self, widget_id: str, new_key: str):
+    def update_translation_key(self, widget_id: str, new_key: str) -> None:
         """Update the translation key for a specific widget"""
         for widget_info in self.translatable_widgets:
             if widget_info.get("widget_id") == widget_id:
                 widget_info["translation_key"] = new_key
                 break
 
-    def refresh_all_translations(self):
+    def refresh_all_translations(self) -> None:
         """Refresh translations for all registered widgets immediately"""
         self._refresh_translations_immediate()
 
@@ -477,7 +477,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
         """Get list of all registered translatable widgets"""
         return self.translatable_widgets.copy()
 
-    def clear_registrations(self):
+    def clear_registrations(self) -> None:
         """Clear all registered widgets and menus"""
         self.translatable_widgets.clear()
         if hasattr(self, "translatable_menus"):
@@ -487,7 +487,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
         if hasattr(self, "_scanned_builders"):
             self._scanned_builders.clear()
 
-    def print_discovered_widgets(self):
+    def print_discovered_widgets(self) -> Any:
         """Debug method to print all discovered translatable widgets"""
         logger.trace("Discovered translatable widgets:", "TranslationManagerGTK3")
         for widget_info in self.translatable_widgets:
@@ -501,7 +501,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
             )
 
     # GTK3 Builder scanning functionality (simplified for GTK3)
-    def scan_builder_widgets(self, builder):
+    def scan_builder_widgets(self, builder: Any) -> Any:
         """
         Scan all widgets from a builder and register translatable ones.
         Simplified for GTK3 compatibility but maintains same interface.
@@ -509,7 +509,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
         # Create a unique identifier for this builder
         builder_id = id(builder)
         if not hasattr(self, "_scanned_builders"):
-            self._scanned_builders = set()
+            self._scanned_builders = set()  # type: ignore[var-annotated]
 
         if builder_id in self._scanned_builders:
             logger.trace(
@@ -546,14 +546,14 @@ class TranslationManagerGTK3(TranslationManagerBase):
             "TranslationManagerGTK3",
         )
 
-    def _get_widget_id(self, widget, builder) -> Optional[str]:
+    def _get_widget_id(self, widget: Any, builder: Any) -> Optional[str]:
         """Try to find the ID of a widget from the builder (GTK3 compatible)"""
         try:
             # Try to get the buildable name (the ID from the UI file)
             if hasattr(widget, "get_buildable_id"):
-                return widget.get_buildable_id()
+                return widget.get_buildable_id()  # type: ignore[no-any-return]
             elif hasattr(widget, "get_name"):
-                return widget.get_name()
+                return widget.get_name()  # type: ignore[no-any-return]
         except Exception:
             pass
 
@@ -562,13 +562,13 @@ class TranslationManagerGTK3(TranslationManagerBase):
             objects = builder.get_objects()
             for obj in objects:
                 if obj is widget and hasattr(obj, "get_name"):
-                    return obj.get_name()
+                    return obj.get_name()  # type: ignore[no-any-return]
         except Exception:
             pass
 
         return None
 
-    def _check_and_register_widget(self, widget, widget_id: Optional[str]):
+    def _check_and_register_widget(self, widget: Any, widget_id: Optional[str]) -> Any:
         """Check if a widget should be registered for translation (GTK3 compatible)"""
         translatable_properties = []
 
@@ -672,7 +672,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
                 )
 
     # Menu functionality for GTK3 (using Gio.Menu if available)
-    def register_menu(self, menu, menu_items: List[Dict[str, str]], popover=None):
+    def register_menu(self, menu: Any, menu_items: List[Dict[str, str]], popover: Any = None) -> None:
         """Register a menu for translation updates (GTK3 compatible)"""
         if not hasattr(self, "translatable_menus"):
             self.translatable_menus = []
@@ -690,7 +690,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
             "TranslationManagerGTK3",
         )
 
-    def refresh_menu_translations(self):
+    def refresh_menu_translations(self) -> None:
         """Recreate all registered menus with translated text (GTK3 compatible)"""
         if not hasattr(self, "translatable_menus"):
             self.translatable_menus = []
@@ -713,7 +713,7 @@ class TranslationManagerGTK3(TranslationManagerBase):
                     "TranslationManagerGTK3",
                 )
 
-    def _recreate_menu(self, menu_info: Dict[str, Any]):
+    def _recreate_menu(self, menu_info: Dict[str, Any]) -> Any:
         """Recreate a menu with translated text (GTK3 compatible)"""
         menu = menu_info["menu"]
         items = menu_info["items"]

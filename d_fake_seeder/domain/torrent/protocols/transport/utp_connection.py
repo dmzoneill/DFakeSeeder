@@ -11,7 +11,7 @@ import random
 import struct
 import time
 from enum import IntEnum
-from typing import Dict, Tuple
+from typing import Any, Dict, Tuple
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -33,7 +33,7 @@ class UTPPacketType(IntEnum):
 class UTPConnection:
     """µTP connection implementation"""
 
-    def __init__(self, connection_id: int, remote_addr: Tuple[str, int], socket):
+    def __init__(self, connection_id: int, remote_addr: Tuple[str, int], socket: Any) -> None:
         """
         Initialize µTP connection
 
@@ -111,7 +111,7 @@ class UTPConnection:
             # Wait for STATE packet (ACK of SYN)
             start_time = time.time()
             while self.state != "CONNECTED" and time.time() - start_time < timeout:
-                await asyncio.sleep(self._get_poll_interval())
+                await asyncio.sleep(self._get_poll_interval())  # type: ignore[attr-defined]
 
                 # Retransmit SYN if needed
                 if time.time() - self.last_packet_time > self.timeout:
@@ -173,7 +173,7 @@ class UTPConnection:
             )
             return False
 
-    async def close(self):
+    async def close(self) -> Any:
         """Close µTP connection gracefully"""
         if self.state == "CLOSED":
             return
@@ -186,7 +186,7 @@ class UTPConnection:
             await self._send_fin()
 
             # Wait briefly for ACK
-            await asyncio.sleep(self._get_retry_interval())
+            await asyncio.sleep(self._get_retry_interval())  # type: ignore[attr-defined]
 
             self.state = "CLOSED"
 
@@ -197,7 +197,7 @@ class UTPConnection:
             )
             self.state = "CLOSED"
 
-    async def handle_packet(self, packet: bytes, addr: Tuple[str, int]):
+    async def handle_packet(self, packet: bytes, addr: Tuple[str, int]) -> None:
         """
         Handle incoming µTP packet
 
@@ -239,13 +239,13 @@ class UTPConnection:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _send_syn(self):
+    async def _send_syn(self) -> Any:
         """Send SYN packet to initiate connection"""
         packet = self._create_packet(UTPPacketType.ST_SYN, b"")
         await self._send_packet(packet)
         self.last_packet_time = time.time()
 
-    async def _send_data_packet(self, data: bytes):
+    async def _send_data_packet(self, data: bytes) -> Any:
         """Send DATA packet"""
         self.seq_nr = (self.seq_nr + 1) % UTPConstants.MAX_SEQUENCE_NUMBER
         packet = self._create_packet(UTPPacketType.ST_DATA, data)
@@ -258,21 +258,21 @@ class UTPConnection:
             "retransmits": 0,
         }
 
-    async def _send_fin(self):
+    async def _send_fin(self) -> Any:
         """Send FIN packet to close connection"""
         packet = self._create_packet(UTPPacketType.ST_FIN, b"")
         await self._send_packet(packet)
 
-    async def _send_state(self):
+    async def _send_state(self) -> Any:
         """Send STATE packet (ACK)"""
         packet = self._create_packet(UTPPacketType.ST_STATE, b"")
         await self._send_packet(packet)
 
-    async def _send_packet(self, packet: bytes):
+    async def _send_packet(self, packet: bytes) -> Any:
         """Send packet via UDP socket"""
         try:
             if self.socket:
-                await asyncio.get_running_loop().sock_sendto(self.socket, packet, self.remote_addr)
+                await asyncio.get_running_loop().sock_sendto(self.socket, packet, self.remote_addr)  # type: ignore[attr-defined]  # noqa: E501
                 self.packets_sent += 1
                 self.bytes_sent += len(packet)
         except Exception as e:
@@ -353,7 +353,7 @@ class UTPConnection:
             "ack_nr": ack_nr,
         }
 
-    async def _handle_syn(self, header: Dict, addr: Tuple[str, int]):
+    async def _handle_syn(self, header: Dict, addr: Tuple[str, int]) -> None:
         """Handle incoming SYN packet (server side)"""
         # Accept connection
         self.connection_id = header["connection_id"] + 1
@@ -365,7 +365,7 @@ class UTPConnection:
 
         logger.trace("µTP connection accepted", extra={"class_name": self.__class__.__name__})
 
-    async def _handle_state(self, header: Dict):
+    async def _handle_state(self, header: Dict) -> None:
         """Handle STATE packet (ACK)"""
         if self.state == "SYN_SENT":
             # SYN was acknowledged
@@ -379,7 +379,7 @@ class UTPConnection:
         ack_nr = header["ack_nr"]
         self.sent_packets = {seq: data for seq, data in self.sent_packets.items() if seq > ack_nr}
 
-    async def _handle_data(self, header: Dict, payload: bytes):
+    async def _handle_data(self, header: Dict, payload: bytes) -> None:
         """Handle DATA packet"""
         if self.state != "CONNECTED":
             return
@@ -396,7 +396,7 @@ class UTPConnection:
         # Send STATE (ACK)
         await self._send_state()
 
-    async def _handle_fin(self, header: Dict):
+    async def _handle_fin(self, header: Dict) -> None:
         """Handle FIN packet"""
         # Send final STATE (ACK)
         await self._send_state()
@@ -407,7 +407,7 @@ class UTPConnection:
             extra={"class_name": self.__class__.__name__},
         )
 
-    async def _handle_reset(self, header: Dict):
+    async def _handle_reset(self, header: Dict) -> None:
         """Handle RESET packet"""
         self.state = "CLOSED"
         logger.warning(
@@ -415,7 +415,7 @@ class UTPConnection:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _update_rtt(self, header: Dict):
+    def _update_rtt(self, header: Dict) -> None:
         """Update RTT estimate"""
         if header.get("timestamp_diff_us"):
             rtt_sample = header["timestamp_diff_us"] / UTPConstants.MICROSECONDS_PER_SECOND  # Convert to seconds
@@ -438,7 +438,7 @@ class UTPConnection:
                 UTPConstants.MIN_TIMEOUT_MS / UTPConstants.MILLISECONDS_PER_SECOND,
             )
 
-    def _update_congestion_window(self, header: Dict):
+    def _update_congestion_window(self, header: Dict) -> None:
         """Update congestion window based on delay"""
         try:
             # Calculate current delay

@@ -8,7 +8,7 @@ accurate piece availability information.
 
 # fmt: off
 import struct
-from typing import Set
+from typing import Any, Set
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -23,7 +23,7 @@ class DontHaveExtension:
     # DontHave message type (using libtorrent's convention)
     DONT_HAVE = 18
 
-    def __init__(self, peer_connection):
+    def __init__(self, peer_connection: Any) -> None:
         """
         Initialize DontHave Extension
 
@@ -56,9 +56,9 @@ class DontHaveExtension:
 
     def supports_donthave_extension(self) -> bool:
         """Check if DontHave Extension is supported"""
-        return self.donthave_enabled
+        return self.donthave_enabled  # type: ignore[no-any-return]
 
-    def enable_peer_donthave_support(self):
+    def enable_peer_donthave_support(self) -> None:
         """Enable DontHave extension support for peer"""
         self.peer_supports_donthave = True
         logger.trace(
@@ -66,7 +66,7 @@ class DontHaveExtension:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_donthave(self, payload: bytes):
+    def handle_donthave(self, payload: bytes) -> None:
         """
         Handle DONT_HAVE message
 
@@ -189,7 +189,7 @@ class DontHaveExtension:
 
         return False
 
-    def handle_storage_error(self, piece_index: int):
+    def handle_storage_error(self, piece_index: int) -> None:
         """
         Handle storage error that makes a piece unavailable
 
@@ -249,7 +249,7 @@ class DontHaveExtension:
 
         return unavailable_pieces
 
-    def _update_peer_availability(self, piece_index: int, has_piece: bool):
+    def _update_peer_availability(self, piece_index: int, has_piece: bool) -> None:
         """
         Update peer's piece availability
 
@@ -266,7 +266,7 @@ class DontHaveExtension:
             else:
                 self.peer_connection.peer_pieces.discard(piece_index)
 
-    def _handle_piece_unavailable(self, piece_index: int):
+    def _handle_piece_unavailable(self, piece_index: int) -> None:
         """
         Handle when a piece becomes unavailable from peer
 
@@ -291,7 +291,7 @@ class DontHaveExtension:
         # Update piece priority/selection logic
         self._update_piece_selection(piece_index)
 
-    def _update_piece_selection(self, unavailable_piece: int):
+    def _update_piece_selection(self, unavailable_piece: int) -> None:
         """
         Update piece selection strategy based on unavailable piece
 
@@ -338,14 +338,14 @@ class DontHaveExtension:
         """
         return self.received_donthave_pieces.copy()
 
-    def reset_corrections(self):
+    def reset_corrections(self) -> None:
         """Reset DONT_HAVE correction tracking"""
         self.sent_donthave_pieces.clear()
         self.received_donthave_pieces.clear()
 
         logger.trace("Reset DONT_HAVE corrections", extra={"class_name": self.__class__.__name__})
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up DontHave Extension state"""
         self.sent_donthave_pieces.clear()
         self.received_donthave_pieces.clear()

@@ -10,7 +10,7 @@ import random
 import socket
 import struct
 import time
-from typing import List, Set, Tuple
+from typing import Dict,  Any, List, Set, Tuple
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -27,7 +27,7 @@ except ImportError:
 class PeerExchangeExtension:
     """Peer Exchange (PEX) extension implementation"""
 
-    def __init__(self, extension_manager, peer_connection):
+    def __init__(self, extension_manager: Any, peer_connection: Any) -> None:
         """
         Initialize PEX extension
 
@@ -49,7 +49,7 @@ class PeerExchangeExtension:
         self.known_peers: Set[Tuple[str, int]] = set()
         self.sent_peers: Set[Tuple[str, int]] = set()
         self.last_pex_time = 0
-        self.peer_flags = {}  # Store peer flags (encryption support, etc.)
+        self.peer_flags: Dict[str, Any] = {}  # Store peer flags (encryption support, etc.)
 
         # Synthetic peer generation for fake seeding
         self.generate_synthetic_peers = pex_config.get("generate_synthetic_peers", True)
@@ -63,10 +63,10 @@ class PeerExchangeExtension:
             },
         )
 
-    def initialize(self):
+    def initialize(self) -> Any:
         """Initialize PEX extension after handshake"""
         # Start PEX message sending
-        self.last_pex_time = time.time()
+        self.last_pex_time = time.time()  # type: ignore[assignment]
 
         # Generate initial synthetic peers for fake seeding
         if self.generate_synthetic_peers:
@@ -77,7 +77,7 @@ class PeerExchangeExtension:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_message(self, payload: bytes):
+    def handle_message(self, payload: bytes) -> None:
         """
         Handle incoming PEX message
 
@@ -114,7 +114,7 @@ class PeerExchangeExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def send_pex_message(self, force: bool = False):
+    def send_pex_message(self, force: bool = False) -> Any:
         """
         Send PEX message to peer
 
@@ -153,7 +153,7 @@ class PeerExchangeExtension:
             success = self.extension_manager.send_extended_message("ut_pex", payload)
 
             if success:
-                self.last_pex_time = current_time
+                self.last_pex_time = current_time  # type: ignore[assignment]
                 # Update sent peers tracking
                 self.sent_peers.update(peers_to_send)
 
@@ -173,7 +173,7 @@ class PeerExchangeExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def add_peer(self, ip: str, port: int, flags: int = 0):
+    def add_peer(self, ip: str, port: int, flags: int = 0) -> None:
         """
         Add a peer to the known peers list
 
@@ -185,14 +185,14 @@ class PeerExchangeExtension:
         peer_tuple = (ip, port)
         if peer_tuple not in self.known_peers:
             self.known_peers.add(peer_tuple)
-            self.peer_flags[peer_tuple] = flags
+            self.peer_flags[peer_tuple] = flags  # type: ignore[index]
 
             logger.trace(
                 f"Added peer to PEX: {ip}:{port}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def remove_peer(self, ip: str, port: int):
+    def remove_peer(self, ip: str, port: int) -> None:
         """
         Remove a peer from known peers
 
@@ -202,7 +202,7 @@ class PeerExchangeExtension:
         """
         peer_tuple = (ip, port)
         self.known_peers.discard(peer_tuple)
-        self.peer_flags.pop(peer_tuple, None)
+        self.peer_flags.pop(peer_tuple, None)  # type: ignore[call-overload]
 
         logger.trace(
             f"Removed peer from PEX: {ip}:{port}",
@@ -260,7 +260,7 @@ class PeerExchangeExtension:
                 peers_data += ip_bytes + port_bytes
 
                 # Add flags
-                flags = self.peer_flags.get((ip, port), 0)
+                flags = self.peer_flags.get((ip, port), 0)  # type: ignore[call-overload]
                 flags_data += struct.pack("B", flags)
 
         except Exception as e:
@@ -271,7 +271,7 @@ class PeerExchangeExtension:
 
         return peers_data, flags_data
 
-    def _process_added_peers(self, peers: List[Tuple[str, int]], flags_data: bytes):
+    def _process_added_peers(self, peers: List[Tuple[str, int]], flags_data: bytes) -> None:
         """
         Process newly added peers from PEX message
 
@@ -295,7 +295,7 @@ class PeerExchangeExtension:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _process_dropped_peers(self, peers: List[Tuple[str, int]]):
+    def _process_dropped_peers(self, peers: List[Tuple[str, int]]) -> None:
         """
         Process dropped peers from PEX message
 
@@ -331,7 +331,7 @@ class PeerExchangeExtension:
         # Real implementation would track peers that disconnected
         return []
 
-    def _generate_synthetic_peers(self):
+    def _generate_synthetic_peers(self) -> Any:
         """Generate synthetic peers for realistic PEX behavior"""
         if not self.generate_synthetic_peers:
             return
@@ -414,7 +414,7 @@ class PeerExchangeExtension:
             "synthetic_peers_enabled": self.generate_synthetic_peers,
         }
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up PEX extension"""
         self.known_peers.clear()
         self.sent_peers.clear()

@@ -36,7 +36,7 @@ def load_tabs_config() -> Dict[str, Any]:
         raise FileNotFoundError(f"Tabs configuration file not found: {config_path}")
     try:
         with open(config_path, "r", encoding="utf-8") as f:
-            return json.load(f)
+            return json.load(f)  # type: ignore[no-any-return]
     except json.JSONDecodeError as e:
         raise json.JSONDecodeError(f"Invalid JSON in tabs config: {e}", e.doc, e.pos)
 
@@ -49,7 +49,7 @@ def get_settings_tab_config() -> Dict[str, Any]:
     """
     try:
         config = load_tabs_config()
-        return config.get("settings_tabs", {})
+        return config.get("settings_tabs", {})  # type: ignore[no-any-return]
     except Exception:
         logger.warning("Warning: Could not load tabs config (...), using fallback", "UnknownClass")
         return {
@@ -68,7 +68,7 @@ def get_torrent_details_tab_config() -> Dict[str, Any]:
     """
     try:
         config = load_tabs_config()
-        return config.get("torrent_details_tabs", {})
+        return config.get("torrent_details_tabs", {})  # type: ignore[no-any-return]
     except Exception:
         logger.warning("Warning: Could not load tabs config (...), using fallback", "UnknownClass")
         return {
@@ -87,7 +87,7 @@ def get_tab_features() -> Dict[str, Any]:
     """
     try:
         config = load_tabs_config()
-        return config.get("tab_features", {})
+        return config.get("tab_features", {})  # type: ignore[no-any-return]
     except (FileNotFoundError, json.JSONDecodeError):
         return {
             "lazy_loading": True,
@@ -203,7 +203,7 @@ def is_feature_enabled(feature_name: str) -> bool:
         True if feature is enabled, False otherwise
     """
     features = get_tab_features()
-    return features.get(feature_name, True)
+    return features.get(feature_name, True)  # type: ignore[no-any-return]
 
 
 def get_config_metadata() -> Dict[str, Any]:
@@ -214,6 +214,6 @@ def get_config_metadata() -> Dict[str, Any]:
     """
     try:
         config = load_tabs_config()
-        return config.get("metadata", {})
+        return config.get("metadata", {})  # type: ignore[no-any-return]
     except (FileNotFoundError, json.JSONDecodeError):
         return {"version": "unknown", "description": "Fallback configuration"}

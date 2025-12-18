@@ -9,7 +9,7 @@ Provides shared logic for connection counting, filtering, and lifetime managemen
 
 # fmt: off
 import time
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 import gi
 
@@ -30,7 +30,7 @@ from d_fake_seeder.lib.util.constants import ConnectionConstants  # noqa: E402
 class ConnectionManager:
     """Shared connection management logic for incoming and outgoing connections"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.settings = AppSettings.get_instance()
 
         # Global connection storage
@@ -59,7 +59,7 @@ class ConnectionManager:
         )  # Exclude failed connections after 3 cycles
 
         # Callbacks for UI updates
-        self.update_callbacks: List[callable] = []
+        self.update_callbacks: List[callable] = []  # type: ignore[valid-type]
 
         # Throttling mechanism for callbacks
         self.last_callback_time = 0.0
@@ -76,27 +76,27 @@ class ConnectionManager:
 
     def get_failed_connection_display_time(self) -> float:
         """Get failed connection display time based on current tickspeed"""
-        return self.failed_connection_display_cycles * self.settings.tickspeed
+        return self.failed_connection_display_cycles * self.settings.tickspeed  # type: ignore[no-any-return]
 
     def get_minimum_display_time(self) -> float:
         """Get minimum connection display time based on current tickspeed"""
-        return self.minimum_display_cycles * self.settings.tickspeed
+        return self.minimum_display_cycles * self.settings.tickspeed  # type: ignore[no-any-return]
 
     def get_failed_connection_timeout(self) -> float:
         """Get failed connection timeout based on current tickspeed"""
-        return self.failed_connection_timeout_cycles * self.settings.tickspeed
+        return self.failed_connection_timeout_cycles * self.settings.tickspeed  # type: ignore[no-any-return]
 
-    def add_update_callback(self, callback):
+    def add_update_callback(self, callback: Any) -> None:
         """Add callback for connection count updates"""
         if callback not in self.update_callbacks:
             self.update_callbacks.append(callback)
 
-    def remove_update_callback(self, callback):
+    def remove_update_callback(self, callback: Any) -> None:
         """Remove callback for connection count updates"""
         if callback in self.update_callbacks:
             self.update_callbacks.remove(callback)
 
-    def notify_update_callbacks(self):
+    def notify_update_callbacks(self) -> None:
         """Notify all registered callbacks of connection changes (throttled)"""
         current_time = time.time()
 
@@ -110,35 +110,35 @@ class ConnectionManager:
                 delay_ms = int((self.callback_throttle_delay - (current_time - self.last_callback_time)) * 1000)
                 self.pending_callback_timer = GLib.timeout_add(delay_ms, self._delayed_callback)
 
-    def _execute_callbacks(self):
+    def _execute_callbacks(self) -> None:
         """Execute all registered callbacks"""
         for callback in self.update_callbacks:
             try:
-                callback()
+                callback()  # type: ignore[misc]
             except Exception as e:
                 logger.error(f"Error in connection update callback: {e}")
 
-    def _delayed_callback(self):
+    def _delayed_callback(self) -> Any:
         """GLib timeout callback for delayed execution"""
         self._execute_callbacks()
         self.last_callback_time = time.time()
         self.pending_callback_timer = None
         return False  # Don't repeat the timeout
 
-    def _start_cleanup_timer(self):
+    def _start_cleanup_timer(self) -> Any:
         """Start the single periodic cleanup timer"""
         if self.cleanup_timer_id is None:
             self.cleanup_timer_id = GLib.timeout_add_seconds(self.cleanup_interval_seconds, self._periodic_cleanup)
             logger.info("Started periodic connection cleanup timer")
 
-    def _stop_cleanup_timer(self):
+    def _stop_cleanup_timer(self) -> Any:
         """Stop the periodic cleanup timer"""
         if self.cleanup_timer_id is not None:
             GLib.source_remove(self.cleanup_timer_id)
             self.cleanup_timer_id = None
             logger.info("Stopped periodic connection cleanup timer")
 
-    def _periodic_cleanup(self):
+    def _periodic_cleanup(self) -> Any:
         """Periodic cleanup of expired failed connections and enforcement of connection limits"""
         current_time = time.time()
         failed_display_time = self.get_failed_connection_display_time()
@@ -217,7 +217,7 @@ class ConnectionManager:
         return True  # Continue timer
 
     # Incoming connection management
-    def add_incoming_connection(self, address: str, port: int, **kwargs) -> str:
+    def add_incoming_connection(self, address: str, port: int, **kwargs: Any) -> str:
         """Add a new incoming connection"""
         connection_key = f"{address}:{port}"
 
@@ -241,7 +241,7 @@ class ConnectionManager:
 
         return connection_key
 
-    def update_incoming_connection(self, address: str, port: int, **kwargs):
+    def update_incoming_connection(self, address: str, port: int, **kwargs: Any) -> None:
         """Update an existing incoming connection"""
         connection_key = f"{address}:{port}"
 
@@ -259,12 +259,12 @@ class ConnectionManager:
 
             self.notify_update_callbacks()
 
-    def remove_incoming_connection(self, address: str, port: int):
+    def remove_incoming_connection(self, address: str, port: int) -> None:
         """Remove an incoming connection"""
         connection_key = f"{address}:{port}"
         self._remove_incoming_connection_by_key(connection_key)
 
-    def _remove_incoming_connection_by_key(self, connection_key: str):
+    def _remove_incoming_connection_by_key(self, connection_key: str) -> Any:
         """Remove an incoming connection by key"""
         if connection_key not in self.all_incoming_connections:
             return
@@ -286,7 +286,7 @@ class ConnectionManager:
         self.notify_update_callbacks()
 
     # Outgoing connection management
-    def add_outgoing_connection(self, address: str, port: int, **kwargs) -> str:
+    def add_outgoing_connection(self, address: str, port: int, **kwargs: Any) -> str:
         """Add a new outgoing connection"""
         connection_key = f"{address}:{port}"
 
@@ -310,7 +310,7 @@ class ConnectionManager:
 
         return connection_key
 
-    def update_outgoing_connection(self, address: str, port: int, **kwargs):
+    def update_outgoing_connection(self, address: str, port: int, **kwargs: Any) -> None:
         """Update an existing outgoing connection"""
         connection_key = f"{address}:{port}"
 
@@ -328,12 +328,12 @@ class ConnectionManager:
 
             self.notify_update_callbacks()
 
-    def remove_outgoing_connection(self, address: str, port: int):
+    def remove_outgoing_connection(self, address: str, port: int) -> None:
         """Remove an outgoing connection"""
         connection_key = f"{address}:{port}"
         self._remove_outgoing_connection_by_key(connection_key)
 
-    def _remove_outgoing_connection_by_key(self, connection_key: str):
+    def _remove_outgoing_connection_by_key(self, connection_key: str) -> Any:
         """Remove an outgoing connection by key"""
         if connection_key not in self.all_outgoing_connections:
             return
@@ -479,7 +479,7 @@ class ConnectionManager:
         """Get all outgoing connections"""
         return self.all_outgoing_connections.copy()
 
-    def clear_all_connections(self):
+    def clear_all_connections(self) -> None:
         """Clear all connections and stop cleanup timer"""
         # Stop the cleanup timer
         self._stop_cleanup_timer()
@@ -500,7 +500,7 @@ class ConnectionManager:
         # Restart the cleanup timer for future connections
         self._start_cleanup_timer()
 
-    def shutdown(self):
+    def shutdown(self) -> Any:
         """Shutdown the connection manager - stop all timers permanently"""
         logger.info(
             "ConnectionManager shutting down",

@@ -535,7 +535,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         except Exception as e:
             self.logger.error(f"Error resetting Peer Protocol tab to defaults: {e}")
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update view based on model changes."""
         self.logger.trace(
             "PeerProtocolTab update view",

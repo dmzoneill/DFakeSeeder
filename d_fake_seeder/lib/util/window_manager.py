@@ -8,7 +8,7 @@ Replaces external window manipulation tools with native GTK4 functionality.
 # isort: skip_file
 
 # fmt: off
-from typing import Optional
+from typing import Any, Optional
 
 import gi
 
@@ -31,7 +31,7 @@ class WindowManager:
     Integrates with AppSettings for persistent window state management.
     """
 
-    def __init__(self, window: Optional[Gtk.Window] = None):
+    def __init__(self, window: Optional[Gtk.Window] = None) -> None:
         """
         Initialize window manager
 
@@ -54,7 +54,7 @@ class WindowManager:
             self._setup_window_handlers()
             self._load_window_state()
 
-    def set_window(self, window: Gtk.Window):
+    def set_window(self, window: Gtk.Window) -> None:
         """
         Set the window to manage
 
@@ -66,7 +66,7 @@ class WindowManager:
         self._load_window_state()
         logger.trace("Window set for management", extra={"class_name": self.__class__.__name__})
 
-    def _setup_window_handlers(self):
+    def _setup_window_handlers(self) -> None:
         """Setup window event handlers for state tracking"""
         if not self.window:
             return
@@ -90,7 +90,7 @@ class WindowManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _load_window_state(self):
+    def _load_window_state(self) -> None:
         """Load saved window state from AppSettings"""
         try:
             # Load window dimensions
@@ -123,7 +123,7 @@ class WindowManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _save_window_state(self):
+    def _save_window_state(self) -> None:
         """Save current window state to AppSettings"""
         try:
             logger.trace(
@@ -189,7 +189,7 @@ class WindowManager:
                 exc_info=True,
             )
 
-    def show(self):
+    def show(self) -> Any:
         """Show the window"""
         try:
             if not self.window:
@@ -215,7 +215,7 @@ class WindowManager:
             )
             return False
 
-    def hide(self):
+    def hide(self) -> Any:
         """Hide the window"""
         try:
             if not self.window:
@@ -243,7 +243,7 @@ class WindowManager:
             )
             return False
 
-    def minimize(self):
+    def minimize(self) -> Any:
         """Minimize the window"""
         try:
             if not self.window:
@@ -271,7 +271,7 @@ class WindowManager:
             )
             return False
 
-    def maximize(self):
+    def maximize(self) -> Any:
         """Maximize the window"""
         try:
             if not self.window:
@@ -294,7 +294,7 @@ class WindowManager:
             )
             return False
 
-    def unmaximize(self):
+    def unmaximize(self) -> Any:
         """Restore window from maximized state"""
         try:
             if not self.window:
@@ -317,7 +317,7 @@ class WindowManager:
             )
             return False
 
-    def toggle_visibility(self):
+    def toggle_visibility(self) -> Any:
         """Toggle window visibility (show/hide)"""
         try:
             if not self.window:
@@ -339,7 +339,7 @@ class WindowManager:
             )
             return False
 
-    def toggle_maximize(self):
+    def toggle_maximize(self) -> Any:
         """Toggle window maximized state"""
         try:
             if not self.window:
@@ -361,7 +361,7 @@ class WindowManager:
             )
             return False
 
-    def restore(self):
+    def restore(self) -> Any:
         """Restore window to normal state (not minimized, not maximized)"""
         try:
             if not self.window:
@@ -394,7 +394,7 @@ class WindowManager:
             )
             return False
 
-    def center_on_screen(self):
+    def center_on_screen(self) -> Any:
         """Center window on the current monitor"""
         try:
             if not self.window:
@@ -452,7 +452,7 @@ class WindowManager:
             )
             return False
 
-    def _on_window_state_changed(self, window, pspec):
+    def _on_window_state_changed(self, window: Any, pspec: Any) -> None:
         """Handle window state changes"""
         try:
             # Save current state
@@ -463,7 +463,7 @@ class WindowManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _on_size_changed(self, window, pspec):
+    def _on_size_changed(self, window: Any, pspec: Any) -> None:
         """Handle window size changes"""
         try:
             # Save current size
@@ -474,7 +474,7 @@ class WindowManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _on_close_request(self, window):
+    def _on_close_request(self, window: Any) -> Any:
         """Handle window close request"""
         try:
             # Check if we should close to tray
@@ -492,7 +492,7 @@ class WindowManager:
                     extra={"class_name": self.__class__.__name__},
                 )
                 self.hide()
-                return True  # Prevent default close behavior
+                return True  # Prevent default close behavior  # type: ignore
             else:
                 # Allow normal close behavior - let view.quit() handle it
                 logger.trace(
@@ -500,7 +500,7 @@ class WindowManager:
                     extra={"class_name": self.__class__.__name__},
                 )
                 self._save_window_state()
-                return False  # Allow other handlers to process
+                return False  # Allow other handlers to process  # type: ignore
 
         except Exception as e:
             logger.error(
@@ -536,7 +536,7 @@ class WindowManager:
             )
             return {"available": False, "error": str(e)}
 
-    def cleanup(self):
+    def cleanup(self) -> Any:
         """Clean up window manager resources"""
         try:
             logger.trace(

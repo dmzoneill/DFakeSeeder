@@ -216,7 +216,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         """Return the name of this tab."""
         return "Simulation"
 
-    def _init_widgets(self):
+    def _init_widgets(self) -> None:
         """Initialize Advanced Simulation widgets"""
         # Client Behavior Engine Settings
         self._widgets["client_behavior_enabled"] = self.builder.get_object("client_behavior_enabled_switch")
@@ -271,7 +271,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _connect_signals(self):
+    def _connect_signals(self) -> None:
         """Connect Advanced Simulation signals"""
         # Simple widgets (behavior_variation, switch_client_probability, realistic_variations,
         # time_based_patterns, all profile settings, adaptation_rate, peer_analysis_depth,
@@ -676,7 +676,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         return errors
 
     # Helper methods
-    def _set_combo_active_text(self, dropdown, text):
+    def _set_combo_active_text(self, dropdown: Any, text: Any) -> Any:
         """Set dropdown active item by text"""
         if not dropdown:
             return
@@ -692,7 +692,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 dropdown.set_selected(i)
                 break
 
-    def _get_combo_active_text(self, dropdown):
+    def _get_combo_active_text(self, dropdown: Any) -> Any:
         """Get active dropdown text"""
         if not dropdown:
             return ""
@@ -707,7 +707,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         return ""
 
     # Signal handlers
-    def _on_client_behavior_enabled_changed(self, switch, state):
+    def _on_client_behavior_enabled_changed(self, switch: Any, state: Any) -> None:
         """Handle client behavior engine enable/disable"""
         self.logger.trace(
             f"Client behavior engine enabled: {state}",
@@ -758,7 +758,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if self._widgets.get(widget_name):
                 self._widgets[widget_name].set_sensitive(state)
 
-    def _on_primary_client_changed(self, combo_box, _param):
+    def _on_primary_client_changed(self, combo_box: Any, _param: Any) -> None:
         """Handle primary client changes"""
         client = self._get_combo_active_text(combo_box)
         # NOTE: Setting will be saved in batch via _collect_settings()
@@ -767,7 +767,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_traffic_profile_changed(self, combo_box, _param):
+    def _on_traffic_profile_changed(self, combo_box: Any, _param: Any) -> None:
         """Handle traffic profile changes"""
         profile = self._get_combo_active_text(combo_box)
         # NOTE: Setting will be saved in batch via _collect_settings()
@@ -776,7 +776,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_swarm_intelligence_enabled_toggled(self, check_button):
+    def _on_swarm_intelligence_enabled_toggled(self, check_button: Any) -> None:
         """Handle swarm intelligence enable toggle"""
         enabled = check_button.get_active()
         if self._widgets["adaptation_rate"]:
@@ -789,7 +789,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _on_protocol_compliance_level_changed(self, combo_box, _param):
+    def _on_protocol_compliance_level_changed(self, combo_box: Any, _param: Any) -> None:
         """Handle protocol compliance level changes"""
         level = self._get_combo_active_text(combo_box)
         # NOTE: Setting will be saved in batch via _collect_settings()
@@ -798,7 +798,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             extra={"class_name": self.__class__.__name__},
         )
 
-    def update_view(self, model, torrent, attribute):
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update view based on model changes and enable dropdown translation."""
         self.logger.trace(
             "SimulationTab update_view called",

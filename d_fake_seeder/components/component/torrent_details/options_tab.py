@@ -25,7 +25,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
     Creates dynamic widgets based on settings configuration for editable attributes.
     """
 
-    def __init__(self, builder: Gtk.Builder, model):
+    def __init__(self, builder: Gtk.Builder, model: Any) -> None:
         """Initialize the options tab."""
         super().__init__(builder, model)
         self._options_grid_children: List[Any] = []
@@ -73,7 +73,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error clearing options tab content: {e}")
 
-    def update_content(self, torrent) -> None:
+    def update_content(self, torrent: Any) -> None:
         """
         Update options tab content with torrent data.
 
@@ -123,13 +123,13 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         """
         try:
             if hasattr(self.settings, "editwidgets"):
-                return self.settings.editwidgets
+                return self.settings.editwidgets  # type: ignore[no-any-return]
             return {}
         except Exception as e:
             self.logger.error(f"Error getting edit widgets config: {e}")
             return {}
 
-    def _create_option_widgets(self, torrent, edit_widgets: dict) -> None:
+    def _create_option_widgets(self, torrent: Any, edit_widgets: dict) -> None:
         """
         Create dynamic option widgets based on configuration.
 
@@ -146,7 +146,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
                 # Create the dynamic widget
                 widget_type = edit_widgets[attribute]
-                dynamic_widget = self._create_dynamic_widget(torrent, attribute, widget_type)
+                dynamic_widget = self._create_dynamic_widget(torrent, attribute, widget_type)  # type: ignore[func-returns-value]  # noqa: E501
 
                 if not dynamic_widget:
                     continue
@@ -192,7 +192,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error creating option widgets: {e}")
 
-    def _create_dynamic_widget(self, torrent, attribute: str, widget_type: str):
+    def _create_dynamic_widget(self, torrent: Any, attribute: str, widget_type: str) -> None:
         """
         Create a dynamic widget for a torrent attribute.
 
@@ -252,13 +252,13 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 dynamic_widget = widget_class()
                 dynamic_widget.set_hexpand(False)
 
-            return dynamic_widget
+            return dynamic_widget  # type: ignore[no-any-return]
 
         except Exception as e:
             self.logger.error(f"Error creating dynamic widget for {attribute}: {e}")
             return None
 
-    def _get_widget_class(self, widget_type: str):
+    def _get_widget_class(self, widget_type: str) -> Any:
         """
         Get widget class from type string safely.
 
@@ -283,7 +283,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             self.logger.error(f"Error getting widget class for {widget_type}: {e}")
             return None
 
-    def _configure_switch_widget(self, widget: Gtk.Switch, torrent, attribute: str) -> None:
+    def _configure_switch_widget(self, widget: Gtk.Switch, torrent: Any, attribute: str) -> None:
         """
         Configure a switch widget.
 
@@ -306,7 +306,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error configuring switch widget for {attribute}: {e}")
 
-    def _configure_adjustment_widget(self, widget, torrent, attribute: str) -> None:
+    def _configure_adjustment_widget(self, widget: Any, torrent: Any, attribute: str) -> None:
         """
         Configure an adjustment-based widget (SpinButton, Scale).
 
@@ -332,7 +332,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             # This ensures the SpinButton gets focus when clicked, enabling keyboard input
             if isinstance(widget, Gtk.SpinButton):
                 # Use activate signal to grab focus when SpinButton is activated/clicked
-                def on_spinbutton_activate(spinbutton):
+                def on_spinbutton_activate(spinbutton: Any) -> None:
                     """Handle SpinButton activation - explicitly grab focus."""
                     try:
                         # Get the window to set focus
@@ -452,7 +452,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             self.logger.error(f"Error showing no options message: {e}")
 
     # Signal handlers
-    def _on_switch_value_changed(self, widget: Gtk.Switch, state: bool, torrent, attribute: str) -> None:
+    def _on_switch_value_changed(self, widget: Gtk.Switch, state: bool, torrent: Any, attribute: str) -> None:
         """
         Handle switch value change.
 
@@ -468,7 +468,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error updating switch value for {attribute}: {e}")
 
-    def _on_adjustment_value_changed(self, widget, torrent, attribute: str) -> None:
+    def _on_adjustment_value_changed(self, widget: Any, torrent: Any, attribute: str) -> None:
         """
         Handle adjustment value change.
 
@@ -498,7 +498,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception:
             return 0
 
-    def on_language_changed(self, source=None, new_language=None):
+    def on_language_changed(self, source: Any = None, new_language: Any = None) -> None:
         """
         Handle language change events by refreshing the options content.
 
