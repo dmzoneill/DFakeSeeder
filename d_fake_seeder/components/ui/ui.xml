@@ -42,6 +42,9 @@
                     <child>
                       <object class="GtkScrolledWindow">
                         <property name="can-focus">True</property>
+                        <property name="hscrollbar-policy">automatic</property>
+                        <property name="vscrollbar-policy">automatic</property>
+                        <property name="propagate-natural-width">False</property>
                         <child>
                           <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/columnview-main.xml"/>
                         </child>
