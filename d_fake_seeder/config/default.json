@@ -246,7 +246,10 @@
             "enabled": true,
             "primary_client": "qBittorrent",
             "behavior_variation": 0.3,
-            "switch_client_probability": 0.05
+            "switch_client_probability": 0.05,
+            "client_profile_switching": true,
+            "protocol_compliance_level": "standard",
+            "behavior_randomization": true
         },
         "traffic_patterns": {
             "profile": "balanced",
@@ -257,6 +260,35 @@
             "enabled": true,
             "adaptation_rate": 0.5,
             "peer_analysis_depth": 10
+        },
+        "profiles": {
+            "conservative": {
+                "upload_speed": 50,
+                "download_speed": 200,
+                "upload_variance": 0.1,
+                "download_variance": 0.15,
+                "max_connections": 100,
+                "burst_probability": 0.05,
+                "idle_probability": 0.2
+            },
+            "balanced": {
+                "upload_speed": 200,
+                "download_speed": 800,
+                "upload_variance": 0.3,
+                "download_variance": 0.25,
+                "max_connections": 200,
+                "burst_probability": 0.15,
+                "idle_probability": 0.1
+            },
+            "aggressive": {
+                "upload_speed": 500,
+                "download_speed": 2048,
+                "upload_variance": 0.5,
+                "download_variance": 0.4,
+                "max_connections": 500,
+                "burst_probability": 0.3,
+                "idle_probability": 0.05
+            }
         }
     },
     "watch_folder": {
