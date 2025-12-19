@@ -19,8 +19,6 @@ jobs:
       rpm-build: "true"
       docker-build: "true"
       flatpak-build: "true"
-      flatpak-runtime: "org.gnome.Platform"
-      flatpak-runtime-version: "49"
       flatpak-flathub-repo: "dmzoneill/flathub"
       flatpak-auto-submit: "false"
       VALIDATE_JSCPD: "false"
