@@ -617,7 +617,6 @@ deb: ui-build-fast
 	@echo "echo 'Desktop integration installed. GNOME users: Press Alt+F2, type r, and press Enter to restart GNOME Shell.'" >> ./debbuild/DEBIAN/postinst
 	@chmod 755 ./debbuild/DEBIAN/postinst
 	@echo "   → Building package with dpkg-deb..."
-	@sudo chown -R root:root debbuild 2>/dev/null
 	@fakeroot dpkg-deb --build debbuild $(DEB_FILENAME) >/dev/null 2>&1
 	@echo "✅ Debian package built successfully!"
 	@echo ""
@@ -692,7 +691,6 @@ deb-quality: clean ui-build lint
 	@echo "echo 'Desktop integration installed. GNOME users: Press Alt+F2, type r, and press Enter to restart GNOME Shell.'" >> ./debbuild/DEBIAN/postinst
 	@chmod 755 ./debbuild/DEBIAN/postinst
 	@echo "   → Building package with dpkg-deb..."
-	@sudo chown -R root:root debbuild 2>/dev/null
 	@fakeroot dpkg-deb --build debbuild $(DEB_FILENAME) >/dev/null 2>&1
 	@echo "✅ Debian package built successfully!"
 	@echo ""
