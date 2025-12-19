@@ -134,9 +134,9 @@ class TorrentDetailsNotebook(Component):
         if not self.notebook:
             return
 
-        scroll_controller = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.VERTICAL)
-        scroll_controller.connect("scroll", self._on_notebook_scroll)
-        self.notebook.add_controller(scroll_controller)
+        self._scroll_controller = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.VERTICAL)
+        self._scroll_handler_id = self._scroll_controller.connect("scroll", self._on_notebook_scroll)
+        self.notebook.add_controller(self._scroll_controller)
         logger.trace("Notebook scroll controller added", self.__class__.__name__)
 
     def _on_notebook_scroll(self, controller: Gtk.EventControllerScroll, dx: float, dy: float) -> bool:
@@ -738,6 +738,12 @@ class TorrentDetailsNotebook(Component):
     def cleanup(self) -> None:
         """Cleanup resources when notebook is destroyed."""
         try:
+            # Disconnect scroll controller signal
+            if hasattr(self, "_scroll_controller") and hasattr(self, "_scroll_handler_id"):
+                try:
+                    self._scroll_controller.disconnect(self._scroll_handler_id)
+                except Exception:
+                    pass  # Already disconnected or destroyed
             # Cleanup all tabs
             for tab in self.tabs:
                 try:
