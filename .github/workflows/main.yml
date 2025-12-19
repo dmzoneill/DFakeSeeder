@@ -19,8 +19,6 @@ jobs:
       rpm-build: "true"
       docker-build: "true"
       flatpak-build: "true"
-      flatpak-flathub-repo: "dmzoneill/flathub"
-      flatpak-auto-submit: "false"
       VALIDATE_JSCPD: "false"
       VALIDATE_PYTHON_MYPY: "false"
       VALIDATE_PYTHON_PYLINT: "false"
