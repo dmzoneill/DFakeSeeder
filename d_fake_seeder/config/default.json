@@ -32,7 +32,7 @@
         "username": "",
         "password": ""
     },
-    "columns": "",
+    "columns": "id,name,progress,upload_speed,download_speed,seeders,leechers,total_size",
     "concurrent_http_connections": 2,
     "concurrent_peer_connections": 10,
     "cellrenderers": {"progress": "Gtk.ProgressBar"},

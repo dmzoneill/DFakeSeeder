@@ -23,7 +23,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("GioUnix", "2.0")
 
 from gi.repository import Gio  # noqa: E402
-from gi.repository import GLib, GObject, Gtk  # noqa: E402
+from gi.repository import GLib, GObject, Gtk, Pango  # noqa: E402
 
 # fmt: on
 
@@ -146,6 +146,9 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
             self.track_signal(factory, factory.connect("setup", self.setup_cell, property_name))
             self.track_signal(factory, factory.connect("bind", self.bind_cell, property_name))
             column = Gtk.ColumnViewColumn.new(None, factory)
+            # Expand to fill available space
+            column.set_expand(True)
+            column.set_resizable(True)
 
             # Register column for translation instead of using hardcoded title
             self.register_translatable_column(self.outgoing_columnview, column, property_name, "outgoing_connections")
@@ -194,6 +197,9 @@ class OutgoingConnectionsTab(Component, ColumnTranslationMixin):
                 widget_obj.set_sensitive(False)  # Read-only
             else:
                 widget_obj = Gtk.Label()
+                # Add ellipsization to prevent forcing column/window width
+                widget_obj.set_ellipsize(Pango.EllipsizeMode.END)
+                widget_obj.set_width_chars(5)
                 # Align based on text direction (RTL for Arabic, Hebrew, etc.)
                 text_direction = widget_obj.get_direction()
                 if text_direction == Gtk.TextDirection.RTL:

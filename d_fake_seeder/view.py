@@ -316,16 +316,22 @@ class View(CleanupMixin):
             self.splash_image = None
             return False
 
-    def resize_panes(self) -> Any:
+    def resize_panes(self) -> bool:
+        """Set initial pane positions: upper/lower halved, left sidebar to 275px."""
         logger.trace("View resize_panes", extra={"class_name": self.__class__.__name__})
+        # Set upper/lower panes to half height
         allocation = self.main_paned.get_allocation()
         available_height = allocation.height
-        position = available_height // 2
+        # If window not yet realized, use a reasonable default (300px for top pane)
+        if available_height < 100:
+            position = 300
+        else:
+            position = available_height // 2
         self.main_paned.set_position(position)
-        allocation = self.paned.get_allocation()
-        available_width = allocation.width
-        position = available_width // 4
-        self.paned.set_position(position)
+        logger.trace(f"Set main_paned position to {position} (height={available_height})")
+        # Set left sidebar to 275px
+        self.paned.set_position(275)
+        return False  # Don't repeat the timeout
 
     # Setting model for the view
     def notify(self, text: Any) -> Any:

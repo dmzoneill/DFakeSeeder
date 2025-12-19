@@ -149,7 +149,7 @@ columnview listitem > * {
 
 /* Monitoring Tab Styles */
 .metric-tile {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.03);
     /* Removed min-width: 320px - now controlled by FlowBox responsive layout */

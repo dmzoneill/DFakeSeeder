@@ -68,7 +68,8 @@ class MonitoringTab(BaseTorrentTab):
         # Create main vertical box
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.main_box.set_vexpand(True)
-        self.main_box.set_hexpand(True)
+        # Don't set hexpand - let the container control horizontal sizing
+        # self.main_box.set_hexpand(True)  # Removed to prevent width propagation
 
         # Create header bar with refresh interval slider
         header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
@@ -102,18 +103,23 @@ class MonitoringTab(BaseTorrentTab):
         # Create main container as a scrolled window
         self.scrolled_window = Gtk.ScrolledWindow()
         self.scrolled_window.set_vexpand(True)
-        self.scrolled_window.set_hexpand(True)
+        # Don't expand horizontally - prevents forcing window width
+        self.scrolled_window.set_hexpand(False)
         # Allow horizontal scrolling if needed, but prefer shrinking
         self.scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        # CRITICAL: Prevent natural width from propagating up and forcing window resize
+        self.scrolled_window.set_propagate_natural_width(False)
+        self.scrolled_window.set_propagate_natural_height(False)
 
         # Responsive layout configuration
-        self.TILE_MIN_WIDTH = 200  # Minimum width per tile in pixels (allows narrower windows)
+        self.TILE_MIN_WIDTH = 250  # Minimum width per tile in pixels
         self.TILE_SPACING = 12  # Gap between tiles
         self.current_columns = 4  # Track current column count for change detection
 
         # Create FlowBox for responsive tile layout
         self.flowbox = Gtk.FlowBox()
-        self.flowbox.set_homogeneous(True)  # All tiles same size
+        # Use homogeneous for uniform tile sizes
+        self.flowbox.set_homogeneous(True)
         self.flowbox.set_row_spacing(self.TILE_SPACING)
         self.flowbox.set_column_spacing(self.TILE_SPACING)
         self.flowbox.set_margin_start(12)
@@ -292,11 +298,13 @@ class MonitoringTab(BaseTorrentTab):
         Returns:
             Dictionary with tile widgets
         """
-        # Tile frame - no minimum width set, FlowBox controls layout
+        # Tile frame - constrain width to prevent forcing window size
         frame = Gtk.Frame()
         frame.set_css_classes(["metric-tile"])
-        # Don't set size_request - let FlowBox distribute width evenly
-        frame.set_hexpand(True)  # Allow horizontal expansion
+        # Set minimum tile width
+        frame.set_size_request(self.TILE_MIN_WIDTH, 150)
+        # Allow tiles to expand to fill available space
+        frame.set_hexpand(True)
 
         # Add CSS class for smooth transitions
         frame.add_css_class("monitoring-tile")
@@ -314,10 +322,11 @@ class MonitoringTab(BaseTorrentTab):
         title_label.set_xalign(0)
         vbox.append(title_label)
 
-        # Live graph - use -1 for width to allow expansion
+        # Live graph - DON'T expand horizontally to prevent forcing window size
         graph = LiveGraph(max_samples=30, auto_scale=False, show_grid=True)
-        graph.set_size_request(-1, 100)  # Natural width, fixed height
-        graph.set_hexpand(True)  # Allow horizontal expansion
+        # Allow graph to expand within tile
+        graph.set_size_request(-1, 60)  # Minimum height only
+        graph.set_hexpand(True)  # Expand to fill tile width
 
         # Add series to graph
         for series_name, color in graph_series:
@@ -455,6 +464,13 @@ class MonitoringTab(BaseTorrentTab):
 
     def _update_metrics(self) -> Any:
         """Update all metrics from collector."""
+        # Only update if the tab widget is visible (mapped)
+        # This prevents layout recalculation when the tab is not shown
+        if hasattr(self, "_tab_widget") and self._tab_widget:
+            if not self._tab_widget.get_mapped():
+                # Tab is not visible, skip update to prevent layout issues
+                return True  # Keep timer running
+
         if not self.metrics_collector:
             logger.trace(
                 "📊 MONITORING TAB: Update skipped - no metrics collector",

@@ -12,11 +12,11 @@ typer = ">=0.20.0"
 urllib3 = ">=2.0.0"
 bencodepy = "*"
 watchdog = "*"
-aiohttp = ">=3.8.0"
 aiohttp-session = ">=2.12.0"
-miniupnpc = ">=2.2.0"
 pycryptodome = ">=3.15.0"
 psutil = ">=5.9.0"
+miniupnpc = "*"
+aiohttp = "*"
 
 [dev-packages]
 pytest = ">=8.0.0"

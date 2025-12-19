@@ -4,17 +4,19 @@ Coordinates all torrent details tabs and provides the main interface.
 """
 
 # isort: skip_file
-
-# fmt: off
-from typing import Any, List, Optional
+# flake8: noqa: E402
 
 import gi
+
+gi.require_version("Gtk", "4.0")
+
+from typing import Any, List, Optional
+
+from gi.repository import Gtk
 
 from d_fake_seeder.components.component.base_component import Component
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
-
-# Import tab configuration system
 from d_fake_seeder.lib.util.tab_config import (
     get_essential_tab_classes,
     get_lazy_load_tab_classes,
@@ -29,14 +31,8 @@ from .monitoring_tab import MonitoringTab
 from .options_tab import OptionsTab
 from .outgoing_connections_tab import OutgoingConnectionsTab
 from .peers_tab import PeersTab
-
-# Import all tab classes
 from .status_tab import StatusTab
 from .trackers_tab import TrackersTab
-
-gi.require_version("Gtk", "4.0")
-
-# fmt: on
 
 
 class TorrentDetailsNotebook(Component):
@@ -58,6 +54,9 @@ class TorrentDetailsNotebook(Component):
                 self.settings = AppSettings.get_instance()
                 # Get main notebook widget
                 self.notebook = self.builder.get_object("notebook1")
+
+                # Add scroll controller for mouse wheel navigation through tabs
+                self._setup_notebook_scroll()
 
                 # Get UI settings
                 ui_settings = getattr(self.settings, "ui_settings", {})
@@ -129,6 +128,37 @@ class TorrentDetailsNotebook(Component):
                 self._complete_initialization()
                 logger.trace("Initialization completion", self.__class__.__name__)
             logger.trace("TorrentDetailsNotebook.__init__() completed", self.__class__.__name__)
+
+    def _setup_notebook_scroll(self) -> None:
+        """Set up scroll controller for mouse wheel navigation through notebook tabs."""
+        if not self.notebook:
+            return
+
+        scroll_controller = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.VERTICAL)
+        scroll_controller.connect("scroll", self._on_notebook_scroll)
+        self.notebook.add_controller(scroll_controller)
+        logger.trace("Notebook scroll controller added", self.__class__.__name__)
+
+    def _on_notebook_scroll(self, controller: Gtk.EventControllerScroll, dx: float, dy: float) -> bool:
+        """Handle scroll events to navigate through notebook tabs."""
+        if not self.notebook:
+            return False
+
+        current_page = self.notebook.get_current_page()
+        n_pages = self.notebook.get_n_pages()
+
+        if dy > 0:  # Scroll down - next tab
+            new_page = min(current_page + 1, n_pages - 1)
+        elif dy < 0:  # Scroll up - previous tab
+            new_page = max(current_page - 1, 0)
+        else:
+            return False
+
+        if new_page != current_page:
+            self.notebook.set_current_page(new_page)
+            return True  # Event handled
+
+        return False
 
     def register_for_translation(self) -> None:
         """Register notebook widgets for translation when model is available."""

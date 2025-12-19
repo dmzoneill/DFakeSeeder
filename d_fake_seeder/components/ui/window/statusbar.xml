@@ -23,6 +23,9 @@
                 <property name="label" translatable="yes"></property>
                 <property name="tooltip-text" translatable="yes">Last Notification</property>
                 <property name="halign">start</property>
+                <property name="hexpand">True</property>
+                <property name="ellipsize">end</property>
+                <property name="max-width-chars">80</property>
               </object>
             </child>
         </object>
@@ -156,6 +159,8 @@
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes"></property>
                 <property name="tooltip-text" translatable="yes">My IP address</property>
+                <property name="ellipsize">end</property>
+                <property name="max-width-chars">20</property>
               </object>
             </child>
             <child>
