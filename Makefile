@@ -482,7 +482,7 @@ rpm: ui-build-fast
 	@echo "   → Cleaning previous build..."
 	@rm -rf ./rpmbuild 2>/dev/null || true
 	@echo "   → Creating RPM directory structure..."
-	@mkdir -p ./rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+	@mkdir -p ./rpmbuild/BUILD ./rpmbuild/BUILDROOT ./rpmbuild/RPMS ./rpmbuild/SOURCES ./rpmbuild/SPECS ./rpmbuild/SRPMS
 	@echo "   → Preparing source files..."
 	@mkdir -p ./rpmbuild/$(rpm_package_name)-$(package_version)
 	@cp -r d_fake_seeder ./rpmbuild/$(rpm_package_name)-$(package_version)/
@@ -490,7 +490,7 @@ rpm: ui-build-fast
 	@cp packaging/dfakeseeder-wrapper.sh ./rpmbuild/$(rpm_package_name)-$(package_version)/packaging/
 	@cp Pipfile Pipfile.lock ./rpmbuild/$(rpm_package_name)-$(package_version)/
 	@echo "   → Creating source tarball..."
-	@tar -czf ./rpmbuild/SOURCES/$(rpm_package_name)-$(package_version).tar.gz -C ./rpmbuild $(rpm_package_name)-$(package_version) 2>/dev/null
+	@tar -czf ./rpmbuild/SOURCES/$(rpm_package_name)-$(package_version).tar.gz -C ./rpmbuild $(rpm_package_name)-$(package_version)
 	@cp dfakeseeder.spec ./rpmbuild/SPECS/
 	@echo "   → Building RPM with rpmbuild..."
 	@rpmbuild --define "_topdir $$(pwd)/rpmbuild" -ba ./rpmbuild/SPECS/dfakeseeder.spec 2>&1 | grep -E "(Wrote:|Processing|Executing)" || true
@@ -577,7 +577,11 @@ deb: ui-build-fast
 	@mkdir -p ./debbuild/opt/dfakeseeder ./debbuild/usr/bin ./debbuild/usr/share/applications/
 	@echo "   → Copying application files..."
 	@cp -r d_fake_seeder/dfakeseeder.desktop ./debbuild/usr/share/applications/
-	@cp -r d_fake_seeder/{config,lib,domain,components,*.py} ./debbuild/opt/dfakeseeder/ 2>/dev/null
+	@cp -r d_fake_seeder/config ./debbuild/opt/dfakeseeder/
+	@cp -r d_fake_seeder/lib ./debbuild/opt/dfakeseeder/
+	@cp -r d_fake_seeder/domain ./debbuild/opt/dfakeseeder/
+	@cp -r d_fake_seeder/components ./debbuild/opt/dfakeseeder/
+	@cp d_fake_seeder/*.py ./debbuild/opt/dfakeseeder/
 	@echo "   → Installing wrapper script..."
 	@cp packaging/dfakeseeder-wrapper.sh ./debbuild/usr/bin/dfakeseeder
 	@chmod 755 ./debbuild/usr/bin/dfakeseeder
