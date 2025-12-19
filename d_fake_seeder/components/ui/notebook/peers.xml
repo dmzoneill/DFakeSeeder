@@ -4,6 +4,7 @@
     <property name="can-focus">True</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
+    <property name="propagate-natural-width">False</property>
     <child>
         <object class="GtkColumnView" id="peers_columnview">
             <property name="visible">True</property>

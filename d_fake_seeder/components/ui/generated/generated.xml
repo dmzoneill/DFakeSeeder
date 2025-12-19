@@ -178,12 +178,24 @@
               <object class="GtkPaned" id="main_paned">
                 <property name="can-focus">True</property>
                 <property name="orientation">vertical</property>
+                <property name="shrink-start-child">True</property>
+                <property name="shrink-end-child">True</property>
+                <property name="position">300</property>
                 <child>                  
                   <object class="GtkPaned" id="paned">
                     <property name="can-focus">True</property>
+                    <property name="shrink-start-child">True</property>
+                    <property name="shrink-end-child">True</property>
+                    <property name="resize-start-child">False</property>
+                    <property name="resize-end-child">True</property>
+                    <property name="width-request">200</property>
                     <child>
                       <object class="GtkScrolledWindow">
                         <property name="can-focus">True</property>
+                        <property name="propagate-natural-width">False</property>
+                        <property name="propagate-natural-height">False</property>
+                        <property name="hscrollbar-policy">never</property>
+                        <property name="width-request">100</property>
                         <child>
                           <object class="GtkColumnView" id="states_columnview" >
     <property name="name">states_columnview</property>
@@ -198,6 +210,12 @@
                     <child>
                       <object class="GtkScrolledWindow">
                         <property name="can-focus">True</property>
+                        <property name="hscrollbar-policy">automatic</property>
+                        <property name="vscrollbar-policy">automatic</property>
+                        <property name="propagate-natural-width">False</property>
+                        <property name="propagate-natural-height">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="width-request">100</property>
                         <child>
                           <object class="GtkColumnView" id="columnview1" >
     <property name="name">columnview1</property>
@@ -598,6 +616,7 @@
     <property name="can-focus">True</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
+    <property name="propagate-natural-width">False</property>
     <child>
         <object class="GtkColumnView" id="peers_columnview">
             <property name="visible">True</property>
@@ -683,6 +702,7 @@
             <property name="can-focus">True</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
+            <property name="propagate-natural-width">False</property>
             <child>
                 <object class="GtkColumnView" id="incoming_columnview">
                     <property name="visible">True</property>
@@ -770,6 +790,7 @@
             <property name="can-focus">True</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
+            <property name="propagate-natural-width">False</property>
             <child>
                 <object class="GtkColumnView" id="outgoing_columnview">
                     <property name="visible">True</property>
@@ -934,6 +955,8 @@
     <child>
         <object class="GtkScrolledWindow">
             <property name="can-focus">False</property>
+            <property name="hscrollbar-policy">automatic</property>
+            <property name="propagate-natural-width">False</property>
             <child>
                 <object class="GtkBox" id="monitoring_tab">
                     <property name="visible">True</property>
@@ -993,6 +1016,9 @@
                 <property name="label" translatable="yes"/>
                 <property name="tooltip-text" translatable="yes">Last Notification</property>
                 <property name="halign">start</property>
+                <property name="hexpand">True</property>
+                <property name="ellipsize">end</property>
+                <property name="max-width-chars">80</property>
               </object>
             </child>
         </object>
@@ -1126,6 +1152,8 @@
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes"/>
                 <property name="tooltip-text" translatable="yes">My IP address</property>
+                <property name="ellipsize">end</property>
+                <property name="max-width-chars">20</property>
               </object>
             </child>
             <child>

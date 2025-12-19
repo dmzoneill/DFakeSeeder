@@ -28,12 +28,24 @@
               <object class="GtkPaned" id="main_paned">
                 <property name="can-focus">True</property>
                 <property name="orientation">vertical</property>
+                <property name="shrink-start-child">True</property>
+                <property name="shrink-end-child">True</property>
+                <property name="position">300</property>
                 <child>                  
                   <object class="GtkPaned" id="paned">
                     <property name="can-focus">True</property>
+                    <property name="shrink-start-child">True</property>
+                    <property name="shrink-end-child">True</property>
+                    <property name="resize-start-child">False</property>
+                    <property name="resize-end-child">True</property>
+                    <property name="width-request">200</property>
                     <child>
                       <object class="GtkScrolledWindow">
                         <property name="can-focus">True</property>
+                        <property name="propagate-natural-width">False</property>
+                        <property name="propagate-natural-height">False</property>
+                        <property name="hscrollbar-policy">never</property>
+                        <property name="width-request">100</property>
                         <child>
                           <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/columnview-stats.xml"/>
                         </child>
@@ -45,6 +57,9 @@
                         <property name="hscrollbar-policy">automatic</property>
                         <property name="vscrollbar-policy">automatic</property>
                         <property name="propagate-natural-width">False</property>
+                        <property name="propagate-natural-height">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="width-request">100</property>
                         <child>
                           <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/columnview-main.xml"/>
                         </child>

@@ -20,7 +20,7 @@ from .tab_mixins import DataUpdateMixin, PerformanceMixin, UIUtilityMixin
 gi.require_version("Gtk", "4.0")
 gi.require_version("GioUnix", "2.0")
 from gi.repository import Gio  # noqa: E402
-from gi.repository import GObject, Gtk  # noqa: E402
+from gi.repository import GObject, Gtk, Pango  # noqa: E402
 
 # fmt: on
 
@@ -156,7 +156,7 @@ class PeersTab(
             # Create column
             column = Gtk.ColumnViewColumn.new(None, factory)
 
-            # Set column properties for visibility
+            # Set column properties - expand to fill available space
             column.set_expand(True)
             column.set_resizable(True)
 
@@ -497,6 +497,9 @@ class PeersTab(
             try:
                 label = Gtk.Label()
                 label.set_hexpand(True)
+                # Add ellipsization to prevent forcing column/window width
+                label.set_ellipsize(Pango.EllipsizeMode.END)
+                label.set_width_chars(5)
                 # Align based on text direction (RTL for Arabic, Hebrew, etc.)
                 text_direction = label.get_direction()
                 if text_direction == Gtk.TextDirection.RTL:

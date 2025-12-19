@@ -151,7 +151,7 @@ columnview listitem > * {
 
 /* Monitoring Tab Styles */
 .metric-tile {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.03);
     /* Removed min-width: 320px - now controlled by FlowBox responsive layout */
@@ -438,7 +438,7 @@ notebook > header.left > tabs:not(:last-child) {
     border-radius: 6px;
     padding: 4px;
     background: shade(@theme_bg_color, 0.9);
-    border: 1px solid shade(@theme_bg_color, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     transition: all 300ms ease-in-out;
 }
 

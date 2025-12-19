@@ -22,7 +22,7 @@ from d_fake_seeder.lib.util.helpers import (
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 gi.require_version("GioUnix", "2.0")
-from gi.repository import Gdk, Gio, GLib, GObject, Gtk  # noqa: E402
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk, Pango  # noqa: E402
 
 # fmt: on
 
@@ -298,7 +298,18 @@ class Torrents(Component, ColumnTranslationMixin):
             # Update column visibility FIRST, before saving to settings
             # This prevents the settings save from triggering signals that query the ColumnView
             # while we're still in the middle of processing the menu action
-            visible_set = set(checked_items) if checked_items else set(attributes)
+            # Use sensible default if all unchecked (not all 30 columns!)
+            DEFAULT_COLUMNS = [
+                "id",
+                "name",
+                "progress",
+                "upload_speed",
+                "download_speed",
+                "seeders",
+                "leechers",
+                "total_size",
+            ]
+            visible_set = set(checked_items) if checked_items else set(DEFAULT_COLUMNS)
             logger.trace(
                 f"🔵 COLUMN TOGGLE: Visible set={visible_set}",
                 extra={"class_name": self.__class__.__name__},
@@ -449,6 +460,7 @@ class Torrents(Component, ColumnTranslationMixin):
             # Step 1: Create column
             id_column = Gtk.ColumnViewColumn()
             id_column.set_resizable(True)
+            id_column.set_expand(True)  # Fill available space
             logger.trace("Step 1 - Column creation: ms", "Torrents")
             # Step 2: Factory setup
             column_factory = Gtk.SignalListItemFactory()
@@ -500,13 +512,23 @@ class Torrents(Component, ColumnTranslationMixin):
             attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
             attributes.remove("id")
             attributes.insert(0, "id")
-            # Parse visible columns
+            # Parse visible columns - use sensible default if empty (not all 30 columns!)
+            DEFAULT_COLUMNS = [
+                "id",
+                "name",
+                "progress",
+                "upload_speed",
+                "download_speed",
+                "seeders",
+                "leechers",
+                "total_size",
+            ]
             visible_columns = self.settings.columns.split(",") if self.settings.columns.strip() else []
             if not visible_columns:
-                visible_columns = attributes
+                visible_columns = DEFAULT_COLUMNS
             visible_set = set(visible_columns)
             existing_columns = {col.get_title(): col for col in self.torrents_columnview.get_columns()}
-            # Create remaining columns
+            # Create all columns, set visibility based on settings
             created_count = 0
             for attribute in attributes:
                 if attribute == "id":
@@ -516,6 +538,8 @@ class Torrents(Component, ColumnTranslationMixin):
                     # Create column with minimal overhead
                     column = Gtk.ColumnViewColumn()
                     column.set_resizable(True)
+                    # Allow columns to expand and fill available space
+                    column.set_expand(True)
                     # Factory setup
                     column_factory = Gtk.SignalListItemFactory()
                     self.track_signal(
@@ -660,6 +684,9 @@ class Torrents(Component, ColumnTranslationMixin):
             display_widget = Gtk.Label()
             display_widget.set_hexpand(True)
             display_widget.set_halign(Gtk.Align.START)
+            # Enable ellipsization to prevent labels from forcing window width
+            display_widget.set_ellipsize(Pango.EllipsizeMode.END)
+            display_widget.set_width_chars(5)  # Minimum chars before ellipsizing
             edit_widget = self._create_edit_widget(attribute, widget_type)
             if edit_widget:
                 widget = self._create_inline_stack(attribute, display_widget, edit_widget)
@@ -696,6 +723,9 @@ class Torrents(Component, ColumnTranslationMixin):
             widget.set_hexpand(True)  # Make the widget expand horizontally
             widget.set_halign(Gtk.Align.START)  # Align text to the left
             widget.set_vexpand(True)
+            # Enable ellipsization to prevent labels from forcing window width
+            widget.set_ellipsize(Pango.EllipsizeMode.END)
+            widget.set_width_chars(5)  # Minimum chars before ellipsizing
         # Set the child widget for the item
         item.set_child(widget)
 
