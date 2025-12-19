@@ -24,6 +24,27 @@ from d_fake_seeder.lib.logger import logger  # noqa: E402
 # fmt: on
 
 
+class LogTabHandler(logging.Handler):
+    """Custom handler for Log tab UI - NOT a StreamHandler.
+
+    This handler captures log messages for display in the Log tab's text view.
+    It doesn't write to any stream (stdout/stderr), only calls a callback.
+    Using a custom class (not StreamHandler) prevents reconfigure_logger from
+    accidentally removing it when clearing console handlers.
+    """
+
+    def __init__(self, callback: Any) -> None:
+        super().__init__()
+        self._callback = callback
+
+    def emit(self, record: Any) -> None:
+        """Emit a log record by calling the callback."""
+        try:
+            self._callback(record)
+        except Exception:
+            self.handleError(record)
+
+
 class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
     """
     Log tab component for displaying application log messages.
@@ -39,7 +60,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
         # Log batching for performance
         self._log_message_queue: List[str] = []
         self._log_flush_timer = None
-        self._log_handler: Optional[logging.StreamHandler] = None
+        self._log_handler: Optional[LogTabHandler] = None
 
         # Get log buffer limit from settings
         ui_settings = getattr(self.settings, "ui_settings", {})
@@ -97,11 +118,11 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
                 msg = f"{record.levelname}: {record.getMessage()}\n"
                 self._queue_log_message(msg)
 
-            # Create and configure handler
-            self._log_handler = logging.StreamHandler()
+            # Create and configure custom handler (NOT StreamHandler)
+            # This prevents reconfigure_logger from removing it
+            self._log_handler = LogTabHandler(update_textview)
             self._log_handler.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
             self._log_handler.setLevel(logging.DEBUG)
-            self._log_handler.emit = update_textview  # type: ignore[method-assign]
 
             # Add handler to the main logger
             logger.addHandler(self._log_handler)

@@ -587,10 +587,10 @@ class AppSettings(GObject.GObject):
                 if old_value != value:
                     self._set_nested_value(self._user_settings, key, value)
                     should_emit = True
-                    logger.debug(f"Updated persistent: {key}", "AppSettings")
-
-                    # Console output for UI validation
-                    print(f"⚙️  SETTING CHANGED: {key} = {value}")
+                    logger.debug(
+                        f"Setting changed: {key} = {value}",
+                        extra={"class_name": "AppSettings"},
+                    )
 
                     # Rebuild merged view
                     self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
@@ -1350,22 +1350,41 @@ class AppSettings(GObject.GObject):
     def webui_ban_after_failures(self, value: Any) -> None:
         self.set("webui.ban_after_failures", value)
 
-    # Advanced settings
+    # Advanced settings - per-output log levels (no main level)
     @property
-    def log_level(self) -> None:
-        return self.get("log_level", "INFO")  # type: ignore[no-any-return]
+    def console_log_level(self) -> str:
+        result = self.get("logging.console_level", "INFO")
+        return str(result) if result else "INFO"
 
-    @log_level.setter
-    def log_level(self, value: Any) -> None:
-        self.set("log_level", value)
+    @console_log_level.setter
+    def console_log_level(self, value: Any) -> None:
+        self.set("logging.console_level", value)
+
+    @property
+    def systemd_log_level(self) -> str:
+        result = self.get("logging.systemd_level", "ERROR")
+        return str(result) if result else "ERROR"
+
+    @systemd_log_level.setter
+    def systemd_log_level(self, value: Any) -> None:
+        self.set("logging.systemd_level", value)
+
+    @property
+    def file_log_level(self) -> str:
+        result = self.get("logging.file_level", "DEBUG")
+        return str(result) if result else "DEBUG"
+
+    @file_log_level.setter
+    def file_log_level(self, value: Any) -> None:
+        self.set("logging.file_level", value)
 
     @property
     def disk_cache_size(self) -> Any:
-        return self.get("disk_cache_size", 64)  # MB
+        return self.get("performance.disk_cache_size_mb", 64)  # MB
 
     @disk_cache_size.setter
     def disk_cache_size(self, value: Any) -> Any:
-        self.set("disk_cache_size", value)
+        self.set("performance.disk_cache_size_mb", value)
 
     # Speed distribution settings - Upload
     @property

@@ -624,24 +624,31 @@ class BaseSettingsTab(Component):
         return False
 
     def print_coverage_report(self) -> None:
-        """Print a human-readable coverage report to console."""
+        """Log a human-readable coverage report."""
         report = self.validate_handler_coverage()
 
-        print(f"\n{'='*70}")
-        print(f"Handler Coverage Report: {self.tab_name}")
-        print(f"{'='*70}")
-        print(f"Total widgets:        {report['total_widgets']}")
-        print(f"Interactive widgets:  {report['interactive_widgets']}")
-        print(f"Connected widgets:    {report['connected_widgets']}")
-        print(f"Coverage:             {report['coverage_percent']:.1f}%")
+        lines = [
+            f"\n{'='*70}",
+            f"Handler Coverage Report: {self.tab_name}",
+            f"{'='*70}",
+            f"Total widgets:        {report['total_widgets']}",
+            f"Interactive widgets:  {report['interactive_widgets']}",
+            f"Connected widgets:    {report['connected_widgets']}",
+            f"Coverage:             {report['coverage_percent']:.1f}%",
+        ]
 
         if report["missing_handlers"]:
-            print(f"\n⚠️  Missing Handlers ({len(report['missing_handlers'])}):")
-            print(f"{'─'*70}")
+            lines.append(f"\n⚠️  Missing Handlers ({len(report['missing_handlers'])}):")
+            lines.append(f"{'─'*70}")
             for missing in report["missing_handlers"]:
-                print(f"  • {missing['id']:<40} ({missing['type']})")
-                print(f"    Expected signal: {missing['expected_signal']}")
+                lines.append(f"  • {missing['id']:<40} ({missing['type']})")
+                lines.append(f"    Expected signal: {missing['expected_signal']}")
         else:
-            print("\n✅ All interactive widgets have handlers!")
+            lines.append("\n✅ All interactive widgets have handlers!")
 
-        print(f"{'='*70}\n")
+        lines.append(f"{'='*70}\n")
+
+        self.logger.info(
+            "\n".join(lines),
+            extra={"class_name": self.__class__.__name__},
+        )

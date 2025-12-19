@@ -319,8 +319,13 @@
         "delete_added_torrents": false
     },
     "logging": {
-        "level": "INFO",
+        "console_level": "INFO",
+        "systemd_level": "ERROR",
+        "file_level": "DEBUG",
         "log_to_file": false,
+        "log_to_console": true,
+        "log_to_systemd": true,
+        "filename": "~/.config/dfakeseeder/dfakeseeder.log",
         "max_size_mb": 10
     },
     "performance": {

@@ -60,8 +60,12 @@ class AdvancedTab(
                 "search_entry": self.builder.get_object("settings_search_entry"),
                 "search_clear": self.builder.get_object("settings_search_clear"),
                 # Logging (use correct XML IDs)
-                "log_level": self.builder.get_object("settings_log_level"),
                 "log_to_file": self.builder.get_object("settings_log_to_file"),
+                "log_to_console": self.builder.get_object("settings_log_to_console"),
+                "log_to_systemd": self.builder.get_object("settings_log_to_systemd"),
+                "file_level": self.builder.get_object("settings_file_level"),
+                "console_level": self.builder.get_object("settings_console_level"),
+                "systemd_level": self.builder.get_object("settings_systemd_level"),
                 "log_file_box": self.builder.get_object("settings_log_file_box"),
                 "log_max_size": self.builder.get_object("settings_max_log_size"),
                 # Performance (use correct XML IDs)
@@ -104,13 +108,6 @@ class AdvancedTab(
             )
 
         # Logging (custom dropdown + reconfigure_logger calls)
-        log_level = self.get_widget("log_level")
-        if log_level:
-            self.track_signal(
-                log_level,
-                log_level.connect("notify::selected", self.on_log_level_changed),
-            )
-
         log_to_file = self.get_widget("log_to_file")
         if log_to_file:
             self.track_signal(
@@ -130,6 +127,28 @@ class AdvancedTab(
             self.track_signal(
                 log_to_systemd,
                 log_to_systemd.connect("state-set", self.on_log_to_systemd_changed),
+            )
+
+        # Per-output level dropdowns
+        file_level = self.get_widget("file_level")
+        if file_level:
+            self.track_signal(
+                file_level,
+                file_level.connect("notify::selected", self.on_file_level_changed),
+            )
+
+        console_level = self.get_widget("console_level")
+        if console_level:
+            self.track_signal(
+                console_level,
+                console_level.connect("notify::selected", self.on_console_level_changed),
+            )
+
+        systemd_level = self.get_widget("systemd_level")
+        if systemd_level:
+            self.track_signal(
+                systemd_level,
+                systemd_level.connect("notify::selected", self.on_systemd_level_changed),
             )
 
         log_file_browse = self.get_widget("log_file_browse")
@@ -176,15 +195,32 @@ class AdvancedTab(
     def _load_settings(self) -> None:
         """Load current settings into Advanced tab widgets using nested keys."""
         try:
-            # Load logging settings
-            if self._widgets.get("log_level"):
-                level = self.app_settings.get("logging.level", "INFO")
-                level_mapping = {"DEBUG": 0, "INFO": 1, "WARNING": 2, "ERROR": 3, "CRITICAL": 4}
-                self._widgets["log_level"].set_selected(level_mapping.get(level, 1))
-
+            # Load logging settings - each output has independent level
             if self._widgets.get("log_to_file"):
                 value = self.app_settings.get("logging.log_to_file", False)
                 self._widgets["log_to_file"].set_state(value)
+
+            if self._widgets.get("log_to_console"):
+                value = self.app_settings.get("logging.log_to_console", True)
+                self._widgets["log_to_console"].set_state(value)
+
+            if self._widgets.get("log_to_systemd"):
+                value = self.app_settings.get("logging.log_to_systemd", True)
+                self._widgets["log_to_systemd"].set_state(value)
+
+            # Per-output log levels (0=DEBUG, 1=INFO, 2=WARNING, 3=ERROR, 4=CRITICAL)
+            level_map = {"DEBUG": 0, "INFO": 1, "WARNING": 2, "ERROR": 3, "CRITICAL": 4}
+            if self._widgets.get("file_level"):
+                level_str = self.app_settings.get("logging.file_level", "DEBUG")
+                self._widgets["file_level"].set_selected(level_map.get(level_str, 0))
+
+            if self._widgets.get("console_level"):
+                level_str = self.app_settings.get("logging.console_level", "INFO")
+                self._widgets["console_level"].set_selected(level_map.get(level_str, 1))
+
+            if self._widgets.get("systemd_level"):
+                level_str = self.app_settings.get("logging.systemd_level", "ERROR")
+                self._widgets["systemd_level"].set_selected(level_map.get(level_str, 3))
 
             if self._widgets.get("log_max_size"):
                 value = self.app_settings.get("logging.max_size_mb", 10)
@@ -232,22 +268,8 @@ class AdvancedTab(
             self.logger.error(f"Error loading search settings: {e}")
 
     def _load_logging_settings(self, logging_settings: Dict[str, Any]) -> None:
-        """Load logging configuration."""
+        """Load logging configuration - each output has independent level."""
         try:
-            # Log level
-            log_level = self.get_widget("log_level")
-            if log_level:
-                level = logging_settings.get("level", "INFO")
-                level_mapping = {
-                    "TRACE": 0,
-                    "DEBUG": 1,
-                    "INFO": 2,
-                    "WARNING": 3,
-                    "ERROR": 4,
-                    "CRITICAL": 5,
-                }
-                log_level.set_selected(level_mapping.get(level, 2))
-
             # Log to file
             log_to_file = self.get_widget("log_to_file")
             if log_to_file:
@@ -316,29 +338,6 @@ class AdvancedTab(
         except Exception as e:
             self.logger.error(f"Error loading expert settings: {e}")
 
-    def _setup_log_level_dropdown(self) -> None:
-        """Set up the log level dropdown."""
-        try:
-            log_level_dropdown = self.get_widget("log_level")
-            if not log_level_dropdown:
-                return
-
-            # Log levels
-            levels = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
-
-            # Create string list model
-            string_list = Gtk.StringList()
-            for level in levels:
-                string_list.append(level)
-
-            # Set model
-            log_level_dropdown.set_model(string_list)
-
-            self.logger.trace(f"Log level dropdown set up with {len(levels)} levels")
-
-        except Exception as e:
-            self.logger.error(f"Error setting up log level dropdown: {e}")
-
     def _setup_dependencies(self) -> None:
         """Set up dependencies for Advanced tab."""
         self._update_logging_dependencies()
@@ -385,13 +384,29 @@ class AdvancedTab(
         settings: Dict[str, Any] = {}
 
         try:
-            # Collect logging settings
-            if self._widgets.get("log_level"):
-                level_mapping = {0: "DEBUG", 1: "INFO", 2: "WARNING", 3: "ERROR", 4: "CRITICAL"}
-                settings["logging.level"] = level_mapping.get(self._widgets["log_level"].get_selected(), "INFO")
-
+            # Collect logging settings - each output has independent level
             if self._widgets.get("log_to_file"):
                 settings["logging.log_to_file"] = self._widgets["log_to_file"].get_state()
+
+            if self._widgets.get("log_to_console"):
+                settings["logging.log_to_console"] = self._widgets["log_to_console"].get_state()
+
+            if self._widgets.get("log_to_systemd"):
+                settings["logging.log_to_systemd"] = self._widgets["log_to_systemd"].get_state()
+
+            # Per-output log levels (0=DEBUG, 1=INFO, 2=WARNING, 3=ERROR, 4=CRITICAL)
+            level_values = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+            if self._widgets.get("file_level"):
+                idx = self._widgets["file_level"].get_selected()
+                settings["logging.file_level"] = level_values[idx] if idx < len(level_values) else "DEBUG"
+
+            if self._widgets.get("console_level"):
+                idx = self._widgets["console_level"].get_selected()
+                settings["logging.console_level"] = level_values[idx] if idx < len(level_values) else "INFO"
+
+            if self._widgets.get("systemd_level"):
+                idx = self._widgets["systemd_level"].get_selected()
+                settings["logging.systemd_level"] = level_values[idx] if idx < len(level_values) else "ERROR"
 
             if self._widgets.get("log_max_size"):
                 settings["logging.max_size_mb"] = int(self._widgets["log_max_size"].get_value())
@@ -438,22 +453,11 @@ class AdvancedTab(
         return search_settings
 
     def _collect_logging_settings(self) -> Dict[str, Any]:
-        """Collect logging settings."""
+        """Collect logging settings - each output has independent level."""
         logging_settings: Dict[str, Any] = {}
 
         try:
-            log_level = self.get_widget("log_level")
-            if log_level:
-                level_mapping = {
-                    0: "TRACE",
-                    1: "DEBUG",
-                    2: "INFO",
-                    3: "WARNING",
-                    4: "ERROR",
-                    5: "CRITICAL",
-                }
-                logging_settings["level"] = level_mapping.get(log_level.get_selected(), "INFO")
-
+            # No main log level - each output has its own level
             log_to_file = self.get_widget("log_to_file")
             if log_to_file:
                 logging_settings["log_to_file"] = log_to_file.get_active()
@@ -573,24 +577,6 @@ class AdvancedTab(
         except Exception as e:
             self.logger.error(f"Error clearing search: {e}")
 
-    def on_log_level_changed(self, dropdown: Gtk.DropDown, _param: Any) -> None:
-        """Handle log level change."""
-        try:
-            level_mapping = {
-                0: "TRACE",
-                1: "DEBUG",
-                2: "INFO",
-                3: "WARNING",
-                4: "ERROR",
-                5: "CRITICAL",
-            }
-            level = level_mapping.get(dropdown.get_selected(), "INFO")
-            # NOTE: Setting will be saved in batch via _collect_settings()
-            self.logger.trace(f"Log level will change to: {level}")
-            # Trigger logger reconfiguration will happen after save
-        except Exception as e:
-            self.logger.error(f"Error changing log level: {e}")
-
     def on_log_to_file_changed(self, switch: Gtk.Switch, state: bool) -> None:
         """Handle log to file toggle."""
         try:
@@ -621,6 +607,27 @@ class AdvancedTab(
             # Trigger logger reconfiguration will happen after save
         except Exception as e:
             self.logger.error(f"Error changing log to systemd setting: {e}")
+
+    def on_file_level_changed(self, dropdown: Any, param: Any) -> None:
+        """Handle file log level change."""
+        level_values = ["(Use main level)", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+        idx = dropdown.get_selected()
+        level = level_values[idx] if idx < len(level_values) else "(Use main level)"
+        self.show_notification(f"File log level: {level}", "info")
+
+    def on_console_level_changed(self, dropdown: Any, param: Any) -> None:
+        """Handle console log level change."""
+        level_values = ["(Use main level)", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+        idx = dropdown.get_selected()
+        level = level_values[idx] if idx < len(level_values) else "(Use main level)"
+        self.show_notification(f"Console log level: {level}", "info")
+
+    def on_systemd_level_changed(self, dropdown: Any, param: Any) -> None:
+        """Handle systemd log level change."""
+        level_values = ["(Use main level)", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+        idx = dropdown.get_selected()
+        level = level_values[idx] if idx < len(level_values) else "(Use main level)"
+        self.show_notification(f"Systemd log level: {level}", "info")
 
     def on_log_file_browse_clicked(self, button: Gtk.Button) -> None:
         """Open file chooser for log file."""
@@ -680,14 +687,31 @@ class AdvancedTab(
             if search_threshold:
                 search_threshold.set_value(0.6)
 
-            # Reset logging
-            log_level = self.get_widget("log_level")
-            if log_level:
-                log_level.set_selected(1)  # INFO
-
+            # Reset logging - console on, file off, systemd on
             log_to_file = self.get_widget("log_to_file")
             if log_to_file:
                 self.set_switch_state(log_to_file, False)
+
+            log_to_console = self.get_widget("log_to_console")
+            if log_to_console:
+                self.set_switch_state(log_to_console, True)
+
+            log_to_systemd = self.get_widget("log_to_systemd")
+            if log_to_systemd:
+                self.set_switch_state(log_to_systemd, True)
+
+            # Reset per-output levels: file=DEBUG(0), console=INFO(1), systemd=ERROR(3)
+            file_level = self.get_widget("file_level")
+            if file_level:
+                file_level.set_selected(0)  # DEBUG
+
+            console_level = self.get_widget("console_level")
+            if console_level:
+                console_level.set_selected(1)  # INFO
+
+            systemd_level = self.get_widget("systemd_level")
+            if systemd_level:
+                systemd_level.set_selected(3)  # ERROR
 
             # Reset performance
             disk_cache_size = self.get_widget("disk_cache_size")
