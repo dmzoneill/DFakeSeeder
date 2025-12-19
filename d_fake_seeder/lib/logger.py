@@ -1,6 +1,7 @@
 # fmt: off
 import functools
 import logging
+import os
 import sys
 import time
 from typing import Any, Dict, Optional
@@ -41,8 +42,46 @@ def add_trace_to_logger(logger_instance: Any) -> None:
 
 class ClassNameFilter(logging.Filter):
     def filter(self, record: Any) -> Any:
-        record.class_name = record.name if not hasattr(record, "class_name") else record.class_name
+        if hasattr(record, "class_name") and record.class_name:
+            # Use provided class_name
+            pass
+        else:
+            # Try to extract class name from the call stack
+            class_name = self._extract_class_from_stack(record)
+            if class_name:
+                record.class_name = class_name
+            else:
+                # Fallback: extract a cleaner name from the module path
+                # e.g., "d_fake_seeder.lib.logger" -> "Logger"
+                name_parts = record.name.split(".")
+                last_part = name_parts[-1] if name_parts else record.name
+                record.class_name = last_part.replace("_", " ").title().replace(" ", "")
         return True
+
+    def _extract_class_from_stack(self, record: Any) -> Optional[str]:
+        """Try to extract the class name from the call stack."""
+        import inspect
+
+        try:
+            # Walk up the stack to find the calling class
+            # Skip frames that are part of the logging infrastructure
+            for frame_info in inspect.stack():
+                # Skip logging-related frames
+                if "logging" in frame_info.filename or "logger" in frame_info.filename:
+                    continue
+
+                # Check if 'self' is in the local variables
+                local_vars = frame_info.frame.f_locals
+                if "self" in local_vars:
+                    obj = local_vars["self"]
+                    return str(obj.__class__.__name__)
+                elif "cls" in local_vars:
+                    cls = local_vars["cls"]
+                    return str(cls.__name__) if hasattr(cls, "__name__") else None
+
+            return None
+        except Exception:
+            return None
 
 
 class TimingFilter(logging.Filter):
@@ -289,33 +328,39 @@ def get_logger_settings() -> Any:
         from domain.app_settings import AppSettings
 
         app_settings = AppSettings.get_instance()
+        # Each output has its own independent level - no main level
+        to_console_val = app_settings.get("logging.log_to_console", True)
         return {
-            "level": app_settings.get("log_level", "INFO"),
-            "level_systemd": app_settings.get("log_level_systemd", "WARNING"),
-            "filename": app_settings.get("log_filename", "log.log"),
+            "console_level": app_settings.get("logging.console_level", "INFO"),
+            "systemd_level": app_settings.get("logging.systemd_level", "ERROR"),
+            "file_level": app_settings.get("logging.file_level", "DEBUG"),
+            "filename": app_settings.get("logging.filename", "~/.config/dfakeseeder/dfakeseeder.log"),
             "format": app_settings.get(
-                "log_format",
+                "logging.format",
                 "[%(asctime)s][%(class_name)s][%(levelname)s][%(lineno)d] - %(message)s",
             ),
-            "to_file": app_settings.get("log_to_file", False),
-            "to_systemd": app_settings.get("log_to_systemd", True),
-            "to_console": app_settings.get("log_to_console", False),
-            "suppress_duplicates": app_settings.get("log_suppress_duplicates", True),
-            "duplicate_time_window": app_settings.get("log_duplicate_time_window", 5.0),
-            "duplicate_flush_interval": app_settings.get("log_duplicate_flush_interval", 30.0),
+            "to_file": app_settings.get("logging.log_to_file", False),
+            "to_systemd": app_settings.get("logging.log_to_systemd", True),
+            "to_console": to_console_val,
+            "suppress_duplicates": app_settings.get("logging.suppress_duplicates", True),
+            "duplicate_time_window": app_settings.get("logging.duplicate_time_window", 5.0),
+            "duplicate_flush_interval": app_settings.get("logging.duplicate_flush_interval", 30.0),
         }
     except (ImportError, Exception):
         # Fallback to hardcoded defaults if AppSettings not available
         # This should only happen during early startup or testing
+        # IMPORTANT: Console is OFF by default - only enable when user settings confirm it
+        # This prevents console output before user settings are loaded
         default_format = "[%(asctime)s][%(class_name)s][%(levelname)s][%(lineno)d] - %(message)s"
         return {
-            "level": "INFO",
-            "level_systemd": "WARNING",
-            "filename": "log.log",
+            "console_level": "INFO",
+            "systemd_level": "ERROR",
+            "file_level": "DEBUG",
+            "filename": "~/.config/dfakeseeder/dfakeseeder.log",
             "format": default_format,
             "to_file": False,
             "to_systemd": True,
-            "to_console": False,
+            "to_console": False,  # OFF by default - wait for user settings
             "suppress_duplicates": True,
             "duplicate_time_window": 5.0,
             "duplicate_flush_interval": 30.0,
@@ -323,65 +368,78 @@ def get_logger_settings() -> Any:
 
 
 def setup_logger() -> None:
-    """Setup logger with current settings"""
+    """Setup logger with current settings.
+
+    Each output (console, systemd, file) has its own independent log level.
+    """
     settings = get_logger_settings()
 
-    # Set the logger level
-    log_level = settings["level"]
-    numeric_level = getattr(logging, log_level.upper(), None)
-    if not isinstance(numeric_level, int):
-        numeric_level = logging.DEBUG
+    # Get per-output log levels
+    console_level_str = settings.get("console_level", "INFO")
+    systemd_level_str = settings.get("systemd_level", "ERROR")
+    file_level_str = settings.get("file_level", "DEBUG")
 
-    # Get systemd-specific log level (defaults to WARNING to reduce journal noise)
-    log_level_systemd = settings.get("level_systemd", "WARNING")
-    numeric_level_systemd = getattr(logging, log_level_systemd.upper(), None)
-    if not isinstance(numeric_level_systemd, int):
-        numeric_level_systemd = logging.WARNING
+    def get_numeric_level(level_str: str, default: int) -> int:
+        level = getattr(logging, level_str.upper(), None)
+        return level if isinstance(level, int) else default
 
-    # Detect if running in a terminal session
-    # If stdin/stdout/stderr are connected to a TTY, we're in an interactive terminal
-    # In this case, systemd journal will write to the terminal instead of the journal daemon
-    running_in_terminal = sys.stdout.isatty() or sys.stderr.isatty()
+    console_numeric = get_numeric_level(console_level_str, logging.INFO)
+    systemd_numeric = get_numeric_level(systemd_level_str, logging.ERROR)
+    file_numeric = get_numeric_level(file_level_str, logging.DEBUG)
 
     # Create or get logger
     logger_instance = logging.getLogger(__name__)
 
-    # Clear existing handlers to avoid duplicates
+    # Clear only logger-managed handlers (StreamHandler, FileHandler, JournalHandler)
+    # Keep custom handlers like LogTabHandler intact
+    managed_handler_types: list[type] = [logging.StreamHandler, logging.FileHandler]
+    if SYSTEMD_AVAILABLE:
+        managed_handler_types.append(JournalHandler)
+
     for handler in logger_instance.handlers[:]:
-        logger_instance.removeHandler(handler)
+        # Only remove handlers that are exactly our managed types
+        # Custom subclasses are preserved
+        if type(handler) in managed_handler_types:
+            logger_instance.removeHandler(handler)
 
-    logger_instance.setLevel(numeric_level)
+    # Set logger to lowest enabled level to capture all messages
+    min_level = logging.DEBUG  # Default to lowest
+    if settings["to_console"]:
+        min_level = min(min_level, console_numeric)
+    if settings["to_systemd"]:
+        min_level = min(min_level, systemd_numeric)
+    if settings["to_file"]:
+        min_level = min(min_level, file_numeric)
+    logger_instance.setLevel(min_level)
 
-    # Create formatter with enhanced timing support - automatically include precise timestamps
+    # Create formatter with enhanced timing support
     enhanced_format = settings["format"].replace("%(asctime)s", "%(asctime)s[%(timestamp_ms)s]")
     formatter = logging.Formatter(enhanced_format)
 
     # Add file handler if enabled
     if settings["to_file"]:
-        file_handler = logging.FileHandler(settings["filename"])
-        file_handler.setLevel(numeric_level)
+        log_path = os.path.expanduser(settings["filename"])
+        # Ensure directory exists
+        log_dir = os.path.dirname(log_path)
+        if log_dir:
+            os.makedirs(log_dir, exist_ok=True)
+        file_handler = logging.FileHandler(log_path)
+        file_handler.setLevel(file_numeric)
         file_handler.setFormatter(formatter)
         logger_instance.addHandler(file_handler)
 
     # Add systemd journal handler if enabled and available
-    # Use separate WARNING level for systemd to reduce journal noise
-    # Skip systemd logging when running in a terminal to avoid duplicate console output
-    if settings["to_systemd"] and SYSTEMD_AVAILABLE and not running_in_terminal:
+    if settings["to_systemd"] and SYSTEMD_AVAILABLE:
         journal_handler = JournalHandler(SYSLOG_IDENTIFIER="dfakeseeder")
-        journal_handler.setLevel(numeric_level_systemd)
-        # For systemd, we use a simpler format since it adds its own metadata
+        journal_handler.setLevel(systemd_numeric)
         journal_formatter = logging.Formatter("%(class_name)s[%(lineno)d]: %(message)s")
         journal_handler.setFormatter(journal_formatter)
         logger_instance.addHandler(journal_handler)
-    elif settings["to_systemd"] and (not SYSTEMD_AVAILABLE or running_in_terminal):
-        # If systemd logging is requested but not available or running in terminal, skip it
-        # Don't fall back to console - respect the user's logging preferences
-        pass
 
     # Add console handler if enabled
     if settings["to_console"]:
         console_handler = logging.StreamHandler(sys.stdout)
-        console_handler.setLevel(numeric_level)
+        console_handler.setLevel(console_numeric)
         console_handler.setFormatter(formatter)
         logger_instance.addHandler(console_handler)
 
@@ -477,10 +535,112 @@ def setup_logger() -> None:
     return enhanced_logger  # type: ignore[return-value]
 
 
-def reconfigure_logger() -> Any:
-    """Reconfigure logger with current settings - call when settings change"""
+def reconfigure_logger(
+    override_console: Optional[bool] = None,
+    override_systemd: Optional[bool] = None,
+    override_file: Optional[bool] = None,
+    override_console_level: Optional[str] = None,
+    override_systemd_level: Optional[str] = None,
+    override_file_level: Optional[str] = None,
+) -> Any:
+    """Reconfigure logger with current settings - call when settings change.
+
+    Each output (console, systemd, file) has its own independent log level.
+    There is no main level.
+
+    Args:
+        override_console: If provided, use this value for console logging.
+        override_systemd: If provided, use this value for systemd logging.
+        override_file: If provided, use this value for file logging.
+        override_console_level: If provided, use this level for console handler.
+        override_systemd_level: If provided, use this level for systemd handler.
+        override_file_level: If provided, use this level for file handler.
+    """
     global logger
-    logger = setup_logger()  # type: ignore[func-returns-value]
+
+    # Get the underlying Python logger instance
+    if hasattr(logger, "_logger"):
+        underlying_logger = logger._logger
+    else:
+        # Fallback: create new logger if structure is unexpected
+        logger = setup_logger()  # type: ignore[func-returns-value]
+        return logger
+
+    # Get new settings
+    settings = get_logger_settings()
+    to_console = override_console if override_console is not None else settings["to_console"]
+    to_systemd = override_systemd if override_systemd is not None else settings["to_systemd"]
+    to_file = override_file if override_file is not None else settings["to_file"]
+
+    # Per-output log levels - each has its own independent level
+    console_level_str = override_console_level or settings.get("console_level", "INFO")
+    systemd_level_str = override_systemd_level or settings.get("systemd_level", "ERROR")
+    file_level_str = override_file_level or settings.get("file_level", "DEBUG")
+
+    # Calculate numeric levels for each output
+    def get_numeric_level(level_str: str, default_level: int) -> int:
+        level = getattr(logging, level_str.upper(), None)
+        return level if isinstance(level, int) else default_level
+
+    console_numeric = get_numeric_level(console_level_str, logging.INFO)
+    systemd_numeric = get_numeric_level(systemd_level_str, logging.ERROR)
+    file_numeric = get_numeric_level(file_level_str, logging.DEBUG)
+
+    # Set logger to the lowest level of all outputs so all messages are captured
+    min_level = min(console_numeric, systemd_numeric, file_numeric)
+    if to_console:
+        min_level = min(min_level, console_numeric)
+    if to_systemd:
+        min_level = min(min_level, systemd_numeric)
+    if to_file:
+        min_level = min(min_level, file_numeric)
+
+    # Update logger level to lowest enabled level to capture all messages
+    underlying_logger.setLevel(min_level)
+
+    # Clear only logger-managed handlers (StreamHandler, FileHandler, JournalHandler)
+    # Keep custom handlers like LogTabHandler intact
+    managed_handler_types: list[type] = [logging.StreamHandler, logging.FileHandler]
+    if SYSTEMD_AVAILABLE:
+        managed_handler_types.append(JournalHandler)
+
+    for handler in underlying_logger.handlers[:]:
+        # Only remove handlers that are exactly our managed types
+        # Custom subclasses (like LogTabHandler) are preserved
+        if type(handler) in managed_handler_types:
+            underlying_logger.removeHandler(handler)
+
+    # Re-add handlers with new settings
+    enhanced_format = settings["format"].replace("%(asctime)s", "%(asctime)s[%(timestamp_ms)s]")
+    formatter = logging.Formatter(enhanced_format)
+
+    # File handler
+    if to_file:
+        log_path = os.path.expanduser(settings["filename"])
+        # Ensure directory exists
+        log_dir = os.path.dirname(log_path)
+        if log_dir:
+            os.makedirs(log_dir, exist_ok=True)
+        file_handler = logging.FileHandler(log_path)
+        file_handler.setLevel(file_numeric)
+        file_handler.setFormatter(formatter)
+        underlying_logger.addHandler(file_handler)
+
+    # Console handler
+    if to_console:
+        console_handler = logging.StreamHandler(sys.stdout)
+        console_handler.setLevel(console_numeric)
+        console_handler.setFormatter(formatter)
+        underlying_logger.addHandler(console_handler)
+
+    # Systemd handler (if available and enabled)
+    if to_systemd and SYSTEMD_AVAILABLE:
+        journal_handler = JournalHandler(SYSLOG_IDENTIFIER="dfakeseeder")
+        journal_handler.setLevel(systemd_numeric)
+        journal_formatter = logging.Formatter("%(class_name)s[%(lineno)d]: %(message)s")
+        journal_handler.setFormatter(journal_formatter)
+        underlying_logger.addHandler(journal_handler)
+
     return logger
 
 

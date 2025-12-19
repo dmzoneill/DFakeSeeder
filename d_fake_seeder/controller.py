@@ -46,6 +46,12 @@ class Controller:
         self.settings = AppSettings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
 
+        # Reconfigure logger now that settings are loaded
+        # This fixes the issue where logger is configured with defaults during module import
+        from d_fake_seeder.lib.logger import reconfigure_logger
+
+        reconfigure_logger()
+
         self.view = view
         self.model = model
 
@@ -396,25 +402,62 @@ class Controller:
             if current_bt != value:
                 self.settings.set("bittorrent.enable_pex", value)
 
-        # Handle debug mode - switch logging to DEBUG level
+        # Handle debug mode - switch all log levels to DEBUG (only when enabling)
         if key == "expert.debug_mode":
             from d_fake_seeder.lib.logger import reconfigure_logger
 
             if value:
-                # Set logging level to DEBUG when debug mode enabled
-                self.settings.set("logging.level", "DEBUG")
-            else:
-                # Restore to INFO when debug mode disabled
-                self.settings.set("logging.level", "INFO")
-            reconfigure_logger()
-            logger.info(f"Debug mode {'enabled' if value else 'disabled'}, logging level changed")
+                # Set all output levels to DEBUG when debug mode enabled
+                self.settings.set("logging.console_level", "DEBUG")
+                self.settings.set("logging.systemd_level", "DEBUG")
+                self.settings.set("logging.file_level", "DEBUG")
+                reconfigure_logger(
+                    override_console_level="DEBUG",
+                    override_systemd_level="DEBUG",
+                    override_file_level="DEBUG",
+                )
+                logger.info("Debug mode enabled, all log levels set to DEBUG")
+            # Note: When disabled, we don't reset levels - user can set them manually
 
-        # Handle logging level changes
-        if key == "logging.level":
+        # Handle log_to_console changes
+        if key == "logging.log_to_console":
             from d_fake_seeder.lib.logger import reconfigure_logger
 
-            reconfigure_logger()
-            logger.info(f"Logging level changed to {value}")
+            reconfigure_logger(override_console=value)
+            logger.info(f"Console logging {'enabled' if value else 'disabled'}")
+
+        # Handle log_to_file changes
+        if key == "logging.log_to_file":
+            from d_fake_seeder.lib.logger import reconfigure_logger
+
+            reconfigure_logger(override_file=value)
+            logger.info(f"File logging {'enabled' if value else 'disabled'}")
+
+        # Handle log_to_systemd changes
+        if key == "logging.log_to_systemd":
+            from d_fake_seeder.lib.logger import reconfigure_logger
+
+            reconfigure_logger(override_systemd=value)
+            logger.info(f"Systemd logging {'enabled' if value else 'disabled'}")
+
+        # Handle per-output log level changes
+        if key == "logging.console_level":
+            from d_fake_seeder.lib.logger import reconfigure_logger
+
+            reconfigure_logger(override_console_level=value)
+            logger.info(f"Console log level set to: {value}")
+
+        if key == "logging.systemd_level":
+            from d_fake_seeder.lib.logger import reconfigure_logger
+
+            reconfigure_logger(override_systemd_level=value)
+            logger.info(f"Systemd log level set to: {value}")
+
+        if key == "logging.file_level":
+            from d_fake_seeder.lib.logger import reconfigure_logger
+
+            reconfigure_logger(override_file_level=value)
+            logger.info(f"File log level set to: {value}")
 
         # Handle application quit request
         if key == "application_quit_requested" and value:
