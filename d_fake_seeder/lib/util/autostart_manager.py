@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.view import View
 
 AUTOSTART_DESKTOP_CONTENT = """[Desktop Entry]
 Type=Application
@@ -47,9 +48,28 @@ def enable_autostart() -> bool:
         autostart_path.write_text(AUTOSTART_DESKTOP_CONTENT)
         os.chmod(autostart_path, 0o755)
         logger.info("Autostart enabled", "AutostartManager")
+
+        # Notify user
+        if View.instance:
+            View.instance.notify(
+                "Autostart enabled",
+                notification_type="success",
+                timeout_ms=2000,
+                translate=True,
+            )
+
         return True
     except Exception as e:
         logger.error(f"Failed to enable autostart: {e}", "AutostartManager")
+
+        # Notify user of failure
+        if View.instance:
+            View.instance.notify(
+                "Failed to enable autostart",
+                notification_type="error",
+                translate=True,
+            )
+
         return False
 
 
@@ -64,9 +84,28 @@ def disable_autostart() -> bool:
         if autostart_path.exists():
             autostart_path.unlink()
             logger.info("Autostart disabled", "AutostartManager")
+
+            # Notify user
+            if View.instance:
+                View.instance.notify(
+                    "Autostart disabled",
+                    notification_type="info",
+                    timeout_ms=2000,
+                    translate=True,
+                )
+
         return True
     except Exception as e:
         logger.error(f"Failed to disable autostart: {e}", "AutostartManager")
+
+        # Notify user of failure
+        if View.instance:
+            View.instance.notify(
+                "Failed to disable autostart",
+                notification_type="error",
+                translate=True,
+            )
+
         return False
 
 

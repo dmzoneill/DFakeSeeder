@@ -21,6 +21,9 @@ class HTTPSeeder(BaseSeeder):
     def __init__(self, torrent: Any) -> None:
         super().__init__(torrent)
 
+        # Track first successful announce for notification
+        self._first_success_notified = False
+
         # Get configurable sleep interval
         ui_settings = getattr(self.settings, "ui_settings", {})
         self.retry_sleep_interval = (
@@ -435,6 +438,20 @@ class HTTPSeeder(BaseSeeder):
                 converted_data[str_key] = value
 
             tracker.update_announce_response(converted_data, response_time)
+
+            # Notify on first successful announce
+            if not self._first_success_notified and View.instance is not None:
+                self._first_success_notified = True
+                torrent_name = self.torrent.name
+                if len(torrent_name) > 35:
+                    torrent_name = torrent_name[:32] + "..."
+                View.instance.notify(
+                    f"Registered: {torrent_name}",
+                    notification_type="success",
+                    timeout_ms=2000,
+                    translate=False,
+                )
+
         except Exception as e:
             logger.trace(
                 f"Failed to update tracker success: {e}",

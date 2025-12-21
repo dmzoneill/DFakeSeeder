@@ -20,6 +20,7 @@ from d_fake_seeder.lib.util.constants import (
     NetworkConstants,
     TimeoutConstants,
 )
+from d_fake_seeder.view import View
 
 # fmt: on
 
@@ -95,6 +96,15 @@ class PeerServer:
             f"🌐 Started BitTorrent peer server on port {self.port}",
             extra={"class_name": self.__class__.__name__},
         )
+
+        # Notify user
+        if View.instance:
+            View.instance.notify(
+                f"Peer server listening on port {self.port}",
+                notification_type="success",
+                timeout_ms=2000,
+                translate=False,
+            )
 
     def stop(self) -> Any:
         """Stop the peer server"""

@@ -20,6 +20,7 @@ except ImportError:
     bencodepy = None
 
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.view import View
 
 # fmt: on
 
@@ -133,9 +134,27 @@ class DHTManager:
 
             logger.info(f"DHT Manager started on port {self.port}")
 
+            # Notify user
+            if View.instance:
+                View.instance.notify(
+                    f"DHT started on port {self.port}",
+                    notification_type="success",
+                    timeout_ms=2000,
+                    translate=False,
+                )
+
         except Exception as e:
             logger.error(f"Failed to start DHT Manager: {e}", exc_info=True)
             self.running = False
+
+            # Notify user of failure
+            if View.instance:
+                View.instance.notify(
+                    "DHT failed to start",
+                    notification_type="warning",
+                    timeout_ms=3000,
+                    translate=True,
+                )
 
     def stop(self) -> Any:
         """Stop DHT manager background thread"""
