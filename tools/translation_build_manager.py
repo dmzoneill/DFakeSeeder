@@ -831,7 +831,13 @@ msgstr ""
         print("🔍 Step 1: Validating JSON file consistency and syntax")
         print("-" * 60)
 
-        # Step 1a: Validate JSON syntax
+        # Patterns for auxiliary files to skip in key consistency checks
+        auxiliary_patterns = ["_fallbacks_to_translate", "_translation_request"]
+
+        def is_auxiliary_file(filename: str) -> bool:
+            return any(pattern in filename for pattern in auxiliary_patterns)
+
+        # Step 1a: Validate JSON syntax (check all files)
         print("📝 Checking JSON syntax for all language files...")
         syntax_valid = True
 
@@ -839,7 +845,9 @@ msgstr ""
             try:
                 with open(json_file, "r", encoding="utf-8") as f:
                     json.load(f)
-                print(f"✅ {json_file.stem}: Valid JSON syntax")
+                # Only report main translation files, skip auxiliary
+                if not is_auxiliary_file(json_file.stem):
+                    print(f"✅ {json_file.stem}: Valid JSON syntax")
             except json.JSONDecodeError as e:
                 print(f"❌ {json_file.stem}: Invalid JSON - {e}")
                 syntax_valid = False
@@ -873,7 +881,8 @@ msgstr ""
 
         for json_file in self.translations_dir.glob("*.json"):
             lang_code = json_file.stem
-            if lang_code == "en":
+            # Skip English and auxiliary files
+            if lang_code == "en" or is_auxiliary_file(lang_code):
                 continue
 
             with open(json_file, "r", encoding="utf-8") as f:
@@ -1692,6 +1701,303 @@ msgstr ""
         print("\n⏸️  WORKFLOW PAUSED - Complete manual editing then run update-from-fallbacks")
         return True
 
+    # ==================== AUDIT METHODS ====================
+
+    # Strings to ignore during audit (technical, not user-facing)
+    AUDIT_IGNORE_STRINGS = {
+        "",
+        "0",
+        "1",
+        "-1",
+        "None",
+        "True",
+        "False",
+        "utf-8",
+        "UTF-8",
+        "GET",
+        "POST",
+        "DEBUG",
+        "INFO",
+        "WARNING",
+        "ERROR",
+        "CRITICAL",
+        "ℹ️",
+        "✓",
+        "✗",
+        "✅",
+        "❌",
+        "🔴",
+        "🔌",
+        "❓",
+        "⚠️",
+        "admin",
+        "password",
+        "localhost",
+        "0.0.0.0",
+        "127.0.0.1",
+    }
+
+    # File patterns to skip during audit
+    AUDIT_SKIP_FILES = {
+        "__pycache__",
+        ".pyc",
+        ".mo",
+        ".po",
+        ".pot",
+        "test_",
+        "_test.py",
+        "conftest.py",
+    }
+
+    def audit_codebase(self, json_output: bool = False, verbose: bool = False) -> bool:
+        """Audit codebase for untranslated strings."""
+        issues = []
+        stats: Dict[str, int] = {}
+        seen: Set[str] = set()
+
+        def add_issue(
+            file: str, line: int, category: str, severity: str, string: str, context: str, suggestion: str
+        ) -> None:
+            key = f"{file}:{line}:{string}"
+            if key in seen:
+                return
+            seen.add(key)
+            issues.append(
+                {
+                    "file": file,
+                    "line": line,
+                    "category": category,
+                    "severity": severity,
+                    "string": string,
+                    "context": context,
+                    "suggestion": suggestion,
+                }
+            )
+            stats[category] = stats.get(category, 0) + 1
+
+        def should_skip_file(filepath: str) -> bool:
+            for skip in self.AUDIT_SKIP_FILES:
+                if skip in filepath:
+                    return True
+            return False
+
+        def is_technical(string: str) -> bool:
+            if string in self.AUDIT_IGNORE_STRINGS:
+                return True
+            if re.match(r"^[a-z]+_[a-z_]+$", string):
+                return True
+            if re.match(r"^[A-Z_]+$", string) and "_" in string:
+                return True
+            if re.match(r"^[\d.]+$", string):
+                return True
+            if string.startswith("http") or string.startswith("/"):
+                return True
+            if re.match(r"^#[0-9a-fA-F]+$", string):
+                return True
+            if len(string) <= 2 and string.isalpha():
+                return True
+            return False
+
+        if not json_output:
+            print("🔍 Starting translation audit...")
+            print()
+            print("  → Auditing Python files...")
+
+        # Audit Python files
+        python_dir = self.source_dir
+        for py_file in python_dir.rglob("*.py"):
+            if should_skip_file(str(py_file)):
+                continue
+            try:
+                content = py_file.read_text(encoding="utf-8")
+                lines = content.split("\n")
+            except Exception:
+                continue
+
+            rel_path = str(py_file.relative_to(self.project_root))
+            for line_num, line in enumerate(lines, 1):
+                stripped = line.strip()
+                if stripped.startswith("#"):
+                    continue
+
+                # Check Gtk.Label
+                for match in re.finditer(r'Gtk\.Label\s*\(\s*label\s*=\s*"([^"]+)"', line):
+                    string = match.group(1)
+                    if not is_technical(string) and "self._(" not in line:
+                        add_issue(
+                            rel_path,
+                            line_num,
+                            "hardcoded_label",
+                            "high",
+                            string,
+                            line.strip()[:100],
+                            f'Use: Gtk.Label(label=self._("{string}"))',
+                        )
+
+                # Check Gtk.Button
+                for match in re.finditer(r'Gtk\.Button\s*\(\s*label\s*=\s*"([^"]+)"', line):
+                    string = match.group(1)
+                    if not is_technical(string) and "self._(" not in line:
+                        add_issue(
+                            rel_path,
+                            line_num,
+                            "button_label",
+                            "high",
+                            string,
+                            line.strip()[:100],
+                            f'Use: Gtk.Button(label=self._("{string}"))',
+                        )
+
+                # Check notifications (skip translate=True and self._())
+                if "translate=True" not in line and "self._(" not in line:
+                    for pattern in [
+                        r'View\.instance\.notify\s*\(\s*f?"([^"]+)"',
+                        r'show_notification\s*\(\s*f?"([^"]+)"',
+                        r'\.notify\s*\(\s*f?"([^"]+)"',
+                    ]:
+                        for match in re.finditer(pattern, line):
+                            string = match.group(1)
+                            if string.startswith("{") and string.endswith("}"):
+                                continue
+                            if not is_technical(string):
+                                add_issue(
+                                    rel_path,
+                                    line_num,
+                                    "notification_message",
+                                    "medium",
+                                    string[:50] + ("..." if len(string) > 50 else ""),
+                                    line.strip()[:100],
+                                    "Use self._() or translate=True",
+                                )
+
+                # Check dialog titles
+                for match in re.finditer(r'set_title\s*\(\s*"([^"]+)"', line):
+                    string = match.group(1)
+                    if not is_technical(string) and "self._(" not in line:
+                        add_issue(
+                            rel_path,
+                            line_num,
+                            "dialog_title",
+                            "medium",
+                            string,
+                            line.strip()[:100],
+                            f'Use: set_title(self._("{string}"))',
+                        )
+
+                # Check tooltip text
+                for match in re.finditer(r'set_tooltip_text\s*\(\s*"([^"]+)"', line):
+                    string = match.group(1)
+                    if not is_technical(string) and "self._(" not in line:
+                        add_issue(
+                            rel_path,
+                            line_num,
+                            "tooltip_text",
+                            "medium",
+                            string[:50] + ("..." if len(string) > 50 else ""),
+                            line.strip()[:100],
+                            f'Use: set_tooltip_text(self._("{string}"))',
+                        )
+
+        if not json_output:
+            print("  → Auditing XML UI files...")
+
+        # Audit XML files
+        ui_dir = self.source_dir / "components" / "ui"
+        if ui_dir.exists():
+            translatable_props = ["label", "tooltip-text", "placeholder-text", "title", "text"]
+            for xml_file in ui_dir.rglob("*.xml"):
+                try:
+                    content = xml_file.read_text(encoding="utf-8")
+                    lines = content.split("\n")
+                except Exception:
+                    continue
+
+                rel_path = str(xml_file.relative_to(self.project_root))
+                for line_num, line in enumerate(lines, 1):
+                    for prop in translatable_props:
+                        pattern = rf'<property\s+name="{prop}"(?:\s+[^>]*)?>'
+                        if re.search(pattern, line) and 'translatable="yes"' not in line:
+                            value_match = re.search(rf'<property\s+name="{prop}"[^>]*>([^<]+)</property>', line)
+                            if value_match:
+                                value = value_match.group(1).strip()
+                                if value and not value.isdigit() and len(value) > 1:
+                                    if not is_technical(value):
+                                        add_issue(
+                                            rel_path,
+                                            line_num,
+                                            "xml_missing_translatable",
+                                            "high" if prop == "label" else "medium",
+                                            value[:50] + ("..." if len(value) > 50 else ""),
+                                            line.strip()[:100],
+                                            f'Add translatable="yes" to {prop} property',
+                                        )
+
+        if not json_output:
+            print("  → Auditing column headers...")
+            print()
+
+        # Print results
+        if json_output:
+            result = {
+                "total_issues": len(issues),
+                "by_severity": {
+                    "high": len([i for i in issues if i["severity"] == "high"]),
+                    "medium": len([i for i in issues if i["severity"] == "medium"]),
+                    "low": len([i for i in issues if i["severity"] == "low"]),
+                },
+                "by_category": stats,
+                "issues": issues,
+            }
+            print(json.dumps(result, indent=2))
+        else:
+            print("=" * 70)
+            print("TRANSLATION AUDIT REPORT")
+            print("=" * 70)
+            print()
+            print(f"Total issues found: {len(issues)}")
+            print()
+
+            high = [i for i in issues if i["severity"] == "high"]
+            medium = [i for i in issues if i["severity"] == "medium"]
+            low = [i for i in issues if i["severity"] == "low"]
+
+            print(f"  🔴 High:   {len(high)}")
+            print(f"  🟡 Medium: {len(medium)}")
+            print(f"  🟢 Low:    {len(low)}")
+            print()
+
+            print("By Category:")
+            for cat, count in sorted(stats.items(), key=lambda x: -x[1]):
+                print(f"  • {cat}: {count}")
+            print()
+
+            if high:
+                print("-" * 70)
+                print("🔴 HIGH SEVERITY ISSUES")
+                print("-" * 70)
+                for issue in high:
+                    print(f"\n  {issue['file']}:{issue['line']}")
+                    print(f"  Category: {issue['category']}")
+                    print(f"  String: \"{issue['string']}\"")
+                    print(f"  Suggestion: {issue['suggestion']}")
+
+            if medium and verbose:
+                print()
+                print("-" * 70)
+                print("🟡 MEDIUM SEVERITY ISSUES")
+                print("-" * 70)
+                for issue in medium[:20]:
+                    print(f"\n  {issue['file']}:{issue['line']}")
+                    print(f"  Category: {issue['category']}")
+                    print(f"  String: \"{issue['string']}\"")
+                if len(medium) > 20:
+                    print(f"\n  ... and {len(medium) - 20} more medium severity issues")
+
+            print()
+            print("=" * 70)
+
+        return len([i for i in issues if i["severity"] == "high"]) == 0
+
     # ==================== MAIN CLI INTERFACE ====================
 
 
@@ -1709,6 +2015,7 @@ Commands:
   validate              Validate translation chain consistency with JSON syntax & fallback analysis
   enhance               Enhance translations (add missing strings/attributes)
   analyze               Analyze translation coverage and quality
+  audit                 Audit codebase for untranslated strings (hardcoded labels, etc.)
   identify-fallbacks    Identify English fallbacks that need translation
   translate-fallbacks   Translate fallbacks using Claude Code Agent (auto-translation)
   update-from-fallbacks Update translations from edited/translated fallback files
@@ -1723,6 +2030,7 @@ Examples:
   python translation_manager.py build --lang de    # Build German only
   python translation_manager.py validate           # Validate all files
   python translation_manager.py analyze            # Show coverage report
+  python translation_manager.py audit              # Check for untranslated strings
   python translation_manager.py cleanup            # Clean up temporary files
         """,
     )
@@ -1737,6 +2045,7 @@ Examples:
             "validate",
             "enhance",
             "analyze",
+            "audit",
             "comprehensive",
             "identify-fallbacks",
             "translate-fallbacks",
@@ -1749,6 +2058,8 @@ Examples:
     )
     parser.add_argument("--lang", type=str, help="Target specific language (e.g., 'de' for German)")
     parser.add_argument("--force", action="store_true", help="Force regeneration of files")
+    parser.add_argument("--json", action="store_true", help="Output as JSON (for audit command)")
+    parser.add_argument("--verbose", action="store_true", help="Show verbose output")
 
     args = parser.parse_args()
 
@@ -1778,6 +2089,8 @@ Examples:
         success = manager.enhance_translations()
     elif args.command == "analyze":
         success = manager.analyze_coverage()
+    elif args.command == "audit":
+        success = manager.audit_codebase(json_output=args.json, verbose=args.verbose)
     elif args.command == "comprehensive":
         success = manager.comprehensive_extraction_and_build(args.lang)
     elif args.command == "identify-fallbacks":

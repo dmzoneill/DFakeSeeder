@@ -55,6 +55,9 @@ class TrayApplication:
         # Store instance checker for cleanup
         self.instance_checker = instance_checker
 
+        # Load tray settings from config
+        self.tray_settings = self._load_tray_settings()
+
         # Initialize components
         self.indicator = None
         self.menu = None
@@ -81,6 +84,45 @@ class TrayApplication:
 
         # Initialize notification system
         Notify.init("DFakeSeeder")
+
+    def _load_tray_settings(self) -> dict[str, Any]:
+        """Load tray settings from config file."""
+        defaults = {
+            "retry_delay_seconds": 3,
+            "max_retries": 5,
+            "update_interval_seconds": 10,
+            "reconnect_delay_seconds": 3,
+            "quit_delay_seconds": 2,
+        }
+        try:
+            import os
+            from pathlib import Path
+
+            # Try user config first
+            config_path = Path.home() / ".config" / "dfakeseeder" / "settings.json"
+            if config_path.exists():
+                with open(config_path) as f:
+                    settings = json.load(f)
+                    loaded = settings.get("tray_settings", {})
+                    defaults.update(loaded)
+                    return defaults
+
+            # Fall back to default config
+            dfs_path = os.environ.get("DFS_PATH", "")
+            if dfs_path:
+                default_config = Path(dfs_path) / "config" / "default.json"
+                if default_config.exists():
+                    with open(default_config) as f:
+                        settings = json.load(f)
+                        loaded = settings.get("tray_settings", {})
+                        defaults.update(loaded)
+        except Exception as e:
+            logger.warning(
+                f"Could not load tray settings: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+        return defaults
 
     def run(self) -> Any:
         """Start the tray application"""
@@ -227,7 +269,8 @@ class TrayApplication:
             )
 
             self.indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)  # type: ignore[attr-defined]
-            self.indicator.set_title("DFakeSeeder")  # type: ignore[attr-defined]
+            title = self._("DFakeSeeder") if callable(self._) else "DFakeSeeder"
+            self.indicator.set_title(title)  # type: ignore[attr-defined]
             # Don't set label - we want only the icon to show
 
             # Set icon using absolute path to dfakeseeder.png
@@ -969,7 +1012,8 @@ class TrayApplication:
                     notification.show()
 
                     # Start trying to reconnect after a delay
-                    GLib.timeout_add_seconds(3, self._try_reconnect_after_launch)
+                    reconnect_delay = self.tray_settings.get("reconnect_delay_seconds", 3)
+                    GLib.timeout_add_seconds(reconnect_delay, self._try_reconnect_after_launch)
 
                     launched = True
                     break
@@ -1032,7 +1076,8 @@ class TrayApplication:
                     )
 
                 # Give main app time to shut down, then quit tray
-                GLib.timeout_add_seconds(2, self.quit)  # Increased to 2 seconds
+                quit_delay = self.tray_settings.get("quit_delay_seconds", 2)
+                GLib.timeout_add_seconds(quit_delay, self.quit)
             else:
                 logger.warning(
                     "No D-Bus connection to main app, quitting tray only",
@@ -1045,8 +1090,9 @@ class TrayApplication:
                 f"Error quitting application: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
-            # Fallback: quit tray anyway after a delay
-            GLib.timeout_add_seconds(1, self.quit)
+            # Fallback: quit tray anyway after a delay (use half the normal quit delay)
+            fallback_delay = max(1, self.tray_settings.get("quit_delay_seconds", 2) // 2)
+            GLib.timeout_add_seconds(fallback_delay, self.quit)
 
     def _on_quit_tray_only(self, menu_item: Any) -> None:
         """Handle quit tray only (when main app is not running)"""
@@ -1065,7 +1111,8 @@ class TrayApplication:
 
     def _start_update_timer(self) -> Any:
         """Start periodic update timer"""
-        self.update_timer = GLib.timeout_add_seconds(10, self._periodic_update)
+        update_interval = self.tray_settings.get("update_interval_seconds", 10)
+        self.update_timer = GLib.timeout_add_seconds(update_interval, self._periodic_update)
 
     def _periodic_update(self) -> Any:
         """Periodic update function"""

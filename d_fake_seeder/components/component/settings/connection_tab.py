@@ -392,7 +392,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             listening_port = self.get_widget("listening_port")
             if listening_port:
                 listening_port.set_value(random_port)
-                self.show_notification("Random port generated: {}".format(random_port), "success")
+                self.show_notification(self._("Random port generated: {port}").format(port=random_port), "success")
 
         except Exception as e:
             self.logger.error(f"Error generating random port: {e}")
@@ -405,7 +405,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # NOTE: Setting will be saved in batch via _collect_settings()
             status = "enabled" if state else "disabled"
             self.logger.trace(f"UPnP {status}")
-            self.show_notification(f"UPnP {status}", "success")
+            self.show_notification(self._("UPnP {status}").format(status=self._(status)), "success")
         except Exception as e:
             self.logger.error(f"Error changing UPnP setting: {e}")
 
@@ -524,7 +524,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 self.set_switch_state(proxy_auth, False)
 
             self.update_dependencies()
-            self.show_notification("Connection settings reset to defaults", "success")
+            self.show_notification(self._("Connection settings reset to defaults"), "success")
 
         except Exception as e:
             self.logger.error(f"Error resetting Connection tab to defaults: {e}")

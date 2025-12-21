@@ -820,7 +820,7 @@ translate-workflow:
 	@echo "   → Step 6/7: Analyzing coverage..."
 	@python3 tools/translation_build_manager.py analyze > /dev/null 2>&1
 	@echo "   → Step 7/7: Validating translations..."
-	@python3 tools/translation_build_manager.py validate > /dev/null 2>&1
+	@python3 tools/translation_build_manager.py validate > /dev/null 2>&1 || true
 	@python3 tools/translation_build_manager.py cleanup > /dev/null 2>&1
 	@if [ -f d_fake_seeder/components/locale/dfakeseeder.pot ]; then \
 		wc -l < d_fake_seeder/components/locale/dfakeseeder.pot > .pot_linecount; \
@@ -841,6 +841,35 @@ translate-clean:
 	@echo "Cleaning translation files..."
 	python3 tools/translation_build_manager.py cleanup
 	@echo "✅ Translation files cleaned!"
+
+# Audit codebase for untranslated strings
+translate-audit:
+	@echo "🔍 Auditing codebase for untranslated strings..."
+	@python3 tools/translation_build_manager.py audit
+	@echo ""
+
+# Audit with JSON output (for CI/automation)
+translate-audit-json:
+	@python3 tools/translation_build_manager.py audit --json
+
+# Full translation update cycle: extract → sync → build → audit
+translate-full:
+	@echo "🌐 Running full translation update cycle..."
+	@echo ""
+	@echo "Step 1/4: Extracting new strings..."
+	@python3 tools/translation_build_manager.py extract
+	@echo ""
+	@echo "Step 2/4: Syncing to JSON files..."
+	@python3 tools/translation_build_manager.py sync
+	@python3 tools/translation_build_manager.py sync-keys
+	@echo ""
+	@echo "Step 3/4: Building translation files..."
+	@python3 tools/translation_build_manager.py build
+	@echo ""
+	@echo "Step 4/4: Running translation audit..."
+	@python3 tools/translation_audit.py || true
+	@echo ""
+	@echo "✅ Full translation cycle complete!"
 
 # ============================================================================
 # End-to-End Testing

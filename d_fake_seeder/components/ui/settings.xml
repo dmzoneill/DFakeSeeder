@@ -115,6 +115,16 @@
                         </object>
                     </child>
 
+                    <!-- Notifications Tab -->
+                    <child>
+                        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/notifications.xml"/>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">Notifications</property>
+                        </object>
+                    </child>
+
                     <!-- Advanced Tab -->
                     <child>
                         <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/advanced.xml"/>

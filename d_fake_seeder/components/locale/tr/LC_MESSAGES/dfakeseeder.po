@@ -23,6 +23,9 @@ msgstr "#"
 msgid "(0 = unlimited)"
 msgstr "(0 = sınırsız)"
 
+msgid "-DE2003-"
+msgstr "-DE2003-"
+
 msgid "0 / 250"
 msgstr "0 / 250"
 
@@ -326,6 +329,9 @@ msgstr "Dengeli profil indirme hızı"
 msgid "Balanced profile upload speed"
 msgstr "Dengeli profil yükleme hızı"
 
+msgid "Ban after failed logins:"
+msgstr "Ban after failed logins:"
+
 msgid "Behavior Variation:"
 msgstr "Davranış Varyasyonu:"
 
@@ -340,6 +346,9 @@ msgstr "Bengalce"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
+
+msgid "Bind IP Address:"
+msgstr "Bind IP Address:"
 
 msgid "Bind to localhost only"
 msgstr "Yalnızca localhost'a bağla"
@@ -482,6 +491,21 @@ msgstr "Muhafazakâr profil yükleme hızı"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "Muhafazakâr: Düşük hızlar, az bağlantı, arka plan paylaşımı için ideal"
 
+msgid "Console log level: {level}"
+msgstr "Console log level: {level}"
+
+msgid "Copied info hash: {hash}..."
+msgstr "Copied info hash: {hash}..."
+
+msgid "Copied magnet link for {name}"
+msgstr "Copied magnet link for {name}"
+
+msgid "Copied name: {name}"
+msgstr "Copied name: {name}"
+
+msgid "Copied tracker URL"
+msgstr "Copied tracker URL"
+
 msgid "Copy"
 msgstr "Kopyala"
 
@@ -623,6 +647,12 @@ msgstr "İndirme limiti (KB/s):"
 msgid "Download limit (KB/s, 0 = unlimited):"
 msgstr "İndirme limiti (KB/s, 0 = sınırsız):"
 
+msgid "Download limit removed"
+msgstr "Download limit removed"
+
+msgid "Download limit set to {limit} KB/s"
+msgstr "Download limit set to {limit} KB/s"
+
 msgid "Download speed variance for aggressive profile"
 msgstr "Agresif profil için indirme hızı varyansı"
 
@@ -749,6 +779,9 @@ msgstr "Etkinleştir debug mode with extra logging and error details"
 msgid "Enable dynamic client profile switching"
 msgstr "Etkinleştir dynamic client profile switching"
 
+msgid "Enable host header validation"
+msgstr "Enable host header validation"
+
 msgid "Enable lt_donthave extension for piece availability"
 msgstr "Etkinleştir lt_donthave extension for piece availability"
 
@@ -830,8 +863,23 @@ msgstr "İngilizce"
 msgid "Error"
 msgstr "Hata"
 
+msgid "Error applying seeding profile"
+msgstr "Error applying seeding profile"
+
 msgid "Error changing language"
 msgstr "Dil değiştirme hatası"
+
+msgid "Error exporting settings: {error}"
+msgstr "Error exporting settings: {error}"
+
+msgid "Error importing settings: {error}"
+msgstr "Error importing settings: {error}"
+
+msgid "Error opening folder browser"
+msgstr "Error opening folder browser"
+
+msgid "Error resetting settings: {error}"
+msgstr "Error resetting settings: {error}"
 
 msgid "Export"
 msgstr "Dışa Aktar"
@@ -871,6 +919,9 @@ msgstr "Dosya Yolu"
 
 msgid "File chooser not yet implemented"
 msgstr "Dosya seçici henüz uygulanmadı"
+
+msgid "File log level: {level}"
+msgstr "File log level: {level}"
 
 msgid "Files"
 msgstr "Dosyalar"
@@ -1082,6 +1133,12 @@ msgstr "Korece"
 msgid "Label"
 msgstr "Etiket"
 
+msgid "Label cleared"
+msgstr "Label cleared"
+
+msgid "Label set: {label}"
+msgstr "Label set: {label}"
+
 msgid "Label:"
 msgstr "Etiket:"
 
@@ -1090,6 +1147,9 @@ msgstr "Dil"
 
 msgid "Language switched to"
 msgstr "Dil değiştirildi:"
+
+msgid "Language switched to {lang}"
+msgstr "Language switched to {lang}"
 
 msgid "Language:"
 msgstr "Dil:"
@@ -1118,14 +1178,23 @@ msgstr "Uzantı mesaj oranını sınırla"
 msgid "List of bootstrap nodes for DHT initialization"
 msgstr "DHT başlatma için başlatma düğümlerinin listesi"
 
+msgid "Location set to: {location}"
+msgstr "Location set to: {location}"
+
 msgid "Log"
 msgstr "Günlük"
 
 msgid "Log Level:"
 msgstr "Günlük Seviyesi:"
 
+msgid "Log to console"
+msgstr "Log to console"
+
 msgid "Log to file"
 msgstr "Dosyaya günlüğe kaydet"
+
+msgid "Log to systemd"
+msgstr "Log to systemd"
 
 msgid "Log-Normal"
 msgstr "Log-Normal"
@@ -1244,6 +1313,15 @@ msgstr "Minimum duyuru aralığı (sn):"
 msgid "Minimize to system tray"
 msgstr "Sistem tepsisine küçült"
 
+msgid "Minimum log level for console output"
+msgstr "Minimum log level for console output"
+
+msgid "Minimum log level for file output"
+msgstr "Minimum log level for file output"
+
+msgid "Minimum log level for systemd output"
+msgstr "Minimum log level for systemd output"
+
 msgid "Minimum log level to record"
 msgstr "Kaydedilecek minimum günlük seviyesi"
 
@@ -1319,6 +1397,9 @@ msgstr "Note: Choosing \\"
 msgid "Note: Choosing \\\\"
 msgstr "Note: Choosing \\\\"
 
+msgid "Number of failed login attempts before temporarily banning IP"
+msgstr "Number of failed login attempts before temporarily banning IP"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Davranış kalıpları için analiz edilecek eş sayısı"
 
@@ -1351,6 +1432,12 @@ msgstr "Giden Bağlantılar"
 
 msgid "Outgoing Peer Connections"
 msgstr "Giden Eş Bağlantıları"
+
+msgid "Output logs to console/terminal"
+msgstr "Output logs to console/terminal"
+
+msgid "Output logs to systemd journal (journalctl)"
+msgstr "Output logs to systemd journal (journalctl)"
 
 msgid "Overlay Notification"
 msgstr "Bindirme Bildirimi"
@@ -1550,6 +1637,9 @@ msgstr "Başlangıç eşleri için ilerleme dağılımı (0.0 - 1.0)"
 msgid "Properties"
 msgstr "Özellikler"
 
+msgid "Properties: {name} - Full dialog not yet implemented"
+msgstr "Properties: {name} - Full dialog not yet implemented"
+
 msgid "Protocol Compliance:"
 msgstr "Protokol Uyumluluğu:"
 
@@ -1589,6 +1679,9 @@ msgstr "DFakeSeeder'dan Çık"
 msgid "Random"
 msgstr "Rastgele"
 
+msgid "Random port generated: {port}"
+msgstr "Random port generated: {port}"
+
 msgid "Rate of adaptation to swarm behavior"
 msgstr "Sürü davranışına uyum oranı"
 
@@ -1601,8 +1694,14 @@ msgstr "Gerçekçi varyasyonlar"
 msgid "Received"
 msgstr "Alındı"
 
+msgid "Recheck completed for {name}: {progress}%"
+msgstr "Recheck completed for {name}: {progress}%"
+
 msgid "Redistribution mode:"
 msgstr "Yeniden dağıtım modu:"
+
+msgid "Refresh Interval:"
+msgstr "Refresh Interval:"
 
 msgid "Relaxed"
 msgstr "Rahat"
@@ -1634,6 +1733,12 @@ msgstr "İzleyici Kaldır..."
 msgid "Remove torrent"
 msgstr "Torrent'i kaldır"
 
+msgid "Removed: {name}"
+msgstr "Removed: {name}"
+
+msgid "Removed: {name} (file deleted)"
+msgstr "Removed: {name} (file deleted)"
+
 msgid "Rename"
 msgstr "Yeniden Adlandır"
 
@@ -1642,6 +1747,9 @@ msgstr "Torrent'i Yeniden Adlandır"
 
 msgid "Rename..."
 msgstr "Yeniden Adlandır..."
+
+msgid "Renamed to: {name}"
+msgstr "Renamed to: {name}"
 
 msgid "Requests"
 msgstr "İstekler"
@@ -1708,6 +1816,9 @@ msgstr "Cumartesi"
 
 msgid "Save"
 msgstr "Kaydet"
+
+msgid "Save logs to file"
+msgstr "Save logs to file"
 
 msgid "Save logs to file in addition to console"
 msgstr "Konsola ek olarak günlükleri dosyaya kaydet"
@@ -1799,6 +1910,9 @@ msgstr "Gönderildi"
 msgid "Sequential Download"
 msgstr "Sıralı İndirme"
 
+msgid "Sequential download {status}"
+msgstr "Sequential download {status}"
+
 msgid "Server:"
 msgstr "Sunucu:"
 
@@ -1840,6 +1954,12 @@ msgstr "Yükleme Limitini Ayarla"
 
 msgid "Set Upload Limit..."
 msgstr "Yükleme Limitini Ayarla..."
+
+msgid "Settings exported to {path}"
+msgstr "Settings exported to {path}"
+
+msgid "Settings imported from {path}"
+msgstr "Settings imported from {path}"
 
 msgid "Settings saved successfully"
 msgstr "Ayarlar başarıyla kaydedildi"
@@ -1946,6 +2066,9 @@ msgstr "Pazar"
 msgid "Super Seeding"
 msgstr "Süper Paylaşım"
 
+msgid "Super seeding {status}"
+msgstr "Super seeding {status}"
+
 msgid "Swedish"
 msgstr "İsveççe"
 
@@ -1954,6 +2077,9 @@ msgstr "Sentetik Eş Sayısı:"
 
 msgid "System Theme"
 msgstr "Sistem Teması"
+
+msgid "Systemd log level: {level}"
+msgstr "Systemd log level: {level}"
 
 msgid "TCP fallback"
 msgstr "TCP yedekleme"
@@ -2054,6 +2180,15 @@ msgstr "İzleyici URL"
 msgid "Tracker URL:"
 msgstr "İzleyici URL:"
 
+msgid "Tracker added to {name}"
+msgstr "Tracker added to {name}"
+
+msgid "Tracker removal not yet implemented"
+msgstr "Tracker removal not yet implemented"
+
+msgid "Tracker updated for {name}"
+msgstr "Tracker updated for {name}"
+
 msgid "Trackers"
 msgstr "İzleyiciler"
 
@@ -2108,6 +2243,9 @@ msgstr "Arayüz Yenileme Oranı"
 msgid "UI refresh rate (sec):"
 msgstr "Arayüz yenileme oranı (sn):"
 
+msgid "UPnP {status}"
+msgstr "UPnP {status}"
+
 msgid "URL"
 msgstr "URL"
 
@@ -2153,6 +2291,12 @@ msgstr "Yükleme limiti (KB/s):"
 msgid "Upload limit (KB/s, 0 = unlimited):"
 msgstr "Yükleme limiti (KB/s, 0 = sınırsız):"
 
+msgid "Upload limit removed"
+msgstr "Upload limit removed"
+
+msgid "Upload limit set to {limit} KB/s"
+msgstr "Upload limit set to {limit} KB/s"
+
 msgid "Upload speed variance for aggressive profile"
 msgstr "Agresif profil için yükleme hızı varyansı"
 
@@ -2192,8 +2336,14 @@ msgstr "Web arayüzü girişi için kullanıcı adı"
 msgid "Username:"
 msgstr "Kullanıcı Adı:"
 
+msgid "Using global speed limits for {name}"
+msgstr "Using global speed limits for {name}"
+
 msgid "Validate DHT security tokens"
 msgstr "DHT güvenlik jetonlarını doğrula"
+
+msgid "Validate HTTP Host header to prevent DNS rebinding attacks"
+msgstr "Validate HTTP Host header to prevent DNS rebinding attacks"
 
 msgid "Validate extension messages"
 msgstr "Uzantı mesajlarını doğrula"
@@ -2224,6 +2374,9 @@ msgstr "Vuze/5.7.6.0"
 
 msgid "WARNING"
 msgstr "UYARI"
+
+msgid "Watch folder set to: {path}"
+msgstr "Watch folder set to: {path}"
 
 msgid "Web UI"
 msgstr "Web Arayüzü"
@@ -2279,11 +2432,17 @@ msgstr "istemci"
 msgid "connection_time"
 msgstr "connection_time"
 
+msgid "disabled"
+msgstr "disabled"
+
 msgid "download_rate"
 msgstr "download_rate"
 
 msgid "download_speed"
 msgstr "download_speed"
+
+msgid "enabled"
+msgstr "enabled"
 
 msgid "failure_reason"
 msgstr "failure_reason"
@@ -2299,6 +2458,9 @@ msgstr "handshake_complete"
 
 msgid "id"
 msgstr "#"
+
+msgid "incoming_connections_tab"
+msgstr "incoming_connections_tab"
 
 msgid "leechers"
 msgstr "leechers"
@@ -2326,6 +2488,9 @@ msgstr "open-menu-symbolic"
 
 msgid "options_tab"
 msgstr "options_tab"
+
+msgid "outgoing_connections_tab"
+msgstr "outgoing_connections_tab"
 
 msgid "peer_choking"
 msgstr "peer_choking"
@@ -2384,6 +2549,9 @@ msgstr "Durum"
 msgid "threshold"
 msgstr "threshold"
 
+msgid "toggleAltSpeed()"
+msgstr "toggleAltSpeed()"
+
 msgid "total_downloaded"
 msgstr "total_downloaded"
 
@@ -2416,6 +2584,27 @@ msgstr "ut_metadata (Metadata Değişimi)"
 
 msgid "ut_pex (Peer Exchange)"
 msgstr "ut_pex (Eş Değişimi)"
+
+msgid "{name} moved to bottom"
+msgstr "{name} moved to bottom"
+
+msgid "{name} moved to top"
+msgstr "{name} moved to top"
+
+msgid "{name} progress set to {progress}%"
+msgstr "{name} progress set to {progress}%"
+
+msgid "{name} set to 100% complete"
+msgstr "{name} set to 100% complete"
+
+msgid "{name} set to high priority"
+msgstr "{name} set to high priority"
+
+msgid "{name} set to low priority"
+msgstr "{name} set to low priority"
+
+msgid "{name} set to normal priority"
+msgstr "{name} set to normal priority"
 
 msgid "µTorrent"
 msgstr "µTorrent"

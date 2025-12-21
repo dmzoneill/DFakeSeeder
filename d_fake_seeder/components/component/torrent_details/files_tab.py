@@ -163,6 +163,8 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 "🔍 FILES TAB: Getting torrent object from model using attributes",
                 extra={"class_name": self.__class__.__name__},
             )
+            if not self.model:
+                return []
             torrent = self.model.get_torrent_by_attributes(attributes)
             if not torrent:
                 self.logger.warning(

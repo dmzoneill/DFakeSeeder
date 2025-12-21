@@ -2,6 +2,7 @@
 Base class for torrent details tab components.
 
 Provides common functionality and interface for all torrent detail tabs.
+Now extends Component for consistent hierarchy with BaseSettingsTab.
 """
 
 # isort: skip_file
@@ -15,16 +16,19 @@ import gi
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk  # noqa: E402
 
+from d_fake_seeder.components.component.base_component import Component  # noqa: E402
 from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
 from d_fake_seeder.lib.logger import logger  # noqa: E402
-from d_fake_seeder.lib.util.cleanup_mixin import CleanupMixin  # noqa: E402
 
 # fmt: on
 
 
-class BaseTorrentTab(ABC, CleanupMixin):
+class BaseTorrentTab(Component, ABC):
     """
     Abstract base class for torrent details tab components.
+
+    Extends Component for consistent hierarchy with BaseSettingsTab.
+    CleanupMixin functionality is inherited through Component.
 
     Each tab is responsible for:
     - Managing its specific UI elements
@@ -41,7 +45,7 @@ class BaseTorrentTab(ABC, CleanupMixin):
             builder: GTK Builder instance with UI loaded
             model: Application model instance
         """
-        CleanupMixin.__init__(self)
+        super().__init__()  # Calls Component.__init__() -> CleanupMixin.__init__()
         self.builder = builder
         self.model = model
         self.logger = logger
@@ -69,6 +73,41 @@ class BaseTorrentTab(ABC, CleanupMixin):
         # Show empty state by default since no torrent is selected on init
         self._show_empty_state()
 
+    # ========== Component Abstract Method Implementations ==========
+    # These provide sensible defaults for torrent tabs
+
+    def handle_model_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
+        """Handle model data changes - delegates to on_torrent_data_changed if applicable."""
+        self.logger.trace(
+            "BaseTorrentTab model changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def handle_attribute_changed(self, source: Any, key: Any, value: Any) -> None:
+        """Handle attribute changes."""
+        self.logger.trace(
+            "BaseTorrentTab attribute changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def handle_settings_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
+        """Handle settings changes - delegates to on_settings_changed."""
+        self.logger.trace(
+            "BaseTorrentTab settings changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
+        """Update view - delegates to update_content for torrent tabs."""
+        self.logger.trace(
+            "BaseTorrentTab update view",
+            extra={"class_name": self.__class__.__name__},
+        )
+        if torrent:
+            self.update_content(torrent)
+
+    # ========== BaseTorrentTab Abstract Methods ==========
+
     @property
     @abstractmethod
     def tab_name(self) -> str:
@@ -85,6 +124,18 @@ class BaseTorrentTab(ABC, CleanupMixin):
     def _init_widgets(self) -> None:
         """Initialize and cache tab-specific widgets."""
         pass
+
+    @abstractmethod
+    def update_content(self, torrent: Any) -> None:
+        """
+        Update tab content with new torrent data.
+
+        Args:
+            torrent: Torrent object to display
+        """
+        pass
+
+    # ========== Common Tab Methods ==========
 
     def _connect_signals(self) -> None:
         """Connect signal handlers for this tab. Override in subclasses if needed."""
@@ -115,16 +166,6 @@ class BaseTorrentTab(ABC, CleanupMixin):
             self._widgets[widget_id] = self.builder.get_object(widget_id)
 
         return self._widgets[widget_id]
-
-    @abstractmethod
-    def update_content(self, torrent: Any) -> None:
-        """
-        Update tab content with new torrent data.
-
-        Args:
-            torrent: Torrent object to display
-        """
-        pass
 
     def clear_content(self) -> None:
         """Clear tab content. Override in subclasses if needed."""
@@ -255,6 +296,22 @@ class BaseTorrentTab(ABC, CleanupMixin):
         """Get the currently displayed torrent."""
         return self._current_torrent
 
+    def _(self, text: str) -> str:
+        """
+        Translate a string using the model's translation function.
+
+        Args:
+            text: String to translate
+
+        Returns:
+            Translated string or original if translation not available
+        """
+        if self.model and hasattr(self.model, "get_translate_func"):
+            translate_func = self.model.get_translate_func()
+            if translate_func:
+                return translate_func(text)
+        return text
+
     def is_visible(self) -> bool:
         """Check if tab is currently visible."""
         try:
@@ -273,8 +330,8 @@ class BaseTorrentTab(ABC, CleanupMixin):
     def cleanup(self) -> None:
         """Cleanup resources when tab is destroyed."""
         try:
-            # Clean up tracked resources (signals, bindings, timeouts, stores)
-            CleanupMixin.cleanup(self)
+            # Clean up tracked resources via Component -> CleanupMixin
+            super().cleanup()
 
             # Clear tab-specific resources
             self._current_torrent = None
@@ -296,7 +353,9 @@ class BaseTorrentTab(ABC, CleanupMixin):
         try:
             # Get translation function from model
             translate_func = (
-                self.model.get_translate_func() if hasattr(self.model, "get_translate_func") else lambda x: x
+                self.model.get_translate_func()
+                if self.model and hasattr(self.model, "get_translate_func")
+                else lambda x: x
             )
 
             # Translate the name label

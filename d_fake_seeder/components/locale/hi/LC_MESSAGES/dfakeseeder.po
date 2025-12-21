@@ -23,6 +23,9 @@ msgstr "#"
 msgid "(0 = unlimited)"
 msgstr "(0 = असीमित)"
 
+msgid "-DE2003-"
+msgstr "-DE2003-"
+
 msgid "0 / 250"
 msgstr "0 / 250"
 
@@ -326,6 +329,9 @@ msgstr "संतुलित प्रोफाइल डाउनलोड ग
 msgid "Balanced profile upload speed"
 msgstr "संतुलित प्रोफाइल अपलोड गति"
 
+msgid "Ban after failed logins:"
+msgstr "Ban after failed logins:"
+
 msgid "Behavior Variation:"
 msgstr "व्यवहार विविधता:"
 
@@ -340,6 +346,9 @@ msgstr "बंगाली"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
+
+msgid "Bind IP Address:"
+msgstr "Bind IP Address:"
 
 msgid "Bind to localhost only"
 msgstr "केवल localhost से बाइंड करें"
@@ -482,6 +491,21 @@ msgstr "रूढ़िवादी प्रोफाइल अपलोड ग
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "रूढ़िवादी: कम गति, कम कनेक्शन, बैकग्राउंड सीडिंग के लिए आदर्श"
 
+msgid "Console log level: {level}"
+msgstr "Console log level: {level}"
+
+msgid "Copied info hash: {hash}..."
+msgstr "Copied info hash: {hash}..."
+
+msgid "Copied magnet link for {name}"
+msgstr "Copied magnet link for {name}"
+
+msgid "Copied name: {name}"
+msgstr "Copied name: {name}"
+
+msgid "Copied tracker URL"
+msgstr "Copied tracker URL"
+
 msgid "Copy"
 msgstr "कॉपी करें"
 
@@ -623,6 +647,12 @@ msgstr "डाउनलोड सीमा (KB/s):"
 msgid "Download limit (KB/s, 0 = unlimited):"
 msgstr "डाउनलोड सीमा (KB/s, 0 = असीमित):"
 
+msgid "Download limit removed"
+msgstr "Download limit removed"
+
+msgid "Download limit set to {limit} KB/s"
+msgstr "Download limit set to {limit} KB/s"
+
 msgid "Download speed variance for aggressive profile"
 msgstr "आक्रामक प्रोफाइल के लिए डाउनलोड गति विचरण"
 
@@ -749,6 +779,9 @@ msgstr "अतिरिक्त लॉगिंग और त्रुटि �
 msgid "Enable dynamic client profile switching"
 msgstr "डायनामिक क्लाइंट प्रोफाइल स्विचिंग सक्षम करें"
 
+msgid "Enable host header validation"
+msgstr "Enable host header validation"
+
 msgid "Enable lt_donthave extension for piece availability"
 msgstr "पीस उपलब्धता के लिए lt_donthave एक्सटेंशन सक्षम करें"
 
@@ -830,8 +863,23 @@ msgstr "अंग्रेजी"
 msgid "Error"
 msgstr "त्रुटि"
 
+msgid "Error applying seeding profile"
+msgstr "Error applying seeding profile"
+
 msgid "Error changing language"
 msgstr "भाषा बदलने में त्रुटि"
+
+msgid "Error exporting settings: {error}"
+msgstr "Error exporting settings: {error}"
+
+msgid "Error importing settings: {error}"
+msgstr "Error importing settings: {error}"
+
+msgid "Error opening folder browser"
+msgstr "Error opening folder browser"
+
+msgid "Error resetting settings: {error}"
+msgstr "Error resetting settings: {error}"
 
 msgid "Export"
 msgstr "निर्यात"
@@ -871,6 +919,9 @@ msgstr "फाइल पथ"
 
 msgid "File chooser not yet implemented"
 msgstr "फाइल चूज़र अभी तक लागू नहीं"
+
+msgid "File log level: {level}"
+msgstr "File log level: {level}"
 
 msgid "Files"
 msgstr "फाइलें"
@@ -1082,6 +1133,12 @@ msgstr "कोरियाई"
 msgid "Label"
 msgstr "लेबल"
 
+msgid "Label cleared"
+msgstr "Label cleared"
+
+msgid "Label set: {label}"
+msgstr "Label set: {label}"
+
 msgid "Label:"
 msgstr "लेबल:"
 
@@ -1090,6 +1147,9 @@ msgstr "भाषा"
 
 msgid "Language switched to"
 msgstr "भाषा बदली गई"
+
+msgid "Language switched to {lang}"
+msgstr "Language switched to {lang}"
 
 msgid "Language:"
 msgstr "भाषा:"
@@ -1118,14 +1178,23 @@ msgstr "एक्सटेंशन मैसेज दर सीमित क�
 msgid "List of bootstrap nodes for DHT initialization"
 msgstr "DHT प्रारंभीकरण के लिए बूटस्ट्रैप नोड्स की सूची"
 
+msgid "Location set to: {location}"
+msgstr "Location set to: {location}"
+
 msgid "Log"
 msgstr "लॉग"
 
 msgid "Log Level:"
 msgstr "लॉग स्तर:"
 
+msgid "Log to console"
+msgstr "Log to console"
+
 msgid "Log to file"
 msgstr "फ़ाइल में लॉग करें"
+
+msgid "Log to systemd"
+msgstr "Log to systemd"
 
 msgid "Log-Normal"
 msgstr "लॉग-नॉर्मल"
@@ -1244,6 +1313,15 @@ msgstr "न्यूनतम घोषणा अंतराल (सेकं�
 msgid "Minimize to system tray"
 msgstr "सिस्टम ट्रे में छोटा करें"
 
+msgid "Minimum log level for console output"
+msgstr "Minimum log level for console output"
+
+msgid "Minimum log level for file output"
+msgstr "Minimum log level for file output"
+
+msgid "Minimum log level for systemd output"
+msgstr "Minimum log level for systemd output"
+
 msgid "Minimum log level to record"
 msgstr "रिकॉर्ड करने के लिए न्यूनतम लॉग स्तर"
 
@@ -1319,6 +1397,9 @@ msgstr "Note: Choosing \\"
 msgid "Note: Choosing \\\\"
 msgstr "Note: Choosing \\\\"
 
+msgid "Number of failed login attempts before temporarily banning IP"
+msgstr "Number of failed login attempts before temporarily banning IP"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "व्यवहार पैटर्न के लिए विश्लेषण करने वाले पीयर्स की संख्या"
 
@@ -1351,6 +1432,12 @@ msgstr "बाहर जाने वाले कनेक्शन"
 
 msgid "Outgoing Peer Connections"
 msgstr "बाहर जाने वाले पीयर कनेक्शन"
+
+msgid "Output logs to console/terminal"
+msgstr "Output logs to console/terminal"
+
+msgid "Output logs to systemd journal (journalctl)"
+msgstr "Output logs to systemd journal (journalctl)"
 
 msgid "Overlay Notification"
 msgstr "ओवरले नोटिफिकेशन"
@@ -1550,6 +1637,9 @@ msgstr "शुरुआती पीअर्स के लिए प्रग�
 msgid "Properties"
 msgstr "गुण"
 
+msgid "Properties: {name} - Full dialog not yet implemented"
+msgstr "Properties: {name} - Full dialog not yet implemented"
+
 msgid "Protocol Compliance:"
 msgstr "प्रोटोकॉल अनुपालन:"
 
@@ -1589,6 +1679,9 @@ msgstr "DFakeSeeder बंद करें"
 msgid "Random"
 msgstr "यादृच्छिक"
 
+msgid "Random port generated: {port}"
+msgstr "Random port generated: {port}"
+
 msgid "Rate of adaptation to swarm behavior"
 msgstr "स्वार्म व्यवहार के अनुकूलन की दर"
 
@@ -1601,8 +1694,14 @@ msgstr "वास्तविक विविधताएं"
 msgid "Received"
 msgstr "प्राप्त"
 
+msgid "Recheck completed for {name}: {progress}%"
+msgstr "Recheck completed for {name}: {progress}%"
+
 msgid "Redistribution mode:"
 msgstr "पुनर्वितरण मोड:"
+
+msgid "Refresh Interval:"
+msgstr "Refresh Interval:"
 
 msgid "Relaxed"
 msgstr "शिथिल"
@@ -1634,6 +1733,12 @@ msgstr "ट्रैकर हटाएँ..."
 msgid "Remove torrent"
 msgstr "टॉरेंट हटाएं"
 
+msgid "Removed: {name}"
+msgstr "Removed: {name}"
+
+msgid "Removed: {name} (file deleted)"
+msgstr "Removed: {name} (file deleted)"
+
 msgid "Rename"
 msgstr "नाम बदलें"
 
@@ -1642,6 +1747,9 @@ msgstr "टोरेंट का नाम बदलें"
 
 msgid "Rename..."
 msgstr "नाम बदलें..."
+
+msgid "Renamed to: {name}"
+msgstr "Renamed to: {name}"
 
 msgid "Requests"
 msgstr "अनुरोध"
@@ -1708,6 +1816,9 @@ msgstr "शनिवार"
 
 msgid "Save"
 msgstr "सहेजें"
+
+msgid "Save logs to file"
+msgstr "Save logs to file"
 
 msgid "Save logs to file in addition to console"
 msgstr "कंसोल के अलावा फ़ाइल में लॉग सहेजें"
@@ -1799,6 +1910,9 @@ msgstr "भेजा गया"
 msgid "Sequential Download"
 msgstr "अनुक्रमिक डाउनलोड"
 
+msgid "Sequential download {status}"
+msgstr "Sequential download {status}"
+
 msgid "Server:"
 msgstr "सर्वर:"
 
@@ -1840,6 +1954,12 @@ msgstr "अपलोड सीमा सेट करें"
 
 msgid "Set Upload Limit..."
 msgstr "अपलोड सीमा सेट करें..."
+
+msgid "Settings exported to {path}"
+msgstr "Settings exported to {path}"
+
+msgid "Settings imported from {path}"
+msgstr "Settings imported from {path}"
 
 msgid "Settings saved successfully"
 msgstr "सेटिंग्स सफलतापूर्वक सहेजी गई"
@@ -1946,6 +2066,9 @@ msgstr "रविवार"
 msgid "Super Seeding"
 msgstr "सुपर सीडिंग"
 
+msgid "Super seeding {status}"
+msgstr "Super seeding {status}"
+
 msgid "Swedish"
 msgstr "स्वीडिश"
 
@@ -1954,6 +2077,9 @@ msgstr "सिंथेटिक पीयर काउंट:"
 
 msgid "System Theme"
 msgstr "सिस्टम थीम"
+
+msgid "Systemd log level: {level}"
+msgstr "Systemd log level: {level}"
 
 msgid "TCP fallback"
 msgstr "TCP फॉलबैक"
@@ -2054,6 +2180,15 @@ msgstr "ट्रैकर URL"
 msgid "Tracker URL:"
 msgstr "ट्रैकर URL:"
 
+msgid "Tracker added to {name}"
+msgstr "Tracker added to {name}"
+
+msgid "Tracker removal not yet implemented"
+msgstr "Tracker removal not yet implemented"
+
+msgid "Tracker updated for {name}"
+msgstr "Tracker updated for {name}"
+
 msgid "Trackers"
 msgstr "ट्रैकर्स"
 
@@ -2108,6 +2243,9 @@ msgstr "UI रिफ्रेश दर"
 msgid "UI refresh rate (sec):"
 msgstr "UI रिफ्रेश दर (सेकंड):"
 
+msgid "UPnP {status}"
+msgstr "UPnP {status}"
+
 msgid "URL"
 msgstr "URL"
 
@@ -2153,6 +2291,12 @@ msgstr "अपलोड सीमा (KB/s):"
 msgid "Upload limit (KB/s, 0 = unlimited):"
 msgstr "अपलोड सीमा (KB/s, 0 = असीमित):"
 
+msgid "Upload limit removed"
+msgstr "Upload limit removed"
+
+msgid "Upload limit set to {limit} KB/s"
+msgstr "Upload limit set to {limit} KB/s"
+
 msgid "Upload speed variance for aggressive profile"
 msgstr "आक्रामक प्रोफाइल के लिए अपलोड गति विचरण"
 
@@ -2192,8 +2336,14 @@ msgstr "वेब इंटरफ़ेस लॉगिन के लिए उ�
 msgid "Username:"
 msgstr "उपयोगकर्ता नाम:"
 
+msgid "Using global speed limits for {name}"
+msgstr "Using global speed limits for {name}"
+
 msgid "Validate DHT security tokens"
 msgstr "DHT सुरक्षा टोकन्स को वैलिडेट करें"
+
+msgid "Validate HTTP Host header to prevent DNS rebinding attacks"
+msgstr "Validate HTTP Host header to prevent DNS rebinding attacks"
 
 msgid "Validate extension messages"
 msgstr "एक्सटेंशन संदेश सत्यापित करें"
@@ -2224,6 +2374,9 @@ msgstr "Vuze/5.7.6.0"
 
 msgid "WARNING"
 msgstr "चेतावनी"
+
+msgid "Watch folder set to: {path}"
+msgstr "Watch folder set to: {path}"
 
 msgid "Web UI"
 msgstr "वेब UI"
@@ -2279,11 +2432,17 @@ msgstr "क्लाइंट"
 msgid "connection_time"
 msgstr "कनेक्शन समय"
 
+msgid "disabled"
+msgstr "disabled"
+
 msgid "download_rate"
 msgstr "डाउनलोड दर"
 
 msgid "download_speed"
 msgstr "डाउनलोड गति"
+
+msgid "enabled"
+msgstr "enabled"
 
 msgid "failure_reason"
 msgstr "विफलता का कारण"
@@ -2299,6 +2458,9 @@ msgstr "हैंडशेक पूरा"
 
 msgid "id"
 msgstr "#"
+
+msgid "incoming_connections_tab"
+msgstr "incoming_connections_tab"
 
 msgid "leechers"
 msgstr "लीचर्स"
@@ -2326,6 +2488,9 @@ msgstr "open-menu-symbolic"
 
 msgid "options_tab"
 msgstr "ऑप्शन्स_टैब"
+
+msgid "outgoing_connections_tab"
+msgstr "outgoing_connections_tab"
 
 msgid "peer_choking"
 msgstr "पीयर चोक कर रहा है"
@@ -2384,6 +2549,9 @@ msgstr "स्थिति"
 msgid "threshold"
 msgstr "सीमा"
 
+msgid "toggleAltSpeed()"
+msgstr "toggleAltSpeed()"
+
 msgid "total_downloaded"
 msgstr "कुल डाउनलोड"
 
@@ -2416,6 +2584,27 @@ msgstr "ut_metadata (मेटाडेटा एक्सचेंज)"
 
 msgid "ut_pex (Peer Exchange)"
 msgstr "ut_pex (पीयर एक्सचेंज)"
+
+msgid "{name} moved to bottom"
+msgstr "{name} moved to bottom"
+
+msgid "{name} moved to top"
+msgstr "{name} moved to top"
+
+msgid "{name} progress set to {progress}%"
+msgstr "{name} progress set to {progress}%"
+
+msgid "{name} set to 100% complete"
+msgstr "{name} set to 100% complete"
+
+msgid "{name} set to high priority"
+msgstr "{name} set to high priority"
+
+msgid "{name} set to low priority"
+msgstr "{name} set to low priority"
+
+msgid "{name} set to normal priority"
+msgstr "{name} set to normal priority"
 
 msgid "µTorrent"
 msgstr "µTorrent"

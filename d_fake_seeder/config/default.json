@@ -141,7 +141,10 @@
         "log_buffer_max_lines": 1000,
         "theme_style": "classic",
         "color_scheme": "auto",
-        "monitoring_refresh_interval": 2
+        "monitoring_refresh_interval": 2,
+        "tickspeed_debounce_ms": 500,
+        "settings_save_debounce_ms": 1000,
+        "notification_close_animation_ms": 200
     },
     "seeders": {
         "port_range_min": 1025,
@@ -355,5 +358,51 @@
             "stopped_min_percentage": 20,
             "stopped_max_percentage": 40
         }
+    },
+    "notification_settings": {
+        "enabled": true,
+        "position": "top-right",
+        "animation": "slide",
+        "animation_duration_ms": 300,
+        "max_visible": 3,
+        "show_in_statusbar": true,
+        "sound_enabled": false,
+        "info_timeout_ms": 1500,
+        "success_timeout_ms": 2000,
+        "warning_timeout_ms": 4000,
+        "error_timeout_ms": 0
+    },
+    "tray_settings": {
+        "retry_delay_seconds": 3,
+        "max_retries": 5,
+        "update_interval_seconds": 10,
+        "reconnect_delay_seconds": 3,
+        "quit_delay_seconds": 2
+    },
+    "upnp_settings": {
+        "discover_delay_ms": 200,
+        "setup_timeout_seconds": 30
+    },
+    "monitoring_settings": {
+        "max_graph_samples": 30,
+        "fd_graph_max": 200,
+        "connections_graph_max": 50,
+        "threads_graph_max": 100,
+        "disk_io_graph_max": 10,
+        "network_io_graph_max": 100,
+        "torrent_graph_max": 20
+    },
+    "scheduler_settings": {
+        "check_interval_seconds": 60
+    },
+    "dht_settings": {
+        "bootstrap_interval_seconds": 300,
+        "announce_interval_seconds": 600,
+        "thread_join_timeout_seconds": 2.0
+    },
+    "lpd_settings": {
+        "port": 6771,
+        "announce_interval_seconds": 300,
+        "socket_timeout_seconds": 1.0
     }
 }

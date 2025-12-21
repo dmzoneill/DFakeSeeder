@@ -48,9 +48,13 @@ class HTTPSeeder(BaseSeeder):
                 )
                 return False  # type: ignore[return-value]
 
-            # Only notify if view instance still exists (may be None during shutdown)
+            # Notify with torrent name for context
             if View.instance is not None:
-                View.instance.notify("load_peers " + self.tracker_url)
+                View.instance.notify(
+                    "Loading peers for {name}",
+                    translate=True,
+                    name=self.torrent.name[:40] + "..." if len(self.torrent.name) > 40 else self.torrent.name,
+                )
 
             # Mark tracker as announcing
             self._set_tracker_announcing()

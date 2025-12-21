@@ -26,6 +26,7 @@ from .advanced_tab import AdvancedTab  # noqa
 from .bittorrent_tab import BitTorrentTab  # noqa
 from .connection_tab import ConnectionTab  # noqa
 from .dht_tab import DHTTab  # noqa
+from .notifications_tab import NotificationsTab  # noqa
 
 # Import all tab classes  # noqa
 from .general_tab import GeneralTab  # noqa
@@ -125,6 +126,13 @@ class SettingsDialog:
             "SettingsDialog",
         )
 
+    def _(self, text: str) -> str:
+        """Helper for translating strings using the model's translation function."""
+        if hasattr(self, "model") and self.model and hasattr(self.model, "get_translate_func"):
+            translate_func = self.model.get_translate_func()
+            return str(translate_func(text))
+        return text
+
     def _initialize_tabs(self) -> None:
         """Initialize all settings tab components."""
         logger.trace("Starting tab initialization", "SettingsDialog")
@@ -140,6 +148,7 @@ class SettingsDialog:
                 "ProtocolExtensionsTab": ProtocolExtensionsTab,
                 "SimulationTab": SimulationTab,
                 "WebUITab": WebUITab,
+                "NotificationsTab": NotificationsTab,
                 "AdvancedTab": AdvancedTab,
             }
             # Load tab configuration
@@ -629,7 +638,7 @@ class SettingsDialog:
             logger.info("Settings applied successfully")
 
             # Show brief confirmation
-            self._show_notification("Settings saved successfully")
+            self._show_notification(self._("Settings saved successfully"))
         except Exception as e:
             logger.error(f"Error handling apply button: {e}")
 

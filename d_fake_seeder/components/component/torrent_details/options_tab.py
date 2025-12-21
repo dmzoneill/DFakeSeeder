@@ -365,7 +365,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         try:
             # Get translation function from model
             translate_func = (
-                self.model.get_translate_func() if hasattr(self.model, "get_translate_func") else lambda x: x
+                self.model.get_translate_func()
+                if self.model and hasattr(self.model, "get_translate_func")
+                else lambda x: x
             )
 
             # Create mapping of attribute names to translatable display strings
@@ -437,7 +439,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         try:
             # Get translation function from model
             translate_func = (
-                self.model.get_translate_func() if hasattr(self.model, "get_translate_func") else lambda x: x
+                self.model.get_translate_func()
+                if self.model and hasattr(self.model, "get_translate_func")
+                else lambda x: x
             )
 
             message_text = translate_func("No editable options available for this torrent.")

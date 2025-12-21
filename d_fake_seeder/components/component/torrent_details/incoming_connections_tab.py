@@ -3,21 +3,24 @@ Incoming Connections Component
 
 Manages the UI for displaying incoming peer connections, showing information
 about peers that have connected to our peer server.
+
+Now extends BaseTorrentTab for consistent hierarchy with other torrent detail tabs.
 """
 
 # isort: skip_file
 
 # fmt: off
-from typing import Dict,  Any
+from typing import Dict, Any
 import gi
 
+from d_fake_seeder.components.component.base_component import Component
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.connection_manager import get_connection_manager
 from d_fake_seeder.domain.torrent.model.connection_peer import ConnectionPeer
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.column_translation_mixin import ColumnTranslationMixin
 
-from ..base_component import Component
+from .base_tab import BaseTorrentTab
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("GioUnix", "2.0")
@@ -28,20 +31,43 @@ from gi.repository import GLib, GObject, Gtk, Pango  # noqa: E402
 # fmt: on
 
 
-class IncomingConnectionsTab(Component, ColumnTranslationMixin):
-    """Component for managing incoming connections display"""
+class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
+    """Component for managing incoming connections display.
+
+    Extends BaseTorrentTab for consistent hierarchy with other torrent detail tabs.
+    """
+
+    @property
+    def tab_name(self) -> str:
+        """Return the name of this tab for identification."""
+        return "Incoming Connections"
+
+    @property
+    def tab_widget_id(self) -> str:
+        """Return the GTK widget ID for this tab."""
+        return "incoming_connections_tab"
 
     def __init__(self, builder: Any, model: Any) -> None:
-        super().__init__()
+        # Initialize ColumnTranslationMixin first
         ColumnTranslationMixin.__init__(self)
+
+        # Use centralized connection manager (needed before parent __init__)
+        self.connection_manager = get_connection_manager()
+
+        # Data store for UI display (filtered view)
+        self.incoming_connections: Dict[str, Any] = {}  # ip:port -> ConnectionPeer (filtered for display)
+        self.count_update_callback = None  # Callback to update connection counts
+
+        # Initialize parent (calls _init_widgets, _connect_signals, etc.)
+        super().__init__(builder, model)
 
         logger.trace(
             "IncomingConnectionsTab view startup",
             extra={"class_name": self.__class__.__name__},
         )
-        self.builder = builder
-        self.model = model
 
+    def _init_widgets(self) -> None:
+        """Initialize and cache tab-specific widgets."""
         # Get UI elements
         self.incoming_columnview = self.builder.get_object("incoming_columnview")
         self.filter_checkbox = self.builder.get_object("incoming_filter_selected_checkbox")
@@ -49,23 +75,17 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         # Initialize the column view
         self.init_incoming_column_view()
 
-        # Use centralized connection manager
-        self.connection_manager = get_connection_manager()
-
-        # Data store for UI display (filtered view)
-        self.incoming_connections: Dict[str, Any] = {}  # ip:port -> ConnectionPeer (filtered for display)
-        self.selected_torrent = None
-        self.count_update_callback = None  # Callback to update connection counts
-
-        # Register for connection updates
-        self.connection_manager.add_update_callback(self.on_connections_updated)
-
         # Load byte formatting thresholds from settings
         settings = AppSettings.get_instance()
         ui_settings = getattr(settings, "ui_settings", {})
         self.kb_threshold = ui_settings.get("byte_format_threshold_kb", 1024)
         self.mb_threshold = ui_settings.get("byte_format_threshold_mb", 1048576)
         self.gb_threshold = ui_settings.get("byte_format_threshold_gb", 1073741824)
+
+    def _connect_signals(self) -> None:
+        """Connect signal handlers for this tab."""
+        # Register for connection updates
+        self.connection_manager.add_update_callback(self.on_connections_updated)
 
         # Connect checkbox signal
         self.track_signal(
@@ -89,6 +109,14 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
                     f"Could not connect to language-changed signal: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
+
+    def update_content(self, torrent: Any) -> None:
+        """Update tab content when torrent selection changes.
+
+        For connection tabs, this applies the current filter with the selected torrent.
+        """
+        self.selected_torrent = torrent
+        self.apply_filter()
 
     def on_connections_updated(self) -> None:
         """Called when the connection manager updates connections"""
@@ -431,6 +459,9 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
         try:
             filter_enabled = self.filter_checkbox.get_active()
 
+            # Use _current_torrent from BaseTorrentTab if selected_torrent not set
+            selected = getattr(self, "selected_torrent", None) or self._current_torrent
+
             # Determine which connections should be shown
             connections_to_show = []
             for (
@@ -439,9 +470,9 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
             ) in self.connection_manager.get_all_incoming_connections().items():
                 should_show = True
 
-                if filter_enabled and self.selected_torrent:
+                if filter_enabled and selected:
                     # Only show connections for the selected torrent
-                    should_show = connection_peer.torrent_hash == self.selected_torrent.id
+                    should_show = connection_peer.torrent_hash == selected.id
 
                 if should_show and connection_key not in self.incoming_connections:
                     # Only add if not already shown to avoid duplicates
@@ -649,34 +680,6 @@ class IncomingConnectionsTab(Component, ColumnTranslationMixin):
     def all_connections(self) -> Any:
         """Property for backward compatibility - delegates to connection manager"""
         return self.connection_manager.get_all_incoming_connections()
-
-    def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
-        """Handle model changes"""
-        logger.trace(
-            "IncomingConnections model changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_attribute_changed(self, source: Any, key: Any, value: Any) -> None:
-        """Handle attribute changes"""
-        logger.trace(
-            "IncomingConnections attribute changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def handle_settings_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
-        """Handle settings changes"""
-        logger.trace(
-            "IncomingConnections settings changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
-        """Update view"""
-        logger.trace(
-            "IncomingConnections update view",
-            extra={"class_name": self.__class__.__name__},
-        )
 
     def on_language_changed(self, source: Any = None, new_language: Any = None) -> None:
         """Handle language change events for column translation."""

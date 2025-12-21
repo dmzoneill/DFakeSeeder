@@ -393,3 +393,237 @@ notebook > header.left > tabs:not(:last-child) {
     background-color: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.5);
 }
+
+/* =========================================
+   Toast Notifications
+   ========================================= */
+
+/* Container for notification stack */
+.notification-container {
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Base notification toast - uses Frame for proper background */
+/* IMPORTANT: GTK4 Frame needs explicit background-color with !important */
+frame.notification-toast,
+.notification-toast,
+.notification-toast > box {
+    pointer-events: auto;
+    /* Force solid background - override all theme defaults */
+    background: #2d2d2d !important;
+    background-color: #2d2d2d !important;
+    border-radius: 12px;
+    min-width: 320px;
+    max-width: 480px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5),
+                0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 200ms ease-out;
+    color: #ffffff;
+}
+
+.notification-toast {
+    padding: 14px 18px;
+}
+
+.notification-toast > box {
+    padding: 12px 16px;
+    background: inherit;
+}
+
+/* Remove default frame border styling */
+.notification-toast > border {
+    border: none;
+    background: transparent;
+}
+
+/* Light theme override - detect via prefers-color-scheme or theme class */
+@media (prefers-color-scheme: light) {
+    frame.notification-toast,
+    .notification-toast,
+    .notification-toast > box {
+        background: #fafafa !important;
+        background-color: #fafafa !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15),
+                    0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        color: #1e1e1e;
+    }
+}
+
+/* Notification type styling - Info (default) */
+frame.notification-toast.notification-info,
+.notification-toast.notification-info,
+.notification-toast.notification-info > box {
+    border-left: 5px solid #3584e4;
+    background: #2a3a4d !important;
+    background-color: #2a3a4d !important;
+}
+
+.notification-toast.notification-info .notification-icon {
+    color: #62a0ea;
+}
+
+/* Notification type styling - Success */
+frame.notification-toast.notification-success,
+.notification-toast.notification-success,
+.notification-toast.notification-success > box {
+    border-left: 5px solid #33d17a;
+    background: #2a3d2a !important;
+    background-color: #2a3d2a !important;
+}
+
+.notification-toast.notification-success .notification-icon {
+    color: #57e389;
+}
+
+/* Notification type styling - Warning */
+frame.notification-toast.notification-warning,
+.notification-toast.notification-warning,
+.notification-toast.notification-warning > box {
+    border-left: 5px solid #f6d32d;
+    background: #3d3a2a !important;
+    background-color: #3d3a2a !important;
+}
+
+.notification-toast.notification-warning .notification-icon {
+    color: #f8e45c;
+}
+
+/* Notification type styling - Error */
+frame.notification-toast.notification-error,
+.notification-toast.notification-error,
+.notification-toast.notification-error > box {
+    border-left: 5px solid #e01b24;
+    background: #3d2a2a !important;
+    background-color: #3d2a2a !important;
+}
+
+.notification-toast.notification-error .notification-icon {
+    color: #ff6b6b;
+}
+
+/* Notification icon */
+.notification-icon {
+    opacity: 0.9;
+}
+
+/* Notification message text */
+.notification-message {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Notification action button */
+.notification-action {
+    color: @accent_color;
+    font-weight: 600;
+}
+
+.notification-action:hover {
+    background-color: alpha(@accent_color, 0.1);
+}
+
+/* Notification close button */
+.notification-close {
+    opacity: 0.6;
+    min-width: 24px;
+    min-height: 24px;
+}
+
+.notification-close:hover {
+    opacity: 1;
+    background-color: alpha(@destructive_color, 0.1);
+}
+
+/* =========================================
+   Notification Animations
+   ========================================= */
+
+/* Slide animation - entry */
+.notification-slide-in {
+    animation: notification-slide-in 300ms ease-out forwards;
+}
+
+@keyframes notification-slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Fade animation - entry */
+.notification-fade-in {
+    animation: notification-fade-in 300ms ease-out forwards;
+}
+
+@keyframes notification-fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Closing animation */
+.notification-closing {
+    animation: notification-close 200ms ease-in forwards;
+}
+
+@keyframes notification-close {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+}
+
+/* =========================================
+   Notification Positioning
+   ========================================= */
+
+/* Position classes applied to container */
+.notification-position-top-left {
+    margin-top: 16px;
+    margin-left: 16px;
+}
+
+.notification-position-top-center {
+    margin-top: 16px;
+}
+
+.notification-position-top-right {
+    margin-top: 16px;
+    margin-right: 16px;
+}
+
+.notification-position-bottom-left {
+    margin-bottom: 16px;
+    margin-left: 16px;
+}
+
+.notification-position-bottom-center {
+    margin-bottom: 16px;
+}
+
+.notification-position-bottom-right {
+    margin-bottom: 16px;
+    margin-right: 16px;
+}
+
+/* Hover effect on toast */
+.notification-toast:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35),
+                0 3px 6px rgba(0, 0, 0, 0.25);
+}

@@ -41,14 +41,41 @@ class TrayLauncher:
     """
 
     def __init__(self) -> None:
-        self.max_retries = 5
-        self.retry_delay = 3  # seconds
+        # Load settings from config file
+        tray_settings = self._load_tray_settings()
+        self.max_retries = tray_settings.get("max_retries", 5)
+        self.retry_delay = tray_settings.get("retry_delay_seconds", 3)
         self.process = None
         self.running = True
 
         # Setup signal handlers
         signal.signal(signal.SIGINT, self._signal_handler)
         signal.signal(signal.SIGTERM, self._signal_handler)
+
+    def _load_tray_settings(self) -> dict[str, Any]:
+        """Load tray settings from config file."""
+        try:
+            import json
+
+            # Try user config first
+            config_path = Path.home() / ".config" / "dfakeseeder" / "settings.json"
+            if config_path.exists():
+                with open(config_path) as f:
+                    settings: dict[str, Any] = json.load(f)
+                    tray_settings: dict[str, Any] = settings.get("tray_settings", {})
+                    return tray_settings
+
+            # Fall back to default config
+            default_config = parent_dir / "config" / "default.json"
+            if default_config.exists():
+                with open(default_config) as f:
+                    settings = json.load(f)
+                    tray_settings = settings.get("tray_settings", {})
+                    return tray_settings
+        except Exception as e:
+            logger.warning(f"Could not load tray settings: {e}")
+
+        return {}
 
     def launch(self) -> Any:
         """Launch the tray application with retry logic"""
@@ -110,7 +137,7 @@ class TrayLauncher:
             )
 
             # Wait a moment to see if it starts successfully
-            time.sleep(self._get_startup_delay())  # type: ignore[attr-defined]
+            time.sleep(self._get_startup_delay())
 
             if self.process.poll() is None:  # type: ignore[attr-defined]
                 # Process is still running, wait for it to complete
@@ -180,6 +207,14 @@ class TrayLauncher:
         except Exception as e:
             logger.error(f"D-Bus service check failed: {e}")
             return False
+
+    def _get_startup_delay(self) -> float:
+        """Get startup delay from settings or default."""
+        return 1.0  # Default startup check delay
+
+    def _get_retry_delay(self) -> float:
+        """Get retry delay from settings."""
+        return float(self.retry_delay)
 
     def _signal_handler(self, signum: Any, frame: Any) -> Any:
         """Handle shutdown signals"""

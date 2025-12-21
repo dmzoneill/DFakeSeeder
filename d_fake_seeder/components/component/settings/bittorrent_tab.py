@@ -412,7 +412,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 scrape_interval.set_value(900)  # 15 minutes
 
             self.update_dependencies()
-            self.show_notification("BitTorrent settings reset to defaults", "success")
+            self.show_notification(self._("BitTorrent settings reset to defaults"), "success")
 
         except Exception as e:
             self.logger.error(f"Error resetting BitTorrent tab to defaults: {e}")

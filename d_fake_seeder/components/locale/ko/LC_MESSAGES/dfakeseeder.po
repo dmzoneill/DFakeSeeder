@@ -23,6 +23,9 @@ msgstr "#"
 msgid "(0 = unlimited)"
 msgstr "(0 = 무제한)"
 
+msgid "-DE2003-"
+msgstr "-DE2003-"
+
 msgid "0 / 250"
 msgstr "0 / 250"
 
@@ -326,6 +329,9 @@ msgstr "균형 프로필 다운로드 속도"
 msgid "Balanced profile upload speed"
 msgstr "균형 프로필 업로드 속도"
 
+msgid "Ban after failed logins:"
+msgstr "Ban after failed logins:"
+
 msgid "Behavior Variation:"
 msgstr "동작 변동:"
 
@@ -340,6 +346,9 @@ msgstr "벵골어"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
+
+msgid "Bind IP Address:"
+msgstr "Bind IP Address:"
 
 msgid "Bind to localhost only"
 msgstr "로컬호스트에만 바인딩"
@@ -482,6 +491,21 @@ msgstr "보수적 프로필 업로드 속도"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "보수적: 낮은 속도, 적은 연결, 백그라운드 시딩에 이상적"
 
+msgid "Console log level: {level}"
+msgstr "Console log level: {level}"
+
+msgid "Copied info hash: {hash}..."
+msgstr "Copied info hash: {hash}..."
+
+msgid "Copied magnet link for {name}"
+msgstr "Copied magnet link for {name}"
+
+msgid "Copied name: {name}"
+msgstr "Copied name: {name}"
+
+msgid "Copied tracker URL"
+msgstr "Copied tracker URL"
+
 msgid "Copy"
 msgstr "복사"
 
@@ -623,6 +647,12 @@ msgstr "다운로드 제한 (KB/s):"
 msgid "Download limit (KB/s, 0 = unlimited):"
 msgstr "다운로드 제한 (KB/s, 0 = 무제한):"
 
+msgid "Download limit removed"
+msgstr "Download limit removed"
+
+msgid "Download limit set to {limit} KB/s"
+msgstr "Download limit set to {limit} KB/s"
+
 msgid "Download speed variance for aggressive profile"
 msgstr "공격적 프로필의 다운로드 속도 변동"
 
@@ -749,6 +779,9 @@ msgstr "추가 로깅 및 오류 세부 사항과 함께 디버그 모드 활성
 msgid "Enable dynamic client profile switching"
 msgstr "동적 클라이언트 프로필 전환 활성화"
 
+msgid "Enable host header validation"
+msgstr "Enable host header validation"
+
 msgid "Enable lt_donthave extension for piece availability"
 msgstr "조각 가용성을 위한 lt_donthave 확장 활성화"
 
@@ -830,8 +863,23 @@ msgstr "영어"
 msgid "Error"
 msgstr "오류"
 
+msgid "Error applying seeding profile"
+msgstr "Error applying seeding profile"
+
 msgid "Error changing language"
 msgstr "언어 변경 오류"
+
+msgid "Error exporting settings: {error}"
+msgstr "Error exporting settings: {error}"
+
+msgid "Error importing settings: {error}"
+msgstr "Error importing settings: {error}"
+
+msgid "Error opening folder browser"
+msgstr "Error opening folder browser"
+
+msgid "Error resetting settings: {error}"
+msgstr "Error resetting settings: {error}"
 
 msgid "Export"
 msgstr "내보내기"
@@ -871,6 +919,9 @@ msgstr "파일 경로"
 
 msgid "File chooser not yet implemented"
 msgstr "파일 선택기가 아직 구현되지 않음"
+
+msgid "File log level: {level}"
+msgstr "File log level: {level}"
 
 msgid "Files"
 msgstr "파일"
@@ -1082,6 +1133,12 @@ msgstr "한국어"
 msgid "Label"
 msgstr "라벨"
 
+msgid "Label cleared"
+msgstr "Label cleared"
+
+msgid "Label set: {label}"
+msgstr "Label set: {label}"
+
 msgid "Label:"
 msgstr "레이블:"
 
@@ -1090,6 +1147,9 @@ msgstr "언어"
 
 msgid "Language switched to"
 msgstr "언어가 변경됨:"
+
+msgid "Language switched to {lang}"
+msgstr "Language switched to {lang}"
 
 msgid "Language:"
 msgstr "언어:"
@@ -1118,14 +1178,23 @@ msgstr "확장 메시지 속도 제한"
 msgid "List of bootstrap nodes for DHT initialization"
 msgstr "DHT 초기화를 위한 부트스트랩 노드 목록"
 
+msgid "Location set to: {location}"
+msgstr "Location set to: {location}"
+
 msgid "Log"
 msgstr "로그"
 
 msgid "Log Level:"
 msgstr "로그 레벨:"
 
+msgid "Log to console"
+msgstr "Log to console"
+
 msgid "Log to file"
 msgstr "파일에 로그"
+
+msgid "Log to systemd"
+msgstr "Log to systemd"
 
 msgid "Log-Normal"
 msgstr "로그 정규"
@@ -1244,6 +1313,15 @@ msgstr "최소 알림 간격 (초):"
 msgid "Minimize to system tray"
 msgstr "시스템 트레이로 최소화"
 
+msgid "Minimum log level for console output"
+msgstr "Minimum log level for console output"
+
+msgid "Minimum log level for file output"
+msgstr "Minimum log level for file output"
+
+msgid "Minimum log level for systemd output"
+msgstr "Minimum log level for systemd output"
+
 msgid "Minimum log level to record"
 msgstr "기록할 최소 로그 레벨"
 
@@ -1319,6 +1397,9 @@ msgstr "Note: Choosing \\"
 msgid "Note: Choosing \\\\"
 msgstr "Note: Choosing \\\\"
 
+msgid "Number of failed login attempts before temporarily banning IP"
+msgstr "Number of failed login attempts before temporarily banning IP"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "동작 패턴 분석을 위한 피어 수"
 
@@ -1351,6 +1432,12 @@ msgstr "나가는 연결"
 
 msgid "Outgoing Peer Connections"
 msgstr "송신 피어 연결"
+
+msgid "Output logs to console/terminal"
+msgstr "Output logs to console/terminal"
+
+msgid "Output logs to systemd journal (journalctl)"
+msgstr "Output logs to systemd journal (journalctl)"
 
 msgid "Overlay Notification"
 msgstr "오버레이 알림"
@@ -1550,6 +1637,9 @@ msgstr "시작 피어의 진행률 분포 (0.0 - 1.0)"
 msgid "Properties"
 msgstr "속성"
 
+msgid "Properties: {name} - Full dialog not yet implemented"
+msgstr "Properties: {name} - Full dialog not yet implemented"
+
 msgid "Protocol Compliance:"
 msgstr "프로토콜 준수:"
 
@@ -1589,6 +1679,9 @@ msgstr "DFakeSeeder 종료"
 msgid "Random"
 msgstr "무작위"
 
+msgid "Random port generated: {port}"
+msgstr "Random port generated: {port}"
+
 msgid "Rate of adaptation to swarm behavior"
 msgstr "스웜 동작에 대한 적응 속도"
 
@@ -1601,8 +1694,14 @@ msgstr "현실적 변동"
 msgid "Received"
 msgstr "수신됨"
 
+msgid "Recheck completed for {name}: {progress}%"
+msgstr "Recheck completed for {name}: {progress}%"
+
 msgid "Redistribution mode:"
 msgstr "재분배 모드:"
+
+msgid "Refresh Interval:"
+msgstr "Refresh Interval:"
 
 msgid "Relaxed"
 msgstr "완화됨"
@@ -1634,6 +1733,12 @@ msgstr "트래커 제거..."
 msgid "Remove torrent"
 msgstr "토렌트 제거"
 
+msgid "Removed: {name}"
+msgstr "Removed: {name}"
+
+msgid "Removed: {name} (file deleted)"
+msgstr "Removed: {name} (file deleted)"
+
 msgid "Rename"
 msgstr "이름 바꾸기"
 
@@ -1642,6 +1747,9 @@ msgstr "토렌트 이름 바꾸기"
 
 msgid "Rename..."
 msgstr "이름 바꾸기..."
+
+msgid "Renamed to: {name}"
+msgstr "Renamed to: {name}"
 
 msgid "Requests"
 msgstr "요청"
@@ -1708,6 +1816,9 @@ msgstr "토요일"
 
 msgid "Save"
 msgstr "저장"
+
+msgid "Save logs to file"
+msgstr "Save logs to file"
 
 msgid "Save logs to file in addition to console"
 msgstr "콘솔 외에 파일에 로그 저장"
@@ -1799,6 +1910,9 @@ msgstr "전송됨"
 msgid "Sequential Download"
 msgstr "순차 다운로드"
 
+msgid "Sequential download {status}"
+msgstr "Sequential download {status}"
+
 msgid "Server:"
 msgstr "서버:"
 
@@ -1840,6 +1954,12 @@ msgstr "업로드 제한 설정"
 
 msgid "Set Upload Limit..."
 msgstr "업로드 제한 설정..."
+
+msgid "Settings exported to {path}"
+msgstr "Settings exported to {path}"
+
+msgid "Settings imported from {path}"
+msgstr "Settings imported from {path}"
 
 msgid "Settings saved successfully"
 msgstr "설정이 성공적으로 저장되었습니다"
@@ -1946,6 +2066,9 @@ msgstr "일요일"
 msgid "Super Seeding"
 msgstr "슈퍼 시딩"
 
+msgid "Super seeding {status}"
+msgstr "Super seeding {status}"
+
 msgid "Swedish"
 msgstr "스웨덴어"
 
@@ -1954,6 +2077,9 @@ msgstr "합성 피어 수:"
 
 msgid "System Theme"
 msgstr "시스템 테마"
+
+msgid "Systemd log level: {level}"
+msgstr "Systemd log level: {level}"
 
 msgid "TCP fallback"
 msgstr "TCP 대체"
@@ -2054,6 +2180,15 @@ msgstr "트래커 URL"
 msgid "Tracker URL:"
 msgstr "트래커 URL:"
 
+msgid "Tracker added to {name}"
+msgstr "Tracker added to {name}"
+
+msgid "Tracker removal not yet implemented"
+msgstr "Tracker removal not yet implemented"
+
+msgid "Tracker updated for {name}"
+msgstr "Tracker updated for {name}"
+
 msgid "Trackers"
 msgstr "트래커"
 
@@ -2108,6 +2243,9 @@ msgstr "UI 새로 고침 비율"
 msgid "UI refresh rate (sec):"
 msgstr "UI 새로 고침 비율 (초):"
 
+msgid "UPnP {status}"
+msgstr "UPnP {status}"
+
 msgid "URL"
 msgstr "URL"
 
@@ -2153,6 +2291,12 @@ msgstr "업로드 제한 (KB/s):"
 msgid "Upload limit (KB/s, 0 = unlimited):"
 msgstr "업로드 제한 (KB/s, 0 = 무제한):"
 
+msgid "Upload limit removed"
+msgstr "Upload limit removed"
+
+msgid "Upload limit set to {limit} KB/s"
+msgstr "Upload limit set to {limit} KB/s"
+
 msgid "Upload speed variance for aggressive profile"
 msgstr "공격적 프로필의 업로드 속도 변동"
 
@@ -2192,8 +2336,14 @@ msgstr "웹 인터페이스 로그인용 사용자명"
 msgid "Username:"
 msgstr "사용자명:"
 
+msgid "Using global speed limits for {name}"
+msgstr "Using global speed limits for {name}"
+
 msgid "Validate DHT security tokens"
 msgstr "DHT 보안 토큰 검증"
+
+msgid "Validate HTTP Host header to prevent DNS rebinding attacks"
+msgstr "Validate HTTP Host header to prevent DNS rebinding attacks"
 
 msgid "Validate extension messages"
 msgstr "확장 메시지 검증"
@@ -2224,6 +2374,9 @@ msgstr "Vuze/5.7.6.0"
 
 msgid "WARNING"
 msgstr "경고"
+
+msgid "Watch folder set to: {path}"
+msgstr "Watch folder set to: {path}"
 
 msgid "Web UI"
 msgstr "웹 UI"
@@ -2279,11 +2432,17 @@ msgstr "客户端"
 msgid "connection_time"
 msgstr "连接时间"
 
+msgid "disabled"
+msgstr "disabled"
+
 msgid "download_rate"
 msgstr "다운로드 속도"
 
 msgid "download_speed"
 msgstr "다운로드 속도"
+
+msgid "enabled"
+msgstr "enabled"
 
 msgid "failure_reason"
 msgstr "실패 이유"
@@ -2299,6 +2458,9 @@ msgstr "핸드셰이크 완료"
 
 msgid "id"
 msgstr "#"
+
+msgid "incoming_connections_tab"
+msgstr "incoming_connections_tab"
 
 msgid "leechers"
 msgstr "리처"
@@ -2326,6 +2488,9 @@ msgstr "open-menu-symbolic"
 
 msgid "options_tab"
 msgstr "옵션 탭"
+
+msgid "outgoing_connections_tab"
+msgstr "outgoing_connections_tab"
 
 msgid "peer_choking"
 msgstr "피어 차단 중"
@@ -2384,6 +2549,9 @@ msgstr "状态"
 msgid "threshold"
 msgstr "임계값"
 
+msgid "toggleAltSpeed()"
+msgstr "toggleAltSpeed()"
+
 msgid "total_downloaded"
 msgstr "총 다운로드"
 
@@ -2416,6 +2584,27 @@ msgstr "ut_metadata(메타데이터 교환)"
 
 msgid "ut_pex (Peer Exchange)"
 msgstr "ut_pex(피어 교환)"
+
+msgid "{name} moved to bottom"
+msgstr "{name} moved to bottom"
+
+msgid "{name} moved to top"
+msgstr "{name} moved to top"
+
+msgid "{name} progress set to {progress}%"
+msgstr "{name} progress set to {progress}%"
+
+msgid "{name} set to 100% complete"
+msgstr "{name} set to 100% complete"
+
+msgid "{name} set to high priority"
+msgstr "{name} set to high priority"
+
+msgid "{name} set to low priority"
+msgstr "{name} set to low priority"
+
+msgid "{name} set to normal priority"
+msgstr "{name} set to normal priority"
 
 msgid "µTorrent"
 msgstr "µTorrent"

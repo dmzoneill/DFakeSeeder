@@ -23,6 +23,9 @@ msgstr "#"
 msgid "(0 = unlimited)"
 msgstr "(0 = неограничено)"
 
+msgid "-DE2003-"
+msgstr "-DE2003-"
+
 msgid "0 / 250"
 msgstr "0 / 250"
 
@@ -326,6 +329,9 @@ msgstr "Скорость загрузки сбалансированного п�
 msgid "Balanced profile upload speed"
 msgstr "Скорость отдачи сбалансированного профиля"
 
+msgid "Ban after failed logins:"
+msgstr "Ban after failed logins:"
+
 msgid "Behavior Variation:"
 msgstr "Вариация поведения:"
 
@@ -340,6 +346,9 @@ msgstr "Бенгальский"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
+
+msgid "Bind IP Address:"
+msgstr "Bind IP Address:"
 
 msgid "Bind to localhost only"
 msgstr "Привязать только к localhost"
@@ -482,6 +491,21 @@ msgstr "Скорость отдачи консервативного профи�
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "Консервативный: Низкие скорости, меньше соединений, идеален для фонового сидирования"
 
+msgid "Console log level: {level}"
+msgstr "Console log level: {level}"
+
+msgid "Copied info hash: {hash}..."
+msgstr "Copied info hash: {hash}..."
+
+msgid "Copied magnet link for {name}"
+msgstr "Copied magnet link for {name}"
+
+msgid "Copied name: {name}"
+msgstr "Copied name: {name}"
+
+msgid "Copied tracker URL"
+msgstr "Copied tracker URL"
+
 msgid "Copy"
 msgstr "Копировать"
 
@@ -623,6 +647,12 @@ msgstr "Лимит загрузки (КБ/с):"
 msgid "Download limit (KB/s, 0 = unlimited):"
 msgstr "Лимит загрузки (КБ/с, 0 = неограничено):"
 
+msgid "Download limit removed"
+msgstr "Download limit removed"
+
+msgid "Download limit set to {limit} KB/s"
+msgstr "Download limit set to {limit} KB/s"
+
 msgid "Download speed variance for aggressive profile"
 msgstr "Вариация скорости загрузки для агрессивного профиля"
 
@@ -749,6 +779,9 @@ msgstr "Включить режим отладки с дополнительны
 msgid "Enable dynamic client profile switching"
 msgstr "Включить динамическое переключение профиля клиента"
 
+msgid "Enable host header validation"
+msgstr "Enable host header validation"
+
 msgid "Enable lt_donthave extension for piece availability"
 msgstr "Включить расширение lt_donthave для доступности частей"
 
@@ -830,8 +863,23 @@ msgstr "Английский"
 msgid "Error"
 msgstr "Ошибка"
 
+msgid "Error applying seeding profile"
+msgstr "Error applying seeding profile"
+
 msgid "Error changing language"
 msgstr "Ошибка смены языка"
+
+msgid "Error exporting settings: {error}"
+msgstr "Error exporting settings: {error}"
+
+msgid "Error importing settings: {error}"
+msgstr "Error importing settings: {error}"
+
+msgid "Error opening folder browser"
+msgstr "Error opening folder browser"
+
+msgid "Error resetting settings: {error}"
+msgstr "Error resetting settings: {error}"
 
 msgid "Export"
 msgstr "Экспорт"
@@ -871,6 +919,9 @@ msgstr "Путь к файлу"
 
 msgid "File chooser not yet implemented"
 msgstr "Выбор файлов еще не реализован"
+
+msgid "File log level: {level}"
+msgstr "File log level: {level}"
 
 msgid "Files"
 msgstr "Файлы"
@@ -1082,6 +1133,12 @@ msgstr "Корейский"
 msgid "Label"
 msgstr "Метка"
 
+msgid "Label cleared"
+msgstr "Label cleared"
+
+msgid "Label set: {label}"
+msgstr "Label set: {label}"
+
 msgid "Label:"
 msgstr "Метка:"
 
@@ -1090,6 +1147,9 @@ msgstr "Язык"
 
 msgid "Language switched to"
 msgstr "Язык переключен на"
+
+msgid "Language switched to {lang}"
+msgstr "Language switched to {lang}"
 
 msgid "Language:"
 msgstr "Язык:"
@@ -1118,14 +1178,23 @@ msgstr "Ограничить скорость сообщений расшире�
 msgid "List of bootstrap nodes for DHT initialization"
 msgstr "Список узлов bootstrap для инициализации DHT"
 
+msgid "Location set to: {location}"
+msgstr "Location set to: {location}"
+
 msgid "Log"
 msgstr "Журнал"
 
 msgid "Log Level:"
 msgstr "Уровень логирования:"
 
+msgid "Log to console"
+msgstr "Log to console"
+
 msgid "Log to file"
 msgstr "Логировать в файл"
+
+msgid "Log to systemd"
+msgstr "Log to systemd"
 
 msgid "Log-Normal"
 msgstr "Лог-нормальное"
@@ -1244,6 +1313,15 @@ msgstr "Мин. интервал анонсов (сек):"
 msgid "Minimize to system tray"
 msgstr "Свернуть в системный трей"
 
+msgid "Minimum log level for console output"
+msgstr "Minimum log level for console output"
+
+msgid "Minimum log level for file output"
+msgstr "Minimum log level for file output"
+
+msgid "Minimum log level for systemd output"
+msgstr "Minimum log level for systemd output"
+
 msgid "Minimum log level to record"
 msgstr "Минимальный уровень логирования для записи"
 
@@ -1319,6 +1397,9 @@ msgstr "Note: Choosing \\"
 msgid "Note: Choosing \\\\"
 msgstr "Note: Choosing \\\\"
 
+msgid "Number of failed login attempts before temporarily banning IP"
+msgstr "Number of failed login attempts before temporarily banning IP"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Количество пиров для анализа поведенческих шаблонов"
 
@@ -1351,6 +1432,12 @@ msgstr "Исходящие соединения"
 
 msgid "Outgoing Peer Connections"
 msgstr "Исходящие соединения с пирами"
+
+msgid "Output logs to console/terminal"
+msgstr "Output logs to console/terminal"
+
+msgid "Output logs to systemd journal (journalctl)"
+msgstr "Output logs to systemd journal (journalctl)"
 
 msgid "Overlay Notification"
 msgstr "Уведомление наложения"
@@ -1550,6 +1637,9 @@ msgstr "Распределение прогресса для начинающи�
 msgid "Properties"
 msgstr "Свойства"
 
+msgid "Properties: {name} - Full dialog not yet implemented"
+msgstr "Properties: {name} - Full dialog not yet implemented"
+
 msgid "Protocol Compliance:"
 msgstr "Соответствие протоколу:"
 
@@ -1589,6 +1679,9 @@ msgstr "Выйти из DFakeSeeder"
 msgid "Random"
 msgstr "Случайный"
 
+msgid "Random port generated: {port}"
+msgstr "Random port generated: {port}"
+
 msgid "Rate of adaptation to swarm behavior"
 msgstr "Скорость адаптации к поведению роя"
 
@@ -1601,8 +1694,14 @@ msgstr "Реалистичные вариации"
 msgid "Received"
 msgstr "Получено"
 
+msgid "Recheck completed for {name}: {progress}%"
+msgstr "Recheck completed for {name}: {progress}%"
+
 msgid "Redistribution mode:"
 msgstr "Режим перераспределения:"
+
+msgid "Refresh Interval:"
+msgstr "Refresh Interval:"
 
 msgid "Relaxed"
 msgstr "Расслабленный"
@@ -1634,6 +1733,12 @@ msgstr "Удалить трекер..."
 msgid "Remove torrent"
 msgstr "Удалить торрент"
 
+msgid "Removed: {name}"
+msgstr "Removed: {name}"
+
+msgid "Removed: {name} (file deleted)"
+msgstr "Removed: {name} (file deleted)"
+
 msgid "Rename"
 msgstr "Переименовать"
 
@@ -1642,6 +1747,9 @@ msgstr "Переименовать торрент"
 
 msgid "Rename..."
 msgstr "Переименовать..."
+
+msgid "Renamed to: {name}"
+msgstr "Renamed to: {name}"
 
 msgid "Requests"
 msgstr "Запросы"
@@ -1708,6 +1816,9 @@ msgstr "Суббота"
 
 msgid "Save"
 msgstr "Сохранить"
+
+msgid "Save logs to file"
+msgstr "Save logs to file"
 
 msgid "Save logs to file in addition to console"
 msgstr "Сохранять логи в файл в дополнение к консоли"
@@ -1799,6 +1910,9 @@ msgstr "Отправлено"
 msgid "Sequential Download"
 msgstr "Последовательная Загрузка"
 
+msgid "Sequential download {status}"
+msgstr "Sequential download {status}"
+
 msgid "Server:"
 msgstr "Сервер:"
 
@@ -1840,6 +1954,12 @@ msgstr "Установить лимит отдачи"
 
 msgid "Set Upload Limit..."
 msgstr "Установить лимит отдачи..."
+
+msgid "Settings exported to {path}"
+msgstr "Settings exported to {path}"
+
+msgid "Settings imported from {path}"
+msgstr "Settings imported from {path}"
 
 msgid "Settings saved successfully"
 msgstr "Настройки успешно сохранены"
@@ -1946,6 +2066,9 @@ msgstr "Воскресенье"
 msgid "Super Seeding"
 msgstr "Супер-Раздача"
 
+msgid "Super seeding {status}"
+msgstr "Super seeding {status}"
+
 msgid "Swedish"
 msgstr "Шведский"
 
@@ -1954,6 +2077,9 @@ msgstr "Количество синтетических пиров:"
 
 msgid "System Theme"
 msgstr "Системная тема"
+
+msgid "Systemd log level: {level}"
+msgstr "Systemd log level: {level}"
 
 msgid "TCP fallback"
 msgstr "Резерв TCP"
@@ -2054,6 +2180,15 @@ msgstr "URL трекера"
 msgid "Tracker URL:"
 msgstr "URL трекера:"
 
+msgid "Tracker added to {name}"
+msgstr "Tracker added to {name}"
+
+msgid "Tracker removal not yet implemented"
+msgstr "Tracker removal not yet implemented"
+
+msgid "Tracker updated for {name}"
+msgstr "Tracker updated for {name}"
+
 msgid "Trackers"
 msgstr "Трекеры"
 
@@ -2108,6 +2243,9 @@ msgstr "Частота обновления UI"
 msgid "UI refresh rate (sec):"
 msgstr "Частота обновления UI (сек):"
 
+msgid "UPnP {status}"
+msgstr "UPnP {status}"
+
 msgid "URL"
 msgstr "URL"
 
@@ -2153,6 +2291,12 @@ msgstr "Лимит отдачи (КБ/с):"
 msgid "Upload limit (KB/s, 0 = unlimited):"
 msgstr "Лимит отдачи (КБ/с, 0 = неограничено):"
 
+msgid "Upload limit removed"
+msgstr "Upload limit removed"
+
+msgid "Upload limit set to {limit} KB/s"
+msgstr "Upload limit set to {limit} KB/s"
+
 msgid "Upload speed variance for aggressive profile"
 msgstr "Вариация скорости отдачи для агрессивного профиля"
 
@@ -2192,8 +2336,14 @@ msgstr "Имя пользователя для входа в веб-интерф
 msgid "Username:"
 msgstr "Имя пользователя:"
 
+msgid "Using global speed limits for {name}"
+msgstr "Using global speed limits for {name}"
+
 msgid "Validate DHT security tokens"
 msgstr "Проверять токены безопасности DHT"
+
+msgid "Validate HTTP Host header to prevent DNS rebinding attacks"
+msgstr "Validate HTTP Host header to prevent DNS rebinding attacks"
 
 msgid "Validate extension messages"
 msgstr "Проверять сообщения расширений"
@@ -2224,6 +2374,9 @@ msgstr "Vuze/5.7.6.0"
 
 msgid "WARNING"
 msgstr "ПРЕДУПРЕЖДЕНИЕ"
+
+msgid "Watch folder set to: {path}"
+msgstr "Watch folder set to: {path}"
 
 msgid "Web UI"
 msgstr "Веб-интерфейс"
@@ -2279,11 +2432,17 @@ msgstr "Клиент"
 msgid "connection_time"
 msgstr "Время соединения"
 
+msgid "disabled"
+msgstr "disabled"
+
 msgid "download_rate"
 msgstr "Скорость загрузки"
 
 msgid "download_speed"
 msgstr "Скорость Загрузки"
+
+msgid "enabled"
+msgstr "enabled"
 
 msgid "failure_reason"
 msgstr "Причина сбоя"
@@ -2299,6 +2458,9 @@ msgstr "Рукопожатие завершено"
 
 msgid "id"
 msgstr "#"
+
+msgid "incoming_connections_tab"
+msgstr "incoming_connections_tab"
 
 msgid "leechers"
 msgstr "Личеры"
@@ -2326,6 +2488,9 @@ msgstr "open-menu-symbolic"
 
 msgid "options_tab"
 msgstr "Вкладка настроек"
+
+msgid "outgoing_connections_tab"
+msgstr "outgoing_connections_tab"
 
 msgid "peer_choking"
 msgstr "Пир блокирует"
@@ -2384,6 +2549,9 @@ msgstr "Статус"
 msgid "threshold"
 msgstr "Порог"
 
+msgid "toggleAltSpeed()"
+msgstr "toggleAltSpeed()"
+
 msgid "total_downloaded"
 msgstr "Всего Загружено"
 
@@ -2416,6 +2584,27 @@ msgstr "ut_metadata (обмен метаданными)"
 
 msgid "ut_pex (Peer Exchange)"
 msgstr "ut_pex (обмен пирами)"
+
+msgid "{name} moved to bottom"
+msgstr "{name} moved to bottom"
+
+msgid "{name} moved to top"
+msgstr "{name} moved to top"
+
+msgid "{name} progress set to {progress}%"
+msgstr "{name} progress set to {progress}%"
+
+msgid "{name} set to 100% complete"
+msgstr "{name} set to 100% complete"
+
+msgid "{name} set to high priority"
+msgstr "{name} set to high priority"
+
+msgid "{name} set to low priority"
+msgstr "{name} set to low priority"
+
+msgid "{name} set to normal priority"
+msgstr "{name} set to normal priority"
 
 msgid "µTorrent"
 msgstr "µTorrent"

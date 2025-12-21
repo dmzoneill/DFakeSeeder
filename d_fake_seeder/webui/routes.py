@@ -9,13 +9,15 @@ from typing import Any
 from d_fake_seeder.lib.logger import logger
 
 # Try to import aiohttp - it's an optional dependency
+web: Any = None
+AIOHTTP_AVAILABLE = False
 try:
-    from aiohttp import web
+    from aiohttp import web as _web
 
+    web = _web
     AIOHTTP_AVAILABLE = True
 except ImportError:
-    AIOHTTP_AVAILABLE = False
-    web = None
+    pass
 
 
 def setup_routes(app: Any) -> None:

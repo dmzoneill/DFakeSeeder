@@ -613,27 +613,27 @@ class AdvancedTab(
         level_values = ["(Use main level)", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
         idx = dropdown.get_selected()
         level = level_values[idx] if idx < len(level_values) else "(Use main level)"
-        self.show_notification(f"File log level: {level}", "info")
+        self.show_notification(self._("File log level: {level}").format(level=level), "info")
 
     def on_console_level_changed(self, dropdown: Any, param: Any) -> None:
         """Handle console log level change."""
         level_values = ["(Use main level)", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
         idx = dropdown.get_selected()
         level = level_values[idx] if idx < len(level_values) else "(Use main level)"
-        self.show_notification(f"Console log level: {level}", "info")
+        self.show_notification(self._("Console log level: {level}").format(level=level), "info")
 
     def on_systemd_level_changed(self, dropdown: Any, param: Any) -> None:
         """Handle systemd log level change."""
         level_values = ["(Use main level)", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
         idx = dropdown.get_selected()
         level = level_values[idx] if idx < len(level_values) else "(Use main level)"
-        self.show_notification(f"Systemd log level: {level}", "info")
+        self.show_notification(self._("Systemd log level: {level}").format(level=level), "info")
 
     def on_log_file_browse_clicked(self, button: Gtk.Button) -> None:
         """Open file chooser for log file."""
         try:
             # TODO: Implement file chooser dialog
-            self.show_notification("File chooser not yet implemented", "info")
+            self.show_notification(self._("File chooser not yet implemented"), "info")
         except Exception as e:
             self.logger.error(f"Error opening file chooser: {e}")
 
@@ -641,7 +641,7 @@ class AdvancedTab(
         """Export configuration."""
         try:
             # TODO: Implement config export
-            self.show_notification("Config export not yet implemented", "info")
+            self.show_notification(self._("Config export not yet implemented"), "info")
         except Exception as e:
             self.logger.error(f"Error exporting config: {e}")
 
@@ -649,7 +649,7 @@ class AdvancedTab(
         """Import configuration."""
         try:
             # TODO: Implement config import
-            self.show_notification("Config import not yet implemented", "info")
+            self.show_notification(self._("Config import not yet implemented"), "info")
         except Exception as e:
             self.logger.error(f"Error importing config: {e}")
 
@@ -657,7 +657,7 @@ class AdvancedTab(
         """Reset all settings to defaults."""
         try:
             # TODO: Implement confirmation dialog and reset all settings
-            self.show_notification("Reset all settings not yet implemented", "warning")
+            self.show_notification(self._("Reset all settings not yet implemented"), "warning")
         except Exception as e:
             self.logger.error(f"Error resetting all settings: {e}")
 
@@ -675,7 +675,7 @@ class AdvancedTab(
         """Open shortcuts configuration."""
         try:
             # TODO: Implement shortcuts configuration dialog
-            self.show_notification("Shortcuts configuration not yet implemented", "info")
+            self.show_notification(self._("Shortcuts configuration not yet implemented"), "info")
         except Exception as e:
             self.logger.error(f"Error opening shortcuts config: {e}")
 
@@ -740,7 +740,7 @@ class AdvancedTab(
                 self.set_switch_state(enable_shortcuts, True)
 
             self.update_dependencies()
-            self.show_notification("Advanced settings reset to defaults", "success")
+            self.show_notification(self._("Advanced settings reset to defaults"), "success")
 
         except Exception as e:
             self.logger.error(f"Error resetting Advanced tab to defaults: {e}")

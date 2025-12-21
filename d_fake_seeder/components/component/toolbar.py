@@ -260,8 +260,9 @@ class Toolbar(Component):
             GLib.source_remove(self._tickspeed_save_source_id)
             self._tickspeed_save_source_id = None
 
-        # Schedule a debounced save after 500ms of no changes
-        self._tickspeed_save_source_id = GLib.timeout_add(500, self._save_tickspeed_debounced)
+        # Schedule a debounced save (configurable delay)
+        debounce_ms = self.settings.get("ui_settings.tickspeed_debounce_ms", 500)
+        self._tickspeed_save_source_id = GLib.timeout_add(debounce_ms, self._save_tickspeed_debounced)
 
     def _save_tickspeed_debounced(self) -> bool:
         """Actually save the tickspeed setting after debounce delay."""

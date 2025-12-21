@@ -494,7 +494,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             webui_password = self.get_widget("webui_password")
             if webui_password:
                 webui_password.set_text(new_password)
-                self.show_notification("Secure password generated", "success")
+                self.show_notification(self._("Secure password generated"), "success")
 
         except Exception as e:
             self.logger.error(f"Error generating password: {e}")
@@ -563,7 +563,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
             self.update_dependencies()
             self._update_url_label()
-            self.show_notification("Web UI settings reset to defaults", "success")
+            self.show_notification(self._("Web UI settings reset to defaults"), "success")
 
         except Exception as e:
             self.logger.error(f"Error resetting Web UI tab to defaults: {e}")

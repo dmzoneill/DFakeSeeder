@@ -74,7 +74,9 @@ class UPnPManager:
         try:
             with self._lock:
                 self.upnp = miniupnpc.UPnP()
-                self.upnp.discoverdelay = 200  # milliseconds
+                # Get discover delay from settings
+                discover_delay = self.settings.get("upnp_settings.discover_delay_ms", 200)
+                self.upnp.discoverdelay = discover_delay
 
                 # Discover UPnP devices
                 devices = self.upnp.discover()

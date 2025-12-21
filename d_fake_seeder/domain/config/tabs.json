@@ -16,13 +16,15 @@
       "ProtocolExtensionsTab",
       "SimulationTab",
       "WebUITab",
+      "NotificationsTab",
       "AdvancedTab"
     ],
     "optional": [
       "SimulationTab",
       "WebUITab",
       "ProtocolExtensionsTab",
-      "DHTTab"
+      "DHTTab",
+      "NotificationsTab"
     ],
     "required": [
       "GeneralTab",

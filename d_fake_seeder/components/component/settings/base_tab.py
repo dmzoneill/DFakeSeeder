@@ -106,6 +106,13 @@ class BaseSettingsTab(Component):
         # Only do minimal initialization - defer full setup until tab is first viewed
         logger.trace("Tab created (deferred initialization)", "BaseTab")
 
+    def _(self, text: str) -> str:
+        """Helper for translating strings using the model's translation function."""
+        if hasattr(self, "model") and self.model and hasattr(self.model, "get_translate_func"):
+            translate_func = self.model.get_translate_func()
+            return translate_func(text)
+        return text
+
     def ensure_initialized(self) -> None:
         """
         Ensure the tab is fully initialized (lazy initialization).

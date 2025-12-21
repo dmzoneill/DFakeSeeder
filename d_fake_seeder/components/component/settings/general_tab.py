@@ -375,7 +375,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
             # Create file chooser dialog
             dialog = Gtk.FileDialog()
-            dialog.set_title("Export Settings")
+            dialog.set_title(self._("Export Settings"))
 
             # Set initial name
             dialog.set_initial_name("dfakeseeder-settings.json")
@@ -402,7 +402,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
         except Exception as e:
             self.logger.error(f"Error showing export dialog: {e}", exc_info=True)
-            self.show_notification(f"Error exporting settings: {e}", "error")
+            self.show_notification(self._("Error exporting settings: {error}").format(error=e), "error")
 
     def _on_export_file_selected(self, dialog: Any, result: Any) -> None:
         """Handle file selection for export."""
@@ -412,12 +412,12 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 file_path = file.get_path()
                 # Export settings
                 self.app_settings.export_settings(file_path)
-                self.show_notification(f"Settings exported to {file_path}", "success")
+                self.show_notification(self._("Settings exported to {path}").format(path=file_path), "success")
                 self.logger.info(f"Settings exported to: {file_path}")
         except Exception as e:
             if "dismissed" not in str(e).lower():  # Don't show error if user cancelled
                 self.logger.error(f"Error exporting settings: {e}", exc_info=True)
-                self.show_notification(f"Error exporting settings: {e}", "error")
+                self.show_notification(self._("Error exporting settings: {error}").format(error=e), "error")
 
     def on_import_clicked(self, button: Gtk.Button) -> None:
         """Handle import settings button click."""
@@ -426,7 +426,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
             # Create file chooser dialog
             dialog = Gtk.FileDialog()
-            dialog.set_title("Import Settings")
+            dialog.set_title(self._("Import Settings"))
 
             # Create file filter for JSON files
             json_filter = Gtk.FileFilter()
@@ -450,7 +450,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
         except Exception as e:
             self.logger.error(f"Error showing import dialog: {e}", exc_info=True)
-            self.show_notification(f"Error importing settings: {e}", "error")
+            self.show_notification(self._("Error importing settings: {error}").format(error=e), "error")
 
     def _on_import_file_selected(self, dialog: Any, result: Any) -> None:
         """Handle file selection for import."""
@@ -462,12 +462,12 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 self.app_settings.import_settings(file_path)
                 # Reload all settings in UI
                 self._load_settings()
-                self.show_notification(f"Settings imported from {file_path}", "success")
+                self.show_notification(self._("Settings imported from {path}").format(path=file_path), "success")
                 self.logger.info(f"Settings imported from: {file_path}")
         except Exception as e:
             if "dismissed" not in str(e).lower():  # Don't show error if user cancelled
                 self.logger.error(f"Error importing settings: {e}", exc_info=True)
-                self.show_notification(f"Error importing settings: {e}", "error")
+                self.show_notification(self._("Error importing settings: {error}").format(error=e), "error")
 
     def on_reset_clicked(self, button: Gtk.Button) -> None:
         """Handle reset to defaults button click."""
@@ -488,7 +488,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
         except Exception as e:
             self.logger.error(f"Error showing reset dialog: {e}", exc_info=True)
-            self.show_notification(f"Error resetting settings: {e}", "error")
+            self.show_notification(self._("Error resetting settings: {error}").format(error=e), "error")
 
     def _on_reset_confirmed(self, dialog: Any, result: Any) -> None:
         """Handle reset confirmation."""
@@ -499,12 +499,12 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 self.app_settings.reset_to_defaults()
                 # Reload all settings in UI
                 self._load_settings()
-                self.show_notification("All settings reset to defaults", "success")
+                self.show_notification(self._("All settings reset to defaults"), "success")
                 self.logger.info("Settings reset to defaults")
         except Exception as e:
             if "dismissed" not in str(e).lower():  # Don't show error if user cancelled
                 self.logger.error(f"Error resetting settings: {e}", exc_info=True)
-                self.show_notification(f"Error resetting settings: {e}", "error")
+                self.show_notification(self._("Error resetting settings: {error}").format(error=e), "error")
 
     def on_theme_style_changed(self, dropdown: Gtk.DropDown, param: Any) -> None:
         """Handle theme style setting change."""
@@ -580,11 +580,11 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 message = f"Applied {display_name} profile: {profile_summary}"
                 self.show_notification(message, "success")
             else:
-                self.show_notification("Failed to apply seeding profile", "error")
+                self.show_notification(self._("Failed to apply seeding profile"), "error")
 
         except Exception as e:
             self.logger.error(f"Error changing seeding profile setting: {e}")
-            self.show_notification("Error applying seeding profile", "error")
+            self.show_notification(self._("Error applying seeding profile"), "error")
 
     def _reset_tab_defaults(self) -> None:
         """Reset General tab to default values."""
@@ -604,7 +604,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             profile_dropdown = self.get_widget("settings_seeding_profile")
             if profile_dropdown:
                 profile_dropdown.set_selected(1)  # "balanced" is index 1
-            self.show_notification("General settings reset to defaults", "success")
+            self.show_notification(self._("General settings reset to defaults"), "success")
         except Exception as e:
             self.logger.error(f"Error resetting General tab to defaults: {e}")
 
@@ -884,7 +884,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                     "UnknownClass",
                 )
                 # Show success notification
-                self.show_notification(f"Language switched to {selected_lang}", "success")
+                self.show_notification(self._("Language switched to {lang}").format(lang=selected_lang), "success")
                 logger.trace(
                     "Notification took {(notification_end - notification_start)*1000:.1f}ms",
                     "UnknownClass",
@@ -892,7 +892,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 logger.trace("Language change completed - TOTAL UI TIME: ms", "GeneralTab")
         except Exception as e:
             self.logger.error(f"Error changing language: {e}")
-            self.show_notification("Error changing language", "error")
+            self.show_notification(self._("Error changing language"), "error")
             # Make sure to reconnect signal even on error
             if hasattr(self, "_language_signal_id"):
                 try:
@@ -945,7 +945,7 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         try:
             # Create file chooser dialog for folder selection
             dialog = Gtk.FileDialog()
-            dialog.set_title("Select Watch Folder")
+            dialog.set_title(self._("Select Watch Folder"))
 
             # Set initial folder if path exists
             path_entry = self.get_widget("watch_folder_path")
@@ -969,7 +969,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                             path_entry.set_text(folder_path)
                             # NOTE: Setting will be saved in batch via _collect_settings()
                             self.logger.trace(f"Watch folder path selected: {folder_path}")
-                            self.show_notification(f"Watch folder set to: {folder_path}", "success")
+                            self.show_notification(
+                                self._("Watch folder set to: {path}").format(path=folder_path), "success"
+                            )
                 except Exception as e:
                     self.logger.error(f"Error selecting folder: {e}")
 
@@ -982,4 +984,4 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
         except Exception as e:
             self.logger.error(f"Error showing folder chooser dialog: {e}")
-            self.show_notification("Error opening folder browser", "error")
+            self.show_notification(self._("Error opening folder browser"), "error")

@@ -23,6 +23,9 @@ msgstr "#"
 msgid "(0 = unlimited)"
 msgstr "(0 = không giới hạn)"
 
+msgid "-DE2003-"
+msgstr "-DE2003-"
+
 msgid "0 / 250"
 msgstr "0 / 250"
 
@@ -326,6 +329,9 @@ msgstr "Tốc độ tải xuống hồ sơ cân bằng"
 msgid "Balanced profile upload speed"
 msgstr "Tốc độ tải lên hồ sơ cân bằng"
 
+msgid "Ban after failed logins:"
+msgstr "Ban after failed logins:"
+
 msgid "Behavior Variation:"
 msgstr "Biến thể Hành vi:"
 
@@ -340,6 +346,9 @@ msgstr "Tiếng Bengal"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
+
+msgid "Bind IP Address:"
+msgstr "Bind IP Address:"
 
 msgid "Bind to localhost only"
 msgstr "Chỉ liên kết với localhost"
@@ -482,6 +491,21 @@ msgstr "Tốc độ tải lên hồ sơ bảo thủ"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "Bảo thủ: Tốc độ thấp hơn, ít kết nối hơn, lý tưởng cho seeding nền"
 
+msgid "Console log level: {level}"
+msgstr "Console log level: {level}"
+
+msgid "Copied info hash: {hash}..."
+msgstr "Copied info hash: {hash}..."
+
+msgid "Copied magnet link for {name}"
+msgstr "Copied magnet link for {name}"
+
+msgid "Copied name: {name}"
+msgstr "Copied name: {name}"
+
+msgid "Copied tracker URL"
+msgstr "Copied tracker URL"
+
 msgid "Copy"
 msgstr "Sao chép"
 
@@ -623,6 +647,12 @@ msgstr "Giới hạn tải xuống (KB/s):"
 msgid "Download limit (KB/s, 0 = unlimited):"
 msgstr "Giới hạn tải xuống (KB/s, 0 = không giới hạn):"
 
+msgid "Download limit removed"
+msgstr "Download limit removed"
+
+msgid "Download limit set to {limit} KB/s"
+msgstr "Download limit set to {limit} KB/s"
+
 msgid "Download speed variance for aggressive profile"
 msgstr "Phương sai tốc độ tải xuống cho hồ sơ tích cực"
 
@@ -749,6 +779,9 @@ msgstr "Bật chế độ gỡ lỗi với ghi nhật ký bổ sung và chi ti�
 msgid "Enable dynamic client profile switching"
 msgstr "Bật chuyển đổi hồ sơ máy khách động"
 
+msgid "Enable host header validation"
+msgstr "Enable host header validation"
+
 msgid "Enable lt_donthave extension for piece availability"
 msgstr "Bật tiện ích lt_donthave cho tính khả dụng mảnh"
 
@@ -830,8 +863,23 @@ msgstr "Tiếng Anh"
 msgid "Error"
 msgstr "Lỗi"
 
+msgid "Error applying seeding profile"
+msgstr "Error applying seeding profile"
+
 msgid "Error changing language"
 msgstr "Lỗi khi thay đổi ngôn ngữ"
+
+msgid "Error exporting settings: {error}"
+msgstr "Error exporting settings: {error}"
+
+msgid "Error importing settings: {error}"
+msgstr "Error importing settings: {error}"
+
+msgid "Error opening folder browser"
+msgstr "Error opening folder browser"
+
+msgid "Error resetting settings: {error}"
+msgstr "Error resetting settings: {error}"
 
 msgid "Export"
 msgstr "Xuất"
@@ -871,6 +919,9 @@ msgstr "Đường dẫn Tệp"
 
 msgid "File chooser not yet implemented"
 msgstr "Trình chọn tệp chưa được triển khai"
+
+msgid "File log level: {level}"
+msgstr "File log level: {level}"
 
 msgid "Files"
 msgstr "Tệp"
@@ -1082,6 +1133,12 @@ msgstr "Tiếng Hàn"
 msgid "Label"
 msgstr "Nhãn"
 
+msgid "Label cleared"
+msgstr "Label cleared"
+
+msgid "Label set: {label}"
+msgstr "Label set: {label}"
+
 msgid "Label:"
 msgstr "Nhãn:"
 
@@ -1090,6 +1147,9 @@ msgstr "Ngôn ngữ"
 
 msgid "Language switched to"
 msgstr "Ngôn ngữ đã chuyển sang"
+
+msgid "Language switched to {lang}"
+msgstr "Language switched to {lang}"
 
 msgid "Language:"
 msgstr "Ngôn ngữ:"
@@ -1118,14 +1178,23 @@ msgstr "Giới hạn tốc độ thông điệp tiện ích"
 msgid "List of bootstrap nodes for DHT initialization"
 msgstr "Danh sách nút khởi động để khởi tạo DHT"
 
+msgid "Location set to: {location}"
+msgstr "Location set to: {location}"
+
 msgid "Log"
 msgstr "Nhật ký"
 
 msgid "Log Level:"
 msgstr "Mức Nhật ký:"
 
+msgid "Log to console"
+msgstr "Log to console"
+
 msgid "Log to file"
 msgstr "Ghi vào tệp"
+
+msgid "Log to systemd"
+msgstr "Log to systemd"
 
 msgid "Log-Normal"
 msgstr "Log-Chuẩn"
@@ -1244,6 +1313,15 @@ msgstr "Khoảng thời gian thông báo tối thiểu (giây):"
 msgid "Minimize to system tray"
 msgstr "Thu nhỏ vào khay hệ thống"
 
+msgid "Minimum log level for console output"
+msgstr "Minimum log level for console output"
+
+msgid "Minimum log level for file output"
+msgstr "Minimum log level for file output"
+
+msgid "Minimum log level for systemd output"
+msgstr "Minimum log level for systemd output"
+
 msgid "Minimum log level to record"
 msgstr "Mức nhật ký tối thiểu để ghi"
 
@@ -1319,6 +1397,9 @@ msgstr "Note: Choosing \\"
 msgid "Note: Choosing \\\\"
 msgstr "Note: Choosing \\\\"
 
+msgid "Number of failed login attempts before temporarily banning IP"
+msgstr "Number of failed login attempts before temporarily banning IP"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Số lượng ngang hàng để phân tích mẫu hành vi"
 
@@ -1351,6 +1432,12 @@ msgstr "Kết nối Đi"
 
 msgid "Outgoing Peer Connections"
 msgstr "Kết nối Ngang hàng Đi"
+
+msgid "Output logs to console/terminal"
+msgstr "Output logs to console/terminal"
+
+msgid "Output logs to systemd journal (journalctl)"
+msgstr "Output logs to systemd journal (journalctl)"
 
 msgid "Overlay Notification"
 msgstr "Thông báo Overlay"
@@ -1550,6 +1637,9 @@ msgstr "Phân phối tiến độ cho ngang hàng mới bắt đầu (0.0 - 1.0)
 msgid "Properties"
 msgstr "Thuộc tính"
 
+msgid "Properties: {name} - Full dialog not yet implemented"
+msgstr "Properties: {name} - Full dialog not yet implemented"
+
 msgid "Protocol Compliance:"
 msgstr "Tuân thủ Giao thức:"
 
@@ -1589,6 +1679,9 @@ msgstr "Thoát DFakeSeeder"
 msgid "Random"
 msgstr "Ngẫu nhiên"
 
+msgid "Random port generated: {port}"
+msgstr "Random port generated: {port}"
+
 msgid "Rate of adaptation to swarm behavior"
 msgstr "Tốc độ thích ứng với hành vi bầy đàn"
 
@@ -1601,8 +1694,14 @@ msgstr "Biến thể thực tế"
 msgid "Received"
 msgstr "Đã nhận"
 
+msgid "Recheck completed for {name}: {progress}%"
+msgstr "Recheck completed for {name}: {progress}%"
+
 msgid "Redistribution mode:"
 msgstr "Chế độ phân phối lại:"
+
+msgid "Refresh Interval:"
+msgstr "Refresh Interval:"
 
 msgid "Relaxed"
 msgstr "Thoải mái"
@@ -1634,6 +1733,12 @@ msgstr "Xóa Tracker..."
 msgid "Remove torrent"
 msgstr "Xóa torrent"
 
+msgid "Removed: {name}"
+msgstr "Removed: {name}"
+
+msgid "Removed: {name} (file deleted)"
+msgstr "Removed: {name} (file deleted)"
+
 msgid "Rename"
 msgstr "Đổi tên"
 
@@ -1642,6 +1747,9 @@ msgstr "Đổi tên Torrent"
 
 msgid "Rename..."
 msgstr "Đổi tên..."
+
+msgid "Renamed to: {name}"
+msgstr "Renamed to: {name}"
 
 msgid "Requests"
 msgstr "Yêu cầu"
@@ -1708,6 +1816,9 @@ msgstr "Thứ Bảy"
 
 msgid "Save"
 msgstr "Lưu"
+
+msgid "Save logs to file"
+msgstr "Save logs to file"
 
 msgid "Save logs to file in addition to console"
 msgstr "Lưu nhật ký vào tệp ngoài console"
@@ -1799,6 +1910,9 @@ msgstr "Đã gửi"
 msgid "Sequential Download"
 msgstr "Tải Xuống Tuần Tự"
 
+msgid "Sequential download {status}"
+msgstr "Sequential download {status}"
+
 msgid "Server:"
 msgstr "Máy chủ:"
 
@@ -1840,6 +1954,12 @@ msgstr "Đặt giới hạn tải lên"
 
 msgid "Set Upload Limit..."
 msgstr "Đặt giới hạn tải lên..."
+
+msgid "Settings exported to {path}"
+msgstr "Settings exported to {path}"
+
+msgid "Settings imported from {path}"
+msgstr "Settings imported from {path}"
 
 msgid "Settings saved successfully"
 msgstr "Cài đặt đã được lưu thành công"
@@ -1946,6 +2066,9 @@ msgstr "Chủ Nhật"
 msgid "Super Seeding"
 msgstr "Siêu Seeding"
 
+msgid "Super seeding {status}"
+msgstr "Super seeding {status}"
+
 msgid "Swedish"
 msgstr "Tiếng Thụy Điển"
 
@@ -1954,6 +2077,9 @@ msgstr "Số lượng Ngang hàng Tổng hợp:"
 
 msgid "System Theme"
 msgstr "Giao diện hệ thống"
+
+msgid "Systemd log level: {level}"
+msgstr "Systemd log level: {level}"
 
 msgid "TCP fallback"
 msgstr "TCP dự phòng"
@@ -2054,6 +2180,15 @@ msgstr "URL Tracker"
 msgid "Tracker URL:"
 msgstr "URL Tracker:"
 
+msgid "Tracker added to {name}"
+msgstr "Tracker added to {name}"
+
+msgid "Tracker removal not yet implemented"
+msgstr "Tracker removal not yet implemented"
+
+msgid "Tracker updated for {name}"
+msgstr "Tracker updated for {name}"
+
 msgid "Trackers"
 msgstr "Tracker"
 
@@ -2108,6 +2243,9 @@ msgstr "Tốc độ Làm mới Giao diện"
 msgid "UI refresh rate (sec):"
 msgstr "Tốc độ làm mới giao diện (giây):"
 
+msgid "UPnP {status}"
+msgstr "UPnP {status}"
+
 msgid "URL"
 msgstr "URL"
 
@@ -2153,6 +2291,12 @@ msgstr "Giới hạn tải lên (KB/s):"
 msgid "Upload limit (KB/s, 0 = unlimited):"
 msgstr "Giới hạn tải lên (KB/s, 0 = không giới hạn):"
 
+msgid "Upload limit removed"
+msgstr "Upload limit removed"
+
+msgid "Upload limit set to {limit} KB/s"
+msgstr "Upload limit set to {limit} KB/s"
+
 msgid "Upload speed variance for aggressive profile"
 msgstr "Phương sai tốc độ tải lên cho hồ sơ tích cực"
 
@@ -2192,8 +2336,14 @@ msgstr "Tên người dùng đăng nhập giao diện web"
 msgid "Username:"
 msgstr "Tên người dùng:"
 
+msgid "Using global speed limits for {name}"
+msgstr "Using global speed limits for {name}"
+
 msgid "Validate DHT security tokens"
 msgstr "Xác thực mã thông báo bảo mật DHT"
+
+msgid "Validate HTTP Host header to prevent DNS rebinding attacks"
+msgstr "Validate HTTP Host header to prevent DNS rebinding attacks"
 
 msgid "Validate extension messages"
 msgstr "Xác thực thông điệp tiện ích"
@@ -2224,6 +2374,9 @@ msgstr "Vuze/5.7.6.0"
 
 msgid "WARNING"
 msgstr "CẢNH BÁO"
+
+msgid "Watch folder set to: {path}"
+msgstr "Watch folder set to: {path}"
 
 msgid "Web UI"
 msgstr "Giao diện Web"
@@ -2279,11 +2432,17 @@ msgstr "Máy khách"
 msgid "connection_time"
 msgstr "Thời gian Kết nối"
 
+msgid "disabled"
+msgstr "disabled"
+
 msgid "download_rate"
 msgstr "Tốc độ Tải xuống"
 
 msgid "download_speed"
 msgstr "Tốc độ Tải xuống"
+
+msgid "enabled"
+msgstr "enabled"
 
 msgid "failure_reason"
 msgstr "Lý do Thất bại"
@@ -2299,6 +2458,9 @@ msgstr "Bắt tay Hoàn thành"
 
 msgid "id"
 msgstr "#"
+
+msgid "incoming_connections_tab"
+msgstr "incoming_connections_tab"
 
 msgid "leechers"
 msgstr "Leecher"
@@ -2326,6 +2488,9 @@ msgstr "open-menu-symbolic"
 
 msgid "options_tab"
 msgstr "Tùy chọn"
+
+msgid "outgoing_connections_tab"
+msgstr "outgoing_connections_tab"
 
 msgid "peer_choking"
 msgstr "Ngang hàng Choking"
@@ -2384,6 +2549,9 @@ msgstr "Trạng thái"
 msgid "threshold"
 msgstr "Ngưỡng"
 
+msgid "toggleAltSpeed()"
+msgstr "toggleAltSpeed()"
+
 msgid "total_downloaded"
 msgstr "Tổng Đã tải xuống"
 
@@ -2416,6 +2584,27 @@ msgstr "ut_metadata (Trao đổi Siêu dữ liệu)"
 
 msgid "ut_pex (Peer Exchange)"
 msgstr "ut_pex (Trao đổi Ngang hàng)"
+
+msgid "{name} moved to bottom"
+msgstr "{name} moved to bottom"
+
+msgid "{name} moved to top"
+msgstr "{name} moved to top"
+
+msgid "{name} progress set to {progress}%"
+msgstr "{name} progress set to {progress}%"
+
+msgid "{name} set to 100% complete"
+msgstr "{name} set to 100% complete"
+
+msgid "{name} set to high priority"
+msgstr "{name} set to high priority"
+
+msgid "{name} set to low priority"
+msgstr "{name} set to low priority"
+
+msgid "{name} set to normal priority"
+msgstr "{name} set to normal priority"
 
 msgid "µTorrent"
 msgstr "µTorrent"
