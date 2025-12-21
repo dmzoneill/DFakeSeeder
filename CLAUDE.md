@@ -2,6 +2,418 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+---
+
+## 🚨 CRITICAL: Read This First
+
+### Do NOT Modify Without Permission
+- **`.github/` workflows** - Always ask before modifying. Consider upstream dispatch at: https://github.com/dmzoneill/dmzoneill/blob/main/.github/workflows/dispatch.yaml
+- **Translation JSON files** (`tools/translations/{en,de,es,...}.json`) - NEVER modify directly. Update the `*_fallbacks_to_translate.json` files instead, then run `make translate-workflow`
+- **Generated files** (`components/ui/generated/*.xml`) - These are auto-generated. Modify source XML files instead
+- **External dependencies** - Never add new libraries without asking first
+
+### Legacy Code Warning
+If you encounter legacy patterns (deprecated signals, old naming conventions, etc.), **DO NOT replicate them**. Instead, prompt the user and explain what you found.
+
+---
+
+## 📋 Quick Reference
+
+### Common Tasks Cheat Sheet
+
+| Task | Command / Location |
+|------|-------------------|
+| **Run app (dev)** | `make run-debug-venv` |
+| **Lint code** | `make lint` (or `make super-lint` for comprehensive) |
+| **Run tests** | `make test-venv` |
+| **Add a setting** | 1. Add to `d_fake_seeder/config/default.json` 2. Add property/setter in `d_fake_seeder/domain/app_settings.py` |
+| **Add UI component** | Create XML in `components/ui/`, use xi:include in parent XML |
+| **Add translation** | Run `make translate-workflow` (uses `tools/translation_build_manager.py`) |
+| **Build packages** | `make deb` / `make rpm` / `make flatpak` |
+
+### Key File Locations
+
+| Purpose | Path |
+|---------|------|
+| Main entry point | `d_fake_seeder/dfakeseeder.py` |
+| Settings singleton | `d_fake_seeder/domain/app_settings.py` |
+| Default config | `d_fake_seeder/config/default.json` |
+| Logger | `d_fake_seeder/lib/logger.py` |
+| UI components | `d_fake_seeder/components/component/` |
+| UI XML files | `d_fake_seeder/components/ui/` |
+| Translation manager | `tools/translation_build_manager.py` |
+| Test fixtures | `tests/conftest.py` |
+
+### Environment Variables
+
+| Variable | Purpose |
+|----------|---------|
+| `DFS_PATH` | Path to d_fake_seeder package (set automatically) |
+| `DFS_SETTINGS` | Override settings.json path |
+| `LOG_LEVEL` | Set logging level (DEBUG, INFO, etc.) |
+
+---
+
+## ⛔ Anti-Patterns (What NOT to Do)
+
+### Never Do This
+```python
+# ❌ DON'T use print statements
+print("Debug message")
+
+# ✅ DO use the logger
+from d_fake_seeder.lib.logger import logger
+logger.debug("Debug message")
+```
+
+```python
+# ❌ DON'T create new utility files without checking existing ones
+# Check lib/util/ first!
+
+# ❌ DON'T add dependencies without asking
+# pip install some-new-library  
+
+# ❌ DON'T modify generated XML files
+# Edit source files in components/ui/notebook/, components/ui/settings/, etc.
+
+# ❌ DON'T modify translation JSON files directly
+# Use fallback files and make translate-workflow
+```
+
+### Logging Levels
+```python
+logger.trace("Ultra-verbose, function entry/exit")  # TRACE (5)
+logger.debug("Normal diagnostic info")              # DEBUG (10) ← DEFAULT FOR NEW CODE
+logger.info("User-visible events, milestones")      # INFO (20)
+logger.warning("Unexpected but recoverable")        # WARNING (30)
+logger.error("Errors needing attention", exc_info=True)  # ERROR (40)
+```
+
+---
+
+## ✅ Required Patterns
+
+### Adding New Settings
+1. Add default value to `d_fake_seeder/config/default.json`
+2. Add property/setter pair in `d_fake_seeder/domain/app_settings.py`:
+```python
+@property
+def my_new_setting(self) -> Any:
+    return self.get("category.my_new_setting", default_value)
+
+@my_new_setting.setter
+def my_new_setting(self, value: Any) -> None:
+    self.set("category.my_new_setting", value)
+```
+
+### Adding UI Components
+1. Create XML file in `components/ui/` (appropriate subfolder)
+2. Use `xi:include` to include in parent XML
+3. Create Python component extending `Component` or `CleanupMixin`
+4. Track all signals with `self.track_signal(obj, handler_id)`
+
+### Writing Tests
+- **Every new function needs a test**
+- Use **standalone test functions** (no test classes)
+- Use `unittest.mock.patch` via `mocker` fixture (NOT `monkeypatch`)
+- Use real filesystem with `tmp_path` (NOT pyfakefs)
+- Follow Arrange-Act-Assert pattern
+
+```python
+def test_my_function(mock_settings, tmp_path):
+    # Arrange
+    expected = "value"
+    
+    # Act
+    result = my_function()
+    
+    # Assert
+    assert result == expected
+```
+
+### Translation Workflow
+```bash
+# Full workflow (extract → sync → build → validate)
+make translate-workflow
+
+# Or manually:
+python3 tools/translation_build_manager.py extract
+python3 tools/translation_build_manager.py sync
+python3 tools/translation_build_manager.py sync-keys
+python3 tools/translation_build_manager.py identify-fallbacks
+python3 tools/translation_build_manager.py translate-fallbacks
+python3 tools/translation_build_manager.py update-from-fallbacks
+python3 tools/translation_build_manager.py build
+python3 tools/translation_build_manager.py analyze
+```
+
+---
+
+## 🧵 Threading & Async Considerations
+
+### Important
+- Many threads can be running simultaneously
+- Use thread managers where possible (they're tracked for cleanup)
+- On shutdown, threads are terminated as part of cleanup procedure
+- Use `SharedAsyncExecutor` for async work when appropriate
+- Track timeouts with `self.track_timeout(source_id)` for proper cleanup
+
+---
+
+## 🧪 Test Fixtures Available
+
+Use these fixtures from `tests/conftest.py`:
+
+| Fixture | Purpose |
+|---------|---------|
+| `temp_config_dir` | Creates temp `~/.config/dfakeseeder/` with torrents subfolder |
+| `sample_torrent_file` | Creates a valid minimal .torrent file |
+| `mock_settings` | MagicMock of AppSettings with sensible defaults |
+| `mock_global_peer_manager` | MagicMock of GlobalPeerManager |
+| `mock_model` | MagicMock of Model with translation support |
+| `clean_environment` | Cleans DFS_* environment variables |
+
+### Test Markers
+```python
+@pytest.mark.unit           # Fast, isolated tests (<100ms)
+@pytest.mark.integration    # Multi-component tests
+@pytest.mark.slow           # Tests taking >1 second
+@pytest.mark.requires_gtk   # Need GTK initialization
+@pytest.mark.requires_network  # Need network access
+```
+
+---
+
+## ⚠️ Common Gotchas
+
+### 1. Circular Import with Logger
+The logger imports AppSettings which imports logger. Use lazy import pattern:
+```python
+# In app_settings.py - logger is accessed via property with lazy import
+@property
+def logger(self) -> Any:
+    if AppSettings._logger is None:
+        from d_fake_seeder.lib.logger import logger
+        AppSettings._logger = logger
+    return AppSettings._logger
+```
+
+### 2. Signal Handler Loops
+When handling `settings-value-changed`, modifying settings can trigger the signal again:
+```python
+# BAD - can cause infinite loop
+def on_setting_changed(self, source, key, value):
+    self.settings.set(key, modified_value)  # Triggers signal again!
+
+# GOOD - check if value actually changed
+def on_setting_changed(self, source, key, value):
+    if value != self.cached_value:
+        self.cached_value = value
+        # Process...
+```
+
+### 3. Weak Reference in CleanupMixin
+Objects passed to `track_signal()` use weak references. If the object is garbage collected, the cleanup is skipped silently. Keep strong references to objects that need signal cleanup.
+
+### 4. GLib.timeout_add Returns Before Callback
+```python
+# The timeout ID is returned immediately
+timer_id = GLib.timeout_add(1000, callback)  # Returns right away
+self.track_timeout(timer_id)  # Track it for cleanup!
+```
+
+### 5. AppSettings Singleton Across Tests
+AppSettings is a singleton - use the `file_path` parameter in tests:
+```python
+# In tests, reinitialize with different path
+settings = AppSettings(file_path=str(tmp_path / "settings.json"))
+```
+
+### 6. Translation Files
+- **NEVER** edit `tools/translations/{en,de,...}.json` directly
+- **DO** edit `tools/translations/*_fallbacks_to_translate.json`
+- Then run `make translate-workflow` or `python3 tools/translation_build_manager.py update-from-fallbacks`
+
+---
+
+## 🔧 Known Refactoring Needs
+
+### CleanupMixin & Component Hierarchy (TODO)
+Current state has some inconsistency:
+- `Component` extends `CleanupMixin` with abstract methods
+- `BaseTorrentTab` extends `CleanupMixin` directly (skipping Component)
+- Some tabs use `Component`, others use `BaseTorrentTab`
+
+**Future refactoring goal**: Standardize inheritance pattern across all UI components.
+
+---
+
+## 🔨 Code Style
+
+### Formatting Tools
+- **Black**: Line length 120, Python 3.11+
+- **isort**: Import ordering (profile: black)
+- **flake8**: Linting
+- **mypy**: Type checking
+
+### Commands
+```bash
+make lint          # Run all formatters
+make super-lint    # Comprehensive linting (Docker-based)
+```
+
+### Standard Import Pattern
+All files follow this pattern for GTK4 imports:
+```python
+# isort: skip_file
+
+# fmt: off
+import other_stdlib_imports
+from typing import Any
+
+import gi
+
+gi.require_version("Gtk", "4.0")
+from gi.repository import Gtk  # noqa: E402
+from gi.repository import GLib, GObject  # noqa: E402
+
+from d_fake_seeder.lib.logger import logger  # noqa: E402
+from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
+
+# fmt: on
+```
+
+**Why?** The `# fmt: off` blocks prevent Black from reordering `gi.require_version()` calls, which must come before GTK imports.
+
+---
+
+## 📡 GObject Signals
+
+### Defined Signals
+
+| Class | Signal | Parameters | Purpose |
+|-------|--------|------------|---------|
+| `Model` | `data-changed` | `(object, object)` | Torrent data modified |
+| `Model` | `selection-changed` | `(object, object)` | Torrent selection changed |
+| `Model` | `language-changed` | `(str,)` | UI language changed |
+| `Torrent` | `attribute-changed` | `(object, object)` | Torrent attribute modified |
+| `AppSettings` | `settings-value-changed` | `(str, object)` | Setting value changed (preferred) |
+| `AppSettings` | `settings-attribute-changed` | `(str, object)` | Setting attribute changed |
+| `AppSettings` | `setting-changed` | `(str, object)` | Legacy - use settings-value-changed |
+| `AppSettings` | `attribute-changed` | `(str, object)` | Legacy - use settings-attribute-changed |
+
+### Connecting to Signals
+```python
+# Always track signals for cleanup!
+handler_id = self.model.connect("data-changed", self.on_data_changed)
+self.track_signal(self.model, handler_id)
+
+# Or inline (common pattern in settings tabs):
+self.track_signal(
+    widget,
+    widget.connect("value-changed", self.on_value_changed),
+)
+```
+
+### Emitting Signals
+```python
+# In GObject subclasses with __gsignals__ defined:
+self.emit("data-changed", torrent, attribute)
+```
+
+---
+
+## 🧩 Available Mixins
+
+### Core Mixins
+| Mixin | Location | Purpose |
+|-------|----------|---------|
+| `CleanupMixin` | `lib/util/cleanup_mixin.py` | Signal/binding/timeout cleanup tracking |
+| `ColumnTranslationMixin` | `lib/util/column_translation_mixin.py` | Column header translation |
+
+### Settings Tab Mixins (compose these for settings tabs)
+| Mixin | Location | Purpose |
+|-------|----------|---------|
+| `NotificationMixin` | `components/component/settings/settings_mixins.py` | Show UI notifications |
+| `ValidationMixin` | `components/component/settings/settings_mixins.py` | Input validation |
+| `TranslationMixin` | `components/component/settings/settings_mixins.py` | Translation helpers |
+| `UtilityMixin` | `components/component/settings/settings_mixins.py` | Utility functions |
+| `KeyboardShortcutMixin` | `components/component/settings/settings_mixins.py` | Keyboard shortcuts |
+
+### Torrent Tab Mixins
+| Mixin | Location | Purpose |
+|-------|----------|---------|
+| `DataUpdateMixin` | `components/component/torrent_details/tab_mixins.py` | Data refresh handling |
+| `UIUtilityMixin` | `components/component/torrent_details/tab_mixins.py` | UI utility functions |
+| `PerformanceMixin` | `components/component/torrent_details/tab_mixins.py` | Performance tracking |
+
+### Typical Usage Pattern
+```python
+# Settings tab (compose multiple mixins):
+class MySettingsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
+    pass
+
+# Torrent details tab:
+class MyDetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
+    pass
+
+# Main component with columns:
+class MyComponent(Component, ColumnTranslationMixin):
+    pass
+```
+
+---
+
+## 🔌 D-Bus Interface
+
+The main app and tray communicate via D-Bus.
+
+### D-Bus Details
+- **Service**: `ie.fio.dfakeseeder`
+- **Object Path**: `/ie/fio/dfakeseeder`
+- **Interface**: `ie.fio.dfakeseeder`
+
+### Key Files
+| File | Purpose |
+|------|---------|
+| `lib/util/dbus_unifier.py` | D-Bus server (main app) |
+| `lib/dbus_client.py` | D-Bus client (tray app) |
+| `dfakeseeder_tray.py` | Tray application |
+
+### D-Bus Signals Emitted
+- `SettingsChanged` - When settings are modified (forwarded from AppSettings)
+
+---
+
+## 🗂️ File Naming Conventions
+
+| Pattern | Examples | Usage |
+|---------|----------|-------|
+| `*_tab.py` | `general_tab.py`, `status_tab.py` | Settings/details tabs |
+| `*_mixin.py` | `cleanup_mixin.py`, `column_translation_mixin.py` | Mixin classes |
+| `*_manager.py` | `peer_protocol_manager.py`, `connection_manager.py` | Manager/coordinator classes |
+| `*_seeder.py` | `http_seeder.py`, `udp_seeder.py`, `dht_seeder.py` | Protocol-specific seeders |
+| `base_*.py` | `base_tab.py`, `base_component.py`, `base_seeder.py` | Base classes |
+
+---
+
+## 🎨 GTK Widget ID Conventions
+
+Widget IDs in XML files follow these patterns:
+- **Settings widgets**: `listening_port`, `upnp_enabled`, `proxy_type`
+- **Buttons**: `random_port_button`, `search_clear`
+- **Containers**: `settings_notebook`, `torrent_details_notebook`
+- **Labels**: `status_label`, `peers_count_label`
+
+Access widgets via builder:
+```python
+widget = self.builder.get_object("widget_id")
+# Or with caching (settings tabs):
+widget = self.get_widget("widget_id")
+```
+
+---
+
 ## Overview
 
 DFakeSeeder is a Python GTK4 desktop application that simulates torrent seeding activity. It's built using the Model-View-Controller (MVC) architecture pattern and supports both HTTP and UDP tracker protocols with advanced peer-to-peer networking capabilities and comprehensive settings management.
@@ -139,7 +551,7 @@ The application follows MVC pattern with these core components:
 - Handles dynamic module loading with `importlib.util.find_spec`
 - Sets `DFS_PATH` environment variable for resource location
 
-### Model (`d_fake_seeder/lib/model.py`)
+### Model (`d_fake_seeder/model.py`)
 - Manages torrent data using GObject signals
 - Emits `data-changed` and `selection-changed` signals
 - Maintains `torrent_list` and `torrent_list_attributes` (Gio.ListStore)
@@ -147,16 +559,16 @@ The application follows MVC pattern with these core components:
 - Aggregates tracker statistics across all torrents
 - Creates filtered ListStore for search results
 
-### View (`d_fake_seeder/lib/view.py`)
-- GTK4 user interface built from XML UI files in `d_fake_seeder/ui/`
-- Main UI compiled to `ui/generated/generated.xml`
+### View (`d_fake_seeder/view.py`)
+- GTK4 user interface built from XML UI files in `d_fake_seeder/components/ui/`
+- Main UI compiled to `components/ui/generated/generated.xml`
 - Manages splash screen with fade animation
 - Creates hamburger menu with about dialog
 - Coordinates multiple UI components: toolbar, notebook, torrents, states, statusbar
 - Handles peer connection events for UI updates
 - Implements CSS styling and icon theming
 
-### Controller (`d_fake_seeder/lib/controller.py`)
+### Controller (`d_fake_seeder/controller.py`)
 - Coordinates between Model and View
 - Initializes GlobalPeerManager for peer-to-peer networking
 - Loads torrents from `~/.config/dfakeseeder/torrents/`
@@ -173,11 +585,10 @@ The application follows MVC pattern with these core components:
 - **Error Handling**: Proper exception logging with `exc_info=True` for full stack traces
 
 #### Settings System
-- **AppSettings** (`d_fake_seeder/lib/app_settings.py`): GObject-based singleton with signal system
-- **Settings** (`d_fake_seeder/lib/settings.py`): File-based configuration with watchdog monitoring
-- **SettingsDialog** (`d_fake_seeder/lib/component/settings_dialog.py`): Comprehensive tabbed settings UI
+- **AppSettings** (`d_fake_seeder/domain/app_settings.py`): Unified GObject-based singleton with signal system, file watching, and thread-safe operations
+- **SettingsDialog** (`d_fake_seeder/components/component/settings/settings_dialog.py`): Comprehensive tabbed settings UI
 
-#### Peer-to-Peer Networking (`d_fake_seeder/lib/torrent/`)
+#### Peer-to-Peer Networking (`d_fake_seeder/domain/torrent/`)
 - `global_peer_manager.py`: Central peer connection coordinator
 - `peer_connection.py`: BitTorrent peer protocol implementation (BEP-003)
 - `peer_server.py`: Incoming connection server
@@ -190,15 +601,17 @@ The application follows MVC pattern with these core components:
 - `file.py`: Torrent file bencode parsing
 - `seeder.py`: Main seeding coordination logic
 - `seeders/`: Protocol-specific implementations
-  - `HTTPSeeder.py`: HTTP tracker communication
-  - `UDPSeeder.py`: UDP tracker communication
-  - `BaseSeeder.py`: Common seeder functionality
+  - `http_seeder.py`: HTTP tracker communication
+  - `udp_seeder.py`: UDP tracker communication
+  - `base_seeder.py`: Common seeder functionality
+  - `dht_seeder.py`: DHT protocol implementation
 
-#### UI Components (`d_fake_seeder/lib/component/`)
+#### UI Components (`d_fake_seeder/components/component/`)
 - `toolbar.py`: Application toolbar with search functionality
 - `torrents.py`: Torrent list view with column management
 - `statusbar.py`: Status information display
 - `states.py`: Application state management
+- `sidebar.py`: Category filtering sidebar
 - `settings/`: Comprehensive settings interface with modular tabs
   - `settings_dialog.py`: Main settings dialog coordinator
   - `*_tab.py`: Individual settings category tabs (General, Connection, Peer Protocol, etc.)
@@ -215,11 +628,13 @@ The application follows MVC pattern with these core components:
 - Torrent directory: `~/.config/dfakeseeder/torrents/`
 
 ### Settings Architecture
-- Dual settings system: `Settings` (file-based JSON) and `AppSettings` (runtime GObject)
+- Unified `AppSettings` singleton (`d_fake_seeder/domain/app_settings.py`)
+- Three-layer data structure: defaults → user settings → transient data (torrents)
 - Thread-safe operation with `threading.Lock`
 - GObject signal system for real-time settings updates
 - File watching with `watchdog` for automatic reload
 - Nested attribute access with dot notation support
+- Debounced saves (1 second delay to prevent excessive disk writes)
 - Settings validation and export/import functionality
 
 ### Enhanced Configuration Structure
@@ -262,22 +677,24 @@ The application follows MVC pattern with these core components:
 
 ### UI Architecture
 - Modular XML-based UI with XInclude system
-- Main UI: `d_fake_seeder/ui/ui.xml` → `ui/generated/generated.xml`
-- Component UIs: `ui/notebook/`, `ui/settings/`, `ui/window/`
-- CSS styling: `ui/css/styles.css`
+- Main UI: `d_fake_seeder/components/ui/ui.xml` → `components/ui/generated/generated.xml`
+- Component UIs: `components/ui/notebook/`, `components/ui/settings/`, `components/ui/window/`
+- CSS styling: `components/ui/css/styles.css`
 
 ### Settings UI Structure
 - Multi-tab interface with comprehensive configuration options:
   - **General**: Application behavior, themes, language, configuration management
   - **Connection**: Network ports, proxy settings, connection limits, UPnP
   - **Peer Protocol**: Timeout settings, keep-alive intervals, seeder configuration
+  - **BitTorrent**: DHT, PEX, encryption, user agent settings
+  - **Speed**: Upload/download limits, alternative speeds, scheduler
   - **Advanced**: Logging, performance, expert settings, keyboard shortcuts
-- Generated UI: `ui/generated/settings_generated.xml` (compiled from modular components)
-- Modular XML components:
-  - `ui/settings/general.xml`: Application behavior and interface preferences
-  - `ui/settings/connection.xml`: Network configuration and proxy settings
-  - `ui/settings/peer_protocol.xml`: Protocol timeouts and seeder parameters
-  - `ui/settings/advanced.xml`: Expert settings with search functionality
+- Generated UI: `components/ui/generated/settings_generated.xml` (compiled from modular components)
+- Modular XML components in `d_fake_seeder/components/ui/settings/`:
+  - `general.xml`: Application behavior and interface preferences
+  - `connection.xml`: Network configuration and proxy settings
+  - `peer_protocol.xml`: Protocol timeouts and seeder parameters
+  - `advanced.xml`: Expert settings with search functionality
 
 ### Icon System
 - Application icons in multiple sizes: 16×16 to 256×256
@@ -287,68 +704,72 @@ The application follows MVC pattern with these core components:
 ## Project Structure
 
 ```text
-d_fake_seeder/                 # Main package (47 Python files, 78 total files)
+d_fake_seeder/                 # Main package (284 Python files)
 ├── dfakeseeder.py             # Main application entry point (Typer CLI)
+├── dfakeseeder_tray.py        # System tray application
+├── model.py                   # Data model with GObject signals
+├── view.py                    # GTK4 UI coordinator
+├── controller.py              # MVC controller with peer manager
 ├── post_install.py            # Desktop integration script
-├── lib/
-│   ├── model.py               # Data model with search filtering
-│   ├── view.py                # GTK4 UI coordinator
-│   ├── controller.py          # MVC controller with peer manager
-│   ├── settings.py            # File-based settings with file watching
-│   ├── app_settings.py        # Runtime settings with GObject signals
-│   ├── logger.py              # Logging utilities
-│   ├── component/             # UI component modules (32 files)
-│   │   ├── toolbar.py         # Search and action toolbar
-│   │   ├── torrents.py        # Torrent list display
-│   │   ├── statusbar.py       # Status information display
-│   │   ├── states.py          # Application state management
-│   │   ├── settings/          # Settings interface components (10 files)
-│   │   │   ├── settings_dialog.py # Main settings coordinator
-│   │   │   └── *_tab.py       # Individual settings tabs
-│   │   └── torrent_details/   # Torrent details components (13 files)
-│   │       ├── notebook.py    # Torrent details coordinator
-│   │       └── *_tab.py       # Individual detail tabs
-│   ├── torrent/              # BitTorrent implementation (18 files)
-│   │   ├── global_peer_manager.py # Central peer coordinator
-│   │   ├── peer_connection.py     # Peer protocol implementation
-│   │   ├── torrent.py             # Core torrent handling
-│   │   ├── seeders/               # Protocol implementations
-│   │   └── model/                 # Data models
-│   └── handlers/             # Event handlers
-├── ui/                       # GTK4 UI definitions
-│   ├── ui.xml               # Main UI template
-│   ├── generated/           # Compiled UI files
-│   ├── settings/            # Settings dialog components
-│   ├── notebook/            # Tab components
-│   ├── window/              # Window layouts
-│   └── css/                 # Stylesheets
-├── images/                  # Application icons and assets
-├── config/                  # Default configuration
-│   └── default.json         # Comprehensive default settings (126 lines)
-├── locale/                  # Translation files (15 languages) ✅ COMPLETED
-│   ├── dfakeseeder.pot      # Translation template
-│   ├── en/LC_MESSAGES/      # English translations
-│   ├── es/LC_MESSAGES/      # Spanish translations
-│   ├── fr/LC_MESSAGES/      # French translations
-│   ├── de/LC_MESSAGES/      # German translations
-│   ├── ar/LC_MESSAGES/      # Arabic translations
-│   └── [11 more languages]  # Complete i18n infrastructure
-├── plans/                   # Development planning documents
-│   ├── LOCALIZATION_PLAN.md # Localization implementation roadmap (in completed/)
-│   ├── PROTOCOL_INTEGRATION_PLAN.md # BitTorrent protocol enhancement roadmap
-│   ├── CODE_ANALYSIS_AND_REFACTORING_PLAN.md # Code quality and refactoring plan
-│   ├── DEVELOPMENT_ROADMAP.md # Overall project development roadmap
-│   ├── SEEDING_PROFILES_PLAN.md # Seeding profiles implementation plan
-│   └── completed/           # Completed implementation plans
-├── docs/                    # Technical documentation
-│   ├── LOCALIZATION.md      # Localization system documentation
-│   ├── CONFIGURATION.md     # Configuration system documentation
-│   ├── FEATURE_COMPARISON.md # Feature comparison and analysis
-│   ├── PACKAGING.md         # Packaging documentation
-│   └── PERFORMANCE_AUDIT_2025-10-05.md # Performance audit report
-└── tools/                   # Development helper scripts
-    ├── translation_build_manager.py # Advanced translation build system ✅
-    └── translations/         # Translation utilities and assets
+├── setup_helper.py            # Installation helper
+│
+├── domain/                    # Business logic layer
+│   ├── app_settings.py        # Unified settings singleton
+│   ├── torrent/               # BitTorrent implementation
+│   │   ├── global_peer_manager.py  # Central peer coordinator
+│   │   ├── peer_connection.py      # Peer protocol (BEP-003)
+│   │   ├── torrent.py              # Core torrent handling
+│   │   ├── seeder.py               # Main seeding logic
+│   │   ├── seeders/                # Protocol implementations
+│   │   │   ├── http_seeder.py
+│   │   │   ├── udp_seeder.py
+│   │   │   ├── dht_seeder.py
+│   │   │   └── base_seeder.py
+│   │   ├── protocols/              # Protocol extensions
+│   │   │   ├── dht/                # DHT implementation
+│   │   │   ├── extensions/         # BEP extensions (PEX, metadata)
+│   │   │   └── transport/          # uTP transport
+│   │   ├── simulation/             # Traffic simulation
+│   │   └── model/                  # Data models
+│   └── translation_manager/   # i18n system (package)
+│
+├── components/                # UI layer
+│   ├── component/             # Python UI components
+│   │   ├── base_component.py  # Component base class
+│   │   ├── toolbar.py, torrents.py, statusbar.py, states.py, sidebar.py
+│   │   ├── settings/          # Settings dialog tabs (13 files)
+│   │   │   ├── settings_dialog.py
+│   │   │   ├── base_tab.py, settings_mixins.py
+│   │   │   └── *_tab.py       # general, connection, speed, etc.
+│   │   └── torrent_details/   # Torrent details tabs (12 files)
+│   │       ├── notebook.py, base_tab.py, tab_mixins.py
+│   │       └── *_tab.py       # status, files, peers, log, etc.
+│   ├── ui/                    # GTK4 XML UI definitions
+│   │   ├── ui.xml, settings.xml  # Main templates
+│   │   ├── generated/         # ⚠️ DO NOT EDIT - auto-generated
+│   │   ├── settings/          # Settings dialog XML
+│   │   ├── notebook/          # Tab XML components
+│   │   ├── window/            # Window layouts
+│   │   └── css/               # Stylesheets
+│   ├── images/                # Icons and assets
+│   ├── locale/                # Translations (21 languages)
+│   │   ├── dfakeseeder.pot    # Translation template
+│   │   └── {lang}/LC_MESSAGES/  # PO/MO files
+│   └── widgets/               # Custom GTK widgets
+│
+├── lib/                       # Infrastructure
+│   ├── logger.py              # Enhanced logging system
+│   ├── dbus_client.py         # D-Bus client for tray
+│   ├── seeding_profile_manager.py
+│   ├── metrics_collector.py
+│   ├── handlers/              # Event handlers
+│   └── util/                  # Utility modules (21 files)
+│       ├── cleanup_mixin.py, column_translation_mixin.py
+│       ├── dbus_unifier.py    # D-Bus server
+│       └── helpers, constants, format_helpers, etc.
+│
+└── config/                    # Default configuration
+    └── default.json           # Comprehensive defaults (360 lines)
 ```text
 ## Dependency Management
 
@@ -419,7 +840,7 @@ d_fake_seeder/                 # Main package (47 Python files, 78 total files)
 
 ### Runtime Language Translation System ✅ **COMPLETED**
 - **TranslationManager**: Complete internationalization system with automatic widget translation
-- **15 Language Support**: Full infrastructure for en, es, fr, de, it, pt, ru, zh, ja, ko, ar, hi, nl, sv, pl
+- **21 Language Support**: Full infrastructure for en, es, fr, de, it, pt, ru, zh, ja, ko, ar, hi, nl, sv, pl, bn, fa, ga, id, tr, vi
 - **Runtime Language Switching**: Dynamic language changes without application restart
 - **Column Header Translation**: Automatic translation of table/list column headers
 - **Settings Dialog Translation**: Complete translation of all settings interface elements
@@ -436,48 +857,45 @@ d_fake_seeder/                 # Main package (47 Python files, 78 total files)
 
 ## Architectural Validation & Structure Analysis
 
-### Library Structure Assessment (Updated 2025-09-21)
+### Package Structure Assessment (Updated 2025-12)
 
-**Status: EXCELLENT** ✅ - The `/d_fake_seeder/lib/` directory maintains a well-organized and consistent structure.
+**Status: EXCELLENT** ✅ - Well-organized with clear separation of concerns.
 
 #### Directory Organization
 
 ```text
-lib/
-├── model.py, view.py, controller.py    # Core MVC components
-├── app_settings.py, settings.py        # Configuration management
-├── logger.py, i18n.py                  # Infrastructure
-├── component/                          # UI components (View layer)
-│   ├── settings/                       # Settings dialog tabs (10 files)
-│   ├── torrent_details/               # Torrent detail tabs (13 files)
-│   └── *.py                          # Main UI components (5 files)
-├── torrent/                           # Business logic layer (18 files)
-│   ├── model/                         # Data models (6 files)
-│   ├── seeders/                       # Protocol implementations (4 files)
-│   └── *.py                          # Core torrent functionality
-├── util/                              # Utility functions (3 files)
-├── helpers/                           # Helper classes (4 files)
-└── handlers/                          # Event handlers (2 files)
+d_fake_seeder/
+├── model.py, view.py, controller.py    # Core MVC components (root level)
+├── domain/                              # Business logic layer
+│   ├── app_settings.py                  # Unified settings singleton
+│   ├── torrent/                         # BitTorrent implementation (40+ files)
+│   │   ├── seeders/                     # Protocol implementations (4 files)
+│   │   ├── protocols/                   # Protocol extensions (DHT, PEX, etc.)
+│   │   ├── simulation/                  # Traffic simulation
+│   │   └── model/                       # Data models (6 files)
+│   └── translation_manager/             # i18n system (package)
+├── components/                          # UI layer
+│   ├── component/                       # Python UI components
+│   │   ├── settings/                    # Settings tabs (13 files)
+│   │   └── torrent_details/             # Detail tabs (12 files)
+│   ├── ui/                              # GTK XML definitions
+│   └── locale/                          # Translations (21 languages)
+└── lib/                                 # Infrastructure
+    ├── logger.py                        # Enhanced logging
+    ├── util/                            # Utilities (21 files)
+    └── handlers/                        # Event handlers
 ```text
 #### MVC Pattern Integrity: **MAINTAINED** ✅
-- **Model Layer**: Pure data management with GObject signals, no inappropriate dependencies
-- **View Layer**: Clean UI coordination with modular component architecture
-- **Controller Layer**: Proper MVC coordination with GlobalPeerManager integration
+- **Model Layer** (`model.py`, `domain/`): Pure data management with GObject signals
+- **View Layer** (`view.py`, `components/`): Clean UI coordination with modular architecture
+- **Controller Layer** (`controller.py`): Proper MVC coordination with GlobalPeerManager integration
 - **Minimal Coupling**: Notification patterns used appropriately without violating MVC principles
 
-#### Recent Structural Improvements
-1. **Tab Naming Consistency**: All tab components now follow consistent naming conventions:
-   - `*Tab` suffix for all tab classes (StatusTab, FilesTab, IncomingConnectionsTab, etc.)
-   - `*_tab.py` file naming pattern throughout the codebase
-2. **File Organization**: Moved `listener.py` from `lib/` to `lib/torrent/` for proper domain placement
-3. **Component Inheritance**: Proper inheritance hierarchies with appropriate base classes and mixins
-4. **Import Structure**: Clean imports with no circular dependencies, proper `__init__.py` management
-
 #### Code Quality Metrics
-- **Total Python files**: 71 across 10 directories
-- **Naming consistency**: ✅ Fixed and standardized
+- **Total Python files**: 284 across the package
+- **Naming consistency**: ✅ `*Tab` suffix, `*_tab.py` file pattern
 - **Inheritance patterns**: ✅ Proper use of base classes and mixins
-- **Import dependencies**: ✅ Clean structure, minimal cross-layer coupling
+- **Import dependencies**: ✅ Clean structure with lazy imports where needed
 - **Component architecture**: ✅ Single responsibility principle maintained
 
 ## ✅ Completed Major Features
@@ -489,12 +907,12 @@ This section documents major features that have been fully implemented and are c
 **Status: COMPLETE** - Full i18n/l10n implementation with runtime language switching
 
 #### Core Implementation
-- **TranslationManager** (`domain/translation_manager.py`): Complete automatic widget translation system
+- **TranslationManager** (`domain/translation_manager/`): Complete automatic widget translation system (package with GTK3/GTK4 implementations)
 - **ColumnTranslations** (`lib/util/column_translations.py`): Centralized column header translation
 - **ColumnTranslationMixin** (`lib/util/column_translation_mixin.py`): Reusable column translation functionality
 
 #### Language Support
-- **15 Languages**: en, es, fr, de, it, pt, ru, zh, ja, ko, ar, hi, nl, sv, pl
+- **21 Languages**: en, es, fr, de, it, pt, ru, zh, ja, ko, ar, hi, nl, sv, pl, bn, fa, ga, id, tr, vi
 - **Complete Infrastructure**: PO/MO files, gettext integration, locale detection
 - **Build System**: Advanced translation build manager with validation and compilation
 
@@ -572,9 +990,8 @@ This section documents major features that have been fully implemented and are c
 
 #### **Print Statement Cleanup**
 - **849 Print Statements Replaced**: Automated replacement of debug print statements with proper logger calls
-- **Automation Tools Created**: `tools/replace_print_statements.py` and `tools/fix_broken_comments.py`
 - **Code Quality**: Removed all commented print statements and replaced `traceback.print_exc()` with proper error logging
-- **Consistency**: Uniform logging patterns across 99 Python files
+- **Consistency**: Uniform logging patterns across all Python files
 
 #### **Technical Improvements**
 - **Manual Timing Removal**: Eliminated redundant manual timing code in favor of automatic logger timing
@@ -584,10 +1001,10 @@ This section documents major features that have been fully implemented and are c
 
 #### **Files Enhanced**
 - `d_fake_seeder/lib/logger.py` - Core logging infrastructure with performance tracking
-- `d_fake_seeder/domain/translation_manager.py` - Translation system timing optimization
+- `d_fake_seeder/domain/translation_manager/` - Translation system timing optimization
 - `d_fake_seeder/view.py` - UI component initialization timing
 - `d_fake_seeder/model.py` - Model operations and language switching timing
-- **20+ Additional Files** - Comprehensive print statement replacement and error handling improvements
+- **All Python files** - Comprehensive print statement replacement and error handling improvements
 
 #### **Benefits Achieved**
 - **Zero Print Statements**: Clean codebase with no debug print clutter
