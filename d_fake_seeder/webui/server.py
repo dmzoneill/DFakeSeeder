@@ -11,6 +11,7 @@ from typing import Any, Optional
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.view import View
 
 from .auth import create_auth_middleware, create_security_middleware
 from .routes import setup_routes
@@ -130,6 +131,16 @@ class WebUIServer:
                 f"Web UI started on {protocol}://{bind_addr}:{port}",
                 extra={"class_name": self.__class__.__name__},
             )
+
+            # Notify user of successful start
+            if View.instance:
+                View.instance.notify(
+                    f"Web UI started on {protocol}://{bind_addr}:{port}",
+                    notification_type="success",
+                    timeout_ms=3000,
+                    translate=False,  # Contains dynamic URL
+                )
+
             return True
 
         except Exception as e:
@@ -137,6 +148,15 @@ class WebUIServer:
                 f"Failed to start Web UI: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
+
+            # Notify user of failure
+            if View.instance:
+                View.instance.notify(
+                    "Web UI failed to start",
+                    notification_type="error",
+                    translate=True,
+                )
+
             return False
 
     async def stop(self) -> None:

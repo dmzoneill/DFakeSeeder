@@ -331,6 +331,18 @@ class HTTPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
 
+            # Notify user of persistent tracker failure (only after all retries exhausted)
+            if View.instance is not None:
+                torrent_name = self.torrent.name
+                if len(torrent_name) > 30:
+                    torrent_name = torrent_name[:27] + "..."
+                View.instance.notify(
+                    f"Tracker unreachable: {torrent_name}",
+                    notification_type="warning",
+                    timeout_ms=4000,
+                    translate=False,  # Contains dynamic torrent name
+                )
+
     def make_http_request(
         self, uploaded_bytes: Any = 0, downloaded_bytes: Any = 0, download_left: Any = 0, num_want: Any = None
     ) -> Any:  # noqa: E501

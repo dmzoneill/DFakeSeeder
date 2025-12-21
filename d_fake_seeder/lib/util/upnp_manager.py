@@ -10,6 +10,7 @@ from typing import Any, Optional
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.view import View
 
 # Try to import miniupnpc - it's an optional dependency
 try:
@@ -147,6 +148,16 @@ class UPnPManager:
                     f"UPnP: Successfully mapped port {port} " f"(external IP: {self.external_ip})",
                     extra={"class_name": self.__class__.__name__},
                 )
+
+                # Notify user of successful port mapping
+                if View.instance:
+                    View.instance.notify(
+                        f"UPnP: Port {port} mapped (IP: {self.external_ip})",
+                        notification_type="success",
+                        timeout_ms=3000,
+                        translate=False,  # Contains dynamic values
+                    )
+
                 return True
 
         except Exception as e:
@@ -154,6 +165,16 @@ class UPnPManager:
                 f"UPnP setup failed: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
+
+            # Notify user of failure
+            if View.instance:
+                View.instance.notify(
+                    "UPnP: Port mapping failed",
+                    notification_type="warning",
+                    timeout_ms=4000,
+                    translate=True,
+                )
+
             return False
 
     def stop(self) -> None:

@@ -12,6 +12,7 @@ import time
 from typing import Any, Dict, Set
 
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.view import View
 
 try:
     from watchdog.events import FileSystemEventHandler
@@ -302,6 +303,19 @@ class TorrentFileEventHandler(FileSystemEventHandler):
                 f"Successfully added torrent from watch folder: {filename}",
                 extra={"class_name": self.__class__.__name__},
             )
+
+            # Notify user of auto-added torrent
+            if View.instance:
+                # Truncate long filenames for display
+                display_name = filename[:-8] if filename.endswith(".torrent") else filename
+                if len(display_name) > 40:
+                    display_name = display_name[:37] + "..."
+                View.instance.notify(
+                    f"Auto-added: {display_name}",
+                    notification_type="success",
+                    timeout_ms=2500,
+                    translate=False,  # Contains dynamic filename
+                )
 
             # Handle source file deletion if configured
             if self.watch_config.get("delete_added_torrents", False):
