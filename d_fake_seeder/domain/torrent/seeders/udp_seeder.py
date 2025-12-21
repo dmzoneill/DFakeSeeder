@@ -16,6 +16,7 @@ from d_fake_seeder.lib.util.constants import (
     TimeoutConstants,
     UDPTrackerConstants,
 )
+from d_fake_seeder.view import View
 
 # fmt: on
 
@@ -328,6 +329,18 @@ class UDPSeeder(BaseSeeder):
             )
         else:
             logger.error("❌ UDP announce failed", extra={"class_name": self.__class__.__name__})
+
+            # Notify user of tracker failure
+            if View.instance is not None:
+                torrent_name = self.torrent.name
+                if len(torrent_name) > 30:
+                    torrent_name = torrent_name[:27] + "..."
+                View.instance.notify(
+                    f"UDP tracker failed: {torrent_name}",
+                    notification_type="warning",
+                    timeout_ms=4000,
+                    translate=False,  # Contains dynamic torrent name
+                )
 
         return result
 

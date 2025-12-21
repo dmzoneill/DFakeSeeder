@@ -12,6 +12,7 @@ from gi.repository import GLib
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.view import View
 
 
 class SpeedScheduler:
@@ -159,6 +160,23 @@ class SpeedScheduler:
                 f"Scheduler: Alternative speeds {status}",
                 extra={"class_name": self.__class__.__name__},
             )
+
+            # Notify user of speed change
+            if View.instance:
+                if enabled:
+                    View.instance.notify(
+                        "Alternative speeds activated",
+                        notification_type="info",
+                        timeout_ms=2000,
+                        translate=True,
+                    )
+                else:
+                    View.instance.notify(
+                        "Alternative speeds deactivated",
+                        notification_type="info",
+                        timeout_ms=2000,
+                        translate=True,
+                    )
 
     def force_check(self) -> None:
         """Force an immediate schedule check."""
