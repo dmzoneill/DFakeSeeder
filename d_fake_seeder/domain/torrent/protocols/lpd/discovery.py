@@ -12,6 +12,7 @@ from typing import Callable, Dict, Optional, Set, Tuple
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.view import View
 
 # BEP-014 constants
 LPD_MULTICAST_ADDR_V4 = "239.192.152.143"
@@ -119,6 +120,16 @@ class LocalPeerDiscovery:
                 "Local Peer Discovery started",
                 extra={"class_name": self.__class__.__name__},
             )
+
+            # Notify user
+            if View.instance:
+                View.instance.notify(
+                    "Local Peer Discovery started",
+                    notification_type="success",
+                    timeout_ms=2000,
+                    translate=True,
+                )
+
             return True
 
         except Exception as e:
@@ -127,6 +138,16 @@ class LocalPeerDiscovery:
                 extra={"class_name": self.__class__.__name__},
             )
             self._cleanup_socket()
+
+            # Notify user of failure
+            if View.instance:
+                View.instance.notify(
+                    "Local Peer Discovery failed to start",
+                    notification_type="warning",
+                    timeout_ms=3000,
+                    translate=True,
+                )
+
             return False
 
     async def stop(self) -> None:
