@@ -205,6 +205,7 @@ class Controller:
         # Start Local Peer Discovery (async)
         if hasattr(self, "lpd_manager") and self.lpd_manager:
             self._start_lpd_async()
+        # #endregion
 
     def stop(self, shutdown_tracker: Any = None) -> Any:
         """Stop the controller and cleanup all background processes"""

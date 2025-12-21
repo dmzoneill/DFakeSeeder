@@ -23,6 +23,9 @@ msgstr "#"
 msgid "(0 = unlimited)"
 msgstr "(0 = neamhtheoranta)"
 
+msgid "-DE2003-"
+msgstr "-DE2003-"
+
 msgid "0 / 250"
 msgstr "0 / 250"
 
@@ -326,6 +329,9 @@ msgstr "Luas íoslódála próifíl chothromaithe"
 msgid "Balanced profile upload speed"
 msgstr "Luas uaslódála próifíl chothromaithe"
 
+msgid "Ban after failed logins:"
+msgstr "Ban after failed logins:"
+
 msgid "Behavior Variation:"
 msgstr "Éagsúlacht Iompair:"
 
@@ -340,6 +346,9 @@ msgstr "Beangáilis"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
+
+msgid "Bind IP Address:"
+msgstr "Bind IP Address:"
 
 msgid "Bind to localhost only"
 msgstr "Ceangail le localhost amháin"
@@ -482,6 +491,21 @@ msgstr "Luas uaslódála próifíl choimeádach"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "Coimeádach: Luasanna níos ísle, níos lú ceangail, oiriúnach do shíolachán cúlra"
 
+msgid "Console log level: {level}"
+msgstr "Console log level: {level}"
+
+msgid "Copied info hash: {hash}..."
+msgstr "Copied info hash: {hash}..."
+
+msgid "Copied magnet link for {name}"
+msgstr "Copied magnet link for {name}"
+
+msgid "Copied name: {name}"
+msgstr "Copied name: {name}"
+
+msgid "Copied tracker URL"
+msgstr "Copied tracker URL"
+
 msgid "Copy"
 msgstr "Cóipeáil"
 
@@ -623,6 +647,12 @@ msgstr "Teorainn íoslódála (KB/s):"
 msgid "Download limit (KB/s, 0 = unlimited):"
 msgstr "Download limit (KB/s, 0 = unlimited):"
 
+msgid "Download limit removed"
+msgstr "Download limit removed"
+
+msgid "Download limit set to {limit} KB/s"
+msgstr "Download limit set to {limit} KB/s"
+
 msgid "Download speed variance for aggressive profile"
 msgstr "Athraitheas luais íoslódála do phróifíl ionsaitheach"
 
@@ -749,6 +779,9 @@ msgstr "Cumasaigh mód dífhabhtaithe le logáil bhreise agus sonraí earráide"
 msgid "Enable dynamic client profile switching"
 msgstr "Cumasaigh athrú próifíl cliant dinimiciúil"
 
+msgid "Enable host header validation"
+msgstr "Enable host header validation"
+
 msgid "Enable lt_donthave extension for piece availability"
 msgstr "Cumasaigh breiseán lt_donthave le haghaidh infhaighteacht píosaí"
 
@@ -830,8 +863,23 @@ msgstr "Béarla"
 msgid "Error"
 msgstr "Earráid"
 
+msgid "Error applying seeding profile"
+msgstr "Error applying seeding profile"
+
 msgid "Error changing language"
 msgstr "Earráid ag athrú teanga"
+
+msgid "Error exporting settings: {error}"
+msgstr "Error exporting settings: {error}"
+
+msgid "Error importing settings: {error}"
+msgstr "Error importing settings: {error}"
+
+msgid "Error opening folder browser"
+msgstr "Error opening folder browser"
+
+msgid "Error resetting settings: {error}"
+msgstr "Error resetting settings: {error}"
 
 msgid "Export"
 msgstr "Easpórtáil"
@@ -871,6 +919,9 @@ msgstr "Conair Chomhaid"
 
 msgid "File chooser not yet implemented"
 msgstr "Roghnóir comhaid gan cur i bhfeidhm fós"
+
+msgid "File log level: {level}"
+msgstr "File log level: {level}"
 
 msgid "Files"
 msgstr "Comhaid"
@@ -1082,6 +1133,12 @@ msgstr "Cóiréis"
 msgid "Label"
 msgstr "Lipéad"
 
+msgid "Label cleared"
+msgstr "Label cleared"
+
+msgid "Label set: {label}"
+msgstr "Label set: {label}"
+
 msgid "Label:"
 msgstr "Lipéad:"
 
@@ -1090,6 +1147,9 @@ msgstr "Teanga"
 
 msgid "Language switched to"
 msgstr "Teanga athraithe go"
+
+msgid "Language switched to {lang}"
+msgstr "Language switched to {lang}"
 
 msgid "Language:"
 msgstr "Teanga:"
@@ -1118,14 +1178,23 @@ msgstr "Teorannaigh ráta teachtaireachta breiseáin"
 msgid "List of bootstrap nodes for DHT initialization"
 msgstr "Liosta de nóid tosaithe le haghaidh túsú DHT"
 
+msgid "Location set to: {location}"
+msgstr "Location set to: {location}"
+
 msgid "Log"
 msgstr "Loga"
 
 msgid "Log Level:"
 msgstr "Leibhéal Loga:"
 
+msgid "Log to console"
+msgstr "Log to console"
+
 msgid "Log to file"
 msgstr "Logáil chuig comhad"
+
+msgid "Log to systemd"
+msgstr "Log to systemd"
 
 msgid "Log-Normal"
 msgstr "Log-Gnáth"
@@ -1244,6 +1313,15 @@ msgstr "Íoseatramh fógra (soic):"
 msgid "Minimize to system tray"
 msgstr "Íoslaghdaigh go tráidire an chórais"
 
+msgid "Minimum log level for console output"
+msgstr "Minimum log level for console output"
+
+msgid "Minimum log level for file output"
+msgstr "Minimum log level for file output"
+
+msgid "Minimum log level for systemd output"
+msgstr "Minimum log level for systemd output"
+
 msgid "Minimum log level to record"
 msgstr "Íoslíon leibhéal loga le taifeadadh"
 
@@ -1319,6 +1397,9 @@ msgstr "Note: Choosing \\"
 msgid "Note: Choosing \\\\"
 msgstr "Note: Choosing \\\\"
 
+msgid "Number of failed login attempts before temporarily banning IP"
+msgstr "Number of failed login attempts before temporarily banning IP"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Líon na bpiaraí le hanailísiú le haghaidh patrúin iompair"
 
@@ -1351,6 +1432,12 @@ msgstr "Ceangail Amach"
 
 msgid "Outgoing Peer Connections"
 msgstr "Ceangail Piaraí Amach"
+
+msgid "Output logs to console/terminal"
+msgstr "Output logs to console/terminal"
+
+msgid "Output logs to systemd journal (journalctl)"
+msgstr "Output logs to systemd journal (journalctl)"
 
 msgid "Overlay Notification"
 msgstr "Fógra Forleagain"
@@ -1550,6 +1637,9 @@ msgstr "Dáileadh dul chun cinn do phiaraí ag tosú (0.0 - 1.0)"
 msgid "Properties"
 msgstr "Airíonna"
 
+msgid "Properties: {name} - Full dialog not yet implemented"
+msgstr "Properties: {name} - Full dialog not yet implemented"
+
 msgid "Protocol Compliance:"
 msgstr "Comhlíonadh Prótacail:"
 
@@ -1589,6 +1679,9 @@ msgstr "Scoir DFakeSeeder"
 msgid "Random"
 msgstr "Randamach"
 
+msgid "Random port generated: {port}"
+msgstr "Random port generated: {port}"
+
 msgid "Rate of adaptation to swarm behavior"
 msgstr "Ráta oiriúnaithe d'iompar saithe"
 
@@ -1601,8 +1694,14 @@ msgstr "Athruithe réadúil"
 msgid "Received"
 msgstr "Faighte"
 
+msgid "Recheck completed for {name}: {progress}%"
+msgstr "Recheck completed for {name}: {progress}%"
+
 msgid "Redistribution mode:"
 msgstr "Mód athdháilte:"
+
+msgid "Refresh Interval:"
+msgstr "Refresh Interval:"
 
 msgid "Relaxed"
 msgstr "Suaimhneach"
@@ -1634,6 +1733,12 @@ msgstr "Bain Lorgaire..."
 msgid "Remove torrent"
 msgstr "Bain torrent"
 
+msgid "Removed: {name}"
+msgstr "Removed: {name}"
+
+msgid "Removed: {name} (file deleted)"
+msgstr "Removed: {name} (file deleted)"
+
 msgid "Rename"
 msgstr "Athainmnigh"
 
@@ -1642,6 +1747,9 @@ msgstr "Athainmnigh Torrent"
 
 msgid "Rename..."
 msgstr "Athainmnigh..."
+
+msgid "Renamed to: {name}"
+msgstr "Renamed to: {name}"
 
 msgid "Requests"
 msgstr "Iarratais"
@@ -1708,6 +1816,9 @@ msgstr "Satharn"
 
 msgid "Save"
 msgstr "Save"
+
+msgid "Save logs to file"
+msgstr "Save logs to file"
 
 msgid "Save logs to file in addition to console"
 msgstr "Sábháil logaí chuig comhad chomh maith leis an gconsól"
@@ -1799,6 +1910,9 @@ msgstr "Seolta"
 msgid "Sequential Download"
 msgstr "Íoslódáil Seichimh"
 
+msgid "Sequential download {status}"
+msgstr "Sequential download {status}"
+
 msgid "Server:"
 msgstr "Freastalaí:"
 
@@ -1840,6 +1954,12 @@ msgstr "Socraigh Teorainn Uaslódála"
 
 msgid "Set Upload Limit..."
 msgstr "Socraigh Teorainn Uaslódála..."
+
+msgid "Settings exported to {path}"
+msgstr "Settings exported to {path}"
+
+msgid "Settings imported from {path}"
+msgstr "Settings imported from {path}"
 
 msgid "Settings saved successfully"
 msgstr "Socruithe sábháilte go rathúil"
@@ -1946,6 +2066,9 @@ msgstr "Domhnach"
 msgid "Super Seeding"
 msgstr "Mór-Síolú"
 
+msgid "Super seeding {status}"
+msgstr "Super seeding {status}"
+
 msgid "Swedish"
 msgstr "Sualainnis"
 
@@ -1954,6 +2077,9 @@ msgstr "Líon Piaraí Sintéiseacha:"
 
 msgid "System Theme"
 msgstr "Téama an Chórais"
+
+msgid "Systemd log level: {level}"
+msgstr "Systemd log level: {level}"
 
 msgid "TCP fallback"
 msgstr "Cúltaca TCP"
@@ -2054,6 +2180,15 @@ msgstr "URL Lorgaire"
 msgid "Tracker URL:"
 msgstr "URL Lorgaire:"
 
+msgid "Tracker added to {name}"
+msgstr "Tracker added to {name}"
+
+msgid "Tracker removal not yet implemented"
+msgstr "Tracker removal not yet implemented"
+
+msgid "Tracker updated for {name}"
+msgstr "Tracker updated for {name}"
+
 msgid "Trackers"
 msgstr "Lorgairí"
 
@@ -2108,6 +2243,9 @@ msgstr "Ráta Athnuachana Comhéadain"
 msgid "UI refresh rate (sec):"
 msgstr "Ráta athnuachana comhéadain (soic):"
 
+msgid "UPnP {status}"
+msgstr "UPnP {status}"
+
 msgid "URL"
 msgstr "URL"
 
@@ -2153,6 +2291,12 @@ msgstr "Teorainn uaslódála (KB/s):"
 msgid "Upload limit (KB/s, 0 = unlimited):"
 msgstr "Upload limit (KB/s, 0 = unlimited):"
 
+msgid "Upload limit removed"
+msgstr "Upload limit removed"
+
+msgid "Upload limit set to {limit} KB/s"
+msgstr "Upload limit set to {limit} KB/s"
+
 msgid "Upload speed variance for aggressive profile"
 msgstr "Athraitheas luais uaslódála do phróifíl ionsaitheach"
 
@@ -2192,8 +2336,14 @@ msgstr "Ainm úsáideora le haghaidh logáil isteach comhéadan gréasáin"
 msgid "Username:"
 msgstr "Ainm úsáideora:"
 
+msgid "Using global speed limits for {name}"
+msgstr "Using global speed limits for {name}"
+
 msgid "Validate DHT security tokens"
 msgstr "Bailíochtaigh comharthaí slándála DHT"
+
+msgid "Validate HTTP Host header to prevent DNS rebinding attacks"
+msgstr "Validate HTTP Host header to prevent DNS rebinding attacks"
 
 msgid "Validate extension messages"
 msgstr "Bailíochtaigh teachtaireachtaí breiseáin"
@@ -2224,6 +2374,9 @@ msgstr "Vuze/5.7.6.0"
 
 msgid "WARNING"
 msgstr "RABHADH"
+
+msgid "Watch folder set to: {path}"
+msgstr "Watch folder set to: {path}"
 
 msgid "Web UI"
 msgstr "Comhéadan Gréasáin"
@@ -2279,11 +2432,17 @@ msgstr "cliant"
 msgid "connection_time"
 msgstr "am ceangail"
 
+msgid "disabled"
+msgstr "disabled"
+
 msgid "download_rate"
 msgstr "Ráta Íoslódála"
 
 msgid "download_speed"
 msgstr "Luas Íoslódála"
+
+msgid "enabled"
+msgstr "enabled"
 
 msgid "failure_reason"
 msgstr "Cúis Teipe"
@@ -2299,6 +2458,9 @@ msgstr "Croitheadh ​​láimhe críochnaithe"
 
 msgid "id"
 msgstr "#"
+
+msgid "incoming_connections_tab"
+msgstr "incoming_connections_tab"
 
 msgid "leechers"
 msgstr "Leechers"
@@ -2326,6 +2488,9 @@ msgstr "open-menu-symbolic"
 
 msgid "options_tab"
 msgstr "cluaisín_roghanna"
+
+msgid "outgoing_connections_tab"
+msgstr "outgoing_connections_tab"
 
 msgid "peer_choking"
 msgstr "Piara ag tachtadh"
@@ -2384,6 +2549,9 @@ msgstr "stádas"
 msgid "threshold"
 msgstr "Tairseach"
 
+msgid "toggleAltSpeed()"
+msgstr "toggleAltSpeed()"
+
 msgid "total_downloaded"
 msgstr "Iomlán Íoslódáilte"
 
@@ -2416,6 +2584,27 @@ msgstr "ut_metadata (Malartú Meiteashonraí)"
 
 msgid "ut_pex (Peer Exchange)"
 msgstr "ut_pex (Malartú Piaraí)"
+
+msgid "{name} moved to bottom"
+msgstr "{name} moved to bottom"
+
+msgid "{name} moved to top"
+msgstr "{name} moved to top"
+
+msgid "{name} progress set to {progress}%"
+msgstr "{name} progress set to {progress}%"
+
+msgid "{name} set to 100% complete"
+msgstr "{name} set to 100% complete"
+
+msgid "{name} set to high priority"
+msgstr "{name} set to high priority"
+
+msgid "{name} set to low priority"
+msgstr "{name} set to low priority"
+
+msgid "{name} set to normal priority"
+msgstr "{name} set to normal priority"
 
 msgid "µTorrent"
 msgstr "µTorrent"

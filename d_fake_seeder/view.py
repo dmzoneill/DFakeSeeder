@@ -31,6 +31,8 @@ from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
 # Translation function will be provided by model's TranslationManager
 from d_fake_seeder.lib.logger import logger  # noqa: E402
 from d_fake_seeder.lib.util.cleanup_mixin import CleanupMixin  # noqa: E402
+from d_fake_seeder.lib.util.notification_manager import NotificationManager  # noqa: E402
+from d_fake_seeder.lib.util.notification_widget import NotificationType  # noqa: E402
 from d_fake_seeder.lib.util.shutdown_progress import (  # noqa: E402
     ShutdownProgressTracker,
 )
@@ -158,6 +160,16 @@ class View(CleanupMixin):
         self.notify_label.set_can_target(False)
         self.notify_label.set_can_focus(False)
         self.overlay.add_overlay(self.notify_label)
+
+        # Initialize the toast-style NotificationManager
+        def statusbar_callback(text: str) -> None:
+            if hasattr(self, "status") and self.status:
+                self.status.set_text(text)
+
+        self.notification_manager = NotificationManager(
+            overlay=self.overlay,
+            statusbar_callback=statusbar_callback,
+        )
         logger.trace(
             "Notification overlay setup completed (took {(overlay_end - overlay_start)*1000:.1f}ms)",
             "View",
@@ -334,29 +346,92 @@ class View(CleanupMixin):
         return False  # Don't repeat the timeout
 
     # Setting model for the view
-    def notify(self, text: Any) -> Any:
+    def notify(
+        self,
+        text: Any,
+        notification_type: str = "info",
+        translate: bool = False,
+        action_label: str | None = None,
+        action_callback: Any = None,
+        timeout_ms: int | None = None,
+        **kwargs: Any,
+    ) -> Any:
+        """
+        Show a notification message using toast-style popups.
+
+        This method is THREAD-SAFE - it can be called from any thread and
+        will properly marshal the notification to the GTK main thread.
+
+        Args:
+            text: The notification text (can be a translation key if translate=True)
+            notification_type: Type of notification ("info", "success", "warning", "error")
+            translate: If True, translate the text using the translation manager
+            action_label: Optional label for an action button
+            action_callback: Optional callback when action button is clicked
+            timeout_ms: Override auto-dismiss timeout (None = use settings)
+            **kwargs: Format arguments for the translated string
+        """
         logger.trace("View notify", extra={"class_name": self.__class__.__name__})
-        # Cancel the previous timeout, if it exists
-        if hasattr(self, "timeout_source") and self.timeout_source and not self.timeout_source.is_destroyed():
-            self.timeout_source.destroy()
-            self.timeout_source = None
-        self.timeout_id = 0
-        # self.notify_label.set_no_show_all(False)
-        self.notify_label.set_visible(True)
-        self.notify_label.show()
-        self.notify_label.set_text(text)
-        self.status.set_text(text)
-        # Use configurable notification timeout (based on tickspeed, minimum configurable)
-        notification_timeout = max(
-            self.notification_timeout_min,
-            int(self.settings.tickspeed * self.notification_timeout_multiplier),
-        )
-        # Create timeout source and store reference
-        self.timeout_source = GLib.timeout_source_new(notification_timeout)
-        self.timeout_source.set_callback(  # type: ignore[attr-defined]
-            lambda user_data: self.notify_label.set_visible(False) or self.notify_label.hide()
-        )
-        self.timeout_id = self.timeout_source.attach(GLib.MainContext.default())  # type: ignore[attr-defined]
+
+        # Optionally translate the text
+        if translate:
+            text = self._(text)
+            if kwargs:
+                text = text.format(**kwargs)
+
+        # Map string type to NotificationType enum
+        type_map = {
+            "info": NotificationType.INFO,
+            "success": NotificationType.SUCCESS,
+            "warning": NotificationType.WARNING,
+            "error": NotificationType.ERROR,
+        }
+        notif_type = type_map.get(notification_type, NotificationType.INFO)
+
+        # Use the new NotificationManager if available
+        if hasattr(self, "notification_manager") and self.notification_manager:
+            # CRITICAL: Marshal to main GTK thread using GLib.idle_add
+            # This prevents UI freezes when notify() is called from background threads
+            def _show_notification() -> bool:
+                if hasattr(self, "notification_manager") and self.notification_manager:
+                    self.notification_manager.show(
+                        message=str(text),
+                        notification_type=notif_type,
+                        action_label=action_label,
+                        action_callback=action_callback,
+                        timeout_ms=timeout_ms,
+                    )
+                return False  # Don't repeat
+
+            GLib.idle_add(_show_notification)
+            return None
+
+        # Fallback to old label-based notification (for backwards compatibility)
+        # Also use GLib.idle_add for thread safety
+        def _show_fallback_notification() -> bool:
+            # Cancel the previous timeout, if it exists
+            if hasattr(self, "timeout_source") and self.timeout_source and not self.timeout_source.is_destroyed():
+                self.timeout_source.destroy()
+                self.timeout_source = None
+            self.timeout_id = 0
+            self.notify_label.set_visible(True)
+            self.notify_label.show()
+            self.notify_label.set_text(str(text))
+            self.status.set_text(str(text))
+            # Use configurable notification timeout (based on tickspeed, minimum configurable)
+            notification_timeout = max(
+                self.notification_timeout_min,
+                int(self.settings.tickspeed * self.notification_timeout_multiplier),
+            )
+            # Create timeout source and store reference
+            self.timeout_source = GLib.timeout_source_new(notification_timeout)
+            self.timeout_source.set_callback(  # type: ignore[attr-defined]
+                lambda user_data: self.notify_label.set_visible(False) or self.notify_label.hide()
+            )
+            self.timeout_id = self.timeout_source.attach(GLib.MainContext.default())  # type: ignore[attr-defined]
+            return False  # Don't repeat
+
+        GLib.idle_add(_show_fallback_notification)
 
     # Setting model for the view
     def set_model(self, model: Any) -> None:

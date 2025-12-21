@@ -89,6 +89,40 @@ logger.warning("Unexpected but recoverable")        # WARNING (30)
 logger.error("Errors needing attention", exc_info=True)  # ERROR (40)
 ```
 
+### GTK4 CSS Gotchas
+
+**GTK4 does NOT support `!important`** - Unlike web CSS, GTK4's CSS parser ignores `!important` declarations entirely. They will not override theme styles.
+
+```css
+/* ❌ DON'T - GTK4 ignores !important */
+.my-widget {
+    background-color: #2d2d2d !important;
+}
+
+/* ✅ DO - Use higher priority CssProvider in code */
+```
+
+**For widgets that need guaranteed styling (especially backgrounds on Gtk.Frame):**
+```python
+# Apply inline CSS with high priority
+css_provider = Gtk.CssProvider()
+css_provider.load_from_string("""
+    frame {
+        background-color: #2d2d2d;
+        border-radius: 12px;
+    }
+""")
+widget.get_style_context().add_provider(
+    css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 100
+)
+```
+
+**Other GTK4 CSS differences from web CSS:**
+- No `box-shadow` spread radius (only offset-x, offset-y, blur-radius, color)
+- Limited pseudo-classes (`:hover`, `:active`, `:focus`, `:checked`, `:disabled`)
+- `@media` queries work but are limited
+- Colors must be hex (`#rrggbb`) or `rgba()` - named colors may not work
+
 ---
 
 ## ✅ Required Patterns
@@ -236,15 +270,40 @@ settings = AppSettings(file_path=str(tmp_path / "settings.json"))
 
 ---
 
-## 🔧 Known Refactoring Needs
+## 🏗️ Component Hierarchy
 
-### CleanupMixin & Component Hierarchy (TODO)
-Current state has some inconsistency:
-- `Component` extends `CleanupMixin` with abstract methods
-- `BaseTorrentTab` extends `CleanupMixin` directly (skipping Component)
-- Some tabs use `Component`, others use `BaseTorrentTab`
+The UI component hierarchy follows a consistent pattern with `CleanupMixin` at the base:
 
-**Future refactoring goal**: Standardize inheritance pattern across all UI components.
+```
+CleanupMixin (d_fake_seeder/lib/util/cleanup_mixin.py)
+│   - Tracks signals, bindings, timeouts, stores
+│   - Provides cleanup() method for resource management
+│
+└── Component (d_fake_seeder/components/component/base_component.py)
+    │   - Abstract: handle_model_changed(), handle_attribute_changed(),
+    │               handle_settings_changed(), update_view()
+    │   - Has set_model() with auto signal tracking
+    │
+    ├── BaseSettingsTab (settings/base_tab.py)
+    │   └── AdvancedTab, BitTorrentTab, ConnectionTab, DHTTab,
+    │       GeneralTab, MultiTrackerTab, PeerProtocolTab,
+    │       ProtocolExtensionsTab, SimulationTab, SpeedTab, WebUITab
+    │
+    ├── BaseTorrentTab (torrent_details/base_tab.py)
+    │   │   - Abstract: tab_name, tab_widget_id, _init_widgets(), update_content()
+    │   └── DetailsTab, FilesTab, StatusTab, TrackersTab, OptionsTab,
+    │       LogTab, MonitoringTab, IncomingConnectionsTab, OutgoingConnectionsTab
+    │
+    ├── TorrentDetailsNotebook
+    └── Torrents, Toolbar, States, Statusbar, Sidebar
+```
+
+### Key Design Principles
+
+1. **Single cleanup chain**: All UI components inherit `CleanupMixin` through `Component`
+2. **Consistent tab pattern**: Both `BaseSettingsTab` and `BaseTorrentTab` extend `Component`
+3. **Specialized abstracts**: Each tab base defines domain-specific abstract methods
+4. **Resource tracking**: Use `track_signal()`, `track_binding()`, `track_timeout()`, `track_store()`
 
 ---
 

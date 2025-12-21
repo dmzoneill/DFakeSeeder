@@ -12,17 +12,19 @@ from typing import Any, Optional
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
 
-# Try to import aiohttp - it's an optional dependency
-try:
-    from aiohttp import web
-
-    AIOHTTP_AVAILABLE = True
-except ImportError:
-    AIOHTTP_AVAILABLE = False
-    web = None
-
 from .auth import create_auth_middleware, create_security_middleware
 from .routes import setup_routes
+
+# Try to import aiohttp - it's an optional dependency
+web: Any = None
+AIOHTTP_AVAILABLE = False
+try:
+    from aiohttp import web as _web
+
+    web = _web
+    AIOHTTP_AVAILABLE = True
+except ImportError:
+    pass
 
 
 class WebUIServer:

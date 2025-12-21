@@ -990,6 +990,18 @@ class Torrents(Component, ColumnTranslationMixin):
             extra={"class_name": self.__class__.__name__},
         )
         self.model = model
+
+        # Show notification for torrent add/remove
+        if updated_attributes == "add" and torrent:
+            from d_fake_seeder.view import View
+
+            if View.instance:
+                View.instance.notify(
+                    self._("Added: {name}").format(name=getattr(torrent, "name", "Unknown")),
+                    notification_type="success",
+                )
+        # Note: "remove" notification is already handled in _on_remove_activate
+
         # Check if this is a filter update
         if updated_attributes == "filter":
             logger.trace(
@@ -1238,7 +1250,11 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"Recheck completed for {torrent.name}: {new_progress*100:.1f}%")
+            View.instance.notify(
+                self._("Recheck completed for {name}: {progress}%").format(
+                    name=torrent.name, progress=f"{new_progress*100:.1f}"
+                )
+            )
 
     def on_force_complete(self, action: Any, parameter: Any) -> None:
         """Force torrent to 100% completion"""
@@ -1256,7 +1272,7 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"{torrent.name} set to 100% complete")
+            View.instance.notify(self._("{name} set to 100% complete").format(name=torrent.name))
 
     def on_set_random_progress(self, action: Any, parameter: Any) -> None:
         """Set torrent to a random realistic progress percentage"""
@@ -1285,7 +1301,9 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"{torrent.name} progress set to {progress*100:.1f}%")
+            View.instance.notify(
+                self._("{name} progress set to {progress}%").format(name=torrent.name, progress=f"{progress*100:.1f}")
+            )
 
     def on_update_tracker(self, action: Any, parameter: Any) -> None:
         """Handle update tracker action from context menu"""
@@ -1321,7 +1339,7 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"Copied name: {torrent.name}")
+            View.instance.notify(self._("Copied name: {name}").format(name=torrent.name))
 
     def on_copy_hash(self, action: Any, parameter: Any) -> None:
         """Copy torrent info hash to clipboard"""
@@ -1341,7 +1359,7 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
-                View.instance.notify(f"Copied info hash: {info_hash[:16]}...")
+                View.instance.notify(self._("Copied info hash: {hash}...").format(hash=info_hash[:16]))
         else:
             logger.warning(
                 "Torrent file hash not available",
@@ -1371,7 +1389,7 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
-                View.instance.notify(f"Copied magnet link for {torrent.name}")
+                View.instance.notify(self._("Copied magnet link for {name}").format(name=torrent.name))
         else:
             logger.warning(
                 "Torrent info not available for magnet link",
@@ -1396,7 +1414,7 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
-                View.instance.notify("Copied tracker URL")
+                View.instance.notify(self._("Copied tracker URL"))
         else:
             logger.warning(
                 "Tracker URL not available",
@@ -1423,7 +1441,7 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"{torrent.name} set to high priority")
+            View.instance.notify(self._("{name} set to high priority").format(name=torrent.name))
 
     def on_priority_normal(self, action: Any, parameter: Any) -> None:
         """Set torrent priority to normal"""
@@ -1443,7 +1461,7 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"{torrent.name} set to normal priority")
+            View.instance.notify(self._("{name} set to normal priority").format(name=torrent.name))
 
     def on_priority_low(self, action: Any, parameter: Any) -> None:
         """Set torrent priority to low"""
@@ -1463,7 +1481,7 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"{torrent.name} set to low priority")
+            View.instance.notify(self._("{name} set to low priority").format(name=torrent.name))
 
     # ===== SPEED LIMIT ACTIONS =====
 
@@ -1496,7 +1514,11 @@ class Torrents(Component, ColumnTranslationMixin):
                 from d_fake_seeder.view import View
 
                 if View.instance:
-                    View.instance.notify(f"Upload limit set to {limit} KB/s" if limit > 0 else "Upload limit removed")
+                    View.instance.notify(
+                        self._("Upload limit set to {limit} KB/s").format(limit=limit)
+                        if limit > 0
+                        else self._("Upload limit removed")
+                    )
             except ValueError:
                 logger.warning(
                     "Invalid upload limit entered",
@@ -1535,7 +1557,9 @@ class Torrents(Component, ColumnTranslationMixin):
 
                 if View.instance:
                     View.instance.notify(
-                        f"Download limit set to {limit} KB/s" if limit > 0 else "Download limit removed"
+                        self._("Download limit set to {limit} KB/s").format(limit=limit)
+                        if limit > 0
+                        else self._("Download limit removed")
                     )
             except ValueError:
                 logger.warning(
@@ -1563,7 +1587,7 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"Using global speed limits for {torrent.name}")
+            View.instance.notify(self._("Using global speed limits for {name}").format(name=torrent.name))
 
     # ===== TRACKER MANAGEMENT =====
 
@@ -1597,7 +1621,7 @@ class Torrents(Component, ColumnTranslationMixin):
                 from d_fake_seeder.view import View
 
                 if View.instance:
-                    View.instance.notify(f"Tracker added to {torrent.name}")
+                    View.instance.notify(self._("Tracker added to {name}").format(name=torrent.name))
 
         dialog.destroy()
 
@@ -1632,7 +1656,7 @@ class Torrents(Component, ColumnTranslationMixin):
                 from d_fake_seeder.view import View
 
                 if View.instance:
-                    View.instance.notify(f"Tracker updated for {torrent.name}")
+                    View.instance.notify(self._("Tracker updated for {name}").format(name=torrent.name))
 
         dialog.destroy()
 
@@ -1649,7 +1673,7 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify("Tracker removal not yet implemented")
+            View.instance.notify(self._("Tracker removal not yet implemented"))
 
     # ===== QUEUE ACTIONS =====
 
@@ -1673,7 +1697,7 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"{torrent.name} moved to top")
+            View.instance.notify(self._("{name} moved to top").format(name=torrent.name))
 
     def on_queue_up(self, action: Any, parameter: Any) -> None:
         """Move torrent up in queue"""
@@ -1729,7 +1753,7 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"{torrent.name} moved to bottom")
+            View.instance.notify(self._("{name} moved to bottom").format(name=torrent.name))
 
     # ===== ADVANCED OPTIONS =====
 
@@ -1763,7 +1787,7 @@ class Torrents(Component, ColumnTranslationMixin):
                 from d_fake_seeder.view import View
 
                 if View.instance:
-                    View.instance.notify(f"Renamed to: {new_name}")
+                    View.instance.notify(self._("Renamed to: {name}").format(name=new_name))
 
         dialog.destroy()
 
@@ -1795,7 +1819,9 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
-                View.instance.notify(f"Label set: {label}" if label else "Label cleared")
+                View.instance.notify(
+                    self._("Label set: {label}").format(label=label) if label else self._("Label cleared")
+                )
 
         dialog.destroy()
 
@@ -1823,7 +1849,7 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
-                View.instance.notify(f"Location set to: {location}")
+                View.instance.notify(self._("Location set to: {location}").format(location=location))
 
         dialog.destroy()
 
@@ -1842,7 +1868,11 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"Super seeding {'enabled' if torrent.super_seeding else 'disabled'}")
+            View.instance.notify(
+                self._("Super seeding {status}").format(
+                    status=self._("enabled") if torrent.super_seeding else self._("disabled")
+                )
+            )
 
     def on_toggle_sequential(self, action: Any, parameter: Any) -> None:
         """Toggle sequential download mode"""
@@ -1859,7 +1889,11 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"Sequential download {'enabled' if torrent.sequential_download else 'disabled'}")
+            View.instance.notify(
+                self._("Sequential download {status}").format(
+                    status=self._("enabled") if torrent.sequential_download else self._("disabled")
+                )
+            )
 
     def on_show_properties(self, action: Any, parameter: Any) -> None:
         """Show torrent properties dialog"""
@@ -1875,7 +1909,9 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(f"Properties: {torrent.name} - Full dialog not yet implemented")
+            View.instance.notify(
+                self._("Properties: {name} - Full dialog not yet implemented").format(name=torrent.name)
+            )
 
     # ===== REMOVE ACTIONS =====
 
@@ -1909,7 +1945,7 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
-                View.instance.notify(f"Removed: {torrent.name}")
+                View.instance.notify(self._("Removed: {name}").format(name=torrent.name))
 
     def on_remove_torrent_and_data(self, action: Any, parameter: Any) -> None:
         """Remove torrent and delete .torrent file"""
@@ -1960,7 +1996,7 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
-                View.instance.notify(f"Removed: {torrent.name} (file deleted)")
+                View.instance.notify(self._("Removed: {name} (file deleted)").format(name=torrent.name))
 
     def model_selection_changed(self, source: Any, model: Any, torrent: Any) -> Any:
         logger.trace(

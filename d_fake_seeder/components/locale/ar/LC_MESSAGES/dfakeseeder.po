@@ -23,6 +23,9 @@ msgstr "#"
 msgid "(0 = unlimited)"
 msgstr "(0 = غير محدود)"
 
+msgid "-DE2003-"
+msgstr "-DE2003-"
+
 msgid "0 / 250"
 msgstr "٠ / ٢٥٠"
 
@@ -326,6 +329,9 @@ msgstr "سرعة تنزيل الملف المتوازن"
 msgid "Balanced profile upload speed"
 msgstr "سرعة رفع الملف المتوازن"
 
+msgid "Ban after failed logins:"
+msgstr "Ban after failed logins:"
+
 msgid "Behavior Variation:"
 msgstr "تنوع السلوك:"
 
@@ -340,6 +346,9 @@ msgstr "البنغالية"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
+
+msgid "Bind IP Address:"
+msgstr "Bind IP Address:"
 
 msgid "Bind to localhost only"
 msgstr "ربط بالمضيف المحلي فقط"
@@ -482,6 +491,21 @@ msgstr "سرعة رفع الملف المحافظ"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "محافظ: سرعات أقل، اتصالات أقل، مثالي للمشاركة في الخلفية"
 
+msgid "Console log level: {level}"
+msgstr "Console log level: {level}"
+
+msgid "Copied info hash: {hash}..."
+msgstr "Copied info hash: {hash}..."
+
+msgid "Copied magnet link for {name}"
+msgstr "Copied magnet link for {name}"
+
+msgid "Copied name: {name}"
+msgstr "Copied name: {name}"
+
+msgid "Copied tracker URL"
+msgstr "Copied tracker URL"
+
 msgid "Copy"
 msgstr "نسخ"
 
@@ -623,6 +647,12 @@ msgstr "حد التنزيل (كيلوبايت/ثانية):"
 msgid "Download limit (KB/s, 0 = unlimited):"
 msgstr "حد التنزيل (كيلوبايت/ثانية، ٠ = غير محدود):"
 
+msgid "Download limit removed"
+msgstr "Download limit removed"
+
+msgid "Download limit set to {limit} KB/s"
+msgstr "Download limit set to {limit} KB/s"
+
 msgid "Download speed variance for aggressive profile"
 msgstr "تباين سرعة التنزيل للملف العدواني"
 
@@ -749,6 +779,9 @@ msgstr "تمكين وضع التصحيح مع تسجيل إضافي وتفاصي
 msgid "Enable dynamic client profile switching"
 msgstr "تمكين تبديل ملف العميل الديناميكي"
 
+msgid "Enable host header validation"
+msgstr "Enable host header validation"
+
 msgid "Enable lt_donthave extension for piece availability"
 msgstr "تمكين امتداد lt_donthave لتوفر القطع"
 
@@ -830,8 +863,23 @@ msgstr "الإنجليزية"
 msgid "Error"
 msgstr "خطأ"
 
+msgid "Error applying seeding profile"
+msgstr "Error applying seeding profile"
+
 msgid "Error changing language"
 msgstr "خطأ في تغيير اللغة"
+
+msgid "Error exporting settings: {error}"
+msgstr "Error exporting settings: {error}"
+
+msgid "Error importing settings: {error}"
+msgstr "Error importing settings: {error}"
+
+msgid "Error opening folder browser"
+msgstr "Error opening folder browser"
+
+msgid "Error resetting settings: {error}"
+msgstr "Error resetting settings: {error}"
 
 msgid "Export"
 msgstr "تصدير"
@@ -871,6 +919,9 @@ msgstr "مسار الملف"
 
 msgid "File chooser not yet implemented"
 msgstr "منتقي الملفات غير مُطبَّق بعد"
+
+msgid "File log level: {level}"
+msgstr "File log level: {level}"
 
 msgid "Files"
 msgstr "الملفات"
@@ -1082,6 +1133,12 @@ msgstr "الكورية"
 msgid "Label"
 msgstr "العنوان"
 
+msgid "Label cleared"
+msgstr "Label cleared"
+
+msgid "Label set: {label}"
+msgstr "Label set: {label}"
+
 msgid "Label:"
 msgstr "التسمية:"
 
@@ -1090,6 +1147,9 @@ msgstr "اللغة"
 
 msgid "Language switched to"
 msgstr "تم تغيير اللغة إلى"
+
+msgid "Language switched to {lang}"
+msgstr "Language switched to {lang}"
 
 msgid "Language:"
 msgstr "اللغة:"
@@ -1118,14 +1178,23 @@ msgstr "تحديد معدل رسائل التمديد"
 msgid "List of bootstrap nodes for DHT initialization"
 msgstr "قائمة عقد التمهيد لتهيئة DHT"
 
+msgid "Location set to: {location}"
+msgstr "Location set to: {location}"
+
 msgid "Log"
 msgstr "السجل"
 
 msgid "Log Level:"
 msgstr "مستوى السجل:"
 
+msgid "Log to console"
+msgstr "Log to console"
+
 msgid "Log to file"
 msgstr "تسجيل في ملف"
+
+msgid "Log to systemd"
+msgstr "Log to systemd"
 
 msgid "Log-Normal"
 msgstr "لوغاريتمي طبيعي"
@@ -1244,6 +1313,15 @@ msgstr "الحد الأدنى لفترة الإعلان (ثانية):"
 msgid "Minimize to system tray"
 msgstr "تصغير إلى شريط النظام"
 
+msgid "Minimum log level for console output"
+msgstr "Minimum log level for console output"
+
+msgid "Minimum log level for file output"
+msgstr "Minimum log level for file output"
+
+msgid "Minimum log level for systemd output"
+msgstr "Minimum log level for systemd output"
+
 msgid "Minimum log level to record"
 msgstr "الحد الأدنى لمستوى السجل للتسجيل"
 
@@ -1319,6 +1397,9 @@ msgstr "Note: Choosing \\"
 msgid "Note: Choosing \\\\"
 msgstr "Note: Choosing \\\\"
 
+msgid "Number of failed login attempts before temporarily banning IP"
+msgstr "Number of failed login attempts before temporarily banning IP"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "عدد الأقران للتحليل لأنماط السلوك"
 
@@ -1351,6 +1432,12 @@ msgstr "الاتصالات الصادرة"
 
 msgid "Outgoing Peer Connections"
 msgstr "اتصالات الأقران الصادرة"
+
+msgid "Output logs to console/terminal"
+msgstr "Output logs to console/terminal"
+
+msgid "Output logs to systemd journal (journalctl)"
+msgstr "Output logs to systemd journal (journalctl)"
 
 msgid "Overlay Notification"
 msgstr "إشعار تراكبي"
@@ -1550,6 +1637,9 @@ msgstr "توزيع التقدم للأقران المبتدئين (0.0 - 1.0)"
 msgid "Properties"
 msgstr "الخصائص"
 
+msgid "Properties: {name} - Full dialog not yet implemented"
+msgstr "Properties: {name} - Full dialog not yet implemented"
+
 msgid "Protocol Compliance:"
 msgstr "الامتثال للبروتوكول:"
 
@@ -1589,6 +1679,9 @@ msgstr "إنهاء DFakeSeeder"
 msgid "Random"
 msgstr "عشوائي"
 
+msgid "Random port generated: {port}"
+msgstr "Random port generated: {port}"
+
 msgid "Rate of adaptation to swarm behavior"
 msgstr "معدل التكيف مع سلوك السرب"
 
@@ -1601,8 +1694,14 @@ msgstr "تنوعات واقعية"
 msgid "Received"
 msgstr "تم الاستلام"
 
+msgid "Recheck completed for {name}: {progress}%"
+msgstr "Recheck completed for {name}: {progress}%"
+
 msgid "Redistribution mode:"
 msgstr "وضع إعادة التوزيع:"
+
+msgid "Refresh Interval:"
+msgstr "Refresh Interval:"
 
 msgid "Relaxed"
 msgstr "مرن"
@@ -1634,6 +1733,12 @@ msgstr "إزالة متتبع..."
 msgid "Remove torrent"
 msgstr "إزالة التورنت"
 
+msgid "Removed: {name}"
+msgstr "Removed: {name}"
+
+msgid "Removed: {name} (file deleted)"
+msgstr "Removed: {name} (file deleted)"
+
 msgid "Rename"
 msgstr "إعادة تسمية"
 
@@ -1642,6 +1747,9 @@ msgstr "إعادة تسمية التورنت"
 
 msgid "Rename..."
 msgstr "إعادة تسمية..."
+
+msgid "Renamed to: {name}"
+msgstr "Renamed to: {name}"
 
 msgid "Requests"
 msgstr "الطلبات"
@@ -1708,6 +1816,9 @@ msgstr "السبت"
 
 msgid "Save"
 msgstr "حفظ"
+
+msgid "Save logs to file"
+msgstr "Save logs to file"
 
 msgid "Save logs to file in addition to console"
 msgstr "حفظ السجلات في ملف بالإضافة لوحة التحكم"
@@ -1799,6 +1910,9 @@ msgstr "تم الإرسال"
 msgid "Sequential Download"
 msgstr "التنزيل المتسلسل"
 
+msgid "Sequential download {status}"
+msgstr "Sequential download {status}"
+
 msgid "Server:"
 msgstr "الخادم:"
 
@@ -1840,6 +1954,12 @@ msgstr "تعيين حد الرفع"
 
 msgid "Set Upload Limit..."
 msgstr "تعيين حد الرفع..."
+
+msgid "Settings exported to {path}"
+msgstr "Settings exported to {path}"
+
+msgid "Settings imported from {path}"
+msgstr "Settings imported from {path}"
 
 msgid "Settings saved successfully"
 msgstr "تم حفظ الإعدادات بنجاح"
@@ -1946,6 +2066,9 @@ msgstr "الأحد"
 msgid "Super Seeding"
 msgstr "البذر الفائق"
 
+msgid "Super seeding {status}"
+msgstr "Super seeding {status}"
+
 msgid "Swedish"
 msgstr "السويدية"
 
@@ -1954,6 +2077,9 @@ msgstr "عدد الأقران الاصطناعيين:"
 
 msgid "System Theme"
 msgstr "سمة النظام"
+
+msgid "Systemd log level: {level}"
+msgstr "Systemd log level: {level}"
 
 msgid "TCP fallback"
 msgstr "TCP احتياطي"
@@ -2054,6 +2180,15 @@ msgstr "رابط المتتبع"
 msgid "Tracker URL:"
 msgstr "رابط المتتبع:"
 
+msgid "Tracker added to {name}"
+msgstr "Tracker added to {name}"
+
+msgid "Tracker removal not yet implemented"
+msgstr "Tracker removal not yet implemented"
+
+msgid "Tracker updated for {name}"
+msgstr "Tracker updated for {name}"
+
 msgid "Trackers"
 msgstr "المتتبعات"
 
@@ -2108,6 +2243,9 @@ msgstr "معدل تحديث الواجهة"
 msgid "UI refresh rate (sec):"
 msgstr "معدل تحديث الواجهة (ثانية):"
 
+msgid "UPnP {status}"
+msgstr "UPnP {status}"
+
 msgid "URL"
 msgstr "URL"
 
@@ -2153,6 +2291,12 @@ msgstr "حد الرفع (كيلوبايت/ثانية):"
 msgid "Upload limit (KB/s, 0 = unlimited):"
 msgstr "حد الرفع (كيلوبايت/ثانية، ٠ = غير محدود):"
 
+msgid "Upload limit removed"
+msgstr "Upload limit removed"
+
+msgid "Upload limit set to {limit} KB/s"
+msgstr "Upload limit set to {limit} KB/s"
+
 msgid "Upload speed variance for aggressive profile"
 msgstr "تباين سرعة الرفع للملف العدواني"
 
@@ -2192,8 +2336,14 @@ msgstr "اسم المستخدم لتسجيل دخول واجهة الويب"
 msgid "Username:"
 msgstr "اسم المستخدم:"
 
+msgid "Using global speed limits for {name}"
+msgstr "Using global speed limits for {name}"
+
 msgid "Validate DHT security tokens"
 msgstr "التحقق من رموز أمان DHT"
+
+msgid "Validate HTTP Host header to prevent DNS rebinding attacks"
+msgstr "Validate HTTP Host header to prevent DNS rebinding attacks"
 
 msgid "Validate extension messages"
 msgstr "التحقق من رسائل الامتداد"
@@ -2224,6 +2374,9 @@ msgstr "Vuze/5.7.6.0"
 
 msgid "WARNING"
 msgstr "تحذير"
+
+msgid "Watch folder set to: {path}"
+msgstr "Watch folder set to: {path}"
 
 msgid "Web UI"
 msgstr "واجهة الويب"
@@ -2279,11 +2432,17 @@ msgstr "العميل"
 msgid "connection_time"
 msgstr "وقت الاتصال"
 
+msgid "disabled"
+msgstr "disabled"
+
 msgid "download_rate"
 msgstr "معدل التنزيل"
 
 msgid "download_speed"
 msgstr "سرعة التحميل"
+
+msgid "enabled"
+msgstr "enabled"
 
 msgid "failure_reason"
 msgstr "سبب الفشل"
@@ -2299,6 +2458,9 @@ msgstr "اكتملت المصافحة"
 
 msgid "id"
 msgstr "#"
+
+msgid "incoming_connections_tab"
+msgstr "incoming_connections_tab"
 
 msgid "leechers"
 msgstr "المستفيدون"
@@ -2326,6 +2488,9 @@ msgstr "open-menu-symbolic"
 
 msgid "options_tab"
 msgstr "تبويب_الخيارات"
+
+msgid "outgoing_connections_tab"
+msgstr "outgoing_connections_tab"
 
 msgid "peer_choking"
 msgstr "النظير يخنق"
@@ -2384,6 +2549,9 @@ msgstr "الحالة"
 msgid "threshold"
 msgstr "العتبة"
 
+msgid "toggleAltSpeed()"
+msgstr "toggleAltSpeed()"
+
 msgid "total_downloaded"
 msgstr "إجمالي التحميل"
 
@@ -2416,6 +2584,27 @@ msgstr "ut_metadata (تبادل البيانات الوصفية)"
 
 msgid "ut_pex (Peer Exchange)"
 msgstr "ut_pex (تبادل الأقران)"
+
+msgid "{name} moved to bottom"
+msgstr "{name} moved to bottom"
+
+msgid "{name} moved to top"
+msgstr "{name} moved to top"
+
+msgid "{name} progress set to {progress}%"
+msgstr "{name} progress set to {progress}%"
+
+msgid "{name} set to 100% complete"
+msgstr "{name} set to 100% complete"
+
+msgid "{name} set to high priority"
+msgstr "{name} set to high priority"
+
+msgid "{name} set to low priority"
+msgstr "{name} set to low priority"
+
+msgid "{name} set to normal priority"
+msgstr "{name} set to normal priority"
 
 msgid "µTorrent"
 msgstr "µTorrent"

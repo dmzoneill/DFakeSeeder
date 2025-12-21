@@ -168,6 +168,8 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 return trackers
 
             # Get the actual Torrent object from the model using the attributes
+            if not self.model:
+                return trackers
             torrent = self.model.get_torrent_by_attributes(attributes)
             if not torrent:
                 self.logger.warning(
@@ -288,7 +290,9 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         try:
             # Get translation function from model
             translate_func = (
-                self.model.get_translate_func() if hasattr(self.model, "get_translate_func") else lambda x: x
+                self.model.get_translate_func()
+                if self.model and hasattr(self.model, "get_translate_func")
+                else lambda x: x
             )
 
             headers = [

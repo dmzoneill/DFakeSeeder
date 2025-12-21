@@ -23,6 +23,9 @@ msgstr "#"
 msgid "(0 = unlimited)"
 msgstr "(0 = tidak terbatas)"
 
+msgid "-DE2003-"
+msgstr "-DE2003-"
+
 msgid "0 / 250"
 msgstr "0 / 250"
 
@@ -326,6 +329,9 @@ msgstr "Kecepatan unduh profil seimbang"
 msgid "Balanced profile upload speed"
 msgstr "Kecepatan unggah profil seimbang"
 
+msgid "Ban after failed logins:"
+msgstr "Ban after failed logins:"
+
 msgid "Behavior Variation:"
 msgstr "Variasi Perilaku:"
 
@@ -340,6 +346,9 @@ msgstr "Bengali"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
+
+msgid "Bind IP Address:"
+msgstr "Bind IP Address:"
 
 msgid "Bind to localhost only"
 msgstr "Bind hanya ke localhost"
@@ -482,6 +491,21 @@ msgstr "Kecepatan unggah profil konservatif"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "Konservatif: Kecepatan lebih rendah, koneksi lebih sedikit, ideal untuk seeding latar belakang"
 
+msgid "Console log level: {level}"
+msgstr "Console log level: {level}"
+
+msgid "Copied info hash: {hash}..."
+msgstr "Copied info hash: {hash}..."
+
+msgid "Copied magnet link for {name}"
+msgstr "Copied magnet link for {name}"
+
+msgid "Copied name: {name}"
+msgstr "Copied name: {name}"
+
+msgid "Copied tracker URL"
+msgstr "Copied tracker URL"
+
 msgid "Copy"
 msgstr "Salin"
 
@@ -623,6 +647,12 @@ msgstr "Batas unduh (KB/s):"
 msgid "Download limit (KB/s, 0 = unlimited):"
 msgstr "Batas unduh (KB/s, 0 = tak terbatas):"
 
+msgid "Download limit removed"
+msgstr "Download limit removed"
+
+msgid "Download limit set to {limit} KB/s"
+msgstr "Download limit set to {limit} KB/s"
+
 msgid "Download speed variance for aggressive profile"
 msgstr "Variansi kecepatan unduh untuk profil agresif"
 
@@ -749,6 +779,9 @@ msgstr "Aktifkan mode debug dengan pencatatan ekstra dan detail kesalahan"
 msgid "Enable dynamic client profile switching"
 msgstr "Aktifkan perpindahan profil klien dinamis"
 
+msgid "Enable host header validation"
+msgstr "Enable host header validation"
+
 msgid "Enable lt_donthave extension for piece availability"
 msgstr "Aktifkan ekstensi lt_donthave untuk ketersediaan piece"
 
@@ -830,8 +863,23 @@ msgstr "Inggris"
 msgid "Error"
 msgstr "Kesalahan"
 
+msgid "Error applying seeding profile"
+msgstr "Error applying seeding profile"
+
 msgid "Error changing language"
 msgstr "Kesalahan mengubah bahasa"
+
+msgid "Error exporting settings: {error}"
+msgstr "Error exporting settings: {error}"
+
+msgid "Error importing settings: {error}"
+msgstr "Error importing settings: {error}"
+
+msgid "Error opening folder browser"
+msgstr "Error opening folder browser"
+
+msgid "Error resetting settings: {error}"
+msgstr "Error resetting settings: {error}"
 
 msgid "Export"
 msgstr "Ekspor"
@@ -871,6 +919,9 @@ msgstr "Path File"
 
 msgid "File chooser not yet implemented"
 msgstr "Pemilih file belum diimplementasikan"
+
+msgid "File log level: {level}"
+msgstr "File log level: {level}"
 
 msgid "Files"
 msgstr "File"
@@ -1082,6 +1133,12 @@ msgstr "Korea"
 msgid "Label"
 msgstr "Label"
 
+msgid "Label cleared"
+msgstr "Label cleared"
+
+msgid "Label set: {label}"
+msgstr "Label set: {label}"
+
 msgid "Label:"
 msgstr "Label:"
 
@@ -1090,6 +1147,9 @@ msgstr "Bahasa"
 
 msgid "Language switched to"
 msgstr "Bahasa diubah ke"
+
+msgid "Language switched to {lang}"
+msgstr "Language switched to {lang}"
 
 msgid "Language:"
 msgstr "Bahasa:"
@@ -1118,14 +1178,23 @@ msgstr "Batasi tingkat pesan ekstensi"
 msgid "List of bootstrap nodes for DHT initialization"
 msgstr "Daftar node bootstrap untuk inisialisasi DHT"
 
+msgid "Location set to: {location}"
+msgstr "Location set to: {location}"
+
 msgid "Log"
 msgstr "Log"
 
 msgid "Log Level:"
 msgstr "Tingkat Log:"
 
+msgid "Log to console"
+msgstr "Log to console"
+
 msgid "Log to file"
 msgstr "Log ke file"
+
+msgid "Log to systemd"
+msgstr "Log to systemd"
 
 msgid "Log-Normal"
 msgstr "Log-Normal"
@@ -1244,6 +1313,15 @@ msgstr "Interval pengumuman min (dtk):"
 msgid "Minimize to system tray"
 msgstr "Minimalkan ke system tray"
 
+msgid "Minimum log level for console output"
+msgstr "Minimum log level for console output"
+
+msgid "Minimum log level for file output"
+msgstr "Minimum log level for file output"
+
+msgid "Minimum log level for systemd output"
+msgstr "Minimum log level for systemd output"
+
 msgid "Minimum log level to record"
 msgstr "Tingkat log minimum untuk direkam"
 
@@ -1319,6 +1397,9 @@ msgstr "Note: Choosing \\"
 msgid "Note: Choosing \\\\"
 msgstr "Note: Choosing \\\\"
 
+msgid "Number of failed login attempts before temporarily banning IP"
+msgstr "Number of failed login attempts before temporarily banning IP"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Jumlah peer untuk dianalisis pola perilaku"
 
@@ -1351,6 +1432,12 @@ msgstr "Koneksi Keluar"
 
 msgid "Outgoing Peer Connections"
 msgstr "Koneksi Peer Keluar"
+
+msgid "Output logs to console/terminal"
+msgstr "Output logs to console/terminal"
+
+msgid "Output logs to systemd journal (journalctl)"
+msgstr "Output logs to systemd journal (journalctl)"
 
 msgid "Overlay Notification"
 msgstr "Notifikasi Overlay"
@@ -1550,6 +1637,9 @@ msgstr "Distribusi progres untuk peer yang memulai (0.0 - 1.0)"
 msgid "Properties"
 msgstr "Properti"
 
+msgid "Properties: {name} - Full dialog not yet implemented"
+msgstr "Properties: {name} - Full dialog not yet implemented"
+
 msgid "Protocol Compliance:"
 msgstr "Kepatuhan Protokol:"
 
@@ -1589,6 +1679,9 @@ msgstr "Keluar DFakeSeeder"
 msgid "Random"
 msgstr "Acak"
 
+msgid "Random port generated: {port}"
+msgstr "Random port generated: {port}"
+
 msgid "Rate of adaptation to swarm behavior"
 msgstr "Tingkat adaptasi terhadap perilaku swarm"
 
@@ -1601,8 +1694,14 @@ msgstr "Variasi realistis"
 msgid "Received"
 msgstr "Diterima"
 
+msgid "Recheck completed for {name}: {progress}%"
+msgstr "Recheck completed for {name}: {progress}%"
+
 msgid "Redistribution mode:"
 msgstr "Mode redistribusi:"
+
+msgid "Refresh Interval:"
+msgstr "Refresh Interval:"
 
 msgid "Relaxed"
 msgstr "Santai"
@@ -1634,6 +1733,12 @@ msgstr "Hapus Pelacak..."
 msgid "Remove torrent"
 msgstr "Hapus torrent"
 
+msgid "Removed: {name}"
+msgstr "Removed: {name}"
+
+msgid "Removed: {name} (file deleted)"
+msgstr "Removed: {name} (file deleted)"
+
 msgid "Rename"
 msgstr "Ubah Nama"
 
@@ -1642,6 +1747,9 @@ msgstr "Ubah Nama Torrent"
 
 msgid "Rename..."
 msgstr "Ubah Nama..."
+
+msgid "Renamed to: {name}"
+msgstr "Renamed to: {name}"
 
 msgid "Requests"
 msgstr "Permintaan"
@@ -1708,6 +1816,9 @@ msgstr "Sabtu"
 
 msgid "Save"
 msgstr "Simpan"
+
+msgid "Save logs to file"
+msgstr "Save logs to file"
 
 msgid "Save logs to file in addition to console"
 msgstr "Simpan log ke file selain ke konsol"
@@ -1799,6 +1910,9 @@ msgstr "Dikirim"
 msgid "Sequential Download"
 msgstr "Unduhan Berurutan"
 
+msgid "Sequential download {status}"
+msgstr "Sequential download {status}"
+
 msgid "Server:"
 msgstr "Server:"
 
@@ -1840,6 +1954,12 @@ msgstr "Atur Batas Unggah"
 
 msgid "Set Upload Limit..."
 msgstr "Atur Batas Unggah..."
+
+msgid "Settings exported to {path}"
+msgstr "Settings exported to {path}"
+
+msgid "Settings imported from {path}"
+msgstr "Settings imported from {path}"
 
 msgid "Settings saved successfully"
 msgstr "Pengaturan berhasil disimpan"
@@ -1946,6 +2066,9 @@ msgstr "Minggu"
 msgid "Super Seeding"
 msgstr "Super Seeding"
 
+msgid "Super seeding {status}"
+msgstr "Super seeding {status}"
+
 msgid "Swedish"
 msgstr "Swedia"
 
@@ -1954,6 +2077,9 @@ msgstr "Jumlah Peer Sintetis:"
 
 msgid "System Theme"
 msgstr "Tema Sistem"
+
+msgid "Systemd log level: {level}"
+msgstr "Systemd log level: {level}"
 
 msgid "TCP fallback"
 msgstr "Fallback TCP"
@@ -2054,6 +2180,15 @@ msgstr "URL Tracker"
 msgid "Tracker URL:"
 msgstr "URL Pelacak:"
 
+msgid "Tracker added to {name}"
+msgstr "Tracker added to {name}"
+
+msgid "Tracker removal not yet implemented"
+msgstr "Tracker removal not yet implemented"
+
+msgid "Tracker updated for {name}"
+msgstr "Tracker updated for {name}"
+
 msgid "Trackers"
 msgstr "Tracker"
 
@@ -2108,6 +2243,9 @@ msgstr "Tingkat Penyegaran UI"
 msgid "UI refresh rate (sec):"
 msgstr "Tingkat penyegaran UI (dtk):"
 
+msgid "UPnP {status}"
+msgstr "UPnP {status}"
+
 msgid "URL"
 msgstr "URL"
 
@@ -2153,6 +2291,12 @@ msgstr "Batas unggah (KB/s):"
 msgid "Upload limit (KB/s, 0 = unlimited):"
 msgstr "Batas unggah (KB/s, 0 = tak terbatas):"
 
+msgid "Upload limit removed"
+msgstr "Upload limit removed"
+
+msgid "Upload limit set to {limit} KB/s"
+msgstr "Upload limit set to {limit} KB/s"
+
 msgid "Upload speed variance for aggressive profile"
 msgstr "Variansi kecepatan unggah untuk profil agresif"
 
@@ -2192,8 +2336,14 @@ msgstr "Nama pengguna untuk login antarmuka web"
 msgid "Username:"
 msgstr "Nama Pengguna:"
 
+msgid "Using global speed limits for {name}"
+msgstr "Using global speed limits for {name}"
+
 msgid "Validate DHT security tokens"
 msgstr "Validasi token keamanan DHT"
+
+msgid "Validate HTTP Host header to prevent DNS rebinding attacks"
+msgstr "Validate HTTP Host header to prevent DNS rebinding attacks"
 
 msgid "Validate extension messages"
 msgstr "Validasi pesan ekstensi"
@@ -2224,6 +2374,9 @@ msgstr "Vuze/5.7.6.0"
 
 msgid "WARNING"
 msgstr "PERINGATAN"
+
+msgid "Watch folder set to: {path}"
+msgstr "Watch folder set to: {path}"
 
 msgid "Web UI"
 msgstr "UI Web"
@@ -2279,11 +2432,17 @@ msgstr "Klien"
 msgid "connection_time"
 msgstr "Waktu Koneksi"
 
+msgid "disabled"
+msgstr "disabled"
+
 msgid "download_rate"
 msgstr "Tingkat Unduh"
 
 msgid "download_speed"
 msgstr "Kecepatan Unduh"
+
+msgid "enabled"
+msgstr "enabled"
 
 msgid "failure_reason"
 msgstr "Alasan Kegagalan"
@@ -2299,6 +2458,9 @@ msgstr "Jabat Tangan Selesai"
 
 msgid "id"
 msgstr "#"
+
+msgid "incoming_connections_tab"
+msgstr "incoming_connections_tab"
 
 msgid "leechers"
 msgstr "Leecher"
@@ -2326,6 +2488,9 @@ msgstr "open-menu-symbolic"
 
 msgid "options_tab"
 msgstr "Opsi"
+
+msgid "outgoing_connections_tab"
+msgstr "outgoing_connections_tab"
 
 msgid "peer_choking"
 msgstr "Peer Choking"
@@ -2384,6 +2549,9 @@ msgstr "Status"
 msgid "threshold"
 msgstr "Ambang Batas"
 
+msgid "toggleAltSpeed()"
+msgstr "toggleAltSpeed()"
+
 msgid "total_downloaded"
 msgstr "Total Diunduh"
 
@@ -2416,6 +2584,27 @@ msgstr "ut_metadata (Pertukaran Metadata)"
 
 msgid "ut_pex (Peer Exchange)"
 msgstr "ut_pex (Pertukaran Peer)"
+
+msgid "{name} moved to bottom"
+msgstr "{name} moved to bottom"
+
+msgid "{name} moved to top"
+msgstr "{name} moved to top"
+
+msgid "{name} progress set to {progress}%"
+msgstr "{name} progress set to {progress}%"
+
+msgid "{name} set to 100% complete"
+msgstr "{name} set to 100% complete"
+
+msgid "{name} set to high priority"
+msgstr "{name} set to high priority"
+
+msgid "{name} set to low priority"
+msgstr "{name} set to low priority"
+
+msgid "{name} set to normal priority"
+msgstr "{name} set to normal priority"
 
 msgid "µTorrent"
 msgstr "µTorrent"

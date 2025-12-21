@@ -12,13 +12,15 @@ from typing import Any, Callable, Dict, Optional, Set
 from d_fake_seeder.lib.logger import logger
 
 # Try to import aiohttp - it's an optional dependency
+web: Any = None
+AIOHTTP_AVAILABLE = False
 try:
-    from aiohttp import web
+    from aiohttp import web as _web
 
+    web = _web
     AIOHTTP_AVAILABLE = True
 except ImportError:
-    AIOHTTP_AVAILABLE = False
-    web = None
+    pass
 
 
 class SessionStore:
@@ -190,15 +192,17 @@ def create_auth_middleware(settings: Any) -> Any:
     public_routes: Set[str] = {"/api/login", "/api/health", "/"}
 
     @web.middleware
-    async def auth_middleware(request: web.Request, handler: Callable) -> web.Response:
+    async def auth_middleware(request: web.Request, handler: Callable[..., Any]) -> web.Response:
         """Authentication middleware."""
         # Check if auth is enabled
         if not settings.get("webui.auth_enabled", True):
-            return await handler(request)
+            response: web.Response = await handler(request)
+            return response
 
         # Allow public routes
         if request.path in public_routes:
-            return await handler(request)
+            response = await handler(request)
+            return response
 
         # Check for banned IP
         client_ip = request.remote or "unknown"
@@ -219,7 +223,8 @@ def create_auth_middleware(settings: Any) -> Any:
             username = session_store.validate_session(token)
             if username:
                 request["username"] = username
-                return await handler(request)
+                response = await handler(request)
+                return response
 
         # Check for Basic Auth
         auth_header = request.headers.get("Authorization")
@@ -234,7 +239,8 @@ def create_auth_middleware(settings: Any) -> Any:
                 if username == expected_username and password == expected_password:
                     login_tracker.clear_failures(client_ip)
                     request["username"] = username
-                    return await handler(request)
+                    response = await handler(request)
+                    return response
                 else:
                     if login_tracker.record_failure(client_ip):
                         logger.warning(
@@ -268,9 +274,9 @@ def create_security_middleware(settings: Any) -> Any:
         raise ImportError("aiohttp is required for Web UI")
 
     @web.middleware
-    async def security_middleware(request: web.Request, handler: Callable) -> web.Response:
+    async def security_middleware(request: web.Request, handler: Callable[..., Any]) -> web.Response:
         """Add security headers to responses."""
-        response = await handler(request)
+        response: web.Response = await handler(request)
 
         # Add security headers if enabled
         if settings.get("webui.secure_headers", True):

@@ -378,8 +378,9 @@ class AppSettings(GObject.GObject):
             GLib.source_remove(self._save_timer)
             self._save_timer = None
 
-        # Create new timer that fires after 1 second (1000ms)
-        self._save_timer = GLib.timeout_add(1000, self._debounced_save_callback)
+        # Create new timer with configurable debounce delay
+        debounce_ms = self.get("ui_settings.settings_save_debounce_ms", 1000)
+        self._save_timer = GLib.timeout_add(debounce_ms, self._debounced_save_callback)
         logger.trace(f"Save timer created: {self._save_timer}", "AppSettings")
 
     def _debounced_save_callback(self) -> Any:

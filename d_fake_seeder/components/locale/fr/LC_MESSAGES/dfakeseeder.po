@@ -23,6 +23,9 @@ msgstr "#"
 msgid "(0 = unlimited)"
 msgstr "(0 = illimité)"
 
+msgid "-DE2003-"
+msgstr "-DE2003-"
+
 msgid "0 / 250"
 msgstr "0 / 250"
 
@@ -326,6 +329,9 @@ msgstr "Vitesse de téléchargement du profil équilibré"
 msgid "Balanced profile upload speed"
 msgstr "Vitesse d'envoi du profil équilibré"
 
+msgid "Ban after failed logins:"
+msgstr "Ban after failed logins:"
+
 msgid "Behavior Variation:"
 msgstr "Variation de comportement :"
 
@@ -340,6 +346,9 @@ msgstr "Bengali"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
+
+msgid "Bind IP Address:"
+msgstr "Bind IP Address:"
 
 msgid "Bind to localhost only"
 msgstr "Lier uniquement à localhost"
@@ -482,6 +491,21 @@ msgstr "Vitesse d'envoi du profil conservateur"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "Conservateur: Vitesses réduites, moins connexions, idéal pour seeding arrière-plan"
 
+msgid "Console log level: {level}"
+msgstr "Console log level: {level}"
+
+msgid "Copied info hash: {hash}..."
+msgstr "Copied info hash: {hash}..."
+
+msgid "Copied magnet link for {name}"
+msgstr "Copied magnet link for {name}"
+
+msgid "Copied name: {name}"
+msgstr "Copied name: {name}"
+
+msgid "Copied tracker URL"
+msgstr "Copied tracker URL"
+
 msgid "Copy"
 msgstr "Copier"
 
@@ -623,6 +647,12 @@ msgstr "Limite téléchargement (KB/s):"
 msgid "Download limit (KB/s, 0 = unlimited):"
 msgstr "Limite de téléchargement (KB/s, 0 = illimité):"
 
+msgid "Download limit removed"
+msgstr "Download limit removed"
+
+msgid "Download limit set to {limit} KB/s"
+msgstr "Download limit set to {limit} KB/s"
+
 msgid "Download speed variance for aggressive profile"
 msgstr "Variance de vitesse de téléchargement pour profil agressif"
 
@@ -749,6 +779,9 @@ msgstr "Activer mode débogage avec journalisation extra et détails erreurs"
 msgid "Enable dynamic client profile switching"
 msgstr "Activer le changement dynamique de profil client"
 
+msgid "Enable host header validation"
+msgstr "Enable host header validation"
+
 msgid "Enable lt_donthave extension for piece availability"
 msgstr "Activer l'extension lt_donthave pour la disponibilité des pièces"
 
@@ -830,8 +863,23 @@ msgstr "Anglais"
 msgid "Error"
 msgstr "Erreur"
 
+msgid "Error applying seeding profile"
+msgstr "Error applying seeding profile"
+
 msgid "Error changing language"
 msgstr "Erreur lors du changement de langue"
+
+msgid "Error exporting settings: {error}"
+msgstr "Error exporting settings: {error}"
+
+msgid "Error importing settings: {error}"
+msgstr "Error importing settings: {error}"
+
+msgid "Error opening folder browser"
+msgstr "Error opening folder browser"
+
+msgid "Error resetting settings: {error}"
+msgstr "Error resetting settings: {error}"
 
 msgid "Export"
 msgstr "Exporter"
@@ -871,6 +919,9 @@ msgstr "Chemin du fichier"
 
 msgid "File chooser not yet implemented"
 msgstr "Sélecteur de fichiers pas encore implémenté"
+
+msgid "File log level: {level}"
+msgstr "File log level: {level}"
 
 msgid "Files"
 msgstr "Fichiers"
@@ -1082,6 +1133,12 @@ msgstr "Coréen"
 msgid "Label"
 msgstr "Étiquette"
 
+msgid "Label cleared"
+msgstr "Label cleared"
+
+msgid "Label set: {label}"
+msgstr "Label set: {label}"
+
 msgid "Label:"
 msgstr "Étiquette:"
 
@@ -1090,6 +1147,9 @@ msgstr "Langue"
 
 msgid "Language switched to"
 msgstr "Langue changée vers"
+
+msgid "Language switched to {lang}"
+msgstr "Language switched to {lang}"
 
 msgid "Language:"
 msgstr "Langue:"
@@ -1118,14 +1178,23 @@ msgstr "Limiter le taux de messages d'extension"
 msgid "List of bootstrap nodes for DHT initialization"
 msgstr "Liste des nœuds d'amorçage pour l'initialisation DHT"
 
+msgid "Location set to: {location}"
+msgstr "Location set to: {location}"
+
 msgid "Log"
 msgstr "Journal"
 
 msgid "Log Level:"
 msgstr "Niveau Journal:"
 
+msgid "Log to console"
+msgstr "Log to console"
+
 msgid "Log to file"
 msgstr "Journaliser dans fichier"
+
+msgid "Log to systemd"
+msgstr "Log to systemd"
 
 msgid "Log-Normal"
 msgstr "Log-Normale"
@@ -1244,6 +1313,15 @@ msgstr "Intervalle annonce min (sec):"
 msgid "Minimize to system tray"
 msgstr "Minimiser dans barre système"
 
+msgid "Minimum log level for console output"
+msgstr "Minimum log level for console output"
+
+msgid "Minimum log level for file output"
+msgstr "Minimum log level for file output"
+
+msgid "Minimum log level for systemd output"
+msgstr "Minimum log level for systemd output"
+
 msgid "Minimum log level to record"
 msgstr "Niveau journal minimum à enregistrer"
 
@@ -1319,6 +1397,9 @@ msgstr "Note: Choosing \\"
 msgid "Note: Choosing \\\\"
 msgstr "Note: Choosing \\\\"
 
+msgid "Number of failed login attempts before temporarily banning IP"
+msgstr "Number of failed login attempts before temporarily banning IP"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "Nombre de pairs à analyser pour les motifs de comportement"
 
@@ -1351,6 +1432,12 @@ msgstr "Connexions Sortantes"
 
 msgid "Outgoing Peer Connections"
 msgstr "Connexions Pairs Sortantes"
+
+msgid "Output logs to console/terminal"
+msgstr "Output logs to console/terminal"
+
+msgid "Output logs to systemd journal (journalctl)"
+msgstr "Output logs to systemd journal (journalctl)"
 
 msgid "Overlay Notification"
 msgstr "Notification de Superposition"
@@ -1550,6 +1637,9 @@ msgstr "Distribution progression pairs débutants (0.0 - 1.0)"
 msgid "Properties"
 msgstr "Propriétés"
 
+msgid "Properties: {name} - Full dialog not yet implemented"
+msgstr "Properties: {name} - Full dialog not yet implemented"
+
 msgid "Protocol Compliance:"
 msgstr "Conformité du protocole :"
 
@@ -1589,6 +1679,9 @@ msgstr "Quitter DFakeSeeder"
 msgid "Random"
 msgstr "Aléatoire"
 
+msgid "Random port generated: {port}"
+msgstr "Random port generated: {port}"
+
 msgid "Rate of adaptation to swarm behavior"
 msgstr "Taux d'adaptation au comportement de l'essaim"
 
@@ -1601,8 +1694,14 @@ msgstr "Variations réalistes"
 msgid "Received"
 msgstr "Reçu"
 
+msgid "Recheck completed for {name}: {progress}%"
+msgstr "Recheck completed for {name}: {progress}%"
+
 msgid "Redistribution mode:"
 msgstr "Mode de redistribution:"
+
+msgid "Refresh Interval:"
+msgstr "Refresh Interval:"
 
 msgid "Relaxed"
 msgstr "Détendu"
@@ -1634,6 +1733,12 @@ msgstr "Supprimer le Tracker..."
 msgid "Remove torrent"
 msgstr "Supprimer torrent"
 
+msgid "Removed: {name}"
+msgstr "Removed: {name}"
+
+msgid "Removed: {name} (file deleted)"
+msgstr "Removed: {name} (file deleted)"
+
 msgid "Rename"
 msgstr "Renommer"
 
@@ -1642,6 +1747,9 @@ msgstr "Renommer le Torrent"
 
 msgid "Rename..."
 msgstr "Renommer..."
+
+msgid "Renamed to: {name}"
+msgstr "Renamed to: {name}"
 
 msgid "Requests"
 msgstr "Requêtes"
@@ -1708,6 +1816,9 @@ msgstr "Samedi"
 
 msgid "Save"
 msgstr "Enregistrer"
+
+msgid "Save logs to file"
+msgstr "Save logs to file"
 
 msgid "Save logs to file in addition to console"
 msgstr "Sauvegarder journaux dans fichier en plus console"
@@ -1799,6 +1910,9 @@ msgstr "Envoyé"
 msgid "Sequential Download"
 msgstr "Téléchargement Séquentiel"
 
+msgid "Sequential download {status}"
+msgstr "Sequential download {status}"
+
 msgid "Server:"
 msgstr "Serveur :"
 
@@ -1840,6 +1954,12 @@ msgstr "Définir la Limite d'Envoi"
 
 msgid "Set Upload Limit..."
 msgstr "Définir la Limite d'Envoi..."
+
+msgid "Settings exported to {path}"
+msgstr "Settings exported to {path}"
+
+msgid "Settings imported from {path}"
+msgstr "Settings imported from {path}"
 
 msgid "Settings saved successfully"
 msgstr "Paramètres enregistrés avec succès"
@@ -1946,6 +2066,9 @@ msgstr "Dimanche"
 msgid "Super Seeding"
 msgstr "Super Partage"
 
+msgid "Super seeding {status}"
+msgstr "Super seeding {status}"
+
 msgid "Swedish"
 msgstr "Suédois"
 
@@ -1954,6 +2077,9 @@ msgstr "Nombre de pairs synthétiques :"
 
 msgid "System Theme"
 msgstr "Thème Système"
+
+msgid "Systemd log level: {level}"
+msgstr "Systemd log level: {level}"
 
 msgid "TCP fallback"
 msgstr "Repli TCP"
@@ -2054,6 +2180,15 @@ msgstr "URL du Tracker"
 msgid "Tracker URL:"
 msgstr "URL du Tracker:"
 
+msgid "Tracker added to {name}"
+msgstr "Tracker added to {name}"
+
+msgid "Tracker removal not yet implemented"
+msgstr "Tracker removal not yet implemented"
+
+msgid "Tracker updated for {name}"
+msgstr "Tracker updated for {name}"
+
 msgid "Trackers"
 msgstr "Traqueurs"
 
@@ -2108,6 +2243,9 @@ msgstr "Taux Rafraîchissement IU"
 msgid "UI refresh rate (sec):"
 msgstr "Taux rafraîchissement IU (sec):"
 
+msgid "UPnP {status}"
+msgstr "UPnP {status}"
+
 msgid "URL"
 msgstr "URL"
 
@@ -2153,6 +2291,12 @@ msgstr "Limite envoi (KB/s):"
 msgid "Upload limit (KB/s, 0 = unlimited):"
 msgstr "Limite d'envoi (KB/s, 0 = illimité):"
 
+msgid "Upload limit removed"
+msgstr "Upload limit removed"
+
+msgid "Upload limit set to {limit} KB/s"
+msgstr "Upload limit set to {limit} KB/s"
+
 msgid "Upload speed variance for aggressive profile"
 msgstr "Variance de vitesse d'envoi pour profil agressif"
 
@@ -2192,8 +2336,14 @@ msgstr "Nom utilisateur pour connexion interface web"
 msgid "Username:"
 msgstr "Nom utilisateur:"
 
+msgid "Using global speed limits for {name}"
+msgstr "Using global speed limits for {name}"
+
 msgid "Validate DHT security tokens"
 msgstr "Valider les jetons de sécurité DHT"
+
+msgid "Validate HTTP Host header to prevent DNS rebinding attacks"
+msgstr "Validate HTTP Host header to prevent DNS rebinding attacks"
 
 msgid "Validate extension messages"
 msgstr "Valider les messages d'extension"
@@ -2224,6 +2374,9 @@ msgstr "Vuze version 5.7.6.0"
 
 msgid "WARNING"
 msgstr "AVERTISSEMENT"
+
+msgid "Watch folder set to: {path}"
+msgstr "Watch folder set to: {path}"
 
 msgid "Web UI"
 msgstr "Interface Web"
@@ -2279,11 +2432,17 @@ msgstr "client"
 msgid "connection_time"
 msgstr "Temps de Connexion"
 
+msgid "disabled"
+msgstr "disabled"
+
 msgid "download_rate"
 msgstr "Vitesse de Téléchargement"
 
 msgid "download_speed"
 msgstr "Vitesse de Téléchargement"
+
+msgid "enabled"
+msgstr "enabled"
 
 msgid "failure_reason"
 msgstr "Raison de l'Échec"
@@ -2299,6 +2458,9 @@ msgstr "Poignée de Main Complète"
 
 msgid "id"
 msgstr "#"
+
+msgid "incoming_connections_tab"
+msgstr "incoming_connections_tab"
 
 msgid "leechers"
 msgstr "Téléchargeurs"
@@ -2326,6 +2488,9 @@ msgstr "open-menu-symbolic"
 
 msgid "options_tab"
 msgstr "Onglet Options"
+
+msgid "outgoing_connections_tab"
+msgstr "outgoing_connections_tab"
 
 msgid "peer_choking"
 msgstr "Pair Bloque"
@@ -2384,6 +2549,9 @@ msgstr "Statut"
 msgid "threshold"
 msgstr "Seuil"
 
+msgid "toggleAltSpeed()"
+msgstr "toggleAltSpeed()"
+
 msgid "total_downloaded"
 msgstr "Total Téléchargé"
 
@@ -2416,6 +2584,27 @@ msgstr "ut_metadata (Échange de Métadonnées)"
 
 msgid "ut_pex (Peer Exchange)"
 msgstr "ut_pex (Échange de Pairs)"
+
+msgid "{name} moved to bottom"
+msgstr "{name} moved to bottom"
+
+msgid "{name} moved to top"
+msgstr "{name} moved to top"
+
+msgid "{name} progress set to {progress}%"
+msgstr "{name} progress set to {progress}%"
+
+msgid "{name} set to 100% complete"
+msgstr "{name} set to 100% complete"
+
+msgid "{name} set to high priority"
+msgstr "{name} set to high priority"
+
+msgid "{name} set to low priority"
+msgstr "{name} set to low priority"
+
+msgid "{name} set to normal priority"
+msgstr "{name} set to normal priority"
 
 msgid "µTorrent"
 msgstr "µTorrent"

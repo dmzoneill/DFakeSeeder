@@ -23,6 +23,9 @@ msgstr "#"
 msgid "(0 = unlimited)"
 msgstr "(0 = 无限制)"
 
+msgid "-DE2003-"
+msgstr "-DE2003-"
+
 msgid "0 / 250"
 msgstr "0 / 250"
 
@@ -326,6 +329,9 @@ msgstr "平衡配置文件下载速度"
 msgid "Balanced profile upload speed"
 msgstr "平衡配置文件上传速度"
 
+msgid "Ban after failed logins:"
+msgstr "Ban after failed logins:"
+
 msgid "Behavior Variation:"
 msgstr "行为变化:"
 
@@ -340,6 +346,9 @@ msgstr "孟加拉语"
 
 msgid "BiglyBT"
 msgstr "BiglyBT"
+
+msgid "Bind IP Address:"
+msgstr "Bind IP Address:"
 
 msgid "Bind to localhost only"
 msgstr "仅绑定到本地主机"
@@ -482,6 +491,21 @@ msgstr "保守配置文件上传速度"
 msgid "Conservative: Lower speeds, fewer connections, ideal for background seeding"
 msgstr "保守模式：较低速度，较少连接，适合后台做种"
 
+msgid "Console log level: {level}"
+msgstr "Console log level: {level}"
+
+msgid "Copied info hash: {hash}..."
+msgstr "Copied info hash: {hash}..."
+
+msgid "Copied magnet link for {name}"
+msgstr "Copied magnet link for {name}"
+
+msgid "Copied name: {name}"
+msgstr "Copied name: {name}"
+
+msgid "Copied tracker URL"
+msgstr "Copied tracker URL"
+
 msgid "Copy"
 msgstr "复制"
 
@@ -623,6 +647,12 @@ msgstr "下载限制 (KB/s)："
 msgid "Download limit (KB/s, 0 = unlimited):"
 msgstr "下载限制 (KB/s, 0 = 无限制):"
 
+msgid "Download limit removed"
+msgstr "Download limit removed"
+
+msgid "Download limit set to {limit} KB/s"
+msgstr "Download limit set to {limit} KB/s"
+
 msgid "Download speed variance for aggressive profile"
 msgstr "激进配置文件的下载速度变化"
 
@@ -749,6 +779,9 @@ msgstr "启用调试模式，包含额外日志和错误详情"
 msgid "Enable dynamic client profile switching"
 msgstr "启用动态客户端配置文件切换"
 
+msgid "Enable host header validation"
+msgstr "Enable host header validation"
+
 msgid "Enable lt_donthave extension for piece availability"
 msgstr "启用 lt_donthave 扩展以获取片段可用性"
 
@@ -830,8 +863,23 @@ msgstr "英语"
 msgid "Error"
 msgstr "错误"
 
+msgid "Error applying seeding profile"
+msgstr "Error applying seeding profile"
+
 msgid "Error changing language"
 msgstr "更改语言时出错"
+
+msgid "Error exporting settings: {error}"
+msgstr "Error exporting settings: {error}"
+
+msgid "Error importing settings: {error}"
+msgstr "Error importing settings: {error}"
+
+msgid "Error opening folder browser"
+msgstr "Error opening folder browser"
+
+msgid "Error resetting settings: {error}"
+msgstr "Error resetting settings: {error}"
 
 msgid "Export"
 msgstr "导出"
@@ -871,6 +919,9 @@ msgstr "文件路径"
 
 msgid "File chooser not yet implemented"
 msgstr "文件选择器尚未实现"
+
+msgid "File log level: {level}"
+msgstr "File log level: {level}"
 
 msgid "Files"
 msgstr "文件"
@@ -1082,6 +1133,12 @@ msgstr "韩语"
 msgid "Label"
 msgstr "标签"
 
+msgid "Label cleared"
+msgstr "Label cleared"
+
+msgid "Label set: {label}"
+msgstr "Label set: {label}"
+
 msgid "Label:"
 msgstr "标签:"
 
@@ -1090,6 +1147,9 @@ msgstr "语言"
 
 msgid "Language switched to"
 msgstr "语言已切换为"
+
+msgid "Language switched to {lang}"
+msgstr "Language switched to {lang}"
 
 msgid "Language:"
 msgstr "语言："
@@ -1118,14 +1178,23 @@ msgstr "限制扩展消息速率"
 msgid "List of bootstrap nodes for DHT initialization"
 msgstr "DHT 初始化的引导节点列表"
 
+msgid "Location set to: {location}"
+msgstr "Location set to: {location}"
+
 msgid "Log"
 msgstr "日志"
 
 msgid "Log Level:"
 msgstr "日志级别:"
 
+msgid "Log to console"
+msgstr "Log to console"
+
 msgid "Log to file"
 msgstr "记录到文件"
+
+msgid "Log to systemd"
+msgstr "Log to systemd"
 
 msgid "Log-Normal"
 msgstr "对数正态"
@@ -1244,6 +1313,15 @@ msgstr "最小通告间隔 (秒):"
 msgid "Minimize to system tray"
 msgstr "最小化到系统托盘"
 
+msgid "Minimum log level for console output"
+msgstr "Minimum log level for console output"
+
+msgid "Minimum log level for file output"
+msgstr "Minimum log level for file output"
+
+msgid "Minimum log level for systemd output"
+msgstr "Minimum log level for systemd output"
+
 msgid "Minimum log level to record"
 msgstr "记录的最低日志级别"
 
@@ -1319,6 +1397,9 @@ msgstr "Note: Choosing \\"
 msgid "Note: Choosing \\\\"
 msgstr "Note: Choosing \\\\"
 
+msgid "Number of failed login attempts before temporarily banning IP"
+msgstr "Number of failed login attempts before temporarily banning IP"
+
 msgid "Number of peers to analyze for behavior patterns"
 msgstr "要分析行为模式的节点数量"
 
@@ -1351,6 +1432,12 @@ msgstr "传出连接"
 
 msgid "Outgoing Peer Connections"
 msgstr "传出节点连接"
+
+msgid "Output logs to console/terminal"
+msgstr "Output logs to console/terminal"
+
+msgid "Output logs to systemd journal (journalctl)"
+msgstr "Output logs to systemd journal (journalctl)"
 
 msgid "Overlay Notification"
 msgstr "覆盖通知"
@@ -1550,6 +1637,9 @@ msgstr "起始节点的进度分布 (0.0 - 1.0)"
 msgid "Properties"
 msgstr "属性"
 
+msgid "Properties: {name} - Full dialog not yet implemented"
+msgstr "Properties: {name} - Full dialog not yet implemented"
+
 msgid "Protocol Compliance:"
 msgstr "协议合规:"
 
@@ -1589,6 +1679,9 @@ msgstr "退出 DFakeSeeder"
 msgid "Random"
 msgstr "随机"
 
+msgid "Random port generated: {port}"
+msgstr "Random port generated: {port}"
+
 msgid "Rate of adaptation to swarm behavior"
 msgstr "对群体行为的适应速率"
 
@@ -1601,8 +1694,14 @@ msgstr "真实变化"
 msgid "Received"
 msgstr "已接收"
 
+msgid "Recheck completed for {name}: {progress}%"
+msgstr "Recheck completed for {name}: {progress}%"
+
 msgid "Redistribution mode:"
 msgstr "重新分配模式："
+
+msgid "Refresh Interval:"
+msgstr "Refresh Interval:"
 
 msgid "Relaxed"
 msgstr "宽松"
@@ -1634,6 +1733,12 @@ msgstr "删除 Tracker..."
 msgid "Remove torrent"
 msgstr "删除种子"
 
+msgid "Removed: {name}"
+msgstr "Removed: {name}"
+
+msgid "Removed: {name} (file deleted)"
+msgstr "Removed: {name} (file deleted)"
+
 msgid "Rename"
 msgstr "重命名"
 
@@ -1642,6 +1747,9 @@ msgstr "重命名种子"
 
 msgid "Rename..."
 msgstr "重命名..."
+
+msgid "Renamed to: {name}"
+msgstr "Renamed to: {name}"
 
 msgid "Requests"
 msgstr "请求"
@@ -1708,6 +1816,9 @@ msgstr "星期六"
 
 msgid "Save"
 msgstr "保存"
+
+msgid "Save logs to file"
+msgstr "Save logs to file"
 
 msgid "Save logs to file in addition to console"
 msgstr "除控制台外还将日志保存到文件"
@@ -1799,6 +1910,9 @@ msgstr "已发送"
 msgid "Sequential Download"
 msgstr "顺序下载"
 
+msgid "Sequential download {status}"
+msgstr "Sequential download {status}"
+
 msgid "Server:"
 msgstr "服务器："
 
@@ -1840,6 +1954,12 @@ msgstr "设置上传限制"
 
 msgid "Set Upload Limit..."
 msgstr "设置上传限制..."
+
+msgid "Settings exported to {path}"
+msgstr "Settings exported to {path}"
+
+msgid "Settings imported from {path}"
+msgstr "Settings imported from {path}"
 
 msgid "Settings saved successfully"
 msgstr "设置已成功保存"
@@ -1946,6 +2066,9 @@ msgstr "星期日"
 msgid "Super Seeding"
 msgstr "超级做种"
 
+msgid "Super seeding {status}"
+msgstr "Super seeding {status}"
+
 msgid "Swedish"
 msgstr "瑞典语"
 
@@ -1954,6 +2077,9 @@ msgstr "合成节点数量:"
 
 msgid "System Theme"
 msgstr "系统主题"
+
+msgid "Systemd log level: {level}"
+msgstr "Systemd log level: {level}"
 
 msgid "TCP fallback"
 msgstr "TCP 回退"
@@ -2054,6 +2180,15 @@ msgstr "Tracker 地址"
 msgid "Tracker URL:"
 msgstr "Tracker 地址:"
 
+msgid "Tracker added to {name}"
+msgstr "Tracker added to {name}"
+
+msgid "Tracker removal not yet implemented"
+msgstr "Tracker removal not yet implemented"
+
+msgid "Tracker updated for {name}"
+msgstr "Tracker updated for {name}"
+
 msgid "Trackers"
 msgstr "Tracker"
 
@@ -2108,6 +2243,9 @@ msgstr "UI 刷新率"
 msgid "UI refresh rate (sec):"
 msgstr "UI 刷新率 (秒):"
 
+msgid "UPnP {status}"
+msgstr "UPnP {status}"
+
 msgid "URL"
 msgstr "URL"
 
@@ -2153,6 +2291,12 @@ msgstr "上传限制 (KB/s)："
 msgid "Upload limit (KB/s, 0 = unlimited):"
 msgstr "上传限制 (KB/s, 0 = 无限制):"
 
+msgid "Upload limit removed"
+msgstr "Upload limit removed"
+
+msgid "Upload limit set to {limit} KB/s"
+msgstr "Upload limit set to {limit} KB/s"
+
 msgid "Upload speed variance for aggressive profile"
 msgstr "激进配置文件的上传速度变化"
 
@@ -2192,8 +2336,14 @@ msgstr "网页界面登录用户名"
 msgid "Username:"
 msgstr "用户名："
 
+msgid "Using global speed limits for {name}"
+msgstr "Using global speed limits for {name}"
+
 msgid "Validate DHT security tokens"
 msgstr "验证 DHT 安全令牌"
+
+msgid "Validate HTTP Host header to prevent DNS rebinding attacks"
+msgstr "Validate HTTP Host header to prevent DNS rebinding attacks"
 
 msgid "Validate extension messages"
 msgstr "验证扩展消息"
@@ -2224,6 +2374,9 @@ msgstr "Vuze/5.7.6.0"
 
 msgid "WARNING"
 msgstr "警告"
+
+msgid "Watch folder set to: {path}"
+msgstr "Watch folder set to: {path}"
 
 msgid "Web UI"
 msgstr "网页界面"
@@ -2279,11 +2432,17 @@ msgstr "客户端"
 msgid "connection_time"
 msgstr "连接时间"
 
+msgid "disabled"
+msgstr "disabled"
+
 msgid "download_rate"
 msgstr "下载速率"
 
 msgid "download_speed"
 msgstr "下载速度"
+
+msgid "enabled"
+msgstr "enabled"
 
 msgid "failure_reason"
 msgstr "失败原因"
@@ -2299,6 +2458,9 @@ msgstr "握手完成"
 
 msgid "id"
 msgstr "#"
+
+msgid "incoming_connections_tab"
+msgstr "incoming_connections_tab"
 
 msgid "leechers"
 msgstr "下载者"
@@ -2326,6 +2488,9 @@ msgstr "open-menu-symbolic"
 
 msgid "options_tab"
 msgstr "选项选项卡"
+
+msgid "outgoing_connections_tab"
+msgstr "outgoing_connections_tab"
 
 msgid "peer_choking"
 msgstr "对等点阻塞"
@@ -2384,6 +2549,9 @@ msgstr "状态"
 msgid "threshold"
 msgstr "阈值"
 
+msgid "toggleAltSpeed()"
+msgstr "toggleAltSpeed()"
+
 msgid "total_downloaded"
 msgstr "总下载量"
 
@@ -2416,6 +2584,27 @@ msgstr "ut_metadata（元数据交换）"
 
 msgid "ut_pex (Peer Exchange)"
 msgstr "ut_pex（节点交换）"
+
+msgid "{name} moved to bottom"
+msgstr "{name} moved to bottom"
+
+msgid "{name} moved to top"
+msgstr "{name} moved to top"
+
+msgid "{name} progress set to {progress}%"
+msgstr "{name} progress set to {progress}%"
+
+msgid "{name} set to 100% complete"
+msgstr "{name} set to 100% complete"
+
+msgid "{name} set to high priority"
+msgstr "{name} set to high priority"
+
+msgid "{name} set to low priority"
+msgstr "{name} set to low priority"
+
+msgid "{name} set to normal priority"
+msgstr "{name} set to normal priority"
 
 msgid "µTorrent"
 msgstr "µTorrent"

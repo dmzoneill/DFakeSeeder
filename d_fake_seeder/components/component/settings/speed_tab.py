@@ -999,7 +999,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
                 download_dist_stopped_max.set_value(40)
 
             self.update_dependencies()
-            self.show_notification("Speed settings reset to defaults", "success")
+            self.show_notification(self._("Speed settings reset to defaults"), "success")
         except Exception as e:
             self.logger.error(f"Error resetting Speed tab to defaults: {e}")
 

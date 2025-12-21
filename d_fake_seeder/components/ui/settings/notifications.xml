@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object class="GtkScrolledWindow">
+  <property name="visible">True</property>
+  <property name="vexpand">True</property>
+  <property name="hexpand">True</property>
+  <property name="hscrollbar-policy">never</property>
+  <child>
+    <object class="GtkBox">
+      <property name="visible">True</property>
+      <property name="orientation">vertical</property>
+      <property name="spacing">12</property>
+      <property name="margin-start">12</property>
+      <property name="margin-end">12</property>
+      <property name="margin-top">12</property>
+      <property name="margin-bottom">12</property>
+
+      <!-- Enable Notifications -->
+      <child>
+        <object class="GtkBox">
+          <property name="visible">True</property>
+          <property name="orientation">horizontal</property>
+          <property name="spacing">12</property>
+          <child>
+            <object class="GtkLabel">
+              <property name="visible">True</property>
+              <property name="label" translatable="yes">Enable popup notifications</property>
+              <property name="halign">start</property>
+              <property name="hexpand">True</property>
+            </object>
+          </child>
+          <child>
+            <object class="GtkSwitch" id="notification_enabled">
+              <property name="visible">True</property>
+              <property name="halign">end</property>
+              <property name="tooltip-text" translatable="yes">Show toast notifications in the application</property>
+            </object>
+          </child>
+        </object>
+      </child>
+
+      <!-- Appearance Section -->
+      <child>
+        <object class="GtkFrame">
+          <property name="visible">True</property>
+          <property name="label" translatable="yes">Appearance</property>
+          <child>
+            <object class="GtkBox">
+              <property name="visible">True</property>
+              <property name="orientation">vertical</property>
+              <property name="spacing">8</property>
+              <property name="margin-start">12</property>
+              <property name="margin-end">12</property>
+              <property name="margin-top">8</property>
+              <property name="margin-bottom">8</property>
+
+              <!-- Position -->
+              <child>
+                <object class="GtkBox">
+                  <property name="visible">True</property>
+                  <property name="orientation">horizontal</property>
+                  <property name="spacing">12</property>
+                  <child>
+                    <object class="GtkLabel">
+                      <property name="visible">True</property>
+                      <property name="label" translatable="yes">Position</property>
+                      <property name="halign">start</property>
+                      <property name="hexpand">True</property>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkDropDown" id="notification_position">
+                      <property name="visible">True</property>
+                      <property name="halign">end</property>
+                      <property name="tooltip-text" translatable="yes">Where notifications appear on screen</property>
+                      <property name="model">
+                        <object class="GtkStringList">
+                          <items>
+                            <item translatable="yes">Top Left</item>
+                            <item translatable="yes">Top Center</item>
+                            <item translatable="yes">Top Right</item>
+                            <item translatable="yes">Bottom Left</item>
+                            <item translatable="yes">Bottom Center</item>
+                            <item translatable="yes">Bottom Right</item>
+                          </items>
+                        </object>
+                      </property>
+                    </object>
+                  </child>
+                </object>
+              </child>
+
+              <!-- Animation -->
+              <child>
+                <object class="GtkBox">
+                  <property name="visible">True</property>
+                  <property name="orientation">horizontal</property>
+                  <property name="spacing">12</property>
+                  <child>
+                    <object class="GtkLabel">
+                      <property name="visible">True</property>
+                      <property name="label" translatable="yes">Animation</property>
+                      <property name="halign">start</property>
+                      <property name="hexpand">True</property>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkDropDown" id="notification_animation">
+                      <property name="visible">True</property>
+                      <property name="halign">end</property>
+                      <property name="tooltip-text" translatable="yes">Animation style for showing/hiding notifications</property>
+                      <property name="model">
+                        <object class="GtkStringList">
+                          <items>
+                            <item translatable="yes">None</item>
+                            <item translatable="yes">Fade</item>
+                            <item translatable="yes">Slide</item>
+                          </items>
+                        </object>
+                      </property>
+                    </object>
+                  </child>
+                </object>
+              </child>
+
+              <!-- Animation Duration -->
+              <child>
+                <object class="GtkBox">
+                  <property name="visible">True</property>
+                  <property name="orientation">horizontal</property>
+                  <property name="spacing">12</property>
+                  <child>
+                    <object class="GtkLabel">
+                      <property name="visible">True</property>
+                      <property name="label" translatable="yes">Animation duration (ms)</property>
+                      <property name="halign">start</property>
+                      <property name="hexpand">True</property>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkSpinButton" id="notification_animation_duration">
+                      <property name="visible">True</property>
+                      <property name="halign">end</property>
+                      <property name="width-chars">6</property>
+                      <property name="tooltip-text" translatable="yes">Duration of show/hide animation in milliseconds</property>
+                      <property name="adjustment">
+                        <object class="GtkAdjustment">
+                          <property name="lower">0</property>
+                          <property name="upper">1000</property>
+                          <property name="step-increment">50</property>
+                          <property name="page-increment">100</property>
+                          <property name="value">300</property>
+                        </object>
+                      </property>
+                    </object>
+                  </child>
+                </object>
+              </child>
+
+              <!-- Max Visible -->
+              <child>
+                <object class="GtkBox">
+                  <property name="visible">True</property>
+                  <property name="orientation">horizontal</property>
+                  <property name="spacing">12</property>
+                  <child>
+                    <object class="GtkLabel">
+                      <property name="visible">True</property>
+                      <property name="label" translatable="yes">Maximum visible</property>
+                      <property name="halign">start</property>
+                      <property name="hexpand">True</property>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkSpinButton" id="notification_max_visible">
+                      <property name="visible">True</property>
+                      <property name="halign">end</property>
+                      <property name="width-chars">4</property>
+                      <property name="tooltip-text" translatable="yes">Maximum number of notifications visible at once</property>
+                      <property name="adjustment">
+                        <object class="GtkAdjustment">
+                          <property name="lower">1</property>
+                          <property name="upper">10</property>
+                          <property name="step-increment">1</property>
+                          <property name="page-increment">1</property>
+                          <property name="value">3</property>
+                        </object>
+                      </property>
+                    </object>
+                  </child>
+                </object>
+              </child>
+            </object>
+          </child>
+        </object>
+      </child>
+
+      <!-- Timeouts Section -->
+      <child>
+        <object class="GtkFrame">
+          <property name="visible">True</property>
+          <property name="label" translatable="yes">Timeouts (milliseconds, 0 = manual dismiss)</property>
+          <child>
+            <object class="GtkBox">
+              <property name="visible">True</property>
+              <property name="orientation">vertical</property>
+              <property name="spacing">8</property>
+              <property name="margin-start">12</property>
+              <property name="margin-end">12</property>
+              <property name="margin-top">8</property>
+              <property name="margin-bottom">8</property>
+
+              <!-- Info Timeout -->
+              <child>
+                <object class="GtkBox">
+                  <property name="visible">True</property>
+                  <property name="orientation">horizontal</property>
+                  <property name="spacing">12</property>
+                  <child>
+                    <object class="GtkLabel">
+                      <property name="visible">True</property>
+                      <property name="label" translatable="yes">ℹ️ Info</property>
+                      <property name="halign">start</property>
+                      <property name="hexpand">True</property>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkSpinButton" id="notification_info_timeout">
+                      <property name="visible">True</property>
+                      <property name="halign">end</property>
+                      <property name="width-chars">8</property>
+                      <property name="adjustment">
+                        <object class="GtkAdjustment">
+                          <property name="lower">0</property>
+                          <property name="upper">30000</property>
+                          <property name="step-increment">500</property>
+                          <property name="page-increment">1000</property>
+                          <property name="value">3000</property>
+                        </object>
+                      </property>
+                    </object>
+                  </child>
+                </object>
+              </child>
+
+              <!-- Success Timeout -->
+              <child>
+                <object class="GtkBox">
+                  <property name="visible">True</property>
+                  <property name="orientation">horizontal</property>
+                  <property name="spacing">12</property>
+                  <child>
+                    <object class="GtkLabel">
+                      <property name="visible">True</property>
+                      <property name="label" translatable="yes">✅ Success</property>
+                      <property name="halign">start</property>
+                      <property name="hexpand">True</property>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkSpinButton" id="notification_success_timeout">
+                      <property name="visible">True</property>
+                      <property name="halign">end</property>
+                      <property name="width-chars">8</property>
+                      <property name="adjustment">
+                        <object class="GtkAdjustment">
+                          <property name="lower">0</property>
+                          <property name="upper">30000</property>
+                          <property name="step-increment">500</property>
+                          <property name="page-increment">1000</property>
+                          <property name="value">3000</property>
+                        </object>
+                      </property>
+                    </object>
+                  </child>
+                </object>
+              </child>
+
+              <!-- Warning Timeout -->
+              <child>
+                <object class="GtkBox">
+                  <property name="visible">True</property>
+                  <property name="orientation">horizontal</property>
+                  <property name="spacing">12</property>
+                  <child>
+                    <object class="GtkLabel">
+                      <property name="visible">True</property>
+                      <property name="label" translatable="yes">⚠️ Warning</property>
+                      <property name="halign">start</property>
+                      <property name="hexpand">True</property>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkSpinButton" id="notification_warning_timeout">
+                      <property name="visible">True</property>
+                      <property name="halign">end</property>
+                      <property name="width-chars">8</property>
+                      <property name="adjustment">
+                        <object class="GtkAdjustment">
+                          <property name="lower">0</property>
+                          <property name="upper">30000</property>
+                          <property name="step-increment">500</property>
+                          <property name="page-increment">1000</property>
+                          <property name="value">5000</property>
+                        </object>
+                      </property>
+                    </object>
+                  </child>
+                </object>
+              </child>
+
+              <!-- Error Timeout -->
+              <child>
+                <object class="GtkBox">
+                  <property name="visible">True</property>
+                  <property name="orientation">horizontal</property>
+                  <property name="spacing">12</property>
+                  <child>
+                    <object class="GtkLabel">
+                      <property name="visible">True</property>
+                      <property name="label" translatable="yes">❌ Error</property>
+                      <property name="halign">start</property>
+                      <property name="hexpand">True</property>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkSpinButton" id="notification_error_timeout">
+                      <property name="visible">True</property>
+                      <property name="halign">end</property>
+                      <property name="width-chars">8</property>
+                      <property name="tooltip-text" translatable="yes">0 = requires manual dismiss</property>
+                      <property name="adjustment">
+                        <object class="GtkAdjustment">
+                          <property name="lower">0</property>
+                          <property name="upper">30000</property>
+                          <property name="step-increment">500</property>
+                          <property name="page-increment">1000</property>
+                          <property name="value">0</property>
+                        </object>
+                      </property>
+                    </object>
+                  </child>
+                </object>
+              </child>
+            </object>
+          </child>
+        </object>
+      </child>
+
+      <!-- Options Section -->
+      <child>
+        <object class="GtkFrame">
+          <property name="visible">True</property>
+          <property name="label" translatable="yes">Options</property>
+          <child>
+            <object class="GtkBox">
+              <property name="visible">True</property>
+              <property name="orientation">vertical</property>
+              <property name="spacing">8</property>
+              <property name="margin-start">12</property>
+              <property name="margin-end">12</property>
+              <property name="margin-top">8</property>
+              <property name="margin-bottom">8</property>
+
+              <!-- Show in statusbar -->
+              <child>
+                <object class="GtkBox">
+                  <property name="visible">True</property>
+                  <property name="orientation">horizontal</property>
+                  <property name="spacing">12</property>
+                  <child>
+                    <object class="GtkLabel">
+                      <property name="visible">True</property>
+                      <property name="label" translatable="yes">Also show in status bar</property>
+                      <property name="halign">start</property>
+                      <property name="hexpand">True</property>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkSwitch" id="notification_show_statusbar">
+                      <property name="visible">True</property>
+                      <property name="halign">end</property>
+                      <property name="tooltip-text" translatable="yes">Also display notification text in the status bar</property>
+                    </object>
+                  </child>
+                </object>
+              </child>
+
+              <!-- Sound -->
+              <child>
+                <object class="GtkBox">
+                  <property name="visible">True</property>
+                  <property name="orientation">horizontal</property>
+                  <property name="spacing">12</property>
+                  <child>
+                    <object class="GtkLabel">
+                      <property name="visible">True</property>
+                      <property name="label" translatable="yes">Play sound</property>
+                      <property name="halign">start</property>
+                      <property name="hexpand">True</property>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkSwitch" id="notification_sound">
+                      <property name="visible">True</property>
+                      <property name="halign">end</property>
+                      <property name="tooltip-text" translatable="yes">Play a sound when notifications appear</property>
+                    </object>
+                  </child>
+                </object>
+              </child>
+            </object>
+          </child>
+        </object>
+      </child>
+
+      <!-- Test Button -->
+      <child>
+        <object class="GtkBox">
+          <property name="visible">True</property>
+          <property name="orientation">horizontal</property>
+          <property name="spacing">12</property>
+          <property name="halign">center</property>
+          <child>
+            <object class="GtkButton" id="notification_test_button">
+              <property name="visible">True</property>
+              <property name="label" translatable="yes">Test Notifications</property>
+              <property name="tooltip-text" translatable="yes">Show sample notifications of each type</property>
+            </object>
+          </child>
+          <child>
+            <object class="GtkButton" id="notification_reset_button">
+              <property name="visible">True</property>
+              <property name="label" translatable="yes">Reset to Defaults</property>
+              <property name="tooltip-text" translatable="yes">Reset notification settings to defaults</property>
+            </object>
+          </child>
+        </object>
+      </child>
+
+    </object>
+  </child>
+</object>
+

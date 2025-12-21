@@ -105,7 +105,9 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             # Get translation function from model
             translate_func = (
-                self.model.get_translate_func() if hasattr(self.model, "get_translate_func") else lambda x: x
+                self.model.get_translate_func()
+                if self.model and hasattr(self.model, "get_translate_func")
+                else lambda x: x
             )
 
             # Extract key torrent information directly from the torrent object
@@ -146,7 +148,9 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             self.logger.error(f"Error getting torrent details: {e}")
             # Get translation function from model
             translate_func = (
-                self.model.get_translate_func() if hasattr(self.model, "get_translate_func") else lambda x: x
+                self.model.get_translate_func()
+                if self.model and hasattr(self.model, "get_translate_func")
+                else lambda x: x
             )
             return [(translate_func("Error"), "Unable to load torrent details")]
 

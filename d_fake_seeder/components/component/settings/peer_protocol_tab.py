@@ -536,7 +536,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
             if peer_idle_chance:
                 peer_idle_chance.set_value(0.1)
 
-            self.show_notification("Peer Protocol settings reset to defaults", "success")
+            self.show_notification(self._("Peer Protocol settings reset to defaults"), "success")
 
         except Exception as e:
             self.logger.error(f"Error resetting Peer Protocol tab to defaults: {e}")

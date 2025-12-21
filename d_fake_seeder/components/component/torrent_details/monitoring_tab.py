@@ -55,6 +55,24 @@ class MonitoringTab(BaseTorrentTab):
     def tab_widget_id(self) -> str:
         return "monitoring_tab"
 
+    def _get_monitoring_settings(self) -> dict[str, Any]:
+        """Get monitoring settings with defaults."""
+        defaults = {
+            "max_graph_samples": 30,
+            "fd_graph_max": 200,
+            "connections_graph_max": 50,
+            "threads_graph_max": 100,
+            "disk_io_graph_max": 10,
+            "network_io_graph_max": 100,
+            "torrent_graph_max": 20,
+        }
+        if self.model and hasattr(self.model, "settings"):
+            settings = self.model.settings
+            monitoring = settings.get("monitoring_settings", {})
+            if monitoring:
+                defaults.update(monitoring)
+        return defaults
+
     def _init_widgets(self) -> None:
         """Initialize monitoring tab widgets."""
         logger.trace(
@@ -78,7 +96,7 @@ class MonitoringTab(BaseTorrentTab):
         header_box.set_margin_top(6)
 
         # Refresh label
-        refresh_label = Gtk.Label(label="Refresh Interval:")
+        refresh_label = Gtk.Label(label=self._("Refresh Interval:"))
         header_box.append(refresh_label)
 
         # Refresh slider (1-10 seconds)
@@ -95,7 +113,7 @@ class MonitoringTab(BaseTorrentTab):
         header_box.append(self.refresh_slider)
 
         # Seconds label
-        seconds_label = Gtk.Label(label="seconds")
+        seconds_label = Gtk.Label(label=self._("seconds"))
         header_box.append(seconds_label)
 
         self.main_box.append(header_box)
@@ -323,7 +341,9 @@ class MonitoringTab(BaseTorrentTab):
         vbox.append(title_label)
 
         # Live graph - DON'T expand horizontally to prevent forcing window size
-        graph = LiveGraph(max_samples=30, auto_scale=False, show_grid=True)
+        monitoring_settings = self._get_monitoring_settings()
+        max_samples = monitoring_settings.get("max_graph_samples", 30)
+        graph = LiveGraph(max_samples=max_samples, auto_scale=False, show_grid=True)
         # Allow graph to expand within tile
         graph.set_size_request(-1, 60)  # Minimum height only
         graph.set_hexpand(True)  # Expand to fill tile width
@@ -406,7 +426,8 @@ class MonitoringTab(BaseTorrentTab):
                 ("Sockets", (0.8, 0.8, 0.2)),  # Yellow
             ],
         )
-        self.fd_tile["graph"].max_value = 200
+        monitoring = self._get_monitoring_settings()
+        self.fd_tile["graph"].max_value = monitoring.get("fd_graph_max", 200)
 
     def _create_connections_tile(self) -> None:
         """Create network connections tile."""
@@ -418,12 +439,14 @@ class MonitoringTab(BaseTorrentTab):
                 ("Listen", (0.8, 0.2, 0.2)),  # Red
             ],
         )
-        self.connections_tile["graph"].max_value = 50
+        monitoring = self._get_monitoring_settings()
+        self.connections_tile["graph"].max_value = monitoring.get("connections_graph_max", 50)
 
     def _create_threads_tile(self) -> None:
         """Create threads count tile."""
         self.threads_tile = self._create_metric_tile("Threads", [("Thread Count", (0.8, 0.4, 0.2))])  # Orange
-        self.threads_tile["graph"].max_value = 100
+        monitoring = self._get_monitoring_settings()
+        self.threads_tile["graph"].max_value = monitoring.get("threads_graph_max", 100)
 
     def _create_disk_io_tile(self) -> None:
         """Create disk I/O tile."""
@@ -434,7 +457,8 @@ class MonitoringTab(BaseTorrentTab):
                 ("Write", (0.8, 0.2, 0.2)),  # Red
             ],
         )
-        self.disk_io_tile["graph"].max_value = 10
+        monitoring = self._get_monitoring_settings()
+        self.disk_io_tile["graph"].max_value = monitoring.get("disk_io_graph_max", 10)
         self.disk_io_last_read = 0
         self.disk_io_last_write = 0
 
@@ -447,7 +471,8 @@ class MonitoringTab(BaseTorrentTab):
                 ("Sending", (0.8, 0.6, 0.2)),  # Orange
             ],
         )
-        self.network_io_tile["graph"].max_value = 100
+        monitoring = self._get_monitoring_settings()
+        self.network_io_tile["graph"].max_value = monitoring.get("network_io_graph_max", 100)
         self.net_io_last_recv = 0
         self.net_io_last_sent = 0
 
@@ -460,7 +485,8 @@ class MonitoringTab(BaseTorrentTab):
                 ("Active Peers", (0.2, 0.8, 0.6)),  # Teal
             ],
         )
-        self.torrent_tile["graph"].max_value = 20
+        monitoring = self._get_monitoring_settings()
+        self.torrent_tile["graph"].max_value = monitoring.get("torrent_graph_max", 20)
 
     def _update_metrics(self) -> Any:
         """Update all metrics from collector."""
