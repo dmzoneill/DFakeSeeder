@@ -39,3 +39,8 @@ python3 tools/translation_build_manager.py analyze
 - Locale files: `d_fake_seeder/components/locale/`
 - Translation JSONs: `tools/translations/`
 
+
+
+
+
+

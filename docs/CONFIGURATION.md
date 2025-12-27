@@ -110,7 +110,7 @@ Basic application information and branding.
   "author": "David O Neill",
   "copyright": "Copyright {year}",
   "version": "1.0",
-  "logo": "images/dfakeseeder.png"
+  "logo": "components/images/dfakeseeder.png"
 }
 ```text
 ### 7. Window and UI Settings

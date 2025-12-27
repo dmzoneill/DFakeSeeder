@@ -267,10 +267,13 @@ class HTTPSeeder(BaseSeeder):
                     continue
 
                 # Log announce values before sending
+                uploaded_mb = uploaded_bytes / 1024 / 1024
+                downloaded_mb = downloaded_bytes / 1024 / 1024
+                left_mb = download_left / 1024 / 1024
                 logger.debug(
-                    f"📊 Announcing to tracker: uploaded={uploaded_bytes:,} bytes ({uploaded_bytes/1024/1024:.2f} MB), "
-                    f"downloaded={downloaded_bytes:,} bytes ({downloaded_bytes/1024/1024:.2f} MB), "
-                    f"left={download_left:,} bytes ({download_left/1024/1024:.2f} MB)",
+                    f"📊 Announcing: up={uploaded_bytes:,}B ({uploaded_mb:.2f}MB), "
+                    f"down={downloaded_bytes:,}B ({downloaded_mb:.2f}MB), "
+                    f"left={download_left:,}B ({left_mb:.2f}MB)",
                     extra={"class_name": self.__class__.__name__},
                 )
 

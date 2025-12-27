@@ -512,9 +512,9 @@ class BaseSeeder:
                 )
                 for i in range(0, len(peers), 6):
                     if i + 6 <= len(peers):
-                        ip_bytes = peers[i : i + 4]  # noqa: E203
+                        ip_bytes = peers[i: i + 4]  # noqa: E203
                         ip = ".".join(str(x) for x in ip_bytes)
-                        port_bytes = peers[i + 4 : i + 6]  # noqa: E203
+                        port_bytes = peers[i + 4: i + 6]  # noqa: E203
                         port = struct.unpack(">H", port_bytes)[0]
                         peer_address = f"{ip}:{port}"
                         result.append(peer_address)
@@ -544,7 +544,7 @@ class BaseSeeder:
                         result.append(peer_address)
 
                         logger.trace(
-                            f"👥 UDP Peer {i+1}: {peer_address}",
+                            f"👥 UDP Peer {i + 1}: {peer_address}",
                             extra={"class_name": self.__class__.__name__},
                         )
 
@@ -584,7 +584,7 @@ class BaseSeeder:
                                 self.settings.add_detected_client(client_name)
 
                             logger.trace(
-                                f"👥 HTTP Peer {i+1}: {peer_address} ({client_name})",
+                                f"👥 HTTP Peer {i + 1}: {peer_address} ({client_name})",
                                 extra={"class_name": self.__class__.__name__},
                             )
                             if peer_id:

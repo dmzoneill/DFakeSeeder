@@ -6,33 +6,29 @@ Coordinates all torrent details tabs and provides the main interface.
 # isort: skip_file
 # flake8: noqa: E402
 
-import gi
-
-gi.require_version("Gtk", "4.0")
-
-from typing import Any, List, Optional
-
-from gi.repository import Gtk
-
-from d_fake_seeder.components.component.base_component import Component
-from d_fake_seeder.domain.app_settings import AppSettings
-from d_fake_seeder.lib.logger import logger
+from .trackers_tab import TrackersTab
+from .status_tab import StatusTab
+from .peers_tab import PeersTab
+from .outgoing_connections_tab import OutgoingConnectionsTab
+from .options_tab import OptionsTab
+from .monitoring_tab import MonitoringTab
+from .log_tab import LogTab
+from .incoming_connections_tab import IncomingConnectionsTab
+from .files_tab import FilesTab
+from .details_tab import DetailsTab
 from d_fake_seeder.lib.util.tab_config import (
     get_essential_tab_classes,
     get_lazy_load_tab_classes,
     get_torrent_details_tab_classes,
 )
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.components.component.base_component import Component
+from gi.repository import Gtk
+from typing import Any, List, Optional
+import gi
 
-from .details_tab import DetailsTab
-from .files_tab import FilesTab
-from .incoming_connections_tab import IncomingConnectionsTab
-from .log_tab import LogTab
-from .monitoring_tab import MonitoringTab
-from .options_tab import OptionsTab
-from .outgoing_connections_tab import OutgoingConnectionsTab
-from .peers_tab import PeersTab
-from .status_tab import StatusTab
-from .trackers_tab import TrackersTab
+gi.require_version("Gtk", "4.0")
 
 
 class TorrentDetailsNotebook(Component):

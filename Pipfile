@@ -35,6 +35,9 @@ vulture = "*"
 pyflakes = "*"
 pytest-forked = "*"
 pytest-asyncio = "*"
+autopep8 = "*"
+pylint = "*"
+yamllint = "*"
 
 [requires]
 python_version = "3.12"
