@@ -71,7 +71,7 @@ class Torrents(Component, ColumnTranslationMixin):
         self.torrents_columnview.add_controller(gesture)
         gesture_end = time.time()
         logger.trace(
-            f"Gesture and action setup completed (took {(gesture_end - gesture_start)*1000:.1f}ms)",
+            f"Gesture and action setup completed (took {(gesture_end - gesture_start) * 1000:.1f}ms)",
             "Torrents",
         )
         # ordering, sorting etc
@@ -266,7 +266,7 @@ class Torrents(Component, ColumnTranslationMixin):
                 f"🔵 COLUMN TOGGLE: Action={action.get_name()}, Value={value.get_boolean()}",
                 extra={"class_name": self.__class__.__name__},
             )
-            self.stateful_actions[action.get_name()[len("toggle_") :]].set_state(  # noqa: E203
+            self.stateful_actions[action.get_name()[len("toggle_"):]].set_state(  # noqa: E203
                 GLib.Variant.new_boolean(value.get_boolean())
             )
             logger.trace(

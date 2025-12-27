@@ -116,12 +116,21 @@ lint: clearlog
 	@echo "🔍 Running code quality checks..."
 	@echo "   → Running Black formatter..."
 	@black . >/dev/null 2>&1 || black .
+	@echo "   → Running isort import checker..."
+	@isort . >/dev/null 2>&1 || isort .
+	@echo "   → Running autopep8 formatter..."
+	@autopep8 d_fake_seeder --recursive --in-place --aggressive --aggressive >/dev/null 2>&1 || true
 	@echo "   → Running Flake8 linter..."
 	@flake8
-	@echo "   → Running isort import checker..."
-	@find . -iname "*.py" -exec isort --profile=black --check-only {} \; >/dev/null 2>&1 || true
+	@echo "   → Running pyflakes..."
+	@pyflakes d_fake_seeder || true
 	@echo "   → Running mypy type checker..."
 	@mypy d_fake_seeder
+	@echo "   → Running pylint..."
+	@pylint d_fake_seeder --exit-zero --score=no
+	@echo "   → Running yamllint..."
+	@yamllint . -c .yamllint.yml 2>/dev/null || true
+	@if [ -f Dockerfile ]; then echo "   → Running hadolint..."; hadolint Dockerfile 2>/dev/null || true; fi
 	@echo "✅ Linting complete!"
 
 # Validate settings handler coverage

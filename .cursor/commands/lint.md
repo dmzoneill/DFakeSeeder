@@ -48,3 +48,8 @@ from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
 - Missing type hints: Add `-> ReturnType` to functions
 - Import order: Let isort fix it automatically
 
+
+
+
+
+

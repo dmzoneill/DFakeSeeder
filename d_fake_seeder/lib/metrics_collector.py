@@ -452,8 +452,8 @@ class MetricsCollector:
 
         # I/O
         lines.append("I/O:")
-        lines.append(f"  Read: {metrics.get('io_read_bytes', 0) / (1024*1024):.2f} MB")
-        lines.append(f"  Write: {metrics.get('io_write_bytes', 0) / (1024*1024):.2f} MB")
+        lines.append(f"  Read: {metrics.get('io_read_bytes', 0) / (1024 * 1024):.2f} MB")
+        lines.append(f"  Write: {metrics.get('io_write_bytes', 0) / (1024 * 1024):.2f} MB")
         lines.append("")
 
         # Delta from baseline

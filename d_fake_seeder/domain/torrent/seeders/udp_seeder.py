@@ -177,12 +177,12 @@ class UDPSeeder(BaseSeeder):
                     # Log individual peer details
                     for i, (ip, port) in enumerate(peers[: UDPTrackerConstants.PEER_LOG_LIMIT]):
                         logger.trace(
-                            f"👥 Peer {i+1}: {ip}:{port}",
+                            f"👥 Peer {i + 1}: {ip}:{port}",
                             extra={"class_name": self.__class__.__name__},
                         )
                     if len(peers) > UDPTrackerConstants.PEER_LOG_LIMIT:
                         logger.trace(
-                            f"👥 ... and {len(peers)-UDPTrackerConstants.PEER_LOG_LIMIT} more peers",
+                            f"👥 ... and {len(peers) - UDPTrackerConstants.PEER_LOG_LIMIT} more peers",
                             extra={"class_name": self.__class__.__name__},
                         )
 

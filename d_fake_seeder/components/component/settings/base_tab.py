@@ -635,9 +635,9 @@ class BaseSettingsTab(Component):
         report = self.validate_handler_coverage()
 
         lines = [
-            f"\n{'='*70}",
+            f"\n{'=' * 70}",
             f"Handler Coverage Report: {self.tab_name}",
-            f"{'='*70}",
+            f"{'=' * 70}",
             f"Total widgets:        {report['total_widgets']}",
             f"Interactive widgets:  {report['interactive_widgets']}",
             f"Connected widgets:    {report['connected_widgets']}",
@@ -646,14 +646,14 @@ class BaseSettingsTab(Component):
 
         if report["missing_handlers"]:
             lines.append(f"\n⚠️  Missing Handlers ({len(report['missing_handlers'])}):")
-            lines.append(f"{'─'*70}")
+            lines.append(f"{'─' * 70}")
             for missing in report["missing_handlers"]:
                 lines.append(f"  • {missing['id']:<40} ({missing['type']})")
                 lines.append(f"    Expected signal: {missing['expected_signal']}")
         else:
             lines.append("\n✅ All interactive widgets have handlers!")
 
-        lines.append(f"{'='*70}\n")
+        lines.append(f"{'=' * 70}\n")
 
         self.logger.info(
             "\n".join(lines),

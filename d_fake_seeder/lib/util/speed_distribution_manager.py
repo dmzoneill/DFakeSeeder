@@ -230,7 +230,7 @@ class SpeedDistributionManager:
                 logger.debug("📊 Distribution Stats:", "SpeedDistributionManager")
                 logger.debug(f"   Min: {min(speeds_list):.2f} KB/s", "SpeedDistributionManager")
                 logger.debug(f"   Max: {max(speeds_list):.2f} KB/s", "SpeedDistributionManager")
-                logger.debug(f"   Avg: {sum(speeds_list)/len(speeds_list):.2f} KB/s", "SpeedDistributionManager")
+                logger.debug(f"   Avg: {sum(speeds_list) / len(speeds_list):.2f} KB/s", "SpeedDistributionManager")
                 logger.debug(f"   Total: {sum(speeds_list):.2f} KB/s", "SpeedDistributionManager")
                 stopped_count = sum(1 for s in speeds_list if s == 0)
                 if stopped_count > 0:
@@ -362,7 +362,7 @@ class SpeedDistributionManager:
                 logger.debug("📊 Distribution Stats:", "SpeedDistributionManager")
                 logger.debug(f"   Min: {min(speeds_list):.2f} KB/s", "SpeedDistributionManager")
                 logger.debug(f"   Max: {max(speeds_list):.2f} KB/s", "SpeedDistributionManager")
-                logger.debug(f"   Avg: {sum(speeds_list)/len(speeds_list):.2f} KB/s", "SpeedDistributionManager")
+                logger.debug(f"   Avg: {sum(speeds_list) / len(speeds_list):.2f} KB/s", "SpeedDistributionManager")
                 logger.debug(f"   Total: {sum(speeds_list):.2f} KB/s", "SpeedDistributionManager")
                 stopped_count = sum(1 for s in speeds_list if s == 0)
                 if stopped_count > 0:

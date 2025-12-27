@@ -17,8 +17,8 @@ extend-exclude = '''
 [tool.isort]
 profile = "black"
 line_length = 120
-skip_gitignore = true
-extend_skip_glob = ["build/*", "dist/*", "rpmbuild/*", "debbuild/*"]
+skip_gitignore = false
+extend_skip_glob = ["build/*", "dist/*", "rpmbuild/*", "debbuild/*", ".venv/*", "__pycache__/*", "*.egg-info/*", ".flatpak-builder/*"]
 
 [tool.flake8]
 max-line-length = 120
@@ -45,3 +45,42 @@ no_implicit_optional = true
 warn_redundant_casts = true
 warn_unused_configs = true
 show_error_codes = true
+
+[tool.autopep8]
+max_line_length = 120
+aggressive = 2
+recursive = true
+in_place = true
+exclude = ".git,__pycache__,build,dist,.venv,.eggs,rpmbuild,debbuild"
+
+[tool.pylint.main]
+max-line-length = 120
+disable = [
+    "C0114",  # missing-module-docstring
+    "C0115",  # missing-class-docstring
+    "C0116",  # missing-function-docstring
+    "R0903",  # too-few-public-methods
+    "R0913",  # too-many-arguments
+    "W0511",  # fixme
+]
+ignore-paths = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+    ".eggs",
+    "rpmbuild",
+    "debbuild",
+]
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.yamllint]
+extends = "default"
+
+[tool.yamllint.rules]
+line-length = { max = 120 }
+truthy = { check-keys = false }
+document-start = "disable"
