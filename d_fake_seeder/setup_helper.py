@@ -18,13 +18,15 @@ def check_system_dependencies() -> Any:
 
     # Check GTK4
     try:
-        subprocess.run(dependencies["GTK4"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # type: ignore[arg-type]  # noqa: E501
+        cmd = dependencies["GTK4"]
+        subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # type: ignore[arg-type]
     except (subprocess.CalledProcessError, FileNotFoundError):
         missing.append("GTK4")
 
     # Check LibAdwaita
     try:
-        subprocess.run(dependencies["LibAdwaita"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # type: ignore[arg-type]  # noqa: E501
+        cmd = dependencies["LibAdwaita"]
+        subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # type: ignore[arg-type]
     except (subprocess.CalledProcessError, FileNotFoundError):
         missing.append("LibAdwaita")
 

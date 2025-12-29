@@ -69,6 +69,7 @@ def humanbytes(B: Any) -> Any:  # pylint: disable=invalid-name
 
 
 def convert_seconds_to_hours_mins_seconds(seconds: Any) -> Any:
+    """Convert seconds to human-readable time string (Xh Xm Xs)."""
     hours = seconds // 3600
     remaining_seconds = seconds % 3600
     mins = remaining_seconds // 60
@@ -86,10 +87,12 @@ def convert_seconds_to_hours_mins_seconds(seconds: Any) -> Any:
 
 
 def add_kb(kb: Any) -> None:
+    """Format value with kb suffix."""
     return f"{kb} kb"  # type: ignore[return-value]
 
 
 def add_percent(percent: Any) -> None:
+    """Format value with percent suffix."""
     return f"{percent} %"  # type: ignore[return-value]
 
 

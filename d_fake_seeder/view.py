@@ -88,7 +88,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                 logger.info("Gtk.Builder created", self.__class__.__name__)
             with logger.performance.operation_context("xml_loading", self.__class__.__name__):
                 logger.trace("About to load XML file", self.__class__.__name__)
-                self.builder.add_from_file(os.environ.get("DFS_PATH") + "/components/ui/generated/generated.xml")  # type: ignore[operator]  # noqa: E501
+                dfs_path = os.environ.get("DFS_PATH")
+                xml_path = dfs_path + "/components/ui/generated/generated.xml"  # type: ignore[operator]
+                self.builder.add_from_file(xml_path)
                 logger.trace("XML file loaded", self.__class__.__name__)
             # CSS will be loaded and applied in setup_window() method
             # Get window object
@@ -224,6 +226,7 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         return text  # Fallback if model not set yet
 
     def setup_window(self) -> None:
+        """Configure main window properties and theme."""
         # Get application settings
         app_settings = AppSettings.get_instance()
         app_title = app_settings.get("application", {}).get("title", self._("D' Fake Seeder"))
@@ -289,9 +292,11 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         self.window.present()
 
     def show_splash_image(self) -> None:
+        """Display splash image overlay on startup."""
         # splash image
         self.splash_image = Gtk.Image()
-        self.splash_image.set_from_file(os.environ.get("DFS_PATH") + "/components/images/dfakeseeder.png")  # type: ignore[operator]  # noqa: E501
+        splash_path = os.environ.get("DFS_PATH") + "/components/images/dfakeseeder.png"  # type: ignore[operator]
+        self.splash_image.set_from_file(splash_path)
         # self.splash_image.set_no_show_all(False)
         self.splash_image.set_visible(True)
         self.splash_image.show()
@@ -306,6 +311,7 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         self.track_timeout(GLib.timeout_add_seconds(self.splash_display_duration, self.fade_out_image))
 
     def show_about(self, action: Any, _param: Any) -> None:
+        """Show the About dialog with application info."""
         self.window.about = Gtk.AboutDialog()
         self.window.about.set_transient_for(self.window)
         self.window.about.set_modal(True)
@@ -349,10 +355,12 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             )
 
     def fade_out_image(self) -> Any:
+        """Start splash image fade out animation."""
         self.splash_image.fade_out = 1.0
         self.track_timeout(GLib.timeout_add(self.splash_fade_interval, self.fade_image))
 
     def fade_image(self) -> Any:
+        """Animate splash image opacity reduction."""
         self.splash_image.fade_out -= self.splash_fade_step
         if self.splash_image.fade_out > 0:
             self.splash_image.set_opacity(self.splash_image.fade_out)
@@ -469,6 +477,7 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
 
     # Setting model for the view
     def set_model(self, model: Any) -> None:
+        """Set the model and propagate it to all child components."""
         logger.trace("View set model", extra={"class_name": self.__class__.__name__})
         self.model = model
         self.notebook.set_model(model)  # type: ignore[union-attr]
@@ -513,6 +522,7 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
 
     # Connecting signals for different events
     def connect_signals(self) -> None:
+        """Connect GObject signals between model and view components."""
         logger.trace(
             "View connect signals",
             extra={"class_name": self.__class__.__name__},
@@ -541,6 +551,7 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
 
     # Connecting signals for different events
     def remove_signals(self) -> None:
+        """Disconnect GObject signals during cleanup."""
         logger.trace("Remove signals", extra={"class_name": self.__class__.__name__})
         self.model.disconnect_by_func(self.torrents.update_view)
         self.model.disconnect_by_func(self.notebook.update_view)  # type: ignore[union-attr]
@@ -560,6 +571,7 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
 
     # open github webpage
     def on_help_clicked(self, menu_item: Any) -> None:
+        """Open GitHub project page in default browser."""
         logger.trace(
             "Opening GitHub webpage",
             extra={"class_name": self.__class__.__name__},
@@ -583,7 +595,10 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                     total_count = component.get_total_connection_count()
                     visible_count = component.get_connection_count()
                     connection_word = "connection" if total_count == 1 else "connections"
-                    message = f"Added incoming connection. Total: {total_count} {connection_word}, Visible: {visible_count}"  # noqa: E501
+                    message = (
+                        f"Added incoming connection. Total: {total_count} "
+                        f"{connection_word}, Visible: {visible_count}"
+                    )
                     logger.trace(
                         message,
                         extra={"class_name": self.__class__.__name__},
@@ -595,7 +610,10 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                     total_count = component.get_total_connection_count()
                     visible_count = component.get_connection_count()
                     connection_word = "connection" if total_count == 1 else "connections"
-                    message = f"Removed incoming connection. Total: {total_count} {connection_word}, Visible: {visible_count}"  # noqa: E501
+                    message = (
+                        f"Removed incoming connection. Total: {total_count} "
+                        f"{connection_word}, Visible: {visible_count}"
+                    )
                     logger.trace(
                         message,
                         extra={"class_name": self.__class__.__name__},
@@ -607,7 +625,10 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                     total_count = component.get_total_connection_count()
                     visible_count = component.get_connection_count()
                     connection_word = "connection" if total_count == 1 else "connections"
-                    message = f"Added outgoing connection. Total: {total_count} {connection_word}, Visible: {visible_count}"  # noqa: E501
+                    message = (
+                        f"Added outgoing connection. Total: {total_count} "
+                        f"{connection_word}, Visible: {visible_count}"
+                    )
                     logger.trace(
                         message,
                         extra={"class_name": self.__class__.__name__},
@@ -619,7 +640,10 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                     total_count = component.get_total_connection_count()
                     visible_count = component.get_connection_count()
                     connection_word = "connection" if total_count == 1 else "connections"
-                    message = f"Removed outgoing connection. Total: {total_count} {connection_word}, Visible: {visible_count}"  # noqa: E501
+                    message = (
+                        f"Removed outgoing connection. Total: {total_count} "
+                        f"{connection_word}, Visible: {visible_count}"
+                    )
                     logger.trace(
                         message,
                         extra={"class_name": self.__class__.__name__},
@@ -837,7 +861,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                     f"Error stopping model: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                self.shutdown_tracker.mark_completed("model_torrents", model_torrent_count)  # type: ignore[attr-defined]  # noqa: E501
+                self.shutdown_tracker.mark_completed(  # type: ignore[attr-defined]
+                    "model_torrents", model_torrent_count
+                )
         phase_times["model_stop"] = time.time() - step_start
 
         # ========== PHASE 3: STOP CONTROLLER & NETWORK ==========
@@ -1045,6 +1071,7 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         )
 
     def handle_settings_changed(self, _source: Any, key: Any, value: Any) -> None:  # noqa: ARG002
+        """Handle settings change events for theme and UI updates."""
         logger.trace(
             f"View settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},

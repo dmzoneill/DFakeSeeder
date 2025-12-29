@@ -8,7 +8,7 @@ look more realistic and less uniform across multiple torrents.
 import math
 import random
 from abc import ABC, abstractmethod
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from d_fake_seeder.lib.logger import logger
 
@@ -383,7 +383,7 @@ def create_distributor(algorithm: str, percentage: float = 50.0, stopped_percent
     return distributor_class(percentage, stopped_percentage)  # type: ignore[abstract]
 
 
-def format_debug_output(torrent_name: str, algorithm: str, speed: float, category: str = None) -> str:  # type: ignore[assignment]  # noqa: E501
+def format_debug_output(torrent_name: str, algorithm: str, speed: float, category: Optional[str] = None) -> str:
     """
     Format debug output for a torrent's distributed speed.
 

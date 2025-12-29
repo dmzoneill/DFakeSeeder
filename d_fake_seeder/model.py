@@ -210,6 +210,7 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
     def stop(  # pylint: disable=too-many-locals,too-many-branches,too-many-statements
         self, shutdown_tracker: Any = None
     ) -> Any:
+        """Stop all torrents and clean up resources."""
         # Stopping all torrents before quitting - PARALLEL SHUTDOWN
         import time
 
@@ -419,6 +420,7 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
 
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore_item(self, index: Any) -> Any:
+        """Get torrent from list by index."""
         logger.trace(
             "Model get list store item",
             extra={"class_name": self.__class__.__name__},
@@ -469,6 +471,7 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             return None
 
     def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
+        """Handle settings changes and propagate to torrents."""
         logger.trace("===== handle_settings_changed() CALLED =====", "Model")
         logger.debug("DEBUG: Signal received - key='', value=''", "Model")
         logger.debug("DEBUG: Source object:", "Model")
@@ -532,6 +535,7 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         # Add other key-specific handling here in the future
 
     def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
+        """Handle model change events and emit data-changed signal."""
         logger.trace(
             "Notebook settings changed",
             extra={"class_name": self.__class__.__name__},
@@ -768,7 +772,8 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                 extra={"class_name": self.__class__.__name__},
             )
             # Check widget registration before switching
-            widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0  # type: ignore[attr-defined]  # noqa: E501
+            tm = self.translation_manager
+            widget_count = len(tm.translatable_widgets) if tm else 0  # type: ignore[attr-defined]
             logger.trace(
                 f"TranslationManager has {widget_count} registered widgets before switch",
                 "Model",
@@ -786,7 +791,8 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                     extra={"class_name": self.__class__.__name__},
                 )
             # Check widget registration after switching
-            widget_count = len(self.translation_manager.translatable_widgets) if self.translation_manager else 0  # type: ignore[attr-defined]  # noqa: E501
+            tm = self.translation_manager
+            widget_count = len(tm.translatable_widgets) if tm else 0  # type: ignore[attr-defined]
             logger.trace(
                 f"TranslationManager has {widget_count} registered widgets after switch",
                 "Model",

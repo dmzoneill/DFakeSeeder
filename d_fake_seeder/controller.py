@@ -172,6 +172,7 @@ class Controller:  # pylint: disable=too-many-instance-attributes
         self.view.connect_signals()
 
     def run(self) -> Any:
+        """Start the controller and load existing torrents."""
         logger.trace("Controller Run", extra={"class_name": self.__class__.__name__})
         for filename in os.listdir(os.path.expanduser("~/.config/dfakeseeder/torrents")):
             if filename.endswith(".torrent"):
@@ -318,6 +319,7 @@ class Controller:  # pylint: disable=too-many-instance-attributes
     def handle_settings_changed(  # pylint: disable=too-many-branches,too-many-statements
         self, source: Any, key: Any, value: Any
     ) -> None:
+        """Handle settings changes and propagate to components."""
         logger.trace(
             f"Controller settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},

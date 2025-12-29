@@ -13,7 +13,7 @@ import random
 import socket
 import struct
 import time
-from typing import Any
+from typing import Any, Optional
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.model.tracker import Tracker
@@ -47,6 +47,7 @@ class UDPSeeder(BaseSeeder):
         downloaded: Any = 0,
         left: Any = 0,
     ) -> None:  # noqa: E501
+        """Build UDP announce packet for tracker."""
         info_hash = (info_hash + b"\x00" * 20)[:20]
         peer_id = (peer_id + b"\x00" * 20)[:20]
 
@@ -79,6 +80,7 @@ class UDPSeeder(BaseSeeder):
         return packet  # type: ignore[return-value]
 
     def process_announce_response(self, response: Any) -> None:
+        """Parse UDP announce response and extract peers."""
         peers = []
         _action, _transaction_id, interval, leechers, seeders = struct.unpack_from("!IIIII", response, offset=0)
         offset = 20
@@ -92,6 +94,7 @@ class UDPSeeder(BaseSeeder):
     def handle_announce(  # pylint: disable=too-many-locals,too-many-statements
         self, packet_data: Any, timeout: Any, log_msg: Any
     ) -> None:
+        """Handle UDP announce request to tracker."""
         logger.trace(log_msg, extra={"class_name": self.__class__.__name__})
 
         # Mark tracker as announcing
@@ -158,7 +161,8 @@ class UDPSeeder(BaseSeeder):
                         extra={"class_name": self.__class__.__name__},
                     )
 
-                    peers, interval, leechers, seeders = self.process_announce_response(response)  # type: ignore[func-returns-value]  # noqa: E501
+                    result = self.process_announce_response(response)  # type: ignore[func-returns-value]
+                    peers, interval, leechers, seeders = result
 
                     # Calculate response time and update tracker model
                     request_end_time = time.time()
@@ -266,6 +270,7 @@ class UDPSeeder(BaseSeeder):
             return False  # type: ignore[return-value]
 
     def load_peers(self) -> None:
+        """Load peers from UDP tracker."""
         logger.trace(
             "🔄 Starting UDP peer discovery",
             extra={"class_name": self.__class__.__name__},
@@ -314,6 +319,7 @@ class UDPSeeder(BaseSeeder):
         return result  # type: ignore[no-any-return]
 
     def upload(self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any) -> Any:
+        """Upload stats to UDP tracker."""
         logger.trace(
             "📤 Starting UDP announce to tracker",
             extra={"class_name": self.__class__.__name__},
@@ -408,7 +414,7 @@ class UDPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _update_tracker_failure(self, error_message: str, response_time: float = None) -> None:  # type: ignore[assignment]  # noqa: E501
+    def _update_tracker_failure(self, error_message: str, response_time: Optional[float] = None) -> None:
         """Update tracker model with failed response"""
         try:
             tracker = self._get_tracker_model()

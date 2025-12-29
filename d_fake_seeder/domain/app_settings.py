@@ -40,16 +40,16 @@ else:
         """Stub Observer fallback when watchdog is not available."""
 
         def __init__(self) -> None:
-            pass
+            """Initialize stub observer."""
 
         def schedule(self, *args: Any, **kwargs: Any) -> Any:
-            pass
+            """Stub schedule method."""
 
         def start(self) -> Any:
-            pass
+            """Stub start method."""
 
         def stop(self) -> Any:
-            pass
+            """Stub stop method."""
 
 # fmt: on
 
@@ -208,7 +208,9 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
                 import logging
                 from d_fake_seeder.lib.logger import add_trace_to_logger
 
-                AppSettings._logger = add_trace_to_logger(logging.getLogger(__name__))  # type: ignore[func-returns-value]  # noqa: E501
+                AppSettings._logger = add_trace_to_logger(  # type: ignore[func-returns-value]
+                    logging.getLogger(__name__)
+                )
         return AppSettings._logger
 
     @property
@@ -838,62 +840,77 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
     # Application-specific setting accessors
     @property
     def window_width(self) -> Any:
+        """Get window width setting."""
         return self.get("window_width", 1024)
 
     @window_width.setter
     def window_width(self, value: Any) -> Any:
+        """Set window width setting."""
         self.set("window_width", value)
 
     @property
     def window_height(self) -> Any:
+        """Get window height setting."""
         return self.get("window_height", 600)
 
     @window_height.setter
     def window_height(self, value: Any) -> Any:
+        """Set window height setting."""
         self.set("window_height", value)
 
     @property
     def remember_window_size(self) -> Any:
+        """Get remember window size setting."""
         return self.get("remember_window_size", True)
 
     @remember_window_size.setter
     def remember_window_size(self, value: Any) -> None:
+        """Set remember window size setting."""
         self.set("remember_window_size", value)
 
     @property
     def start_minimized(self) -> None:
+        """Get start minimized setting."""
         return self.get("start_minimized", False)  # type: ignore[no-any-return]
 
     @start_minimized.setter
     def start_minimized(self, value: Any) -> None:
+        """Set start minimized setting."""
         self.set("start_minimized", value)
 
     @property
     def minimize_to_tray(self) -> Any:
+        """Get minimize to tray setting."""
         return self.get("minimize_to_tray", False)
 
     @minimize_to_tray.setter
     def minimize_to_tray(self, value: Any) -> Any:
+        """Set minimize to tray setting."""
         self.set("minimize_to_tray", value)
 
     @property
     def auto_start(self) -> Any:
+        """Get auto start setting."""
         return self.get("auto_start", False)
 
     @auto_start.setter
     def auto_start(self, value: Any) -> Any:
+        """Set auto start setting."""
         self.set("auto_start", value)
 
     @property
     def theme(self) -> Any:
+        """Get theme setting."""
         return self.get("theme", "system")
 
     @theme.setter
     def theme(self, value: Any) -> Any:
+        """Set theme setting."""
         self.set("theme", value)
 
     @property
     def language(self) -> Any:
+        """Get language setting."""
         return self.get("language", "auto")
 
     @language.setter
@@ -955,99 +972,123 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
     # Connection settings
     @property
     def listening_port(self) -> Any:
+        """Get listening port setting."""
         return self.get("connection.listening_port", NetworkConstants.DEFAULT_PORT)
 
     @listening_port.setter
     def listening_port(self, value: Any) -> Any:
+        """Set listening port setting."""
         self.set("connection.listening_port", value)
 
     @property
     def enable_upnp(self) -> None:
+        """Get UPnP enabled setting."""
         return self.get("connection.upnp_enabled", True)  # type: ignore[no-any-return]
 
     @enable_upnp.setter
     def enable_upnp(self, value: Any) -> None:
+        """Set UPnP enabled setting."""
         self.set("connection.upnp_enabled", value)
 
     @property
     def upnp_enabled(self) -> Any:
+        """Get UPnP enabled setting (alias)."""
         return self.get("connection.upnp_enabled", True)
 
     @upnp_enabled.setter
     def upnp_enabled(self, value: Any) -> Any:
+        """Set UPnP enabled setting (alias)."""
         self.set("connection.upnp_enabled", value)
 
     @property
     def max_global_connections(self) -> Any:
+        """Get max global connections setting."""
         return self.get("connection.max_global_connections", 200)
 
     @max_global_connections.setter
     def max_global_connections(self, value: Any) -> Any:
+        """Set max global connections setting."""
         self.set("connection.max_global_connections", value)
 
     @property
     def max_per_torrent(self) -> Any:
+        """Get max connections per torrent setting."""
         return self.get("connection.max_per_torrent", 50)
 
     @max_per_torrent.setter
     def max_per_torrent(self, value: Any) -> Any:
+        """Set max connections per torrent setting."""
         self.set("connection.max_per_torrent", value)
 
     @property
     def max_upload_slots(self) -> Any:
+        """Get max upload slots setting."""
         return self.get("connection.max_upload_slots", 4)
 
     @max_upload_slots.setter
     def max_upload_slots(self, value: Any) -> Any:
+        """Set max upload slots setting."""
         self.set("connection.max_upload_slots", value)
 
     # Proxy settings
     @property
     def proxy_type(self) -> Any:
+        """Get proxy type setting."""
         return self.get("proxy.type", "none")
 
     @proxy_type.setter
     def proxy_type(self, value: Any) -> Any:
+        """Set proxy type setting."""
         self.set("proxy.type", value)
 
     @property
     def proxy_server(self) -> Any:
+        """Get proxy server setting."""
         return self.get("proxy.server", "")
 
     @proxy_server.setter
     def proxy_server(self, value: Any) -> Any:
+        """Set proxy server setting."""
         self.set("proxy.server", value)
 
     @property
     def proxy_port(self) -> Any:
+        """Get proxy port setting."""
         return self.get("proxy.port", 8080)
 
     @proxy_port.setter
     def proxy_port(self, value: Any) -> Any:
+        """Set proxy port setting."""
         self.set("proxy.port", value)
 
     @property
     def proxy_auth_enabled(self) -> Any:
+        """Get proxy auth enabled setting."""
         return self.get("proxy.auth_enabled", False)
 
     @proxy_auth_enabled.setter
     def proxy_auth_enabled(self, value: Any) -> Any:
+        """Set proxy auth enabled setting."""
         self.set("proxy.auth_enabled", value)
 
     @property
     def proxy_username(self) -> Any:
+        """Get proxy username setting."""
         return self.get("proxy.username", "")
 
     @proxy_username.setter
     def proxy_username(self, value: Any) -> Any:
+        """Set proxy username setting."""
         self.set("proxy.username", value)
 
     @property
     def proxy_password(self) -> Any:
+        """Get proxy password setting."""
         return self.get("proxy.password", "")
 
     @proxy_password.setter
     def proxy_password(self, value: Any) -> Any:
+        """Set proxy password setting."""
         self.set("proxy.password", value)
 
     @property
@@ -1092,160 +1133,199 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
     # BitTorrent settings
     @property
     def enable_dht(self) -> Any:
+        """Get DHT enabled setting."""
         return self.get("bittorrent.enable_dht", True)
 
     @enable_dht.setter
     def enable_dht(self, value: Any) -> None:
+        """Set DHT enabled setting."""
         self.set("bittorrent.enable_dht", value)
 
     @property
     def enable_pex(self) -> Any:
+        """Get PEX enabled setting."""
         return self.get("bittorrent.enable_pex", True)
 
     @enable_pex.setter
     def enable_pex(self, value: Any) -> None:
+        """Set PEX enabled setting."""
         self.set("bittorrent.enable_pex", value)
 
     @property
     def enable_lpd(self) -> Any:
+        """Get LPD enabled setting."""
         return self.get("bittorrent.enable_lpd", True)
 
     @enable_lpd.setter
     def enable_lpd(self, value: Any) -> None:
+        """Set LPD enabled setting."""
         self.set("bittorrent.enable_lpd", value)
 
     @property
     def encryption_mode(self) -> Any:
+        """Get encryption mode setting."""
         return self.get("bittorrent.encryption_mode", "enabled")
 
     @encryption_mode.setter
     def encryption_mode(self, value: Any) -> None:
+        """Set encryption mode setting."""
         self.set("bittorrent.encryption_mode", value)
 
     @property
     def bittorrent_user_agent(self) -> Any:
+        """Get BitTorrent user agent setting."""
         return self.get("bittorrent.user_agent", "Deluge/2.0.3 libtorrent/2.0.5.0")
 
     @bittorrent_user_agent.setter
     def bittorrent_user_agent(self, value: Any) -> None:
+        """Set BitTorrent user agent setting."""
         self.set("bittorrent.user_agent", value)
 
     @property
     def peer_id_prefix(self) -> Any:
+        """Get peer ID prefix setting."""
         return self.get("bittorrent.peer_id_prefix", "-DE2003-")
 
     @peer_id_prefix.setter
     def peer_id_prefix(self, value: Any) -> None:
+        """Set peer ID prefix setting."""
         self.set("bittorrent.peer_id_prefix", value)
 
     @property
     def bittorrent_announce_interval(self) -> Any:
+        """Get BitTorrent announce interval setting."""
         return self.get("bittorrent.announce_interval_seconds", 1800)
 
     @bittorrent_announce_interval.setter
     def bittorrent_announce_interval(self, value: Any) -> None:
+        """Set BitTorrent announce interval setting."""
         self.set("bittorrent.announce_interval_seconds", value)
 
     @property
     def bittorrent_min_announce_interval(self) -> Any:
+        """Get BitTorrent min announce interval setting."""
         return self.get("bittorrent.min_announce_interval_seconds", 300)
 
     @bittorrent_min_announce_interval.setter
     def bittorrent_min_announce_interval(self, value: Any) -> None:
+        """Set BitTorrent min announce interval setting."""
         self.set("bittorrent.min_announce_interval_seconds", value)
 
     @property
     def bittorrent_scrape_interval(self) -> Any:
+        """Get BitTorrent scrape interval setting."""
         return self.get("bittorrent.scrape_interval_seconds", 900)
 
     @bittorrent_scrape_interval.setter
     def bittorrent_scrape_interval(self, value: Any) -> None:
+        """Set BitTorrent scrape interval setting."""
         self.set("bittorrent.scrape_interval_seconds", value)
 
     # Speed settings
     @property
     def upload_limit_kbps(self) -> Any:
+        """Get upload limit in kbps (0 = unlimited)."""
         return self.get("speed.upload_limit_kbps", 0)  # 0 = unlimited
 
     @upload_limit_kbps.setter
     def upload_limit_kbps(self, value: Any) -> None:
+        """Set upload limit in kbps."""
         self.set("speed.upload_limit_kbps", value)
 
     @property
     def download_limit_kbps(self) -> Any:
+        """Get download limit in kbps (0 = unlimited)."""
         return self.get("speed.download_limit_kbps", 0)  # 0 = unlimited
 
     @download_limit_kbps.setter
     def download_limit_kbps(self, value: Any) -> None:
+        """Set download limit in kbps."""
         self.set("speed.download_limit_kbps", value)
 
     @property
     def enable_alternative_speeds(self) -> Any:
+        """Get alternative speeds enabled setting."""
         return self.get("speed.enable_alternative_speeds", False)
 
     @enable_alternative_speeds.setter
     def enable_alternative_speeds(self, value: Any) -> None:
+        """Set alternative speeds enabled setting."""
         self.set("speed.enable_alternative_speeds", value)
 
     @property
     def alt_upload_limit_kbps(self) -> Any:
+        """Get alternative upload limit in kbps."""
         return self.get("speed.alt_upload_limit_kbps", 50)
 
     @alt_upload_limit_kbps.setter
     def alt_upload_limit_kbps(self, value: Any) -> None:
+        """Set alternative upload limit in kbps."""
         self.set("speed.alt_upload_limit_kbps", value)
 
     @property
     def alt_download_limit_kbps(self) -> Any:
+        """Get alternative download limit in kbps."""
         return self.get("speed.alt_download_limit_kbps", 100)
 
     @alt_download_limit_kbps.setter
     def alt_download_limit_kbps(self, value: Any) -> None:
+        """Set alternative download limit in kbps."""
         self.set("speed.alt_download_limit_kbps", value)
 
     # Scheduler settings
     @property
     def scheduler_enabled(self) -> Any:
+        """Get scheduler enabled setting."""
         return self.get("scheduler.enabled", False)
 
     @scheduler_enabled.setter
     def scheduler_enabled(self, value: Any) -> None:
+        """Set scheduler enabled setting."""
         self.set("scheduler.enabled", value)
 
     @property
     def scheduler_start_hour(self) -> Any:
+        """Get scheduler start hour."""
         return self.get("scheduler.start_hour", 22)
 
     @scheduler_start_hour.setter
     def scheduler_start_hour(self, value: Any) -> None:
+        """Set scheduler start hour."""
         self.set("scheduler.start_hour", value)
 
     @property
     def scheduler_start_minute(self) -> Any:
+        """Get scheduler start minute."""
         return self.get("scheduler.start_minute", 0)
 
     @scheduler_start_minute.setter
     def scheduler_start_minute(self, value: Any) -> None:
+        """Set scheduler start minute."""
         self.set("scheduler.start_minute", value)
 
     @property
     def scheduler_end_hour(self) -> Any:
+        """Get scheduler end hour."""
         return self.get("scheduler.end_hour", 6)
 
     @scheduler_end_hour.setter
     def scheduler_end_hour(self, value: Any) -> None:
+        """Set scheduler end hour."""
         self.set("scheduler.end_hour", value)
 
     @property
     def scheduler_end_minute(self) -> Any:
+        """Get scheduler end minute."""
         return self.get("scheduler.end_minute", 0)
 
     @scheduler_end_minute.setter
     def scheduler_end_minute(self, value: Any) -> None:
+        """Set scheduler end minute."""
         self.set("scheduler.end_minute", value)
 
     @property
     def scheduler_days(self) -> Any:
+        """Get scheduler days setting."""
         return self.get(
             "scheduler.days",
             {
@@ -1261,124 +1341,154 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
     @scheduler_days.setter
     def scheduler_days(self, value: Any) -> None:
+        """Set scheduler days setting."""
         self.set("scheduler.days", value)
 
     # Web UI settings
     @property
     def webui_enabled(self) -> Any:
+        """Get WebUI enabled setting."""
         return self.get("webui.enabled", False)
 
     @webui_enabled.setter
     def webui_enabled(self, value: Any) -> None:
+        """Set WebUI enabled setting."""
         self.set("webui.enabled", value)
 
     @property
     def webui_port(self) -> Any:
+        """Get WebUI port setting."""
         return self.get("webui.port", 8080)
 
     @webui_port.setter
     def webui_port(self, value: Any) -> None:
+        """Set WebUI port setting."""
         self.set("webui.port", value)
 
     @property
     def webui_interface(self) -> Any:
+        """Get WebUI interface setting."""
         return self.get("webui.interface", "127.0.0.1")
 
     @webui_interface.setter
     def webui_interface(self, value: Any) -> None:
+        """Set WebUI interface setting."""
         self.set("webui.interface", value)
 
     @property
     def webui_localhost_only(self) -> Any:
+        """Get WebUI localhost only setting."""
         return self.get("webui.localhost_only", True)
 
     @webui_localhost_only.setter
     def webui_localhost_only(self, value: Any) -> None:
+        """Set WebUI localhost only setting."""
         self.set("webui.localhost_only", value)
 
     @property
     def webui_https_enabled(self) -> Any:
+        """Get WebUI HTTPS enabled setting."""
         return self.get("webui.https_enabled", False)
 
     @webui_https_enabled.setter
     def webui_https_enabled(self, value: Any) -> None:
+        """Set WebUI HTTPS enabled setting."""
         self.set("webui.https_enabled", value)
 
     @property
     def webui_auth_enabled(self) -> Any:
+        """Get WebUI auth enabled setting."""
         return self.get("webui.auth_enabled", True)
 
     @webui_auth_enabled.setter
     def webui_auth_enabled(self, value: Any) -> None:
+        """Set WebUI auth enabled setting."""
         self.set("webui.auth_enabled", value)
 
     @property
     def webui_username(self) -> Any:
+        """Get WebUI username setting."""
         return self.get("webui.username", "admin")
 
     @webui_username.setter
     def webui_username(self, value: Any) -> None:
+        """Set WebUI username setting."""
         self.set("webui.username", value)
 
     @property
     def webui_password(self) -> Any:
+        """Get WebUI password setting."""
         return self.get("webui.password", "")
 
     @webui_password.setter
     def webui_password(self, value: Any) -> None:
+        """Set WebUI password setting."""
         self.set("webui.password", value)
 
     @property
     def webui_session_timeout(self) -> Any:
+        """Get WebUI session timeout in minutes."""
         return self.get("webui.session_timeout_minutes", 60)
 
     @webui_session_timeout.setter
     def webui_session_timeout(self, value: Any) -> None:
+        """Set WebUI session timeout in minutes."""
         self.set("webui.session_timeout_minutes", value)
 
     @property
     def webui_csrf_protection(self) -> Any:
+        """Get WebUI CSRF protection setting."""
         return self.get("webui.csrf_protection", True)
 
     @webui_csrf_protection.setter
     def webui_csrf_protection(self, value: Any) -> None:
+        """Set WebUI CSRF protection setting."""
         self.set("webui.csrf_protection", value)
 
     @property
     def webui_clickjacking_protection(self) -> Any:
+        """Get WebUI clickjacking protection setting."""
         return self.get("webui.clickjacking_protection", True)
 
     @webui_clickjacking_protection.setter
     def webui_clickjacking_protection(self, value: Any) -> None:
+        """Set WebUI clickjacking protection setting."""
         self.set("webui.clickjacking_protection", value)
 
     @property
     def webui_secure_headers(self) -> Any:
+        """Get WebUI secure headers setting."""
         return self.get("webui.secure_headers", True)
 
     @webui_secure_headers.setter
     def webui_secure_headers(self, value: Any) -> None:
+        """Set WebUI secure headers setting."""
         self.set("webui.secure_headers", value)
 
     @property
     def webui_host_header_validation(self) -> Any:
+        """Get WebUI host header validation setting."""
         return self.get("webui.host_header_validation", True)
 
     @webui_host_header_validation.setter
     def webui_host_header_validation(self, value: Any) -> None:
+        """Set WebUI host header validation setting."""
         self.set("webui.host_header_validation", value)
 
     @property
     def webui_ban_after_failures(self) -> Any:
+        """Get WebUI ban after failures setting."""
         return self.get("webui.ban_after_failures", 5)
 
     @webui_ban_after_failures.setter
     def webui_ban_after_failures(self, value: Any) -> None:
+        """Set WebUI ban after failures setting."""
         self.set("webui.ban_after_failures", value)
 
     # Advanced settings - per-output log levels (no main level)
     @property
     def console_log_level(self) -> str:
+        """Get console log level setting."""
         result = self.get("logging.console_level", "INFO")
         return str(result) if result else "INFO"
 
@@ -1388,33 +1498,40 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
     @property
     def systemd_log_level(self) -> str:
+        """Get systemd log level setting."""
         result = self.get("logging.systemd_level", "ERROR")
         return str(result) if result else "ERROR"
 
     @systemd_log_level.setter
     def systemd_log_level(self, value: Any) -> None:
+        """Set systemd log level setting."""
         self.set("logging.systemd_level", value)
 
     @property
     def file_log_level(self) -> str:
+        """Get file log level setting."""
         result = self.get("logging.file_level", "DEBUG")
         return str(result) if result else "DEBUG"
 
     @file_log_level.setter
     def file_log_level(self, value: Any) -> None:
+        """Set file log level setting."""
         self.set("logging.file_level", value)
 
     @property
     def disk_cache_size(self) -> Any:
+        """Get disk cache size in MB."""
         return self.get("performance.disk_cache_size_mb", 64)  # MB
 
     @disk_cache_size.setter
     def disk_cache_size(self, value: Any) -> Any:
+        """Set disk cache size in MB."""
         self.set("performance.disk_cache_size_mb", value)
 
     # Speed distribution settings - Upload
     @property
     def upload_distribution_algorithm(self) -> Any:
+        """Get upload distribution algorithm setting."""
         speed_dist = self.get("speed_distribution", {})
         if speed_dist is None or not isinstance(speed_dist, dict):
             return "off"
@@ -1452,10 +1569,12 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
     @property
     def upload_distribution_spread_percentage(self) -> Any:
+        """Get upload distribution spread percentage."""
         return self.get("speed_distribution", {}).get("upload", {}).get("spread_percentage", 50)
 
     @upload_distribution_spread_percentage.setter
     def upload_distribution_spread_percentage(self, value: Any) -> Any:
+        """Set upload distribution spread percentage."""
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1468,10 +1587,12 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
     @property
     def upload_distribution_redistribution_mode(self) -> Any:
+        """Get upload distribution redistribution mode."""
         return self.get("speed_distribution", {}).get("upload", {}).get("redistribution_mode", "tick")
 
     @upload_distribution_redistribution_mode.setter
     def upload_distribution_redistribution_mode(self, value: Any) -> Any:
+        """Set upload distribution redistribution mode."""
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1484,10 +1605,12 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
     @property
     def upload_distribution_custom_interval_minutes(self) -> Any:
+        """Get upload distribution custom interval in minutes."""
         return self.get("speed_distribution", {}).get("upload", {}).get("custom_interval_minutes", 5)
 
     @upload_distribution_custom_interval_minutes.setter
     def upload_distribution_custom_interval_minutes(self, value: Any) -> Any:
+        """Set upload distribution custom interval in minutes."""
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1501,10 +1624,12 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
     # Speed distribution settings - Download
     @property
     def download_distribution_algorithm(self) -> Any:
+        """Get download distribution algorithm setting."""
         return self.get("speed_distribution", {}).get("download", {}).get("algorithm", "off")
 
     @download_distribution_algorithm.setter
     def download_distribution_algorithm(self, value: Any) -> Any:
+        """Set download distribution algorithm setting."""
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1517,10 +1642,12 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
     @property
     def download_distribution_spread_percentage(self) -> Any:
+        """Get download distribution spread percentage."""
         return self.get("speed_distribution", {}).get("download", {}).get("spread_percentage", 50)
 
     @download_distribution_spread_percentage.setter
     def download_distribution_spread_percentage(self, value: Any) -> Any:
+        """Set download distribution spread percentage."""
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1533,10 +1660,12 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
     @property
     def download_distribution_redistribution_mode(self) -> Any:
+        """Get download distribution redistribution mode."""
         return self.get("speed_distribution", {}).get("download", {}).get("redistribution_mode", "tick")
 
     @download_distribution_redistribution_mode.setter
     def download_distribution_redistribution_mode(self, value: Any) -> Any:
+        """Set download distribution redistribution mode."""
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1549,10 +1678,12 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
     @property
     def download_distribution_custom_interval_minutes(self) -> Any:
+        """Get download distribution custom interval in minutes."""
         return self.get("speed_distribution", {}).get("download", {}).get("custom_interval_minutes", 5)
 
     @download_distribution_custom_interval_minutes.setter
     def download_distribution_custom_interval_minutes(self, value: Any) -> Any:
+        """Set download distribution custom interval in minutes."""
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1566,10 +1697,12 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
     # Upload stopped torrents percentage range
     @property
     def upload_distribution_stopped_min_percentage(self) -> Any:
+        """Get upload distribution stopped min percentage."""
         return self.get("speed_distribution", {}).get("upload", {}).get("stopped_min_percentage", 20)
 
     @upload_distribution_stopped_min_percentage.setter
     def upload_distribution_stopped_min_percentage(self, value: Any) -> Any:
+        """Set upload distribution stopped min percentage."""
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1582,10 +1715,12 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
     @property
     def upload_distribution_stopped_max_percentage(self) -> Any:
+        """Get upload distribution stopped max percentage."""
         return self.get("speed_distribution", {}).get("upload", {}).get("stopped_max_percentage", 40)
 
     @upload_distribution_stopped_max_percentage.setter
     def upload_distribution_stopped_max_percentage(self, value: Any) -> Any:
+        """Set upload distribution stopped max percentage."""
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1599,10 +1734,12 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
     # Download stopped torrents percentage range
     @property
     def download_distribution_stopped_min_percentage(self) -> Any:
+        """Get download distribution stopped min percentage."""
         return self.get("speed_distribution", {}).get("download", {}).get("stopped_min_percentage", 20)
 
     @download_distribution_stopped_min_percentage.setter
     def download_distribution_stopped_min_percentage(self, value: Any) -> Any:
+        """Set download distribution stopped min percentage."""
         import copy
 
         speed_dist = copy.deepcopy(self.get("speed_distribution", {}))
@@ -1615,6 +1752,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
     @property
     def download_distribution_stopped_max_percentage(self) -> Any:
+        """Get download distribution stopped max percentage."""
         return self.get("speed_distribution", {}).get("download", {}).get("stopped_max_percentage", 40)
 
     @download_distribution_stopped_max_percentage.setter
