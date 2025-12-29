@@ -4,7 +4,6 @@ from typing import Any
 import math
 import os
 import shutil
-import traceback
 
 import gi
 
@@ -55,8 +54,12 @@ class Toolbar(Component):
                         "Settings signal connected successfully",
                         self.__class__.__name__,
                     )
-                except Exception as e:
-                    logger.error(f"ERROR getting AppSettings: {e}", self.__class__.__name__)
+                except (AttributeError, TypeError, KeyError) as e:
+                    logger.error(
+                        f"ERROR getting AppSettings: {e}",
+                        self.__class__.__name__,
+                        exc_info=True,
+                    )
                     self.settings = None
                     logger.trace(
                         "Continuing without AppSettings connection",
@@ -151,10 +154,8 @@ class Toolbar(Component):
             logger.trace("Calling self.builder.get_object('toolbar_settings')", "Toolbar")
             self.toolbar_settings_button = self.builder.get_object("toolbar_settings")
             logger.info("get_object call completed successfully", "Toolbar")
-        except Exception:
-            logger.error("ERROR in get_object:", "Toolbar")
-            logger.error("Exception type:", "Toolbar")
-            logger.error("Full traceback:", "Toolbar")
+        except (AttributeError, TypeError):
+            logger.error("ERROR in get_object", "Toolbar", exc_info=True)
             self.toolbar_settings_button = None
         logger.info("Got toolbar_settings button successfully", "Toolbar")
         logger.trace(
@@ -229,8 +230,8 @@ class Toolbar(Component):
             logger.trace("About to call set_value", "Toolbar")
             self.toolbar_refresh_rate.set_value(int(tickspeed_value))
             logger.trace("set_value completed, now connecting signal", "Toolbar")
-        except Exception as e:
-            logger.error(f"ERROR accessing tickspeed: {e}", "Toolbar")
+        except (AttributeError, TypeError, KeyError, ValueError) as e:
+            logger.error(f"ERROR accessing tickspeed: {e}", "Toolbar", exc_info=True)
             logger.trace("Using default value of 9", "Toolbar")
             self.toolbar_refresh_rate.set_value(9)
 
@@ -302,12 +303,12 @@ class Toolbar(Component):
         )
         try:
             os.remove(selected.filepath)
-        except Exception as e:
+        except OSError as e:
             logger.error(
                 f"Error removing torrent file {selected.filepath}: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
-            pass
         self.model.remove_torrent(selected.filepath)  # type: ignore[attr-defined]
 
     def on_toolbar_pause_clicked(self, button: Any) -> None:
@@ -407,17 +408,11 @@ class Toolbar(Component):
                 "show_settings_dialog() completed successfully",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
-            logger.error("EXCEPTION in on_toolbar_settings_clicked:", "Toolbar")
-            logger.error("Exception type:", "Toolbar")
+        except (AttributeError, TypeError, ImportError) as e:
             logger.error(
                 f"ERROR in on_toolbar_settings_clicked: {e}",
                 extra={"class_name": self.__class__.__name__},
-            )
-            logger.error("Full traceback:", "Toolbar")
-            logger.error(
-                f"TRACEBACK: {traceback.format_exc()}",
-                extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     def show_settings_dialog(self) -> None:
@@ -449,12 +444,15 @@ class Toolbar(Component):
                         extra={"class_name": self.__class__.__name__},
                     )
                     return
-                except Exception as e:
+                except (AttributeError, TypeError) as e:
                     logger.trace(
-                        "Existing settings dialog invalid: , creating new one",
+                        "Existing settings dialog invalid, creating new one",
                         "Toolbar",
                     )
-                    logger.error(f"Existing settings dialog invalid, creating new one: {e}")
+                    logger.error(
+                        f"Existing settings dialog invalid, creating new one: {e}",
+                        exc_info=True,
+                    )
                     self.settings_dialog = None
             logger.trace("About to import SettingsDialog", "Toolbar")
             logger.trace(
@@ -549,17 +547,11 @@ class Toolbar(Component):
                 "Settings dialog show() called successfully",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
-            logger.error("EXCEPTION in show_settings_dialog:", "Toolbar")
-            logger.error("Exception type:", "Toolbar")
+        except (AttributeError, TypeError, ImportError) as e:
             logger.error(
                 f"FAILED to open settings dialog: {e}",
                 extra={"class_name": self.__class__.__name__},
-            )
-            logger.error("Full exception traceback:", "Toolbar")
-            logger.error(
-                f"FULL TRACEBACK: {traceback.format_exc()}",
-                extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     def _on_settings_dialog_closed(self, window: Any) -> Any:

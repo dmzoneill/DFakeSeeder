@@ -224,7 +224,7 @@ class CleanupMixin:
                 obj.disconnect(handler_id)
                 disconnected += 1
 
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.trace(
                     f"Failed to disconnect handler {handler_id}: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -248,7 +248,7 @@ class CleanupMixin:
             try:
                 binding.unbind()
                 unbound += 1
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.trace(
                     f"Failed to unbind binding: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -279,7 +279,7 @@ class CleanupMixin:
                     else:
                         # Source already removed or invalid
                         pass
-                except Exception as e:
+                except Exception as e:  # pylint: disable=broad-exception-caught
                     logger.trace(
                         f"Failed to remove timeout source {source_id}: {e}",
                         extra={"class_name": self.__class__.__name__},
@@ -318,7 +318,7 @@ class CleanupMixin:
                     store.clear()
                     cleared += 1
 
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.trace(
                     f"Failed to clear store: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -343,8 +343,9 @@ class CleanupMixin:
             )
             try:
                 self.cleanup()
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.error(
                     f"Error during __del__ cleanup: {e}",
                     extra={"class_name": self.__class__.__name__},
+                    exc_info=True,
                 )

@@ -21,7 +21,7 @@ from d_fake_seeder.lib.util.constants import NetworkConstants
 # fmt: on
 
 
-class GlobalPeerManager:
+class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
     """Global background worker managing peer connections for all torrents"""
 
     def __init__(self) -> None:
@@ -199,7 +199,7 @@ class GlobalPeerManager:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def add_torrent(self, torrent: Any) -> None:
+    def add_torrent(self, torrent: Any) -> None:  # pylint: disable=too-many-branches
         """Add a torrent to be tracked by the global peer manager"""
         if not torrent or not hasattr(torrent, "id"):
             return
@@ -297,10 +297,11 @@ class GlobalPeerManager:
                         extra={"class_name": self.__class__.__name__},
                     )
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to add torrent {torrent_id}: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     def remove_torrent(self, torrent_id: str) -> None:
@@ -423,10 +424,11 @@ class GlobalPeerManager:
                 if self.shutdown_event.wait(timeout=sleep_time):
                     break  # Shutdown event was set
 
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.error(
                     f"Error in global peer manager worker: {e}",
                     extra={"class_name": self.__class__.__name__},
+                    exc_info=True,
                 )
                 # Back off on error with event-based sleep
                 if self.shutdown_event.wait(timeout=self.manager_error_sleep_interval):
@@ -443,7 +445,7 @@ class GlobalPeerManager:
             if not self.peer_managers:
                 return
 
-            for info_hash_hex, manager in self.peer_managers.items():
+            for info_hash_hex, manager in self.peer_managers.items():  # pylint: disable=too-many-nested-blocks
                 try:
                     # Find torrents using this manager
                     using_torrents = [t for t in self.active_torrents.values() if t["info_hash_hex"] == info_hash_hex]
@@ -460,13 +462,14 @@ class GlobalPeerManager:
                                     # Mark this manager's stats as dirty
                                     self._invalidate_manager_stats(info_hash_hex)
 
-                except Exception as e:
+                except Exception as e:  # pylint: disable=broad-exception-caught
                     logger.error(
                         f"Error updating peers for {info_hash_hex}: {e}",
                         extra={"class_name": self.__class__.__name__},
+                        exc_info=True,
                     )
 
-    def _update_global_stats(self) -> None:
+    def _update_global_stats(self) -> None:  # pylint: disable=too-many-locals
         """Update global statistics from all peer managers (with dirty-tracking cache)"""
         with self.lock:
             # Only recalculate if something changed
@@ -511,8 +514,8 @@ class GlobalPeerManager:
                     # Cache the aggregated stats for this manager
                     self._per_manager_stats[info_hash_hex] = manager_totals
 
-                except Exception as e:
-                    logger.error(f"Error getting stats from manager {info_hash_hex}: {e}")
+                except Exception as e:  # pylint: disable=broad-exception-caught
+                    logger.error(f"Error getting stats from manager {info_hash_hex}: {e}", exc_info=True)
 
             # Clear dirty set
             self._dirty_managers.clear()

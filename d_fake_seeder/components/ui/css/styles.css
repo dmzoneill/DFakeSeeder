@@ -1,3 +1,44 @@
+/* Toolbar button group container */
+.toolbar-button-group {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding: 4px 8px;
+}
+
+/* Toolbar button styling - subtle background with hover */
+.toolbar-btn {
+    min-width: 32px;
+    min-height: 32px;
+    padding: 6px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    transition: all 150ms ease;
+}
+
+.toolbar-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.toolbar-btn:active {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.toolbar-btn image {
+    opacity: 0.85;
+}
+
+.toolbar-btn:hover image {
+    opacity: 1;
+    color: @accent_color;
+}
+
+/* Lower notebook (Details, Status, etc.) - reduce vertical padding */
+notebook[tab-pos="left"] > header > tabs > tab {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
 .statusbar {
     padding: 50px;
     margin: 50px;

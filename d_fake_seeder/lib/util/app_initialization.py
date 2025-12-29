@@ -25,15 +25,16 @@ class AppInitializationHelper:
         loaded and initialized before other components start using them.
         """
         try:
-            from domain.app_settings import AppSettings
+            # pylint: disable=import-outside-toplevel
+            from d_fake_seeder.domain.app_settings import AppSettings
 
             # Initialize settings singleton
             AppSettings.get_instance()
 
             logger.info("Application settings initialized")
 
-        except Exception as e:
-            logger.error(f"Error initializing application settings: {e}")
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            logger.error(f"Error initializing application settings: {e}", exc_info=True)
 
     @classmethod
     def setup_resource_paths(cls) -> None:
@@ -62,8 +63,8 @@ class AppInitializationHelper:
                     os.environ["DFS_PATH"] = package_root
                     logger.trace(f"DFS_PATH set to fallback path: {package_root}")
 
-        except Exception as e:
-            logger.error(f"Error setting up resource paths: {e}")
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            logger.error(f"Error setting up resource paths: {e}", exc_info=True)
 
     @classmethod
     def perform_full_initialization(cls) -> None:
@@ -82,5 +83,5 @@ class AppInitializationHelper:
 
             logger.trace("Full application initialization completed")
 
-        except Exception as e:
-            logger.error(f"Error during full application initialization: {e}")
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            logger.error(f"Error during full application initialization: {e}", exc_info=True)

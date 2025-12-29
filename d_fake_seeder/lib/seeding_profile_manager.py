@@ -57,10 +57,11 @@ class SeedingProfileManager:
                 extra={"class_name": self.__class__.__name__},
             )
             return current  # type: ignore[no-any-return]
-        except Exception as e:
+        except (KeyError, AttributeError, TypeError) as e:
             self.logger.error(
                 f"Error loading current profile: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return "balanced"
 
@@ -142,19 +143,19 @@ class SeedingProfileManager:
                 )
                 custom_settings["description"] = "User-defined custom settings"
                 return custom_settings  # type: ignore[no-any-return]
-            elif profile_name in predefined_profiles:
+            if profile_name in predefined_profiles:
                 return predefined_profiles[profile_name]
-            else:
-                self.logger.warning(
-                    f"Unknown profile '{profile_name}', using balanced",
-                    extra={"class_name": self.__class__.__name__},
-                )
-                return predefined_profiles["balanced"]
+            self.logger.warning(
+                f"Unknown profile '{profile_name}', using balanced",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return predefined_profiles["balanced"]
 
-        except Exception as e:
+        except (KeyError, AttributeError, TypeError) as e:
             self.logger.error(
                 f"Error getting profile settings for '{profile_name}': {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return self.get_predefined_profiles()["balanced"]
 
@@ -197,10 +198,11 @@ class SeedingProfileManager:
             )
             return True
 
-        except Exception as e:
+        except (KeyError, AttributeError, TypeError, ValueError) as e:
             self.logger.error(
                 f"Error applying profile '{profile_name}': {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return False
 
@@ -306,10 +308,11 @@ class SeedingProfileManager:
 
             return True
 
-        except Exception as e:
+        except (KeyError, TypeError, ValueError) as e:
             self.logger.error(
                 f"Error validating profile: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return False
 
@@ -366,10 +369,11 @@ class SeedingProfileManager:
             )
             return custom_settings
 
-        except Exception as e:
+        except (KeyError, AttributeError, TypeError) as e:
             self.logger.error(
                 f"Error creating custom profile: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return self.get_predefined_profiles()["balanced"]
 
@@ -394,9 +398,10 @@ class SeedingProfileManager:
 
             return f"Upload: {upload_str}, Connections: {connections}, Announces: {interval}min"
 
-        except Exception as e:
+        except (KeyError, AttributeError, TypeError, ValueError) as e:
             self.logger.error(
                 f"Error generating profile summary for '{profile_name}': {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return "Profile summary unavailable"

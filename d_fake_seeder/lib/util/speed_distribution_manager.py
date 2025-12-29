@@ -120,7 +120,7 @@ class SpeedDistributionManager:
         elif download_mode == "announce" and event_type == "announce":
             self.redistribute_download_speeds()
 
-    def redistribute_upload_speeds(self) -> Any:
+    def redistribute_upload_speeds(self) -> Any:  # pylint: disable=too-many-locals,too-many-statements
         """Redistribute upload speeds across all torrents."""
         try:
             algorithm = self.settings.upload_distribution_algorithm
@@ -249,10 +249,10 @@ class SpeedDistributionManager:
                 "SpeedDistributionManager",
             )
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(f"Error redistributing upload speeds: {e}", "SpeedDistributionManager", exc_info=True)
 
-    def redistribute_download_speeds(self) -> Any:
+    def redistribute_download_speeds(self) -> Any:  # pylint: disable=too-many-locals,too-many-statements
         """Redistribute download speeds across all torrents."""
         try:
             algorithm = self.settings.download_distribution_algorithm
@@ -381,7 +381,7 @@ class SpeedDistributionManager:
                 "SpeedDistributionManager",
             )
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(f"Error redistributing download speeds: {e}", "SpeedDistributionManager", exc_info=True)
 
     def _get_active_torrents(self) -> List:

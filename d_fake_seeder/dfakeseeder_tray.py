@@ -5,7 +5,10 @@ DFakeSeeder System Tray Application
 Comprehensive system tray interface for DFakeSeeder with full feature support.
 Communicates with main application via D-Bus for settings management.
 """
+# pylint: disable=too-many-lines
+
 # isort: skip_file
+# pylint: disable=ungrouped-imports
 
 # fmt: off
 import json
@@ -43,7 +46,7 @@ from d_fake_seeder.lib.util.single_instance import MultiMethodSingleInstance  # 
 # fmt: on
 
 
-class TrayApplication:
+class TrayApplication:  # pylint: disable=too-many-instance-attributes
     """Main tray application with comprehensive menu system"""
 
     def __init__(self, instance_checker: Any = None) -> None:
@@ -95,13 +98,12 @@ class TrayApplication:
             "quit_delay_seconds": 2,
         }
         try:
-            import os
             from pathlib import Path
 
             # Try user config first
             config_path = Path.home() / ".config" / "dfakeseeder" / "settings.json"
             if config_path.exists():
-                with open(config_path) as f:
+                with open(config_path, encoding="utf-8") as f:
                     settings = json.load(f)
                     loaded = settings.get("tray_settings", {})
                     defaults.update(loaded)
@@ -112,11 +114,11 @@ class TrayApplication:
             if dfs_path:
                 default_config = Path(dfs_path) / "config" / "default.json"
                 if default_config.exists():
-                    with open(default_config) as f:
+                    with open(default_config, encoding="utf-8") as f:
                         settings = json.load(f)
                         loaded = settings.get("tray_settings", {})
                         defaults.update(loaded)
-        except Exception as e:
+        except (json.JSONDecodeError, OSError, KeyError) as e:
             logger.warning(
                 f"Could not load tray settings: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -179,7 +181,7 @@ class TrayApplication:
 
             return True
 
-        except Exception as e:
+        except (RuntimeError, OSError, GLib.Error, ValueError, AttributeError) as e:
             logger.error(
                 f"Failed to initialize tray application: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -207,12 +209,14 @@ class TrayApplication:
 
                 try:
                     current_locale = locale.getlocale()[0]
-                    system_locale = current_locale if current_locale else locale.getdefaultlocale()[0]
-                    if system_locale:
-                        target_language = system_locale.split("_")[0].lower()
+                    if not current_locale:
+                        # Fallback to environment variables
+                        current_locale = os.environ.get("LANG") or os.environ.get("LC_ALL") or ""
+                    if current_locale:
+                        target_language = current_locale.split("_")[0].split(".")[0].lower()
                     else:
                         target_language = "en"
-                except Exception:
+                except (ValueError, TypeError, AttributeError):
                     target_language = "en"
 
             logger.trace(
@@ -228,7 +232,7 @@ class TrayApplication:
                 "GTK3 TranslationManager initialized for tray",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
+        except (OSError, RuntimeError, AttributeError, ImportError) as e:
             logger.warning(
                 f"Could not setup GTK3 TranslationManager: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -246,13 +250,12 @@ class TrayApplication:
                     extra={"class_name": self.__class__.__name__},
                 )
                 return actual_language
-            else:
-                logger.warning(
-                    "TranslationManager not available for language switch",
-                    extra={"class_name": self.__class__.__name__},
-                )
-                return "en"
-        except Exception as e:
+            logger.warning(
+                "TranslationManager not available for language switch",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return "en"
+        except (RuntimeError, AttributeError, ValueError) as e:
             logger.warning(
                 f"Could not switch to language {language_code}: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -305,7 +308,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, OSError, AttributeError) as e:
             logger.error(
                 f"Failed to create indicator: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -331,7 +334,7 @@ class TrayApplication:
                 self._update_indicator_status(False)
                 # Note: Reconnection is handled by _periodic_update, no need for separate timer
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, ConnectionError, OSError) as e:
             logger.error(
                 f"D-Bus connection error: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -366,7 +369,7 @@ class TrayApplication:
 
                 self.indicator.set_title(status_text)
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to update indicator status: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -383,7 +386,7 @@ class TrayApplication:
                         f"Loaded {len(self.settings_cache)} settings",
                         extra={"class_name": self.__class__.__name__},
                     )
-        except Exception as e:
+        except (json.JSONDecodeError, GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Could not load initial settings: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -405,13 +408,13 @@ class TrayApplication:
                     "D-Bus handlers already set up, skipping",
                     extra={"class_name": self.__class__.__name__},
                 )
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Could not set up D-Bus handlers: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _on_settings_changed(
+    def _on_settings_changed(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         connection: Any,
         sender: Any,
@@ -428,6 +431,7 @@ class TrayApplication:
 
             # Check for language changes first (before updating cache)
             language_changed = False
+            new_language = None
             if "language" in changes:
                 logger.trace(
                     f"Language change detected in tray: {changes['language']}",
@@ -441,7 +445,7 @@ class TrayApplication:
                 self._update_cache_value(key, value)
 
             # Handle language change
-            if language_changed:
+            if language_changed and new_language is not None:
                 self._handle_language_change(new_language)
             else:
                 # Regular menu update
@@ -450,7 +454,7 @@ class TrayApplication:
             # Update indicator status
             self._update_indicator_status(True)
 
-        except Exception as e:
+        except (json.JSONDecodeError, KeyError, TypeError, AttributeError) as e:
             logger.error(
                 f"Error handling settings change: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -492,7 +496,7 @@ class TrayApplication:
             # Recreate entire menu with new translations
             self._recreate_menu_with_translations()
 
-        except Exception as e:
+        except (RuntimeError, AttributeError, ValueError, GLib.Error) as e:
             logger.error(
                 f"Error handling language change in tray: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -523,7 +527,7 @@ class TrayApplication:
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except (RuntimeError, AttributeError, GLib.Error) as e:
             logger.error(
                 f"Error recreating tray menu: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -730,7 +734,7 @@ class TrayApplication:
                 f"Loaded {len(languages)} languages for tray menu",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
+        except (OSError, KeyError, ValueError, ImportError) as e:
             logger.error(
                 f"Error loading language config, using minimal fallback: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -811,7 +815,7 @@ class TrayApplication:
                 else:
                     self.menu_items["window_toggle"].set_label(_("Show Main Window"))
 
-        except Exception as e:
+        except (KeyError, AttributeError, GLib.Error) as e:
             logger.error(
                 f"Error updating menu: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -825,7 +829,7 @@ class TrayApplication:
             changes = {"alternative_speed_enabled": enabled}
             if self.dbus_client:
                 self.dbus_client.update_settings(changes)
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error toggling speed: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -838,7 +842,7 @@ class TrayApplication:
             changes = {"seeding_paused": not current_paused}
             if self.dbus_client:
                 self.dbus_client.update_settings(changes)
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error toggling pause: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -851,7 +855,7 @@ class TrayApplication:
                 changes = {"current_seeding_profile": profile_id}
                 if self.dbus_client:
                     self.dbus_client.update_settings(changes)
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error changing profile: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -864,7 +868,7 @@ class TrayApplication:
             changes = {"window_visible": not current_visible}
             if self.dbus_client:
                 self.dbus_client.update_settings(changes)
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error toggling window: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -877,7 +881,7 @@ class TrayApplication:
                 changes = {"language": language_code}
                 if self.dbus_client:
                     self.dbus_client.update_settings(changes)
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error changing language: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -913,7 +917,7 @@ class TrayApplication:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError, TypeError) as e:
             logger.error(
                 f"Error showing preferences: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -949,7 +953,7 @@ class TrayApplication:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError, TypeError) as e:
             logger.error(
                 f"Error showing about: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -990,6 +994,7 @@ class TrayApplication:
 
                 try:
                     # Launch the main app in the background
+                    # pylint: disable=consider-using-with
                     process = subprocess.Popen(
                         cmd,
                         cwd=os.environ.get("DFS_PATH", "."),
@@ -1018,7 +1023,7 @@ class TrayApplication:
                     launched = True
                     break
 
-                except Exception as e:
+                except (OSError, subprocess.SubprocessError, FileNotFoundError) as e:
                     logger.trace(
                         f"Failed to launch via {method_name}: {e}",
                         extra={"class_name": self.__class__.__name__},
@@ -1035,7 +1040,7 @@ class TrayApplication:
                 )
                 notification.show()
 
-        except Exception as e:
+        except (OSError, RuntimeError, GLib.Error, ImportError) as e:
             logger.error(
                 f"Failed to launch main application: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -1046,7 +1051,7 @@ class TrayApplication:
         try:
             self._connect_to_dbus()
             return False  # Don't repeat
-        except Exception as e:
+        except (GLib.Error, RuntimeError, ConnectionError) as e:
             logger.trace(
                 f"Reconnection after launch failed: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -1068,7 +1073,7 @@ class TrayApplication:
                         f"✅ TRAY QUIT: Quit signal sent successfully, result: {result}",
                         extra={"class_name": self.__class__.__name__},
                     )
-                except Exception as e:
+                except (GLib.Error, RuntimeError, ConnectionError) as e:
                     # Main app may disconnect immediately on quit, which is expected
                     logger.trace(
                         f"Main app disconnected during quit (expected): {e}",
@@ -1085,7 +1090,7 @@ class TrayApplication:
                 )
                 # If not connected, just quit the tray
                 self.quit()
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error quitting application: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -1103,7 +1108,7 @@ class TrayApplication:
             )
             # Just quit the tray - no need to communicate with main app since it's not running
             self.quit()
-        except Exception as e:
+        except (GLib.Error, RuntimeError) as e:
             logger.error(
                 f"Error quitting tray: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -1159,7 +1164,7 @@ class TrayApplication:
 
             return True  # Continue timer
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, ConnectionError, AttributeError) as e:
             logger.error(
                 f"Error in periodic update: {e}",
                 extra={"class_name": self.__class__.__name__},

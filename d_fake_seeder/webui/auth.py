@@ -13,12 +13,12 @@ from d_fake_seeder.lib.logger import logger
 
 # Try to import aiohttp - it's an optional dependency
 web: Any = None
-AIOHTTP_AVAILABLE = False
+AIOHTTP_AVAILABLE = False  # pylint: disable=invalid-name
 try:
     from aiohttp import web as _web
 
     web = _web
-    AIOHTTP_AVAILABLE = True
+    AIOHTTP_AVAILABLE = True  # pylint: disable=invalid-name
 except ImportError:
     pass
 
@@ -241,13 +241,12 @@ def create_auth_middleware(settings: Any) -> Any:
                     request["username"] = username
                     response = await handler(request)
                     return response
-                else:
-                    if login_tracker.record_failure(client_ip):
-                        logger.warning(
-                            f"WebUI: IP banned due to failed logins: {client_ip}",
-                            extra={"class_name": "AuthMiddleware"},
-                        )
-            except Exception:
+                if login_tracker.record_failure(client_ip):
+                    logger.warning(
+                        f"WebUI: IP banned due to failed logins: {client_ip}",
+                        extra={"class_name": "AuthMiddleware"},
+                    )
+            except Exception:  # pylint: disable=broad-exception-caught
                 pass
 
         # No valid authentication

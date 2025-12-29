@@ -50,7 +50,7 @@ def get_settings_tab_config() -> Dict[str, Any]:
     try:
         config = load_tabs_config()
         return config.get("settings_tabs", {})  # type: ignore[no-any-return]
-    except Exception:
+    except Exception:  # pylint: disable=broad-exception-caught
         logger.warning("Warning: Could not load tabs config (...), using fallback", "UnknownClass")
         return {
             "enabled": True,
@@ -69,7 +69,7 @@ def get_torrent_details_tab_config() -> Dict[str, Any]:
     try:
         config = load_tabs_config()
         return config.get("torrent_details_tabs", {})  # type: ignore[no-any-return]
-    except Exception:
+    except Exception:  # pylint: disable=broad-exception-caught
         logger.warning("Warning: Could not load tabs config (...), using fallback", "UnknownClass")
         return {
             "enabled": True,
@@ -186,11 +186,11 @@ def is_tab_enabled(tab_name: str, context: str = "settings") -> bool:
         if context == "settings":
             config = get_settings_tab_config()
             return tab_name in config.get("order", [])
-        elif context == "torrent_details":
+        if context == "torrent_details":
             config = get_torrent_details_tab_config()
             return tab_name in config.get("order", [])
         return False
-    except Exception:
+    except Exception:  # pylint: disable=broad-exception-caught
         return True  # Default to enabled if config fails
 
 

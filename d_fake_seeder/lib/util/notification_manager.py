@@ -162,7 +162,7 @@ class NotificationManager:
         if key.startswith("notification_settings"):
             self._apply_position()
 
-    def show(
+    def show(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         message: str,
         notification_type: NotificationType = NotificationType.INFO,

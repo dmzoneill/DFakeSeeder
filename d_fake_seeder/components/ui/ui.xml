@@ -22,53 +22,219 @@
             </child>
             // -->
             <child>
-              <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/toolbar.xml"/>
-            </child>
-            <child>
-              <object class="GtkPaned" id="main_paned">
+              <object class="GtkNotebook" id="top_level_notebook">
                 <property name="can-focus">True</property>
-                <property name="orientation">vertical</property>
-                <property name="shrink-start-child">True</property>
-                <property name="shrink-end-child">True</property>
-                <property name="position">300</property>
-                <child>                  
-                  <object class="GtkPaned" id="paned">
-                    <property name="can-focus">True</property>
-                    <property name="shrink-start-child">True</property>
-                    <property name="shrink-end-child">True</property>
-                    <property name="resize-start-child">False</property>
-                    <property name="resize-end-child">True</property>
-                    <property name="width-request">200</property>
-                    <child>
-                      <object class="GtkScrolledWindow">
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="show-border">False</property>
+                <!-- Tab 1: Torrents (existing view) -->
+                <child>
+                  <object class="GtkNotebookPage">
+                    <property name="tab">
+                      <object class="GtkLabel" id="tab_label_torrents">
+                        <property name="label" translatable="yes">Torrents</property>
+                      </object>
+                    </property>
+                    <property name="child">
+                      <object class="GtkBox" id="torrents_tab_box">
                         <property name="can-focus">True</property>
-                        <property name="propagate-natural-width">False</property>
-                        <property name="propagate-natural-height">False</property>
-                        <property name="hscrollbar-policy">never</property>
-                        <property name="width-request">100</property>
-                        <child>
-                          <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/columnview-stats.xml"/>
-                        </child>
-                      </object>                      
-                    </child>
-                    <child>
-                      <object class="GtkScrolledWindow">
-                        <property name="can-focus">True</property>
-                        <property name="hscrollbar-policy">automatic</property>
-                        <property name="vscrollbar-policy">automatic</property>
-                        <property name="propagate-natural-width">False</property>
-                        <property name="propagate-natural-height">False</property>
                         <property name="hexpand">True</property>
-                        <property name="width-request">100</property>
+                        <property name="vexpand">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
-                          <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/columnview-main.xml"/>
+                          <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/toolbar.xml"/>
+                        </child>
+                        <child>
+                          <object class="GtkPaned" id="main_paned">
+                        <property name="can-focus">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="shrink-start-child">True</property>
+                        <property name="shrink-end-child">True</property>
+                        <property name="position">300</property>
+                        <child>                  
+                          <object class="GtkPaned" id="paned">
+                            <property name="can-focus">True</property>
+                            <property name="shrink-start-child">True</property>
+                            <property name="shrink-end-child">True</property>
+                            <property name="resize-start-child">False</property>
+                            <property name="resize-end-child">True</property>
+                            <property name="width-request">200</property>
+                            <child>
+                              <object class="GtkScrolledWindow">
+                                <property name="can-focus">True</property>
+                                <property name="propagate-natural-width">False</property>
+                                <property name="propagate-natural-height">False</property>
+                                <property name="hscrollbar-policy">never</property>
+                                <property name="width-request">100</property>
+                                <child>
+                                  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/columnview-stats.xml"/>
+                                </child>
+                              </object>                      
+                            </child>
+                            <child>
+                              <object class="GtkScrolledWindow">
+                                <property name="can-focus">True</property>
+                                <property name="hscrollbar-policy">automatic</property>
+                                <property name="vscrollbar-policy">automatic</property>
+                                <property name="propagate-natural-width">False</property>
+                                <property name="propagate-natural-height">False</property>
+                                <property name="hexpand">True</property>
+                                <property name="width-request">100</property>
+                                <child>
+                                  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="window/columnview-main.xml"/>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                            <child>
+                              <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="notebook/notebook.xml"/>
+                            </child>
+                          </object>
                         </child>
                       </object>
-                    </child>
+                    </property>
                   </object>
                 </child>
+                <!-- Tab 2: Log (global application log) -->
                 <child>
-                  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="notebook/notebook.xml"/>
+                  <object class="GtkNotebookPage">
+                    <property name="tab">
+                      <object class="GtkLabel" id="tab_label_log">
+                        <property name="label" translatable="yes">Log</property>
+                      </object>
+                    </property>
+                    <property name="child">
+                      <object class="GtkScrolledWindow">
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkBox" id="log_tab">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">10</property>
+                            <property name="margin-start">15</property>
+                            <property name="margin-end">15</property>
+                            <property name="margin-top">15</property>
+                            <property name="margin-bottom">15</property>
+                            <child>
+                              <object class="GtkScrolledWindow" id="log_scroll">
+                                <property name="visible">True</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
+                                <child>
+                                  <object class="GtkTextView" id="log_viewer">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="monospace">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="left-margin">15</property>
+                                    <property name="right-margin">15</property>
+                                    <property name="top-margin">15</property>
+                                    <property name="bottom-margin">15</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <!-- Tab 3: Monitoring (global system monitoring) -->
+                <child>
+                  <object class="GtkNotebookPage">
+                    <property name="tab">
+                      <object class="GtkLabel" id="tab_label_monitoring">
+                        <property name="label" translatable="yes">Monitoring</property>
+                      </object>
+                    </property>
+                    <property name="child">
+                      <object class="GtkScrolledWindow">
+                        <property name="can-focus">False</property>
+                        <property name="hscrollbar-policy">automatic</property>
+                        <property name="propagate-natural-width">False</property>
+                        <child>
+                          <object class="GtkBox" id="monitoring_tab">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">10</property>
+                            <property name="margin-start">15</property>
+                            <property name="margin-end">15</property>
+                            <property name="margin-top">15</property>
+                            <property name="margin-bottom">15</property>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <!-- Tab 4: Dashboard -->
+                <child>
+                  <object class="GtkNotebookPage">
+                    <property name="tab">
+                      <object class="GtkLabel" id="tab_label_dashboard">
+                        <property name="label" translatable="yes">Dashboard</property>
+                      </object>
+                    </property>
+                    <property name="child">
+                      <object class="GtkBox" id="dashboard_tab_content">
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Real-Time Statistics Dashboard</property>
+                            <property name="css-classes">title-1</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Coming soon...</property>
+                            <property name="css-classes">dim-label</property>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <!-- Tab 5: Tracker -->
+                <child>
+                  <object class="GtkNotebookPage">
+                    <property name="tab">
+                      <object class="GtkLabel" id="tab_label_tracker">
+                        <property name="label" translatable="yes">Tracker</property>
+                      </object>
+                    </property>
+                    <property name="child">
+                      <object class="GtkBox" id="tracker_tab_content">
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Built-in Tracker</property>
+                            <property name="css-classes">title-1</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Coming soon...</property>
+                            <property name="css-classes">dim-label</property>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
                 </child>
               </object>
             </child>

@@ -1,3 +1,11 @@
+"""
+DFakeSeeder Main Application Module.
+
+This module contains the main GTK4 application class that serves as the entry point
+for the DFakeSeeder torrent ratio faker application. It manages the Model-View-Controller
+architecture and handles application lifecycle events.
+"""
+
 # fmt: off
 # isort: skip_file
 from typing import Any
@@ -29,6 +37,8 @@ from d_fake_seeder.view import View  # noqa: E402
 
 
 class DFakeSeeder(Gtk.Application):
+    """Main GTK4 application class for DFakeSeeder with single-instance support."""
+
     def __init__(self) -> None:
         # Use default application ID to avoid AppSettings recursion during initialization
         application_id = "ie.fio.dfakeseeder"
@@ -44,10 +54,16 @@ class DFakeSeeder(Gtk.Application):
         # Track if we've shown the UI (for single-instance handling)
         self.ui_initialized = False
 
+        # Initialize MVC components to None (defined in do_activate)
+        self.model: Any = None
+        self.view: Any = None
+        self.controller: Any = None
+
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
         self.settings.connect("attribute-changed", self.handle_settings_changed)
 
+    # pylint: disable=arguments-differ
     def do_activate(self) -> None:
         """
         GTK4 single-instance handler.
@@ -66,8 +82,8 @@ class DFakeSeeder(Gtk.Application):
                     extra={"class_name": self.__class__.__name__},
                 )
                 # Just present the existing window
-                if hasattr(self, "view") and self.view and hasattr(self.view, "window"):  # type: ignore[has-type]
-                    self.view.window.present()  # type: ignore[has-type]
+                if self.view and hasattr(self.view, "window"):
+                    self.view.window.present()
                 return
 
             logger.trace("First instance - initializing UI", self.__class__.__name__)
@@ -127,6 +143,7 @@ class DFakeSeeder(Gtk.Application):
             self.ui_initialized = True
 
     def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
+        """Handle settings change notifications from AppSettings."""
         logger.trace("Settings changed", extra={"class_name": self.__class__.__name__})
 
 
@@ -180,8 +197,8 @@ def run() -> Any:
 
         sys.exit(exit_code)
 
-    except Exception as e:
-        logger.error(f"Failed to run DFakeSeeder application: {e}")
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        logger.error(f"Failed to run DFakeSeeder application: {e}", exc_info=True)
         logger.error("Failed to start application: ...", "DFakeSeeder")
         sys.exit(1)
 

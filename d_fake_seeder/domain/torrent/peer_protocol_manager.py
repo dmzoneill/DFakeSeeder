@@ -30,7 +30,7 @@ from d_fake_seeder.lib.util.constants import (
 # fmt: on
 
 
-class PeerProtocolManager:
+class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
     """Manages peer-to-peer connections for a torrent"""
 
     def __init__(
@@ -100,7 +100,7 @@ class PeerProtocolManager:
         with self.lock:
             current_time = time.time()
             added_count = 0
-            MAX_PEERS = 1000  # Prevent unbounded growth
+            max_peers = 1000  # Prevent unbounded growth
 
             for address in peer_addresses:
                 if ":" not in address:
@@ -123,14 +123,14 @@ class PeerProtocolManager:
 
                     # Enforce max peer limit - remove oldest peer if at limit
                     if address not in self.peers:
-                        if len(self.peers) >= MAX_PEERS:
+                        if len(self.peers) >= max_peers:
                             # Remove oldest peer
                             oldest_address = min(self.peers.items(), key=lambda x: x[1].last_seen)[0]
                             del self.peers[oldest_address]
                             if oldest_address in self.peer_contact_history:
                                 del self.peer_contact_history[oldest_address]
                             logger.trace(
-                                f"🗑️ Removed oldest peer {oldest_address} to make room (max: {MAX_PEERS})",
+                                f"🗑️ Removed oldest peer {oldest_address} to make room (max: {max_peers})",
                                 extra={"class_name": self.__class__.__name__},
                             )
 
@@ -207,7 +207,7 @@ class PeerProtocolManager:
             extra={"class_name": self.__class__.__name__},
         )
 
-    async def _async_manager_loop(self) -> Any:
+    async def _async_manager_loop(self) -> Any:  # pylint: disable=too-many-branches
         """Async manager loop with proper cancellation"""
         logger.trace(
             "🔄 PeerProtocolManager loop started",
@@ -293,10 +293,11 @@ class PeerProtocolManager:
                         "⏱️ Operation timeout in peer manager loop",
                         extra={"class_name": self.__class__.__name__},
                     )
-                except Exception as e:
+                except Exception as e:  # pylint: disable=broad-exception-caught
                     logger.error(
                         f"❌ Error in peer manager loop: {e}",
                         extra={"class_name": self.__class__.__name__},
+                        exc_info=True,
                     )
                     if not self.running:
                         break
@@ -321,7 +322,7 @@ class PeerProtocolManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _manage_connections(self, current_time: float) -> Any:
+    async def _manage_connections(self, current_time: float) -> Any:  # pylint: disable=too-many-branches
         """Manage peer connections with rate limiting"""
         with self.lock:
             peers_list = list(self.peers.items())
@@ -382,7 +383,7 @@ class PeerProtocolManager:
                         f"❌ Connection failed to {address} (attempt {peer_info.connection_attempts})",
                         extra={"class_name": self.__class__.__name__},
                     )
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.trace(
                     f"❌ Error connecting to {address}: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -434,7 +435,7 @@ class PeerProtocolManager:
                     )
                     connections_to_remove.append((address, connection))
 
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.trace(
                     f"❌ Error polling peer {address}: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -504,7 +505,7 @@ class PeerProtocolManager:
         if extended_msg_id == 0:
             # Extension handshake (BEP 10)
             try:
-                import bencodepy
+                import bencodepy  # pylint: disable=import-error,import-outside-toplevel
 
                 handshake_data = bencodepy.decode(extended_payload)
                 logger.trace(
@@ -526,7 +527,7 @@ class PeerProtocolManager:
                         extra={"class_name": self.__class__.__name__},
                     )
 
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.trace(
                     f"⚠️ Failed to parse extension handshake from {address}: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -582,7 +583,7 @@ class PeerProtocolManager:
                             f"✅ Sent ut_metadata response for piece {piece_index} to {address}",
                             extra={"class_name": self.__class__.__name__},
                         )
-                    except Exception as e:
+                    except Exception as e:  # pylint: disable=broad-exception-caught
                         logger.trace(
                             f"❌ Failed to send ut_metadata response to {address}: {e}",
                             extra={"class_name": self.__class__.__name__},
@@ -615,7 +616,7 @@ class PeerProtocolManager:
 
         return set_bits / total_bits if total_bits > 0 else 0.0
 
-    async def _cleanup_connections(self, current_time: float) -> Any:
+    async def _cleanup_connections(self, current_time: float) -> Any:  # pylint: disable=too-many-branches
         """Clean up dead or old connections, peers, and contact history"""
         to_remove_connections = []
         to_remove_peers = []
@@ -640,10 +641,10 @@ class PeerProtocolManager:
                     )
 
         # Clean up old inactive peers (not seen in 24 hours)
-        PEER_EXPIRY_SECONDS = 86400  # 24 hours
+        peer_expiry_seconds = 86400  # 24 hours
         with self.lock:
             for address, peer_info in self.peers.items():
-                if current_time - peer_info.last_seen > PEER_EXPIRY_SECONDS:
+                if current_time - peer_info.last_seen > peer_expiry_seconds:
                     to_remove_peers.append(address)
 
             for address in to_remove_peers:
@@ -658,10 +659,10 @@ class PeerProtocolManager:
                 )
 
         # Clean up old contact history entries (keep last 30 days)
-        HISTORY_EXPIRY_SECONDS = 2592000  # 30 days
+        history_expiry_seconds = 2592000  # 30 days
         with self.lock:
             for address, last_contact in self.peer_contact_history.items():
-                if current_time - last_contact > HISTORY_EXPIRY_SECONDS:
+                if current_time - last_contact > history_expiry_seconds:
                     to_remove_history.append(address)
 
             for address in to_remove_history:
@@ -727,7 +728,7 @@ class PeerProtocolManager:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.trace(
                     f"❌ Error exchanging metadata with {address}: {e}",
                     extra={"class_name": self.__class__.__name__},

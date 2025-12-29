@@ -1,6 +1,16 @@
+"""
+DFakeSeeder View Module.
+
+This module implements the GTK4 user interface for the DFakeSeeder application.
+It manages all UI components, windows, dialogs, and user interaction handling.
+"""
+
+# pylint: disable=too-many-lines
+
 # fmt: off
 # isort: skip_file
 from typing import Any
+import json
 import logging
 import os
 import signal
@@ -20,6 +30,7 @@ from gi.repository import Adw, Gdk, Gio, GLib, Gtk  # noqa
 from d_fake_seeder.components.component.sidebar import Sidebar  # noqa: E402
 from d_fake_seeder.components.component.statusbar import Statusbar  # noqa: E402
 from d_fake_seeder.components.component.toolbar import Toolbar  # noqa: E402
+from d_fake_seeder.components.component.tracker_tab import TrackerTab  # noqa: E402
 
 # Importing necessary libraries
 from d_fake_seeder.components.component.torrent_details import (  # noqa: E402
@@ -41,14 +52,16 @@ from d_fake_seeder.lib.util.shutdown_progress import (  # noqa: E402
 
 
 # View class for Torrent Application
-class View(CleanupMixin):
+class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
+    """Main GTK4 View class managing all UI components and user interactions."""
+
     instance = None
     toolbar = None
     notebook = None
     torrents_columnview = None
     torrents_states = None
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: Any) -> None:  # pylint: disable=too-many-statements
         with logger.performance.operation_context("view_init", self.__class__.__name__):
             logger.info("View.__init__() started", self.__class__.__name__)
             logger.trace("View instantiate", self.__class__.__name__)
@@ -122,6 +135,9 @@ class View(CleanupMixin):
             "Statusbar component created successfully (took {(statusbar_end - statusbar_start)*1000:.1f}ms)",
             "View",
         )
+        logger.trace("About to create TrackerTab component", "View")
+        self.tracker_tab = TrackerTab(self.builder, None)
+        logger.trace("TrackerTab component created successfully", "View")
         # Getting relevant objects
         self.quit_menu_item = self.builder.get_object("quit_menu_item")
         self.help_menu_item = self.builder.get_object("help_menu_item")
@@ -236,6 +252,7 @@ class View(CleanupMixin):
         self.action_group.add_action(action)
         # Create standard menu with translatable structure
         self.main_menu_items = [
+            {"action": "win.preferences", "key": "Preferences"},
             {"action": "win.about", "key": "About"},
             {"action": "win.quit", "key": "Quit"},
         ]
@@ -252,6 +269,10 @@ class View(CleanupMixin):
         self.hamburger.set_icon_name("open-menu-symbolic")
         # Add menu button to the header bar
         self.header.pack_start(self.hamburger)
+        # Add preferences action
+        action = Gio.SimpleAction.new("preferences", None)
+        action.connect("activate", self.show_preferences)
+        self.action_group.add_action(action)
         # Add an about dialog
         action = Gio.SimpleAction.new("about", None)
         action.connect("activate", self.show_about)
@@ -313,6 +334,20 @@ class View(CleanupMixin):
         self.window.about.set_logo(texture)
         self.window.about.show()
 
+    def show_preferences(self, action: Any, _param: Any) -> None:  # noqa: ARG002
+        """Show the preferences/settings dialog from the hamburger menu."""
+        if hasattr(self, "toolbar") and self.toolbar:
+            logger.trace(
+                "Opening preferences from hamburger menu",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self.toolbar.show_settings_dialog()
+        else:
+            logger.error(
+                "Toolbar not available, cannot show settings dialog",
+                extra={"class_name": self.__class__.__name__},
+            )
+
     def fade_out_image(self) -> Any:
         self.splash_image.fade_out = 1.0
         self.track_timeout(GLib.timeout_add(self.splash_fade_interval, self.fade_image))
@@ -322,11 +357,10 @@ class View(CleanupMixin):
         if self.splash_image.fade_out > 0:
             self.splash_image.set_opacity(self.splash_image.fade_out)
             return True
-        else:
-            self.splash_image.hide()
-            self.splash_image.unparent()
-            self.splash_image = None
-            return False
+        self.splash_image.hide()
+        self.splash_image.unparent()
+        self.splash_image = None
+        return False
 
     def resize_panes(self) -> bool:
         """Set initial pane positions: upper/lower halved, left sidebar to 275px."""
@@ -346,7 +380,7 @@ class View(CleanupMixin):
         return False  # Don't repeat the timeout
 
     # Setting model for the view
-    def notify(
+    def notify(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         text: Any,
         notification_type: str = "info",
@@ -532,7 +566,7 @@ class View(CleanupMixin):
         )
         webbrowser.open(self.settings.issues_page)
 
-    def handle_peer_connection_event(
+    def handle_peer_connection_event(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self, direction: Any, action: Any, address: Any, port: Any, data: Any = None
     ) -> None:  # noqa: E501
         """Handle peer connection events from peer server or connection manager"""
@@ -592,7 +626,7 @@ class View(CleanupMixin):
                     )
             # Update connection counts
             self.notebook.update_connection_counts()  # type: ignore[union-attr]
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError, KeyError) as e:
             logger.error(
                 f"Error handling peer connection event: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -612,7 +646,7 @@ class View(CleanupMixin):
                     self.timeout_source.destroy()
                 self.timeout_source = None
                 self.timeout_id = 0
-            except Exception as e:
+            except (GLib.Error, RuntimeError, AttributeError) as e:
                 logger.trace(
                     f"Error cleaning up timeout_source: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -624,14 +658,14 @@ class View(CleanupMixin):
                 self.splash_image.hide()
                 self.splash_image.unparent()
                 self.splash_image = None
-            except Exception as e:
+            except (GLib.Error, RuntimeError, AttributeError) as e:
                 logger.trace(
                     f"Error cleaning up splash_image: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
 
         # Clean up connection tab timers (incoming connections tab has removal_timers)
-        try:
+        try:  # pylint: disable=too-many-nested-blocks
             if hasattr(self, "notebook") and self.notebook:
                 incoming_tab = self.notebook.get_incoming_connections()
                 if incoming_tab and hasattr(incoming_tab, "removal_timers"):
@@ -641,15 +675,13 @@ class View(CleanupMixin):
                             f"🧹 Removing {timer_count} connection removal timers",
                             extra={"class_name": self.__class__.__name__},
                         )
-                        from gi.repository import GLib  # noqa: E402
-
                         for timer_id in incoming_tab.removal_timers.values():
                             try:
                                 GLib.source_remove(timer_id)
-                            except Exception:
+                            except (GLib.Error, ValueError):
                                 pass  # Timer may have already fired
                         incoming_tab.removal_timers.clear()
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.trace(
                 f"Error cleaning up connection timers: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -671,7 +703,9 @@ class View(CleanupMixin):
         return ui.get("shutdown_backup_timeout_seconds", 0.25) if isinstance(ui, dict) else 0.25
 
     # Function to quit the application with consolidated shutdown procedure
-    def quit(self, widget: Any = None, event: Any = None, fast_shutdown: Any = False) -> Any:
+    def quit(  # pylint: disable=too-many-locals,too-many-branches,too-many-statements
+        self, widget: Any = None, event: Any = None, fast_shutdown: Any = False
+    ) -> Any:
         """
         Consolidated shutdown procedure for all application resources.
 
@@ -684,9 +718,6 @@ class View(CleanupMixin):
         6. Cleanup UI and destroy window
         7. Force exit with watchdog
         """
-        import os
-        import time
-
         # CRITICAL: Detect recursive/hanging shutdown attempts
         if hasattr(self, "_quit_in_progress"):
             logger.error(
@@ -698,14 +729,8 @@ class View(CleanupMixin):
         self._quit_in_progress = True
         shutdown_start_time = time.time()
 
-        # ========== SAVE SETTINGS IMMEDIATELY (BEFORE WATCHDOGS OR CLEANUP) ==========
-        try:
-            self.settings.save_quit()
-        except Exception as e:
-            logger.warning(
-                f"Error saving settings: {e}",
-                extra={"class_name": self.__class__.__name__},
-            )
+        # NOTE: Settings are saved AFTER model.stop() to ensure torrent state is captured
+        # (torrents call save_to_transient() during stop())
 
         logger.trace(
             f"🎬 SHUTDOWN START: Consolidated quit procedure "
@@ -781,7 +806,7 @@ class View(CleanupMixin):
         )
         try:
             self.remove_signals()
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.warning(
                 f"Error removing signals: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -807,7 +832,7 @@ class View(CleanupMixin):
             self.shutdown_tracker.start_component_shutdown("model_torrents")  # type: ignore[attr-defined]
             try:
                 self.model.stop(shutdown_tracker=self.shutdown_tracker)
-            except Exception as e:
+            except (RuntimeError, OSError, AttributeError) as e:
                 logger.warning(
                     f"Error stopping model: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -827,7 +852,7 @@ class View(CleanupMixin):
             self.shutdown_tracker.start_component_shutdown("network_connections")  # type: ignore[attr-defined]
             try:
                 self.app.controller.stop(shutdown_tracker=self.shutdown_tracker)
-            except Exception as e:
+            except (RuntimeError, OSError, AttributeError) as e:
                 logger.warning(
                     f"Error stopping controller: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -837,11 +862,24 @@ class View(CleanupMixin):
                 self.shutdown_tracker.mark_completed("network_connections", 1)  # type: ignore[attr-defined]
         phase_times["controller_stop"] = time.time() - step_start
 
-        # ========== PHASE 4: SAVE SETTINGS (NOW DONE AT START) ==========
+        # ========== PHASE 4: SAVE SETTINGS (AFTER TORRENTS STOP) ==========
         step_start = time.time()
-        logger.trace("💾 PHASE 4: Settings already saved at start", extra={"class_name": self.__class__.__name__})
-        # Note: save_quit() is now called FIRST thing in quit() before watchdogs start
-        phase_times["settings_save"] = 0  # Already done
+        logger.trace(
+            "💾 PHASE 4: Saving settings (after torrents saved their state)",
+            extra={"class_name": self.__class__.__name__},
+        )
+        try:
+            self.settings.save_quit()
+            logger.trace(
+                "✅ Settings saved successfully",
+                extra={"class_name": self.__class__.__name__},
+            )
+        except (OSError, json.JSONDecodeError, RuntimeError) as e:
+            logger.warning(
+                f"Error saving settings: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+        phase_times["settings_save"] = time.time() - step_start
 
         # ========== PHASE 5: CHECK TIMEOUT & LOG STATUS ==========
         if self.shutdown_tracker.is_force_shutdown_time():  # type: ignore[attr-defined]
@@ -852,8 +890,9 @@ class View(CleanupMixin):
             )
 
             pending_components = []
-            for component_type in self.shutdown_tracker.components:  # type: ignore[attr-defined]
-                status = self.shutdown_tracker.components[component_type]["status"]  # type: ignore[attr-defined]
+            components = self.shutdown_tracker.components  # type: ignore[attr-defined]
+            for component_type, component_data in components.items():
+                status = component_data["status"]
                 if status not in ["complete", "timeout"]:
                     pending_components.append(f"{component_type}({status})")
                     self.shutdown_tracker.mark_component_timeout(component_type)  # type: ignore[attr-defined]
@@ -926,7 +965,7 @@ class View(CleanupMixin):
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.warning(
                 f"Error during UI cleanup: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -940,7 +979,7 @@ class View(CleanupMixin):
         )
         try:
             self.window.destroy()
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.warning(
                 f"Error destroying window: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -964,7 +1003,7 @@ class View(CleanupMixin):
             logger.trace("🚪 Calling app.quit()", extra={"class_name": self.__class__.__name__})
             try:
                 self.app.quit()
-            except Exception as e:
+            except (GLib.Error, RuntimeError, AttributeError) as e:
                 logger.warning(
                     f"app.quit() failed: {e} - forcing exit",
                     extra={"class_name": self.__class__.__name__},
@@ -1081,7 +1120,9 @@ class View(CleanupMixin):
             theme_style = app_settings.get("ui_settings.theme_style", "classic")
             self.apply_theme(theme_style, value)
 
-    def apply_theme(self, theme_style: str, color_scheme: str = "auto") -> None:
+    def apply_theme(  # pylint: disable=too-many-branches,too-many-statements
+        self, theme_style: str, color_scheme: str = "auto"
+    ) -> None:
         """
         Apply the specified theme style and color scheme to the application.
 
@@ -1181,7 +1222,7 @@ class View(CleanupMixin):
                     style_manager.set_color_scheme(Adw.ColorScheme.DEFAULT)
                     self.window.remove_css_class("dark")
 
-            except Exception as adw_error:
+            except (GLib.Error, RuntimeError, AttributeError) as adw_error:
                 logger.trace(
                     f"Adwaita StyleManager not available: {adw_error}",
                     extra={"class_name": self.__class__.__name__},
@@ -1192,7 +1233,7 @@ class View(CleanupMixin):
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error applying theme (style={theme_style}, color={color_scheme}): {e}",
                 extra={"class_name": self.__class__.__name__},

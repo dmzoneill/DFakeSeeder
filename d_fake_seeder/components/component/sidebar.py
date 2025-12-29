@@ -291,7 +291,7 @@ class Sidebar(Component):
                         tracker_stats[domain]["count"] += 1
 
                         # Note: Error status would need to come from seeder, not implemented yet
-                except Exception as e:
+                except (AttributeError, TypeError, KeyError) as e:
                     logger.trace(
                         f"Error getting trackers for torrent: {e}",
                         extra={"class_name": self.__class__.__name__},
@@ -312,7 +312,7 @@ class Sidebar(Component):
         try:
             parsed = urlparse(url)
             return parsed.hostname or url
-        except Exception:
+        except (ValueError, AttributeError):
             return url
 
     def _on_state_selected(self, listbox: Any, row: Any) -> None:
@@ -408,7 +408,7 @@ class Sidebar(Component):
                     model,
                     model.connect("language-changed", self.on_language_changed),
                 )
-            except Exception as e:
+            except (AttributeError, TypeError) as e:
                 logger.trace(
                     f"Could not connect to language-changed signal: {e}",
                     extra={"class_name": self.__class__.__name__},

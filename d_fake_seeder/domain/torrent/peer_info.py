@@ -12,7 +12,7 @@ from typing import Optional
 
 
 @dataclass
-class PeerInfo:
+class PeerInfo:  # pylint: disable=too-many-instance-attributes
     """Information about a peer"""
 
     ip: str

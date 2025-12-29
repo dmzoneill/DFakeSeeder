@@ -17,7 +17,7 @@ from d_fake_seeder.lib.util.constants import SwarmIntelligenceConstants
 # fmt: on
 
 
-class SwarmHealthMetrics:
+class SwarmHealthMetrics:  # pylint: disable=too-many-instance-attributes
     """Tracks and analyzes swarm health metrics"""
 
     def __init__(self, info_hash: bytes) -> None:
@@ -208,10 +208,9 @@ class PieceSelectionStrategy:
 
         if self.strategy == "rarest_first":
             return self._select_rarest(available_pieces)
-        elif self.strategy == "sequential":
+        if self.strategy == "sequential":
             return self._select_sequential(available_pieces)
-        else:
-            return random.choice(available_pieces)
+        return random.choice(available_pieces)
 
     def _select_rarest(self, available_pieces: List[int]) -> int:
         """Select rarest piece"""
@@ -237,7 +236,7 @@ class PieceSelectionStrategy:
         return completion > SwarmIntelligenceConstants.ENDGAME_COMPLETION_THRESHOLD
 
 
-class SwarmIntelligence:
+class SwarmIntelligence:  # pylint: disable=too-many-instance-attributes
     """Main swarm intelligence system"""
 
     def __init__(self, torrent_manager: Any = None) -> None:
@@ -316,10 +315,11 @@ class SwarmIntelligence:
 
             return summary
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to analyze swarm: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return {"error": str(e)}
 
@@ -359,10 +359,11 @@ class SwarmIntelligence:
                 "peer_exchange_enabled": adjustments["pex_enabled"],
             }
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to adapt behavior: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return {"behavior": "normal"}
 

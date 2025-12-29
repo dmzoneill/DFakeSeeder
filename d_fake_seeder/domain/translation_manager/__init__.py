@@ -58,10 +58,10 @@ __all__ = [
     "TranslationManagerBase",
 ]
 
-# Backwards compatibility aliases
-TranslationManager = create_translation_manager
-GTK3TranslationManager = create_gtk3_translation_manager
-GTK4TranslationManager = create_gtk4_translation_manager
+# Backwards compatibility aliases (PascalCase for class-like factory functions)
+TranslationManager = create_translation_manager  # pylint: disable=invalid-name
+GTK3TranslationManager = create_gtk3_translation_manager  # pylint: disable=invalid-name
+GTK4TranslationManager = create_gtk4_translation_manager  # pylint: disable=invalid-name
 
 # Version information
 __version__ = "1.0.0"

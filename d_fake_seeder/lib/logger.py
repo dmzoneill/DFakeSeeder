@@ -1,3 +1,12 @@
+"""
+Enhanced Logger Module.
+
+This module provides a comprehensive logging system with TRACE level support,
+performance monitoring, colored console output, and optional systemd journal
+integration. It wraps Python's standard logging with additional features
+tailored for the DFakeSeeder application.
+"""
+
 # fmt: off
 import functools
 import logging
@@ -31,7 +40,7 @@ def add_trace_to_logger(logger_instance: Any) -> None:
     """
     def trace(msg: Any, *args: Any, **kwargs: Any) -> Any:
         if logger_instance.isEnabledFor(TRACE_LEVEL):
-            logger_instance._log(TRACE_LEVEL, msg, args, **kwargs)
+            logger_instance._log(TRACE_LEVEL, msg, args, **kwargs)  # pylint: disable=protected-access
 
     logger_instance.trace = trace
     return logger_instance  # type: ignore[no-any-return]
@@ -40,7 +49,9 @@ def add_trace_to_logger(logger_instance: Any) -> None:
 # fmt: on
 
 
-class ClassNameFilter(logging.Filter):
+class ClassNameFilter(logging.Filter):  # pylint: disable=too-few-public-methods
+    """Logging filter that extracts and adds class name to log records."""
+
     def filter(self, record: Any) -> Any:
         if hasattr(record, "class_name") and record.class_name:
             # Use provided class_name
@@ -75,16 +86,16 @@ class ClassNameFilter(logging.Filter):
                 if "self" in local_vars:
                     obj = local_vars["self"]
                     return str(obj.__class__.__name__)
-                elif "cls" in local_vars:
+                if "cls" in local_vars:
                     cls = local_vars["cls"]
                     return str(cls.__name__) if hasattr(cls, "__name__") else None
 
             return None
-        except Exception:
+        except (AttributeError, KeyError, TypeError):
             return None
 
 
-class TimingFilter(logging.Filter):
+class TimingFilter(logging.Filter):  # pylint: disable=too-few-public-methods
     """Filter that adds precise timing information to log records."""
 
     def filter(self, record: Any) -> Any:
@@ -93,7 +104,7 @@ class TimingFilter(logging.Filter):
         return True
 
 
-class DuplicateFilter(logging.Filter):
+class DuplicateFilter(logging.Filter):  # pylint: disable=too-few-public-methods
     """
     Filter that suppresses duplicate log messages within a time window.
 
@@ -188,26 +199,23 @@ class DuplicateFilter(logging.Filter):
                     record,
                 )
                 return False
-            else:
-                # Time window expired, log summary of suppressed messages
-                if count > 1:
-                    duration = last_time - first_time
-                    record.msg = (
-                        f"{record.getMessage()} " f"(previous message repeated {count} times over {duration:.1f}s)"
-                    )
+            # Time window expired, log summary of suppressed messages
+            if count > 1:
+                duration = last_time - first_time
+                record.msg = f"{record.getMessage()} " f"(previous message repeated {count} times over {duration:.1f}s)"
 
-                # Reset counter for this message
-                self.last_messages[message_key] = (
-                    1,
-                    current_time,
-                    current_time,
-                    record,
-                )
-                return True
-        else:
-            # First occurrence of this message
-            self.last_messages[message_key] = (1, current_time, current_time, record)
+            # Reset counter for this message
+            self.last_messages[message_key] = (
+                1,
+                current_time,
+                current_time,
+                record,
+            )
             return True
+
+        # First occurrence of this message
+        self.last_messages[message_key] = (1, current_time, current_time, record)
+        return True
 
 
 class PerformanceLogger:
@@ -346,7 +354,7 @@ def get_logger_settings() -> Any:
             "duplicate_time_window": app_settings.get("logging.duplicate_time_window", 5.0),
             "duplicate_flush_interval": app_settings.get("logging.duplicate_flush_interval", 30.0),
         }
-    except (ImportError, Exception):
+    except (ImportError, Exception):  # pylint: disable=broad-exception-caught
         # Fallback to hardcoded defaults if AppSettings not available
         # This should only happen during early startup or testing
         # IMPORTANT: Console is OFF by default - only enable when user settings confirm it
@@ -367,7 +375,7 @@ def get_logger_settings() -> Any:
         }
 
 
-def setup_logger() -> None:
+def setup_logger() -> None:  # pylint: disable=too-many-locals,too-many-statements
     """Setup logger with current settings.
 
     Each output (console, systemd, file) has its own independent log level.
@@ -457,6 +465,8 @@ def setup_logger() -> None:
 
     # Create enhanced logger wrapper with performance tracking
     class EnhancedLogger:
+        """Enhanced logger wrapper with TRACE level and performance tracking."""
+
         def __init__(self, logger_instance: Any) -> None:
             self._logger = logger_instance
             self.performance = PerformanceLogger(logger_instance)
@@ -535,6 +545,7 @@ def setup_logger() -> None:
     return enhanced_logger  # type: ignore[return-value]
 
 
+# pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals,too-many-statements
 def reconfigure_logger(
     override_console: Optional[bool] = None,
     override_systemd: Optional[bool] = None,
@@ -556,11 +567,11 @@ def reconfigure_logger(
         override_systemd_level: If provided, use this level for systemd handler.
         override_file_level: If provided, use this level for file handler.
     """
-    global logger
+    global logger  # pylint: disable=global-statement
 
     # Get the underlying Python logger instance
     if hasattr(logger, "_logger"):
-        underlying_logger = logger._logger
+        underlying_logger = logger._logger  # pylint: disable=protected-access
     else:
         # Fallback: create new logger if structure is unexpected
         logger = setup_logger()  # type: ignore[func-returns-value]

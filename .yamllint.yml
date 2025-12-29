@@ -27,8 +27,3 @@ ignore: |
   debbuild/
   *.lock
   Pipfile.lock
-
-
-
-
-

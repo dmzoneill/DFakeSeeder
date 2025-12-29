@@ -1,3 +1,13 @@
+"""
+Application Settings Module.
+
+This module provides a unified, thread-safe singleton settings manager for the
+DFakeSeeder application. It handles configuration loading, saving, file watching,
+and GObject signal emission for settings changes.
+"""
+
+# pylint: disable=too-many-lines
+
 # fmt: off
 # isort: skip_file
 from typing import Dict,  Any
@@ -23,10 +33,12 @@ from d_fake_seeder.lib.logger import logger  # noqa: E402
 from d_fake_seeder.lib.util.constants import NetworkConstants  # noqa: E402
 
 if WATCHDOG_AVAILABLE:
-    from watchdog.observers import Observer  # noqa: E402
+    from watchdog.observers import Observer  # noqa: E402  # pylint: disable=import-error
 else:
     # Fallback if watchdog is not available
     class Observer:  # type: ignore[no-redef]
+        """Stub Observer fallback when watchdog is not available."""
+
         def __init__(self) -> None:
             pass
 
@@ -42,7 +54,7 @@ else:
 # fmt: on
 
 
-class AppSettings(GObject.GObject):
+class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attributes,too-many-public-methods
     """
     Unified application settings manager (replaces both Settings and old AppSettings)
     Thread-safe singleton with nested attribute access, file watching, and GObject signals
@@ -76,6 +88,10 @@ class AppSettings(GObject.GObject):
     _instance = None
     _lock = Lock()  # Thread safety
     _logger = None  # Lazy logger instance
+    _file_path: Any = None  # File path for settings (set in __init__)
+    _observer: Any = None  # File watcher observer (set in __init__)
+    _initialized: bool = False  # Initialization flag
+    _saving: bool = False  # Flag to prevent reload during save
 
     def __new__(cls, *args: Any, **kwargs: Any) -> Any:
         if cls._instance is None:
@@ -89,17 +105,17 @@ class AppSettings(GObject.GObject):
         # This allows re-initialization when file_path changes (e.g., in tests)
         if hasattr(self, "_initialized") and hasattr(self, "_file_path"):
             # If file_path is changing, we need to reinitialize
-            if file_path is not None and str(file_path) != str(self._file_path):  # type: ignore[has-type]
+            if file_path is not None and str(file_path) != str(self._file_path):
                 # Stop existing observer before reinitializing
-                if hasattr(self, "_observer") and self._observer:  # type: ignore[has-type]
+                if hasattr(self, "_observer") and self._observer:
                     try:
-                        self._observer.stop()  # type: ignore[has-type]
-                        self._observer.join(timeout=1.0)  # type: ignore[has-type]
-                    except Exception:
+                        self._observer.stop()
+                        self._observer.join(timeout=1.0)
+                    except (RuntimeError, OSError, AttributeError):
                         pass
                 # Clear initialization flag to allow reinitialization
                 delattr(self, "_initialized")
-            elif file_path is None or str(file_path) == str(self._file_path):  # type: ignore[has-type]
+            elif file_path is None or str(file_path) == str(self._file_path):
                 # Same file path or no file path specified, skip reinitialization
                 return
 
@@ -183,6 +199,7 @@ class AppSettings(GObject.GObject):
         """Get logger instance with lazy import to avoid circular dependency"""
         if AppSettings._logger is None:
             try:
+                # pylint: disable=reimported,import-outside-toplevel,redefined-outer-name
                 from d_fake_seeder.lib.logger import logger
 
                 AppSettings._logger = logger
@@ -214,7 +231,7 @@ class AppSettings(GObject.GObject):
     def _load_defaults(self) -> None:
         """Load default settings from config/default.json"""
         try:
-            with open(self.default_config_file, "r") as f:
+            with open(self.default_config_file, "r", encoding="utf-8") as f:
                 self._defaults = json.load(f)
             self.logger.trace(f"Loaded {len(self._defaults)} default settings from {self.default_config_file}")
         except (FileNotFoundError, json.JSONDecodeError) as e:
@@ -288,7 +305,7 @@ class AppSettings(GObject.GObject):
         self.logger.trace("Settings load", extra={"class_name": self.__class__.__name__})
         try:
             # Skip reload if we're currently saving (prevents file watch feedback loop)
-            if hasattr(self, "_saving") and self._saving:  # type: ignore[has-type]
+            if self._saving:
                 self.logger.trace(
                     "Skipping load_settings - save in progress", extra={"class_name": self.__class__.__name__}
                 )
@@ -304,7 +321,7 @@ class AppSettings(GObject.GObject):
             # Check if the file has been modified since last load
             modified = os.path.getmtime(self._file_path)
             if modified > self._last_modified:
-                with open(self._file_path, "r") as f:
+                with open(self._file_path, "r", encoding="utf-8") as f:
                     loaded_data = json.load(f)
 
                 # Check if this is initial load (transient data empty)
@@ -346,7 +363,7 @@ class AppSettings(GObject.GObject):
 
             if not os.path.exists(self._file_path):
                 # Create the JSON file with default contents (no torrents yet)
-                with open(self._file_path, "w") as f:
+                with open(self._file_path, "w", encoding="utf-8") as f:
                     json.dump(self._defaults, f, indent=4)
                 self.logger.info("Created new settings file with defaults")
 
@@ -357,7 +374,7 @@ class AppSettings(GObject.GObject):
             self._transient_data = {}
             self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
 
-        except Exception as e:
+        except (OSError, TypeError, KeyError) as e:
             self.logger.error(f"Error loading settings: {e}", exc_info=True)
 
     def _queue_save(self) -> Any:
@@ -396,7 +413,7 @@ class AppSettings(GObject.GObject):
         try:
             self.save_settings()
             logger.info("Debounced save completed successfully", "AppSettings")
-        except Exception as e:
+        except (OSError, json.JSONDecodeError, TypeError) as e:
             logger.error(f"Error in debounced save: {e}", "AppSettings", exc_info=True)
         finally:
             # Clear pending save flag and timer reference
@@ -427,7 +444,7 @@ class AppSettings(GObject.GObject):
                     extra={"class_name": self.__class__.__name__},
                 )
             self.logger.trace("Settings lock released", extra={"class_name": self.__class__.__name__})
-        except Exception as e:
+        except (OSError, json.JSONDecodeError, TypeError, RuntimeError) as e:
             self.logger.error(f"Failed to save settings: {e}", exc_info=True)
 
     def _save_settings_unlocked(self) -> None:
@@ -470,7 +487,7 @@ class AppSettings(GObject.GObject):
 
             self.logger.info("Settings saved successfully with atomic write")
 
-        except Exception as write_error:
+        except (OSError, json.JSONDecodeError, TypeError, RuntimeError) as write_error:
             # Clean up on error
             if temp_fd is not None:
                 try:
@@ -498,6 +515,8 @@ class AppSettings(GObject.GObject):
         Merges transient data (torrents) into user_settings before final write.
         This is the ONLY place where transient data is persisted to disk.
         """
+        import copy
+
         # Cancel any pending debounced save timer
         if self._save_timer is not None:
             GLib.source_remove(self._save_timer)
@@ -505,9 +524,14 @@ class AppSettings(GObject.GObject):
             self._pending_save = False
 
         # Merge transient data (torrents) into user_settings before final write
+        # CRITICAL: Use deepcopy to prevent race conditions with worker threads
+        # that might modify _transient_data during json.dump() serialization
         with AppSettings._lock:
-            if self._transient_data:
-                self._user_settings["torrents"] = self._transient_data
+            # Always save torrents dict, even if empty (user might have removed all)
+            # deepcopy ensures the data is frozen at this point in time
+            self._user_settings["torrents"] = copy.deepcopy(self._transient_data)
+            torrent_count = len(self._transient_data) if self._transient_data else 0
+            self.logger.info(f"Merged {torrent_count} torrents into user_settings for shutdown save")
 
         # Stop file watching
         if hasattr(self, "_observer"):
@@ -755,7 +779,7 @@ class AppSettings(GObject.GObject):
                 # Legacy compatibility signal
                 self.emit("setting-changed", key, value)
                 self.emit("attribute-changed", key, value)
-        except Exception as e:
+        except (OSError, json.JSONDecodeError, TypeError, RuntimeError) as e:
             self.logger.error(f"Failed to reset settings: {e}")
 
     def export_settings(self, file_path: str) -> Any:
@@ -763,10 +787,10 @@ class AppSettings(GObject.GObject):
         try:
             with self._lock:
                 # Export user settings (not including transient data)
-                with open(file_path, "w") as f:
+                with open(file_path, "w", encoding="utf-8") as f:
                     json.dump(self._user_settings, f, indent=4)
                 self.logger.info(f"Settings exported to: {file_path}")
-        except Exception as e:
+        except (OSError, json.JSONDecodeError, TypeError) as e:
             self.logger.error(f"Failed to export settings: {e}", exc_info=True)
             raise
 
@@ -775,7 +799,7 @@ class AppSettings(GObject.GObject):
         try:
             with self._lock:
                 # Load settings from file
-                with open(file_path, "r") as f:
+                with open(file_path, "r", encoding="utf-8") as f:
                     imported_settings = json.load(f)
                 # Update user settings
                 self._user_settings = imported_settings.copy()
@@ -792,7 +816,7 @@ class AppSettings(GObject.GObject):
                 # Legacy compatibility signal
                 self.emit("setting-changed", key, value)
                 self.emit("attribute-changed", key, value)
-        except Exception as e:
+        except (OSError, json.JSONDecodeError, TypeError) as e:
             self.logger.error(f"Failed to import settings: {e}", exc_info=True)
             raise
 
@@ -801,6 +825,7 @@ class AppSettings(GObject.GObject):
         """Get singleton instance (Settings API compatibility)"""
         # Note: Can't use self.logger here since this is a class method
         try:
+            # pylint: disable=reimported,import-outside-toplevel,redefined-outer-name
             from d_fake_seeder.lib.logger import logger
 
             logger.trace("AppSettings get instance", extra={"class_name": "AppSettings"})
@@ -912,16 +937,16 @@ class AppSettings(GObject.GObject):
                 if current_locale:
                     system_locale = current_locale
                 else:
-                    # Fallback to deprecated method if getlocale returns None
-                    system_locale = locale.getdefaultlocale()[0]  # type: ignore[assignment]
-            except Exception:
-                system_locale = locale.getdefaultlocale()[0]  # type: ignore[assignment]
+                    # Fallback to environment variables
+                    system_locale = os.environ.get("LANG") or os.environ.get("LC_ALL") or ""
+            except (ValueError, TypeError, AttributeError):
+                system_locale = os.environ.get("LANG") or os.environ.get("LC_ALL") or ""
 
             if system_locale:
                 # Extract language code (e.g., 'en_US' -> 'en')
                 lang_code = system_locale.split("_")[0].lower()
                 return lang_code
-        except Exception as e:
+        except (ValueError, TypeError, AttributeError) as e:
             self.logger.warning(f"Could not detect system locale: {e}")
 
         # Ultimate fallback to English

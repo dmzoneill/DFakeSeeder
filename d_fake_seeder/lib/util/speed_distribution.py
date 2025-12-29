@@ -39,12 +39,10 @@ class SpeedDistributor(ABC):
         Returns:
             Dictionary mapping torrent_id to speed (KB/s)
         """
-        pass
 
     @abstractmethod
     def get_algorithm_name(self) -> str:
         """Return the name of this algorithm."""
-        pass
 
     def _apply_stopped_torrents(self, torrent_ids: List[str]) -> tuple[List[str], List[str]]:
         """
@@ -271,7 +269,9 @@ class LogNormalDistributor(SpeedDistributor):
     def get_algorithm_name(self) -> str:
         return "Log-Normal"
 
-    def distribute(self, total_bandwidth: float, torrent_ids: List[str]) -> Dict[str, float]:
+    def distribute(  # pylint: disable=too-many-locals
+        self, total_bandwidth: float, torrent_ids: List[str]
+    ) -> Dict[str, float]:
         """Distribute using log-normal distribution."""
         if not torrent_ids:
             return {}

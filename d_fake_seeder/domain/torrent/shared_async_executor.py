@@ -26,7 +26,7 @@ from d_fake_seeder.lib.util.constants import AsyncConstants
 # fmt: on
 
 
-class SharedAsyncExecutor:
+class SharedAsyncExecutor:  # pylint: disable=too-many-instance-attributes
     """
     Global singleton managing shared async event loop and thread pool.
 
@@ -183,7 +183,7 @@ class SharedAsyncExecutor:
                 "✅ Thread pool shut down",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.trace(
                 f"Error during thread pool shutdown: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -211,24 +211,26 @@ class SharedAsyncExecutor:
                 try:
                     # Run loop for short intervals to allow shutdown checks
                     self.event_loop.run_until_complete(asyncio.sleep(self._get_event_loop_sleep()))
-                except Exception as e:
+                except Exception as e:  # pylint: disable=broad-exception-caught
                     if self.running:
                         logger.error(
                             f"Error in event loop: {e}",
                             extra={"class_name": self.__class__.__name__},
+                            exc_info=True,
                         )
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Fatal error in event loop thread: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
         finally:
             # Clean up event loop
             if self.event_loop:
                 try:
                     self.event_loop.close()
-                except Exception as e:
+                except Exception as e:  # pylint: disable=broad-exception-caught
                     logger.trace(
                         f"Error closing event loop: {e}",
                         extra={"class_name": self.__class__.__name__},
@@ -286,10 +288,11 @@ class SharedAsyncExecutor:
 
             return task  # type: ignore[return-value]
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to submit task for {manager_id}: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             if self.stats_enabled:
                 with self.stats_lock:
@@ -349,7 +352,7 @@ class SharedAsyncExecutor:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-                for manager_id, tasks in list(self.active_tasks.items()):
+                for _, tasks in list(self.active_tasks.items()):
                     for task in tasks:
                         if not task.done():
                             task.cancel()

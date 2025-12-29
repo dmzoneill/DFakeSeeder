@@ -180,10 +180,11 @@ class Tracker(GObject.Object):
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Error updating tracker announce response: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     def update_announce_failure(self, error_message: str, response_time: Optional[float] = None) -> None:
@@ -227,10 +228,11 @@ class Tracker(GObject.Object):
                     extra={"class_name": self.__class__.__name__},
                 )
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Error updating tracker failure: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     def update_scrape_response(self, scrape_data: Dict[str, Any]) -> None:
@@ -258,10 +260,11 @@ class Tracker(GObject.Object):
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Error updating tracker scrape response: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     def set_announcing(self) -> None:
@@ -280,17 +283,16 @@ class Tracker(GObject.Object):
 
         if not self.get_property("enabled"):
             return "Disabled"
-        elif status == "working":
+        if status == "working":
             seeders = self.get_property("seeders")
             leechers = self.get_property("leechers")
             return f"Working (S:{seeders} L:{leechers})"
-        elif status == "failed":
+        if status == "failed":
             error = self.get_property("error_message")
             return f"Failed: {error}" if error else "Failed"
-        elif status == "announcing":
+        if status == "announcing":
             return "Announcing..."
-        else:
-            return "Unknown"
+        return "Unknown"
 
     def get_timing_summary(self) -> str:
         """Get a human-readable timing summary"""
@@ -300,10 +302,9 @@ class Tracker(GObject.Object):
         time_since = self.time_since_last_announce
         if time_since < 60:
             return f"{int(time_since)}s ago"
-        elif time_since < 3600:
+        if time_since < 3600:
             return f"{int(time_since / 60)}m ago"
-        else:
-            return f"{int(time_since / 3600)}h ago"
+        return f"{int(time_since / 3600)}h ago"
 
     def _update_average_response_time(self, response_time: float) -> None:
         """Update running average of response times"""

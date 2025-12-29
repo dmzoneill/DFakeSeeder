@@ -1,3 +1,11 @@
+"""
+DFakeSeeder Controller Module.
+
+This module implements the Controller in the MVC architecture. It coordinates
+between the Model and View, handles application logic, manages background tasks,
+and orchestrates network operations like UPnP, DHT, and tracker communications.
+"""
+
 # fmt: off
 import asyncio
 import os
@@ -39,8 +47,10 @@ except ImportError:
 
 
 # Cont roller
-class Controller:
-    def __init__(self, view: Any, model: Any) -> None:
+class Controller:  # pylint: disable=too-many-instance-attributes
+    """Controller coordinating Model-View interactions and background operations."""
+
+    def __init__(self, view: Any, model: Any) -> None:  # pylint: disable=too-many-statements
         logger.trace("Startup", extra={"class_name": self.__class__.__name__})
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
@@ -106,7 +116,7 @@ class Controller:
                 "D-Bus service initialized",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
+        except (GLib.Error, RuntimeError, OSError, ImportError) as e:
             logger.error(
                 f"Failed to initialize D-Bus service: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -191,12 +201,10 @@ class Controller:
             self.speed_scheduler.start()
             logger.info("Speed scheduler started", "Controller")
 
-        # Start UPnP port forwarding
+        # Start UPnP port forwarding (non-blocking background thread)
         if hasattr(self, "upnp_manager") and self.upnp_manager:
-            if self.upnp_manager.start():
-                logger.info("UPnP port forwarding enabled", "Controller")
-            else:
-                logger.debug("UPnP port forwarding not available", "Controller")
+            self.upnp_manager.start_async()
+            logger.debug("UPnP port forwarding starting in background", "Controller")
 
         # Start Web UI server (async)
         if hasattr(self, "webui_server") and self.webui_server:
@@ -297,17 +305,19 @@ class Controller:
                 for torrent in self.model.get_torrents():
                     try:
                         torrent.save_to_transient()
-                    except Exception as e:
+                    except (OSError, RuntimeError, AttributeError) as e:
                         logger.error(
                             f"Error saving torrent {getattr(torrent, 'name', 'unknown')} to transient: {e}",
                             "Controller",
                             exc_info=True,
                         )
-        except Exception as e:
+        except (RuntimeError, AttributeError, TypeError) as e:
             logger.error(f"Error in tick callback: {e}", "Controller", exc_info=True)
         return True  # Keep timer running
 
-    def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
+    def handle_settings_changed(  # pylint: disable=too-many-branches,too-many-statements
+        self, source: Any, key: Any, value: Any
+    ) -> None:
         logger.trace(
             f"Controller settings changed: {key} = {value}",
             extra={"class_name": self.__class__.__name__},
@@ -345,7 +355,7 @@ class Controller:
         if key == "connection.upnp_enabled":
             if hasattr(self, "upnp_manager") and self.upnp_manager:
                 if value:
-                    self.upnp_manager.start()
+                    self.upnp_manager.start_async()
                 else:
                     self.upnp_manager.stop()
 
@@ -375,8 +385,6 @@ class Controller:
             if hasattr(self, "dht_manager"):
                 if value and not self.dht_manager:
                     dht_port = self.settings.get("connection.listening_port", 6881)
-                    from d_fake_seeder.domain.torrent.dht_manager import DHTManager
-
                     self.dht_manager = DHTManager(port=dht_port)
                     self.dht_manager.start()
                     logger.info("DHT Manager started", "Controller")
@@ -532,7 +540,7 @@ class Controller:
             try:
                 if await server.start():
                     logger.info("Web UI server started", "Controller")
-            except Exception as e:
+            except (OSError, RuntimeError, asyncio.CancelledError) as e:
                 logger.error(f"Failed to start Web UI: {e}", "Controller")
 
         # Run in existing event loop or create new one
@@ -552,7 +560,7 @@ class Controller:
         async def _stop() -> None:
             try:
                 await server.stop()
-            except Exception as e:
+            except (OSError, RuntimeError, asyncio.CancelledError) as e:
                 logger.error(f"Error stopping Web UI: {e}", "Controller")
 
         try:
@@ -571,7 +579,7 @@ class Controller:
             try:
                 if await lpd.start():
                     logger.info("Local Peer Discovery started", "Controller")
-            except Exception as e:
+            except (OSError, RuntimeError, asyncio.CancelledError) as e:
                 logger.error(f"Failed to start LPD: {e}", "Controller")
 
         try:
@@ -589,7 +597,7 @@ class Controller:
         async def _stop() -> None:
             try:
                 await lpd.stop()
-            except Exception as e:
+            except (OSError, RuntimeError, asyncio.CancelledError) as e:
                 logger.error(f"Error stopping LPD: {e}", "Controller")
 
         try:
@@ -606,7 +614,7 @@ class Controller:
         )
 
         # Add peer to the appropriate torrent's peer list
-        if hasattr(self, "global_peer_manager") and self.global_peer_manager:
+        if hasattr(self, "global_peer_manager") and self.global_peer_manager:  # pylint: disable=too-many-nested-blocks
             # Find torrent with matching info_hash
             for torrent in self.model.get_torrents():
                 if hasattr(torrent, "torrent_file") and hasattr(torrent.torrent_file, "info_hash"):
@@ -621,7 +629,7 @@ class Controller:
                                     f"Added LPD peer {ip}:{port} to torrent {torrent.name}",
                                     extra={"class_name": self.__class__.__name__},
                                 )
-                        except Exception as e:
+                        except (KeyError, AttributeError, ValueError) as e:
                             logger.warning(
                                 f"Failed to add LPD peer: {e}",
                                 extra={"class_name": self.__class__.__name__},

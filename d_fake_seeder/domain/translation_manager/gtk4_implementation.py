@@ -6,6 +6,7 @@ This implementation provides full compatibility with GTK4 widgets and applicatio
 It includes all the advanced features like widget discovery, menu translation,
 and automatic UI updates.
 """
+
 # isort: skip_file
 
 # fmt: off
@@ -30,7 +31,9 @@ from .base import TranslationManagerBase  # noqa: E402
 # fmt: on
 
 
-class TranslationManagerGTK4(TranslationManagerBase):
+class TranslationManagerGTK4(
+    TranslationManagerBase
+):  # pylint: disable=too-many-instance-attributes,too-many-public-methods
     """
     GTK4 implementation of the TranslationManager
 
@@ -38,7 +41,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
     including automatic widget discovery, menu translation, and runtime language switching.
     """
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         domain: str = "messages",
         localedir: Optional[str] = None,
@@ -99,7 +102,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
         start_time = time.time()
         discovered_languages = {self.fallback_language}
 
-        try:
+        try:  # pylint: disable=too-many-nested-blocks
             if os.path.exists(self._localedir):
                 for item in os.listdir(self._localedir):
                     lang_dir = os.path.join(self._localedir, item)
@@ -116,7 +119,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
                 f"Discovered languages: {sorted(discovered_languages)} (took {discovery_time:.1f}ms)",
                 "TranslationManagerGTK4",
             )
-        except Exception:
+        except (OSError, ValueError, AttributeError):
             logger.warning("Warning: Could not discover languages", "TranslationManagerGTK4")
 
         return discovered_languages
@@ -192,15 +195,18 @@ class TranslationManagerGTK4(TranslationManagerBase):
         try:
             try:
                 current_locale = locale.getlocale()[0]
-                system_locale = current_locale if current_locale else locale.getdefaultlocale()[0]
-            except Exception:
-                system_locale = locale.getdefaultlocale()[0]
+                if not current_locale:
+                    # Fallback to environment variables
+                    current_locale = os.environ.get("LANG") or os.environ.get("LC_ALL") or ""
+                system_locale = current_locale
+            except (ValueError, TypeError, AttributeError):
+                system_locale = os.environ.get("LANG") or os.environ.get("LC_ALL") or ""
 
             if system_locale:
                 lang_code = system_locale.split("_")[0].lower()
                 if lang_code in self.supported_languages:
                     return lang_code
-        except Exception:
+        except (ValueError, TypeError, AttributeError):
             logger.warning("Warning: Could not detect system locale", "TranslationManagerGTK4")
 
         return self.fallback_language
@@ -278,7 +284,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
                 try:
                     translated_text = self.translate_func(translation_key)
                     self._set_widget_property(widget, property_name, translated_text)
-                except Exception as e:
+                except (AttributeError, TypeError, ValueError) as e:
                     logger.warning(f"Warning: Could not translate widget property {property_name}: {e}")
         finally:
             self._updating = False
@@ -303,7 +309,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
         else:
             try:
                 widget.set_property(property_name, value)
-            except Exception as e:
+            except (AttributeError, TypeError, ValueError) as e:
                 logger.warning(f"Warning: Could not set property '{property_name}': {e}")
 
     def get_language_name(self, language_code: str) -> str:
@@ -314,7 +320,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
 
             language_names = get_language_display_names()
             return language_names.get(language_code, language_code.upper())  # type: ignore[no-any-return]
-        except Exception as e:
+        except (ImportError, KeyError, AttributeError, TypeError) as e:
             logger.trace(
                 f"Could not load language names from config: {e}",
                 "TranslationManagerGTK4",
@@ -393,7 +399,9 @@ class TranslationManagerGTK4(TranslationManagerBase):
                 return obj.get_name()  # type: ignore[no-any-return]
         return None
 
-    def _check_and_register_widget(self, widget: Gtk.Widget, widget_id: Optional[str]) -> Any:
+    def _check_and_register_widget(  # pylint: disable=too-many-branches,too-many-statements
+        self, widget: Gtk.Widget, widget_id: Optional[str]
+    ) -> Any:
         """Check if a widget should be registered for translation and register it."""
         # List to store multiple translatable properties for this widget
         translatable_properties = []
@@ -504,7 +512,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
         for menu_info in self.translatable_menus:
             try:
                 self._recreate_menu(menu_info)
-            except Exception as e:
+            except (AttributeError, TypeError, KeyError) as e:
                 logger.warning(f"Warning: Could not refresh menu translations: {e}")
 
     def _recreate_menu(self, menu_info: Dict[str, Any]) -> Any:
@@ -581,7 +589,7 @@ class TranslationManagerGTK4(TranslationManagerBase):
                     "TranslationManagerGTK4",
                 )
                 return language  # type: ignore[no-any-return]
-            except Exception as e:
+            except (ImportError, AttributeError, TypeError, KeyError) as e:
                 logger.trace(
                     f"Could not get language from AppSettings: {e}",
                     "TranslationManagerGTK4",

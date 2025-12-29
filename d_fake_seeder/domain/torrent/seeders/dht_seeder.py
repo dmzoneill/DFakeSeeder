@@ -18,7 +18,7 @@ from d_fake_seeder.lib.logger import logger
 # fmt: on
 
 
-class DHTSeeder(BaseSeeder):
+class DHTSeeder(BaseSeeder):  # pylint: disable=too-many-instance-attributes
     """DHT-based seeder for trackerless torrents"""
 
     def __init__(self, torrent: Any) -> None:
@@ -60,6 +60,7 @@ class DHTSeeder(BaseSeeder):
             if hasattr(self.torrent, "torrent_file") and self.torrent.torrent_file:
                 torrent_data = self.torrent.torrent_file.get_data()
                 if b"info" in torrent_data:
+                    # pylint: disable=import-error,import-outside-toplevel
                     import bencode
 
                     info_data = bencode.bencode(torrent_data[b"info"])
@@ -71,10 +72,11 @@ class DHTSeeder(BaseSeeder):
             )
             return None
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to calculate info hash: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return None
 
@@ -108,10 +110,11 @@ class DHTSeeder(BaseSeeder):
             )
             return True
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to start DHT seeder: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return False
 
@@ -151,10 +154,11 @@ class DHTSeeder(BaseSeeder):
 
             except asyncio.CancelledError:
                 break
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.error(
                     f"DHT announce loop error: {e}",
                     extra={"class_name": self.__class__.__name__},
+                    exc_info=True,
                 )
                 await asyncio.sleep(self._get_announce_sleep())  # type: ignore[attr-defined]
 
@@ -186,10 +190,11 @@ class DHTSeeder(BaseSeeder):
                 )
                 self._update_stats("dht_announce", False)
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"DHT announcement error: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             self._update_stats("dht_announce", False)
 
@@ -208,10 +213,11 @@ class DHTSeeder(BaseSeeder):
 
             return peers
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"DHT peer discovery error: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return []
 
@@ -234,7 +240,7 @@ class DHTSeeder(BaseSeeder):
             # Store back to settings
             self.settings.set("dht_stats", dht_stats)
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.trace(
                 f"Failed to update DHT stats: {e}",
                 extra={"class_name": self.__class__.__name__},

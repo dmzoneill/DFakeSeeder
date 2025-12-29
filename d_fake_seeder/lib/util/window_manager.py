@@ -5,6 +5,7 @@ Window Manager - GTK4 native window management for DFakeSeeder
 Provides clean window control operations integrated with AppSettings.
 Replaces external window manipulation tools with native GTK4 functionality.
 """
+
 # isort: skip_file
 
 # fmt: off
@@ -17,7 +18,7 @@ import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Gdk", "4.0")
 
-from gi.repository import Gdk, Gtk  # noqa: E402
+from gi.repository import Gdk, GLib, Gtk  # noqa: E402
 
 from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
 from d_fake_seeder.lib.logger import logger  # noqa: E402
@@ -90,7 +91,7 @@ class WindowManager:
 
             # Read PID from lock file
             try:
-                pid_str = lock_path.read_text().strip()
+                pid_str = lock_path.read_text(encoding="utf-8").strip()
                 pid = int(pid_str)
             except (ValueError, OSError) as e:
                 logger.trace(
@@ -114,7 +115,7 @@ class WindowManager:
                 )
                 return False
 
-        except Exception as e:
+        except (OSError, ValueError, FileNotFoundError) as e:
             logger.error(
                 f"Error checking if tray is running: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -139,7 +140,7 @@ class WindowManager:
                 "Window event handlers connected",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to setup window handlers: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -189,7 +190,7 @@ class WindowManager:
                 # Set visibility directly without calling show()/hide() to avoid side effects during init
                 self.window.set_visible(visible)
 
-        except Exception as e:
+        except (GLib.Error, KeyError, AttributeError, TypeError) as e:
             logger.error(
                 f"Failed to load window state: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -248,7 +249,7 @@ class WindowManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except (GLib.Error, AttributeError, TypeError) as e:
             logger.error(
                 f"Failed to save window state: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -274,7 +275,7 @@ class WindowManager:
             logger.trace("Window shown", extra={"class_name": self.__class__.__name__})
             return True
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to show window: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -302,7 +303,7 @@ class WindowManager:
             logger.trace("Window hidden", extra={"class_name": self.__class__.__name__})
             return True
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to hide window: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -341,7 +342,7 @@ class WindowManager:
             logger.trace("Window minimized", extra={"class_name": self.__class__.__name__})
             return True
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to minimize window: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -364,7 +365,7 @@ class WindowManager:
             logger.trace("Window maximized", extra={"class_name": self.__class__.__name__})
             return True
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to maximize window: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -387,7 +388,7 @@ class WindowManager:
             logger.trace("Window unmaximized", extra={"class_name": self.__class__.__name__})
             return True
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to unmaximize window: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -406,10 +407,9 @@ class WindowManager:
 
             if self.window.get_visible():
                 return self.hide()
-            else:
-                return self.show()
+            return self.show()
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to toggle window visibility: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -428,10 +428,9 @@ class WindowManager:
 
             if self._is_maximized:
                 return self.unmaximize()
-            else:
-                return self.maximize()
+            return self.maximize()
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to toggle window maximize: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -464,7 +463,7 @@ class WindowManager:
             logger.trace("Window restored", extra={"class_name": self.__class__.__name__})
             return True
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to restore window: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -525,8 +524,9 @@ class WindowManager:
                     extra={"class_name": self.__class__.__name__},
                 )
                 return True
+            return False  # No monitor available
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError, TypeError) as e:
             logger.error(
                 f"Failed to center window: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -538,7 +538,7 @@ class WindowManager:
         try:
             # Save current state
             self._save_window_state()
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error handling window state change: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -549,7 +549,7 @@ class WindowManager:
         try:
             # Save current size
             self._save_window_state()
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error handling window size change: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -576,24 +576,22 @@ class WindowManager:
                     )
                     self.hide()
                     return True  # Prevent default close behavior  # type: ignore
-                else:
-                    # Tray is not running - close the app instead of hiding
-                    logger.warning(
-                        "close_to_tray enabled but tray is not running - closing app instead",
-                        extra={"class_name": self.__class__.__name__},
-                    )
-                    self._save_window_state()
-                    return False  # Allow normal close  # type: ignore
-            else:
-                # Allow normal close behavior - let view.quit() handle it
-                logger.trace(
-                    "Allowing normal close/quit behavior",
+                # Tray is not running - close the app instead of hiding
+                logger.warning(
+                    "close_to_tray enabled but tray is not running - closing app instead",
                     extra={"class_name": self.__class__.__name__},
                 )
                 self._save_window_state()
-                return False  # Allow other handlers to process  # type: ignore
+                return False  # Allow normal close  # type: ignore
+            # Allow normal close behavior - let view.quit() handle it
+            logger.trace(
+                "Allowing normal close/quit behavior",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self._save_window_state()
+            return False  # Allow other handlers to process  # type: ignore
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error handling close request: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -620,7 +618,7 @@ class WindowManager:
                 "minimized": self._is_minimized,
             }
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to get window info: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -653,7 +651,7 @@ class WindowManager:
                 "WindowManager cleaned up",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error during WindowManager cleanup: {e}",
                 extra={"class_name": self.__class__.__name__},

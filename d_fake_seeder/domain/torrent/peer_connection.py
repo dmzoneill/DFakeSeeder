@@ -20,7 +20,7 @@ from d_fake_seeder.lib.util.constants import BitTorrentProtocolConstants
 # fmt: on
 
 
-class PeerConnection:
+class PeerConnection:  # pylint: disable=too-many-instance-attributes
     """Represents a single peer connection"""
 
     def __init__(
@@ -107,7 +107,7 @@ class PeerConnection:
             self.close()
             return False
 
-    async def perform_handshake(self) -> bool:
+    async def perform_handshake(self) -> bool:  # pylint: disable=too-many-locals,too-many-return-statements
         """Perform BitTorrent handshake"""
         if not self.connected or self.socket is None:
             return False
@@ -186,7 +186,7 @@ class PeerConnection:
 
             return True
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.trace(
                 f"❌ Handshake failed with {self.peer_info.ip}: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -208,7 +208,7 @@ class PeerConnection:
             self.last_message_time = time.time()
             return True
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.trace(
                 f"❌ Failed to send message to {self.peer_info.ip}: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -259,7 +259,7 @@ class PeerConnection:
             self.last_message_time = time.time()
             return (message_id, payload)
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.trace(
                 f"❌ Failed to receive message from {self.peer_info.ip}: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -276,7 +276,7 @@ class PeerConnection:
             keep_alive = struct.pack("!I", BitTorrentProtocolConstants.KEEPALIVE_MESSAGE_LENGTH)
             await asyncio.get_running_loop().run_in_executor(None, self.socket.send, keep_alive)
             return True
-        except Exception:
+        except Exception:  # pylint: disable=broad-exception-caught
             return False
 
     def close(self) -> Any:
@@ -284,7 +284,7 @@ class PeerConnection:
         if self.socket:
             try:
                 self.socket.close()
-            except Exception:
+            except Exception:  # pylint: disable=broad-exception-caught
                 pass
             self.socket = None
 

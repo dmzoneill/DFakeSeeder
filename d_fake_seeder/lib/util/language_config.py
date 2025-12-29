@@ -97,7 +97,7 @@ def _discover_languages_from_locale() -> Dict[str, Dict[str, str]]:
         }
         logger.trace("Added English as fallback language")
 
-    logger.info(f"Discovered {len(languages)} languages from locale directory")
+    logger.info("Discovered %d languages from locale directory", len(languages))
     return languages
 
 
@@ -114,7 +114,7 @@ def get_supported_languages() -> Dict[str, Dict[str, str]]:
         return config.get("languages", {})  # type: ignore[no-any-return]
     except (FileNotFoundError, json.JSONDecodeError) as e:
         # Fallback to dynamic discovery from locale directory if config loading fails
-        logger.warning(f"Could not load languages config ({e}), falling back to locale directory scan")
+        logger.warning("Could not load languages config (%s), falling back to locale directory scan", e)
         return _discover_languages_from_locale()
 
 
@@ -133,8 +133,7 @@ def get_language_display_names(use_native_names: bool = True) -> Dict[str, str]:
     languages = get_supported_languages()
     if use_native_names:
         return {code: info.get("native_name", info["name"]) for code, info in languages.items()}
-    else:
-        return {code: info["name"] for code, info in languages.items()}
+    return {code: info["name"] for code, info in languages.items()}
 
 
 def get_language_plural_forms(language_code: str) -> Optional[str]:

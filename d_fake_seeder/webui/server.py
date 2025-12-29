@@ -18,12 +18,12 @@ from .routes import setup_routes
 
 # Try to import aiohttp - it's an optional dependency
 web: Any = None
-AIOHTTP_AVAILABLE = False
+AIOHTTP_AVAILABLE = False  # pylint: disable=invalid-name
 try:
     from aiohttp import web as _web
 
     web = _web
-    AIOHTTP_AVAILABLE = True
+    AIOHTTP_AVAILABLE = True  # pylint: disable=invalid-name
 except ImportError:
     pass
 
@@ -53,7 +53,7 @@ class WebUIServer:
 
         if not AIOHTTP_AVAILABLE:
             logger.warning(
-                "aiohttp not installed - Web UI disabled. " "Install with: pip install aiohttp",
+                "aiohttp not installed - Web UI disabled. Install with: pip install aiohttp",
                 extra={"class_name": self.__class__.__name__},
             )
         else:
@@ -143,10 +143,11 @@ class WebUIServer:
 
             return True
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to start Web UI: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
             # Notify user of failure
@@ -177,10 +178,11 @@ class WebUIServer:
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Error stopping Web UI: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     def _create_ssl_context(self) -> Optional[ssl.SSLContext]:
@@ -214,10 +216,11 @@ class WebUIServer:
             )
             return ssl_ctx
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to create SSL context: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return None
 
@@ -259,12 +262,12 @@ class WebUIServer:
 
 
 # Convenience function to get a singleton instance
-_instance: Optional[WebUIServer] = None
+_instance: Optional[WebUIServer] = None  # pylint: disable=invalid-name
 
 
 def get_webui_server(model: Any = None) -> WebUIServer:
     """Get or create the WebUIServer singleton instance."""
-    global _instance
+    global _instance  # pylint: disable=global-statement
     if _instance is None:
         _instance = WebUIServer(model)
     elif model is not None:

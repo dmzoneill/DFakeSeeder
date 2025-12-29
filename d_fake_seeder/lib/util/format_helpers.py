@@ -33,8 +33,7 @@ def format_size(bytes_count: Union[int, float], decimal_places: int = 1) -> str:
 
     if decimal_places == 0:
         return f"{int(size)} {units[unit_index]}"
-    else:
-        return f"{size:.{decimal_places}f} {units[unit_index]}"
+    return f"{size:.{decimal_places}f} {units[unit_index]}"
 
 
 def format_number(number: Union[int, float], decimal_places: Optional[int] = None) -> str:
@@ -56,5 +55,4 @@ def format_number(number: Union[int, float], decimal_places: Optional[int] = Non
 
     if decimal_places == 0:
         return str(int(number))
-    else:
-        return f"{number:.{decimal_places}f}"
+    return f"{number:.{decimal_places}f}"

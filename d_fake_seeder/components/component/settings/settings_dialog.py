@@ -18,7 +18,6 @@ from d_fake_seeder.domain.app_settings import AppSettings  # noqa
 from d_fake_seeder.lib.logger import logger  # noqa
 
 # Import tab configuration system
-from d_fake_seeder.lib.util.tab_config import get_config_metadata  # noqa
 from d_fake_seeder.lib.util.tab_config import get_settings_tab_classes  # noqa: E402
 
 # Component inheritance removed - settings dialog should not be a general model observer
@@ -34,6 +33,7 @@ from .peer_protocol_tab import PeerProtocolTab  # noqa
 from .protocol_extensions_tab import ProtocolExtensionsTab  # noqa
 from .simulation_tab import SimulationTab  # noqa
 from .speed_tab import SpeedTab  # noqa
+from .tracker_settings_tab import TrackerSettingsTab  # noqa
 from .webui_tab import WebUITab  # noqa
 
 # fmt: on
@@ -150,13 +150,14 @@ class SettingsDialog:
                 "WebUITab": WebUITab,
                 "NotificationsTab": NotificationsTab,
                 "AdvancedTab": AdvancedTab,
+                "TrackerSettingsTab": TrackerSettingsTab,
             }
             # Load tab configuration
             try:
                 tab_classes = get_settings_tab_classes(module_mapping)
                 logger.trace("Loaded  tabs from configuration", "SettingsDialog")
                 logger.trace("Configuration metadata:", "SettingsDialog")
-            except Exception:
+            except (KeyError, AttributeError, TypeError, ValueError):
                 logger.trace(
                     "Warning: Could not load tab config (), using fallback",
                     "SettingsDialog",
@@ -178,13 +179,13 @@ class SettingsDialog:
                     self.tabs.append(tab)
                     logger.info("Successfully initialized", "SettingsDialog")
                     # logger.debug(f"Initialized {tab.tab_name} tab")  # Temporarily commented out - causes hang
-                except Exception as e:
+                except (AttributeError, TypeError, KeyError, ValueError) as e:
                     logger.error("ERROR initializing :", "SettingsDialog")
-                    logger.error(f"Error initializing {tab_class.__name__}: {e}")
+                    logger.error(f"Error initializing {tab_class.__name__}: {e}", exc_info=True)
             logger.trace("Tab initialization completed. Total tabs:", "SettingsDialog")
             logger.info(f"Initialized {len(self.tabs)} settings tabs")
-        except Exception as e:
-            logger.error(f"Error initializing settings tabs: {e}")
+        except (AttributeError, TypeError, KeyError, ValueError) as e:
+            logger.error(f"Error initializing settings tabs: {e}", exc_info=True)
 
     def _update_tabs_with_model(self) -> None:
         """Update all tabs with the model reference."""
@@ -211,9 +212,9 @@ class SettingsDialog:
                     logger.trace("Model stored for  tab", "SettingsDialog")
             logger.trace("All tabs updated with model", "SettingsDialog")
             logger.trace(f"Updated {len(self.tabs)} tabs with model")
-        except Exception as e:
+        except (AttributeError, TypeError) as e:
             logger.error("ERROR in _update_tabs_with_model:", "SettingsDialog")
-            logger.error(f"Error updating tabs with model: {e}")
+            logger.error(f"Error updating tabs with model: {e}", exc_info=True)
 
     def _connect_window_signals(self) -> None:
         """Connect window-level signals."""
@@ -225,8 +226,8 @@ class SettingsDialog:
             # Notebook page switching
             if self.notebook:
                 self.notebook.connect("switch-page", self.on_page_switched)
-        except Exception as e:
-            logger.error(f"Error connecting window signals: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error connecting window signals: {e}", exc_info=True)
 
     def _connect_button_signals(self) -> None:
         """Connect action button signals."""
@@ -248,8 +249,8 @@ class SettingsDialog:
                 reset_button.connect("clicked", self.on_reset_clicked)
 
             logger.trace("Action button signals connected", "SettingsDialog")
-        except Exception as e:
-            logger.error(f"Error connecting button signals: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error connecting button signals: {e}", exc_info=True)
 
     def on_window_shown(self, window: Any) -> None:
         """Handle window shown event - perform deferred initialization."""
@@ -281,7 +282,7 @@ class SettingsDialog:
                             logger.trace("Populating language dropdown for GeneralTab", "SettingsDialog")
                             try:
                                 tab._populate_language_dropdown()
-                            except Exception as e:
+                            except (AttributeError, TypeError, ValueError) as e:
                                 logger.error(f"Error populating language dropdown: {e}", exc_info=True)
 
                 # Register for translation (if model available)
@@ -290,7 +291,7 @@ class SettingsDialog:
 
                 self._first_show_complete = True
                 logger.trace("Deferred initialization complete", "SettingsDialog")
-            except Exception as e:
+            except (AttributeError, TypeError, ValueError) as e:
                 logger.error(f"Error in deferred initialization: {e}", exc_info=True)
             return False  # Remove idle callback
 
@@ -312,8 +313,8 @@ class SettingsDialog:
                     if self.window.has_css_class("dark"):
                         self.window.remove_css_class("dark")
                         logger.trace("Removed 'dark' CSS class from settings dialog", "SettingsDialog")
-        except Exception as e:
-            logger.error(f"Error handling app settings change in dialog: {e}", "SettingsDialog")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error handling app settings change in dialog: {e}", "SettingsDialog", exc_info=True)
 
     def _setup_global_shortcuts(self) -> None:
         """Set up global keyboard shortcuts for the settings dialog."""
@@ -333,8 +334,8 @@ class SettingsDialog:
                 if hasattr(tab, "setup_tab_shortcuts"):
                     tab.setup_tab_shortcuts(shortcuts)
                     break
-        except Exception as e:
-            logger.error(f"Error setting up global shortcuts: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error setting up global shortcuts: {e}", exc_info=True)
 
     def _register_for_translation(self) -> None:
         """Register settings dialog widgets for translation."""
@@ -360,8 +361,8 @@ class SettingsDialog:
                     )
                     # Use debounced refresh to avoid cascading refresh operations
                     self.model.translation_manager.refresh_all_translations()
-        except Exception as e:
-            logger.error(f"Error registering settings dialog for translation: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error registering settings dialog for translation: {e}", exc_info=True)
 
     def show(self) -> None:
         """Show the settings dialog."""
@@ -389,16 +390,16 @@ class SettingsDialog:
             else:
                 logger.trace("No translation manager found", "SettingsDialog")
             logger.info("show() method completed successfully", "SettingsDialog")
-        except Exception as e:
-            logger.error(f"Error showing settings dialog: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error showing settings dialog: {e}", exc_info=True)
 
     def hide(self) -> None:
         """Hide the settings dialog."""
         try:
             self.window.hide()
             logger.trace("Settings dialog hidden")
-        except Exception as e:
-            logger.error(f"Error hiding settings dialog: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error hiding settings dialog: {e}", exc_info=True)
 
     def close_dialog(self) -> None:
         """Close the settings dialog with validation."""
@@ -419,8 +420,8 @@ class SettingsDialog:
             # Save all settings before closing
             self.save_all_settings()
             self.hide()
-        except Exception as e:
-            logger.error(f"Error closing settings dialog: {e}")
+        except (AttributeError, TypeError, KeyError) as e:
+            logger.error(f"Error closing settings dialog: {e}", exc_info=True)
 
     def save_all_settings(self) -> Dict[str, Any]:
         """Save settings from all tabs."""
@@ -431,12 +432,12 @@ class SettingsDialog:
                     saved_settings = tab.save_settings()
                     all_saved_settings.update(saved_settings)
                     logger.trace(f"Saved settings for {tab.tab_name} tab")
-                except Exception as e:
-                    logger.error(f"Error saving {tab.tab_name} tab settings: {e}")
+                except (AttributeError, TypeError, KeyError, ValueError) as e:
+                    logger.error(f"Error saving {tab.tab_name} tab settings: {e}", exc_info=True)
             logger.trace(f"Saved settings from {len(self.tabs)} tabs")
             return all_saved_settings
-        except Exception as e:
-            logger.error(f"Error saving all settings: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error saving all settings: {e}", exc_info=True)
             return {}
 
     def validate_all_settings(self) -> Dict[str, Dict[str, str]]:
@@ -448,12 +449,12 @@ class SettingsDialog:
                     validation_errors = tab.validate_settings()
                     if validation_errors:
                         all_validation_errors[tab.tab_name] = validation_errors
-                except Exception as e:
-                    logger.error(f"Error validating {tab.tab_name} tab settings: {e}")
+                except (AttributeError, TypeError, KeyError, ValueError) as e:
+                    logger.error(f"Error validating {tab.tab_name} tab settings: {e}", exc_info=True)
                     all_validation_errors[tab.tab_name] = {"general": str(e)}
             return all_validation_errors
-        except Exception as e:
-            logger.error(f"Error validating all settings: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error validating all settings: {e}", exc_info=True)
             return {"general": {"error": str(e)}}
 
     def reset_current_tab(self) -> None:
@@ -466,8 +467,8 @@ class SettingsDialog:
                 tab = self.tabs[current_page]
                 tab.reset_to_defaults()
                 logger.trace(f"Reset {tab.tab_name} tab to defaults")
-        except Exception as e:
-            logger.error(f"Error resetting current tab: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error resetting current tab: {e}", exc_info=True)
 
     def reset_all_tabs(self) -> None:
         """Reset all tabs to default values."""
@@ -476,11 +477,11 @@ class SettingsDialog:
                 try:
                     tab.reset_to_defaults()
                     logger.trace(f"Reset {tab.tab_name} tab to defaults")
-                except Exception as e:
-                    logger.error(f"Error resetting {tab.tab_name} tab: {e}")
+                except (AttributeError, TypeError, ValueError) as e:
+                    logger.error(f"Error resetting {tab.tab_name} tab: {e}", exc_info=True)
             logger.debug("Reset all settings tabs to defaults")
-        except Exception as e:
-            logger.error(f"Error resetting all tabs: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error resetting all tabs: {e}", exc_info=True)
 
     def next_tab(self) -> None:
         """Switch to the next tab."""
@@ -491,8 +492,8 @@ class SettingsDialog:
             total_pages = self.notebook.get_n_pages()
             next_page = (current_page + 1) % total_pages
             self.notebook.set_current_page(next_page)
-        except Exception as e:
-            logger.error(f"Error switching to next tab: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error switching to next tab: {e}", exc_info=True)
 
     def previous_tab(self) -> None:
         """Switch to the previous tab."""
@@ -503,8 +504,8 @@ class SettingsDialog:
             total_pages = self.notebook.get_n_pages()
             previous_page = (current_page - 1) % total_pages
             self.notebook.set_current_page(previous_page)
-        except Exception as e:
-            logger.error(f"Error switching to previous tab: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error switching to previous tab: {e}", exc_info=True)
 
     def get_tab_by_name(self, tab_name: str) -> Any:
         """Get a specific tab by name."""
@@ -513,8 +514,8 @@ class SettingsDialog:
                 if tab.tab_name == tab_name:
                     return tab
             return None
-        except Exception as e:
-            logger.error(f"Error getting tab by name {tab_name}: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error getting tab by name {tab_name}: {e}", exc_info=True)
             return None
 
     def switch_to_tab(self, tab_name: str) -> bool:
@@ -526,8 +527,8 @@ class SettingsDialog:
                         self.notebook.set_current_page(i)
                         return True
             return False
-        except Exception as e:
-            logger.error(f"Error switching to tab {tab_name}: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error switching to tab {tab_name}: {e}", exc_info=True)
             return False
 
     # Signal handlers
@@ -558,8 +559,8 @@ class SettingsDialog:
                             elif response == 1:  # Discard
                                 self._cleanup_and_close()
                             # else: Cancel - do nothing, dialog stays open
-                        except Exception as e:
-                            logger.error(f"Error handling unsaved changes dialog: {e}")
+                        except (AttributeError, TypeError) as e:
+                            logger.error(f"Error handling unsaved changes dialog: {e}", exc_info=True)
 
                     dialog.choose(self.window, None, on_response)
                     return False
@@ -570,8 +571,8 @@ class SettingsDialog:
                 # No unsaved changes - just close
                 self._cleanup_and_close()
                 return False  # Allow default close behavior
-        except Exception as e:
-            logger.error(f"Error handling window close: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error handling window close: {e}", exc_info=True)
             return False  # Allow close even if there was an error
 
     def _cleanup_and_close(self) -> None:
@@ -583,16 +584,16 @@ class SettingsDialog:
                 if hasattr(tab, "cleanup"):
                     try:
                         tab.cleanup()
-                    except Exception as e:
-                        logger.error(f"Error cleaning up tab: {e}")
+                    except (AttributeError, TypeError) as e:
+                        logger.error(f"Error cleaning up tab: {e}", exc_info=True)
 
             # Reset dirty flag
             self._settings_dirty = False
 
             self.hide()
             logger.trace("Settings dialog closed and cleaned up")
-        except Exception as e:
-            logger.error(f"Error during cleanup and close: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error during cleanup and close: {e}", exc_info=True)
 
     def on_page_switched(self, notebook: Gtk.Notebook, page: Gtk.Widget, page_num: int) -> None:
         """Handle notebook page switch."""
@@ -604,8 +605,8 @@ class SettingsDialog:
                 tab.ensure_initialized()
                 # Update tab dependencies when switching
                 tab.update_dependencies()
-        except Exception as e:
-            logger.error(f"Error handling page switch: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error handling page switch: {e}", exc_info=True)
 
     # Button signal handlers
     def on_cancel_clicked(self, button: Any) -> None:
@@ -618,8 +619,8 @@ class SettingsDialog:
             self._settings_dirty = False
             # Close the dialog
             self._cleanup_and_close()
-        except Exception as e:
-            logger.error(f"Error handling cancel button: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error handling cancel button: {e}", exc_info=True)
 
     def on_apply_clicked(self, button: Any) -> None:
         """Handle Apply button click - save but keep dialog open."""
@@ -639,8 +640,8 @@ class SettingsDialog:
 
             # Show brief confirmation
             self._show_notification(self._("Settings saved successfully"))
-        except Exception as e:
-            logger.error(f"Error handling apply button: {e}")
+        except (AttributeError, TypeError, KeyError) as e:
+            logger.error(f"Error handling apply button: {e}", exc_info=True)
 
     def on_ok_clicked(self, button: Any) -> None:
         """Handle OK button click - save and close."""
@@ -659,8 +660,8 @@ class SettingsDialog:
             # Close the dialog
             self._cleanup_and_close()
             logger.info("Settings saved and dialog closed")
-        except Exception as e:
-            logger.error(f"Error handling OK button: {e}")
+        except (AttributeError, TypeError, KeyError) as e:
+            logger.error(f"Error handling OK button: {e}", exc_info=True)
 
     def on_reset_clicked(self, button: Any) -> None:
         """Handle Reset button click - reset current tab to defaults."""
@@ -671,8 +672,8 @@ class SettingsDialog:
             # Mark settings as modified
             self._settings_dirty = True
             logger.info("Current tab reset to defaults")
-        except Exception as e:
-            logger.error(f"Error handling reset button: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error handling reset button: {e}", exc_info=True)
 
     # Helper methods
     def _show_validation_errors(self, validation_errors: Dict[str, Dict[str, str]]) -> None:
@@ -696,12 +697,12 @@ class SettingsDialog:
             def on_response(dialog: Any, result: Any) -> None:
                 try:
                     dialog.choose_finish(result)
-                except Exception as e:
-                    logger.error(f"Error handling validation dialog response: {e}")
+                except (AttributeError, TypeError) as e:
+                    logger.error(f"Error handling validation dialog response: {e}", exc_info=True)
 
             dialog.choose(self.window, None, on_response)
-        except Exception as e:
-            logger.error(f"Error showing validation errors: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error showing validation errors: {e}", exc_info=True)
 
     def _show_notification(self, message: str) -> None:
         """Show a brief notification message."""
@@ -710,8 +711,8 @@ class SettingsDialog:
             # In the future, this could show a toast notification
             logger.info(message)
             # TODO: Implement toast notification UI
-        except Exception as e:
-            logger.error(f"Error showing notification: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error showing notification: {e}", exc_info=True)
 
     def mark_dirty(self) -> None:
         """Mark settings as modified (dirty)."""
@@ -728,16 +729,16 @@ class SettingsDialog:
             if 0 <= current_page < len(self.tabs):
                 return self.tabs[current_page]
             return None
-        except Exception as e:
-            logger.error(f"Error getting current tab: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error getting current tab: {e}", exc_info=True)
             return None
 
     def get_all_tab_names(self) -> List[str]:
         """Get names of all tabs."""
         try:
             return [tab.tab_name for tab in self.tabs]
-        except Exception as e:
-            logger.error(f"Error getting tab names: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error getting tab names: {e}", exc_info=True)
             return []
 
     def export_settings(self) -> Dict[str, Any]:
@@ -748,11 +749,11 @@ class SettingsDialog:
                 try:
                     tab_settings = tab._collect_settings()
                     exported_settings.update(tab_settings)
-                except Exception as e:
-                    logger.error(f"Error exporting {tab.tab_name} tab settings: {e}")
+                except (AttributeError, TypeError, KeyError) as e:
+                    logger.error(f"Error exporting {tab.tab_name} tab settings: {e}", exc_info=True)
             return exported_settings
-        except Exception as e:
-            logger.error(f"Error exporting settings: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error exporting settings: {e}", exc_info=True)
             return {}
 
     def reload_all_tab_settings(self) -> bool:
@@ -761,16 +762,18 @@ class SettingsDialog:
             success = True
             for tab in self.tabs:
                 try:
+                    # Ensure tab is initialized first (handles lazy-loaded tabs)
+                    tab.ensure_initialized()
                     # Reload settings for each tab
                     tab._load_settings()
-                except Exception as e:
+                except (AttributeError, TypeError, KeyError) as e:
                     logger.error(
                         f"Error reloading settings for {tab.tab_name} tab: {e}",
                         exc_info=True,
                     )
                     success = False
             return success
-        except Exception as e:
+        except (AttributeError, TypeError) as e:
             logger.error(f"Error reloading tab settings: {e}", exc_info=True)
             return False
 
@@ -783,10 +786,10 @@ class SettingsDialog:
                     # Reload settings for each tab
                     tab._load_settings()
                     tab.update_dependencies()
-                except Exception as e:
-                    logger.error(f"Error importing settings to {tab.tab_name} tab: {e}")
+                except (AttributeError, TypeError, KeyError) as e:
+                    logger.error(f"Error importing settings to {tab.tab_name} tab: {e}", exc_info=True)
                     success = False
             return success
-        except Exception as e:
-            logger.error(f"Error importing settings: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Error importing settings: {e}", exc_info=True)
             return False

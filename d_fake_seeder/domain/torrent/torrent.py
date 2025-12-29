@@ -1,3 +1,11 @@
+"""
+Torrent Domain Object Module.
+
+This module defines the Torrent class, which represents a single torrent in the
+application. It manages torrent state, statistics, seeder connections, and
+coordinates with the settings system to persist torrent data.
+"""
+
 # fmt: off
 # isort: skip_file
 from typing import List,  Any
@@ -25,7 +33,10 @@ from gi.repository import GObject  # noqa: E402
 
 
 # Torrent class definition
-class Torrent(GObject.GObject):
+# pylint: disable=access-member-before-definition
+class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
+    """Domain object representing a torrent with state, stats, and seeder connection."""
+
     # Define custom signal 'attribute-changed'
     # which is emitted when torrent data is modified
     __gsignals__ = {
@@ -36,7 +47,7 @@ class Torrent(GObject.GObject):
         )
     }
 
-    def __init__(self, filepath: Any) -> None:
+    def __init__(self, filepath: Any) -> None:  # pylint: disable=too-many-statements
         super().__init__()
         logger.trace("instantiate", extra={"class_name": self.__class__.__name__})
 
@@ -191,6 +202,11 @@ class Torrent(GObject.GObject):
         )
         self.peers_worker.start()
 
+    @property
+    def info_hash_bytes(self) -> bytes:
+        """Get the 20-byte info hash for this torrent."""
+        return self.torrent_file.file_hash
+
     def peers_worker_update(self) -> Any:
         logger.trace(
             "Peers worker",
@@ -231,7 +247,7 @@ class Torrent(GObject.GObject):
                     if count == 0:
                         self.active = False
 
-        except Exception as e:
+        except (RuntimeError, OSError, AttributeError) as e:
             logger.error(
                 f"Error in seeder_request_worker: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -267,13 +283,13 @@ class Torrent(GObject.GObject):
                     ticker = 0.0
                 ticker += self.worker_sleep_interval
 
-        except Exception as e:
+        except (RuntimeError, OSError, AttributeError) as e:
             logger.error(
                 f"Error in update_torrent_worker: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def update_torrent_callback(self) -> None:
+    def update_torrent_callback(self) -> None:  # pylint: disable=too-many-branches,too-many-statements
         # Clear pending flag - this callback is now executing
         self._ui_update_pending = False
 
@@ -290,7 +306,7 @@ class Torrent(GObject.GObject):
         if self.total_size != self.torrent_file.total_size:  # type: ignore[has-type]
             self.total_size = self.torrent_file.total_size
 
-        if self.seeder.ready:  # type: ignore[truthy-function]
+        if self.seeder.ready:
             if self.seeders != self.seeder.seeders:  # type: ignore[has-type]
                 self.seeders = self.seeder.seeders
 
@@ -390,6 +406,7 @@ class Torrent(GObject.GObject):
         """
         Save current torrent state to transient storage (in-memory only, no disk write).
         Called periodically during runtime and when stopping.
+        Thread-safe via AppSettings lock.
         """
         ATTRIBUTES = Attributes
         attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
@@ -397,9 +414,10 @@ class Torrent(GObject.GObject):
         # Build torrent data dictionary
         torrent_data = {attr: getattr(self, attr) for attr in attributes}
 
-        # Update transient storage (NO disk write during runtime)
-        # Torrents are only persisted to disk during application shutdown via save_quit()
-        self.settings.torrents[self.file_path] = torrent_data
+        # Update transient storage with lock to prevent race conditions during shutdown
+        # This ensures save_quit() gets a consistent snapshot when doing deepcopy
+        with AppSettings._lock:  # pylint: disable=protected-access
+            self.settings.torrents[self.file_path] = torrent_data
 
         logger.trace(
             f"💾 Torrent data saved to transient: {self.name[:30]} - progress={self.progress:.2%}, "
@@ -510,7 +528,7 @@ class Torrent(GObject.GObject):
             # Reset the timer to 1800 seconds (using GLib.idle_add for thread safety)
             GLib.idle_add(self._complete_tracker_update)
 
-        except Exception as e:
+        except (RuntimeError, OSError, AttributeError, ValueError) as e:
             logger.error(
                 f"❌ Error during force tracker update for {self.name}: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -594,7 +612,7 @@ class Torrent(GObject.GObject):
                 f"⚡ STOPPED WORKERS: {self.name}",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
+        except (RuntimeError, OSError, AttributeError) as e:
             logger.error(
                 f"Error stopping peers worker: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -629,7 +647,7 @@ class Torrent(GObject.GObject):
                     f"⚡ STARTED PEERS WORKER: {self.name}",
                     extra={"class_name": self.__class__.__name__},
                 )
-            except Exception as e:
+            except (RuntimeError, OSError, AttributeError) as e:
                 logger.error(
                     f"Error starting peers worker: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -645,7 +663,7 @@ class Torrent(GObject.GObject):
         if attr == "torrent_attributes":
             self.torrent_attributes = Attributes()
             return self.torrent_attributes
-        elif hasattr(self.torrent_attributes, attr):
+        if hasattr(self.torrent_attributes, attr):
             return getattr(self.torrent_attributes, attr)
         # Note: Removed hasattr(self, attr) check - it creates infinite recursion
         # and is unnecessary since __getattr__ is only called when attr doesn't exist on self
@@ -672,9 +690,10 @@ class Torrent(GObject.GObject):
             if hasattr(self, "seeder") and self.seeder and hasattr(self.seeder, "seeder"):
                 active_seeder = self.seeder.seeder
                 if hasattr(active_seeder, "_get_tracker_model"):
+                    # pylint: disable=protected-access
                     return active_seeder._get_tracker_model()  # type: ignore[attr-defined]
             return None
-        except Exception as e:
+        except (RuntimeError, AttributeError) as e:
             logger.trace(
                 f"Failed to get active tracker model: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -701,7 +720,7 @@ class Torrent(GObject.GObject):
                         tracker_model = Tracker(url=announce_url, tier=tier + 1)
                         tracker_models.append(tracker_model)
 
-        except Exception as e:
+        except (RuntimeError, AttributeError, ValueError) as e:
             logger.trace(
                 f"Failed to get all tracker models: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -761,7 +780,7 @@ class Torrent(GObject.GObject):
             if last_announces:
                 stats["last_announce"] = max(last_announces)
 
-        except Exception as e:
+        except (RuntimeError, AttributeError, ValueError, ZeroDivisionError) as e:
             logger.trace(
                 f"Failed to get tracker statistics: {e}",
                 extra={"class_name": self.__class__.__name__},

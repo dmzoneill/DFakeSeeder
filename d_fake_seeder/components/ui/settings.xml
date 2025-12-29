@@ -125,6 +125,16 @@
                         </object>
                     </child>
 
+                    <!-- Tracker Tab -->
+                    <child>
+                        <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/tracker.xml"/>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">Tracker</property>
+                        </object>
+                    </child>
+
                     <!-- Advanced Tab -->
                     <child>
                         <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="settings/advanced.xml"/>

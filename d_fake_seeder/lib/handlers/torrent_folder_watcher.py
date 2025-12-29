@@ -21,11 +21,11 @@ try:
     WATCHDOG_AVAILABLE = True
 except ImportError:
     # Fallback if watchdog is not available
-    class FileSystemEventHandler:  # type: ignore[no-redef]
-        pass
+    class FileSystemEventHandler:  # type: ignore[no-redef]  # pylint: disable=too-few-public-methods
+        """Stub fallback when watchdog is not available."""
 
-    class Observer:  # type: ignore[no-redef]
-        pass
+    class Observer:  # type: ignore[no-redef]  # pylint: disable=too-few-public-methods
+        """Stub fallback when watchdog is not available."""
 
     WATCHDOG_AVAILABLE = False
 
@@ -57,7 +57,7 @@ class TorrentFolderWatcher:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def start(self) -> Any:
+    def start(self) -> Any:  # pylint: disable=too-many-return-statements
         """Start watching the configured folder"""
         if not WATCHDOG_AVAILABLE:
             logger.warning(
@@ -122,7 +122,7 @@ class TorrentFolderWatcher:
 
             return True
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to start watch folder: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -141,7 +141,7 @@ class TorrentFolderWatcher:
                     "Stopped watching torrent folder",
                     extra={"class_name": self.__class__.__name__},
                 )
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.error(
                     f"Error stopping watch folder: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -165,7 +165,7 @@ class TorrentFolderWatcher:
                     if os.path.isfile(torrent_path):
                         self.event_handler.process_torrent_file(torrent_path)
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Error scanning existing files: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -212,7 +212,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
             time.sleep(0.5)
             self.process_torrent_file(event.dest_path)
 
-    def process_torrent_file(self, file_path: Any) -> None:
+    def process_torrent_file(self, file_path: Any) -> None:  # pylint: disable=too-many-branches
         """
         Process a torrent file by copying it to the config directory
 
@@ -266,7 +266,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
                             f"Deleted duplicate torrent from watch folder: {filename}",
                             extra={"class_name": self.__class__.__name__},
                         )
-                    except Exception as e:
+                    except Exception as e:  # pylint: disable=broad-exception-caught
                         logger.warning(
                             f"Failed to delete torrent file {filename}: {e}",
                             extra={"class_name": self.__class__.__name__},
@@ -325,13 +325,13 @@ class TorrentFileEventHandler(FileSystemEventHandler):
                         f"Deleted source torrent file from watch folder: {filename}",
                         extra={"class_name": self.__class__.__name__},
                     )
-                except Exception as e:
+                except Exception as e:  # pylint: disable=broad-exception-caught
                     logger.warning(
                         f"Failed to delete source torrent file {filename}: {e}",
                         extra={"class_name": self.__class__.__name__},
                     )
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Error processing torrent file {file_path}: {e}",
                 extra={"class_name": self.__class__.__name__},

@@ -1,3 +1,11 @@
+"""
+Torrent State Model.
+
+This module defines the TorrentState class which represents the current
+runtime state of a torrent including progress, upload/download stats,
+and connection status.
+"""
+
 # fmt: off
 import uuid
 from typing import Any
@@ -12,6 +20,8 @@ from gi.repository import GObject  # noqa: E402
 
 
 class TorrentState(GObject.Object):
+    """GObject representing aggregated state for torrents by tracker."""
+
     tracker = GObject.Property(type=GObject.TYPE_STRING, default="")
     count = GObject.Property(type=GObject.TYPE_INT, default=0)
 

@@ -34,7 +34,7 @@ class DBusClient:
         self.connected = False
         self._connect()
 
-    def _connect(self) -> bool:
+    def _connect(self) -> bool:  # pylint: disable=too-many-return-statements
         """Connect to D-Bus service and verify main app is actually running"""
         try:
             self.connection = Gio.bus_get_sync(Gio.BusType.SESSION, None)
@@ -54,7 +54,7 @@ class DBusClient:
                     1000,  # 1 second timeout
                     None,
                 )
-            except Exception as e:
+            except GLib.Error as e:
                 # Service not found - this is normal when main app isn't running
                 logger.trace(
                     f"Service not available on D-Bus: {e}",
@@ -98,14 +98,13 @@ class DBusClient:
                         extra={"class_name": self.__class__.__name__},
                     )
                     return True
-                else:
-                    self.connected = False
-                    logger.warning(
-                        "Service found but GetSettings returned None",
-                        extra={"class_name": self.__class__.__name__},
-                    )
-                    return False
-            except Exception as e:
+                self.connected = False
+                logger.warning(
+                    "Service found but GetSettings returned None",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                return False
+            except GLib.Error as e:
                 self.connected = False
                 logger.warning(
                     f"Service found but not responding: {e}",
@@ -113,7 +112,7 @@ class DBusClient:
                 )
                 return False
 
-        except Exception as e:
+        except GLib.Error as e:
             logger.info(
                 f"Main application not running (D-Bus connection failed): {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -149,14 +148,13 @@ class DBusClient:
                     extra={"class_name": self.__class__.__name__},
                 )
                 return unpacked
-            else:
-                logger.warning(
-                    "GetSettings returned None result",
-                    extra={"class_name": self.__class__.__name__},
-                )
-                return None
+            logger.warning(
+                "GetSettings returned None result",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return None
 
-        except Exception as e:
+        except GLib.Error as e:
             logger.error(
                 f"Failed to get settings: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -180,10 +178,11 @@ class DBusClient:
             )
             return result.unpack()[0] if result else False
 
-        except Exception as e:
+        except GLib.Error as e:
             logger.error(
                 f"Failed to update settings: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return False
 
@@ -205,10 +204,11 @@ class DBusClient:
             )
             return True
 
-        except Exception as e:
+        except GLib.Error as e:
             logger.error(
                 f"Failed to subscribe to signal {signal_name}: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return False
 
@@ -222,8 +222,12 @@ class DBusClient:
             result = self.proxy.call_sync("Ping", None, Gio.DBusCallFlags.NONE, 1000, None)  # 1 second timeout
             return result.unpack()[0] if result else False
 
-        except Exception as e:
-            logger.error(f"Ping failed: {e}", extra={"class_name": self.__class__.__name__})
+        except GLib.Error as e:
+            logger.error(
+                f"Ping failed: {e}",
+                extra={"class_name": self.__class__.__name__},
+                exc_info=True,
+            )
             return False
 
     def reconnect(self) -> bool:

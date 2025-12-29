@@ -181,7 +181,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
 
             # Basic Multi-Tracker settings
             if self._widgets["multi_tracker_enabled"]:
-                self._widgets["multi_tracker_enabled"].set_state(mt_config.get("enabled", True))
+                self._widgets["multi_tracker_enabled"].set_active(mt_config.get("enabled", True))
 
             # Failover configuration
             if self._widgets["failover_enabled"]:
@@ -291,7 +291,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
         try:
             # Basic settings
             if self._widgets.get("multi_tracker_enabled"):
-                settings["protocols.multi_tracker.enabled"] = self._widgets["multi_tracker_enabled"].get_state()
+                settings["protocols.multi_tracker.enabled"] = self._widgets["multi_tracker_enabled"].get_active()
 
             # Failover settings
             if self._widgets.get("failover_enabled"):
@@ -449,7 +449,7 @@ class MultiTrackerTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Vali
         try:
             # Multi-tracker enabled state
             if self._widgets["multi_tracker_enabled"]:
-                enabled = self._widgets["multi_tracker_enabled"].get_state()
+                enabled = self._widgets["multi_tracker_enabled"].get_active()
 
                 # Enable/disable all multi-tracker widgets based on main switch
                 dependent_widgets = [

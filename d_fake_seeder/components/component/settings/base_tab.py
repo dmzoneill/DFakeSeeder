@@ -159,8 +159,8 @@ class BaseSettingsTab(Component):
             try:
                 self.translate_all_dropdowns()
                 logger.trace("Completed dropdown translation for", "BaseTab")
-            except Exception as e:
-                logger.error(f"Error translating dropdowns: {e}")
+            except (AttributeError, TypeError, ValueError) as e:
+                logger.error(f"Error translating dropdowns: {e}", exc_info=True)
 
         # VALIDATE handler coverage in debug mode
         if self._is_debug_mode():
@@ -217,10 +217,11 @@ class BaseSettingsTab(Component):
         # Call custom disconnection logic first
         try:
             self._disconnect_signals()
-        except Exception as e:
+        except (AttributeError, TypeError) as e:
             logger.warning(
                 f"Error in _disconnect_signals for {self.tab_name}: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
         # Call parent cleanup to handle tracked resources
@@ -267,6 +268,10 @@ class BaseSettingsTab(Component):
             Dictionary of settings that were changed
         """
         try:
+            # Ensure tab is initialized before collecting settings
+            # This handles lazy-loaded tabs that user may not have viewed
+            self.ensure_initialized()
+
             changed_settings = self._collect_settings()
 
             # Handle None return (should return empty dict instead)
@@ -280,8 +285,11 @@ class BaseSettingsTab(Component):
             self.logger.info(f"{self.tab_name} tab settings saved: {len(changed_settings)} items")
             return changed_settings
 
-        except Exception as e:
-            self.logger.error(f"Error saving {self.tab_name} tab settings: {e}")
+        except (KeyError, AttributeError, TypeError, ValueError) as e:
+            self.logger.error(
+                f"Error saving {self.tab_name} tab settings: {e}",
+                exc_info=True,
+            )
             return {}
 
     @abstractmethod
@@ -337,8 +345,11 @@ class BaseSettingsTab(Component):
         """
         try:
             return self._validate_tab_settings()
-        except Exception as e:
-            self.logger.error(f"Error validating {self.tab_name} tab settings: {e}")
+        except (KeyError, TypeError, ValueError) as e:
+            self.logger.error(
+                f"Error validating {self.tab_name} tab settings: {e}",
+                exc_info=True,
+            )
             return {"general": f"Validation error: {e}"}
 
     def _validate_tab_settings(self) -> Dict[str, str]:
@@ -355,8 +366,11 @@ class BaseSettingsTab(Component):
         """Update UI element dependencies."""
         try:
             self._update_tab_dependencies()
-        except Exception as e:
-            self.logger.error(f"Error updating {self.tab_name} tab dependencies: {e}")
+        except (AttributeError, TypeError, ValueError) as e:
+            self.logger.error(
+                f"Error updating {self.tab_name} tab dependencies: {e}",
+                exc_info=True,
+            )
 
     def _update_tab_dependencies(self) -> None:
         """Tab-specific dependency update logic. Override in subclasses."""
@@ -367,8 +381,11 @@ class BaseSettingsTab(Component):
         try:
             self._reset_tab_defaults()
             self.logger.trace(f"{self.tab_name} tab reset to defaults")
-        except Exception as e:
-            self.logger.error(f"Error resetting {self.tab_name} tab to defaults: {e}")
+        except (AttributeError, TypeError, ValueError) as e:
+            self.logger.error(
+                f"Error resetting {self.tab_name} tab to defaults: {e}",
+                exc_info=True,
+            )
 
     def _reset_tab_defaults(self) -> None:
         """Tab-specific reset logic. Override in subclasses."""
@@ -390,8 +407,11 @@ class BaseSettingsTab(Component):
             widget_name = getattr(widget, "get_name", lambda: "unknown")()
             self.logger.trace(f"{self.tab_name} tab setting changed: {widget_name}")
 
-        except Exception as e:
-            self.logger.error(f"Error handling setting change in {self.tab_name} tab: {e}")
+        except (AttributeError, TypeError, ValueError) as e:
+            self.logger.error(
+                f"Error handling setting change in {self.tab_name} tab: {e}",
+                exc_info=True,
+            )
 
     # ========== HYBRID APPROACH: Auto-Connect Methods ==========
 
@@ -406,9 +426,11 @@ class BaseSettingsTab(Component):
         for mapping in self.WIDGET_MAPPINGS:
             try:
                 self._connect_widget_mapping(mapping)
-            except Exception as e:
+            except (KeyError, AttributeError, TypeError) as e:
                 logger.error(
-                    f"{self.tab_name}: Failed to connect widget {mapping.get('id', 'unknown')}: {e}", "BaseTab"
+                    f"{self.tab_name}: Failed to connect widget {mapping.get('id', 'unknown')}: {e}",
+                    "BaseTab",
+                    exc_info=True,
                 )
 
     def _connect_widget_mapping(self, mapping: Dict[str, Any]) -> None:
@@ -584,7 +606,7 @@ class BaseSettingsTab(Component):
 
                 try:
                     widget_id = Gtk.Buildable.get_buildable_id(obj)
-                except Exception:
+                except (AttributeError, TypeError):
                     widget_id = None
 
                 if not widget_id:
@@ -625,7 +647,7 @@ class BaseSettingsTab(Component):
                 # Very basic check - if signal exists, assume it might be connected
                 # This is imperfect but better than nothing
                 return True
-        except Exception:
+        except (AttributeError, TypeError, ValueError):
             pass
 
         return False

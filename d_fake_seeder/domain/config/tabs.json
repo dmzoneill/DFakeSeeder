@@ -17,14 +17,16 @@
       "SimulationTab",
       "WebUITab",
       "NotificationsTab",
-      "AdvancedTab"
+      "AdvancedTab",
+      "TrackerSettingsTab"
     ],
     "optional": [
       "SimulationTab",
       "WebUITab",
       "ProtocolExtensionsTab",
       "DHTTab",
-      "NotificationsTab"
+      "NotificationsTab",
+      "TrackerSettingsTab"
     ],
     "required": [
       "GeneralTab",

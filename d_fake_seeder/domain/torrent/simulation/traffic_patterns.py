@@ -17,7 +17,7 @@ from d_fake_seeder.lib.logger import logger
 # fmt: on
 
 
-class TrafficPatternSimulator:
+class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
     """Generate realistic BitTorrent traffic patterns"""
 
     def __init__(self, seeding_profile: str = "balanced") -> None:
@@ -114,10 +114,11 @@ class TrafficPatternSimulator:
 
                 yield (current_time, speed)
 
-        except Exception as e:
+        except (KeyError, TypeError, ValueError, ArithmeticError) as e:
             logger.error(
                 f"Failed to generate upload pattern: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     def generate_download_pattern(
@@ -151,10 +152,11 @@ class TrafficPatternSimulator:
 
                 yield (current_time, speed)
 
-        except Exception as e:
+        except (KeyError, TypeError, ValueError, ArithmeticError) as e:
             logger.error(
                 f"Failed to generate download pattern: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     def simulate_peer_interactions(self, peer_count: int) -> List[Dict]:
@@ -196,10 +198,11 @@ class TrafficPatternSimulator:
 
             return interactions
 
-        except Exception as e:
+        except (KeyError, TypeError, ValueError, ArithmeticError) as e:
             logger.error(
                 f"Failed to simulate peer interactions: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return []
 
@@ -248,14 +251,15 @@ class TrafficPatternSimulator:
 
             return int(speed)
 
-        except Exception as e:
+        except (KeyError, TypeError, ValueError, ArithmeticError) as e:
             logger.error(
                 f"Failed to calculate realistic speed: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return base_speed
 
-    def _get_time_based_factor(self, current_time: float) -> float:
+    def _get_time_based_factor(self, current_time: float) -> float:  # pylint: disable=too-many-locals
         """
         Calculate time-based speed factor (day/night patterns, weekday/weekend)
 
@@ -297,7 +301,7 @@ class TrafficPatternSimulator:
 
             return time_factor  # type: ignore[no-any-return]
 
-        except Exception:
+        except (KeyError, TypeError, ValueError):
             return 1.0
 
     def _apply_burst_idle_states(self, speed: float, current_time: float) -> float:
@@ -352,7 +356,7 @@ class TrafficPatternSimulator:
 
             return speed
 
-        except Exception:
+        except (KeyError, TypeError, ValueError, ArithmeticError):
             return speed
 
     def _simulate_network_congestion(self, current_time: float) -> float:
@@ -382,7 +386,7 @@ class TrafficPatternSimulator:
 
             return congestion_cycle * random_factor  # type: ignore[no-any-return]
 
-        except Exception:
+        except (KeyError, TypeError, ValueError, ArithmeticError):
             return 1.0
 
     def _calculate_peer_influence(self) -> Any:
@@ -409,14 +413,13 @@ class TrafficPatternSimulator:
 
             if peer_count < few_peers_threshold:
                 return few_peers_factor  # Reduced speed with few peers  # type: ignore
-            elif peer_count < optimal_peers_threshold:
+            if peer_count < optimal_peers_threshold:
                 return (
                     1.0 + (peer_count - few_peers_threshold) * improvement_per_peer
                 )  # Gradual improvement  # type: ignore  # noqa: E501
-            else:
-                return max_improvement_factor  # Cap at maximum improvement  # type: ignore
+            return max_improvement_factor  # Cap at maximum improvement  # type: ignore
 
-        except Exception:
+        except (KeyError, TypeError, ValueError):
             return 1.0
 
     def _generate_peer_interaction(self, timestamp: float, peer_index: int) -> Dict:
@@ -474,10 +477,11 @@ class TrafficPatternSimulator:
                 "bytes_exchanged": random.randint(1024, 1024 * 1024),  # 1KB to 1MB
             }
 
-        except Exception as e:
+        except (KeyError, TypeError, ValueError, ArithmeticError) as e:
             logger.error(
                 f"Failed to generate peer interaction: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return {
                 "timestamp": timestamp,

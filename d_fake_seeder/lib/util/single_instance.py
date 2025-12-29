@@ -30,7 +30,6 @@ class SingleInstanceChecker:
 
     def cleanup(self) -> Any:
         """Clean up resources"""
-        pass
 
 
 class DBusSingleInstance(SingleInstanceChecker):
@@ -84,16 +83,15 @@ class DBusSingleInstance(SingleInstanceChecker):
                         extra={"class_name": self.__class__.__name__},
                     )
                     return False
-                else:
-                    logger.trace(
-                        f"D-Bus check error: {e}",
-                        extra={"class_name": self.__class__.__name__},
-                    )
-                    return False
+                logger.trace(
+                    f"D-Bus check error: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                return False
 
             return False
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.trace(
                 f"D-Bus instance check failed: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -118,7 +116,7 @@ class PIDFileLock(SingleInstanceChecker):
             if self.lockfile.exists():
                 try:
                     # Read PID from file
-                    pid_str = self.lockfile.read_text().strip()
+                    pid_str = self.lockfile.read_text(encoding="utf-8").strip()
                     if not pid_str:
                         # Empty file - remove it
                         self.lockfile.unlink()
@@ -133,14 +131,13 @@ class PIDFileLock(SingleInstanceChecker):
                             extra={"class_name": self.__class__.__name__},
                         )
                         return True
-                    else:
-                        # Stale lock file - remove it
-                        logger.trace(
-                            f"Stale PID file found (PID: {pid}), removing",
-                            extra={"class_name": self.__class__.__name__},
-                        )
-                        self.lockfile.unlink()
-                        return False
+                    # Stale lock file - remove it
+                    logger.trace(
+                        f"Stale PID file found (PID: {pid}), removing",
+                        extra={"class_name": self.__class__.__name__},
+                    )
+                    self.lockfile.unlink()
+                    return False
                 except (ValueError, OSError) as e:
                     # Corrupted lock file - remove it
                     logger.trace(
@@ -151,7 +148,7 @@ class PIDFileLock(SingleInstanceChecker):
                     return False
 
             # No lock file - create it with current PID
-            self.lockfile.write_text(str(os.getpid()))
+            self.lockfile.write_text(str(os.getpid()), encoding="utf-8")
             self.locked = True
             atexit.register(self.cleanup)
             logger.trace(
@@ -160,10 +157,11 @@ class PIDFileLock(SingleInstanceChecker):
             )
             return False
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"PID file check failed: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return False
 
@@ -228,10 +226,11 @@ class SocketLock(SingleInstanceChecker):
                 self.socket.close()
                 self.socket = None
             return True
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Socket lock error: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             if self.socket:
                 self.socket.close()
@@ -247,7 +246,7 @@ class SocketLock(SingleInstanceChecker):
                     f"Socket lock released: {self.socket_address}",
                     extra={"class_name": self.__class__.__name__},
                 )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.trace(
                 f"Error releasing socket lock: {e}",
                 extra={"class_name": self.__class__.__name__},

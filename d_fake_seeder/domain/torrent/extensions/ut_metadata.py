@@ -53,7 +53,7 @@ class UTMetadataExtension:
                 self.metadata = bencodepy.encode(info_dict)
                 self.metadata_size = len(self.metadata)
                 self._split_metadata_into_pieces()
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.error(f"Failed to encode metadata: {e}", "UTMetadataExtension", exc_info=True)
                 self.metadata = None
 
@@ -138,7 +138,7 @@ class UTMetadataExtension:
 
             return result
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.trace(f"Failed to parse ut_metadata message: {e}", "UTMetadataExtension")
             return None
 
