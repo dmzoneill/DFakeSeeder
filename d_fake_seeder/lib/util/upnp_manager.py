@@ -22,7 +22,7 @@ except ImportError:
     miniupnpc = None
 
 
-class UPnPManager:
+class UPnPManager:  # pylint: disable=too-many-instance-attributes
     """
     Manages UPnP/NAT-PMP port forwarding.
 
@@ -38,10 +38,12 @@ class UPnPManager:
         self.external_ip: Optional[str] = None
         self._lock = threading.Lock()
         self._started = False
+        self._setup_thread: Optional[threading.Thread] = None
+        self._setup_in_progress = False
 
         if not UPNP_AVAILABLE:
             logger.warning(
-                "miniupnpc not installed - UPnP port forwarding disabled. " "Install with: pip install miniupnpc",
+                "miniupnpc not installed - UPnP port forwarding disabled. Install with: pip install miniupnpc",
                 extra={"class_name": self.__class__.__name__},
             )
         else:
@@ -49,6 +51,56 @@ class UPnPManager:
                 "UPnPManager initialized",
                 extra={"class_name": self.__class__.__name__},
             )
+
+    def start_async(self) -> None:
+        """
+        Start UPnP setup in a background thread (non-blocking).
+
+        This prevents UPnP operations from blocking the UI thread.
+        """
+        if not UPNP_AVAILABLE:
+            return
+
+        if self._started or self._setup_in_progress:
+            return
+
+        if not self.settings.get("connection.upnp_enabled", True):
+            return
+
+        self._setup_in_progress = True
+        self._setup_thread = threading.Thread(
+            target=self._background_setup,
+            name="UPnP-Setup",
+            daemon=True,
+        )
+        self._setup_thread.start()
+        logger.debug(
+            "UPnP setup started in background thread",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def _background_setup(self) -> None:
+        """Background thread for UPnP setup."""
+        try:
+            result = self.start()
+            if result:
+                logger.info(
+                    f"UPnP: Background setup completed successfully (port {self.mapped_port})",
+                    extra={"class_name": self.__class__.__name__},
+                )
+            else:
+                logger.debug(
+                    "UPnP: Background setup completed - no mapping created",
+                    extra={"class_name": self.__class__.__name__},
+                )
+        except (OSError, AttributeError, RuntimeError) as e:
+            logger.warning(
+                f"UPnP: Background setup failed: {e}",
+                extra={"class_name": self.__class__.__name__},
+                exc_info=True,
+            )
+        finally:
+            self._setup_in_progress = False
 
     def start(self) -> bool:
         """
@@ -115,7 +167,7 @@ class UPnPManager:
                         f"UPnP: Added TCP port mapping for port {port}",
                         extra={"class_name": self.__class__.__name__},
                     )
-                except Exception as e:
+                except (OSError, RuntimeError) as e:
                     logger.warning(
                         f"UPnP: Failed to add TCP port mapping: {e}",
                         extra={"class_name": self.__class__.__name__},
@@ -135,7 +187,7 @@ class UPnPManager:
                         f"UPnP: Added UDP port mapping for port {port}",
                         extra={"class_name": self.__class__.__name__},
                     )
-                except Exception as e:
+                except (OSError, RuntimeError) as e:
                     logger.warning(
                         f"UPnP: Failed to add UDP port mapping: {e}",
                         extra={"class_name": self.__class__.__name__},
@@ -160,10 +212,11 @@ class UPnPManager:
 
                 return True
 
-        except Exception as e:
+        except (OSError, AttributeError, RuntimeError) as e:
             logger.error(
                 f"UPnP setup failed: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
             # Notify user of failure
@@ -190,7 +243,7 @@ class UPnPManager:
                     f"UPnP: Removed TCP port mapping for {self.mapped_port}",
                     extra={"class_name": self.__class__.__name__},
                 )
-            except Exception as e:
+            except (OSError, RuntimeError) as e:
                 logger.warning(
                     f"Failed to remove TCP UPnP mapping: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -203,7 +256,7 @@ class UPnPManager:
                     f"UPnP: Removed UDP port mapping for {self.mapped_port}",
                     extra={"class_name": self.__class__.__name__},
                 )
-            except Exception as e:
+            except (OSError, RuntimeError) as e:
                 logger.warning(
                     f"Failed to remove UDP UPnP mapping: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -262,12 +315,12 @@ class UPnPManager:
 
 
 # Convenience function to get a singleton instance
-_instance: Optional[UPnPManager] = None
+_instance: Optional[UPnPManager] = None  # pylint: disable=invalid-name
 
 
 def get_upnp_manager() -> UPnPManager:
     """Get or create the UPnPManager singleton instance."""
-    global _instance
+    global _instance  # pylint: disable=global-statement
     if _instance is None:
         _instance = UPnPManager()
     return _instance

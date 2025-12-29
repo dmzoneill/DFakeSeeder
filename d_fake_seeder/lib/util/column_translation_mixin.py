@@ -73,10 +73,11 @@ class ColumnTranslationMixin:
                 f"Updated column title: {property_name} -> '{translated_title}'",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to update column title for {property_name}: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     def refresh_column_translations(self) -> None:
@@ -180,10 +181,11 @@ class ColumnTranslationMixin:
 
             return column  # type: ignore[no-any-return]
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to create translated column {property_name}: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return None
 

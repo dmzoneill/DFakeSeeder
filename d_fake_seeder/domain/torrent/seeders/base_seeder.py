@@ -1,3 +1,11 @@
+"""
+Base Seeder Module.
+
+This module provides the abstract base class for all seeder implementations.
+It contains common functionality for tracker communication, peer management,
+and announce handling shared between HTTP and UDP seeders.
+"""
+
 # fmt: off
 import random
 import struct
@@ -5,9 +13,9 @@ import threading
 from typing import Any, Dict
 from urllib.parse import urlparse
 
-import d_fake_seeder.lib.util.helpers as helpers
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util import helpers
 from d_fake_seeder.lib.util.constants import (
     BitTorrentProtocolConstants,
     CalculationConstants,
@@ -17,7 +25,9 @@ from d_fake_seeder.lib.util.constants import (
 # fmt: on
 
 
-class BaseSeeder:
+class BaseSeeder:  # pylint: disable=too-many-instance-attributes
+    """Abstract base class for HTTP and UDP seeder implementations."""
+
     _tracker_semaphore = None
     peer_clients: Dict[str, Any] = {}
 
@@ -168,7 +178,7 @@ class BaseSeeder:
             "Seeder recreate_semaphore",
             extra={"class_name": obj.__class__.__name__},
         )
-        current_count = BaseSeeder.get_tracker_semaphore()._value
+        current_count = BaseSeeder.get_tracker_semaphore()._value  # pylint: disable=protected-access
 
         if obj.settings.concurrent_http_connections == current_count:
             return
@@ -191,6 +201,72 @@ class BaseSeeder:
             extra={"class_name": self.__class__.__name__},
         )
         self.get_tracker_semaphore().release()
+
+    def _announce_to_local_tracker(
+        self,
+        uploaded: int,
+        downloaded: int,
+        left: int,
+        event: str = "",
+    ) -> None:
+        """
+        Announce to the inbuilt tracker if enabled.
+
+        This hook is called after successful external tracker announces.
+        It uses direct in-process communication (no network overhead).
+
+        Args:
+            uploaded: Total bytes uploaded
+            downloaded: Total bytes downloaded
+            left: Bytes remaining (0 = seeder)
+            event: Event type (started, stopped, completed, or empty)
+        """
+        try:
+            # Check if local tracker is enabled
+            tracker_settings = getattr(self.settings, "tracker_settings", {})
+            if not tracker_settings.get("enabled", False):
+                return
+
+            self_tracking = tracker_settings.get("self_tracking", {})
+            if not self_tracking.get("enabled", True):
+                return
+
+            # Import here to avoid circular imports
+            from d_fake_seeder.domain.tracker import LocalAnnouncer
+
+            local_announcer = LocalAnnouncer.get_instance()
+            if not local_announcer:
+                # Create one if it doesn't exist
+                local_announcer = LocalAnnouncer(enabled=True)
+
+            # Get info_hash from torrent
+            info_hash = self.torrent.info_hash_bytes
+            if not info_hash:
+                return
+
+            # Announce to local tracker
+            local_announcer.announce(
+                info_hash=info_hash,
+                peer_id=self.peer_id.encode() if isinstance(self.peer_id, str) else self.peer_id,
+                port=self.port,
+                uploaded=uploaded,
+                downloaded=downloaded,
+                left=left,
+                event=event,
+                torrent_name=getattr(self.torrent, "name", None),
+            )
+
+            logger.trace(
+                f"Local tracker announce: {event or 'periodic'}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            # Don't let local tracker errors affect normal operation
+            logger.trace(
+                f"Local tracker announce failed (non-critical): {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
 
     def request_shutdown(self) -> Any:
         """Signal this seeder to shutdown gracefully"""
@@ -216,13 +292,15 @@ class BaseSeeder:
 
     def __str__(self) -> str:
         logger.trace("Seeder __get__", extra={"class_name": self.__class__.__name__})
-        result = "Peer ID: %s\n" % self.peer_id
-        result += "Key: %s\n" % self.download_key
-        result += "Port: %d\n" % self.port
-        result += "Update tracker interval: %ds" % self.update_interval  # type: ignore[attr-defined]
+        result = f"Peer ID: {self.peer_id}\n"
+        result += f"Key: {self.download_key}\n"
+        result += f"Port: {self.port}\n"
+        result += f"Update tracker interval: {self.update_interval}s"  # type: ignore[attr-defined]
         return result
 
-    def identify_client_from_peer_id(self, peer_id: Any) -> Any:
+    def identify_client_from_peer_id(  # pylint: disable=too-many-locals,too-many-return-statements,too-many-branches
+        self, peer_id: Any
+    ) -> Any:
         """Identify BitTorrent client from peer ID with comprehensive patterns"""
         if not peer_id or len(peer_id) < 8:
             return "Unknown"
@@ -284,7 +362,6 @@ class BaseSeeder:
                 "LC": "LeechCraft",
                 "LH": "LH-ABC",
                 "LP": "Lphant",
-                "LT": "libtorrent",
                 "lt": "libTorrent",
                 "LW": "LimeWire",
                 "MO": "MonoTorrent",
@@ -314,7 +391,6 @@ class BaseSeeder:
                 "TT": "TuoTu",
                 "UL": "uLeecher",
                 "UM": "µTorrent Mac",
-                "UT": "µTorrent",
                 "VZ": "Vuze",
                 "WD": "WebTorrent Desktop",
                 "WT": "BitLet",
@@ -396,11 +472,11 @@ class BaseSeeder:
         if peer_id.startswith("M"):
             # Mainline client
             return "BitTorrent (Mainline)"
-        elif peer_id_upper.startswith("AZUREUS"):
+        if peer_id_upper.startswith("AZUREUS"):
             return "Azureus"
-        elif peer_id_lower.startswith("bitcomet"):
+        if peer_id_lower.startswith("bitcomet"):
             return "BitComet"
-        elif peer_id.startswith("\x00\x00\x00\x00"):
+        if peer_id.startswith("\x00\x00\x00\x00"):
             return "Generic Client"
 
         # Try to extract readable ASCII for unknown clients
@@ -421,7 +497,7 @@ class BaseSeeder:
         return "Unknown"
 
     @property
-    def peers(self) -> Any:
+    def peers(self) -> Any:  # pylint: disable=too-many-locals,too-many-branches,too-many-statements
         logger.trace("Seeder get peers", extra={"class_name": self.__class__.__name__})
         result = []  # type: ignore[var-annotated]
         if b"peers" not in self.info:
@@ -529,7 +605,7 @@ class BaseSeeder:
                         BaseSeeder.peer_clients[peer_address] = peer_data["client"]
 
         # Handle list format - could be dictionary format or UDP tuple format
-        elif isinstance(peers, list):
+        elif isinstance(peers, list):  # pylint: disable=too-many-nested-blocks
             if len(peers) > 0:
                 # Check if this is UDP tuple format [(ip, port), ...] or HTTP dict format
                 first_peer = peers[0]
@@ -631,12 +707,12 @@ class BaseSeeder:
         # We could potentially use other heuristics like port numbers, etc.
         return "Unknown Client"
 
-    def get_country_from_ip(self, ip: Any) -> Any:
+    def get_country_from_ip(self, ip: Any) -> Any:  # pylint: disable=too-many-return-statements,too-many-branches
         """Get country code from IP address with enhanced detection"""
         # Check for private/local IP ranges first
         if ip.startswith("192.168.") or ip.startswith("10.") or ip.startswith("172.16."):
             return "LAN"
-        elif ip.startswith("127."):
+        if ip.startswith("127."):
             return "LO"
 
         # Enhanced IP-to-country mapping for common IP ranges
@@ -700,15 +776,15 @@ class BaseSeeder:
                 # Americas, parts of Asia-Pacific
                 if 173 <= first_octet <= 208:
                     return "US"  # Likely USA
-                elif 200 <= first_octet <= 223:
+                if 200 <= first_octet <= 223:
                     return "??-SA"  # South America or Asia
-            elif 128 <= first_octet <= 191:
+            if 128 <= first_octet <= 191:
                 # Europe, Middle East, parts of Africa
                 if 185 <= first_octet <= 195:
                     return "??-EU"  # Likely Europe
-                elif 41 <= first_octet <= 105:
+                if 41 <= first_octet <= 105:
                     return "??-AF"  # Africa
-            elif 192 <= first_octet <= 223:
+            if 192 <= first_octet <= 223:
                 # Asia-Pacific
                 if 210 <= first_octet <= 223:
                     return "??-AP"  # Asia-Pacific
@@ -718,7 +794,9 @@ class BaseSeeder:
 
         return "??"
 
-    def create_peer_data(self, ip: Any, port: Any, peer_id: Any = None, client_name: Any = None) -> None:
+    def create_peer_data(  # pylint: disable=too-many-locals,too-many-branches
+        self, ip: Any, port: Any, peer_id: Any = None, client_name: Any = None
+    ) -> None:
         """Create comprehensive peer data structure"""
         address = f"{ip}:{port}"
 
@@ -822,7 +900,7 @@ class BaseSeeder:
 
         return peer_data  # type: ignore[return-value]
 
-    # TODO: UNUSED METHOD - Consider removing or integrating into active code path
+    # TODO: UNUSED METHOD - Consider removing or integrating into active code path  # pylint: disable=fixme
     # def update_peer_speeds(self):
     #     """Update transfer speeds for existing peers to simulate activity"""
     #     logger.debug(

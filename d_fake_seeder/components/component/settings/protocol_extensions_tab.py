@@ -178,7 +178,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         try:
             # Set up initial state based on extensions_enabled
             if self._widgets.get("extensions_enabled"):
-                enabled = self._widgets["extensions_enabled"].get_state()
+                enabled = self._widgets["extensions_enabled"].get_active()
                 # Control ALL extension widgets based on extensions_enabled state
                 extension_widgets = [
                     # Extension Protocol toggles
@@ -224,7 +224,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             if self._widgets.get("ut_pex"):
                 pex_enabled = self._widgets["ut_pex"].get_active()
                 extensions_enabled = (
-                    self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_state()
+                    self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_active()
                 )
                 pex_widgets = [
                     "pex_interval",
@@ -241,7 +241,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             if self._widgets.get("ut_metadata"):
                 metadata_enabled = self._widgets["ut_metadata"].get_active()
                 extensions_enabled = (
-                    self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_state()
+                    self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_active()
                 )
                 metadata_widgets = ["metadata_piece_size", "metadata_timeout", "metadata_synthetic"]
                 for widget_name in metadata_widgets:
@@ -253,7 +253,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 synthetic_enabled = self._widgets["pex_synthetic_peers"].get_active()
                 pex_enabled = self._widgets.get("ut_pex") and self._widgets["ut_pex"].get_active()
                 extensions_enabled = (
-                    self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_state()
+                    self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_active()
                 )
                 self._widgets["pex_synthetic_count"].set_sensitive(
                     extensions_enabled and pex_enabled and synthetic_enabled
@@ -363,7 +363,7 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             # Overall extensions enabled (any extension is enabled)
             extensions_enabled = any([ut_metadata, ut_pex, lt_donthave, fast_ext, ut_holepunch])
             if self._widgets["extensions_enabled"]:
-                self._widgets["extensions_enabled"].set_state(extensions_enabled)
+                self._widgets["extensions_enabled"].set_active(extensions_enabled)
 
             # Individual extensions
             if self._widgets["ut_metadata"]:
@@ -575,7 +575,9 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         # NOTE: Setting will be saved in batch via _collect_settings()
         enabled = check_button.get_active()
         # Only enable metadata widgets if extensions are globally enabled
-        extensions_enabled = self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_state()
+        extensions_enabled = (
+            self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_active()
+        )
         # Enable/disable metadata-related widgets
         metadata_widgets = [
             "metadata_piece_size",
@@ -592,7 +594,9 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         # NOTE: Setting will be saved in batch via _collect_settings()
         enabled = check_button.get_active()
         # Only enable PEX widgets if extensions are globally enabled
-        extensions_enabled = self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_state()
+        extensions_enabled = (
+            self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_active()
+        )
         # Enable/disable PEX-related widgets
         pex_widgets = [
             "pex_interval",
@@ -628,7 +632,9 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         """Handle PEX synthetic peers toggle"""
         enabled = check_button.get_active()
         # Only enable synthetic count if extensions AND ut_pex AND synthetic_peers are all enabled
-        extensions_enabled = self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_state()
+        extensions_enabled = (
+            self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_active()
+        )
         pex_enabled = self._widgets.get("ut_pex") and self._widgets["ut_pex"].get_active()
         if self._widgets["pex_synthetic_count"]:
             self._widgets["pex_synthetic_count"].set_sensitive(extensions_enabled and pex_enabled and enabled)

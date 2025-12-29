@@ -198,15 +198,15 @@ class AdvancedTab(
             # Load logging settings - each output has independent level
             if self._widgets.get("log_to_file"):
                 value = self.app_settings.get("logging.log_to_file", False)
-                self._widgets["log_to_file"].set_state(value)
+                self._widgets["log_to_file"].set_active(value)
 
             if self._widgets.get("log_to_console"):
                 value = self.app_settings.get("logging.log_to_console", True)
-                self._widgets["log_to_console"].set_state(value)
+                self._widgets["log_to_console"].set_active(value)
 
             if self._widgets.get("log_to_systemd"):
                 value = self.app_settings.get("logging.log_to_systemd", True)
-                self._widgets["log_to_systemd"].set_state(value)
+                self._widgets["log_to_systemd"].set_active(value)
 
             # Per-output log levels (0=DEBUG, 1=INFO, 2=WARNING, 3=ERROR, 4=CRITICAL)
             level_map = {"DEBUG": 0, "INFO": 1, "WARNING": 2, "ERROR": 3, "CRITICAL": 4}
@@ -242,15 +242,15 @@ class AdvancedTab(
             # Load expert settings
             if self._widgets.get("debug_mode"):
                 value = self.app_settings.get("expert.debug_mode", False)
-                self._widgets["debug_mode"].set_state(value)
+                self._widgets["debug_mode"].set_active(value)
 
             if self._widgets.get("validate_settings"):
                 value = self.app_settings.get("expert.validate_settings", True)
-                self._widgets["validate_settings"].set_state(value)
+                self._widgets["validate_settings"].set_active(value)
 
             if self._widgets.get("auto_save"):
                 value = self.app_settings.get("expert.auto_save", True)
-                self._widgets["auto_save"].set_state(value)
+                self._widgets["auto_save"].set_active(value)
 
             self.logger.trace("Advanced tab settings loaded")
 
@@ -386,13 +386,13 @@ class AdvancedTab(
         try:
             # Collect logging settings - each output has independent level
             if self._widgets.get("log_to_file"):
-                settings["logging.log_to_file"] = self._widgets["log_to_file"].get_state()
+                settings["logging.log_to_file"] = self._widgets["log_to_file"].get_active()
 
             if self._widgets.get("log_to_console"):
-                settings["logging.log_to_console"] = self._widgets["log_to_console"].get_state()
+                settings["logging.log_to_console"] = self._widgets["log_to_console"].get_active()
 
             if self._widgets.get("log_to_systemd"):
-                settings["logging.log_to_systemd"] = self._widgets["log_to_systemd"].get_state()
+                settings["logging.log_to_systemd"] = self._widgets["log_to_systemd"].get_active()
 
             # Per-output log levels (0=DEBUG, 1=INFO, 2=WARNING, 3=ERROR, 4=CRITICAL)
             level_values = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
@@ -423,13 +423,13 @@ class AdvancedTab(
 
             # Collect expert settings
             if self._widgets.get("debug_mode"):
-                settings["expert.debug_mode"] = self._widgets["debug_mode"].get_state()
+                settings["expert.debug_mode"] = self._widgets["debug_mode"].get_active()
 
             if self._widgets.get("validate_settings"):
-                settings["expert.validate_settings"] = self._widgets["validate_settings"].get_state()
+                settings["expert.validate_settings"] = self._widgets["validate_settings"].get_active()
 
             if self._widgets.get("auto_save"):
-                settings["expert.auto_save"] = self._widgets["auto_save"].get_state()
+                settings["expert.auto_save"] = self._widgets["auto_save"].get_active()
 
             self.logger.trace(f"Collected {len(settings)} settings from Advanced tab")
 

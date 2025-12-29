@@ -9,7 +9,7 @@ to make it clear which category each constant belongs to.
 """
 
 
-class NetworkConstants:
+class NetworkConstants:  # pylint: disable=too-few-public-methods
     """Network-related timeout and connection constants."""
 
     # Socket timeouts (seconds)
@@ -39,7 +39,7 @@ class NetworkConstants:
     TRACKER_SEMAPHORE_SHORT_TIMEOUT = 3.0
 
 
-class UIConstants:
+class UIConstants:  # pylint: disable=too-few-public-methods
     """UI-related margins, padding, and timing constants."""
 
     # Margins and spacing (pixels)
@@ -66,7 +66,7 @@ class UIConstants:
     ]
 
 
-class ProtocolConstants:
+class ProtocolConstants:  # pylint: disable=too-few-public-methods
     """BitTorrent protocol constants."""
 
     # Message intervals (seconds)
@@ -89,7 +89,7 @@ class ProtocolConstants:
     FAILED_CONNECTION_TIMEOUT_CYCLES = 3
 
 
-class AsyncConstants:
+class AsyncConstants:  # pylint: disable=too-few-public-methods
     """Async operation timeouts (seconds)."""
 
     # Peer protocol manager timeouts
@@ -108,7 +108,7 @@ class AsyncConstants:
     EXECUTOR_SHUTDOWN_TIMEOUT = 2.0
 
 
-class BitTorrentProtocolConstants:
+class BitTorrentProtocolConstants:  # pylint: disable=too-few-public-methods
     """BitTorrent protocol-specific constants."""
 
     # Handshake structure
@@ -167,7 +167,7 @@ class BitTorrentProtocolConstants:
     PRINTABLE_ASCII_MAX = 126
 
 
-class DHTConstants:
+class DHTConstants:  # pylint: disable=too-few-public-methods
     """DHT (Distributed Hash Table) protocol constants."""
 
     # Node identification
@@ -192,7 +192,7 @@ class DHTConstants:
     RESPONSE_SHORT_TIMEOUT = 5
 
 
-class UDPTrackerConstants:
+class UDPTrackerConstants:  # pylint: disable=too-few-public-methods
     """UDP tracker protocol constants."""
 
     # Magic protocol identifier
@@ -211,7 +211,7 @@ class UDPTrackerConstants:
     PEER_LOG_LIMIT = 5  # Log first N peers
 
 
-class TimeoutConstants:
+class TimeoutConstants:  # pylint: disable=too-few-public-methods
     """Centralized timeout values for various operations (seconds)."""
 
     # Thread shutdown timeouts - OPTIMIZED FOR FAST SHUTDOWN
@@ -237,7 +237,7 @@ class TimeoutConstants:
     TRAY_STARTUP_DELAY = 2
 
 
-class ConnectionConstants:
+class ConnectionConstants:  # pylint: disable=too-few-public-methods
     """Connection management constants."""
 
     # Connection limits
@@ -257,7 +257,7 @@ class ConnectionConstants:
     FAKE_PIECE_COUNT_MAX = 1000
 
 
-class RetryConstants:
+class RetryConstants:  # pylint: disable=too-few-public-methods
     """Retry limits and delays."""
 
     # HTTP announce retries
@@ -267,7 +267,7 @@ class RetryConstants:
     TRAY_DBUS_MAX_RETRIES = 5
 
 
-class PeerExchangeConstants:
+class PeerExchangeConstants:  # pylint: disable=too-few-public-methods
     """Peer Exchange (PEX) protocol constants."""
 
     # IP address class ranges (for private IP detection)
@@ -289,7 +289,7 @@ class PeerExchangeConstants:
     FLAGS_MAX = 3
 
 
-class UTPConstants:
+class UTPConstants:  # pylint: disable=too-few-public-methods
     """µTP (Micro Transport Protocol) constants (BEP-029)."""
 
     # Packet structure
@@ -336,7 +336,7 @@ class UTPConstants:
     # ST_DATA = 0, ST_FIN = 1, ST_STATE = 2, ST_RESET = 3, ST_SYN = 4
 
 
-class MultiTrackerConstants:
+class MultiTrackerConstants:  # pylint: disable=too-few-public-methods
     """Multi-Tracker protocol constants (BEP-012)."""
 
     # Tracker health and failover
@@ -350,7 +350,7 @@ class MultiTrackerConstants:
     RESPONSE_TIME_WEIGHT = 0.2  # Weight for new response time sample
 
 
-class SwarmIntelligenceConstants:
+class SwarmIntelligenceConstants:  # pylint: disable=too-few-public-methods
     """Swarm Intelligence system constants."""
 
     # Swarm health thresholds
@@ -398,7 +398,7 @@ class SwarmIntelligenceConstants:
     ENDGAME_COMPLETION_THRESHOLD = 0.95  # Enter endgame mode at 95% complete
 
 
-class CalculationConstants:
+class CalculationConstants:  # pylint: disable=too-few-public-methods
     """Constants used in calculations and conversions."""
 
     # Byte conversions
@@ -412,7 +412,7 @@ class CalculationConstants:
     JITTER_OFFSET_ADJUSTMENT = -1  # For centering jitter range
 
 
-class SizeConstants:
+class SizeConstants:  # pylint: disable=too-few-public-methods
     """File size units and conversions."""
 
     # Size unit arrays

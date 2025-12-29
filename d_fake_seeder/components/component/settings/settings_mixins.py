@@ -397,7 +397,7 @@ class UtilityMixin:
 
             # Force visual state synchronization
             # GTK4 switches should auto-sync, but we force it to prevent visual glitches
-            switch.set_state(active)
+            switch.set_active(active)
 
         except Exception as e:
             logger.error(f"Error setting switch state: {e}")

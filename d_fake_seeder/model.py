@@ -1,3 +1,11 @@
+"""
+DFakeSeeder Model Module.
+
+This module implements the Model in the MVC architecture. It manages the data layer
+including torrent list management, torrent lifecycle, and data persistence.
+The Model uses GObject signals to notify observers of state changes.
+"""
+
 # fmt: off
 # isort: skip_file
 from typing import List,  Any
@@ -8,7 +16,7 @@ import gi  # noqa
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("GioUnix", "2.0")
-from gi.repository import Gio  # noqa: E402
+from gi.repository import Gio, GLib  # noqa: E402
 from gi.repository import GObject, Gtk  # noqa: E402
 
 from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
@@ -25,7 +33,9 @@ from d_fake_seeder.lib.util.column_translations import ColumnTranslations  # noq
 
 
 # Class for handling Torrent data
-class Model(GObject.GObject):
+class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
+    """Data model managing torrent list and lifecycle with GObject signals."""
+
     # Define custom signal 'data-changed' which is emitted when torrent data
     # is modified
     __gsignals__ = {
@@ -59,12 +69,12 @@ class Model(GObject.GObject):
         try:
             self.settings.connect("settings-attribute-changed", self.handle_settings_changed)
             logger.debug("DEBUG: Connected to 'settings-attribute-changed' signal", "Model")
-        except Exception:
+        except (GLib.Error, TypeError, RuntimeError):
             logger.error("DEBUG: Failed to connect to 'settings-attribute-changed':", "Model")
         try:
             self.settings.connect("attribute-changed", self.handle_settings_changed)
             logger.debug("DEBUG: Connected to 'attribute-changed' signal", "Model")
-        except Exception:
+        except (GLib.Error, TypeError, RuntimeError):
             logger.error("DEBUG: Failed to connect to 'attribute-changed':", "Model")
         logger.trace("DEBUG: AppSettings signal connections completed", "Model")
         # Initialize translation manager
@@ -80,7 +90,7 @@ class Model(GObject.GObject):
         try:
             result = self.translation_manager.setup_translations(auto_detect=True)  # type: ignore[attr-defined]
             logger.trace(f"setup_translations() returned: {result}", "Model")
-        except Exception:
+        except (OSError, RuntimeError, AttributeError):
             logger.error("Exception in setup_translations()", "Model", exc_info=True)
         # Register translation function with ColumnTranslations to avoid expensive gc.get_objects() calls
         if hasattr(self.translation_manager, "translate_func"):
@@ -105,6 +115,7 @@ class Model(GObject.GObject):
 
     # Method to add a new torrent
     def add_torrent(self, filepath: Any) -> None:
+        """Add a new torrent from the given file path to the model."""
         logger.trace("Model add torrent", extra={"class_name": self.__class__.__name__})
         # Create new Torrent instance
         torrent = Torrent(filepath)
@@ -119,15 +130,23 @@ class Model(GObject.GObject):
         # Update filtered list if search is active
         if self.search_filter:
             self._update_filtered_list()
+
+        # Register with inbuilt tracker if enabled (INT-5.1)
+        self._register_with_local_tracker(torrent)
+
         # Emit 'data-changed' signal with torrent instance and message
         self.emit("data-changed", torrent, "add")
 
-    # Method to add a new torrent
+    # Method to remove a torrent
     def remove_torrent(self, filepath: Any) -> None:
-        logger.trace("Model add torrent", extra={"class_name": self.__class__.__name__})
+        """Remove a torrent with the given file path from the model."""
+        logger.trace("Model remove torrent", extra={"class_name": self.__class__.__name__})
         # Find the Torrent instance
         torrent = next((t for t in self.torrent_list if t.filepath == filepath), None)
         if torrent is not None:
+            # Unregister from inbuilt tracker if enabled (INT-5.2)
+            self._unregister_from_local_tracker(torrent)
+
             self.torrent_list.remove(torrent)
             for index, item in enumerate(self.torrent_list_attributes):
                 if item.filepath == torrent.filepath:
@@ -147,20 +166,23 @@ class Model(GObject.GObject):
 
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore(self) -> Any:
+        """Return the list of torrent attributes for UI binding."""
         logger.trace("Model get_liststore", extra={"class_name": self.__class__.__name__})
         return self.torrent_list_attributes
 
     def get_torrents(self) -> Any:
+        """Return the list of all torrent objects."""
         logger.trace("Model get_torrents", extra={"class_name": self.__class__.__name__})
         return self.torrent_list
 
     def get_trackers_liststore(self) -> Any:
+        """Return aggregated tracker statistics for all torrents."""
         logger.trace(
             "Model get trackers liststore",
             extra={"class_name": self.__class__.__name__},
         )
         tracker_count = {}  # type: ignore[var-annotated]
-        for torrent in self.torrent_list:
+        for torrent in self.torrent_list:  # pylint: disable=too-many-nested-blocks
             if torrent.is_ready():
                 # Get ALL trackers from the torrent file
                 all_trackers = torrent.get_torrent_file().get_trackers()
@@ -173,7 +195,7 @@ class Model(GObject.GObject):
                                 tracker_count[fqdn] += 1
                             else:
                                 tracker_count[fqdn] = 1
-                    except Exception as e:
+                    except (ValueError, AttributeError) as e:
                         logger.error(f"Failed to parse tracker URL {tracker_url}: {e}")
         # Create a list store with the custom GObject type TorrentState
         list_store = Gio.ListStore.new(TorrentState)
@@ -185,7 +207,9 @@ class Model(GObject.GObject):
         logger.trace(f"Found {len(sorted_trackers)} unique trackers across all torrents")
         return list_store
 
-    def stop(self, shutdown_tracker: Any = None) -> Any:
+    def stop(  # pylint: disable=too-many-locals,too-many-branches,too-many-statements
+        self, shutdown_tracker: Any = None
+    ) -> Any:
         # Stopping all torrents before quitting - PARALLEL SHUTDOWN
         import time
 
@@ -286,7 +310,7 @@ class Model(GObject.GObject):
         for torrent in self.torrent_list:
             try:
                 torrent.stop()
-            except Exception as e:
+            except (RuntimeError, OSError, AttributeError) as e:
                 logger.warning(
                     f"Error calling stop() for {torrent.name}: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -331,7 +355,7 @@ class Model(GObject.GObject):
                 "✅ Phase 3 complete: Data stores cleaned up",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.warning(
                 f"Error cleaning up data stores: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -387,7 +411,7 @@ class Model(GObject.GObject):
                     extra={"class_name": self.__class__.__name__},
                 )
 
-        except Exception as e:
+        except (RuntimeError, ImportError, AttributeError) as e:
             logger.warning(
                 f"Error during garbage collection: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -437,7 +461,7 @@ class Model(GObject.GObject):
                 extra={"class_name": self.__class__.__name__},
             )
             return None
-        except Exception as e:
+        except (KeyError, AttributeError, IndexError) as e:
             logger.error(
                 f"Error getting torrent by attributes: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -495,7 +519,7 @@ class Model(GObject.GObject):
                     if hasattr(self, "translation_manager"):
                         logger.trace("self.translation_manager:", "Model")
                     logger.error("Translation manager not available for language change")
-            except Exception as e:
+            except (GLib.Error, RuntimeError, AttributeError, OSError) as e:
                 logger.error(
                     f"Error handling language change from AppSettings: {e}",
                     "Model",
@@ -681,7 +705,7 @@ class Model(GObject.GObject):
 
         return True
 
-    def _matches_state_filter(self, torrent: Any) -> Any:
+    def _matches_state_filter(self, torrent: Any) -> Any:  # pylint: disable=too-many-return-statements
         """Check if torrent matches the active state filter."""
         # Get torrent properties
         active = getattr(torrent, "active", True)
@@ -691,17 +715,17 @@ class Model(GObject.GObject):
         # Match based on derived state
         if self.active_filter_state == "seeding":
             return progress >= 100.0 and uploading
-        elif self.active_filter_state == "downloading":
+        if self.active_filter_state == "downloading":
             return progress < 100.0 and active
-        elif self.active_filter_state == "active":
+        if self.active_filter_state == "active":
             return active
-        elif self.active_filter_state == "paused":
+        if self.active_filter_state == "paused":
             return not active
-        elif self.active_filter_state == "checking":
+        if self.active_filter_state == "checking":
             return False  # Not implemented
-        elif self.active_filter_state == "error":
+        if self.active_filter_state == "error":
             return False  # Not implemented
-        elif self.active_filter_state == "queued":
+        if self.active_filter_state == "queued":
             return False  # Not implemented
 
         return True
@@ -713,8 +737,6 @@ class Model(GObject.GObject):
             return False
 
         # Extract domain from URL
-        from urllib.parse import urlparse
-
         try:
             trackers = torrent.get_torrent_file().get_trackers()
             for tracker_url in trackers:
@@ -724,9 +746,9 @@ class Model(GObject.GObject):
 
                     if domain == self.active_filter_tracker:
                         return True
-                except Exception:
+                except (ValueError, AttributeError):
                     continue
-        except Exception:
+        except (AttributeError, TypeError):
             return False
 
         return False
@@ -806,3 +828,86 @@ class Model(GObject.GObject):
     def get_current_language(self) -> Any:
         """Get current language code"""
         return self.translation_manager.get_current_language()
+
+    def _register_with_local_tracker(self, torrent: Any) -> None:
+        """
+        Register a torrent with the inbuilt tracker if enabled.
+
+        Args:
+            torrent: Torrent instance to register
+        """
+        try:
+            settings = AppSettings.get_instance()
+            tracker_settings = getattr(settings, "tracker_settings", {})
+
+            if not tracker_settings.get("enabled", False):
+                return
+
+            self_tracking = tracker_settings.get("self_tracking", {})
+            if not self_tracking.get("sync_on_add", True):
+                return
+
+            from d_fake_seeder.domain.tracker import TrackerServer
+
+            tracker = TrackerServer.get_instance()
+            if not tracker or not tracker.is_running:
+                return
+
+            # Register the torrent
+            info_hash = getattr(torrent, "info_hash_bytes", None)
+            if info_hash:
+                tracker.register_torrent(
+                    info_hash=info_hash,
+                    name=getattr(torrent, "name", None),
+                    total_size=getattr(torrent, "total_size", 0),
+                    is_internal=True,
+                )
+                logger.trace(
+                    f"Registered torrent with inbuilt tracker: {torrent.name}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+        except (ImportError, RuntimeError, AttributeError) as e:
+            logger.trace(
+                f"Failed to register torrent with local tracker: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+
+    def _unregister_from_local_tracker(self, torrent: Any) -> None:
+        """
+        Unregister a torrent from the inbuilt tracker if enabled.
+
+        Args:
+            torrent: Torrent instance to unregister
+        """
+        try:
+            settings = AppSettings.get_instance()
+            tracker_settings = getattr(settings, "tracker_settings", {})
+
+            if not tracker_settings.get("enabled", False):
+                return
+
+            self_tracking = tracker_settings.get("self_tracking", {})
+            if not self_tracking.get("sync_on_remove", True):
+                return
+
+            from d_fake_seeder.domain.tracker import TrackerServer
+
+            tracker = TrackerServer.get_instance()
+            if not tracker or not tracker.is_running:
+                return
+
+            # Unregister the torrent
+            info_hash = getattr(torrent, "info_hash_bytes", None)
+            if info_hash:
+                tracker.unregister_torrent(info_hash)
+                logger.trace(
+                    f"Unregistered torrent from inbuilt tracker: {torrent.name}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+        except (ImportError, RuntimeError, AttributeError) as e:
+            logger.trace(
+                f"Failed to unregister torrent from local tracker: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )

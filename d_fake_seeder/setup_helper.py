@@ -71,10 +71,9 @@ def print_installation_guide(missing_deps: Any) -> Any:
 
         print("\n" + "=" * 60)
         return False
-    else:
-        print("\n✅ All system dependencies are installed!")
-        print("\n" + "=" * 60)
-        return True
+    print("\n✅ All system dependencies are installed!")
+    print("\n" + "=" * 60)
+    return True
 
 
 def offer_desktop_integration() -> Any:
@@ -111,7 +110,7 @@ def run_desktop_integration() -> None:
         install_desktop_integration()
         print("✅ Desktop integration installed successfully!")
         return True  # type: ignore[return-value]
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         print(f"⚠️  Desktop integration failed: {e}")
         print("You can try again later with: dfs-install-desktop")
         return False  # type: ignore[return-value]

@@ -97,10 +97,11 @@ class TorrentPeerManager:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.error(
                     f"❌ Failed to start peer communication for torrent {torrent_id}: {e}",
                     extra={"class_name": self.__class__.__name__},
+                    exc_info=True,
                 )
                 self.current_manager = None
                 self.current_torrent_id = None
@@ -152,10 +153,11 @@ class TorrentPeerManager:
                                 extra={"class_name": self.__class__.__name__},
                             )
 
-                    except Exception as e:
+                    except Exception as e:  # pylint: disable=broad-exception-caught
                         logger.error(
                             f"❌ Error getting peer stats: {e}",
                             extra={"class_name": self.__class__.__name__},
+                            exc_info=True,
                         )
 
         return self.peer_stats_cache.copy()
@@ -185,9 +187,8 @@ class TorrentPeerManager:
                     # Ensure it's 20 bytes
                     if len(peer_id_str) >= 20:
                         return peer_id_str[:20].encode("utf-8", errors="ignore")
-                    else:
-                        # Pad to 20 bytes
-                        return (peer_id_str + "0" * 20)[:20].encode("utf-8", errors="ignore")
+                    # Pad to 20 bytes
+                    return (peer_id_str + "0" * 20)[:20].encode("utf-8", errors="ignore")
 
             # Fallback: generate a peer ID
             import random
@@ -205,10 +206,11 @@ class TorrentPeerManager:
 
             return peer_id.encode("utf-8")
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"❌ Error generating peer ID: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             # Final fallback
             return b"-DF0100-abcdef123456"
@@ -223,12 +225,12 @@ class TorrentPeerManager:
 
 
 # Global instance
-_torrent_peer_manager: Optional[TorrentPeerManager] = None
+_torrent_peer_manager: Optional[TorrentPeerManager] = None  # pylint: disable=invalid-name
 
 
 def get_torrent_peer_manager() -> TorrentPeerManager:
     """Get the global torrent peer manager instance"""
-    global _torrent_peer_manager
+    global _torrent_peer_manager  # pylint: disable=global-statement
     if _torrent_peer_manager is None:
         _torrent_peer_manager = TorrentPeerManager()
     return _torrent_peer_manager
@@ -236,7 +238,7 @@ def get_torrent_peer_manager() -> TorrentPeerManager:
 
 def shutdown_torrent_peer_manager() -> Any:
     """Shutdown the global torrent peer manager"""
-    global _torrent_peer_manager
+    global _torrent_peer_manager  # pylint: disable=global-statement
     if _torrent_peer_manager:
         _torrent_peer_manager.shutdown()
         _torrent_peer_manager = None

@@ -109,7 +109,7 @@ class SpeedScheduler:
 
         return True  # Keep timer running
 
-    def _is_in_time_window(
+    def _is_in_time_window(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         now: datetime,
         start_h: int,
@@ -139,9 +139,8 @@ class SpeedScheduler:
         if start_minutes <= end_minutes:
             # Normal case: e.g., 09:00 to 17:00
             return start_minutes <= current_minutes < end_minutes
-        else:
-            # Crosses midnight: e.g., 22:00 to 06:00
-            return current_minutes >= start_minutes or current_minutes < end_minutes
+        # Crosses midnight: e.g., 22:00 to 06:00
+        return current_minutes >= start_minutes or current_minutes < end_minutes
 
     def _set_alt_speeds(self, enabled: bool) -> None:
         """
@@ -202,12 +201,12 @@ class SpeedScheduler:
 
 
 # Convenience function to get a singleton instance
-_instance: Optional[SpeedScheduler] = None
+_instance: Optional[SpeedScheduler] = None  # pylint: disable=invalid-name
 
 
 def get_speed_scheduler() -> SpeedScheduler:
     """Get or create the SpeedScheduler singleton instance."""
-    global _instance
+    global _instance  # pylint: disable=global-statement
     if _instance is None:
         _instance = SpeedScheduler()
     return _instance

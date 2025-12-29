@@ -17,7 +17,7 @@ from d_fake_seeder.lib.util.constants import BitTorrentProtocolConstants
 # fmt: on
 
 
-class ClientBehaviorEngine:
+class ClientBehaviorEngine:  # pylint: disable=too-many-instance-attributes
     """Advanced client behavior simulation engine"""
 
     # Comprehensive client profiles with realistic behavior patterns
@@ -262,10 +262,11 @@ class ClientBehaviorEngine:
 
             return prefix + suffix  # type: ignore[no-any-return, operator]
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to generate peer ID: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return self._generate_generic_peer_id()
 
@@ -325,10 +326,11 @@ class ClientBehaviorEngine:
 
             return base_value
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to get behavior parameter {parameter}: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return default
 
@@ -357,14 +359,15 @@ class ClientBehaviorEngine:
 
             return timing_value
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to get timing parameter {parameter}: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             return default
 
-    # TODO: UNUSED METHOD - Simulation engine not integrated
+    # TODO: UNUSED METHOD - Simulation engine not integrated  # pylint: disable=fixme
     # def simulate_client_behavior(self, action: str, context: Optional[Dict] = None) -> Dict[str, Any]:
     #     """
     #     Simulate client-specific behavior for given action
@@ -511,10 +514,11 @@ class ClientBehaviorEngine:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"Failed to switch client profile: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     def _get_reserved_bytes(self) -> bytes:
@@ -543,7 +547,7 @@ class ClientBehaviorEngine:
         """Generate generic peer ID"""
         try:
             return "-DF1000-" + "".join(random.choices("0123456789ABCDEF", k=12))
-        except Exception:
+        except Exception:  # pylint: disable=broad-exception-caught
             # Ultimate fallback - use fixed suffix if random fails
             return "-DF1000-000000000000"
 

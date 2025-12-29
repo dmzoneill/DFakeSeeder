@@ -5,6 +5,7 @@ D-Bus Unifier - Inter-process communication bridge for DFakeSeeder
 Provides D-Bus service for communication between main application and tray application.
 Integrates directly with AppSettings for settings management and signal forwarding.
 """
+
 # isort: skip_file
 
 # fmt: off
@@ -160,14 +161,14 @@ class DBusUnifier:
             )
             return True
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, OSError, AttributeError) as e:
             logger.error(
                 f"Failed to initialize D-Bus: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
             return False
 
-    def _handle_method_call(
+    def _handle_method_call(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         connection: Any,
         sender: Any,
@@ -224,7 +225,7 @@ class DBusUnifier:
                     f"Unknown method: {method_name}",
                 )
 
-        except Exception as e:
+        except (GLib.Error, json.JSONDecodeError, KeyError, TypeError, AttributeError) as e:
             self._error_count += 1
             logger.error(
                 f"Error handling D-Bus method {method_name}: {e}",
@@ -240,12 +241,13 @@ class DBusUnifier:
         """Get complete AppSettings serialization from merged user+default settings"""
         try:
             # Access merged user+default settings via _settings attribute
+            # pylint: disable=protected-access
             settings_dict = self.app_settings._settings
             # Handle None case explicitly
             if settings_dict is None:
                 return "{}"
             return json.dumps(settings_dict, default=str)
-        except Exception as e:
+        except (json.JSONDecodeError, TypeError, AttributeError) as e:
             logger.error(
                 f"Failed to get settings: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -309,6 +311,7 @@ class DBusUnifier:
                     )
                 elif "." in path:
                     # Handle nested settings using internal helper method
+                    # pylint: disable=protected-access
                     self.app_settings._set_nested_value(self.app_settings._settings, path, value)
                     self.app_settings.save_settings()  # Save and emit signals
                 else:
@@ -325,7 +328,7 @@ class DBusUnifier:
             )
             return True
 
-        except Exception as e:
+        except (json.JSONDecodeError, KeyError, TypeError, AttributeError) as e:
             logger.error(
                 f"Failed to update settings: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -350,7 +353,7 @@ class DBusUnifier:
                 "uptime": (time.time() - (self._last_ping or time.time()) if self._last_ping else 0),
             }
             return json.dumps(status)
-        except Exception as e:
+        except (json.JSONDecodeError, TypeError, AttributeError) as e:
             logger.error(
                 f"Failed to get connection status: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -367,10 +370,11 @@ class DBusUnifier:
                 "connection_status": json.loads(self._handle_get_connection_status()),
                 "registration_id": self._registration_id,
                 "app_settings_available": self.app_settings is not None,
+                # pylint: disable=protected-access
                 "settings_count": (len(self.app_settings._settings) if self.app_settings else 0),
             }
             return json.dumps(debug_info, indent=2)
-        except Exception as e:
+        except (json.JSONDecodeError, TypeError, AttributeError) as e:
             logger.error(
                 f"Failed to get debug info: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -414,7 +418,7 @@ class DBusUnifier:
             )
             return True
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to show preferences: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -456,7 +460,7 @@ class DBusUnifier:
             )
             return True
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to show about dialog: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -502,7 +506,7 @@ class DBusUnifier:
             # Default: allow if we don't have specific validation
             return True
 
-        except Exception as e:
+        except (TypeError, ValueError, AttributeError) as e:
             logger.error(
                 f"Validation error for {path}: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -528,7 +532,7 @@ class DBusUnifier:
                 f"Emitted D-Bus SettingsChanged signal: {changes}",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
+        except (GLib.Error, json.JSONDecodeError, RuntimeError) as e:
             logger.error(
                 f"Failed to emit D-Bus settings changed signal: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -544,7 +548,7 @@ class DBusUnifier:
                 "DBusUnifier connected to AppSettings signals",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to setup settings signal forwarding: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -566,7 +570,7 @@ class DBusUnifier:
             # Emit D-Bus signal
             self._emit_settings_changed_signal(changes)
 
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error forwarding settings change to D-Bus: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -580,7 +584,7 @@ class DBusUnifier:
                 "D-Bus connection health monitoring enabled",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Failed to setup connection health monitoring: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -617,7 +621,7 @@ class DBusUnifier:
             self._is_service_owner = False
 
             logger.trace("DBusUnifier cleaned up", extra={"class_name": self.__class__.__name__})
-        except Exception as e:
+        except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error during DBusUnifier cleanup: {e}",
                 extra={"class_name": self.__class__.__name__},

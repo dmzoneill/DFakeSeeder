@@ -1,24 +1,32 @@
+"""
+Torrent File Parser Module.
+
+This module handles parsing and extracting metadata from .torrent files,
+including info hash calculation, tracker extraction, and file list parsing.
+"""
+
 # fmt: off
 import hashlib
 from datetime import datetime
 from typing import Any
 
-import d_fake_seeder.domain.torrent.bencoding as bencoding
-import d_fake_seeder.lib.util.helpers as helpers
+from d_fake_seeder.domain.torrent import bencoding
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util import helpers
 
 # fmt: on
 
 
 class File:
+    """Parser for .torrent files extracting metadata, hashes, and tracker info."""
+
     def __init__(self, filepath: Any) -> None:
         logger.trace("Startup", extra={"class_name": self.__class__.__name__})
         while True:
             try:
                 self.filepath = filepath
-                f = open(filepath, "rb")
-                self.raw_torrent = f.read()
-                f.close()
+                with open(filepath, "rb") as f:
+                    self.raw_torrent = f.read()
                 self.torrent_header = bencoding.decode(self.raw_torrent)
 
                 if b"announce" in self.torrent_header:
@@ -36,7 +44,7 @@ class File:
                 m.update(bencoding.encode(torrent_info))
                 self.file_hash = m.digest()
                 break
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.info(
                     "File read error: " + str(e),
                     extra={"class_name": self.__class__.__name__},
@@ -66,33 +74,33 @@ class File:
     def __str__(self) -> str:
         logger.trace("File attribute", extra={"class_name": self.__class__.__name__})
         announce = self.torrent_header[b"announce"].decode("utf-8")
-        result = "Announce: %s\n" % announce
+        result = f"Announce: {announce}\n"
 
         if b"creation date" in self.torrent_header:
             try:
                 creation_date = self.torrent_header[b"creation date"]
                 creation_date = datetime.fromtimestamp(creation_date)
-                result += "Date: %s\n" % creation_date.strftime("%Y/%m/%d %H:%M:%S")
+                result += f"Date: {creation_date.strftime('%Y/%m/%d %H:%M:%S')}\n"
             except (TypeError, ValueError, OSError):
                 # Invalid creation date, skip it
                 pass
 
         if b"created by" in self.torrent_header:
             created_by = self.torrent_header[b"created by"].decode("utf-8")
-            result += "Created by: %s\n" % created_by
+            result += f"Created by: {created_by}\n"
 
         if b"encoding" in self.torrent_header:
             encoding = self.torrent_header[b"encoding"].decode("utf-8")
-            result += "Encoding:   %s\n" % encoding
+            result += f"Encoding:   {encoding}\n"
 
         torrent_info = self.torrent_header[b"info"]
         piece_len = torrent_info[b"piece length"]
-        result += "Piece len: %s\n" % helpers.sizeof_fmt(piece_len)
+        result += f"Piece len: {helpers.sizeof_fmt(piece_len)}\n"
         pieces = len(torrent_info[b"pieces"]) / 20
-        result += "Pieces: %d\n" % pieces
+        result += f"Pieces: {int(pieces)}\n"
 
         torrent_name = torrent_info[b"name"].decode("utf-8")
-        result += "Name: %s\n" % torrent_name
+        result += f"Name: {torrent_name}\n"
         piece_len = torrent_info[b"piece length"]
 
         if b"files" in torrent_info:
@@ -100,15 +108,12 @@ class File:
             result += "Files:\n"
             for file_info in torrent_info[b"files"]:
                 fullpath = "/".join([x.decode("utf-8") for x in file_info[b"path"]])
-                result += "  '%s' (%s)\n" % (
-                    fullpath,
-                    helpers.sizeof_fmt(file_info[b"length"]),
-                )
+                result += f"  '{fullpath}' ({helpers.sizeof_fmt(file_info[b'length'])})\n"
         else:
             # Single File Mode
-            result += "Length: %s\n" % helpers.sizeof_fmt(torrent_info[b"length"])
+            result += f"Length: {helpers.sizeof_fmt(torrent_info[b'length'])}\n"
             if b"md5sum" in torrent_info:
-                result += "Md5: %s\n" % torrent_info[b"md5sum"]
+                result += f"Md5: {torrent_info[b'md5sum']}\n"
 
         return result
 

@@ -4,6 +4,7 @@ Post-install script for D' Fake Seeder desktop integration.
 This script installs desktop files and icons to provide proper
 desktop environment integration after PyPI installation.
 """
+
 import os
 import shutil
 import subprocess
@@ -51,7 +52,7 @@ def install_icons(package_dir: Any, home_dir: Any) -> Any:
             shutil.copy2(icon_source, target_file)
             logger.trace("✓ Installed icon: ...", "UnknownClass")
             installed_any = True
-        except Exception:
+        except OSError:
             logger.warning("Warning: Could not install icon to ...: ...", "UnknownClass")
     return installed_any
 
@@ -77,7 +78,7 @@ def install_desktop_file(package_dir: Any, home_dir: Any) -> Any:
 
     try:
         # Read desktop file
-        with open(source_file, "r") as f:
+        with open(source_file, "r", encoding="utf-8") as f:
             content = f.read()
 
         # If using the dev desktop file, update paths
@@ -101,14 +102,14 @@ def install_desktop_file(package_dir: Any, home_dir: Any) -> Any:
             content = "\n".join(lines)
 
         # Write to target
-        with open(desktop_target, "w") as f:
+        with open(desktop_target, "w", encoding="utf-8") as f:
             f.write(content)
 
         # Make desktop file executable
         os.chmod(desktop_target, 0o755)
         logger.trace("✓ Installed desktop file: ...", "UnknownClass")
         return True
-    except Exception:
+    except OSError:
         logger.warning("Warning: Could not install desktop file to ...: ...", "UnknownClass")
         return False
 
@@ -131,7 +132,7 @@ def install_tray_desktop_file(package_dir: Any, home_dir: Any) -> Any:
         os.chmod(tray_desktop_target, 0o755)
         logger.trace("✓ Installed tray autostart file", "UnknownClass")
         return True
-    except Exception:
+    except OSError:
         logger.warning("Warning: Could not install tray desktop file", "UnknownClass")
         return False
 
@@ -147,7 +148,7 @@ def update_caches(home_dir: Any) -> None:
         try:
             shutil.rmtree(gnome_cache_dir)
             logger.trace("✓ Cleared GNOME Shell cache", "UnknownClass")
-        except Exception:
+        except OSError:
             logger.trace(
                 "Info: Could not clear GNOME Shell cache (this is optional)",
                 "UnknownClass",
@@ -162,7 +163,7 @@ def update_caches(home_dir: Any) -> None:
             "Info: gtk-update-icon-cache not available (this is optional)",
             "UnknownClass",
         )
-    except Exception:
+    except (OSError, subprocess.SubprocessError):
         logger.trace("Info: Could not update icon cache: ...", "UnknownClass")
     # Update desktop database
     try:
@@ -177,7 +178,7 @@ def update_caches(home_dir: Any) -> None:
             "Info: update-desktop-database not available (this is optional)",
             "UnknownClass",
         )
-    except Exception:
+    except (OSError, subprocess.SubprocessError):
         logger.trace("Info: Could not update desktop database: ...", "UnknownClass")
 
 
@@ -229,7 +230,7 @@ def install_desktop_integration() -> Any:
                 "The application will still work from the command line with 'dfs'",
                 "UnknownClass",
             )
-    except Exception:
+    except OSError:
         logger.error("\n❌ Error during desktop integration installation: ...", "UnknownClass")
         logger.trace(
             "The application will still work from the command line with 'dfs'",
@@ -250,7 +251,7 @@ def uninstall_desktop_integration() -> Any:
             desktop_file.unlink()
             logger.trace("✓ Removed desktop file: ...", "UnknownClass")
             removed_any = True
-        except Exception:
+        except OSError:
             logger.warning("Warning: Could not remove desktop file: ...", "UnknownClass")
 
     # Remove tray autostart file
@@ -260,7 +261,7 @@ def uninstall_desktop_integration() -> Any:
             tray_file.unlink()
             logger.trace("✓ Removed tray autostart file", "UnknownClass")
             removed_any = True
-        except Exception:
+        except OSError:
             logger.warning("Warning: Could not remove tray autostart file", "UnknownClass")
     # Remove icons
     icon_base = home_dir / ".local" / "share" / "icons" / "hicolor"
@@ -272,7 +273,7 @@ def uninstall_desktop_integration() -> Any:
                 icon_file.unlink()
                 logger.trace("✓ Removed icon: ...", "UnknownClass")
                 removed_any = True
-            except Exception:
+            except OSError:
                 logger.warning("Warning: Could not remove icon: ...", "UnknownClass")
     if removed_any:
         update_caches(home_dir)

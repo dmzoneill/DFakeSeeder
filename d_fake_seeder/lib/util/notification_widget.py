@@ -67,7 +67,7 @@ class NotificationWidget(Gtk.Frame):
         "action-clicked": (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         message: str,
         notification_type: NotificationType = NotificationType.INFO,
@@ -229,8 +229,8 @@ class NotificationWidget(Gtk.Frame):
         if self.action_callback:
             try:
                 self.action_callback()
-            except Exception as e:
-                logger.error(f"Error in notification action callback: {e}")
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logger.error(f"Error in notification action callback: {e}", exc_info=True)
         self.emit("action-clicked")
         self.dismiss()
 

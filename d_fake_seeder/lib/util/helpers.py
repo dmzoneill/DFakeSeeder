@@ -1,3 +1,11 @@
+"""
+Utility Helper Functions.
+
+This module provides common utility functions used throughout the DFakeSeeder
+application, including human-readable byte formatting, URL encoding for
+BitTorrent protocols, and random string generation.
+"""
+
 # fmt: off
 import random
 import string
@@ -10,22 +18,22 @@ def sizeof_fmt(num: Any, suffix: Any = "B") -> Any:
     """Format size of file in a readable format."""
     for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
         if abs(num) < 1024.0:
-            return "%3.1f%s%s" % (num, unit, suffix)
+            return f"{num:3.1f}{unit}{suffix}"
         num /= 1024.0
-    return "%.1f%s%s" % (num, "Yi", suffix)
+    return f"{num:.1f}Yi{suffix}"
 
 
-def urlencode(bytes: Any) -> Any:
+def urlencode(data: Any) -> Any:
     """Encode a byte array in URL format."""
     result = ""
     valids = (string.ascii_letters + "_.").encode("ascii")
-    for b in bytes:
+    for b in data:
         if b in valids:
             result += chr(b)
         elif b == " ":
             result += "+"
         else:
-            result += "%%%02X" % b
+            result += f"%{b:02X}"
     return result
 
 
@@ -34,32 +42,30 @@ def random_id(length: Any) -> Any:
     return "".join(random.choices(string.ascii_letters + string.digits, k=length))
 
 
-def humanbytes(B: Any) -> Any:
+def humanbytes(B: Any) -> Any:  # pylint: disable=invalid-name
     """Return the given bytes as a human friendly KB, MB, GB, or TB string."""
-    B = float(B)
-    KB = float(1024)
-    MB = float(KB**2)  # 1,048,576
-    GB = float(KB**3)  # 1,073,741,824
-    TB = float(KB**4)  # 1,099,511,627,776
+    B = float(B)  # pylint: disable=invalid-name
+    KB = float(1024)  # pylint: disable=invalid-name
+    MB = float(KB**2)  # 1,048,576  # pylint: disable=invalid-name
+    GB = float(KB**3)  # 1,073,741,824  # pylint: disable=invalid-name
+    TB = float(KB**4)  # 1,099,511,627,776  # pylint: disable=invalid-name
 
     if B < KB:
-        return "{0} {1}".format(int(B) if B.is_integer() else B, "B" if 0 == B > 1 else "B")
-    elif KB <= B < MB:
-        return "{0} KB".format(
-            int(B / KB) if (B / KB).is_integer() else "{0:.2f}".format(B / KB).rstrip("0").rstrip(".")
-        )
-    elif MB <= B < GB:
-        return "{0} MB".format(
-            int(B / MB) if (B / MB).is_integer() else "{0:.2f}".format(B / MB).rstrip("0").rstrip(".")
-        )
-    elif GB <= B < TB:
-        return "{0} GB".format(
-            int(B / GB) if (B / GB).is_integer() else "{0:.2f}".format(B / GB).rstrip("0").rstrip(".")
-        )
-    elif TB <= B:
-        return "{0} TB".format(
-            int(B / TB) if (B / TB).is_integer() else "{0:.2f}".format(B / TB).rstrip("0").rstrip(".")
-        )
+        val = int(B) if B.is_integer() else B
+        return f"{val} B"
+    if KB <= B < MB:
+        val = int(B / KB) if (B / KB).is_integer() else f"{B / KB:.2f}".rstrip("0").rstrip(".")
+        return f"{val} KB"
+    if MB <= B < GB:
+        val = int(B / MB) if (B / MB).is_integer() else f"{B / MB:.2f}".rstrip("0").rstrip(".")
+        return f"{val} MB"
+    if GB <= B < TB:
+        val = int(B / GB) if (B / GB).is_integer() else f"{B / GB:.2f}".rstrip("0").rstrip(".")
+        return f"{val} GB"
+    if TB <= B:
+        val = int(B / TB) if (B / TB).is_integer() else f"{B / TB:.2f}".rstrip("0").rstrip(".")
+        return f"{val} TB"
+    return "0 B"  # Fallback for edge cases
 
 
 def convert_seconds_to_hours_mins_seconds(seconds: Any) -> Any:
@@ -80,11 +86,11 @@ def convert_seconds_to_hours_mins_seconds(seconds: Any) -> Any:
 
 
 def add_kb(kb: Any) -> None:
-    return "{} kb".format(str(kb))  # type: ignore[return-value]
+    return f"{kb} kb"  # type: ignore[return-value]
 
 
 def add_percent(percent: Any) -> None:
-    return "{} %".format(str(percent))  # type: ignore[return-value]
+    return f"{percent} %"  # type: ignore[return-value]
 
 
 def format_timestamp(timestamp: Any) -> Any:

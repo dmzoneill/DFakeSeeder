@@ -1,3 +1,11 @@
+"""
+UDP Tracker Seeder Module.
+
+This module implements the UDP tracker protocol (BEP 15) for announcing to
+BitTorrent trackers. It handles UDP connection establishment, announce packets,
+and binary response parsing.
+"""
+
 # fmt: off
 import random
 
@@ -22,10 +30,14 @@ from d_fake_seeder.view import View
 
 
 class UDPSeeder(BaseSeeder):
+    """UDP tracker seeder implementing BEP 15 binary announce protocol."""
+
     def __init__(self, torrent: Any) -> None:
         super().__init__(torrent)
+        self._last_event: str = ""  # Track last event type for local tracker
+        self._tracker_model: Any = None  # Tracker model for statistics
 
-    def build_announce_packet(
+    def build_announce_packet(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         connection_id: Any,
         transaction_id: Any,
@@ -68,7 +80,7 @@ class UDPSeeder(BaseSeeder):
 
     def process_announce_response(self, response: Any) -> None:
         peers = []
-        action, transaction_id, interval, leechers, seeders = struct.unpack_from("!IIIII", response, offset=0)
+        _action, _transaction_id, interval, leechers, seeders = struct.unpack_from("!IIIII", response, offset=0)
         offset = 20
         while offset + UDPTrackerConstants.IPV4_WITH_PORT_LENGTH <= len(response):
             ip, port = struct.unpack_from("!IH", response, offset=offset)
@@ -77,7 +89,9 @@ class UDPSeeder(BaseSeeder):
             offset += UDPTrackerConstants.IPV4_WITH_PORT_LENGTH
         return peers, interval, leechers, seeders  # type: ignore[return-value]
 
-    def handle_announce(self, packet_data: Any, timeout: Any, log_msg: Any) -> None:
+    def handle_announce(  # pylint: disable=too-many-locals,too-many-statements
+        self, packet_data: Any, timeout: Any, log_msg: Any
+    ) -> None:
         logger.trace(log_msg, extra={"class_name": self.__class__.__name__})
 
         # Mark tracker as announcing
@@ -194,6 +208,22 @@ class UDPSeeder(BaseSeeder):
                             b"seeders": seeders,
                         }
                         self.update_interval = self._apply_announce_jitter(self.info[b"interval"])
+
+                    # Announce to inbuilt tracker if enabled (INT-4.1)
+                    if packet_data:
+                        uploaded, downloaded, left = packet_data
+                        # Determine event type from packet
+                        event = ""
+                        if hasattr(self, "_last_event"):
+                            event = self._last_event
+                            self._last_event = ""
+                        self._announce_to_local_tracker(
+                            uploaded=uploaded,
+                            downloaded=downloaded,
+                            left=left,
+                            event=event,
+                        )
+
                     return True  # type: ignore[return-value]
                 except socket.timeout:
                     # Update tracker model with timeout failure
@@ -213,7 +243,7 @@ class UDPSeeder(BaseSeeder):
                     )
                     return False  # type: ignore[return-value]
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             # Update tracker model with failure
             if "request_start_time" in locals():
                 request_end_time = time.time()
@@ -225,6 +255,7 @@ class UDPSeeder(BaseSeeder):
             logger.error(
                 f"❌ UDP tracker error: {str(e)}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             self.set_random_announce_url()
             logger.trace(
@@ -297,23 +328,23 @@ class UDPSeeder(BaseSeeder):
 
         # Validate uploaded/downloaded bytes to prevent reporting unrealistic values
         # Maximum reasonable value: 1 TB (1,000,000,000,000 bytes)
-        MAX_REASONABLE_BYTES = 1_000_000_000_000
+        max_reasonable_bytes = 1_000_000_000_000
 
-        if uploaded_bytes > MAX_REASONABLE_BYTES:
+        if uploaded_bytes > max_reasonable_bytes:
             logger.warning(
                 f"⚠️ Unrealistic upload value detected: {uploaded_bytes:,} bytes "
                 f"({uploaded_bytes / 1_000_000_000:.2f} GB). Capping at 1 TB.",
                 extra={"class_name": self.__class__.__name__},
             )
-            uploaded_bytes = MAX_REASONABLE_BYTES
+            uploaded_bytes = max_reasonable_bytes
 
-        if downloaded_bytes > MAX_REASONABLE_BYTES:
+        if downloaded_bytes > max_reasonable_bytes:
             logger.warning(
                 f"⚠️ Unrealistic download value detected: {downloaded_bytes:,} bytes "
                 f"({downloaded_bytes / 1_000_000_000:.2f} GB). Capping at 1 TB.",
                 extra={"class_name": self.__class__.__name__},
             )
-            downloaded_bytes = MAX_REASONABLE_BYTES
+            downloaded_bytes = max_reasonable_bytes
 
         packet_data = (uploaded_bytes, downloaded_bytes, download_left)
         result = self.handle_announce(  # type: ignore[func-returns-value]
@@ -344,10 +375,10 @@ class UDPSeeder(BaseSeeder):
 
         return result
 
-    def _get_tracker_model(self) -> Tracker:
+    def _get_tracker_model(self) -> Any:
         """Get or create tracker model for current tracker URL"""
         tracker_url = f"udp://{self.tracker_hostname}:{self.tracker_port}"
-        if not hasattr(self, "_tracker_model") or self._tracker_model is None:  # type: ignore[has-type]
+        if self._tracker_model is None:
             # Create tracker model with current URL and tier
             self._tracker_model = Tracker(url=tracker_url, tier=0)
         elif self._tracker_model.get_property("url") != tracker_url:
@@ -360,7 +391,7 @@ class UDPSeeder(BaseSeeder):
         try:
             tracker = self._get_tracker_model()
             tracker.set_announcing()
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.trace(
                 f"Failed to set tracker announcing status: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -371,7 +402,7 @@ class UDPSeeder(BaseSeeder):
         try:
             tracker = self._get_tracker_model()
             tracker.update_announce_response(response_data, response_time)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.trace(
                 f"Failed to update tracker success: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -382,7 +413,7 @@ class UDPSeeder(BaseSeeder):
         try:
             tracker = self._get_tracker_model()
             tracker.update_announce_failure(error_message, response_time)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.trace(
                 f"Failed to update tracker failure: {e}",
                 extra={"class_name": self.__class__.__name__},

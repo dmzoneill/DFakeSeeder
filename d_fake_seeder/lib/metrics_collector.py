@@ -76,8 +76,8 @@ class MetricsCollector:
             else:
                 logger.error("Warning: DFakeSeeder process not found")
 
-        except Exception as e:
-            logger.error(f"Error initializing process: {e}")
+        except (psutil.Error, OSError, AttributeError) as e:
+            logger.error("Error initializing process: %s", e)
 
     def collect_metrics(self) -> Dict:
         """
@@ -133,7 +133,7 @@ class MetricsCollector:
                 "error": "Process terminated",
                 "timestamp": datetime.now().isoformat(),
             }
-        except Exception as e:
+        except (psutil.Error, OSError, AttributeError) as e:
             return {"error": str(e), "timestamp": datetime.now().isoformat()}
 
     def _collect_cpu_metrics(self) -> Dict:
@@ -150,7 +150,7 @@ class MetricsCollector:
                 "cpu_system_time": cpu_times.system,
                 "cpu_num_threads": self.process.num_threads(),  # type: ignore[union-attr]
             }
-        except Exception as e:
+        except (psutil.Error, OSError, AttributeError) as e:
             return {"cpu_error": str(e)}
 
     def _collect_memory_metrics(self) -> Dict:
@@ -181,7 +181,7 @@ class MetricsCollector:
                 metrics["memory_pss_mb"] = pss / (1024 * 1024)  # Proportional Set Size
 
             return metrics
-        except Exception as e:
+        except (psutil.Error, OSError, AttributeError) as e:
             return {"memory_error": str(e)}
 
     def _collect_fd_metrics(self) -> Dict:
@@ -192,19 +192,19 @@ class MetricsCollector:
             # Get FD types
             fd_types = Counter()  # type: ignore[var-annotated]
             try:
-                for item in self.process.open_files():  # type: ignore[union-attr]
+                for _ in self.process.open_files():  # type: ignore[union-attr]
                     fd_types["file"] += 1
 
-                for conn in self.process.connections():  # type: ignore[union-attr]
+                for _ in self.process.connections():  # type: ignore[union-attr]
                     fd_types["socket"] += 1
             except (psutil.AccessDenied, AttributeError):
                 pass
 
             # Get system FD limits
             try:
-                with open("/proc/sys/fs/file-max", "r") as f:
+                with open("/proc/sys/fs/file-max", "r", encoding="utf-8") as f:
                     system_fd_max = int(f.read().strip())
-            except Exception:
+            except (OSError, ValueError):
                 system_fd_max = None
 
             metrics = {
@@ -217,7 +217,7 @@ class MetricsCollector:
                 metrics["fd_system_max"] = system_fd_max
 
             return metrics
-        except Exception as e:
+        except (psutil.Error, OSError, AttributeError) as e:
             return {"fd_error": str(e)}
 
     def _collect_connection_metrics(self) -> Dict:
@@ -250,7 +250,7 @@ class MetricsCollector:
                 "connections_tcp": conn_types.get("1", 0),  # SOCK_STREAM = TCP
                 "connections_udp": conn_types.get("2", 0),  # SOCK_DGRAM = UDP
             }
-        except Exception as e:
+        except (psutil.Error, OSError, AttributeError) as e:
             return {"connections_error": str(e)}
 
     def _collect_thread_metrics(self) -> Dict:
@@ -268,7 +268,7 @@ class MetricsCollector:
                 "threads_user_time": total_user_time,
                 "threads_system_time": total_system_time,
             }
-        except Exception as e:
+        except (psutil.Error, OSError, AttributeError) as e:
             return {"threads_error": str(e)}
 
     def _collect_io_metrics(self) -> Dict:
@@ -282,7 +282,7 @@ class MetricsCollector:
                 "io_read_bytes": io_counters.read_bytes,
                 "io_write_bytes": io_counters.write_bytes,
             }
-        except Exception as e:
+        except (psutil.Error, OSError, AttributeError) as e:
             return {"io_error": str(e)}
 
     def _collect_net_io_metrics(self) -> Dict:
@@ -301,7 +301,7 @@ class MetricsCollector:
                 "net_errin": net_io.errin,
                 "net_errout": net_io.errout,
             }
-        except Exception as e:
+        except (psutil.Error, OSError, AttributeError) as e:
             return {"net_io_error": str(e)}
 
     def _collect_gtk_metrics(self) -> Dict:
@@ -322,7 +322,7 @@ class MetricsCollector:
             }
 
             return metrics
-        except Exception as e:
+        except (RuntimeError, AttributeError) as e:
             return {"gc_error": str(e)}
 
     def get_metrics_delta(self, current: Dict, baseline: Dict = None) -> Dict:  # type: ignore[assignment]
@@ -484,13 +484,13 @@ if __name__ == "__main__":
 
     if collector.process:
         print("\nCollecting metrics...")
-        metrics = collector.collect_metrics()
-        print(collector.format_metrics(metrics))
+        collected_metrics = collector.collect_metrics()
+        print(collector.format_metrics(collected_metrics))
 
         # Save to file
         output_file = Path(__file__).parent / "test_metrics.json"
-        with open(output_file, "w") as f:
-            json.dump(metrics, f, indent=2)
+        with open(output_file, "w", encoding="utf-8") as output_f:
+            json.dump(collected_metrics, output_f, indent=2)
         print(f"\nMetrics saved to: {output_file}")
     else:
         print("Could not find DFakeSeeder process. Is it running?")

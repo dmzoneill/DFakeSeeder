@@ -139,10 +139,11 @@ class ShutdownProgressTracker:
         for callback in self.callbacks:
             try:
                 callback()
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.error(
                     f"Error in shutdown progress callback: {e}",
                     extra={"class_name": self.__class__.__name__},
+                    exc_info=True,
                 )
                 # Remove problematic callback to prevent repeated errors
                 try:

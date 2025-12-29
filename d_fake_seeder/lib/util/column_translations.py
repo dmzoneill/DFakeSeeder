@@ -260,7 +260,7 @@ class ColumnTranslations:
         # If we have a specific mapping, use it (try underscore version first)
         if property_name_underscore in mapping:
             return mapping[property_name_underscore]  # type: ignore[no-any-return]
-        elif property_name in mapping:
+        if property_name in mapping:
             return mapping[property_name]  # type: ignore[no-any-return]
 
         # Try to translate the property name directly (with underscores)

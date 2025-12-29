@@ -3,8 +3,8 @@
 from typing import Any
 
 
-class bencode:
-    """Bencodepy-compatible interface wrapper."""
+class bencode:  # pylint: disable=invalid-name
+    """Bencodepy-compatible interface wrapper (lowercase for bencodepy API compatibility)."""
 
     @staticmethod
     def bdecode(data: Any) -> Any:
@@ -54,7 +54,7 @@ def _decode(raw_buffer: Any, elements: Any, index: Any = 0) -> Any:
             data = raw_buffer[index: index + size]  # noqa: E203
             index += size
             elements.append(data)
-        except BaseException:
+        except BaseException:  # pylint: disable=broad-exception-caught
             pass
     return index
 
@@ -72,17 +72,17 @@ def encode(data: Any) -> Any:
     """Encode data into a bytes string via Bencoding."""
     if isinstance(data, bytes):
         return str(len(data)).encode("ascii") + b":" + data
-    elif isinstance(data, str):
+    if isinstance(data, str):
         return encode(data.encode("ascii"))
-    elif isinstance(data, int):
+    if isinstance(data, int):
         return b"i" + str(data).encode("ascii") + b"e"
-    elif isinstance(data, list):
+    if isinstance(data, list):
         result = b"l"
         for d in data:
             result += encode(d)
         result += b"e"
         return result
-    elif isinstance(data, dict):
+    if isinstance(data, dict):
         result = b"d"
         for key, value in data.items():
             result += encode(key)

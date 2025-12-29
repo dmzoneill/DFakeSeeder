@@ -10,12 +10,12 @@ from d_fake_seeder.lib.logger import logger
 
 # Try to import aiohttp - it's an optional dependency
 web: Any = None
-AIOHTTP_AVAILABLE = False
+AIOHTTP_AVAILABLE = False  # pylint: disable=invalid-name
 try:
     from aiohttp import web as _web
 
     web = _web
-    AIOHTTP_AVAILABLE = True
+    AIOHTTP_AVAILABLE = True  # pylint: disable=invalid-name
 except ImportError:
     pass
 
@@ -87,7 +87,7 @@ async def handle_login(request: Any) -> Any:
             return response
 
         return web.json_response({"success": False, "error": "Invalid credentials"}, status=401)
-    except Exception as e:
+    except (KeyError, ValueError, AttributeError, RuntimeError) as e:
         logger.error(f"Login error: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
 
@@ -122,7 +122,7 @@ async def handle_get_torrents(request: Any) -> Any:
             )
 
         return web.json_response({"torrents": torrent_list, "count": len(torrent_list)})
-    except Exception as e:
+    except (KeyError, ValueError, AttributeError, RuntimeError) as e:
         logger.error(f"Error getting torrents: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
 
@@ -156,7 +156,7 @@ async def handle_get_torrent(request: Any) -> Any:
                 )
 
         return web.json_response({"error": "Torrent not found"}, status=404)
-    except Exception as e:
+    except (KeyError, ValueError, AttributeError, RuntimeError) as e:
         logger.error(f"Error getting torrent: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
 
@@ -177,7 +177,7 @@ async def handle_start_torrent(request: Any) -> Any:
                 return web.json_response({"success": True})
 
         return web.json_response({"error": "Torrent not found"}, status=404)
-    except Exception as e:
+    except (KeyError, ValueError, AttributeError, RuntimeError) as e:
         logger.error(f"Error starting torrent: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
 
@@ -198,7 +198,7 @@ async def handle_stop_torrent(request: Any) -> Any:
                 return web.json_response({"success": True})
 
         return web.json_response({"error": "Torrent not found"}, status=404)
-    except Exception as e:
+    except (KeyError, ValueError, AttributeError, RuntimeError) as e:
         logger.error(f"Error stopping torrent: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
 
@@ -218,7 +218,7 @@ async def handle_delete_torrent(request: Any) -> Any:
             return web.json_response({"success": True})
 
         return web.json_response({"error": "Delete not supported"}, status=501)
-    except Exception as e:
+    except (KeyError, ValueError, AttributeError, RuntimeError) as e:
         logger.error(f"Error deleting torrent: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
 
@@ -242,7 +242,7 @@ async def handle_get_stats(request: Any) -> Any:
                 "global_ratio": total_upload / total_download if total_download > 0 else 0,
             }
         )
-    except Exception as e:
+    except (KeyError, ValueError, AttributeError, RuntimeError, ZeroDivisionError) as e:
         logger.error(f"Error getting stats: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
 
@@ -266,7 +266,7 @@ async def handle_get_speed_stats(request: Any) -> Any:
                 "alt_speed_enabled": alt_speed_enabled,
             }
         )
-    except Exception as e:
+    except (KeyError, ValueError, AttributeError, RuntimeError) as e:
         logger.error(f"Error getting speed stats: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
 
@@ -295,7 +295,7 @@ async def handle_get_settings(request: Any) -> Any:
         }
 
         return web.json_response(safe_settings)
-    except Exception as e:
+    except (KeyError, ValueError, AttributeError, RuntimeError) as e:
         logger.error(f"Error getting settings: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
 
@@ -323,7 +323,7 @@ async def handle_update_settings(request: Any) -> Any:
                 updated.append(key)
 
         return web.json_response({"success": True, "updated": updated})
-    except Exception as e:
+    except (KeyError, ValueError, AttributeError, RuntimeError) as e:
         logger.error(f"Error updating settings: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
 
@@ -339,7 +339,7 @@ async def handle_get_alt_speed(request: Any) -> Any:
                 "download_limit": settings.get("speed.alt_download_limit_kbps", 100),
             }
         )
-    except Exception as e:
+    except (KeyError, ValueError, AttributeError, RuntimeError) as e:
         logger.error(f"Error getting alt speed: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
 
@@ -351,7 +351,7 @@ async def handle_toggle_alt_speed(request: Any) -> Any:
         current = settings.get("speed.enable_alternative_speeds", False)
         settings.set("speed.enable_alternative_speeds", not current)
         return web.json_response({"enabled": not current})
-    except Exception as e:
+    except (KeyError, ValueError, AttributeError, RuntimeError) as e:
         logger.error(f"Error toggling alt speed: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
 

@@ -1,3 +1,11 @@
+"""
+HTTP Tracker Seeder Module.
+
+This module implements the HTTP tracker protocol (BEP 3) for announcing to
+BitTorrent trackers. It handles HTTP announce requests, response parsing,
+scrape operations, and peer list extraction.
+"""
+
 # fmt: off
 # isort: skip_file
 from typing import Any
@@ -6,7 +14,7 @@ from time import sleep
 
 import requests
 
-import d_fake_seeder.domain.torrent.bencoding as bencoding
+from d_fake_seeder.domain.torrent import bencoding
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.model.tracker import Tracker
 from d_fake_seeder.domain.torrent.seeders.base_seeder import BaseSeeder
@@ -18,11 +26,16 @@ from d_fake_seeder.view import View
 
 
 class HTTPSeeder(BaseSeeder):
+    """HTTP tracker seeder implementing BEP 3 announce/scrape protocol."""
+
     def __init__(self, torrent: Any) -> None:
         super().__init__(torrent)
 
         # Track first successful announce for notification
         self._first_success_notified = False
+
+        # Tracker model for tracking state (lazy-initialized in _get_tracker_model)
+        self._tracker_model: Any = None
 
         # Get configurable sleep interval
         ui_settings = getattr(self.settings, "ui_settings", {})
@@ -32,7 +45,7 @@ class HTTPSeeder(BaseSeeder):
             / 10
         )  # Much smaller for HTTP retries
 
-    def load_peers(self) -> None:
+    def load_peers(self) -> None:  # pylint: disable=too-many-branches,too-many-statements
         logger.trace("Seeder load peers", extra={"class_name": self.__class__.__name__})
 
         if self.shutdown_requested:
@@ -196,6 +209,19 @@ class HTTPSeeder(BaseSeeder):
                 # Apply jitter to announce interval to prevent request storms
                 base_interval = self.info[b"interval"]
                 self.update_interval = self._apply_announce_jitter(base_interval)
+
+                # Announce to inbuilt tracker if enabled (INT-3.1)
+                # This is the "started" event for initial peer load
+                event = "started" if self.first_announce else ""
+                self._announce_to_local_tracker(
+                    uploaded=0,
+                    downloaded=0,
+                    left=self.torrent.total_size,
+                    event=event,
+                )
+                if self.first_announce:
+                    self.first_announce = False
+
                 self.get_tracker_semaphore().release()
                 return True  # type: ignore[return-value]
 
@@ -205,7 +231,7 @@ class HTTPSeeder(BaseSeeder):
             )
             self.get_tracker_semaphore().release()
             return False  # type: ignore[return-value]
-        except Exception as e:
+        except (requests.RequestException, OSError, ValueError, RuntimeError) as e:
             # Update tracker model with failure
             if "request_start_time" in locals():
                 request_end_time = time.time()
@@ -218,28 +244,30 @@ class HTTPSeeder(BaseSeeder):
             self.handle_exception(e, "Seeder unknown error in load_peers_http")
             return False  # type: ignore[return-value]
 
-    def upload(self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any) -> Any:
+    def upload(  # pylint: disable=too-many-branches,too-many-statements
+        self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any
+    ) -> Any:
         logger.trace("Seeder upload", extra={"class_name": self.__class__.__name__})
 
         # Validate uploaded/downloaded bytes to prevent reporting unrealistic values
         # Maximum reasonable value: 1 TB (1,000,000,000,000 bytes)
-        MAX_REASONABLE_BYTES = 1_000_000_000_000
+        max_reasonable_bytes = 1_000_000_000_000
 
-        if uploaded_bytes > MAX_REASONABLE_BYTES:
+        if uploaded_bytes > max_reasonable_bytes:
             logger.warning(
                 f"⚠️ Unrealistic upload value detected: {uploaded_bytes:,} bytes "
                 f"({uploaded_bytes / 1_000_000_000:.2f} GB). Capping at 1 TB.",
                 extra={"class_name": self.__class__.__name__},
             )
-            uploaded_bytes = MAX_REASONABLE_BYTES
+            uploaded_bytes = max_reasonable_bytes
 
-        if downloaded_bytes > MAX_REASONABLE_BYTES:
+        if downloaded_bytes > max_reasonable_bytes:
             logger.warning(
                 f"⚠️ Unrealistic download value detected: {downloaded_bytes:,} bytes "
                 f"({downloaded_bytes / 1_000_000_000:.2f} GB). Capping at 1 TB.",
                 extra={"class_name": self.__class__.__name__},
             )
-            downloaded_bytes = MAX_REASONABLE_BYTES
+            downloaded_bytes = max_reasonable_bytes
 
         # Log upload attempt
         logger.trace(
@@ -293,13 +321,21 @@ class HTTPSeeder(BaseSeeder):
                             f"⏱️ Next announce in: {data[b'interval']} seconds",
                             extra={"class_name": self.__class__.__name__},
                         )
-                except Exception:
+                except (ValueError, KeyError, TypeError):
                     pass  # Not all announce responses contain decodable data
+
+                # Announce to inbuilt tracker if enabled (INT-3.1)
+                self._announce_to_local_tracker(
+                    uploaded=uploaded_bytes,
+                    downloaded=downloaded_bytes,
+                    left=download_left,
+                    event="",  # Periodic announce
+                )
 
                 self.get_tracker_semaphore().release()
                 return  # Success, exit the loop
 
-            except BaseException as e:
+            except BaseException as e:  # pylint: disable=broad-exception-caught
                 retry_count += 1
                 if self.shutdown_requested:
                     logger.trace(
@@ -328,7 +364,7 @@ class HTTPSeeder(BaseSeeder):
             finally:
                 try:
                     self.get_tracker_semaphore().release()
-                except Exception:
+                except (ValueError, RuntimeError):
                     pass  # Ignore if already released or error occurred
 
         if retry_count >= max_retries:
@@ -405,9 +441,9 @@ class HTTPSeeder(BaseSeeder):
 
         return req
 
-    def _get_tracker_model(self) -> Tracker:
+    def _get_tracker_model(self) -> Any:
         """Get or create tracker model for current tracker URL"""
-        if not hasattr(self, "_tracker_model") or self._tracker_model is None:  # type: ignore[has-type]
+        if self._tracker_model is None:
             # Create tracker model with current URL and tier
             self._tracker_model = Tracker(url=self.tracker_url, tier=0)
         elif self._tracker_model.get_property("url") != self.tracker_url:
@@ -420,7 +456,7 @@ class HTTPSeeder(BaseSeeder):
         try:
             tracker = self._get_tracker_model()
             tracker.set_announcing()
-        except Exception as e:
+        except (AttributeError, RuntimeError) as e:
             logger.trace(
                 f"Failed to set tracker announcing status: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -455,7 +491,7 @@ class HTTPSeeder(BaseSeeder):
                     translate=False,
                 )
 
-        except Exception as e:
+        except (AttributeError, KeyError, ValueError, UnicodeDecodeError) as e:
             logger.trace(
                 f"Failed to update tracker success: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -466,7 +502,7 @@ class HTTPSeeder(BaseSeeder):
         try:
             tracker = self._get_tracker_model()
             tracker.update_announce_failure(error_message, response_time)
-        except Exception as e:
+        except (AttributeError, RuntimeError) as e:
             logger.trace(
                 f"Failed to update tracker failure: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -553,7 +589,7 @@ class HTTPSeeder(BaseSeeder):
             )
             return {}
 
-        except Exception as e:
+        except (requests.RequestException, OSError, ValueError, AttributeError) as e:
             logger.trace(
                 f"Scrape error: {e}",
                 extra={"class_name": self.__class__.__name__},

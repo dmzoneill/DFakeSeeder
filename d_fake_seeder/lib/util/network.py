@@ -58,10 +58,10 @@ def get_local_ip() -> Optional[str]:
         try:
             s.connect(("8.8.8.8", 80))
             ip: str = s.getsockname()[0]
-        except Exception:
+        except Exception:  # pylint: disable=broad-exception-caught
             ip = "127.0.0.1"
         finally:
             s.close()
         return ip
-    except Exception:
+    except Exception:  # pylint: disable=broad-exception-caught
         return None

@@ -5,7 +5,7 @@ Defines message type constants for the BitTorrent protocol.
 """
 
 
-class BitTorrentMessage:
+class BitTorrentMessage:  # pylint: disable=too-few-public-methods
     """BitTorrent protocol message types"""
 
     CHOKE = 0

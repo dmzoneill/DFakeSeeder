@@ -1,9 +1,11 @@
 # fmt: off
 # isort: skip_file
 from typing import Any
+import threading
 import time
 
 import requests
+from gi.repository import GLib
 
 from d_fake_seeder.components.component.base_component import Component
 from d_fake_seeder.domain.app_settings import AppSettings
@@ -60,19 +62,36 @@ class Statusbar(Component):
         connection_manager.add_update_callback(self.update_connection_status)
 
     def get_ip(self) -> Any:
-        try:
-            if self.ip != "0.0.0.0":
-                return self.ip
-            response = requests.get("https://ifconfig.me/")
-            if response.status_code == 200:
-                self.ip = response.content.decode("UTF-8")
-                return self.ip
-            else:
-                self.ip = ""
-                return self.ip
-        except requests.exceptions.RequestException:
-            self.ip = ""
+        """Get cached IP or return placeholder while fetching."""
+        if self.ip != "0.0.0.0":
             return self.ip
+        # Return placeholder - IP will be fetched async
+        return "..."
+
+    def fetch_ip_async(self) -> None:
+        """Fetch external IP in background thread to avoid blocking UI."""
+        if self.ip != "0.0.0.0":
+            return  # Already have IP
+
+        def _fetch() -> None:
+            try:
+                response = requests.get("https://ifconfig.me/", timeout=5)
+                if response.status_code == 200:
+                    new_ip = response.content.decode("UTF-8").strip()
+                    # Update on main thread
+                    GLib.idle_add(self._update_ip_display, new_ip)
+            except (requests.exceptions.RequestException, requests.exceptions.Timeout):
+                GLib.idle_add(self._update_ip_display, "N/A")
+
+        thread = threading.Thread(target=_fetch, name="IP-Fetch", daemon=True)
+        thread.start()
+
+    def _update_ip_display(self, new_ip: str) -> bool:
+        """Update IP display on main thread (called via GLib.idle_add)."""
+        self.ip = new_ip
+        if hasattr(self, "status_ip"):
+            self.status_ip.set_text("  " + new_ip)
+        return False  # Don't repeat
 
     def sum_column_values(self, column_name: Any) -> Any:
         total_sum = 0
@@ -131,14 +150,17 @@ class Statusbar(Component):
                     format_number(max_total_connections, 0),
                 )
             )
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError) as e:
             logger.error(
                 f"Error updating connection status: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             self.status_peers.set_text("  0 / 250")
 
+        # Display cached IP and trigger async fetch if needed
         self.status_ip.set_text("  " + self.get_ip())
+        self.fetch_ip_async()  # Non-blocking background fetch
 
     def update_connection_status(self) -> None:
         """Update only the connection status in the status bar"""
@@ -155,10 +177,11 @@ class Statusbar(Component):
                     format_number(max_total_connections, 0),
                 )
             )
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError) as e:
             logger.error(
                 f"Error updating connection status: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
             self.status_peers.set_text("  0 / 250")
 

@@ -1,3 +1,11 @@
+"""
+Torrent Attributes Model.
+
+This module defines the Attributes class which stores torrent metadata
+like name, size, hash, and tracker information as GObject properties
+with change notification support.
+"""
+
 # fmt: off
 import uuid
 
@@ -11,6 +19,8 @@ from gi.repository import GObject  # noqa: E402
 
 
 class Attributes(GObject.Object):
+    """GObject storing torrent metadata attributes with change notifications."""
+
     # Hidden attributes
     active = GObject.Property(type=GObject.TYPE_BOOLEAN, default=True)
 

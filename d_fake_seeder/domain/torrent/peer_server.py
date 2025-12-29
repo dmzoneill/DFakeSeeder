@@ -25,7 +25,7 @@ from d_fake_seeder.view import View
 # fmt: on
 
 
-class PeerServer:
+class PeerServer:  # pylint: disable=too-many-instance-attributes
     """Server to accept incoming BitTorrent peer connections"""
 
     def __init__(
@@ -126,7 +126,7 @@ class PeerServer:
                     "🚪 Peer server closed (no longer accepting connections)",
                     extra={"class_name": self.__class__.__name__},
                 )
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.warning(
                     f"⚠️ Error closing peer server: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -136,7 +136,7 @@ class PeerServer:
         for writer in self.active_connections.values():
             try:
                 writer.close()
-            except Exception:
+            except Exception:  # pylint: disable=broad-exception-caught
                 pass
         self.active_connections.clear()
 
@@ -176,10 +176,11 @@ class PeerServer:
             async with self.server:
                 await self.server.serve_forever()
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(
                 f"❌ Error in peer server: {e}",
                 extra={"class_name": self.__class__.__name__},
+                exc_info=True,
             )
 
     async def _handle_client(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
@@ -219,7 +220,7 @@ class PeerServer:
             # Handle the peer protocol
             await self._handle_peer_protocol(reader, writer, client_key)
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             logger.trace(
                 f"❌ Error handling peer {client_key}: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -231,7 +232,7 @@ class PeerServer:
                 del self.active_connections[client_key]
             try:
                 writer.close()
-            except Exception:
+            except Exception:  # pylint: disable=broad-exception-caught
                 pass
 
             logger.trace(
@@ -375,8 +376,8 @@ class PeerServer:
                 writer.write(struct.pack(">I", 0))
                 await writer.drain()
 
-            except Exception as e:
-                logger.error(f"❌ Message handling error for {client_key}: {e}")
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logger.error(f"❌ Message handling error for {client_key}: {e}", exc_info=True)
                 break
 
     async def _handle_message(

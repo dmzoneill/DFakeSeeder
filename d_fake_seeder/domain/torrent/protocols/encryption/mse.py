@@ -24,8 +24,8 @@ try:
 
     CRYPTO_AVAILABLE = True
 except ImportError:
+    ARC4 = None  # type: ignore[assignment]
     CRYPTO_AVAILABLE = False
-    ARC4 = None
 
 
 # Diffie-Hellman parameters (standard for BitTorrent MSE)

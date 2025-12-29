@@ -479,7 +479,7 @@ class Torrents(Component, ColumnTranslationMixin):
                 id_expression = Gtk.PropertyExpression.new(Attributes, None, "id")
                 id_sorter = Gtk.NumericSorter.new(id_expression)
                 id_column.set_sorter(id_sorter)
-            except Exception:
+            except (AttributeError, TypeError):
                 pass
             logger.trace("Step 3 - Sorter setup: ms", "Torrents")
             # Step 4: Append to columnview
@@ -561,7 +561,7 @@ class Torrents(Component, ColumnTranslationMixin):
                         else:
                             sorter = Gtk.NumericSorter.new(attribute_expression)
                         column.set_sorter(sorter)
-                    except Exception:
+                    except (AttributeError, TypeError):
                         pass
                     self.torrents_columnview.append_column(column)
                     # Translation registration
@@ -579,8 +579,8 @@ class Torrents(Component, ColumnTranslationMixin):
                 f"Background column creation completed: {created_count} columns",
                 "Torrents",
             )
-        except Exception:
-            logger.error("Background column creation error:", "Torrents")
+        except (AttributeError, TypeError, KeyError) as e:
+            logger.error(f"Background column creation error: {e}", "Torrents", exc_info=True)
         return False  # Don't repeat this idle task  # type: ignore
 
     def _create_edit_widget(self, attribute: Any, widget_type_str: Any) -> Any:
@@ -798,7 +798,7 @@ class Torrents(Component, ColumnTranslationMixin):
         if hasattr(edit_widget, "_handler_id") and edit_widget._handler_id:
             try:
                 edit_widget.disconnect(edit_widget._handler_id)
-            except Exception:
+            except (TypeError, AttributeError):
                 pass
             edit_widget._handler_id = None
 
@@ -809,7 +809,7 @@ class Torrents(Component, ColumnTranslationMixin):
         # Get current value
         try:
             current_value = getattr(item_data, attribute, 0)
-        except Exception:
+        except (AttributeError, TypeError):
             current_value = 0
 
         # Bind display widget
@@ -846,7 +846,7 @@ class Torrents(Component, ColumnTranslationMixin):
                 if item and attr:
                     try:
                         setattr(item, attr, sb.get_value())
-                    except Exception:
+                    except (AttributeError, TypeError, ValueError):
                         pass
 
             edit_widget._handler_id = edit_widget.connect("value-changed", on_value_changed)
@@ -859,7 +859,7 @@ class Torrents(Component, ColumnTranslationMixin):
                 if item and attr:
                     try:
                         setattr(item, attr, sw.get_active())
-                    except Exception:
+                    except (AttributeError, TypeError, ValueError):
                         pass
 
             edit_widget._handler_id = edit_widget.connect("notify::active", on_switch_changed)
@@ -872,7 +872,7 @@ class Torrents(Component, ColumnTranslationMixin):
                 if item and attr:
                     try:
                         setattr(item, attr, entry.get_text())
-                    except Exception:
+                    except (AttributeError, TypeError, ValueError):
                         pass
 
             edit_widget._handler_id = edit_widget.connect("changed", on_entry_changed)
@@ -893,7 +893,7 @@ class Torrents(Component, ColumnTranslationMixin):
                         selected_idx = dropdown.get_selected()
                         if 0 <= selected_idx < len(opts):
                             setattr(item, attr, opts[selected_idx])
-                    except Exception:
+                    except (AttributeError, TypeError, ValueError, IndexError):
                         pass
 
             edit_widget._handler_id = edit_widget.connect("notify::selected", on_dropdown_changed)
@@ -927,10 +927,11 @@ class Torrents(Component, ColumnTranslationMixin):
                     "Successfully connected to language-changed signal for column translation",
                     extra={"class_name": self.__class__.__name__},
                 )
-            except Exception as e:
+            except (AttributeError, TypeError) as e:
                 logger.error(
                     f"FAILED to connect to language-changed signal: {e}",
                     extra={"class_name": self.__class__.__name__},
+                    exc_info=True,
                 )
         # Update the view if model is set
         if self.model:
@@ -963,8 +964,8 @@ class Torrents(Component, ColumnTranslationMixin):
                 self.selection,
                 self.selection.connect("notify::selected", self.on_selection_changed),
             )
-        except Exception as e:
-            logger.error(f"Failed to connect notify::selected signal: {e}")
+        except (AttributeError, TypeError) as e:
+            logger.error(f"Failed to connect notify::selected signal: {e}", exc_info=True)
             # Try alternative signal names
             try:
                 self.track_signal(
@@ -972,8 +973,8 @@ class Torrents(Component, ColumnTranslationMixin):
                     self.selection.connect("selection-changed", self.on_selection_changed_old),
                 )
                 logger.debug("Connected to selection-changed signal as fallback")
-            except Exception as e2:
-                logger.error(f"All signal connections failed: {e2}")
+            except (AttributeError, TypeError) as e2:
+                logger.error(f"All signal connections failed: {e2}", exc_info=True)
         self.torrents_columnview.set_model(self.selection)
         # Don't auto-select the first torrent - let user manually select
         # This allows detail tabs to show "No Torrent Selected" empty state on startup
@@ -996,8 +997,23 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
+                # Try torrent.name first, then torrent_file.name, then extract from filepath
+                torrent_name = getattr(torrent, "name", None)
+                if not torrent_name:
+                    torrent_file = getattr(torrent, "torrent_file", None)
+                    if torrent_file:
+                        torrent_name = getattr(torrent_file, "name", None)
+                if not torrent_name:
+                    # Extract filename from filepath as last resort
+                    filepath = getattr(torrent, "filepath", None) or getattr(torrent, "file_path", "")
+                    if filepath:
+                        import os
+
+                        torrent_name = os.path.basename(str(filepath)).replace(".torrent", "")
+                if not torrent_name:
+                    torrent_name = "Unknown"
                 View.instance.notify(
-                    self._("Added: {name}").format(name=getattr(torrent, "name", "Unknown")),
+                    self._("Added: {name}").format(name=torrent_name),
                     notification_type="success",
                 )
         # Note: "remove" notification is already handled in _on_remove_activate
@@ -1984,10 +2000,11 @@ class Torrents(Component, ColumnTranslationMixin):
                         f"Deleted file: {torrent.file_path}",
                         extra={"class_name": self.__class__.__name__},
                     )
-                except Exception as e:
+                except OSError as e:
                     logger.error(
                         f"Failed to delete file: {e}",
                         extra={"class_name": self.__class__.__name__},
+                        exc_info=True,
                     )
 
             if hasattr(self.model, "remove_torrent"):

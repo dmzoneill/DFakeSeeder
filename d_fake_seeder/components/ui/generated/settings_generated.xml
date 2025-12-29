@@ -6550,11 +6550,11 @@
     <object class="GtkBox">
       <property name="visible">True</property>
       <property name="orientation">vertical</property>
-      <property name="spacing">12</property>
-      <property name="margin-start">12</property>
-      <property name="margin-end">12</property>
-      <property name="margin-top">12</property>
-      <property name="margin-bottom">12</property>
+      <property name="spacing">18</property>
+      <property name="margin-start">24</property>
+      <property name="margin-end">24</property>
+      <property name="margin-top">24</property>
+      <property name="margin-bottom">24</property>
 
       <!-- Enable Notifications -->
       <child>
@@ -6582,18 +6582,22 @@
 
       <!-- Appearance Section -->
       <child>
-        <object class="GtkFrame">
-          <property name="visible">True</property>
-          <property name="label" translatable="yes">Appearance</property>
+        <object class="GtkBox">
+          <property name="orientation">vertical</property>
+          <property name="spacing">12</property>
+          <child>
+            <object class="GtkLabel">
+              <property name="label" translatable="yes">&lt;b&gt;Appearance&lt;/b&gt;</property>
+              <property name="use-markup">True</property>
+              <property name="halign">start</property>
+            </object>
+          </child>
           <child>
             <object class="GtkBox">
               <property name="visible">True</property>
               <property name="orientation">vertical</property>
               <property name="spacing">8</property>
               <property name="margin-start">12</property>
-              <property name="margin-end">12</property>
-              <property name="margin-top">8</property>
-              <property name="margin-bottom">8</property>
 
               <!-- Position -->
               <child>
@@ -6738,18 +6742,22 @@
 
       <!-- Timeouts Section -->
       <child>
-        <object class="GtkFrame">
-          <property name="visible">True</property>
-          <property name="label" translatable="yes">Timeouts (milliseconds, 0 = manual dismiss)</property>
+        <object class="GtkBox">
+          <property name="orientation">vertical</property>
+          <property name="spacing">12</property>
+          <child>
+            <object class="GtkLabel">
+              <property name="label" translatable="yes">&lt;b&gt;Timeouts (milliseconds, 0 = manual dismiss)&lt;/b&gt;</property>
+              <property name="use-markup">True</property>
+              <property name="halign">start</property>
+            </object>
+          </child>
           <child>
             <object class="GtkBox">
               <property name="visible">True</property>
               <property name="orientation">vertical</property>
               <property name="spacing">8</property>
               <property name="margin-start">12</property>
-              <property name="margin-end">12</property>
-              <property name="margin-top">8</property>
-              <property name="margin-bottom">8</property>
 
               <!-- Info Timeout -->
               <child>
@@ -6890,18 +6898,22 @@
 
       <!-- Options Section -->
       <child>
-        <object class="GtkFrame">
-          <property name="visible">True</property>
-          <property name="label" translatable="yes">Options</property>
+        <object class="GtkBox">
+          <property name="orientation">vertical</property>
+          <property name="spacing">12</property>
+          <child>
+            <object class="GtkLabel">
+              <property name="label" translatable="yes">&lt;b&gt;Options&lt;/b&gt;</property>
+              <property name="use-markup">True</property>
+              <property name="halign">start</property>
+            </object>
+          </child>
           <child>
             <object class="GtkBox">
               <property name="visible">True</property>
               <property name="orientation">vertical</property>
               <property name="spacing">8</property>
               <property name="margin-start">12</property>
-              <property name="margin-end">12</property>
-              <property name="margin-top">8</property>
-              <property name="margin-bottom">8</property>
 
               <!-- Show in statusbar -->
               <child>
@@ -6986,6 +6998,651 @@
                     <child type="tab">
                         <object class="GtkLabel">
                             <property name="label" translatable="yes">Notifications</property>
+                        </object>
+                    </child>
+
+                    <!-- Tracker Tab -->
+                    <child>
+                        <object class="GtkScrolledWindow" id="settings_tracker_scroll" >
+    <property name="hscrollbar-policy">never</property>
+    <property name="vscrollbar-policy">automatic</property>
+    <child>
+        <object class="GtkBox" id="settings_tracker_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">18</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+
+            <!-- Inbuilt Tracker Server Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Inbuilt Tracker Server&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable Tracker -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="tracker_enabled_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable the inbuilt BitTorrent tracker server</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable tracker server</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- HTTP Server Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;HTTP Server&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable HTTP -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="tracker_http_enabled_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable HTTP tracker protocol (BEP 3)</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable HTTP tracker</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- HTTP Port -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">HTTP Port</property>
+                                            <property name="halign">start</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="tracker_http_port_spin">
+                                            <property name="valign">center</property>
+                                            <property name="width-chars">6</property>
+                                            <property name="tooltip-text" translatable="yes">Port for HTTP tracker (default: 6969)</property>
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1024</property>
+                                                    <property name="upper">65535</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">100</property>
+                                                    <property name="value">6969</property>
+                                                </object>
+                                            </property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Bind Address -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Bind Address</property>
+                                            <property name="halign">start</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkEntry" id="tracker_bind_address_entry">
+                                            <property name="valign">center</property>
+                                            <property name="width-chars">15</property>
+                                            <property name="text">0.0.0.0</property>
+                                            <property name="tooltip-text" translatable="yes">IP address to bind to (0.0.0.0 for all interfaces)</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- UDP Server Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;UDP Server&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable UDP -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="tracker_udp_enabled_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable UDP tracker protocol (BEP 15)</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable UDP tracker</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- UDP Port -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">UDP Port</property>
+                                            <property name="halign">start</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="tracker_udp_port_spin">
+                                            <property name="valign">center</property>
+                                            <property name="width-chars">6</property>
+                                            <property name="tooltip-text" translatable="yes">Port for UDP tracker (default: 6969)</property>
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">1024</property>
+                                                    <property name="upper">65535</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">100</property>
+                                                    <property name="value">6969</property>
+                                                </object>
+                                            </property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Announce Settings Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Announce Settings&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Announce Interval -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Announce Interval (seconds)</property>
+                                            <property name="halign">start</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="tracker_announce_interval_spin">
+                                            <property name="valign">center</property>
+                                            <property name="width-chars">6</property>
+                                            <property name="tooltip-text" translatable="yes">Time between client announces (default: 1800 = 30 minutes)</property>
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">60</property>
+                                                    <property name="upper">7200</property>
+                                                    <property name="step-increment">60</property>
+                                                    <property name="page-increment">300</property>
+                                                    <property name="value">1800</property>
+                                                </object>
+                                            </property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Peer Timeout Multiplier -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Peer Timeout Multiplier</property>
+                                            <property name="halign">start</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="tracker_peer_timeout_multiplier_spin">
+                                            <property name="valign">center</property>
+                                            <property name="width-chars">4</property>
+                                            <property name="tooltip-text" translatable="yes">Multiply announce interval for peer timeout (default: 3)</property>
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">2</property>
+                                                    <property name="upper">10</property>
+                                                    <property name="step-increment">1</property>
+                                                    <property name="page-increment">1</property>
+                                                    <property name="value">3</property>
+                                                </object>
+                                            </property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Max Peers per Announce -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Max Peers per Announce</property>
+                                            <property name="halign">start</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="tracker_max_peers_spin">
+                                            <property name="valign">center</property>
+                                            <property name="width-chars">4</property>
+                                            <property name="tooltip-text" translatable="yes">Maximum peers returned per announce (default: 50)</property>
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">10</property>
+                                                    <property name="upper">200</property>
+                                                    <property name="step-increment">10</property>
+                                                    <property name="page-increment">50</property>
+                                                    <property name="value">50</property>
+                                                </object>
+                                            </property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Features Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Features&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable Scrape -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="tracker_enable_scrape_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Enable /scrape endpoint for torrent statistics</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable scrape endpoint</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Private Mode -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="tracker_private_mode_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Only allow pre-registered torrents</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Private mode (registered torrents only)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Log Announces -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="tracker_log_announces_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Log all announce requests (for debugging)</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Log announces (debug)</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Self-Tracking Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Self-Tracking&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Enable Self-Tracking -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="tracker_self_tracking_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Report own torrents to this tracker</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Enable self-tracking</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Announce with Seeders -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="tracker_announce_seeders_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Include seeder stats in announces</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Announce with seeder statistics</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Sync on Add -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="tracker_sync_on_add_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Register torrent with tracker when added</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Sync on torrent add</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- Sync on Remove -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <property name="halign">start</property>
+                                    <child>
+                                        <object class="GtkSwitch" id="tracker_sync_on_remove_switch">
+                                            <property name="valign">center</property>
+                                            <property name="tooltip-text" translatable="yes">Unregister torrent from tracker when removed</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Sync on torrent remove</property>
+                                            <property name="halign">start</property>
+                                            <property name="valign">center</property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+
+            <!-- Security Group -->
+            <child>
+                <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;b&gt;Security&lt;/b&gt;</property>
+                            <property name="use-markup">True</property>
+                            <property name="halign">start</property>
+                        </object>
+                    </child>
+                    <child>
+                        <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
+                            <property name="margin-start">12</property>
+
+                            <!-- Rate Limit -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="spacing">12</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">Rate Limit (requests/minute)</property>
+                                            <property name="halign">start</property>
+                                            <property name="hexpand">True</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkSpinButton" id="tracker_rate_limit_spin">
+                                            <property name="valign">center</property>
+                                            <property name="width-chars">4</property>
+                                            <property name="tooltip-text" translatable="yes">Maximum requests per minute per IP (0 = unlimited)</property>
+                                            <property name="adjustment">
+                                                <object class="GtkAdjustment">
+                                                    <property name="lower">0</property>
+                                                    <property name="upper">1000</property>
+                                                    <property name="step-increment">10</property>
+                                                    <property name="page-increment">50</property>
+                                                    <property name="value">60</property>
+                                                </object>
+                                            </property>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- IP Whitelist -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">6</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">IP Whitelist (one per line, empty = allow all)</property>
+                                            <property name="halign">start</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkScrolledWindow">
+                                            <property name="min-content-height">60</property>
+                                            <property name="max-content-height">100</property>
+                                            <property name="hscrollbar-policy">never</property>
+                                            <child>
+                                                <object class="GtkTextView" id="tracker_ip_whitelist_textview">
+                                                    <property name="monospace">True</property>
+                                                    <property name="wrap-mode">none</property>
+                                                    <property name="tooltip-text" translatable="yes">Only allow these IP addresses (leave empty to allow all)</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+
+                            <!-- IP Blacklist -->
+                            <child>
+                                <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">6</property>
+                                    <child>
+                                        <object class="GtkLabel">
+                                            <property name="label" translatable="yes">IP Blacklist (one per line)</property>
+                                            <property name="halign">start</property>
+                                        </object>
+                                    </child>
+                                    <child>
+                                        <object class="GtkScrolledWindow">
+                                            <property name="min-content-height">60</property>
+                                            <property name="max-content-height">100</property>
+                                            <property name="hscrollbar-policy">never</property>
+                                            <child>
+                                                <object class="GtkTextView" id="tracker_ip_blacklist_textview">
+                                                    <property name="monospace">True</property>
+                                                    <property name="wrap-mode">none</property>
+                                                    <property name="tooltip-text" translatable="yes">Block these IP addresses</property>
+                                                </object>
+                                            </child>
+                                        </object>
+                                    </child>
+                                </object>
+                            </child>
+                        </object>
+                    </child>
+                </object>
+            </child>
+        </object>
+    </child>
+</object>
+                    </child>
+                    <child type="tab">
+                        <object class="GtkLabel">
+                            <property name="label" translatable="yes">Tracker</property>
                         </object>
                     </child>
 

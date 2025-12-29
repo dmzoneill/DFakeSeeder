@@ -93,7 +93,7 @@ class DHTTab(BaseSettingsTab):
             # Basic DHT settings
             if self._widgets["dht_enabled"]:
                 value = self.app_settings.get("protocols.dht.enabled", True)
-                self._widgets["dht_enabled"].set_state(value)
+                self._widgets["dht_enabled"].set_active(value)
 
             # Node configuration
             node_id_setting = self.app_settings.get("protocols.dht.node_id", "auto_generate")
@@ -197,7 +197,7 @@ class DHTTab(BaseSettingsTab):
         try:
             # Basic settings
             if self._widgets.get("dht_enabled"):
-                settings["protocols.dht.enabled"] = self._widgets["dht_enabled"].get_state()
+                settings["protocols.dht.enabled"] = self._widgets["dht_enabled"].get_active()
 
             # Node configuration
             if self._widgets.get("node_id_auto") and self._widgets["node_id_auto"].get_active():
@@ -279,7 +279,7 @@ class DHTTab(BaseSettingsTab):
         # Initial dependency state based on current settings
         try:
             if self._widgets.get("dht_enabled"):
-                state = self._widgets["dht_enabled"].get_state()
+                state = self._widgets["dht_enabled"].get_active()
                 # Control ALL DHT widgets based on dht_enabled state
                 sensitive_widgets = [
                     # Node configuration
@@ -312,19 +312,19 @@ class DHTTab(BaseSettingsTab):
             # Node ID custom field sensitivity (only if DHT is enabled)
             if self._widgets.get("node_id_auto") and self._widgets.get("node_id_custom"):
                 auto_enabled = self._widgets["node_id_auto"].get_active()
-                dht_enabled = self._widgets.get("dht_enabled") and self._widgets["dht_enabled"].get_state()
+                dht_enabled = self._widgets.get("dht_enabled") and self._widgets["dht_enabled"].get_active()
                 self._widgets["node_id_custom"].set_sensitive(dht_enabled and not auto_enabled)
 
             # Stats interval sensitivity (only if DHT is enabled)
             if self._widgets.get("enable_stats") and self._widgets.get("stats_interval"):
                 stats_enabled = self._widgets["enable_stats"].get_active()
-                dht_enabled = self._widgets.get("dht_enabled") and self._widgets["dht_enabled"].get_state()
+                dht_enabled = self._widgets.get("dht_enabled") and self._widgets["dht_enabled"].get_active()
                 self._widgets["stats_interval"].set_sensitive(dht_enabled and stats_enabled)
 
             # Rate limit max queries sensitivity (only if DHT is enabled)
             if self._widgets.get("rate_limit_enabled") and self._widgets.get("max_queries_per_second"):
                 rate_limit_enabled = self._widgets["rate_limit_enabled"].get_active()
-                dht_enabled = self._widgets.get("dht_enabled") and self._widgets["dht_enabled"].get_state()
+                dht_enabled = self._widgets.get("dht_enabled") and self._widgets["dht_enabled"].get_active()
                 self._widgets["max_queries_per_second"].set_sensitive(dht_enabled and rate_limit_enabled)
 
             self.logger.trace(

@@ -404,5 +404,30 @@
         "port": 6771,
         "announce_interval_seconds": 300,
         "socket_timeout_seconds": 1.0
+    },
+    "tracker_settings": {
+        "enabled": false,
+        "http_enabled": true,
+        "http_port": 6969,
+        "udp_enabled": false,
+        "udp_port": 6969,
+        "bind_address": "0.0.0.0",
+        "announce_interval_seconds": 1800,
+        "peer_timeout_multiplier": 3,
+        "max_peers_per_announce": 50,
+        "self_tracking": {
+            "enabled": true,
+            "announce_with_seeders": true,
+            "sync_on_add": true,
+            "sync_on_remove": true
+        },
+        "private_mode": false,
+        "enable_scrape": true,
+        "log_announces": false,
+        "security": {
+            "ip_whitelist": [],
+            "ip_blacklist": [],
+            "rate_limit_per_minute": 60
+        }
     }
 }

@@ -27,7 +27,7 @@ from d_fake_seeder.lib.util.constants import ConnectionConstants  # noqa: E402
 # fmt: on
 
 
-class ConnectionManager:
+class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-many-public-methods
     """Shared connection management logic for incoming and outgoing connections"""
 
     def __init__(self) -> None:
@@ -115,8 +115,8 @@ class ConnectionManager:
         for callback in self.update_callbacks:
             try:
                 callback()  # type: ignore[misc]
-            except Exception as e:
-                logger.error(f"Error in connection update callback: {e}")
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logger.error(f"Error in connection update callback: {e}", exc_info=True)
 
     def _delayed_callback(self) -> Any:
         """GLib timeout callback for delayed execution"""
@@ -138,7 +138,7 @@ class ConnectionManager:
             self.cleanup_timer_id = None
             logger.info("Stopped periodic connection cleanup timer")
 
-    def _periodic_cleanup(self) -> Any:
+    def _periodic_cleanup(self) -> Any:  # pylint: disable=too-many-locals,too-many-branches
         """Periodic cleanup of expired failed connections and enforcement of connection limits"""
         current_time = time.time()
         failed_display_time = self.get_failed_connection_display_time()
@@ -547,12 +547,12 @@ class ConnectionManager:
 
 
 # Global instance
-_connection_manager = None
+_connection_manager = None  # pylint: disable=invalid-name
 
 
 def get_connection_manager() -> ConnectionManager:
     """Get the global connection manager instance"""
-    global _connection_manager
+    global _connection_manager  # pylint: disable=global-statement
     if _connection_manager is None:
         _connection_manager = ConnectionManager()
     return _connection_manager

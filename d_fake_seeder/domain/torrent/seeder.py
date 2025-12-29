@@ -23,18 +23,20 @@ from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 
 class Seeder:
+    """Factory/wrapper for HTTP or UDP seeder based on tracker protocol."""
+
     def __init__(self, torrent: Any) -> None:
         logger.trace("Startup", extra={"class_name": self.__class__.__name__})
-        self.ready = False  # type: ignore[method-assign, assignment]
+        self.ready = False
         self.seeder = None
         self.settings = AppSettings.get_instance()
         self.check_announce_attribute(torrent)
 
     def check_announce_attribute(self, torrent: Any, attempts: Any = 3) -> Any:
         if hasattr(torrent, "announce"):
-            self.ready = True  # type: ignore[method-assign, assignment]
+            self.ready = True
             parsed_url = urlparse(torrent.announce)
-            if parsed_url.scheme == "http" or parsed_url.scheme == "https":
+            if parsed_url.scheme in ("http", "https"):
                 self.seeder = HTTPSeeder(torrent)  # type: ignore[assignment]
             elif parsed_url.scheme == "udp":
                 self.seeder = UDPSeeder(torrent)  # type: ignore[assignment]
@@ -57,14 +59,13 @@ class Seeder:
     def load_peers(self) -> None:
         if self.seeder:
             return self.seeder.load_peers()
-        else:
-            return False  # type: ignore[return-value]
+        return False  # type: ignore[return-value]
 
     def upload(self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any) -> Any:
         if self.seeder:
             self.seeder.upload(uploaded_bytes, downloaded_bytes, download_left)
-        else:
-            return False
+            return None
+        return False
 
     @property
     def peers(self) -> Any:
@@ -90,8 +91,9 @@ class Seeder:
         """Get comprehensive peer data for a specific peer"""
         return self.seeder.get_peer_data(peer_address) if self.seeder is not None else {}
 
-    def ready(self) -> Any:
-        return self.ready and self.seeder is not None  # type: ignore[truthy-function]
+    def is_ready(self) -> bool:
+        """Check if seeder is ready (use ready attribute for simpler checks)"""
+        return self.ready and self.seeder is not None
 
     def request_shutdown(self) -> Any:
         """Request graceful shutdown of the seeder"""

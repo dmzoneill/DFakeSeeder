@@ -126,7 +126,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Client Behavior Engine Settings
             if self._widgets["client_behavior_enabled"]:
                 value = self.app_settings.get("simulation.client_behavior_engine.enabled", True)
-                self._widgets["client_behavior_enabled"].set_state(value)
+                self._widgets["client_behavior_enabled"].set_active(value)
 
             if self._widgets["primary_client"]:
                 value = self.app_settings.get("simulation.client_behavior_engine.primary_client", "qBittorrent")
@@ -251,7 +251,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         # Enable/disable ALL simulation widgets based on client behavior enabled
         try:
             if self._widgets.get("client_behavior_enabled"):
-                enabled = self._widgets["client_behavior_enabled"].get_state()
+                enabled = self._widgets["client_behavior_enabled"].get_active()
                 behavior_widgets = [
                     # Client behavior settings
                     "primary_client",
@@ -316,7 +316,7 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if self._widgets.get("client_behavior_enabled"):
                 settings["simulation.client_behavior_engine.enabled"] = self._widgets[
                     "client_behavior_enabled"
-                ].get_state()
+                ].get_active()
 
             if self._widgets.get("primary_client"):
                 settings["simulation.client_behavior_engine.primary_client"] = self._get_combo_active_text(

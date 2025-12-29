@@ -25,7 +25,7 @@ from d_fake_seeder.view import View
 # fmt: on
 
 
-class DHTManager:
+class DHTManager:  # pylint: disable=too-many-instance-attributes
     """
     Manages DHT peer discovery for torrents.
 
@@ -143,7 +143,7 @@ class DHTManager:
                     translate=False,
                 )
 
-        except Exception as e:
+        except (OSError, socket.error, ValueError) as e:
             logger.error(f"Failed to start DHT Manager: {e}", exc_info=True)
             self.running = False
 
@@ -175,7 +175,7 @@ class DHTManager:
         if self.socket:
             try:
                 self.socket.close()
-            except Exception:
+            except OSError:
                 pass
 
         logger.info("DHT Manager stopped")
@@ -223,7 +223,7 @@ class DHTManager:
                 # Small sleep to prevent CPU spinning
                 time.sleep(self._get_poll_interval())
 
-            except Exception as e:
+            except (OSError, socket.error, ValueError, KeyError) as e:
                 logger.error(f"Error in DHT loop: {e}", exc_info=True)
                 time.sleep(self._get_error_retry_interval())
 
@@ -237,7 +237,7 @@ class DHTManager:
             try:
                 # Send find_node query for our own ID (to discover nearby nodes)
                 self._send_find_node(host, port, self.node_id)
-            except Exception as e:
+            except (OSError, socket.error) as e:
                 logger.trace(f"Failed to bootstrap from {host}:{port}: {e}")
 
     def _announce_torrents(self) -> Any:
@@ -260,7 +260,7 @@ class DHTManager:
             self._handle_message(data, addr)
         except socket.timeout:
             pass  # Normal timeout, continue loop
-        except Exception as e:
+        except OSError as e:
             logger.trace(f"Error receiving DHT message: {e}")
 
     def _handle_message(self, data: bytes, addr: Tuple[str, int]) -> None:
@@ -285,7 +285,7 @@ class DHTManager:
                 # Error message
                 logger.trace(f"DHT error from {addr}: {message.get(b'e', b'')}")
 
-        except Exception as e:
+        except (ValueError, KeyError, TypeError) as e:
             logger.trace(f"Failed to parse DHT message from {addr}: {e}")
 
     def _handle_response(self, message: dict, addr: Tuple[str, int]) -> None:
@@ -300,13 +300,12 @@ class DHTManager:
             peers = message[b"r"][b"values"]
             logger.trace(f"Received {len(peers)} peers from DHT")
 
-            # TODO: Parse peer addresses and call peer_callback
+            # TODO: Parse peer addresses and call peer_callback  # pylint: disable=fixme
 
     def _handle_query(self, message: dict, addr: Tuple[str, int]) -> None:
         """Handle DHT query message"""
         # Respond to ping, find_node, get_peers queries
-        # For now, just acknowledge
-        pass
+        # For now, just acknowledge - intentionally empty
 
     def _send_find_node(self, host: str, port: int, target: bytes) -> Any:
         """Send find_node query"""
@@ -329,7 +328,7 @@ class DHTManager:
             data = bencodepy.encode(query)
             self.socket.sendto(data, (host, port))
             logger.trace(f"Sent find_node to {host}:{port}")
-        except Exception as e:
+        except (OSError, socket.error, ValueError) as e:
             logger.trace(f"Failed to send find_node to {host}:{port}: {e}")
 
     def _add_node(self, node_id: bytes, ip: str, port: int) -> Any:
