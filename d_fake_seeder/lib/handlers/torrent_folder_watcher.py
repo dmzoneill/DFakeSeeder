@@ -104,7 +104,9 @@ class TorrentFolderWatcher:
 
         try:
             # Create event handler
-            self.event_handler = TorrentFileEventHandler(self.model, watch_config, self.global_peer_manager)  # type: ignore[assignment]  # noqa: E501
+            self.event_handler = TorrentFileEventHandler(  # type: ignore[assignment]
+                self.model, watch_config, self.global_peer_manager
+            )
 
             # Create and start observer
             self.observer = Observer()

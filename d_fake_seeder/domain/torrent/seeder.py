@@ -33,6 +33,7 @@ class Seeder:
         self.check_announce_attribute(torrent)
 
     def check_announce_attribute(self, torrent: Any, attempts: Any = 3) -> Any:
+        """Check torrent announce URL and create appropriate seeder."""
         if hasattr(torrent, "announce"):
             self.ready = True
             parsed_url = urlparse(torrent.announce)
@@ -57,11 +58,13 @@ class Seeder:
                 )
 
     def load_peers(self) -> None:
+        """Load peers from tracker via the seeder."""
         if self.seeder:
             return self.seeder.load_peers()
         return False  # type: ignore[return-value]
 
     def upload(self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any) -> Any:
+        """Send upload stats to tracker."""
         if self.seeder:
             self.seeder.upload(uploaded_bytes, downloaded_bytes, download_left)
             return None
@@ -69,22 +72,27 @@ class Seeder:
 
     @property
     def peers(self) -> Any:
+        """Get peer list from underlying seeder."""
         return self.seeder.peers if self.seeder is not None else 0
 
     @property
     def clients(self) -> Any:
+        """Get client count from underlying seeder."""
         return self.seeder.clients if self.seeder is not None else 0
 
     @property
     def seeders(self) -> Any:
+        """Get seeder count from tracker."""
         return self.seeder.seeders if self.seeder is not None else 0
 
     @property
     def tracker(self) -> Any:
+        """Get tracker URL."""
         return self.seeder.tracker if self.seeder is not None else ""
 
     @property
     def leechers(self) -> Any:
+        """Get leecher count from tracker."""
         return self.seeder.leechers if self.seeder is not None else 0
 
     def get_peer_data(self, peer_address: Any) -> Any:
@@ -101,6 +109,7 @@ class Seeder:
             self.seeder.request_shutdown()
 
     def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
+        """Propagate settings changes to underlying seeder."""
         self.seeder.handle_settings_changed(source, key, value)  # type: ignore[attr-defined]
 
     def __str__(self) -> str:

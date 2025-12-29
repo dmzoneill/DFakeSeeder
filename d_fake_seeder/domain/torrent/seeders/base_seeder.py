@@ -154,6 +154,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         return jittered_interval
 
     def set_random_announce_url(self) -> None:
+        """Set a random announce URL from the torrent's announce list."""
         if hasattr(self.torrent, "announce_list") and self.torrent.announce_list:
             same_schema_urls = [
                 url for url in self.torrent.announce_list if urlparse(url).scheme == self.tracker_scheme
@@ -174,6 +175,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
 
     @staticmethod
     def recreate_semaphore(obj: Any) -> Any:
+        """Recreate the tracker semaphore with new connection limit."""
         logger.trace(
             "Seeder recreate_semaphore",
             extra={"class_name": obj.__class__.__name__},
@@ -196,6 +198,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         BaseSeeder._tracker_semaphore = new_semaphore
 
     def handle_exception(self, e: Any, message: Any) -> None:
+        """Log exception with message."""
         logger.trace(
             f"{message}: {str(e)}",
             extra={"class_name": self.__class__.__name__},
@@ -277,6 +280,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         self.shutdown_requested = True
 
     def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
+        """Handle settings changes for connection limits."""
         logger.trace(
             "Seeder settings changed",
             extra={"class_name": self.__class__.__name__},
@@ -285,6 +289,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
             BaseSeeder.recreate_semaphore(self)
 
     def generate_transaction_id(self) -> Any:
+        """Generate a random transaction ID for tracker requests."""
         seeders_config = getattr(self.settings, "seeders", {})
         transaction_id_min = seeders_config.get("transaction_id_min", 0)
         transaction_id_max = seeders_config.get("transaction_id_max", 255)
@@ -498,6 +503,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
 
     @property
     def peers(self) -> Any:  # pylint: disable=too-many-locals,too-many-branches,too-many-statements
+        """Parse and return peer list from tracker response."""
         logger.trace("Seeder get peers", extra={"class_name": self.__class__.__name__})
         result = []  # type: ignore[var-annotated]
         if b"peers" not in self.info:
@@ -979,20 +985,24 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
 
     @property
     def clients(self) -> Any:
+        """Get peer client identification data."""
         logger.trace("Seeder get clients", extra={"class_name": self.__class__.__name__})
         return BaseSeeder.peer_clients
 
     @property
     def seeders(self) -> Any:
+        """Get complete/seeder count from tracker."""
         logger.trace("Seeder get seeders", extra={"class_name": self.__class__.__name__})
         return self.info[b"complete"] if b"complete" in self.info else 0
 
     @property
     def tracker(self) -> Any:
+        """Get current tracker URL."""
         logger.trace("Seeder get tracker", extra={"class_name": self.__class__.__name__})
         return self.tracker_url
 
     @property
     def leechers(self) -> Any:
+        """Get incomplete/leecher count from tracker."""
         logger.trace("Seeder get leechers", extra={"class_name": self.__class__.__name__})
         return self.info[b"incomplete"] if b"incomplete" in self.info else 0

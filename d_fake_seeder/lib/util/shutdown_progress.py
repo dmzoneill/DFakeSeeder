@@ -44,7 +44,8 @@ class ShutdownProgressTracker:
         """Mark items as completed for this component type"""
         if component_type in self.components:
             component = self.components[component_type]
-            component["completed"] = min(component["completed"] + count, component["total"])  # type: ignore[operator, call-overload]  # noqa: E501
+            new_completed = component["completed"] + count  # type: ignore[operator]
+            component["completed"] = min(new_completed, component["total"])  # type: ignore[call-overload]
 
             # Update status
             if component["completed"] >= component["total"] and component["total"] > 0:  # type: ignore[operator]

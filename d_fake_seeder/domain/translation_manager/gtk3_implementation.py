@@ -33,7 +33,7 @@ _ = Gtk  # Imported for side effects and interface compatibility with GTK4 versi
 from d_fake_seeder.lib.logger import logger  # noqa: E402
 
 try:
-    from gi.repository import Gio  # noqa: E402
+    from gi.repository import Gio  # noqa: E402  # pylint: disable=unused-import
 except ImportError as e:
     # Fallback if Gio has version conflicts
     logger.warning(f"Could not import Gio in GTK3 mode: {e}", "TranslationManagerGTK3")

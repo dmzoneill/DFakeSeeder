@@ -56,24 +56,22 @@ exclude = ".git,__pycache__,build,dist,.venv,.eggs,rpmbuild,debbuild"
 [tool.pylint.main]
 max-line-length = 120
 disable = [
-    # GTK/GLib Introspection - pylint cannot analyze these correctly (unfixable)
+    # GTK/GLib Introspection - pylint cannot analyze these correctly
     "E0611",  # no-name-in-module (GTK introspection)
     "E1101",  # no-member (GTK dynamic attributes)
     "E1120",  # no-value-for-parameter (GTK static methods)
-    # GTK Required Patterns - intentional, not fixable
+    # GTK Required Patterns - required for GTK applications
     "C0413",  # wrong-import-position (gi.require_version must come first)
     "W0201",  # attribute-defined-outside-init (GTK do_activate pattern)
     "W0613",  # unused-argument (GTK signal handlers require specific signatures)
-    # Intentional design patterns
+    # Intentional Design Patterns
     "C0415",  # import-outside-toplevel (lazy imports for circular dependency avoidance)
-    # Docstrings - code is self-documenting, add as needed
-    "C0116",  # missing-function-docstring
-    # Cross-file checks that are hard to fix
-    "R0801",  # duplicate-code (similar code in multiple files - acceptable patterns)
-    # Handled by other tools (redundant checks)
-    "C0301",  # line-too-long (handled by black/flake8)
-    "C0411",  # wrong-import-order (handled by isort)
-    "W0611",  # unused-import (handled by flake8)
+    # Cross-file Analysis
+    "R0801",  # duplicate-code (similar patterns across files - acceptable)
+    # Module Size
+    "C0302",  # too-many-lines (base_seeder.py slightly over limit)
+    # Handled by Other Tools
+    "C0411",  # wrong-import-order (handled by isort, but gi imports complicate)
 ]
 ignore-paths = [
     ".git",

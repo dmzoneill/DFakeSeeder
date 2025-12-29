@@ -8,7 +8,7 @@ scrape operations, and peer list extraction.
 
 # fmt: off
 # isort: skip_file
-from typing import Any
+from typing import Any, Optional
 import time
 from time import sleep
 
@@ -46,6 +46,7 @@ class HTTPSeeder(BaseSeeder):
         )  # Much smaller for HTTP retries
 
     def load_peers(self) -> None:  # pylint: disable=too-many-branches,too-many-statements
+        """Load peers from HTTP tracker."""
         logger.trace("Seeder load peers", extra={"class_name": self.__class__.__name__})
 
         if self.shutdown_requested:
@@ -247,6 +248,7 @@ class HTTPSeeder(BaseSeeder):
     def upload(  # pylint: disable=too-many-branches,too-many-statements
         self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any
     ) -> Any:
+        """Upload stats to HTTP tracker."""
         logger.trace("Seeder upload", extra={"class_name": self.__class__.__name__})
 
         # Validate uploaded/downloaded bytes to prevent reporting unrealistic values
@@ -388,6 +390,7 @@ class HTTPSeeder(BaseSeeder):
     def make_http_request(
         self, uploaded_bytes: Any = 0, downloaded_bytes: Any = 0, download_left: Any = 0, num_want: Any = None
     ) -> Any:  # noqa: E501
+        """Make HTTP announce request to tracker."""
         if num_want is None:
             app_settings = AppSettings.get_instance()
             num_want = app_settings.get("seeders", {}).get("peer_request_count", 200)
@@ -497,7 +500,7 @@ class HTTPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _update_tracker_failure(self, error_message: str, response_time: float = None) -> None:  # type: ignore[assignment]  # noqa: E501
+    def _update_tracker_failure(self, error_message: str, response_time: Optional[float] = None) -> None:
         """Update tracker model with failed response"""
         try:
             tracker = self._get_tracker_model()

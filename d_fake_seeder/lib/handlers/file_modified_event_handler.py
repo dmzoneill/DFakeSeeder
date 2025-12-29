@@ -28,5 +28,6 @@ class FileModifiedEventHandler(FileSystemEventHandler):  # pylint: disable=too-f
         self.settings = settings_instance
 
     def on_modified(self, event: Any) -> None:
+        """Reload settings when config file is modified."""
         if event.src_path == self.settings._file_path:  # pylint: disable=protected-access
             self.settings.load_settings()

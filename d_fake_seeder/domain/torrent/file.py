@@ -52,6 +52,7 @@ class File:
 
     @property
     def total_size(self) -> Any:
+        """Get total size of all files in the torrent."""
         logger.trace("File size", extra={"class_name": self.__class__.__name__})
         size = 0
         torrent_info = self.torrent_header[b"info"]
@@ -67,6 +68,7 @@ class File:
 
     @property
     def name(self) -> Any:
+        """Get torrent name from info dict."""
         logger.trace("File name", extra={"class_name": self.__class__.__name__})
         torrent_info = self.torrent_header[b"info"]
         return torrent_info[b"name"].decode("utf-8")
@@ -118,9 +120,11 @@ class File:
         return result
 
     def get_announce(self) -> Any:
+        """Get primary announce URL."""
         return self.torrent_header[b"announce"].decode("utf-8")
 
     def get_creation_date(self) -> Any:
+        """Get torrent creation date as formatted string."""
         if b"creation date" in self.torrent_header:
             try:
                 creation_date = self.torrent_header[b"creation date"]
@@ -132,11 +136,13 @@ class File:
         return None
 
     def get_created_by(self) -> Any:
+        """Get creator software/client name."""
         if b"created by" in self.torrent_header:
             return self.torrent_header[b"created by"].decode("utf-8")
         return None
 
     def get_encoding(self) -> Any:
+        """Get torrent file encoding."""
         if b"encoding" in self.torrent_header:
             return self.torrent_header[b"encoding"].decode("utf-8")
         return None
@@ -213,12 +219,15 @@ class File:
         return trackers
 
     def get_num_pieces(self) -> Any:
+        """Get number of pieces in torrent."""
         return len(self.torrent_header[b"info"][b"pieces"]) / 20
 
     def get_torrent_name(self) -> Any:
+        """Get torrent name from info dict."""
         return self.torrent_header[b"info"][b"name"].decode("utf-8")
 
     def get_files(self) -> Any:
+        """Get list of files as (path, size) tuples."""
         files = []
         if b"files" in self.torrent_header[b"info"]:
             for file_info in self.torrent_header[b"info"][b"files"]:
@@ -228,12 +237,14 @@ class File:
         return files
 
     def get_single_file_info(self) -> Any:
+        """Get single file size for single-file torrents."""
         if b"files" not in self.torrent_header[b"info"]:
             # Return raw byte length for consistent formatting by UI components
             return self.torrent_header[b"info"][b"length"]
         return None
 
     def get_md5sum(self) -> Any:
+        """Get MD5 checksum if present."""
         if b"md5sum" in self.torrent_header[b"info"]:
             return self.torrent_header[b"info"][b"md5sum"]
         return None

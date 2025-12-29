@@ -208,6 +208,7 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         return self.torrent_file.file_hash
 
     def peers_worker_update(self) -> Any:
+        """Background worker to fetch and update peer list from tracker."""
         logger.trace(
             "Peers worker",
             extra={"class_name": self.__class__.__name__},
@@ -239,7 +240,8 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                     # Use Event.wait() instead of time.sleep() for instant shutdown response
                     if self.peers_worker_stop_event.wait(timeout=int(self.seeder_retry_interval)):
                         logger.trace(
-                            f"🛑 PEERS WORKER SHUTDOWN: {self.name} - stop event received during retry sleep",  # type: ignore[has-type]  # noqa: E501
+                            f"🛑 PEERS WORKER SHUTDOWN: {self.name} - "  # type: ignore[has-type]
+                            "stop event received during retry sleep",
                             extra={"class_name": self.__class__.__name__},
                         )
                         break
@@ -254,6 +256,7 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             )
 
     def update_torrent_worker(self) -> None:
+        """Background worker to periodically update torrent stats."""
         logger.trace(
             f"🔄 TORRENT UPDATE WORKER STARTED for {self.name}",  # type: ignore[has-type]
             extra={"class_name": self.__class__.__name__},
@@ -265,8 +268,8 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             # Use Event.wait() instead of time.sleep() for instant shutdown response
             while not self.torrent_worker_stop_event.wait(timeout=self.worker_sleep_interval):
                 logger.trace(
-                    f"🔄 WORKER LOOP: {self.name} ticker={ticker:.2f}, tickspeed={self.settings.tickspeed}, "  # type: ignore[has-type]  # noqa: E501
-                    f"active={self.active}",
+                    f"🔄 WORKER LOOP: {self.name} ticker={ticker:.2f}, "  # type: ignore[has-type]
+                    f"tickspeed={self.settings.tickspeed}, active={self.active}",
                     extra={"class_name": self.__class__.__name__},
                 )
                 if ticker >= self.settings.tickspeed and self.active:
@@ -290,6 +293,7 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             )
 
     def update_torrent_callback(self) -> None:  # pylint: disable=too-many-branches,too-many-statements
+        """UI callback to update torrent display values."""
         # Clear pending flag - this callback is now executing
         self._ui_update_pending = False
 
@@ -426,6 +430,7 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         )
 
     def stop(self) -> Any:
+        """Stop torrent workers and clean up resources."""
         logger.info("Torrent stop", extra={"class_name": self.__class__.__name__})
 
         # Set stopping flag to prevent new threads
@@ -473,16 +478,19 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         self.save_to_transient()
 
     def get_seeder(self) -> Any:
+        """Get the seeder instance for this torrent."""
         # logger.info("Torrent get seeder",
         # extra={"class_name": self.__class__.__name__})
         return self.seeder
 
     def is_ready(self) -> Any:
+        """Check if the seeder is ready."""
         # logger.info("Torrent get seeder",
         # extra={"class_name": self.__class__.__name__})
         return self.seeder.ready
 
     def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
+        """Handle settings change events."""
         logger.trace(
             "Torrent settings changed",
             extra={"class_name": self.__class__.__name__},
@@ -595,6 +603,7 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         self.tracker_update_threads = [t for t in self.tracker_update_threads if t.is_alive()]
 
     def restart_worker(self, state: Any) -> Any:
+        """Restart torrent worker threads with new state."""
         logger.trace(
             f"⚡ RESTART WORKER: {self.name} state={state} (active={getattr(self, 'active', 'Unknown')})",
             extra={"class_name": self.__class__.__name__},
@@ -654,9 +663,11 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                 )
 
     def get_attributes(self) -> Any:
+        """Get torrent attributes container."""
         return self.torrent_attributes
 
     def get_torrent_file(self) -> Any:
+        """Get the torrent file object."""
         return self.torrent_file
 
     def __getattr__(self, attr: Any) -> Any:
