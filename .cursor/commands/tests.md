@@ -33,6 +33,7 @@ def test_my_function(mock_settings, tmp_path):
 ```
 
 ### Available Fixtures (from `tests/conftest.py`)
+
 | Fixture | Purpose |
 |---------|---------|
 | `temp_config_dir` | Creates temp `~/.config/dfakeseeder/` with torrents subfolder |

@@ -385,12 +385,14 @@ self.emit("data-changed", torrent, attribute)
 ## 🧩 Available Mixins
 
 ### Core Mixins
+
 | Mixin | Location | Purpose |
 |-------|----------|---------|
 | `CleanupMixin` | `lib/util/cleanup_mixin.py` | Signal/binding/timeout cleanup tracking |
 | `ColumnTranslationMixin` | `lib/util/column_translation_mixin.py` | Column header translation |
 
 ### Settings Tab Mixins (compose these for settings tabs)
+
 | Mixin | Location | Purpose |
 |-------|----------|---------|
 | `NotificationMixin` | `components/component/settings/settings_mixins.py` | Show UI notifications |
@@ -400,6 +402,7 @@ self.emit("data-changed", torrent, attribute)
 | `KeyboardShortcutMixin` | `components/component/settings/settings_mixins.py` | Keyboard shortcuts |
 
 ### Torrent Tab Mixins
+
 | Mixin | Location | Purpose |
 |-------|----------|---------|
 | `DataUpdateMixin` | `components/component/torrent_details/tab_mixins.py` | Data refresh handling |
@@ -433,6 +436,7 @@ The main app and tray communicate via D-Bus.
 - **Interface**: `ie.fio.dfakeseeder`
 
 ### Key Files
+
 | File | Purpose |
 |------|---------|
 | `lib/util/dbus_unifier.py` | D-Bus server (main app) |
