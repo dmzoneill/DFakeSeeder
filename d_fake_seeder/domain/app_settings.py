@@ -103,7 +103,8 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
     def __init__(self, file_path: Any = None) -> None:
         # Check if already initialized AND file_path matches
         # This allows re-initialization when file_path changes (e.g., in tests)
-        if hasattr(self, "_initialized") and hasattr(self, "_file_path"):
+        # Note: Check instance __dict__ directly since class attributes also exist
+        if "_initialized" in self.__dict__ and "_file_path" in self.__dict__:
             # If file_path is changing, we need to reinitialize
             if file_path is not None and str(file_path) != str(self._file_path):
                 # Stop existing observer before reinitializing
@@ -641,6 +642,11 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
     def __getattr__(self, name: Any) -> Any:
         """Dynamic attribute access (Settings API compatibility)"""
+        # Private attributes should not be handled here - raise AttributeError
+        # to prevent infinite recursion during initialization
+        if name.startswith("_"):
+            raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
+
         if name == "settings":
             try:
                 return super().__getattribute__("_settings")
