@@ -45,23 +45,17 @@
                           <object class="GtkBox" id="main_toolbar" >
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="spacing">0</property>
+    <property name="spacing">4</property>
+    <property name="margin-start">8</property>
+    <property name="margin-end">8</property>
     <property name="margin-top">4</property>
     <property name="margin-bottom">4</property>
     
-    <!-- Left spacer for centering -->
-    <child>
-        <object class="GtkBox">
-            <property name="hexpand">True</property>
-        </object>
-    </child>
-    
-    <!-- Centered button container -->
+    <!-- Button group -->
     <child>
         <object class="GtkBox" id="toolbar_buttons">
             <property name="visible">True</property>
             <property name="spacing">4</property>
-            <property name="halign">center</property>
             <style>
                 <class name="toolbar-button-group"/>
             </style>
@@ -222,7 +216,6 @@
             <property name="hexpand">True</property>
             <property name="halign">end</property>
             <property name="spacing">6</property>
-            <property name="margin-end">8</property>
             <child>
                 <object class="GtkEntry" id="toolbar_search_entry">
                     <property name="visible">False</property>
