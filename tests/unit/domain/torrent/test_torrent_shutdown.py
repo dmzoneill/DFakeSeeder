@@ -9,9 +9,36 @@ View.instance had already been set to None, causing:
     AttributeError: 'NoneType' object has no attribute 'notify'
 """
 
+import sys
 from unittest.mock import MagicMock, patch
 
 import pytest
+
+# Mock gi module and all GTK/UI components before any imports that use them
+gi_mock = MagicMock()
+sys.modules['gi'] = gi_mock
+sys.modules['gi.repository'] = MagicMock()
+sys.modules['gi.repository.Gtk'] = MagicMock()
+sys.modules['gi.repository.Gdk'] = MagicMock()
+sys.modules['gi.repository.Gio'] = MagicMock()
+sys.modules['gi.repository.GLib'] = MagicMock()
+sys.modules['gi.repository.GioUnix'] = MagicMock()
+sys.modules['gi.repository.Adw'] = MagicMock()
+
+# Mock UI components that view.py imports
+sys.modules['d_fake_seeder.components.component.sidebar'] = MagicMock()
+sys.modules['d_fake_seeder.components.component.topbar'] = MagicMock()
+sys.modules['d_fake_seeder.components.component.mainview'] = MagicMock()
+sys.modules['d_fake_seeder.components.component.torrentlist'] = MagicMock()
+sys.modules['d_fake_seeder.components.component.statusbar'] = MagicMock()
+sys.modules['d_fake_seeder.components.component.infobar'] = MagicMock()
+sys.modules['d_fake_seeder.components.component.dialogues'] = MagicMock()
+sys.modules['d_fake_seeder.components.component.settings'] = MagicMock()
+
+# Mock AppSettings module before it gets imported
+mock_app_settings = MagicMock()
+mock_app_settings.get_instance = MagicMock()
+sys.modules['d_fake_seeder.domain.app_settings'] = MagicMock(AppSettings=mock_app_settings)
 
 
 def test_torrent_stop_with_none_view_instance(tmp_path, monkeypatch):
