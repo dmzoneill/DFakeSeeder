@@ -41,9 +41,12 @@ mock_app_settings.get_instance = MagicMock()
 sys.modules["d_fake_seeder.domain.app_settings"] = MagicMock(AppSettings=mock_app_settings)
 
 
-def test_torrent_stop_with_none_view_instance(tmp_path, monkeypatch):
+def test_torrent_shutdown_with_none_view_instance(sample_torrent_file, mock_settings):
     """
-    Test that torrent.stop() handles View.instance=None gracefully.
+    Test that torrent shutdown methods handle View.instance=None gracefully.
+
+    Tests both torrent.stop() and torrent.restart_worker(False) to ensure
+    they handle the shutdown state without raising AttributeError.
 
     Arrange:
         - Create a minimal torrent instance
@@ -51,175 +54,55 @@ def test_torrent_stop_with_none_view_instance(tmp_path, monkeypatch):
 
     Act:
         - Call torrent.stop()
+        - Call torrent.restart_worker(False)
 
     Assert:
         - No AttributeError is raised
         - Torrent stops gracefully
     """
-    # Arrange - create minimal torrent file
+    # Arrange - extend mock_settings with missing fields
     from d_fake_seeder.domain.torrent.torrent import Torrent
     from d_fake_seeder.view import View
 
-    torrent_data = {
-        "announce": "http://tracker.example.com:6969/announce",
-        "info": {
-            "name": "test_torrent",
-            "piece length": 16384,
-            "pieces": b"\\x00" * 20,
-            "length": 1024,
-        },
-    }
-
-    # Create torrent file
-    try:
-        import bencodepy
-
-        encoded = bencodepy.encode(torrent_data)
-    except ImportError:
-        # Fallback bencoding
-        def bencode(obj):
-            if isinstance(obj, int):
-                return f"i{obj}e".encode()
-            elif isinstance(obj, bytes):
-                return f"{len(obj)}:".encode() + obj
-            elif isinstance(obj, str):
-                return f"{len(obj)}:{obj}".encode()
-            elif isinstance(obj, dict):
-                items = []
-                for key in sorted(obj.keys()):
-                    items.append(bencode(key))
-                    items.append(bencode(obj[key]))
-                return b"d" + b"".join(items) + b"e"
-
-        encoded = bencode(torrent_data)
-
-    torrent_path = tmp_path / "test.torrent"
-    torrent_path.write_bytes(encoded)
-
-    # Mock AppSettings to avoid file system dependencies
-    mock_settings = MagicMock()
     mock_settings.torrents = {}
-    mock_settings.upload_speed = 50
-    mock_settings.download_speed = 500
-    mock_settings.announce_interval = 1800
     mock_settings.threshold = 100
-    mock_settings.tickspeed = 10
-    mock_settings.ui_settings = {
-        "error_sleep_interval_seconds": 5.0,
-        "seeder_retry_interval_divisor": 2,
-        "async_sleep_interval_seconds": 1.0,
-        "seeder_retry_count": 5,
-    }
+    mock_settings.ui_settings.update(
+        {
+            "error_sleep_interval_seconds": 5.0,
+            "seeder_retry_interval_divisor": 2,
+            "async_sleep_interval_seconds": 1.0,
+            "seeder_retry_count": 5,
+            "speed_variation_min": 0.2,
+            "speed_variation_max": 0.8,
+        }
+    )
 
     with patch(
         "d_fake_seeder.domain.torrent.torrent.AppSettings.get_instance",
         return_value=mock_settings,
     ):
         # Create torrent instance
-        torrent = Torrent(str(torrent_path))
+        torrent = Torrent(str(sample_torrent_file))
 
         # Simulate shutdown state - View.instance becomes None
         View.instance = None
 
-        # Act & Assert - should not raise AttributeError
+        # Act & Assert - test torrent.stop()
         try:
             torrent.stop()
             # If we get here without exception, the fix is working
-            assert True
         except AttributeError as e:
             if "'NoneType' object has no attribute 'notify'" in str(e):
-                pytest.fail(f"Bug not fixed: {e}")
+                pytest.fail(f"Bug not fixed in torrent.stop(): {e}")
             else:
                 raise  # Re-raise if it's a different AttributeError
 
-
-def test_torrent_restart_worker_with_none_view_instance(tmp_path):
-    """
-    Test that torrent.restart_worker() handles View.instance=None gracefully.
-
-    Arrange:
-        - Create a minimal torrent instance
-        - Set View.instance to None (simulating shutdown state)
-
-    Act:
-        - Call torrent.restart_worker(False) to stop workers
-
-    Assert:
-        - No AttributeError is raised
-        - Workers stop gracefully
-    """
-    # Arrange
-    from d_fake_seeder.domain.torrent.torrent import Torrent
-    from d_fake_seeder.view import View
-
-    torrent_data = {
-        "announce": "http://tracker.example.com:6969/announce",
-        "info": {
-            "name": "test_torrent",
-            "piece length": 16384,
-            "pieces": b"\\x00" * 20,
-            "length": 1024,
-        },
-    }
-
-    # Create torrent file
-    try:
-        import bencodepy
-
-        encoded = bencodepy.encode(torrent_data)
-    except ImportError:
-        # Fallback bencoding
-        def bencode(obj):
-            if isinstance(obj, int):
-                return f"i{obj}e".encode()
-            elif isinstance(obj, bytes):
-                return f"{len(obj)}:".encode() + obj
-            elif isinstance(obj, str):
-                return f"{len(obj)}:{obj}".encode()
-            elif isinstance(obj, dict):
-                items = []
-                for key in sorted(obj.keys()):
-                    items.append(bencode(key))
-                    items.append(bencode(obj[key]))
-                return b"d" + b"".join(items) + b"e"
-
-        encoded = bencode(torrent_data)
-
-    torrent_path = tmp_path / "test.torrent"
-    torrent_path.write_bytes(encoded)
-
-    # Mock AppSettings
-    mock_settings = MagicMock()
-    mock_settings.torrents = {}
-    mock_settings.upload_speed = 50
-    mock_settings.download_speed = 500
-    mock_settings.announce_interval = 1800
-    mock_settings.threshold = 100
-    mock_settings.tickspeed = 10
-    mock_settings.ui_settings = {
-        "error_sleep_interval_seconds": 5.0,
-        "seeder_retry_interval_divisor": 2,
-        "async_sleep_interval_seconds": 1.0,
-        "seeder_retry_count": 5,
-    }
-
-    with patch(
-        "d_fake_seeder.domain.torrent.torrent.AppSettings.get_instance",
-        return_value=mock_settings,
-    ):
-        # Create torrent instance
-        torrent = Torrent(str(torrent_path))
-
-        # Simulate shutdown state - View.instance becomes None
-        View.instance = None
-
-        # Act & Assert - should not raise AttributeError
+        # Act & Assert - test torrent.restart_worker(False)
         try:
-            torrent.restart_worker(False)  # Stop workers
+            torrent.restart_worker(False)
             # If we get here without exception, the fix is working
-            assert True
         except AttributeError as e:
             if "'NoneType' object has no attribute 'notify'" in str(e):
-                pytest.fail(f"Bug not fixed: {e}")
+                pytest.fail(f"Bug not fixed in torrent.restart_worker(): {e}")
             else:
                 raise  # Re-raise if it's a different AttributeError
