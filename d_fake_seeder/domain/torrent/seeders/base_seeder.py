@@ -101,10 +101,13 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         converted_profiles = {}
         for client_name, profile in profiles_config.items():
             converted_profiles[client_name] = {
-                "max_down": profile.get("max_down_kbps", CalculationConstants.BYTES_PER_KB)
-                * CalculationConstants.KB_TO_BYTES_MULTIPLIER,  # Convert KB/s to bytes/s
-                "max_up": profile.get("max_up_kbps", 512)
-                * CalculationConstants.KB_TO_BYTES_MULTIPLIER,  # Convert KB/s to bytes/s
+                "max_down": (
+                    profile.get("max_down_kbps", CalculationConstants.BYTES_PER_KB)
+                    * CalculationConstants.KB_TO_BYTES_MULTIPLIER
+                ),  # Convert KB/s to bytes/s
+                "max_up": (
+                    profile.get("max_up_kbps", 512) * CalculationConstants.KB_TO_BYTES_MULTIPLIER
+                ),  # Convert KB/s to bytes/s
                 "seed_ratio": profile.get("seed_ratio", 0.25),  # Keep as-is
             }
 

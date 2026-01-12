@@ -535,8 +535,8 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
             "current_idle_state": self.idle_state,
             "traffic_history_size": len(self.traffic_history),
             "connection_history_size": len(self.connection_history),
-            "average_upload_speed": (sum(upload_speeds) / len(upload_speeds) if upload_speeds else 0),
-            "average_download_speed": (sum(download_speeds) / len(download_speeds) if download_speeds else 0),
+            "average_upload_speed": sum(upload_speeds) / len(upload_speeds) if upload_speeds else 0,
+            "average_download_speed": sum(download_speeds) / len(download_speeds) if download_speeds else 0,
             "realistic_variations_enabled": self.realistic_variations,
             "time_based_patterns_enabled": self.time_based_patterns,
         }

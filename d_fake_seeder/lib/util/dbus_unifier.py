@@ -350,7 +350,7 @@ class DBusUnifier:
                 "last_ping": self._last_ping or 0,
                 "message_count": self._message_count,
                 "error_count": self._error_count,
-                "uptime": (time.time() - (self._last_ping or time.time()) if self._last_ping else 0),
+                "uptime": time.time() - (self._last_ping or time.time()) if self._last_ping else 0,
             }
             return json.dumps(status)
         except (json.JSONDecodeError, TypeError, AttributeError) as e:
@@ -371,7 +371,7 @@ class DBusUnifier:
                 "registration_id": self._registration_id,
                 "app_settings_available": self.app_settings is not None,
                 # pylint: disable=protected-access
-                "settings_count": (len(self.app_settings._settings) if self.app_settings else 0),
+                "settings_count": len(self.app_settings._settings) if self.app_settings else 0,
             }
             return json.dumps(debug_info, indent=2)
         except (json.JSONDecodeError, TypeError, AttributeError) as e:

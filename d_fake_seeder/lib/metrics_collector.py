@@ -317,8 +317,8 @@ class MetricsCollector:
             # We can try to get GC stats if we're in the same process
             metrics = {
                 "gc_collections_gen0": gc.get_count()[0] if gc.get_count() else 0,
-                "gc_collections_gen1": (gc.get_count()[1] if len(gc.get_count()) > 1 else 0),
-                "gc_collections_gen2": (gc.get_count()[2] if len(gc.get_count()) > 2 else 0),
+                "gc_collections_gen1": gc.get_count()[1] if len(gc.get_count()) > 1 else 0,
+                "gc_collections_gen2": gc.get_count()[2] if len(gc.get_count()) > 2 else 0,
             }
 
             return metrics
