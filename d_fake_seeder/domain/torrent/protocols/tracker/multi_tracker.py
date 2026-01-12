@@ -179,7 +179,7 @@ class TrackerTier:
             "enabled_trackers": sum(1 for s in self.tracker_status.values() if s["enabled"]),
             "total_announces": total_announces,
             "successful_announces": successful_announces,
-            "success_rate": (successful_announces / total_announces if total_announces > 0 else 0.0),
+            "success_rate": successful_announces / total_announces if total_announces > 0 else 0.0,
             "trackers": list(self.tracker_status.values()),
         }
 
@@ -507,7 +507,7 @@ class MultiTrackerManager:
             "enabled_trackers": enabled_trackers,
             "total_announces": total_announces,
             "successful_announces": successful_announces,
-            "overall_success_rate": (successful_announces / total_announces if total_announces > 0 else 0.0),
+            "overall_success_rate": successful_announces / total_announces if total_announces > 0 else 0.0,
             "current_tier": self.current_tier_index,
             "tiers": tier_stats,
         }

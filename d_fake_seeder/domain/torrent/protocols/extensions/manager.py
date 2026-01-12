@@ -107,7 +107,7 @@ class ExtensionManager:
             handshake_data = {
                 b"m": extension_dict,  # Extension mapping
                 b"v": b"DFakeSeeder 1.0",  # Client version
-                b"p": (self.peer_connection.port if hasattr(self.peer_connection, "port") else 6881),
+                b"p": self.peer_connection.port if hasattr(self.peer_connection, "port") else 6881,
             }
 
             # Add metadata size if available

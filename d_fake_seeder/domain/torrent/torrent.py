@@ -105,7 +105,7 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             # Build new torrent data dictionary
             new_torrent_data = {
                 "active": True,
-                "id": (len(self.settings.torrents) + 1 if len(self.settings.torrents) > 0 else 1),
+                "id": len(self.settings.torrents) + 1 if len(self.settings.torrents) > 0 else 1,
                 "name": "",
                 "upload_speed": self.settings.upload_speed,
                 "download_speed": self.settings.download_speed,

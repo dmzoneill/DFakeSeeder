@@ -193,10 +193,14 @@ class SpeedScheduler:
             "running": self._running,
             "enabled": enabled,
             "last_state": self.last_state,
-            "start_time": f"{self.settings.get('scheduler.start_hour', 22):02d}:"
-            f"{self.settings.get('scheduler.start_minute', 0):02d}",
-            "end_time": f"{self.settings.get('scheduler.end_hour', 6):02d}:"
-            f"{self.settings.get('scheduler.end_minute', 0):02d}",
+            "start_time": (
+                f"{self.settings.get('scheduler.start_hour', 22):02d}:"
+                f"{self.settings.get('scheduler.start_minute', 0):02d}"
+            ),
+            "end_time": (
+                f"{self.settings.get('scheduler.end_hour', 6):02d}:"
+                f"{self.settings.get('scheduler.end_minute', 0):02d}"
+            ),
         }
 
 

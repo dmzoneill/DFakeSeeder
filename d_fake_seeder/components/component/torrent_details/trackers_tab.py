@@ -198,7 +198,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                         tracker_data = {
                             "url": tracker_model.get_property("url"),
                             "tier": tracker_model.get_property("tier"),
-                            "type": ("Primary" if tracker_model.get_property("tier") == 0 else "Backup"),
+                            "type": "Primary" if tracker_model.get_property("tier") == 0 else "Backup",
                             "status": tracker_model.get_property("status"),
                             "seeders": tracker_model.get_property("seeders"),
                             "leechers": tracker_model.get_property("leechers"),
@@ -207,7 +207,7 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                             "response_time": tracker_model.get_property("average_response_time"),
                             "error_message": tracker_model.get_property("error_message"),
                             "success_rate": tracker_model.success_rate,
-                            "health_status": ("Healthy" if tracker_model.is_healthy else "Unhealthy"),
+                            "health_status": "Healthy" if tracker_model.is_healthy else "Unhealthy",
                             "status_summary": tracker_model.get_status_summary(),
                             "timing_summary": tracker_model.get_timing_summary(),
                         }

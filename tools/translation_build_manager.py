@@ -905,7 +905,7 @@ msgstr ""
                 "extra_keys": len(extra_keys),
                 "fallback_count": fallback_count,
                 "native_translations": len(lang_keys) - fallback_count,
-                "fallback_percentage": ((fallback_count / len(english_keys) * 100) if english_keys else 0),
+                "fallback_percentage": (fallback_count / len(english_keys) * 100) if english_keys else 0,
             }
 
             if missing_keys or extra_keys:
