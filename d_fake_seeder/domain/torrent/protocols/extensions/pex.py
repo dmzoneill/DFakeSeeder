@@ -223,8 +223,8 @@ class PeerExchangeExtension:
         try:
             for i in range(0, len(peers_data), 6):
                 if i + 6 <= len(peers_data):
-                    ip_bytes = peers_data[i: i + 4]
-                    port_bytes = peers_data[i + 4: i + 6]
+                    ip_bytes = peers_data[i : i + 4]
+                    port_bytes = peers_data[i + 4 : i + 6]
 
                     ip = socket.inet_ntoa(ip_bytes)
                     port = struct.unpack(">H", port_bytes)[0]
