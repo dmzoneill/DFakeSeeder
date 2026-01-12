@@ -14,31 +14,47 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-# Mock gi module and all GTK/UI components before any imports that use them
-gi_mock = MagicMock()
-sys.modules["gi"] = gi_mock
-sys.modules["gi.repository"] = MagicMock()
-sys.modules["gi.repository.Gtk"] = MagicMock()
-sys.modules["gi.repository.Gdk"] = MagicMock()
-sys.modules["gi.repository.Gio"] = MagicMock()
-sys.modules["gi.repository.GLib"] = MagicMock()
-sys.modules["gi.repository.GioUnix"] = MagicMock()
-sys.modules["gi.repository.Adw"] = MagicMock()
 
-# Mock UI components that view.py imports
-sys.modules["d_fake_seeder.components.component.sidebar"] = MagicMock()
-sys.modules["d_fake_seeder.components.component.topbar"] = MagicMock()
-sys.modules["d_fake_seeder.components.component.mainview"] = MagicMock()
-sys.modules["d_fake_seeder.components.component.torrentlist"] = MagicMock()
-sys.modules["d_fake_seeder.components.component.statusbar"] = MagicMock()
-sys.modules["d_fake_seeder.components.component.infobar"] = MagicMock()
-sys.modules["d_fake_seeder.components.component.dialogues"] = MagicMock()
-sys.modules["d_fake_seeder.components.component.settings"] = MagicMock()
+@pytest.fixture(autouse=True)
+def mock_gtk_modules():
+    """Mock GTK and UI modules before any imports."""
+    # Store original modules
+    original_modules = {}
+    modules_to_mock = [
+        "gi",
+        "gi.repository",
+        "gi.repository.Gtk",
+        "gi.repository.Gdk",
+        "gi.repository.Gio",
+        "gi.repository.GLib",
+        "gi.repository.GioUnix",
+        "gi.repository.Adw",
+        "d_fake_seeder.components.component.sidebar",
+        "d_fake_seeder.components.component.topbar",
+        "d_fake_seeder.components.component.mainview",
+        "d_fake_seeder.components.component.torrentlist",
+        "d_fake_seeder.components.component.statusbar",
+        "d_fake_seeder.components.component.infobar",
+        "d_fake_seeder.components.component.dialogues",
+        "d_fake_seeder.components.component.settings",
+        "d_fake_seeder.domain.app_settings",
+    ]
 
-# Mock AppSettings module before it gets imported
-mock_app_settings = MagicMock()
-mock_app_settings.get_instance = MagicMock()
-sys.modules["d_fake_seeder.domain.app_settings"] = MagicMock(AppSettings=mock_app_settings)
+    # Save and replace with mocks
+    for module_name in modules_to_mock:
+        if module_name in sys.modules:
+            original_modules[module_name] = sys.modules[module_name]
+        sys.modules[module_name] = MagicMock()
+
+    # Yield control to the test
+    yield
+
+    # Restore original modules
+    for module_name in modules_to_mock:
+        if module_name in original_modules:
+            sys.modules[module_name] = original_modules[module_name]
+        elif module_name in sys.modules:
+            del sys.modules[module_name]
 
 
 def test_torrent_shutdown_with_none_view_instance(sample_torrent_file, mock_settings):
