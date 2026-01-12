@@ -20,7 +20,7 @@ import pytest
 # Skip test on Python < 3.14 due to MagicMock/typing incompatibility
 pytestmark = pytest.mark.skipif(
     sys.version_info < (3, 14),
-    reason="MagicMock causes SyntaxError in typing.ForwardRef on Python < 3.14"
+    reason="MagicMock causes SyntaxError in typing.ForwardRef on Python < 3.14",
 )
 
 
