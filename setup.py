@@ -25,7 +25,7 @@ install_requires = [
 ]
 
 # Optional dependencies (kept for backwards compatibility with pip install d-fake-seeder[all])
-extras_require = {
+extras_require: dict = {
     "webui": [],  # Now included by default
     "upnp": [],  # Now included by default
     "encryption": [],  # Now included by default
@@ -69,7 +69,7 @@ entry_points = {
 class PostInstallCommand(install):
     """Custom install command to run post-installation setup automatically."""
 
-    def run(self):
+    def run(self) -> None:
         # Run the standard install
         install.run(self)
 
@@ -106,7 +106,7 @@ class PostInstallCommand(install):
 
 setup_kwargs = {
     "name": "d-fake-seeder",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "description": "BitTorrent seeding simulator for testing and development",
     "long_description": long_description,
     "long_description_content_type": "text/markdown",

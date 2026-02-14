@@ -358,11 +358,11 @@ class Sidebar(Component):
         self.selected_state = None
 
     def update_counts(self) -> None:
-        """Update all filter item counts."""
+        """Update all filter item counts in-place, only rebuilding trackers when the set changes."""
         if not self.model:
             return
 
-        # Update state counts
+        # Update state counts in-place
         state_filters = self.get_state_filters()
         for i in range(len(state_filters)):
             row = self.states_listbox.get_row_at_index(i)
@@ -371,8 +371,45 @@ class Sidebar(Component):
                 count = self._get_state_count(filter_item.filter_id)
                 filter_item.update_count(count)
 
-        # Update tracker counts - full rebuild since trackers can be added/removed
-        self._populate_trackers()
+        # Update tracker counts in-place — only rebuild if tracker list changed
+        current_stats = self._get_tracker_stats()
+        current_domains = {domain for domain, _, _ in current_stats}
+
+        # Check existing tracker items (skip index 0 which is "All")
+        existing_domains = set()
+        i = 1
+        while True:
+            row = self.trackers_listbox.get_row_at_index(i)
+            if not row:
+                break
+            filter_item = row.get_child()
+            if filter_item and hasattr(filter_item, "filter_id") and filter_item.filter_id != "all":
+                existing_domains.add(filter_item.filter_id)
+            i += 1
+
+        if current_domains != existing_domains:
+            # Tracker list changed (torrent added/removed) — full rebuild needed
+            self._populate_trackers()
+        else:
+            # Only update counts in-place — no widget destruction
+            all_count = len(self.model.torrent_list) if hasattr(self.model, "torrent_list") else 0
+            row = self.trackers_listbox.get_row_at_index(0)
+            if row:
+                filter_item = row.get_child()
+                if filter_item:
+                    filter_item.update_count(all_count)
+
+            stats_by_domain = {domain: count for domain, count, _ in current_stats}
+            j = 1
+            while True:
+                row = self.trackers_listbox.get_row_at_index(j)
+                if not row:
+                    break
+                filter_item = row.get_child()
+                if filter_item and hasattr(filter_item, "filter_id"):
+                    count = stats_by_domain.get(filter_item.filter_id, 0)
+                    filter_item.update_count(count)
+                j += 1
 
     def refresh_trackers(self) -> None:
         """Rebuild tracker list (when trackers change)."""

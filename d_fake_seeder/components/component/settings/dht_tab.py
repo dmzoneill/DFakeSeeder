@@ -363,9 +363,9 @@ class DHTTab(BaseSettingsTab):
             if self._widgets.get("announcement_interval"):
                 interval = self._widgets["announcement_interval"].get_value()
                 if interval < 300:  # 5 minutes
-                    errors["announcement_interval"] = (
-                        "Announcement interval below 5 minutes may cause high network load"
-                    )
+                    errors[
+                        "announcement_interval"
+                    ] = "Announcement interval below 5 minutes may cause high network load"
 
             # Validate bootstrap nodes format
             if self._widgets.get("bootstrap_nodes"):

@@ -487,9 +487,9 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 if timeout < 5:
                     errors["connection_timeout"] = "Connection timeout below 5 seconds may cause frequent timeouts"
                 elif timeout > 120:
-                    errors["connection_timeout"] = (
-                        "Connection timeout above 2 minutes may cause slow connection establishment"
-                    )
+                    errors[
+                        "connection_timeout"
+                    ] = "Connection timeout above 2 minutes may cause slow connection establishment"
 
             # Validate extension message size
             if self._widgets.get("max_extension_msg_size"):
@@ -497,9 +497,9 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 if max_size < 1024:
                     errors["max_extension_msg_size"] = "Maximum extension message size cannot be less than 1KB"
                 elif max_size > 10485760:  # 10MB
-                    errors["max_extension_msg_size"] = (
-                        "Maximum extension message size above 10MB may cause memory issues"
-                    )
+                    errors[
+                        "max_extension_msg_size"
+                    ] = "Maximum extension message size above 10MB may cause memory issues"
 
             # Check for conflicting settings
             if (

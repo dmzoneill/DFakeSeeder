@@ -62,6 +62,17 @@
   </provides>
 
   <releases>
+    <release version="1.0.2" date="2026-02-14">
+      <description>
+        <p>Performance fix:</p>
+        <ul>
+          <li>Fix CPU spin from GTK4 ListStore signal storm (33% to under 7%)</li>
+          <li>Fix memory leak from SortListModel/SingleSelection object churn</li>
+          <li>Debounce data-changed signals with 100ms coalescing</li>
+          <li>Sidebar updates tracker counts in-place instead of full rebuild</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.0.0" date="2026-02-14">
       <description>
         <p>First stable release:</p>

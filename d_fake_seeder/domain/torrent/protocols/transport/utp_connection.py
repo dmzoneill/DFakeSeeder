@@ -160,7 +160,7 @@ class UTPConnection:
             offset = 0
 
             while offset < len(data):
-                chunk = data[offset: offset + max_payload]
+                chunk = data[offset : offset + max_payload]
                 await self._send_data_packet(chunk)
                 offset += max_payload
 
@@ -212,7 +212,7 @@ class UTPConnection:
 
             header = self._parse_header(packet)
             packet_type = header["type"]
-            payload = packet[UTPConstants.HEADER_SIZE:]
+            payload = packet[UTPConstants.HEADER_SIZE :]
 
             self.packets_received += 1
             self.last_packet_time = time.time()

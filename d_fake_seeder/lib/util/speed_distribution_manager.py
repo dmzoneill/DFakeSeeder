@@ -209,9 +209,7 @@ class SpeedDistributionManager:
                 # Log torrent info
                 torrent_name = torrent.name[:50] + "..." if len(torrent.name) > 50 else torrent.name
                 category_str = f" [{category}]" if category else ""
-                logger.debug(
-                    f"  📁 {torrent_name:53} → {new_speed:7.2f} KB/s{category_str}", "SpeedDistributionManager"
-                )
+                logger.debug(f"  📁 {torrent_name:53} → {new_speed:7.2f} KB/s{category_str}", "SpeedDistributionManager")
 
                 speeds_list.append(new_speed)
 
@@ -341,9 +339,7 @@ class SpeedDistributionManager:
                 # Log torrent info
                 torrent_name = torrent.name[:50] + "..." if len(torrent.name) > 50 else torrent.name
                 category_str = f" [{category}]" if category else ""
-                logger.debug(
-                    f"  📁 {torrent_name:53} → {new_speed:7.2f} KB/s{category_str}", "SpeedDistributionManager"
-                )
+                logger.debug(f"  📁 {torrent_name:53} → {new_speed:7.2f} KB/s{category_str}", "SpeedDistributionManager")
 
                 speeds_list.append(new_speed)
 

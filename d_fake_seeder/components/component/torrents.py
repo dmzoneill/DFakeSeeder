@@ -39,7 +39,10 @@ class Torrents(Component, ColumnTranslationMixin):
         self.builder = builder
         self.model = model
         # Track selected item ID for inline editing
-        self._selected_item_id = None
+        self._selected_item_id: Any = None
+        # Track selection signal handler to disconnect before recreating
+        self._selection_handler_id: Any = None
+        self.selection: Any = None
         self.store = Gio.ListStore.new(Attributes)
         self.track_store(self.store)  # Track for automatic cleanup
         # window
@@ -266,7 +269,7 @@ class Torrents(Component, ColumnTranslationMixin):
                 f"🔵 COLUMN TOGGLE: Action={action.get_name()}, Value={value.get_boolean()}",
                 extra={"class_name": self.__class__.__name__},
             )
-            self.stateful_actions[action.get_name()[len("toggle_"):]].set_state(  # noqa: E203
+            self.stateful_actions[action.get_name()[len("toggle_") :]].set_state(  # noqa: E203
                 GLib.Variant.new_boolean(value.get_boolean())
             )
             logger.trace(
@@ -938,6 +941,14 @@ class Torrents(Component, ColumnTranslationMixin):
             self.update_model()
 
     def update_model(self) -> None:
+        # Disconnect old selection signal to prevent handler leaks
+        if hasattr(self, "_selection_handler_id") and self._selection_handler_id and hasattr(self, "selection"):
+            try:
+                self.selection.disconnect(self._selection_handler_id)
+            except (TypeError, AttributeError):
+                pass
+            self._selection_handler_id = None
+
         # Use filtered liststore if search is active
         if hasattr(self.model, "get_filtered_liststore"):
             self.store = self.model.get_filtered_liststore()  # type: ignore[attr-defined]
@@ -960,36 +971,22 @@ class Torrents(Component, ColumnTranslationMixin):
 
         # Connect to the notify::selected signal which fires when selection changes
         try:
-            self.track_signal(
-                self.selection,
-                self.selection.connect("notify::selected", self.on_selection_changed),
-            )
+            self._selection_handler_id = self.selection.connect("notify::selected", self.on_selection_changed)
+            self.track_signal(self.selection, self._selection_handler_id)
         except (AttributeError, TypeError) as e:
             logger.error(f"Failed to connect notify::selected signal: {e}", exc_info=True)
+            self._selection_handler_id = None
             # Try alternative signal names
             try:
-                self.track_signal(
-                    self.selection,
-                    self.selection.connect("selection-changed", self.on_selection_changed_old),
-                )
-                logger.debug("Connected to selection-changed signal as fallback")
+                self._selection_handler_id = self.selection.connect("selection-changed", self.on_selection_changed_old)
+                self.track_signal(self.selection, self._selection_handler_id)
             except (AttributeError, TypeError) as e2:
                 logger.error(f"All signal connections failed: {e2}", exc_info=True)
+                self._selection_handler_id = None
         self.torrents_columnview.set_model(self.selection)
-        # Don't auto-select the first torrent - let user manually select
-        # This allows detail tabs to show "No Torrent Selected" empty state on startup
-        logger.trace(
-            "Torrent list initialized - no auto-selection, user must select manually",
-            extra={"class_name": self.__class__.__name__},
-        )
 
     # Method to update the ColumnView with compatible attributes
     def update_view(self, model: Any, torrent: Any, updated_attributes: Any) -> None:
-        logger.trace(
-            f"📺 VIEW RECEIVED SIGNAL: torrent={getattr(torrent, 'name', 'Unknown') if torrent else 'None'}, "
-            f"attributes={updated_attributes}",
-            extra={"class_name": self.__class__.__name__},
-        )
         self.model = model
 
         # Show notification for torrent add/remove
@@ -1016,29 +1013,17 @@ class Torrents(Component, ColumnTranslationMixin):
                     self._("Added: {name}").format(name=torrent_name),
                     notification_type="success",
                 )
-        # Note: "remove" notification is already handled in _on_remove_activate
 
-        # Check if this is a filter update
-        if updated_attributes == "filter":
-            logger.trace(
-                "Filter update detected - refreshing model",
-                extra={"class_name": self.__class__.__name__},
-            )
+        # Structural changes need a full model rebuild
+        if updated_attributes in ("add", "remove", "filter"):
             self.update_model()
             return
-        # Check if the model is initialized
-        current_model = self.torrents_columnview.get_model()
-        if current_model is None:
-            logger.trace(
-                "📺 VIEW: No current model, initializing with update_model()",
-                extra={"class_name": self.__class__.__name__},
-            )
+
+        # "attribute" updates — the ListStore items are GObjects with property bindings,
+        # so GTK4 picks up changes automatically. No action needed here.
+        # Only initialize the model if it hasn't been set yet.
+        if self.torrents_columnview.get_model() is None:
             self.update_model()
-        else:
-            logger.trace(
-                "📺 VIEW: Column view has model, torrent update should be visible",
-                extra={"class_name": self.__class__.__name__},
-            )
 
     def on_selection_changed(self, selection: Any, pspec: Any) -> None:
         selected_position = selection.get_selected()

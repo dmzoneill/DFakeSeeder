@@ -469,9 +469,9 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 self._widgets.get("aggressive_max_connections")
                 and self._widgets["aggressive_max_connections"].get_value() > 1000
             ):
-                errors["aggressive_max_connections"] = (
-                    "Aggressive profile with >1000 connections may cause high resource usage"
-                )
+                errors[
+                    "aggressive_max_connections"
+                ] = "Aggressive profile with >1000 connections may cause high resource usage"
 
         except Exception as e:
             errors["general"] = f"Validation error: {str(e)}"

@@ -98,6 +98,9 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             logger.trace("Registered translation function with ColumnTranslations", "Model")
         self.torrent_list: List[Any] = []  # List to hold all torrent instances
         self._torrent_by_filepath: dict = {}  # filepath -> Torrent for O(1) lookup
+        # Debounce state for coalescing rapid attribute-changed signals
+        self._data_changed_pending = False
+        self._data_changed_timer = None
         self.torrent_list_attributes = Gio.ListStore.new(Attributes)  # List to hold all Attributes instances
         # Multi-criteria filtering
         logger.trace("About to initialize filtering", "Model")
@@ -213,6 +216,12 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         self, shutdown_tracker: Any = None
     ) -> Any:
         """Stop all torrents and clean up resources."""
+        # Cancel pending debounced data-changed timer
+        if self._data_changed_timer is not None:
+            GLib.source_remove(self._data_changed_timer)
+            self._data_changed_timer = None
+            self._data_changed_pending = False
+
         # Stopping all torrents before quitting - PARALLEL SHUTDOWN
         import time
 
@@ -537,12 +546,17 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         # Add other key-specific handling here in the future
 
     def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
-        """Handle model change events and emit data-changed signal."""
-        logger.trace(
-            "Notebook settings changed",
-            extra={"class_name": self.__class__.__name__},
-        )
-        self.emit("data-changed", data_obj, "attribute")
+        """Coalesce rapid attribute-changed signals into a single data-changed."""
+        if not self._data_changed_pending:
+            self._data_changed_pending = True
+            self._data_changed_timer = GLib.timeout_add(100, self._flush_data_changed)
+
+    def _flush_data_changed(self) -> bool:
+        """Emit a single coalesced data-changed signal."""
+        self._data_changed_pending = False
+        self._data_changed_timer = None
+        self.emit("data-changed", None, "attribute")
+        return False  # one-shot
 
     def _setup_filtering(self) -> None:
         """Setup the filtering system for search functionality"""
