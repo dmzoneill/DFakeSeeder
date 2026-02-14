@@ -112,6 +112,10 @@ test-setup: setup-venv
 clearlog:
 	@truncate -s 0 d_fake_seeder/log.log 2>/dev/null || true
 
+setup-hooks:
+	@git config core.hooksPath .githooks
+	@echo "✅ Git hooks installed (.githooks/pre-commit)"
+
 lint: clearlog
 	@echo "🔍 Running code quality checks..."
 	@echo "   → Running Black formatter..."
