@@ -3,9 +3,9 @@
 <component type="desktop-application">
   <id>ie.fio.dfakeseeder</id>
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>MIT</project_license>
+  <project_license>Apache-2.0</project_license>
   <name>D' Fake Seeder</name>
-  <summary>BitTorrent seeding simulator for testing and development</summary>
+  <summary>Simulate BitTorrent seeding</summary>
 
   <description>
     <p>
@@ -30,9 +30,14 @@
 
   <launchable type="desktop-id">ie.fio.dfakeseeder.desktop</launchable>
 
+  <branding>
+    <color type="primary" scheme_preference="light">#62a0ea</color>
+    <color type="primary" scheme_preference="dark">#1a5fb4</color>
+  </branding>
+
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/dmzoneill/dFakeSeeder/main/d_fake_seeder/components/images/screenshot.png</image>
+      <image>https://raw.githubusercontent.com/dmzoneill/DFakeSeeder/v0.0.64/d_fake_seeder/components/images/screenshot.png</image>
       <caption>Main application window showing torrent list and status</caption>
     </screenshot>
   </screenshots>
@@ -47,6 +52,8 @@
 
   <content_rating type="oars-1.1" />
 
+  <translation type="gettext">dfakeseeder</translation>
+
   <provides>
     <binary>dfakeseeder</binary>
     <binary>dfs</binary>
@@ -54,9 +61,25 @@
   </provides>
 
   <releases>
+    <release version="0.0.64" date="2026-02-09">
+      <description>
+        <p>XDG base directory support for Flatpak compatibility and various improvements:</p>
+        <ul>
+          <li>XDG-aware config paths for Flatpak sandbox support</li>
+          <li>Speed control toolbar buttons for upload and download</li>
+          <li>Improved peer protocol and connection management</li>
+          <li>Enhanced speed distribution manager</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.0.63" date="2026-01-12">
+      <description>
+        <p>Test infrastructure improvements and build fixes</p>
+      </description>
+    </release>
     <release version="0.0.52" date="2024-12-03">
       <description>
-        <p>Current stable release with comprehensive features:</p>
+        <p>Stable release with comprehensive features:</p>
         <ul>
           <li>Full BitTorrent protocol support (HTTP and UDP trackers)</li>
           <li>Advanced peer-to-peer networking with connection management</li>

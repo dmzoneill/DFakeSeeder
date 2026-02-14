@@ -10,10 +10,8 @@
         "--socket=wayland",
         "--share=network",
         "--filesystem=xdg-download",
-        "--filesystem=xdg-config/dfakeseeder:create",
         "--talk-name=org.freedesktop.Notifications",
         "--talk-name=org.gtk.vfs.*",
-        "--talk-name=ie.fio.dfakeseeder",
         "--filesystem=xdg-run/gvfsd"
     ],
     "cleanup": [
@@ -142,7 +140,7 @@
                 "pip3 install --verbose --no-deps --no-build-isolation --prefix=${FLATPAK_DEST} .",
                 "install -Dm644 d_fake_seeder/components/images/dfakeseeder.png ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/ie.fio.dfakeseeder.png",
                 "install -Dm644 ie.fio.dfakeseeder.desktop ${FLATPAK_DEST}/share/applications/ie.fio.dfakeseeder.desktop",
-                "install -Dm644 ie.fio.dfakeseeder.appdata.xml ${FLATPAK_DEST}/share/metainfo/ie.fio.dfakeseeder.appdata.xml"
+                "install -Dm644 ie.fio.dfakeseeder.metainfo.xml ${FLATPAK_DEST}/share/metainfo/ie.fio.dfakeseeder.metainfo.xml"
             ],
             "sources": [
                 {
