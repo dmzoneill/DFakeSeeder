@@ -97,6 +97,7 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
             logger.trace("Registered translation function with ColumnTranslations", "Model")
         self.torrent_list: List[Any] = []  # List to hold all torrent instances
+        self._torrent_by_filepath: dict = {}  # filepath -> Torrent for O(1) lookup
         self.torrent_list_attributes = Gio.ListStore.new(Attributes)  # List to hold all Attributes instances
         # Multi-criteria filtering
         logger.trace("About to initialize filtering", "Model")
@@ -121,6 +122,7 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         torrent = Torrent(filepath)
         torrent.connect("attribute-changed", self.handle_model_changed)
         self.torrent_list.append(torrent)
+        self._torrent_by_filepath[filepath] = torrent
         self.torrent_list_attributes.append(torrent.get_attributes())
         current_id = 1
         for torrent in self.torrent_list:
@@ -141,8 +143,8 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
     def remove_torrent(self, filepath: Any) -> None:
         """Remove a torrent with the given file path from the model."""
         logger.trace("Model remove torrent", extra={"class_name": self.__class__.__name__})
-        # Find the Torrent instance
-        torrent = next((t for t in self.torrent_list if t.filepath == filepath), None)
+        # Find the Torrent instance via index
+        torrent = self._torrent_by_filepath.pop(filepath, None)
         if torrent is not None:
             # Unregister from inbuilt tracker if enabled (INT-5.2)
             self._unregister_from_local_tracker(torrent)
@@ -683,8 +685,8 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         Returns:
             bool: True if torrent matches all filters
         """
-        # Get the actual torrent object using filepath
-        torrent = next((t for t in self.torrent_list if t.file_path == torrent_attributes.filepath), None)
+        # Get the actual torrent object via index
+        torrent = self._torrent_by_filepath.get(torrent_attributes.filepath)
 
         if not torrent:
             return False

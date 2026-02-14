@@ -29,9 +29,9 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 
 ## Files Created for Flathub
 
-### 1. Flatpak Manifest: `ie.fio.dfakeseeder.json`
+### 1. Flatpak Manifest: `ie.fio.dfakeseeder.flatpak.json`
 
-**Location**: `/home/daoneill/src/DFakeSeeder/ie.fio.dfakeseeder.json`
+**Location**: `/home/daoneill/src/DFakeSeeder/ie.fio.dfakeseeder.flatpak.json`
 
 **Purpose**: Defines how to build the Flatpak package
 
@@ -95,7 +95,7 @@ desktop-file-validate ie.fio.dfakeseeder.desktop
 rm -rf build-dir .flatpak-builder
 
 # Build and install locally
-flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.json
+flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.flatpak.json
 
 # Run the application
 flatpak run ie.fio.dfakeseeder
@@ -120,14 +120,14 @@ journalctl --user -f -u flatpak-session@*
 
 ```bash
 # Build with verbose output
-flatpak-builder --verbose build-dir ie.fio.dfakeseeder.json
+flatpak-builder --verbose build-dir ie.fio.dfakeseeder.flatpak.json
 
 # Build without installing to inspect files
-flatpak-builder build-dir ie.fio.dfakeseeder.json
+flatpak-builder build-dir ie.fio.dfakeseeder.flatpak.json
 ls -R build-dir/
 
 # Enter build environment for debugging
-flatpak-builder --run build-dir ie.fio.dfakeseeder.json bash
+flatpak-builder --run build-dir ie.fio.dfakeseeder.flatpak.json bash
 ```
 
 ## Flathub Submission Process
@@ -151,7 +151,7 @@ mkdir ie.fio.dfakeseeder
 cd ie.fio.dfakeseeder
 
 # Copy the manifest
-cp /home/daoneill/src/DFakeSeeder/ie.fio.dfakeseeder.json .
+cp /home/daoneill/src/DFakeSeeder/ie.fio.dfakeseeder.flatpak.json .
 
 # Copy metadata files
 cp /home/daoneill/src/DFakeSeeder/ie.fio.dfakeseeder.appdata.xml .
@@ -166,7 +166,7 @@ cp /home/daoneill/src/DFakeSeeder/d_fake_seeder/components/images/dfakeseeder.pn
 
 **IMPORTANT**: The manifest must reference a **stable release**, not a git branch tip.
 
-Update the `dfakeseeder` module sources in `ie.fio.dfakeseeder.json`:
+Update the `dfakeseeder` module sources in `ie.fio.dfakeseeder.flatpak.json`:
 
 ```json
 {
@@ -199,7 +199,7 @@ sha256sum v0.0.52.tar.gz
 ```bash
 # Build from your Flathub fork directory
 cd ~/flathub/ie.fio.dfakeseeder
-flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.json
+flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.flatpak.json
 
 # Test the application
 flatpak run ie.fio.dfakeseeder
@@ -274,16 +274,16 @@ git clone https://github.com/flathub/ie.fio.dfakeseeder.git
 cd ie.fio.dfakeseeder
 
 # Update manifest with new version
-# Edit ie.fio.dfakeseeder.json:
+# Edit ie.fio.dfakeseeder.flatpak.json:
 # - Update tarball URL to new release tag
 # - Update SHA256 hash
 # - Update appdata.xml with new release notes
 
 # Test the build
-flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.json
+flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.flatpak.json
 
 # Commit and push
-git add ie.fio.dfakeseeder.json ie.fio.dfakeseeder.appdata.xml
+git add ie.fio.dfakeseeder.flatpak.json ie.fio.dfakeseeder.appdata.xml
 git commit -m "Update to version X.Y.Z"
 git push origin master
 ```
@@ -390,7 +390,7 @@ appstream-util validate-relax ie.fio.dfakeseeder.appdata.xml
 desktop-file-validate ie.fio.dfakeseeder.desktop
 
 # Build locally
-flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.json
+flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.flatpak.json
 
 # Run application
 flatpak run ie.fio.dfakeseeder

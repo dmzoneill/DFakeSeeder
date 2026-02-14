@@ -22,6 +22,7 @@ from gi.repository import Gdk, GLib, Gtk  # noqa: E402
 
 from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
 from d_fake_seeder.lib.logger import logger  # noqa: E402
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir  # noqa: E402
 
 # fmt: on
 
@@ -35,7 +36,7 @@ class WindowManager:
     """
 
     # Path to tray PID lock file
-    TRAY_LOCK_FILE = "~/.config/dfakeseeder/dfakeseeder-tray.lock"
+    TRAY_LOCK_FILE = os.path.join(get_config_dir(), "dfakeseeder-tray.lock")
 
     def __init__(self, window: Optional[Gtk.Window] = None) -> None:
         """
@@ -80,7 +81,7 @@ class WindowManager:
         Returns True if tray is running and responsive, False otherwise.
         """
         try:
-            lock_path = Path(os.path.expanduser(self.TRAY_LOCK_FILE))
+            lock_path = Path(self.TRAY_LOCK_FILE)
 
             if not lock_path.exists():
                 logger.trace(

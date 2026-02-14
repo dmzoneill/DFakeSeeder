@@ -13,6 +13,7 @@
         "--filesystem=xdg-config/dfakeseeder:create",
         "--talk-name=org.freedesktop.Notifications",
         "--talk-name=org.gtk.vfs.*",
+        "--talk-name=ie.fio.dfakeseeder",
         "--filesystem=xdg-run/gvfsd"
     ],
     "cleanup": [

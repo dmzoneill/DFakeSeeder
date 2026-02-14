@@ -7,6 +7,7 @@ including info hash calculation, tracker extraction, and file list parsing.
 
 # fmt: off
 import hashlib
+import time
 from datetime import datetime
 from typing import Any
 
@@ -16,13 +17,15 @@ from d_fake_seeder.lib.util import helpers
 
 # fmt: on
 
+MAX_FILE_PARSE_RETRIES = 5
+
 
 class File:
     """Parser for .torrent files extracting metadata, hashes, and tracker info."""
 
     def __init__(self, filepath: Any) -> None:
         logger.trace("Startup", extra={"class_name": self.__class__.__name__})
-        while True:
+        for attempt in range(MAX_FILE_PARSE_RETRIES):
             try:
                 self.filepath = filepath
                 with open(filepath, "rb") as f:
@@ -46,9 +49,13 @@ class File:
                 break
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.info(
-                    "File read error: " + str(e),
+                    f"File read error (attempt {attempt + 1}/{MAX_FILE_PARSE_RETRIES}): {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
+                if attempt < MAX_FILE_PARSE_RETRIES - 1:
+                    time.sleep(min(2**attempt, 10))
+                else:
+                    raise
 
     @property
     def total_size(self) -> Any:

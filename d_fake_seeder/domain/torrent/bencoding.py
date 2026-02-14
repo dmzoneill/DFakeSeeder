@@ -51,7 +51,7 @@ def _decode(raw_buffer: Any, elements: Any, index: Any = 0) -> Any:
             pos = index + raw_buffer[index:].find(ord(":"))
             size = int(raw_buffer[index:pos])
             index = pos + 1
-            data = raw_buffer[index : index + size]  # noqa: E203
+            data = raw_buffer[index: index + size]  # noqa: E203
             index += size
             elements.append(data)
         except BaseException:  # pylint: disable=broad-exception-caught

@@ -330,6 +330,12 @@ def timing_decorator(operation_name: Optional[str] = None, level: str = "debug")
     return decorator
 
 
+def _get_default_log_path() -> str:
+    """Return the config dir for log file path without importing xdg_paths (avoids circular imports)."""
+    base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
+    return os.path.join(base, "dfakeseeder")
+
+
 def get_logger_settings() -> Any:
     """Get logger settings from AppSettings if available, otherwise use defaults"""
     try:
@@ -342,7 +348,9 @@ def get_logger_settings() -> Any:
             "console_level": app_settings.get("logging.console_level", "INFO"),
             "systemd_level": app_settings.get("logging.systemd_level", "ERROR"),
             "file_level": app_settings.get("logging.file_level", "DEBUG"),
-            "filename": app_settings.get("logging.filename", "~/.config/dfakeseeder/dfakeseeder.log"),
+            "filename": (
+                app_settings.get("logging.filename", "") or os.path.join(_get_default_log_path(), "dfakeseeder.log")
+            ),
             "format": app_settings.get(
                 "logging.format",
                 "[%(asctime)s][%(class_name)s][%(levelname)s][%(lineno)d] - %(message)s",
@@ -364,7 +372,7 @@ def get_logger_settings() -> Any:
             "console_level": "INFO",
             "systemd_level": "ERROR",
             "file_level": "DEBUG",
-            "filename": "~/.config/dfakeseeder/dfakeseeder.log",
+            "filename": os.path.join(_get_default_log_path(), "dfakeseeder.log"),
             "format": default_format,
             "to_file": False,
             "to_systemd": True,

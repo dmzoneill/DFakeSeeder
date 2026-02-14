@@ -43,6 +43,7 @@ from d_fake_seeder.lib.util.language_config import (  # noqa: E402
     get_supported_language_codes,
 )
 from d_fake_seeder.lib.util.single_instance import MultiMethodSingleInstance  # noqa: E402
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir  # noqa: E402
 
 # fmt: on
 
@@ -102,7 +103,7 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
             from pathlib import Path
 
             # Try user config first
-            config_path = Path.home() / ".config" / "dfakeseeder" / "settings.json"
+            config_path = Path(get_config_dir()) / "settings.json"
             if config_path.exists():
                 with open(config_path, encoding="utf-8") as f:
                     settings = json.load(f)

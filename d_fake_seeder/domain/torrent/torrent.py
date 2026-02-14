@@ -55,7 +55,7 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
 
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
-        self.settings.connect("attribute-changed", self.handle_settings_changed)
+        self._settings_handler_id = self.settings.connect("attribute-changed", self.handle_settings_changed)
 
         # Get UI settings for configurable sleep intervals and random factors
         ui_settings = getattr(self.settings, "ui_settings", {})
@@ -432,6 +432,14 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
     def stop(self) -> Any:
         """Stop torrent workers and clean up resources."""
         logger.info("Torrent stop", extra={"class_name": self.__class__.__name__})
+
+        # Disconnect settings signal to break circular reference
+        if hasattr(self, "_settings_handler_id") and self._settings_handler_id:
+            try:
+                self.settings.disconnect(self._settings_handler_id)
+            except Exception:  # pylint: disable=broad-exception-caught
+                pass
+            self._settings_handler_id = None
 
         # Set stopping flag to prevent new threads
         self.is_stopping = True

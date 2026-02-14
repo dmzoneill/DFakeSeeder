@@ -33,6 +33,28 @@
     color: @accent_color;
 }
 
+/* Upload speed buttons - green arrows */
+.toolbar-btn-upload image {
+    color: #33d17a;
+    opacity: 0.9;
+}
+
+.toolbar-btn-upload:hover image {
+    color: #57e389;
+    opacity: 1;
+}
+
+/* Download speed buttons - red arrows */
+.toolbar-btn-download image {
+    color: #e01b24;
+    opacity: 0.9;
+}
+
+.toolbar-btn-download:hover image {
+    color: #ff6b6b;
+    opacity: 1;
+}
+
 /* Lower notebook (Details, Status, etc.) - reduce vertical padding */
 notebook[tab-pos="left"] > header > tabs > tab {
     padding-top: 4px;

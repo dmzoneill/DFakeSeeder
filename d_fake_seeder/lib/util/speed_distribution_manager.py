@@ -41,7 +41,7 @@ class SpeedDistributionManager:
         self.download_timer_id = None
 
         # Subscribe to settings changes
-        self.settings.connect("attribute-changed", self.on_settings_changed)
+        self._settings_handler_id = self.settings.connect("attribute-changed", self.on_settings_changed)
 
         logger.info("SpeedDistributionManager initialized", "SpeedDistributionManager")
 
@@ -430,6 +430,14 @@ class SpeedDistributionManager:
 
     def stop(self) -> Any:
         """Stop the speed distribution manager."""
+        # Disconnect settings signal
+        if hasattr(self, "_settings_handler_id") and self._settings_handler_id:
+            try:
+                self.settings.disconnect(self._settings_handler_id)
+            except Exception:  # pylint: disable=broad-exception-caught
+                pass
+            self._settings_handler_id = None
+
         # Cancel timers
         if self.upload_timer_id:
             GLib.source_remove(self.upload_timer_id)

@@ -310,7 +310,7 @@ Check logs for these key indicators:
 ✅ **Success Indicators**:
 ```
 ✅ Detected Flatpak files:
-  Manifest: ie.fio.dfakeseeder.json
+  Manifest: ie.fio.dfakeseeder.flatpak.json
   App ID: ie.fio.dfakeseeder
   AppData: ie.fio.dfakeseeder.appdata.xml
   Desktop: ie.fio.dfakeseeder.desktop

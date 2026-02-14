@@ -22,6 +22,7 @@ from gi.repository import Gio, GLib, GObject, Gtk  # noqa: E402
 from d_fake_seeder.components.component.base_component import Component  # noqa: E402
 from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
 from d_fake_seeder.lib.logger import logger  # noqa: E402
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir  # noqa: E402
 
 # fmt: on
 
@@ -881,7 +882,7 @@ class JackettTab(Component):
                     torrent_data = response.read()
 
                 # Save to torrents directory
-                torrents_dir = os.path.expanduser("~/.config/dfakeseeder/torrents")
+                torrents_dir = os.path.join(get_config_dir(), "torrents")
                 os.makedirs(torrents_dir, exist_ok=True)
 
                 # Clean filename

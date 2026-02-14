@@ -36,6 +36,8 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
         self.bytes_downloaded = 0
         self.bytes_uploaded = 0
         self.connection_callback = connection_callback
+        self._reader: Optional[asyncio.StreamReader] = None
+        self._writer: Optional[asyncio.StreamWriter] = None
 
         # Get settings instance for configurable timeouts
         self.settings = AppSettings.get_instance()
@@ -44,7 +46,7 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
         self.message_receive_timeout = ui_settings.get("message_receive_timeout_seconds", 5.0)
 
     async def connect(self, timeout: Optional[float] = None) -> bool:
-        """Establish TCP connection to peer"""
+        """Establish TCP connection to peer using non-blocking asyncio"""
         if timeout is None:
             timeout = self.connection_timeout
 
@@ -54,13 +56,20 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
                 extra={"class_name": self.__class__.__name__},
             )
 
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.socket.settimeout(timeout)
-
-            await asyncio.get_running_loop().run_in_executor(
-                None, self.socket.connect, (self.peer_info.ip, self.peer_info.port)
+            # Use asyncio.open_connection for non-blocking connect — no thread pool needed
+            reader, writer = await asyncio.wait_for(
+                asyncio.open_connection(self.peer_info.ip, self.peer_info.port),
+                timeout=timeout,
             )
 
+            # Extract underlying socket for compatibility with handshake/message methods
+            self.socket = writer.get_extra_info("socket")
+            # Set socket back to blocking for run_in_executor send/recv calls
+            if self.socket:
+                self.socket.setblocking(True)
+                self.socket.settimeout(timeout)
+            self._reader = reader
+            self._writer = writer
             self.connected = True
             self.peer_info.last_connected = time.time()
 
@@ -84,7 +93,7 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
 
             return True
 
-        except (socket.timeout, socket.error, OSError) as e:
+        except (asyncio.TimeoutError, socket.error, OSError) as e:
             logger.trace(
                 f"❌ Failed to connect to " f"{self.peer_info.ip}:{self.peer_info.port}: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -251,7 +260,7 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
 
             message_id = message_data[0]
             payload = (
-                message_data[BitTorrentProtocolConstants.MESSAGE_PAYLOAD_START_OFFSET :]
+                message_data[BitTorrentProtocolConstants.MESSAGE_PAYLOAD_START_OFFSET:]
                 if length > BitTorrentProtocolConstants.MESSAGE_ID_LENGTH_BYTES
                 else b""
             )
@@ -281,6 +290,14 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
 
     def close(self) -> Any:
         """Close the connection"""
+        if hasattr(self, "_writer") and self._writer:
+            try:
+                self._writer.close()
+            except Exception:  # pylint: disable=broad-exception-caught
+                pass
+            self._writer = None
+            self._reader = None
+
         if self.socket:
             try:
                 self.socket.close()

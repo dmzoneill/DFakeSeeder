@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir
 
 
 class SingleInstanceChecker:
@@ -293,7 +294,7 @@ class MultiMethodSingleInstance:
 
         # Method 3: PID file (additional safety)
         if self.use_pidfile:
-            pidfile_path = os.path.expanduser(f"~/.config/dfakeseeder/{self.app_name}.lock")
+            pidfile_path = os.path.join(get_config_dir(), f"{self.app_name}.lock")
             pid_lock = PIDFileLock(pidfile_path)
             if pid_lock.is_already_running():
                 # Another instance detected by PID file

@@ -12,6 +12,7 @@ from d_fake_seeder.domain.app_settings import AppSettings
 
 # Translation function will be provided by model's TranslationManager
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir
 
 gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
@@ -149,6 +150,68 @@ class Toolbar(Component):
         )
         self.toolbar_down_button.add_css_class("flat")
         logger.trace("toolbar_down button setup completed", "Toolbar")
+        logger.trace("About to get toolbar_speed_double button", "Toolbar")
+        self.toolbar_speed_double_button = self.builder.get_object("toolbar_speed_double")
+        logger.info("Got toolbar_speed_double button successfully", "Toolbar")
+        self.track_signal(
+            self.toolbar_speed_double_button,
+            self.toolbar_speed_double_button.connect("clicked", self.on_toolbar_speed_double_clicked),
+        )
+        self.toolbar_speed_double_button.add_css_class("flat")
+        logger.trace("toolbar_speed_double button setup completed", "Toolbar")
+        logger.trace("About to get toolbar_speed_halve button", "Toolbar")
+        self.toolbar_speed_halve_button = self.builder.get_object("toolbar_speed_halve")
+        logger.info("Got toolbar_speed_halve button successfully", "Toolbar")
+        self.track_signal(
+            self.toolbar_speed_halve_button,
+            self.toolbar_speed_halve_button.connect("clicked", self.on_toolbar_speed_halve_clicked),
+        )
+        self.toolbar_speed_halve_button.add_css_class("flat")
+        logger.trace("toolbar_speed_halve button setup completed", "Toolbar")
+
+        # Apply green color to upload speed buttons
+        upload_css = Gtk.CssProvider()
+        upload_css.load_from_string("image { color: #33d17a; }")
+        self.toolbar_speed_double_button.get_first_child().get_style_context().add_provider(
+            upload_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 100
+        )
+        upload_css2 = Gtk.CssProvider()
+        upload_css2.load_from_string("image { color: #33d17a; }")
+        self.toolbar_speed_halve_button.get_first_child().get_style_context().add_provider(
+            upload_css2, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 100
+        )
+
+        logger.trace("About to get toolbar_download_speed_double button", "Toolbar")
+        self.toolbar_download_speed_double_button = self.builder.get_object("toolbar_download_speed_double")
+        logger.info("Got toolbar_download_speed_double button successfully", "Toolbar")
+        self.track_signal(
+            self.toolbar_download_speed_double_button,
+            self.toolbar_download_speed_double_button.connect("clicked", self.on_toolbar_download_speed_double_clicked),
+        )
+        self.toolbar_download_speed_double_button.add_css_class("flat")
+        logger.trace("toolbar_download_speed_double button setup completed", "Toolbar")
+        logger.trace("About to get toolbar_download_speed_halve button", "Toolbar")
+        self.toolbar_download_speed_halve_button = self.builder.get_object("toolbar_download_speed_halve")
+        logger.info("Got toolbar_download_speed_halve button successfully", "Toolbar")
+        self.track_signal(
+            self.toolbar_download_speed_halve_button,
+            self.toolbar_download_speed_halve_button.connect("clicked", self.on_toolbar_download_speed_halve_clicked),
+        )
+        self.toolbar_download_speed_halve_button.add_css_class("flat")
+
+        # Apply red color to download speed buttons
+        download_css = Gtk.CssProvider()
+        download_css.load_from_string("image { color: #e01b24; }")
+        self.toolbar_download_speed_double_button.get_first_child().get_style_context().add_provider(
+            download_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 100
+        )
+        download_css2 = Gtk.CssProvider()
+        download_css2.load_from_string("image { color: #e01b24; }")
+        self.toolbar_download_speed_halve_button.get_first_child().get_style_context().add_provider(
+            download_css2, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 100
+        )
+
+        logger.trace("toolbar_download_speed_halve button setup completed", "Toolbar")
         logger.trace("About to get toolbar_settings button", "Toolbar")
         try:
             logger.trace("Calling self.builder.get_object('toolbar_settings')", "Toolbar")
@@ -369,6 +432,42 @@ class Toolbar(Component):
                 self.model.emit("data-changed", self.model, torrent)  # type: ignore[attr-defined]
                 break
 
+    def on_toolbar_speed_double_clicked(self, button: Any) -> None:
+        logger.trace(
+            "Toolbar speed double button clicked",
+            extra={"class_name": self.__class__.__name__},
+        )
+        for torrent in self.model.torrent_list:  # type: ignore[attr-defined]
+            torrent.upload_speed = torrent.upload_speed * 2
+        self.model.emit("data-changed", self.model, None)  # type: ignore[attr-defined]
+
+    def on_toolbar_speed_halve_clicked(self, button: Any) -> None:
+        logger.trace(
+            "Toolbar speed halve button clicked",
+            extra={"class_name": self.__class__.__name__},
+        )
+        for torrent in self.model.torrent_list:  # type: ignore[attr-defined]
+            torrent.upload_speed = max(1, torrent.upload_speed // 2)
+        self.model.emit("data-changed", self.model, None)  # type: ignore[attr-defined]
+
+    def on_toolbar_download_speed_double_clicked(self, button: Any) -> None:
+        logger.trace(
+            "Toolbar download speed double button clicked",
+            extra={"class_name": self.__class__.__name__},
+        )
+        for torrent in self.model.torrent_list:  # type: ignore[attr-defined]
+            torrent.download_speed = torrent.download_speed * 2
+        self.model.emit("data-changed", self.model, None)  # type: ignore[attr-defined]
+
+    def on_toolbar_download_speed_halve_clicked(self, button: Any) -> None:
+        logger.trace(
+            "Toolbar download speed halve button clicked",
+            extra={"class_name": self.__class__.__name__},
+        )
+        for torrent in self.model.torrent_list:  # type: ignore[attr-defined]
+            torrent.download_speed = max(1, torrent.download_speed // 2)
+        self.model.emit("data-changed", self.model, None)  # type: ignore[attr-defined]
+
     def on_toolbar_search_clicked(self, button: Any) -> None:
         logger.trace(
             "Toolbar search button clicked",
@@ -571,7 +670,7 @@ class Toolbar(Component):
             )
             # Get the selected file
             selected_file = dialog.get_file()
-            torrents_path = os.path.expanduser("~/.config/dfakeseeder/torrents")
+            torrents_path = os.path.join(get_config_dir(), "torrents")
             shutil.copy(os.path.abspath(selected_file.get_path()), torrents_path)
             file_path = selected_file.get_path()
             copied_torrent_path = os.path.join(torrents_path, os.path.basename(file_path))

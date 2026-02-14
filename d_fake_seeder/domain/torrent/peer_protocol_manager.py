@@ -114,11 +114,6 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
                     if current_time - self.startup_time > self.startup_grace_period:
                         last_contact = self.peer_contact_history.get(address, 0)
                         if current_time - last_contact < self.min_contact_interval:
-                            logger.trace(
-                                f"🔒 Rate limited peer {address} "
-                                f"(last contact {current_time - last_contact:.1f}s ago)",
-                                extra={"class_name": self.__class__.__name__},
-                            )
                             continue
 
                     # Enforce max peer limit - remove oldest peer if at limit
@@ -129,26 +124,15 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
                             del self.peers[oldest_address]
                             if oldest_address in self.peer_contact_history:
                                 del self.peer_contact_history[oldest_address]
-                            logger.trace(
-                                f"🗑️ Removed oldest peer {oldest_address} to make room (max: {max_peers})",
-                                extra={"class_name": self.__class__.__name__},
-                            )
 
                         self.peers[address] = PeerInfo(ip=ip, port=port, last_seen=current_time)
                         added_count += 1
-                        logger.trace(
-                            f"➕ Added peer {address}",
-                            extra={"class_name": self.__class__.__name__},
-                        )
                     else:
                         # Update last seen time
                         self.peers[address].last_seen = current_time
 
                 except ValueError:
-                    logger.trace(
-                        f"❌ Invalid peer address format: {address}",
-                        extra={"class_name": self.__class__.__name__},
-                    )
+                    pass
 
             if added_count > 0:
                 logger.trace(
@@ -333,7 +317,14 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
             return
 
         # Try to connect to peers we're not connected to
+        # Limit attempts per cycle to avoid wasting CPU on 1000+ peers
+        max_attempts_per_cycle = min(10, self.max_connections - active_count)
+        attempts = 0
+
         for address, peer_info in peers_list:
+            if attempts >= max_attempts_per_cycle:
+                break
+
             if address in self.active_connections:
                 continue
 
@@ -348,6 +339,8 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
             # Check if enough time has passed since last connection attempt
             if current_time - peer_info.last_connected < self.connection_retry_interval:
                 continue
+
+            attempts += 1
 
             # Try to connect with proper cleanup
             connection = PeerConnection(peer_info, self.info_hash, self.our_peer_id, self.connection_callback)

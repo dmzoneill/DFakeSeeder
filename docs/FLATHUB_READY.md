@@ -31,7 +31,7 @@ Updated all Python package URLs to current versions:
 
 ### 3. ✅ Runtime Updated to GNOME 49
 - Changed from GNOME 47 (end-of-life) to GNOME 49 (latest stable)
-- File: `ie.fio.dfakeseeder.json` line 4
+- File: `ie.fio.dfakeseeder.flatpak.json` line 4
 - Tested and confirmed working
 
 ### 4. ✅ Metadata Validation
@@ -55,7 +55,7 @@ Updated all Python package URLs to current versions:
 cd /home/daoneill/src/DFakeSeeder
 
 # Stage the updated Flatpak files
-git add ie.fio.dfakeseeder.json
+git add ie.fio.dfakeseeder.flatpak.json
 git add ie.fio.dfakeseeder.appdata.xml
 git add ie.fio.dfakeseeder.desktop
 
@@ -140,7 +140,7 @@ sha256sum v0.0.52.tar.gz
 
 ### Step 3: Update Manifest for Release Tarball
 
-Edit `ie.fio.dfakeseeder.json` and replace the `dfakeseeder` module sources (lines 147-151):
+Edit `ie.fio.dfakeseeder.flatpak.json` and replace the `dfakeseeder` module sources (lines 147-151):
 
 **Current:**
 ```json
@@ -167,7 +167,7 @@ Edit `ie.fio.dfakeseeder.json` and replace the `dfakeseeder` module sources (lin
 
 ```bash
 cd /home/daoneill/src/DFakeSeeder
-flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.json
+flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.flatpak.json
 flatpak run ie.fio.dfakeseeder
 ```
 
@@ -189,13 +189,13 @@ mkdir -p ie.fio.dfakeseeder
 cd ie.fio.dfakeseeder
 
 # Copy files
-cp ~/src/DFakeSeeder/ie.fio.dfakeseeder.json .
+cp ~/src/DFakeSeeder/ie.fio.dfakeseeder.flatpak.json .
 cp ~/src/DFakeSeeder/ie.fio.dfakeseeder.appdata.xml .
 cp ~/src/DFakeSeeder/ie.fio.dfakeseeder.desktop .
 
 # Test build from Flathub fork location
 cd ..
-flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder/ie.fio.dfakeseeder.json
+flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder/ie.fio.dfakeseeder.flatpak.json
 
 # If successful, commit and push
 git add ie.fio.dfakeseeder/
@@ -209,7 +209,7 @@ git push origin new-pr
 
 All files are ready and validated:
 
-- ✅ `ie.fio.dfakeseeder.json` - Flatpak manifest (GNOME 49, current package URLs)
+- ✅ `ie.fio.dfakeseeder.flatpak.json` - Flatpak manifest (GNOME 49, current package URLs)
 - ✅ `ie.fio.dfakeseeder.appdata.xml` - AppStream metadata (validated)
 - ✅ `ie.fio.dfakeseeder.desktop` - Desktop file (validated, no warnings)
 - ✅ Icon: `d_fake_seeder/components/images/dfakeseeder.png` (256x256)

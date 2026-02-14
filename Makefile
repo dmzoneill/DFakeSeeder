@@ -751,7 +751,7 @@ docker-ghcr: xhosts
 
 flatpak: clean
 	@echo "Building Flatpak package..."
-	flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.json
+	flatpak-builder --user --install --force-clean build-dir ie.fio.dfakeseeder.flatpak.json
 	@echo "✅ Flatpak built and installed!"
 	@echo "Run with: flatpak run ie.fio.dfakeseeder"
 

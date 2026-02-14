@@ -171,11 +171,7 @@ class Sidebar(Component):
     def _populate_states(self) -> Any:
         """Populate the states list with filter items."""
         # Clear existing
-        while True:
-            row = self.states_listbox.get_row_at_index(0)
-            if row is None:
-                break
-            self.states_listbox.remove(row)
+        self.states_listbox.remove_all()
 
         # Add state filter items
         state_filters = self.get_state_filters()
@@ -195,11 +191,7 @@ class Sidebar(Component):
             return
 
         # Clear existing
-        while True:
-            row = self.trackers_listbox.get_row_at_index(0)
-            if row is None:
-                break
-            self.trackers_listbox.remove(row)
+        self.trackers_listbox.remove_all()
 
         # Add "All" tracker item
         all_count = len(self.model.torrent_list) if hasattr(self.model, "torrent_list") else 0

@@ -42,6 +42,7 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
         # Torrent tracking
         self.active_torrents: Dict[str, Dict] = {}  # torrent_id -> torrent_info
         self.peer_managers: Dict[str, PeerProtocolManager] = {}  # info_hash -> manager
+        self._torrents_by_info_hash: Dict[str, List[str]] = {}  # info_hash_hex -> [torrent_id, ...]
 
         # Peer server for incoming connections - use configured values
         port = self.settings.get("connection.listening_port", NetworkConstants.DEFAULT_PORT)
@@ -140,6 +141,9 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
 
             # Clear torrent tracking
             self.active_torrents.clear()
+            self._torrents_by_info_hash.clear()
+            self._per_manager_stats.clear()
+            self._dirty_managers.clear()
 
         # Stop peer server
         logger.trace("Stopping peer server", extra={"class_name": self.__class__.__name__})
@@ -220,13 +224,10 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
                 logger.error(f"❌ No torrent file returned for {torrent_id}")
                 return
 
-            # Debug: Check what attributes the torrent file has
-            attrs = [attr for attr in dir(torrent_file) if not attr.startswith("_")]
             logger.trace(
                 f"🔍 Torrent file for {torrent_id}: "
                 f"type={type(torrent_file).__name__}, "
-                f"has_info_hash={hasattr(torrent_file, 'info_hash')}, "
-                f"attributes={attrs}",
+                f"has_info_hash={hasattr(torrent_file, 'info_hash')}",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -260,6 +261,12 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
                     "name": getattr(torrent_file, "name", f"Torrent {torrent_id}"),
                     "added_time": time.time(),
                 }
+
+                # Maintain reverse index
+                if info_hash_hex not in self._torrents_by_info_hash:
+                    self._torrents_by_info_hash[info_hash_hex] = []
+                if torrent_id not in self._torrents_by_info_hash[info_hash_hex]:
+                    self._torrents_by_info_hash[info_hash_hex].append(torrent_id)
 
                 # Create peer manager if not exists
                 if info_hash_hex not in self.peer_managers:
@@ -315,8 +322,16 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
             torrent_info = self.active_torrents.pop(torrent_id)
             info_hash_hex = torrent_info["info_hash_hex"]
 
+            # Update reverse index
+            if info_hash_hex in self._torrents_by_info_hash:
+                torrent_ids = self._torrents_by_info_hash[info_hash_hex]
+                if torrent_id in torrent_ids:
+                    torrent_ids.remove(torrent_id)
+                if not torrent_ids:
+                    del self._torrents_by_info_hash[info_hash_hex]
+
             # Check if other torrents are using this info_hash
-            still_used = any(t["info_hash_hex"] == info_hash_hex for t in self.active_torrents.values())
+            still_used = info_hash_hex in self._torrents_by_info_hash
 
             if not still_used and info_hash_hex in self.peer_managers:
                 # Stop and remove peer manager
@@ -414,11 +429,11 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
                     self._update_global_stats()
                     self.last_stats_update = current_time  # type: ignore[assignment]
 
-                # Calculate intelligent sleep interval - wait until next event
+                # Sleep until next scheduled event
                 next_peer_update = self.last_peer_update + self.peer_update_interval
                 next_stats_update = self.last_stats_update + self.stats_update_interval
                 next_event_time = min(next_peer_update, next_stats_update)
-                sleep_time = max(self.manager_sleep_interval, next_event_time - time.time())
+                sleep_time = max(0.1, next_event_time - time.time())
 
                 # Use event-based sleep for immediate wake on shutdown
                 if self.shutdown_event.wait(timeout=sleep_time):
@@ -441,33 +456,35 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
 
     def _update_peer_connections(self) -> None:
         """Update peer connections for all active torrents"""
+        # Snapshot data under lock, then do I/O outside lock
         with self.lock:
             if not self.peer_managers:
                 return
+            managers_snapshot = list(self.peer_managers.items())
+            torrents_snapshot = {
+                ih: [self.active_torrents[tid] for tid in tids if tid in self.active_torrents]
+                for ih, tids in self._torrents_by_info_hash.items()
+            }
 
-            for info_hash_hex, manager in self.peer_managers.items():  # pylint: disable=too-many-nested-blocks
-                try:
-                    # Find torrents using this manager
-                    using_torrents = [t for t in self.active_torrents.values() if t["info_hash_hex"] == info_hash_hex]
+        # Process outside lock — seeder access may involve I/O
+        for info_hash_hex, manager in managers_snapshot:
+            try:
+                using_torrents = torrents_snapshot.get(info_hash_hex, [])
+                for torrent_info in using_torrents:
+                    torrent = torrent_info["torrent"]
+                    seeder = torrent.get_seeder()
+                    if seeder and hasattr(seeder, "peers"):
+                        peer_addresses = [str(peer) for peer in seeder.peers]
+                        if peer_addresses:
+                            manager.add_peers(peer_addresses)
+                            self._invalidate_manager_stats(info_hash_hex)
 
-                    if using_torrents:
-                        # Update peers from seeder data
-                        for torrent_info in using_torrents:
-                            torrent = torrent_info["torrent"]
-                            seeder = torrent.get_seeder()
-                            if seeder and hasattr(seeder, "peers"):
-                                peer_addresses = [str(peer) for peer in seeder.peers]
-                                if peer_addresses:
-                                    manager.add_peers(peer_addresses)
-                                    # Mark this manager's stats as dirty
-                                    self._invalidate_manager_stats(info_hash_hex)
-
-                except Exception as e:  # pylint: disable=broad-exception-caught
-                    logger.error(
-                        f"Error updating peers for {info_hash_hex}: {e}",
-                        extra={"class_name": self.__class__.__name__},
-                        exc_info=True,
-                    )
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logger.error(
+                    f"Error updating peers for {info_hash_hex}: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                    exc_info=True,
+                )
 
     def _update_global_stats(self) -> None:  # pylint: disable=too-many-locals
         """Update global statistics from all peer managers (with dirty-tracking cache)"""

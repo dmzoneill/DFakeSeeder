@@ -97,10 +97,9 @@ class SharedAsyncExecutor:  # pylint: disable=too-many-instance-attributes
     @classmethod
     def get_instance(cls) -> "SharedAsyncExecutor":
         """Get singleton instance (thread-safe)"""
-        if cls._instance is None:
-            with cls._lock:
-                if cls._instance is None:
-                    cls._instance = cls()
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = cls()
         return cls._instance
 
     def start(self) -> Any:
@@ -123,10 +122,10 @@ class SharedAsyncExecutor:  # pylint: disable=too-many-instance-attributes
             self.loop_thread = threading.Thread(target=self._run_event_loop, daemon=True, name="SharedAsyncExecutor")
             self.loop_thread.start()
 
-            # Wait for event loop to be ready
+            # Wait for event loop to be running
             max_wait = AsyncConstants.EXECUTOR_SHUTDOWN_TIMEOUT  # 2 second timeout
             start_time = time.time()
-            while self.event_loop is None and time.time() - start_time < max_wait:
+            while (self.event_loop is None or not self.event_loop.is_running()) and time.time() - start_time < max_wait:
                 time.sleep(self._get_startup_poll_interval())
 
             if self.event_loop is None:
@@ -206,18 +205,8 @@ class SharedAsyncExecutor:  # pylint: disable=too-many-instance-attributes
             self.event_loop = asyncio.new_event_loop()
             asyncio.set_event_loop(self.event_loop)
 
-            # Run until stopped
-            while self.running and not self.shutdown_event.is_set():
-                try:
-                    # Run loop for short intervals to allow shutdown checks
-                    self.event_loop.run_until_complete(asyncio.sleep(self._get_event_loop_sleep()))
-                except Exception as e:  # pylint: disable=broad-exception-caught
-                    if self.running:
-                        logger.error(
-                            f"Error in event loop: {e}",
-                            extra={"class_name": self.__class__.__name__},
-                            exc_info=True,
-                        )
+            # Run until stopped — loop.stop() is called from stop() via call_soon_threadsafe
+            self.event_loop.run_forever()
 
         except Exception as e:  # pylint: disable=broad-exception-caught
             logger.error(

@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.xdg_paths import is_flatpak
 from d_fake_seeder.view import View
 
 AUTOSTART_DESKTOP_CONTENT = """[Desktop Entry]
@@ -28,9 +29,11 @@ def get_autostart_path() -> Path:
     """Get the path to the autostart desktop file.
 
     Returns:
-        Path to ~/.config/autostart/dfakeseeder.desktop
+        Path to $XDG_CONFIG_HOME/autostart/dfakeseeder.desktop
+        (defaults to ~/.config/autostart/dfakeseeder.desktop on native installs)
     """
-    return Path.home() / ".config" / "autostart" / "dfakeseeder.desktop"
+    xdg_config_base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
+    return Path(xdg_config_base) / "autostart" / "dfakeseeder.desktop"
 
 
 def enable_autostart() -> bool:
@@ -42,6 +45,9 @@ def enable_autostart() -> bool:
     Returns:
         True if successful, False otherwise
     """
+    if is_flatpak():
+        logger.info("Running inside Flatpak — autostart managed by desktop portal.", "AutostartManager")
+        return True
     try:
         autostart_path = get_autostart_path()
         autostart_path.parent.mkdir(parents=True, exist_ok=True)

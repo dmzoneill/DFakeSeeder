@@ -58,7 +58,8 @@ class TrayLauncher:
             import json
 
             # Try user config first
-            config_path = Path.home() / ".config" / "dfakeseeder" / "settings.json"
+            xdg_config = os.environ.get("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
+            config_path = Path(xdg_config) / "dfakeseeder" / "settings.json"
             if config_path.exists():
                 with open(config_path) as f:
                     settings: dict[str, Any] = json.load(f)

@@ -11,6 +11,7 @@ from typing import Any, Optional
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir
 from d_fake_seeder.view import View
 
 from .auth import create_auth_middleware, create_security_middleware
@@ -194,7 +195,7 @@ class WebUIServer:
         """
         try:
             # Look for certificates in config directory
-            config_dir = Path.home() / ".config" / "dfakeseeder"
+            config_dir = Path(get_config_dir())
             cert_file = config_dir / "cert.pem"
             key_file = config_dir / "key.pem"
 

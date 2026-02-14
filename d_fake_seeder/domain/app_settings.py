@@ -31,6 +31,7 @@ from d_fake_seeder.lib.handlers.file_modified_event_handler import (  # noqa: E4
 )
 from d_fake_seeder.lib.logger import logger  # noqa: E402
 from d_fake_seeder.lib.util.constants import NetworkConstants  # noqa: E402
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir  # noqa: E402
 
 if WATCHDOG_AVAILABLE:
     from watchdog.observers import Observer  # noqa: E402  # pylint: disable=import-error
@@ -129,7 +130,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
         if file_path is None:
             env_file = os.getenv(
                 "DFS_SETTINGS",
-                os.path.expanduser("~/.config/dfakeseeder") + "/settings.json",
+                os.path.join(get_config_dir(), "settings.json"),
             )
             file_path = env_file
 
@@ -155,10 +156,10 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
         self._pending_save = False  # Flag for pending save operations
 
         # Create config directory if needed (like Settings does)
-        home_config_path = os.path.expanduser("~/.config/dfakeseeder")
+        home_config_path = get_config_dir()
         if not os.path.exists(home_config_path):
             os.makedirs(home_config_path, exist_ok=True)
-            os.makedirs(home_config_path + "/torrents", exist_ok=True)
+            os.makedirs(os.path.join(home_config_path, "torrents"), exist_ok=True)
 
             # Determine source config file (priority order):
             # 1. System-wide RPM config: /etc/dfakeseeder/default.json
@@ -179,7 +180,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
             # Copy the source file to the destination directory
             if os.path.exists(source_path):
-                shutil.copy(source_path, home_config_path + "/settings.json")
+                shutil.copy(source_path, os.path.join(home_config_path, "settings.json"))
                 self.logger.trace(
                     f"Created user config at {home_config_path}/settings.json",
                     extra={"class_name": self.__class__.__name__},
@@ -504,10 +505,14 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
                     pass
             raise write_error
         finally:
-            # Clear save flag to allow file watch reload (with small delay to ensure file system settles)
-            import time
+            # Clear save flag to allow file watch reload
+            # Only delay if the file observer is still running (normal operation);
+            # during shutdown save_quit() stops the observer first, so no delay needed.
+            observer_running = hasattr(self, "_observer") and self._observer.is_alive()
+            if observer_running:
+                import time
 
-            time.sleep(0.1)  # 100ms delay to ensure file system events complete
+                time.sleep(0.1)  # 100ms delay to ensure file system events complete
             self._saving = False
             self.logger.trace("Save flag cleared, file watch can reload", extra={"class_name": self.__class__.__name__})
 
@@ -793,11 +798,12 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
     def export_settings(self, file_path: str) -> Any:
         """Export current settings to a file"""
         try:
+            # Copy data under lock, write file outside lock
             with self._lock:
-                # Export user settings (not including transient data)
-                with open(file_path, "w", encoding="utf-8") as f:
-                    json.dump(self._user_settings, f, indent=4)
-                self.logger.info(f"Settings exported to: {file_path}")
+                settings_copy = self._user_settings.copy()
+            with open(file_path, "w", encoding="utf-8") as f:
+                json.dump(settings_copy, f, indent=4)
+            self.logger.info(f"Settings exported to: {file_path}")
         except (OSError, json.JSONDecodeError, TypeError) as e:
             self.logger.error(f"Failed to export settings: {e}", exc_info=True)
             raise
@@ -805,10 +811,10 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
     def import_settings(self, file_path: str) -> Any:
         """Import settings from a file"""
         try:
+            # Read file outside lock
+            with open(file_path, "r", encoding="utf-8") as f:
+                imported_settings = json.load(f)
             with self._lock:
-                # Load settings from file
-                with open(file_path, "r", encoding="utf-8") as f:
-                    imported_settings = json.load(f)
                 # Update user settings
                 self._user_settings = imported_settings.copy()
                 # Rebuild merged view

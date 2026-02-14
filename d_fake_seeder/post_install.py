@@ -16,6 +16,7 @@ from typing import Any
 
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import DEFAULT_ICON_SIZES
+from d_fake_seeder.lib.util.xdg_paths import get_cache_dir, get_data_dir, is_flatpak
 
 # fmt: on
 
@@ -40,7 +41,7 @@ def install_icons(package_dir: Any, home_dir: Any) -> Any:
     if not icon_source.exists():
         logger.error(f"Warning: Icon file not found at {icon_source}", "UnknownClass")
         return False
-    icon_base = home_dir / ".local" / "share" / "icons" / "hicolor"
+    icon_base = Path(get_data_dir()) / "icons" / "hicolor"
     # Install to multiple sizes for better compatibility
     sizes = DEFAULT_ICON_SIZES
     installed_any = False
@@ -72,7 +73,7 @@ def install_desktop_file(package_dir: Any, home_dir: Any) -> Any:
         logger.warning("Warning: No desktop file found", "UnknownClass")
         return False
 
-    desktop_dir = home_dir / ".local" / "share" / "applications"
+    desktop_dir = Path(get_data_dir()) / "applications"
     desktop_dir.mkdir(parents=True, exist_ok=True)
     desktop_target = desktop_dir / "dfakeseeder.desktop"
 
@@ -121,7 +122,8 @@ def install_tray_desktop_file(package_dir: Any, home_dir: Any) -> Any:
         logger.error("Warning: Tray desktop file not found", "UnknownClass")
         return False
 
-    autostart_dir = home_dir / ".config" / "autostart"
+    xdg_config_base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
+    autostart_dir = Path(xdg_config_base) / "autostart"
     autostart_dir.mkdir(parents=True, exist_ok=True)
     tray_desktop_target = autostart_dir / "dfakeseeder-tray.desktop"
 
@@ -139,9 +141,9 @@ def install_tray_desktop_file(package_dir: Any, home_dir: Any) -> Any:
 
 def update_caches(home_dir: Any) -> None:
     """Update desktop and icon caches."""
-    icon_dir = home_dir / ".local" / "share" / "icons" / "hicolor"
-    desktop_dir = home_dir / ".local" / "share" / "applications"
-    gnome_cache_dir = home_dir / ".cache" / "gnome-shell"
+    icon_dir = Path(get_data_dir()) / "icons" / "hicolor"
+    desktop_dir = Path(get_data_dir()) / "applications"
+    gnome_cache_dir = Path(get_cache_dir()) / "gnome-shell"
 
     # Clear GNOME Shell cache to ensure desktop file changes are picked up
     if gnome_cache_dir.exists():
@@ -184,6 +186,9 @@ def update_caches(home_dir: Any) -> None:
 
 def install_desktop_integration() -> Any:
     """Main function to install desktop integration."""
+    if is_flatpak():
+        logger.info("Running inside Flatpak — skipping desktop integration (handled by manifest).", "PostInstall")
+        return
     logger.trace("Installing D' Fake Seeder desktop integration...", "UnknownClass")
     try:
         package_dir = get_package_dir()
@@ -245,7 +250,7 @@ def uninstall_desktop_integration() -> Any:
     home_dir = Path.home()
     removed_any = False
     # Remove desktop file
-    desktop_file = home_dir / ".local" / "share" / "applications" / "dfakeseeder.desktop"
+    desktop_file = Path(get_data_dir()) / "applications" / "dfakeseeder.desktop"
     if desktop_file.exists():
         try:
             desktop_file.unlink()
@@ -255,7 +260,8 @@ def uninstall_desktop_integration() -> Any:
             logger.warning("Warning: Could not remove desktop file: ...", "UnknownClass")
 
     # Remove tray autostart file
-    tray_file = home_dir / ".config" / "autostart" / "dfakeseeder-tray.desktop"
+    xdg_config_base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
+    tray_file = Path(xdg_config_base) / "autostart" / "dfakeseeder-tray.desktop"
     if tray_file.exists():
         try:
             tray_file.unlink()
@@ -264,7 +270,7 @@ def uninstall_desktop_integration() -> Any:
         except OSError:
             logger.warning("Warning: Could not remove tray autostart file", "UnknownClass")
     # Remove icons
-    icon_base = home_dir / ".local" / "share" / "icons" / "hicolor"
+    icon_base = Path(get_data_dir()) / "icons" / "hicolor"
     sizes = DEFAULT_ICON_SIZES
     for size in sizes:
         icon_file = icon_base / size / "apps" / "dfakeseeder.png"

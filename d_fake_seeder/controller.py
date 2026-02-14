@@ -27,6 +27,7 @@ from d_fake_seeder.lib.util.speed_distribution_manager import SpeedDistributionM
 from d_fake_seeder.lib.util.speed_scheduler import SpeedScheduler
 from d_fake_seeder.lib.util.upnp_manager import UPnPManager
 from d_fake_seeder.lib.util.window_manager import WindowManager
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir
 
 # Optional imports for features that may not be available
 try:
@@ -174,10 +175,11 @@ class Controller:  # pylint: disable=too-many-instance-attributes
     def run(self) -> Any:
         """Start the controller and load existing torrents."""
         logger.trace("Controller Run", extra={"class_name": self.__class__.__name__})
-        for filename in os.listdir(os.path.expanduser("~/.config/dfakeseeder/torrents")):
+        torrents_dir = os.path.join(get_config_dir(), "torrents")
+        for filename in os.listdir(torrents_dir):
             if filename.endswith(".torrent"):
                 torrent_file = os.path.join(
-                    os.path.expanduser("~/.config/dfakeseeder/torrents"),
+                    torrents_dir,
                     filename,
                 )
                 self.model.add_torrent(torrent_file)

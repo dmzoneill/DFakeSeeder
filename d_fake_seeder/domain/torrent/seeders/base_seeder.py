@@ -597,9 +597,9 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
                 )
                 for i in range(0, len(peers), 6):
                     if i + 6 <= len(peers):
-                        ip_bytes = peers[i : i + 4]  # noqa: E203
+                        ip_bytes = peers[i: i + 4]  # noqa: E203
                         ip = ".".join(str(x) for x in ip_bytes)
-                        port_bytes = peers[i + 4 : i + 6]  # noqa: E203
+                        port_bytes = peers[i + 4: i + 6]  # noqa: E203
                         port = struct.unpack(">H", port_bytes)[0]
                         peer_address = f"{ip}:{port}"
                         result.append(peer_address)

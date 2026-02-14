@@ -11,8 +11,14 @@ import time
 # fmt: off
 from typing import Any, Dict, Set
 
-from d_fake_seeder.lib.logger import logger
-from d_fake_seeder.view import View
+import gi
+
+gi.require_version("Gtk", "4.0")
+from gi.repository import GLib  # noqa: E402
+
+from d_fake_seeder.lib.logger import logger  # noqa: E402
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir  # noqa: E402
+from d_fake_seeder.view import View  # noqa: E402
 
 try:
     from watchdog.events import FileSystemEventHandler
@@ -202,7 +208,8 @@ class TorrentFileEventHandler(FileSystemEventHandler):
         if event.src_path.lower().endswith(".torrent"):
             # Small delay to ensure file is fully written
             time.sleep(0.5)
-            self.process_torrent_file(event.src_path)
+            # Marshal to GTK main thread for safe model access
+            GLib.idle_add(self._deferred_process, event.src_path)
 
     def on_moved(self, event: Any) -> None:
         """Handle file move events (e.g., file moved into watch folder)"""
@@ -212,7 +219,13 @@ class TorrentFileEventHandler(FileSystemEventHandler):
         if event.dest_path.lower().endswith(".torrent"):
             # Small delay to ensure file is fully written
             time.sleep(0.5)
-            self.process_torrent_file(event.dest_path)
+            # Marshal to GTK main thread for safe model access
+            GLib.idle_add(self._deferred_process, event.dest_path)
+
+    def _deferred_process(self, file_path: Any) -> bool:
+        """GLib callback to process torrent file on main thread"""
+        self.process_torrent_file(file_path)
+        return False  # Don't repeat
 
     def process_torrent_file(self, file_path: Any) -> None:  # pylint: disable=too-many-branches
         """
@@ -251,7 +264,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
 
             # Get filename and check if already exists in config directory
             filename = os.path.basename(file_path)
-            torrents_path = os.path.expanduser("~/.config/dfakeseeder/torrents")
+            torrents_path = os.path.join(get_config_dir(), "torrents")
             destination_path = os.path.join(torrents_path, filename)
 
             # Check if torrent already exists in config directory

@@ -736,11 +736,12 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         Shutdown order (optimized for speed and reliability):
         1. Cleanup UI timers (instant)
         2. Remove signal connections (instant)
-        3. Stop model torrents in parallel (fast)
-        4. Stop controller & network resources (parallel where possible)
-        5. Save settings (fast)
-        6. Cleanup UI and destroy window
-        7. Force exit with watchdog
+        3. Save settings to disk FIRST (transient data may be up to ~9s stale from last tick)
+        4. Start watchdogs (protect against thread-stop hangs)
+        5. Stop model torrents in parallel
+        6. Stop controller & network resources
+        7. Cleanup UI and destroy window
+        8. Force exit
         """
         # CRITICAL: Detect recursive/hanging shutdown attempts
         if hasattr(self, "_quit_in_progress"):
@@ -753,43 +754,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         self._quit_in_progress = True
         shutdown_start_time = time.time()
 
-        # NOTE: Settings are saved AFTER model.stop() to ensure torrent state is captured
-        # (torrents call save_to_transient() during stop())
-
         logger.trace(
             f"🎬 SHUTDOWN START: Consolidated quit procedure "
             f"(widget={widget}, event={event}, fast_shutdown={fast_shutdown})",
-            extra={"class_name": self.__class__.__name__},
-        )
-
-        # ========== START WATCHDOGS IMMEDIATELY (BEFORE ANY CLEANUP) ==========
-        import threading
-
-        def ultra_aggressive_watchdog() -> Any:
-            time.sleep(self._get_shutdown_kill_timeout())  # Configurable kill timeout
-            logger.error(
-                "⚠️⚠️⚠️ ULTRA WATCHDOG: Shutdown blocked for 100ms - FORCE KILLING NOW",
-                extra={"class_name": self.__class__.__name__},
-            )
-            os._exit(0)
-
-        def backup_watchdog() -> Any:
-            time.sleep(self._get_shutdown_backup_timeout())  # Configurable backup timeout
-            logger.warning(
-                "⚠️ BACKUP WATCHDOG: Force exit",
-                extra={"class_name": self.__class__.__name__},
-            )
-            os._exit(0)
-
-        # Start watchdogs BEFORE any cleanup operations
-        ultra_wd = threading.Thread(target=ultra_aggressive_watchdog, daemon=True, name="UltraWatchdog")
-        ultra_wd.start()
-
-        backup_wd = threading.Thread(target=backup_watchdog, daemon=True, name="BackupWatchdog")
-        backup_wd.start()
-
-        logger.trace(
-            "⏰ Watchdogs active: 100ms + 250ms force-kill",
             extra={"class_name": self.__class__.__name__},
         )
 
@@ -837,6 +804,59 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             )
         phase_times["signal_removal"] = time.time() - step_start
 
+        # ========== PHASE 2: SAVE SETTINGS FIRST (before stopping threads) ==========
+        # Transient data is updated every tick (~9s) so may be slightly stale,
+        # but this guarantees state is written to disk before watchdogs or
+        # thread-stop operations can kill the process.
+        step_start = time.time()
+        logger.trace(
+            "💾 PHASE 2: Saving settings to disk FIRST (before thread shutdown)",
+            extra={"class_name": self.__class__.__name__},
+        )
+        try:
+            self.settings.save_quit()
+            logger.trace(
+                "✅ Settings saved successfully",
+                extra={"class_name": self.__class__.__name__},
+            )
+        except (OSError, json.JSONDecodeError, RuntimeError) as e:
+            logger.warning(
+                f"Error saving settings: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+        phase_times["settings_save"] = time.time() - step_start
+
+        # ========== START WATCHDOGS (AFTER save, BEFORE thread shutdown) ==========
+        import threading
+
+        def ultra_aggressive_watchdog() -> Any:
+            time.sleep(self._get_shutdown_kill_timeout())  # Configurable kill timeout
+            logger.error(
+                "⚠️⚠️⚠️ ULTRA WATCHDOG: Shutdown blocked - FORCE KILLING NOW",
+                extra={"class_name": self.__class__.__name__},
+            )
+            os._exit(0)
+
+        def backup_watchdog() -> Any:
+            time.sleep(self._get_shutdown_backup_timeout())  # Configurable backup timeout
+            logger.warning(
+                "⚠️ BACKUP WATCHDOG: Force exit",
+                extra={"class_name": self.__class__.__name__},
+            )
+            os._exit(0)
+
+        # Start watchdogs AFTER settings are saved - they protect against thread-stop hangs
+        ultra_wd = threading.Thread(target=ultra_aggressive_watchdog, daemon=True, name="UltraWatchdog")
+        ultra_wd.start()
+
+        backup_wd = threading.Thread(target=backup_watchdog, daemon=True, name="BackupWatchdog")
+        backup_wd.start()
+
+        logger.trace(
+            "⏰ Watchdogs active (settings already saved to disk)",
+            extra={"class_name": self.__class__.__name__},
+        )
+
         # Count components for tracking
         model_torrent_count = len(self.model.torrent_list) if hasattr(self, "model") and self.model else 0
 
@@ -846,11 +866,11 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         self.shutdown_tracker.register_component("background_workers", 1)  # type: ignore[attr-defined]
         self.shutdown_tracker.register_component("network_connections", 1)  # type: ignore[attr-defined]
 
-        # ========== PHASE 2: STOP MODEL (PARALLEL TORRENT SHUTDOWN) ==========
+        # ========== PHASE 3: STOP MODEL (PARALLEL TORRENT SHUTDOWN) ==========
         step_start = time.time()
         if hasattr(self, "model") and self.model:
             logger.trace(
-                f"🛑 PHASE 2: Stopping {model_torrent_count} torrents (parallel)",
+                f"🛑 PHASE 3: Stopping {model_torrent_count} torrents (parallel)",
                 extra={"class_name": self.__class__.__name__},
             )
             self.shutdown_tracker.start_component_shutdown("model_torrents")  # type: ignore[attr-defined]
@@ -866,11 +886,11 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                 )
         phase_times["model_stop"] = time.time() - step_start
 
-        # ========== PHASE 3: STOP CONTROLLER & NETWORK ==========
+        # ========== PHASE 4: STOP CONTROLLER & NETWORK ==========
         step_start = time.time()
         if hasattr(self, "app") and self.app and hasattr(self.app, "controller"):
             logger.trace(
-                "🌐 PHASE 3: Stopping controller & network resources",
+                "🌐 PHASE 4: Stopping controller & network resources",
                 extra={"class_name": self.__class__.__name__},
             )
             self.shutdown_tracker.start_component_shutdown("peer_managers")  # type: ignore[attr-defined]
@@ -887,25 +907,6 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                 self.shutdown_tracker.mark_completed("background_workers", 1)  # type: ignore[attr-defined]
                 self.shutdown_tracker.mark_completed("network_connections", 1)  # type: ignore[attr-defined]
         phase_times["controller_stop"] = time.time() - step_start
-
-        # ========== PHASE 4: SAVE SETTINGS (AFTER TORRENTS STOP) ==========
-        step_start = time.time()
-        logger.trace(
-            "💾 PHASE 4: Saving settings (after torrents saved their state)",
-            extra={"class_name": self.__class__.__name__},
-        )
-        try:
-            self.settings.save_quit()
-            logger.trace(
-                "✅ Settings saved successfully",
-                extra={"class_name": self.__class__.__name__},
-            )
-        except (OSError, json.JSONDecodeError, RuntimeError) as e:
-            logger.warning(
-                f"Error saving settings: {e}",
-                extra={"class_name": self.__class__.__name__},
-            )
-        phase_times["settings_save"] = time.time() - step_start
 
         # ========== PHASE 5: CHECK TIMEOUT & LOG STATUS ==========
         if self.shutdown_tracker.is_force_shutdown_time():  # type: ignore[attr-defined]
@@ -1017,14 +1018,14 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             f"🏁 SHUTDOWN COMPLETE in {total_shutdown_time:.3f}s | "
             f"UI:{phase_times.get('ui_cleanup', 0):.3f}s "
             f"Signals:{phase_times.get('signal_removal', 0):.3f}s "
+            f"Settings:{phase_times.get('settings_save', 0):.3f}s "
             f"Model:{phase_times.get('model_stop', 0):.3f}s "
             f"Controller:{phase_times.get('controller_stop', 0):.3f}s "
-            f"Settings:{phase_times.get('settings_save', 0):.3f}s "
             f"UICleanup:{phase_times.get('ui_resource_cleanup', 0):.3f}s",
             extra={"class_name": self.__class__.__name__},
         )
 
-        # Try graceful GTK quit (watchdogs already running from start of function)
+        # Try graceful GTK quit (watchdogs already running from after save)
         if hasattr(self, "app") and self.app:
             logger.trace("🚪 Calling app.quit()", extra={"class_name": self.__class__.__name__})
             try:

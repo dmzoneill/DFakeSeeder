@@ -188,31 +188,19 @@ docker run --rm --net=host --env="DISPLAY" \
 ```text
 ---
 
-## 5. Flatpak ⚠️
+## 5. Flatpak
 
-### Status: INCOMPLETE
-**Manifest:** `manifest.json` (basic structure only)
+### Status: COMPLETE
+**Manifest:** `ie.fio.dfakeseeder.flatpak.json`
 **App ID:** `ie.fio.dfakeseeder`
-
-### Current State
-- Basic manifest structure exists
-- Runtime and SDK specified (org.freedesktop.Platform 22.08)
-- Missing:
-  - Build commands
-  - Finish-args (permissions)
-  - Complete module configuration
-  - Desktop/icon integration
+**Runtime:** org.gnome.Platform 49
+**SDK:** org.gnome.Sdk 49
 
 ### Flatpak Build Commands
 ```bash
-make flatpak             # Build Flatpak package (incomplete)
-```text
-### TODO
-- [ ] Add finish-args for X11, network, filesystem access
-- [ ] Implement proper build commands
-- [ ] Add desktop file and icon exports
-- [ ] Configure Python runtime dependencies
-- [ ] Test and validate Flatpak sandbox
+make flatpak             # Build and install Flatpak package
+flatpak run ie.fio.dfakeseeder  # Run the installed Flatpak
+```
 
 ---
 
