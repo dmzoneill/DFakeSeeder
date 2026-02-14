@@ -106,7 +106,7 @@ class PostInstallCommand(install):
 
 setup_kwargs = {
     "name": "d-fake-seeder",
-    "version": "0.0.66",
+    "version": "1.0.0",
     "description": "BitTorrent seeding simulator for testing and development",
     "long_description": long_description,
     "long_description_content_type": "text/markdown",

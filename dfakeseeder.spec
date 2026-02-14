@@ -1,5 +1,5 @@
 Name:           dfakeseeder
-Version:        0.0.66
+Version:        1.0.0
 Release:        1%{?dist}
 Summary:        BitTorrent seeding simulator for testing and development
 
@@ -173,7 +173,10 @@ if [ $1 -eq 0 ]; then
 fi
 
 %changelog
-* Wed Nov 27 2024 David O Neill <dmz.oneill@gmail.com> - 0.0.66-1
+* Fri Feb 14 2026 David O Neill <dmz.oneill@gmail.com> - 1.0.0-1
+- Release v1.0.0: XDG paths, Flatpak support, Flathub compliance
+
+* Wed Nov 27 2024 David O Neill <dmz.oneill@gmail.com> - 0.0.65-1
 - Comprehensive RPM packaging with system-wide config
 - Added wrapper script for CLI and tray support
 - System-wide icon installation with user fallback
