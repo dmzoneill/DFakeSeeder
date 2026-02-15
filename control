@@ -1,5 +1,5 @@
 Package: dfakeseeder
-Version: 1.0.7
+Version: 1.0.8
 Architecture: all
 Maintainer: David O Neill <dmz.oneill@gmail.com>
 Depends: python3 (>= 3.11), python3-pip, gir1.2-gtk-4.0, libadwaita-1-0, gir1.2-adw-1, python3-gi, python3-requests (>= 2.31.0), python3-urllib3 (>= 1.26.18), python3-watchdog
