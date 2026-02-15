@@ -1,5 +1,5 @@
 Name:           dfakeseeder
-Version:        1.0.3
+Version:        1.0.4
 Release:        1%{?dist}
 Summary:        BitTorrent seeding simulator for testing and development
 
@@ -173,7 +173,7 @@ if [ $1 -eq 0 ]; then
 fi
 
 %changelog
-* Sat Feb 14 2026 David O Neill <dmz.oneill@gmail.com> - 1.0.3-1
+* Sat Feb 14 2026 David O Neill <dmz.oneill@gmail.com> - 1.0.4-1
 - Fix CPU spin and memory leak from GTK4 ListStore signal storm
 
 * Fri Feb 14 2026 David O Neill <dmz.oneill@gmail.com> - 1.0.0-1
