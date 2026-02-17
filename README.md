@@ -3,9 +3,12 @@
 
 # D' Fake Seeder
 
-[![RPM E2E Tests](https://github.com/dmzoneill/DFakeSeeder/workflows/RPM%20End-to-End%20Tests/badge.svg)](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/rpm-e2e-tests.yml)
-[![PyPI E2E Tests](https://github.com/dmzoneill/DFakeSeeder/workflows/PyPI%20End-to-End%20Tests/badge.svg)](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/pypi-e2e-tests.yml)
-[![DEB E2E Tests](https://github.com/dmzoneill/DFakeSeeder/workflows/DEB%20End-to-End%20Tests/badge.svg)](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/deb-e2e-tests.yml)
+[![CI/CD](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/main.yml/badge.svg)](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/main.yml)
+[![PyPI](https://img.shields.io/pypi/v/d-fake-seeder)](https://pypi.org/project/d-fake-seeder/)
+[![Python](https://img.shields.io/pypi/pyversions/d-fake-seeder)](https://pypi.org/project/d-fake-seeder/)
+[![License](https://img.shields.io/github/license/dmzoneill/DFakeSeeder)](https://github.com/dmzoneill/DFakeSeeder/blob/main/LICENSE)
+[![Release](https://img.shields.io/github/v/release/dmzoneill/DFakeSeeder)](https://github.com/dmzoneill/DFakeSeeder/releases/latest)
+[![Downloads](https://img.shields.io/pypi/dm/d-fake-seeder)](https://pypi.org/project/d-fake-seeder/)
 
 A sophisticated Python GTK4 BitTorrent client that simulates seeding activity with advanced peer-to-peer networking capabilities, comprehensive settings management, multi-language support, and extensive automated testing.
 
