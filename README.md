@@ -182,7 +182,7 @@ make test-e2e-deb      # DEB packages (Ubuntu + Debian)
 **GitHub Actions:**
 All E2E tests run automatically on every push and PR with results visible in status checks.
 
-### Build System
+### Build Tools
 ```bash
 # Setup development environment
 make setup-venv          # Create pipenv environment
