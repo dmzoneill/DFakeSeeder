@@ -2,11 +2,47 @@
 name: dfakeseeder
 version: '1.0.14'
 summary: BitTorrent seeding simulator for testing and development
+icon: d_fake_seeder/components/images/dfakeseeder.png
 description: |
-  D' Fake Seeder is a Python GTK4 BitTorrent client that simulates seeding
-  activity with advanced peer-to-peer networking capabilities. Features include
-  multi-language support (21 languages), system tray integration, web UI,
-  UPnP port forwarding, and protocol encryption (MSE/PE).
+  D' Fake Seeder is a sophisticated Python GTK4 BitTorrent client that
+  simulates seeding activity with advanced peer-to-peer networking
+  capabilities.
+
+  Core Features:
+    - Multi-torrent support with individual configuration per torrent
+    - Full HTTP and UDP tracker compatibility (BEP-003)
+    - Advanced peer-to-peer networking with incoming/outgoing connections
+    - Real-time connection tracking and performance metrics
+    - UPnP port forwarding for NAT traversal
+    - Protocol encryption (MSE/PE) support
+
+  User Interface:
+    - Modern GTK4 + LibAdwaita UI with responsive design
+    - System tray integration with D-Bus IPC
+    - Multi-tab settings (General, Connection, Peer Protocol, Advanced)
+    - Speed control toolbar for upload and download limits
+    - Real-time torrent status and peer monitoring
+
+  Internationalization:
+    - 21 languages supported including English, Spanish, French, German,
+      Italian, Portuguese, Russian, Chinese, Japanese, Korean, Arabic,
+      Hindi, Dutch, Swedish, Polish, Irish, and more
+    - Runtime language switching without restart
+
+  Desktop Integration:
+    - XDG-compliant configuration and data paths
+    - Desktop file and icon theme integration
+    - GNOME Shell support
+    - Application menu integration
+
+  Web UI:
+    - Built-in web interface for remote monitoring
+    - Accessible from any browser on the local network
+
+  Developer and Testing:
+    - 140+ automated E2E tests across RPM, DEB, and PyPI
+    - Available as DEB, RPM, PyPI, Docker, Flatpak, and Snap packages
+    - Comprehensive CI/CD pipeline with GitHub Actions
 base: core24
 grade: stable
 confinement: strict
