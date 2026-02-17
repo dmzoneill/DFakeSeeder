@@ -1,5 +1,5 @@
 name: dfakeseeder
-version: '1.0.11'
+version: '1.0.12'
 summary: BitTorrent seeding simulator for testing and development
 description: |
   D' Fake Seeder is a Python GTK4 BitTorrent client that simulates seeding
