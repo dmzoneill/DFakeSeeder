@@ -19,7 +19,6 @@ jobs:
       rpm-build: "true"
       snap-build: "true"
       docker-build: "true"
-      flatpak-build: "true"
       VALIDATE_JSCPD: "false"
       VALIDATE_PYTHON_MYPY: "false"
       VALIDATE_PYTHON_PYLINT: "false"
