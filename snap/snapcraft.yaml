@@ -7,7 +7,7 @@ description: |
   activity with advanced peer-to-peer networking capabilities. Features include
   multi-language support (21 languages), system tray integration, web UI,
   UPnP port forwarding, and protocol encryption (MSE/PE).
-base: core22
+base: core24
 grade: stable
 confinement: strict
 
