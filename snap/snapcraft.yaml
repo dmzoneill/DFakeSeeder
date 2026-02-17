@@ -1,6 +1,6 @@
 ---
 name: dfakeseeder
-version: '1.0.14'
+version: '1.0.15'
 summary: BitTorrent seeding simulator for testing and development
 icon: d_fake_seeder/components/images/dfakeseeder.png
 description: |
