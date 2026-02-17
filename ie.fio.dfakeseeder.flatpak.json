@@ -51,7 +51,7 @@
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/bc/56/190ceb8cb10511b730b564fb1.0.133fa468363dbad26145c34928a60cb0c/urllib3-2.6.1-py3-none-any.whl",
+                    "url": "https://files.pythonhosted.org/packages/bc/56/190ceb8cb10511b730b564fb1.0.143fa468363dbad26145c34928a60cb0c/urllib3-2.6.1-py3-none-any.whl",
                     "sha256": "e67d06fe947c36a7ca39f4994b08d73922d40e6cca949907be05efa6fd75110b"
                 }
             ]
@@ -70,7 +70,7 @@
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/98/78/01.0.13cdb5d6498122777c1a43056ebb3ebfeef2076d9d026bfe15583b2b/click-8.3.1-py3-none-any.whl",
+                    "url": "https://files.pythonhosted.org/packages/98/78/01.0.14cdb5d6498122777c1a43056ebb3ebfeef2076d9d026bfe15583b2b/click-8.3.1-py3-none-any.whl",
                     "sha256": "981153a64e25f12d547d3426c367a4857371575ee7ad18df2a6183ab0545b2a6"
                 },
                 {
@@ -81,7 +81,7 @@
                 {
                     "type": "file",
                     "url": "https://files.pythonhosted.org/packages/e0/f9/0595336914c5619e5f28a1fb793285925a8cd4b432c9da0a987836c7f822/shellingham-1.5.4-py2.py3-none-any.whl",
-                    "sha256": "7ecfff8f2fd72616f7481040475a65b2bf8af90a56c891.0.132d1120324e8686"
+                    "sha256": "7ecfff8f2fd72616f7481040475a65b2bf8af90a56c891.0.142d1120324e8686"
                 },
                 {
                     "type": "file",
