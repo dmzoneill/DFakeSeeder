@@ -276,7 +276,9 @@ class PeersTab(
             # Update peers store with new data
             self._update_peers_store(peer_data)
 
-            final_count = self._peers_store.get_n_items() if self._peers_store is not None else 0
+            final_count = 0
+            if self._peers_store is not None:
+                final_count = self._peers_store.get_n_items()
             self.logger.trace(f"Peers tab updated: {final_count} peers now in store")
 
         except Exception as e:

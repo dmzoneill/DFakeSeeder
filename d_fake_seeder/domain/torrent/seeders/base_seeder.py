@@ -303,7 +303,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         result = f"Peer ID: {self.peer_id}\n"
         result += f"Key: {self.download_key}\n"
         result += f"Port: {self.port}\n"
-        result += f"Update tracker interval: {self.update_interval}s"  # type: ignore[attr-defined]
+        result += f"Update tracker interval: {getattr(self, 'update_interval', 'N/A')}s"
         return result
 
     def identify_client_from_peer_id(  # pylint: disable=too-many-locals,too-many-return-statements,too-many-branches
