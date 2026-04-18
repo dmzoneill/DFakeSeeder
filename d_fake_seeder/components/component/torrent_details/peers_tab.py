@@ -160,7 +160,9 @@ class PeersTab(
                 factory,
                 factory.connect("setup", self._setup_column_item, property_name),
             )
-            self.track_signal(factory, factory.connect("bind", self._bind_column_item, property_name))
+            self.track_signal(
+                factory, factory.connect("bind", self._bind_column_item, property_name)
+            )
 
             # Create column
             column = Gtk.ColumnViewColumn.new(None, factory)
@@ -170,10 +172,14 @@ class PeersTab(
             column.set_resizable(True)
 
             # Register column for translation instead of setting title directly
-            self.register_translatable_column(self._peers_columnview, column, property_name, "peer")
+            self.register_translatable_column(
+                self._peers_columnview, column, property_name, "peer"
+            )
 
             # Create sorter for the column
-            property_expression = Gtk.PropertyExpression.new(TorrentPeer, None, property_name)
+            property_expression = Gtk.PropertyExpression.new(
+                TorrentPeer, None, property_name
+            )
             sorter = self._create_property_sorter(property_name, property_expression)  # type: ignore[func-returns-value]  # noqa: E501
             if sorter:
                 column.set_sorter(sorter)
@@ -186,7 +192,9 @@ class PeersTab(
         except Exception as e:
             self.logger.error(f"Error creating peer column {property_name}: {e}")
 
-    def _create_property_sorter(self, property_name: str, property_expression: Any) -> None:
+    def _create_property_sorter(
+        self, property_name: str, property_expression: Any
+    ) -> None:
         """
         Create appropriate sorter based on property type.
 
@@ -248,7 +256,9 @@ class PeersTab(
         try:
             if self._peers_store:
                 self._peers_store.remove_all()
-                self.logger.trace(f"Cleared peers store (now has {self._peers_store.get_n_items()} items)")
+                self.logger.trace(
+                    f"Cleared peers store (now has {self._peers_store.get_n_items()} items)"
+                )
 
             # Show empty state
             super().clear_content()

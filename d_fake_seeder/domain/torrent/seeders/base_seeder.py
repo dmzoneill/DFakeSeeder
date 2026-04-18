@@ -35,7 +35,9 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
     def get_tracker_semaphore(cls) -> Any:
         """Lazy-load the tracker semaphore to avoid initialization issues"""
         if cls._tracker_semaphore is None:
-            cls._tracker_semaphore = threading.Semaphore(AppSettings.get_instance().concurrent_http_connections)
+            cls._tracker_semaphore = threading.Semaphore(
+                AppSettings.get_instance().concurrent_http_connections
+            )
         return cls._tracker_semaphore
 
     # Common functionality goes here
@@ -48,7 +50,8 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
 
         self.torrent = torrent
         self.tracker_url = ""
-        self.peer_id = self.settings.agents[self.settings.agent].split(",")[1] + helpers.random_id(12)
+        agent_prefix = self.settings.agents[self.settings.agent].split(",")[1]
+        self.peer_id = agent_prefix + helpers.random_id(12)
         self.download_key = helpers.random_id(12)
 
         # Use configured port range
