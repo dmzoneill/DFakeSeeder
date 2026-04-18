@@ -4,6 +4,8 @@ Speed Distribution Manager for DFakeSeeder.
 Coordinates the application of speed distribution algorithms across all torrents.
 """
 
+# isort: skip_file
+
 import random
 import time
 from typing import Any, List

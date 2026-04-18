@@ -6,6 +6,8 @@ between the Model and View, handles application logic, manages background tasks,
 and orchestrates network operations like UPnP, DHT, and tracker communications.
 """
 
+# isort: skip_file
+
 # fmt: off
 import asyncio
 import os
