@@ -73,8 +73,11 @@ class PeersTab(
         self._init_peers_column_view()
 
     def set_connection_managers(
-        self, incoming_connections: Any = None, outgoing_connections: Any = None, global_peer_manager: Any = None
-    ) -> None:  # noqa: E501
+        self,
+        incoming_connections: Any = None,
+        outgoing_connections: Any = None,
+        global_peer_manager: Any = None,
+    ) -> None:
         """
         Set connection managers for peer data sources.
 
@@ -120,10 +123,14 @@ class PeersTab(
             self._selection = Gtk.SingleSelection.new(self._sort_model)
             self._peers_columnview.set_model(self._selection)
 
-            self.logger.info(f"Peers column view initialized successfully with {len(properties)} columns")
+            self.logger.info(
+                f"Peers column view initialized successfully with {len(properties)} columns"
+            )
 
         except Exception as e:
-            self.logger.error(f"Error initializing peers column view: {e}", exc_info=True)
+            self.logger.error(
+                f"Error initializing peers column view: {e}", exc_info=True
+            )
 
     def on_language_changed(self, source: Any = None, new_language: Any = None) -> None:
         """Handle language change events for column translation."""
@@ -135,7 +142,9 @@ class PeersTab(
             self.refresh_column_translations()
 
         except Exception as e:
-            self.logger.error(f"Error handling language change in {self.tab_name} tab: {e}")
+            self.logger.error(
+                f"Error handling language change in {self.tab_name} tab: {e}"
+            )
 
     def _create_peer_column(self, property_name: str) -> None:
         """
