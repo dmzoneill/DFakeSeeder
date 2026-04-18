@@ -70,13 +70,25 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
 
         # Load configurable probability values
         ui_settings = getattr(self.settings, "ui_settings", {})
-        self.seeder_upload_activity_probability = ui_settings.get("seeder_upload_activity_probability", 0.3)
+        self.seeder_upload_activity_probability = ui_settings.get(
+            "seeder_upload_activity_probability", 0.3
+        )
         self.peer_idle_chance = ui_settings.get("peer_idle_chance", 0.3)
-        self.progress_distribution_start = ui_settings.get("progress_distribution_start", 0.1)
-        self.progress_distribution_middle = ui_settings.get("progress_distribution_middle", 0.3)
-        self.progress_distribution_almost = ui_settings.get("progress_distribution_almost", 0.7)
-        self.peer_behavior_analysis_probability = ui_settings.get("peer_behavior_analysis_probability", 0.2)
-        self.peer_status_change_probability = ui_settings.get("peer_status_change_probability", 0.4)
+        self.progress_distribution_start = ui_settings.get(
+            "progress_distribution_start", 0.1
+        )
+        self.progress_distribution_middle = ui_settings.get(
+            "progress_distribution_middle", 0.3
+        )
+        self.progress_distribution_almost = ui_settings.get(
+            "progress_distribution_almost", 0.7
+        )
+        self.peer_behavior_analysis_probability = ui_settings.get(
+            "peer_behavior_analysis_probability", 0.2
+        )
+        self.peer_status_change_probability = ui_settings.get(
+            "peer_status_change_probability", 0.4
+        )
         self.peer_dropout_probability = ui_settings.get("peer_dropout_probability", 0.1)
 
         # Enhanced peer storage
@@ -90,7 +102,9 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         self.tracker_scheme = self.parsed_url.scheme
         if hasattr(self.torrent, "announce_list"):
             self.tracker_urls = [
-                url for url in self.torrent.announce_list if urlparse(url).scheme == self.tracker_scheme
+                url
+                for url in self.torrent.announce_list
+                if urlparse(url).scheme == self.tracker_scheme
             ]
         self.tracker_hostname = self.parsed_url.hostname
         self.tracker_port = self.parsed_url.port
@@ -109,7 +123,8 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
                     * CalculationConstants.KB_TO_BYTES_MULTIPLIER
                 ),  # Convert KB/s to bytes/s
                 "max_up": (
-                    profile.get("max_up_kbps", 512) * CalculationConstants.KB_TO_BYTES_MULTIPLIER
+                    profile.get("max_up_kbps", 512)
+                    * CalculationConstants.KB_TO_BYTES_MULTIPLIER
                 ),  # Convert KB/s to bytes/s
                 "seed_ratio": profile.get("seed_ratio", 0.25),  # Keep as-is
             }
@@ -131,7 +146,9 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
             Interval with random jitter applied, respecting minimum interval
         """
         # Get minimum announce interval from settings
-        min_interval = self.settings.get("bittorrent.min_announce_interval_seconds", 300)
+        min_interval = self.settings.get(
+            "bittorrent.min_announce_interval_seconds", 300
+        )
 
         jitter_percent = CalculationConstants.ANNOUNCE_JITTER_PERCENT  # ±10% jitter
         jitter = (
@@ -163,7 +180,9 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         """Set a random announce URL from the torrent's announce list."""
         if hasattr(self.torrent, "announce_list") and self.torrent.announce_list:
             same_schema_urls = [
-                url for url in self.torrent.announce_list if urlparse(url).scheme == self.tracker_scheme
+                url
+                for url in self.torrent.announce_list
+                if urlparse(url).scheme == self.tracker_scheme
             ]
             if same_schema_urls:
                 random_url = random.choice(same_schema_urls)
@@ -186,7 +205,9 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
             "Seeder recreate_semaphore",
             extra={"class_name": obj.__class__.__name__},
         )
-        current_count = BaseSeeder.get_tracker_semaphore()._value  # pylint: disable=protected-access
+        current_count = (
+            BaseSeeder.get_tracker_semaphore()._value
+        )  # pylint: disable=protected-access
 
         if obj.settings.concurrent_http_connections == current_count:
             return
@@ -256,7 +277,11 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
             # Announce to local tracker
             local_announcer.announce(
                 info_hash=info_hash,
-                peer_id=self.peer_id.encode() if isinstance(self.peer_id, str) else self.peer_id,
+                peer_id=(
+                    self.peer_id.encode()
+                    if isinstance(self.peer_id, str)
+                    else self.peer_id
+                ),
                 port=self.port,
                 uploaded=uploaded,
                 downloaded=downloaded,
@@ -508,7 +533,9 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         return "Unknown"
 
     @property
-    def peers(self) -> Any:  # pylint: disable=too-many-locals,too-many-branches,too-many-statements
+    def peers(
+        self,
+    ) -> Any:  # pylint: disable=too-many-locals,too-many-branches,too-many-statements
         """Parse and return peer list from tracker response."""
         logger.trace("Seeder get peers", extra={"class_name": self.__class__.__name__})
         result = []  # type: ignore[var-annotated]
@@ -651,7 +678,9 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
                         # Handle both byte keys and string keys
                         ip_key = b"ip" if b"ip" in peer_dict else "ip"
                         port_key = b"port" if b"port" in peer_dict else "port"
-                        peer_id_key = b"peer id" if b"peer id" in peer_dict else "peer id"
+                        peer_id_key = (
+                            b"peer id" if b"peer id" in peer_dict else "peer id"
+                        )
 
                         ip = peer_dict.get(ip_key, b"")
                         if isinstance(ip, bytes):
@@ -665,7 +694,11 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
                             result.append(peer_address)
 
                             # Log detailed peer info
-                            client_name = self.identify_client_from_peer_id(peer_id) if peer_id else "Unknown"
+                            client_name = (
+                                self.identify_client_from_peer_id(peer_id)
+                                if peer_id
+                                else "Unknown"
+                            )
 
                             # Add detected client to settings
                             if client_name and client_name != "Unknown":
@@ -681,7 +714,9 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
                                     if isinstance(peer_id, bytes)
                                     else str(peer_id).encode("utf-8", errors="ignore")
                                 )
-                                peer_id_str = peer_id_bytes.decode("utf-8", errors="ignore")
+                                peer_id_str = peer_id_bytes.decode(
+                                    "utf-8", errors="ignore"
+                                )
                                 truncated = "..." if len(peer_id_str) > 20 else ""
                                 logger.trace(
                                     f"🆔 Peer ID: {peer_id_str[:20]}{truncated}",
@@ -720,10 +755,16 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         # We could potentially use other heuristics like port numbers, etc.
         return "Unknown Client"
 
-    def get_country_from_ip(self, ip: Any) -> Any:  # pylint: disable=too-many-return-statements,too-many-branches
+    def get_country_from_ip(
+        self, ip: Any
+    ) -> Any:  # pylint: disable=too-many-return-statements,too-many-branches
         """Get country code from IP address with enhanced detection"""
         # Check for private/local IP ranges first
-        if ip.startswith("192.168.") or ip.startswith("10.") or ip.startswith("172.16."):
+        if (
+            ip.startswith("192.168.")
+            or ip.startswith("10.")
+            or ip.startswith("172.16.")
+        ):
             return "LAN"
         if ip.startswith("127."):
             return "LO"
@@ -814,7 +855,11 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         address = f"{ip}:{port}"
 
         if not client_name:
-            client_name = self.identify_client_from_peer_id(peer_id) if peer_id else self.guess_client_from_ip(ip)
+            client_name = (
+                self.identify_client_from_peer_id(peer_id)
+                if peer_id
+                else self.guess_client_from_ip(ip)
+            )
 
         # Add detected client to settings
         if client_name and client_name != "Unknown" and "?" not in client_name:
@@ -829,7 +874,11 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         client_behaviors = self.client_speed_profiles
 
         # Extract base client name for behavior lookup
-        base_client = client_name.split()[0] if client_name and " " in client_name else client_name
+        base_client = (
+            client_name.split()[0]
+            if client_name and " " in client_name
+            else client_name
+        )
         behavior = client_behaviors.get(
             base_client,
             client_behaviors.get(
@@ -868,7 +917,9 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
                 up_speed = random.uniform(0, behavior["max_up"] * 0.1)
             elif progress < 0.5:
                 # Mid download - peak speeds
-                down_speed = random.uniform(behavior["max_down"] * 0.2, behavior["max_down"])
+                down_speed = random.uniform(
+                    behavior["max_down"] * 0.2, behavior["max_down"]
+                )
                 up_speed = random.uniform(0, behavior["max_up"] * 0.5)
             else:
                 # Nearly complete - slower download, more upload
@@ -993,23 +1044,31 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
     @property
     def clients(self) -> Any:
         """Get peer client identification data."""
-        logger.trace("Seeder get clients", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Seeder get clients", extra={"class_name": self.__class__.__name__}
+        )
         return BaseSeeder.peer_clients
 
     @property
     def seeders(self) -> Any:
         """Get complete/seeder count from tracker."""
-        logger.trace("Seeder get seeders", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Seeder get seeders", extra={"class_name": self.__class__.__name__}
+        )
         return self.info[b"complete"] if b"complete" in self.info else 0
 
     @property
     def tracker(self) -> Any:
         """Get current tracker URL."""
-        logger.trace("Seeder get tracker", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Seeder get tracker", extra={"class_name": self.__class__.__name__}
+        )
         return self.tracker_url
 
     @property
     def leechers(self) -> Any:
         """Get incomplete/leecher count from tracker."""
-        logger.trace("Seeder get leechers", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Seeder get leechers", extra={"class_name": self.__class__.__name__}
+        )
         return self.info[b"incomplete"] if b"incomplete" in self.info else 0

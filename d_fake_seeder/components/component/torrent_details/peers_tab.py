@@ -290,7 +290,9 @@ class PeersTab(
 
             # Collect peer data from all sources
             peer_data = self._collect_peer_data(torrent)
-            self.logger.trace(f"Collected {len(peer_data)} peers for torrent {torrent_id}")
+            self.logger.trace(
+                f"Collected {len(peer_data)} peers for torrent {torrent_id}"
+            )
 
             # Update peers store with new data
             self._update_peers_store(peer_data)
@@ -386,7 +388,11 @@ class PeersTab(
 
             legacy_count = 0
             for peer in seeder.peers:
-                client = seeder.clients[peer] if hasattr(seeder, "clients") and peer in seeder.clients else "Unknown"
+                client = (
+                    seeder.clients[peer]
+                    if hasattr(seeder, "clients") and peer in seeder.clients
+                    else "Unknown"
+                )
                 peer_data.append(
                     {
                         "address": str(peer),
@@ -428,7 +434,9 @@ class PeersTab(
                 conn_key,
                 conn_peer,
             ) in self._incoming_connections.all_connections.items():
-                if hasattr(conn_peer, "torrent_hash") and conn_peer.torrent_hash == str(torrent.id):
+                if hasattr(conn_peer, "torrent_hash") and conn_peer.torrent_hash == str(
+                    torrent.id
+                ):
                     address = f"{conn_peer.address}:{conn_peer.port}"
                     connection_addresses.add(address)
 
@@ -437,7 +445,9 @@ class PeersTab(
                 conn_key,
                 conn_peer,
             ) in self._outgoing_connections.all_connections.items():
-                if hasattr(conn_peer, "torrent_hash") and conn_peer.torrent_hash == str(torrent.id):
+                if hasattr(conn_peer, "torrent_hash") and conn_peer.torrent_hash == str(
+                    torrent.id
+                ):
                     address = f"{conn_peer.address}:{conn_peer.port}"
                     connection_addresses.add(address)
 
@@ -547,7 +557,9 @@ class PeersTab(
                 if not list_item:
                     return False  # type: ignore[return-value]
 
-                value = self.safe_get_property(list_item, property_name.replace("-", "_"), "")
+                value = self.safe_get_property(
+                    list_item, property_name.replace("-", "_"), ""
+                )
                 formatted_value = self.format_property_value(value)
                 child.set_text(str(formatted_value))
 
