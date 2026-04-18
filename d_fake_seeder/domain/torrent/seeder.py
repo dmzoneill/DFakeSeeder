@@ -73,31 +73,43 @@ class Seeder:
     @property
     def peers(self) -> Any:
         """Get peer list from underlying seeder."""
-        return self.seeder.peers if self.seeder is not None else 0
+        if self.seeder is not None:
+            return self.seeder.peers
+        return 0
 
     @property
     def clients(self) -> Any:
         """Get client count from underlying seeder."""
-        return self.seeder.clients if self.seeder is not None else 0
+        if self.seeder is not None:
+            return self.seeder.clients
+        return 0
 
     @property
     def seeders(self) -> Any:
         """Get seeder count from tracker."""
-        return self.seeder.seeders if self.seeder is not None else 0
+        if self.seeder is not None:
+            return self.seeder.seeders
+        return 0
 
     @property
     def tracker(self) -> Any:
         """Get tracker URL."""
-        return self.seeder.tracker if self.seeder is not None else ""
+        if self.seeder is not None:
+            return self.seeder.tracker
+        return ""
 
     @property
     def leechers(self) -> Any:
         """Get leecher count from tracker."""
-        return self.seeder.leechers if self.seeder is not None else 0
+        if self.seeder is not None:
+            return self.seeder.leechers
+        return 0
 
     def get_peer_data(self, peer_address: Any) -> Any:
         """Get comprehensive peer data for a specific peer"""
-        return self.seeder.get_peer_data(peer_address) if self.seeder is not None else {}
+        if self.seeder is not None:
+            return self.seeder.get_peer_data(peer_address)
+        return {}
 
     def is_ready(self) -> bool:
         """Check if seeder is ready (use ready attribute for simpler checks)"""
@@ -110,7 +122,8 @@ class Seeder:
 
     def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         """Propagate settings changes to underlying seeder."""
-        self.seeder.handle_settings_changed(source, key, value)  # type: ignore[attr-defined]
+        if self.seeder is not None:
+            self.seeder.handle_settings_changed(source, key, value)
 
     def __str__(self) -> str:
         return str(self.seeder)

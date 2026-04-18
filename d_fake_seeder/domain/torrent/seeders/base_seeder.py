@@ -673,11 +673,12 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
                                 extra={"class_name": self.__class__.__name__},
                             )
                             if peer_id:
-                                peer_id_str = (
-                                    peer_id.decode("utf-8", errors="ignore")
+                                peer_id_bytes = (
+                                    peer_id
                                     if isinstance(peer_id, bytes)
-                                    else str(peer_id)
+                                    else str(peer_id).encode("utf-8", errors="ignore")
                                 )
+                                peer_id_str = peer_id_bytes.decode("utf-8", errors="ignore")
                                 truncated = "..." if len(peer_id_str) > 20 else ""
                                 logger.trace(
                                     f"🆔 Peer ID: {peer_id_str[:20]}{truncated}",

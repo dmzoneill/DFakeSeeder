@@ -88,6 +88,20 @@ class UTPConnection:
             },
         )
 
+    def _get_poll_interval(self) -> float:
+        """Get poll interval from settings."""
+        utp_config = getattr(self.settings, "protocols", {}).get("transport", {}).get("utp", {})
+        if isinstance(utp_config, dict):
+            return float(utp_config.get("poll_interval_seconds", 0.1))
+        return 0.1
+
+    def _get_retry_interval(self) -> float:
+        """Get retry interval from settings."""
+        utp_config = getattr(self.settings, "protocols", {}).get("transport", {}).get("utp", {})
+        if isinstance(utp_config, dict):
+            return float(utp_config.get("retry_interval_seconds", 0.5))
+        return 0.5
+
     async def connect(self, timeout: float = 30.0) -> bool:
         """
         Initiate µTP connection
@@ -111,7 +125,7 @@ class UTPConnection:
             # Wait for STATE packet (ACK of SYN)
             start_time = time.time()
             while self.state != "CONNECTED" and time.time() - start_time < timeout:
-                await asyncio.sleep(self._get_poll_interval())  # type: ignore[attr-defined]
+                await asyncio.sleep(self._get_poll_interval())
 
                 # Retransmit SYN if needed
                 if time.time() - self.last_packet_time > self.timeout:
@@ -186,7 +200,7 @@ class UTPConnection:
             await self._send_fin()
 
             # Wait briefly for ACK
-            await asyncio.sleep(self._get_retry_interval())  # type: ignore[attr-defined]
+            await asyncio.sleep(self._get_retry_interval())
 
             self.state = "CLOSED"
 

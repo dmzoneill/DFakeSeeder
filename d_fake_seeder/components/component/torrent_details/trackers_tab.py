@@ -289,11 +289,9 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         """Create header row for the trackers grid."""
         try:
             # Get translation function from model
-            translate_func = (
-                self.model.get_translate_func()
-                if self.model and hasattr(self.model, "get_translate_func")
-                else lambda x: x
-            )
+            translate_func: Any = str
+            if self.model is not None and hasattr(self.model, "get_translate_func"):
+                translate_func = self.model.get_translate_func()
 
             headers = [
                 translate_func("Type"),

@@ -364,11 +364,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         """
         try:
             # Get translation function from model
-            translate_func = (
-                self.model.get_translate_func()
-                if self.model and hasattr(self.model, "get_translate_func")
-                else lambda x: x
-            )
+            translate_func: Any = str
+            if self.model is not None and hasattr(self.model, "get_translate_func"):
+                translate_func = self.model.get_translate_func()
 
             # Create mapping of attribute names to translatable display strings
             # This ensures fresh translations on each call, respecting language changes
@@ -438,11 +436,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         """Show a message when no options are available."""
         try:
             # Get translation function from model
-            translate_func = (
-                self.model.get_translate_func()
-                if self.model and hasattr(self.model, "get_translate_func")
-                else lambda x: x
-            )
+            translate_func: Any = str
+            if self.model is not None and hasattr(self.model, "get_translate_func"):
+                translate_func = self.model.get_translate_func()
 
             message_text = translate_func("No editable options available for this torrent.")
             message_label = self.create_info_label(message_text)

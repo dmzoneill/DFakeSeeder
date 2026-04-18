@@ -75,6 +75,13 @@ class PeerDiscovery:
             extra={"class_name": self.__class__.__name__},
         )
 
+    def _get_poll_interval(self) -> float:
+        """Get poll interval from settings."""
+        dht_config = getattr(self.settings, "dht_manager", {})
+        if isinstance(dht_config, dict):
+            return float(dht_config.get("poll_interval_seconds", 0.1))
+        return 0.1
+
     async def discover_peers(self, info_hash: bytes, count: int = 50) -> List[Tuple[str, int]]:
         """
         Discover peers for a torrent through DHT
@@ -456,7 +463,7 @@ class PeerDiscovery:
                 # This would be handled by the main message processing loop
                 break
 
-            await asyncio.sleep(self._get_poll_interval())  # type: ignore[attr-defined]
+            await asyncio.sleep(self._get_poll_interval())
 
         # Clean up pending query
         if transaction_id in self.pending_queries:

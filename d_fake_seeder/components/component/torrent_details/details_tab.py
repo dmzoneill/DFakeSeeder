@@ -104,11 +104,9 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 return []
 
             # Get translation function from model
-            translate_func = (
-                self.model.get_translate_func()
-                if self.model and hasattr(self.model, "get_translate_func")
-                else lambda x: x
-            )
+            translate_func: Any = str
+            if self.model is not None and hasattr(self.model, "get_translate_func"):
+                translate_func = self.model.get_translate_func()
 
             # Extract key torrent information directly from the torrent object
             # Try multiple sources for the name
@@ -146,13 +144,10 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
         except Exception as e:
             self.logger.error(f"Error getting torrent details: {e}")
-            # Get translation function from model
-            translate_func = (
-                self.model.get_translate_func()
-                if self.model and hasattr(self.model, "get_translate_func")
-                else lambda x: x
-            )
-            return [(translate_func("Error"), "Unable to load torrent details")]
+            err_func: Any = str
+            if self.model is not None and hasattr(self.model, "get_translate_func"):
+                err_func = self.model.get_translate_func()
+            return [(err_func("Error"), "Unable to load torrent details")]
 
     def _get_additional_details(self, torrent: Any) -> list:
         """

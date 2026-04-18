@@ -170,9 +170,9 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             Display string for the attribute (e.g., "File Path", "Total Size")
         """
         # Get translation function from model
-        translate_func = (
-            self.model.get_translate_func() if self.model and hasattr(self.model, "get_translate_func") else lambda x: x
-        )
+        translate_func: Any = str
+        if self.model is not None and hasattr(self.model, "get_translate_func"):
+            translate_func = self.model.get_translate_func()
 
         # Mapping of attribute names to translatable display strings
         attribute_display_map = {

@@ -58,12 +58,12 @@ class TrackerHTTPHandler(BaseHTTPRequestHandler):
             params = parse_qs(query, keep_blank_values=True)
 
             # Extract required parameters
-            info_hash = params.get("info_hash", [None])[0]
-            peer_id = params.get("peer_id", [None])[0]
-            port = params.get("port", [None])[0]
-            uploaded = params.get("uploaded", [None])[0]
-            downloaded = params.get("downloaded", [None])[0]
-            left = params.get("left", [None])[0]
+            info_hash = params.get("info_hash", [""])[0]
+            peer_id = params.get("peer_id", [""])[0]
+            port = params.get("port", [""])[0]
+            uploaded = params.get("uploaded", [""])[0]
+            downloaded = params.get("downloaded", [""])[0]
+            left = params.get("left", [""])[0]
 
             # Validate required params
             if not all([info_hash, peer_id, port, uploaded, downloaded, left]):
@@ -86,7 +86,7 @@ class TrackerHTTPHandler(BaseHTTPRequestHandler):
             event = params.get("event", [""])[0]
             compact = params.get("compact", ["1"])[0] == "1"
             numwant = int(params.get("numwant", ["50"])[0])
-            ip = params.get("ip", [None])[0]
+            ip = params.get("ip", [""])[0]
 
             # Use client IP if not provided
             if not ip:

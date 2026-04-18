@@ -68,6 +68,7 @@ class Torrents(Component, ColumnTranslationMixin):
         # Create an action group
         self.action_group = Gio.SimpleActionGroup()
         self.stateful_actions = {}  # type: ignore[var-annotated]
+        self._updating_columns = False
         # Insert the action group into the window
         self.window.insert_action_group("app", self.action_group)
         # Attach the gesture to the columnView
@@ -251,7 +252,7 @@ class Torrents(Component, ColumnTranslationMixin):
         logger.trace("🔵 COLUMN TOGGLE: START", extra={"class_name": self.__class__.__name__})
 
         # Prevent re-entry if this handler is triggered by settings changes
-        if hasattr(self, "_updating_columns") and self._updating_columns:  # type: ignore[has-type]
+        if self._updating_columns:
             logger.trace(
                 "🔵 COLUMN TOGGLE: RE-ENTRY DETECTED, SKIPPING",
                 extra={"class_name": self.__class__.__name__},

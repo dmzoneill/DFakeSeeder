@@ -239,8 +239,8 @@ class NotificationManager:
         self._container.append(widget)
 
         # Set auto-dismiss
-        if timeout_ms > 0:
-            widget.set_auto_dismiss(timeout_ms)
+        if timeout_ms is not None and timeout_ms > 0:
+            widget.set_auto_dismiss(int(timeout_ms))
 
         # Also show in statusbar if enabled
         if settings.get("show_in_statusbar", True) and self.statusbar_callback:
