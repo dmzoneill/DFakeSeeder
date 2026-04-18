@@ -79,6 +79,10 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
         self.update_timer = None
         self.dbus_handlers_setup = False
 
+        # Track launched main app process to prevent zombie
+        self._main_app_process = None
+        self._main_app_poll_timer = None
+
         # Menu caching to avoid full rebuilds
         self.menu_structure_cached = False
         self.last_connection_state = None
@@ -995,6 +999,14 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
                         continue
 
                 try:
+                    # Reap any previous child process to avoid zombies
+                    if self._main_app_process is not None:
+                        self._main_app_process.poll()
+                        self._main_app_process = None
+                    if self._main_app_poll_timer is not None:
+                        GLib.source_remove(self._main_app_poll_timer)
+                        self._main_app_poll_timer = None
+
                     # Launch the main app in the background
                     # pylint: disable=consider-using-with
                     process = subprocess.Popen(
@@ -1004,6 +1016,10 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
                         stdout=subprocess.DEVNULL,
                         stderr=subprocess.DEVNULL,
                     )
+
+                    # Store process handle and start polling to reap child on exit
+                    self._main_app_process = process
+                    self._main_app_poll_timer = GLib.timeout_add_seconds(5, self._poll_main_app_process)
 
                     logger.info(
                         f"Launched main application using {method_name} (PID: {process.pid})",
@@ -1047,6 +1063,25 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
                 f"Failed to launch main application: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
+
+    def _poll_main_app_process(self) -> Any:
+        """Periodically poll the main app process to reap it when it exits (prevents zombies)."""
+        if self._main_app_process is None:
+            self._main_app_poll_timer = None
+            return False  # Stop the timer
+
+        returncode = self._main_app_process.poll()
+        if returncode is not None:
+            # Process has exited - it's now reaped
+            logger.info(
+                f"Main application exited with code {returncode} (PID: {self._main_app_process.pid})",
+                extra={"class_name": self.__class__.__name__},
+            )
+            self._main_app_process = None
+            self._main_app_poll_timer = None
+            return False  # Stop the timer
+
+        return True  # Keep polling
 
     def _try_reconnect_after_launch(self) -> Any:
         """Try to reconnect after launching main app"""

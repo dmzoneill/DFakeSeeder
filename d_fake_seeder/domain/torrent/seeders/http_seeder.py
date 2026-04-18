@@ -207,9 +207,20 @@ class HTTPSeeder(BaseSeeder):
                         extra={"class_name": self.__class__.__name__},
                     )
 
+                # If tracker returned a failure, release semaphore and return False
+                if b"failure reason" in data:
+                    self.get_tracker_semaphore().release()
+                    return False  # type: ignore[return-value]
+
                 # Apply jitter to announce interval to prevent request storms
-                base_interval = self.info[b"interval"]
-                self.update_interval = self._apply_announce_jitter(base_interval)
+                if b"interval" in self.info:
+                    base_interval = self.info[b"interval"]
+                    self.update_interval = self._apply_announce_jitter(base_interval)
+                else:
+                    logger.warning(
+                        "No 'interval' key in tracker response, using default update interval",
+                        extra={"class_name": self.__class__.__name__},
+                    )
 
                 # Announce to inbuilt tracker if enabled (INT-3.1)
                 # This is the "started" event for initial peer load

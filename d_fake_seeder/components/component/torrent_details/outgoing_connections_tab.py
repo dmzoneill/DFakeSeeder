@@ -472,7 +472,7 @@ class OutgoingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
 
                 if filter_enabled and selected:
                     # Only show connections for the selected torrent
-                    should_show = connection_peer.torrent_hash == selected.id
+                    should_show = connection_peer.torrent_hash == selected.torrent_file.get_info_hash_hex()
 
                 if should_show and connection_key not in self.outgoing_connections:
                     # Only add if not already shown to avoid duplicates

@@ -247,7 +247,7 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                         break
                     count -= 1
                     if count == 0:
-                        self.active = False
+                        GLib.idle_add(self._set_inactive)
 
         except (RuntimeError, OSError, AttributeError) as e:
             logger.error(
@@ -388,15 +388,20 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                 f"📊 ANNOUNCE CYCLE: {self.name} resetting next_update to {self.announce_interval}",
                 extra={"class_name": self.__class__.__name__},
             )
-            # announce
+            # announce - run in background thread to avoid blocking the GTK main thread
+            # with synchronous HTTP/UDP tracker network calls
             download_left = (
                 self.total_size - self.total_downloaded if self.total_size - self.total_downloaded > 0 else 0
             )
-            self.seeder.upload(
-                self.session_uploaded,
-                self.session_downloaded,
-                download_left,
-            )
+            uploaded = self.session_uploaded
+            downloaded = self.session_downloaded
+            seeder = self.seeder
+            threading.Thread(
+                target=seeder.upload,
+                args=(uploaded, downloaded, download_left),
+                name=f"TrackerAnnounce-{self.name}",
+                daemon=True,
+            ).start()
 
         logger.trace(
             f"🚀 EMITTING SIGNAL: {self.name} - progress={self.progress:.3f}, "
@@ -496,6 +501,11 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         # logger.info("Torrent get seeder",
         # extra={"class_name": self.__class__.__name__})
         return self.seeder.ready
+
+    def _set_inactive(self) -> bool:
+        """Set torrent inactive from the main thread (avoids joining worker from within itself)."""
+        self.active = False
+        return False
 
     def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
         """Handle settings change events."""
@@ -621,10 +631,10 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             if View.instance is not None:
                 View.instance.notify("Stopping fake seeder {name}", translate=True, name=self.name)
             self.torrent_worker_stop_event.set()
-            self.torrent_worker.join()
+            self.torrent_worker.join(timeout=TimeoutConstants.WORKER_SHUTDOWN)
 
             self.peers_worker_stop_event.set()
-            self.peers_worker.join()
+            self.peers_worker.join(timeout=TimeoutConstants.WORKER_SHUTDOWN)
             logger.trace(
                 f"⚡ STOPPED WORKERS: {self.name}",
                 extra={"class_name": self.__class__.__name__},

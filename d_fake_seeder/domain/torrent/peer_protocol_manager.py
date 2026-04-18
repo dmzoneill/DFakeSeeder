@@ -651,8 +651,9 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
                     extra={"class_name": self.__class__.__name__},
                 )
 
-        # Clean up old contact history entries (keep last 30 days)
-        history_expiry_seconds = 2592000  # 30 days
+        # Clean up old contact history entries (keep last 24 hours)
+        history_expiry_seconds = 86400  # 24 hours
+        max_history_entries = 2000  # Hard cap to prevent unbounded memory growth
         with self.lock:
             for address, last_contact in self.peer_contact_history.items():
                 if current_time - last_contact > history_expiry_seconds:
@@ -660,6 +661,14 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
 
             for address in to_remove_history:
                 del self.peer_contact_history[address]
+
+            # Enforce hard cap by evicting oldest entries
+            if len(self.peer_contact_history) > max_history_entries:
+                sorted_entries = sorted(self.peer_contact_history.items(), key=lambda x: x[1])
+                evict_count = len(self.peer_contact_history) - max_history_entries
+                for address, _ in sorted_entries[:evict_count]:
+                    del self.peer_contact_history[address]
+                to_remove_history.extend(["(capped)"] * evict_count)
 
             if to_remove_history:
                 logger.trace(

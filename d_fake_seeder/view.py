@@ -589,7 +589,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         )
         try:
             if direction == "incoming":
-                component = self.notebook.get_incoming_connections()  # type: ignore[union-attr]
+                component = self.notebook.get_incoming_connections() if self.notebook else None
+                if component is None:
+                    return
                 if action == "add":
                     component.add_incoming_connection(address, port, **(data or {}))
                     total_count = component.get_total_connection_count()
@@ -619,7 +621,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                         extra={"class_name": self.__class__.__name__},
                     )
             elif direction == "outgoing":
-                component = self.notebook.get_outgoing_connections()  # type: ignore[union-attr]
+                component = self.notebook.get_outgoing_connections() if self.notebook else None
+                if component is None:
+                    return
                 if action == "add":
                     component.add_outgoing_connection(address, port, **(data or {}))
                     total_count = component.get_total_connection_count()
@@ -649,7 +653,8 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                         extra={"class_name": self.__class__.__name__},
                     )
             # Update connection counts
-            self.notebook.update_connection_counts()  # type: ignore[union-attr]
+            if self.notebook:
+                self.notebook.update_connection_counts()
         except (GLib.Error, RuntimeError, AttributeError, KeyError) as e:
             logger.error(
                 f"Error handling peer connection event: {e}",

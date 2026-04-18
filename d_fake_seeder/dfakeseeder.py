@@ -10,7 +10,10 @@ architecture and handles application lifecycle events.
 # isort: skip_file
 from typing import Any
 import os
+import signal
 import sys
+import threading
+import traceback
 
 import gi
 
@@ -150,6 +153,24 @@ class DFakeSeeder(Gtk.Application):
 app = typer.Typer()
 
 
+def _dump_threads(signum: int, frame: Any) -> None:
+    """SIGUSR1 handler: dump all thread stacks to stderr for hang diagnosis."""
+    lines = ["\n", "=" * 80, f"  THREAD DUMP ({threading.active_count()} threads)", "=" * 80]
+    for thread_id, stack in sys._current_frames().items():
+        thread_name = "unknown"
+        for t in threading.enumerate():
+            if t.ident == thread_id:
+                thread_name = t.name
+                break
+        lines.append(f"\n--- Thread {thread_id} ({thread_name}) ---")
+        for filename, lineno, name, line in traceback.extract_stack(stack):
+            lines.append(f"  {filename}:{lineno} in {name}")
+            if line:
+                lines.append(f"    {line.strip()}")
+    lines.append("=" * 80)
+    print("\n".join(lines), file=sys.stderr, flush=True)
+
+
 def _show_console_message(detection_method: str) -> Any:
     """Show console message when another instance is detected before GTK initialization"""
     print(f"\nDFakeSeeder is already running (detected via {detection_method})")
@@ -160,6 +181,8 @@ def _show_console_message(detection_method: str) -> Any:
 def run() -> Any:
     """Run the DFakeSeeder application with proper initialization."""
     try:
+        signal.signal(signal.SIGUSR1, _dump_threads)
+
         # Perform full application initialization (locale, paths, settings)
         AppInitializationHelper.perform_full_initialization()
 

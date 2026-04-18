@@ -17,7 +17,7 @@ extend-exclude = '''
 [tool.isort]
 profile = "black"
 line_length = 120
-skip_gitignore = false
+skip_gitignore = true
 extend_skip_glob = ["build/*", "dist/*", "rpmbuild/*", "debbuild/*", ".venv/*", "__pycache__/*", "*.egg-info/*", ".flatpak-builder/*"]
 
 [tool.flake8]

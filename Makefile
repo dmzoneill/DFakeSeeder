@@ -121,7 +121,7 @@ lint: clearlog
 	@echo "   → Running Black formatter..."
 	@black . >/dev/null 2>&1 || black .
 	@echo "   → Running isort import checker..."
-	@isort . >/dev/null 2>&1 || isort .
+	@isort d_fake_seeder tests >/dev/null 2>&1 || isort d_fake_seeder tests
 	@echo "   → Running autopep8 formatter..."
 	@autopep8 d_fake_seeder --recursive --in-place --aggressive --aggressive >/dev/null 2>&1 || true
 	@echo "   → Running Flake8 linter..."

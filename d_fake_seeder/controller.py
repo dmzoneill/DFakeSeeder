@@ -9,6 +9,7 @@ and orchestrates network operations like UPnP, DHT, and tracker communications.
 # fmt: off
 import asyncio
 import os
+import threading
 from typing import Any, Optional
 
 from gi.repository import GLib
@@ -20,6 +21,8 @@ from d_fake_seeder.lib.handlers.torrent_folder_watcher import TorrentFolderWatch
 
 # from domain.torrent.listener import Listener
 from d_fake_seeder.lib.logger import logger
+
+# from d_fake_seeder.lib.memory_monitor import MemoryMonitor
 from d_fake_seeder.lib.util.autostart_manager import sync_autostart
 from d_fake_seeder.lib.util.client_behavior_simulator import ClientBehaviorSimulator
 from d_fake_seeder.lib.util.dbus_unifier import DBusUnifier
@@ -62,6 +65,10 @@ class Controller:  # pylint: disable=too-many-instance-attributes
         from d_fake_seeder.lib.logger import reconfigure_logger
 
         reconfigure_logger()
+
+        # Memory monitor for leak detection (commented out for now, enable when needed)
+        # self.memory_monitor = MemoryMonitor(controller=self, interval_seconds=30)
+        # self.memory_monitor.start()
 
         self.view = view
         self.model = model
@@ -287,6 +294,10 @@ class Controller:  # pylint: disable=too-many-instance-attributes
         if hasattr(self, "dbus") and self.dbus:
             self.dbus.cleanup()
         logger.trace("✅ D-Bus cleanup complete", extra={"class_name": self.__class__.__name__})
+
+        # Stop memory monitor (commented out, enable when needed)
+        # if hasattr(self, "memory_monitor") and self.memory_monitor:
+        #     self.memory_monitor.stop()
 
         logger.info("Controller stopped", extra={"class_name": self.__class__.__name__})
 
@@ -534,6 +545,26 @@ class Controller:  # pylint: disable=too-many-instance-attributes
 
     # Helper methods for async feature management
 
+    def _run_async_in_background(self, coro_func: Any, name: str) -> None:
+        """Run an async coroutine in a background thread to avoid blocking the GTK main thread.
+
+        Args:
+            coro_func: A callable that returns a coroutine (called inside the thread).
+            name: Thread name for debugging.
+        """
+
+        def _runner() -> None:
+            try:
+                asyncio.run(coro_func())
+            except (OSError, RuntimeError, asyncio.CancelledError) as e:
+                logger.error(
+                    f"Error in async background task '{name}': {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+        thread = threading.Thread(target=_runner, name=name, daemon=True)
+        thread.start()
+
     def _start_webui_async(self) -> None:
         """Start Web UI server asynchronously."""
         server = self.webui_server
@@ -541,19 +572,10 @@ class Controller:  # pylint: disable=too-many-instance-attributes
             return
 
         async def _start() -> None:
-            try:
-                if await server.start():
-                    logger.info("Web UI server started", "Controller")
-            except (OSError, RuntimeError, asyncio.CancelledError) as e:
-                logger.error(f"Failed to start Web UI: {e}", "Controller")
+            if await server.start():
+                logger.info("Web UI server started", "Controller")
 
-        # Run in existing event loop or create new one
-        try:
-            asyncio.get_running_loop()
-            asyncio.create_task(_start())
-        except RuntimeError:
-            # No running loop - use GLib to schedule
-            GLib.idle_add(lambda: asyncio.run(_start()) or False)
+        self._run_async_in_background(_start, "WebUI-Start")
 
     def _stop_webui_async(self) -> None:
         """Stop Web UI server asynchronously."""
@@ -562,16 +584,9 @@ class Controller:  # pylint: disable=too-many-instance-attributes
             return
 
         async def _stop() -> None:
-            try:
-                await server.stop()
-            except (OSError, RuntimeError, asyncio.CancelledError) as e:
-                logger.error(f"Error stopping Web UI: {e}", "Controller")
+            await server.stop()
 
-        try:
-            asyncio.get_running_loop()
-            asyncio.create_task(_stop())
-        except RuntimeError:
-            GLib.idle_add(lambda: asyncio.run(_stop()) or False)
+        self._run_async_in_background(_stop, "WebUI-Stop")
 
     def _start_lpd_async(self) -> None:
         """Start Local Peer Discovery asynchronously."""
@@ -580,17 +595,10 @@ class Controller:  # pylint: disable=too-many-instance-attributes
             return
 
         async def _start() -> None:
-            try:
-                if await lpd.start():
-                    logger.info("Local Peer Discovery started", "Controller")
-            except (OSError, RuntimeError, asyncio.CancelledError) as e:
-                logger.error(f"Failed to start LPD: {e}", "Controller")
+            if await lpd.start():
+                logger.info("Local Peer Discovery started", "Controller")
 
-        try:
-            asyncio.get_running_loop()
-            asyncio.create_task(_start())
-        except RuntimeError:
-            GLib.idle_add(lambda: asyncio.run(_start()) or False)
+        self._run_async_in_background(_start, "LPD-Start")
 
     def _stop_lpd_async(self) -> None:
         """Stop Local Peer Discovery asynchronously."""
@@ -599,16 +607,9 @@ class Controller:  # pylint: disable=too-many-instance-attributes
             return
 
         async def _stop() -> None:
-            try:
-                await lpd.stop()
-            except (OSError, RuntimeError, asyncio.CancelledError) as e:
-                logger.error(f"Error stopping LPD: {e}", "Controller")
+            await lpd.stop()
 
-        try:
-            asyncio.get_running_loop()
-            asyncio.create_task(_stop())
-        except RuntimeError:
-            GLib.idle_add(lambda: asyncio.run(_stop()) or False)
+        self._run_async_in_background(_stop, "LPD-Stop")
 
     def _on_lpd_peer_discovered(self, ip: str, port: int, info_hash: bytes) -> None:
         """Callback when a peer is discovered via LPD."""

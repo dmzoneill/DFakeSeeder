@@ -196,7 +196,7 @@ class PeerDiscovery:
         if len(self.peer_storage[info_hash]) > DHTConstants.MAX_PEERS_PER_INFOHASH:
             # Remove oldest peers
             sorted_peers = sorted(self.peer_storage[info_hash], key=lambda p: p.discovered_at)
-            self.peer_storage[info_hash] = set(sorted_peers[-DHTConstants.MAX_PEERS_PER_INFOHASH :])
+            self.peer_storage[info_hash] = set(sorted_peers[-DHTConstants.MAX_PEERS_PER_INFOHASH:])
 
         logger.trace(
             f"Stored peer {ip}:{port} for {info_hash.hex()[:16]}",

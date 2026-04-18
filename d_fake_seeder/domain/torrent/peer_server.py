@@ -364,7 +364,7 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
 
                 message_type = message_data[0]
                 payload = (
-                    message_data[BitTorrentProtocolConstants.MESSAGE_PAYLOAD_START_OFFSET :]
+                    message_data[BitTorrentProtocolConstants.MESSAGE_PAYLOAD_START_OFFSET:]
                     if len(message_data) > BitTorrentProtocolConstants.MESSAGE_ID_LENGTH_BYTES
                     else b""
                 )

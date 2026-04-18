@@ -54,45 +54,12 @@ class ClassNameFilter(logging.Filter):  # pylint: disable=too-few-public-methods
 
     def filter(self, record: Any) -> Any:
         if hasattr(record, "class_name") and record.class_name:
-            # Use provided class_name
             pass
         else:
-            # Try to extract class name from the call stack
-            class_name = self._extract_class_from_stack(record)
-            if class_name:
-                record.class_name = class_name
-            else:
-                # Fallback: extract a cleaner name from the module path
-                # e.g., "d_fake_seeder.lib.logger" -> "Logger"
-                name_parts = record.name.split(".")
-                last_part = name_parts[-1] if name_parts else record.name
-                record.class_name = last_part.replace("_", " ").title().replace(" ", "")
+            name_parts = record.name.split(".")
+            last_part = name_parts[-1] if name_parts else record.name
+            record.class_name = last_part.replace("_", " ").title().replace(" ", "")
         return True
-
-    def _extract_class_from_stack(self, record: Any) -> Optional[str]:
-        """Try to extract the class name from the call stack."""
-        import inspect
-
-        try:
-            # Walk up the stack to find the calling class
-            # Skip frames that are part of the logging infrastructure
-            for frame_info in inspect.stack():
-                # Skip logging-related frames
-                if "logging" in frame_info.filename or "logger" in frame_info.filename:
-                    continue
-
-                # Check if 'self' is in the local variables
-                local_vars = frame_info.frame.f_locals
-                if "self" in local_vars:
-                    obj = local_vars["self"]
-                    return str(obj.__class__.__name__)
-                if "cls" in local_vars:
-                    cls = local_vars["cls"]
-                    return str(cls.__name__) if hasattr(cls, "__name__") else None
-
-            return None
-        except (AttributeError, KeyError, TypeError):
-            return None
 
 
 class TimingFilter(logging.Filter):  # pylint: disable=too-few-public-methods
@@ -113,7 +80,10 @@ class DuplicateFilter(logging.Filter):  # pylint: disable=too-few-public-methods
     - Counts how many times a message was suppressed
     - Logs summary when suppression window expires
     - Optionally flushes suppressed counts periodically
+    - Enforces a maximum entry count to prevent unbounded memory growth
     """
+
+    MAX_ENTRIES = 5000  # Hard cap on tracked messages to prevent memory leaks
 
     def __init__(self, time_window: Any = 5.0, flush_interval: Any = 30.0) -> None:
         """
@@ -172,6 +142,16 @@ class DuplicateFilter(logging.Filter):  # pylint: disable=too-few-public-methods
         for key in to_remove:
             del self.last_messages[key]
 
+    def _evict_oldest_entries(self) -> None:
+        """Evict oldest entries when the dict exceeds MAX_ENTRIES."""
+        overflow = len(self.last_messages) - self.MAX_ENTRIES
+        if overflow <= 0:
+            return
+        # Remove the entries with the oldest last_time
+        sorted_keys = sorted(self.last_messages, key=lambda k: self.last_messages[k][2])
+        for key in sorted_keys[: overflow + (self.MAX_ENTRIES // 10)]:
+            del self.last_messages[key]
+
     def filter(self, record: Any) -> Any:
         """
         Filter duplicate messages.
@@ -212,6 +192,10 @@ class DuplicateFilter(logging.Filter):  # pylint: disable=too-few-public-methods
                 record,
             )
             return True
+
+        # Evict oldest entries if we've hit the cap
+        if len(self.last_messages) >= self.MAX_ENTRIES:
+            self._evict_oldest_entries()
 
         # First occurrence of this message
         self.last_messages[message_key] = (1, current_time, current_time, record)
