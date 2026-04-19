@@ -92,7 +92,9 @@ class PostInstallCommand(install):
         # Try to run setup automatically if interactive
         if sys.stdin.isatty():
             try:
-                response = input("Would you like to run setup now? [Y/n]: ").strip().lower()
+                response = (
+                    input("Would you like to run setup now? [Y/n]: ").strip().lower()
+                )
                 if response in ("", "y", "yes"):
                     print()
                     from d_fake_seeder.setup_helper import post_install_setup
