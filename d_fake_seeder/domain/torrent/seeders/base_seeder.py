@@ -958,7 +958,9 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
             "peer_id": (
                 peer_id.decode("utf-8", errors="ignore")
                 if isinstance(peer_id, bytes)
-                else str(peer_id) if peer_id else ""
+                else str(peer_id)
+                if peer_id
+                else ""
             ),
         }
 
