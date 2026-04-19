@@ -16,4 +16,8 @@ jobs:
     secrets: inherit
     uses: dmzoneill/dmzoneill/.github/workflows/dispatch.yaml@main
     with:
-      basic: "true"
+      pypi-extension: "true"
+      deb-build: "true"
+      rpm-build: "true"
+      snap-build: "true"
+      docker-build: "true"
