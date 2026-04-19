@@ -21,3 +21,4 @@ jobs:
       rpm-build: "true"
       snap-build: "true"
       docker-build: "true"
+      aur-publish: "true"
