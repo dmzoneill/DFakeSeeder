@@ -161,7 +161,11 @@ class TrackerTab(Component):
 
     def _(self, text: Any) -> Any:
         """Get translation function from model's TranslationManager."""
-        if hasattr(self, "model") and self.model and hasattr(self.model, "translation_manager"):
+        if (
+            hasattr(self, "model")
+            and self.model
+            and hasattr(self.model, "translation_manager")
+        ):
             return self.model.translation_manager.translate_func(text)
         return text
 
@@ -200,21 +204,27 @@ class TrackerTab(Component):
         status_grid.set_margin_bottom(12)
 
         # Status row
-        status_grid.attach(Gtk.Label(label=self._("Status:"), halign=Gtk.Align.END), 0, 0, 1, 1)
+        status_grid.attach(
+            Gtk.Label(label=self._("Status:"), halign=Gtk.Align.END), 0, 0, 1, 1
+        )
         self.status_label = Gtk.Label(label=self._("Stopped"))
         self.status_label.set_halign(Gtk.Align.START)
         self.status_label.add_css_class("dim-label")
         status_grid.attach(self.status_label, 1, 0, 1, 1)
 
         # Address row
-        status_grid.attach(Gtk.Label(label=self._("Address:"), halign=Gtk.Align.END), 0, 1, 1, 1)
+        status_grid.attach(
+            Gtk.Label(label=self._("Address:"), halign=Gtk.Align.END), 0, 1, 1, 1
+        )
         self.address_label = Gtk.Label(label="-")
         self.address_label.set_halign(Gtk.Align.START)
         self.address_label.set_selectable(True)
         status_grid.attach(self.address_label, 1, 1, 1, 1)
 
         # Uptime row
-        status_grid.attach(Gtk.Label(label=self._("Uptime:"), halign=Gtk.Align.END), 0, 2, 1, 1)
+        status_grid.attach(
+            Gtk.Label(label=self._("Uptime:"), halign=Gtk.Align.END), 0, 2, 1, 1
+        )
         self.uptime_label = Gtk.Label(label="-")
         self.uptime_label.set_halign(Gtk.Align.START)
         status_grid.attach(self.uptime_label, 1, 2, 1, 1)
@@ -236,25 +246,45 @@ class TrackerTab(Component):
         stats_grid.set_margin_bottom(12)
 
         # Torrents row
-        stats_grid.attach(Gtk.Label(label=self._("Tracked Torrents:"), halign=Gtk.Align.END), 0, 0, 1, 1)
+        stats_grid.attach(
+            Gtk.Label(label=self._("Tracked Torrents:"), halign=Gtk.Align.END),
+            0,
+            0,
+            1,
+            1,
+        )
         self.torrents_label = Gtk.Label(label="0")
         self.torrents_label.set_halign(Gtk.Align.START)
         stats_grid.attach(self.torrents_label, 1, 0, 1, 1)
 
         # Internal torrents row
-        stats_grid.attach(Gtk.Label(label=self._("Internal (DFakeSeeder):"), halign=Gtk.Align.END), 0, 1, 1, 1)
+        stats_grid.attach(
+            Gtk.Label(label=self._("Internal (DFakeSeeder):"), halign=Gtk.Align.END),
+            0,
+            1,
+            1,
+            1,
+        )
         self.internal_label = Gtk.Label(label="0")
         self.internal_label.set_halign(Gtk.Align.START)
         stats_grid.attach(self.internal_label, 1, 1, 1, 1)
 
         # Active peers row
-        stats_grid.attach(Gtk.Label(label=self._("Active Peers:"), halign=Gtk.Align.END), 0, 2, 1, 1)
+        stats_grid.attach(
+            Gtk.Label(label=self._("Active Peers:"), halign=Gtk.Align.END), 0, 2, 1, 1
+        )
         self.peers_label = Gtk.Label(label="0")
         self.peers_label.set_halign(Gtk.Align.START)
         stats_grid.attach(self.peers_label, 1, 2, 1, 1)
 
         # Total announces row
-        stats_grid.attach(Gtk.Label(label=self._("Total Announces:"), halign=Gtk.Align.END), 0, 3, 1, 1)
+        stats_grid.attach(
+            Gtk.Label(label=self._("Total Announces:"), halign=Gtk.Align.END),
+            0,
+            3,
+            1,
+            1,
+        )
         self.announces_label = Gtk.Label(label="0")
         self.announces_label.set_halign(Gtk.Align.START)
         stats_grid.attach(self.announces_label, 1, 3, 1, 1)
@@ -401,15 +431,23 @@ class TrackerTab(Component):
                 http_port=tracker_settings.get("http_port", 6969),
                 udp_enabled=tracker_settings.get("udp_enabled", False),
                 udp_port=tracker_settings.get("udp_port", 6969),
-                announce_interval=tracker_settings.get("announce_interval_seconds", 1800),
-                peer_timeout_multiplier=tracker_settings.get("peer_timeout_multiplier", 3),
-                max_peers_per_announce=tracker_settings.get("max_peers_per_announce", 50),
+                announce_interval=tracker_settings.get(
+                    "announce_interval_seconds", 1800
+                ),
+                peer_timeout_multiplier=tracker_settings.get(
+                    "peer_timeout_multiplier", 3
+                ),
+                max_peers_per_announce=tracker_settings.get(
+                    "max_peers_per_announce", 50
+                ),
                 private_mode=tracker_settings.get("private_mode", False),
                 enable_scrape=tracker_settings.get("enable_scrape", True),
                 log_announces=tracker_settings.get("log_announces", False),
                 ip_whitelist=security_settings.get("ip_whitelist", []) or None,
                 ip_blacklist=security_settings.get("ip_blacklist", []) or None,
-                rate_limit_per_minute=security_settings.get("rate_limit_per_minute", 60),
+                rate_limit_per_minute=security_settings.get(
+                    "rate_limit_per_minute", 60
+                ),
             )
 
             if self._tracker_server.start():
@@ -545,7 +583,9 @@ class TrackerTab(Component):
 
         # Use the same tickspeed as the main app for consistent refresh rates
         tick_speed = getattr(self.settings, "tickspeed", 9)
-        self._update_timer_id = GLib.timeout_add_seconds(tick_speed, self._update_status)
+        self._update_timer_id = GLib.timeout_add_seconds(
+            tick_speed, self._update_status
+        )
 
     def _update_status(self) -> bool:
         """Update the status display."""
@@ -634,7 +674,11 @@ class TrackerTab(Component):
             from d_fake_seeder.view import View
 
             model_torrents = {}
-            if View.instance and hasattr(View.instance, "model") and View.instance.model:
+            if (
+                View.instance
+                and hasattr(View.instance, "model")
+                and View.instance.model
+            ):
                 for t in View.instance.model.torrent_list:
                     info_hash = getattr(t, "info_hash_bytes", None)
                     if info_hash:
@@ -721,7 +765,9 @@ class TrackerTab(Component):
 
     # === ABSTRACT METHOD IMPLEMENTATIONS ===
 
-    def handle_model_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
+    def handle_model_changed(
+        self, source: Any, data_obj: Any, _data_changed: Any
+    ) -> None:
         """Handle model data changes."""
         pass  # Tracker tab doesn't depend on torrent model changes
 
@@ -729,7 +775,9 @@ class TrackerTab(Component):
         """Handle attribute changes."""
         pass  # Tracker tab doesn't depend on attribute changes
 
-    def handle_settings_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
+    def handle_settings_changed(
+        self, source: Any, data_obj: Any, _data_changed: Any
+    ) -> None:
         """Handle settings changes."""
         # Could reload tracker settings here if needed
         pass

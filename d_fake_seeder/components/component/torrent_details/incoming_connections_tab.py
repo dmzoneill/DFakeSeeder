@@ -55,7 +55,9 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         self.connection_manager = get_connection_manager()
 
         # Data store for UI display (filtered view)
-        self.incoming_connections: Dict[str, Any] = {}  # ip:port -> ConnectionPeer (filtered for display)
+        self.incoming_connections: Dict[str, Any] = (
+            {}
+        )  # ip:port -> ConnectionPeer (filtered for display)
         self.count_update_callback = None  # Callback to update connection counts
 
         # Initialize parent (calls _init_widgets, _connect_signals, etc.)
@@ -70,7 +72,9 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         """Initialize and cache tab-specific widgets."""
         # Get UI elements
         self.incoming_columnview = self.builder.get_object("incoming_columnview")
-        self.filter_checkbox = self.builder.get_object("incoming_filter_selected_checkbox")
+        self.filter_checkbox = self.builder.get_object(
+            "incoming_filter_selected_checkbox"
+        )
 
         # Initialize the column view
         self.init_incoming_column_view()
@@ -171,15 +175,21 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
 
         for property_name, column_title in columns:
             factory = Gtk.SignalListItemFactory()
-            self.track_signal(factory, factory.connect("setup", self.setup_cell, property_name))
-            self.track_signal(factory, factory.connect("bind", self.bind_cell, property_name))
+            self.track_signal(
+                factory, factory.connect("setup", self.setup_cell, property_name)
+            )
+            self.track_signal(
+                factory, factory.connect("bind", self.bind_cell, property_name)
+            )
             column = Gtk.ColumnViewColumn.new(None, factory)
             # Expand to fill available space
             column.set_expand(True)
             column.set_resizable(True)
 
             # Register column for translation instead of using hardcoded title
-            self.register_translatable_column(self.incoming_columnview, column, property_name, "incoming_connections")
+            self.register_translatable_column(
+                self.incoming_columnview, column, property_name, "incoming_connections"
+            )
 
             # Create sorter for the column
             if property_name in [
@@ -189,17 +199,23 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                 "requests_received",
                 "pieces_sent",
             ]:
-                property_expression = Gtk.PropertyExpression.new(ConnectionPeer, None, property_name)
+                property_expression = Gtk.PropertyExpression.new(
+                    ConnectionPeer, None, property_name
+                )
                 sorter = Gtk.NumericSorter.new(property_expression)
             elif property_name in [
                 "handshake_complete",
                 "peer_interested",
                 "am_choking",
             ]:
-                property_expression = Gtk.PropertyExpression.new(ConnectionPeer, None, property_name)
+                property_expression = Gtk.PropertyExpression.new(
+                    ConnectionPeer, None, property_name
+                )
                 sorter = Gtk.NumericSorter.new(property_expression)
             else:
-                property_expression = Gtk.PropertyExpression.new(ConnectionPeer, None, property_name)
+                property_expression = Gtk.PropertyExpression.new(
+                    ConnectionPeer, None, property_name
+                )
                 sorter = Gtk.StringSorter.new(property_expression)
 
             column.set_sorter(sorter)
@@ -361,7 +377,11 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                             )
                 elif property_name in ["address", "client"]:
                     # Direct text setting for address and client fields
-                    if obj is not None and child is not None and hasattr(child, "set_text"):
+                    if (
+                        obj is not None
+                        and child is not None
+                        and hasattr(child, "set_text")
+                    ):
                         try:
                             value = getattr(obj, property_name, "")
                             if property_name == "address" and hasattr(obj, "port"):
@@ -382,7 +402,11 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                             )
                 elif property_name == "failure_reason":
                     # Only show failure reason if status is failed
-                    if obj is not None and child is not None and hasattr(child, "set_text"):
+                    if (
+                        obj is not None
+                        and child is not None
+                        and hasattr(child, "set_text")
+                    ):
                         try:
                             status = getattr(obj, "status", "")
                             if status == "failed":
@@ -449,7 +473,8 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         """Handle model selection change"""
         self.selected_torrent = torrent
         logger.trace(
-            f"Incoming connections selection changed: " f"{torrent.id if torrent else 'None'}",
+            f"Incoming connections selection changed: "
+            f"{torrent.id if torrent else 'None'}",
             extra={"class_name": self.__class__.__name__},
         )
         self.apply_filter()
@@ -472,7 +497,10 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
 
                 if filter_enabled and selected:
                     # Only show connections for the selected torrent
-                    should_show = connection_peer.torrent_hash == selected.torrent_file.get_info_hash_hex()
+                    should_show = (
+                        connection_peer.torrent_hash
+                        == selected.torrent_file.get_info_hash_hex()
+                    )
 
                 if should_show and connection_key not in self.incoming_connections:
                     # Only add if not already shown to avoid duplicates
@@ -494,7 +522,9 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                     for connection_key, connection_peer in connections_to_show:
                         try:
                             if connection_key in self.all_connections:
-                                self.incoming_connections[connection_key] = connection_peer
+                                self.incoming_connections[connection_key] = (
+                                    connection_peer
+                                )
                                 self.incoming_store.append(connection_peer)
                         except Exception as e:
                             logger.error(
@@ -521,14 +551,18 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def schedule_failed_connection_removal(self, connection_key: Any, delay_seconds: Any = None) -> Any:
+    def schedule_failed_connection_removal(
+        self, connection_key: Any, delay_seconds: Any = None
+    ) -> Any:
         # Get configurable delay if not provided
         if delay_seconds is None:
             from domain.app_settings import AppSettings
 
             settings = AppSettings.get_instance()
             ui_settings = getattr(settings, "ui_settings", {})
-            delay_seconds = ui_settings.get("failed_connection_removal_delay_seconds", 60)
+            delay_seconds = ui_settings.get(
+                "failed_connection_removal_delay_seconds", 60
+            )
         """Schedule removal of a failed connection after a delay"""
 
         def remove_connection() -> Any:
@@ -555,7 +589,9 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         timer_id = GLib.timeout_add_seconds(delay_seconds, remove_connection)
         self.removal_timers[connection_key] = timer_id  # type: ignore[attr-defined]
 
-    def schedule_connection_removal_after_display_time(self, connection_key: Any) -> Any:
+    def schedule_connection_removal_after_display_time(
+        self, connection_key: Any
+    ) -> Any:
         """Schedule removal of a connection after minimum display time"""
 
         def remove_after_display_time() -> Any:
@@ -568,14 +604,17 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                 # Only remove if minimum display time has passed
                 if elapsed >= self.min_display_time:  # type: ignore[attr-defined]
                     logger.trace(
-                        f"Auto-removing connection after {elapsed:.1f}s display: " f"{connection_key}",
+                        f"Auto-removing connection after {elapsed:.1f}s display: "
+                        f"{connection_key}",
                         extra={"class_name": self.__class__.__name__},
                     )
                     self.remove_incoming_connection_by_key(connection_key)
                 else:
                     # Schedule another check later
                     remaining = self.min_display_time - elapsed  # type: ignore[attr-defined]
-                    timer_id = GLib.timeout_add_seconds(int(remaining) + 1, remove_after_display_time)
+                    timer_id = GLib.timeout_add_seconds(
+                        int(remaining) + 1, remove_after_display_time
+                    )
                     self.removal_timers[connection_key] = timer_id  # type: ignore[attr-defined]
                     return False
 
@@ -635,7 +674,9 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def add_incoming_connection(self, address: str, port: int, torrent_hash: str = "", **kwargs: Any) -> None:
+    def add_incoming_connection(
+        self, address: str, port: int, torrent_hash: str = "", **kwargs: Any
+    ) -> None:
         """Add a new incoming connection"""
         # Set defaults if not provided in kwargs
         connection_kwargs = {
@@ -645,12 +686,16 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         }
 
         # Delegate to centralized connection manager
-        self.connection_manager.add_incoming_connection(address, port, **connection_kwargs)
+        self.connection_manager.add_incoming_connection(
+            address, port, **connection_kwargs
+        )
 
         # Apply current filter to update display
         self.apply_filter()
 
-    def update_incoming_connection(self, address: str, port: int, **kwargs: Any) -> None:
+    def update_incoming_connection(
+        self, address: str, port: int, **kwargs: Any
+    ) -> None:
         """Update an existing incoming connection"""
         # Delegate to centralized connection manager
         self.connection_manager.update_incoming_connection(address, port, **kwargs)
