@@ -625,6 +625,9 @@ class TrackerTab(Component):
         import time
 
         try:
+            # Detach model to prevent O(n²) re-sort on each append
+            self.column_view.set_model(None)
+
             self.torrents_store.remove_all()
 
             # Get model to look up actual torrent data
@@ -713,6 +716,8 @@ class TrackerTab(Component):
                 f"Failed to update torrents list: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
+        finally:
+            self.column_view.set_model(self.selection_model)
 
     # === ABSTRACT METHOD IMPLEMENTATIONS ===
 

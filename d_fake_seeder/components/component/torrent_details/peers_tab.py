@@ -494,6 +494,9 @@ class PeersTab(
 
             # Only update if the count changed (optimization)
             if num_rows != num_peers:
+                # Detach model to prevent O(n²) re-sort on each append
+                self._peers_columnview.set_model(None)
+
                 self._peers_store.remove_all()
 
                 # Add new peer data
@@ -502,20 +505,19 @@ class PeersTab(
                         row = TorrentPeer(
                             address=peer.get("address", ""),
                             client=peer.get("client", "Unknown"),
-                            country="",  # Country not provided yet
+                            country="",
                             progress=peer.get("progress", 0.0),
                             down_speed=peer.get("download_rate", 0.0),
                             up_speed=peer.get("upload_rate", 0.0),
                             seed=peer.get("is_seed", False),
-                            peer_id="",  # Peer ID not provided yet
+                            peer_id="",
                         )
                         self._peers_store.append(row)
                     except Exception as e:
                         self.logger.error(f"Error creating TorrentPeer row: {e}")
 
-                # Ensure model is set
-                if self._peers_columnview.get_model() != self._selection:
-                    self._peers_columnview.set_model(self._selection)
+                # Reattach model after bulk update
+                self._peers_columnview.set_model(self._selection)
 
         except Exception as e:
             self.logger.error(f"Error updating peers store: {e}")

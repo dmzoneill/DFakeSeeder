@@ -481,6 +481,9 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
             # Schedule the filter update in idle to avoid snapshot issues
             def update_filter_when_idle() -> Any:
                 try:
+                    # Detach model to prevent O(n²) re-sort on each append
+                    self.incoming_columnview.set_model(None)
+
                     # Clear current displayed connections
                     self.incoming_connections.clear()
 
@@ -490,7 +493,6 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                     # Add filtered connections
                     for connection_key, connection_peer in connections_to_show:
                         try:
-                            # Check if peer is still valid before adding
                             if connection_key in self.all_connections:
                                 self.incoming_connections[connection_key] = connection_peer
                                 self.incoming_store.append(connection_peer)
@@ -504,6 +506,8 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                         f"Error updating filter in idle: {e}",
                         extra={"class_name": self.__class__.__name__},
                     )
+                finally:
+                    self.incoming_columnview.set_model(self.selection)
                 return False  # Don't repeat  # type: ignore
 
             GLib.idle_add(update_filter_when_idle)
