@@ -55,9 +55,9 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         self.connection_manager = get_connection_manager()
 
         # Data store for UI display (filtered view)
-        self.incoming_connections: Dict[str, Any] = (
-            {}
-        )  # ip:port -> ConnectionPeer (filtered for display)
+        self.incoming_connections: Dict[
+            str, Any
+        ] = {}  # ip:port -> ConnectionPeer
         self.count_update_callback = None  # Callback to update connection counts
 
         # Initialize parent (calls _init_widgets, _connect_signals, etc.)
