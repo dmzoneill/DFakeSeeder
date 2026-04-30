@@ -8,6 +8,7 @@ when users frequently switch between torrents.
 
 # fmt: off
 import asyncio
+import collections
 import struct
 import threading
 import time
@@ -91,6 +92,15 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
         self.connection_rotation_percentage = peer_protocol.get("connection_rotation_percentage", 0.25)
         self.last_metadata_exchange = 0.0
         self.last_connection_rotation = 0.0
+
+        # Mass-disconnection circuit breaker (prevents reconnection storms after sleep/wake)
+        self._recent_failures: collections.deque = collections.deque()
+        self._failure_window = 10.0
+        self._failure_threshold = 5
+        self._backoff_until = 0.0
+        self._backoff_base = 30.0
+        self._backoff_max = 300.0
+        self._consecutive_backoffs = 0
 
         # Extension protocol support (BEP 9 - ut_metadata)
         self.ut_metadata = None  # Will be initialized when torrent info is available
@@ -307,7 +317,11 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
             )
 
     async def _manage_connections(self, current_time: float) -> Any:  # pylint: disable=too-many-branches
-        """Manage peer connections with rate limiting"""
+        """Manage peer connections with rate limiting and circuit breaker"""
+        # Circuit breaker: skip connection attempts during backoff
+        if current_time < self._backoff_until:
+            return
+
         with self.lock:
             peers_list = list(self.peers.items())
             active_count = len(self.active_connections)
@@ -387,10 +401,48 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
                 if not connection_success:
                     connection.close()
 
+            if connection_success:
+                self._reset_backoff()
+            else:
+                self._record_failure(current_time)
+                if self._is_circuit_open(current_time):
+                    break
+
             # Don't try to connect to too many at once
             with self.lock:
                 if len(self.active_connections) >= self.max_connections:
                     break
+
+    def _record_failure(self, current_time: float) -> None:
+        """Record a connection failure for circuit breaker tracking."""
+        self._recent_failures.append(current_time)
+        while self._recent_failures and current_time - self._recent_failures[0] > self._failure_window:
+            self._recent_failures.popleft()
+
+    def _is_circuit_open(self, current_time: float) -> bool:
+        """Check if too many recent failures should trigger backoff."""
+        if len(self._recent_failures) >= self._failure_threshold:
+            self._consecutive_backoffs += 1
+            backoff = min(self._backoff_base * (2 ** (self._consecutive_backoffs - 1)), self._backoff_max)
+            self._backoff_until = current_time + backoff
+            self._recent_failures.clear()
+            logger.warning(
+                f"Circuit breaker: {self._failure_threshold} failures in {self._failure_window}s, "
+                f"backing off {backoff:.0f}s (attempt {self._consecutive_backoffs})",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return True
+        return False
+
+    def _reset_backoff(self) -> None:
+        """Reset backoff state after a successful connection."""
+        if self._consecutive_backoffs > 0:
+            logger.info(
+                "Circuit breaker reset: connection succeeded",
+                extra={"class_name": self.__class__.__name__},
+            )
+        self._consecutive_backoffs = 0
+        self._backoff_until = 0.0
 
     async def _send_keep_alives(self, current_time: float) -> Any:
         """Send keep-alive messages to maintain connections"""

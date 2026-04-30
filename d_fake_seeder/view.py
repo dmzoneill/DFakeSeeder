@@ -10,10 +10,12 @@ It manages all UI components, windows, dialogs, and user interaction handling.
 # fmt: off
 # isort: skip_file
 from typing import Any
+import collections
 import json
 import logging
 import os
 import signal
+import threading
 import time
 import webbrowser
 from datetime import datetime
@@ -75,6 +77,10 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                 # Initialize shutdown progress tracking
                 self.shutdown_tracker = None
                 self.shutdown_overlay = None
+                # Thread-safe queue for connection events from background threads
+                self._connection_event_queue: collections.deque = collections.deque()
+                self._connection_event_scheduled = False
+                self._connection_event_lock = threading.Lock()
                 logger.trace("Basic initialization completed", self.__class__.__name__)
             # subscribe to settings changed
             with logger.performance.operation_context("settings_init", self.__class__.__name__):
@@ -581,85 +587,78 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
     def handle_peer_connection_event(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self, direction: Any, action: Any, address: Any, port: Any, data: Any = None
     ) -> None:  # noqa: E501
-        """Handle peer connection events from peer server or connection manager"""
-        torrent_hash = (data or {}).get("torrent_hash", "unknown") if data else "unknown"
-        logger.trace(
-            f"Peer connection event: {direction} {action} {address}:{port} " f"(torrent: {torrent_hash})",
-            extra={"class_name": self.__class__.__name__},
-        )
-        try:
-            if direction == "incoming":
-                component = self.notebook.get_incoming_connections() if self.notebook else None
-                if component is None:
-                    return
-                if action == "add":
-                    component.add_incoming_connection(address, port, **(data or {}))
-                    total_count = component.get_total_connection_count()
-                    visible_count = component.get_connection_count()
-                    connection_word = "connection" if total_count == 1 else "connections"
-                    message = (
-                        f"Added incoming connection. Total: {total_count} "
-                        f"{connection_word}, Visible: {visible_count}"
-                    )
-                    logger.trace(
-                        message,
-                        extra={"class_name": self.__class__.__name__},
-                    )
-                elif action == "update":
-                    component.update_incoming_connection(address, port, **(data or {}))
-                elif action == "remove":
-                    component.remove_incoming_connection(address, port)
-                    total_count = component.get_total_connection_count()
-                    visible_count = component.get_connection_count()
-                    connection_word = "connection" if total_count == 1 else "connections"
-                    message = (
-                        f"Removed incoming connection. Total: {total_count} "
-                        f"{connection_word}, Visible: {visible_count}"
-                    )
-                    logger.trace(
-                        message,
-                        extra={"class_name": self.__class__.__name__},
-                    )
-            elif direction == "outgoing":
-                component = self.notebook.get_outgoing_connections() if self.notebook else None
-                if component is None:
-                    return
-                if action == "add":
-                    component.add_outgoing_connection(address, port, **(data or {}))
-                    total_count = component.get_total_connection_count()
-                    visible_count = component.get_connection_count()
-                    connection_word = "connection" if total_count == 1 else "connections"
-                    message = (
-                        f"Added outgoing connection. Total: {total_count} "
-                        f"{connection_word}, Visible: {visible_count}"
-                    )
-                    logger.trace(
-                        message,
-                        extra={"class_name": self.__class__.__name__},
-                    )
-                elif action == "update":
-                    component.update_outgoing_connection(address, port, **(data or {}))
-                elif action == "remove":
-                    component.remove_outgoing_connection(address, port)
-                    total_count = component.get_total_connection_count()
-                    visible_count = component.get_connection_count()
-                    connection_word = "connection" if total_count == 1 else "connections"
-                    message = (
-                        f"Removed outgoing connection. Total: {total_count} "
-                        f"{connection_word}, Visible: {visible_count}"
-                    )
-                    logger.trace(
-                        message,
-                        extra={"class_name": self.__class__.__name__},
-                    )
-            # Update connection counts
-            if self.notebook:
+        """Handle peer connection events from background threads.
+
+        Called from SharedAsyncExecutor/PeerServer threads. Events are queued
+        and processed in batch on the GTK main thread via GLib.idle_add to
+        prevent thread safety violations and UI hangs.
+        """
+        self._connection_event_queue.append((direction, action, address, port, data))
+
+        with self._connection_event_lock:
+            if not self._connection_event_scheduled:
+                self._connection_event_scheduled = True
+                GLib.idle_add(self._process_connection_events)
+
+    def _process_connection_events(self) -> bool:
+        """Process queued connection events on the GTK main thread."""
+        with self._connection_event_lock:
+            self._connection_event_scheduled = False
+
+        # Drain up to 50 events per idle cycle to stay responsive
+        processed = 0
+        while self._connection_event_queue and processed < 50:
+            try:
+                direction, action, address, port, data = self._connection_event_queue.popleft()
+            except IndexError:
+                break
+
+            processed += 1
+
+            try:
+                if direction == "incoming":
+                    component = self.notebook.get_incoming_connections() if self.notebook else None
+                    if component is None:
+                        continue
+                    if action == "add":
+                        component.add_incoming_connection(address, port, **(data or {}))
+                    elif action == "update":
+                        component.update_incoming_connection(address, port, **(data or {}))
+                    elif action == "remove":
+                        component.remove_incoming_connection(address, port)
+                elif direction == "outgoing":
+                    component = self.notebook.get_outgoing_connections() if self.notebook else None
+                    if component is None:
+                        continue
+                    if action == "add":
+                        component.add_outgoing_connection(address, port, **(data or {}))
+                    elif action == "update":
+                        component.update_outgoing_connection(address, port, **(data or {}))
+                    elif action == "remove":
+                        component.remove_outgoing_connection(address, port)
+            except (GLib.Error, RuntimeError, AttributeError, KeyError) as e:
+                logger.error(
+                    f"Error handling peer connection event: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+        # Update connection counts once for the entire batch
+        if processed > 0 and self.notebook:
+            try:
                 self.notebook.update_connection_counts()
-        except (GLib.Error, RuntimeError, AttributeError, KeyError) as e:
-            logger.error(
-                f"Error handling peer connection event: {e}",
-                extra={"class_name": self.__class__.__name__},
-            )
+            except (GLib.Error, RuntimeError, AttributeError) as e:
+                logger.error(
+                    f"Error updating connection counts: {e}",
+                    extra={"class_name": self.__class__.__name__},
+                )
+
+        # If more events remain, reschedule
+        if self._connection_event_queue:
+            with self._connection_event_lock:
+                self._connection_event_scheduled = True
+            return True  # Repeat this idle callback
+
+        return False  # Done, remove idle callback
 
     def _cleanup_timers(self) -> Any:
         """Cleanup all GLib timers and timeout sources"""
