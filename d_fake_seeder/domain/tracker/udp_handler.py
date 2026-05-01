@@ -244,25 +244,25 @@ class UDPTrackerHandler:  # pylint: disable=too-many-instance-attributes
         #         4 bytes num_want, 2 bytes port
         try:
             offset = 16
-            info_hash = data[offset: offset + 20]
+            info_hash = data[offset : offset + 20]
             offset += 20
-            peer_id = data[offset: offset + 20]
+            peer_id = data[offset : offset + 20]
             offset += 20
-            downloaded = struct.unpack(">Q", data[offset: offset + 8])[0]
+            downloaded = struct.unpack(">Q", data[offset : offset + 8])[0]
             offset += 8
-            left = struct.unpack(">Q", data[offset: offset + 8])[0]
+            left = struct.unpack(">Q", data[offset : offset + 8])[0]
             offset += 8
-            uploaded = struct.unpack(">Q", data[offset: offset + 8])[0]
+            uploaded = struct.unpack(">Q", data[offset : offset + 8])[0]
             offset += 8
-            event = struct.unpack(">I", data[offset: offset + 4])[0]
+            event = struct.unpack(">I", data[offset : offset + 4])[0]
             offset += 4
-            ip = struct.unpack(">I", data[offset: offset + 4])[0]
+            ip = struct.unpack(">I", data[offset : offset + 4])[0]
             offset += 4
-            _ = struct.unpack(">I", data[offset: offset + 4])[0]  # key (unused)
+            _ = struct.unpack(">I", data[offset : offset + 4])[0]  # key (unused)
             offset += 4
-            num_want = struct.unpack(">i", data[offset: offset + 4])[0]
+            num_want = struct.unpack(">i", data[offset : offset + 4])[0]
             offset += 4
-            port = struct.unpack(">H", data[offset: offset + 2])[0]
+            port = struct.unpack(">H", data[offset : offset + 2])[0]
 
         except struct.error:
             self._send_error(addr, transaction_id, "Invalid announce format")
@@ -371,7 +371,7 @@ class UDPTrackerHandler:  # pylint: disable=too-many-instance-attributes
         info_hashes = []
         offset = 16
         while offset + 20 <= len(data):
-            info_hash = data[offset: offset + 20]
+            info_hash = data[offset : offset + 20]
             info_hashes.append(info_hash)
             offset += 20
 

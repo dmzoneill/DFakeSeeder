@@ -373,7 +373,7 @@ class FastExtension:
 
             # Use hash to select pieces
             for i in range(max_fast):
-                piece_index = int.from_bytes(hash_value[i * 2: (i + 1) * 2], "big") % num_pieces
+                piece_index = int.from_bytes(hash_value[i * 2 : (i + 1) * 2], "big") % num_pieces
                 fast_pieces.add(piece_index)
 
             # Send allowed fast messages
