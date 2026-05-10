@@ -74,7 +74,9 @@ class CleanupMixin:
         # Cleanup performed flag
         self._cleanup_done = False
 
-        logger.info("CleanupMixin initialized", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "CleanupMixin initialized", extra={"class_name": self.__class__.__name__}
+        )
 
     def track_signal(self, obj: GObject.Object, handler_id: int) -> int:
         """
@@ -116,7 +118,9 @@ class CleanupMixin:
             The binding (for convenience)
         """
         self._tracked_bindings.append(binding)
-        logger.trace("Tracking property binding", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Tracking property binding", extra={"class_name": self.__class__.__name__}
+        )
         return binding
 
     def track_timeout(self, source_id: int) -> int:

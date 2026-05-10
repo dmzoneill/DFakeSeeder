@@ -35,7 +35,9 @@ class ExtensionManager:
         self.settings = AppSettings.get_instance()
 
         # Extension configuration
-        extensions_config = getattr(self.settings, "protocols", {}).get("extensions", {})
+        extensions_config = getattr(self.settings, "protocols", {}).get(
+            "extensions", {}
+        )
         self.ut_metadata_enabled = extensions_config.get("ut_metadata", True)
         self.ut_pex_enabled = extensions_config.get("ut_pex", True)
         self.lt_donthave_enabled = extensions_config.get("lt_donthave", True)
@@ -46,8 +48,12 @@ class ExtensionManager:
         self.extension_instances: Dict[str, Any] = {}  # Active extension instances
 
         # Extension message IDs (negotiated during handshake)
-        self.local_extension_ids: Dict[str, Any] = {}  # Our extension name -> message ID
-        self.remote_extension_ids: Dict[str, Any] = {}  # Peer's extension name -> message ID
+        self.local_extension_ids: Dict[str, Any] = (
+            {}
+        )  # Our extension name -> message ID
+        self.remote_extension_ids: Dict[str, Any] = (
+            {}
+        )  # Peer's extension name -> message ID
 
         self._register_extensions()
 
@@ -107,13 +113,22 @@ class ExtensionManager:
             handshake_data = {
                 b"m": extension_dict,  # Extension mapping
                 b"v": b"DFakeSeeder 1.0",  # Client version
-                b"p": self.peer_connection.port if hasattr(self.peer_connection, "port") else 6881,
+                b"p": (
+                    self.peer_connection.port
+                    if hasattr(self.peer_connection, "port")
+                    else 6881
+                ),
             }
 
             # Add metadata size if available
-            if hasattr(self.peer_connection, "torrent") and self.peer_connection.torrent:
+            if (
+                hasattr(self.peer_connection, "torrent")
+                and self.peer_connection.torrent
+            ):
                 try:
-                    metadata_size = len(bencode.bencode(self.peer_connection.torrent.info))
+                    metadata_size = len(
+                        bencode.bencode(self.peer_connection.torrent.info)
+                    )
                     handshake_data[b"metadata_size"] = metadata_size
                 except Exception:
                     pass
@@ -164,7 +179,9 @@ class ExtensionManager:
             }
 
             # Build reverse mapping
-            self.remote_extension_ids = {ext_name: ext_id for ext_name, ext_id in self.peer_extensions.items()}
+            self.remote_extension_ids = {
+                ext_name: ext_id for ext_name, ext_id in self.peer_extensions.items()
+            }
 
             # Initialize extension instances for common extensions
             for ext_name in self.supported_extensions:
@@ -176,12 +193,18 @@ class ExtensionManager:
                 extra={
                     "class_name": self.__class__.__name__,
                     "peer_extensions": list(self.peer_extensions.keys()),
-                    "common_extensions": [ext for ext in self.supported_extensions if ext in self.peer_extensions],
+                    "common_extensions": [
+                        ext
+                        for ext in self.supported_extensions
+                        if ext in self.peer_extensions
+                    ],
                 },
             )
 
             # Store peer metadata
-            self.peer_version = handshake_data.get(b"v", b"Unknown").decode("utf-8", errors="ignore")
+            self.peer_version = handshake_data.get(b"v", b"Unknown").decode(
+                "utf-8", errors="ignore"
+            )
             self.peer_port = handshake_data.get(b"p", 0)
             self.peer_metadata_size = handshake_data.get(b"metadata_size", 0)
 

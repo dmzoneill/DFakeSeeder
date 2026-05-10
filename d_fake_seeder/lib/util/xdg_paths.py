@@ -25,7 +25,9 @@ def get_config_dir() -> str:
     Returns ``$XDG_CONFIG_HOME/dfakeseeder`` when the variable is set
     (Flatpak), otherwise ``~/.config/dfakeseeder`` (native).
     """
-    base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
+    base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(
+        os.path.expanduser("~"), ".config"
+    )
     return os.path.join(base, _APP_DIR)
 
 
@@ -34,7 +36,9 @@ def get_data_dir() -> str:
 
     Returns ``$XDG_DATA_HOME`` when set, otherwise ``~/.local/share``.
     """
-    return os.environ.get("XDG_DATA_HOME") or os.path.join(os.path.expanduser("~"), ".local", "share")
+    return os.environ.get("XDG_DATA_HOME") or os.path.join(
+        os.path.expanduser("~"), ".local", "share"
+    )
 
 
 def get_cache_dir() -> str:
@@ -42,7 +46,9 @@ def get_cache_dir() -> str:
 
     Returns ``$XDG_CACHE_HOME`` when set, otherwise ``~/.cache``.
     """
-    return os.environ.get("XDG_CACHE_HOME") or os.path.join(os.path.expanduser("~"), ".cache")
+    return os.environ.get("XDG_CACHE_HOME") or os.path.join(
+        os.path.expanduser("~"), ".cache"
+    )
 
 
 def is_flatpak() -> bool:

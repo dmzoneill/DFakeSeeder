@@ -57,8 +57,12 @@ class ClientBehaviorSimulator:
         # Load profile settings
         profile_settings = self.profiles.get(behavior_profile, self.profiles["balanced"])  # type: ignore[arg-type]
         self.max_unchoked_peers = profile_settings["max_unchoked_peers"]
-        self.optimistic_unchoke_probability = profile_settings["optimistic_unchoke_probability"]
-        self.interest_change_probability = profile_settings["interest_change_probability"]
+        self.optimistic_unchoke_probability = profile_settings[
+            "optimistic_unchoke_probability"
+        ]
+        self.interest_change_probability = profile_settings[
+            "interest_change_probability"
+        ]
         self.choke_round_interval = profile_settings["choke_round_interval"]
 
         logger.trace(
@@ -93,7 +97,10 @@ class ClientBehaviorSimulator:
         - Download interest
         """
         for torrent in torrents:
-            if not hasattr(torrent, "peer_protocol_manager") or not torrent.peer_protocol_manager:
+            if (
+                not hasattr(torrent, "peer_protocol_manager")
+                or not torrent.peer_protocol_manager
+            ):
                 continue
 
             manager = torrent.peer_protocol_manager
@@ -122,7 +129,9 @@ class ClientBehaviorSimulator:
 
             # Optimistic unchoke - randomly unchoke one choked peer
             if random.random() < self.optimistic_unchoke_probability:
-                choked_peers = [c for c in connections if getattr(c.peer_info, "choked", True)]
+                choked_peers = [
+                    c for c in connections if getattr(c.peer_info, "choked", True)
+                ]
                 if choked_peers:
                     lucky_peer = random.choice(choked_peers)
                     lucky_peer.peer_info.choked = False
@@ -138,7 +147,10 @@ class ClientBehaviorSimulator:
         Peers become interested/not interested based on piece availability.
         """
         for torrent in torrents:
-            if not hasattr(torrent, "peer_protocol_manager") or not torrent.peer_protocol_manager:
+            if (
+                not hasattr(torrent, "peer_protocol_manager")
+                or not torrent.peer_protocol_manager
+            ):
                 continue
 
             manager = torrent.peer_protocol_manager
@@ -148,7 +160,9 @@ class ClientBehaviorSimulator:
                 if random.random() < self.interest_change_probability:
                     # Toggle interest state
                     if hasattr(connection.peer_info, "interested"):
-                        connection.peer_info.interested = not connection.peer_info.interested
+                        connection.peer_info.interested = (
+                            not connection.peer_info.interested
+                        )
 
     def change_profile(self, new_profile: str) -> None:
         """
@@ -167,8 +181,12 @@ class ClientBehaviorSimulator:
         self.behavior_profile = new_profile
         profile_settings = self.profiles[new_profile]
         self.max_unchoked_peers = profile_settings["max_unchoked_peers"]
-        self.optimistic_unchoke_probability = profile_settings["optimistic_unchoke_probability"]
-        self.interest_change_probability = profile_settings["interest_change_probability"]
+        self.optimistic_unchoke_probability = profile_settings[
+            "optimistic_unchoke_probability"
+        ]
+        self.interest_change_probability = profile_settings[
+            "interest_change_probability"
+        ]
         self.choke_round_interval = profile_settings["choke_round_interval"]
 
         logger.trace(

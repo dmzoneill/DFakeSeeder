@@ -46,13 +46,17 @@ def load_languages_config() -> Dict[str, Any]:
     config_path = get_languages_config_path()
 
     if not config_path.exists():
-        raise FileNotFoundError(f"Languages configuration file not found: {config_path}")
+        raise FileNotFoundError(
+            f"Languages configuration file not found: {config_path}"
+        )
 
     try:
         with open(config_path, "r", encoding="utf-8") as f:
             return json.load(f)  # type: ignore[no-any-return]
     except json.JSONDecodeError as e:
-        raise json.JSONDecodeError(f"Invalid JSON in languages config: {e}", e.doc, e.pos)
+        raise json.JSONDecodeError(
+            f"Invalid JSON in languages config: {e}", e.doc, e.pos
+        )
 
 
 def _discover_languages_from_locale() -> Dict[str, Dict[str, str]]:
@@ -114,7 +118,10 @@ def get_supported_languages() -> Dict[str, Dict[str, str]]:
         return config.get("languages", {})  # type: ignore[no-any-return]
     except (FileNotFoundError, json.JSONDecodeError) as e:
         # Fallback to dynamic discovery from locale directory if config loading fails
-        logger.warning("Could not load languages config (%s), falling back to locale directory scan", e)
+        logger.warning(
+            "Could not load languages config (%s), falling back to locale directory scan",
+            e,
+        )
         return _discover_languages_from_locale()
 
 
@@ -132,7 +139,10 @@ def get_language_display_names(use_native_names: bool = True) -> Dict[str, str]:
     """
     languages = get_supported_languages()
     if use_native_names:
-        return {code: info.get("native_name", info["name"]) for code, info in languages.items()}
+        return {
+            code: info.get("native_name", info["name"])
+            for code, info in languages.items()
+        }
     return {code: info["name"] for code, info in languages.items()}
 
 

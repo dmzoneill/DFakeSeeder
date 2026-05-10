@@ -71,7 +71,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             self.app = app
             View.instance = self
             # Initialize timeout_id to prevent warnings on cleanup
-            with logger.performance.operation_context("basic_init", self.__class__.__name__):
+            with logger.performance.operation_context(
+                "basic_init", self.__class__.__name__
+            ):
                 self.timeout_id = 0
                 self.timeout_source = None
                 # Initialize shutdown progress tracking
@@ -83,16 +85,22 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                 self._connection_event_lock = threading.Lock()
                 logger.trace("Basic initialization completed", self.__class__.__name__)
             # subscribe to settings changed
-            with logger.performance.operation_context("settings_init", self.__class__.__name__):
+            with logger.performance.operation_context(
+                "settings_init", self.__class__.__name__
+            ):
                 self.settings = AppSettings.get_instance()
                 self.settings.connect("attribute-changed", self.handle_settings_changed)
                 logger.trace("Settings subscription completed", self.__class__.__name__)
             # Loading GUI from XML
-            with logger.performance.operation_context("builder_creation", self.__class__.__name__):
+            with logger.performance.operation_context(
+                "builder_creation", self.__class__.__name__
+            ):
                 logger.trace("About to create Gtk.Builder", self.__class__.__name__)
                 self.builder = Gtk.Builder()
                 logger.info("Gtk.Builder created", self.__class__.__name__)
-            with logger.performance.operation_context("xml_loading", self.__class__.__name__):
+            with logger.performance.operation_context(
+                "xml_loading", self.__class__.__name__
+            ):
                 logger.trace("About to load XML file", self.__class__.__name__)
                 dfs_path = os.environ.get("DFS_PATH")
                 xml_path = dfs_path + "/components/ui/generated/generated.xml"  # type: ignore[operator]
@@ -100,7 +108,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                 logger.trace("XML file loaded", self.__class__.__name__)
             # CSS will be loaded and applied in setup_window() method
             # Get window object
-            with logger.performance.operation_context("window_setup", self.__class__.__name__):
+            with logger.performance.operation_context(
+                "window_setup", self.__class__.__name__
+            ):
                 self.window = self.builder.get_object("main_window")
 
                 # TEMPORARILY DISABLED: Window keyboard controller for debugging
@@ -200,12 +210,22 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         )
         # Get UI settings for configurable timeouts using proper AppSettings API
         self.resize_delay = self.settings.get("ui_settings.resize_delay_seconds", 1.0)
-        self.splash_display_duration = self.settings.get("ui_settings.splash_display_duration_seconds", 2)
-        self.splash_fade_interval = self.settings.get("ui_settings.splash_fade_interval_ms", 75)
+        self.splash_display_duration = self.settings.get(
+            "ui_settings.splash_display_duration_seconds", 2
+        )
+        self.splash_fade_interval = self.settings.get(
+            "ui_settings.splash_fade_interval_ms", 75
+        )
         self.splash_fade_step = self.settings.get("ui_settings.splash_fade_step", 0.025)
-        self.splash_image_size = self.settings.get("ui_settings.splash_image_size_pixels", 300)
-        self.notification_timeout_min = self.settings.get("ui_settings.notification_timeout_min_ms", 2000)
-        self.notification_timeout_multiplier = self.settings.get("ui_settings.notification_timeout_multiplier", 500)
+        self.splash_image_size = self.settings.get(
+            "ui_settings.splash_image_size_pixels", 300
+        )
+        self.notification_timeout_min = self.settings.get(
+            "ui_settings.notification_timeout_min_ms", 2000
+        )
+        self.notification_timeout_multiplier = self.settings.get(
+            "ui_settings.notification_timeout_multiplier", 500
+        )
         logger.trace(
             "UI settings configuration completed (took {(ui_settings_end - ui_settings_start)*1000:.1f}ms)",
             "View",
@@ -216,7 +236,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         logger.trace("About to show splash image", "View")
         self.show_splash_image()
         logger.trace("Splash image shown (took ms)", "View")
-        self.track_timeout(GLib.timeout_add_seconds(int(self.resize_delay), self.resize_panes))
+        self.track_timeout(
+            GLib.timeout_add_seconds(int(self.resize_delay), self.resize_panes)
+        )
         logger.trace(
             "Timeout for resize panes added (took {(timeout_end - timeout_start)*1000:.1f}ms)",
             "View",
@@ -227,7 +249,11 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
 
     def _(self, text: Any) -> Any:
         """Get translation function from model's TranslationManager"""
-        if hasattr(self, "model") and self.model and hasattr(self.model, "translation_manager"):
+        if (
+            hasattr(self, "model")
+            and self.model
+            and hasattr(self.model, "translation_manager")
+        ):
             return self.model.translation_manager.translate_func(text)
         return text  # Fallback if model not set yet
 
@@ -235,7 +261,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         """Configure main window properties and theme."""
         # Get application settings
         app_settings = AppSettings.get_instance()
-        app_title = app_settings.get("application", {}).get("title", self._("D' Fake Seeder"))
+        app_title = app_settings.get("application", {}).get(
+            "title", self._("D' Fake Seeder")
+        )
         self.window.set_title(app_title)
         self.window.set_application(self.app)
         # Initialize display for CSS loading
@@ -244,7 +272,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         # Get theme style and color scheme from ui_settings
         theme_style = app_settings.get("ui_settings.theme_style", "classic")
         color_scheme = app_settings.get("ui_settings.color_scheme", "auto")
-        logger.trace(f"Initial theme from settings: style={theme_style}, color={color_scheme}")
+        logger.trace(
+            f"Initial theme from settings: style={theme_style}, color={color_scheme}"
+        )
         # Apply initial theme (will load appropriate CSS file and color scheme)
         self.apply_theme(theme_style, color_scheme)
         # Connect to AppSettings changes for theme switching
@@ -314,7 +344,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         self.splash_image.set_can_target(False)
         self.splash_image.set_can_focus(False)
         self.overlay.add_overlay(self.splash_image)
-        self.track_timeout(GLib.timeout_add_seconds(self.splash_display_duration, self.fade_out_image))
+        self.track_timeout(
+            GLib.timeout_add_seconds(self.splash_display_duration, self.fade_out_image)
+        )
 
     def show_about(self, action: Any, _param: Any) -> None:
         """Show the About dialog with application info."""
@@ -322,10 +354,14 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         self.window.about.set_transient_for(self.window)
         self.window.about.set_modal(True)
         app_settings = AppSettings.get_instance()
-        app_title = app_settings.get("application", {}).get("title", self._("D' Fake Seeder"))
+        app_title = app_settings.get("application", {}).get(
+            "title", self._("D' Fake Seeder")
+        )
         self.window.about.set_program_name(app_title)
         self.window.about.set_authors([self.settings.author])
-        self.window.about.set_copyright(self.settings.copyright.replace("{year}", str(datetime.now().year)))
+        self.window.about.set_copyright(
+            self.settings.copyright.replace("{year}", str(datetime.now().year))
+        )
         self.window.about.set_license_type(Gtk.License.APACHE_2_0)
         self.window.about.set_website(self.settings.website)
         self.window.about.set_website_label(self._("Github - D' Fake Seeder"))
@@ -388,7 +424,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         else:
             position = available_height // 2
         self.main_paned.set_position(position)
-        logger.trace(f"Set main_paned position to {position} (height={available_height})")
+        logger.trace(
+            f"Set main_paned position to {position} (height={available_height})"
+        )
         # Set left sidebar to 275px
         self.paned.set_position(275)
         return False  # Don't repeat the timeout
@@ -458,7 +496,11 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         # Also use GLib.idle_add for thread safety
         def _show_fallback_notification() -> bool:
             # Cancel the previous timeout, if it exists
-            if hasattr(self, "timeout_source") and self.timeout_source and not self.timeout_source.is_destroyed():
+            if (
+                hasattr(self, "timeout_source")
+                and self.timeout_source
+                and not self.timeout_source.is_destroyed()
+            ):
                 self.timeout_source.destroy()
                 self.timeout_source = None
             self.timeout_id = 0
@@ -474,7 +516,8 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             # Create timeout source and store reference
             self.timeout_source = GLib.timeout_source_new(notification_timeout)
             self.timeout_source.set_callback(  # type: ignore[attr-defined]
-                lambda user_data: self.notify_label.set_visible(False) or self.notify_label.hide()
+                lambda user_data: self.notify_label.set_visible(False)
+                or self.notify_label.hide()
             )
             self.timeout_id = self.timeout_source.attach(GLib.MainContext.default())  # type: ignore[attr-defined]
             return False  # Don't repeat
@@ -520,7 +563,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             self.notebook.register_for_translation()  # type: ignore[union-attr]
         # Register main menu for translation updates
         if hasattr(self, "main_menu") and hasattr(self, "main_menu_items"):
-            self.model.translation_manager.register_menu(self.main_menu, self.main_menu_items, popover=self.popover)
+            self.model.translation_manager.register_menu(
+                self.main_menu, self.main_menu_items, popover=self.popover
+            )
             logger.trace(
                 f"Registered main menu with {len(self.main_menu_items)} items for translation",
                 extra={"class_name": self.__class__.__name__},
@@ -609,7 +654,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         processed = 0
         while self._connection_event_queue and processed < 50:
             try:
-                direction, action, address, port, data = self._connection_event_queue.popleft()
+                direction, action, address, port, data = (
+                    self._connection_event_queue.popleft()
+                )
             except IndexError:
                 break
 
@@ -617,23 +664,35 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
 
             try:
                 if direction == "incoming":
-                    component = self.notebook.get_incoming_connections() if self.notebook else None
+                    component = (
+                        self.notebook.get_incoming_connections()
+                        if self.notebook
+                        else None
+                    )
                     if component is None:
                         continue
                     if action == "add":
                         component.add_incoming_connection(address, port, **(data or {}))
                     elif action == "update":
-                        component.update_incoming_connection(address, port, **(data or {}))
+                        component.update_incoming_connection(
+                            address, port, **(data or {})
+                        )
                     elif action == "remove":
                         component.remove_incoming_connection(address, port)
                 elif direction == "outgoing":
-                    component = self.notebook.get_outgoing_connections() if self.notebook else None
+                    component = (
+                        self.notebook.get_outgoing_connections()
+                        if self.notebook
+                        else None
+                    )
                     if component is None:
                         continue
                     if action == "add":
                         component.add_outgoing_connection(address, port, **(data or {}))
                     elif action == "update":
-                        component.update_outgoing_connection(address, port, **(data or {}))
+                        component.update_outgoing_connection(
+                            address, port, **(data or {})
+                        )
                     elif action == "remove":
                         component.remove_outgoing_connection(address, port)
             except (GLib.Error, RuntimeError, AttributeError, KeyError) as e:
@@ -662,7 +721,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
 
     def _cleanup_timers(self) -> Any:
         """Cleanup all GLib timers and timeout sources"""
-        logger.trace("🧹 Cleaning up GLib timers", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "🧹 Cleaning up GLib timers", extra={"class_name": self.__class__.__name__}
+        )
 
         # Clean up all tracked timeouts via CleanupMixin
         CleanupMixin.cleanup(self)
@@ -723,12 +784,20 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
     def _get_shutdown_kill_timeout(self) -> Any:
         """Get shutdown kill timeout from settings."""
         ui = getattr(self.settings, "ui_settings", {})
-        return ui.get("shutdown_kill_timeout_seconds", 0.1) if isinstance(ui, dict) else 0.1
+        return (
+            ui.get("shutdown_kill_timeout_seconds", 0.1)
+            if isinstance(ui, dict)
+            else 0.1
+        )
 
     def _get_shutdown_backup_timeout(self) -> Any:
         """Get shutdown backup timeout from settings."""
         ui = getattr(self.settings, "ui_settings", {})
-        return ui.get("shutdown_backup_timeout_seconds", 0.25) if isinstance(ui, dict) else 0.25
+        return (
+            ui.get("shutdown_backup_timeout_seconds", 0.25)
+            if isinstance(ui, dict)
+            else 0.25
+        )
 
     # Function to quit the application with consolidated shutdown procedure
     def quit(  # pylint: disable=too-many-locals,too-many-branches,too-many-statements
@@ -842,7 +911,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             os._exit(0)
 
         def backup_watchdog() -> Any:
-            time.sleep(self._get_shutdown_backup_timeout())  # Configurable backup timeout
+            time.sleep(
+                self._get_shutdown_backup_timeout()
+            )  # Configurable backup timeout
             logger.warning(
                 "⚠️ BACKUP WATCHDOG: Force exit",
                 extra={"class_name": self.__class__.__name__},
@@ -850,10 +921,14 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             os._exit(0)
 
         # Start watchdogs AFTER settings are saved - they protect against thread-stop hangs
-        ultra_wd = threading.Thread(target=ultra_aggressive_watchdog, daemon=True, name="UltraWatchdog")
+        ultra_wd = threading.Thread(
+            target=ultra_aggressive_watchdog, daemon=True, name="UltraWatchdog"
+        )
         ultra_wd.start()
 
-        backup_wd = threading.Thread(target=backup_watchdog, daemon=True, name="BackupWatchdog")
+        backup_wd = threading.Thread(
+            target=backup_watchdog, daemon=True, name="BackupWatchdog"
+        )
         backup_wd.start()
 
         logger.trace(
@@ -862,7 +937,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         )
 
         # Count components for tracking
-        model_torrent_count = len(self.model.torrent_list) if hasattr(self, "model") and self.model else 0
+        model_torrent_count = (
+            len(self.model.torrent_list) if hasattr(self, "model") and self.model else 0
+        )
 
         # Register components
         self.shutdown_tracker.register_component("model_torrents", model_torrent_count)  # type: ignore[attr-defined]
@@ -942,10 +1019,22 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         )
         try:
             # Clean up translation manager widget registry
-            if hasattr(self, "model") and self.model and hasattr(self.model, "translation_manager"):
+            if (
+                hasattr(self, "model")
+                and self.model
+                and hasattr(self.model, "translation_manager")
+            ):
                 tm = self.model.translation_manager
-                widget_count = len(tm.translatable_widgets) if hasattr(tm, "translatable_widgets") else 0
-                menu_count = len(tm.translatable_menus) if hasattr(tm, "translatable_menus") else 0
+                widget_count = (
+                    len(tm.translatable_widgets)
+                    if hasattr(tm, "translatable_widgets")
+                    else 0
+                )
+                menu_count = (
+                    len(tm.translatable_menus)
+                    if hasattr(tm, "translatable_menus")
+                    else 0
+                )
 
                 logger.trace(
                     f"Clearing {widget_count} widget references and {menu_count} menu references",
@@ -968,7 +1057,11 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                 # Clear incoming connections data
                 incoming_tab = self.notebook.get_incoming_connections()
                 if incoming_tab and hasattr(incoming_tab, "connections"):
-                    conn_count = len(incoming_tab.connections) if hasattr(incoming_tab.connections, "__len__") else 0
+                    conn_count = (
+                        len(incoming_tab.connections)
+                        if hasattr(incoming_tab.connections, "__len__")
+                        else 0
+                    )
                     if conn_count > 0:
                         incoming_tab.connections.clear()
                         logger.trace(
@@ -979,7 +1072,11 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                 # Clear outgoing connections data
                 outgoing_tab = self.notebook.get_outgoing_connections()
                 if outgoing_tab and hasattr(outgoing_tab, "connections"):
-                    conn_count = len(outgoing_tab.connections) if hasattr(outgoing_tab.connections, "__len__") else 0
+                    conn_count = (
+                        len(outgoing_tab.connections)
+                        if hasattr(outgoing_tab.connections, "__len__")
+                        else 0
+                    )
                     if conn_count > 0:
                         outgoing_tab.connections.clear()
                         logger.trace(
@@ -1031,7 +1128,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
 
         # Try graceful GTK quit (watchdogs already running from after save)
         if hasattr(self, "app") and self.app:
-            logger.trace("🚪 Calling app.quit()", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "🚪 Calling app.quit()", extra={"class_name": self.__class__.__name__}
+            )
             try:
                 self.app.quit()
             except (GLib.Error, RuntimeError, AttributeError) as e:
@@ -1057,8 +1156,16 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             extra={"class_name": self.__class__.__name__},
         )
         # TranslationManager should automatically refresh all registered widgets and menus
-        widget_count = len(model.translation_manager.translatable_widgets) if model.translation_manager else 0
-        menu_count = len(model.translation_manager.translatable_menus) if model.translation_manager else 0
+        widget_count = (
+            len(model.translation_manager.translatable_widgets)
+            if model.translation_manager
+            else 0
+        )
+        menu_count = (
+            len(model.translation_manager.translatable_menus)
+            if model.translation_manager
+            else 0
+        )
         logger.trace(
             f"TranslationManager has {widget_count} registered widgets and {menu_count} registered menus",
             "View",
@@ -1075,7 +1182,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_settings_changed(self, _source: Any, key: Any, value: Any) -> None:  # noqa: ARG002
+    def handle_settings_changed(
+        self, _source: Any, key: Any, value: Any
+    ) -> None:  # noqa: ARG002
         """Handle settings change events for theme and UI updates."""
         logger.trace(
             f"View settings changed: {key} = {value}",
@@ -1120,10 +1229,14 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             # Reset the flag immediately
             self.settings.set("show_about", False)
             # Show the about dialog
-            logger.trace("Calling show_about()", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "Calling show_about()", extra={"class_name": self.__class__.__name__}
+            )
             GLib.idle_add(self.show_about, None, None)
 
-    def handle_app_settings_changed(self, _source: Any, key: Any, value: Any) -> None:  # noqa: ARG002
+    def handle_app_settings_changed(
+        self, _source: Any, key: Any, value: Any
+    ) -> None:  # noqa: ARG002
         """Handle AppSettings changes."""
         logger.trace(
             f"AppSettings changed: {key} = {value}",
@@ -1175,8 +1288,14 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             )
 
             # Remove existing CSS provider if one exists
-            if hasattr(self, "css_provider") and self.css_provider and hasattr(self, "display"):
-                Gtk.StyleContext.remove_provider_for_display(self.display, self.css_provider)
+            if (
+                hasattr(self, "css_provider")
+                and self.css_provider
+                and hasattr(self, "display")
+            ):
+                Gtk.StyleContext.remove_provider_for_display(
+                    self.display, self.css_provider
+                )
                 logger.trace(
                     "Removed previous CSS provider",
                     extra={"class_name": self.__class__.__name__},
@@ -1221,7 +1340,9 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
                         self.display = self.window.get_display()
 
                     Gtk.StyleContext.add_provider_for_display(
-                        self.display, self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+                        self.display,
+                        self.css_provider,
+                        Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
                     )
 
                     logger.trace(

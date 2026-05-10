@@ -67,10 +67,16 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         logger.debug("DEBUG: AppSettings instance:", "Model")
         # Connect to both new and legacy signals to ensure we catch the change
         try:
-            self.settings.connect("settings-attribute-changed", self.handle_settings_changed)
-            logger.debug("DEBUG: Connected to 'settings-attribute-changed' signal", "Model")
+            self.settings.connect(
+                "settings-attribute-changed", self.handle_settings_changed
+            )
+            logger.debug(
+                "DEBUG: Connected to 'settings-attribute-changed' signal", "Model"
+            )
         except (GLib.Error, TypeError, RuntimeError):
-            logger.error("DEBUG: Failed to connect to 'settings-attribute-changed':", "Model")
+            logger.error(
+                "DEBUG: Failed to connect to 'settings-attribute-changed':", "Model"
+            )
         try:
             self.settings.connect("attribute-changed", self.handle_settings_changed)
             logger.debug("DEBUG: Connected to 'attribute-changed' signal", "Model")
@@ -81,7 +87,9 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         logger.trace("About to create TranslationManager", "Model")
         self.translation_manager = create_translation_manager(
             domain="dfakeseeder",
-            localedir=os.path.join(os.environ.get("DFS_PATH", "."), "components", "locale"),
+            localedir=os.path.join(
+                os.environ.get("DFS_PATH", "."), "components", "locale"
+            ),
             fallback_language="en",
         )
         logger.info("TranslationManager created successfully", "Model")
@@ -94,14 +102,20 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             logger.error("Exception in setup_translations()", "Model", exc_info=True)
         # Register translation function with ColumnTranslations to avoid expensive gc.get_objects() calls
         if hasattr(self.translation_manager, "translate_func"):
-            ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
-            logger.trace("Registered translation function with ColumnTranslations", "Model")
+            ColumnTranslations.register_translation_function(
+                self.translation_manager.translate_func
+            )
+            logger.trace(
+                "Registered translation function with ColumnTranslations", "Model"
+            )
         self.torrent_list: List[Any] = []  # List to hold all torrent instances
         self._torrent_by_filepath: dict = {}  # filepath -> Torrent for O(1) lookup
         # Debounce state for coalescing rapid attribute-changed signals
         self._data_changed_pending = False
         self._data_changed_timer = None
-        self.torrent_list_attributes = Gio.ListStore.new(Attributes)  # List to hold all Attributes instances
+        self.torrent_list_attributes = Gio.ListStore.new(
+            Attributes
+        )  # List to hold all Attributes instances
         # Multi-criteria filtering
         logger.trace("About to initialize filtering", "Model")
         self.search_filter = ""
@@ -145,7 +159,9 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
     # Method to remove a torrent
     def remove_torrent(self, filepath: Any) -> None:
         """Remove a torrent with the given file path from the model."""
-        logger.trace("Model remove torrent", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Model remove torrent", extra={"class_name": self.__class__.__name__}
+        )
         # Find the Torrent instance via index
         torrent = self._torrent_by_filepath.pop(filepath, None)
         if torrent is not None:
@@ -172,12 +188,16 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore(self) -> Any:
         """Return the list of torrent attributes for UI binding."""
-        logger.trace("Model get_liststore", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Model get_liststore", extra={"class_name": self.__class__.__name__}
+        )
         return self.torrent_list_attributes
 
     def get_torrents(self) -> Any:
         """Return the list of all torrent objects."""
-        logger.trace("Model get_torrents", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Model get_torrents", extra={"class_name": self.__class__.__name__}
+        )
         return self.torrent_list
 
     def get_trackers_liststore(self) -> Any:
@@ -209,7 +229,9 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         for fqdn, count in sorted_trackers:
             # Create a new instance of TorrentState and append it to the list store
             list_store.append(TorrentState(fqdn, count))
-        logger.trace(f"Found {len(sorted_trackers)} unique trackers across all torrents")
+        logger.trace(
+            f"Found {len(sorted_trackers)} unique trackers across all torrents"
+        )
         return list_store
 
     def stop(  # pylint: disable=too-many-locals,too-many-branches,too-many-statements
@@ -271,7 +293,11 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             remaining = max(0.05, max_wait_total - elapsed)  # Minimum 50ms per thread
 
             # Join torrent worker thread
-            if hasattr(torrent, "torrent_worker") and torrent.torrent_worker and torrent.torrent_worker.is_alive():
+            if (
+                hasattr(torrent, "torrent_worker")
+                and torrent.torrent_worker
+                and torrent.torrent_worker.is_alive()
+            ):
                 timeout = min(max_wait_per_thread, remaining)
                 torrent.torrent_worker.join(timeout=timeout)
                 if torrent.torrent_worker.is_alive():
@@ -287,7 +313,11 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             elapsed = time.time() - phase2_start
             remaining = max(0.05, max_wait_total - elapsed)
 
-            if hasattr(torrent, "peers_worker") and torrent.peers_worker and torrent.peers_worker.is_alive():
+            if (
+                hasattr(torrent, "peers_worker")
+                and torrent.peers_worker
+                and torrent.peers_worker.is_alive()
+            ):
                 timeout = min(max_wait_per_thread, remaining)
                 torrent.peers_worker.join(timeout=timeout)
                 if torrent.peers_worker.is_alive():
@@ -339,7 +369,10 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         )
         try:
             # Clear ListStore to release all Attributes objects
-            if hasattr(self, "torrent_list_attributes") and self.torrent_list_attributes:
+            if (
+                hasattr(self, "torrent_list_attributes")
+                and self.torrent_list_attributes
+            ):
                 items_count = self.torrent_list_attributes.get_n_items()
                 self.torrent_list_attributes.remove_all()
                 logger.trace(
@@ -348,7 +381,10 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                 )
 
             # Clear filtered store if it exists
-            if hasattr(self, "filtered_torrent_list_attributes") and self.filtered_torrent_list_attributes:
+            if (
+                hasattr(self, "filtered_torrent_list_attributes")
+                and self.filtered_torrent_list_attributes
+            ):
                 # Filtered store is a FilterListModel, get its underlying store
                 logger.trace(
                     "Cleared filtered torrent list",
@@ -497,7 +533,9 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             logger.trace("New language value: ''", "Model")
             try:
                 logger.trace(f"Language change detected from AppSettings: {value}")
-                logger.trace("About to check translation_manager availability...", "Model")
+                logger.trace(
+                    "About to check translation_manager availability...", "Model"
+                )
                 # Use the translation manager to switch language
                 if hasattr(self, "translation_manager") and self.translation_manager:
                     logger.trace(
@@ -506,7 +544,9 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                     )
                     actual_lang = self.translation_manager.switch_language(value)
                     logger.trace("switch_language() returned: ''", "Model")
-                    logger.info(f"Language switched via translation manager: {actual_lang}")
+                    logger.info(
+                        f"Language switched via translation manager: {actual_lang}"
+                    )
                     # Update translate function reference
                     logger.debug("Updating translate function reference...", "Model")
                     self.translate_func = self.translation_manager.translate_func  # type: ignore[attr-defined]
@@ -518,21 +558,29 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                         "Model",
                     )
                     if hasattr(self.translation_manager, "translate_func"):
-                        ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
+                        ColumnTranslations.register_translation_function(
+                            self.translation_manager.translate_func
+                        )
                         logger.trace(
                             "Re-registered NEW translation function with ColumnTranslations for language:",
                             "Model",
                         )
                     # Emit our own language-changed signal for UI components
-                    logger.trace("About to emit 'language-changed' signal with: ''", "Model")
+                    logger.trace(
+                        "About to emit 'language-changed' signal with: ''", "Model"
+                    )
                     self.emit("language-changed", actual_lang)
-                    logger.info("Successfully emitted language-changed signal:", "Model")
+                    logger.info(
+                        "Successfully emitted language-changed signal:", "Model"
+                    )
                 else:
                     logger.error("ERROR: Translation manager not available!", "Model")
                     logger.trace("hasattr(self, 'translation_manager'):", "Model")
                     if hasattr(self, "translation_manager"):
                         logger.trace("self.translation_manager:", "Model")
-                    logger.error("Translation manager not available for language change")
+                    logger.error(
+                        "Translation manager not available for language change"
+                    )
             except (GLib.Error, RuntimeError, AttributeError, OSError) as e:
                 logger.error(
                     f"Error handling language change from AppSettings: {e}",
@@ -545,7 +593,9 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         # Handle other setting changes as needed
         # Add other key-specific handling here in the future
 
-    def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
+    def handle_model_changed(
+        self, source: Any, data_obj: Any, data_changed: Any
+    ) -> None:
         """Coalesce rapid attribute-changed signals into a single data-changed."""
         if not self._data_changed_pending:
             self._data_changed_pending = True
@@ -640,14 +690,17 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
     def _update_filtered_list(self) -> None:
         """Update the filtered torrent list based on all active filters"""
         # Check if any filters are active
-        has_filters = bool(self.search_filter or self.active_filter_state or self.active_filter_tracker)
+        has_filters = bool(
+            self.search_filter or self.active_filter_state or self.active_filter_tracker
+        )
 
         if not has_filters:
             # No filters - show all torrents
             if (
                 hasattr(self, "filtered_torrent_list_attributes")
                 and self.filtered_torrent_list_attributes is not None
-                and self.filtered_torrent_list_attributes != self.torrent_list_attributes
+                and self.filtered_torrent_list_attributes
+                != self.torrent_list_attributes
             ):
                 old_store = self.filtered_torrent_list_attributes
                 old_store.remove_all()
@@ -725,7 +778,9 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
 
         return True
 
-    def _matches_state_filter(self, torrent: Any) -> Any:  # pylint: disable=too-many-return-statements
+    def _matches_state_filter(
+        self, torrent: Any
+    ) -> Any:  # pylint: disable=too-many-return-statements
         """Check if torrent matches the active state filter."""
         # Get torrent properties
         active = getattr(torrent, "active", True)
@@ -821,9 +876,13 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             # No need to call it manually here to avoid infinite loops
             # Re-register the NEW translation function with ColumnTranslations
             # This is critical - the translation function changes when language changes!
-            with logger.performance.operation_context("translation_reregister", "Model"):
+            with logger.performance.operation_context(
+                "translation_reregister", "Model"
+            ):
                 if hasattr(self.translation_manager, "translate_func"):
-                    ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
+                    ColumnTranslations.register_translation_function(
+                        self.translation_manager.translate_func
+                    )
                     logger.trace(
                         f"Re-registered NEW translation function with ColumnTranslations for language: {lang_code}",
                         "Model",

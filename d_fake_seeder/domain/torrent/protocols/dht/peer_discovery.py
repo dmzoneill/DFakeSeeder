@@ -43,7 +43,9 @@ class PeerInfo:
 class PeerDiscovery:
     """DHT peer discovery manager"""
 
-    def __init__(self, node_id: bytes, routing_table: RoutingTable, socket: Any) -> None:
+    def __init__(
+        self, node_id: bytes, routing_table: RoutingTable, socket: Any
+    ) -> None:
         """
         Initialize peer discovery
 
@@ -82,7 +84,9 @@ class PeerDiscovery:
             return float(dht_config.get("poll_interval_seconds", 0.1))
         return 0.1
 
-    async def discover_peers(self, info_hash: bytes, count: int = 50) -> List[Tuple[str, int]]:
+    async def discover_peers(
+        self, info_hash: bytes, count: int = 50
+    ) -> List[Tuple[str, int]]:
         """
         Discover peers for a torrent through DHT
 
@@ -160,7 +164,9 @@ class PeerDiscovery:
             # Announce to nodes with tokens
             successful_announces = 0
             for node_contact, token in tokens.items():
-                success = await self._send_announce_peer(node_contact, info_hash, port, token)
+                success = await self._send_announce_peer(
+                    node_contact, info_hash, port, token
+                )
                 if success:
                     successful_announces += 1
 
@@ -202,8 +208,12 @@ class PeerDiscovery:
         # Limit storage size
         if len(self.peer_storage[info_hash]) > DHTConstants.MAX_PEERS_PER_INFOHASH:
             # Remove oldest peers
-            sorted_peers = sorted(self.peer_storage[info_hash], key=lambda p: p.discovered_at)
-            self.peer_storage[info_hash] = set(sorted_peers[-DHTConstants.MAX_PEERS_PER_INFOHASH :])
+            sorted_peers = sorted(
+                self.peer_storage[info_hash], key=lambda p: p.discovered_at
+            )
+            self.peer_storage[info_hash] = set(
+                sorted_peers[-DHTConstants.MAX_PEERS_PER_INFOHASH :]
+            )
 
         logger.trace(
             f"Stored peer {ip}:{port} for {info_hash.hex()[:16]}",
@@ -226,7 +236,9 @@ class PeerDiscovery:
 
         for info_hash in list(self.peer_storage.keys()):
             peers = self.peer_storage[info_hash]
-            old_peers = {peer for peer in peers if current_time - peer.discovered_at > max_age}
+            old_peers = {
+                peer for peer in peers if current_time - peer.discovered_at > max_age
+            }
 
             if old_peers:
                 peers -= old_peers
@@ -253,7 +265,9 @@ class PeerDiscovery:
 
         return [(peer.ip, peer.port) for peer in peers[:count]]
 
-    async def _discover_peers_from_network(self, info_hash: bytes, count: int) -> List[Tuple[str, int]]:
+    async def _discover_peers_from_network(
+        self, info_hash: bytes, count: int
+    ) -> List[Tuple[str, int]]:
         """Discover peers from DHT network"""
         # Prevent concurrent discoveries for same torrent
         if info_hash in self.active_discoveries:
@@ -274,7 +288,9 @@ class PeerDiscovery:
             if info_hash in self.active_discoveries:
                 del self.active_discoveries[info_hash]
 
-    async def _perform_get_peers(self, info_hash: bytes, count: int) -> List[Tuple[str, int]]:
+    async def _perform_get_peers(
+        self, info_hash: bytes, count: int
+    ) -> List[Tuple[str, int]]:
         """Perform get_peers lookup in DHT"""
         discovered_peers: List[Tuple[str, int]] = []
         queried_nodes = set()
@@ -303,7 +319,9 @@ class PeerDiscovery:
 
             # Get new nodes for next round (simplified)
             nodes_to_query = self.routing_table.find_closest_nodes(info_hash, 8)
-            nodes_to_query = [n for n in nodes_to_query if n.node_id not in queried_nodes]
+            nodes_to_query = [
+                n for n in nodes_to_query if n.node_id not in queried_nodes
+            ]
 
         # Remove duplicates and limit count
         unique_peers = list(set(discovered_peers))[:count]
@@ -315,7 +333,9 @@ class PeerDiscovery:
 
         return unique_peers
 
-    async def _send_get_peers(self, node_contact: NodeContact, info_hash: bytes) -> List[Tuple[str, int]]:
+    async def _send_get_peers(
+        self, node_contact: NodeContact, info_hash: bytes
+    ) -> List[Tuple[str, int]]:
         """Send get_peers query to a node"""
         try:
             transaction_id = self._generate_transaction_id()
@@ -339,7 +359,9 @@ class PeerDiscovery:
             await self._send_dht_message(message, (node_contact.ip, node_contact.port))
 
             # Wait for response (with timeout)
-            response = await self._wait_for_response(transaction_id, timeout=DHTConstants.RESPONSE_TIMEOUT_SECONDS)
+            response = await self._wait_for_response(
+                transaction_id, timeout=DHTConstants.RESPONSE_TIMEOUT_SECONDS
+            )
 
             if response:
                 return self._parse_get_peers_response(response)
@@ -352,7 +374,9 @@ class PeerDiscovery:
 
         return []
 
-    async def _get_announce_tokens(self, nodes: List[NodeContact], info_hash: bytes) -> Dict[NodeContact, bytes]:
+    async def _get_announce_tokens(
+        self, nodes: List[NodeContact], info_hash: bytes
+    ) -> Dict[NodeContact, bytes]:
         """Get announce tokens from nodes"""
         tokens = {}
 
@@ -374,9 +398,13 @@ class PeerDiscovery:
                     "timestamp": time.time(),
                 }
 
-                await self._send_dht_message(message, (node_contact.ip, node_contact.port))
+                await self._send_dht_message(
+                    message, (node_contact.ip, node_contact.port)
+                )
 
-                response = await self._wait_for_response(transaction_id, timeout=DHTConstants.RESPONSE_SHORT_TIMEOUT)
+                response = await self._wait_for_response(
+                    transaction_id, timeout=DHTConstants.RESPONSE_SHORT_TIMEOUT
+                )
                 if response and b"r" in response and b"token" in response[b"r"]:
                     tokens[node_contact] = response[b"r"][b"token"]
 
@@ -388,7 +416,9 @@ class PeerDiscovery:
 
         return tokens
 
-    async def _send_announce_peer(self, node_contact: NodeContact, info_hash: bytes, port: int, token: bytes) -> bool:
+    async def _send_announce_peer(
+        self, node_contact: NodeContact, info_hash: bytes, port: int, token: bytes
+    ) -> bool:
         """Send announce_peer message"""
         try:
             transaction_id = self._generate_transaction_id()
@@ -408,7 +438,9 @@ class PeerDiscovery:
             await self._send_dht_message(message, (node_contact.ip, node_contact.port))
 
             # Wait for response
-            response = await self._wait_for_response(transaction_id, timeout=DHTConstants.RESPONSE_SHORT_TIMEOUT)
+            response = await self._wait_for_response(
+                transaction_id, timeout=DHTConstants.RESPONSE_SHORT_TIMEOUT
+            )
             return response is not None
 
         except Exception as e:
@@ -452,7 +484,9 @@ class PeerDiscovery:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _wait_for_response(self, transaction_id: bytes, timeout: float = 10) -> Optional[dict]:
+    async def _wait_for_response(
+        self, transaction_id: bytes, timeout: float = 10
+    ) -> Optional[dict]:
         """Wait for response to a query"""
         start_time = time.time()
 
@@ -476,7 +510,9 @@ class PeerDiscovery:
         self.transaction_counter = (self.transaction_counter + 1) % 65536
         return f"py{self.transaction_counter}".encode()[:4]
 
-    def handle_get_peers_query(self, message: dict, addr: Tuple[str, int]) -> Optional[dict]:
+    def handle_get_peers_query(
+        self, message: dict, addr: Tuple[str, int]
+    ) -> Optional[dict]:
         """Handle incoming get_peers query"""
         args = message.get(b"a", {})
         info_hash = args.get(b"info_hash")
@@ -526,7 +562,9 @@ class PeerDiscovery:
 
         return response
 
-    def handle_announce_peer_query(self, message: dict, addr: Tuple[str, int]) -> Optional[dict]:
+    def handle_announce_peer_query(
+        self, message: dict, addr: Tuple[str, int]
+    ) -> Optional[dict]:
         """Handle incoming announce_peer query"""
         args = message.get(b"a", {})
         info_hash = args.get(b"info_hash")

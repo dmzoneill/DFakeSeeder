@@ -35,17 +35,27 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
         ui_settings = getattr(self.settings, "ui_settings", {})
 
         # Configurable sleep intervals
-        self.manager_sleep_interval = ui_settings.get("async_sleep_interval_seconds", 1.0)
-        self.manager_error_sleep_interval = ui_settings.get("error_sleep_interval_seconds", 5.0)
-        self.manager_thread_join_timeout = ui_settings.get("manager_thread_join_timeout_seconds", 5.0)
+        self.manager_sleep_interval = ui_settings.get(
+            "async_sleep_interval_seconds", 1.0
+        )
+        self.manager_error_sleep_interval = ui_settings.get(
+            "error_sleep_interval_seconds", 5.0
+        )
+        self.manager_thread_join_timeout = ui_settings.get(
+            "manager_thread_join_timeout_seconds", 5.0
+        )
 
         # Torrent tracking
         self.active_torrents: Dict[str, Dict] = {}  # torrent_id -> torrent_info
         self.peer_managers: Dict[str, PeerProtocolManager] = {}  # info_hash -> manager
-        self._torrents_by_info_hash: Dict[str, List[str]] = {}  # info_hash_hex -> [torrent_id, ...]
+        self._torrents_by_info_hash: Dict[str, List[str]] = (
+            {}
+        )  # info_hash_hex -> [torrent_id, ...]
 
         # Peer server for incoming connections - use configured values
-        port = self.settings.get("connection.listening_port", NetworkConstants.DEFAULT_PORT)
+        port = self.settings.get(
+            "connection.listening_port", NetworkConstants.DEFAULT_PORT
+        )
         max_connections = self.settings.get("connection.max_global_connections", 200)
         self.peer_server = PeerServer(port=port, max_connections=max_connections)
 
@@ -68,14 +78,22 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
         # stats_update_interval_seconds is user-configurable (default 5.0s for better performance)
         # Increasing this from 2.0s to 5.0s reduces CPU by ~5-10% with minimal UX impact
         peer_protocol = getattr(self.settings, "peer_protocol", {})
-        self.peer_update_interval = peer_protocol.get("peer_update_interval_seconds", 30.0)
-        self.stats_update_interval = peer_protocol.get("stats_update_interval_seconds", 5.0)
+        self.peer_update_interval = peer_protocol.get(
+            "peer_update_interval_seconds", 30.0
+        )
+        self.stats_update_interval = peer_protocol.get(
+            "stats_update_interval_seconds", 5.0
+        )
         self.last_peer_update = 0
         self.last_stats_update = 0
 
         # Statistics caching with dirty-tracking (only recalculate changed managers)
-        self._per_manager_stats: Dict[str, Dict] = {}  # Cache per-manager aggregated stats
-        self._dirty_managers: set = set()  # Track which managers need stats recalculation
+        self._per_manager_stats: Dict[str, Dict] = (
+            {}
+        )  # Cache per-manager aggregated stats
+        self._dirty_managers: set = (
+            set()
+        )  # Track which managers need stats recalculation
         self._stats_cache_dirty = True  # Global dirty flag
 
         logger.trace(
@@ -146,7 +164,9 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
             self._dirty_managers.clear()
 
         # Stop peer server
-        logger.trace("Stopping peer server", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Stopping peer server", extra={"class_name": self.__class__.__name__}
+        )
         self.peer_server.stop()
         if shutdown_tracker:
             shutdown_tracker.mark_completed("network_connections", 1)
@@ -161,7 +181,9 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
             shutdown_tracker.mark_completed("async_executor", 1)
 
         # Stop ConnectionManager (stop all GLib timers)
-        logger.trace("Stopping ConnectionManager", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Stopping ConnectionManager", extra={"class_name": self.__class__.__name__}
+        )
         from d_fake_seeder.domain.torrent.connection_manager import (
             get_connection_manager,
         )
@@ -241,11 +263,17 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
                     try:
                         info_hash = bytes.fromhex(info_hash_hex)
                     except ValueError:
-                        logger.error(f"Invalid hex info_hash for {torrent_id}: " f"{info_hash_hex}")
+                        logger.error(
+                            f"Invalid hex info_hash for {torrent_id}: "
+                            f"{info_hash_hex}"
+                        )
                         return
 
             if not info_hash:
-                logger.warning(f"Could not get info_hash for {torrent_id} - " f"no valid method found")
+                logger.warning(
+                    f"Could not get info_hash for {torrent_id} - "
+                    f"no valid method found"
+                )
                 return
             if isinstance(info_hash, str):
                 info_hash = info_hash.encode()
@@ -274,7 +302,9 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
                     our_peer_id = self._generate_peer_id()
 
                     # Use configured max connections
-                    max_peer_connections = self.settings.get("connection.max_per_torrent", 50)
+                    max_peer_connections = self.settings.get(
+                        "connection.max_per_torrent", 50
+                    )
                     manager = PeerProtocolManager(
                         info_hash,
                         our_peer_id,
@@ -295,7 +325,8 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
                             manager.add_peers(peer_addresses)
 
                     logger.trace(
-                        f"🎯 Added torrent {torrent_id} " f"({info_hash_hex[:12]}...) with {len(peer_addresses)} peers",
+                        f"🎯 Added torrent {torrent_id} "
+                        f"({info_hash_hex[:12]}...) with {len(peer_addresses)} peers",
                         extra={"class_name": self.__class__.__name__},
                     )
                 else:
@@ -344,7 +375,8 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
                 )
             else:
                 logger.trace(
-                    f"🔄 Removed torrent {torrent_id} " f"(peer manager still used by other torrents)",
+                    f"🔄 Removed torrent {torrent_id} "
+                    f"(peer manager still used by other torrents)",
                     extra={"class_name": self.__class__.__name__},
                 )
 
@@ -368,7 +400,8 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
                 self._invalidate_manager_stats(info_hash_hex)
 
                 logger.trace(
-                    f"🔄 Updated {len(peer_addresses)} peers for " f"torrent {torrent_id}",
+                    f"🔄 Updated {len(peer_addresses)} peers for "
+                    f"torrent {torrent_id}",
                     extra={"class_name": self.__class__.__name__},
                 )
 
@@ -462,7 +495,11 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
                 return
             managers_snapshot = list(self.peer_managers.items())
             torrents_snapshot = {
-                ih: [self.active_torrents[tid] for tid in tids if tid in self.active_torrents]
+                ih: [
+                    self.active_torrents[tid]
+                    for tid in tids
+                    if tid in self.active_torrents
+                ]
                 for ih, tids in self._torrents_by_info_hash.items()
             }
 
@@ -532,7 +569,10 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
                     self._per_manager_stats[info_hash_hex] = manager_totals
 
                 except Exception as e:  # pylint: disable=broad-exception-caught
-                    logger.error(f"Error getting stats from manager {info_hash_hex}: {e}", exc_info=True)
+                    logger.error(
+                        f"Error getting stats from manager {info_hash_hex}: {e}",
+                        exc_info=True,
+                    )
 
             # Clear dirty set
             self._dirty_managers.clear()

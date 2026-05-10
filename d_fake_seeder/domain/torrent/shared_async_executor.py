@@ -119,13 +119,17 @@ class SharedAsyncExecutor:  # pylint: disable=too-many-instance-attributes
             self.shutdown_event.clear()
 
             # Start dedicated event loop thread
-            self.loop_thread = threading.Thread(target=self._run_event_loop, daemon=True, name="SharedAsyncExecutor")
+            self.loop_thread = threading.Thread(
+                target=self._run_event_loop, daemon=True, name="SharedAsyncExecutor"
+            )
             self.loop_thread.start()
 
             # Wait for event loop to be running
             max_wait = AsyncConstants.EXECUTOR_SHUTDOWN_TIMEOUT  # 2 second timeout
             start_time = time.time()
-            while (self.event_loop is None or not self.event_loop.is_running()) and time.time() - start_time < max_wait:
+            while (
+                self.event_loop is None or not self.event_loop.is_running()
+            ) and time.time() - start_time < max_wait:
                 time.sleep(self._get_startup_poll_interval())
 
             if self.event_loop is None:
@@ -354,10 +358,14 @@ class SharedAsyncExecutor:  # pylint: disable=too-many-instance-attributes
         # Add current state
         stats["running"] = self.running
         stats["max_workers"] = self.max_workers
-        stats["event_loop_running"] = self.event_loop is not None and self.event_loop.is_running()
+        stats["event_loop_running"] = (
+            self.event_loop is not None and self.event_loop.is_running()
+        )
 
         with self.tasks_lock:
-            stats["active_tasks"] = sum(len(tasks) for tasks in self.active_tasks.values())
+            stats["active_tasks"] = sum(
+                len(tasks) for tasks in self.active_tasks.values()
+            )
 
         return stats
 

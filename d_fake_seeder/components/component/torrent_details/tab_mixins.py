@@ -40,7 +40,9 @@ class DataUpdateMixin:
             if hasattr(model, "connect"):
                 model.connect("data-changed", callback)
                 model.connect("selection-changed", callback)
-            logger.trace(f"Data binding set up for {getattr(self, 'tab_name', 'unknown')} tab")
+            logger.trace(
+                f"Data binding set up for {getattr(self, 'tab_name', 'unknown')} tab"
+            )
         except Exception as e:
             logger.error(f"Error setting up data binding: {e}")
 
@@ -86,7 +88,8 @@ class DataUpdateMixin:
                 # Get translation function from model if available
                 translate_func = (
                     self.model.get_translate_func()
-                    if hasattr(self, "model") and hasattr(self.model, "get_translate_func")
+                    if hasattr(self, "model")
+                    and hasattr(self.model, "get_translate_func")
                     else lambda x: x
                 )
                 return translate_func("Yes") if value else translate_func("No")  # type: ignore[no-any-return]
@@ -267,7 +270,9 @@ class UIUtilityMixin:
             logger.error(f"Error creating grid: {e}")
             return Gtk.Grid()
 
-    def create_label_pair(self, label_text: str, value_text: str, row: int, grid: Gtk.Grid) -> None:
+    def create_label_pair(
+        self, label_text: str, value_text: str, row: int, grid: Gtk.Grid
+    ) -> None:
         """
         Create a label pair (name and value) and add to grid.
 
@@ -336,7 +341,9 @@ class UIUtilityMixin:
             logger.error(f"Error creating info label: {e}")
             return Gtk.Label()
 
-    def update_text_buffer(self, text_view: Gtk.TextView, text: str, max_lines: int = 1000) -> None:
+    def update_text_buffer(
+        self, text_view: Gtk.TextView, text: str, max_lines: int = 1000
+    ) -> None:
         """
         Update text view buffer with line limit for performance.
 

@@ -40,13 +40,17 @@ class ColumnTranslations:
             translate_func: The translation function from TranslationManager
         """
         logger.trace("Translation function registration called", "ColumnTranslations")
-        logger.trace(f"New translation function: {translate_func}", "ColumnTranslations")
+        logger.trace(
+            f"New translation function: {translate_func}", "ColumnTranslations"
+        )
         logger.trace(
             f"Previous translation function: {cls._translation_function}",
             "ColumnTranslations",
         )
         cls._translation_function = translate_func
-        logger.info("Translation function registered successfully", "ColumnTranslations")
+        logger.info(
+            "Translation function registered successfully", "ColumnTranslations"
+        )
 
     @classmethod
     def _get_translation_function(cls) -> Any:

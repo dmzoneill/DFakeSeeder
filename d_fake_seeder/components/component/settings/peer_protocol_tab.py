@@ -18,7 +18,9 @@ from .settings_mixins import UtilityMixin, ValidationMixin  # noqa: E402
 # fmt: on
 
 
-class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin):
+class PeerProtocolTab(
+    BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
+):
     """
     Peer Protocol settings tab component.
 
@@ -166,28 +168,64 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         self._widgets.update(
             {
                 # Peer Protocol Timeouts
-                "handshake_timeout": self.builder.get_object("settings_handshake_timeout"),
-                "message_read_timeout": self.builder.get_object("settings_message_read_timeout"),
-                "keep_alive_interval": self.builder.get_object("settings_keep_alive_interval"),
-                "peer_contact_interval": self.builder.get_object("settings_peer_contact_interval"),
+                "handshake_timeout": self.builder.get_object(
+                    "settings_handshake_timeout"
+                ),
+                "message_read_timeout": self.builder.get_object(
+                    "settings_message_read_timeout"
+                ),
+                "keep_alive_interval": self.builder.get_object(
+                    "settings_keep_alive_interval"
+                ),
+                "peer_contact_interval": self.builder.get_object(
+                    "settings_peer_contact_interval"
+                ),
                 # Seeder Protocol Settings
-                "udp_seeder_timeout": self.builder.get_object("settings_udp_seeder_timeout"),
-                "http_seeder_timeout": self.builder.get_object("settings_http_seeder_timeout"),
+                "udp_seeder_timeout": self.builder.get_object(
+                    "settings_udp_seeder_timeout"
+                ),
+                "http_seeder_timeout": self.builder.get_object(
+                    "settings_http_seeder_timeout"
+                ),
                 "seeder_port_min": self.builder.get_object("settings_seeder_port_min"),
                 "seeder_port_max": self.builder.get_object("settings_seeder_port_max"),
-                "transaction_id_min": self.builder.get_object("settings_transaction_id_min"),
-                "transaction_id_max": self.builder.get_object("settings_transaction_id_max"),
-                "peer_request_count": self.builder.get_object("settings_peer_request_count"),
+                "transaction_id_min": self.builder.get_object(
+                    "settings_transaction_id_min"
+                ),
+                "transaction_id_max": self.builder.get_object(
+                    "settings_transaction_id_max"
+                ),
+                "peer_request_count": self.builder.get_object(
+                    "settings_peer_request_count"
+                ),
                 # Peer Behavior Settings
-                "seeder_upload_activity": self.builder.get_object("settings_seeder_upload_activity_probability"),
-                "peer_idle_chance": self.builder.get_object("settings_peer_idle_chance"),
-                "progress_dist_start": self.builder.get_object("settings_progress_distribution_start"),
-                "progress_dist_middle": self.builder.get_object("settings_progress_distribution_middle"),
-                "progress_dist_almost": self.builder.get_object("settings_progress_distribution_almost"),
-                "peer_behavior_analysis": self.builder.get_object("settings_peer_behavior_analysis_probability"),
-                "peer_status_change": self.builder.get_object("settings_peer_status_change_probability"),
-                "peer_dropout": self.builder.get_object("settings_peer_dropout_probability"),
-                "connection_rotation": self.builder.get_object("settings_connection_rotation_percentage"),
+                "seeder_upload_activity": self.builder.get_object(
+                    "settings_seeder_upload_activity_probability"
+                ),
+                "peer_idle_chance": self.builder.get_object(
+                    "settings_peer_idle_chance"
+                ),
+                "progress_dist_start": self.builder.get_object(
+                    "settings_progress_distribution_start"
+                ),
+                "progress_dist_middle": self.builder.get_object(
+                    "settings_progress_distribution_middle"
+                ),
+                "progress_dist_almost": self.builder.get_object(
+                    "settings_progress_distribution_almost"
+                ),
+                "peer_behavior_analysis": self.builder.get_object(
+                    "settings_peer_behavior_analysis_probability"
+                ),
+                "peer_status_change": self.builder.get_object(
+                    "settings_peer_status_change_probability"
+                ),
+                "peer_dropout": self.builder.get_object(
+                    "settings_peer_dropout_probability"
+                ),
+                "connection_rotation": self.builder.get_object(
+                    "settings_connection_rotation_percentage"
+                ),
             }
         )
 
@@ -227,19 +265,27 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             handshake_timeout = self.get_widget("handshake_timeout")
             if handshake_timeout:
-                handshake_timeout.set_value(peer_protocol.get("handshake_timeout_seconds", 30.0))
+                handshake_timeout.set_value(
+                    peer_protocol.get("handshake_timeout_seconds", 30.0)
+                )
 
             message_read_timeout = self.get_widget("message_read_timeout")
             if message_read_timeout:
-                message_read_timeout.set_value(peer_protocol.get("message_read_timeout_seconds", 60.0))
+                message_read_timeout.set_value(
+                    peer_protocol.get("message_read_timeout_seconds", 60.0)
+                )
 
             keep_alive_interval = self.get_widget("keep_alive_interval")
             if keep_alive_interval:
-                keep_alive_interval.set_value(peer_protocol.get("keep_alive_interval_seconds", 120.0))
+                keep_alive_interval.set_value(
+                    peer_protocol.get("keep_alive_interval_seconds", 120.0)
+                )
 
             peer_contact_interval = self.get_widget("peer_contact_interval")
             if peer_contact_interval:
-                peer_contact_interval.set_value(peer_protocol.get("contact_interval_seconds", 300.0))
+                peer_contact_interval.set_value(
+                    peer_protocol.get("contact_interval_seconds", 300.0)
+                )
 
         except Exception as e:
             self.logger.error(f"Error loading peer protocol settings: {e}")
@@ -269,7 +315,9 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
 
             transaction_id_max = self.get_widget("transaction_id_max")
             if transaction_id_max:
-                transaction_id_max.set_value(seeders.get("transaction_id_max", 2147483647))
+                transaction_id_max.set_value(
+                    seeders.get("transaction_id_max", 2147483647)
+                )
 
             peer_request_count = self.get_widget("peer_request_count")
             if peer_request_count:
@@ -283,7 +331,9 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             seeder_upload_activity = self.get_widget("seeder_upload_activity")
             if seeder_upload_activity:
-                seeder_upload_activity.set_value(peer_behavior.get("seeder_upload_activity_probability", 0.9))
+                seeder_upload_activity.set_value(
+                    peer_behavior.get("seeder_upload_activity_probability", 0.9)
+                )
 
             peer_idle_chance = self.get_widget("peer_idle_chance")
             if peer_idle_chance:
@@ -291,31 +341,45 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
 
             progress_dist_start = self.get_widget("progress_dist_start")
             if progress_dist_start:
-                progress_dist_start.set_value(peer_behavior.get("progress_distribution_start", 0.2))
+                progress_dist_start.set_value(
+                    peer_behavior.get("progress_distribution_start", 0.2)
+                )
 
             progress_dist_middle = self.get_widget("progress_dist_middle")
             if progress_dist_middle:
-                progress_dist_middle.set_value(peer_behavior.get("progress_distribution_middle", 0.5))
+                progress_dist_middle.set_value(
+                    peer_behavior.get("progress_distribution_middle", 0.5)
+                )
 
             progress_dist_almost = self.get_widget("progress_dist_almost")
             if progress_dist_almost:
-                progress_dist_almost.set_value(peer_behavior.get("progress_distribution_almost_done", 0.3))
+                progress_dist_almost.set_value(
+                    peer_behavior.get("progress_distribution_almost_done", 0.3)
+                )
 
             peer_behavior_analysis = self.get_widget("peer_behavior_analysis")
             if peer_behavior_analysis:
-                peer_behavior_analysis.set_value(peer_behavior.get("peer_behavior_analysis_probability", 0.05))
+                peer_behavior_analysis.set_value(
+                    peer_behavior.get("peer_behavior_analysis_probability", 0.05)
+                )
 
             peer_status_change = self.get_widget("peer_status_change")
             if peer_status_change:
-                peer_status_change.set_value(peer_behavior.get("peer_status_change_probability", 0.1))
+                peer_status_change.set_value(
+                    peer_behavior.get("peer_status_change_probability", 0.1)
+                )
 
             peer_dropout = self.get_widget("peer_dropout")
             if peer_dropout:
-                peer_dropout.set_value(peer_behavior.get("peer_dropout_probability", 0.02))
+                peer_dropout.set_value(
+                    peer_behavior.get("peer_dropout_probability", 0.02)
+                )
 
             connection_rotation = self.get_widget("connection_rotation")
             if connection_rotation:
-                connection_rotation.set_value(peer_behavior.get("connection_rotation_percentage", 0.1))
+                connection_rotation.set_value(
+                    peer_behavior.get("connection_rotation_percentage", 0.1)
+                )
 
         except Exception as e:
             self.logger.error(f"Error loading peer behavior settings: {e}")
@@ -358,19 +422,27 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             handshake_timeout = self.get_widget("handshake_timeout")
             if handshake_timeout:
-                peer_protocol["handshake_timeout_seconds"] = handshake_timeout.get_value()
+                peer_protocol["handshake_timeout_seconds"] = (
+                    handshake_timeout.get_value()
+                )
 
             message_read_timeout = self.get_widget("message_read_timeout")
             if message_read_timeout:
-                peer_protocol["message_read_timeout_seconds"] = message_read_timeout.get_value()
+                peer_protocol["message_read_timeout_seconds"] = (
+                    message_read_timeout.get_value()
+                )
 
             keep_alive_interval = self.get_widget("keep_alive_interval")
             if keep_alive_interval:
-                peer_protocol["keep_alive_interval_seconds"] = keep_alive_interval.get_value()
+                peer_protocol["keep_alive_interval_seconds"] = (
+                    keep_alive_interval.get_value()
+                )
 
             peer_contact_interval = self.get_widget("peer_contact_interval")
             if peer_contact_interval:
-                peer_protocol["contact_interval_seconds"] = peer_contact_interval.get_value()
+                peer_protocol["contact_interval_seconds"] = (
+                    peer_contact_interval.get_value()
+                )
 
         except Exception as e:
             self.logger.error(f"Error collecting peer protocol settings: {e}")
@@ -422,7 +494,9 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         try:
             seeder_upload_activity = self.get_widget("seeder_upload_activity")
             if seeder_upload_activity:
-                peer_behavior["seeder_upload_activity_probability"] = seeder_upload_activity.get_value()
+                peer_behavior["seeder_upload_activity_probability"] = (
+                    seeder_upload_activity.get_value()
+                )
 
             peer_idle_chance = self.get_widget("peer_idle_chance")
             if peer_idle_chance:
@@ -430,23 +504,33 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
 
             progress_dist_start = self.get_widget("progress_dist_start")
             if progress_dist_start:
-                peer_behavior["progress_distribution_start"] = progress_dist_start.get_value()
+                peer_behavior["progress_distribution_start"] = (
+                    progress_dist_start.get_value()
+                )
 
             progress_dist_middle = self.get_widget("progress_dist_middle")
             if progress_dist_middle:
-                peer_behavior["progress_distribution_middle"] = progress_dist_middle.get_value()
+                peer_behavior["progress_distribution_middle"] = (
+                    progress_dist_middle.get_value()
+                )
 
             progress_dist_almost = self.get_widget("progress_dist_almost")
             if progress_dist_almost:
-                peer_behavior["progress_distribution_almost_done"] = progress_dist_almost.get_value()
+                peer_behavior["progress_distribution_almost_done"] = (
+                    progress_dist_almost.get_value()
+                )
 
             peer_behavior_analysis = self.get_widget("peer_behavior_analysis")
             if peer_behavior_analysis:
-                peer_behavior["peer_behavior_analysis_probability"] = peer_behavior_analysis.get_value()
+                peer_behavior["peer_behavior_analysis_probability"] = (
+                    peer_behavior_analysis.get_value()
+                )
 
             peer_status_change = self.get_widget("peer_status_change")
             if peer_status_change:
-                peer_behavior["peer_status_change_probability"] = peer_status_change.get_value()
+                peer_behavior["peer_status_change_probability"] = (
+                    peer_status_change.get_value()
+                )
 
             peer_dropout = self.get_widget("peer_dropout")
             if peer_dropout:
@@ -454,7 +538,9 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
 
             connection_rotation = self.get_widget("connection_rotation")
             if connection_rotation:
-                peer_behavior["connection_rotation_percentage"] = connection_rotation.get_value()
+                peer_behavior["connection_rotation_percentage"] = (
+                    connection_rotation.get_value()
+                )
 
         except Exception as e:
             self.logger.error(f"Error collecting peer behavior settings: {e}")
@@ -473,7 +559,9 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
                 min_port = int(seeder_port_min.get_value())
                 max_port = int(seeder_port_max.get_value())
                 if min_port >= max_port:
-                    errors["seeder_port_range"] = "Minimum port must be less than maximum port"
+                    errors["seeder_port_range"] = (
+                        "Minimum port must be less than maximum port"
+                    )
 
             # Validate transaction ID ranges
             transaction_id_min = self.get_widget("transaction_id_min")
@@ -482,7 +570,9 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
                 min_id = int(transaction_id_min.get_value())
                 max_id = int(transaction_id_max.get_value())
                 if min_id >= max_id:
-                    errors["transaction_id_range"] = "Minimum transaction ID must be less than maximum"
+                    errors["transaction_id_range"] = (
+                        "Minimum transaction ID must be less than maximum"
+                    )
 
         except Exception as e:
             self.logger.error(f"Error validating Peer Protocol tab settings: {e}")
@@ -536,7 +626,9 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
             if peer_idle_chance:
                 peer_idle_chance.set_value(0.1)
 
-            self.show_notification(self._("Peer Protocol settings reset to defaults"), "success")
+            self.show_notification(
+                self._("Peer Protocol settings reset to defaults"), "success"
+            )
 
         except Exception as e:
             self.logger.error(f"Error resetting Peer Protocol tab to defaults: {e}")

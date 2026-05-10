@@ -31,18 +31,24 @@ def detect_gtk_version() -> str:  # pylint: disable=too-many-return-statements
 
             # Try to determine version from module attributes
             if hasattr(gtk_module, "_version"):
-                version_str = str(gtk_module._version)  # pylint: disable=protected-access
+                version_str = str(
+                    gtk_module._version
+                )  # pylint: disable=protected-access
                 if "3." in version_str:
                     return "3"
                 if "4." in version_str:
                     return "4"
 
             # Alternative detection method - check for GTK4-specific features
-            if hasattr(gtk_module, "Application") and hasattr(gtk_module.Application, "get_default"):
+            if hasattr(gtk_module, "Application") and hasattr(
+                gtk_module.Application, "get_default"
+            ):
                 # GTK4 has different API signatures
                 try:
                     # This is a GTK4-specific check
-                    if hasattr(gtk_module, "CssProvider") and hasattr(gtk_module.CssProvider, "load_from_data"):
+                    if hasattr(gtk_module, "CssProvider") and hasattr(
+                        gtk_module.CssProvider, "load_from_data"
+                    ):
                         return "4"
                 except Exception:  # pylint: disable=broad-exception-caught
                     pass
@@ -54,7 +60,9 @@ def detect_gtk_version() -> str:  # pylint: disable=too-many-return-statements
 
         # No GTK loaded - default to GTK4 for new applications
         # We avoid trying to load GTK versions here to prevent conflicts
-        logger.trace("No GTK version loaded, defaulting to GTK4", "TranslationManagerFactory")
+        logger.trace(
+            "No GTK version loaded, defaulting to GTK4", "TranslationManagerFactory"
+        )
         return "4"
 
     except Exception as e:  # pylint: disable=broad-exception-caught
@@ -113,7 +121,9 @@ def create_translation_manager(  # pylint: disable=too-many-arguments,too-many-p
         if gtk_version == "3":
             from .gtk3_implementation import TranslationManagerGTK3
 
-            logger.trace("Creating GTK3 TranslationManager", "TranslationManagerFactory")
+            logger.trace(
+                "Creating GTK3 TranslationManager", "TranslationManagerFactory"
+            )
             return TranslationManagerGTK3(
                 domain=domain,
                 localedir=localedir,
@@ -153,7 +163,9 @@ def create_translation_manager(  # pylint: disable=too-many-arguments,too-many-p
 
         # Try fallback to the other version only if no version conflict
         fallback_version = "4" if gtk_version == "3" else "3"
-        logger.warning(f"Attempting fallback to GTK{fallback_version}", "TranslationManagerFactory")
+        logger.warning(
+            f"Attempting fallback to GTK{fallback_version}", "TranslationManagerFactory"
+        )
 
         try:
             if fallback_version == "3":
@@ -202,7 +214,9 @@ def create_gtk3_translation_manager(
     try:
         from .gtk3_implementation import TranslationManagerGTK3
 
-        logger.trace("Creating GTK3 TranslationManager directly", "TranslationManagerFactory")
+        logger.trace(
+            "Creating GTK3 TranslationManager directly", "TranslationManagerFactory"
+        )
         return TranslationManagerGTK3(
             domain=domain,
             localedir=localedir,
@@ -233,7 +247,9 @@ def create_gtk4_translation_manager(
     try:
         from .gtk4_implementation import TranslationManagerGTK4
 
-        logger.trace("Creating GTK4 TranslationManager directly", "TranslationManagerFactory")
+        logger.trace(
+            "Creating GTK4 TranslationManager directly", "TranslationManagerFactory"
+        )
         return TranslationManagerGTK4(
             domain=domain,
             localedir=localedir,
@@ -265,7 +281,9 @@ def get_available_gtk_versions() -> Set[str]:
         if "gi.repository.Gtk" in sys.modules:
             gtk_module = sys.modules["gi.repository.Gtk"]
             if hasattr(gtk_module, "_version"):
-                version_str = str(gtk_module._version)  # pylint: disable=protected-access
+                version_str = str(
+                    gtk_module._version
+                )  # pylint: disable=protected-access
                 if "3." in version_str:
                     available_versions.add("3")
                 elif "4." in version_str:
@@ -322,5 +340,9 @@ def validate_gtk_environment(gtk_version: str) -> bool:
         return widget is not None
 
     except Exception as e:  # pylint: disable=broad-exception-caught
-        logger.error(f"GTK{gtk_version} validation failed: {e}", "TranslationManagerFactory", exc_info=True)
+        logger.error(
+            f"GTK{gtk_version} validation failed: {e}",
+            "TranslationManagerFactory",
+            exc_info=True,
+        )
         return False

@@ -111,7 +111,11 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             # Extract key torrent information directly from the torrent object
             # Try multiple sources for the name
             torrent_name = self.safe_get_property(torrent, "name", "")
-            if not torrent_name and hasattr(torrent, "torrent_file") and torrent.torrent_file:
+            if (
+                not torrent_name
+                and hasattr(torrent, "torrent_file")
+                and torrent.torrent_file
+            ):
                 torrent_name = getattr(torrent.torrent_file, "name", "Unknown")
             if not torrent_name:
                 torrent_name = "Unknown"
@@ -132,7 +136,9 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 ),
                 (
                     translate_func("Progress"),
-                    self._format_progress(self.safe_get_property(torrent, "progress", 0)),
+                    self._format_progress(
+                        self.safe_get_property(torrent, "progress", 0)
+                    ),
                 ),
             ]
 
@@ -221,7 +227,9 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 self._details_grid.attach(value, 1, row, 1, 1)
 
         except Exception as e:
-            self.logger.error(f"Error creating detail row {label_text}={value_text}: {e}")
+            self.logger.error(
+                f"Error creating detail row {label_text}={value_text}: {e}"
+            )
 
     def _format_size(self, size_value: Any) -> str:
         """

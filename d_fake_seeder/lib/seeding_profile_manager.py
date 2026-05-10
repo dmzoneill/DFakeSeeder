@@ -394,7 +394,9 @@ class SeedingProfileManager:
             upload_str = "Unlimited" if upload == 0 else f"{upload} KB/s"
 
             connections = settings.get("max_connections", 0)
-            interval = settings.get("announce_interval", 1800) // 60  # Convert to minutes
+            interval = (
+                settings.get("announce_interval", 1800) // 60
+            )  # Convert to minutes
 
             return f"Upload: {upload_str}, Connections: {connections}, Announces: {interval}min"
 

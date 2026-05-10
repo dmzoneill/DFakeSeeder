@@ -83,7 +83,9 @@ class DHTSeeder(BaseSeeder):  # pylint: disable=too-many-instance-attributes
     async def start(self) -> Any:
         """Start DHT seeding"""
         if not self.dht_enabled:
-            logger.info("DHT seeding disabled", extra={"class_name": self.__class__.__name__})
+            logger.info(
+                "DHT seeding disabled", extra={"class_name": self.__class__.__name__}
+            )
             return False
 
         if not self.info_hash:
@@ -94,7 +96,9 @@ class DHTSeeder(BaseSeeder):  # pylint: disable=too-many-instance-attributes
             return False
 
         try:
-            logger.trace("Starting DHT seeder", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "Starting DHT seeder", extra={"class_name": self.__class__.__name__}
+            )
 
             # Initialize DHT node
             self.dht_node = DHTNode(port=self.port)
@@ -120,7 +124,9 @@ class DHTSeeder(BaseSeeder):  # pylint: disable=too-many-instance-attributes
 
     async def stop(self) -> Any:
         """Stop DHT seeding"""
-        logger.info("Stopping DHT seeder", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Stopping DHT seeder", extra={"class_name": self.__class__.__name__}
+        )
 
         self.active = False
         self.shutdown_requested = True

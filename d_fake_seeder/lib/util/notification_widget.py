@@ -165,7 +165,9 @@ class NotificationWidget(Gtk.Frame):
         # Apply CSS provider to this widget
         css_provider = Gtk.CssProvider()
         css_provider.load_from_string(css)
-        self.get_style_context().add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 100)
+        self.get_style_context().add_provider(
+            css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 100
+        )
 
     def _build_ui(
         self,
@@ -176,7 +178,9 @@ class NotificationWidget(Gtk.Frame):
     ) -> None:
         """Build the notification UI."""
         # Icon
-        icon_name = NOTIFICATION_ICONS.get(notification_type, "dialog-information-symbolic")
+        icon_name = NOTIFICATION_ICONS.get(
+            notification_type, "dialog-information-symbolic"
+        )
         icon = Gtk.Image.new_from_icon_name(icon_name)
         icon.set_pixel_size(24)
         icon.add_css_class("notification-icon")
@@ -230,7 +234,9 @@ class NotificationWidget(Gtk.Frame):
             try:
                 self.action_callback()
             except Exception as e:  # pylint: disable=broad-exception-caught
-                logger.error(f"Error in notification action callback: {e}", exc_info=True)
+                logger.error(
+                    f"Error in notification action callback: {e}", exc_info=True
+                )
         self.emit("action-clicked")
         self.dismiss()
 

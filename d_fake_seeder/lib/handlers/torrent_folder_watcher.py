@@ -41,7 +41,9 @@ except ImportError:
 class TorrentFolderWatcher:
     """Watches a folder for new torrent files and triggers callbacks when found"""
 
-    def __init__(self, model: Any, settings: Any, global_peer_manager: Any = None) -> None:
+    def __init__(
+        self, model: Any, settings: Any, global_peer_manager: Any = None
+    ) -> None:
         """
         Initialize torrent folder watcher
 
@@ -184,7 +186,9 @@ class TorrentFolderWatcher:
 class TorrentFileEventHandler(FileSystemEventHandler):
     """Handles file system events for torrent files"""
 
-    def __init__(self, model: Any, watch_config: Any, global_peer_manager: Any = None) -> None:
+    def __init__(
+        self, model: Any, watch_config: Any, global_peer_manager: Any = None
+    ) -> None:
         """
         Initialize event handler
 
@@ -197,8 +201,12 @@ class TorrentFileEventHandler(FileSystemEventHandler):
         self.model = model
         self.watch_config = watch_config
         self.global_peer_manager = global_peer_manager
-        self.processed_files: Set[Any] = set()  # Track processed files to avoid duplicates
-        self.last_process_time: Dict[str, Any] = {}  # Track when files were last processed
+        self.processed_files: Set[Any] = (
+            set()
+        )  # Track processed files to avoid duplicates
+        self.last_process_time: Dict[str, Any] = (
+            {}
+        )  # Track when files were last processed
 
     def on_created(self, event: Any) -> None:
         """Handle file creation events"""
@@ -227,7 +235,9 @@ class TorrentFileEventHandler(FileSystemEventHandler):
         self.process_torrent_file(file_path)
         return False  # Don't repeat
 
-    def process_torrent_file(self, file_path: Any) -> None:  # pylint: disable=too-many-branches
+    def process_torrent_file(
+        self, file_path: Any
+    ) -> None:  # pylint: disable=too-many-branches
         """
         Process a torrent file by copying it to the config directory
 
@@ -322,7 +332,9 @@ class TorrentFileEventHandler(FileSystemEventHandler):
             # Notify user of auto-added torrent
             if View.instance:
                 # Truncate long filenames for display
-                display_name = filename[:-8] if filename.endswith(".torrent") else filename
+                display_name = (
+                    filename[:-8] if filename.endswith(".torrent") else filename
+                )
                 if len(display_name) > 40:
                     display_name = display_name[:37] + "..."
                 View.instance.notify(

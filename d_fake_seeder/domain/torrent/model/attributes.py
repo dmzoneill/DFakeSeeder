@@ -46,19 +46,31 @@ class Attributes(GObject.Object):
 
     # New attributes for enhanced functionality
     label = GObject.Property(type=GObject.TYPE_STRING, default="")
-    priority = GObject.Property(type=GObject.TYPE_STRING, default="normal")  # low, normal, high
-    upload_limit = GObject.Property(type=GObject.TYPE_LONG, default=0)  # 0 = unlimited (uses global)
-    download_limit = GObject.Property(type=GObject.TYPE_LONG, default=0)  # 0 = unlimited (uses global)
+    priority = GObject.Property(
+        type=GObject.TYPE_STRING, default="normal"
+    )  # low, normal, high
+    upload_limit = GObject.Property(
+        type=GObject.TYPE_LONG, default=0
+    )  # 0 = unlimited (uses global)
+    download_limit = GObject.Property(
+        type=GObject.TYPE_LONG, default=0
+    )  # 0 = unlimited (uses global)
     super_seeding = GObject.Property(type=GObject.TYPE_BOOLEAN, default=False)
     sequential_download = GObject.Property(type=GObject.TYPE_BOOLEAN, default=False)
     force_start = GObject.Property(type=GObject.TYPE_BOOLEAN, default=False)
 
     # Torrent metadata properties
-    creation_date = GObject.Property(type=GObject.TYPE_LONG, default=0)  # Unix timestamp
+    creation_date = GObject.Property(
+        type=GObject.TYPE_LONG, default=0
+    )  # Unix timestamp
     comment = GObject.Property(type=GObject.TYPE_STRING, default="")
     created_by = GObject.Property(type=GObject.TYPE_STRING, default="")
-    piece_length = GObject.Property(type=GObject.TYPE_LONG, default=0)  # Bytes per piece
-    piece_count = GObject.Property(type=GObject.TYPE_LONG, default=0)  # Total number of pieces
+    piece_length = GObject.Property(
+        type=GObject.TYPE_LONG, default=0
+    )  # Bytes per piece
+    piece_count = GObject.Property(
+        type=GObject.TYPE_LONG, default=0
+    )  # Total number of pieces
 
     def __init__(self) -> None:
         super().__init__()

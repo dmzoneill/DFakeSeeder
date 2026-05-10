@@ -76,7 +76,9 @@ class BaseTorrentTab(Component, ABC):
     # ========== Component Abstract Method Implementations ==========
     # These provide sensible defaults for torrent tabs
 
-    def handle_model_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
+    def handle_model_changed(
+        self, source: Any, data_obj: Any, _data_changed: Any
+    ) -> None:
         """Handle model data changes - delegates to on_torrent_data_changed if applicable."""
         self.logger.trace(
             "BaseTorrentTab model changed",
@@ -90,7 +92,9 @@ class BaseTorrentTab(Component, ABC):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_settings_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
+    def handle_settings_changed(
+        self, source: Any, data_obj: Any, _data_changed: Any
+    ) -> None:
         """Handle settings changes - delegates to on_settings_changed."""
         self.logger.trace(
             "BaseTorrentTab settings changed",
@@ -150,7 +154,9 @@ class BaseTorrentTab(Component, ABC):
                 # Margins are now set in XML for consistency across all tabs
                 # Removed: set_margin_top/bottom/start/end calls
         except Exception as e:
-            self.logger.error(f"Error setting up UI styling for {self.tab_name} tab: {e}")
+            self.logger.error(
+                f"Error setting up UI styling for {self.tab_name} tab: {e}"
+            )
 
     def get_widget(self, widget_id: str) -> Optional[Gtk.Widget]:
         """
@@ -180,7 +186,9 @@ class BaseTorrentTab(Component, ABC):
                 empty_state.set_visible(True)
                 self.logger.trace(f"Showing empty state for {self.tab_name} tab")
         except Exception as e:
-            self.logger.trace(f"No empty state widget found for {self.tab_name} tab: {e}")
+            self.logger.trace(
+                f"No empty state widget found for {self.tab_name} tab: {e}"
+            )
 
     def _hide_empty_state(self) -> None:
         """Hide the empty state widget for this tab."""
@@ -191,7 +199,9 @@ class BaseTorrentTab(Component, ABC):
                 empty_state.set_visible(False)
                 self.logger.trace(f"Hiding empty state for {self.tab_name} tab")
         except Exception as e:
-            self.logger.trace(f"No empty state widget found for {self.tab_name} tab: {e}")
+            self.logger.trace(
+                f"No empty state widget found for {self.tab_name} tab: {e}"
+            )
 
     def _register_for_translation(self) -> None:
         """Register this tab for translation updates."""
@@ -203,9 +213,13 @@ class BaseTorrentTab(Component, ABC):
 
                 # If tab has its own builder widgets, register them
                 if hasattr(self, "builder") and self.builder:
-                    initial_count = len(self.model.translation_manager.translatable_widgets)
+                    initial_count = len(
+                        self.model.translation_manager.translatable_widgets
+                    )
                     self.model.translation_manager.scan_builder_widgets(self.builder)
-                    final_count = len(self.model.translation_manager.translatable_widgets)
+                    final_count = len(
+                        self.model.translation_manager.translatable_widgets
+                    )
                     new_widgets = final_count - initial_count
 
                     # CRITICAL FIX: Refresh translations for newly registered tab widgets
@@ -218,7 +232,9 @@ class BaseTorrentTab(Component, ABC):
                         self.model.translation_manager.refresh_all_translations()
 
         except Exception as e:
-            self.logger.error(f"Error registering {self.tab_name} tab for translation: {e}")
+            self.logger.error(
+                f"Error registering {self.tab_name} tab for translation: {e}"
+            )
 
     def on_language_changed(self, source: Any, new_language: Any) -> None:
         """Handle language change events for this tab."""
@@ -233,7 +249,9 @@ class BaseTorrentTab(Component, ABC):
                 self.update_content(self._current_torrent)
 
         except Exception as e:
-            self.logger.error(f"Error handling language change in {self.tab_name} tab: {e}")
+            self.logger.error(
+                f"Error handling language change in {self.tab_name} tab: {e}"
+            )
 
     def on_torrent_selection_changed(self, torrent: Any) -> None:
         """
@@ -250,9 +268,13 @@ class BaseTorrentTab(Component, ABC):
             else:
                 self.clear_content()
         except Exception as e:
-            self.logger.error(f"Error handling torrent selection change in {self.tab_name} tab: {e}")
+            self.logger.error(
+                f"Error handling torrent selection change in {self.tab_name} tab: {e}"
+            )
 
-    def on_torrent_data_changed(self, torrent: Any, attribute: Optional[str] = None) -> None:
+    def on_torrent_data_changed(
+        self, torrent: Any, attribute: Optional[str] = None
+    ) -> None:
         """
         Handle torrent data change.
 
@@ -264,7 +286,9 @@ class BaseTorrentTab(Component, ABC):
             if torrent == self._current_torrent:
                 self.update_content(torrent)
         except Exception as e:
-            self.logger.error(f"Error handling torrent data change in {self.tab_name} tab: {e}")
+            self.logger.error(
+                f"Error handling torrent data change in {self.tab_name} tab: {e}"
+            )
 
     def on_settings_changed(self, key: str, value: Any) -> None:
         """
@@ -280,8 +304,12 @@ class BaseTorrentTab(Component, ABC):
                 ui_settings = getattr(self.settings, "ui_settings", {})
                 self.ui_margin_large = ui_settings.get("ui_margin_large", 10)
                 self.ui_margin_xlarge = ui_settings.get("ui_margin_xlarge", 20)
-                self.ui_column_spacing_small = ui_settings.get("ui_column_spacing_small", 10)
-                self.ui_column_spacing_large = ui_settings.get("ui_column_spacing_large", 20)
+                self.ui_column_spacing_small = ui_settings.get(
+                    "ui_column_spacing_small", 10
+                )
+                self.ui_column_spacing_large = ui_settings.get(
+                    "ui_column_spacing_large", 20
+                )
                 self.ui_row_spacing = ui_settings.get("ui_row_spacing", 10)
 
                 # Refresh UI with new settings
@@ -290,7 +318,9 @@ class BaseTorrentTab(Component, ABC):
                     self.update_content(self._current_torrent)
 
         except Exception as e:
-            self.logger.error(f"Error handling settings change in {self.tab_name} tab: {e}")
+            self.logger.error(
+                f"Error handling settings change in {self.tab_name} tab: {e}"
+            )
 
     def get_current_torrent(self) -> Any:
         """Get the currently displayed torrent."""
@@ -340,7 +370,9 @@ class BaseTorrentTab(Component, ABC):
         except Exception as e:
             self.logger.error(f"Error cleaning up {self.tab_name} tab: {e}")
 
-    def create_label_pair(self, name: str, value: str, row: int, grid: Gtk.Grid) -> None:
+    def create_label_pair(
+        self, name: str, value: str, row: int, grid: Gtk.Grid
+    ) -> None:
         """
         Create a name-value label pair and add to grid.
 

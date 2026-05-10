@@ -129,7 +129,11 @@ class FailedLoginTracker:
 
         # Clean old attempts
         if ip in self.failed_attempts:
-            self.failed_attempts[ip] = [t for t in self.failed_attempts[ip] if current_time - t < self.ban_duration]
+            self.failed_attempts[ip] = [
+                t
+                for t in self.failed_attempts[ip]
+                if current_time - t < self.ban_duration
+            ]
 
         # Add new attempt
         if ip not in self.failed_attempts:
@@ -192,7 +196,9 @@ def create_auth_middleware(settings: Any) -> Any:
     public_routes: Set[str] = {"/api/login", "/api/health", "/"}
 
     @web.middleware
-    async def auth_middleware(request: web.Request, handler: Callable[..., Any]) -> web.Response:
+    async def auth_middleware(
+        request: web.Request, handler: Callable[..., Any]
+    ) -> web.Response:
         """Authentication middleware."""
         # Check if auth is enabled
         if not settings.get("webui.auth_enabled", True):
@@ -273,7 +279,9 @@ def create_security_middleware(settings: Any) -> Any:
         raise ImportError("aiohttp is required for Web UI")
 
     @web.middleware
-    async def security_middleware(request: web.Request, handler: Callable[..., Any]) -> web.Response:
+    async def security_middleware(
+        request: web.Request, handler: Callable[..., Any]
+    ) -> web.Response:
         """Add security headers to responses."""
         response: web.Response = await handler(request)
 

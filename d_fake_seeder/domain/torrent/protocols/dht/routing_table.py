@@ -188,7 +188,9 @@ class RoutingTable:
             return True
 
         # If bucket is full and this is our bucket, split it
-        if bucket_index == len(self.buckets) - 1 and self._should_split_bucket(bucket_index):
+        if bucket_index == len(self.buckets) - 1 and self._should_split_bucket(
+            bucket_index
+        ):
             self._split_bucket(bucket_index)
             return self.add_node(node_id, ip, port)  # Retry after split
 
@@ -264,7 +266,9 @@ class RoutingTable:
         removed_count = 0
 
         for bucket in self.buckets:
-            stale_nodes = [node for node in bucket.nodes if current_time - node.last_seen > max_age]
+            stale_nodes = [
+                node for node in bucket.nodes if current_time - node.last_seen > max_age
+            ]
             for node in stale_nodes:
                 bucket.remove_node(node.node_id)
                 removed_count += 1

@@ -34,11 +34,15 @@ class UTPManager:
         # Socket and connections
         self.socket = None
         self.running = False
-        self.connections: Dict[int, UTPConnection] = {}  # connection_id -> UTPConnection
+        self.connections: Dict[int, UTPConnection] = (
+            {}
+        )  # connection_id -> UTPConnection
         self.next_connection_id = 1
 
         # Configuration
-        utp_config = getattr(self.settings, "protocols", {}).get("transport", {}).get("utp", {})
+        utp_config = (
+            getattr(self.settings, "protocols", {}).get("transport", {}).get("utp", {})
+        )
         self.enabled = utp_config.get("enabled", True)
         self.max_connections = utp_config.get("max_connections", 100)
 
@@ -62,7 +66,9 @@ class UTPManager:
             return False
 
         try:
-            logger.trace("Starting µTP manager", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "Starting µTP manager", extra={"class_name": self.__class__.__name__}
+            )
 
             # Create UDP socket
             from d_fake_seeder.lib.util.network import get_bind_tuple
@@ -96,7 +102,9 @@ class UTPManager:
 
     async def stop(self) -> Any:
         """Stop µTP manager"""
-        logger.trace("Stopping µTP manager", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Stopping µTP manager", extra={"class_name": self.__class__.__name__}
+        )
 
         self.running = False
 
@@ -111,7 +119,9 @@ class UTPManager:
             self.socket.close()
             self.socket = None
 
-    async def connect(self, host: str, port: int, timeout: float = 30.0) -> Optional[UTPConnection]:
+    async def connect(
+        self, host: str, port: int, timeout: float = 30.0
+    ) -> Optional[UTPConnection]:
         """
         Create outgoing µTP connection
 
@@ -217,7 +227,9 @@ class UTPManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _accept_connection(self, data: bytes, addr: Tuple[str, int], connection_id: int) -> Any:
+    async def _accept_connection(
+        self, data: bytes, addr: Tuple[str, int], connection_id: int
+    ) -> Any:
         """
         Accept incoming µTP connection
 
@@ -255,7 +267,9 @@ class UTPManager:
     def _get_next_connection_id(self) -> int:
         """Get next available connection ID"""
         connection_id = self.next_connection_id
-        self.next_connection_id = (self.next_connection_id + 1) % UTPConstants.MAX_SEQUENCE_NUMBER
+        self.next_connection_id = (
+            self.next_connection_id + 1
+        ) % UTPConstants.MAX_SEQUENCE_NUMBER
         return connection_id
 
     def remove_connection(self, connection_id: int) -> None:

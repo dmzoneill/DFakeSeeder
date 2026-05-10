@@ -121,7 +121,9 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             # Create and configure custom handler (NOT StreamHandler)
             # This prevents reconfigure_logger from removing it
             self._log_handler = LogTabHandler(update_textview)
-            self._log_handler.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
+            self._log_handler.setFormatter(
+                logging.Formatter("%(levelname)s: %(message)s")
+            )
             self._log_handler.setLevel(logging.DEBUG)
 
             # Add handler to the main logger
@@ -146,7 +148,9 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             if self._log_flush_timer is None:
                 # Use a fraction of tickspeed for responsive log updates
                 flush_delay = max(1, int(getattr(self.settings, "tickspeed", 3) / 3))
-                self._log_flush_timer = GLib.timeout_add_seconds(flush_delay, self._flush_log_messages)
+                self._log_flush_timer = GLib.timeout_add_seconds(
+                    flush_delay, self._flush_log_messages
+                )
 
         except Exception as e:
             self.logger.error(f"Error queuing log message: {e}")
@@ -165,7 +169,9 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
                 self._log_message_queue.clear()
 
                 # Single UI update for all messages
-                GLib.idle_add(lambda: (self._update_text_buffer(combined_msg), False)[1])
+                GLib.idle_add(
+                    lambda: (self._update_text_buffer(combined_msg), False)[1]
+                )
 
         except Exception as e:
             self.logger.error(f"Error flushing log messages: {e}")

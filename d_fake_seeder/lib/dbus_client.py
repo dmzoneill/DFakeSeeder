@@ -135,7 +135,9 @@ class DBusClient:
                 extra={"class_name": self.__class__.__name__},
             )
             assert self.proxy is not None
-            result = self.proxy.call_sync("GetSettings", None, Gio.DBusCallFlags.NONE, 5000, None)  # 5 second timeout
+            result = self.proxy.call_sync(
+                "GetSettings", None, Gio.DBusCallFlags.NONE, 5000, None
+            )  # 5 second timeout
             logger.trace(
                 f"GetSettings result type: {type(result)}",
                 extra={"class_name": self.__class__.__name__},
@@ -219,7 +221,9 @@ class DBusClient:
                 return False
 
             assert self.proxy is not None
-            result = self.proxy.call_sync("Ping", None, Gio.DBusCallFlags.NONE, 1000, None)  # 1 second timeout
+            result = self.proxy.call_sync(
+                "Ping", None, Gio.DBusCallFlags.NONE, 1000, None
+            )  # 1 second timeout
             return result.unpack()[0] if result else False
 
         except GLib.Error as e:

@@ -53,7 +53,9 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
         self.failed_connection_display_cycles = (
             ConnectionConstants.FAILED_CONNECTION_DISPLAY_CYCLES
         )  # Show failed connections for 1 cycle
-        self.minimum_display_cycles = ConnectionConstants.MIN_DISPLAY_CYCLES  # Minimum cycles to show any connection
+        self.minimum_display_cycles = (
+            ConnectionConstants.MIN_DISPLAY_CYCLES
+        )  # Minimum cycles to show any connection
         self.failed_connection_timeout_cycles = (
             ConnectionConstants.TIMEOUT_CYCLES
         )  # Exclude failed connections after 3 cycles
@@ -64,7 +66,9 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
         # Throttling mechanism for callbacks
         self.last_callback_time = 0.0
         connection_manager_config = getattr(self.settings, "connection_manager", {})
-        self.callback_throttle_delay = connection_manager_config.get("callback_throttle_delay_seconds", 1.0)
+        self.callback_throttle_delay = connection_manager_config.get(
+            "callback_throttle_delay_seconds", 1.0
+        )
         self.pending_callback_timer = None
 
         # Single periodic cleanup timer instead of per-connection timers (O(1) instead of O(n))
@@ -107,8 +111,16 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
         else:
             # Otherwise, schedule a delayed callback if none is pending
             if self.pending_callback_timer is None:
-                delay_ms = int((self.callback_throttle_delay - (current_time - self.last_callback_time)) * 1000)
-                self.pending_callback_timer = GLib.timeout_add(delay_ms, self._delayed_callback)
+                delay_ms = int(
+                    (
+                        self.callback_throttle_delay
+                        - (current_time - self.last_callback_time)
+                    )
+                    * 1000
+                )
+                self.pending_callback_timer = GLib.timeout_add(
+                    delay_ms, self._delayed_callback
+                )
 
     def _execute_callbacks(self) -> None:
         """Execute all registered callbacks"""
@@ -128,7 +140,9 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
     def _start_cleanup_timer(self) -> Any:
         """Start the single periodic cleanup timer"""
         if self.cleanup_timer_id is None:
-            self.cleanup_timer_id = GLib.timeout_add_seconds(self.cleanup_interval_seconds, self._periodic_cleanup)
+            self.cleanup_timer_id = GLib.timeout_add_seconds(
+                self.cleanup_interval_seconds, self._periodic_cleanup
+            )
             logger.info("Started periodic connection cleanup timer")
 
     def _stop_cleanup_timer(self) -> Any:
@@ -138,7 +152,9 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
             self.cleanup_timer_id = None
             logger.info("Stopped periodic connection cleanup timer")
 
-    def _periodic_cleanup(self) -> Any:  # pylint: disable=too-many-locals,too-many-branches
+    def _periodic_cleanup(
+        self,
+    ) -> Any:  # pylint: disable=too-many-locals,too-many-branches
         """Periodic cleanup of expired failed connections and enforcement of connection limits"""
         current_time = time.time()
         failed_display_time = self.get_failed_connection_display_time()
@@ -147,14 +163,18 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
         connection_manager_config = getattr(self.settings, "connection_manager", {})
         max_incoming = connection_manager_config.get("max_incoming_connections", 500)
         max_outgoing = connection_manager_config.get("max_outgoing_connections", 500)
-        connection_expiry = connection_manager_config.get("connection_expiry_seconds", 600)
+        connection_expiry = connection_manager_config.get(
+            "connection_expiry_seconds", 600
+        )
 
         # Cleanup expired incoming connections
         incoming_to_remove = []
         for connection_key, conn in self.all_incoming_connections.items():
             # Remove failed connections after display time
             if hasattr(conn, "status") and conn.status == "failed":
-                failed_time = self.incoming_failed_times.get(connection_key, current_time)
+                failed_time = self.incoming_failed_times.get(
+                    connection_key, current_time
+                )
                 if current_time - failed_time >= failed_display_time:
                     incoming_to_remove.append(connection_key)
             # Remove old connections based on age (even if not failed)
@@ -171,7 +191,9 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
         for connection_key, conn in self.all_outgoing_connections.items():
             # Remove failed connections after display time
             if hasattr(conn, "status") and conn.status == "failed":
-                failed_time = self.outgoing_failed_times.get(connection_key, current_time)
+                failed_time = self.outgoing_failed_times.get(
+                    connection_key, current_time
+                )
                 if current_time - failed_time >= failed_display_time:
                     outgoing_to_remove.append(connection_key)
             # Remove old connections based on age (even if not failed)
@@ -187,7 +209,9 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
         incoming_overflow = len(self.all_incoming_connections) - max_incoming
         if incoming_overflow > 0:
             # Remove oldest connections first
-            sorted_incoming = sorted(self.incoming_creation_times.items(), key=lambda x: x[1])  # Sort by creation time
+            sorted_incoming = sorted(
+                self.incoming_creation_times.items(), key=lambda x: x[1]
+            )  # Sort by creation time
             for connection_key, _ in sorted_incoming[:incoming_overflow]:
                 self._remove_incoming_connection_by_key(connection_key)
             logger.warning(
@@ -198,7 +222,9 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
         outgoing_overflow = len(self.all_outgoing_connections) - max_outgoing
         if outgoing_overflow > 0:
             # Remove oldest connections first
-            sorted_outgoing = sorted(self.outgoing_creation_times.items(), key=lambda x: x[1])  # Sort by creation time
+            sorted_outgoing = sorted(
+                self.outgoing_creation_times.items(), key=lambda x: x[1]
+            )  # Sort by creation time
             for connection_key, _ in sorted_outgoing[:outgoing_overflow]:
                 self._remove_outgoing_connection_by_key(connection_key)
             logger.warning(
@@ -241,7 +267,9 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
 
         return connection_key
 
-    def update_incoming_connection(self, address: str, port: int, **kwargs: Any) -> None:
+    def update_incoming_connection(
+        self, address: str, port: int, **kwargs: Any
+    ) -> None:
         """Update an existing incoming connection"""
         connection_key = f"{address}:{port}"
 
@@ -310,7 +338,9 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
 
         return connection_key
 
-    def update_outgoing_connection(self, address: str, port: int, **kwargs: Any) -> None:
+    def update_outgoing_connection(
+        self, address: str, port: int, **kwargs: Any
+    ) -> None:
         """Update an existing outgoing connection"""
         connection_key = f"{address}:{port}"
 
@@ -368,7 +398,9 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
         for connection_key, conn in self.all_incoming_connections.items():
             if hasattr(conn, "status") and conn.status == "failed":
                 # Check if this failed connection has timed out
-                failed_time = self.incoming_failed_times.get(connection_key, current_time)
+                failed_time = self.incoming_failed_times.get(
+                    connection_key, current_time
+                )
                 if current_time - failed_time < self.get_failed_connection_timeout():
                     count += 1  # Include recent failed connections
                 # Exclude old failed connections from count
@@ -379,7 +411,9 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
         for connection_key, conn in self.all_outgoing_connections.items():
             if hasattr(conn, "status") and conn.status == "failed":
                 # Check if this failed connection has timed out
-                failed_time = self.outgoing_failed_times.get(connection_key, current_time)
+                failed_time = self.outgoing_failed_times.get(
+                    connection_key, current_time
+                )
                 if current_time - failed_time < self.get_failed_connection_timeout():
                     count += 1  # Include recent failed connections
                 # Exclude old failed connections from count
@@ -432,10 +466,14 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
     def get_torrent_connection_count(self, torrent_hash: str) -> int:
         """Get total number of connections for a specific torrent"""
         incoming_count = sum(
-            1 for conn in self.all_incoming_connections.values() if getattr(conn, "torrent_hash", "") == torrent_hash
+            1
+            for conn in self.all_incoming_connections.values()
+            if getattr(conn, "torrent_hash", "") == torrent_hash
         )
         outgoing_count = sum(
-            1 for conn in self.all_outgoing_connections.values() if getattr(conn, "torrent_hash", "") == torrent_hash
+            1
+            for conn in self.all_outgoing_connections.values()
+            if getattr(conn, "torrent_hash", "") == torrent_hash
         )
         return incoming_count + outgoing_count
 
@@ -445,17 +483,27 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
 
         # Count active incoming connections for torrent
         for conn in self.all_incoming_connections.values():
-            if getattr(conn, "torrent_hash", "") == torrent_hash and hasattr(conn, "connected") and conn.connected:
+            if (
+                getattr(conn, "torrent_hash", "") == torrent_hash
+                and hasattr(conn, "connected")
+                and conn.connected
+            ):
                 active_count += 1
 
         # Count active outgoing connections for torrent
         for conn in self.all_outgoing_connections.values():
-            if getattr(conn, "torrent_hash", "") == torrent_hash and hasattr(conn, "connected") and conn.connected:
+            if (
+                getattr(conn, "torrent_hash", "") == torrent_hash
+                and hasattr(conn, "connected")
+                and conn.connected
+            ):
                 active_count += 1
 
         return active_count
 
-    def get_torrent_incoming_connections(self, torrent_hash: str) -> List[Tuple[str, ConnectionPeer]]:
+    def get_torrent_incoming_connections(
+        self, torrent_hash: str
+    ) -> List[Tuple[str, ConnectionPeer]]:
         """Get incoming connections for a specific torrent"""
         return [
             (key, conn)
@@ -463,7 +511,9 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
             if getattr(conn, "torrent_hash", "") == torrent_hash
         ]
 
-    def get_torrent_outgoing_connections(self, torrent_hash: str) -> List[Tuple[str, ConnectionPeer]]:
+    def get_torrent_outgoing_connections(
+        self, torrent_hash: str
+    ) -> List[Tuple[str, ConnectionPeer]]:
         """Get outgoing connections for a specific torrent"""
         return [
             (key, conn)
@@ -511,7 +561,10 @@ class ConnectionManager:  # pylint: disable=too-many-instance-attributes,too-man
         self._stop_cleanup_timer()
 
         # Stop any pending callback timers
-        if hasattr(self, "pending_callback_timer") and self.pending_callback_timer is not None:
+        if (
+            hasattr(self, "pending_callback_timer")
+            and self.pending_callback_timer is not None
+        ):
             GLib.source_remove(self.pending_callback_timer)
             self.pending_callback_timer = None
 

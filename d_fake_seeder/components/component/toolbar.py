@@ -24,19 +24,27 @@ from gi.repository import Gtk  # noqa
 class Toolbar(Component):
     def __init__(self, builder: Any, model: Any, app: Any) -> None:
         super().__init__()
-        with logger.performance.operation_context("toolbar_init", self.__class__.__name__):
+        with logger.performance.operation_context(
+            "toolbar_init", self.__class__.__name__
+        ):
             logger.trace("Toolbar.__init__ START", self.__class__.__name__)
             logger.trace("Toolbar startup", self.__class__.__name__)
             logger.trace("Logger call completed", self.__class__.__name__)
-            logger.trace("About to set builder, model, app attributes", self.__class__.__name__)
+            logger.trace(
+                "About to set builder, model, app attributes", self.__class__.__name__
+            )
             self.builder = builder
             self.model = model
             self.app = app
             self.settings_dialog = None  # Track existing settings dialog
             logger.info("Basic attributes set successfully", self.__class__.__name__)
             # subscribe to settings changed
-            with logger.performance.operation_context("settings_setup", self.__class__.__name__):
-                logger.trace("About to get AppSettings instance", self.__class__.__name__)
+            with logger.performance.operation_context(
+                "settings_setup", self.__class__.__name__
+            ):
+                logger.trace(
+                    "About to get AppSettings instance", self.__class__.__name__
+                )
                 try:
                     self.settings = AppSettings.get_instance()
                     logger.trace(
@@ -49,7 +57,9 @@ class Toolbar(Component):
                     )
                     self.track_signal(
                         self.settings,
-                        self.settings.connect("attribute-changed", self.handle_settings_changed),
+                        self.settings.connect(
+                            "attribute-changed", self.handle_settings_changed
+                        ),
                     )
                     logger.trace(
                         "Settings signal connected successfully",
@@ -66,22 +76,32 @@ class Toolbar(Component):
                         "Continuing without AppSettings connection",
                         self.__class__.__name__,
                     )
-            with logger.performance.operation_context("toolbar_buttons_setup", self.__class__.__name__):
+            with logger.performance.operation_context(
+                "toolbar_buttons_setup", self.__class__.__name__
+            ):
                 logger.trace("About to get toolbar_add button", self.__class__.__name__)
                 self.toolbar_add_button = self.builder.get_object("toolbar_add")
-                logger.info("Got toolbar_add button successfully", self.__class__.__name__)
+                logger.info(
+                    "Got toolbar_add button successfully", self.__class__.__name__
+                )
                 self.track_signal(
                     self.toolbar_add_button,
-                    self.toolbar_add_button.connect("clicked", self.on_toolbar_add_clicked),
+                    self.toolbar_add_button.connect(
+                        "clicked", self.on_toolbar_add_clicked
+                    ),
                 )
                 self.toolbar_add_button.add_css_class("flat")
-                logger.trace("toolbar_add button setup completed", self.__class__.__name__)
+                logger.trace(
+                    "toolbar_add button setup completed", self.__class__.__name__
+                )
         logger.trace("About to get toolbar_remove button", "Toolbar")
         self.toolbar_remove_button = self.builder.get_object("toolbar_remove")
         logger.info("Got toolbar_remove button successfully", "Toolbar")
         self.track_signal(
             self.toolbar_remove_button,
-            self.toolbar_remove_button.connect("clicked", self.on_toolbar_remove_clicked),
+            self.toolbar_remove_button.connect(
+                "clicked", self.on_toolbar_remove_clicked
+            ),
         )
         self.toolbar_remove_button.add_css_class("flat")
         logger.trace("toolbar_remove button setup completed", "Toolbar")
@@ -90,7 +110,9 @@ class Toolbar(Component):
         logger.info("Got toolbar_search button successfully", "Toolbar")
         self.track_signal(
             self.toolbar_search_button,
-            self.toolbar_search_button.connect("clicked", self.on_toolbar_search_clicked),
+            self.toolbar_search_button.connect(
+                "clicked", self.on_toolbar_search_clicked
+            ),
         )
         self.toolbar_search_button.add_css_class("flat")
         logger.trace("toolbar_search button setup completed", "Toolbar")
@@ -128,7 +150,9 @@ class Toolbar(Component):
         logger.info("Got toolbar_resume button successfully", "Toolbar")
         self.track_signal(
             self.toolbar_resume_button,
-            self.toolbar_resume_button.connect("clicked", self.on_toolbar_resume_clicked),
+            self.toolbar_resume_button.connect(
+                "clicked", self.on_toolbar_resume_clicked
+            ),
         )
         self.toolbar_resume_button.add_css_class("flat")
         logger.trace("toolbar_resume button setup completed", "Toolbar")
@@ -151,11 +175,15 @@ class Toolbar(Component):
         self.toolbar_down_button.add_css_class("flat")
         logger.trace("toolbar_down button setup completed", "Toolbar")
         logger.trace("About to get toolbar_speed_double button", "Toolbar")
-        self.toolbar_speed_double_button = self.builder.get_object("toolbar_speed_double")
+        self.toolbar_speed_double_button = self.builder.get_object(
+            "toolbar_speed_double"
+        )
         logger.info("Got toolbar_speed_double button successfully", "Toolbar")
         self.track_signal(
             self.toolbar_speed_double_button,
-            self.toolbar_speed_double_button.connect("clicked", self.on_toolbar_speed_double_clicked),
+            self.toolbar_speed_double_button.connect(
+                "clicked", self.on_toolbar_speed_double_clicked
+            ),
         )
         self.toolbar_speed_double_button.add_css_class("flat")
         logger.trace("toolbar_speed_double button setup completed", "Toolbar")
@@ -164,7 +192,9 @@ class Toolbar(Component):
         logger.info("Got toolbar_speed_halve button successfully", "Toolbar")
         self.track_signal(
             self.toolbar_speed_halve_button,
-            self.toolbar_speed_halve_button.connect("clicked", self.on_toolbar_speed_halve_clicked),
+            self.toolbar_speed_halve_button.connect(
+                "clicked", self.on_toolbar_speed_halve_clicked
+            ),
         )
         self.toolbar_speed_halve_button.add_css_class("flat")
         logger.trace("toolbar_speed_halve button setup completed", "Toolbar")
@@ -182,20 +212,28 @@ class Toolbar(Component):
         )
 
         logger.trace("About to get toolbar_download_speed_double button", "Toolbar")
-        self.toolbar_download_speed_double_button = self.builder.get_object("toolbar_download_speed_double")
+        self.toolbar_download_speed_double_button = self.builder.get_object(
+            "toolbar_download_speed_double"
+        )
         logger.info("Got toolbar_download_speed_double button successfully", "Toolbar")
         self.track_signal(
             self.toolbar_download_speed_double_button,
-            self.toolbar_download_speed_double_button.connect("clicked", self.on_toolbar_download_speed_double_clicked),
+            self.toolbar_download_speed_double_button.connect(
+                "clicked", self.on_toolbar_download_speed_double_clicked
+            ),
         )
         self.toolbar_download_speed_double_button.add_css_class("flat")
         logger.trace("toolbar_download_speed_double button setup completed", "Toolbar")
         logger.trace("About to get toolbar_download_speed_halve button", "Toolbar")
-        self.toolbar_download_speed_halve_button = self.builder.get_object("toolbar_download_speed_halve")
+        self.toolbar_download_speed_halve_button = self.builder.get_object(
+            "toolbar_download_speed_halve"
+        )
         logger.info("Got toolbar_download_speed_halve button successfully", "Toolbar")
         self.track_signal(
             self.toolbar_download_speed_halve_button,
-            self.toolbar_download_speed_halve_button.connect("clicked", self.on_toolbar_download_speed_halve_clicked),
+            self.toolbar_download_speed_halve_button.connect(
+                "clicked", self.on_toolbar_download_speed_halve_clicked
+            ),
         )
         self.toolbar_download_speed_halve_button.add_css_class("flat")
 
@@ -214,7 +252,9 @@ class Toolbar(Component):
         logger.trace("toolbar_download_speed_halve button setup completed", "Toolbar")
         logger.trace("About to get toolbar_settings button", "Toolbar")
         try:
-            logger.trace("Calling self.builder.get_object('toolbar_settings')", "Toolbar")
+            logger.trace(
+                "Calling self.builder.get_object('toolbar_settings')", "Toolbar"
+            )
             self.toolbar_settings_button = self.builder.get_object("toolbar_settings")
             logger.info("get_object call completed successfully", "Toolbar")
         except (AttributeError, TypeError):
@@ -239,7 +279,9 @@ class Toolbar(Component):
                 "About to connect clicked signal to on_toolbar_settings_clicked",
                 "Toolbar",
             )
-            signal_id = self.toolbar_settings_button.connect("clicked", self.on_toolbar_settings_clicked)
+            signal_id = self.toolbar_settings_button.connect(
+                "clicked", self.on_toolbar_settings_clicked
+            )
             self.track_signal(
                 self.toolbar_settings_button,
                 signal_id,
@@ -267,7 +309,9 @@ class Toolbar(Component):
         self.toolbar_refresh_rate = self.builder.get_object("toolbar_refresh_rate")
         logger.info("Got toolbar_refresh_rate successfully", "Toolbar")
         logger.trace("About to create Gtk.Adjustment", "Toolbar")
-        adjustment = Gtk.Adjustment.new(1, 1, 60, 1, 10, 0)  # Fixed: value=1 (was 0), page_size=0
+        adjustment = Gtk.Adjustment.new(
+            1, 1, 60, 1, 10, 0
+        )  # Fixed: value=1 (was 0), page_size=0
         logger.info("Gtk.Adjustment created successfully", "Toolbar")
         logger.trace("About to set step increment", "Toolbar")
         adjustment.set_step_increment(1)
@@ -301,7 +345,9 @@ class Toolbar(Component):
         # Connect value-changed signal - use debounced save to avoid excessive writes
         self.track_signal(
             self.toolbar_refresh_rate,
-            self.toolbar_refresh_rate.connect("value-changed", self.on_toolbar_refresh_rate_changed),
+            self.toolbar_refresh_rate.connect(
+                "value-changed", self.on_toolbar_refresh_rate_changed
+            ),
         )
         logger.info("set_value completed successfully", "Toolbar")
         logger.trace("About to set size request", "Toolbar")
@@ -311,7 +357,11 @@ class Toolbar(Component):
 
     def _(self, text: Any) -> Any:
         """Get translation function from model's TranslationManager"""
-        if hasattr(self, "model") and self.model and hasattr(self.model, "translation_manager"):
+        if (
+            hasattr(self, "model")
+            and self.model
+            and hasattr(self.model, "translation_manager")
+        ):
             return self.model.translation_manager.translate_func(text)
         return text  # Fallback if model not set yet
 
@@ -326,7 +376,9 @@ class Toolbar(Component):
 
         # Schedule a debounced save (configurable delay)
         debounce_ms = self.settings.get("ui_settings.tickspeed_debounce_ms", 500)
-        self._tickspeed_save_source_id = GLib.timeout_add(debounce_ms, self._save_tickspeed_debounced)
+        self._tickspeed_save_source_id = GLib.timeout_add(
+            debounce_ms, self._save_tickspeed_debounced
+        )
 
     def _save_tickspeed_debounced(self) -> bool:
         """Actually save the tickspeed setting after debounce delay."""
@@ -492,7 +544,9 @@ class Toolbar(Component):
                 f"Button object: {button}",
                 extra={"class_name": self.__class__.__name__},
             )
-            logger.trace(f"Self app: {self.app}", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                f"Self app: {self.app}", extra={"class_name": self.__class__.__name__}
+            )
             logger.trace(
                 f"Self model: {self.model}",
                 extra={"class_name": self.__class__.__name__},
@@ -530,14 +584,18 @@ class Toolbar(Component):
             # Check if settings dialog already exists and is visible
             if self.settings_dialog and hasattr(self.settings_dialog, "window"):
                 try:
-                    logger.debug("Existing settings dialog found, trying to present", "Toolbar")
+                    logger.debug(
+                        "Existing settings dialog found, trying to present", "Toolbar"
+                    )
                     logger.trace(
                         "Existing settings dialog found, trying to present",
                         extra={"class_name": self.__class__.__name__},
                     )
                     # Try to present the existing window
                     self.settings_dialog.window.present()
-                    logger.info("Existing settings dialog presented successfully", "Toolbar")
+                    logger.info(
+                        "Existing settings dialog presented successfully", "Toolbar"
+                    )
                     logger.trace(
                         "Presenting existing settings dialog",
                         extra={"class_name": self.__class__.__name__},
@@ -573,7 +631,9 @@ class Toolbar(Component):
                 f"Checking app: hasattr(self, 'app'): {hasattr(self, 'app')}",
                 extra={"class_name": self.__class__.__name__},
             )
-            logger.trace(f"self.app: {self.app}", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                f"self.app: {self.app}", extra={"class_name": self.__class__.__name__}
+            )
             if hasattr(self, "app") and self.app:
                 logger.trace("Getting active window from app", "Toolbar")
                 logger.trace(
@@ -630,7 +690,9 @@ class Toolbar(Component):
                 )
                 logger.info("Close-request signal connected successfully", "Toolbar")
             else:
-                logger.warning("WARNING: Settings dialog has no window attribute", "Toolbar")
+                logger.warning(
+                    "WARNING: Settings dialog has no window attribute", "Toolbar"
+                )
                 logger.warning(
                     "Settings dialog has no window attribute",
                     extra={"class_name": self.__class__.__name__},
@@ -673,14 +735,18 @@ class Toolbar(Component):
             torrents_path = os.path.join(get_config_dir(), "torrents")
             shutil.copy(os.path.abspath(selected_file.get_path()), torrents_path)
             file_path = selected_file.get_path()
-            copied_torrent_path = os.path.join(torrents_path, os.path.basename(file_path))
+            copied_torrent_path = os.path.join(
+                torrents_path, os.path.basename(file_path)
+            )
             self.model.add_torrent(copied_torrent_path)  # type: ignore[attr-defined]
             dialog.destroy()
         else:
             dialog.destroy()
 
     def show_file_selection_dialog(self) -> None:
-        logger.trace("Toolbar file dialog", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Toolbar file dialog", extra={"class_name": self.__class__.__name__}
+        )
         # Create a new file chooser dialog
         dialog = Gtk.FileChooserDialog(
             title=self._("Select torrent"),
@@ -718,9 +784,13 @@ class Toolbar(Component):
                 new_value = int(value)
                 if current_value != new_value:
                     # Block the value-changed handler temporarily to avoid feedback loop
-                    self.toolbar_refresh_rate.handler_block_by_func(self.on_toolbar_refresh_rate_changed)
+                    self.toolbar_refresh_rate.handler_block_by_func(
+                        self.on_toolbar_refresh_rate_changed
+                    )
                     self.toolbar_refresh_rate.set_value(new_value)
-                    self.toolbar_refresh_rate.handler_unblock_by_func(self.on_toolbar_refresh_rate_changed)
+                    self.toolbar_refresh_rate.handler_unblock_by_func(
+                        self.on_toolbar_refresh_rate_changed
+                    )
                     logger.trace(
                         f"Updated refresh rate slider to {new_value}",
                         extra={"class_name": self.__class__.__name__},
@@ -731,7 +801,9 @@ class Toolbar(Component):
                     extra={"class_name": self.__class__.__name__},
                 )
 
-    def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
+    def handle_model_changed(
+        self, source: Any, data_obj: Any, data_changed: Any
+    ) -> None:
         logger.trace(
             "Toolbar settings changed",
             extra={"class_name": self.__class__.__name__},

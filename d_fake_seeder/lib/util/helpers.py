@@ -54,16 +54,32 @@ def humanbytes(B: Any) -> Any:  # pylint: disable=invalid-name
         val = int(B) if B.is_integer() else B
         return f"{val} B"
     if KB <= B < MB:
-        val = int(B / KB) if (B / KB).is_integer() else f"{B / KB:.2f}".rstrip("0").rstrip(".")
+        val = (
+            int(B / KB)
+            if (B / KB).is_integer()
+            else f"{B / KB:.2f}".rstrip("0").rstrip(".")
+        )
         return f"{val} KB"
     if MB <= B < GB:
-        val = int(B / MB) if (B / MB).is_integer() else f"{B / MB:.2f}".rstrip("0").rstrip(".")
+        val = (
+            int(B / MB)
+            if (B / MB).is_integer()
+            else f"{B / MB:.2f}".rstrip("0").rstrip(".")
+        )
         return f"{val} MB"
     if GB <= B < TB:
-        val = int(B / GB) if (B / GB).is_integer() else f"{B / GB:.2f}".rstrip("0").rstrip(".")
+        val = (
+            int(B / GB)
+            if (B / GB).is_integer()
+            else f"{B / GB:.2f}".rstrip("0").rstrip(".")
+        )
         return f"{val} GB"
     if TB <= B:
-        val = int(B / TB) if (B / TB).is_integer() else f"{B / TB:.2f}".rstrip("0").rstrip(".")
+        val = (
+            int(B / TB)
+            if (B / TB).is_integer()
+            else f"{B / TB:.2f}".rstrip("0").rstrip(".")
+        )
         return f"{val} TB"
     return "0 B"  # Fallback for edge cases
 

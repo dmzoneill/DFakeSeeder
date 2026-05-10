@@ -58,7 +58,9 @@ class TrayLauncher:
             import json
 
             # Try user config first
-            xdg_config = os.environ.get("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
+            xdg_config = os.environ.get("XDG_CONFIG_HOME") or os.path.join(
+                os.path.expanduser("~"), ".config"
+            )
             config_path = Path(xdg_config) / "dfakeseeder" / "settings.json"
             if config_path.exists():
                 with open(config_path) as f:
@@ -85,7 +87,9 @@ class TrayLauncher:
         retry_count = 0
         while self.running and retry_count < self.max_retries:
             try:
-                logger.info(f"Launching tray application (attempt {retry_count + 1}/{self.max_retries})")
+                logger.info(
+                    f"Launching tray application (attempt {retry_count + 1}/{self.max_retries})"
+                )
 
                 # Launch tray application
                 result = self._launch_tray()
@@ -96,7 +100,9 @@ class TrayLauncher:
                 else:
                     retry_count += 1
                     if retry_count < self.max_retries:
-                        logger.error(f"Launch failed, retrying in {self.retry_delay} seconds...")
+                        logger.error(
+                            f"Launch failed, retrying in {self.retry_delay} seconds..."
+                        )
                         time.sleep(self.retry_delay)
 
             except KeyboardInterrupt:
@@ -171,7 +177,9 @@ class TrayLauncher:
             from gi.repository import AppIndicator3, Notify
 
             # Verify modules are available
-            logger.info(f"System tray dependencies available: {AppIndicator3.__name__}, {Notify.__name__}")
+            logger.info(
+                f"System tray dependencies available: {AppIndicator3.__name__}, {Notify.__name__}"
+            )
             return True
         except ImportError as e:
             logger.error(f"Missing system tray dependencies: {e}")

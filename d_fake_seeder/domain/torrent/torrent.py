@@ -55,13 +55,15 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
 
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
-        self._settings_handler_id = self.settings.connect("attribute-changed", self.handle_settings_changed)
+        self._settings_handler_id = self.settings.connect(
+            "attribute-changed", self.handle_settings_changed
+        )
 
         # Get UI settings for configurable sleep intervals and random factors
         ui_settings = getattr(self.settings, "ui_settings", {})
-        self.seeder_retry_interval = ui_settings.get("error_sleep_interval_seconds", 5.0) / ui_settings.get(
-            "seeder_retry_interval_divisor", 2
-        )
+        self.seeder_retry_interval = ui_settings.get(
+            "error_sleep_interval_seconds", 5.0
+        ) / ui_settings.get("seeder_retry_interval_divisor", 2)
         self.worker_sleep_interval = (
             ui_settings.get("async_sleep_interval_seconds", 1.0) / 2
         )  # Half of the async sleep interval
@@ -69,12 +71,16 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         self.speed_variation_min = ui_settings.get("speed_variation_min", 0.2)
         self.speed_variation_max = ui_settings.get("speed_variation_max", 0.8)
         self.peer_idle_probability = ui_settings.get("peer_idle_probability", 0.3)
-        self.speed_calculation_multiplier = ui_settings.get("speed_calculation_multiplier", 1000)
+        self.speed_calculation_multiplier = ui_settings.get(
+            "speed_calculation_multiplier", 1000
+        )
 
         self.file_path = filepath
 
         # Track additional background threads for cleanup
-        self.tracker_update_threads: List[Any] = []  # Track force tracker update threads
+        self.tracker_update_threads: List[Any] = (
+            []
+        )  # Track force tracker update threads
         self.is_stopping = False  # Flag to prevent new threads during shutdown
 
         # Coalescing flag to prevent duplicate UI update callbacks
@@ -105,7 +111,11 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             # Build new torrent data dictionary
             new_torrent_data = {
                 "active": True,
-                "id": len(self.settings.torrents) + 1 if len(self.settings.torrents) > 0 else 1,
+                "id": (
+                    len(self.settings.torrents) + 1
+                    if len(self.settings.torrents) > 0
+                    else 1
+                ),
                 "name": "",
                 "upload_speed": self.settings.upload_speed,
                 "download_speed": self.settings.download_speed,
@@ -142,7 +152,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             )
 
         ATTRIBUTES = Attributes
-        attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
+        attributes = [
+            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
+        ]
 
         self.torrent_file = File(self.file_path)
         self.seeder = Seeder(self.torrent_file)
@@ -238,7 +250,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                         extra={"class_name": self.__class__.__name__},
                     )
                     # Use Event.wait() instead of time.sleep() for instant shutdown response
-                    if self.peers_worker_stop_event.wait(timeout=int(self.seeder_retry_interval)):
+                    if self.peers_worker_stop_event.wait(
+                        timeout=int(self.seeder_retry_interval)
+                    ):
                         logger.trace(
                             f"🛑 PEERS WORKER SHUTDOWN: {self.name} - "  # type: ignore[has-type]
                             "stop event received during retry sleep",
@@ -266,7 +280,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             ticker = 0.0
 
             # Use Event.wait() instead of time.sleep() for instant shutdown response
-            while not self.torrent_worker_stop_event.wait(timeout=self.worker_sleep_interval):
+            while not self.torrent_worker_stop_event.wait(
+                timeout=self.worker_sleep_interval
+            ):
                 logger.trace(
                     f"🔄 WORKER LOOP: {self.name} ticker={ticker:.2f}, "  # type: ignore[has-type]
                     f"tickspeed={self.settings.tickspeed}, active={self.active}",
@@ -292,7 +308,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def update_torrent_callback(self) -> None:  # pylint: disable=too-many-branches,too-many-statements
+    def update_torrent_callback(
+        self,
+    ) -> None:  # pylint: disable=too-many-branches,too-many-statements
         """UI callback to update torrent display values."""
         # Clear pending flag - this callback is now executing
         self._ui_update_pending = False
@@ -318,7 +336,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                 self.leechers = self.seeder.leechers
 
         # Get torrent-specific threshold, or fall back to global threshold
-        threshold = self.settings.torrents[self.file_path].get("threshold", self.settings.threshold)
+        threshold = self.settings.torrents[self.file_path].get(
+            "threshold", self.settings.threshold
+        )
 
         if self.threshold != threshold:  # type: ignore[has-type]
             self.threshold = threshold
@@ -332,7 +352,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                 random.uniform(self.speed_variation_min, self.speed_variation_max)
                 * CalculationConstants.SPEED_CALCULATION_DIVISOR
             )
-            next_speed = self.upload_speed * CalculationConstants.BYTES_PER_KB * upload_factor
+            next_speed = (
+                self.upload_speed * CalculationConstants.BYTES_PER_KB * upload_factor
+            )
             next_speed *= update_internal
             next_speed /= CalculationConstants.SPEED_CALCULATION_DIVISOR
             next_speed_bytes = int(next_speed)
@@ -353,7 +375,11 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                 random.uniform(self.speed_variation_min, self.speed_variation_max)
                 * CalculationConstants.SPEED_CALCULATION_DIVISOR
             )
-            next_speed = self.download_speed * CalculationConstants.BYTES_PER_KB * download_factor
+            next_speed = (
+                self.download_speed
+                * CalculationConstants.BYTES_PER_KB
+                * download_factor
+            )
             next_speed *= update_internal
             next_speed /= CalculationConstants.SPEED_CALCULATION_DIVISOR
             old_downloaded = self.total_downloaded
@@ -391,7 +417,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             # announce - run in background thread to avoid blocking the GTK main thread
             # with synchronous HTTP/UDP tracker network calls
             download_left = (
-                self.total_size - self.total_downloaded if self.total_size - self.total_downloaded > 0 else 0
+                self.total_size - self.total_downloaded
+                if self.total_size - self.total_downloaded > 0
+                else 0
             )
             uploaded = self.session_uploaded
             downloaded = self.session_downloaded
@@ -418,7 +446,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         Thread-safe via AppSettings lock.
         """
         ATTRIBUTES = Attributes
-        attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
+        attributes = [
+            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
+        ]
 
         # Build torrent data dictionary
         torrent_data = {attr: getattr(self, attr) for attr in attributes}
@@ -456,7 +486,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         )
         # Only notify if view instance still exists (may be None during shutdown)
         if View.instance is not None:
-            View.instance.notify("Stopping fake seeder {name}", translate=True, name=self.name)
+            View.instance.notify(
+                "Stopping fake seeder {name}", translate=True, name=self.name
+            )
 
         # Request graceful shutdown of seeder first
         if hasattr(self, "seeder") and self.seeder:
@@ -467,13 +499,17 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         self.torrent_worker.join(timeout=TimeoutConstants.WORKER_SHUTDOWN)
 
         if self.torrent_worker.is_alive():
-            logger.warning(f"⚠️ Torrent worker thread for {self.name} still alive after timeout - forcing shutdown")
+            logger.warning(
+                f"⚠️ Torrent worker thread for {self.name} still alive after timeout - forcing shutdown"
+            )
 
         self.peers_worker_stop_event.set()
         self.peers_worker.join(timeout=TimeoutConstants.WORKER_SHUTDOWN)
 
         if self.peers_worker.is_alive():
-            logger.warning(f"⚠️ Peers worker thread for {self.name} still alive after timeout - forcing shutdown")
+            logger.warning(
+                f"⚠️ Peers worker thread for {self.name} still alive after timeout - forcing shutdown"
+            )
 
         # Join any outstanding tracker update threads
         if hasattr(self, "tracker_update_threads") and self.tracker_update_threads:
@@ -483,7 +519,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             )
             for thread in self.tracker_update_threads:
                 if thread.is_alive():
-                    thread.join(timeout=0.1)  # Very short timeout - these should finish quickly
+                    thread.join(
+                        timeout=0.1
+                    )  # Very short timeout - these should finish quickly
             # Clear the list
             self.tracker_update_threads.clear()
 
@@ -537,7 +575,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
 
             # Calculate current stats for announce
             download_left = (
-                self.total_size - self.total_downloaded if self.total_size - self.total_downloaded > 0 else 0
+                self.total_size - self.total_downloaded
+                if self.total_size - self.total_downloaded > 0
+                else 0
             )
 
             # Announce to tracker with current stats
@@ -577,14 +617,18 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
 
         # Update status bar with completion message
         if View.instance is not None:
-            View.instance.notify("Tracker updated for {name}", translate=True, name=self.name)
+            View.instance.notify(
+                "Tracker updated for {name}", translate=True, name=self.name
+            )
 
         return False  # Don't repeat
 
     def _notify_tracker_update_failed(self) -> Any:
         """Notify user of tracker update failure"""
         if View.instance is not None:
-            View.instance.notify("Failed to update tracker for {name}", translate=True, name=self.name)
+            View.instance.notify(
+                "Failed to update tracker for {name}", translate=True, name=self.name
+            )
         return False  # Don't repeat
 
     def force_tracker_update(self) -> Any:
@@ -604,7 +648,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
 
         # Only notify if view instance still exists
         if View.instance is not None:
-            View.instance.notify("Updating tracker for {name}", translate=True, name=self.name)
+            View.instance.notify(
+                "Updating tracker for {name}", translate=True, name=self.name
+            )
 
         # Start the update in a background thread and track it
         update_thread = threading.Thread(
@@ -618,7 +664,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         self.tracker_update_threads.append(update_thread)
 
         # Clean up finished threads from the list
-        self.tracker_update_threads = [t for t in self.tracker_update_threads if t.is_alive()]
+        self.tracker_update_threads = [
+            t for t in self.tracker_update_threads if t.is_alive()
+        ]
 
     def restart_worker(self, state: Any) -> Any:
         """Restart torrent worker threads with new state."""
@@ -629,7 +677,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         try:
             # Only notify if view instance still exists (may be None during shutdown)
             if View.instance is not None:
-                View.instance.notify("Stopping fake seeder {name}", translate=True, name=self.name)
+                View.instance.notify(
+                    "Stopping fake seeder {name}", translate=True, name=self.name
+                )
             self.torrent_worker_stop_event.set()
             self.torrent_worker.join(timeout=TimeoutConstants.WORKER_SHUTDOWN)
 
@@ -649,7 +699,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             try:
                 # Only notify if view instance still exists (may be None during shutdown)
                 if View.instance is not None:
-                    View.instance.notify("Starting fake seeder {name}", translate=True, name=self.name)
+                    View.instance.notify(
+                        "Starting fake seeder {name}", translate=True, name=self.name
+                    )
                 self.torrent_worker_stop_event = threading.Event()
                 self.torrent_worker = threading.Thread(
                     target=self.update_torrent_worker,
@@ -696,7 +748,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             return getattr(self.torrent_attributes, attr)
         # Note: Removed hasattr(self, attr) check - it creates infinite recursion
         # and is unnecessary since __getattr__ is only called when attr doesn't exist on self
-        raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{attr}'")
+        raise AttributeError(
+            f"'{self.__class__.__name__}' object has no attribute '{attr}'"
+        )
 
     def __setattr__(self, attr: Any, value: Any) -> None:
         if attr == "torrent_attributes":
@@ -716,7 +770,11 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
     def get_active_tracker_model(self) -> Any:
         """Get tracker model from the currently active seeder"""
         try:
-            if hasattr(self, "seeder") and self.seeder and hasattr(self.seeder, "seeder"):
+            if (
+                hasattr(self, "seeder")
+                and self.seeder
+                and hasattr(self.seeder, "seeder")
+            ):
                 active_seeder = self.seeder.seeder
                 if hasattr(active_seeder, "_get_tracker_model"):
                     # pylint: disable=protected-access
@@ -740,8 +798,12 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
                 tracker_models.append(active_tracker)
 
             # Create models for backup trackers from announce-list
-            if hasattr(self, "torrent_file") and hasattr(self.torrent_file, "announce_list"):
-                current_url = active_tracker.get_property("url") if active_tracker else None
+            if hasattr(self, "torrent_file") and hasattr(
+                self.torrent_file, "announce_list"
+            ):
+                current_url = (
+                    active_tracker.get_property("url") if active_tracker else None
+                )
 
                 for tier, announce_url in enumerate(self.torrent_file.announce_list):
                     # Skip if this is already the active tracker
@@ -804,7 +866,9 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             stats["total_leechers"] = total_leechers
 
             if response_times:
-                stats["average_response_time"] = sum(response_times) / len(response_times)
+                stats["average_response_time"] = sum(response_times) / len(
+                    response_times
+                )
 
             if last_announces:
                 stats["last_announce"] = max(last_announces)

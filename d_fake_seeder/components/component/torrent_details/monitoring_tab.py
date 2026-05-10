@@ -81,7 +81,11 @@ class MonitoringTab(BaseTorrentTab):
         )
 
         # Get refresh interval from settings (default 2 seconds)
-        self.refresh_interval = self.settings.get("ui_settings.monitoring_refresh_interval", 2) if self.settings else 2
+        self.refresh_interval = (
+            self.settings.get("ui_settings.monitoring_refresh_interval", 2)
+            if self.settings
+            else 2
+        )
 
         # Create main vertical box
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -101,9 +105,16 @@ class MonitoringTab(BaseTorrentTab):
 
         # Refresh slider (1-10 seconds)
         self.refresh_adjustment = Gtk.Adjustment(
-            value=self.refresh_interval, lower=1, upper=10, step_increment=1, page_increment=1, page_size=0
+            value=self.refresh_interval,
+            lower=1,
+            upper=10,
+            step_increment=1,
+            page_increment=1,
+            page_size=0,
         )
-        self.refresh_slider = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=self.refresh_adjustment)
+        self.refresh_slider = Gtk.Scale(
+            orientation=Gtk.Orientation.HORIZONTAL, adjustment=self.refresh_adjustment
+        )
         self.refresh_slider.set_digits(0)
         self.refresh_slider.set_draw_value(True)
         self.refresh_slider.set_value_pos(Gtk.PositionType.RIGHT)
@@ -124,7 +135,9 @@ class MonitoringTab(BaseTorrentTab):
         # Don't expand horizontally - prevents forcing window width
         self.scrolled_window.set_hexpand(False)
         # Allow horizontal scrolling if needed, but prefer shrinking
-        self.scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        self.scrolled_window.set_policy(
+            Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC
+        )
         # CRITICAL: Prevent natural width from propagating up and forcing window resize
         self.scrolled_window.set_propagate_natural_width(False)
         self.scrolled_window.set_propagate_natural_height(False)
@@ -209,7 +222,9 @@ class MonitoringTab(BaseTorrentTab):
         )
 
         # Start update timer using configured refresh interval
-        self.update_timer = GLib.timeout_add_seconds(self.refresh_interval, self._update_metrics)
+        self.update_timer = GLib.timeout_add_seconds(
+            self.refresh_interval, self._update_metrics
+        )
         self.track_timeout(self.update_timer)
         logger.trace(
             f"⏱️ MONITORING TAB: Started update timer ({self.refresh_interval} second interval)",
@@ -254,12 +269,16 @@ class MonitoringTab(BaseTorrentTab):
                 GLib.source_remove(self.update_timer)
 
             # Start new timer with updated interval
-            self.update_timer = GLib.timeout_add_seconds(self.refresh_interval, self._update_metrics)
+            self.update_timer = GLib.timeout_add_seconds(
+                self.refresh_interval, self._update_metrics
+            )
             self.track_timeout(self.update_timer)
 
             # Save to settings using proper settings API
             if self.settings:
-                self.settings.set("ui_settings.monitoring_refresh_interval", new_interval)
+                self.settings.set(
+                    "ui_settings.monitoring_refresh_interval", new_interval
+                )
 
             logger.trace(
                 f"⏱️ MONITORING TAB: Refresh interval changed to {new_interval} seconds",
@@ -384,7 +403,9 @@ class MonitoringTab(BaseTorrentTab):
 
     def _create_cpu_tile(self) -> None:
         """Create CPU usage tile."""
-        self.cpu_tile = self._create_metric_tile("CPU Usage", [("CPU %", (0.2, 0.8, 0.2))])  # Green
+        self.cpu_tile = self._create_metric_tile(
+            "CPU Usage", [("CPU %", (0.2, 0.8, 0.2))]
+        )  # Green
 
     def _create_memory_tile(self) -> None:
         """Create memory usage tile."""
@@ -440,11 +461,15 @@ class MonitoringTab(BaseTorrentTab):
             ],
         )
         monitoring = self._get_monitoring_settings()
-        self.connections_tile["graph"].max_value = monitoring.get("connections_graph_max", 50)
+        self.connections_tile["graph"].max_value = monitoring.get(
+            "connections_graph_max", 50
+        )
 
     def _create_threads_tile(self) -> None:
         """Create threads count tile."""
-        self.threads_tile = self._create_metric_tile("Threads", [("Thread Count", (0.8, 0.4, 0.2))])  # Orange
+        self.threads_tile = self._create_metric_tile(
+            "Threads", [("Thread Count", (0.8, 0.4, 0.2))]
+        )  # Orange
         monitoring = self._get_monitoring_settings()
         self.threads_tile["graph"].max_value = monitoring.get("threads_graph_max", 100)
 
@@ -472,7 +497,9 @@ class MonitoringTab(BaseTorrentTab):
             ],
         )
         monitoring = self._get_monitoring_settings()
-        self.network_io_tile["graph"].max_value = monitoring.get("network_io_graph_max", 100)
+        self.network_io_tile["graph"].max_value = monitoring.get(
+            "network_io_graph_max", 100
+        )
         self.net_io_last_recv = 0
         self.net_io_last_sent = 0
 
@@ -551,7 +578,9 @@ class MonitoringTab(BaseTorrentTab):
             # Update CPU tile
             cpu_percent = metrics.get("cpu_percent", 0)
             self.cpu_tile["graph"].update_series("CPU %", cpu_percent)
-            self.cpu_tile["value_labels"]["CPU %"].set_markup(f"<small>CPU %: <b>{cpu_percent:.1f}%</b></small>")
+            self.cpu_tile["value_labels"]["CPU %"].set_markup(
+                f"<small>CPU %: <b>{cpu_percent:.1f}%</b></small>"
+            )
 
             # Update Memory tile
             rss_mb = metrics.get("memory_rss_mb", 0)
@@ -562,9 +591,15 @@ class MonitoringTab(BaseTorrentTab):
             self.memory_tile["graph"].update_series("USS", uss_mb)
             # VMS is text-only (not graphed - too large compared to RSS/USS)
 
-            self.memory_tile["value_labels"]["RSS"].set_markup(f"<small>RSS: <b>{rss_mb:.1f} MB</b></small>")
-            self.memory_tile["value_labels"]["USS"].set_markup(f"<small>USS: <b>{uss_mb:.1f} MB</b></small>")
-            self.memory_tile["value_labels"]["VMS"].set_markup(f"<small>VMS: <b>{vms_mb:.1f} MB</b></small>")
+            self.memory_tile["value_labels"]["RSS"].set_markup(
+                f"<small>RSS: <b>{rss_mb:.1f} MB</b></small>"
+            )
+            self.memory_tile["value_labels"]["USS"].set_markup(
+                f"<small>USS: <b>{uss_mb:.1f} MB</b></small>"
+            )
+            self.memory_tile["value_labels"]["VMS"].set_markup(
+                f"<small>VMS: <b>{vms_mb:.1f} MB</b></small>"
+            )
 
             # Update File Descriptors tile
             fd_count = metrics.get("fd_count", 0)
@@ -575,9 +610,15 @@ class MonitoringTab(BaseTorrentTab):
             self.fd_tile["graph"].update_series("Files", fd_files)
             self.fd_tile["graph"].update_series("Sockets", fd_sockets)
 
-            self.fd_tile["value_labels"]["Total FDs"].set_markup(f"<small>Total FDs: <b>{fd_count}</b></small>")
-            self.fd_tile["value_labels"]["Files"].set_markup(f"<small>Files: <b>{fd_files}</b></small>")
-            self.fd_tile["value_labels"]["Sockets"].set_markup(f"<small>Sockets: <b>{fd_sockets}</b></small>")
+            self.fd_tile["value_labels"]["Total FDs"].set_markup(
+                f"<small>Total FDs: <b>{fd_count}</b></small>"
+            )
+            self.fd_tile["value_labels"]["Files"].set_markup(
+                f"<small>Files: <b>{fd_files}</b></small>"
+            )
+            self.fd_tile["value_labels"]["Sockets"].set_markup(
+                f"<small>Sockets: <b>{fd_sockets}</b></small>"
+            )
 
             # Update Network Connections tile
             conn_total = metrics.get("connections_total", 0)
@@ -585,14 +626,20 @@ class MonitoringTab(BaseTorrentTab):
             conn_listen = metrics.get("connections_listen", 0)
 
             self.connections_tile["graph"].update_series("Total", conn_total)
-            self.connections_tile["graph"].update_series("Established", conn_established)
+            self.connections_tile["graph"].update_series(
+                "Established", conn_established
+            )
             self.connections_tile["graph"].update_series("Listen", conn_listen)
 
-            self.connections_tile["value_labels"]["Total"].set_markup(f"<small>Total: <b>{conn_total}</b></small>")
+            self.connections_tile["value_labels"]["Total"].set_markup(
+                f"<small>Total: <b>{conn_total}</b></small>"
+            )
             self.connections_tile["value_labels"]["Established"].set_markup(
                 f"<small>Established: <b>{conn_established}</b></small>"
             )
-            self.connections_tile["value_labels"]["Listen"].set_markup(f"<small>Listen: <b>{conn_listen}</b></small>")
+            self.connections_tile["value_labels"]["Listen"].set_markup(
+                f"<small>Listen: <b>{conn_listen}</b></small>"
+            )
 
             # Update Threads tile
             thread_count = metrics.get("threads_count", 0)
@@ -607,8 +654,12 @@ class MonitoringTab(BaseTorrentTab):
 
             # Calculate MB/s using actual refresh interval
             interval = self.refresh_interval if self.refresh_interval > 0 else 2
-            read_rate = (io_read_bytes - self.disk_io_last_read) / (1024 * 1024 * interval)
-            write_rate = (io_write_bytes - self.disk_io_last_write) / (1024 * 1024 * interval)
+            read_rate = (io_read_bytes - self.disk_io_last_read) / (
+                1024 * 1024 * interval
+            )
+            write_rate = (io_write_bytes - self.disk_io_last_write) / (
+                1024 * 1024 * interval
+            )
 
             self.disk_io_tile["graph"].update_series("Read", max(0, read_rate))
             self.disk_io_tile["graph"].update_series("Write", max(0, write_rate))
@@ -647,8 +698,14 @@ class MonitoringTab(BaseTorrentTab):
 
             # Update Torrent Statistics tile
             if self.model:
-                torrent_count = len(self.model.torrent_list) if hasattr(self.model, "torrent_list") else 0
-                self.torrent_tile["graph"].update_series("Total Torrents", torrent_count)
+                torrent_count = (
+                    len(self.model.torrent_list)
+                    if hasattr(self.model, "torrent_list")
+                    else 0
+                )
+                self.torrent_tile["graph"].update_series(
+                    "Total Torrents", torrent_count
+                )
                 self.torrent_tile["value_labels"]["Total Torrents"].set_markup(
                     f"<small>Total Torrents: <b>{torrent_count}</b></small>"
                 )

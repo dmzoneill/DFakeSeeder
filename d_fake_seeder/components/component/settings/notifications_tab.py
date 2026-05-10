@@ -23,7 +23,9 @@ from .settings_mixins import ValidationMixin  # noqa: E402
 # fmt: on
 
 
-class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, UtilityMixin, ValidationMixin):
+class NotificationsTab(
+    BaseSettingsTab, NotificationMixin, TranslationMixin, UtilityMixin, ValidationMixin
+):
     """
     Notifications settings tab component.
 
@@ -34,11 +36,25 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
     """
 
     # Dropdown items for translation
-    POSITION_ITEMS = ["Top Left", "Top Center", "Top Right", "Bottom Left", "Bottom Center", "Bottom Right"]
+    POSITION_ITEMS = [
+        "Top Left",
+        "Top Center",
+        "Top Right",
+        "Bottom Left",
+        "Bottom Center",
+        "Bottom Right",
+    ]
     ANIMATION_ITEMS = ["None", "Fade", "Slide"]
 
     # Position value mapping
-    POSITION_VALUES = ["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"]
+    POSITION_VALUES = [
+        "top-left",
+        "top-center",
+        "top-right",
+        "bottom-left",
+        "bottom-center",
+        "bottom-right",
+    ]
     ANIMATION_VALUES = ["none", "fade", "slide"]
 
     # Widget mappings for auto-connect
@@ -163,16 +179,23 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
             # Load enabled switch
             enabled_switch = self.get_widget("notification_enabled")
             if enabled_switch:
-                self.set_switch_state(enabled_switch, notification_settings.get("enabled", True))
+                self.set_switch_state(
+                    enabled_switch, notification_settings.get("enabled", True)
+                )
 
             # Load other switches
             statusbar_switch = self.get_widget("notification_show_statusbar")
             if statusbar_switch:
-                self.set_switch_state(statusbar_switch, notification_settings.get("show_in_statusbar", True))
+                self.set_switch_state(
+                    statusbar_switch,
+                    notification_settings.get("show_in_statusbar", True),
+                )
 
             sound_switch = self.get_widget("notification_sound")
             if sound_switch:
-                self.set_switch_state(sound_switch, notification_settings.get("sound_enabled", False))
+                self.set_switch_state(
+                    sound_switch, notification_settings.get("sound_enabled", False)
+                )
 
             # Load spin buttons
             spin_mappings = [
@@ -210,7 +233,9 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
         if animation_dropdown:
             self.track_signal(
                 animation_dropdown,
-                animation_dropdown.connect("notify::selected", self.on_animation_changed),
+                animation_dropdown.connect(
+                    "notify::selected", self.on_animation_changed
+                ),
             )
 
         # Test button
@@ -347,7 +372,9 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
                 self.set_switch_state(sound_switch, False)
 
             self.update_dependencies()
-            self.show_notification(self._("Notification settings reset to defaults"), "success")
+            self.show_notification(
+                self._("Notification settings reset to defaults"), "success"
+            )
 
         except Exception as e:
             self.logger.error(f"Error resetting Notifications tab: {e}")
@@ -362,14 +389,18 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
             if position_dropdown:
                 idx = position_dropdown.get_selected()
                 if 0 <= idx < len(self.POSITION_VALUES):
-                    settings["notification_settings.position"] = self.POSITION_VALUES[idx]
+                    settings["notification_settings.position"] = self.POSITION_VALUES[
+                        idx
+                    ]
 
             # Animation
             animation_dropdown = self.get_widget("notification_animation")
             if animation_dropdown:
                 idx = animation_dropdown.get_selected()
                 if 0 <= idx < len(self.ANIMATION_VALUES):
-                    settings["notification_settings.animation"] = self.ANIMATION_VALUES[idx]
+                    settings["notification_settings.animation"] = self.ANIMATION_VALUES[
+                        idx
+                    ]
 
             # Enabled
             enabled_switch = self.get_widget("notification_enabled")
@@ -379,21 +410,37 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
             # Show in statusbar
             statusbar_switch = self.get_widget("notification_show_statusbar")
             if statusbar_switch:
-                settings["notification_settings.show_in_statusbar"] = statusbar_switch.get_active()
+                settings["notification_settings.show_in_statusbar"] = (
+                    statusbar_switch.get_active()
+                )
 
             # Sound
             sound_switch = self.get_widget("notification_sound")
             if sound_switch:
-                settings["notification_settings.sound_enabled"] = sound_switch.get_active()
+                settings["notification_settings.sound_enabled"] = (
+                    sound_switch.get_active()
+                )
 
             # Spin buttons
             spin_mappings = [
-                ("notification_animation_duration", "notification_settings.animation_duration_ms"),
+                (
+                    "notification_animation_duration",
+                    "notification_settings.animation_duration_ms",
+                ),
                 ("notification_max_visible", "notification_settings.max_visible"),
                 ("notification_info_timeout", "notification_settings.info_timeout_ms"),
-                ("notification_success_timeout", "notification_settings.success_timeout_ms"),
-                ("notification_warning_timeout", "notification_settings.warning_timeout_ms"),
-                ("notification_error_timeout", "notification_settings.error_timeout_ms"),
+                (
+                    "notification_success_timeout",
+                    "notification_settings.success_timeout_ms",
+                ),
+                (
+                    "notification_warning_timeout",
+                    "notification_settings.warning_timeout_ms",
+                ),
+                (
+                    "notification_error_timeout",
+                    "notification_settings.error_timeout_ms",
+                ),
             ]
 
             for widget_id, setting_key in spin_mappings:

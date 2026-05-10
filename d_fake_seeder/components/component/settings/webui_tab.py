@@ -23,7 +23,9 @@ from .settings_mixins import (  # noqa: E402
 # fmt: on
 
 
-class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
+class WebUITab(
+    BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin
+):
     """
     Web UI settings tab component.
 
@@ -49,30 +51,58 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         self._widgets.update(
             {
                 # Section containers (these are hardcoded to sensitive=False in XML)
-                "webui_config_box": self.builder.get_object("settings_webui_config_box"),
+                "webui_config_box": self.builder.get_object(
+                    "settings_webui_config_box"
+                ),
                 "webui_auth_box": self.builder.get_object("settings_webui_auth_box"),
-                "webui_security_box": self.builder.get_object("settings_webui_security_box"),
-                "webui_auth_settings_box": self.builder.get_object("settings_webui_auth_settings_box"),
-                "webui_interface_box": self.builder.get_object("settings_webui_interface_box"),
+                "webui_security_box": self.builder.get_object(
+                    "settings_webui_security_box"
+                ),
+                "webui_auth_settings_box": self.builder.get_object(
+                    "settings_webui_auth_settings_box"
+                ),
+                "webui_interface_box": self.builder.get_object(
+                    "settings_webui_interface_box"
+                ),
                 # Main settings
                 "enable_webui": self.builder.get_object("settings_enable_webui"),
                 "webui_port": self.builder.get_object("settings_webui_port"),
                 "webui_url_label": self.builder.get_object("settings_webui_url_label"),
-                "webui_https_enabled": self.builder.get_object("settings_webui_https_enabled"),
-                "webui_localhost_only": self.builder.get_object("settings_webui_localhost_only"),
+                "webui_https_enabled": self.builder.get_object(
+                    "settings_webui_https_enabled"
+                ),
+                "webui_localhost_only": self.builder.get_object(
+                    "settings_webui_localhost_only"
+                ),
                 "webui_interface": self.builder.get_object("settings_webui_interface"),
                 # Authentication
-                "webui_auth_enabled": self.builder.get_object("settings_webui_auth_enabled"),
+                "webui_auth_enabled": self.builder.get_object(
+                    "settings_webui_auth_enabled"
+                ),
                 "webui_username": self.builder.get_object("settings_webui_username"),
                 "webui_password": self.builder.get_object("settings_webui_password"),
-                "webui_generate_password": self.builder.get_object("settings_webui_generate_password"),
-                "webui_session_timeout": self.builder.get_object("settings_webui_session_timeout"),
+                "webui_generate_password": self.builder.get_object(
+                    "settings_webui_generate_password"
+                ),
+                "webui_session_timeout": self.builder.get_object(
+                    "settings_webui_session_timeout"
+                ),
                 # Security
-                "webui_csrf_protection": self.builder.get_object("settings_webui_csrf_protection"),
-                "webui_clickjacking_protection": self.builder.get_object("settings_webui_clickjacking_protection"),
-                "webui_secure_headers": self.builder.get_object("settings_webui_secure_headers"),
-                "webui_host_header_validation": self.builder.get_object("settings_webui_host_header_validation"),
-                "webui_ban_after_failures": self.builder.get_object("settings_webui_ban_after_failures"),
+                "webui_csrf_protection": self.builder.get_object(
+                    "settings_webui_csrf_protection"
+                ),
+                "webui_clickjacking_protection": self.builder.get_object(
+                    "settings_webui_clickjacking_protection"
+                ),
+                "webui_secure_headers": self.builder.get_object(
+                    "settings_webui_secure_headers"
+                ),
+                "webui_host_header_validation": self.builder.get_object(
+                    "settings_webui_host_header_validation"
+                ),
+                "webui_ban_after_failures": self.builder.get_object(
+                    "settings_webui_ban_after_failures"
+                ),
             }
         )
 
@@ -113,7 +143,9 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         # Authentication enable (has dependencies - controls username/password/generate)
         webui_auth = self.get_widget("webui_auth_enabled")
         if webui_auth:
-            self.track_signal(webui_auth, webui_auth.connect("state-set", self.on_webui_auth_changed))
+            self.track_signal(
+                webui_auth, webui_auth.connect("state-set", self.on_webui_auth_changed)
+            )
 
         # Password generation button (complex logic)
         gen_password = self.get_widget("webui_generate_password")
@@ -154,11 +186,15 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
             webui_https = self.get_widget("webui_https_enabled")
             if webui_https:
-                self.set_switch_state(webui_https, self.app_settings.webui_https_enabled)
+                self.set_switch_state(
+                    webui_https, self.app_settings.webui_https_enabled
+                )
 
             webui_localhost = self.get_widget("webui_localhost_only")
             if webui_localhost:
-                self.set_switch_state(webui_localhost, self.app_settings.webui_localhost_only)
+                self.set_switch_state(
+                    webui_localhost, self.app_settings.webui_localhost_only
+                )
 
             webui_interface = self.get_widget("webui_interface")
             if webui_interface:
@@ -184,19 +220,27 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             # Security
             webui_csrf = self.get_widget("webui_csrf_protection")
             if webui_csrf:
-                self.set_switch_state(webui_csrf, self.app_settings.webui_csrf_protection)
+                self.set_switch_state(
+                    webui_csrf, self.app_settings.webui_csrf_protection
+                )
 
             webui_clickjacking = self.get_widget("webui_clickjacking_protection")
             if webui_clickjacking:
-                self.set_switch_state(webui_clickjacking, self.app_settings.webui_clickjacking_protection)
+                self.set_switch_state(
+                    webui_clickjacking, self.app_settings.webui_clickjacking_protection
+                )
 
             webui_secure_headers = self.get_widget("webui_secure_headers")
             if webui_secure_headers:
-                self.set_switch_state(webui_secure_headers, self.app_settings.webui_secure_headers)
+                self.set_switch_state(
+                    webui_secure_headers, self.app_settings.webui_secure_headers
+                )
 
             webui_host_header = self.get_widget("webui_host_header_validation")
             if webui_host_header:
-                self.set_switch_state(webui_host_header, self.app_settings.webui_host_header_validation)
+                self.set_switch_state(
+                    webui_host_header, self.app_settings.webui_host_header_validation
+                )
 
             webui_ban = self.get_widget("webui_ban_after_failures")
             if webui_ban:
@@ -221,9 +265,15 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             webui_enabled = enable_webui and enable_webui.get_active()
 
             # IMPORTANT: Enable all three main section containers that are hardcoded to sensitive=False in XML
-            self.update_widget_sensitivity("webui_config_box", webui_enabled)  # Connection Settings
-            self.update_widget_sensitivity("webui_auth_box", webui_enabled)  # Authentication
-            self.update_widget_sensitivity("webui_security_box", webui_enabled)  # Security Options
+            self.update_widget_sensitivity(
+                "webui_config_box", webui_enabled
+            )  # Connection Settings
+            self.update_widget_sensitivity(
+                "webui_auth_box", webui_enabled
+            )  # Authentication
+            self.update_widget_sensitivity(
+                "webui_security_box", webui_enabled
+            )  # Security Options
 
             # Main settings
             self.update_widget_sensitivity("webui_port", webui_enabled)
@@ -251,9 +301,13 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
             # Security settings
             self.update_widget_sensitivity("webui_csrf_protection", webui_enabled)
-            self.update_widget_sensitivity("webui_clickjacking_protection", webui_enabled)
+            self.update_widget_sensitivity(
+                "webui_clickjacking_protection", webui_enabled
+            )
             self.update_widget_sensitivity("webui_secure_headers", webui_enabled)
-            self.update_widget_sensitivity("webui_host_header_validation", webui_enabled)
+            self.update_widget_sensitivity(
+                "webui_host_header_validation", webui_enabled
+            )
             self.update_widget_sensitivity("webui_ban_after_failures", webui_enabled)
 
         except Exception as e:
@@ -314,7 +368,9 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
             webui_session = self.get_widget("webui_session_timeout")
             if webui_session:
-                settings["webui.session_timeout_minutes"] = int(webui_session.get_value())
+                settings["webui.session_timeout_minutes"] = int(
+                    webui_session.get_value()
+                )
 
             # Security
             webui_csrf = self.get_widget("webui_csrf_protection")
@@ -323,7 +379,9 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
             webui_clickjacking = self.get_widget("webui_clickjacking_protection")
             if webui_clickjacking:
-                settings["webui.clickjacking_protection"] = webui_clickjacking.get_active()
+                settings["webui.clickjacking_protection"] = (
+                    webui_clickjacking.get_active()
+                )
 
             webui_secure_headers = self.get_widget("webui_secure_headers")
             if webui_secure_headers:
@@ -331,7 +389,9 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
             webui_host_header = self.get_widget("webui_host_header_validation")
             if webui_host_header:
-                settings["webui.host_header_validation"] = webui_host_header.get_active()
+                settings["webui.host_header_validation"] = (
+                    webui_host_header.get_active()
+                )
 
             webui_ban = self.get_widget("webui_ban_after_failures")
             if webui_ban:
@@ -388,13 +448,17 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
                 if webui_username:
                     username = webui_username.get_text().strip()
                     if not username:
-                        errors["webui_username"] = "Username cannot be empty when authentication is enabled"
+                        errors["webui_username"] = (
+                            "Username cannot be empty when authentication is enabled"
+                        )
 
                 webui_password = self.get_widget("webui_password")
                 if webui_password:
                     password = webui_password.get_text()
                     if not password:
-                        errors["webui_password"] = "Password cannot be empty when authentication is enabled"
+                        errors["webui_password"] = (
+                            "Password cannot be empty when authentication is enabled"
+                        )
 
         except Exception as e:
             self.logger.error(f"Error validating Web UI tab settings: {e}")
@@ -477,7 +541,9 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         try:
             self.update_dependencies()
             # NOTE: Setting will be saved in batch via _collect_settings()
-            message = "Web UI authentication will be " + ("enabled" if state else "disabled")
+            message = "Web UI authentication will be " + (
+                "enabled" if state else "disabled"
+            )
             self.show_notification(message, "info")
         except Exception as e:
             self.logger.error(f"Error changing Web UI authentication: {e}")
@@ -563,7 +629,9 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
             self.update_dependencies()
             self._update_url_label()
-            self.show_notification(self._("Web UI settings reset to defaults"), "success")
+            self.show_notification(
+                self._("Web UI settings reset to defaults"), "success"
+            )
 
         except Exception as e:
             self.logger.error(f"Error resetting Web UI tab to defaults: {e}")

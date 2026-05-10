@@ -52,11 +52,15 @@ class DHTSeeder:
             True if started successfully
         """
         if not self.enabled:
-            logger.info("DHT seeder disabled", extra={"class_name": self.__class__.__name__})
+            logger.info(
+                "DHT seeder disabled", extra={"class_name": self.__class__.__name__}
+            )
             return False
 
         try:
-            logger.trace("Starting DHT seeder", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "Starting DHT seeder", extra={"class_name": self.__class__.__name__}
+            )
 
             # Start DHT node
             await self.dht_node.start()
@@ -84,7 +88,9 @@ class DHTSeeder:
 
     async def stop(self) -> Any:
         """Stop DHT seeder"""
-        logger.info("Stopping DHT seeder", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "Stopping DHT seeder", extra={"class_name": self.__class__.__name__}
+        )
 
         self.running = False
         self.active_torrents.clear()
@@ -203,7 +209,9 @@ class DHTSeeder:
             )
             return False
 
-    async def discover_peers(self, info_hash: bytes, max_peers: int = 50) -> List[Tuple[str, int]]:
+    async def discover_peers(
+        self, info_hash: bytes, max_peers: int = 50
+    ) -> List[Tuple[str, int]]:
         """
         Discover peers for torrent via DHT
 
@@ -301,7 +309,8 @@ class DHTSeeder:
             "port": self.port,
             "routing_table": routing_stats,
             "total_announcements": sum(
-                torrent.get("total_announcements", 0) for torrent in self.active_torrents.values()
+                torrent.get("total_announcements", 0)
+                for torrent in self.active_torrents.values()
             ),
         }
 
@@ -320,7 +329,9 @@ class DHTSeeder:
         try:
             current_time = time.time()
             announcement_interval = (
-                getattr(self.settings, "protocols", {}).get("dht", {}).get("announcement_interval", 1800)
+                getattr(self.settings, "protocols", {})
+                .get("dht", {})
+                .get("announcement_interval", 1800)
             )
 
             # Re-announce torrents that need it
@@ -361,4 +372,6 @@ class DHTSeeder:
     def disable(self) -> Any:
         """Disable DHT seeder"""
         self.enabled = False
-        logger.info("DHT seeder disabled", extra={"class_name": self.__class__.__name__})
+        logger.info(
+            "DHT seeder disabled", extra={"class_name": self.__class__.__name__}
+        )

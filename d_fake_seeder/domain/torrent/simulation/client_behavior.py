@@ -214,7 +214,9 @@ class ClientBehaviorEngine:  # pylint: disable=too-many-instance-attributes
         self.enabled = client_config.get("enabled", True)
         self.primary_client = client_config.get("primary_client", "qBittorrent")
         self.behavior_variation = client_config.get("behavior_variation", 0.3)
-        self.switch_client_probability = client_config.get("switch_client_probability", 0.05)
+        self.switch_client_probability = client_config.get(
+            "switch_client_probability", 0.05
+        )
 
         # Current client state
         self.current_client_profile = self.CLIENT_PROFILES.get(self.primary_client)
@@ -321,7 +323,9 @@ class ClientBehaviorEngine:  # pylint: disable=too-many-instance-attributes
                 and not isinstance(base_value, bool)
                 and self.behavior_variation > 0
             ):
-                variation = base_value * self.behavior_variation * (random.random() - 0.5) * 2
+                variation = (
+                    base_value * self.behavior_variation * (random.random() - 0.5) * 2
+                )
                 return max(0, base_value + variation)
 
             return base_value
@@ -439,7 +443,9 @@ class ClientBehaviorEngine:  # pylint: disable=too-many-instance-attributes
     def _simulate_piece_request(self, context: Dict) -> Dict[str, Any]:
         """Simulate client-specific piece request behavior"""
         delay = self.get_timing_parameter("piece_request_delay", 0.05)
-        strategy = self.get_behavior_parameter("piece_selection_strategy", "rarest_first")
+        strategy = self.get_behavior_parameter(
+            "piece_selection_strategy", "rarest_first"
+        )
         queue_size = self.get_behavior_parameter("request_queue_size", 250)
 
         return {
@@ -531,7 +537,11 @@ class ClientBehaviorEngine:  # pylint: disable=too-many-instance-attributes
 
             # Set extension protocol bit if supported
             if "ut_metadata" in extensions or "ut_pex" in extensions:
-                reserved[5] |= BitTorrentProtocolConstants.EXTENSION_PROTOCOL_BIT  # Extension protocol bit
+                reserved[
+                    5
+                ] |= (
+                    BitTorrentProtocolConstants.EXTENSION_PROTOCOL_BIT
+                )  # Extension protocol bit
 
             # Set DHT bit if supported
             if self.get_behavior_parameter("dht_participation", False):
@@ -539,7 +549,11 @@ class ClientBehaviorEngine:  # pylint: disable=too-many-instance-attributes
 
             # Set fast extension bit if supported
             if self.get_behavior_parameter("fast_extension", False):
-                reserved[7] |= BitTorrentProtocolConstants.FAST_EXTENSION_BIT  # Fast extension bit
+                reserved[
+                    7
+                ] |= (
+                    BitTorrentProtocolConstants.FAST_EXTENSION_BIT
+                )  # Fast extension bit
 
         return bytes(reserved)
 

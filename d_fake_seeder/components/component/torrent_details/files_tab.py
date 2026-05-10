@@ -265,7 +265,9 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             formatted_length = self._format_file_size(length)
 
             # Create the label pair for file path and size
-            self.create_label_pair(fullpath, formatted_length, row, self._files_grid_child)
+            self.create_label_pair(
+                fullpath, formatted_length, row, self._files_grid_child
+            )
 
         except Exception as e:
             self.logger.error(f"Error creating file row for {fullpath}: {e}")
@@ -333,7 +335,9 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if not self._files_grid_child:
                 self._files_grid_child = self.create_grid()
 
-            message_label = self.create_info_label("No files available for this torrent.")
+            message_label = self.create_info_label(
+                "No files available for this torrent."
+            )
             self.set_widget_margins(message_label, self.ui_margin_large)
 
             # Add message to the grid instead of directly to the tab

@@ -56,16 +56,24 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
 
         # Timeout settings from config
         self.handshake_timeout = peer_protocol.get("handshake_timeout_seconds", 30.0)
-        self.message_read_timeout = peer_protocol.get("message_read_timeout_seconds", 60.0)
+        self.message_read_timeout = peer_protocol.get(
+            "message_read_timeout_seconds", 60.0
+        )
         self.data_read_timeout = peer_protocol.get("data_read_timeout_seconds", 30.0)
 
         # Thread management timeout
         ui_settings = getattr(self.settings, "ui_settings", {})
-        self.server_thread_join_timeout = ui_settings.get("manager_thread_join_timeout_seconds", 5.0)
+        self.server_thread_join_timeout = ui_settings.get(
+            "manager_thread_join_timeout_seconds", 5.0
+        )
 
         # Configurable bitfield probability
-        self.bitfield_piece_probability = ui_settings.get("bitfield_piece_probability", 0.3)
-        self.max_piece_request_size = ui_settings.get("max_piece_request_size_bytes", 32768)
+        self.bitfield_piece_probability = ui_settings.get(
+            "bitfield_piece_probability", 0.3
+        )
+        self.max_piece_request_size = ui_settings.get(
+            "max_piece_request_size_bytes", 32768
+        )
         self.bitfield_size = ui_settings.get("bitfield_size_bytes", 32)
 
         # UI callback for connection updates
@@ -166,7 +174,9 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
 
             bind_address = get_bind_address()
 
-            self.server = await asyncio.start_server(self._handle_client, bind_address, self.port)
+            self.server = await asyncio.start_server(
+                self._handle_client, bind_address, self.port
+            )
 
             logger.trace(
                 f"🎧 Peer server listening on {bind_address}:{self.port}",
@@ -183,7 +193,9 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
                 exc_info=True,
             )
 
-    async def _handle_client(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
+    async def _handle_client(
+        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter
+    ) -> None:
         """Handle incoming peer connection"""
         client_addr = writer.get_extra_info("peername")
         client_key = f"{client_addr[0]}:{client_addr[1]}"
@@ -202,7 +214,8 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
         self.connection_count += 1
 
         logger.trace(
-            f"🤝 Accepted peer connection from {client_key} " f"(total: {len(self.active_connections)})",
+            f"🤝 Accepted peer connection from {client_key} "
+            f"(total: {len(self.active_connections)})",
             extra={"class_name": self.__class__.__name__},
         )
 
@@ -245,7 +258,10 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
                 self.connection_callback("incoming", "remove", client_ip, client_port)
 
     async def _handle_peer_protocol(
-        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter, client_key: str
+        self,
+        reader: asyncio.StreamReader,
+        writer: asyncio.StreamWriter,
+        client_key: str,
     ) -> None:  # noqa: E501
         """Handle BitTorrent peer protocol messages"""
 
@@ -267,9 +283,13 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
                 return
 
             info_hash_start = (
-                1 + BitTorrentProtocolConstants.PROTOCOL_NAME_LENGTH + BitTorrentProtocolConstants.RESERVED_BYTES_LENGTH
+                1
+                + BitTorrentProtocolConstants.PROTOCOL_NAME_LENGTH
+                + BitTorrentProtocolConstants.RESERVED_BYTES_LENGTH
             )
-            info_hash_end = info_hash_start + BitTorrentProtocolConstants.INFOHASH_LENGTH
+            info_hash_end = (
+                info_hash_start + BitTorrentProtocolConstants.INFOHASH_LENGTH
+            )
             info_hash = handshake_data[info_hash_start:info_hash_end]
 
             # Check if we know this torrent
@@ -301,7 +321,9 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
                 BitTorrentProtocolConstants.FAKE_SEEDER_PEER_ID_PREFIX + b"1234567890ab"
             )  # Fake Seeder v0.0.01
             handshake_response = (
-                struct.pack("!B", BitTorrentProtocolConstants.PROTOCOL_NAME_LENGTH)  # Protocol name length
+                struct.pack(
+                    "!B", BitTorrentProtocolConstants.PROTOCOL_NAME_LENGTH
+                )  # Protocol name length
                 + BitTorrentProtocolConstants.PROTOCOL_NAME  # Protocol string
                 + BitTorrentProtocolConstants.RESERVED_BYTES  # Reserved bytes
                 + info_hash  # Info hash
@@ -330,42 +352,62 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
         for i in range(0, self.bitfield_size * 8, 8):  # Set every 8th piece
             byte_index = i // 8
             bit_index = i % 8
-            if random.random() < self.bitfield_piece_probability:  # Configurable chance to have piece
+            if (
+                random.random() < self.bitfield_piece_probability
+            ):  # Configurable chance to have piece
                 bitfield[byte_index] |= 1 << (7 - bit_index)
 
         # Send bitfield message
-        message = struct.pack(">I", len(bitfield) + 1) + bytes([BitTorrentMessage.BITFIELD]) + bytes(bitfield)
+        message = (
+            struct.pack(">I", len(bitfield) + 1)
+            + bytes([BitTorrentMessage.BITFIELD])
+            + bytes(bitfield)
+        )
         writer.write(message)
         await writer.drain()
 
     async def _handle_peer_messages(
-        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter, client_key: str, info_hash: bytes
+        self,
+        reader: asyncio.StreamReader,
+        writer: asyncio.StreamWriter,
+        client_key: str,
+        info_hash: bytes,
     ) -> None:  # noqa: E501
         """Handle ongoing peer protocol messages"""
 
         while self.running:
             try:
                 # Read message length
-                length_data = await asyncio.wait_for(reader.read(4), timeout=self.message_read_timeout)
+                length_data = await asyncio.wait_for(
+                    reader.read(4), timeout=self.message_read_timeout
+                )
                 if len(length_data) != 4:
                     break
 
                 message_length = struct.unpack(">I", length_data)[0]
 
                 # Keep-alive message
-                if message_length == BitTorrentProtocolConstants.KEEPALIVE_MESSAGE_LENGTH:
+                if (
+                    message_length
+                    == BitTorrentProtocolConstants.KEEPALIVE_MESSAGE_LENGTH
+                ):
                     logger.trace(f"💓 Keep-alive from {client_key}")
                     continue
 
                 # Read message type and payload
-                message_data = await asyncio.wait_for(reader.read(message_length), timeout=self.data_read_timeout)
+                message_data = await asyncio.wait_for(
+                    reader.read(message_length), timeout=self.data_read_timeout
+                )
                 if len(message_data) != message_length:
                     break
 
                 message_type = message_data[0]
                 payload = (
-                    message_data[BitTorrentProtocolConstants.MESSAGE_PAYLOAD_START_OFFSET :]
-                    if len(message_data) > BitTorrentProtocolConstants.MESSAGE_ID_LENGTH_BYTES
+                    message_data[
+                        BitTorrentProtocolConstants.MESSAGE_PAYLOAD_START_OFFSET :
+                    ]
+                    if len(message_data)
+                    > BitTorrentProtocolConstants.MESSAGE_ID_LENGTH_BYTES
                     else b""
                 )
 
@@ -377,11 +419,17 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
                 await writer.drain()
 
             except Exception as e:  # pylint: disable=broad-exception-caught
-                logger.error(f"❌ Message handling error for {client_key}: {e}", exc_info=True)
+                logger.error(
+                    f"❌ Message handling error for {client_key}: {e}", exc_info=True
+                )
                 break
 
     async def _handle_message(
-        self, writer: asyncio.StreamWriter, client_key: str, message_type: int, payload: bytes
+        self,
+        writer: asyncio.StreamWriter,
+        client_key: str,
+        message_type: int,
+        payload: bytes,
     ) -> None:  # noqa: E501
         """Handle specific peer protocol messages"""
 
@@ -399,7 +447,8 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
                 length = struct.unpack(">I", payload[8:12])[0]
 
                 logger.trace(
-                    f"📥 Piece request from {client_key}: " f"piece={piece_index}, offset={offset}, length={length}"
+                    f"📥 Piece request from {client_key}: "
+                    f"piece={piece_index}, offset={offset}, length={length}"
                 )
 
                 # Send fake piece data (will be rejected due to hash mismatch)
@@ -416,7 +465,9 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
         elif message_type == BitTorrentMessage.UNCHOKE:
             logger.trace(f"✅ Peer {client_key} unchoked us")
 
-    async def _send_fake_piece(self, writer: asyncio.StreamWriter, piece_index: int, offset: int, length: int) -> Any:
+    async def _send_fake_piece(
+        self, writer: asyncio.StreamWriter, piece_index: int, offset: int, length: int
+    ) -> Any:
         """Send fake piece data that will be rejected by hash verification"""
 
         # Limit length to prevent abuse
@@ -426,7 +477,9 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
         fake_data = self.fake_piece_data[:length]
 
         # Send piece message
-        message_header = struct.pack(">I", BitTorrentProtocolConstants.PIECE_MESSAGE_HEADER_SIZE + length)  # Length
+        message_header = struct.pack(
+            ">I", BitTorrentProtocolConstants.PIECE_MESSAGE_HEADER_SIZE + length
+        )  # Length
         message_type = bytes([BitTorrentMessage.PIECE])  # Type
         piece_header = struct.pack(">II", piece_index, offset)  # Piece index + offset
 
@@ -436,7 +489,8 @@ class PeerServer:  # pylint: disable=too-many-instance-attributes
         await writer.drain()
 
         logger.trace(
-            f"📤 Sent fake piece to peer: piece={piece_index}, " f"offset={offset}, length={length}",
+            f"📤 Sent fake piece to peer: piece={piece_index}, "
+            f"offset={offset}, length={length}",
             extra={"class_name": self.__class__.__name__},
         )
 

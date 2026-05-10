@@ -82,14 +82,26 @@ class SwarmHealthMetrics:  # pylint: disable=too-many-instance-attributes
             self.peer_clients[client] = self.peer_clients.get(client, 0) + 1
 
         # Update speed metrics
-        self.upload_speeds = [p.get("upload_speed", 0.0) for p in peers_data if p.get("upload_speed", 0) > 0]
-        self.download_speeds = [p.get("download_speed", 0.0) for p in peers_data if p.get("download_speed", 0) > 0]
+        self.upload_speeds = [
+            p.get("upload_speed", 0.0)
+            for p in peers_data
+            if p.get("upload_speed", 0) > 0
+        ]
+        self.download_speeds = [
+            p.get("download_speed", 0.0)
+            for p in peers_data
+            if p.get("download_speed", 0) > 0
+        ]
 
         if self.upload_speeds:
-            self.average_upload_speed = sum(self.upload_speeds) / len(self.upload_speeds)
+            self.average_upload_speed = sum(self.upload_speeds) / len(
+                self.upload_speeds
+            )
 
         if self.download_speeds:
-            self.average_download_speed = sum(self.download_speeds) / len(self.download_speeds)
+            self.average_download_speed = sum(self.download_speeds) / len(
+                self.download_speeds
+            )
 
         # Calculate health score
         self._calculate_health_score()
@@ -101,11 +113,17 @@ class SwarmHealthMetrics:  # pylint: disable=too-many-instance-attributes
         score = 1.0
 
         # Factor 1: Seed-to-peer ratio (optimal: 0.1-0.3)
-        if self.seed_to_peer_ratio < SwarmIntelligenceConstants.SEED_RATIO_LOW_THRESHOLD:
+        if (
+            self.seed_to_peer_ratio
+            < SwarmIntelligenceConstants.SEED_RATIO_LOW_THRESHOLD
+        ):
             # Too few seeds
             score *= SwarmIntelligenceConstants.SCORE_VERY_LOW_SEEDS
             self.recommendation = "boost"
-        elif self.seed_to_peer_ratio > SwarmIntelligenceConstants.SEED_RATIO_HIGH_THRESHOLD:
+        elif (
+            self.seed_to_peer_ratio
+            > SwarmIntelligenceConstants.SEED_RATIO_HIGH_THRESHOLD
+        ):
             # Too many seeds (oversaturated)
             score *= SwarmIntelligenceConstants.SCORE_HIGH_SEEDS
             self.recommendation = "reduce"
@@ -125,7 +143,9 @@ class SwarmHealthMetrics:  # pylint: disable=too-many-instance-attributes
         # Factor 3: Upload speed distribution (check for stalled peers)
         if self.upload_speeds:
             stalled_ratio = sum(
-                1 for s in self.upload_speeds if s < SwarmIntelligenceConstants.STALLED_SPEED_THRESHOLD
+                1
+                for s in self.upload_speeds
+                if s < SwarmIntelligenceConstants.STALLED_SPEED_THRESHOLD
             ) / len(self.upload_speeds)
             if stalled_ratio > SwarmIntelligenceConstants.STALLED_RATIO_THRESHOLD:
                 # Many stalled peers
@@ -135,7 +155,9 @@ class SwarmHealthMetrics:  # pylint: disable=too-many-instance-attributes
             SwarmIntelligenceConstants.HEALTH_SCORE_MIN,
             min(SwarmIntelligenceConstants.HEALTH_SCORE_MAX, score),
         )
-        self.is_healthy = self.health_score > SwarmIntelligenceConstants.HEALTH_SCORE_THRESHOLD
+        self.is_healthy = (
+            self.health_score > SwarmIntelligenceConstants.HEALTH_SCORE_THRESHOLD
+        )
 
     def get_summary(self) -> Dict:
         """Get health metrics summary"""
@@ -190,7 +212,9 @@ class PieceSelectionStrategy:
                 byte_index = piece_index // 8
                 bit_index = 7 - (piece_index % 8)
 
-                if byte_index < len(bitfield) and (bitfield[byte_index] & (1 << bit_index)):
+                if byte_index < len(bitfield) and (
+                    bitfield[byte_index] & (1 << bit_index)
+                ):
                     self.piece_availability[piece_index] += 1
 
     def select_piece(self) -> Optional[int]:
@@ -201,7 +225,9 @@ class PieceSelectionStrategy:
             Piece index or None if no pieces available
         """
         # Filter out completed pieces
-        available_pieces = [p for p in self.piece_availability.keys() if p not in self.completed_pieces]
+        available_pieces = [
+            p for p in self.piece_availability.keys() if p not in self.completed_pieces
+        ]
 
         if not available_pieces:
             return None
@@ -216,7 +242,11 @@ class PieceSelectionStrategy:
         """Select rarest piece"""
         # Find pieces with minimum availability
         min_availability = min(self.piece_availability[p] for p in available_pieces)
-        rarest_pieces = [p for p in available_pieces if self.piece_availability[p] == min_availability]
+        rarest_pieces = [
+            p
+            for p in available_pieces
+            if self.piece_availability[p] == min_availability
+        ]
 
         # Random selection among rarest
         return random.choice(rarest_pieces)
@@ -232,7 +262,11 @@ class PieceSelectionStrategy:
 
     def is_endgame(self) -> bool:
         """Check if we're in endgame mode (>95% complete)"""
-        completion = len(self.completed_pieces) / self.total_pieces if self.total_pieces > 0 else 0
+        completion = (
+            len(self.completed_pieces) / self.total_pieces
+            if self.total_pieces > 0
+            else 0
+        )
         return completion > SwarmIntelligenceConstants.ENDGAME_COMPLETION_THRESHOLD
 
 
@@ -254,7 +288,9 @@ class SwarmIntelligence:  # pylint: disable=too-many-instance-attributes
         self.piece_strategies: Dict[bytes, PieceSelectionStrategy] = {}
 
         # Configuration
-        si_config = getattr(self.settings, "simulation", {}).get("swarm_intelligence", {})
+        si_config = getattr(self.settings, "simulation", {}).get(
+            "swarm_intelligence", {}
+        )
         self.enabled = si_config.get("enabled", True)
         self.adaptation_rate = si_config.get("adaptation_rate", 0.5)
         self.peer_analysis_depth = si_config.get("peer_analysis_depth", 10)
@@ -378,23 +414,41 @@ class SwarmIntelligence:  # pylint: disable=too-many-instance-attributes
 
         if metrics.recommendation == "boost":
             # Unhealthy swarm - be more active
-            adjustments["upload_multiplier"] = SwarmIntelligenceConstants.BOOST_UPLOAD_MULTIPLIER
-            adjustments["connection_multiplier"] = SwarmIntelligenceConstants.BOOST_CONNECTION_MULTIPLIER
-            adjustments["announce_multiplier"] = SwarmIntelligenceConstants.BOOST_ANNOUNCE_MULTIPLIER
+            adjustments["upload_multiplier"] = (
+                SwarmIntelligenceConstants.BOOST_UPLOAD_MULTIPLIER
+            )
+            adjustments["connection_multiplier"] = (
+                SwarmIntelligenceConstants.BOOST_CONNECTION_MULTIPLIER
+            )
+            adjustments["announce_multiplier"] = (
+                SwarmIntelligenceConstants.BOOST_ANNOUNCE_MULTIPLIER
+            )
             adjustments["pex_enabled"] = True
 
         elif metrics.recommendation == "reduce":
             # Oversaturated swarm - be less active
-            adjustments["upload_multiplier"] = SwarmIntelligenceConstants.REDUCE_UPLOAD_MULTIPLIER
-            adjustments["connection_multiplier"] = SwarmIntelligenceConstants.REDUCE_CONNECTION_MULTIPLIER
-            adjustments["announce_multiplier"] = SwarmIntelligenceConstants.REDUCE_ANNOUNCE_MULTIPLIER
+            adjustments["upload_multiplier"] = (
+                SwarmIntelligenceConstants.REDUCE_UPLOAD_MULTIPLIER
+            )
+            adjustments["connection_multiplier"] = (
+                SwarmIntelligenceConstants.REDUCE_CONNECTION_MULTIPLIER
+            )
+            adjustments["announce_multiplier"] = (
+                SwarmIntelligenceConstants.REDUCE_ANNOUNCE_MULTIPLIER
+            )
             adjustments["pex_enabled"] = True
 
         elif metrics.recommendation == "pause":
             # Swarm doesn't need us
-            adjustments["upload_multiplier"] = SwarmIntelligenceConstants.PAUSE_UPLOAD_MULTIPLIER
-            adjustments["connection_multiplier"] = SwarmIntelligenceConstants.PAUSE_CONNECTION_MULTIPLIER
-            adjustments["announce_multiplier"] = SwarmIntelligenceConstants.PAUSE_ANNOUNCE_MULTIPLIER
+            adjustments["upload_multiplier"] = (
+                SwarmIntelligenceConstants.PAUSE_UPLOAD_MULTIPLIER
+            )
+            adjustments["connection_multiplier"] = (
+                SwarmIntelligenceConstants.PAUSE_CONNECTION_MULTIPLIER
+            )
+            adjustments["announce_multiplier"] = (
+                SwarmIntelligenceConstants.PAUSE_ANNOUNCE_MULTIPLIER
+            )
             adjustments["pex_enabled"] = False
 
         # Apply adaptation rate
@@ -424,7 +478,9 @@ class SwarmIntelligence:  # pylint: disable=too-many-instance-attributes
         strategy = self.piece_strategies[info_hash]
         return strategy.select_piece()
 
-    def update_piece_availability(self, info_hash: bytes, peer_bitfields: List[bytes]) -> None:
+    def update_piece_availability(
+        self, info_hash: bytes, peer_bitfields: List[bytes]
+    ) -> None:
         """
         Update piece availability information
 

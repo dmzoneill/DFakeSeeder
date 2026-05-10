@@ -41,7 +41,8 @@ class IPFilter:
         self._lock = threading.RLock()
 
         logger.debug(
-            f"IPFilter initialized: whitelist={len(self._whitelist)}, " f"blacklist={len(self._blacklist)}",
+            f"IPFilter initialized: whitelist={len(self._whitelist)}, "
+            f"blacklist={len(self._blacklist)}",
             extra={"class_name": self.__class__.__name__},
         )
 
@@ -133,7 +134,8 @@ class RateLimiter:
         self._lock = threading.RLock()
 
         logger.debug(
-            f"RateLimiter initialized: {requests_per_minute}/min, " f"ban={ban_duration_seconds}s",
+            f"RateLimiter initialized: {requests_per_minute}/min, "
+            f"ban={ban_duration_seconds}s",
             extra={"class_name": self.__class__.__name__},
         )
 

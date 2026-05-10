@@ -48,7 +48,9 @@ class DHTManager:  # pylint: disable=too-many-instance-attributes
     ROUTING_TABLE_K = 8  # K-bucket size
     TOKEN_LENGTH = 4
 
-    def __init__(self, port: int = DHT_PORT, peer_callback: Optional[Callable] = None) -> None:
+    def __init__(
+        self, port: int = DHT_PORT, peer_callback: Optional[Callable] = None
+    ) -> None:
         """
         Initialize DHT manager.
 
@@ -80,7 +82,9 @@ class DHTManager:  # pylint: disable=too-many-instance-attributes
 
         # DHT state
         self.transaction_id_counter = 0
-        self.pending_transactions: Dict[bytes, dict] = {}  # transaction_id -> request_info
+        self.pending_transactions: Dict[bytes, dict] = (
+            {}
+        )  # transaction_id -> request_info
 
         # Timing
         self.last_bootstrap = 0.0
@@ -88,7 +92,9 @@ class DHTManager:  # pylint: disable=too-many-instance-attributes
         self.last_announce = 0.0
         self.announce_interval = 600.0  # Announce every 10 minutes
 
-        logger.trace(f"DHT Manager initialized on port {port} with node ID: {self.node_id.hex()[:16]}...")
+        logger.trace(
+            f"DHT Manager initialized on port {port} with node ID: {self.node_id.hex()[:16]}..."
+        )
 
     def _get_poll_interval(self) -> Any:
         """Get poll interval from settings."""
@@ -129,7 +135,9 @@ class DHTManager:  # pylint: disable=too-many-instance-attributes
 
             self.running = True
             self.stop_event.clear()
-            self.thread = threading.Thread(target=self._dht_loop, name="DHTManager", daemon=True)
+            self.thread = threading.Thread(
+                target=self._dht_loop, name="DHTManager", daemon=True
+            )
             self.thread.start()
 
             logger.info(f"DHT Manager started on port {self.port}")
@@ -190,7 +198,9 @@ class DHTManager:  # pylint: disable=too-many-instance-attributes
         """
         with self.lock:
             self.torrents[info_hash] = torrent
-            logger.trace(f"Registered torrent {info_hash.hex()[:16]}... for DHT discovery")
+            logger.trace(
+                f"Registered torrent {info_hash.hex()[:16]}... for DHT discovery"
+            )
 
     def unregister_torrent(self, info_hash: bytes) -> None:
         """Unregister a torrent from DHT discovery"""

@@ -32,7 +32,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
         # Connect to language change signal for translation updates
         if hasattr(self.model, "connect"):
-            self.track_signal(model, model.connect("language-changed", self.on_language_changed))
+            self.track_signal(
+                model, model.connect("language-changed", self.on_language_changed)
+            )
 
     @property
     def tab_name(self) -> str:
@@ -192,7 +194,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error creating option widgets: {e}")
 
-    def _create_dynamic_widget(self, torrent: Any, attribute: str, widget_type: str) -> None:
+    def _create_dynamic_widget(
+        self, torrent: Any, attribute: str, widget_type: str
+    ) -> None:
         """
         Create a dynamic widget for a torrent attribute.
 
@@ -221,7 +225,11 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 self._configure_switch_widget(dynamic_widget, torrent, attribute)
             elif widget_class in (Gtk.SpinButton, Gtk.Scale):
                 # Create adjustment first for numeric widgets
-                upper_val = max(100.0, float(current_value) * 10) if current_value >= 0 else 100.0
+                upper_val = (
+                    max(100.0, float(current_value) * 10)
+                    if current_value >= 0
+                    else 100.0
+                )
                 adjustment = Gtk.Adjustment(
                     value=float(current_value),
                     lower=0.0,
@@ -240,7 +248,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                     # Make the SpinButton editable and focusable so users can click and type
                     dynamic_widget.set_editable(True)
                     dynamic_widget.set_can_focus(True)
-                    dynamic_widget.set_focusable(True)  # Ensure widget is in focus chain
+                    dynamic_widget.set_focusable(
+                        True
+                    )  # Ensure widget is in focus chain
                     dynamic_widget.set_visible(True)  # Ensure widget is visible
                 else:
                     dynamic_widget = Gtk.Scale(adjustment=adjustment)
@@ -283,7 +293,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             self.logger.error(f"Error getting widget class for {widget_type}: {e}")
             return None
 
-    def _configure_switch_widget(self, widget: Gtk.Switch, torrent: Any, attribute: str) -> None:
+    def _configure_switch_widget(
+        self, widget: Gtk.Switch, torrent: Any, attribute: str
+    ) -> None:
         """
         Configure a switch widget.
 
@@ -300,13 +312,17 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             # Connect signal
             self.track_signal(
                 widget,
-                widget.connect("state-set", self._on_switch_value_changed, torrent, attribute),
+                widget.connect(
+                    "state-set", self._on_switch_value_changed, torrent, attribute
+                ),
             )
 
         except Exception as e:
             self.logger.error(f"Error configuring switch widget for {attribute}: {e}")
 
-    def _configure_adjustment_widget(self, widget: Any, torrent: Any, attribute: str) -> None:
+    def _configure_adjustment_widget(
+        self, widget: Any, torrent: Any, attribute: str
+    ) -> None:
         """
         Configure an adjustment-based widget (SpinButton, Scale).
 
@@ -350,7 +366,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 )
 
         except Exception as e:
-            self.logger.error(f"Error configuring adjustment widget for {attribute}: {e}")
+            self.logger.error(
+                f"Error configuring adjustment widget for {attribute}: {e}"
+            )
 
     def _create_option_label(self, attribute: str) -> Gtk.Label:
         """
@@ -440,7 +458,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if self.model is not None and hasattr(self.model, "get_translate_func"):
                 translate_func = self.model.get_translate_func()
 
-            message_text = translate_func("No editable options available for this torrent.")
+            message_text = translate_func(
+                "No editable options available for this torrent."
+            )
             message_label = self.create_info_label(message_text)
             self.set_widget_margins(message_label, self.ui_margin_large)
 
@@ -452,7 +472,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             self.logger.error(f"Error showing no options message: {e}")
 
     # Signal handlers
-    def _on_switch_value_changed(self, widget: Gtk.Switch, state: bool, torrent: Any, attribute: str) -> None:
+    def _on_switch_value_changed(
+        self, widget: Gtk.Switch, state: bool, torrent: Any, attribute: str
+    ) -> None:
         """
         Handle switch value change.
 
@@ -468,7 +490,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error updating switch value for {attribute}: {e}")
 
-    def _on_adjustment_value_changed(self, widget: Any, torrent: Any, attribute: str) -> None:
+    def _on_adjustment_value_changed(
+        self, widget: Any, torrent: Any, attribute: str
+    ) -> None:
         """
         Handle adjustment value change.
 
@@ -507,7 +531,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             new_language: New language code
         """
         try:
-            self.logger.trace(f"Language changed to {new_language}, refreshing options tab content")
+            self.logger.trace(
+                f"Language changed to {new_language}, refreshing options tab content"
+            )
             # Refresh content to update all labels with new translations
             if hasattr(self, "_current_torrent") and self._current_torrent:
                 self.update_content(self._current_torrent)

@@ -49,7 +49,9 @@ class PeerExchangeExtension:
         self.known_peers: Set[Tuple[str, int]] = set()
         self.sent_peers: Set[Tuple[str, int]] = set()
         self.last_pex_time = 0
-        self.peer_flags: Dict[str, Any] = {}  # Store peer flags (encryption support, etc.)
+        self.peer_flags: Dict[str, Any] = (
+            {}
+        )  # Store peer flags (encryption support, etc.)
 
         # Synthetic peer generation for fake seeding
         self.generate_synthetic_peers = pex_config.get("generate_synthetic_peers", True)
@@ -104,7 +106,8 @@ class PeerExchangeExtension:
                 self._process_dropped_peers(dropped_peer_list)
 
             logger.trace(
-                f"Processed PEX message: {len(added_peers)} added, " f"{len(dropped_peer_list)} dropped",
+                f"Processed PEX message: {len(added_peers)} added, "
+                f"{len(dropped_peer_list)} dropped",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -158,7 +161,8 @@ class PeerExchangeExtension:
                 self.sent_peers.update(peers_to_send)
 
                 logger.trace(
-                    f"Sent PEX message: {len(peers_to_send)} added, " f"{len(dropped_peers)} dropped",
+                    f"Sent PEX message: {len(peers_to_send)} added, "
+                    f"{len(dropped_peers)} dropped",
                     extra={"class_name": self.__class__.__name__},
                 )
             else:
@@ -271,7 +275,9 @@ class PeerExchangeExtension:
 
         return peers_data, flags_data
 
-    def _process_added_peers(self, peers: List[Tuple[str, int]], flags_data: bytes) -> None:
+    def _process_added_peers(
+        self, peers: List[Tuple[str, int]], flags_data: bytes
+    ) -> None:
         """
         Process newly added peers from PEX message
 
@@ -360,7 +366,9 @@ class PeerExchangeExtension:
 
                 if first_octet == 192:
                     # Avoid 192.168.x.x private range
-                    second_octet = random.choice([random.randint(0, 167), random.randint(169, 255)])
+                    second_octet = random.choice(
+                        [random.randint(0, 167), random.randint(169, 255)]
+                    )
                 else:
                     second_octet = random.randint(1, 254)
 
@@ -384,7 +392,9 @@ class PeerExchangeExtension:
                 )
 
                 # Random flags (encryption support, etc.)
-                flags = random.randint(PeerExchangeConstants.FLAGS_MIN, PeerExchangeConstants.FLAGS_MAX)
+                flags = random.randint(
+                    PeerExchangeConstants.FLAGS_MIN, PeerExchangeConstants.FLAGS_MAX
+                )
 
                 self.add_peer(ip, port, flags)
 
@@ -420,4 +430,6 @@ class PeerExchangeExtension:
         self.sent_peers.clear()
         self.peer_flags.clear()
 
-        logger.trace("PEX extension cleaned up", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "PEX extension cleaned up", extra={"class_name": self.__class__.__name__}
+        )

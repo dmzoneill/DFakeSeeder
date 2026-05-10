@@ -50,7 +50,9 @@ class Seeder:
             if attempts > 0:
                 # Use tickspeed-based retry interval (minimum 1 second)
                 retry_interval = max(1, int(self.settings.tickspeed / 2))
-                GLib.timeout_add_seconds(retry_interval, self.check_announce_attribute, torrent, attempts - 1)
+                GLib.timeout_add_seconds(
+                    retry_interval, self.check_announce_attribute, torrent, attempts - 1
+                )
             else:
                 logger.error(
                     f"Problem with torrent after retries: {torrent.filepath}",
@@ -63,7 +65,9 @@ class Seeder:
             return self.seeder.load_peers()
         return False  # type: ignore[return-value]
 
-    def upload(self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any) -> Any:
+    def upload(
+        self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any
+    ) -> Any:
         """Send upload stats to tracker."""
         if self.seeder:
             self.seeder.upload(uploaded_bytes, downloaded_bytes, download_left)

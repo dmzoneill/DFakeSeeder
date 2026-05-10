@@ -33,7 +33,9 @@ from .settings_mixins import ValidationMixin  # noqa: E402
 # fmt: on
 
 
-class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
+class GeneralTab(
+    BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin
+):
     """
     General settings tab component.
     Manages:
@@ -117,7 +119,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         },
     ]
 
-    def __init__(self, builder: Gtk.Builder, app_settings: Any, app: Any = None) -> None:
+    def __init__(
+        self, builder: Gtk.Builder, app_settings: Any, app: Any = None
+    ) -> None:
         """Initialize the General tab."""
         self.app = app
         # Initialize seeding profile manager BEFORE super().__init__
@@ -136,7 +140,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         logger.trace(f"Builder: {self.builder}", "GeneralTab")
         # Let's try to debug what objects are available in the builder
         if self.builder:
-            logger.trace("Checking for language-related objects in builder...", "GeneralTab")
+            logger.trace(
+                "Checking for language-related objects in builder...", "GeneralTab"
+            )
             # Try various possible names for the language dropdown
             possible_names = [
                 "settings_language",
@@ -159,19 +165,31 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             "auto_start": self.builder.get_object("settings_auto_start"),
             "start_minimized": self.builder.get_object("settings_start_minimized"),
             "minimize_to_tray": self.builder.get_object("settings_minimize_to_tray"),
-            "remember_window_size": self.builder.get_object("settings_remember_window_size"),
+            "remember_window_size": self.builder.get_object(
+                "settings_remember_window_size"
+            ),
             "language_dropdown": self.builder.get_object("settings_language"),
             # Configuration management buttons
             "export_button": self.builder.get_object("settings_export_button"),
             "import_button": self.builder.get_object("settings_import_button"),
             "reset_button": self.builder.get_object("general_reset_button"),
             # Watch folder widgets
-            "watch_folder_enabled": self.builder.get_object("settings_watch_folder_enabled"),
+            "watch_folder_enabled": self.builder.get_object(
+                "settings_watch_folder_enabled"
+            ),
             "watch_folder_path": self.builder.get_object("settings_watch_folder_path"),
-            "watch_folder_browse": self.builder.get_object("settings_watch_folder_browse"),
-            "watch_folder_scan_interval": self.builder.get_object("settings_watch_folder_scan_interval"),
-            "watch_folder_auto_start": self.builder.get_object("settings_watch_folder_auto_start"),
-            "watch_folder_delete_added": self.builder.get_object("settings_watch_folder_delete_added"),
+            "watch_folder_browse": self.builder.get_object(
+                "settings_watch_folder_browse"
+            ),
+            "watch_folder_scan_interval": self.builder.get_object(
+                "settings_watch_folder_scan_interval"
+            ),
+            "watch_folder_auto_start": self.builder.get_object(
+                "settings_watch_folder_auto_start"
+            ),
+            "watch_folder_delete_added": self.builder.get_object(
+                "settings_watch_folder_delete_added"
+            ),
         }
         logger.trace("Widget lookup completed", "GeneralTab")
         self._widgets.update(widget_objects)
@@ -213,21 +231,27 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         if theme_style_dropdown:
             self.track_signal(
                 theme_style_dropdown,
-                theme_style_dropdown.connect("notify::selected", self.on_theme_style_changed),
+                theme_style_dropdown.connect(
+                    "notify::selected", self.on_theme_style_changed
+                ),
             )
         # Color scheme dropdown
         color_scheme_dropdown = self.get_widget("settings_color_scheme")
         if color_scheme_dropdown:
             self.track_signal(
                 color_scheme_dropdown,
-                color_scheme_dropdown.connect("notify::selected", self.on_color_scheme_changed),
+                color_scheme_dropdown.connect(
+                    "notify::selected", self.on_color_scheme_changed
+                ),
             )
         # Seeding profile dropdown
         profile_dropdown = self.get_widget("settings_seeding_profile")
         if profile_dropdown:
             self.track_signal(
                 profile_dropdown,
-                profile_dropdown.connect("notify::selected", self.on_seeding_profile_changed),
+                profile_dropdown.connect(
+                    "notify::selected", self.on_seeding_profile_changed
+                ),
             )
 
         # Watch folder browse button (complex logic, keep manual)
@@ -235,7 +259,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         if watch_folder_browse:
             self.track_signal(
                 watch_folder_browse,
-                watch_folder_browse.connect("clicked", self.on_watch_folder_browse_clicked),
+                watch_folder_browse.connect(
+                    "clicked", self.on_watch_folder_browse_clicked
+                ),
             )
 
         # Language dropdown - signal connection handled in _setup_language_dropdown()
@@ -249,21 +275,32 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             # Auto-start setting
             auto_start = self.get_widget("auto_start")
             if auto_start:
-                self.set_switch_state(auto_start, getattr(self.app_settings, "auto_start", False))
+                self.set_switch_state(
+                    auto_start, getattr(self.app_settings, "auto_start", False)
+                )
             # Start minimized setting
             start_minimized = self.get_widget("start_minimized")
             if start_minimized:
-                self.set_switch_state(start_minimized, getattr(self.app_settings, "start_minimized", False))
+                self.set_switch_state(
+                    start_minimized,
+                    getattr(self.app_settings, "start_minimized", False),
+                )
 
             # Minimize to tray setting
             minimize_to_tray = self.get_widget("minimize_to_tray")
             if minimize_to_tray:
-                self.set_switch_state(minimize_to_tray, getattr(self.app_settings, "minimize_to_tray", False))
+                self.set_switch_state(
+                    minimize_to_tray,
+                    getattr(self.app_settings, "minimize_to_tray", False),
+                )
 
             # Remember window size setting
             remember_window_size = self.get_widget("remember_window_size")
             if remember_window_size:
-                self.set_switch_state(remember_window_size, getattr(self.app_settings, "remember_window_size", True))
+                self.set_switch_state(
+                    remember_window_size,
+                    getattr(self.app_settings, "remember_window_size", True),
+                )
 
             # Theme style setting - load from ui_settings.theme_style
             theme_style_dropdown = self.get_widget("settings_theme")
@@ -271,19 +308,25 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 ui_settings = getattr(self.app_settings, "ui_settings", {})
                 current_theme_style = ui_settings.get("theme_style", "classic")
                 theme_style_mapping = {"system": 0, "classic": 1, "modern": 2}
-                theme_style_dropdown.set_selected(theme_style_mapping.get(current_theme_style, 1))
+                theme_style_dropdown.set_selected(
+                    theme_style_mapping.get(current_theme_style, 1)
+                )
             # Color scheme setting - load from ui_settings.color_scheme
             color_scheme_dropdown = self.get_widget("settings_color_scheme")
             if color_scheme_dropdown:
                 ui_settings = getattr(self.app_settings, "ui_settings", {})
                 current_color_scheme = ui_settings.get("color_scheme", "auto")
                 color_scheme_mapping = {"auto": 0, "light": 1, "dark": 2}
-                color_scheme_dropdown.set_selected(color_scheme_mapping.get(current_color_scheme, 0))
+                color_scheme_dropdown.set_selected(
+                    color_scheme_mapping.get(current_color_scheme, 0)
+                )
             # Seeding profile setting
             profile_dropdown = self.get_widget("settings_seeding_profile")
             if profile_dropdown:
                 current_profile = self.profile_manager.get_current_profile()
-                profile_index = self.profile_manager.get_profile_dropdown_index(current_profile)
+                profile_index = self.profile_manager.get_profile_dropdown_index(
+                    current_profile
+                )
                 profile_dropdown.set_selected(profile_index)
 
             # Watch folder settings
@@ -291,7 +334,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
             watch_folder_enabled = self.get_widget("watch_folder_enabled")
             if watch_folder_enabled:
-                self.set_switch_state(watch_folder_enabled, watch_folder_config.get("enabled", False))
+                self.set_switch_state(
+                    watch_folder_enabled, watch_folder_config.get("enabled", False)
+                )
 
             watch_folder_path = self.get_widget("watch_folder_path")
             if watch_folder_path:
@@ -299,16 +344,22 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
             watch_folder_scan_interval = self.get_widget("watch_folder_scan_interval")
             if watch_folder_scan_interval:
-                watch_folder_scan_interval.set_value(watch_folder_config.get("scan_interval_seconds", 10))
+                watch_folder_scan_interval.set_value(
+                    watch_folder_config.get("scan_interval_seconds", 10)
+                )
 
             watch_folder_auto_start = self.get_widget("watch_folder_auto_start")
             if watch_folder_auto_start:
-                self.set_switch_state(watch_folder_auto_start, watch_folder_config.get("auto_start_torrents", True))
+                self.set_switch_state(
+                    watch_folder_auto_start,
+                    watch_folder_config.get("auto_start_torrents", True),
+                )
 
             watch_folder_delete_added = self.get_widget("watch_folder_delete_added")
             if watch_folder_delete_added:
                 self.set_switch_state(
-                    watch_folder_delete_added, watch_folder_config.get("delete_added_torrents", False)
+                    watch_folder_delete_added,
+                    watch_folder_config.get("delete_added_torrents", False),
                 )
 
             self.logger.info("General tab settings loaded successfully", "GeneralTab")
@@ -346,7 +397,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             color_scheme_values = ["auto", "light", "dark"]
             selected_index = color_scheme_dropdown.get_selected()
             if 0 <= selected_index < len(color_scheme_values):
-                settings["ui_settings.color_scheme"] = color_scheme_values[selected_index]
+                settings["ui_settings.color_scheme"] = color_scheme_values[
+                    selected_index
+                ]
 
         # Seeding profile - collect the selected profile name (don't apply it)
         # NOTE: Profile is applied immediately when user changes dropdown via on_seeding_profile_changed()
@@ -354,7 +407,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         profile_dropdown = self.get_widget("settings_seeding_profile")
         if profile_dropdown:
             selected_index = profile_dropdown.get_selected()
-            profile_name = self.profile_manager.get_profile_from_dropdown_index(selected_index)
+            profile_name = self.profile_manager.get_profile_from_dropdown_index(
+                selected_index
+            )
             settings["seeding_profile"] = profile_name
             logger.trace(f"Collected seeding profile: {profile_name}", "GeneralTab")
 
@@ -365,7 +420,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             if 0 <= selected_index < len(self.language_codes):
                 settings["language"] = self.language_codes[selected_index]
 
-        logger.trace(f"Collected {len(settings)} settings from General tab", "GeneralTab")
+        logger.trace(
+            f"Collected {len(settings)} settings from General tab", "GeneralTab"
+        )
         return settings
 
     def on_export_clicked(self, button: Gtk.Button) -> None:
@@ -402,7 +459,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
         except Exception as e:
             self.logger.error(f"Error showing export dialog: {e}", exc_info=True)
-            self.show_notification(self._("Error exporting settings: {error}").format(error=e), "error")
+            self.show_notification(
+                self._("Error exporting settings: {error}").format(error=e), "error"
+            )
 
     def _on_export_file_selected(self, dialog: Any, result: Any) -> None:
         """Handle file selection for export."""
@@ -412,12 +471,17 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 file_path = file.get_path()
                 # Export settings
                 self.app_settings.export_settings(file_path)
-                self.show_notification(self._("Settings exported to {path}").format(path=file_path), "success")
+                self.show_notification(
+                    self._("Settings exported to {path}").format(path=file_path),
+                    "success",
+                )
                 self.logger.info(f"Settings exported to: {file_path}")
         except Exception as e:
             if "dismissed" not in str(e).lower():  # Don't show error if user cancelled
                 self.logger.error(f"Error exporting settings: {e}", exc_info=True)
-                self.show_notification(self._("Error exporting settings: {error}").format(error=e), "error")
+                self.show_notification(
+                    self._("Error exporting settings: {error}").format(error=e), "error"
+                )
 
     def on_import_clicked(self, button: Gtk.Button) -> None:
         """Handle import settings button click."""
@@ -450,7 +514,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
         except Exception as e:
             self.logger.error(f"Error showing import dialog: {e}", exc_info=True)
-            self.show_notification(self._("Error importing settings: {error}").format(error=e), "error")
+            self.show_notification(
+                self._("Error importing settings: {error}").format(error=e), "error"
+            )
 
     def _on_import_file_selected(self, dialog: Any, result: Any) -> None:
         """Handle file selection for import."""
@@ -462,12 +528,17 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 self.app_settings.import_settings(file_path)
                 # Reload all settings in UI
                 self._load_settings()
-                self.show_notification(self._("Settings imported from {path}").format(path=file_path), "success")
+                self.show_notification(
+                    self._("Settings imported from {path}").format(path=file_path),
+                    "success",
+                )
                 self.logger.info(f"Settings imported from: {file_path}")
         except Exception as e:
             if "dismissed" not in str(e).lower():  # Don't show error if user cancelled
                 self.logger.error(f"Error importing settings: {e}", exc_info=True)
-                self.show_notification(self._("Error importing settings: {error}").format(error=e), "error")
+                self.show_notification(
+                    self._("Error importing settings: {error}").format(error=e), "error"
+                )
 
     def on_reset_clicked(self, button: Gtk.Button) -> None:
         """Handle reset to defaults button click."""
@@ -475,7 +546,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             # Show confirmation dialog
             dialog = Gtk.AlertDialog()
             dialog.set_message("Reset to Defaults?")
-            dialog.set_detail("This will reset ALL settings to their default values. This action cannot be undone.")
+            dialog.set_detail(
+                "This will reset ALL settings to their default values. This action cannot be undone."
+            )
             dialog.set_buttons(["Cancel", "Reset to Defaults"])
             dialog.set_cancel_button(0)
             dialog.set_default_button(0)
@@ -488,7 +561,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
         except Exception as e:
             self.logger.error(f"Error showing reset dialog: {e}", exc_info=True)
-            self.show_notification(self._("Error resetting settings: {error}").format(error=e), "error")
+            self.show_notification(
+                self._("Error resetting settings: {error}").format(error=e), "error"
+            )
 
     def _on_reset_confirmed(self, dialog: Any, result: Any) -> None:
         """Handle reset confirmation."""
@@ -499,12 +574,16 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 self.app_settings.reset_to_defaults()
                 # Reload all settings in UI
                 self._load_settings()
-                self.show_notification(self._("All settings reset to defaults"), "success")
+                self.show_notification(
+                    self._("All settings reset to defaults"), "success"
+                )
                 self.logger.info("Settings reset to defaults")
         except Exception as e:
             if "dismissed" not in str(e).lower():  # Don't show error if user cancelled
                 self.logger.error(f"Error resetting settings: {e}", exc_info=True)
-                self.show_notification(self._("Error resetting settings: {error}").format(error=e), "error")
+                self.show_notification(
+                    self._("Error resetting settings: {error}").format(error=e), "error"
+                )
 
     def on_theme_style_changed(self, dropdown: Gtk.DropDown, param: Any) -> None:
         """Handle theme style setting change."""
@@ -562,7 +641,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             return
         try:
             selected_index = dropdown.get_selected()
-            profile_name = self.profile_manager.get_profile_from_dropdown_index(selected_index)
+            profile_name = self.profile_manager.get_profile_from_dropdown_index(
+                selected_index
+            )
 
             self.logger.trace(f"Seeding profile changed to: {profile_name}")
 
@@ -580,7 +661,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 message = f"Applied {display_name} profile: {profile_summary}"
                 self.show_notification(message, "success")
             else:
-                self.show_notification(self._("Failed to apply seeding profile"), "error")
+                self.show_notification(
+                    self._("Failed to apply seeding profile"), "error"
+                )
 
         except Exception as e:
             self.logger.error(f"Error changing seeding profile setting: {e}")
@@ -604,7 +687,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             profile_dropdown = self.get_widget("settings_seeding_profile")
             if profile_dropdown:
                 profile_dropdown.set_selected(1)  # "balanced" is index 1
-            self.show_notification(self._("General settings reset to defaults"), "success")
+            self.show_notification(
+                self._("General settings reset to defaults"), "success"
+            )
         except Exception as e:
             self.logger.error(f"Error resetting General tab to defaults: {e}")
 
@@ -632,7 +717,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             "NOT connecting to model language-changed signal to avoid loops",
             "GeneralTab",
         )
-        logger.trace("Settings dialog will handle its own translation directly", "GeneralTab")
+        logger.trace(
+            "Settings dialog will handle its own translation directly", "GeneralTab"
+        )
         # Note: Language dropdown population postponed to avoid initialization loops
         # self._populate_language_dropdown() will be called when needed
         # Translate dropdown items now that we have the model using original English items
@@ -647,7 +734,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         language_dropdown = self.get_widget("language_dropdown")
         logger.trace("Language dropdown widget:", "GeneralTab")
         logger.trace("Language dropdown type:", "GeneralTab")
-        self.logger.trace(f"Language dropdown widget found: {language_dropdown is not None}")
+        self.logger.trace(
+            f"Language dropdown widget found: {language_dropdown is not None}"
+        )
         if not language_dropdown:
             logger.error("ERROR: Language dropdown widget not found!", "GeneralTab")
             return
@@ -668,7 +757,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             )
             logger.info("Language signal connected successfully with ID:", "GeneralTab")
         except Exception as e:
-            logger.error(f"FAILED to connect language signal: {e}", "GeneralTab", exc_info=True)
+            logger.error(
+                f"FAILED to connect language signal: {e}", "GeneralTab", exc_info=True
+            )
         logger.trace("Language dropdown setup completed", "GeneralTab")
         self.logger.trace("Language dropdown setup completed with empty StringList")
 
@@ -678,7 +769,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
         self.logger.trace("_populate_language_dropdown called")
 
         if not hasattr(self, "model") or not self.model:
-            self.logger.trace("Model not available, skipping language dropdown population")
+            self.logger.trace(
+                "Model not available, skipping language dropdown population"
+            )
             return
 
         language_dropdown = self.get_widget("language_dropdown")
@@ -698,7 +791,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
 
             # Get current language from settings
             current_language = self.app_settings.get_language()
-            self.logger.trace(f"Found {len(supported_languages)} languages: {supported_languages}")
+            self.logger.trace(
+                f"Found {len(supported_languages)} languages: {supported_languages}"
+            )
             self.logger.trace(f"Current language: {current_language}")
 
             # Clear existing items
@@ -709,9 +804,13 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             # This ensures users can always identify their own language regardless of current UI language
             try:
                 language_names = get_language_display_names(use_native_names=True)
-                self.logger.trace(f"Loaded {len(language_names)} language names from config")
+                self.logger.trace(
+                    f"Loaded {len(language_names)} language names from config"
+                )
             except Exception as e:
-                self.logger.error(f"Failed to load language display names: {e}", exc_info=True)
+                self.logger.error(
+                    f"Failed to load language display names: {e}", exc_info=True
+                )
                 # Fallback: use uppercase language codes
                 language_names = {code: code.upper() for code in supported_languages}
 
@@ -750,9 +849,13 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 try:
                     self.track_signal(
                         language_dropdown,
-                        language_dropdown.connect("notify::selected", self.on_language_changed),
+                        language_dropdown.connect(
+                            "notify::selected", self.on_language_changed
+                        ),
                     )
-                    logger.trace("Reconnected language signal with new ID:", "GeneralTab")
+                    logger.trace(
+                        "Reconnected language signal with new ID:", "GeneralTab"
+                    )
                 except Exception:
                     logger.error("Failed to reconnect language signal:", "GeneralTab")
             # Clear initialization flag here after setting up the dropdown
@@ -766,7 +869,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                     "Language dropdown initialization completed - enabling user interactions",
                     "GeneralTab",
                 )
-                self.logger.info("Language dropdown initialization completed - enabling user interactions")
+                self.logger.info(
+                    "Language dropdown initialization completed - enabling user interactions"
+                )
             else:
                 logger.error("Warning: _initializing attribute not found", "GeneralTab")
             lang_count = len(self.language_codes)
@@ -820,7 +925,10 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                 self.logger.trace("Skipping language change during initialization")
                 return
         # Prevent concurrent language changes - use class-level lock
-        if hasattr(self.__class__, "_changing_language") and self.__class__._changing_language:
+        if (
+            hasattr(self.__class__, "_changing_language")
+            and self.__class__._changing_language
+        ):
             self.logger.trace("Skipping language change - already in progress globally")
             return
         # Check if the selected language is already the current language
@@ -830,7 +938,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
             selected_lang = self.language_codes[selected_index]
             # If we're trying to switch to the same language, skip
             if selected_lang == current_lang:
-                self.logger.trace(f"Skipping language change - already using {selected_lang}")
+                self.logger.trace(
+                    f"Skipping language change - already using {selected_lang}"
+                )
                 return
         logger.trace(
             f"Language change initiated: {current_lang} -> "
@@ -846,7 +956,9 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                     "User language change request: {current_lang} -> {selected_lang}",
                     "UnknownClass",
                 )
-                self.logger.trace(f"User language change request: {current_lang} -> {selected_lang}")
+                self.logger.trace(
+                    f"User language change request: {current_lang} -> {selected_lang}"
+                )
                 # Temporarily disconnect the signal to prevent feedback loops
                 signal_was_blocked = False
                 if hasattr(self, "_language_signal_id") and self._language_signal_id:
@@ -872,11 +984,17 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                     "UnknownClass",
                 )
                 # Handle settings dialog translation directly (not via model signal to avoid loops)
-                logger.trace("Handling settings dialog translation directly...", "GeneralTab")
+                logger.trace(
+                    "Handling settings dialog translation directly...", "GeneralTab"
+                )
                 self._handle_settings_translation(selected_lang)
                 logger.trace("Settings dialog translation completed", "GeneralTab")
                 # Unblock the signal
-                if signal_was_blocked and hasattr(self, "_language_signal_id") and self._language_signal_id:
+                if (
+                    signal_was_blocked
+                    and hasattr(self, "_language_signal_id")
+                    and self._language_signal_id
+                ):
                     dropdown.handler_unblock(self._language_signal_id)
                     logger.info("Signal unblocked successfully", "GeneralTab")
                 logger.trace(
@@ -884,12 +1002,17 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                     "UnknownClass",
                 )
                 # Show success notification
-                self.show_notification(self._("Language switched to {lang}").format(lang=selected_lang), "success")
+                self.show_notification(
+                    self._("Language switched to {lang}").format(lang=selected_lang),
+                    "success",
+                )
                 logger.trace(
                     "Notification took {(notification_end - notification_start)*1000:.1f}ms",
                     "UnknownClass",
                 )
-                logger.trace("Language change completed - TOTAL UI TIME: ms", "GeneralTab")
+                logger.trace(
+                    "Language change completed - TOTAL UI TIME: ms", "GeneralTab"
+                )
         except Exception as e:
             self.logger.error(f"Error changing language: {e}")
             self.show_notification(self._("Error changing language"), "error")
@@ -909,14 +1032,20 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
     def _handle_settings_translation(self, new_language: Any) -> None:
         """Handle translation for the settings dialog directly (not via model signal)."""
         try:
-            self.logger.trace(f"_handle_settings_translation() called with language: {new_language}")
+            self.logger.trace(
+                f"_handle_settings_translation() called with language: {new_language}"
+            )
 
             # First, handle GeneralTab's own dropdowns using original English items
             self.translate_dropdown_items("settings_theme", self.THEME_ITEMS)  # type: ignore[attr-defined]
-            self.translate_dropdown_items("settings_seeding_profile", self.PROFILE_ITEMS)
+            self.translate_dropdown_items(
+                "settings_seeding_profile", self.PROFILE_ITEMS
+            )
 
             # Then handle other tabs
-            if hasattr(self, "settings_dialog") and hasattr(self.settings_dialog, "tabs"):
+            if hasattr(self, "settings_dialog") and hasattr(
+                self.settings_dialog, "tabs"
+            ):
                 # Use a direct approach: call translate_all_dropdowns() on each tab that has it
                 for i, tab in enumerate(self.settings_dialog.tabs):
                     if hasattr(tab, "tab_name") and tab.tab_name != "General":
@@ -924,19 +1053,29 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                         if hasattr(tab, "translate_all_dropdowns"):
                             try:
                                 tab.translate_all_dropdowns()
-                                self.logger.trace(f"Updated {tab.tab_name} dropdowns via translate_all_dropdowns()")
+                                self.logger.trace(
+                                    f"Updated {tab.tab_name} dropdowns via translate_all_dropdowns()"
+                                )
                             except Exception as e:
-                                self.logger.error(f"Error updating {tab.tab_name} via translate_all_dropdowns: {e}")
+                                self.logger.error(
+                                    f"Error updating {tab.tab_name} via translate_all_dropdowns: {e}"
+                                )
                         elif hasattr(tab, "update_view"):
                             try:
                                 # Use the same call pattern as SettingsDialog.__init__
                                 tab.update_view(self.model, None, None)
-                                self.logger.trace(f"Updated {tab.tab_name} dropdowns via update_view()")
+                                self.logger.trace(
+                                    f"Updated {tab.tab_name} dropdowns via update_view()"
+                                )
                             except Exception as e:
-                                self.logger.error(f"Error updating {tab.tab_name} via update_view: {e}")
+                                self.logger.error(
+                                    f"Error updating {tab.tab_name} via update_view: {e}"
+                                )
 
         except Exception as e:
-            self.logger.error(f"Error handling settings dialog translation: {e}", exc_info=True)
+            self.logger.error(
+                f"Error handling settings dialog translation: {e}", exc_info=True
+            )
 
     # This was causing infinite loops. Settings dialog handles its own translation directly.
 
@@ -968,9 +1107,14 @@ class GeneralTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Validatio
                         if path_entry:
                             path_entry.set_text(folder_path)
                             # NOTE: Setting will be saved in batch via _collect_settings()
-                            self.logger.trace(f"Watch folder path selected: {folder_path}")
+                            self.logger.trace(
+                                f"Watch folder path selected: {folder_path}"
+                            )
                             self.show_notification(
-                                self._("Watch folder set to: {path}").format(path=folder_path), "success"
+                                self._("Watch folder set to: {path}").format(
+                                    path=folder_path
+                                ),
+                                "success",
                             )
                 except Exception as e:
                     self.logger.error(f"Error selecting folder: {e}")

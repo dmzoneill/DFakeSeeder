@@ -47,7 +47,9 @@ class TrackerHTTPHandler(BaseHTTPRequestHandler):
         else:
             self._send_error("Invalid request path")
 
-    def _parse_announce_params(self, query: str) -> Optional[Dict[str, Any]]:  # pylint: disable=too-many-locals
+    def _parse_announce_params(
+        self, query: str
+    ) -> Optional[Dict[str, Any]]:  # pylint: disable=too-many-locals
         """
         Parse announce request parameters.
 
@@ -140,7 +142,9 @@ class TrackerHTTPHandler(BaseHTTPRequestHandler):
         event = params["event"]
 
         # Check if torrent is allowed (private mode)
-        if not self.tracker_server.torrent_registry.is_allowed(info_hash, self.tracker_server.private_mode):
+        if not self.tracker_server.torrent_registry.is_allowed(
+            info_hash, self.tracker_server.private_mode
+        ):
             self._send_error("Torrent not registered")
             return
 
@@ -203,7 +207,8 @@ class TrackerHTTPHandler(BaseHTTPRequestHandler):
         self._send_bencoded_response(response)
 
         logger.trace(
-            f"Announce: {params['ip']}:{params['port']} for " f"{info_hash.hex()[:16]} event={event or 'periodic'}",
+            f"Announce: {params['ip']}:{params['port']} for "
+            f"{info_hash.hex()[:16]} event={event or 'periodic'}",
             extra={"class_name": self.__class__.__name__},
         )
 
@@ -223,7 +228,10 @@ class TrackerHTTPHandler(BaseHTTPRequestHandler):
 
             # If no specific hashes, return all (if allowed)
             if not info_hashes:
-                info_hashes = [h.decode("latin-1") for h in self.tracker_server.peer_database.get_all_info_hashes()]
+                info_hashes = [
+                    h.decode("latin-1")
+                    for h in self.tracker_server.peer_database.get_all_info_hashes()
+                ]
 
             files: Dict[bytes, Dict[bytes, int]] = {}
 

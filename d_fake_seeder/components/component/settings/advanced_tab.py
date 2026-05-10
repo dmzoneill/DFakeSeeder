@@ -71,10 +71,14 @@ class AdvancedTab(
                 # Performance (use correct XML IDs)
                 "disk_cache_size": self.builder.get_object("settings_disk_cache_size"),
                 "ui_refresh_rate": self.builder.get_object("settings_ui_refresh_rate"),
-                "network_interface": self.builder.get_object("settings_network_interface"),
+                "network_interface": self.builder.get_object(
+                    "settings_network_interface"
+                ),
                 # Expert settings (use correct XML IDs)
                 "debug_mode": self.builder.get_object("settings_debug_mode"),
-                "validate_settings": self.builder.get_object("settings_validate_settings"),
+                "validate_settings": self.builder.get_object(
+                    "settings_validate_settings"
+                ),
                 "auto_save": self.builder.get_object("settings_auto_save"),
                 # Keyboard shortcuts list (display only)
                 "shortcuts_list": self.builder.get_object("settings_shortcuts_list"),
@@ -141,14 +145,18 @@ class AdvancedTab(
         if console_level:
             self.track_signal(
                 console_level,
-                console_level.connect("notify::selected", self.on_console_level_changed),
+                console_level.connect(
+                    "notify::selected", self.on_console_level_changed
+                ),
             )
 
         systemd_level = self.get_widget("systemd_level")
         if systemd_level:
             self.track_signal(
                 systemd_level,
-                systemd_level.connect("notify::selected", self.on_systemd_level_changed),
+                systemd_level.connect(
+                    "notify::selected", self.on_systemd_level_changed
+                ),
             )
 
         log_file_browse = self.get_widget("log_file_browse")
@@ -175,7 +183,9 @@ class AdvancedTab(
 
         reset_all = self.get_widget("reset_all_settings")
         if reset_all:
-            self.track_signal(reset_all, reset_all.connect("clicked", self.on_reset_all_clicked))
+            self.track_signal(
+                reset_all, reset_all.connect("clicked", self.on_reset_all_clicked)
+            )
 
         # Keyboard shortcuts (has dependencies - controls shortcuts_config widget)
         enable_shortcuts = self.get_widget("enable_shortcuts")
@@ -273,17 +283,23 @@ class AdvancedTab(
             # Log to file
             log_to_file = self.get_widget("log_to_file")
             if log_to_file:
-                self.set_switch_state(log_to_file, logging_settings.get("log_to_file", False))
+                self.set_switch_state(
+                    log_to_file, logging_settings.get("log_to_file", False)
+                )
 
             # Log to console
             log_to_console = self.get_widget("log_to_console")
             if log_to_console:
-                self.set_switch_state(log_to_console, logging_settings.get("log_to_console", False))
+                self.set_switch_state(
+                    log_to_console, logging_settings.get("log_to_console", False)
+                )
 
             # Log to systemd
             log_to_systemd = self.get_widget("log_to_systemd")
             if log_to_systemd:
-                self.set_switch_state(log_to_systemd, logging_settings.get("log_to_systemd", True))
+                self.set_switch_state(
+                    log_to_systemd, logging_settings.get("log_to_systemd", True)
+                )
 
             # Log file path
             log_file_path = self.get_widget("log_file_path")
@@ -307,7 +323,9 @@ class AdvancedTab(
         try:
             disk_cache_size = self.get_widget("disk_cache_size")
             if disk_cache_size:
-                disk_cache_size.set_value(performance_settings.get("disk_cache_size_mb", 256))
+                disk_cache_size.set_value(
+                    performance_settings.get("disk_cache_size_mb", 256)
+                )
 
             memory_limit = self.get_widget("memory_limit")
             if memory_limit:
@@ -325,15 +343,22 @@ class AdvancedTab(
         try:
             enable_debug = self.get_widget("enable_debug_mode")
             if enable_debug:
-                self.set_switch_state(enable_debug, expert_settings.get("debug_mode", False))
+                self.set_switch_state(
+                    enable_debug, expert_settings.get("debug_mode", False)
+                )
 
             enable_experimental = self.get_widget("enable_experimental")
             if enable_experimental:
-                self.set_switch_state(enable_experimental, expert_settings.get("experimental_features", False))
+                self.set_switch_state(
+                    enable_experimental,
+                    expert_settings.get("experimental_features", False),
+                )
 
             enable_shortcuts = self.get_widget("enable_shortcuts")
             if enable_shortcuts:
-                self.set_switch_state(enable_shortcuts, expert_settings.get("keyboard_shortcuts", True))
+                self.set_switch_state(
+                    enable_shortcuts, expert_settings.get("keyboard_shortcuts", True)
+                )
 
         except Exception as e:
             self.logger.error(f"Error loading expert settings: {e}")
@@ -386,47 +411,69 @@ class AdvancedTab(
         try:
             # Collect logging settings - each output has independent level
             if self._widgets.get("log_to_file"):
-                settings["logging.log_to_file"] = self._widgets["log_to_file"].get_active()
+                settings["logging.log_to_file"] = self._widgets[
+                    "log_to_file"
+                ].get_active()
 
             if self._widgets.get("log_to_console"):
-                settings["logging.log_to_console"] = self._widgets["log_to_console"].get_active()
+                settings["logging.log_to_console"] = self._widgets[
+                    "log_to_console"
+                ].get_active()
 
             if self._widgets.get("log_to_systemd"):
-                settings["logging.log_to_systemd"] = self._widgets["log_to_systemd"].get_active()
+                settings["logging.log_to_systemd"] = self._widgets[
+                    "log_to_systemd"
+                ].get_active()
 
             # Per-output log levels (0=DEBUG, 1=INFO, 2=WARNING, 3=ERROR, 4=CRITICAL)
             level_values = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
             if self._widgets.get("file_level"):
                 idx = self._widgets["file_level"].get_selected()
-                settings["logging.file_level"] = level_values[idx] if idx < len(level_values) else "DEBUG"
+                settings["logging.file_level"] = (
+                    level_values[idx] if idx < len(level_values) else "DEBUG"
+                )
 
             if self._widgets.get("console_level"):
                 idx = self._widgets["console_level"].get_selected()
-                settings["logging.console_level"] = level_values[idx] if idx < len(level_values) else "INFO"
+                settings["logging.console_level"] = (
+                    level_values[idx] if idx < len(level_values) else "INFO"
+                )
 
             if self._widgets.get("systemd_level"):
                 idx = self._widgets["systemd_level"].get_selected()
-                settings["logging.systemd_level"] = level_values[idx] if idx < len(level_values) else "ERROR"
+                settings["logging.systemd_level"] = (
+                    level_values[idx] if idx < len(level_values) else "ERROR"
+                )
 
             if self._widgets.get("log_max_size"):
-                settings["logging.max_size_mb"] = int(self._widgets["log_max_size"].get_value())
+                settings["logging.max_size_mb"] = int(
+                    self._widgets["log_max_size"].get_value()
+                )
 
             # Collect performance settings
             if self._widgets.get("disk_cache_size"):
-                settings["performance.disk_cache_size_mb"] = int(self._widgets["disk_cache_size"].get_value())
+                settings["performance.disk_cache_size_mb"] = int(
+                    self._widgets["disk_cache_size"].get_value()
+                )
 
             if self._widgets.get("ui_refresh_rate"):
-                settings["performance.ui_refresh_rate_sec"] = int(self._widgets["ui_refresh_rate"].get_value())
+                settings["performance.ui_refresh_rate_sec"] = int(
+                    self._widgets["ui_refresh_rate"].get_value()
+                )
 
             if self._widgets.get("network_interface"):
-                settings["performance.network_interface"] = self._widgets["network_interface"].get_text()
+                settings["performance.network_interface"] = self._widgets[
+                    "network_interface"
+                ].get_text()
 
             # Collect expert settings
             if self._widgets.get("debug_mode"):
                 settings["expert.debug_mode"] = self._widgets["debug_mode"].get_active()
 
             if self._widgets.get("validate_settings"):
-                settings["expert.validate_settings"] = self._widgets["validate_settings"].get_active()
+                settings["expert.validate_settings"] = self._widgets[
+                    "validate_settings"
+                ].get_active()
 
             if self._widgets.get("auto_save"):
                 settings["expert.auto_save"] = self._widgets["auto_save"].get_active()
@@ -494,7 +541,9 @@ class AdvancedTab(
         try:
             disk_cache_size = self.get_widget("disk_cache_size")
             if disk_cache_size:
-                performance_settings["disk_cache_size_mb"] = int(disk_cache_size.get_value())
+                performance_settings["disk_cache_size_mb"] = int(
+                    disk_cache_size.get_value()
+                )
 
             memory_limit = self.get_widget("memory_limit")
             if memory_limit:
@@ -520,7 +569,9 @@ class AdvancedTab(
 
             enable_experimental = self.get_widget("enable_experimental")
             if enable_experimental:
-                expert_settings["experimental_features"] = enable_experimental.get_active()
+                expert_settings["experimental_features"] = (
+                    enable_experimental.get_active()
+                )
 
             enable_shortcuts = self.get_widget("enable_shortcuts")
             if enable_shortcuts:
@@ -550,7 +601,9 @@ class AdvancedTab(
                 if log_file_path:
                     path = log_file_path.get_text().strip()
                     if not path:
-                        errors["log_file_path"] = "Log file path cannot be empty when file logging is enabled"
+                        errors["log_file_path"] = (
+                            "Log file path cannot be empty when file logging is enabled"
+                        )
 
         except Exception as e:
             self.logger.error(f"Error validating Advanced tab settings: {e}")
@@ -602,7 +655,9 @@ class AdvancedTab(
         """Handle log to systemd toggle."""
         try:
             # NOTE: Setting will be saved in batch via _collect_settings()
-            message = "Systemd journal logging will be " + ("enabled" if state else "disabled")
+            message = "Systemd journal logging will be " + (
+                "enabled" if state else "disabled"
+            )
             self.show_notification(message, "info")
             # Trigger logger reconfiguration will happen after save
         except Exception as e:
@@ -610,24 +665,51 @@ class AdvancedTab(
 
     def on_file_level_changed(self, dropdown: Any, param: Any) -> None:
         """Handle file log level change."""
-        level_values = ["(Use main level)", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+        level_values = [
+            "(Use main level)",
+            "DEBUG",
+            "INFO",
+            "WARNING",
+            "ERROR",
+            "CRITICAL",
+        ]
         idx = dropdown.get_selected()
         level = level_values[idx] if idx < len(level_values) else "(Use main level)"
-        self.show_notification(self._("File log level: {level}").format(level=level), "info")
+        self.show_notification(
+            self._("File log level: {level}").format(level=level), "info"
+        )
 
     def on_console_level_changed(self, dropdown: Any, param: Any) -> None:
         """Handle console log level change."""
-        level_values = ["(Use main level)", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+        level_values = [
+            "(Use main level)",
+            "DEBUG",
+            "INFO",
+            "WARNING",
+            "ERROR",
+            "CRITICAL",
+        ]
         idx = dropdown.get_selected()
         level = level_values[idx] if idx < len(level_values) else "(Use main level)"
-        self.show_notification(self._("Console log level: {level}").format(level=level), "info")
+        self.show_notification(
+            self._("Console log level: {level}").format(level=level), "info"
+        )
 
     def on_systemd_level_changed(self, dropdown: Any, param: Any) -> None:
         """Handle systemd log level change."""
-        level_values = ["(Use main level)", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+        level_values = [
+            "(Use main level)",
+            "DEBUG",
+            "INFO",
+            "WARNING",
+            "ERROR",
+            "CRITICAL",
+        ]
         idx = dropdown.get_selected()
         level = level_values[idx] if idx < len(level_values) else "(Use main level)"
-        self.show_notification(self._("Systemd log level: {level}").format(level=level), "info")
+        self.show_notification(
+            self._("Systemd log level: {level}").format(level=level), "info"
+        )
 
     def on_log_file_browse_clicked(self, button: Gtk.Button) -> None:
         """Open file chooser for log file."""
@@ -657,7 +739,9 @@ class AdvancedTab(
         """Reset all settings to defaults."""
         try:
             # TODO: Implement confirmation dialog and reset all settings
-            self.show_notification(self._("Reset all settings not yet implemented"), "warning")
+            self.show_notification(
+                self._("Reset all settings not yet implemented"), "warning"
+            )
         except Exception as e:
             self.logger.error(f"Error resetting all settings: {e}")
 
@@ -666,7 +750,9 @@ class AdvancedTab(
         try:
             self.update_dependencies()
             # NOTE: Setting will be saved in batch via _collect_settings()
-            message = "Keyboard shortcuts will be " + ("enabled" if state else "disabled")
+            message = "Keyboard shortcuts will be " + (
+                "enabled" if state else "disabled"
+            )
             self.show_notification(message, "info")
         except Exception as e:
             self.logger.error(f"Error changing keyboard shortcuts: {e}")
@@ -675,7 +761,9 @@ class AdvancedTab(
         """Open shortcuts configuration."""
         try:
             # TODO: Implement shortcuts configuration dialog
-            self.show_notification(self._("Shortcuts configuration not yet implemented"), "info")
+            self.show_notification(
+                self._("Shortcuts configuration not yet implemented"), "info"
+            )
         except Exception as e:
             self.logger.error(f"Error opening shortcuts config: {e}")
 
@@ -740,7 +828,9 @@ class AdvancedTab(
                 self.set_switch_state(enable_shortcuts, True)
 
             self.update_dependencies()
-            self.show_notification(self._("Advanced settings reset to defaults"), "success")
+            self.show_notification(
+                self._("Advanced settings reset to defaults"), "success"
+            )
 
         except Exception as e:
             self.logger.error(f"Error resetting Advanced tab to defaults: {e}")

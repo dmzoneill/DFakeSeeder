@@ -82,7 +82,9 @@ class UDPSeeder(BaseSeeder):
     def process_announce_response(self, response: Any) -> None:
         """Parse UDP announce response and extract peers."""
         peers = []
-        _action, _transaction_id, interval, leechers, seeders = struct.unpack_from("!IIIII", response, offset=0)
+        _action, _transaction_id, interval, leechers, seeders = struct.unpack_from(
+            "!IIIII", response, offset=0
+        )
         offset = 20
         while offset + UDPTrackerConstants.IPV4_WITH_PORT_LENGTH <= len(response):
             ip, port = struct.unpack_from("!IH", response, offset=offset)
@@ -107,16 +109,20 @@ class UDPSeeder(BaseSeeder):
             extra={"class_name": self.__class__.__name__},
         )
         logger.trace(
-            f"📁 Torrent: {self.torrent.name} " f"(Hash: {self.torrent.file_hash.hex()[:16]}...)",
+            f"📁 Torrent: {self.torrent.name} "
+            f"(Hash: {self.torrent.file_hash.hex()[:16]}...)",
             extra={"class_name": self.__class__.__name__},
         )
-        logger.trace(f"🆔 Peer ID: {self.peer_id}", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            f"🆔 Peer ID: {self.peer_id}", extra={"class_name": self.__class__.__name__}
+        )
 
         # Log packet data if present (for upload announces)
         if packet_data:
             uploaded, downloaded, left = packet_data
             logger.trace(
-                f"📊 Upload announce - Up: {uploaded} bytes, " f"Down: {downloaded} bytes, Left: {left} bytes",
+                f"📊 Upload announce - Up: {uploaded} bytes, "
+                f"Down: {downloaded} bytes, Left: {left} bytes",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -132,7 +138,8 @@ class UDPSeeder(BaseSeeder):
                 connection_id = UDPTrackerConstants.MAGIC_CONNECTION_ID
                 transaction_id = self.generate_transaction_id()
                 logger.trace(
-                    f"🔢 Transaction ID: {transaction_id}, " f"Connection ID: {hex(connection_id)}",
+                    f"🔢 Transaction ID: {transaction_id}, "
+                    f"Connection ID: {hex(connection_id)}",
                     extra={"class_name": self.__class__.__name__},
                 )
 
@@ -193,7 +200,9 @@ class UDPSeeder(BaseSeeder):
                     )
 
                     # Log individual peer details
-                    for i, (ip, port) in enumerate(peers[: UDPTrackerConstants.PEER_LOG_LIMIT]):
+                    for i, (ip, port) in enumerate(
+                        peers[: UDPTrackerConstants.PEER_LOG_LIMIT]
+                    ):
                         logger.trace(
                             f"👥 Peer {i + 1}: {ip}:{port}",
                             extra={"class_name": self.__class__.__name__},
@@ -211,7 +220,9 @@ class UDPSeeder(BaseSeeder):
                             b"leechers": leechers,
                             b"seeders": seeders,
                         }
-                        self.update_interval = self._apply_announce_jitter(self.info[b"interval"])
+                        self.update_interval = self._apply_announce_jitter(
+                            self.info[b"interval"]
+                        )
 
                     # Announce to inbuilt tracker if enabled (INT-4.1)
                     if packet_data:
@@ -233,7 +244,9 @@ class UDPSeeder(BaseSeeder):
                     # Update tracker model with timeout failure
                     request_end_time = time.time()
                     response_time = request_end_time - request_start_time
-                    self._update_tracker_failure(f"Socket timeout ({timeout}s)", response_time)
+                    self._update_tracker_failure(
+                        f"Socket timeout ({timeout}s)", response_time
+                    )
 
                     # Timeout occurred
                     logger.error(
@@ -242,7 +255,8 @@ class UDPSeeder(BaseSeeder):
                     )
                     self.set_random_announce_url()
                     logger.trace(
-                        f"🔄 Switched to backup tracker: " f"{self.tracker_hostname}:{self.tracker_port}",
+                        f"🔄 Switched to backup tracker: "
+                        f"{self.tracker_hostname}:{self.tracker_port}",
                         extra={"class_name": self.__class__.__name__},
                     )
                     return False  # type: ignore[return-value]
@@ -263,7 +277,8 @@ class UDPSeeder(BaseSeeder):
             )
             self.set_random_announce_url()
             logger.trace(
-                f"🔄 Switched to backup tracker: " f"{self.tracker_hostname}:{self.tracker_port}",
+                f"🔄 Switched to backup tracker: "
+                f"{self.tracker_hostname}:{self.tracker_port}",
                 extra={"class_name": self.__class__.__name__},
             )
             self.handle_exception(e, f"Seeder unknown error in {log_msg}")
@@ -284,7 +299,9 @@ class UDPSeeder(BaseSeeder):
             return False  # type: ignore[return-value]
 
         # Use timeout for semaphore acquisition
-        if not self.get_tracker_semaphore().acquire(timeout=TimeoutConstants.TRACKER_SEMAPHORE_UDP):
+        if not self.get_tracker_semaphore().acquire(
+            timeout=TimeoutConstants.TRACKER_SEMAPHORE_UDP
+        ):
             logger.warning(
                 "⏱️ Timeout acquiring tracker semaphore for UDP load_peers",
                 extra={"class_name": self.__class__.__name__},
@@ -299,7 +316,9 @@ class UDPSeeder(BaseSeeder):
                     0,
                     self.torrent.total_size,
                 ),  # uploaded=0, downloaded=0, left=total_size
-                timeout=getattr(self.settings, "seeders", {}).get("udp_load_timeout_seconds", 5),
+                timeout=getattr(self.settings, "seeders", {}).get(
+                    "udp_load_timeout_seconds", 5
+                ),
                 log_msg="Seeder load peers",
             )
         finally:
@@ -318,7 +337,9 @@ class UDPSeeder(BaseSeeder):
 
         return result  # type: ignore[no-any-return]
 
-    def upload(self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any) -> Any:
+    def upload(
+        self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any
+    ) -> Any:
         """Upload stats to UDP tracker."""
         logger.trace(
             "📤 Starting UDP announce to tracker",
@@ -355,7 +376,9 @@ class UDPSeeder(BaseSeeder):
         packet_data = (uploaded_bytes, downloaded_bytes, download_left)
         result = self.handle_announce(  # type: ignore[func-returns-value]
             packet_data=packet_data,
-            timeout=getattr(self.settings, "seeders", {}).get("udp_upload_timeout_seconds", 4),
+            timeout=getattr(self.settings, "seeders", {}).get(
+                "udp_upload_timeout_seconds", 4
+            ),
             log_msg="Seeder upload",
         )
 
@@ -365,7 +388,9 @@ class UDPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
         else:
-            logger.error("❌ UDP announce failed", extra={"class_name": self.__class__.__name__})
+            logger.error(
+                "❌ UDP announce failed", extra={"class_name": self.__class__.__name__}
+            )
 
             # Notify user of tracker failure
             if View.instance is not None:
@@ -403,7 +428,9 @@ class UDPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _update_tracker_success(self, response_data: dict, response_time: float) -> None:
+    def _update_tracker_success(
+        self, response_data: dict, response_time: float
+    ) -> None:
         """Update tracker model with successful response"""
         try:
             tracker = self._get_tracker_model()
@@ -414,7 +441,9 @@ class UDPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _update_tracker_failure(self, error_message: str, response_time: Optional[float] = None) -> None:
+    def _update_tracker_failure(
+        self, error_message: str, response_time: Optional[float] = None
+    ) -> None:
         """Update tracker model with failed response"""
         try:
             tracker = self._get_tracker_model()

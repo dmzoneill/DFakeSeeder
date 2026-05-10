@@ -39,7 +39,11 @@ class File:
                     announce_list = self.torrent_header[b"announce-list"]
                     if isinstance(announce_list, list):
                         # Extract announce URLs from the announce-list
-                        announce_urls = [url.decode("utf-8") for sublist in announce_list for url in sublist]
+                        announce_urls = [
+                            url.decode("utf-8")
+                            for sublist in announce_list
+                            for url in sublist
+                        ]
                         self.announce_list = announce_urls
 
                 torrent_info = self.torrent_header[b"info"]
@@ -117,7 +121,9 @@ class File:
             result += "Files:\n"
             for file_info in torrent_info[b"files"]:
                 fullpath = "/".join([x.decode("utf-8") for x in file_info[b"path"]])
-                result += f"  '{fullpath}' ({helpers.sizeof_fmt(file_info[b'length'])})\n"
+                result += (
+                    f"  '{fullpath}' ({helpers.sizeof_fmt(file_info[b'length'])})\n"
+                )
         else:
             # Single File Mode
             result += f"Length: {helpers.sizeof_fmt(torrent_info[b'length'])}\n"
@@ -189,7 +195,9 @@ class File:
         if b"files" in torrent_info:
             # Multi-file torrent
             for file_info in torrent_info[b"files"]:
-                path_parts = [part.decode("utf-8", errors="ignore") for part in file_info[b"path"]]
+                path_parts = [
+                    part.decode("utf-8", errors="ignore") for part in file_info[b"path"]
+                ]
                 files.append(
                     {
                         "path": "/".join(path_parts),
@@ -215,7 +223,9 @@ class File:
 
         # Primary announce
         if b"announce" in self.torrent_header:
-            trackers.append(self.torrent_header[b"announce"].decode("utf-8", errors="ignore"))
+            trackers.append(
+                self.torrent_header[b"announce"].decode("utf-8", errors="ignore")
+            )
 
         # Announce list
         if hasattr(self, "announce_list"):

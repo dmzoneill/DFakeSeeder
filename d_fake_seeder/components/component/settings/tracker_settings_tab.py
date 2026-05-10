@@ -31,59 +31,105 @@ class TrackerSettingsTab(BaseSettingsTab):
     def _init_widgets(self) -> None:
         """Initialize tracker-specific widgets"""
         # Main enable switch
-        self._widgets["tracker_enabled"] = self.builder.get_object("tracker_enabled_switch")
+        self._widgets["tracker_enabled"] = self.builder.get_object(
+            "tracker_enabled_switch"
+        )
 
         # HTTP Server Settings
-        self._widgets["http_enabled"] = self.builder.get_object("tracker_http_enabled_switch")
+        self._widgets["http_enabled"] = self.builder.get_object(
+            "tracker_http_enabled_switch"
+        )
         self._widgets["http_port"] = self.builder.get_object("tracker_http_port_spin")
-        self._widgets["bind_address"] = self.builder.get_object("tracker_bind_address_entry")
+        self._widgets["bind_address"] = self.builder.get_object(
+            "tracker_bind_address_entry"
+        )
 
         # UDP Server Settings
-        self._widgets["udp_enabled"] = self.builder.get_object("tracker_udp_enabled_switch")
+        self._widgets["udp_enabled"] = self.builder.get_object(
+            "tracker_udp_enabled_switch"
+        )
         self._widgets["udp_port"] = self.builder.get_object("tracker_udp_port_spin")
 
         # Announce Settings
-        self._widgets["announce_interval"] = self.builder.get_object("tracker_announce_interval_spin")
-        self._widgets["peer_timeout_multiplier"] = self.builder.get_object("tracker_peer_timeout_multiplier_spin")
-        self._widgets["max_peers_per_announce"] = self.builder.get_object("tracker_max_peers_spin")
+        self._widgets["announce_interval"] = self.builder.get_object(
+            "tracker_announce_interval_spin"
+        )
+        self._widgets["peer_timeout_multiplier"] = self.builder.get_object(
+            "tracker_peer_timeout_multiplier_spin"
+        )
+        self._widgets["max_peers_per_announce"] = self.builder.get_object(
+            "tracker_max_peers_spin"
+        )
 
         # Features
-        self._widgets["enable_scrape"] = self.builder.get_object("tracker_enable_scrape_switch")
-        self._widgets["private_mode"] = self.builder.get_object("tracker_private_mode_switch")
-        self._widgets["log_announces"] = self.builder.get_object("tracker_log_announces_switch")
+        self._widgets["enable_scrape"] = self.builder.get_object(
+            "tracker_enable_scrape_switch"
+        )
+        self._widgets["private_mode"] = self.builder.get_object(
+            "tracker_private_mode_switch"
+        )
+        self._widgets["log_announces"] = self.builder.get_object(
+            "tracker_log_announces_switch"
+        )
 
         # Self-Tracking Settings
-        self._widgets["self_tracking_enabled"] = self.builder.get_object("tracker_self_tracking_switch")
-        self._widgets["announce_with_seeders"] = self.builder.get_object("tracker_announce_seeders_switch")
-        self._widgets["sync_on_add"] = self.builder.get_object("tracker_sync_on_add_switch")
-        self._widgets["sync_on_remove"] = self.builder.get_object("tracker_sync_on_remove_switch")
+        self._widgets["self_tracking_enabled"] = self.builder.get_object(
+            "tracker_self_tracking_switch"
+        )
+        self._widgets["announce_with_seeders"] = self.builder.get_object(
+            "tracker_announce_seeders_switch"
+        )
+        self._widgets["sync_on_add"] = self.builder.get_object(
+            "tracker_sync_on_add_switch"
+        )
+        self._widgets["sync_on_remove"] = self.builder.get_object(
+            "tracker_sync_on_remove_switch"
+        )
 
         # Security Settings
         self._widgets["rate_limit"] = self.builder.get_object("tracker_rate_limit_spin")
-        self._widgets["ip_whitelist"] = self.builder.get_object("tracker_ip_whitelist_textview")
-        self._widgets["ip_blacklist"] = self.builder.get_object("tracker_ip_blacklist_textview")
+        self._widgets["ip_whitelist"] = self.builder.get_object(
+            "tracker_ip_whitelist_textview"
+        )
+        self._widgets["ip_blacklist"] = self.builder.get_object(
+            "tracker_ip_blacklist_textview"
+        )
 
-        self.logger.info("Tracker tab widgets initialized", extra={"class_name": self.__class__.__name__})
+        self.logger.info(
+            "Tracker tab widgets initialized",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _connect_signals(self) -> None:
         """Connect tracker-specific signals"""
         # Main enable switch
         if self._widgets["tracker_enabled"]:
-            self._widgets["tracker_enabled"].connect("state-set", self._on_tracker_enabled_changed)
+            self._widgets["tracker_enabled"].connect(
+                "state-set", self._on_tracker_enabled_changed
+            )
 
         # HTTP enable switch (has dependencies)
         if self._widgets["http_enabled"]:
-            self._widgets["http_enabled"].connect("state-set", self._on_http_enabled_changed)
+            self._widgets["http_enabled"].connect(
+                "state-set", self._on_http_enabled_changed
+            )
 
         # UDP enable switch (has dependencies)
         if self._widgets["udp_enabled"]:
-            self._widgets["udp_enabled"].connect("state-set", self._on_udp_enabled_changed)
+            self._widgets["udp_enabled"].connect(
+                "state-set", self._on_udp_enabled_changed
+            )
 
         # Self-tracking switch (has dependencies)
         if self._widgets["self_tracking_enabled"]:
-            self._widgets["self_tracking_enabled"].connect("state-set", self._on_self_tracking_changed)
+            self._widgets["self_tracking_enabled"].connect(
+                "state-set", self._on_self_tracking_changed
+            )
 
-        self.logger.trace("Tracker tab signals connected", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(
+            "Tracker tab signals connected",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _load_settings(self) -> None:
         """Load tracker settings from configuration."""
@@ -103,7 +149,9 @@ class TrackerSettingsTab(BaseSettingsTab):
                 self._widgets["http_port"].set_value(value)
 
             if self._widgets["bind_address"]:
-                value = self.app_settings.get("tracker_settings.bind_address", "0.0.0.0")
+                value = self.app_settings.get(
+                    "tracker_settings.bind_address", "0.0.0.0"
+                )
                 self._widgets["bind_address"].set_text(value)
 
             # UDP Settings
@@ -117,15 +165,21 @@ class TrackerSettingsTab(BaseSettingsTab):
 
             # Announce Settings
             if self._widgets["announce_interval"]:
-                value = self.app_settings.get("tracker_settings.announce_interval_seconds", 1800)
+                value = self.app_settings.get(
+                    "tracker_settings.announce_interval_seconds", 1800
+                )
                 self._widgets["announce_interval"].set_value(value)
 
             if self._widgets["peer_timeout_multiplier"]:
-                value = self.app_settings.get("tracker_settings.peer_timeout_multiplier", 3)
+                value = self.app_settings.get(
+                    "tracker_settings.peer_timeout_multiplier", 3
+                )
                 self._widgets["peer_timeout_multiplier"].set_value(value)
 
             if self._widgets["max_peers_per_announce"]:
-                value = self.app_settings.get("tracker_settings.max_peers_per_announce", 50)
+                value = self.app_settings.get(
+                    "tracker_settings.max_peers_per_announce", 50
+                )
                 self._widgets["max_peers_per_announce"].set_value(value)
 
             # Features
@@ -143,34 +197,48 @@ class TrackerSettingsTab(BaseSettingsTab):
 
             # Self-Tracking
             if self._widgets["self_tracking_enabled"]:
-                value = self.app_settings.get("tracker_settings.self_tracking.enabled", True)
+                value = self.app_settings.get(
+                    "tracker_settings.self_tracking.enabled", True
+                )
                 self._widgets["self_tracking_enabled"].set_active(value)
 
             if self._widgets["announce_with_seeders"]:
-                value = self.app_settings.get("tracker_settings.self_tracking.announce_with_seeders", True)
+                value = self.app_settings.get(
+                    "tracker_settings.self_tracking.announce_with_seeders", True
+                )
                 self._widgets["announce_with_seeders"].set_active(value)
 
             if self._widgets["sync_on_add"]:
-                value = self.app_settings.get("tracker_settings.self_tracking.sync_on_add", True)
+                value = self.app_settings.get(
+                    "tracker_settings.self_tracking.sync_on_add", True
+                )
                 self._widgets["sync_on_add"].set_active(value)
 
             if self._widgets["sync_on_remove"]:
-                value = self.app_settings.get("tracker_settings.self_tracking.sync_on_remove", True)
+                value = self.app_settings.get(
+                    "tracker_settings.self_tracking.sync_on_remove", True
+                )
                 self._widgets["sync_on_remove"].set_active(value)
 
             # Security
             if self._widgets["rate_limit"]:
-                value = self.app_settings.get("tracker_settings.security.rate_limit_per_minute", 60)
+                value = self.app_settings.get(
+                    "tracker_settings.security.rate_limit_per_minute", 60
+                )
                 self._widgets["rate_limit"].set_value(value)
 
             if self._widgets["ip_whitelist"]:
                 buffer = self._widgets["ip_whitelist"].get_buffer()
-                whitelist = self.app_settings.get("tracker_settings.security.ip_whitelist", [])
+                whitelist = self.app_settings.get(
+                    "tracker_settings.security.ip_whitelist", []
+                )
                 buffer.set_text("\n".join(whitelist))
 
             if self._widgets["ip_blacklist"]:
                 buffer = self._widgets["ip_blacklist"].get_buffer()
-                blacklist = self.app_settings.get("tracker_settings.security.ip_blacklist", [])
+                blacklist = self.app_settings.get(
+                    "tracker_settings.security.ip_blacklist", []
+                )
                 buffer.set_text("\n".join(blacklist))
 
             self.logger.trace(
@@ -191,24 +259,36 @@ class TrackerSettingsTab(BaseSettingsTab):
         try:
             # Main enable
             if self._widgets.get("tracker_enabled"):
-                settings["tracker_settings.enabled"] = self._widgets["tracker_enabled"].get_active()
+                settings["tracker_settings.enabled"] = self._widgets[
+                    "tracker_enabled"
+                ].get_active()
 
             # HTTP Settings
             if self._widgets.get("http_enabled"):
-                settings["tracker_settings.http_enabled"] = self._widgets["http_enabled"].get_active()
+                settings["tracker_settings.http_enabled"] = self._widgets[
+                    "http_enabled"
+                ].get_active()
 
             if self._widgets.get("http_port"):
-                settings["tracker_settings.http_port"] = int(self._widgets["http_port"].get_value())
+                settings["tracker_settings.http_port"] = int(
+                    self._widgets["http_port"].get_value()
+                )
 
             if self._widgets.get("bind_address"):
-                settings["tracker_settings.bind_address"] = self._widgets["bind_address"].get_text().strip()
+                settings["tracker_settings.bind_address"] = (
+                    self._widgets["bind_address"].get_text().strip()
+                )
 
             # UDP Settings
             if self._widgets.get("udp_enabled"):
-                settings["tracker_settings.udp_enabled"] = self._widgets["udp_enabled"].get_active()
+                settings["tracker_settings.udp_enabled"] = self._widgets[
+                    "udp_enabled"
+                ].get_active()
 
             if self._widgets.get("udp_port"):
-                settings["tracker_settings.udp_port"] = int(self._widgets["udp_port"].get_value())
+                settings["tracker_settings.udp_port"] = int(
+                    self._widgets["udp_port"].get_value()
+                )
 
             # Announce Settings
             if self._widgets.get("announce_interval"):
@@ -228,28 +308,40 @@ class TrackerSettingsTab(BaseSettingsTab):
 
             # Features
             if self._widgets.get("enable_scrape"):
-                settings["tracker_settings.enable_scrape"] = self._widgets["enable_scrape"].get_active()
+                settings["tracker_settings.enable_scrape"] = self._widgets[
+                    "enable_scrape"
+                ].get_active()
 
             if self._widgets.get("private_mode"):
-                settings["tracker_settings.private_mode"] = self._widgets["private_mode"].get_active()
+                settings["tracker_settings.private_mode"] = self._widgets[
+                    "private_mode"
+                ].get_active()
 
             if self._widgets.get("log_announces"):
-                settings["tracker_settings.log_announces"] = self._widgets["log_announces"].get_active()
+                settings["tracker_settings.log_announces"] = self._widgets[
+                    "log_announces"
+                ].get_active()
 
             # Self-Tracking
             if self._widgets.get("self_tracking_enabled"):
-                settings["tracker_settings.self_tracking.enabled"] = self._widgets["self_tracking_enabled"].get_active()
-
-            if self._widgets.get("announce_with_seeders"):
-                settings["tracker_settings.self_tracking.announce_with_seeders"] = self._widgets[
-                    "announce_with_seeders"
+                settings["tracker_settings.self_tracking.enabled"] = self._widgets[
+                    "self_tracking_enabled"
                 ].get_active()
 
+            if self._widgets.get("announce_with_seeders"):
+                settings["tracker_settings.self_tracking.announce_with_seeders"] = (
+                    self._widgets["announce_with_seeders"].get_active()
+                )
+
             if self._widgets.get("sync_on_add"):
-                settings["tracker_settings.self_tracking.sync_on_add"] = self._widgets["sync_on_add"].get_active()
+                settings["tracker_settings.self_tracking.sync_on_add"] = self._widgets[
+                    "sync_on_add"
+                ].get_active()
 
             if self._widgets.get("sync_on_remove"):
-                settings["tracker_settings.self_tracking.sync_on_remove"] = self._widgets["sync_on_remove"].get_active()
+                settings["tracker_settings.self_tracking.sync_on_remove"] = (
+                    self._widgets["sync_on_remove"].get_active()
+                )
 
             # Security
             if self._widgets.get("rate_limit"):
@@ -294,7 +386,10 @@ class TrackerSettingsTab(BaseSettingsTab):
             if tracker_enabled_override is not None:
                 tracker_enabled = tracker_enabled_override
             else:
-                tracker_enabled = self._widgets.get("tracker_enabled") and self._widgets["tracker_enabled"].get_active()
+                tracker_enabled = (
+                    self._widgets.get("tracker_enabled")
+                    and self._widgets["tracker_enabled"].get_active()
+                )
 
             # All dependent widgets
             dependent_widgets = [
@@ -324,17 +419,24 @@ class TrackerSettingsTab(BaseSettingsTab):
 
             # HTTP port depends on HTTP enabled
             if self._widgets.get("http_enabled") and self._widgets.get("http_port"):
-                http_enabled = tracker_enabled and self._widgets["http_enabled"].get_active()
+                http_enabled = (
+                    tracker_enabled and self._widgets["http_enabled"].get_active()
+                )
                 self._widgets["http_port"].set_sensitive(http_enabled)
 
             # UDP port depends on UDP enabled
             if self._widgets.get("udp_enabled") and self._widgets.get("udp_port"):
-                udp_enabled = tracker_enabled and self._widgets["udp_enabled"].get_active()
+                udp_enabled = (
+                    tracker_enabled and self._widgets["udp_enabled"].get_active()
+                )
                 self._widgets["udp_port"].set_sensitive(udp_enabled)
 
             # Self-tracking sub-options depend on self-tracking enabled
             if self._widgets.get("self_tracking_enabled"):
-                self_tracking = tracker_enabled and self._widgets["self_tracking_enabled"].get_active()
+                self_tracking = (
+                    tracker_enabled
+                    and self._widgets["self_tracking_enabled"].get_active()
+                )
                 for widget_name in [
                     "announce_with_seeders",
                     "sync_on_add",
@@ -378,7 +480,9 @@ class TrackerSettingsTab(BaseSettingsTab):
             if self._widgets.get("announce_interval"):
                 interval = int(self._widgets["announce_interval"].get_value())
                 if interval < 60:
-                    errors["announce_interval"] = "Announce interval should be at least 60 seconds"
+                    errors["announce_interval"] = (
+                        "Announce interval should be at least 60 seconds"
+                    )
 
             # Validate IP lists
             for ip_widget_name in ["ip_whitelist", "ip_blacklist"]:
@@ -429,7 +533,10 @@ class TrackerSettingsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
         if self._widgets.get("http_port"):
-            tracker_enabled = self._widgets.get("tracker_enabled") and self._widgets["tracker_enabled"].get_active()
+            tracker_enabled = (
+                self._widgets.get("tracker_enabled")
+                and self._widgets["tracker_enabled"].get_active()
+            )
             self._widgets["http_port"].set_sensitive(tracker_enabled and state)
 
     def _on_udp_enabled_changed(self, switch: Any, state: Any) -> None:
@@ -439,7 +546,10 @@ class TrackerSettingsTab(BaseSettingsTab):
             extra={"class_name": self.__class__.__name__},
         )
         if self._widgets.get("udp_port"):
-            tracker_enabled = self._widgets.get("tracker_enabled") and self._widgets["tracker_enabled"].get_active()
+            tracker_enabled = (
+                self._widgets.get("tracker_enabled")
+                and self._widgets["tracker_enabled"].get_active()
+            )
             self._widgets["udp_port"].set_sensitive(tracker_enabled and state)
 
     def _on_self_tracking_changed(self, switch: Any, state: Any) -> None:
@@ -448,7 +558,10 @@ class TrackerSettingsTab(BaseSettingsTab):
             f"Self-tracking enabled changed: {state}",
             extra={"class_name": self.__class__.__name__},
         )
-        tracker_enabled = self._widgets.get("tracker_enabled") and self._widgets["tracker_enabled"].get_active()
+        tracker_enabled = (
+            self._widgets.get("tracker_enabled")
+            and self._widgets["tracker_enabled"].get_active()
+        )
         for widget_name in ["announce_with_seeders", "sync_on_add", "sync_on_remove"]:
             if self._widgets.get(widget_name):
                 self._widgets[widget_name].set_sensitive(tracker_enabled and state)

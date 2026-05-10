@@ -20,7 +20,9 @@ from .settings_mixins import UtilityMixin, ValidationMixin  # noqa: E402
 # fmt: on
 
 
-class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
+class BitTorrentTab(
+    BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin
+):
     """
     BitTorrent settings tab component.
 
@@ -54,13 +56,21 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 # User agent
                 "user_agent": self.builder.get_object("settings_user_agent"),
                 # Section container (hardcoded to sensitive=False in XML)
-                "custom_agent_box": self.builder.get_object("settings_custom_agent_box"),
-                "custom_user_agent": self.builder.get_object("settings_custom_user_agent"),
+                "custom_agent_box": self.builder.get_object(
+                    "settings_custom_agent_box"
+                ),
+                "custom_user_agent": self.builder.get_object(
+                    "settings_custom_user_agent"
+                ),
                 # Peer ID prefix
                 "peer_id_prefix": self.builder.get_object("settings_peer_id_prefix"),
                 # Announce intervals
-                "announce_interval": self.builder.get_object("settings_announce_interval"),
-                "min_announce_interval": self.builder.get_object("settings_min_announce_interval"),
+                "announce_interval": self.builder.get_object(
+                    "settings_announce_interval"
+                ),
+                "min_announce_interval": self.builder.get_object(
+                    "settings_min_announce_interval"
+                ),
                 "scrape_interval": self.builder.get_object("settings_scrape_interval"),
             }
         )
@@ -112,10 +122,14 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Encryption mode
             encryption_mode = self.get_widget("encryption_mode")
             if encryption_mode:
-                encryption_value = self.app_settings.get("bittorrent.encryption_mode", "enabled")
+                encryption_value = self.app_settings.get(
+                    "bittorrent.encryption_mode", "enabled"
+                )
                 # Map encryption modes to dropdown index: disabled=0, enabled=1, forced=2
                 encryption_mapping = {"disabled": 0, "enabled": 1, "forced": 2}
-                encryption_mode.set_selected(encryption_mapping.get(encryption_value, 1))
+                encryption_mode.set_selected(
+                    encryption_mapping.get(encryption_value, 1)
+                )
 
             # User agent dropdown
             self._update_user_agent_dropdown()
@@ -129,12 +143,16 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Announce intervals
             announce = self.get_widget("announce_interval")
             if announce:
-                value = self.app_settings.get("bittorrent.announce_interval_seconds", 1800)
+                value = self.app_settings.get(
+                    "bittorrent.announce_interval_seconds", 1800
+                )
                 announce.set_value(value)
 
             min_announce = self.get_widget("min_announce_interval")
             if min_announce:
-                value = self.app_settings.get("bittorrent.min_announce_interval_seconds", 300)
+                value = self.app_settings.get(
+                    "bittorrent.min_announce_interval_seconds", 300
+                )
                 min_announce.set_value(value)
 
             scrape_interval = self.get_widget("scrape_interval")
@@ -170,7 +188,9 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if not user_agent_dropdown:
                 return
 
-            current_user_agent = self.app_settings.get("bittorrent.user_agent", "Deluge/2.0.3 libtorrent/2.0.5.0")
+            current_user_agent = self.app_settings.get(
+                "bittorrent.user_agent", "Deluge/2.0.3 libtorrent/2.0.5.0"
+            )
 
             # The XML dropdown has these predefined agents:
             # Deluge/2.0.3, qBittorrent/4.3.1, Transmission/3.00, uTorrent/3.5.5,
@@ -284,7 +304,9 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                         "rTorrent/0.9.6",
                     ]
                     if selected_index < len(predefined_agents):
-                        settings["bittorrent.user_agent"] = predefined_agents[selected_index]
+                        settings["bittorrent.user_agent"] = predefined_agents[
+                            selected_index
+                        ]
 
             # Peer ID prefix
             peer_id_prefix = self.get_widget("peer_id_prefix")
@@ -294,15 +316,21 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Announce intervals
             announce = self.get_widget("announce_interval")
             if announce:
-                settings["bittorrent.announce_interval_seconds"] = int(announce.get_value())
+                settings["bittorrent.announce_interval_seconds"] = int(
+                    announce.get_value()
+                )
 
             min_announce = self.get_widget("min_announce_interval")
             if min_announce:
-                settings["bittorrent.min_announce_interval_seconds"] = int(min_announce.get_value())
+                settings["bittorrent.min_announce_interval_seconds"] = int(
+                    min_announce.get_value()
+                )
 
             scrape_interval = self.get_widget("scrape_interval")
             if scrape_interval:
-                settings["bittorrent.scrape_interval_seconds"] = int(scrape_interval.get_value())
+                settings["bittorrent.scrape_interval_seconds"] = int(
+                    scrape_interval.get_value()
+                )
 
         except Exception as e:
             self.logger.error(f"Error collecting BitTorrent settings: {e}")
@@ -321,16 +349,22 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 announce_interval = int(announce.get_value())
                 min_announce_interval = int(min_announce.get_value())
                 if min_announce_interval >= announce_interval:
-                    errors["announce_interval"] = "Minimum announce interval must be less than announce interval"
+                    errors["announce_interval"] = (
+                        "Minimum announce interval must be less than announce interval"
+                    )
 
             # Validate custom user agent
             user_agent_dropdown = self.get_widget("user_agent")
-            if user_agent_dropdown and user_agent_dropdown.get_selected() == 7:  # Custom
+            if (
+                user_agent_dropdown and user_agent_dropdown.get_selected() == 7
+            ):  # Custom
                 custom_user_agent = self.get_widget("custom_user_agent")
                 if custom_user_agent:
                     custom_text = custom_user_agent.get_text().strip()
                     if not custom_text:
-                        errors["custom_user_agent"] = "Custom user agent cannot be empty"
+                        errors["custom_user_agent"] = (
+                            "Custom user agent cannot be empty"
+                        )
 
         except Exception as e:
             self.logger.error(f"Error validating BitTorrent tab settings: {e}")
@@ -412,7 +446,9 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 scrape_interval.set_value(900)  # 15 minutes
 
             self.update_dependencies()
-            self.show_notification(self._("BitTorrent settings reset to defaults"), "success")
+            self.show_notification(
+                self._("BitTorrent settings reset to defaults"), "success"
+            )
 
         except Exception as e:
             self.logger.error(f"Error resetting BitTorrent tab to defaults: {e}")

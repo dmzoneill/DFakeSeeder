@@ -49,7 +49,9 @@ class MemoryMonitor:
     def start(self) -> None:
         """Start tracemalloc (deferred) and the monitoring thread."""
         self._stop_event.clear()
-        self._thread = threading.Thread(target=self._run, daemon=True, name="MemoryMonitor")
+        self._thread = threading.Thread(
+            target=self._run, daemon=True, name="MemoryMonitor"
+        )
         self._thread.start()
 
     def stop(self) -> None:
@@ -111,7 +113,9 @@ class MemoryMonitor:
                     tracemalloc.Filter(False, "<unknown>"),
                 ]
             )
-            report["top_allocs"] = snapshot.statistics("lineno", cumulative=False)[: self.top_n]
+            report["top_allocs"] = snapshot.statistics("lineno", cumulative=False)[
+                : self.top_n
+            ]
             report["top_files"] = snapshot.statistics("filename")[: self.top_n]
 
             traced_current, traced_peak = tracemalloc.get_traced_memory()
@@ -272,7 +276,10 @@ class MemoryMonitor:
             prev = self._snapshots[-2]
             rss_delta = report["rss_mb"] - prev["rss_mb"]
             traced_delta = report["traced_current_mb"] - prev["traced_current_mb"]
-            lines.append(f"  Delta since last: RSS {rss_delta:+.1f} MB  |  " f"Traced {traced_delta:+.1f} MB")
+            lines.append(
+                f"  Delta since last: RSS {rss_delta:+.1f} MB  |  "
+                f"Traced {traced_delta:+.1f} MB"
+            )
 
         if report["top_allocs"]:
             lines.append("")
@@ -296,7 +303,9 @@ class MemoryMonitor:
                 if "error" in obj_info:
                     lines.append(f"  ERROR: {obj_info['name']}: {obj_info['error']}")
                 else:
-                    lines.append(f"  {obj_info['name']:50s} {obj_info['type']:8s} size={obj_info['size']}")
+                    lines.append(
+                        f"  {obj_info['name']:50s} {obj_info['type']:8s} size={obj_info['size']}"
+                    )
 
         lines.append("=" * 80)
         lines.append("")

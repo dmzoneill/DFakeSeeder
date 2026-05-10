@@ -128,7 +128,9 @@ class UPnPManager:  # pylint: disable=too-many-instance-attributes
             with self._lock:
                 self.upnp = miniupnpc.UPnP()
                 # Get discover delay from settings
-                discover_delay = self.settings.get("upnp_settings.discover_delay_ms", 200)
+                discover_delay = self.settings.get(
+                    "upnp_settings.discover_delay_ms", 200
+                )
                 self.upnp.discoverdelay = discover_delay
 
                 # Discover UPnP devices
@@ -149,7 +151,8 @@ class UPnPManager:  # pylint: disable=too-many-instance-attributes
                 local_ip = self.upnp.lanaddr
 
                 logger.debug(
-                    f"UPnP: Found IGD, external IP: {self.external_ip}, " f"local IP: {local_ip}",
+                    f"UPnP: Found IGD, external IP: {self.external_ip}, "
+                    f"local IP: {local_ip}",
                     extra={"class_name": self.__class__.__name__},
                 )
 
@@ -197,7 +200,8 @@ class UPnPManager:  # pylint: disable=too-many-instance-attributes
                 self._started = True
 
                 logger.info(
-                    f"UPnP: Successfully mapped port {port} " f"(external IP: {self.external_ip})",
+                    f"UPnP: Successfully mapped port {port} "
+                    f"(external IP: {self.external_ip})",
                     extra={"class_name": self.__class__.__name__},
                 )
 

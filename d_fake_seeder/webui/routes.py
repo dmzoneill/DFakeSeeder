@@ -86,7 +86,9 @@ async def handle_login(request: Any) -> Any:
             response = web.json_response({"success": True, "username": username})
             return response
 
-        return web.json_response({"success": False, "error": "Invalid credentials"}, status=401)
+        return web.json_response(
+            {"success": False, "error": "Invalid credentials"}, status=401
+        )
     except (KeyError, ValueError, AttributeError, RuntimeError) as e:
         logger.error(f"Login error: {e}", extra={"class_name": "WebUIRoutes"})
         return web.json_response({"error": str(e)}, status=500)
@@ -123,7 +125,9 @@ async def handle_get_torrents(request: Any) -> Any:
 
         return web.json_response({"torrents": torrent_list, "count": len(torrent_list)})
     except (KeyError, ValueError, AttributeError, RuntimeError) as e:
-        logger.error(f"Error getting torrents: {e}", extra={"class_name": "WebUIRoutes"})
+        logger.error(
+            f"Error getting torrents: {e}", extra={"class_name": "WebUIRoutes"}
+        )
         return web.json_response({"error": str(e)}, status=500)
 
 
@@ -178,7 +182,9 @@ async def handle_start_torrent(request: Any) -> Any:
 
         return web.json_response({"error": "Torrent not found"}, status=404)
     except (KeyError, ValueError, AttributeError, RuntimeError) as e:
-        logger.error(f"Error starting torrent: {e}", extra={"class_name": "WebUIRoutes"})
+        logger.error(
+            f"Error starting torrent: {e}", extra={"class_name": "WebUIRoutes"}
+        )
         return web.json_response({"error": str(e)}, status=500)
 
 
@@ -199,7 +205,9 @@ async def handle_stop_torrent(request: Any) -> Any:
 
         return web.json_response({"error": "Torrent not found"}, status=404)
     except (KeyError, ValueError, AttributeError, RuntimeError) as e:
-        logger.error(f"Error stopping torrent: {e}", extra={"class_name": "WebUIRoutes"})
+        logger.error(
+            f"Error stopping torrent: {e}", extra={"class_name": "WebUIRoutes"}
+        )
         return web.json_response({"error": str(e)}, status=500)
 
 
@@ -219,7 +227,9 @@ async def handle_delete_torrent(request: Any) -> Any:
 
         return web.json_response({"error": "Delete not supported"}, status=501)
     except (KeyError, ValueError, AttributeError, RuntimeError) as e:
-        logger.error(f"Error deleting torrent: {e}", extra={"class_name": "WebUIRoutes"})
+        logger.error(
+            f"Error deleting torrent: {e}", extra={"class_name": "WebUIRoutes"}
+        )
         return web.json_response({"error": str(e)}, status=500)
 
 
@@ -239,7 +249,9 @@ async def handle_get_stats(request: Any) -> Any:
                 "active_torrents": active_count,
                 "total_uploaded": total_upload,
                 "total_downloaded": total_download,
-                "global_ratio": total_upload / total_download if total_download > 0 else 0,
+                "global_ratio": (
+                    total_upload / total_download if total_download > 0 else 0
+                ),
             }
         )
     except (KeyError, ValueError, AttributeError, RuntimeError, ZeroDivisionError) as e:
@@ -267,7 +279,9 @@ async def handle_get_speed_stats(request: Any) -> Any:
             }
         )
     except (KeyError, ValueError, AttributeError, RuntimeError) as e:
-        logger.error(f"Error getting speed stats: {e}", extra={"class_name": "WebUIRoutes"})
+        logger.error(
+            f"Error getting speed stats: {e}", extra={"class_name": "WebUIRoutes"}
+        )
         return web.json_response({"error": str(e)}, status=500)
 
 
@@ -281,9 +295,15 @@ async def handle_get_settings(request: Any) -> Any:
             "speed": {
                 "upload_limit_kbps": settings.get("speed.upload_limit_kbps", 0),
                 "download_limit_kbps": settings.get("speed.download_limit_kbps", 0),
-                "enable_alternative_speeds": settings.get("speed.enable_alternative_speeds", False),
-                "alt_upload_limit_kbps": settings.get("speed.alt_upload_limit_kbps", 50),
-                "alt_download_limit_kbps": settings.get("speed.alt_download_limit_kbps", 100),
+                "enable_alternative_speeds": settings.get(
+                    "speed.enable_alternative_speeds", False
+                ),
+                "alt_upload_limit_kbps": settings.get(
+                    "speed.alt_upload_limit_kbps", 50
+                ),
+                "alt_download_limit_kbps": settings.get(
+                    "speed.alt_download_limit_kbps", 100
+                ),
             },
             "scheduler": {
                 "enabled": settings.get("scheduler.enabled", False),
@@ -296,7 +316,9 @@ async def handle_get_settings(request: Any) -> Any:
 
         return web.json_response(safe_settings)
     except (KeyError, ValueError, AttributeError, RuntimeError) as e:
-        logger.error(f"Error getting settings: {e}", extra={"class_name": "WebUIRoutes"})
+        logger.error(
+            f"Error getting settings: {e}", extra={"class_name": "WebUIRoutes"}
+        )
         return web.json_response({"error": str(e)}, status=500)
 
 
@@ -324,7 +346,9 @@ async def handle_update_settings(request: Any) -> Any:
 
         return web.json_response({"success": True, "updated": updated})
     except (KeyError, ValueError, AttributeError, RuntimeError) as e:
-        logger.error(f"Error updating settings: {e}", extra={"class_name": "WebUIRoutes"})
+        logger.error(
+            f"Error updating settings: {e}", extra={"class_name": "WebUIRoutes"}
+        )
         return web.json_response({"error": str(e)}, status=500)
 
 
@@ -340,7 +364,9 @@ async def handle_get_alt_speed(request: Any) -> Any:
             }
         )
     except (KeyError, ValueError, AttributeError, RuntimeError) as e:
-        logger.error(f"Error getting alt speed: {e}", extra={"class_name": "WebUIRoutes"})
+        logger.error(
+            f"Error getting alt speed: {e}", extra={"class_name": "WebUIRoutes"}
+        )
         return web.json_response({"error": str(e)}, status=500)
 
 
@@ -352,7 +378,9 @@ async def handle_toggle_alt_speed(request: Any) -> Any:
         settings.set("speed.enable_alternative_speeds", not current)
         return web.json_response({"enabled": not current})
     except (KeyError, ValueError, AttributeError, RuntimeError) as e:
-        logger.error(f"Error toggling alt speed: {e}", extra={"class_name": "WebUIRoutes"})
+        logger.error(
+            f"Error toggling alt speed: {e}", extra={"class_name": "WebUIRoutes"}
+        )
         return web.json_response({"error": str(e)}, status=500)
 
 

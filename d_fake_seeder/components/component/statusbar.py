@@ -112,7 +112,9 @@ class Statusbar(Component):
         self.last_execution_time = current_time
 
         session_uploaded = self.sum_column_values("session_uploaded")
-        session_upload_speed = (session_uploaded - self.last_session_uploaded) / int(self.settings.tickspeed)
+        session_upload_speed = (session_uploaded - self.last_session_uploaded) / int(
+            self.settings.tickspeed
+        )
         self.last_session_uploaded = session_uploaded
 
         session_upload_speed = format_size(session_upload_speed)
@@ -122,7 +124,9 @@ class Statusbar(Component):
         total_uploaded = format_size(total_uploaded)
 
         session_downloaded = self.sum_column_values("session_downloaded")
-        session_downloaded_speed = (session_downloaded - self.last_session_downloaded) / int(self.settings.tickspeed)
+        session_downloaded_speed = (
+            session_downloaded - self.last_session_downloaded
+        ) / int(self.settings.tickspeed)
         self.last_session_downloaded = session_downloaded
 
         session_download_speed = format_size(session_downloaded_speed)
@@ -132,16 +136,22 @@ class Statusbar(Component):
         total_downloaded = format_size(total_downloaded)
 
         self.status_uploading.set_text(" " + session_upload_speed + " /s")
-        self.status_uploaded.set_text("  {} / {}".format(session_uploaded, total_uploaded))
+        self.status_uploaded.set_text(
+            "  {} / {}".format(session_uploaded, total_uploaded)
+        )
         self.status_downloading.set_text(" " + session_download_speed + " /s")
-        self.status_downloaded.set_text("  {} / {}".format(session_downloaded, total_downloaded))
+        self.status_downloaded.set_text(
+            "  {} / {}".format(session_downloaded, total_downloaded)
+        )
 
         # Update connection metrics: current connections / maximum allowed connections
         try:
             connection_manager = get_connection_manager()
 
             # Get current total connections excluding old failed ones and max limits
-            current_connections = connection_manager.get_global_connection_count_excluding_old_failed()
+            current_connections = (
+                connection_manager.get_global_connection_count_excluding_old_failed()
+            )
             _, _, max_total_connections = connection_manager.get_max_connections()
 
             self.status_peers.set_text(
@@ -168,7 +178,9 @@ class Statusbar(Component):
             connection_manager = get_connection_manager()
 
             # Get current total connections excluding old failed ones and max limits
-            current_connections = connection_manager.get_global_connection_count_excluding_old_failed()
+            current_connections = (
+                connection_manager.get_global_connection_count_excluding_old_failed()
+            )
             _, _, max_total_connections = connection_manager.get_max_connections()
 
             self.status_peers.set_text(
@@ -191,7 +203,9 @@ class Statusbar(Component):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
+    def handle_model_changed(
+        self, source: Any, data_obj: Any, data_changed: Any
+    ) -> None:
         logger.trace(
             "StatusBar settings changed",
             extra={"class_name": self.__class__.__name__},

@@ -28,12 +28,16 @@ class ColumnTranslationMixin:
         super().__init__(*args, **kwargs)
 
         # Track columns for translation updates
-        self._translatable_columns: Dict[str, Any] = {}  # column_view -> [(column, property_name, column_type)]
+        self._translatable_columns: Dict[str, Any] = (
+            {}
+        )  # column_view -> [(column, property_name, column_type)]
 
         # Get settings instance for language access
         self.settings = AppSettings.get_instance()
 
-    def register_translatable_column(self, column_view: Any, column: Any, property_name: Any, column_type: Any) -> None:
+    def register_translatable_column(
+        self, column_view: Any, column: Any, property_name: Any, column_type: Any
+    ) -> None:
         """
         Register a column for runtime translation
 
@@ -46,7 +50,9 @@ class ColumnTranslationMixin:
         if column_view not in self._translatable_columns:
             self._translatable_columns[column_view] = []
 
-        self._translatable_columns[column_view].append((column, property_name, column_type))
+        self._translatable_columns[column_view].append(
+            (column, property_name, column_type)
+        )
 
         # Set initial translated title
         self._update_column_title(column, property_name, column_type)
@@ -56,7 +62,9 @@ class ColumnTranslationMixin:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _update_column_title(self, column: Any, property_name: Any, column_type: Any) -> None:
+    def _update_column_title(
+        self, column: Any, property_name: Any, column_type: Any
+    ) -> None:
         """
         Update a single column's title with current translation
 
@@ -66,7 +74,9 @@ class ColumnTranslationMixin:
             column_type: Type identifier for translation mapping
         """
         try:
-            translated_title = ColumnTranslations.get_column_title(column_type, property_name)
+            translated_title = ColumnTranslations.get_column_title(
+                column_type, property_name
+            )
             column.set_title(translated_title)
 
             logger.trace(
@@ -99,7 +109,9 @@ class ColumnTranslationMixin:
         )
 
         for column_view, columns in self._translatable_columns.items():
-            logger.trace(f"Processing column view: {column_view}", self.__class__.__name__)
+            logger.trace(
+                f"Processing column view: {column_view}", self.__class__.__name__
+            )
             logger.trace(f"Number of columns: {len(columns)}", self.__class__.__name__)
             for column, property_name, column_type in columns:
                 logger.trace(
@@ -140,7 +152,11 @@ class ColumnTranslationMixin:
         logger.trace("Column translations refresh completed", self.__class__.__name__)
 
     def create_translated_column(
-        self, column_view: Any, property_name: Any, column_type: Any, factory: Any = None
+        self,
+        column_view: Any,
+        property_name: Any,
+        column_type: Any,
+        factory: Any = None,
     ) -> None:  # noqa: E501
         """
         Helper method to create a column with translation support
@@ -169,7 +185,9 @@ class ColumnTranslationMixin:
                 column = Gtk.ColumnViewColumn.new(None, factory)
 
             # Register for translation
-            self.register_translatable_column(column_view, column, property_name, column_type)
+            self.register_translatable_column(
+                column_view, column, property_name, column_type
+            )
 
             # Add to column view
             column_view.append_column(column)

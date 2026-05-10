@@ -73,7 +73,9 @@ class PeerDatabase:
                                   Default is 5400 (3 * 1800 announce interval).
         """
         self._lock = threading.RLock()
-        self._peers: Dict[bytes, Dict[bytes, PeerInfo]] = {}  # info_hash -> peer_id -> PeerInfo
+        self._peers: Dict[bytes, Dict[bytes, PeerInfo]] = (
+            {}
+        )  # info_hash -> peer_id -> PeerInfo
         self._peer_timeout = peer_timeout_seconds
         self._stats = {
             "total_announces": 0,
@@ -133,7 +135,8 @@ class PeerDatabase:
                 self._stats["total_peers_added"] += 1
 
             logger.trace(
-                f"Peer {'added' if is_new else 'updated'}: " f"{ip}:{port} for {info_hash.hex()[:16]}",
+                f"Peer {'added' if is_new else 'updated'}: "
+                f"{ip}:{port} for {info_hash.hex()[:16]}",
                 extra={"class_name": self.__class__.__name__},
             )
 

@@ -198,16 +198,30 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                         tracker_data = {
                             "url": tracker_model.get_property("url"),
                             "tier": tracker_model.get_property("tier"),
-                            "type": "Primary" if tracker_model.get_property("tier") == 0 else "Backup",
+                            "type": (
+                                "Primary"
+                                if tracker_model.get_property("tier") == 0
+                                else "Backup"
+                            ),
                             "status": tracker_model.get_property("status"),
                             "seeders": tracker_model.get_property("seeders"),
                             "leechers": tracker_model.get_property("leechers"),
-                            "last_announce": tracker_model.get_property("last_announce"),
-                            "next_announce": tracker_model.get_property("next_announce"),
-                            "response_time": tracker_model.get_property("average_response_time"),
-                            "error_message": tracker_model.get_property("error_message"),
+                            "last_announce": tracker_model.get_property(
+                                "last_announce"
+                            ),
+                            "next_announce": tracker_model.get_property(
+                                "next_announce"
+                            ),
+                            "response_time": tracker_model.get_property(
+                                "average_response_time"
+                            ),
+                            "error_message": tracker_model.get_property(
+                                "error_message"
+                            ),
                             "success_rate": tracker_model.success_rate,
-                            "health_status": "Healthy" if tracker_model.is_healthy else "Unhealthy",
+                            "health_status": (
+                                "Healthy" if tracker_model.is_healthy else "Unhealthy"
+                            ),
                             "status_summary": tracker_model.get_status_summary(),
                             "timing_summary": tracker_model.get_timing_summary(),
                         }
@@ -245,9 +259,14 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                         )
 
                     # Add backup trackers from announce-list
-                    if hasattr(torrent_file, "announce_list") and torrent_file.announce_list:
+                    if (
+                        hasattr(torrent_file, "announce_list")
+                        and torrent_file.announce_list
+                    ):
                         primary_url = getattr(torrent_file, "announce", None)
-                        for tier_index, tracker_url in enumerate(torrent_file.announce_list):
+                        for tier_index, tracker_url in enumerate(
+                            torrent_file.announce_list
+                        ):
                             if tracker_url != primary_url:
                                 trackers.append(
                                     {
@@ -347,7 +366,9 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 self._trackers_grid_child.attach(url_label, 2, row, 1, 1)
 
             # Status column with live data
-            status_text = tracker.get("status_summary", tracker.get("status", "Unknown"))
+            status_text = tracker.get(
+                "status_summary", tracker.get("status", "Unknown")
+            )
             status_label = Gtk.Label(label=status_text)
             status_label.set_visible(True)
             status_label.set_halign(Gtk.Align.START)
@@ -365,7 +386,9 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 self._trackers_grid_child.attach(status_label, 3, row, 1, 1)
 
             # Seeders column
-            seeders_text = str(tracker.get("seeders", 0)) if tracker.get("seeders", 0) > 0 else "-"
+            seeders_text = (
+                str(tracker.get("seeders", 0)) if tracker.get("seeders", 0) > 0 else "-"
+            )
             seeders_label = Gtk.Label(label=seeders_text)
             seeders_label.set_visible(True)
             seeders_label.set_halign(Gtk.Align.START)
@@ -373,7 +396,11 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 self._trackers_grid_child.attach(seeders_label, 4, row, 1, 1)
 
             # Leechers column
-            leechers_text = str(tracker.get("leechers", 0)) if tracker.get("leechers", 0) > 0 else "-"
+            leechers_text = (
+                str(tracker.get("leechers", 0))
+                if tracker.get("leechers", 0) > 0
+                else "-"
+            )
             leechers_label = Gtk.Label(label=leechers_text)
             leechers_label.set_visible(True)
             leechers_label.set_halign(Gtk.Align.START)
@@ -398,12 +425,16 @@ class TrackersTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if not self._trackers_grid_child:
                 self._trackers_grid_child = self._create_trackers_grid()
 
-            message_label = self.create_info_label("No trackers available for this torrent.")
+            message_label = self.create_info_label(
+                "No trackers available for this torrent."
+            )
             self.set_widget_margins(message_label, self.ui_margin_large)
 
             # Add message to the grid instead of directly to the tab
             if self._trackers_grid_child:
-                self._trackers_grid_child.attach(message_label, 0, 0, 7, 1)  # Span all columns
+                self._trackers_grid_child.attach(
+                    message_label, 0, 0, 7, 1
+                )  # Span all columns
 
             # Add the grid to the tab
             if self._trackers_tab and self._trackers_grid_child:

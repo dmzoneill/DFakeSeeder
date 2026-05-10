@@ -33,7 +33,9 @@ class UTPPacketType(IntEnum):
 class UTPConnection:
     """µTP connection implementation"""
 
-    def __init__(self, connection_id: int, remote_addr: Tuple[str, int], socket: Any) -> None:
+    def __init__(
+        self, connection_id: int, remote_addr: Tuple[str, int], socket: Any
+    ) -> None:
         """
         Initialize µTP connection
 
@@ -49,7 +51,9 @@ class UTPConnection:
 
         # Connection state
         self.state = "IDLE"  # IDLE, SYN_SENT, CONNECTED, FIN_SENT, CLOSED
-        self.seq_nr = random.randint(1, UTPConstants.MAX_RANDOM_SEQUENCE)  # Sequence number
+        self.seq_nr = random.randint(
+            1, UTPConstants.MAX_RANDOM_SEQUENCE
+        )  # Sequence number
         self.ack_nr = 0  # Acknowledgment number
         self.recv_window = UTPConstants.DEFAULT_WINDOW_SIZE  # Receive window size
         self.send_window = UTPConstants.DEFAULT_WINDOW_SIZE  # Send window size
@@ -74,10 +78,18 @@ class UTPConnection:
         self.retransmits = 0
 
         # Configuration from settings
-        utp_config = getattr(self.settings, "protocols", {}).get("transport", {}).get("utp", {})
-        self.max_window_size = utp_config.get("max_window_size", UTPConstants.MAX_WINDOW_SIZE)
-        self.min_window_size = utp_config.get("min_window_size", UTPConstants.MIN_WINDOW_SIZE)
-        self.target_delay_ms = utp_config.get("target_delay_ms", UTPConstants.TARGET_DELAY_MS)
+        utp_config = (
+            getattr(self.settings, "protocols", {}).get("transport", {}).get("utp", {})
+        )
+        self.max_window_size = utp_config.get(
+            "max_window_size", UTPConstants.MAX_WINDOW_SIZE
+        )
+        self.min_window_size = utp_config.get(
+            "min_window_size", UTPConstants.MIN_WINDOW_SIZE
+        )
+        self.target_delay_ms = utp_config.get(
+            "target_delay_ms", UTPConstants.TARGET_DELAY_MS
+        )
 
         logger.trace(
             "µTP connection initialized",
@@ -90,14 +102,18 @@ class UTPConnection:
 
     def _get_poll_interval(self) -> float:
         """Get poll interval from settings."""
-        utp_config = getattr(self.settings, "protocols", {}).get("transport", {}).get("utp", {})
+        utp_config = (
+            getattr(self.settings, "protocols", {}).get("transport", {}).get("utp", {})
+        )
         if isinstance(utp_config, dict):
             return float(utp_config.get("poll_interval_seconds", 0.1))
         return 0.1
 
     def _get_retry_interval(self) -> float:
         """Get retry interval from settings."""
-        utp_config = getattr(self.settings, "protocols", {}).get("transport", {}).get("utp", {})
+        utp_config = (
+            getattr(self.settings, "protocols", {}).get("transport", {}).get("utp", {})
+        )
         if isinstance(utp_config, dict):
             return float(utp_config.get("retry_interval_seconds", 0.5))
         return 0.5
@@ -193,7 +209,9 @@ class UTPConnection:
             return
 
         try:
-            logger.trace("Closing µTP connection", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "Closing µTP connection", extra={"class_name": self.__class__.__name__}
+            )
 
             # Send FIN packet
             self.state = "FIN_SENT"
@@ -319,7 +337,10 @@ class UTPConnection:
 
         version = 1
         extension = 0
-        timestamp_us = int(time.time() * UTPConstants.MICROSECONDS_PER_SECOND) & UTPConstants.VERSION_TYPE_MASK
+        timestamp_us = (
+            int(time.time() * UTPConstants.MICROSECONDS_PER_SECOND)
+            & UTPConstants.VERSION_TYPE_MASK
+        )
         timestamp_diff_us = 0
 
         header = struct.pack(
@@ -352,7 +373,9 @@ class UTPConnection:
             ack_nr,
         ) = struct.unpack(">BBHIIIHH", packet[: UTPConstants.HEADER_SIZE])
 
-        version = (version_type >> UTPConstants.VERSION_SHIFT) & UTPConstants.VERSION_MASK
+        version = (
+            version_type >> UTPConstants.VERSION_SHIFT
+        ) & UTPConstants.VERSION_MASK
         packet_type = version_type & UTPConstants.PACKET_TYPE_MASK
 
         return {
@@ -377,7 +400,9 @@ class UTPConnection:
         # Send STATE (ACK)
         await self._send_state()
 
-        logger.trace("µTP connection accepted", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "µTP connection accepted", extra={"class_name": self.__class__.__name__}
+        )
 
     async def _handle_state(self, header: Dict) -> None:
         """Handle STATE packet (ACK)"""
@@ -391,7 +416,9 @@ class UTPConnection:
 
         # Remove acknowledged packets from sent buffer
         ack_nr = header["ack_nr"]
-        self.sent_packets = {seq: data for seq, data in self.sent_packets.items() if seq > ack_nr}
+        self.sent_packets = {
+            seq: data for seq, data in self.sent_packets.items() if seq > ack_nr
+        }
 
     async def _handle_data(self, header: Dict, payload: bytes) -> None:
         """Handle DATA packet"""
@@ -432,7 +459,9 @@ class UTPConnection:
     def _update_rtt(self, header: Dict) -> None:
         """Update RTT estimate"""
         if header.get("timestamp_diff_us"):
-            rtt_sample = header["timestamp_diff_us"] / UTPConstants.MICROSECONDS_PER_SECOND  # Convert to seconds
+            rtt_sample = (
+                header["timestamp_diff_us"] / UTPConstants.MICROSECONDS_PER_SECOND
+            )  # Convert to seconds
 
             if self.rtt == 0:
                 # First sample
@@ -442,9 +471,13 @@ class UTPConnection:
                 # Exponential moving average
                 delta = abs(rtt_sample - self.rtt)
                 self.rtt_variance = (
-                    UTPConstants.RTT_VARIANCE_SMOOTHING * self.rtt_variance + UTPConstants.RTT_VARIANCE_WEIGHT * delta
+                    UTPConstants.RTT_VARIANCE_SMOOTHING * self.rtt_variance
+                    + UTPConstants.RTT_VARIANCE_WEIGHT * delta
                 )
-                self.rtt = UTPConstants.RTT_SMOOTHING_FACTOR * self.rtt + UTPConstants.RTT_SAMPLE_WEIGHT * rtt_sample
+                self.rtt = (
+                    UTPConstants.RTT_SMOOTHING_FACTOR * self.rtt
+                    + UTPConstants.RTT_SAMPLE_WEIGHT * rtt_sample
+                )
 
             # Update timeout
             self.timeout = max(
@@ -457,7 +490,9 @@ class UTPConnection:
         try:
             # Calculate current delay
             if header.get("timestamp_diff_us"):
-                current_delay_ms = header["timestamp_diff_us"] / UTPConstants.MILLISECONDS_PER_SECOND
+                current_delay_ms = (
+                    header["timestamp_diff_us"] / UTPConstants.MILLISECONDS_PER_SECOND
+                )
 
                 # LEDBAT congestion control
                 if self.base_delay == 0:

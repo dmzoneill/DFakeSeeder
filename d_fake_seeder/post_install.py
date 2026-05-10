@@ -54,7 +54,9 @@ def install_icons(package_dir: Any, home_dir: Any) -> Any:
             logger.trace("✓ Installed icon: ...", "UnknownClass")
             installed_any = True
         except OSError:
-            logger.warning("Warning: Could not install icon to ...: ...", "UnknownClass")
+            logger.warning(
+                "Warning: Could not install icon to ...: ...", "UnknownClass"
+            )
     return installed_any
 
 
@@ -91,7 +93,9 @@ def install_desktop_file(package_dir: Any, home_dir: Any) -> Any:
             )
             # Remove dev-specific Path
             lines = content.split("\n")
-            content = "\n".join([line for line in lines if not line.startswith("Path=")])
+            content = "\n".join(
+                [line for line in lines if not line.startswith("Path=")]
+            )
 
         # Ensure icon name is correct
         if "Icon=" in content:
@@ -111,7 +115,9 @@ def install_desktop_file(package_dir: Any, home_dir: Any) -> Any:
         logger.trace("✓ Installed desktop file: ...", "UnknownClass")
         return True
     except OSError:
-        logger.warning("Warning: Could not install desktop file to ...: ...", "UnknownClass")
+        logger.warning(
+            "Warning: Could not install desktop file to ...: ...", "UnknownClass"
+        )
         return False
 
 
@@ -122,7 +128,9 @@ def install_tray_desktop_file(package_dir: Any, home_dir: Any) -> Any:
         logger.error("Warning: Tray desktop file not found", "UnknownClass")
         return False
 
-    xdg_config_base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
+    xdg_config_base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(
+        os.path.expanduser("~"), ".config"
+    )
     autostart_dir = Path(xdg_config_base) / "autostart"
     autostart_dir.mkdir(parents=True, exist_ok=True)
     tray_desktop_target = autostart_dir / "dfakeseeder-tray.desktop"
@@ -158,7 +166,9 @@ def update_caches(home_dir: Any) -> None:
 
     # Update icon cache
     try:
-        subprocess.run(["gtk-update-icon-cache", str(icon_dir)], check=False, capture_output=True)
+        subprocess.run(
+            ["gtk-update-icon-cache", str(icon_dir)], check=False, capture_output=True
+        )
         logger.trace("✓ Updated icon cache", "UnknownClass")
     except FileNotFoundError:
         logger.trace(
@@ -187,7 +197,10 @@ def update_caches(home_dir: Any) -> None:
 def install_desktop_integration() -> Any:
     """Main function to install desktop integration."""
     if is_flatpak():
-        logger.info("Running inside Flatpak — skipping desktop integration (handled by manifest).", "PostInstall")
+        logger.info(
+            "Running inside Flatpak — skipping desktop integration (handled by manifest).",
+            "PostInstall",
+        )
         return
     logger.trace("Installing D' Fake Seeder desktop integration...", "UnknownClass")
     try:
@@ -203,14 +216,20 @@ def install_desktop_integration() -> Any:
         if icons_installed or desktop_installed or tray_installed:
             # Update caches
             update_caches(home_dir)
-            logger.info("\n✅ Desktop integration installed successfully!", "UnknownClass")
+            logger.info(
+                "\n✅ Desktop integration installed successfully!", "UnknownClass"
+            )
             logger.trace(
                 "\nThe application should now appear in your application menu",
                 "UnknownClass",
             )
-            logger.trace("and show proper icons in the taskbar when launched.", "UnknownClass")
+            logger.trace(
+                "and show proper icons in the taskbar when launched.", "UnknownClass"
+            )
             if tray_installed:
-                logger.trace("System tray will start automatically on login.", "UnknownClass")
+                logger.trace(
+                    "System tray will start automatically on login.", "UnknownClass"
+                )
 
             # GNOME Shell refresh instructions
             logger.trace(
@@ -224,19 +243,25 @@ def install_desktop_integration() -> Any:
             logger.trace("  • Or log out and log back in", "UnknownClass")
 
             logger.trace("\nYou can launch it from:", "UnknownClass")
-            logger.trace("  • Application menu (search for 'D' Fake Seeder')", "UnknownClass")
+            logger.trace(
+                "  • Application menu (search for 'D' Fake Seeder')", "UnknownClass"
+            )
             logger.trace("  • Command line: dfs", "UnknownClass")
             logger.trace("  • Desktop launcher: gtk-launch dfakeseeder", "UnknownClass")
             if tray_installed:
                 logger.trace("  • System tray (automatic)", "UnknownClass")
         else:
-            logger.error("\n❌ Could not install desktop integration files.", "UnknownClass")
+            logger.error(
+                "\n❌ Could not install desktop integration files.", "UnknownClass"
+            )
             logger.trace(
                 "The application will still work from the command line with 'dfs'",
                 "UnknownClass",
             )
     except OSError:
-        logger.error("\n❌ Error during desktop integration installation: ...", "UnknownClass")
+        logger.error(
+            "\n❌ Error during desktop integration installation: ...", "UnknownClass"
+        )
         logger.trace(
             "The application will still work from the command line with 'dfs'",
             "UnknownClass",
@@ -257,10 +282,14 @@ def uninstall_desktop_integration() -> Any:
             logger.trace("✓ Removed desktop file: ...", "UnknownClass")
             removed_any = True
         except OSError:
-            logger.warning("Warning: Could not remove desktop file: ...", "UnknownClass")
+            logger.warning(
+                "Warning: Could not remove desktop file: ...", "UnknownClass"
+            )
 
     # Remove tray autostart file
-    xdg_config_base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
+    xdg_config_base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(
+        os.path.expanduser("~"), ".config"
+    )
     tray_file = Path(xdg_config_base) / "autostart" / "dfakeseeder-tray.desktop"
     if tray_file.exists():
         try:
@@ -268,7 +297,9 @@ def uninstall_desktop_integration() -> Any:
             logger.trace("✓ Removed tray autostart file", "UnknownClass")
             removed_any = True
         except OSError:
-            logger.warning("Warning: Could not remove tray autostart file", "UnknownClass")
+            logger.warning(
+                "Warning: Could not remove tray autostart file", "UnknownClass"
+            )
     # Remove icons
     icon_base = Path(get_data_dir()) / "icons" / "hicolor"
     sizes = DEFAULT_ICON_SIZES
@@ -285,14 +316,18 @@ def uninstall_desktop_integration() -> Any:
         update_caches(home_dir)
         logger.info("\n✅ Desktop integration removed successfully!", "UnknownClass")
     else:
-        logger.trace("\n✓ No desktop integration files found to remove.", "UnknownClass")
+        logger.trace(
+            "\n✓ No desktop integration files found to remove.", "UnknownClass"
+        )
 
 
 def main() -> Any:
     """Command line interface."""
     import argparse
 
-    parser = argparse.ArgumentParser(description="Install or remove D' Fake Seeder desktop integration")
+    parser = argparse.ArgumentParser(
+        description="Install or remove D' Fake Seeder desktop integration"
+    )
     parser.add_argument(
         "action",
         choices=["install", "uninstall"],

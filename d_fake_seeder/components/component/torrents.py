@@ -96,7 +96,11 @@ class Torrents(Component, ColumnTranslationMixin):
 
     def _(self, text: Any) -> Any:
         """Get translation function from model's TranslationManager"""
-        if hasattr(self, "model") and self.model and hasattr(self.model, "translation_manager"):
+        if (
+            hasattr(self, "model")
+            and self.model
+            and hasattr(self.model, "translation_manager")
+        ):
             return self.model.translation_manager.translate_func(text)
         return text  # Fallback if model not set yet
 
@@ -107,15 +111,25 @@ class Torrents(Component, ColumnTranslationMixin):
         rect.x = x
         rect.y = y
         ATTRIBUTES = Attributes
-        attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
+        attributes = [
+            prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)
+        ]
         menu = Gio.Menu.new()
 
         # Get the currently selected torrent to determine state
-        selected_item = self.selection.get_selected_item() if hasattr(self, "selection") else None
+        selected_item = (
+            self.selection.get_selected_item() if hasattr(self, "selection") else None
+        )
         is_active = getattr(selected_item, "active", True) if selected_item else True
         progress = getattr(selected_item, "progress", 0.0) if selected_item else 0.0
-        super_seeding = getattr(selected_item, "super_seeding", False) if selected_item else False
-        sequential = getattr(selected_item, "sequential_download", False) if selected_item else False
+        super_seeding = (
+            getattr(selected_item, "super_seeding", False) if selected_item else False
+        )
+        sequential = (
+            getattr(selected_item, "sequential_download", False)
+            if selected_item
+            else False
+        )
 
         # === BASIC ACTIONS ===
         # Pause/Resume
@@ -195,7 +209,9 @@ class Torrents(Component, ColumnTranslationMixin):
         # === REMOVAL OPTIONS ===
         remove_submenu = Gio.Menu()
         remove_submenu.append(self._("Remove Torrent"), "app.remove_torrent")
-        remove_submenu.append(self._("Remove Torrent and Data"), "app.remove_torrent_and_data")
+        remove_submenu.append(
+            self._("Remove Torrent and Data"), "app.remove_torrent_and_data"
+        )
         menu.append_submenu(self._("Remove"), remove_submenu)
 
         # Register all actions
@@ -205,7 +221,9 @@ class Torrents(Component, ColumnTranslationMixin):
         # Use the tracking dict we maintain for translations
         column_to_attr = {}
         if self.torrents_columnview in self._translatable_columns:
-            for col, prop_name, col_type in self._translatable_columns[self.torrents_columnview]:
+            for col, prop_name, col_type in self._translatable_columns[
+                self.torrents_columnview
+            ]:
                 column_to_attr[col] = prop_name
 
         # Get list of visible column attribute names
@@ -228,11 +246,15 @@ class Torrents(Component, ColumnTranslationMixin):
                     None,
                     GLib.Variant.new_boolean(state),
                 )
-                self.stateful_actions[attribute].connect("change-state", self.on_stateful_action_change_state)
+                self.stateful_actions[attribute].connect(
+                    "change-state", self.on_stateful_action_change_state
+                )
                 self.action_group.add_action(self.stateful_actions[attribute])
             else:
                 # Update existing action state to match current column visibility
-                self.stateful_actions[attribute].set_state(GLib.Variant.new_boolean(state))
+                self.stateful_actions[attribute].set_state(
+                    GLib.Variant.new_boolean(state)
+                )
         # Iterate over attributes and add toggle items for each one
         for attribute in attributes:
             # Use translated column name for menu items
@@ -249,7 +271,9 @@ class Torrents(Component, ColumnTranslationMixin):
         self.popover.popup()
 
     def on_stateful_action_change_state(self, action: Any, value: Any) -> None:
-        logger.trace("🔵 COLUMN TOGGLE: START", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "🔵 COLUMN TOGGLE: START", extra={"class_name": self.__class__.__name__}
+        )
 
         # Prevent re-entry if this handler is triggered by settings changes
         if self._updating_columns:
@@ -270,7 +294,9 @@ class Torrents(Component, ColumnTranslationMixin):
                 f"🔵 COLUMN TOGGLE: Action={action.get_name()}, Value={value.get_boolean()}",
                 extra={"class_name": self.__class__.__name__},
             )
-            self.stateful_actions[action.get_name()[len("toggle_") :]].set_state(  # noqa: E203
+            self.stateful_actions[
+                action.get_name()[len("toggle_") :]
+            ].set_state(  # noqa: E203
                 GLib.Variant.new_boolean(value.get_boolean())
             )
             logger.trace(
@@ -281,7 +307,10 @@ class Torrents(Component, ColumnTranslationMixin):
             checked_items = []
             all_unchecked = True
             ATTRIBUTES = Attributes
-            attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
+            attributes = [
+                prop.name.replace("-", "_")
+                for prop in GObject.list_properties(ATTRIBUTES)
+            ]
             column_titles = [column if column != "#" else "id" for column in attributes]
             logger.trace(
                 f"🔵 COLUMN TOGGLE: Total attributes={len(attributes)}",
@@ -327,7 +356,9 @@ class Torrents(Component, ColumnTranslationMixin):
                 )
                 for title in column_titles:
                     if title in self.stateful_actions:
-                        self.stateful_actions[title].set_state(GLib.Variant.new_boolean(True))
+                        self.stateful_actions[title].set_state(
+                            GLib.Variant.new_boolean(True)
+                        )
 
             # Build reverse mapping: column object -> property_name (attribute)
             logger.trace(
@@ -336,7 +367,9 @@ class Torrents(Component, ColumnTranslationMixin):
             )
             column_to_attr = {}
             if self.torrents_columnview in self._translatable_columns:
-                for col, prop_name, col_type in self._translatable_columns[self.torrents_columnview]:
+                for col, prop_name, col_type in self._translatable_columns[
+                    self.torrents_columnview
+                ]:
                     column_to_attr[col] = prop_name
             logger.trace(
                 f"🔵 COLUMN TOGGLE: Column mapping built, {len(column_to_attr)} columns",
@@ -457,7 +490,9 @@ class Torrents(Component, ColumnTranslationMixin):
         # ULTRA-FAST STARTUP: Create minimal columns for immediate display
         # Defer full column creation to background task
         # Only create the ID column initially for basic functionality
-        existing_columns = {col.get_title(): col for col in self.torrents_columnview.get_columns()}
+        existing_columns = {
+            col.get_title(): col for col in self.torrents_columnview.get_columns()
+        }
         # Ensure ID column exists for basic functionality
         if "#" not in existing_columns:
             logger.trace("Creating minimal ID column for immediate display", "Torrents")
@@ -490,7 +525,9 @@ class Torrents(Component, ColumnTranslationMixin):
             self.torrents_columnview.append_column(id_column)
             logger.trace("Step 4 - Append column: ms", "Torrents")
             # Step 5: Register for translation
-            self.register_translatable_column(self.torrents_columnview, id_column, "id", "torrent")
+            self.register_translatable_column(
+                self.torrents_columnview, id_column, "id", "torrent"
+            )
             logger.trace(
                 "Step 5 - Translation registration: {(step5_end - step5_start)*1000:.1f}ms",
                 "Torrents",
@@ -513,7 +550,10 @@ class Torrents(Component, ColumnTranslationMixin):
         try:
             # Get all attributes
             ATTRIBUTES = Attributes
-            attributes = [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
+            attributes = [
+                prop.name.replace("-", "_")
+                for prop in GObject.list_properties(ATTRIBUTES)
+            ]
             attributes.remove("id")
             attributes.insert(0, "id")
             # Parse visible columns - use sensible default if empty (not all 30 columns!)
@@ -527,11 +567,17 @@ class Torrents(Component, ColumnTranslationMixin):
                 "leechers",
                 "total_size",
             ]
-            visible_columns = self.settings.columns.split(",") if self.settings.columns.strip() else []
+            visible_columns = (
+                self.settings.columns.split(",")
+                if self.settings.columns.strip()
+                else []
+            )
             if not visible_columns:
                 visible_columns = DEFAULT_COLUMNS
             visible_set = set(visible_columns)
-            existing_columns = {col.get_title(): col for col in self.torrents_columnview.get_columns()}
+            existing_columns = {
+                col.get_title(): col for col in self.torrents_columnview.get_columns()
+            }
             # Create all columns, set visibility based on settings
             created_count = 0
             for attribute in attributes:
@@ -548,18 +594,26 @@ class Torrents(Component, ColumnTranslationMixin):
                     column_factory = Gtk.SignalListItemFactory()
                     self.track_signal(
                         column_factory,
-                        column_factory.connect("setup", self.setup_column_factory, attribute),
+                        column_factory.connect(
+                            "setup", self.setup_column_factory, attribute
+                        ),
                     )
                     self.track_signal(
                         column_factory,
-                        column_factory.connect("bind", self.bind_column_factory, attribute),
+                        column_factory.connect(
+                            "bind", self.bind_column_factory, attribute
+                        ),
                     )
                     column.set_factory(column_factory)
                     # Property and sorter setup
                     try:
                         prop = Attributes.find_property(attribute)
-                        attribute_type = prop.value_type.fundamental if prop else GObject.TYPE_STRING
-                        attribute_expression = Gtk.PropertyExpression.new(Attributes, None, attribute)
+                        attribute_type = (
+                            prop.value_type.fundamental if prop else GObject.TYPE_STRING
+                        )
+                        attribute_expression = Gtk.PropertyExpression.new(
+                            Attributes, None, attribute
+                        )
                         if attribute_type == GObject.TYPE_STRING:
                             sorter = Gtk.StringSorter.new(attribute_expression)
                         else:
@@ -569,7 +623,9 @@ class Torrents(Component, ColumnTranslationMixin):
                         pass
                     self.torrents_columnview.append_column(column)
                     # Translation registration
-                    self.register_translatable_column(self.torrents_columnview, column, attribute, "torrent")
+                    self.register_translatable_column(
+                        self.torrents_columnview, column, attribute, "torrent"
+                    )
                     created_count += 1
                 # Set visibility
                 column = (
@@ -584,13 +640,22 @@ class Torrents(Component, ColumnTranslationMixin):
                 "Torrents",
             )
         except (AttributeError, TypeError, KeyError) as e:
-            logger.error(f"Background column creation error: {e}", "Torrents", exc_info=True)
+            logger.error(
+                f"Background column creation error: {e}", "Torrents", exc_info=True
+            )
         return False  # Don't repeat this idle task  # type: ignore
 
     def _create_edit_widget(self, attribute: Any, widget_type_str: Any) -> Any:
         """Create an edit widget based on type string."""
         if widget_type_str == "Gtk.SpinButton":
-            adj = Gtk.Adjustment(value=0, lower=0, upper=999999, step_increment=1, page_increment=10, page_size=0)
+            adj = Gtk.Adjustment(
+                value=0,
+                lower=0,
+                upper=999999,
+                step_increment=1,
+                page_increment=10,
+                page_size=0,
+            )
             widget = Gtk.SpinButton(adjustment=adj)
             widget.set_editable(True)
             widget.set_can_focus(True)
@@ -642,7 +707,9 @@ class Torrents(Component, ColumnTranslationMixin):
                 return self.model.translation_manager.translate_func
         return lambda x: x
 
-    def _create_inline_stack(self, attribute: Any, display_widget: Any, edit_widget: Any) -> Any:
+    def _create_inline_stack(
+        self, attribute: Any, display_widget: Any, edit_widget: Any
+    ) -> Any:
         """Create a Stack with display and edit children."""
         stack = Gtk.Stack()
         stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
@@ -693,7 +760,9 @@ class Torrents(Component, ColumnTranslationMixin):
             display_widget.set_width_chars(5)  # Minimum chars before ellipsizing
             edit_widget = self._create_edit_widget(attribute, widget_type)
             if edit_widget:
-                widget = self._create_inline_stack(attribute, display_widget, edit_widget)
+                widget = self._create_inline_stack(
+                    attribute, display_widget, edit_widget
+                )
                 widget.set_margin_top(self.ui_margin_small)
                 widget.set_margin_bottom(self.ui_margin_small)
                 widget.set_margin_start(self.ui_margin_small)
@@ -790,7 +859,9 @@ class Torrents(Component, ColumnTranslationMixin):
                 self.track_binding(binding)
             # Add more cases for other widget types as needed
 
-    def _bind_inline_stack(self, stack: Any, item_data: Any, attribute: Any, textrenderers: Any) -> Any:
+    def _bind_inline_stack(
+        self, stack: Any, item_data: Any, attribute: Any, textrenderers: Any
+    ) -> Any:
         """Bind data to both display and edit widgets in a Stack."""
         if item_data is None:
             return
@@ -853,7 +924,9 @@ class Torrents(Component, ColumnTranslationMixin):
                     except (AttributeError, TypeError, ValueError):
                         pass
 
-            edit_widget._handler_id = edit_widget.connect("value-changed", on_value_changed)
+            edit_widget._handler_id = edit_widget.connect(
+                "value-changed", on_value_changed
+            )
         elif isinstance(edit_widget, Gtk.Switch):
             edit_widget.set_active(bool(current_value))
 
@@ -866,7 +939,9 @@ class Torrents(Component, ColumnTranslationMixin):
                     except (AttributeError, TypeError, ValueError):
                         pass
 
-            edit_widget._handler_id = edit_widget.connect("notify::active", on_switch_changed)
+            edit_widget._handler_id = edit_widget.connect(
+                "notify::active", on_switch_changed
+            )
         elif isinstance(edit_widget, Gtk.Entry):
             edit_widget.set_text(str(current_value) if current_value else "")
 
@@ -900,7 +975,9 @@ class Torrents(Component, ColumnTranslationMixin):
                     except (AttributeError, TypeError, ValueError, IndexError):
                         pass
 
-            edit_widget._handler_id = edit_widget.connect("notify::selected", on_dropdown_changed)
+            edit_widget._handler_id = edit_widget.connect(
+                "notify::selected", on_dropdown_changed
+            )
 
     def get_text_renderer(self, func_name: Any) -> Any:
         # Map function names to functions
@@ -921,12 +998,16 @@ class Torrents(Component, ColumnTranslationMixin):
 
     def set_model(self, model: Any) -> None:
         """Set the model for the torrents component."""
-        logger.trace("Torrents set_model", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Torrents set_model", extra={"class_name": self.__class__.__name__}
+        )
         self.model = model
         # Connect to language change signals for column translation
         if self.model and hasattr(self.model, "connect"):
             try:
-                self.track_signal(model, model.connect("language-changed", self.on_language_changed))
+                self.track_signal(
+                    model, model.connect("language-changed", self.on_language_changed)
+                )
                 logger.trace(
                     "Successfully connected to language-changed signal for column translation",
                     extra={"class_name": self.__class__.__name__},
@@ -943,7 +1024,11 @@ class Torrents(Component, ColumnTranslationMixin):
 
     def update_model(self) -> None:
         # Disconnect old selection signal to prevent handler leaks
-        if hasattr(self, "_selection_handler_id") and self._selection_handler_id and hasattr(self, "selection"):
+        if (
+            hasattr(self, "_selection_handler_id")
+            and self._selection_handler_id
+            and hasattr(self, "selection")
+        ):
             try:
                 self.selection.disconnect(self._selection_handler_id)
             except (TypeError, AttributeError):
@@ -972,14 +1057,20 @@ class Torrents(Component, ColumnTranslationMixin):
 
         # Connect to the notify::selected signal which fires when selection changes
         try:
-            self._selection_handler_id = self.selection.connect("notify::selected", self.on_selection_changed)
+            self._selection_handler_id = self.selection.connect(
+                "notify::selected", self.on_selection_changed
+            )
             self.track_signal(self.selection, self._selection_handler_id)
         except (AttributeError, TypeError) as e:
-            logger.error(f"Failed to connect notify::selected signal: {e}", exc_info=True)
+            logger.error(
+                f"Failed to connect notify::selected signal: {e}", exc_info=True
+            )
             self._selection_handler_id = None
             # Try alternative signal names
             try:
-                self._selection_handler_id = self.selection.connect("selection-changed", self.on_selection_changed_old)
+                self._selection_handler_id = self.selection.connect(
+                    "selection-changed", self.on_selection_changed_old
+                )
                 self.track_signal(self.selection, self._selection_handler_id)
             except (AttributeError, TypeError) as e2:
                 logger.error(f"All signal connections failed: {e2}", exc_info=True)
@@ -1003,11 +1094,15 @@ class Torrents(Component, ColumnTranslationMixin):
                         torrent_name = getattr(torrent_file, "name", None)
                 if not torrent_name:
                     # Extract filename from filepath as last resort
-                    filepath = getattr(torrent, "filepath", None) or getattr(torrent, "file_path", "")
+                    filepath = getattr(torrent, "filepath", None) or getattr(
+                        torrent, "file_path", ""
+                    )
                     if filepath:
                         import os
 
-                        torrent_name = os.path.basename(str(filepath)).replace(".torrent", "")
+                        torrent_name = os.path.basename(str(filepath)).replace(
+                            ".torrent", ""
+                        )
                 if not torrent_name:
                     torrent_name = "Unknown"
                 View.instance.notify(
@@ -1052,7 +1147,9 @@ class Torrents(Component, ColumnTranslationMixin):
                 None,
             )
 
-    def on_selection_changed_old(self, selection: Any, position: Any, item: Any) -> None:
+    def on_selection_changed_old(
+        self, selection: Any, position: Any, item: Any
+    ) -> None:
         """Fallback method for old selection-changed signal."""
         logger.debug(f"Torrent selection changed at position {position}")
         # Get the selected item from SingleSelection
@@ -1077,7 +1174,9 @@ class Torrents(Component, ColumnTranslationMixin):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
+    def handle_model_changed(
+        self, source: Any, data_obj: Any, data_changed: Any
+    ) -> None:
         logger.trace(
             "Torrents view settings changed",
             extra={"class_name": self.__class__.__name__},
@@ -1177,7 +1276,10 @@ class Torrents(Component, ColumnTranslationMixin):
         # Find the torrent object in the model's torrent list
         if hasattr(self.model, "torrent_list"):
             for torrent in self.model.torrent_list:  # type: ignore[attr-defined]
-                if hasattr(torrent, "torrent_attributes") and torrent.torrent_attributes == selected_item:
+                if (
+                    hasattr(torrent, "torrent_attributes")
+                    and torrent.torrent_attributes == selected_item
+                ):
                     return torrent, selected_item
 
         return None, selected_item
@@ -1274,7 +1376,9 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(self._("{name} set to 100% complete").format(name=torrent.name))
+            View.instance.notify(
+                self._("{name} set to 100% complete").format(name=torrent.name)
+            )
 
     def on_set_random_progress(self, action: Any, parameter: Any) -> None:
         """Set torrent to a random realistic progress percentage"""
@@ -1304,7 +1408,9 @@ class Torrents(Component, ColumnTranslationMixin):
 
         if View.instance:
             View.instance.notify(
-                self._("{name} progress set to {progress}%").format(name=torrent.name, progress=f"{progress*100:.1f}")
+                self._("{name} progress set to {progress}%").format(
+                    name=torrent.name, progress=f"{progress*100:.1f}"
+                )
             )
 
     def on_update_tracker(self, action: Any, parameter: Any) -> None:
@@ -1341,7 +1447,9 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(self._("Copied name: {name}").format(name=torrent.name))
+            View.instance.notify(
+                self._("Copied name: {name}").format(name=torrent.name)
+            )
 
     def on_copy_hash(self, action: Any, parameter: Any) -> None:
         """Copy torrent info hash to clipboard"""
@@ -1349,7 +1457,9 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        if hasattr(torrent, "torrent_file") and hasattr(torrent.torrent_file, "file_hash"):
+        if hasattr(torrent, "torrent_file") and hasattr(
+            torrent.torrent_file, "file_hash"
+        ):
             info_hash = torrent.torrent_file.file_hash.hex()
             clipboard = Gdk.Display.get_default().get_clipboard()
             clipboard.set(info_hash)
@@ -1361,7 +1471,9 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
-                View.instance.notify(self._("Copied info hash: {hash}...").format(hash=info_hash[:16]))
+                View.instance.notify(
+                    self._("Copied info hash: {hash}...").format(hash=info_hash[:16])
+                )
         else:
             logger.warning(
                 "Torrent file hash not available",
@@ -1374,7 +1486,9 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        if hasattr(torrent, "torrent_file") and hasattr(torrent.torrent_file, "file_hash"):
+        if hasattr(torrent, "torrent_file") and hasattr(
+            torrent.torrent_file, "file_hash"
+        ):
             info_hash = torrent.torrent_file.file_hash.hex()
             tracker_url = getattr(torrent.torrent_file, "announce", "")
             magnet_link = f"magnet:?xt=urn:btih:{info_hash}&dn={torrent.name}"
@@ -1391,7 +1505,9 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
-                View.instance.notify(self._("Copied magnet link for {name}").format(name=torrent.name))
+                View.instance.notify(
+                    self._("Copied magnet link for {name}").format(name=torrent.name)
+                )
         else:
             logger.warning(
                 "Torrent info not available for magnet link",
@@ -1404,7 +1520,9 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        if hasattr(torrent, "torrent_file") and hasattr(torrent.torrent_file, "announce"):
+        if hasattr(torrent, "torrent_file") and hasattr(
+            torrent.torrent_file, "announce"
+        ):
             tracker_url = torrent.torrent_file.announce
             clipboard = Gdk.Display.get_default().get_clipboard()
             clipboard.set(tracker_url)
@@ -1443,7 +1561,9 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(self._("{name} set to high priority").format(name=torrent.name))
+            View.instance.notify(
+                self._("{name} set to high priority").format(name=torrent.name)
+            )
 
     def on_priority_normal(self, action: Any, parameter: Any) -> None:
         """Set torrent priority to normal"""
@@ -1463,7 +1583,9 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(self._("{name} set to normal priority").format(name=torrent.name))
+            View.instance.notify(
+                self._("{name} set to normal priority").format(name=torrent.name)
+            )
 
     def on_priority_low(self, action: Any, parameter: Any) -> None:
         """Set torrent priority to low"""
@@ -1483,7 +1605,9 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(self._("{name} set to low priority").format(name=torrent.name))
+            View.instance.notify(
+                self._("{name} set to low priority").format(name=torrent.name)
+            )
 
     # ===== SPEED LIMIT ACTIONS =====
 
@@ -1493,7 +1617,9 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        dialog = Gtk.Dialog(title=self._("Set Upload Limit"), transient_for=self.window, modal=True)
+        dialog = Gtk.Dialog(
+            title=self._("Set Upload Limit"), transient_for=self.window, modal=True
+        )
         dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
         dialog.add_button(self._("OK"), Gtk.ResponseType.OK)
 
@@ -1535,7 +1661,9 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        dialog = Gtk.Dialog(title=self._("Set Download Limit"), transient_for=self.window, modal=True)
+        dialog = Gtk.Dialog(
+            title=self._("Set Download Limit"), transient_for=self.window, modal=True
+        )
         dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
         dialog.add_button(self._("OK"), Gtk.ResponseType.OK)
 
@@ -1589,7 +1717,9 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(self._("Using global speed limits for {name}").format(name=torrent.name))
+            View.instance.notify(
+                self._("Using global speed limits for {name}").format(name=torrent.name)
+            )
 
     # ===== TRACKER MANAGEMENT =====
 
@@ -1599,7 +1729,9 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        dialog = Gtk.Dialog(title=self._("Add Tracker"), transient_for=self.window, modal=True)
+        dialog = Gtk.Dialog(
+            title=self._("Add Tracker"), transient_for=self.window, modal=True
+        )
         dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
         dialog.add_button(self._("Add"), Gtk.ResponseType.OK)
 
@@ -1623,7 +1755,9 @@ class Torrents(Component, ColumnTranslationMixin):
                 from d_fake_seeder.view import View
 
                 if View.instance:
-                    View.instance.notify(self._("Tracker added to {name}").format(name=torrent.name))
+                    View.instance.notify(
+                        self._("Tracker added to {name}").format(name=torrent.name)
+                    )
 
         dialog.destroy()
 
@@ -1633,9 +1767,15 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        current_tracker = getattr(torrent.torrent_file, "announce", "") if hasattr(torrent, "torrent_file") else ""
+        current_tracker = (
+            getattr(torrent.torrent_file, "announce", "")
+            if hasattr(torrent, "torrent_file")
+            else ""
+        )
 
-        dialog = Gtk.Dialog(title=self._("Edit Tracker"), transient_for=self.window, modal=True)
+        dialog = Gtk.Dialog(
+            title=self._("Edit Tracker"), transient_for=self.window, modal=True
+        )
         dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
         dialog.add_button(self._("Save"), Gtk.ResponseType.OK)
 
@@ -1658,7 +1798,9 @@ class Torrents(Component, ColumnTranslationMixin):
                 from d_fake_seeder.view import View
 
                 if View.instance:
-                    View.instance.notify(self._("Tracker updated for {name}").format(name=torrent.name))
+                    View.instance.notify(
+                        self._("Tracker updated for {name}").format(name=torrent.name)
+                    )
 
         dialog.destroy()
 
@@ -1699,7 +1841,9 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(self._("{name} moved to top").format(name=torrent.name))
+            View.instance.notify(
+                self._("{name} moved to top").format(name=torrent.name)
+            )
 
     def on_queue_up(self, action: Any, parameter: Any) -> None:
         """Move torrent up in queue"""
@@ -1755,7 +1899,9 @@ class Torrents(Component, ColumnTranslationMixin):
         from d_fake_seeder.view import View
 
         if View.instance:
-            View.instance.notify(self._("{name} moved to bottom").format(name=torrent.name))
+            View.instance.notify(
+                self._("{name} moved to bottom").format(name=torrent.name)
+            )
 
     # ===== ADVANCED OPTIONS =====
 
@@ -1765,7 +1911,9 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        dialog = Gtk.Dialog(title=self._("Rename Torrent"), transient_for=self.window, modal=True)
+        dialog = Gtk.Dialog(
+            title=self._("Rename Torrent"), transient_for=self.window, modal=True
+        )
         dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
         dialog.add_button(self._("Rename"), Gtk.ResponseType.OK)
 
@@ -1789,7 +1937,9 @@ class Torrents(Component, ColumnTranslationMixin):
                 from d_fake_seeder.view import View
 
                 if View.instance:
-                    View.instance.notify(self._("Renamed to: {name}").format(name=new_name))
+                    View.instance.notify(
+                        self._("Renamed to: {name}").format(name=new_name)
+                    )
 
         dialog.destroy()
 
@@ -1799,7 +1949,9 @@ class Torrents(Component, ColumnTranslationMixin):
         if torrent is None:
             return
 
-        dialog = Gtk.Dialog(title=self._("Set Label"), transient_for=self.window, modal=True)
+        dialog = Gtk.Dialog(
+            title=self._("Set Label"), transient_for=self.window, modal=True
+        )
         dialog.add_button(self._("Cancel"), Gtk.ResponseType.CANCEL)
         dialog.add_button(self._("Set"), Gtk.ResponseType.OK)
 
@@ -1822,7 +1974,9 @@ class Torrents(Component, ColumnTranslationMixin):
 
             if View.instance:
                 View.instance.notify(
-                    self._("Label set: {label}").format(label=label) if label else self._("Label cleared")
+                    self._("Label set: {label}").format(label=label)
+                    if label
+                    else self._("Label cleared")
                 )
 
         dialog.destroy()
@@ -1851,7 +2005,9 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
-                View.instance.notify(self._("Location set to: {location}").format(location=location))
+                View.instance.notify(
+                    self._("Location set to: {location}").format(location=location)
+                )
 
         dialog.destroy()
 
@@ -1872,7 +2028,11 @@ class Torrents(Component, ColumnTranslationMixin):
         if View.instance:
             View.instance.notify(
                 self._("Super seeding {status}").format(
-                    status=self._("enabled") if torrent.super_seeding else self._("disabled")
+                    status=(
+                        self._("enabled")
+                        if torrent.super_seeding
+                        else self._("disabled")
+                    )
                 )
             )
 
@@ -1893,7 +2053,11 @@ class Torrents(Component, ColumnTranslationMixin):
         if View.instance:
             View.instance.notify(
                 self._("Sequential download {status}").format(
-                    status=self._("enabled") if torrent.sequential_download else self._("disabled")
+                    status=(
+                        self._("enabled")
+                        if torrent.sequential_download
+                        else self._("disabled")
+                    )
                 )
             )
 
@@ -1912,7 +2076,9 @@ class Torrents(Component, ColumnTranslationMixin):
 
         if View.instance:
             View.instance.notify(
-                self._("Properties: {name} - Full dialog not yet implemented").format(name=torrent.name)
+                self._("Properties: {name} - Full dialog not yet implemented").format(
+                    name=torrent.name
+                )
             )
 
     # ===== REMOVE ACTIONS =====
@@ -1931,7 +2097,9 @@ class Torrents(Component, ColumnTranslationMixin):
             buttons=Gtk.ButtonsType.YES_NO,
             text=self._("Remove Torrent?"),
         )
-        dialog.format_secondary_text(f"{self._('Remove')} {torrent.name}?\n{self._('The .torrent file will be kept.')}")
+        dialog.format_secondary_text(
+            f"{self._('Remove')} {torrent.name}?\n{self._('The .torrent file will be kept.')}"
+        )
 
         response = dialog.run()
         dialog.destroy()
@@ -1947,7 +2115,9 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
-                View.instance.notify(self._("Removed: {name}").format(name=torrent.name))
+                View.instance.notify(
+                    self._("Removed: {name}").format(name=torrent.name)
+                )
 
     def on_remove_torrent_and_data(self, action: Any, parameter: Any) -> None:
         """Remove torrent and delete .torrent file"""
@@ -1999,7 +2169,9 @@ class Torrents(Component, ColumnTranslationMixin):
             from d_fake_seeder.view import View
 
             if View.instance:
-                View.instance.notify(self._("Removed: {name} (file deleted)").format(name=torrent.name))
+                View.instance.notify(
+                    self._("Removed: {name} (file deleted)").format(name=torrent.name)
+                )
 
     def model_selection_changed(self, source: Any, model: Any, torrent: Any) -> Any:
         logger.trace(

@@ -80,7 +80,9 @@ class DBusUnifier:
 
     def __init__(self) -> None:
         """Initialize D-Bus unifier with AppSettings integration"""
-        logger.trace("Initializing DBusUnifier", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Initializing DBusUnifier", extra={"class_name": self.__class__.__name__}
+        )
 
         # Get AppSettings singleton instance
         self.app_settings = AppSettings.get_instance()
@@ -196,7 +198,9 @@ class DBusUnifier:
                 invocation.return_value(GLib.Variant("(b)", (True,)))
                 # Process settings update asynchronously to allow D-Bus response to complete first
                 # IMPORTANT: Must explicitly return False, not use 'or False' since function returns True
-                GLib.idle_add(lambda: (self._handle_update_settings(changes_json), False)[1])
+                GLib.idle_add(
+                    lambda: (self._handle_update_settings(changes_json), False)[1]
+                )
 
             elif method_name == "Ping":
                 result = self._handle_ping()  # type: ignore[assignment]
@@ -225,7 +229,13 @@ class DBusUnifier:
                     f"Unknown method: {method_name}",
                 )
 
-        except (GLib.Error, json.JSONDecodeError, KeyError, TypeError, AttributeError) as e:
+        except (
+            GLib.Error,
+            json.JSONDecodeError,
+            KeyError,
+            TypeError,
+            AttributeError,
+        ) as e:
             self._error_count += 1
             logger.error(
                 f"Error handling D-Bus method {method_name}: {e}",
@@ -312,7 +322,9 @@ class DBusUnifier:
                 elif "." in path:
                     # Handle nested settings using internal helper method
                     # pylint: disable=protected-access
-                    self.app_settings._set_nested_value(self.app_settings._settings, path, value)
+                    self.app_settings._set_nested_value(
+                        self.app_settings._settings, path, value
+                    )
                     self.app_settings.save_settings()  # Save and emit signals
                 else:
                     # Handle top-level settings using public method
@@ -350,7 +362,11 @@ class DBusUnifier:
                 "last_ping": self._last_ping or 0,
                 "message_count": self._message_count,
                 "error_count": self._error_count,
-                "uptime": time.time() - (self._last_ping or time.time()) if self._last_ping else 0,
+                "uptime": (
+                    time.time() - (self._last_ping or time.time())
+                    if self._last_ping
+                    else 0
+                ),
             }
             return json.dumps(status)
         except (json.JSONDecodeError, TypeError, AttributeError) as e:
@@ -371,7 +387,9 @@ class DBusUnifier:
                 "registration_id": self._registration_id,
                 "app_settings_available": self.app_settings is not None,
                 # pylint: disable=protected-access
-                "settings_count": len(self.app_settings._settings) if self.app_settings else 0,
+                "settings_count": (
+                    len(self.app_settings._settings) if self.app_settings else 0
+                ),
             }
             return json.dumps(debug_info, indent=2)
         except (json.JSONDecodeError, TypeError, AttributeError) as e:
@@ -449,7 +467,9 @@ class DBusUnifier:
             # Force about dialog trigger by setting to False first, then True
             # This ensures the value changes and signals are emitted even if it was already True
             self.app_settings.set("show_about", False)
-            logger.trace("Setting show_about=True", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "Setting show_about=True", extra={"class_name": self.__class__.__name__}
+            )
             self.app_settings.set("show_about", True)
 
             # Verify the value was set
@@ -543,7 +563,9 @@ class DBusUnifier:
         try:
             # Connect to AppSettings signals to forward them over D-Bus
             # Use the new preferred signal name from AppSettings
-            self.app_settings.connect("settings-value-changed", self._on_app_setting_changed)
+            self.app_settings.connect(
+                "settings-value-changed", self._on_app_setting_changed
+            )
             logger.trace(
                 "DBusUnifier connected to AppSettings signals",
                 extra={"class_name": self.__class__.__name__},
@@ -592,7 +614,9 @@ class DBusUnifier:
 
     def _on_bus_acquired(self, connection: Any, name: Any) -> None:
         """Callback when D-Bus connection is acquired"""
-        logger.trace(f"D-Bus bus acquired: {name}", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            f"D-Bus bus acquired: {name}", extra={"class_name": self.__class__.__name__}
+        )
 
     def _on_name_acquired(self, connection: Any, name: Any) -> None:
         """Callback when service name is acquired"""
@@ -620,7 +644,9 @@ class DBusUnifier:
             self._connection = None
             self._is_service_owner = False
 
-            logger.trace("DBusUnifier cleaned up", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "DBusUnifier cleaned up", extra={"class_name": self.__class__.__name__}
+            )
         except (GLib.Error, RuntimeError, AttributeError) as e:
             logger.error(
                 f"Error during DBusUnifier cleanup: {e}",

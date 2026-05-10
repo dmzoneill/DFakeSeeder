@@ -103,7 +103,8 @@ class MSEHandler:
 
         if not CRYPTO_AVAILABLE:
             logger.warning(
-                "pycryptodome not installed - MSE encryption disabled. " "Install with: pip install pycryptodome",
+                "pycryptodome not installed - MSE encryption disabled. "
+                "Install with: pip install pycryptodome",
                 extra={"class_name": self.__class__.__name__},
             )
         else:
@@ -111,7 +112,8 @@ class MSEHandler:
             self._generate_dh_keypair()
 
             logger.trace(
-                f"MSEHandler initialized (mode: {encryption_mode}, " f"initiator: {is_initiator})",
+                f"MSEHandler initialized (mode: {encryption_mode}, "
+                f"initiator: {is_initiator})",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -208,12 +210,20 @@ class MSEHandler:
 
             if self.is_initiator:
                 # Initiator uses keyA for encryption, keyB for decryption
-                enc_key = hashlib.sha1(b"keyA" + self.shared_secret + self.info_hash).digest()
-                dec_key = hashlib.sha1(b"keyB" + self.shared_secret + self.info_hash).digest()
+                enc_key = hashlib.sha1(
+                    b"keyA" + self.shared_secret + self.info_hash
+                ).digest()
+                dec_key = hashlib.sha1(
+                    b"keyB" + self.shared_secret + self.info_hash
+                ).digest()
             else:
                 # Responder uses keyB for encryption, keyA for decryption
-                enc_key = hashlib.sha1(b"keyB" + self.shared_secret + self.info_hash).digest()
-                dec_key = hashlib.sha1(b"keyA" + self.shared_secret + self.info_hash).digest()
+                enc_key = hashlib.sha1(
+                    b"keyB" + self.shared_secret + self.info_hash
+                ).digest()
+                dec_key = hashlib.sha1(
+                    b"keyA" + self.shared_secret + self.info_hash
+                ).digest()
 
             # Create RC4 ciphers
             self.encrypt_cipher = ARC4.new(enc_key)

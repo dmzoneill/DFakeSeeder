@@ -27,15 +27,21 @@ class ConnectionPeer(GObject.Object):
     peer_id = GObject.Property(type=str, default="")
     client = GObject.Property(type=str, default="")
     direction = GObject.Property(type=str, default="")  # "incoming" or "outgoing"
-    torrent_hash = GObject.Property(type=str, default="")  # Hash of the torrent this connection belongs to
+    torrent_hash = GObject.Property(
+        type=str, default=""
+    )  # Hash of the torrent this connection belongs to
 
     # Connection status
     connected = GObject.Property(type=bool, default=False)
     handshake_complete = GObject.Property(type=bool, default=False)
     connection_time = GObject.Property(type=float, default=0.0)
     last_message_time = GObject.Property(type=float, default=0.0)
-    status = GObject.Property(type=str, default="connecting")  # "connecting", "connected", "failed", "disconnected"
-    failure_reason = GObject.Property(type=str, default="")  # Reason for failure if status is "failed"
+    status = GObject.Property(
+        type=str, default="connecting"
+    )  # "connecting", "connected", "failed", "disconnected"
+    failure_reason = GObject.Property(
+        type=str, default=""
+    )  # Reason for failure if status is "failed"
 
     # Protocol state
     am_choking = GObject.Property(type=bool, default=True)
@@ -74,7 +80,9 @@ class ConnectionPeer(GObject.Object):
             return time.time() - self.last_message_time
         return 0.0
 
-    def update_rates(self, upload_bytes_delta: int, download_bytes_delta: int, time_delta: float) -> None:
+    def update_rates(
+        self, upload_bytes_delta: int, download_bytes_delta: int, time_delta: float
+    ) -> None:
         """Update transfer rates based on deltas with validation to prevent unrealistic values"""
         # Minimum time interval to prevent division by very small numbers
         min_time_delta = 0.5  # Half second minimum to avoid crazy rates on first update

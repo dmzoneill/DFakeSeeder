@@ -19,7 +19,9 @@ class Component(CleanupMixin):
         return str(from_value)
 
     @abstractmethod
-    def handle_model_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
+    def handle_model_changed(
+        self, source: Any, data_obj: Any, _data_changed: Any
+    ) -> None:
         logger.trace(
             "Component Model changed",
             extra={"class_name": self.__class__.__name__},
@@ -33,7 +35,9 @@ class Component(CleanupMixin):
         )
 
     @abstractmethod
-    def handle_settings_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
+    def handle_settings_changed(
+        self, source: Any, data_obj: Any, _data_changed: Any
+    ) -> None:
         logger.trace(
             "Component settings changed",
             extra={"class_name": self.__class__.__name__},

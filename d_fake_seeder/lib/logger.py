@@ -96,7 +96,9 @@ class DuplicateFilter(logging.Filter):  # pylint: disable=too-few-public-methods
         super().__init__()
         self.time_window = time_window
         self.flush_interval = flush_interval
-        self.last_messages: Dict[str, Any] = {}  # message_key -> (count, first_time, last_time, record)
+        self.last_messages: Dict[str, Any] = (
+            {}
+        )  # message_key -> (count, first_time, last_time, record)
         self.last_flush = time.time()
 
     def _get_message_key(self, record: Any) -> Any:
@@ -182,7 +184,10 @@ class DuplicateFilter(logging.Filter):  # pylint: disable=too-few-public-methods
             # Time window expired, log summary of suppressed messages
             if count > 1:
                 duration = last_time - first_time
-                record.msg = f"{record.getMessage()} " f"(previous message repeated {count} times over {duration:.1f}s)"
+                record.msg = (
+                    f"{record.getMessage()} "
+                    f"(previous message repeated {count} times over {duration:.1f}s)"
+                )
 
             # Reset counter for this message
             self.last_messages[message_key] = (
@@ -211,7 +216,10 @@ class PerformanceLogger:
         self._operation_stack: list = []
 
     def timing_info(
-        self, message: str, class_name: Optional[str] = None, operation_time_ms: Optional[float] = None
+        self,
+        message: str,
+        class_name: Optional[str] = None,
+        operation_time_ms: Optional[float] = None,
     ) -> Any:  # noqa: E501
         """Log with timing information similar to the old print statements."""
         extra = {}
@@ -224,7 +232,10 @@ class PerformanceLogger:
         self._logger.info(message, extra=extra)
 
     def timing_debug(
-        self, message: str, class_name: Optional[str] = None, operation_time_ms: Optional[float] = None
+        self,
+        message: str,
+        class_name: Optional[str] = None,
+        operation_time_ms: Optional[float] = None,
     ) -> Any:  # noqa: E501
         """Debug level timing information."""
         extra = {}
@@ -243,7 +254,11 @@ class PerformanceLogger:
         return start_time
 
     def end_timer(
-        self, operation_name: str, message: Optional[str] = None, class_name: Optional[str] = None, level: str = "info"
+        self,
+        operation_name: str,
+        message: Optional[str] = None,
+        class_name: Optional[str] = None,
+        level: str = "info",
     ) -> float:  # noqa: E501
         """End a named timer and log the duration."""
         if operation_name not in self._timers:
@@ -265,11 +280,15 @@ class PerformanceLogger:
 
         return duration_ms
 
-    def operation_context(self, operation_name: str, class_name: Optional[str] = None) -> Any:
+    def operation_context(
+        self, operation_name: str, class_name: Optional[str] = None
+    ) -> Any:
         """Context manager for timing operations."""
         return OperationTimer(self, operation_name, class_name)
 
-    def performance_info(self, message: str, class_name: Optional[str] = None, **metrics: Any) -> Any:
+    def performance_info(
+        self, message: str, class_name: Optional[str] = None, **metrics: Any
+    ) -> Any:
         """Log performance information with custom metrics."""
         extra = {"class_name": class_name} if class_name else {}
         extra.update(metrics)
@@ -283,7 +302,12 @@ class PerformanceLogger:
 class OperationTimer:
     """Context manager for timing operations."""
 
-    def __init__(self, perf_logger: PerformanceLogger, operation_name: str, class_name: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        perf_logger: PerformanceLogger,
+        operation_name: str,
+        class_name: Optional[str] = None,
+    ) -> None:
         self.perf_logger = perf_logger
         self.operation_name = operation_name
         self.class_name = class_name
@@ -294,7 +318,9 @@ class OperationTimer:
         return self
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
-        self.perf_logger.end_timer(self.operation_name, class_name=self.class_name, level="debug")
+        self.perf_logger.end_timer(
+            self.operation_name, class_name=self.class_name, level="debug"
+        )
 
 
 def timing_decorator(operation_name: Optional[str] = None, level: str = "debug") -> Any:
@@ -316,7 +342,9 @@ def timing_decorator(operation_name: Optional[str] = None, level: str = "debug")
 
 def _get_default_log_path() -> str:
     """Return the config dir for log file path without importing xdg_paths (avoids circular imports)."""
-    base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
+    base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(
+        os.path.expanduser("~"), ".config"
+    )
     return os.path.join(base, "dfakeseeder")
 
 
@@ -333,7 +361,8 @@ def get_logger_settings() -> Any:
             "systemd_level": app_settings.get("logging.systemd_level", "ERROR"),
             "file_level": app_settings.get("logging.file_level", "DEBUG"),
             "filename": (
-                app_settings.get("logging.filename", "") or os.path.join(_get_default_log_path(), "dfakeseeder.log")
+                app_settings.get("logging.filename", "")
+                or os.path.join(_get_default_log_path(), "dfakeseeder.log")
             ),
             "format": app_settings.get(
                 "logging.format",
@@ -342,16 +371,24 @@ def get_logger_settings() -> Any:
             "to_file": app_settings.get("logging.log_to_file", False),
             "to_systemd": app_settings.get("logging.log_to_systemd", True),
             "to_console": to_console_val,
-            "suppress_duplicates": app_settings.get("logging.suppress_duplicates", True),
-            "duplicate_time_window": app_settings.get("logging.duplicate_time_window", 5.0),
-            "duplicate_flush_interval": app_settings.get("logging.duplicate_flush_interval", 30.0),
+            "suppress_duplicates": app_settings.get(
+                "logging.suppress_duplicates", True
+            ),
+            "duplicate_time_window": app_settings.get(
+                "logging.duplicate_time_window", 5.0
+            ),
+            "duplicate_flush_interval": app_settings.get(
+                "logging.duplicate_flush_interval", 30.0
+            ),
         }
     except (ImportError, Exception):  # pylint: disable=broad-exception-caught
         # Fallback to hardcoded defaults if AppSettings not available
         # This should only happen during early startup or testing
         # IMPORTANT: Console is OFF by default - only enable when user settings confirm it
         # This prevents console output before user settings are loaded
-        default_format = "[%(asctime)s][%(class_name)s][%(levelname)s][%(lineno)d] - %(message)s"
+        default_format = (
+            "[%(asctime)s][%(class_name)s][%(levelname)s][%(lineno)d] - %(message)s"
+        )
         return {
             "console_level": "INFO",
             "systemd_level": "ERROR",
@@ -413,7 +450,9 @@ def setup_logger() -> None:  # pylint: disable=too-many-locals,too-many-statemen
     logger_instance.setLevel(min_level)
 
     # Create formatter with enhanced timing support
-    enhanced_format = settings["format"].replace("%(asctime)s", "%(asctime)s[%(timestamp_ms)s]")
+    enhanced_format = settings["format"].replace(
+        "%(asctime)s", "%(asctime)s[%(timestamp_ms)s]"
+    )
     formatter = logging.Formatter(enhanced_format)
 
     # Add file handler if enabled
@@ -467,7 +506,9 @@ def setup_logger() -> None:  # pylint: disable=too-many-locals,too-many-statemen
             # Delegate all other attributes to the underlying logger
             return getattr(self._logger, name)
 
-        def trace(self, message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
+        def trace(
+            self, message: str, class_name: Optional[str] = None, **kwargs: Any
+        ) -> Any:
             """
             Ultra-verbose logging for detailed diagnostics.
             Use for: function entry/exit, loop iterations, internal state.
@@ -478,7 +519,9 @@ def setup_logger() -> None:  # pylint: disable=too-many-locals,too-many-statemen
             kwargs["extra"] = extra
             return self._logger.log(TRACE_LEVEL, message, **kwargs)
 
-        def debug(self, message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
+        def debug(
+            self, message: str, class_name: Optional[str] = None, **kwargs: Any
+        ) -> Any:
             """
             Verbose diagnostic logging.
             Use for: important state changes, control flow, variable values.
@@ -489,7 +532,9 @@ def setup_logger() -> None:  # pylint: disable=too-many-locals,too-many-statemen
             kwargs["extra"] = extra
             return self._logger.debug(message, **kwargs)
 
-        def info(self, message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
+        def info(
+            self, message: str, class_name: Optional[str] = None, **kwargs: Any
+        ) -> Any:
             """
             Important state changes and milestones.
             Use for: application lifecycle, major operations, user actions.
@@ -500,7 +545,9 @@ def setup_logger() -> None:  # pylint: disable=too-many-locals,too-many-statemen
             kwargs["extra"] = extra
             return self._logger.info(message, **kwargs)
 
-        def warning(self, message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
+        def warning(
+            self, message: str, class_name: Optional[str] = None, **kwargs: Any
+        ) -> Any:
             """
             Unexpected but recoverable situations.
             Use for: missing optional config, deprecated usage, performance issues.
@@ -511,7 +558,9 @@ def setup_logger() -> None:  # pylint: disable=too-many-locals,too-many-statemen
             kwargs["extra"] = extra
             return self._logger.warning(message, **kwargs)
 
-        def error(self, message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
+        def error(
+            self, message: str, class_name: Optional[str] = None, **kwargs: Any
+        ) -> Any:
             """
             Errors that need attention but don't crash the app.
             Use for: failed operations, exceptions caught, data errors.
@@ -522,7 +571,9 @@ def setup_logger() -> None:  # pylint: disable=too-many-locals,too-many-statemen
             kwargs["extra"] = extra
             return self._logger.error(message, **kwargs)
 
-        def critical(self, message: str, class_name: Optional[str] = None, **kwargs: Any) -> Any:
+        def critical(
+            self, message: str, class_name: Optional[str] = None, **kwargs: Any
+        ) -> Any:
             """
             Fatal errors that prevent operation.
             Use for: cannot start app, critical resources missing, unrecoverable errors.
@@ -571,8 +622,12 @@ def reconfigure_logger(
 
     # Get new settings
     settings = get_logger_settings()
-    to_console = override_console if override_console is not None else settings["to_console"]
-    to_systemd = override_systemd if override_systemd is not None else settings["to_systemd"]
+    to_console = (
+        override_console if override_console is not None else settings["to_console"]
+    )
+    to_systemd = (
+        override_systemd if override_systemd is not None else settings["to_systemd"]
+    )
     to_file = override_file if override_file is not None else settings["to_file"]
 
     # Per-output log levels - each has its own independent level
@@ -614,7 +669,9 @@ def reconfigure_logger(
             underlying_logger.removeHandler(handler)
 
     # Re-add handlers with new settings
-    enhanced_format = settings["format"].replace("%(asctime)s", "%(asctime)s[%(timestamp_ms)s]")
+    enhanced_format = settings["format"].replace(
+        "%(asctime)s", "%(asctime)s[%(timestamp_ms)s]"
+    )
     formatter = logging.Formatter(enhanced_format)
 
     # File handler

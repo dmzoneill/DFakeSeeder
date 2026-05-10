@@ -36,7 +36,9 @@ def format_size(bytes_count: Union[int, float], decimal_places: int = 1) -> str:
     return f"{size:.{decimal_places}f} {units[unit_index]}"
 
 
-def format_number(number: Union[int, float], decimal_places: Optional[int] = None) -> str:
+def format_number(
+    number: Union[int, float], decimal_places: Optional[int] = None
+) -> str:
     """
     Format number with appropriate decimal places.
 

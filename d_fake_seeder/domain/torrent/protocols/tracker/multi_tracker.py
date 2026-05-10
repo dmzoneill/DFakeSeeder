@@ -73,7 +73,9 @@ class TrackerTier:
             status = self.tracker_status[tracker]
 
             # Move to next tracker for next call
-            self.current_tracker_index = (self.current_tracker_index + 1) % len(self.trackers)
+            self.current_tracker_index = (self.current_tracker_index + 1) % len(
+                self.trackers
+            )
 
             # Check if tracker is enabled and not in cooldown
             if status["enabled"] and self._is_tracker_available(status):
@@ -83,7 +85,9 @@ class TrackerTier:
 
         return None
 
-    def mark_success(self, tracker_url: str, response_time: float, peer_count: int = 0) -> Any:
+    def mark_success(
+        self, tracker_url: str, response_time: float, peer_count: int = 0
+    ) -> Any:
         """
         Mark tracker announce as successful
 
@@ -105,7 +109,8 @@ class TrackerTier:
                 status["average_response_time"] = response_time
             else:
                 status["average_response_time"] = (
-                    MultiTrackerConstants.RESPONSE_TIME_SMOOTHING * status["average_response_time"]
+                    MultiTrackerConstants.RESPONSE_TIME_SMOOTHING
+                    * status["average_response_time"]
                     + MultiTrackerConstants.RESPONSE_TIME_WEIGHT * response_time
                 )
 
@@ -130,7 +135,10 @@ class TrackerTier:
             status["total_announces"] += 1
 
             # Disable tracker after too many failures
-            if status["consecutive_failures"] >= MultiTrackerConstants.MAX_CONSECUTIVE_FAILURES:
+            if (
+                status["consecutive_failures"]
+                >= MultiTrackerConstants.MAX_CONSECUTIVE_FAILURES
+            ):
                 status["enabled"] = False
                 logger.warning(
                     f"Tracker {tracker_url} disabled after {status['consecutive_failures']} failures",
@@ -161,7 +169,10 @@ class TrackerTier:
         # Calculate cooldown based on failure count
         cooldown_seconds = min(
             MultiTrackerConstants.BACKOFF_BASE_SECONDS
-            * (MultiTrackerConstants.BACKOFF_EXPONENT_BASE ** status["consecutive_failures"]),
+            * (
+                MultiTrackerConstants.BACKOFF_EXPONENT_BASE
+                ** status["consecutive_failures"]
+            ),
             MultiTrackerConstants.MAX_BACKOFF_SECONDS,
         )
 
@@ -170,16 +181,24 @@ class TrackerTier:
 
     def get_statistics(self) -> Dict:
         """Get tier statistics"""
-        total_announces = sum(s["total_announces"] for s in self.tracker_status.values())
-        successful_announces = sum(s["successful_announces"] for s in self.tracker_status.values())
+        total_announces = sum(
+            s["total_announces"] for s in self.tracker_status.values()
+        )
+        successful_announces = sum(
+            s["successful_announces"] for s in self.tracker_status.values()
+        )
 
         return {
             "tier_number": self.tier_number,
             "tracker_count": len(self.trackers),
-            "enabled_trackers": sum(1 for s in self.tracker_status.values() if s["enabled"]),
+            "enabled_trackers": sum(
+                1 for s in self.tracker_status.values() if s["enabled"]
+            ),
             "total_announces": total_announces,
             "successful_announces": successful_announces,
-            "success_rate": successful_announces / total_announces if total_announces > 0 else 0.0,
+            "success_rate": (
+                successful_announces / total_announces if total_announces > 0 else 0.0
+            ),
             "trackers": list(self.tracker_status.values()),
         }
 
@@ -231,7 +250,9 @@ class MultiTrackerManager:
                     for tier_number, tier_trackers in enumerate(announce_list):
                         # Each tier is a list of tracker URLs
                         tracker_urls = [
-                            t.decode("utf-8", errors="ignore") for t in tier_trackers if isinstance(t, bytes)
+                            t.decode("utf-8", errors="ignore")
+                            for t in tier_trackers
+                            if isinstance(t, bytes)
                         ]
 
                         if tracker_urls:
@@ -240,12 +261,18 @@ class MultiTrackerManager:
 
                 # Fallback to single announce URL
                 elif b"announce" in torrent_data:
-                    announce_url = torrent_data[b"announce"].decode("utf-8", errors="ignore")
+                    announce_url = torrent_data[b"announce"].decode(
+                        "utf-8", errors="ignore"
+                    )
                     tier = TrackerTier([announce_url], 0)
                     self.tiers.append(tier)
 
             # Additional fallback: check for tracker URLs in torrent object
-            if not self.tiers and hasattr(self.torrent, "tracker_url") and self.torrent.tracker_url:
+            if (
+                not self.tiers
+                and hasattr(self.torrent, "tracker_url")
+                and self.torrent.tracker_url
+            ):
                 tier = TrackerTier([self.torrent.tracker_url], 0)
                 self.tiers.append(tier)
 
@@ -260,7 +287,9 @@ class MultiTrackerManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def announce(self, seeder_manager: Any, event: str = "started") -> Tuple[bool, List[Dict]]:
+    async def announce(
+        self, seeder_manager: Any, event: str = "started"
+    ) -> Tuple[bool, List[Dict]]:
         """
         Perform announce to trackers with failover support
 
@@ -291,7 +320,9 @@ class MultiTrackerManager:
             )
             return False, []
 
-    async def _announce_all_tiers(self, seeder_manager: Any, event: str) -> Tuple[bool, List[Dict]]:
+    async def _announce_all_tiers(
+        self, seeder_manager: Any, event: str
+    ) -> Tuple[bool, List[Dict]]:
         """
         Announce to all tiers simultaneously
 
@@ -317,7 +348,9 @@ class MultiTrackerManager:
 
         return any_success, unique_peers
 
-    async def _announce_with_failover(self, seeder_manager: Any, event: str) -> Tuple[bool, List[Dict]]:
+    async def _announce_with_failover(
+        self, seeder_manager: Any, event: str
+    ) -> Tuple[bool, List[Dict]]:
         """
         Announce with tier-based failover
 
@@ -339,10 +372,14 @@ class MultiTrackerManager:
                 return True, peers
 
         # All tiers failed
-        logger.error("All tracker tiers failed", extra={"class_name": self.__class__.__name__})
+        logger.error(
+            "All tracker tiers failed", extra={"class_name": self.__class__.__name__}
+        )
         return False, []
 
-    async def _announce_tier(self, tier: TrackerTier, seeder_manager: Any, event: str) -> Tuple[bool, List[Dict]]:
+    async def _announce_tier(
+        self, tier: TrackerTier, seeder_manager: Any, event: str
+    ) -> Tuple[bool, List[Dict]]:
         """
         Announce to a single tier
 
@@ -372,7 +409,9 @@ class MultiTrackerManager:
             if not tier.tracker_status[tracker_url]["enabled"]:
                 continue
 
-            success, peers = await self._announce_to_tracker(tracker_url, tier, seeder_manager, event)
+            success, peers = await self._announce_to_tracker(
+                tracker_url, tier, seeder_manager, event
+            )
             if success:
                 any_success = True
                 all_peers.extend(peers)
@@ -389,7 +428,9 @@ class MultiTrackerManager:
             if not tracker_url:
                 break
 
-            success, peers = await self._announce_to_tracker(tracker_url, tier, seeder_manager, event)
+            success, peers = await self._announce_to_tracker(
+                tracker_url, tier, seeder_manager, event
+            )
             if success:
                 return True, peers
 
@@ -448,7 +489,9 @@ class MultiTrackerManager:
             tier.mark_success(tracker_url, response_time, peer_count)
 
             # Simulated peers (real implementation would return actual peers)
-            peers = [{"ip": f"192.168.1.{i}", "port": 6881 + i} for i in range(peer_count)]
+            peers = [
+                {"ip": f"192.168.1.{i}", "port": 6881 + i} for i in range(peer_count)
+            ]
 
             await seeder.stop()
 
@@ -507,7 +550,9 @@ class MultiTrackerManager:
             "enabled_trackers": enabled_trackers,
             "total_announces": total_announces,
             "successful_announces": successful_announces,
-            "overall_success_rate": successful_announces / total_announces if total_announces > 0 else 0.0,
+            "overall_success_rate": (
+                successful_announces / total_announces if total_announces > 0 else 0.0
+            ),
             "current_tier": self.current_tier_index,
             "tiers": tier_stats,
         }

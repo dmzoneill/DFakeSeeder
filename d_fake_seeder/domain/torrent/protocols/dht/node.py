@@ -62,8 +62,12 @@ class DHTNode:
         # DHT data structures
         self.routing_table = RoutingTable(self.node_id)
         self.peer_discovery = None  # Will be initialized after socket creation
-        self.token_storage: Dict[str, Tuple[bytes, float]] = {}  # IP -> (token, timestamp) mapping for announce_peer
-        self.pending_queries: Dict[bytes, Dict[str, Any]] = {}  # Transaction ID -> query info
+        self.token_storage: Dict[str, Tuple[bytes, float]] = (
+            {}
+        )  # IP -> (token, timestamp) mapping for announce_peer
+        self.pending_queries: Dict[bytes, Dict[str, Any]] = (
+            {}
+        )  # Transaction ID -> query info
 
         # Transaction ID counter
         self.transaction_id = 0
@@ -82,7 +86,9 @@ class DHTNode:
 
     def _generate_node_id(self) -> bytes:
         """Generate a random 20-byte node ID"""
-        return hashlib.sha1(str(random.getrandbits(DHTConstants.NODE_ID_BITS)).encode()).digest()
+        return hashlib.sha1(
+            str(random.getrandbits(DHTConstants.NODE_ID_BITS)).encode()
+        ).digest()
 
     async def start(self) -> Any:
         """Start the DHT node"""
@@ -281,7 +287,9 @@ class DHTNode:
                         await self._send_message(response, addr)
             elif query_type == b"announce_peer":
                 if self.peer_discovery:
-                    response = self.peer_discovery.handle_announce_peer_query(message, addr)
+                    response = self.peer_discovery.handle_announce_peer_query(
+                        message, addr
+                    )
                     if response:
                         await self._send_message(response, addr)
 
@@ -291,7 +299,9 @@ class DHTNode:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _send_ping_response(self, transaction_id: bytes, addr: Tuple[str, int]) -> Any:
+    async def _send_ping_response(
+        self, transaction_id: bytes, addr: Tuple[str, int]
+    ) -> Any:
         """Send ping response"""
         response = {b"t": transaction_id, b"y": b"r", b"r": {b"id": self.node_id}}
         await self._send_message(response, addr)
@@ -318,7 +328,9 @@ class DHTNode:
                 # Resolve hostname and ping
                 addr = (socket.gethostbyname(host), port)
                 await self._send_ping(addr)
-                await asyncio.sleep(DHTConstants.RATE_LIMIT_DELAY_SECONDS)  # Rate limiting
+                await asyncio.sleep(
+                    DHTConstants.RATE_LIMIT_DELAY_SECONDS
+                )  # Rate limiting
             except Exception as e:
                 logger.trace(
                     f"Bootstrap failed for {host}:{port}: {e}",
@@ -389,7 +401,9 @@ class DHTNode:
         # In real implementation, this would query closest nodes
         return []
 
-    async def _send_announce_peer(self, node_addr: Tuple[str, int], info_hash: bytes, port: int) -> bool:
+    async def _send_announce_peer(
+        self, node_addr: Tuple[str, int], info_hash: bytes, port: int
+    ) -> bool:
         """Send announce_peer message to a DHT node"""
         try:
             transaction_id = self._get_transaction_id()
@@ -441,10 +455,14 @@ class DHTNode:
     def _add_node_to_routing_table(self, node_id: bytes, addr: Tuple[str, int]) -> Any:
         """Add node to routing table"""
         # Simplified routing table - just store recent nodes
-        if self.routing_table.get_node_count() < DHTConstants.ROUTING_TABLE_SIZE_LIMIT:  # Limit size
+        if (
+            self.routing_table.get_node_count() < DHTConstants.ROUTING_TABLE_SIZE_LIMIT
+        ):  # Limit size
             self.routing_table.add_node(node_id, addr[0], addr[1])
 
-    async def _send_find_node_response(self, message: dict, transaction_id: bytes, addr: Tuple[str, int]) -> Any:
+    async def _send_find_node_response(
+        self, message: dict, transaction_id: bytes, addr: Tuple[str, int]
+    ) -> Any:
         """Send find_node response"""
         # Simplified implementation
         response = {
@@ -454,7 +472,9 @@ class DHTNode:
         }  # Empty nodes list
         await self._send_message(response, addr)
 
-    async def _send_get_peers_response(self, message: dict, transaction_id: bytes, addr: Tuple[str, int]) -> Any:
+    async def _send_get_peers_response(
+        self, message: dict, transaction_id: bytes, addr: Tuple[str, int]
+    ) -> Any:
         """Send get_peers response"""
         # Generate token for potential announce_peer
         token = hashlib.sha1(f"{addr[0]}{time.time()}".encode()).digest()[:8]
@@ -471,7 +491,9 @@ class DHTNode:
         }
         await self._send_message(response, addr)
 
-    async def _handle_announce_peer(self, message: dict, transaction_id: bytes, addr: Tuple[str, int]) -> None:
+    async def _handle_announce_peer(
+        self, message: dict, transaction_id: bytes, addr: Tuple[str, int]
+    ) -> None:
         """Handle announce_peer query"""
         # Send success response
         response = {b"t": transaction_id, b"y": b"r", b"r": {b"id": self.node_id}}

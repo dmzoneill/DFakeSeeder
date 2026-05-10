@@ -25,7 +25,9 @@ from .settings_mixins import UtilityMixin, ValidationMixin  # noqa: E402
 # fmt: on
 
 
-class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
+class ConnectionTab(
+    BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin
+):
     """
     Connection settings tab component.
 
@@ -53,17 +55,25 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             {
                 # Port settings
                 "listening_port": self.builder.get_object("settings_listening_port"),
-                "random_port_button": self.builder.get_object("settings_random_port_button"),
+                "random_port_button": self.builder.get_object(
+                    "settings_random_port_button"
+                ),
                 "upnp_enabled": self.builder.get_object("settings_upnp_enabled"),
                 # Connection limits
-                "max_global_connections": self.builder.get_object("settings_max_global_connections"),
+                "max_global_connections": self.builder.get_object(
+                    "settings_max_global_connections"
+                ),
                 "max_per_torrent": self.builder.get_object("settings_max_per_torrent"),
-                "max_upload_slots": self.builder.get_object("settings_max_upload_slots"),
+                "max_upload_slots": self.builder.get_object(
+                    "settings_max_upload_slots"
+                ),
                 # Proxy settings
                 "proxy_type": self.builder.get_object("settings_proxy_type"),
                 "proxy_server": self.builder.get_object("settings_proxy_server"),
                 "proxy_port": self.builder.get_object("settings_proxy_port"),
-                "proxy_auth_enabled": self.builder.get_object("settings_proxy_auth_enabled"),
+                "proxy_auth_enabled": self.builder.get_object(
+                    "settings_proxy_auth_enabled"
+                ),
                 # Section container (hardcoded to sensitive=False in XML)
                 "proxy_auth_box": self.builder.get_object("settings_proxy_auth_box"),
                 "proxy_username": self.builder.get_object("settings_proxy_username"),
@@ -109,14 +119,18 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         if max_per_torrent:
             self.track_signal(
                 max_per_torrent,
-                max_per_torrent.connect("value-changed", self.on_connection_limit_changed),
+                max_per_torrent.connect(
+                    "value-changed", self.on_connection_limit_changed
+                ),
             )
 
         max_upload_slots = self.get_widget("max_upload_slots")
         if max_upload_slots:
             self.track_signal(
                 max_upload_slots,
-                max_upload_slots.connect("value-changed", self.on_connection_limit_changed),
+                max_upload_slots.connect(
+                    "value-changed", self.on_connection_limit_changed
+                ),
             )
 
         # Proxy settings
@@ -129,7 +143,9 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
         proxy_auth = self.get_widget("proxy_auth_enabled")
         if proxy_auth:
-            self.track_signal(proxy_auth, proxy_auth.connect("state-set", self.on_proxy_auth_changed))
+            self.track_signal(
+                proxy_auth, proxy_auth.connect("state-set", self.on_proxy_auth_changed)
+            )
 
         # Proxy port (has validation)
         proxy_port = self.get_widget("proxy_port")
@@ -150,26 +166,36 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Listening port
             listening_port = self.get_widget("listening_port")
             if listening_port:
-                port = connection_settings.get("listening_port", NetworkConstants.DEFAULT_PORT)
+                port = connection_settings.get(
+                    "listening_port", NetworkConstants.DEFAULT_PORT
+                )
                 listening_port.set_value(port)
 
             # UPnP setting
             upnp_enabled = self.get_widget("upnp_enabled")
             if upnp_enabled:
-                self.set_switch_state(upnp_enabled, connection_settings.get("upnp_enabled", True))
+                self.set_switch_state(
+                    upnp_enabled, connection_settings.get("upnp_enabled", True)
+                )
 
             # Connection limits
             max_global = self.get_widget("max_global_connections")
             if max_global:
-                max_global.set_value(connection_settings.get("max_global_connections", 200))
+                max_global.set_value(
+                    connection_settings.get("max_global_connections", 200)
+                )
 
             max_per_torrent = self.get_widget("max_per_torrent")
             if max_per_torrent:
-                max_per_torrent.set_value(connection_settings.get("max_per_torrent", 50))
+                max_per_torrent.set_value(
+                    connection_settings.get("max_per_torrent", 50)
+                )
 
             max_upload_slots = self.get_widget("max_upload_slots")
             if max_upload_slots:
-                max_upload_slots.set_value(connection_settings.get("max_upload_slots", 4))
+                max_upload_slots.set_value(
+                    connection_settings.get("max_upload_slots", 4)
+                )
 
             # Proxy settings from nested structure
             proxy_settings = self.app_settings.get("proxy", {})
@@ -208,7 +234,9 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Authentication
             proxy_auth = self.get_widget("proxy_auth_enabled")
             if proxy_auth:
-                self.set_switch_state(proxy_auth, proxy_settings.get("auth_enabled", False))
+                self.set_switch_state(
+                    proxy_auth, proxy_settings.get("auth_enabled", False)
+                )
 
             proxy_username = self.get_widget("proxy_username")
             if proxy_username:
@@ -307,7 +335,9 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             proxy_type = self.get_widget("proxy_type")
             if proxy_type:
                 type_mapping = {0: "none", 1: "http", 2: "socks4", 3: "socks5"}
-                proxy_settings["type"] = type_mapping.get(proxy_type.get_selected(), "none")
+                proxy_settings["type"] = type_mapping.get(
+                    proxy_type.get_selected(), "none"
+                )
 
             proxy_server = self.get_widget("proxy_server")
             if proxy_server:
@@ -351,7 +381,9 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if proxy_type and proxy_port and proxy_type.get_selected() > 0:
                 proxy_port_errors = self.validate_port(proxy_port.get_value())
                 if proxy_port_errors:
-                    errors["proxy_port"] = proxy_port_errors.get("port", "Invalid proxy port")
+                    errors["proxy_port"] = proxy_port_errors.get(
+                        "port", "Invalid proxy port"
+                    )
 
         except Exception as e:
             self.logger.error(f"Error validating Connection tab settings: {e}")
@@ -392,7 +424,10 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             listening_port = self.get_widget("listening_port")
             if listening_port:
                 listening_port.set_value(random_port)
-                self.show_notification(self._("Random port generated: {port}").format(port=random_port), "success")
+                self.show_notification(
+                    self._("Random port generated: {port}").format(port=random_port),
+                    "success",
+                )
 
         except Exception as e:
             self.logger.error(f"Error generating random port: {e}")
@@ -405,7 +440,9 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # NOTE: Setting will be saved in batch via _collect_settings()
             status = "enabled" if state else "disabled"
             self.logger.trace(f"UPnP {status}")
-            self.show_notification(self._("UPnP {status}").format(status=self._(status)), "success")
+            self.show_notification(
+                self._("UPnP {status}").format(status=self._(status)), "success"
+            )
         except Exception as e:
             self.logger.error(f"Error changing UPnP setting: {e}")
 
@@ -427,7 +464,9 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 self.logger.trace(f"Max upload slots changed to: {value}")
 
         except Exception as e:
-            self.logger.error(f"Error handling connection limit change: {e}", exc_info=True)
+            self.logger.error(
+                f"Error handling connection limit change: {e}", exc_info=True
+            )
 
     def on_proxy_type_changed(self, dropdown: Gtk.DropDown, param: Any) -> None:
         """Handle proxy type change."""
@@ -524,7 +563,9 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 self.set_switch_state(proxy_auth, False)
 
             self.update_dependencies()
-            self.show_notification(self._("Connection settings reset to defaults"), "success")
+            self.show_notification(
+                self._("Connection settings reset to defaults"), "success"
+            )
 
         except Exception as e:
             self.logger.error(f"Error resetting Connection tab to defaults: {e}")

@@ -32,7 +32,9 @@ class TorrentPeerManager:
         # Statistics tracking
         self.peer_stats_cache: Dict[str, Dict] = {}
         self.last_stats_update = 0
-        self.stats_update_interval = torrent_peer_manager_config.get("stats_update_interval_seconds", 2.0)
+        self.stats_update_interval = torrent_peer_manager_config.get(
+            "stats_update_interval_seconds", 2.0
+        )
 
         logger.trace(
             "🎯 TorrentPeerManager initialized",
@@ -144,12 +146,21 @@ class TorrentPeerManager:
 
                         # Log summary statistics
                         total_peers = len(self.peer_stats_cache)
-                        connected_peers = sum(1 for stats in self.peer_stats_cache.values() if stats["connected"])
-                        seeds = sum(1 for stats in self.peer_stats_cache.values() if stats["is_seed"])
+                        connected_peers = sum(
+                            1
+                            for stats in self.peer_stats_cache.values()
+                            if stats["connected"]
+                        )
+                        seeds = sum(
+                            1
+                            for stats in self.peer_stats_cache.values()
+                            if stats["is_seed"]
+                        )
 
                         if total_peers > 0:
                             logger.trace(
-                                f"📊 Peer stats: {total_peers} total, " f"{connected_peers} connected, {seeds} seeds",
+                                f"📊 Peer stats: {total_peers} total, "
+                                f"{connected_peers} connected, {seeds} seeds",
                                 extra={"class_name": self.__class__.__name__},
                             )
 
@@ -171,7 +182,9 @@ class TorrentPeerManager:
             "connected_peers": sum(1 for s in stats.values() if s["connected"]),
             "seeds": sum(1 for s in stats.values() if s["is_seed"]),
             "leechers": sum(1 for s in stats.values() if not s["is_seed"]),
-            "unchoked_peers": sum(1 for s in stats.values() if s["connected"] and not s["choked"]),
+            "unchoked_peers": sum(
+                1 for s in stats.values() if s["connected"] and not s["choked"]
+            ),
         }
 
         return summary
@@ -188,7 +201,9 @@ class TorrentPeerManager:
                     if len(peer_id_str) >= 20:
                         return peer_id_str[:20].encode("utf-8", errors="ignore")
                     # Pad to 20 bytes
-                    return (peer_id_str + "0" * 20)[:20].encode("utf-8", errors="ignore")
+                    return (peer_id_str + "0" * 20)[:20].encode(
+                        "utf-8", errors="ignore"
+                    )
 
             # Fallback: generate a peer ID
             import random
@@ -225,7 +240,9 @@ class TorrentPeerManager:
 
 
 # Global instance
-_torrent_peer_manager: Optional[TorrentPeerManager] = None  # pylint: disable=invalid-name
+_torrent_peer_manager: Optional[TorrentPeerManager] = (
+    None  # pylint: disable=invalid-name
+)
 
 
 def get_torrent_peer_manager() -> TorrentPeerManager:

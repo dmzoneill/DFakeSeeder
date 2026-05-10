@@ -35,7 +35,9 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
 
         # Use the provided seeding_profile parameter directly
         self.profile_name = seeding_profile
-        self.realistic_variations = self.traffic_config.get("realistic_variations", True)
+        self.realistic_variations = self.traffic_config.get(
+            "realistic_variations", True
+        )
         self.time_based_patterns = self.traffic_config.get("time_based_patterns", True)
 
         # Load traffic profiles from configuration
@@ -46,20 +48,28 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
         for profile_name in ["conservative", "balanced", "aggressive"]:
             profile_config = traffic_profiles_config.get(profile_name, {})
             self.profiles[profile_name] = {
-                "base_upload_speed": profile_config.get("base_upload_speed_kb", 200) * 1024,
-                "base_download_speed": profile_config.get("base_download_speed_kb", 800) * 1024,
+                "base_upload_speed": profile_config.get("base_upload_speed_kb", 200)
+                * 1024,
+                "base_download_speed": profile_config.get("base_download_speed_kb", 800)
+                * 1024,
                 "upload_variance": profile_config.get("upload_variance", 0.3),
                 "download_variance": profile_config.get("download_variance", 0.25),
-                "connection_frequency": profile_config.get("connection_frequency", "medium"),
+                "connection_frequency": profile_config.get(
+                    "connection_frequency", "medium"
+                ),
                 "peer_exchange_rate": profile_config.get("peer_exchange_rate", 0.6),
                 "burst_probability": profile_config.get("burst_probability", 0.15),
                 "idle_probability": profile_config.get("idle_probability", 0.1),
                 "max_connections": profile_config.get("max_connections", 100),
                 "connection_timeout": profile_config.get("connection_timeout", 45),
-                "announce_frequency_multiplier": profile_config.get("announce_frequency_multiplier", 1.0),
+                "announce_frequency_multiplier": profile_config.get(
+                    "announce_frequency_multiplier", 1.0
+                ),
             }
 
-        self.current_profile = self.profiles.get(self.profile_name, self.profiles["balanced"])
+        self.current_profile = self.profiles.get(
+            self.profile_name, self.profiles["balanced"]
+        )
 
         # State tracking
         self.session_start_time = time.time()
@@ -103,10 +113,14 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
                 current_time = start_time + second
 
                 # Calculate speed with various factors
-                speed = self._calculate_realistic_speed(base_speed, "upload", current_time)
+                speed = self._calculate_realistic_speed(
+                    base_speed, "upload", current_time
+                )
 
                 # Store in history
-                self.traffic_history.append({"timestamp": current_time, "type": "upload", "speed": speed})
+                self.traffic_history.append(
+                    {"timestamp": current_time, "type": "upload", "speed": speed}
+                )
 
                 # Keep history size manageable
                 if len(self.traffic_history) > 3600:  # 1 hour
@@ -143,9 +157,13 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
             for second in range(duration):
                 current_time = start_time + second
 
-                speed = self._calculate_realistic_speed(base_speed, "download", current_time)
+                speed = self._calculate_realistic_speed(
+                    base_speed, "download", current_time
+                )
 
-                self.traffic_history.append({"timestamp": current_time, "type": "download", "speed": speed})
+                self.traffic_history.append(
+                    {"timestamp": current_time, "type": "download", "speed": speed}
+                )
 
                 if len(self.traffic_history) > 3600:
                     self.traffic_history.pop(0)
@@ -174,9 +192,13 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
             current_time = time.time()
 
             # Calculate connection frequency based on profile and configuration
-            frequency_settings = self.traffic_config.get("frequency_settings", {"low": 0.5, "medium": 2.0, "high": 5.0})
+            frequency_settings = self.traffic_config.get(
+                "frequency_settings", {"low": 0.5, "medium": 2.0, "high": 5.0}
+            )
 
-            frequency = frequency_settings.get(self.current_profile["connection_frequency"], 2.0)
+            frequency = frequency_settings.get(
+                self.current_profile["connection_frequency"], 2.0
+            )
 
             # Generate connection events
             for i in range(peer_count):
@@ -206,7 +228,9 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
             )
             return []
 
-    def _calculate_realistic_speed(self, base_speed: int, traffic_type: str, current_time: float) -> int:
+    def _calculate_realistic_speed(
+        self, base_speed: int, traffic_type: str, current_time: float
+    ) -> int:
         """
         Calculate realistic speed with various factors
 
@@ -259,7 +283,9 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
             )
             return base_speed
 
-    def _get_time_based_factor(self, current_time: float) -> float:  # pylint: disable=too-many-locals
+    def _get_time_based_factor(
+        self, current_time: float
+    ) -> float:  # pylint: disable=too-many-locals
         """
         Calculate time-based speed factor (day/night patterns, weekday/weekend)
 
@@ -288,7 +314,9 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
             weekend_multiplier = time_patterns.get("weekend_multiplier", 1.1)
 
             # Time of day factor (peak hours have higher speeds)
-            if (peak_start <= hour <= peak_end_morning) or (peak_start_evening <= hour <= peak_end_evening):
+            if (peak_start <= hour <= peak_end_morning) or (
+                peak_start_evening <= hour <= peak_end_evening
+            ):
                 time_factor = peak_multiplier
             elif night_start <= hour <= night_end:  # Night hours
                 time_factor = night_multiplier
@@ -318,7 +346,9 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
         try:
             # Check for burst state transitions
             if not self.current_burst_state:
-                if random.random() < self.current_profile["burst_probability"] / 60:  # Per second
+                if (
+                    random.random() < self.current_profile["burst_probability"] / 60
+                ):  # Per second
                     self.current_burst_state = True
                     self.burst_start_time = current_time
                     burst_settings = self.traffic_config.get("burst_settings", {})
@@ -331,7 +361,9 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
 
             # Check for idle state transitions
             if not self.idle_state:
-                if random.random() < self.current_profile["idle_probability"] / 300:  # Per 5 minutes
+                if (
+                    random.random() < self.current_profile["idle_probability"] / 300
+                ):  # Per 5 minutes
                     self.idle_state = True
                     self.idle_start_time = current_time
                     idle_settings = self.traffic_config.get("idle_settings", {})
@@ -377,7 +409,9 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
             variance_factor = congestion_settings.get("variance_factor", 0.25)
             random_variance = congestion_settings.get("random_variance", 0.1)
 
-            congestion_cycle = math.sin(current_time / cycle_duration) * variance_factor + base_factor
+            congestion_cycle = (
+                math.sin(current_time / cycle_duration) * variance_factor + base_factor
+            )
 
             # Add random fluctuations
             random_min = 1.0 - random_variance
@@ -399,17 +433,25 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
         try:
             # More peers generally mean better speeds (up to a point)
             recent_connections = [
-                conn for conn in self.connection_history if time.time() - conn["timestamp"] < 300  # Last 5 minutes
+                conn
+                for conn in self.connection_history
+                if time.time() - conn["timestamp"] < 300  # Last 5 minutes
             ]
 
             peer_count = len(recent_connections)
 
             peer_influence_settings = self.traffic_config.get("peer_influence", {})
             few_peers_threshold = peer_influence_settings.get("few_peers_threshold", 5)
-            optimal_peers_threshold = peer_influence_settings.get("optimal_peers_threshold", 20)
+            optimal_peers_threshold = peer_influence_settings.get(
+                "optimal_peers_threshold", 20
+            )
             few_peers_factor = peer_influence_settings.get("few_peers_factor", 0.8)
-            improvement_per_peer = peer_influence_settings.get("improvement_per_peer", 0.02)
-            max_improvement_factor = peer_influence_settings.get("max_improvement_factor", 1.3)
+            improvement_per_peer = peer_influence_settings.get(
+                "improvement_per_peer", 0.02
+            )
+            max_improvement_factor = peer_influence_settings.get(
+                "max_improvement_factor", 1.3
+            )
 
             if peer_count < few_peers_threshold:
                 return few_peers_factor  # Reduced speed with few peers  # type: ignore
@@ -463,7 +505,9 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
 
             # Calculate connection duration
             if interaction_type == "connect":
-                duration = random.expovariate(1.0 / self.current_profile["connection_timeout"])
+                duration = random.expovariate(
+                    1.0 / self.current_profile["connection_timeout"]
+                )
             else:
                 duration = 0
 
@@ -523,10 +567,14 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
         session_duration = current_time - self.session_start_time
 
         # Calculate average speeds from history
-        recent_traffic = [t for t in self.traffic_history if current_time - t["timestamp"] < 3600]  # Last hour
+        recent_traffic = [
+            t for t in self.traffic_history if current_time - t["timestamp"] < 3600
+        ]  # Last hour
 
         upload_speeds = [t["speed"] for t in recent_traffic if t["type"] == "upload"]
-        download_speeds = [t["speed"] for t in recent_traffic if t["type"] == "download"]
+        download_speeds = [
+            t["speed"] for t in recent_traffic if t["type"] == "download"
+        ]
 
         return {
             "profile": self.profile_name,
@@ -535,8 +583,12 @@ class TrafficPatternSimulator:  # pylint: disable=too-many-instance-attributes
             "current_idle_state": self.idle_state,
             "traffic_history_size": len(self.traffic_history),
             "connection_history_size": len(self.connection_history),
-            "average_upload_speed": sum(upload_speeds) / len(upload_speeds) if upload_speeds else 0,
-            "average_download_speed": sum(download_speeds) / len(download_speeds) if download_speeds else 0,
+            "average_upload_speed": (
+                sum(upload_speeds) / len(upload_speeds) if upload_speeds else 0
+            ),
+            "average_download_speed": (
+                sum(download_speeds) / len(download_speeds) if download_speeds else 0
+            ),
             "realistic_variations_enabled": self.realistic_variations,
             "time_based_patterns_enabled": self.time_based_patterns,
         }

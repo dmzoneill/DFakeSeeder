@@ -104,7 +104,9 @@ class SpeedScheduler:
         end_minute = self.settings.get("scheduler.end_minute", 0)
 
         # Check if current time is within the scheduled window
-        in_window = self._is_in_time_window(now, start_hour, start_minute, end_hour, end_minute)
+        in_window = self._is_in_time_window(
+            now, start_hour, start_minute, end_hour, end_minute
+        )
         self._set_alt_speeds(in_window)
 
         return True  # Keep timer running

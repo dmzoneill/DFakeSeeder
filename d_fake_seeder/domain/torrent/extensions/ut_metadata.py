@@ -35,7 +35,9 @@ class UTMetadataExtension:
     # Maximum piece size (16KB as per BEP 9)
     PIECE_SIZE = 16384
 
-    def __init__(self, info_dict: Optional[dict] = None, metadata_size: Optional[int] = None) -> None:
+    def __init__(
+        self, info_dict: Optional[dict] = None, metadata_size: Optional[int] = None
+    ) -> None:
         """
         Initialize ut_metadata extension.
 
@@ -54,7 +56,11 @@ class UTMetadataExtension:
                 self.metadata_size = len(self.metadata)
                 self._split_metadata_into_pieces()
             except Exception as e:  # pylint: disable=broad-exception-caught
-                logger.error(f"Failed to encode metadata: {e}", "UTMetadataExtension", exc_info=True)
+                logger.error(
+                    f"Failed to encode metadata: {e}",
+                    "UTMetadataExtension",
+                    exc_info=True,
+                )
                 self.metadata = None
 
     def _split_metadata_into_pieces(self) -> Any:
@@ -69,7 +75,10 @@ class UTMetadataExtension:
             end = min(start + self.PIECE_SIZE, self.metadata_size)  # type: ignore[type-var]
             self.metadata_pieces[i] = self.metadata[start:end]
 
-        logger.trace(f"Split metadata into {num_pieces} pieces ({self.metadata_size} bytes)", "UTMetadataExtension")
+        logger.trace(
+            f"Split metadata into {num_pieces} pieces ({self.metadata_size} bytes)",
+            "UTMetadataExtension",
+        )
 
     def handle_request(self, piece_index: int) -> Optional[bytes]:
         """
@@ -82,7 +91,10 @@ class UTMetadataExtension:
             Bencoded response message or None if piece not available
         """
         if not bencodepy:
-            logger.warning("bencodepy not available, cannot handle metadata requests", "UTMetadataExtension")
+            logger.warning(
+                "bencodepy not available, cannot handle metadata requests",
+                "UTMetadataExtension",
+            )
             return None
 
         if piece_index not in self.metadata_pieces:
@@ -139,7 +151,9 @@ class UTMetadataExtension:
             return result
 
         except Exception as e:  # pylint: disable=broad-exception-caught
-            logger.trace(f"Failed to parse ut_metadata message: {e}", "UTMetadataExtension")
+            logger.trace(
+                f"Failed to parse ut_metadata message: {e}", "UTMetadataExtension"
+            )
             return None
 
     def create_request(self, piece_index: int) -> Optional[bytes]:

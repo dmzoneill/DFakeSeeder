@@ -75,7 +75,9 @@ class DFakeSeeder(Gtk.Application):
         1. First instance starts (ui_initialized=False)
         2. Another instance tries to start (GTK4 passes activate to existing instance)
         """
-        with logger.performance.operation_context("do_activate", self.__class__.__name__):
+        with logger.performance.operation_context(
+            "do_activate", self.__class__.__name__
+        ):
             logger.info("do_activate() started", self.__class__.__name__)
 
             # If UI already initialized, this is a second instance trying to start
@@ -92,7 +94,9 @@ class DFakeSeeder(Gtk.Application):
             logger.trace("First instance - initializing UI", self.__class__.__name__)
 
             # Ensure resource paths are set up before creating Model
-            with logger.performance.operation_context("setup_resource_paths", self.__class__.__name__):
+            with logger.performance.operation_context(
+                "setup_resource_paths", self.__class__.__name__
+            ):
                 logger.trace(
                     f"DFS_PATH before setup: {os.environ.get('DFS_PATH')}",
                     self.__class__.__name__,
@@ -104,37 +108,55 @@ class DFakeSeeder(Gtk.Application):
                 )
 
             # The Model manages the data and logic
-            with logger.performance.operation_context("model_creation", self.__class__.__name__):
+            with logger.performance.operation_context(
+                "model_creation", self.__class__.__name__
+            ):
                 logger.trace("About to create Model instance", self.__class__.__name__)
                 self.model = Model()
-                logger.info("Model creation completed successfully", self.__class__.__name__)
+                logger.info(
+                    "Model creation completed successfully", self.__class__.__name__
+                )
 
             # The View manages the user interface
-            with logger.performance.operation_context("view_creation", self.__class__.__name__):
+            with logger.performance.operation_context(
+                "view_creation", self.__class__.__name__
+            ):
                 logger.trace("About to create View instance", self.__class__.__name__)
                 self.view = View(self)
-                logger.info("View creation completed successfully", self.__class__.__name__)
+                logger.info(
+                    "View creation completed successfully", self.__class__.__name__
+                )
 
             # The Controller manages the interactions between the Model and View
-            with logger.performance.operation_context("controller_creation", self.__class__.__name__):
-                logger.trace("About to create Controller instance", self.__class__.__name__)
+            with logger.performance.operation_context(
+                "controller_creation", self.__class__.__name__
+            ):
+                logger.trace(
+                    "About to create Controller instance", self.__class__.__name__
+                )
                 self.controller = Controller(self.view, self.model)
                 logger.trace("Controller creation completed", self.__class__.__name__)
 
             # Start the controller
-            with logger.performance.operation_context("controller_start", self.__class__.__name__):
+            with logger.performance.operation_context(
+                "controller_start", self.__class__.__name__
+            ):
                 logger.trace("About to start controller", self.__class__.__name__)
                 self.controller.run()
                 logger.info("Controller started", self.__class__.__name__)
 
             # Show the window
-            with logger.performance.operation_context("window_show", self.__class__.__name__):
+            with logger.performance.operation_context(
+                "window_show", self.__class__.__name__
+            ):
                 logger.trace("About to show window", self.__class__.__name__)
                 self.view.window.show()
 
                 # Check if we should start minimized
                 if self.settings.start_minimized:
-                    logger.info("Starting minimized as per settings", self.__class__.__name__)
+                    logger.info(
+                        "Starting minimized as per settings", self.__class__.__name__
+                    )
                     self.view.window.minimize()
                     # If minimize_to_tray is also enabled, hide the window
                     if self.settings.minimize_to_tray:
@@ -155,7 +177,12 @@ app = typer.Typer()
 
 def _dump_threads(signum: int, frame: Any) -> None:
     """SIGUSR1 handler: dump all thread stacks to stderr for hang diagnosis."""
-    lines = ["\n", "=" * 80, f"  THREAD DUMP ({threading.active_count()} threads)", "=" * 80]
+    lines = [
+        "\n",
+        "=" * 80,
+        f"  THREAD DUMP ({threading.active_count()} threads)",
+        "=" * 80,
+    ]
     for thread_id, stack in sys._current_frames().items():
         thread_name = "unknown"
         for t in threading.enumerate():
@@ -189,10 +216,14 @@ def run() -> Any:
         # ========== MULTI-METHOD SINGLE INSTANCE CHECK ==========
         # Check using D-Bus, Socket, and PID file BEFORE creating GTK app
         # This provides defense-in-depth before GTK4's single-instance mechanism
-        logger.trace("Checking for existing instance using multi-method approach", "DFakeSeeder")
+        logger.trace(
+            "Checking for existing instance using multi-method approach", "DFakeSeeder"
+        )
 
         instance_checker = MultiMethodSingleInstance(
-            app_name="dfakeseeder-main", dbus_service="ie.fio.dfakeseeder", use_pidfile=True
+            app_name="dfakeseeder-main",
+            dbus_service="ie.fio.dfakeseeder",
+            use_pidfile=True,
         )
 
         is_running, detected_by = instance_checker.is_already_running()

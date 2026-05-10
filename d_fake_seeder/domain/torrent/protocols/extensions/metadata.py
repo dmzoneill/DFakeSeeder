@@ -74,7 +74,8 @@ class MetadataExtension:
             self._generate_synthetic_metadata()
 
         logger.trace(
-            f"Metadata extension ready - size: {self.metadata_size}, " f"pieces: {self.pieces_count}",
+            f"Metadata extension ready - size: {self.metadata_size}, "
+            f"pieces: {self.pieces_count}",
             extra={"class_name": self.__class__.__name__},
         )
 
@@ -246,7 +247,9 @@ class MetadataExtension:
             payload += piece_data
 
             # Send message
-            success = self.extension_manager.send_extended_message("ut_metadata", payload)
+            success = self.extension_manager.send_extended_message(
+                "ut_metadata", payload
+            )
 
             if success:
                 logger.trace(
@@ -302,7 +305,10 @@ class MetadataExtension:
 
         # Request all pieces we don't have
         for piece_index in range(self.pieces_count):
-            if piece_index not in self.received_pieces and piece_index not in self.requested_pieces:
+            if (
+                piece_index not in self.received_pieces
+                and piece_index not in self.requested_pieces
+            ):
                 self._request_piece(piece_index)
 
     def _request_piece(self, piece_index: int) -> Any:
@@ -318,7 +324,9 @@ class MetadataExtension:
             payload = struct.pack("B", self.REQUEST)
             payload += bencode.bencode(request_dict)
 
-            success = self.extension_manager.send_extended_message("ut_metadata", payload)
+            success = self.extension_manager.send_extended_message(
+                "ut_metadata", payload
+            )
 
             if success:
                 self.requested_pieces.add(piece_index)
@@ -381,7 +389,9 @@ class MetadataExtension:
                 b"name": b"fake_file.txt",
                 b"length": 1024 * 1024,  # 1MB file
                 b"piece length": 32768,  # 32KB pieces
-                b"pieces": b"\x00" * 20 * BitTorrentProtocolConstants.FAKE_METADATA_PIECE_COUNT,  # 32 fake piece hashes
+                b"pieces": b"\x00"
+                * 20
+                * BitTorrentProtocolConstants.FAKE_METADATA_PIECE_COUNT,  # 32 fake piece hashes
             }
 
             metadata_dict = {

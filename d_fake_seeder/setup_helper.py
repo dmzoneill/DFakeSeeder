@@ -129,7 +129,9 @@ def post_install_setup() -> Any:
     deps_ok = print_installation_guide(missing)
 
     if not deps_ok:
-        print("\n⚠️  Please install missing dependencies before running the application.")
+        print(
+            "\n⚠️  Please install missing dependencies before running the application."
+        )
         print("=" * 60 + "\n")
         return
 

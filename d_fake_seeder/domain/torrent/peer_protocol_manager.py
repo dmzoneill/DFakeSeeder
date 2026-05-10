@@ -54,9 +54,15 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
         # Configurable async sleep intervals
         self.async_sleep_interval = ui_settings.get("async_sleep_interval_seconds", 1.0)
         self.error_sleep_interval = ui_settings.get("error_sleep_interval_seconds", 5.0)
-        self.peer_protocol_message_timeout = ui_settings.get("peer_protocol_message_receive_timeout_seconds", 0.1)
-        self.manager_thread_join_timeout = ui_settings.get("manager_thread_join_timeout_seconds", 5.0)
-        self.metadata_exchange_probability = ui_settings.get("metadata_exchange_probability", 0.3)
+        self.peer_protocol_message_timeout = ui_settings.get(
+            "peer_protocol_message_receive_timeout_seconds", 0.1
+        )
+        self.manager_thread_join_timeout = ui_settings.get(
+            "manager_thread_join_timeout_seconds", 5.0
+        )
+        self.metadata_exchange_probability = ui_settings.get(
+            "metadata_exchange_probability", 0.3
+        )
         self.fake_piece_count_max = ui_settings.get("fake_piece_count_max", 1000)
         self.connection_cleanup_timeout = ui_settings.get(
             "connection_cleanup_timeout_seconds", 120
@@ -74,7 +80,9 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
         # Rate limiting - prevent excessive peer communication (use config values)
         self.peer_contact_history: Dict[str, float] = {}  # ip:port -> last_contact_time
         self.min_contact_interval = peer_protocol.get("contact_interval_seconds", 300.0)
-        self.startup_grace_period = peer_protocol.get("startup_grace_period_seconds", 60.0)
+        self.startup_grace_period = peer_protocol.get(
+            "startup_grace_period_seconds", 60.0
+        )
 
         # State management (no dedicated thread - using shared executor)
         self.running = False
@@ -83,13 +91,23 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
 
         # Timing (use config values)
         self.last_peer_scan = 0
-        self.keep_alive_interval = peer_protocol.get("keep_alive_interval_seconds", 120.0)
-        self.connection_retry_interval = peer_protocol.get("retry_interval_seconds", 30.0)
+        self.keep_alive_interval = peer_protocol.get(
+            "keep_alive_interval_seconds", 120.0
+        )
+        self.connection_retry_interval = peer_protocol.get(
+            "retry_interval_seconds", 30.0
+        )
 
         # Connection simulation and rotation (use config values)
-        self.metadata_exchange_interval = peer_protocol.get("metadata_exchange_interval_seconds", 30.0)
-        self.connection_duration = peer_protocol.get("connection_duration_seconds", 300.0)
-        self.connection_rotation_percentage = peer_protocol.get("connection_rotation_percentage", 0.25)
+        self.metadata_exchange_interval = peer_protocol.get(
+            "metadata_exchange_interval_seconds", 30.0
+        )
+        self.connection_duration = peer_protocol.get(
+            "connection_duration_seconds", 300.0
+        )
+        self.connection_rotation_percentage = peer_protocol.get(
+            "connection_rotation_percentage", 0.25
+        )
         self.last_metadata_exchange = 0.0
         self.last_connection_rotation = 0.0
 
@@ -130,12 +148,16 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
                     if address not in self.peers:
                         if len(self.peers) >= max_peers:
                             # Remove oldest peer
-                            oldest_address = min(self.peers.items(), key=lambda x: x[1].last_seen)[0]
+                            oldest_address = min(
+                                self.peers.items(), key=lambda x: x[1].last_seen
+                            )[0]
                             del self.peers[oldest_address]
                             if oldest_address in self.peer_contact_history:
                                 del self.peer_contact_history[oldest_address]
 
-                        self.peers[address] = PeerInfo(ip=ip, port=port, last_seen=current_time)
+                        self.peers[address] = PeerInfo(
+                            ip=ip, port=port, last_seen=current_time
+                        )
                         added_count += 1
                     else:
                         # Update last seen time
@@ -159,7 +181,9 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
         self.running = True
 
         # Submit async loop to shared executor
-        self.manager_task = self.executor.submit_coroutine(self._async_manager_loop(), manager_id=self.manager_id)
+        self.manager_task = self.executor.submit_coroutine(
+            self._async_manager_loop(), manager_id=self.manager_id
+        )
 
         if self.manager_task is None:
             logger.error(
@@ -298,7 +322,10 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
                     # Shorter error sleep with cancellation check
                     error_sleep_chunks = max(
                         1,
-                        int(self.error_sleep_interval / TimeoutConstants.PEER_MANAGER_SLEEP_CHUNK),
+                        int(
+                            self.error_sleep_interval
+                            / TimeoutConstants.PEER_MANAGER_SLEEP_CHUNK
+                        ),
                     )
                     for _ in range(error_sleep_chunks):
                         if not self.running:
@@ -316,7 +343,9 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _manage_connections(self, current_time: float) -> Any:  # pylint: disable=too-many-branches
+    async def _manage_connections(
+        self, current_time: float
+    ) -> Any:  # pylint: disable=too-many-branches
         """Manage peer connections with rate limiting and circuit breaker"""
         # Circuit breaker: skip connection attempts during backoff
         if current_time < self._backoff_until:
@@ -357,7 +386,9 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
             attempts += 1
 
             # Try to connect with proper cleanup
-            connection = PeerConnection(peer_info, self.info_hash, self.our_peer_id, self.connection_callback)
+            connection = PeerConnection(
+                peer_info, self.info_hash, self.our_peer_id, self.connection_callback
+            )
             connection_success = False
 
             try:
@@ -416,14 +447,20 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
     def _record_failure(self, current_time: float) -> None:
         """Record a connection failure for circuit breaker tracking."""
         self._recent_failures.append(current_time)
-        while self._recent_failures and current_time - self._recent_failures[0] > self._failure_window:
+        while (
+            self._recent_failures
+            and current_time - self._recent_failures[0] > self._failure_window
+        ):
             self._recent_failures.popleft()
 
     def _is_circuit_open(self, current_time: float) -> bool:
         """Check if too many recent failures should trigger backoff."""
         if len(self._recent_failures) >= self._failure_threshold:
             self._consecutive_backoffs += 1
-            backoff = min(self._backoff_base * (2 ** (self._consecutive_backoffs - 1)), self._backoff_max)
+            backoff = min(
+                self._backoff_base * (2 ** (self._consecutive_backoffs - 1)),
+                self._backoff_max,
+            )
             self._backoff_until = current_time + backoff
             self._recent_failures.clear()
             logger.warning(
@@ -468,10 +505,14 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
         for address, connection in connections_list:
             try:
                 # Try to receive any pending messages
-                message = await connection.receive_message(timeout=self.peer_protocol_message_timeout)
+                message = await connection.receive_message(
+                    timeout=self.peer_protocol_message_timeout
+                )
                 if message:
                     message_id, payload = message
-                    await self._handle_peer_message(address, connection, message_id, payload)
+                    await self._handle_peer_message(
+                        address, connection, message_id, payload
+                    )
                 elif message is None:
                     # Connection closed by peer - mark for removal
                     logger.trace(
@@ -522,7 +563,9 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
         elif message_id == BitTorrentMessage.HAVE:
             # Peer has a new piece
             if len(payload) >= BitTorrentProtocolConstants.HAVE_PAYLOAD_SIZE:
-                piece_index = struct.unpack("!I", payload[: BitTorrentProtocolConstants.HAVE_PAYLOAD_SIZE])[0]
+                piece_index = struct.unpack(
+                    "!I", payload[: BitTorrentProtocolConstants.HAVE_PAYLOAD_SIZE]
+                )[0]
                 logger.trace(f"📦 Peer {address} has piece {piece_index}")
 
         elif message_id == BitTorrentMessage.CHOKE:
@@ -537,7 +580,9 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
             # Extension protocol message (BEP 10)
             await self._handle_extended_message(address, connection, payload)
 
-    async def _handle_extended_message(self, address: str, connection: PeerConnection, payload: bytes) -> None:
+    async def _handle_extended_message(
+        self, address: str, connection: PeerConnection, payload: bytes
+    ) -> None:
         """Handle BitTorrent extension protocol messages (BEP 10)"""
         if not payload:
             logger.trace(f"⚠️ Empty extended message from {address}")
@@ -580,11 +625,18 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
         else:
             # Other extension messages (ut_metadata, ut_pex, etc.)
             # Check if this is a ut_metadata message
-            if connection.peer_info.supported_extensions and "ut_metadata" in connection.peer_info.supported_extensions:
-                ut_metadata_id = connection.peer_info.supported_extensions["ut_metadata"]
+            if (
+                connection.peer_info.supported_extensions
+                and "ut_metadata" in connection.peer_info.supported_extensions
+            ):
+                ut_metadata_id = connection.peer_info.supported_extensions[
+                    "ut_metadata"
+                ]
                 if extended_msg_id == ut_metadata_id and self.ut_metadata:
                     # Handle ut_metadata message
-                    await self._handle_ut_metadata_message(address, connection, extended_payload)
+                    await self._handle_ut_metadata_message(
+                        address, connection, extended_payload
+                    )
                     return
 
             logger.trace(
@@ -592,7 +644,9 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _handle_ut_metadata_message(self, address: str, connection: PeerConnection, payload: bytes) -> None:
+    async def _handle_ut_metadata_message(
+        self, address: str, connection: PeerConnection, payload: bytes
+    ) -> None:
         """Handle ut_metadata extension messages (BEP 9)"""
         if not self.ut_metadata:
             return
@@ -615,15 +669,23 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
             # Generate response (either DATA or REJECT)
             response = self.ut_metadata.handle_request(piece_index)
             if response and connection.peer_info.supported_extensions:
-                ut_metadata_id = connection.peer_info.supported_extensions.get("ut_metadata")
+                ut_metadata_id = connection.peer_info.supported_extensions.get(
+                    "ut_metadata"
+                )
                 if ut_metadata_id is not None:
                     # Send extended message with ut_metadata data
                     # Format: <length><id=20><extended_id><payload>
                     extended_payload = bytes([ut_metadata_id]) + response
-                    message = struct.pack("!I", len(extended_payload) + 1) + bytes([20]) + extended_payload
+                    message = (
+                        struct.pack("!I", len(extended_payload) + 1)
+                        + bytes([20])
+                        + extended_payload
+                    )
 
                     try:
-                        await asyncio.get_running_loop().run_in_executor(None, connection.socket.send, message)
+                        await asyncio.get_running_loop().run_in_executor(
+                            None, connection.socket.send, message
+                        )
                         logger.trace(
                             f"✅ Sent ut_metadata response for piece {piece_index} to {address}",
                             extra={"class_name": self.__class__.__name__},
@@ -661,7 +723,9 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
 
         return set_bits / total_bits if total_bits > 0 else 0.0
 
-    async def _cleanup_connections(self, current_time: float) -> Any:  # pylint: disable=too-many-branches
+    async def _cleanup_connections(
+        self, current_time: float
+    ) -> Any:  # pylint: disable=too-many-branches
         """Clean up dead or old connections, peers, and contact history"""
         to_remove_connections = []
         to_remove_peers = []
@@ -672,7 +736,8 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
             for address, connection in self.active_connections.items():
                 # Remove connections that haven't communicated in a while
                 if (
-                    current_time - connection.last_message_time > self.connection_cleanup_timeout
+                    current_time - connection.last_message_time
+                    > self.connection_cleanup_timeout
                 ):  # Configurable timeout
                     to_remove_connections.append(address)
                     connection.close()
@@ -716,7 +781,9 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
 
             # Enforce hard cap by evicting oldest entries
             if len(self.peer_contact_history) > max_history_entries:
-                sorted_entries = sorted(self.peer_contact_history.items(), key=lambda x: x[1])
+                sorted_entries = sorted(
+                    self.peer_contact_history.items(), key=lambda x: x[1]
+                )
                 evict_count = len(self.peer_contact_history) - max_history_entries
                 for address, _ in sorted_entries[:evict_count]:
                     del self.peer_contact_history[address]
@@ -772,8 +839,12 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
                 # This simulates progress without transferring data
                 import random
 
-                if random.random() < self.metadata_exchange_probability:  # Configurable chance
-                    piece_index = random.randint(0, self.fake_piece_count_max)  # Configurable fake piece number
+                if (
+                    random.random() < self.metadata_exchange_probability
+                ):  # Configurable chance
+                    piece_index = random.randint(
+                        0, self.fake_piece_count_max
+                    )  # Configurable fake piece number
                     piece_data = struct.pack(">I", piece_index)
                     await connection.send_message(BitTorrentMessage.HAVE, piece_data)
 
@@ -802,8 +873,12 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
         if len(connections_list) > self.max_connections // 2:
             import random
 
-            disconnect_count = int(len(connections_list) * self.connection_rotation_percentage)
-            connections_to_disconnect = random.sample(connections_list, disconnect_count)
+            disconnect_count = int(
+                len(connections_list) * self.connection_rotation_percentage
+            )
+            connections_to_disconnect = random.sample(
+                connections_list, disconnect_count
+            )
 
             for address, connection in connections_to_disconnect:
                 logger.trace(

@@ -41,7 +41,9 @@ class NotificationMixin:
     and automatic timeout handling.
     """
 
-    def show_notification(self, message: str, notification_type: str = "info", timeout: int = 3000) -> None:
+    def show_notification(
+        self, message: str, notification_type: str = "info", timeout: int = 3000
+    ) -> None:
         """
         Show a notification message.
 
@@ -82,7 +84,9 @@ class NotificationMixin:
             notification_label.show()
 
             # Auto-hide after timeout
-            GLib.timeout_add(timeout, lambda: (self._hide_notification(notification_label), False)[1])
+            GLib.timeout_add(
+                timeout, lambda: (self._hide_notification(notification_label), False)[1]
+            )
 
             logger.trace(f"Notification shown: {message} ({notification_type})")
 
@@ -197,7 +201,9 @@ class ValidationMixin:
 
         return {}
 
-    def validate_positive_number(self, value: Any, field_name: str = "value") -> Dict[str, str]:
+    def validate_positive_number(
+        self, value: Any, field_name: str = "value"
+    ) -> Dict[str, str]:
         """
         Validate a positive number.
 
@@ -216,7 +222,9 @@ class ValidationMixin:
         except (ValueError, TypeError):
             return {field_name: "Value must be a valid number"}
 
-    def validate_range(self, value: Any, min_val: float, max_val: float, field_name: str = "value") -> Dict[str, str]:
+    def validate_range(
+        self, value: Any, min_val: float, max_val: float, field_name: str = "value"
+    ) -> Dict[str, str]:
         """
         Validate a value is within a specific range.
 
@@ -232,7 +240,11 @@ class ValidationMixin:
         try:
             num = float(value)
             if num < min_val or num > max_val:
-                return {field_name: "Value must be between {} and {}".format(min_val, max_val)}
+                return {
+                    field_name: "Value must be between {} and {}".format(
+                        min_val, max_val
+                    )
+                }
             return {}
         except (ValueError, TypeError):
             return {field_name: "Value must be a valid number"}
@@ -268,7 +280,9 @@ class KeyboardShortcutMixin:
         except Exception as e:
             logger.error(f"Error setting up keyboard shortcuts: {e}")
 
-    def _add_keyboard_shortcut(self, window: Gtk.Window, key_combo: str, callback: Callable) -> None:
+    def _add_keyboard_shortcut(
+        self, window: Gtk.Window, key_combo: str, callback: Callable
+    ) -> None:
         """
         Add a single keyboard shortcut.
 
@@ -420,7 +434,9 @@ class TranslationMixin:
         super().__init__(*args, **kwargs)
         self._language_change_connected = False
 
-    def translate_dropdown_items(self, dropdown_id: str, items: Optional[List[Any]] = None) -> None:
+    def translate_dropdown_items(
+        self, dropdown_id: str, items: Optional[List[Any]] = None
+    ) -> None:
         """
         Translate and update dropdown items.
 
@@ -431,7 +447,9 @@ class TranslationMixin:
         try:
             # Skip language dropdown - it's managed separately
             if dropdown_id in ["settings_language", "language_dropdown"]:
-                self.logger.trace(f"Skipping translation for language dropdown: {dropdown_id}")
+                self.logger.trace(
+                    f"Skipping translation for language dropdown: {dropdown_id}"
+                )
                 return
 
             dropdown = self.get_widget(dropdown_id)  # type: ignore[attr-defined]
@@ -500,10 +518,14 @@ class TranslationMixin:
                 )
             finally:
                 # Always unblock signals, even if an error occurred
-                GObject.signal_handlers_unblock_matched(dropdown, GObject.SignalMatchType.DATA, 0, 0, None, None, None)
+                GObject.signal_handlers_unblock_matched(
+                    dropdown, GObject.SignalMatchType.DATA, 0, 0, None, None, None
+                )
 
         except Exception as e:
-            self.logger.error(f"Error translating dropdown {dropdown_id}: {e}", exc_info=True)
+            self.logger.error(
+                f"Error translating dropdown {dropdown_id}: {e}", exc_info=True
+            )
 
     def _extract_dropdown_items(self, dropdown: Any) -> list:
         """
@@ -564,12 +586,18 @@ class TranslationMixin:
 
             # Get all cached widgets and check for dropdowns
             for widget_id, widget in cached_widgets.items():
-                if widget and hasattr(widget, "__class__") and "DropDown" in str(widget.__class__):
+                if (
+                    widget
+                    and hasattr(widget, "__class__")
+                    and "DropDown" in str(widget.__class__)
+                ):
                     dropdowns_found += 1
 
                     # Skip language dropdowns - they're managed separately
                     if widget_id in ["settings_language", "language_dropdown"]:
-                        self.logger.trace(f"Skipping special language dropdown: {widget_id}")
+                        self.logger.trace(
+                            f"Skipping special language dropdown: {widget_id}"
+                        )
                         continue
 
                     # Translate this dropdown using its current items
@@ -578,7 +606,9 @@ class TranslationMixin:
                         dropdowns_translated += 1
                         self.logger.trace(f"Translated dropdown: {widget_id}")
                     except Exception as e:
-                        self.logger.error(f"Failed to translate dropdown {widget_id}: {e}")
+                        self.logger.error(
+                            f"Failed to translate dropdown {widget_id}: {e}"
+                        )
 
             # Also check for any dropdowns that might not be cached yet
             if hasattr(self, "builder") and self.builder:
@@ -589,7 +619,9 @@ class TranslationMixin:
             )
 
         except Exception as e:
-            self.logger.error(f"Error during dropdown discovery and translation: {e}", exc_info=True)
+            self.logger.error(
+                f"Error during dropdown discovery and translation: {e}", exc_info=True
+            )
 
         # Connect to language change signal if not already connected
         self._connect_language_change_signal()
@@ -627,9 +659,13 @@ class TranslationMixin:
 
                         try:
                             self.translate_dropdown_items(widget_id)
-                            logger.trace(f"Discovered and translated uncached dropdown: {widget_id}")
+                            logger.trace(
+                                f"Discovered and translated uncached dropdown: {widget_id}"
+                            )
                         except Exception as e:
-                            logger.error(f"Failed to translate discovered dropdown {widget_id}: {e}")
+                            logger.error(
+                                f"Failed to translate discovered dropdown {widget_id}: {e}"
+                            )
 
         except Exception as e:
             logger.error(f"Error discovering uncached dropdowns: {e}")
@@ -648,7 +684,11 @@ class TranslationMixin:
         if not hasattr(self, "_language_change_connected"):
             self._language_change_connected = False
 
-        if self._language_change_connected or not hasattr(self, "model") or not self.model:
+        if (
+            self._language_change_connected
+            or not hasattr(self, "model")
+            or not self.model
+        ):
             return
 
         try:
@@ -656,15 +696,21 @@ class TranslationMixin:
             if hasattr(self.model, "connect"):
                 self.model.connect("language-changed", self._on_language_changed)
                 self._language_change_connected = True
-                logger.trace("Connected to language-changed signal for dropdown translation")
+                logger.trace(
+                    "Connected to language-changed signal for dropdown translation"
+                )
         except Exception as e:
             logger.error(f"Error connecting to language change signal: {e}")
 
     def _on_language_changed(self, source: Any, new_language: Any) -> None:
         """Handle language change events by refreshing dropdown translations."""
         try:
-            logger.trace(f"Refreshing dropdown translations for language: {new_language}")
+            logger.trace(
+                f"Refreshing dropdown translations for language: {new_language}"
+            )
             # Dynamically translate all dropdowns
             self.translate_all_dropdowns()
         except Exception as e:
-            logger.error(f"Error refreshing dropdown translations on language change: {e}")
+            logger.error(
+                f"Error refreshing dropdown translations on language change: {e}"
+            )

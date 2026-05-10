@@ -189,7 +189,9 @@ class UDPTrackerHandler:  # pylint: disable=too-many-instance-attributes
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _handle_connect(self, data: bytes, addr: Tuple[str, int], transaction_id: int) -> None:
+    def _handle_connect(
+        self, data: bytes, addr: Tuple[str, int], transaction_id: int
+    ) -> None:
         """Handle connect request (step 1 of UDP protocol)."""
         if len(data) < 16:
             return
@@ -350,7 +352,8 @@ class UDPTrackerHandler:  # pylint: disable=too-many-instance-attributes
 
         if self.log_announces:
             logger.trace(
-                f"UDP announce: {client_ip}:{port} for " f"{info_hash.hex()[:16]} event={event_str or 'periodic'}",
+                f"UDP announce: {client_ip}:{port} for "
+                f"{info_hash.hex()[:16]} event={event_str or 'periodic'}",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -425,7 +428,9 @@ class UDPTrackerHandler:  # pylint: disable=too-many-instance-attributes
         for addr in expired:
             del self._connection_ids[addr]
 
-    def _send_error(self, addr: Tuple[str, int], transaction_id: int, message: str) -> None:
+    def _send_error(
+        self, addr: Tuple[str, int], transaction_id: int, message: str
+    ) -> None:
         """Send an error response."""
         response = struct.pack(">II", ACTION_ERROR, transaction_id)
         response += message.encode()

@@ -108,7 +108,11 @@ class BaseSettingsTab(Component):
 
     def _(self, text: str) -> str:
         """Helper for translating strings using the model's translation function."""
-        if hasattr(self, "model") and self.model and hasattr(self.model, "get_translate_func"):
+        if (
+            hasattr(self, "model")
+            and self.model
+            and hasattr(self.model, "get_translate_func")
+        ):
             translate_func = self.model.get_translate_func()
             return translate_func(text)
         return text
@@ -276,13 +280,17 @@ class BaseSettingsTab(Component):
 
             # Handle None return (should return empty dict instead)
             if changed_settings is None:
-                self.logger.warning(f"{self.tab_name} _collect_settings returned None, using empty dict")
+                self.logger.warning(
+                    f"{self.tab_name} _collect_settings returned None, using empty dict"
+                )
                 changed_settings = {}
 
             for key, value in changed_settings.items():
                 self.app_settings.set(key, value)
 
-            self.logger.info(f"{self.tab_name} tab settings saved: {len(changed_settings)} items")
+            self.logger.info(
+                f"{self.tab_name} tab settings saved: {len(changed_settings)} items"
+            )
             return changed_settings
 
         except (KeyError, AttributeError, TypeError, ValueError) as e:
@@ -321,7 +329,10 @@ class BaseSettingsTab(Component):
 
             widget = self._widgets.get(widget_name)
             if not widget:
-                logger.warning(f"{self.tab_name}: Widget '{widget_name}' not found for collection", "BaseTab")
+                logger.warning(
+                    f"{self.tab_name}: Widget '{widget_name}' not found for collection",
+                    "BaseTab",
+                )
                 continue
 
             # Extract value from widget
@@ -418,10 +429,15 @@ class BaseSettingsTab(Component):
     def _auto_connect_mappings(self) -> None:
         """Auto-connect widgets defined in WIDGET_MAPPINGS."""
         if not self.WIDGET_MAPPINGS:
-            logger.trace(f"{self.tab_name}: No WIDGET_MAPPINGS to auto-connect", "BaseTab")
+            logger.trace(
+                f"{self.tab_name}: No WIDGET_MAPPINGS to auto-connect", "BaseTab"
+            )
             return
 
-        logger.info(f"{self.tab_name}: Auto-connecting {len(self.WIDGET_MAPPINGS)} widgets", "BaseTab")
+        logger.info(
+            f"{self.tab_name}: Auto-connecting {len(self.WIDGET_MAPPINGS)} widgets",
+            "BaseTab",
+        )
 
         for mapping in self.WIDGET_MAPPINGS:
             try:
@@ -465,7 +481,9 @@ class BaseSettingsTab(Component):
 
                 # NOTE: Settings are NOT saved here - they're collected and saved in batch
                 # via _collect_settings() when the dialog closes or Apply is clicked
-                logger.trace(f"Widget changed: {m.get('name', widget_id)} = {value}", "BaseTab")
+                logger.trace(
+                    f"Widget changed: {m.get('name', widget_id)} = {value}", "BaseTab"
+                )
 
                 # Handle dependencies
                 if "enables" in m:
@@ -487,7 +505,10 @@ class BaseSettingsTab(Component):
         # Track this widget as connected
         self._connected_widgets.add(widget_id)
 
-        logger.trace(f"{self.tab_name}: Auto-connected {widget_id} (batch save mode, signal: {signal})", "BaseTab")
+        logger.trace(
+            f"{self.tab_name}: Auto-connected {widget_id} (batch save mode, signal: {signal})",
+            "BaseTab",
+        )
 
     def _auto_detect_signal(self, widget: Gtk.Widget) -> str:
         """Auto-detect appropriate signal for widget type."""
@@ -509,7 +530,9 @@ class BaseSettingsTab(Component):
             return "changed"
         return "changed"  # Default fallback
 
-    def _extract_widget_value(self, widget: Gtk.Widget, value_type: Optional[type] = None) -> Any:
+    def _extract_widget_value(
+        self, widget: Gtk.Widget, value_type: Optional[type] = None
+    ) -> Any:
         """Extract value from widget."""
         value = None
 
@@ -568,7 +591,9 @@ class BaseSettingsTab(Component):
                 )
 
             if len(report["missing_handlers"]) > 5:
-                logger.warning(f"  ... and {len(report['missing_handlers']) - 5} more", "BaseTab")
+                logger.warning(
+                    f"  ... and {len(report['missing_handlers']) - 5} more", "BaseTab"
+                )
         else:
             logger.info(
                 f"✅ {self.tab_name}: All interactive widgets have handlers "
@@ -617,7 +642,11 @@ class BaseSettingsTab(Component):
                     report["connected_widgets"] += 1  # type: ignore[operator]
                 else:
                     report["missing_handlers"].append(  # type: ignore[attr-defined]
-                        {"id": widget_id, "type": type(obj).__name__, "expected_signal": self._auto_detect_signal(obj)}
+                        {
+                            "id": widget_id,
+                            "type": type(obj).__name__,
+                            "expected_signal": self._auto_detect_signal(obj),
+                        }
                     )
 
         # Calculate coverage
@@ -633,7 +662,9 @@ class BaseSettingsTab(Component):
             return True
 
         # Check if widget is in cached widgets (manual connection)
-        if widget_id in self._widgets or any(widget_id in str(w) for w in self._widgets.values()):
+        if widget_id in self._widgets or any(
+            widget_id in str(w) for w in self._widgets.values()
+        ):
             return True
 
         # Check if widget has any connected signals (heuristic)

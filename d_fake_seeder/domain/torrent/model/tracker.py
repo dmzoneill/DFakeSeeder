@@ -31,7 +31,9 @@ class Tracker(GObject.Object):
     tier = GObject.Property(type=int, default=0)  # Tracker tier (0 = primary)
 
     # Dynamic status tracking
-    status = GObject.Property(type=str, default="unknown")  # "working", "failed", "unknown", "announcing"
+    status = GObject.Property(
+        type=str, default="unknown"
+    )  # "working", "failed", "unknown", "announcing"
     enabled = GObject.Property(type=bool, default=True)  # Can be disabled by user
 
     # Announce timing
@@ -47,7 +49,9 @@ class Tracker(GObject.Object):
     downloaded = GObject.Property(type=int, default=0)  # Completed downloads
 
     # Performance metrics
-    last_response_time = GObject.Property(type=float, default=0.0)  # Response time in seconds
+    last_response_time = GObject.Property(
+        type=float, default=0.0
+    )  # Response time in seconds
     average_response_time = GObject.Property(type=float, default=0.0)
     consecutive_failures = GObject.Property(type=int, default=0)
     total_announces = GObject.Property(type=int, default=0)
@@ -80,7 +84,9 @@ class Tracker(GObject.Object):
             self.set_property("last_announce", current_time)
 
         # Performance tracking
-        self._response_times: List[Any] = []  # Keep last 10 response times for averaging
+        self._response_times: List[Any] = (
+            []
+        )  # Keep last 10 response times for averaging
         self._last_update_time = current_time
 
         logger.trace(
@@ -122,7 +128,9 @@ class Tracker(GObject.Object):
             and self.get_property("enabled")
         )
 
-    def update_announce_response(self, response_data: Dict[str, Any], response_time: float) -> None:
+    def update_announce_response(
+        self, response_data: Dict[str, Any], response_time: float
+    ) -> None:
         """
         Update tracker with successful announce response
 
@@ -136,8 +144,12 @@ class Tracker(GObject.Object):
             # Update basic status
             self.set_property("status", "working")
             self.set_property("last_announce", current_time)
-            self.set_property("total_announces", self.get_property("total_announces") + 1)
-            self.set_property("successful_announces", self.get_property("successful_announces") + 1)
+            self.set_property(
+                "total_announces", self.get_property("total_announces") + 1
+            )
+            self.set_property(
+                "successful_announces", self.get_property("successful_announces") + 1
+            )
             self.set_property("consecutive_failures", 0)
             self.set_property("error_message", "")
 
@@ -149,7 +161,9 @@ class Tracker(GObject.Object):
             if "interval" in response_data:
                 self.set_property("announce_interval", response_data["interval"])
             if "min interval" in response_data:
-                self.set_property("min_announce_interval", response_data["min interval"])
+                self.set_property(
+                    "min_announce_interval", response_data["min interval"]
+                )
 
             # Calculate next announce time
             interval = self.get_property("announce_interval")
@@ -187,7 +201,9 @@ class Tracker(GObject.Object):
                 exc_info=True,
             )
 
-    def update_announce_failure(self, error_message: str, response_time: Optional[float] = None) -> None:
+    def update_announce_failure(
+        self, error_message: str, response_time: Optional[float] = None
+    ) -> None:
         """
         Update tracker with failed announce attempt
 
@@ -202,8 +218,12 @@ class Tracker(GObject.Object):
             self.set_property("status", "failed")
             self.set_property("last_error_time", current_time)
             self.set_property("error_message", error_message)
-            self.set_property("total_announces", self.get_property("total_announces") + 1)
-            self.set_property("consecutive_failures", self.get_property("consecutive_failures") + 1)
+            self.set_property(
+                "total_announces", self.get_property("total_announces") + 1
+            )
+            self.set_property(
+                "consecutive_failures", self.get_property("consecutive_failures") + 1
+            )
 
             # Update timing if we have response time
             if response_time is not None:
@@ -213,7 +233,9 @@ class Tracker(GObject.Object):
             # Exponential backoff for next announce
             consecutive = self.get_property("consecutive_failures")
             base_interval = self.get_property("announce_interval")
-            backoff_interval = min(base_interval * (2 ** min(consecutive - 1, 5)), 3600)  # Max 1 hour
+            backoff_interval = min(
+                base_interval * (2 ** min(consecutive - 1, 5)), 3600
+            )  # Max 1 hour
             self.set_property("next_announce", current_time + backoff_interval)
 
             # Log at DEBUG for first 2 attempts, WARNING for persistent failures

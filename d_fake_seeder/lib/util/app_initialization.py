@@ -59,7 +59,9 @@ class AppInitializationHelper:
                     # Fallback: use the directory containing this file
                     current_file = os.path.abspath(__file__)
                     # Go up from lib/util/app_initialization.py to the package root
-                    package_root = os.path.dirname(os.path.dirname(os.path.dirname(current_file)))
+                    package_root = os.path.dirname(
+                        os.path.dirname(os.path.dirname(current_file))
+                    )
                     os.environ["DFS_PATH"] = package_root
                     logger.trace(f"DFS_PATH set to fallback path: {package_root}")
 
@@ -84,4 +86,6 @@ class AppInitializationHelper:
             logger.trace("Full application initialization completed")
 
         except Exception as e:  # pylint: disable=broad-exception-caught
-            logger.error(f"Error during full application initialization: {e}", exc_info=True)
+            logger.error(
+                f"Error during full application initialization: {e}", exc_info=True
+            )

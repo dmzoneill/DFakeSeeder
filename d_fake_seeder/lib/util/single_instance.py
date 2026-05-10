@@ -77,7 +77,10 @@ class DBusSingleInstance(SingleInstanceChecker):
                     return True
             except GLib.Error as e:
                 error_msg = str(e)
-                if "NameHasNoOwner" in error_msg or "org.freedesktop.DBus.Error.NameHasNoOwner" in error_msg:
+                if (
+                    "NameHasNoOwner" in error_msg
+                    or "org.freedesktop.DBus.Error.NameHasNoOwner" in error_msg
+                ):
                     # Service not registered - no other instance
                     logger.trace(
                         f"D-Bus service '{self.service_name}' not registered - no existing instance",
@@ -264,7 +267,12 @@ class MultiMethodSingleInstance:
     3. PID file (fallback)
     """
 
-    def __init__(self, app_name: str, dbus_service: Optional[str] = None, use_pidfile: bool = True) -> None:
+    def __init__(
+        self,
+        app_name: str,
+        dbus_service: Optional[str] = None,
+        use_pidfile: bool = True,
+    ) -> None:
         self.app_name = app_name
         self.dbus_service = dbus_service
         self.use_pidfile = use_pidfile

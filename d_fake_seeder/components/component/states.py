@@ -50,14 +50,18 @@ class States(Component, ColumnTranslationMixin):
         tracker_col.set_visible(True)  # Set column visibility
         tracker_col.set_expand(True)
         # Register tracker column for translation
-        self.register_translatable_column(self.states_columnview, tracker_col, "tracker", "states")
+        self.register_translatable_column(
+            self.states_columnview, tracker_col, "tracker", "states"
+        )
         # Create a custom factory for the tracker column
         tracker_factory = Gtk.SignalListItemFactory()
         self.track_signal(
             tracker_factory,
             tracker_factory.connect("setup", self.setup_tracker_factory),
         )
-        self.track_signal(tracker_factory, tracker_factory.connect("bind", self.bind_tracker_factory))
+        self.track_signal(
+            tracker_factory, tracker_factory.connect("bind", self.bind_tracker_factory)
+        )
         tracker_col.set_factory(tracker_factory)
         self.states_columnview.append_column(tracker_col)
         logger.trace(
@@ -68,11 +72,17 @@ class States(Component, ColumnTranslationMixin):
         count_col = Gtk.ColumnViewColumn()
         count_col.set_visible(True)  # Set column visibility
         # Register count column for translation
-        self.register_translatable_column(self.states_columnview, count_col, "count", "states")
+        self.register_translatable_column(
+            self.states_columnview, count_col, "count", "states"
+        )
         # Create a custom factory for the count column
         count_factory = Gtk.SignalListItemFactory()
-        self.track_signal(count_factory, count_factory.connect("setup", self.setup_count_factory))
-        self.track_signal(count_factory, count_factory.connect("bind", self.bind_count_factory))
+        self.track_signal(
+            count_factory, count_factory.connect("setup", self.setup_count_factory)
+        )
+        self.track_signal(
+            count_factory, count_factory.connect("bind", self.bind_count_factory)
+        )
         count_col.set_factory(count_factory)
         self.states_columnview.append_column(count_col)
         logger.trace(
@@ -94,12 +104,16 @@ class States(Component, ColumnTranslationMixin):
             tracker_factory,
             tracker_factory.connect("setup", self.setup_tracker_factory),
         )
-        self.track_signal(tracker_factory, tracker_factory.connect("bind", self.bind_tracker_factory))
+        self.track_signal(
+            tracker_factory, tracker_factory.connect("bind", self.bind_tracker_factory)
+        )
         tracker_col.set_factory(tracker_factory)
         self.states_columnview.append_column(tracker_col)
         # Register for translation after creation to reduce blocking
         try:
-            self.register_translatable_column(self.states_columnview, tracker_col, "tracker", "states")
+            self.register_translatable_column(
+                self.states_columnview, tracker_col, "tracker", "states"
+            )
         except Exception:
             pass  # Translation registration can fail, column still works
         logger.trace(
@@ -119,13 +133,19 @@ class States(Component, ColumnTranslationMixin):
             count_col.set_visible(True)
             # Create a custom factory for the count column
             count_factory = Gtk.SignalListItemFactory()
-            self.track_signal(count_factory, count_factory.connect("setup", self.setup_count_factory))
-            self.track_signal(count_factory, count_factory.connect("bind", self.bind_count_factory))
+            self.track_signal(
+                count_factory, count_factory.connect("setup", self.setup_count_factory)
+            )
+            self.track_signal(
+                count_factory, count_factory.connect("bind", self.bind_count_factory)
+            )
             count_col.set_factory(count_factory)
             self.states_columnview.append_column(count_col)
             # Register count column for translation
             try:
-                self.register_translatable_column(self.states_columnview, count_col, "count", "states")
+                self.register_translatable_column(
+                    self.states_columnview, count_col, "count", "states"
+                )
             except Exception:
                 pass
             logger.info("Background count column created successfully", "States")
@@ -140,7 +160,9 @@ class States(Component, ColumnTranslationMixin):
         # Get the item from the factory
         torrent_state = item.get_item()
         # Update the label with just the tracker data
-        tracker_name = torrent_state.tracker if torrent_state.tracker is not None else ""
+        tracker_name = (
+            torrent_state.tracker if torrent_state.tracker is not None else ""
+        )
         item.get_child().set_label(tracker_name)
 
     def setup_count_factory(self, factory: Any, item: Any) -> None:
@@ -159,7 +181,9 @@ class States(Component, ColumnTranslationMixin):
         # Connect to language change signals for column translation
         if self.model and hasattr(self.model, "connect"):
             try:
-                self.track_signal(model, model.connect("language-changed", self.on_language_changed))
+                self.track_signal(
+                    model, model.connect("language-changed", self.on_language_changed)
+                )
                 logger.trace(
                     "Connected to language-changed signal for column translation",
                     extra={"class_name": self.__class__.__name__},
@@ -181,7 +205,9 @@ class States(Component, ColumnTranslationMixin):
             extra={"class_name": self.__class__.__name__},
         )
 
-    def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
+    def handle_model_changed(
+        self, source: Any, data_obj: Any, data_changed: Any
+    ) -> None:
         logger.trace(
             "States settings update",
             extra={"class_name": self.__class__.__name__},

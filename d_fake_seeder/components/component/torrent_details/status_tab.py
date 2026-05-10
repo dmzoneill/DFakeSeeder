@@ -63,7 +63,10 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if self._status_grid_child is None:
                 return
 
-            if self._status_tab and self._status_grid_child.get_parent() == self._status_tab:
+            if (
+                self._status_tab
+                and self._status_grid_child.get_parent() == self._status_tab
+            ):
                 self._status_tab.remove(self._status_grid_child)
             elif self._status_grid_child.get_parent():
                 # If it has a different parent, remove from that parent
@@ -131,7 +134,10 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         """
         try:
             ATTRIBUTES = Attributes
-            return [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
+            return [
+                prop.name.replace("-", "_")
+                for prop in GObject.list_properties(ATTRIBUTES)
+            ]
         except Exception as e:
             self.logger.error(f"Error getting compatible attributes: {e}")
             return []
@@ -154,7 +160,9 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             display_name = self._convert_attribute_to_display_name(attribute)
 
             # Create the label pair
-            self.create_label_pair(display_name, formatted_value, row, self._status_grid_child)
+            self.create_label_pair(
+                display_name, formatted_value, row, self._status_grid_child
+            )
 
         except Exception as e:
             self.logger.error(f"Error creating attribute row for {attribute}: {e}")

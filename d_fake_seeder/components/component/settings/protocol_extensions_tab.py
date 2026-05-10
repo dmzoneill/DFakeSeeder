@@ -31,46 +31,84 @@ class ProtocolExtensionsTab(BaseSettingsTab):
     def _init_widgets(self) -> None:
         """Initialize Protocol Extensions widgets"""
         # Extension Protocol (BEP-010) Settings
-        self._widgets["extensions_enabled"] = self.builder.get_object("extensions_enabled_switch")
+        self._widgets["extensions_enabled"] = self.builder.get_object(
+            "extensions_enabled_switch"
+        )
         self._widgets["ut_metadata"] = self.builder.get_object("ut_metadata_check")
         self._widgets["ut_pex"] = self.builder.get_object("ut_pex_check")
         self._widgets["lt_donthave"] = self.builder.get_object("lt_donthave_check")
-        self._widgets["fast_extension"] = self.builder.get_object("fast_extension_check")
+        self._widgets["fast_extension"] = self.builder.get_object(
+            "fast_extension_check"
+        )
         self._widgets["ut_holepunch"] = self.builder.get_object("ut_holepunch_check")
 
         # Peer Exchange (PEX) Settings
         self._widgets["pex_interval"] = self.builder.get_object("pex_interval_spin")
         self._widgets["pex_max_peers"] = self.builder.get_object("pex_max_peers_spin")
-        self._widgets["pex_max_dropped"] = self.builder.get_object("pex_max_dropped_spin")
-        self._widgets["pex_synthetic_peers"] = self.builder.get_object("pex_synthetic_peers_check")
-        self._widgets["pex_synthetic_count"] = self.builder.get_object("pex_synthetic_count_spin")
+        self._widgets["pex_max_dropped"] = self.builder.get_object(
+            "pex_max_dropped_spin"
+        )
+        self._widgets["pex_synthetic_peers"] = self.builder.get_object(
+            "pex_synthetic_peers_check"
+        )
+        self._widgets["pex_synthetic_count"] = self.builder.get_object(
+            "pex_synthetic_count_spin"
+        )
 
         # Metadata Extension Settings
-        self._widgets["metadata_enabled"] = self.builder.get_object("metadata_enabled_check")
-        self._widgets["metadata_piece_size"] = self.builder.get_object("metadata_piece_size_spin")
-        self._widgets["metadata_timeout"] = self.builder.get_object("metadata_timeout_spin")
-        self._widgets["metadata_synthetic"] = self.builder.get_object("metadata_synthetic_check")
+        self._widgets["metadata_enabled"] = self.builder.get_object(
+            "metadata_enabled_check"
+        )
+        self._widgets["metadata_piece_size"] = self.builder.get_object(
+            "metadata_piece_size_spin"
+        )
+        self._widgets["metadata_timeout"] = self.builder.get_object(
+            "metadata_timeout_spin"
+        )
+        self._widgets["metadata_synthetic"] = self.builder.get_object(
+            "metadata_synthetic_check"
+        )
 
         # Transport Protocol Settings
         self._widgets["utp_enabled"] = self.builder.get_object("utp_enabled_check")
         self._widgets["tcp_fallback"] = self.builder.get_object("tcp_fallback_check")
-        self._widgets["connection_timeout"] = self.builder.get_object("ext_connection_timeout_spin")
-        self._widgets["keep_alive_interval"] = self.builder.get_object("ext_keep_alive_spin")
+        self._widgets["connection_timeout"] = self.builder.get_object(
+            "ext_connection_timeout_spin"
+        )
+        self._widgets["keep_alive_interval"] = self.builder.get_object(
+            "ext_keep_alive_spin"
+        )
 
         # Advanced Extension Settings
-        self._widgets["nagle_algorithm"] = self.builder.get_object("nagle_algorithm_check")
+        self._widgets["nagle_algorithm"] = self.builder.get_object(
+            "nagle_algorithm_check"
+        )
         self._widgets["tcp_keepalive"] = self.builder.get_object("tcp_keepalive_check")
-        self._widgets["extension_timeout"] = self.builder.get_object("extension_timeout_spin")
-        self._widgets["max_extension_msg_size"] = self.builder.get_object("max_extension_msg_size_spin")
+        self._widgets["extension_timeout"] = self.builder.get_object(
+            "extension_timeout_spin"
+        )
+        self._widgets["max_extension_msg_size"] = self.builder.get_object(
+            "max_extension_msg_size_spin"
+        )
 
         # Extension Statistics
-        self._widgets["track_extension_stats"] = self.builder.get_object("track_extension_stats_check")
-        self._widgets["stats_update_interval"] = self.builder.get_object("ext_stats_interval_spin")
+        self._widgets["track_extension_stats"] = self.builder.get_object(
+            "track_extension_stats_check"
+        )
+        self._widgets["stats_update_interval"] = self.builder.get_object(
+            "ext_stats_interval_spin"
+        )
 
         # Security Settings
-        self._widgets["validate_extensions"] = self.builder.get_object("validate_extensions_check")
-        self._widgets["limit_extension_msgs"] = self.builder.get_object("limit_extension_msgs_check")
-        self._widgets["max_msgs_per_second"] = self.builder.get_object("max_ext_msgs_per_sec_spin")
+        self._widgets["validate_extensions"] = self.builder.get_object(
+            "validate_extensions_check"
+        )
+        self._widgets["limit_extension_msgs"] = self.builder.get_object(
+            "limit_extension_msgs_check"
+        )
+        self._widgets["max_msgs_per_second"] = self.builder.get_object(
+            "max_ext_msgs_per_sec_spin"
+        )
 
         self.logger.trace(
             "Protocol Extensions tab widgets initialized",
@@ -83,86 +121,134 @@ class ProtocolExtensionsTab(BaseSettingsTab):
 
         # Extension Protocol Enable/Disable (has dependencies - controls child widget sensitivity)
         if self._widgets["extensions_enabled"]:
-            self._widgets["extensions_enabled"].connect("state-set", self._on_extensions_enabled_changed)
+            self._widgets["extensions_enabled"].connect(
+                "state-set", self._on_extensions_enabled_changed
+            )
 
         # Individual Extension Toggles (have dependencies - control related widget sensitivity)
         if self._widgets["ut_metadata"]:
-            self._widgets["ut_metadata"].connect("toggled", self._on_ut_metadata_toggled)
+            self._widgets["ut_metadata"].connect(
+                "toggled", self._on_ut_metadata_toggled
+            )
 
         if self._widgets["ut_pex"]:
             self._widgets["ut_pex"].connect("toggled", self._on_ut_pex_toggled)
 
         # PEX Settings
         if self._widgets["pex_interval"]:
-            self._widgets["pex_interval"].connect("value-changed", self._on_pex_interval_changed)
+            self._widgets["pex_interval"].connect(
+                "value-changed", self._on_pex_interval_changed
+            )
 
         if self._widgets["pex_max_peers"]:
-            self._widgets["pex_max_peers"].connect("value-changed", self._on_pex_max_peers_changed)
+            self._widgets["pex_max_peers"].connect(
+                "value-changed", self._on_pex_max_peers_changed
+            )
 
         if self._widgets["pex_max_dropped"]:
-            self._widgets["pex_max_dropped"].connect("value-changed", self._on_pex_max_dropped_changed)
+            self._widgets["pex_max_dropped"].connect(
+                "value-changed", self._on_pex_max_dropped_changed
+            )
 
         if self._widgets["pex_synthetic_peers"]:
-            self._widgets["pex_synthetic_peers"].connect("toggled", self._on_pex_synthetic_peers_toggled)
+            self._widgets["pex_synthetic_peers"].connect(
+                "toggled", self._on_pex_synthetic_peers_toggled
+            )
 
         if self._widgets["pex_synthetic_count"]:
-            self._widgets["pex_synthetic_count"].connect("value-changed", self._on_pex_synthetic_count_changed)
+            self._widgets["pex_synthetic_count"].connect(
+                "value-changed", self._on_pex_synthetic_count_changed
+            )
 
         # Metadata Extension Settings
         if self._widgets["metadata_enabled"]:
-            self._widgets["metadata_enabled"].connect("toggled", self._on_metadata_enabled_toggled)
+            self._widgets["metadata_enabled"].connect(
+                "toggled", self._on_metadata_enabled_toggled
+            )
 
         if self._widgets["metadata_piece_size"]:
-            self._widgets["metadata_piece_size"].connect("value-changed", self._on_metadata_piece_size_changed)
+            self._widgets["metadata_piece_size"].connect(
+                "value-changed", self._on_metadata_piece_size_changed
+            )
 
         if self._widgets["metadata_timeout"]:
-            self._widgets["metadata_timeout"].connect("value-changed", self._on_metadata_timeout_changed)
+            self._widgets["metadata_timeout"].connect(
+                "value-changed", self._on_metadata_timeout_changed
+            )
 
         if self._widgets["metadata_synthetic"]:
-            self._widgets["metadata_synthetic"].connect("toggled", self._on_metadata_synthetic_toggled)
+            self._widgets["metadata_synthetic"].connect(
+                "toggled", self._on_metadata_synthetic_toggled
+            )
 
         # Transport Settings
         if self._widgets["utp_enabled"]:
-            self._widgets["utp_enabled"].connect("toggled", self._on_utp_enabled_toggled)
+            self._widgets["utp_enabled"].connect(
+                "toggled", self._on_utp_enabled_toggled
+            )
 
         if self._widgets["tcp_fallback"]:
-            self._widgets["tcp_fallback"].connect("toggled", self._on_tcp_fallback_toggled)
+            self._widgets["tcp_fallback"].connect(
+                "toggled", self._on_tcp_fallback_toggled
+            )
 
         if self._widgets["connection_timeout"]:
-            self._widgets["connection_timeout"].connect("value-changed", self._on_connection_timeout_changed)
+            self._widgets["connection_timeout"].connect(
+                "value-changed", self._on_connection_timeout_changed
+            )
 
         if self._widgets["keep_alive_interval"]:
-            self._widgets["keep_alive_interval"].connect("value-changed", self._on_keep_alive_interval_changed)
+            self._widgets["keep_alive_interval"].connect(
+                "value-changed", self._on_keep_alive_interval_changed
+            )
 
         # Advanced Settings
         if self._widgets["nagle_algorithm"]:
-            self._widgets["nagle_algorithm"].connect("toggled", self._on_nagle_algorithm_toggled)
+            self._widgets["nagle_algorithm"].connect(
+                "toggled", self._on_nagle_algorithm_toggled
+            )
 
         if self._widgets["tcp_keepalive"]:
-            self._widgets["tcp_keepalive"].connect("toggled", self._on_tcp_keepalive_toggled)
+            self._widgets["tcp_keepalive"].connect(
+                "toggled", self._on_tcp_keepalive_toggled
+            )
 
         if self._widgets["extension_timeout"]:
-            self._widgets["extension_timeout"].connect("value-changed", self._on_extension_timeout_changed)
+            self._widgets["extension_timeout"].connect(
+                "value-changed", self._on_extension_timeout_changed
+            )
 
         if self._widgets["max_extension_msg_size"]:
-            self._widgets["max_extension_msg_size"].connect("value-changed", self._on_max_extension_msg_size_changed)
+            self._widgets["max_extension_msg_size"].connect(
+                "value-changed", self._on_max_extension_msg_size_changed
+            )
 
         # Statistics Settings
         if self._widgets["track_extension_stats"]:
-            self._widgets["track_extension_stats"].connect("toggled", self._on_track_extension_stats_toggled)
+            self._widgets["track_extension_stats"].connect(
+                "toggled", self._on_track_extension_stats_toggled
+            )
 
         if self._widgets["stats_update_interval"]:
-            self._widgets["stats_update_interval"].connect("value-changed", self._on_stats_update_interval_changed)
+            self._widgets["stats_update_interval"].connect(
+                "value-changed", self._on_stats_update_interval_changed
+            )
 
         # Security Settings
         if self._widgets["validate_extensions"]:
-            self._widgets["validate_extensions"].connect("toggled", self._on_validate_extensions_toggled)
+            self._widgets["validate_extensions"].connect(
+                "toggled", self._on_validate_extensions_toggled
+            )
 
         if self._widgets["limit_extension_msgs"]:
-            self._widgets["limit_extension_msgs"].connect("toggled", self._on_limit_extension_msgs_toggled)
+            self._widgets["limit_extension_msgs"].connect(
+                "toggled", self._on_limit_extension_msgs_toggled
+            )
 
         if self._widgets["max_msgs_per_second"]:
-            self._widgets["max_msgs_per_second"].connect("value-changed", self._on_max_msgs_per_second_changed)
+            self._widgets["max_msgs_per_second"].connect(
+                "value-changed", self._on_max_msgs_per_second_changed
+            )
 
         self.logger.trace(
             "Protocol Extensions tab signals connected",
@@ -224,7 +310,8 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             if self._widgets.get("ut_pex"):
                 pex_enabled = self._widgets["ut_pex"].get_active()
                 extensions_enabled = (
-                    self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_active()
+                    self._widgets.get("extensions_enabled")
+                    and self._widgets["extensions_enabled"].get_active()
                 )
                 pex_widgets = [
                     "pex_interval",
@@ -235,25 +322,39 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 ]
                 for widget_name in pex_widgets:
                     if self._widgets.get(widget_name):
-                        self._widgets[widget_name].set_sensitive(extensions_enabled and pex_enabled)
+                        self._widgets[widget_name].set_sensitive(
+                            extensions_enabled and pex_enabled
+                        )
 
             # Set up metadata-specific dependencies (only if extensions are enabled AND ut_metadata is enabled)
             if self._widgets.get("ut_metadata"):
                 metadata_enabled = self._widgets["ut_metadata"].get_active()
                 extensions_enabled = (
-                    self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_active()
+                    self._widgets.get("extensions_enabled")
+                    and self._widgets["extensions_enabled"].get_active()
                 )
-                metadata_widgets = ["metadata_piece_size", "metadata_timeout", "metadata_synthetic"]
+                metadata_widgets = [
+                    "metadata_piece_size",
+                    "metadata_timeout",
+                    "metadata_synthetic",
+                ]
                 for widget_name in metadata_widgets:
                     if self._widgets.get(widget_name):
-                        self._widgets[widget_name].set_sensitive(extensions_enabled and metadata_enabled)
+                        self._widgets[widget_name].set_sensitive(
+                            extensions_enabled and metadata_enabled
+                        )
 
             # Set up PEX synthetic count dependency
-            if self._widgets.get("pex_synthetic_peers") and self._widgets.get("pex_synthetic_count"):
+            if self._widgets.get("pex_synthetic_peers") and self._widgets.get(
+                "pex_synthetic_count"
+            ):
                 synthetic_enabled = self._widgets["pex_synthetic_peers"].get_active()
-                pex_enabled = self._widgets.get("ut_pex") and self._widgets["ut_pex"].get_active()
+                pex_enabled = (
+                    self._widgets.get("ut_pex") and self._widgets["ut_pex"].get_active()
+                )
                 extensions_enabled = (
-                    self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_active()
+                    self._widgets.get("extensions_enabled")
+                    and self._widgets["extensions_enabled"].get_active()
                 )
                 self._widgets["pex_synthetic_count"].set_sensitive(
                     extensions_enabled and pex_enabled and synthetic_enabled
@@ -320,7 +421,11 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             ("metadata_timeout", "protocols.extended.metadata_timeout", int),
             ("metadata_synthetic", "protocols.extended.metadata_synthetic", bool),
             ("extension_timeout", "protocols.extended.extension_timeout", int),
-            ("max_extension_msg_size", "protocols.extended.max_extension_msg_size", int),
+            (
+                "max_extension_msg_size",
+                "protocols.extended.max_extension_msg_size",
+                int,
+            ),
             ("track_extension_stats", "protocols.extended.track_extension_stats", bool),
             ("stats_update_interval", "protocols.extended.stats_update_interval", int),
             ("validate_extensions", "protocols.extended.validate_extensions", bool),
@@ -334,7 +439,9 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 else:
                     settings[setting_key] = widget.get_active()
 
-        self.logger.trace(f"Collected {len(settings)} settings from Protocol Extensions tab")
+        self.logger.trace(
+            f"Collected {len(settings)} settings from Protocol Extensions tab"
+        )
         return settings
 
     def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
@@ -354,14 +461,24 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         """Load Protocol Extensions settings from configuration using nested keys."""
         try:
             # Extension Protocol Settings
-            ut_metadata = self.app_settings.get("protocols.extensions.ut_metadata", True)
+            ut_metadata = self.app_settings.get(
+                "protocols.extensions.ut_metadata", True
+            )
             ut_pex = self.app_settings.get("protocols.extensions.ut_pex", True)
-            lt_donthave = self.app_settings.get("protocols.extensions.lt_donthave", True)
-            fast_ext = self.app_settings.get("protocols.extensions.fast_extension", True)
-            ut_holepunch = self.app_settings.get("protocols.extensions.ut_holepunch", False)
+            lt_donthave = self.app_settings.get(
+                "protocols.extensions.lt_donthave", True
+            )
+            fast_ext = self.app_settings.get(
+                "protocols.extensions.fast_extension", True
+            )
+            ut_holepunch = self.app_settings.get(
+                "protocols.extensions.ut_holepunch", False
+            )
 
             # Overall extensions enabled (any extension is enabled)
-            extensions_enabled = any([ut_metadata, ut_pex, lt_donthave, fast_ext, ut_holepunch])
+            extensions_enabled = any(
+                [ut_metadata, ut_pex, lt_donthave, fast_ext, ut_holepunch]
+            )
             if self._widgets["extensions_enabled"]:
                 self._widgets["extensions_enabled"].set_active(extensions_enabled)
 
@@ -388,7 +505,9 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 value = self.app_settings.get("protocols.pex.max_dropped_peers", 20)
                 self._widgets["pex_max_dropped"].set_value(value)
             if self._widgets["pex_synthetic_peers"]:
-                value = self.app_settings.get("protocols.pex.generate_synthetic_peers", True)
+                value = self.app_settings.get(
+                    "protocols.pex.generate_synthetic_peers", True
+                )
                 self._widgets["pex_synthetic_peers"].set_active(value)
             if self._widgets["pex_synthetic_count"]:
                 value = self.app_settings.get("protocols.pex.synthetic_peer_count", 20)
@@ -402,13 +521,19 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 value = self.app_settings.get("protocols.transport.tcp_fallback", True)
                 self._widgets["tcp_fallback"].set_active(value)
             if self._widgets["connection_timeout"]:
-                value = self.app_settings.get("protocols.transport.connection_timeout", 30)
+                value = self.app_settings.get(
+                    "protocols.transport.connection_timeout", 30
+                )
                 self._widgets["connection_timeout"].set_value(value)
             if self._widgets["keep_alive_interval"]:
-                value = self.app_settings.get("protocols.transport.keep_alive_interval", 120)
+                value = self.app_settings.get(
+                    "protocols.transport.keep_alive_interval", 120
+                )
                 self._widgets["keep_alive_interval"].set_value(value)
             if self._widgets["nagle_algorithm"]:
-                value = self.app_settings.get("protocols.transport.nagle_algorithm", False)
+                value = self.app_settings.get(
+                    "protocols.transport.nagle_algorithm", False
+                )
                 self._widgets["nagle_algorithm"].set_active(value)
             if self._widgets["tcp_keepalive"]:
                 value = self.app_settings.get("protocols.transport.tcp_keepalive", True)
@@ -416,37 +541,57 @@ class ProtocolExtensionsTab(BaseSettingsTab):
 
             # Extended settings
             if self._widgets["metadata_enabled"]:
-                value = self.app_settings.get("protocols.extended.metadata_enabled", True)
+                value = self.app_settings.get(
+                    "protocols.extended.metadata_enabled", True
+                )
                 self._widgets["metadata_enabled"].set_active(value)
             if self._widgets["metadata_piece_size"]:
-                value = self.app_settings.get("protocols.extended.metadata_piece_size", 16384)
+                value = self.app_settings.get(
+                    "protocols.extended.metadata_piece_size", 16384
+                )
                 self._widgets["metadata_piece_size"].set_value(value)
             if self._widgets["metadata_timeout"]:
                 value = self.app_settings.get("protocols.extended.metadata_timeout", 60)
                 self._widgets["metadata_timeout"].set_value(value)
             if self._widgets["metadata_synthetic"]:
-                value = self.app_settings.get("protocols.extended.metadata_synthetic", True)
+                value = self.app_settings.get(
+                    "protocols.extended.metadata_synthetic", True
+                )
                 self._widgets["metadata_synthetic"].set_active(value)
             if self._widgets["extension_timeout"]:
-                value = self.app_settings.get("protocols.extended.extension_timeout", 30)
+                value = self.app_settings.get(
+                    "protocols.extended.extension_timeout", 30
+                )
                 self._widgets["extension_timeout"].set_value(value)
             if self._widgets["max_extension_msg_size"]:
-                value = self.app_settings.get("protocols.extended.max_extension_msg_size", 1048576)
+                value = self.app_settings.get(
+                    "protocols.extended.max_extension_msg_size", 1048576
+                )
                 self._widgets["max_extension_msg_size"].set_value(value)
             if self._widgets["track_extension_stats"]:
-                value = self.app_settings.get("protocols.extended.track_extension_stats", True)
+                value = self.app_settings.get(
+                    "protocols.extended.track_extension_stats", True
+                )
                 self._widgets["track_extension_stats"].set_active(value)
             if self._widgets["stats_update_interval"]:
-                value = self.app_settings.get("protocols.extended.stats_update_interval", 60)
+                value = self.app_settings.get(
+                    "protocols.extended.stats_update_interval", 60
+                )
                 self._widgets["stats_update_interval"].set_value(value)
             if self._widgets["validate_extensions"]:
-                value = self.app_settings.get("protocols.extended.validate_extensions", True)
+                value = self.app_settings.get(
+                    "protocols.extended.validate_extensions", True
+                )
                 self._widgets["validate_extensions"].set_active(value)
             if self._widgets["limit_extension_msgs"]:
-                value = self.app_settings.get("protocols.extended.limit_extension_msgs", True)
+                value = self.app_settings.get(
+                    "protocols.extended.limit_extension_msgs", True
+                )
                 self._widgets["limit_extension_msgs"].set_active(value)
             if self._widgets["max_msgs_per_second"]:
-                value = self.app_settings.get("protocols.extended.max_msgs_per_second", 50)
+                value = self.app_settings.get(
+                    "protocols.extended.max_msgs_per_second", 50
+                )
                 self._widgets["max_msgs_per_second"].set_value(value)
 
             self.logger.trace(
@@ -471,21 +616,29 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             if self._widgets.get("pex_interval"):
                 interval = self._widgets["pex_interval"].get_value()
                 if interval < 30:
-                    errors["pex_interval"] = "PEX interval below 30 seconds may cause high network load"
+                    errors["pex_interval"] = (
+                        "PEX interval below 30 seconds may cause high network load"
+                    )
                 elif interval > 300:
-                    errors["pex_interval"] = "PEX interval above 5 minutes may reduce peer discovery effectiveness"
+                    errors["pex_interval"] = (
+                        "PEX interval above 5 minutes may reduce peer discovery effectiveness"
+                    )
 
             # Validate metadata piece size
             if self._widgets.get("metadata_piece_size"):
                 piece_size = self._widgets["metadata_piece_size"].get_value()
                 if piece_size < 1024 or piece_size > 65536:
-                    errors["metadata_piece_size"] = "Metadata piece size must be between 1KB and 64KB"
+                    errors["metadata_piece_size"] = (
+                        "Metadata piece size must be between 1KB and 64KB"
+                    )
 
             # Validate connection timeout
             if self._widgets.get("connection_timeout"):
                 timeout = self._widgets["connection_timeout"].get_value()
                 if timeout < 5:
-                    errors["connection_timeout"] = "Connection timeout below 5 seconds may cause frequent timeouts"
+                    errors["connection_timeout"] = (
+                        "Connection timeout below 5 seconds may cause frequent timeouts"
+                    )
                 elif timeout > 120:
                     errors["connection_timeout"] = (
                         "Connection timeout above 2 minutes may cause slow connection establishment"
@@ -495,7 +648,9 @@ class ProtocolExtensionsTab(BaseSettingsTab):
             if self._widgets.get("max_extension_msg_size"):
                 max_size = self._widgets["max_extension_msg_size"].get_value()
                 if max_size < 1024:
-                    errors["max_extension_msg_size"] = "Maximum extension message size cannot be less than 1KB"
+                    errors["max_extension_msg_size"] = (
+                        "Maximum extension message size cannot be less than 1KB"
+                    )
                 elif max_size > 10485760:  # 10MB
                     errors["max_extension_msg_size"] = (
                         "Maximum extension message size above 10MB may cause memory issues"
@@ -508,7 +663,9 @@ class ProtocolExtensionsTab(BaseSettingsTab):
                 and self._widgets.get("tcp_fallback")
                 and not self._widgets["tcp_fallback"].get_active()
             ):
-                errors["tcp_fallback"] = "µTP enabled without TCP fallback may cause connection issues"
+                errors["tcp_fallback"] = (
+                    "µTP enabled without TCP fallback may cause connection issues"
+                )
 
         except Exception as e:
             errors["general"] = f"Validation error: {str(e)}"
@@ -576,7 +733,8 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         enabled = check_button.get_active()
         # Only enable metadata widgets if extensions are globally enabled
         extensions_enabled = (
-            self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_active()
+            self._widgets.get("extensions_enabled")
+            and self._widgets["extensions_enabled"].get_active()
         )
         # Enable/disable metadata-related widgets
         metadata_widgets = [
@@ -587,7 +745,9 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         for widget_name in metadata_widgets:
             if self._widgets.get(widget_name):
                 self._widgets[widget_name].set_sensitive(extensions_enabled and enabled)
-        self.logger.trace(f"ut_metadata: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(
+            f"ut_metadata: {enabled}", extra={"class_name": self.__class__.__name__}
+        )
 
     def _on_ut_pex_toggled(self, check_button: Any) -> None:
         """Handle ut_pex toggle"""
@@ -595,7 +755,8 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         enabled = check_button.get_active()
         # Only enable PEX widgets if extensions are globally enabled
         extensions_enabled = (
-            self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_active()
+            self._widgets.get("extensions_enabled")
+            and self._widgets["extensions_enabled"].get_active()
         )
         # Enable/disable PEX-related widgets
         pex_widgets = [
@@ -608,17 +769,23 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         for widget_name in pex_widgets:
             if self._widgets.get(widget_name):
                 self._widgets[widget_name].set_sensitive(extensions_enabled and enabled)
-        self.logger.trace(f"ut_pex: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(
+            f"ut_pex: {enabled}", extra={"class_name": self.__class__.__name__}
+        )
 
     def _on_pex_interval_changed(self, spin_button: Any) -> None:
         """Handle PEX interval changes"""
         interval = spin_button.get_value()
-        self.logger.trace(f"PEX interval: {interval}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(
+            f"PEX interval: {interval}", extra={"class_name": self.__class__.__name__}
+        )
 
     def _on_pex_max_peers_changed(self, spin_button: Any) -> None:
         """Handle PEX max peers changes"""
         max_peers = spin_button.get_value()
-        self.logger.trace(f"PEX max peers: {max_peers}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(
+            f"PEX max peers: {max_peers}", extra={"class_name": self.__class__.__name__}
+        )
 
     def _on_pex_max_dropped_changed(self, spin_button: Any) -> None:
         """Handle PEX max dropped changes"""
@@ -633,11 +800,16 @@ class ProtocolExtensionsTab(BaseSettingsTab):
         enabled = check_button.get_active()
         # Only enable synthetic count if extensions AND ut_pex AND synthetic_peers are all enabled
         extensions_enabled = (
-            self._widgets.get("extensions_enabled") and self._widgets["extensions_enabled"].get_active()
+            self._widgets.get("extensions_enabled")
+            and self._widgets["extensions_enabled"].get_active()
         )
-        pex_enabled = self._widgets.get("ut_pex") and self._widgets["ut_pex"].get_active()
+        pex_enabled = (
+            self._widgets.get("ut_pex") and self._widgets["ut_pex"].get_active()
+        )
         if self._widgets["pex_synthetic_count"]:
-            self._widgets["pex_synthetic_count"].set_sensitive(extensions_enabled and pex_enabled and enabled)
+            self._widgets["pex_synthetic_count"].set_sensitive(
+                extensions_enabled and pex_enabled and enabled
+            )
         self.logger.trace(
             f"PEX synthetic peers: {enabled}",
             extra={"class_name": self.__class__.__name__},
@@ -686,12 +858,16 @@ class ProtocolExtensionsTab(BaseSettingsTab):
     def _on_utp_enabled_toggled(self, check_button: Any) -> None:
         """Handle µTP enabled toggle"""
         enabled = check_button.get_active()
-        self.logger.trace(f"µTP enabled: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(
+            f"µTP enabled: {enabled}", extra={"class_name": self.__class__.__name__}
+        )
 
     def _on_tcp_fallback_toggled(self, check_button: Any) -> None:
         """Handle TCP fallback toggle"""
         enabled = check_button.get_active()
-        self.logger.trace(f"TCP fallback: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(
+            f"TCP fallback: {enabled}", extra={"class_name": self.__class__.__name__}
+        )
 
     def _on_connection_timeout_changed(self, spin_button: Any) -> None:
         """Handle connection timeout changes"""
@@ -712,12 +888,16 @@ class ProtocolExtensionsTab(BaseSettingsTab):
     def _on_nagle_algorithm_toggled(self, check_button: Any) -> None:
         """Handle Nagle algorithm toggle"""
         enabled = check_button.get_active()
-        self.logger.trace(f"Nagle algorithm: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(
+            f"Nagle algorithm: {enabled}", extra={"class_name": self.__class__.__name__}
+        )
 
     def _on_tcp_keepalive_toggled(self, check_button: Any) -> None:
         """Handle TCP keepalive toggle"""
         enabled = check_button.get_active()
-        self.logger.trace(f"TCP keepalive: {enabled}", extra={"class_name": self.__class__.__name__})
+        self.logger.trace(
+            f"TCP keepalive: {enabled}", extra={"class_name": self.__class__.__name__}
+        )
 
     def _on_extension_timeout_changed(self, spin_button: Any) -> None:
         """Handle extension timeout changes"""

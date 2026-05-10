@@ -70,7 +70,9 @@ class OutgoingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         """Initialize and cache tab-specific widgets."""
         # Get UI elements
         self.outgoing_columnview = self.builder.get_object("outgoing_columnview")
-        self.filter_checkbox = self.builder.get_object("outgoing_filter_selected_checkbox")
+        self.filter_checkbox = self.builder.get_object(
+            "outgoing_filter_selected_checkbox"
+        )
 
         # Initialize the column view
         self.init_outgoing_column_view()
@@ -171,15 +173,21 @@ class OutgoingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
 
         for property_name, column_title in columns:
             factory = Gtk.SignalListItemFactory()
-            self.track_signal(factory, factory.connect("setup", self.setup_cell, property_name))
-            self.track_signal(factory, factory.connect("bind", self.bind_cell, property_name))
+            self.track_signal(
+                factory, factory.connect("setup", self.setup_cell, property_name)
+            )
+            self.track_signal(
+                factory, factory.connect("bind", self.bind_cell, property_name)
+            )
             column = Gtk.ColumnViewColumn.new(None, factory)
             # Expand to fill available space
             column.set_expand(True)
             column.set_resizable(True)
 
             # Register column for translation instead of using hardcoded title
-            self.register_translatable_column(self.outgoing_columnview, column, property_name, "outgoing_connections")
+            self.register_translatable_column(
+                self.outgoing_columnview, column, property_name, "outgoing_connections"
+            )
 
             # Create sorter for the column
             if property_name in [
@@ -189,17 +197,23 @@ class OutgoingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                 "requests_sent",
                 "pieces_received",
             ]:
-                property_expression = Gtk.PropertyExpression.new(ConnectionPeer, None, property_name)
+                property_expression = Gtk.PropertyExpression.new(
+                    ConnectionPeer, None, property_name
+                )
                 sorter = Gtk.NumericSorter.new(property_expression)
             elif property_name in [
                 "handshake_complete",
                 "am_interested",
                 "peer_choking",
             ]:
-                property_expression = Gtk.PropertyExpression.new(ConnectionPeer, None, property_name)
+                property_expression = Gtk.PropertyExpression.new(
+                    ConnectionPeer, None, property_name
+                )
                 sorter = Gtk.NumericSorter.new(property_expression)
             else:
-                property_expression = Gtk.PropertyExpression.new(ConnectionPeer, None, property_name)
+                property_expression = Gtk.PropertyExpression.new(
+                    ConnectionPeer, None, property_name
+                )
                 sorter = Gtk.StringSorter.new(property_expression)
 
             column.set_sorter(sorter)
@@ -361,7 +375,11 @@ class OutgoingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                             )
                 elif property_name in ["address", "client"]:
                     # Direct text setting for address and client fields
-                    if obj is not None and child is not None and hasattr(child, "set_text"):
+                    if (
+                        obj is not None
+                        and child is not None
+                        and hasattr(child, "set_text")
+                    ):
                         try:
                             value = getattr(obj, property_name, "")
                             if property_name == "address" and hasattr(obj, "port"):
@@ -382,7 +400,11 @@ class OutgoingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                             )
                 elif property_name == "failure_reason":
                     # Only show failure reason if status is failed
-                    if obj is not None and child is not None and hasattr(child, "set_text"):
+                    if (
+                        obj is not None
+                        and child is not None
+                        and hasattr(child, "set_text")
+                    ):
                         try:
                             status = getattr(obj, "status", "")
                             if status == "failed":
@@ -449,7 +471,8 @@ class OutgoingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         """Handle model selection change"""
         self.selected_torrent = torrent
         logger.trace(
-            f"Outgoing connections selection changed: " f"{torrent.id if torrent else 'None'}",
+            f"Outgoing connections selection changed: "
+            f"{torrent.id if torrent else 'None'}",
             extra={"class_name": self.__class__.__name__},
         )
         self.apply_filter()
@@ -472,7 +495,10 @@ class OutgoingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
 
                 if filter_enabled and selected:
                     # Only show connections for the selected torrent
-                    should_show = connection_peer.torrent_hash == selected.torrent_file.get_info_hash_hex()
+                    should_show = (
+                        connection_peer.torrent_hash
+                        == selected.torrent_file.get_info_hash_hex()
+                    )
 
                 if should_show and connection_key not in self.outgoing_connections:
                     # Only add if not already shown to avoid duplicates
@@ -493,8 +519,13 @@ class OutgoingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                     # Add filtered connections
                     for connection_key, connection_peer in connections_to_show:
                         try:
-                            if connection_key in self.connection_manager.get_all_outgoing_connections():
-                                self.outgoing_connections[connection_key] = connection_peer
+                            if (
+                                connection_key
+                                in self.connection_manager.get_all_outgoing_connections()
+                            ):
+                                self.outgoing_connections[connection_key] = (
+                                    connection_peer
+                                )
                                 self.outgoing_store.append(connection_peer)
                         except Exception as e:
                             logger.error(
@@ -521,7 +552,9 @@ class OutgoingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def add_outgoing_connection(self, address: str, port: int, torrent_hash: str = "", **kwargs: Any) -> None:
+    def add_outgoing_connection(
+        self, address: str, port: int, torrent_hash: str = "", **kwargs: Any
+    ) -> None:
         """Add a new outgoing connection"""
         # Set defaults if not provided in kwargs
         connection_kwargs = {
@@ -531,12 +564,16 @@ class OutgoingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         }
 
         # Delegate to centralized connection manager
-        self.connection_manager.add_outgoing_connection(address, port, **connection_kwargs)
+        self.connection_manager.add_outgoing_connection(
+            address, port, **connection_kwargs
+        )
 
         # Apply current filter to update display
         self.apply_filter()
 
-    def update_outgoing_connection(self, address: str, port: int, **kwargs: Any) -> None:
+    def update_outgoing_connection(
+        self, address: str, port: int, **kwargs: Any
+    ) -> None:
         """Update an existing outgoing connection"""
         # Delegate to centralized connection manager
         self.connection_manager.update_outgoing_connection(address, port, **kwargs)

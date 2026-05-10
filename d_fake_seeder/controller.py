@@ -56,7 +56,9 @@ except ImportError:
 class Controller:  # pylint: disable=too-many-instance-attributes
     """Controller coordinating Model-View interactions and background operations."""
 
-    def __init__(self, view: Any, model: Any) -> None:  # pylint: disable=too-many-statements
+    def __init__(
+        self, view: Any, model: Any
+    ) -> None:  # pylint: disable=too-many-statements
         logger.trace("Startup", extra={"class_name": self.__class__.__name__})
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
@@ -89,7 +91,9 @@ class Controller:  # pylint: disable=too-many-instance-attributes
         self.speed_distribution_manager = SpeedDistributionManager(model)
 
         # Initialize client behavior simulator
-        behavior_profile = self.settings.get("simulation.client_behavior_engine.primary_client", "balanced")
+        behavior_profile = self.settings.get(
+            "simulation.client_behavior_engine.primary_client", "balanced"
+        )
         self.client_behavior_simulator = ClientBehaviorSimulator(behavior_profile)
 
         # Tick timer for speed distribution and behavior simulation
@@ -116,7 +120,9 @@ class Controller:  # pylint: disable=too-many-instance-attributes
         self.window_manager = None  # Will be set after view initialization
 
         # Initialize torrent folder watcher (pass global_peer_manager for P2P integration)
-        self.torrent_watcher = TorrentFolderWatcher(model, self.settings, self.global_peer_manager)
+        self.torrent_watcher = TorrentFolderWatcher(
+            model, self.settings, self.global_peer_manager
+        )
 
         # Initialize D-Bus service for tray communication
         self.dbus = None
@@ -153,7 +159,9 @@ class Controller:  # pylint: disable=too-many-instance-attributes
             self.view.window_manager = self.window_manager
 
         # Set up connection callback for UI updates
-        self.global_peer_manager.set_connection_callback(self.view.handle_peer_connection_event)
+        self.global_peer_manager.set_connection_callback(
+            self.view.handle_peer_connection_event
+        )
 
         # Start global peer manager after setting up callbacks
         self.global_peer_manager.start()
@@ -198,8 +206,14 @@ class Controller:  # pylint: disable=too-many-instance-attributes
             self.global_peer_manager.add_torrent(torrent)
 
             # Register torrent with DHT if enabled
-            if self.dht_manager and hasattr(torrent, "torrent_file") and hasattr(torrent.torrent_file, "info_hash"):
-                self.dht_manager.register_torrent(torrent.torrent_file.info_hash, torrent)
+            if (
+                self.dht_manager
+                and hasattr(torrent, "torrent_file")
+                and hasattr(torrent.torrent_file, "info_hash")
+            ):
+                self.dht_manager.register_torrent(
+                    torrent.torrent_file.info_hash, torrent
+                )
 
         # Start watching folder for new torrents
         self.torrent_watcher.start()
@@ -229,7 +243,9 @@ class Controller:  # pylint: disable=too-many-instance-attributes
 
     def stop(self, shutdown_tracker: Any = None) -> Any:
         """Stop the controller and cleanup all background processes"""
-        logger.trace("Controller stopping", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "Controller stopping", extra={"class_name": self.__class__.__name__}
+        )
 
         # Stop tick timer
         if hasattr(self, "tick_timer_id") and self.tick_timer_id:
@@ -239,30 +255,45 @@ class Controller:  # pylint: disable=too-many-instance-attributes
         # Stop speed scheduler
         if hasattr(self, "speed_scheduler") and self.speed_scheduler:
             self.speed_scheduler.stop()
-            logger.trace("Speed scheduler stopped", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "Speed scheduler stopped", extra={"class_name": self.__class__.__name__}
+            )
 
         # Stop Web UI server (async)
         if hasattr(self, "webui_server") and self.webui_server:
             self._stop_webui_async()
-            logger.trace("Web UI server stopped", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "Web UI server stopped", extra={"class_name": self.__class__.__name__}
+            )
 
         # Stop Local Peer Discovery (async)
         if hasattr(self, "lpd_manager") and self.lpd_manager:
             self._stop_lpd_async()
-            logger.trace("Local Peer Discovery stopped", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "Local Peer Discovery stopped",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         # Stop UPnP port forwarding
         if hasattr(self, "upnp_manager") and self.upnp_manager:
             self.upnp_manager.stop()
-            logger.trace("UPnP port forwarding stopped", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "UPnP port forwarding stopped",
+                extra={"class_name": self.__class__.__name__},
+            )
 
         # Stop speed distribution manager
-        if hasattr(self, "speed_distribution_manager") and self.speed_distribution_manager:
+        if (
+            hasattr(self, "speed_distribution_manager")
+            and self.speed_distribution_manager
+        ):
             self.speed_distribution_manager.stop()
 
         # Stop DHT manager (before peer manager to cleanly unregister torrents)
         if hasattr(self, "dht_manager") and self.dht_manager:
-            logger.trace("Stopping DHT Manager", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                "Stopping DHT Manager", extra={"class_name": self.__class__.__name__}
+            )
             self.dht_manager.stop()
 
         # Stop global peer manager
@@ -291,11 +322,15 @@ class Controller:  # pylint: disable=too-many-instance-attributes
             extra={"class_name": self.__class__.__name__},
         )
 
-        logger.trace("🔧 About to cleanup D-Bus", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "🔧 About to cleanup D-Bus", extra={"class_name": self.__class__.__name__}
+        )
         # Cleanup D-Bus service
         if hasattr(self, "dbus") and self.dbus:
             self.dbus.cleanup()
-        logger.trace("✅ D-Bus cleanup complete", extra={"class_name": self.__class__.__name__})
+        logger.trace(
+            "✅ D-Bus cleanup complete", extra={"class_name": self.__class__.__name__}
+        )
 
         # Stop memory monitor (commented out, enable when needed)
         # if hasattr(self, "memory_monitor") and self.memory_monitor:
@@ -310,7 +345,10 @@ class Controller:  # pylint: disable=too-many-instance-attributes
                 self.speed_distribution_manager.check_redistribution("tick")
 
             # Run client behavior simulation
-            if hasattr(self, "client_behavior_simulator") and self.client_behavior_simulator:
+            if (
+                hasattr(self, "client_behavior_simulator")
+                and self.client_behavior_simulator
+            ):
                 if hasattr(self, "model") and self.model:
                     torrents = self.model.get_torrents()
                     self.client_behavior_simulator.simulate_tick(torrents)
@@ -505,7 +543,9 @@ class Controller:  # pylint: disable=too-many-instance-attributes
                         "🎯 QUIT SEQUENCE: Calling self.view.on_quit_clicked() with fast_shutdown=True for D-Bus quit",
                         extra={"class_name": self.__class__.__name__},
                     )
-                    self.view.on_quit_clicked(None, fast_shutdown=True)  # Use fast shutdown for D-Bus triggered quit
+                    self.view.on_quit_clicked(
+                        None, fast_shutdown=True
+                    )  # Use fast shutdown for D-Bus triggered quit
                     logger.trace(
                         "📞 QUIT SEQUENCE: self.view.on_quit_clicked() call completed",
                         extra={"class_name": self.__class__.__name__},
@@ -516,12 +556,19 @@ class Controller:  # pylint: disable=too-many-instance-attributes
                         "for ShutdownProgressTracker shutdown",
                         extra={"class_name": self.__class__.__name__},
                     )
-                    self.view.quit(fast_shutdown=True)  # Fallback to direct quit with fast shutdown
+                    self.view.quit(
+                        fast_shutdown=True
+                    )  # Fallback to direct quit with fast shutdown
                     logger.trace(
                         "📞 QUIT SEQUENCE: self.view.quit() call completed",
                         extra={"class_name": self.__class__.__name__},
                     )
-            elif hasattr(self, "view") and self.view and hasattr(self.view, "app") and self.view.app:
+            elif (
+                hasattr(self, "view")
+                and self.view
+                and hasattr(self.view, "app")
+                and self.view.app
+            ):
                 logger.warning(
                     "⚠️ QUIT SEQUENCE: Using app.quit() fallback - this should not happen",
                     extra={"class_name": self.__class__.__name__},
@@ -621,16 +668,22 @@ class Controller:  # pylint: disable=too-many-instance-attributes
         )
 
         # Add peer to the appropriate torrent's peer list
-        if hasattr(self, "global_peer_manager") and self.global_peer_manager:  # pylint: disable=too-many-nested-blocks
+        if (
+            hasattr(self, "global_peer_manager") and self.global_peer_manager
+        ):  # pylint: disable=too-many-nested-blocks
             # Find torrent with matching info_hash
             for torrent in self.model.get_torrents():
-                if hasattr(torrent, "torrent_file") and hasattr(torrent.torrent_file, "info_hash"):
+                if hasattr(torrent, "torrent_file") and hasattr(
+                    torrent.torrent_file, "info_hash"
+                ):
                     if torrent.torrent_file.info_hash == info_hash:
                         # Add peer to global peer manager for this torrent
                         try:
                             info_hash_hex = info_hash.hex()
                             if info_hash_hex in self.global_peer_manager.peer_managers:
-                                manager = self.global_peer_manager.peer_managers[info_hash_hex]
+                                manager = self.global_peer_manager.peer_managers[
+                                    info_hash_hex
+                                ]
                                 manager.add_peers([f"{ip}:{port}"])
                                 logger.trace(
                                     f"Added LPD peer {ip}:{port} to torrent {torrent.name}",

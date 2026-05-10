@@ -73,7 +73,9 @@ class TranslationManagerBase(ABC):
         """
 
     @abstractmethod
-    def register_translation_function(self, widget: Any, get_text_func: Callable[[], str]) -> None:
+    def register_translation_function(
+        self, widget: Any, get_text_func: Callable[[], str]
+    ) -> None:
         """
         Register a translation function for automatic widget updates
 

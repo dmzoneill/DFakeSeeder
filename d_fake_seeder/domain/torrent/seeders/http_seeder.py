@@ -45,7 +45,9 @@ class HTTPSeeder(BaseSeeder):
             / 10
         )  # Much smaller for HTTP retries
 
-    def load_peers(self) -> None:  # pylint: disable=too-many-branches,too-many-statements
+    def load_peers(
+        self,
+    ) -> None:  # pylint: disable=too-many-branches,too-many-statements
         """Load peers from HTTP tracker."""
         logger.trace("Seeder load peers", extra={"class_name": self.__class__.__name__})
 
@@ -70,7 +72,11 @@ class HTTPSeeder(BaseSeeder):
                 View.instance.notify(
                     "Loading peers for {name}",
                     translate=True,
-                    name=self.torrent.name[:40] + "..." if len(self.torrent.name) > 40 else self.torrent.name,
+                    name=(
+                        self.torrent.name[:40] + "..."
+                        if len(self.torrent.name) > 40
+                        else self.torrent.name
+                    ),
                 )
 
             # Mark tracker as announcing
@@ -84,14 +90,17 @@ class HTTPSeeder(BaseSeeder):
 
             request_start_time = time.time()
             logger.trace(
-                f"📁 Torrent: {self.torrent.name} " f"(Hash: {self.torrent.file_hash.hex()[:16]}...)",
+                f"📁 Torrent: {self.torrent.name} "
+                f"(Hash: {self.torrent.file_hash.hex()[:16]}...)",
                 extra={"class_name": self.__class__.__name__},
             )
             logger.trace(
                 f"🆔 Peer ID: {self.peer_id}",
                 extra={"class_name": self.__class__.__name__},
             )
-            logger.trace(f"🔌 Port: {self.port}", extra={"class_name": self.__class__.__name__})
+            logger.trace(
+                f"🔌 Port: {self.port}", extra={"class_name": self.__class__.__name__}
+            )
 
             req = self.make_http_request(download_left=self.torrent.total_size)
 
@@ -136,7 +145,9 @@ class HTTPSeeder(BaseSeeder):
                     "✅ Tracker response decoded successfully",
                     extra={"class_name": self.__class__.__name__},
                 )
-                response_keys = [k.decode() if isinstance(k, bytes) else k for k in data.keys()]
+                response_keys = [
+                    k.decode() if isinstance(k, bytes) else k for k in data.keys()
+                ]
                 logger.trace(
                     f"🔑 Response keys: {response_keys}",
                     extra={"class_name": self.__class__.__name__},
@@ -174,7 +185,8 @@ class HTTPSeeder(BaseSeeder):
                     if isinstance(peers_data, bytes):
                         peer_count = len(peers_data) // 6
                         logger.trace(
-                            f"👥 Found {peer_count} peers " f"(compact format, {len(peers_data)} bytes)",
+                            f"👥 Found {peer_count} peers "
+                            f"(compact format, {len(peers_data)} bytes)",
                             extra={"class_name": self.__class__.__name__},
                         )
                     elif isinstance(peers_data, list):
@@ -299,7 +311,9 @@ class HTTPSeeder(BaseSeeder):
         while retry_count < max_retries and not self.shutdown_requested:
             try:
                 # Use timeout for semaphore acquisition
-                if not self.get_tracker_semaphore().acquire(timeout=TimeoutConstants.TRACKER_SEMAPHORE_ANNOUNCE):
+                if not self.get_tracker_semaphore().acquire(
+                    timeout=TimeoutConstants.TRACKER_SEMAPHORE_ANNOUNCE
+                ):
                     logger.trace(
                         "⏱️ Timeout acquiring tracker semaphore",
                         extra={"class_name": self.__class__.__name__},
@@ -318,7 +332,9 @@ class HTTPSeeder(BaseSeeder):
                     extra={"class_name": self.__class__.__name__},
                 )
 
-                req = self.make_http_request(uploaded_bytes, downloaded_bytes, download_left, num_want=0)
+                req = self.make_http_request(
+                    uploaded_bytes, downloaded_bytes, download_left, num_want=0
+                )
 
                 # Log successful announce
                 logger.trace(
@@ -372,7 +388,9 @@ class HTTPSeeder(BaseSeeder):
                         extra={"class_name": self.__class__.__name__},
                     )
                     # Limit sleep time and check for shutdown
-                    sleep_time = min(self.retry_sleep_interval, TimeoutConstants.HTTP_RETRY_MAX_SLEEP)
+                    sleep_time = min(
+                        self.retry_sleep_interval, TimeoutConstants.HTTP_RETRY_MAX_SLEEP
+                    )
                     sleep(sleep_time)
             finally:
                 try:
@@ -399,7 +417,11 @@ class HTTPSeeder(BaseSeeder):
                 )
 
     def make_http_request(
-        self, uploaded_bytes: Any = 0, downloaded_bytes: Any = 0, download_left: Any = 0, num_want: Any = None
+        self,
+        uploaded_bytes: Any = 0,
+        downloaded_bytes: Any = 0,
+        download_left: Any = 0,
+        num_want: Any = None,
     ) -> Any:  # noqa: E501
         """Make HTTP announce request to tracker."""
         if num_want is None:
@@ -428,7 +450,9 @@ class HTTPSeeder(BaseSeeder):
             http_params["event"] = "completed"
 
         http_agent_headers = self.settings.http_headers
-        http_agent_headers["User-Agent"] = self.settings.agents[self.settings.agent].split(",")[0]
+        http_agent_headers["User-Agent"] = self.settings.agents[
+            self.settings.agent
+        ].split(",")[0]
 
         # Log request details
         logger.trace(
@@ -450,7 +474,9 @@ class HTTPSeeder(BaseSeeder):
             params=http_params,
             proxies=self.settings.proxies,
             headers=http_agent_headers,
-            timeout=getattr(self.settings, "seeders", {}).get("http_timeout_seconds", 10),
+            timeout=getattr(self.settings, "seeders", {}).get(
+                "http_timeout_seconds", 10
+            ),
         )
 
         return req
@@ -476,7 +502,9 @@ class HTTPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _update_tracker_success(self, response_data: dict, response_time: float) -> None:
+    def _update_tracker_success(
+        self, response_data: dict, response_time: float
+    ) -> None:
         """Update tracker model with successful response"""
         try:
             tracker = self._get_tracker_model()
@@ -511,7 +539,9 @@ class HTTPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _update_tracker_failure(self, error_message: str, response_time: Optional[float] = None) -> None:
+    def _update_tracker_failure(
+        self, error_message: str, response_time: Optional[float] = None
+    ) -> None:
         """Update tracker model with failed response"""
         try:
             tracker = self._get_tracker_model()
@@ -560,7 +590,9 @@ class HTTPSeeder(BaseSeeder):
             )
 
             http_agent_headers = self.settings.http_headers.copy()
-            http_agent_headers["User-Agent"] = self.settings.agents[self.settings.agent].split(",")[0]
+            http_agent_headers["User-Agent"] = self.settings.agents[
+                self.settings.agent
+            ].split(",")[0]
 
             # Scrape with info_hash parameter
             params = {"info_hash": self.torrent.file_hash}
@@ -570,7 +602,9 @@ class HTTPSeeder(BaseSeeder):
                 params=params,
                 proxies=self.settings.proxies,
                 headers=http_agent_headers,
-                timeout=getattr(self.settings, "seeders", {}).get("http_timeout_seconds", 10),
+                timeout=getattr(self.settings, "seeders", {}).get(
+                    "http_timeout_seconds", 10
+                ),
             )
 
             if req.status_code == 200:
