@@ -127,18 +127,14 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         if alt_upload_limit:
             self.track_signal(
                 alt_upload_limit,
-                alt_upload_limit.connect(
-                    "value-changed", self.on_alt_upload_limit_changed
-                ),
+                alt_upload_limit.connect("value-changed", self.on_alt_upload_limit_changed),
             )
 
         alt_download_limit = self.get_widget("alt_download_limit")
         if alt_download_limit:
             self.track_signal(
                 alt_download_limit,
-                alt_download_limit.connect(
-                    "value-changed", self.on_alt_download_limit_changed
-                ),
+                alt_download_limit.connect("value-changed", self.on_alt_download_limit_changed),
             )
 
         # Scheduler enable
@@ -154,36 +150,28 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         if scheduler_start_hour:
             self.track_signal(
                 scheduler_start_hour,
-                scheduler_start_hour.connect(
-                    "value-changed", self.on_scheduler_time_changed
-                ),
+                scheduler_start_hour.connect("value-changed", self.on_scheduler_time_changed),
             )
 
         scheduler_start_minute = self.get_widget("scheduler_start_minute")
         if scheduler_start_minute:
             self.track_signal(
                 scheduler_start_minute,
-                scheduler_start_minute.connect(
-                    "value-changed", self.on_scheduler_time_changed
-                ),
+                scheduler_start_minute.connect("value-changed", self.on_scheduler_time_changed),
             )
 
         scheduler_end_hour = self.get_widget("scheduler_end_hour")
         if scheduler_end_hour:
             self.track_signal(
                 scheduler_end_hour,
-                scheduler_end_hour.connect(
-                    "value-changed", self.on_scheduler_time_changed
-                ),
+                scheduler_end_hour.connect("value-changed", self.on_scheduler_time_changed),
             )
 
         scheduler_end_minute = self.get_widget("scheduler_end_minute")
         if scheduler_end_minute:
             self.track_signal(
                 scheduler_end_minute,
-                scheduler_end_minute.connect(
-                    "value-changed", self.on_scheduler_time_changed
-                ),
+                scheduler_end_minute.connect("value-changed", self.on_scheduler_time_changed),
             )
 
         # Scheduler day checkbuttons
@@ -209,36 +197,28 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         if upload_dist_algorithm:
             self.track_signal(
                 upload_dist_algorithm,
-                upload_dist_algorithm.connect(
-                    "notify::selected", self.on_upload_dist_algorithm_changed
-                ),
+                upload_dist_algorithm.connect("notify::selected", self.on_upload_dist_algorithm_changed),
             )
 
         upload_dist_percentage = self.get_widget("upload_dist_percentage")
         if upload_dist_percentage:
             self.track_signal(
                 upload_dist_percentage,
-                upload_dist_percentage.connect(
-                    "value-changed", self.on_upload_dist_percentage_changed
-                ),
+                upload_dist_percentage.connect("value-changed", self.on_upload_dist_percentage_changed),
             )
 
         upload_dist_mode = self.get_widget("upload_dist_mode")
         if upload_dist_mode:
             self.track_signal(
                 upload_dist_mode,
-                upload_dist_mode.connect(
-                    "notify::selected", self.on_upload_dist_mode_changed
-                ),
+                upload_dist_mode.connect("notify::selected", self.on_upload_dist_mode_changed),
             )
 
         upload_dist_interval = self.get_widget("upload_dist_interval")
         if upload_dist_interval:
             self.track_signal(
                 upload_dist_interval,
-                upload_dist_interval.connect(
-                    "value-changed", self.on_upload_dist_interval_changed
-                ),
+                upload_dist_interval.connect("value-changed", self.on_upload_dist_interval_changed),
             )
 
         # Download speed distribution
@@ -246,36 +226,28 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         if download_dist_algorithm:
             self.track_signal(
                 download_dist_algorithm,
-                download_dist_algorithm.connect(
-                    "notify::selected", self.on_download_dist_algorithm_changed
-                ),
+                download_dist_algorithm.connect("notify::selected", self.on_download_dist_algorithm_changed),
             )
 
         download_dist_percentage = self.get_widget("download_dist_percentage")
         if download_dist_percentage:
             self.track_signal(
                 download_dist_percentage,
-                download_dist_percentage.connect(
-                    "value-changed", self.on_download_dist_percentage_changed
-                ),
+                download_dist_percentage.connect("value-changed", self.on_download_dist_percentage_changed),
             )
 
         download_dist_mode = self.get_widget("download_dist_mode")
         if download_dist_mode:
             self.track_signal(
                 download_dist_mode,
-                download_dist_mode.connect(
-                    "notify::selected", self.on_download_dist_mode_changed
-                ),
+                download_dist_mode.connect("notify::selected", self.on_download_dist_mode_changed),
             )
 
         download_dist_interval = self.get_widget("download_dist_interval")
         if download_dist_interval:
             self.track_signal(
                 download_dist_interval,
-                download_dist_interval.connect(
-                    "value-changed", self.on_download_dist_interval_changed
-                ),
+                download_dist_interval.connect("value-changed", self.on_download_dist_interval_changed),
             )
 
         # Upload stopped torrents percentage range
@@ -283,18 +255,14 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         if upload_dist_stopped_min:
             self.track_signal(
                 upload_dist_stopped_min,
-                upload_dist_stopped_min.connect(
-                    "value-changed", self.on_upload_dist_stopped_min_changed
-                ),
+                upload_dist_stopped_min.connect("value-changed", self.on_upload_dist_stopped_min_changed),
             )
 
         upload_dist_stopped_max = self.get_widget("upload_dist_stopped_max")
         if upload_dist_stopped_max:
             self.track_signal(
                 upload_dist_stopped_max,
-                upload_dist_stopped_max.connect(
-                    "value-changed", self.on_upload_dist_stopped_max_changed
-                ),
+                upload_dist_stopped_max.connect("value-changed", self.on_upload_dist_stopped_max_changed),
             )
 
         # Download stopped torrents percentage range
@@ -302,18 +270,14 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         if download_dist_stopped_min:
             self.track_signal(
                 download_dist_stopped_min,
-                download_dist_stopped_min.connect(
-                    "value-changed", self.on_download_dist_stopped_min_changed
-                ),
+                download_dist_stopped_min.connect("value-changed", self.on_download_dist_stopped_min_changed),
             )
 
         download_dist_stopped_max = self.get_widget("download_dist_stopped_max")
         if download_dist_stopped_max:
             self.track_signal(
                 download_dist_stopped_max,
-                download_dist_stopped_max.connect(
-                    "value-changed", self.on_download_dist_stopped_max_changed
-                ),
+                download_dist_stopped_max.connect("value-changed", self.on_download_dist_stopped_max_changed),
             )
 
     def _load_settings(self) -> None:
@@ -463,13 +427,9 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
             upload_dist_percentage = self.get_widget("upload_dist_percentage")
             if upload_dist_percentage:
-                upload_dist_percentage.set_value(
-                    self.app_settings.upload_distribution_spread_percentage
-                )
+                upload_dist_percentage.set_value(self.app_settings.upload_distribution_spread_percentage)
 
-            upload_mode = (
-                self.app_settings.upload_distribution_redistribution_mode.lower()
-            )
+            upload_mode = self.app_settings.upload_distribution_redistribution_mode.lower()
             upload_dist_mode = self.get_widget("upload_dist_mode")
             if upload_dist_mode:
                 if upload_mode == "tick":
@@ -481,26 +441,18 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
             upload_dist_interval = self.get_widget("upload_dist_interval")
             if upload_dist_interval:
-                upload_dist_interval.set_value(
-                    self.app_settings.upload_distribution_custom_interval_minutes
-                )
+                upload_dist_interval.set_value(self.app_settings.upload_distribution_custom_interval_minutes)
 
             upload_dist_stopped_min = self.get_widget("upload_dist_stopped_min")
             if upload_dist_stopped_min:
-                upload_dist_stopped_min.set_value(
-                    self.app_settings.upload_distribution_stopped_min_percentage
-                )
+                upload_dist_stopped_min.set_value(self.app_settings.upload_distribution_stopped_min_percentage)
 
             upload_dist_stopped_max = self.get_widget("upload_dist_stopped_max")
             if upload_dist_stopped_max:
-                upload_dist_stopped_max.set_value(
-                    self.app_settings.upload_distribution_stopped_max_percentage
-                )
+                upload_dist_stopped_max.set_value(self.app_settings.upload_distribution_stopped_max_percentage)
 
             # Download distribution
-            download_algorithm = (
-                self.app_settings.download_distribution_algorithm.lower()
-            )
+            download_algorithm = self.app_settings.download_distribution_algorithm.lower()
             download_dist_algorithm = self.get_widget("download_dist_algorithm")
             if download_dist_algorithm:
                 index = algorithm_map.get(download_algorithm, 0)
@@ -508,13 +460,9 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
             download_dist_percentage = self.get_widget("download_dist_percentage")
             if download_dist_percentage:
-                download_dist_percentage.set_value(
-                    self.app_settings.download_distribution_spread_percentage
-                )
+                download_dist_percentage.set_value(self.app_settings.download_distribution_spread_percentage)
 
-            download_mode = (
-                self.app_settings.download_distribution_redistribution_mode.lower()
-            )
+            download_mode = self.app_settings.download_distribution_redistribution_mode.lower()
             download_dist_mode = self.get_widget("download_dist_mode")
             if download_dist_mode:
                 if download_mode == "tick":
@@ -526,26 +474,18 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
             download_dist_interval = self.get_widget("download_dist_interval")
             if download_dist_interval:
-                download_dist_interval.set_value(
-                    self.app_settings.download_distribution_custom_interval_minutes
-                )
+                download_dist_interval.set_value(self.app_settings.download_distribution_custom_interval_minutes)
 
             download_dist_stopped_min = self.get_widget("download_dist_stopped_min")
             if download_dist_stopped_min:
-                download_dist_stopped_min.set_value(
-                    self.app_settings.download_distribution_stopped_min_percentage
-                )
+                download_dist_stopped_min.set_value(self.app_settings.download_distribution_stopped_min_percentage)
 
             download_dist_stopped_max = self.get_widget("download_dist_stopped_max")
             if download_dist_stopped_max:
-                download_dist_stopped_max.set_value(
-                    self.app_settings.download_distribution_stopped_max_percentage
-                )
+                download_dist_stopped_max.set_value(self.app_settings.download_distribution_stopped_max_percentage)
 
         except Exception as e:
-            self.logger.error(
-                f"Error loading distribution settings: {e}", exc_info=True
-            )
+            self.logger.error(f"Error loading distribution settings: {e}", exc_info=True)
 
     def _setup_dependencies(self) -> None:
         """Set up dependencies for Speed tab."""
@@ -598,21 +538,11 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             # Upload distribution - enable widgets only if algorithm is not "off"
             upload_dist_algorithm = self.get_widget("upload_dist_algorithm")
             if upload_dist_algorithm:
-                upload_algorithm_enabled = (
-                    upload_dist_algorithm.get_selected() > 0
-                )  # 0 = "off"
-                self.update_widget_sensitivity(
-                    "upload_dist_percentage", upload_algorithm_enabled
-                )
-                self.update_widget_sensitivity(
-                    "upload_dist_mode", upload_algorithm_enabled
-                )
-                self.update_widget_sensitivity(
-                    "upload_dist_stopped_min", upload_algorithm_enabled
-                )
-                self.update_widget_sensitivity(
-                    "upload_dist_stopped_max", upload_algorithm_enabled
-                )
+                upload_algorithm_enabled = upload_dist_algorithm.get_selected() > 0  # 0 = "off"
+                self.update_widget_sensitivity("upload_dist_percentage", upload_algorithm_enabled)
+                self.update_widget_sensitivity("upload_dist_mode", upload_algorithm_enabled)
+                self.update_widget_sensitivity("upload_dist_stopped_min", upload_algorithm_enabled)
+                self.update_widget_sensitivity("upload_dist_stopped_max", upload_algorithm_enabled)
 
                 # Also handle interval box visibility based on mode (only if algorithm is enabled)
                 if upload_algorithm_enabled:
@@ -632,21 +562,11 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             # Download distribution - enable widgets only if algorithm is not "off"
             download_dist_algorithm = self.get_widget("download_dist_algorithm")
             if download_dist_algorithm:
-                download_algorithm_enabled = (
-                    download_dist_algorithm.get_selected() > 0
-                )  # 0 = "off"
-                self.update_widget_sensitivity(
-                    "download_dist_percentage", download_algorithm_enabled
-                )
-                self.update_widget_sensitivity(
-                    "download_dist_mode", download_algorithm_enabled
-                )
-                self.update_widget_sensitivity(
-                    "download_dist_stopped_min", download_algorithm_enabled
-                )
-                self.update_widget_sensitivity(
-                    "download_dist_stopped_max", download_algorithm_enabled
-                )
+                download_algorithm_enabled = download_dist_algorithm.get_selected() > 0  # 0 = "off"
+                self.update_widget_sensitivity("download_dist_percentage", download_algorithm_enabled)
+                self.update_widget_sensitivity("download_dist_mode", download_algorithm_enabled)
+                self.update_widget_sensitivity("download_dist_stopped_min", download_algorithm_enabled)
+                self.update_widget_sensitivity("download_dist_stopped_max", download_algorithm_enabled)
 
                 # Also handle interval box visibility based on mode (only if algorithm is enabled)
                 if download_algorithm_enabled:
@@ -702,33 +622,23 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             upload_limit = self.get_widget("upload_limit")
             if upload_limit:
-                speed_settings["speed.upload_limit_kbps"] = int(
-                    upload_limit.get_value()
-                )
+                speed_settings["speed.upload_limit_kbps"] = int(upload_limit.get_value())
 
             download_limit = self.get_widget("download_limit")
             if download_limit:
-                speed_settings["speed.download_limit_kbps"] = int(
-                    download_limit.get_value()
-                )
+                speed_settings["speed.download_limit_kbps"] = int(download_limit.get_value())
 
             enable_alt = self.get_widget("enable_alt_speeds")
             if enable_alt:
-                speed_settings["speed.enable_alternative_speeds"] = (
-                    enable_alt.get_active()
-                )
+                speed_settings["speed.enable_alternative_speeds"] = enable_alt.get_active()
 
             alt_upload_limit = self.get_widget("alt_upload_limit")
             if alt_upload_limit:
-                speed_settings["speed.alt_upload_limit_kbps"] = int(
-                    alt_upload_limit.get_value()
-                )
+                speed_settings["speed.alt_upload_limit_kbps"] = int(alt_upload_limit.get_value())
 
             alt_download_limit = self.get_widget("alt_download_limit")
             if alt_download_limit:
-                speed_settings["speed.alt_download_limit_kbps"] = int(
-                    alt_download_limit.get_value()
-                )
+                speed_settings["speed.alt_download_limit_kbps"] = int(alt_download_limit.get_value())
         except Exception as e:
             self.logger.error(f"Error collecting speed settings: {e}")
         return speed_settings
@@ -744,28 +654,20 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             # Start time (hour and minute)
             scheduler_start_hour = self.get_widget("scheduler_start_hour")
             if scheduler_start_hour:
-                scheduler_settings["scheduler.start_hour"] = int(
-                    scheduler_start_hour.get_value()
-                )
+                scheduler_settings["scheduler.start_hour"] = int(scheduler_start_hour.get_value())
 
             scheduler_start_minute = self.get_widget("scheduler_start_minute")
             if scheduler_start_minute:
-                scheduler_settings["scheduler.start_minute"] = int(
-                    scheduler_start_minute.get_value()
-                )
+                scheduler_settings["scheduler.start_minute"] = int(scheduler_start_minute.get_value())
 
             # End time (hour and minute)
             scheduler_end_hour = self.get_widget("scheduler_end_hour")
             if scheduler_end_hour:
-                scheduler_settings["scheduler.end_hour"] = int(
-                    scheduler_end_hour.get_value()
-                )
+                scheduler_settings["scheduler.end_hour"] = int(scheduler_end_hour.get_value())
 
             scheduler_end_minute = self.get_widget("scheduler_end_minute")
             if scheduler_end_minute:
-                scheduler_settings["scheduler.end_minute"] = int(
-                    scheduler_end_minute.get_value()
-                )
+                scheduler_settings["scheduler.end_minute"] = int(scheduler_end_minute.get_value())
 
             # Collect day settings
             days = {}
@@ -805,78 +707,54 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
 
             upload_dist_percentage = self.get_widget("upload_dist_percentage")
             if upload_dist_percentage:
-                distribution_settings["upload"]["spread_percentage"] = int(
-                    upload_dist_percentage.get_value()
-                )
+                distribution_settings["upload"]["spread_percentage"] = int(upload_dist_percentage.get_value())
 
             upload_dist_mode = self.get_widget("upload_dist_mode")
             if upload_dist_mode:
                 selected = upload_dist_mode.get_selected()
-                distribution_settings["upload"]["redistribution_mode"] = mode_names[
-                    selected
-                ]
+                distribution_settings["upload"]["redistribution_mode"] = mode_names[selected]
 
             upload_dist_interval = self.get_widget("upload_dist_interval")
             if upload_dist_interval:
-                distribution_settings["upload"]["custom_interval_minutes"] = int(
-                    upload_dist_interval.get_value()
-                )
+                distribution_settings["upload"]["custom_interval_minutes"] = int(upload_dist_interval.get_value())
 
             upload_dist_stopped_min = self.get_widget("upload_dist_stopped_min")
             if upload_dist_stopped_min:
-                distribution_settings["upload"]["stopped_min_percentage"] = int(
-                    upload_dist_stopped_min.get_value()
-                )
+                distribution_settings["upload"]["stopped_min_percentage"] = int(upload_dist_stopped_min.get_value())
 
             upload_dist_stopped_max = self.get_widget("upload_dist_stopped_max")
             if upload_dist_stopped_max:
-                distribution_settings["upload"]["stopped_max_percentage"] = int(
-                    upload_dist_stopped_max.get_value()
-                )
+                distribution_settings["upload"]["stopped_max_percentage"] = int(upload_dist_stopped_max.get_value())
 
             # Download distribution
             download_dist_algorithm = self.get_widget("download_dist_algorithm")
             if download_dist_algorithm:
                 selected = download_dist_algorithm.get_selected()
-                distribution_settings["download"]["algorithm"] = algorithm_names[
-                    selected
-                ]
+                distribution_settings["download"]["algorithm"] = algorithm_names[selected]
 
             download_dist_percentage = self.get_widget("download_dist_percentage")
             if download_dist_percentage:
-                distribution_settings["download"]["spread_percentage"] = int(
-                    download_dist_percentage.get_value()
-                )
+                distribution_settings["download"]["spread_percentage"] = int(download_dist_percentage.get_value())
 
             download_dist_mode = self.get_widget("download_dist_mode")
             if download_dist_mode:
                 selected = download_dist_mode.get_selected()
-                distribution_settings["download"]["redistribution_mode"] = mode_names[
-                    selected
-                ]
+                distribution_settings["download"]["redistribution_mode"] = mode_names[selected]
 
             download_dist_interval = self.get_widget("download_dist_interval")
             if download_dist_interval:
-                distribution_settings["download"]["custom_interval_minutes"] = int(
-                    download_dist_interval.get_value()
-                )
+                distribution_settings["download"]["custom_interval_minutes"] = int(download_dist_interval.get_value())
 
             download_dist_stopped_min = self.get_widget("download_dist_stopped_min")
             if download_dist_stopped_min:
-                distribution_settings["download"]["stopped_min_percentage"] = int(
-                    download_dist_stopped_min.get_value()
-                )
+                distribution_settings["download"]["stopped_min_percentage"] = int(download_dist_stopped_min.get_value())
 
             download_dist_stopped_max = self.get_widget("download_dist_stopped_max")
             if download_dist_stopped_max:
-                distribution_settings["download"]["stopped_max_percentage"] = int(
-                    download_dist_stopped_max.get_value()
-                )
+                distribution_settings["download"]["stopped_max_percentage"] = int(download_dist_stopped_max.get_value())
 
         except Exception as e:
-            self.logger.error(
-                f"Error collecting distribution settings: {e}", exc_info=True
-            )
+            self.logger.error(f"Error collecting distribution settings: {e}", exc_info=True)
 
         return distribution_settings
 
@@ -887,27 +765,19 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             # Validate that limits are non-negative
             upload_limit = self.get_widget("upload_limit")
             if upload_limit:
-                limit_errors = self.validate_positive_number(
-                    upload_limit.get_value(), "upload_limit"
-                )
+                limit_errors = self.validate_positive_number(upload_limit.get_value(), "upload_limit")
                 errors.update(limit_errors)
             download_limit = self.get_widget("download_limit")
             if download_limit:
-                limit_errors = self.validate_positive_number(
-                    download_limit.get_value(), "download_limit"
-                )
+                limit_errors = self.validate_positive_number(download_limit.get_value(), "download_limit")
                 errors.update(limit_errors)
             alt_upload_limit = self.get_widget("alt_upload_limit")
             if alt_upload_limit:
-                limit_errors = self.validate_positive_number(
-                    alt_upload_limit.get_value(), "alt_upload_limit"
-                )
+                limit_errors = self.validate_positive_number(alt_upload_limit.get_value(), "alt_upload_limit")
                 errors.update(limit_errors)
             alt_download_limit = self.get_widget("alt_download_limit")
             if alt_download_limit:
-                limit_errors = self.validate_positive_number(
-                    alt_download_limit.get_value(), "alt_download_limit"
-                )
+                limit_errors = self.validate_positive_number(alt_download_limit.get_value(), "alt_download_limit")
                 errors.update(limit_errors)
         except Exception as e:
             self.logger.error(f"Error validating Speed tab settings: {e}")
@@ -923,9 +793,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             self.update_dependencies()
             # NOTE: Setting will be saved in batch via _collect_settings()
-            message = "Alternative speeds will be " + (
-                "enabled" if state else "disabled"
-            )
+            message = "Alternative speeds will be " + ("enabled" if state else "disabled")
             self.show_notification(message, "info")
         except Exception as e:
             self.logger.error(f"Error changing alternative speeds setting: {e}")
@@ -998,19 +866,13 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             end_minute = self.get_widget("scheduler_end_minute")
 
             if start_hour:
-                self.app_settings.set(
-                    "scheduler.start_hour", int(start_hour.get_value())
-                )
+                self.app_settings.set("scheduler.start_hour", int(start_hour.get_value()))
             if start_minute:
-                self.app_settings.set(
-                    "scheduler.start_minute", int(start_minute.get_value())
-                )
+                self.app_settings.set("scheduler.start_minute", int(start_minute.get_value()))
             if end_hour:
                 self.app_settings.set("scheduler.end_hour", int(end_hour.get_value()))
             if end_minute:
-                self.app_settings.set(
-                    "scheduler.end_minute", int(end_minute.get_value())
-                )
+                self.app_settings.set("scheduler.end_minute", int(end_minute.get_value()))
 
             self.logger.trace("Scheduler time changed")
         except Exception as e:
@@ -1137,9 +999,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
                 download_dist_stopped_max.set_value(40)
 
             self.update_dependencies()
-            self.show_notification(
-                self._("Speed settings reset to defaults"), "success"
-            )
+            self.show_notification(self._("Speed settings reset to defaults"), "success")
         except Exception as e:
             self.logger.error(f"Error resetting Speed tab to defaults: {e}")
 
@@ -1158,9 +1018,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             selected = dropdown.get_selected()
             algorithm_names = ["off", "pareto", "power-law", "log-normal"]
-            algorithm = (
-                algorithm_names[selected] if selected < len(algorithm_names) else "off"
-            )
+            algorithm = algorithm_names[selected] if selected < len(algorithm_names) else "off"
 
             self.app_settings.upload_distribution_algorithm = algorithm
             self.logger.trace(f"Upload distribution algorithm changed to: {algorithm}")
@@ -1168,9 +1026,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
             # Update dependencies to enable/disable distribution options
             self.update_dependencies()
         except Exception as e:
-            self.logger.error(
-                f"Error changing upload distribution algorithm: {e}", exc_info=True
-            )
+            self.logger.error(f"Error changing upload distribution algorithm: {e}", exc_info=True)
 
     def on_upload_dist_percentage_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle upload distribution percentage change."""
@@ -1179,9 +1035,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             percentage = int(spin_button.get_value())
             self.app_settings.upload_distribution_spread_percentage = percentage
-            self.logger.trace(
-                f"Upload distribution percentage changed to: {percentage}%"
-            )
+            self.logger.trace(f"Upload distribution percentage changed to: {percentage}%")
         except Exception as e:
             self.logger.error(f"Error changing upload distribution percentage: {e}")
 
@@ -1211,9 +1065,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             interval = int(spin_button.get_value())
             self.app_settings.upload_distribution_custom_interval_minutes = interval
-            self.logger.trace(
-                f"Upload distribution interval changed to: {interval} minutes"
-            )
+            self.logger.trace(f"Upload distribution interval changed to: {interval} minutes")
         except Exception as e:
             self.logger.error(f"Error changing upload distribution interval: {e}")
 
@@ -1224,13 +1076,9 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             selected = dropdown.get_selected()
             algorithm_names = ["off", "pareto", "power-law", "log-normal"]
-            algorithm = (
-                algorithm_names[selected] if selected < len(algorithm_names) else "off"
-            )
+            algorithm = algorithm_names[selected] if selected < len(algorithm_names) else "off"
             self.app_settings.download_distribution_algorithm = algorithm
-            self.logger.trace(
-                f"Download distribution algorithm changed to: {algorithm}"
-            )
+            self.logger.trace(f"Download distribution algorithm changed to: {algorithm}")
 
             # Update dependencies to enable/disable distribution options
             self.update_dependencies()
@@ -1244,9 +1092,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             percentage = int(spin_button.get_value())
             self.app_settings.download_distribution_spread_percentage = percentage
-            self.logger.trace(
-                f"Download distribution percentage changed to: {percentage}%"
-            )
+            self.logger.trace(f"Download distribution percentage changed to: {percentage}%")
         except Exception as e:
             self.logger.error(f"Error changing download distribution percentage: {e}")
 
@@ -1276,9 +1122,7 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             interval = int(spin_button.get_value())
             self.app_settings.download_distribution_custom_interval_minutes = interval
-            self.logger.trace(
-                f"Download distribution interval changed to: {interval} minutes"
-            )
+            self.logger.trace(f"Download distribution interval changed to: {interval} minutes")
         except Exception as e:
             self.logger.error(f"Error changing download distribution interval: {e}")
 
@@ -1289,13 +1133,9 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             percentage = int(spin_button.get_value())
             self.app_settings.upload_distribution_stopped_min_percentage = percentage
-            self.logger.trace(
-                f"Upload distribution stopped min percentage changed to: {percentage}%"
-            )
+            self.logger.trace(f"Upload distribution stopped min percentage changed to: {percentage}%")
         except Exception as e:
-            self.logger.error(
-                f"Error changing upload distribution stopped min percentage: {e}"
-            )
+            self.logger.error(f"Error changing upload distribution stopped min percentage: {e}")
 
     def on_upload_dist_stopped_max_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle upload distribution stopped max percentage change."""
@@ -1304,13 +1144,9 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             percentage = int(spin_button.get_value())
             self.app_settings.upload_distribution_stopped_max_percentage = percentage
-            self.logger.trace(
-                f"Upload distribution stopped max percentage changed to: {percentage}%"
-            )
+            self.logger.trace(f"Upload distribution stopped max percentage changed to: {percentage}%")
         except Exception as e:
-            self.logger.error(
-                f"Error changing upload distribution stopped max percentage: {e}"
-            )
+            self.logger.error(f"Error changing upload distribution stopped max percentage: {e}")
 
     def on_download_dist_stopped_min_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle download distribution stopped min percentage change."""
@@ -1319,13 +1155,9 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             percentage = int(spin_button.get_value())
             self.app_settings.download_distribution_stopped_min_percentage = percentage
-            self.logger.trace(
-                f"Download distribution stopped min percentage changed to: {percentage}%"
-            )
+            self.logger.trace(f"Download distribution stopped min percentage changed to: {percentage}%")
         except Exception as e:
-            self.logger.error(
-                f"Error changing download distribution stopped min percentage: {e}"
-            )
+            self.logger.error(f"Error changing download distribution stopped min percentage: {e}")
 
     def on_download_dist_stopped_max_changed(self, spin_button: Gtk.SpinButton) -> None:
         """Handle download distribution stopped max percentage change."""
@@ -1334,10 +1166,6 @@ class SpeedTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin
         try:
             percentage = int(spin_button.get_value())
             self.app_settings.download_distribution_stopped_max_percentage = percentage
-            self.logger.trace(
-                f"Download distribution stopped max percentage changed to: {percentage}%"
-            )
+            self.logger.trace(f"Download distribution stopped max percentage changed to: {percentage}%")
         except Exception as e:
-            self.logger.error(
-                f"Error changing download distribution stopped max percentage: {e}"
-            )
+            self.logger.error(f"Error changing download distribution stopped max percentage: {e}")

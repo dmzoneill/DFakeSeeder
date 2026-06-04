@@ -77,10 +77,7 @@ class DBusSingleInstance(SingleInstanceChecker):
                     return True
             except GLib.Error as e:
                 error_msg = str(e)
-                if (
-                    "NameHasNoOwner" in error_msg
-                    or "org.freedesktop.DBus.Error.NameHasNoOwner" in error_msg
-                ):
+                if "NameHasNoOwner" in error_msg or "org.freedesktop.DBus.Error.NameHasNoOwner" in error_msg:
                     # Service not registered - no other instance
                     logger.trace(
                         f"D-Bus service '{self.service_name}' not registered - no existing instance",

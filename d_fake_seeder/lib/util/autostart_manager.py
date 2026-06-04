@@ -32,9 +32,7 @@ def get_autostart_path() -> Path:
         Path to $XDG_CONFIG_HOME/autostart/dfakeseeder.desktop
         (defaults to ~/.config/autostart/dfakeseeder.desktop on native installs)
     """
-    xdg_config_base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(
-        os.path.expanduser("~"), ".config"
-    )
+    xdg_config_base = os.environ.get("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
     return Path(xdg_config_base) / "autostart" / "dfakeseeder.desktop"
 
 
@@ -71,9 +69,7 @@ def enable_autostart() -> bool:
 
         return True
     except Exception as e:  # pylint: disable=broad-exception-caught
-        logger.error(
-            f"Failed to enable autostart: {e}", "AutostartManager", exc_info=True
-        )
+        logger.error(f"Failed to enable autostart: {e}", "AutostartManager", exc_info=True)
 
         # Notify user of failure
         if View.instance:
@@ -109,9 +105,7 @@ def disable_autostart() -> bool:
 
         return True
     except Exception as e:  # pylint: disable=broad-exception-caught
-        logger.error(
-            f"Failed to disable autostart: {e}", "AutostartManager", exc_info=True
-        )
+        logger.error(f"Failed to disable autostart: {e}", "AutostartManager", exc_info=True)
 
         # Notify user of failure
         if View.instance:

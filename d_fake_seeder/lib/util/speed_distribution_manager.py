@@ -46,9 +46,7 @@ class SpeedDistributionManager:
         self.download_timer_id = None
 
         # Subscribe to settings changes
-        self._settings_handler_id = self.settings.connect(
-            "attribute-changed", self.on_settings_changed
-        )
+        self._settings_handler_id = self.settings.connect("attribute-changed", self.on_settings_changed)
 
         logger.info("SpeedDistributionManager initialized", "SpeedDistributionManager")
 
@@ -62,9 +60,7 @@ class SpeedDistributionManager:
             )
             self._restart_timers()
         elif "distribution" in key and "custom_interval" in key:
-            logger.debug(
-                f"Custom interval changed: {key} = {value}", "SpeedDistributionManager"
-            )
+            logger.debug(f"Custom interval changed: {key} = {value}", "SpeedDistributionManager")
             self._restart_timers()
 
     def _restart_timers(self) -> Any:
@@ -92,9 +88,7 @@ class SpeedDistributionManager:
             )
 
         if self.settings.download_distribution_redistribution_mode == "custom":
-            interval_minutes = (
-                self.settings.download_distribution_custom_interval_minutes
-            )
+            interval_minutes = self.settings.download_distribution_custom_interval_minutes
             interval_seconds = interval_minutes * 60
             self.download_timer_id = GLib.timeout_add_seconds(
                 interval_seconds,
@@ -175,9 +169,7 @@ class SpeedDistributionManager:
                 )
 
             if total_bandwidth <= 0:
-                logger.debug(
-                    "No upload bandwidth to distribute", "SpeedDistributionManager"
-                )
+                logger.debug("No upload bandwidth to distribute", "SpeedDistributionManager")
                 return
 
             logger.debug("=" * 80, "SpeedDistributionManager")
@@ -231,11 +223,7 @@ class SpeedDistributionManager:
                 category = speed_distribution.get(f"{torrent.file_path}_category", None)
 
                 # Log torrent info
-                torrent_name = (
-                    torrent.name[:50] + "..."
-                    if len(torrent.name) > 50
-                    else torrent.name
-                )
+                torrent_name = torrent.name[:50] + "..." if len(torrent.name) > 50 else torrent.name
                 category_str = f" [{category}]" if category else ""
                 logger.debug(
                     f"  📁 {torrent_name:53} → {new_speed:7.2f} KB/s{category_str}",
@@ -257,19 +245,13 @@ class SpeedDistributionManager:
             if speeds_list:
                 logger.debug("-" * 80, "SpeedDistributionManager")
                 logger.debug("📊 Distribution Stats:", "SpeedDistributionManager")
-                logger.debug(
-                    f"   Min: {min(speeds_list):.2f} KB/s", "SpeedDistributionManager"
-                )
-                logger.debug(
-                    f"   Max: {max(speeds_list):.2f} KB/s", "SpeedDistributionManager"
-                )
+                logger.debug(f"   Min: {min(speeds_list):.2f} KB/s", "SpeedDistributionManager")
+                logger.debug(f"   Max: {max(speeds_list):.2f} KB/s", "SpeedDistributionManager")
                 logger.debug(
                     f"   Avg: {sum(speeds_list) / len(speeds_list):.2f} KB/s",
                     "SpeedDistributionManager",
                 )
-                logger.debug(
-                    f"   Total: {sum(speeds_list):.2f} KB/s", "SpeedDistributionManager"
-                )
+                logger.debug(f"   Total: {sum(speeds_list):.2f} KB/s", "SpeedDistributionManager")
                 stopped_count = sum(1 for s in speeds_list if s == 0)
                 if stopped_count > 0:
                     logger.debug(
@@ -281,9 +263,7 @@ class SpeedDistributionManager:
             self.last_upload_redistribution = time.time()
 
             # Store current state in settings (will be saved via debounced save)
-            self.settings.set(
-                "speed_distribution.upload.current_speed", total_bandwidth
-            )
+            self.settings.set("speed_distribution.upload.current_speed", total_bandwidth)
             self.settings.set("speed_distribution.upload.current_values", speed_values)
 
             logger.debug(
@@ -338,15 +318,11 @@ class SpeedDistributionManager:
                 )
 
             if total_bandwidth <= 0:
-                logger.debug(
-                    "No download bandwidth to distribute", "SpeedDistributionManager"
-                )
+                logger.debug("No download bandwidth to distribute", "SpeedDistributionManager")
                 return
 
             logger.debug("=" * 80, "SpeedDistributionManager")
-            logger.debug(
-                "⬇️  REDISTRIBUTING DOWNLOAD SPEEDS", "SpeedDistributionManager"
-            )
+            logger.debug("⬇️  REDISTRIBUTING DOWNLOAD SPEEDS", "SpeedDistributionManager")
             logger.debug("=" * 80, "SpeedDistributionManager")
             logger.debug(f"Algorithm: {algorithm.upper()}", "SpeedDistributionManager")
             logger.debug(f"Spread: {percentage}%", "SpeedDistributionManager")
@@ -396,11 +372,7 @@ class SpeedDistributionManager:
                 category = speed_distribution.get(f"{torrent.file_path}_category", None)
 
                 # Log torrent info
-                torrent_name = (
-                    torrent.name[:50] + "..."
-                    if len(torrent.name) > 50
-                    else torrent.name
-                )
+                torrent_name = torrent.name[:50] + "..." if len(torrent.name) > 50 else torrent.name
                 category_str = f" [{category}]" if category else ""
                 logger.debug(
                     f"  📁 {torrent_name:53} → {new_speed:7.2f} KB/s{category_str}",
@@ -422,19 +394,13 @@ class SpeedDistributionManager:
             if speeds_list:
                 logger.debug("-" * 80, "SpeedDistributionManager")
                 logger.debug("📊 Distribution Stats:", "SpeedDistributionManager")
-                logger.debug(
-                    f"   Min: {min(speeds_list):.2f} KB/s", "SpeedDistributionManager"
-                )
-                logger.debug(
-                    f"   Max: {max(speeds_list):.2f} KB/s", "SpeedDistributionManager"
-                )
+                logger.debug(f"   Min: {min(speeds_list):.2f} KB/s", "SpeedDistributionManager")
+                logger.debug(f"   Max: {max(speeds_list):.2f} KB/s", "SpeedDistributionManager")
                 logger.debug(
                     f"   Avg: {sum(speeds_list) / len(speeds_list):.2f} KB/s",
                     "SpeedDistributionManager",
                 )
-                logger.debug(
-                    f"   Total: {sum(speeds_list):.2f} KB/s", "SpeedDistributionManager"
-                )
+                logger.debug(f"   Total: {sum(speeds_list):.2f} KB/s", "SpeedDistributionManager")
                 stopped_count = sum(1 for s in speeds_list if s == 0)
                 if stopped_count > 0:
                     logger.debug(
@@ -446,12 +412,8 @@ class SpeedDistributionManager:
             self.last_download_redistribution = time.time()
 
             # Store current state in settings (will be saved via debounced save)
-            self.settings.set(
-                "speed_distribution.download.current_speed", total_bandwidth
-            )
-            self.settings.set(
-                "speed_distribution.download.current_values", speed_values
-            )
+            self.settings.set("speed_distribution.download.current_speed", total_bandwidth)
+            self.settings.set("speed_distribution.download.current_values", speed_values)
 
             logger.debug(
                 f"Redistributed download speeds: {algorithm} algorithm, "

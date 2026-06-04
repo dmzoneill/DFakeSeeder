@@ -123,14 +123,10 @@ class PeersTab(
             self._selection = Gtk.SingleSelection.new(self._sort_model)
             self._peers_columnview.set_model(self._selection)
 
-            self.logger.info(
-                f"Peers column view initialized successfully with {len(properties)} columns"
-            )
+            self.logger.info(f"Peers column view initialized successfully with {len(properties)} columns")
 
         except Exception as e:
-            self.logger.error(
-                f"Error initializing peers column view: {e}", exc_info=True
-            )
+            self.logger.error(f"Error initializing peers column view: {e}", exc_info=True)
 
     def on_language_changed(self, source: Any = None, new_language: Any = None) -> None:
         """Handle language change events for column translation."""
@@ -142,9 +138,7 @@ class PeersTab(
             self.refresh_column_translations()
 
         except Exception as e:
-            self.logger.error(
-                f"Error handling language change in {self.tab_name} tab: {e}"
-            )
+            self.logger.error(f"Error handling language change in {self.tab_name} tab: {e}")
 
     def _create_peer_column(self, property_name: str) -> None:
         """
@@ -160,9 +154,7 @@ class PeersTab(
                 factory,
                 factory.connect("setup", self._setup_column_item, property_name),
             )
-            self.track_signal(
-                factory, factory.connect("bind", self._bind_column_item, property_name)
-            )
+            self.track_signal(factory, factory.connect("bind", self._bind_column_item, property_name))
 
             # Create column
             column = Gtk.ColumnViewColumn.new(None, factory)
@@ -172,14 +164,10 @@ class PeersTab(
             column.set_resizable(True)
 
             # Register column for translation instead of setting title directly
-            self.register_translatable_column(
-                self._peers_columnview, column, property_name, "peer"
-            )
+            self.register_translatable_column(self._peers_columnview, column, property_name, "peer")
 
             # Create sorter for the column
-            property_expression = Gtk.PropertyExpression.new(
-                TorrentPeer, None, property_name
-            )
+            property_expression = Gtk.PropertyExpression.new(TorrentPeer, None, property_name)
             sorter = self._create_property_sorter(property_name, property_expression)  # type: ignore[func-returns-value]  # noqa: E501
             if sorter:
                 column.set_sorter(sorter)
@@ -192,9 +180,7 @@ class PeersTab(
         except Exception as e:
             self.logger.error(f"Error creating peer column {property_name}: {e}")
 
-    def _create_property_sorter(
-        self, property_name: str, property_expression: Any
-    ) -> None:
+    def _create_property_sorter(self, property_name: str, property_expression: Any) -> None:
         """
         Create appropriate sorter based on property type.
 
@@ -256,9 +242,7 @@ class PeersTab(
         try:
             if self._peers_store:
                 self._peers_store.remove_all()
-                self.logger.trace(
-                    f"Cleared peers store (now has {self._peers_store.get_n_items()} items)"
-                )
+                self.logger.trace(f"Cleared peers store (now has {self._peers_store.get_n_items()} items)")
 
             # Show empty state
             super().clear_content()
@@ -290,9 +274,7 @@ class PeersTab(
 
             # Collect peer data from all sources
             peer_data = self._collect_peer_data(torrent)
-            self.logger.trace(
-                f"Collected {len(peer_data)} peers for torrent {torrent_id}"
-            )
+            self.logger.trace(f"Collected {len(peer_data)} peers for torrent {torrent_id}")
 
             # Update peers store with new data
             self._update_peers_store(peer_data)
@@ -388,11 +370,7 @@ class PeersTab(
 
             legacy_count = 0
             for peer in seeder.peers:
-                client = (
-                    seeder.clients[peer]
-                    if hasattr(seeder, "clients") and peer in seeder.clients
-                    else "Unknown"
-                )
+                client = seeder.clients[peer] if hasattr(seeder, "clients") and peer in seeder.clients else "Unknown"
                 peer_data.append(
                     {
                         "address": str(peer),
@@ -434,9 +412,7 @@ class PeersTab(
                 conn_key,
                 conn_peer,
             ) in self._incoming_connections.all_connections.items():
-                if hasattr(conn_peer, "torrent_hash") and conn_peer.torrent_hash == str(
-                    torrent.id
-                ):
+                if hasattr(conn_peer, "torrent_hash") and conn_peer.torrent_hash == str(torrent.id):
                     address = f"{conn_peer.address}:{conn_peer.port}"
                     connection_addresses.add(address)
 
@@ -445,9 +421,7 @@ class PeersTab(
                 conn_key,
                 conn_peer,
             ) in self._outgoing_connections.all_connections.items():
-                if hasattr(conn_peer, "torrent_hash") and conn_peer.torrent_hash == str(
-                    torrent.id
-                ):
+                if hasattr(conn_peer, "torrent_hash") and conn_peer.torrent_hash == str(torrent.id):
                     address = f"{conn_peer.address}:{conn_peer.port}"
                     connection_addresses.add(address)
 
@@ -559,9 +533,7 @@ class PeersTab(
                 if not list_item:
                     return False  # type: ignore[return-value]
 
-                value = self.safe_get_property(
-                    list_item, property_name.replace("-", "_"), ""
-                )
+                value = self.safe_get_property(list_item, property_name.replace("-", "_"), "")
                 formatted_value = self.format_property_value(value)
                 child.set_text(str(formatted_value))
 

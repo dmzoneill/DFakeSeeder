@@ -134,9 +134,7 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
 
     def run(self) -> Any:
         """Start the tray application"""
-        logger.info(
-            "Starting tray application", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Starting tray application", extra={"class_name": self.__class__.__name__})
 
         if not self._initialize():
             logger.error(
@@ -200,9 +198,7 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
         """Setup GTK3 TranslationManager for tray application"""
         try:
             # Create GTK3 translation manager
-            localedir = os.path.join(
-                os.environ.get("DFS_PATH", "."), "components", "locale"
-            )
+            localedir = os.path.join(os.environ.get("DFS_PATH", "."), "components", "locale")
             self.translation_manager = TranslationManagerGTK3(  # type: ignore[assignment]
                 domain="dfakeseeder",
                 localedir=localedir,
@@ -221,13 +217,9 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
                     current_locale = locale.getlocale()[0]
                     if not current_locale:
                         # Fallback to environment variables
-                        current_locale = (
-                            os.environ.get("LANG") or os.environ.get("LC_ALL") or ""
-                        )
+                        current_locale = os.environ.get("LANG") or os.environ.get("LC_ALL") or ""
                     if current_locale:
-                        target_language = (
-                            current_locale.split("_")[0].split(".")[0].lower()
-                        )
+                        target_language = current_locale.split("_")[0].split(".")[0].lower()
                     else:
                         target_language = "en"
                 except (ValueError, TypeError, AttributeError):
@@ -257,9 +249,7 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
         """Switch to a different language using GTK3 TranslationManager"""
         try:
             if self.translation_manager:
-                actual_language = self.translation_manager.switch_language(
-                    language_code
-                )
+                actual_language = self.translation_manager.switch_language(language_code)
                 self._ = self.translation_manager.get_translate_func()
                 logger.trace(
                     f"Tray switched to language: {actual_language}",
@@ -294,9 +284,7 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
 
             # Set icon using absolute path to dfakeseeder.png
             dfs_path = os.environ.get("DFS_PATH", ".")
-            icon_path = os.path.join(
-                dfs_path, "components", "images", "dfakeseeder.png"
-            )
+            icon_path = os.path.join(dfs_path, "components", "images", "dfakeseeder.png")
 
             if os.path.exists(icon_path):
                 self.indicator.set_icon_full(icon_path, "DFakeSeeder")  # type: ignore[attr-defined]
@@ -366,9 +354,7 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
             if self.indicator:
                 # Use the same dfakeseeder icon for all states (can be enhanced later with different state icons)
                 dfs_path = os.environ.get("DFS_PATH", ".")
-                icon_path = os.path.join(
-                    dfs_path, "components", "images", "dfakeseeder.png"
-                )
+                icon_path = os.path.join(dfs_path, "components", "images", "dfakeseeder.png")
 
                 if os.path.exists(icon_path):
                     self.indicator.set_icon_full(icon_path, "DFakeSeeder")
@@ -383,11 +369,7 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
                 # Update tooltip to reflect status
                 if connected:
                     seeding_paused = self.settings_cache.get("seeding_paused", False)
-                    status_text = (
-                        "DFakeSeeder - Paused"
-                        if seeding_paused
-                        else "DFakeSeeder - Active"
-                    )
+                    status_text = "DFakeSeeder - Paused" if seeding_paused else "DFakeSeeder - Active"
                 else:
                     status_text = "DFakeSeeder - Disconnected"
 
@@ -649,9 +631,7 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
         self.menu.show_all()  # type: ignore[attr-defined]
 
         # Register menu items for translation if TranslationManager supports it
-        if self.translation_manager and hasattr(
-            self.translation_manager, "register_simple_text"
-        ):
+        if self.translation_manager and hasattr(self.translation_manager, "register_simple_text"):
             logger.trace(
                 "Menu items could be registered for automatic translation",
                 extra={"class_name": self.__class__.__name__},
@@ -809,27 +789,19 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
         try:
             # Update speed toggle
             if "speed_toggle" in self.menu_items:
-                alt_speed_enabled = self.settings_cache.get(
-                    "alternative_speed_enabled", False
-                )
+                alt_speed_enabled = self.settings_cache.get("alternative_speed_enabled", False)
                 self.menu_items["speed_toggle"].set_active(alt_speed_enabled)
 
             # Update speed info
             if "speed_info" in self.menu_items:
-                alt_speed_enabled = self.settings_cache.get(
-                    "alternative_speed_enabled", False
-                )
+                alt_speed_enabled = self.settings_cache.get("alternative_speed_enabled", False)
                 if alt_speed_enabled:
                     up_speed = self.settings_cache.get("alternative_upload_speed", 25)
-                    down_speed = self.settings_cache.get(
-                        "alternative_download_speed", 100
-                    )
+                    down_speed = self.settings_cache.get("alternative_download_speed", 100)
                 else:
                     up_speed = self.settings_cache.get("upload_speed", 50)
                     down_speed = self.settings_cache.get("download_speed", 500)
-                self.menu_items["speed_info"].set_label(
-                    f"↑ {up_speed} KB/s  ↓ {down_speed} KB/s"
-                )
+                self.menu_items["speed_info"].set_label(f"↑ {up_speed} KB/s  ↓ {down_speed} KB/s")
 
             # Update pause toggle
             if "pause_toggle" in self.menu_items:
@@ -1053,9 +1025,7 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
 
                     # Store process handle and start polling to reap child on exit
                     self._main_app_process = process
-                    self._main_app_poll_timer = GLib.timeout_add_seconds(
-                        5, self._poll_main_app_process
-                    )
+                    self._main_app_poll_timer = GLib.timeout_add_seconds(5, self._poll_main_app_process)
 
                     logger.info(
                         f"Launched main application using {method_name} (PID: {process.pid})",
@@ -1071,12 +1041,8 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
                     notification.show()
 
                     # Start trying to reconnect after a delay
-                    reconnect_delay = self.tray_settings.get(
-                        "reconnect_delay_seconds", 3
-                    )
-                    GLib.timeout_add_seconds(
-                        reconnect_delay, self._try_reconnect_after_launch
-                    )
+                    reconnect_delay = self.tray_settings.get("reconnect_delay_seconds", 3)
+                    GLib.timeout_add_seconds(reconnect_delay, self._try_reconnect_after_launch)
 
                     launched = True
                     break
@@ -1175,9 +1141,7 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
                 extra={"class_name": self.__class__.__name__},
             )
             # Fallback: quit tray anyway after a delay (use half the normal quit delay)
-            fallback_delay = max(
-                1, self.tray_settings.get("quit_delay_seconds", 2) // 2
-            )
+            fallback_delay = max(1, self.tray_settings.get("quit_delay_seconds", 2) // 2)
             GLib.timeout_add_seconds(fallback_delay, self.quit)
 
     def _on_quit_tray_only(self, menu_item: Any) -> None:
@@ -1198,9 +1162,7 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
     def _start_update_timer(self) -> Any:
         """Start periodic update timer"""
         update_interval = self.tray_settings.get("update_interval_seconds", 10)
-        self.update_timer = GLib.timeout_add_seconds(
-            update_interval, self._periodic_update
-        )
+        self.update_timer = GLib.timeout_add_seconds(update_interval, self._periodic_update)
 
     def _periodic_update(self) -> Any:
         """Periodic update function"""
@@ -1282,9 +1244,7 @@ class TrayApplication:  # pylint: disable=too-many-instance-attributes
 
     def _signal_handler(self, signum: Any, frame: Any) -> Any:
         """Handle system signals"""
-        logger.info(
-            f"Received signal {signum}", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info(f"Received signal {signum}", extra={"class_name": self.__class__.__name__})
         GLib.idle_add(self.quit)
 
 

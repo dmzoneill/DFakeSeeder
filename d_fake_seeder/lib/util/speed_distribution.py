@@ -16,9 +16,7 @@ from d_fake_seeder.lib.logger import logger
 class SpeedDistributor(ABC):
     """Base class for speed distribution algorithms."""
 
-    def __init__(
-        self, percentage: float = 50.0, stopped_percentage: float = 0.0
-    ) -> None:
+    def __init__(self, percentage: float = 50.0, stopped_percentage: float = 0.0) -> None:
         """
         Initialize distributor.
 
@@ -30,9 +28,7 @@ class SpeedDistributor(ABC):
         self.stopped_percentage = max(0.0, min(100.0, stopped_percentage))
 
     @abstractmethod
-    def distribute(
-        self, total_bandwidth: float, torrent_ids: List[str]
-    ) -> Dict[str, float]:
+    def distribute(self, total_bandwidth: float, torrent_ids: List[str]) -> Dict[str, float]:
         """
         Distribute bandwidth across torrents.
 
@@ -48,9 +44,7 @@ class SpeedDistributor(ABC):
     def get_algorithm_name(self) -> str:
         """Return the name of this algorithm."""
 
-    def _apply_stopped_torrents(
-        self, torrent_ids: List[str]
-    ) -> tuple[List[str], List[str]]:
+    def _apply_stopped_torrents(self, torrent_ids: List[str]) -> tuple[List[str], List[str]]:
         """
         Randomly select torrents to stop based on stopped_percentage.
 
@@ -120,9 +114,7 @@ class ParetoDistributor(SpeedDistributor):
     def get_algorithm_name(self) -> str:
         return "Pareto"
 
-    def distribute(
-        self, total_bandwidth: float, torrent_ids: List[str]
-    ) -> Dict[str, float]:
+    def distribute(self, total_bandwidth: float, torrent_ids: List[str]) -> Dict[str, float]:
         """Distribute using Pareto principle."""
         if not torrent_ids:
             return {}
@@ -178,9 +170,7 @@ class ParetoDistributor(SpeedDistributor):
 
         return self._ensure_unique_speeds(speeds)
 
-    def _distribute_tier(
-        self, bandwidth: float, torrent_ids: List[str], tier: str
-    ) -> Dict[str, float]:
+    def _distribute_tier(self, bandwidth: float, torrent_ids: List[str], tier: str) -> Dict[str, float]:
         """Distribute bandwidth within a tier using random weights."""
         if not torrent_ids:
             return {}
@@ -211,9 +201,7 @@ class PowerLawDistributor(SpeedDistributor):
     def get_algorithm_name(self) -> str:
         return "Power-Law"
 
-    def distribute(
-        self, total_bandwidth: float, torrent_ids: List[str]
-    ) -> Dict[str, float]:
+    def distribute(self, total_bandwidth: float, torrent_ids: List[str]) -> Dict[str, float]:
         """Distribute using power law."""
         if not torrent_ids:
             return {}
@@ -331,9 +319,7 @@ class LogNormalDistributor(SpeedDistributor):
 
         # Normalize to exactly match total bandwidth
         total_raw = sum(raw_speeds)
-        normalized_speeds = [
-            (speed / total_raw) * total_bandwidth for speed in raw_speeds
-        ]
+        normalized_speeds = [(speed / total_raw) * total_bandwidth for speed in raw_speeds]
 
         # Shuffle to randomize assignment
         shuffled_ids = active_ids.copy()
@@ -356,9 +342,7 @@ class OffDistributor(SpeedDistributor):
     def get_algorithm_name(self) -> str:
         return "Off"
 
-    def distribute(
-        self, total_bandwidth: float, torrent_ids: List[str]
-    ) -> Dict[str, float]:
+    def distribute(self, total_bandwidth: float, torrent_ids: List[str]) -> Dict[str, float]:
         """Distribute equally across all torrents."""
         n = len(torrent_ids)
 
@@ -370,9 +354,7 @@ class OffDistributor(SpeedDistributor):
         return {tid: speed_per_torrent for tid in torrent_ids}
 
 
-def create_distributor(
-    algorithm: str, percentage: float = 50.0, stopped_percentage: float = 0.0
-) -> SpeedDistributor:
+def create_distributor(algorithm: str, percentage: float = 50.0, stopped_percentage: float = 0.0) -> SpeedDistributor:
     """
     Factory function to create a speed distributor.
 
@@ -401,9 +383,7 @@ def create_distributor(
     return distributor_class(percentage, stopped_percentage)  # type: ignore[abstract]
 
 
-def format_debug_output(
-    torrent_name: str, algorithm: str, speed: float, category: Optional[str] = None
-) -> str:
+def format_debug_output(torrent_name: str, algorithm: str, speed: float, category: Optional[str] = None) -> str:
     """
     Format debug output for a torrent's distributed speed.
 
@@ -422,6 +402,4 @@ def format_debug_output(
     if category:
         return f"[SpeedDist] {torrent_name} [Algorithm: {algorithm}, Speed: {speed:.2f} KB/s, Category: {category}]"
 
-    return (
-        f"[SpeedDist] {torrent_name} [Algorithm: {algorithm}, Speed: {speed:.2f} KB/s]"
-    )
+    return f"[SpeedDist] {torrent_name} [Algorithm: {algorithm}, Speed: {speed:.2f} KB/s]"

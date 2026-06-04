@@ -77,9 +77,7 @@ class NotificationManager:
     - Non-blocking (doesn't interfere with keyboard)
     """
 
-    def __init__(
-        self, overlay: Gtk.Overlay, statusbar_callback: Optional[Callable] = None
-    ) -> None:
+    def __init__(self, overlay: Gtk.Overlay, statusbar_callback: Optional[Callable] = None) -> None:
         """
         Initialize the notification manager.
 

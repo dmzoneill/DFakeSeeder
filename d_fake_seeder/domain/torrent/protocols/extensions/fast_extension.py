@@ -51,12 +51,8 @@ class FastExtension:
 
         # For fake seeding
         self.simulate_fast_behavior = True
-        self.max_allowed_fast = (
-            BitTorrentProtocolConstants.MAX_ALLOWED_FAST_PIECES
-        )  # Maximum allowed fast pieces
-        self.max_suggest_pieces = (
-            BitTorrentProtocolConstants.MAX_SUGGEST_PIECES
-        )  # Maximum pieces to suggest
+        self.max_allowed_fast = BitTorrentProtocolConstants.MAX_ALLOWED_FAST_PIECES  # Maximum allowed fast pieces
+        self.max_suggest_pieces = BitTorrentProtocolConstants.MAX_SUGGEST_PIECES  # Maximum pieces to suggest
 
         logger.trace(
             "Fast Extension initialized",
@@ -137,9 +133,7 @@ class FastExtension:
         self.have_none = True
         self.have_all = False
 
-        logger.trace(
-            "Received HAVE_NONE", extra={"class_name": self.__class__.__name__}
-        )
+        logger.trace("Received HAVE_NONE", extra={"class_name": self.__class__.__name__})
 
         # Clear all peer availability
         if hasattr(self.peer_connection, "peer_pieces"):
@@ -250,9 +244,7 @@ class FastExtension:
 
             if hasattr(self.peer_connection, "send_message"):
                 self.peer_connection.send_message(message)
-                logger.trace(
-                    "Sent HAVE_ALL", extra={"class_name": self.__class__.__name__}
-                )
+                logger.trace("Sent HAVE_ALL", extra={"class_name": self.__class__.__name__})
                 return True
 
         except Exception as e:
@@ -278,9 +270,7 @@ class FastExtension:
 
             if hasattr(self.peer_connection, "send_message"):
                 self.peer_connection.send_message(message)
-                logger.trace(
-                    "Sent HAVE_NONE", extra={"class_name": self.__class__.__name__}
-                )
+                logger.trace("Sent HAVE_NONE", extra={"class_name": self.__class__.__name__})
                 return True
 
         except Exception as e:
@@ -307,9 +297,7 @@ class FastExtension:
             return False
 
         try:
-            message = struct.pack(
-                ">IBIII", 13, self.REJECT_REQUEST, piece_index, begin, length
-            )
+            message = struct.pack(">IBIII", 13, self.REJECT_REQUEST, piece_index, begin, length)
 
             if hasattr(self.peer_connection, "send_message"):
                 self.peer_connection.send_message(message)
@@ -359,9 +347,7 @@ class FastExtension:
 
         return False
 
-    def generate_allowed_fast_set(
-        self, info_hash: bytes, peer_ip: str, num_pieces: int
-    ) -> Any:
+    def generate_allowed_fast_set(self, info_hash: bytes, peer_ip: str, num_pieces: int) -> Any:
         """
         Generate allowed fast set based on peer IP and info hash
 
@@ -387,9 +373,7 @@ class FastExtension:
 
             # Use hash to select pieces
             for i in range(max_fast):
-                piece_index = (
-                    int.from_bytes(hash_value[i * 2 : (i + 1) * 2], "big") % num_pieces
-                )
+                piece_index = int.from_bytes(hash_value[i * 2 : (i + 1) * 2], "big") % num_pieces
                 fast_pieces.add(piece_index)
 
             # Send allowed fast messages
@@ -485,6 +469,4 @@ class FastExtension:
         self.have_none = False
         self.peer_supports_fast = False
 
-        logger.trace(
-            "Fast Extension cleaned up", extra={"class_name": self.__class__.__name__}
-        )
+        logger.trace("Fast Extension cleaned up", extra={"class_name": self.__class__.__name__})

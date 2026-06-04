@@ -64,14 +64,10 @@ class MetricsCollector:
                 logger.trace(f"Monitoring current process: PID {self.pid}")
                 logger.trace(f"Process: {self.process.name()}")
                 cmdline = self.process.cmdline()
-                logger.trace(
-                    f"Command: {' '.join(cmdline[:3] if cmdline else ['unknown'])}"
-                )
+                logger.trace(f"Command: {' '.join(cmdline[:3] if cmdline else ['unknown'])}")
 
             if self.process:
-                logger.trace(
-                    f"Monitoring process: {self.process.name()} (PID: {self.pid})"
-                )
+                logger.trace(f"Monitoring process: {self.process.name()} (PID: {self.pid})")
                 # Prime the cpu_percent() call - first call always returns 0
                 # Subsequent calls with interval=None return CPU since last call
                 self.process.cpu_percent(interval=None)
@@ -321,12 +317,8 @@ class MetricsCollector:
             # We can try to get GC stats if we're in the same process
             metrics = {
                 "gc_collections_gen0": gc.get_count()[0] if gc.get_count() else 0,
-                "gc_collections_gen1": (
-                    gc.get_count()[1] if len(gc.get_count()) > 1 else 0
-                ),
-                "gc_collections_gen2": (
-                    gc.get_count()[2] if len(gc.get_count()) > 2 else 0
-                ),
+                "gc_collections_gen1": (gc.get_count()[1] if len(gc.get_count()) > 1 else 0),
+                "gc_collections_gen2": (gc.get_count()[2] if len(gc.get_count()) > 2 else 0),
             }
 
             return metrics
@@ -401,9 +393,7 @@ class MetricsCollector:
             if key in metrics:
                 value = metrics[key]
                 if value > threshold:
-                    warnings.append(
-                        f"{key} is {value:.2f}, exceeds threshold {threshold}"
-                    )
+                    warnings.append(f"{key} is {value:.2f}, exceeds threshold {threshold}")
 
         return len(warnings) == 0, warnings
 
@@ -462,12 +452,8 @@ class MetricsCollector:
 
         # I/O
         lines.append("I/O:")
-        lines.append(
-            f"  Read: {metrics.get('io_read_bytes', 0) / (1024 * 1024):.2f} MB"
-        )
-        lines.append(
-            f"  Write: {metrics.get('io_write_bytes', 0) / (1024 * 1024):.2f} MB"
-        )
+        lines.append(f"  Read: {metrics.get('io_read_bytes', 0) / (1024 * 1024):.2f} MB")
+        lines.append(f"  Write: {metrics.get('io_write_bytes', 0) / (1024 * 1024):.2f} MB")
         lines.append("")
 
         # Delta from baseline

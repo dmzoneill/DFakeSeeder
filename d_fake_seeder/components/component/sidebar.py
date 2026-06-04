@@ -25,9 +25,7 @@ from gi.repository import Gtk  # noqa: E402
 class FilterItem(Gtk.Box):
     """Single filter item with optional icon, label, and count badge."""
 
-    def __init__(
-        self, filter_id: Any, label: Any, icon_name: Any = "", count: Any = 0
-    ) -> None:
+    def __init__(self, filter_id: Any, label: Any, icon_name: Any = "", count: Any = 0) -> None:
         super().__init__(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
 
         self.filter_id = filter_id
@@ -72,9 +70,7 @@ class Sidebar(Component):
 
     def __init__(self, builder: Any, model: Any) -> None:
         super().__init__()
-        logger.info(
-            "Sidebar.__init__() started", extra={"class_name": self.__class__.__name__}
-        )
+        logger.info("Sidebar.__init__() started", extra={"class_name": self.__class__.__name__})
 
         self.builder = builder
         self.model = model
@@ -201,9 +197,7 @@ class Sidebar(Component):
         self.trackers_listbox.remove_all()
 
         # Add "All" tracker item
-        all_count = (
-            len(self.model.torrent_list) if hasattr(self.model, "torrent_list") else 0
-        )
+        all_count = len(self.model.torrent_list) if hasattr(self.model, "torrent_list") else 0
         all_item = FilterItem("all", self._("All"), "", all_count)
         self.trackers_listbox.append(all_item)
 
@@ -300,10 +294,7 @@ class Sidebar(Component):
 
         # Sort by count (descending) then by name
         sorted_stats = sorted(
-            [
-                (domain, stats["count"], stats["has_error"])
-                for domain, stats in tracker_stats.items()
-            ],
+            [(domain, stats["count"], stats["has_error"]) for domain, stats in tracker_stats.items()],
             key=lambda x: (-x[1], x[0]),
         )
 
@@ -395,11 +386,7 @@ class Sidebar(Component):
             if not row:
                 break
             filter_item = row.get_child()
-            if (
-                filter_item
-                and hasattr(filter_item, "filter_id")
-                and filter_item.filter_id != "all"
-            ):
+            if filter_item and hasattr(filter_item, "filter_id") and filter_item.filter_id != "all":
                 existing_domains.add(filter_item.filter_id)
             i += 1
 
@@ -408,11 +395,7 @@ class Sidebar(Component):
             self._populate_trackers()
         else:
             # Only update counts in-place — no widget destruction
-            all_count = (
-                len(self.model.torrent_list)
-                if hasattr(self.model, "torrent_list")
-                else 0
-            )
+            all_count = len(self.model.torrent_list) if hasattr(self.model, "torrent_list") else 0
             row = self.trackers_listbox.get_row_at_index(0)
             if row:
                 filter_item = row.get_child()

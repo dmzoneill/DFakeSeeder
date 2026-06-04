@@ -47,9 +47,7 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
         self.settings = AppSettings.get_instance()
         ui_settings = getattr(self.settings, "ui_settings", {})
         self.connection_timeout = ui_settings.get("connection_timeout_seconds", 10.0)
-        self.message_receive_timeout = ui_settings.get(
-            "message_receive_timeout_seconds", 5.0
-        )
+        self.message_receive_timeout = ui_settings.get("message_receive_timeout_seconds", 5.0)
 
     async def connect(self, timeout: Optional[float] = None) -> bool:
         """Establish TCP connection to peer using non-blocking asyncio"""
@@ -81,8 +79,7 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
 
             # Notify UI of new outgoing connection
             logger.trace(
-                f"✅ Successfully connected to peer "
-                f"{self.peer_info.ip}:{self.peer_info.port}",
+                f"✅ Successfully connected to peer " f"{self.peer_info.ip}:{self.peer_info.port}",
                 extra={"class_name": self.__class__.__name__},
             )
             if self.connection_callback:
@@ -102,8 +99,7 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
 
         except (asyncio.TimeoutError, socket.error, OSError) as e:
             logger.trace(
-                f"❌ Failed to connect to "
-                f"{self.peer_info.ip}:{self.peer_info.port}: {e}",
+                f"❌ Failed to connect to " f"{self.peer_info.ip}:{self.peer_info.port}: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -138,18 +134,10 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
             pstrlen = BitTorrentProtocolConstants.PROTOCOL_NAME_LENGTH
             reserved = BitTorrentProtocolConstants.RESERVED_BYTES
 
-            handshake = (
-                struct.pack("!B", pstrlen)
-                + pstr
-                + reserved
-                + self.info_hash
-                + self.our_peer_id
-            )
+            handshake = struct.pack("!B", pstrlen) + pstr + reserved + self.info_hash + self.our_peer_id
 
             # Send handshake
-            await asyncio.get_running_loop().run_in_executor(
-                None, self.socket.send, handshake
-            )
+            await asyncio.get_running_loop().run_in_executor(None, self.socket.send, handshake)
 
             # Receive handshake response
             response = await asyncio.get_running_loop().run_in_executor(
@@ -176,12 +164,8 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
                 return False
 
             # Extract info hash
-            info_hash_start = (
-                1 + response_pstrlen + BitTorrentProtocolConstants.RESERVED_BYTES_LENGTH
-            )
-            info_hash_end = (
-                info_hash_start + BitTorrentProtocolConstants.INFOHASH_LENGTH
-            )
+            info_hash_start = 1 + response_pstrlen + BitTorrentProtocolConstants.RESERVED_BYTES_LENGTH
+            info_hash_end = info_hash_start + BitTorrentProtocolConstants.INFOHASH_LENGTH
             response_info_hash = response[info_hash_start:info_hash_end]
             if response_info_hash != self.info_hash:
                 return False
@@ -198,8 +182,7 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
             self.peer_info.peer_id = peer_id
 
             logger.trace(
-                f"✅ Handshake successful with "
-                f"{self.peer_info.ip}:{self.peer_info.port}",
+                f"✅ Handshake successful with " f"{self.peer_info.ip}:{self.peer_info.port}",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -233,13 +216,9 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
         try:
             # Message format: <length><id><payload>
             length = 1 + len(payload)  # 1 byte for message ID + payload
-            message = (
-                struct.pack("!I", length) + struct.pack("!B", message_id) + payload
-            )
+            message = struct.pack("!I", length) + struct.pack("!B", message_id) + payload
 
-            await asyncio.get_running_loop().run_in_executor(
-                None, self.socket.send, message
-            )
+            await asyncio.get_running_loop().run_in_executor(None, self.socket.send, message)
 
             self.last_message_time = time.time()
             return True
@@ -251,9 +230,7 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
             )
             return False
 
-    async def receive_message(
-        self, timeout: Optional[float] = None
-    ) -> Optional[Tuple[int, bytes]]:
+    async def receive_message(self, timeout: Optional[float] = None) -> Optional[Tuple[int, bytes]]:
         """Receive a BitTorrent message"""
         if timeout is None:
             timeout = self.message_receive_timeout
@@ -271,10 +248,7 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
                 BitTorrentProtocolConstants.MESSAGE_LENGTH_HEADER_BYTES,
             )
 
-            if (
-                len(length_data)
-                != BitTorrentProtocolConstants.MESSAGE_LENGTH_HEADER_BYTES
-            ):
+            if len(length_data) != BitTorrentProtocolConstants.MESSAGE_LENGTH_HEADER_BYTES:
                 return None
 
             length = struct.unpack("!I", length_data)[0]
@@ -285,9 +259,7 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
                 return (-1, b"")  # Special case for keep-alive
 
             # Read message ID and payload
-            message_data = await asyncio.get_running_loop().run_in_executor(
-                None, self.socket.recv, length
-            )
+            message_data = await asyncio.get_running_loop().run_in_executor(None, self.socket.recv, length)
 
             if len(message_data) != length:
                 return None
@@ -316,12 +288,8 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
 
         try:
             # Keep-alive is just a length of 0
-            keep_alive = struct.pack(
-                "!I", BitTorrentProtocolConstants.KEEPALIVE_MESSAGE_LENGTH
-            )
-            await asyncio.get_running_loop().run_in_executor(
-                None, self.socket.send, keep_alive
-            )
+            keep_alive = struct.pack("!I", BitTorrentProtocolConstants.KEEPALIVE_MESSAGE_LENGTH)
+            await asyncio.get_running_loop().run_in_executor(None, self.socket.send, keep_alive)
             return True
         except Exception:  # pylint: disable=broad-exception-caught
             return False
@@ -345,9 +313,7 @@ class PeerConnection:  # pylint: disable=too-many-instance-attributes
 
         # Notify UI of disconnection
         if self.connection_callback and self.connected:
-            self.connection_callback(
-                "outgoing", "remove", self.peer_info.ip, self.peer_info.port
-            )
+            self.connection_callback("outgoing", "remove", self.peer_info.ip, self.peer_info.port)
 
         self.connected = False
         self.handshake_complete = False

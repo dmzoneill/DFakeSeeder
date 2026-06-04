@@ -33,9 +33,7 @@ class ShutdownProgressTracker:
         """Register how many items of this type need to be shut down"""
         if component_type in self.components:
             self.components[component_type]["total"] = count
-            self.components[component_type]["status"] = (
-                "pending" if count > 0 else "complete"
-            )
+            self.components[component_type]["status"] = "pending" if count > 0 else "complete"
             logger.trace(
                 f"📊 Registered {count} {component_type} for shutdown tracking",
                 extra={"class_name": self.__class__.__name__},
@@ -56,8 +54,7 @@ class ShutdownProgressTracker:
                 component["status"] = "in_progress"
 
             logger.trace(
-                f"✅ Marked {count} {component_type} as completed "
-                f"({component['completed']}/{component['total']})",
+                f"✅ Marked {count} {component_type} as completed " f"({component['completed']}/{component['total']})",
                 extra={"class_name": self.__class__.__name__},
             )
             self._notify_callbacks()
@@ -163,9 +160,7 @@ class ShutdownProgressTracker:
             "background_workers": "Background Workers",
             "network_connections": "Network Connections",
         }
-        return display_names.get(
-            component_type, component_type.replace("_", " ").title()
-        )
+        return display_names.get(component_type, component_type.replace("_", " ").title())
 
     def get_status_icon(self, component_type: str) -> str:
         """Get status icon for component type"""

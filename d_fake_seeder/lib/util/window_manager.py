@@ -45,9 +45,7 @@ class WindowManager:
         Args:
             window: GTK4 window to manage (optional, can be set later)
         """
-        logger.trace(
-            "Initializing WindowManager", extra={"class_name": self.__class__.__name__}
-        )
+        logger.trace("Initializing WindowManager", extra={"class_name": self.__class__.__name__})
 
         self.window = window
         self.app_settings = AppSettings.get_instance()
@@ -73,9 +71,7 @@ class WindowManager:
         self.window = window
         self._setup_window_handlers()
         self._load_window_state()
-        logger.trace(
-            "Window set for management", extra={"class_name": self.__class__.__name__}
-        )
+        logger.trace("Window set for management", extra={"class_name": self.__class__.__name__})
 
     def is_tray_running(self) -> bool:
         """
@@ -344,9 +340,7 @@ class WindowManager:
                         extra={"class_name": self.__class__.__name__},
                     )
 
-            logger.trace(
-                "Window minimized", extra={"class_name": self.__class__.__name__}
-            )
+            logger.trace("Window minimized", extra={"class_name": self.__class__.__name__})
             return True
 
         except (GLib.Error, RuntimeError, AttributeError) as e:
@@ -369,9 +363,7 @@ class WindowManager:
             self.window.maximize()
             self._is_maximized = True
 
-            logger.trace(
-                "Window maximized", extra={"class_name": self.__class__.__name__}
-            )
+            logger.trace("Window maximized", extra={"class_name": self.__class__.__name__})
             return True
 
         except (GLib.Error, RuntimeError, AttributeError) as e:
@@ -394,9 +386,7 @@ class WindowManager:
             self.window.unmaximize()
             self._is_maximized = False
 
-            logger.trace(
-                "Window unmaximized", extra={"class_name": self.__class__.__name__}
-            )
+            logger.trace("Window unmaximized", extra={"class_name": self.__class__.__name__})
             return True
 
         except (GLib.Error, RuntimeError, AttributeError) as e:
@@ -471,9 +461,7 @@ class WindowManager:
 
             self._is_minimized = False
 
-            logger.trace(
-                "Window restored", extra={"class_name": self.__class__.__name__}
-            )
+            logger.trace("Window restored", extra={"class_name": self.__class__.__name__})
             return True
 
         except (GLib.Error, RuntimeError, AttributeError) as e:

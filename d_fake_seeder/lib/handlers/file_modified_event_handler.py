@@ -21,9 +21,7 @@ except ImportError:
     WATCHDOG_AVAILABLE = False
 
 
-class FileModifiedEventHandler(
-    FileSystemEventHandler
-):  # pylint: disable=too-few-public-methods
+class FileModifiedEventHandler(FileSystemEventHandler):  # pylint: disable=too-few-public-methods
     """Handler that triggers settings reload when config file is modified."""
 
     def __init__(self, settings_instance: Any) -> None:
@@ -31,7 +29,5 @@ class FileModifiedEventHandler(
 
     def on_modified(self, event: Any) -> None:
         """Reload settings when config file is modified."""
-        if (
-            event.src_path == self.settings._file_path
-        ):  # pylint: disable=protected-access
+        if event.src_path == self.settings._file_path:  # pylint: disable=protected-access
             self.settings.load_settings()

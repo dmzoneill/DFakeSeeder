@@ -65,9 +65,7 @@ class SettingsDialog:
 
         # Connect to AppSettings changes for theme updates
         self.app_settings.connect("attribute-changed", self._on_app_settings_changed)
-        logger.trace(
-            "Connected to AppSettings attribute-changed signal", "SettingsDialog"
-        )
+        logger.trace("Connected to AppSettings attribute-changed signal", "SettingsDialog")
 
         # Load the settings UI
         logger.trace("Creating Gtk.Builder", "SettingsDialog")
@@ -130,11 +128,7 @@ class SettingsDialog:
 
     def _(self, text: str) -> str:
         """Helper for translating strings using the model's translation function."""
-        if (
-            hasattr(self, "model")
-            and self.model
-            and hasattr(self.model, "get_translate_func")
-        ):
+        if hasattr(self, "model") and self.model and hasattr(self.model, "get_translate_func"):
             translate_func = self.model.get_translate_func()
             return str(translate_func(text))
         return text
@@ -187,9 +181,7 @@ class SettingsDialog:
                     # logger.debug(f"Initialized {tab.tab_name} tab")  # Temporarily commented out - causes hang
                 except (AttributeError, TypeError, KeyError, ValueError) as e:
                     logger.error("ERROR initializing :", "SettingsDialog")
-                    logger.error(
-                        f"Error initializing {tab_class.__name__}: {e}", exc_info=True
-                    )
+                    logger.error(f"Error initializing {tab_class.__name__}: {e}", exc_info=True)
             logger.trace("Tab initialization completed. Total tabs:", "SettingsDialog")
             logger.info(f"Initialized {len(self.tabs)} settings tabs")
         except (AttributeError, TypeError, KeyError, ValueError) as e:
@@ -207,16 +199,12 @@ class SettingsDialog:
                         "Special handling for GeneralTab to populate language dropdown",
                         "SettingsDialog",
                     )
-                    logger.trace(
-                        f"Calling update_view on {tab.tab_name} tab for language dropdown"
-                    )
+                    logger.trace(f"Calling update_view on {tab.tab_name} tab for language dropdown")
                     # Just store the model reference and populate language dropdown
                     tab.model = self.model
                     if hasattr(tab, "_populate_language_dropdown"):
                         tab._populate_language_dropdown()
-                    logger.trace(
-                        "Completed language dropdown population for", "SettingsDialog"
-                    )
+                    logger.trace("Completed language dropdown population for", "SettingsDialog")
                 elif hasattr(tab, "update_view"):
                     logger.trace("Storing model reference for  tab", "SettingsDialog")
                     # For other tabs, just store the model reference without calling full update_view
@@ -288,9 +276,7 @@ class SettingsDialog:
                 current_page = self.notebook.get_current_page() if self.notebook else 0
                 if 0 <= current_page < len(self.tabs):
                     tab = self.tabs[current_page]
-                    logger.trace(
-                        f"Initializing visible tab: {tab.tab_name}", "SettingsDialog"
-                    )
+                    logger.trace(f"Initializing visible tab: {tab.tab_name}", "SettingsDialog")
                     tab.ensure_initialized()
 
                     # Special handling for GeneralTab language dropdown
@@ -398,9 +384,7 @@ class SettingsDialog:
                     # Use debounced refresh to avoid cascading refresh operations
                     self.model.translation_manager.refresh_all_translations()
         except (AttributeError, TypeError) as e:
-            logger.error(
-                f"Error registering settings dialog for translation: {e}", exc_info=True
-            )
+            logger.error(f"Error registering settings dialog for translation: {e}", exc_info=True)
 
     def show(self) -> None:
         """Show the settings dialog."""
@@ -413,9 +397,7 @@ class SettingsDialog:
 
             logger.trace("About to call self.window.present()", "SettingsDialog")
             self.window.present()
-            logger.info(
-                "self.window.present() completed successfully", "SettingsDialog"
-            )
+            logger.info("self.window.present() completed successfully", "SettingsDialog")
             logger.trace("Settings dialog shown")
             # Force translation refresh for settings dialog widgets
             logger.trace("Checking for translation manager", "SettingsDialog")
@@ -473,9 +455,7 @@ class SettingsDialog:
                     all_saved_settings.update(saved_settings)
                     logger.trace(f"Saved settings for {tab.tab_name} tab")
                 except (AttributeError, TypeError, KeyError, ValueError) as e:
-                    logger.error(
-                        f"Error saving {tab.tab_name} tab settings: {e}", exc_info=True
-                    )
+                    logger.error(f"Error saving {tab.tab_name} tab settings: {e}", exc_info=True)
             logger.trace(f"Saved settings from {len(self.tabs)} tabs")
             return all_saved_settings
         except (AttributeError, TypeError) as e:
@@ -523,9 +503,7 @@ class SettingsDialog:
                     tab.reset_to_defaults()
                     logger.trace(f"Reset {tab.tab_name} tab to defaults")
                 except (AttributeError, TypeError, ValueError) as e:
-                    logger.error(
-                        f"Error resetting {tab.tab_name} tab: {e}", exc_info=True
-                    )
+                    logger.error(f"Error resetting {tab.tab_name} tab: {e}", exc_info=True)
             logger.debug("Reset all settings tabs to defaults")
         except (AttributeError, TypeError) as e:
             logger.error(f"Error resetting all tabs: {e}", exc_info=True)
@@ -592,9 +570,7 @@ class SettingsDialog:
                 def _show_unsaved_dialog() -> Any:
                     dialog = Gtk.AlertDialog()
                     dialog.set_message("Unsaved Changes")
-                    dialog.set_detail(
-                        "You have unsaved changes. What would you like to do?"
-                    )
+                    dialog.set_detail("You have unsaved changes. What would you like to do?")
                     dialog.set_buttons(["Cancel", "Discard Changes", "Save"])
                     dialog.set_cancel_button(0)
                     dialog.set_default_button(2)
@@ -647,9 +623,7 @@ class SettingsDialog:
         except (AttributeError, TypeError) as e:
             logger.error(f"Error during cleanup and close: {e}", exc_info=True)
 
-    def on_page_switched(
-        self, notebook: Gtk.Notebook, page: Gtk.Widget, page_num: int
-    ) -> None:
+    def on_page_switched(self, notebook: Gtk.Notebook, page: Gtk.Widget, page_num: int) -> None:
         """Handle notebook page switch."""
         try:
             if 0 <= page_num < len(self.tabs):
@@ -730,9 +704,7 @@ class SettingsDialog:
             logger.error(f"Error handling reset button: {e}", exc_info=True)
 
     # Helper methods
-    def _show_validation_errors(
-        self, validation_errors: Dict[str, Dict[str, str]]
-    ) -> None:
+    def _show_validation_errors(self, validation_errors: Dict[str, Dict[str, str]]) -> None:
         """Show validation error dialog."""
         try:
             # Build error message
@@ -754,9 +726,7 @@ class SettingsDialog:
                 try:
                     dialog.choose_finish(result)
                 except (AttributeError, TypeError) as e:
-                    logger.error(
-                        f"Error handling validation dialog response: {e}", exc_info=True
-                    )
+                    logger.error(f"Error handling validation dialog response: {e}", exc_info=True)
 
             dialog.choose(self.window, None, on_response)
         except (AttributeError, TypeError) as e:

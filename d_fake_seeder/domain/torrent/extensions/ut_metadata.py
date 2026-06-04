@@ -35,9 +35,7 @@ class UTMetadataExtension:
     # Maximum piece size (16KB as per BEP 9)
     PIECE_SIZE = 16384
 
-    def __init__(
-        self, info_dict: Optional[dict] = None, metadata_size: Optional[int] = None
-    ) -> None:
+    def __init__(self, info_dict: Optional[dict] = None, metadata_size: Optional[int] = None) -> None:
         """
         Initialize ut_metadata extension.
 
@@ -151,9 +149,7 @@ class UTMetadataExtension:
             return result
 
         except Exception as e:  # pylint: disable=broad-exception-caught
-            logger.trace(
-                f"Failed to parse ut_metadata message: {e}", "UTMetadataExtension"
-            )
+            logger.trace(f"Failed to parse ut_metadata message: {e}", "UTMetadataExtension")
             return None
 
     def create_request(self, piece_index: int) -> Optional[bytes]:

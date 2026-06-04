@@ -178,11 +178,7 @@ class JackettTab(Component):
 
     def _(self, text: Any) -> Any:
         """Get translation function from model's TranslationManager."""
-        if (
-            hasattr(self, "model")
-            and self.model
-            and hasattr(self.model, "translation_manager")
-        ):
+        if hasattr(self, "model") and self.model and hasattr(self.model, "translation_manager"):
             return self.model.translation_manager.translate_func(text)
         return text
 
@@ -226,23 +222,17 @@ class JackettTab(Component):
         config_grid.set_margin_bottom(12)
 
         # API URL row
-        config_grid.attach(
-            Gtk.Label(label=self._("API URL:"), halign=Gtk.Align.END), 0, 0, 1, 1
-        )
+        config_grid.attach(Gtk.Label(label=self._("API URL:"), halign=Gtk.Align.END), 0, 0, 1, 1)
         self.api_url_entry = Gtk.Entry()
         self.api_url_entry.set_hexpand(True)
         self.api_url_entry.set_placeholder_text("http://localhost:9117")
         jackett_settings = self.settings.get("jackett_settings", {})
-        self.api_url_entry.set_text(
-            jackett_settings.get("api_url", "http://localhost:9117")
-        )
+        self.api_url_entry.set_text(jackett_settings.get("api_url", "http://localhost:9117"))
         self.api_url_entry.connect("changed", self._on_config_changed)
         config_grid.attach(self.api_url_entry, 1, 0, 2, 1)
 
         # API Key row
-        config_grid.attach(
-            Gtk.Label(label=self._("API Key:"), halign=Gtk.Align.END), 0, 1, 1, 1
-        )
+        config_grid.attach(Gtk.Label(label=self._("API Key:"), halign=Gtk.Align.END), 0, 1, 1, 1)
         self.api_key_entry = Gtk.Entry()
         self.api_key_entry.set_hexpand(True)
         self.api_key_entry.set_placeholder_text(self._("Enter your Jackett API key"))
@@ -407,9 +397,7 @@ class JackettTab(Component):
         label.set_ellipsize(3)  # PANGO_ELLIPSIZE_END
         item.set_child(label)
 
-    def _setup_action_cell(
-        self, factory: Gtk.SignalListItemFactory, item: Gtk.ListItem
-    ) -> None:
+    def _setup_action_cell(self, factory: Gtk.SignalListItemFactory, item: Gtk.ListItem) -> None:
         """Setup action cell with download button."""
         button = Gtk.Button()
         button.set_icon_name("list-add-symbolic")
@@ -417,9 +405,7 @@ class JackettTab(Component):
         button.add_css_class("flat")
         item.set_child(button)
 
-    def _bind_action_cell(
-        self, factory: Gtk.SignalListItemFactory, item: Gtk.ListItem
-    ) -> None:
+    def _bind_action_cell(self, factory: Gtk.SignalListItemFactory, item: Gtk.ListItem) -> None:
         """Bind action cell to result item."""
         button = item.get_child()
         result = item.get_item()
@@ -533,9 +519,7 @@ class JackettTab(Component):
                 api_key = self.api_key_entry.get_text().strip()
 
                 if not api_url or not api_key:
-                    GLib.idle_add(
-                        self._show_test_result, False, self._("Missing API URL or Key")
-                    )
+                    GLib.idle_add(self._show_test_result, False, self._("Missing API URL or Key"))
                     return
 
                 # Test by fetching indexers
@@ -552,16 +536,12 @@ class JackettTab(Component):
                             self._("Connection successful!"),
                         )
                     else:
-                        GLib.idle_add(
-                            self._show_test_result, False, f"HTTP {response.status}"
-                        )
+                        GLib.idle_add(self._show_test_result, False, f"HTTP {response.status}")
 
             except urllib.error.HTTPError as e:
                 GLib.idle_add(self._show_test_result, False, f"HTTP Error: {e.code}")
             except urllib.error.URLError as e:
-                GLib.idle_add(
-                    self._show_test_result, False, f"Connection Error: {e.reason}"
-                )
+                GLib.idle_add(self._show_test_result, False, f"Connection Error: {e.reason}")
             except Exception as e:
                 GLib.idle_add(self._show_test_result, False, str(e))
 
@@ -694,16 +674,12 @@ class JackettTab(Component):
                         results = self._parse_torznab_results(xml_data, max_results)
                         GLib.idle_add(self._display_search_results, results, None)
                     else:
-                        GLib.idle_add(
-                            self._display_search_results, [], f"HTTP {response.status}"
-                        )
+                        GLib.idle_add(self._display_search_results, [], f"HTTP {response.status}")
 
             except urllib.error.HTTPError as e:
                 GLib.idle_add(self._display_search_results, [], f"HTTP Error: {e.code}")
             except urllib.error.URLError as e:
-                GLib.idle_add(
-                    self._display_search_results, [], f"Connection Error: {e.reason}"
-                )
+                GLib.idle_add(self._display_search_results, [], f"Connection Error: {e.reason}")
             except Exception as e:
                 logger.error(
                     f"Jackett search error: {e}",
@@ -779,9 +755,7 @@ class JackettTab(Component):
                             break
 
                     # Get info URL
-                    info_url = item.findtext("guid", "") or item.findtext(
-                        "comments", ""
-                    )
+                    info_url = item.findtext("guid", "") or item.findtext("comments", "")
 
                     # Get publish date
                     pub_date = item.findtext("pubDate", "")
@@ -824,9 +798,7 @@ class JackettTab(Component):
 
         return results
 
-    def _display_search_results(
-        self, results: List[Dict], error: Optional[str]
-    ) -> bool:
+    def _display_search_results(self, results: List[Dict], error: Optional[str]) -> bool:
         """Display search results in the UI."""
         self._is_searching = False
         self.search_button.set_sensitive(True)
@@ -862,9 +834,7 @@ class JackettTab(Component):
             self.results_store.append(item)
 
         count = len(results)
-        self.search_status_label.set_text(
-            f"{count} {self._('result' if count == 1 else 'results')} {self._('found')}"
-        )
+        self.search_status_label.set_text(f"{count} {self._('result' if count == 1 else 'results')} {self._('found')}")
 
         logger.info(
             f"Jackett search returned {count} results",
@@ -925,9 +895,7 @@ class JackettTab(Component):
                 os.makedirs(torrents_dir, exist_ok=True)
 
                 # Clean filename
-                safe_title = "".join(
-                    c for c in title if c.isalnum() or c in " -_."
-                ).strip()[:100]
+                safe_title = "".join(c for c in title if c.isalnum() or c in " -_.").strip()[:100]
                 filename = f"{safe_title}.torrent"
                 filepath = os.path.join(torrents_dir, filename)
 
@@ -947,9 +915,7 @@ class JackettTab(Component):
             except urllib.error.HTTPError as e:
                 GLib.idle_add(self._show_add_result, False, f"HTTP Error: {e.code}")
             except urllib.error.URLError as e:
-                GLib.idle_add(
-                    self._show_add_result, False, f"Connection Error: {e.reason}"
-                )
+                GLib.idle_add(self._show_add_result, False, f"Connection Error: {e.reason}")
             except Exception as e:
                 logger.error(
                     f"Error adding torrent: {e}",
@@ -977,9 +943,7 @@ class JackettTab(Component):
                 self.model.add_torrent(filepath)
                 self._show_add_result(True, f"{self._('Added')}: {title}")
             else:
-                self._show_add_result(
-                    False, self._("Could not add torrent - controller not available")
-                )
+                self._show_add_result(False, self._("Could not add torrent - controller not available"))
 
         except Exception as e:
             logger.error(
@@ -1011,16 +975,12 @@ class JackettTab(Component):
             self._update_connection_status()
             # Update UI fields from settings
             jackett_settings = self.settings.get("jackett_settings", {})
-            self.api_url_entry.set_text(
-                jackett_settings.get("api_url", "http://localhost:9117")
-            )
+            self.api_url_entry.set_text(jackett_settings.get("api_url", "http://localhost:9117"))
             self.api_key_entry.set_text(jackett_settings.get("api_key", ""))
 
     # === ABSTRACT METHOD IMPLEMENTATIONS ===
 
-    def handle_model_changed(
-        self, source: Any, data_obj: Any, _data_changed: Any
-    ) -> None:
+    def handle_model_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
         """Handle model data changes."""
         pass  # Jackett tab doesn't depend on torrent model changes
 
@@ -1028,9 +988,7 @@ class JackettTab(Component):
         """Handle attribute changes."""
         pass
 
-    def handle_settings_changed(
-        self, source: Any, data_obj: Any, _data_changed: Any
-    ) -> None:
+    def handle_settings_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
         """Handle settings changes."""
         pass
 

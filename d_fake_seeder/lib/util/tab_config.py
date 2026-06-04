@@ -51,9 +51,7 @@ def get_settings_tab_config() -> Dict[str, Any]:
         config = load_tabs_config()
         return config.get("settings_tabs", {})  # type: ignore[no-any-return]
     except Exception:  # pylint: disable=broad-exception-caught
-        logger.warning(
-            "Warning: Could not load tabs config (...), using fallback", "UnknownClass"
-        )
+        logger.warning("Warning: Could not load tabs config (...), using fallback", "UnknownClass")
         return {
             "enabled": True,
             "order": ["GeneralTab", "ConnectionTab", "AdvancedTab"],
@@ -72,9 +70,7 @@ def get_torrent_details_tab_config() -> Dict[str, Any]:
         config = load_tabs_config()
         return config.get("torrent_details_tabs", {})  # type: ignore[no-any-return]
     except Exception:  # pylint: disable=broad-exception-caught
-        logger.warning(
-            "Warning: Could not load tabs config (...), using fallback", "UnknownClass"
-        )
+        logger.warning("Warning: Could not load tabs config (...), using fallback", "UnknownClass")
         return {
             "enabled": True,
             "order": ["StatusTab", "FilesTab", "DetailsTab"],
@@ -102,9 +98,7 @@ def get_tab_features() -> Dict[str, Any]:
         }
 
 
-def resolve_tab_classes(
-    tab_names: List[str], module_mapping: Dict[str, Type]
-) -> List[Type]:
+def resolve_tab_classes(tab_names: List[str], module_mapping: Dict[str, Type]) -> List[Type]:
     """
     Resolve tab class names to actual class objects.
     Args:

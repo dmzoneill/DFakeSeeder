@@ -230,8 +230,7 @@ class DontHaveExtension:
                     import random
 
                     if (
-                        random.random()
-                        < BitTorrentProtocolConstants.PIECE_UNAVAILABLE_PROBABILITY
+                        random.random() < BitTorrentProtocolConstants.PIECE_UNAVAILABLE_PROBABILITY
                     ):  # 5% chance piece becomes unavailable
                         unavailable_pieces.add(piece_index)
                         self.send_donthave(piece_index)
@@ -344,9 +343,7 @@ class DontHaveExtension:
         self.sent_donthave_pieces.clear()
         self.received_donthave_pieces.clear()
 
-        logger.trace(
-            "Reset DONT_HAVE corrections", extra={"class_name": self.__class__.__name__}
-        )
+        logger.trace("Reset DONT_HAVE corrections", extra={"class_name": self.__class__.__name__})
 
     def cleanup(self) -> Any:
         """Clean up DontHave Extension state"""

@@ -159,9 +159,7 @@ class LiveGraph(Gtk.DrawingArea):
 
         return self.min_value, self.max_value
 
-    def _draw_rounded_rect(
-        self, ctx: Any, x: Any, y: Any, width: Any, height: Any, radius: Any
-    ) -> None:
+    def _draw_rounded_rect(self, ctx: Any, x: Any, y: Any, width: Any, height: Any, radius: Any) -> None:
         """Draw a rounded rectangle path for clipping or filling."""
         # Ensure radius doesn't exceed half of width/height
         radius = min(radius, width / 2, height / 2)
@@ -215,13 +213,9 @@ class LiveGraph(Gtk.DrawingArea):
             if len(data) < 2:
                 continue
 
-            self._draw_series_line(
-                ctx, width, height, data, series_data["color"], min_val, value_range
-            )
+            self._draw_series_line(ctx, width, height, data, series_data["color"], min_val, value_range)
 
-    def _draw_grid(
-        self, ctx: Any, width: Any, height: Any, min_val: Any, max_val: Any
-    ) -> Any:
+    def _draw_grid(self, ctx: Any, width: Any, height: Any, min_val: Any, max_val: Any) -> Any:
         """Draw horizontal grid lines."""
         ctx.set_source_rgba(0.3, 0.3, 0.3, 0.5)
         ctx.set_line_width(1)

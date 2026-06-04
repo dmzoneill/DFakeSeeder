@@ -55,9 +55,7 @@ else:
 # fmt: on
 
 
-class AppSettings(
-    GObject.GObject
-):  # pylint: disable=too-many-instance-attributes,too-many-public-methods
+class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attributes,too-many-public-methods
     """
     Unified application settings manager (replaces both Settings and old AppSettings)
     Thread-safe singleton with nested attribute access, file watching, and GObject signals
@@ -126,9 +124,7 @@ class AppSettings(
         # GObject.__init__ already called in __new__
         self._initialized = True
 
-        self.logger.trace(
-            "AppSettings instantiate", extra={"class_name": self.__class__.__name__}
-        )
+        self.logger.trace("AppSettings instantiate", extra={"class_name": self.__class__.__name__})
 
         # Initialize file paths (compatible with Settings API)
         if file_path is None:
@@ -141,9 +137,7 @@ class AppSettings(
         self._file_path = file_path
         self.config_dir = Path(file_path).parent
         self.config_file = Path(file_path)
-        self.default_config_file = (
-            Path(__file__).parent.parent / "config" / "default.json"
-        )
+        self.default_config_file = Path(__file__).parent.parent / "config" / "default.json"
 
         # Three-layer data structure:
         # 1. _defaults: Loaded from default.json, never changes
@@ -151,14 +145,10 @@ class AppSettings(
         # 3. _transient_data: Runtime-only data (ENTIRE torrents dictionary)
         self._defaults = {}  # type: ignore[var-annotated]
         self._user_settings = {}  # type: ignore[var-annotated]
-        self._transient_data: Dict[str, Any] = (
-            {}
-        )  # ENTIRE torrents dictionary stored here
+        self._transient_data: Dict[str, Any] = {}  # ENTIRE torrents dictionary stored here
 
         # Merged view for reading (rebuilt when any layer changes)
-        self._settings: Dict[str, Any] = (
-            {}
-        )  # Legacy compatibility - will be merged view
+        self._settings: Dict[str, Any] = {}  # Legacy compatibility - will be merged view
 
         # File watching state
         self._last_modified = 0
@@ -190,9 +180,7 @@ class AppSettings(
 
             # Copy the source file to the destination directory
             if os.path.exists(source_path):
-                shutil.copy(
-                    source_path, os.path.join(home_config_path, "settings.json")
-                )
+                shutil.copy(source_path, os.path.join(home_config_path, "settings.json"))
                 self.logger.trace(
                     f"Created user config at {home_config_path}/settings.json",
                     extra={"class_name": self.__class__.__name__},
@@ -205,9 +193,7 @@ class AppSettings(
         # Set up file watching
         self._event_handler = FileModifiedEventHandler(self)
         self._observer = Observer()
-        self._observer.schedule(
-            self._event_handler, path=str(self.config_dir), recursive=False
-        )
+        self._observer.schedule(self._event_handler, path=str(self.config_dir), recursive=False)
         self._observer.start()
 
     @property
@@ -251,13 +237,9 @@ class AppSettings(
         try:
             with open(self.default_config_file, "r", encoding="utf-8") as f:
                 self._defaults = json.load(f)
-            self.logger.trace(
-                f"Loaded {len(self._defaults)} default settings from {self.default_config_file}"
-            )
+            self.logger.trace(f"Loaded {len(self._defaults)} default settings from {self.default_config_file}")
         except (FileNotFoundError, json.JSONDecodeError) as e:
-            self.logger.warning(
-                f"Could not load default settings file ({e}), using hardcoded defaults"
-            )
+            self.logger.warning(f"Could not load default settings file ({e}), using hardcoded defaults")
             self._defaults = {
                 "upload_speed": 50,
                 "download_speed": 500,
@@ -273,11 +255,7 @@ class AppSettings(
         def deep_merge(default_dict: Any, user_dict: Any) -> Any:
             result = default_dict.copy()
             for key, value in user_dict.items():
-                if (
-                    key in result
-                    and isinstance(result[key], dict)
-                    and isinstance(value, dict)
-                ):
+                if key in result and isinstance(result[key], dict) and isinstance(value, dict):
                     result[key] = deep_merge(result[key], value)
                 else:
                     result[key] = value
@@ -328,9 +306,7 @@ class AppSettings(
         3. Remaining → _user_settings (persistent)
         4. Build merged view = defaults + user_settings + transient_data
         """
-        self.logger.trace(
-            "Settings load", extra={"class_name": self.__class__.__name__}
-        )
+        self.logger.trace("Settings load", extra={"class_name": self.__class__.__name__})
         try:
             # Skip reload if we're currently saving (prevents file watch feedback loop)
             if self._saving:
@@ -399,9 +375,7 @@ class AppSettings(
 
         except json.JSONDecodeError as e:
             # Handle corrupt/truncated JSON files
-            self.logger.error(
-                f"Settings file contains invalid JSON, using defaults: {e}"
-            )
+            self.logger.error(f"Settings file contains invalid JSON, using defaults: {e}")
             self._user_settings = {}
             self._transient_data = {}
             self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
@@ -458,9 +432,7 @@ class AppSettings(
 
     def save_settings(self) -> None:
         """Save current settings to user config file (thread-safe with atomic writes)"""
-        self.logger.trace(
-            "Settings save", extra={"class_name": self.__class__.__name__}
-        )
+        self.logger.trace("Settings save", extra={"class_name": self.__class__.__name__})
         try:
             # Use lock to prevent concurrent save operations
             self.logger.trace(
@@ -477,9 +449,7 @@ class AppSettings(
                     "Settings saved to disk",
                     extra={"class_name": self.__class__.__name__},
                 )
-            self.logger.trace(
-                "Settings lock released", extra={"class_name": self.__class__.__name__}
-            )
+            self.logger.trace("Settings lock released", extra={"class_name": self.__class__.__name__})
         except (OSError, json.JSONDecodeError, TypeError, RuntimeError) as e:
             self.logger.error(f"Failed to save settings: {e}", exc_info=True)
 
@@ -501,9 +471,7 @@ class AppSettings(
         temp_path = None
         try:
             # Create temporary file in same directory as target file
-            temp_fd, temp_path = tempfile.mkstemp(
-                dir=str(self.config_dir), prefix=".settings_tmp_", suffix=".json"
-            )
+            temp_fd, temp_path = tempfile.mkstemp(dir=str(self.config_dir), prefix=".settings_tmp_", suffix=".json")
 
             # Write settings to temporary file
             # NOTE: We save _user_settings only (persistent preferences)
@@ -576,9 +544,7 @@ class AppSettings(
             # deepcopy ensures the data is frozen at this point in time
             self._user_settings["torrents"] = copy.deepcopy(self._transient_data)
             torrent_count = len(self._transient_data) if self._transient_data else 0
-            self.logger.info(
-                f"Merged {torrent_count} torrents into user_settings for shutdown save"
-            )
+            self.logger.info(f"Merged {torrent_count} torrents into user_settings for shutdown save")
 
         # Stop file watching
         if hasattr(self, "_observer"):
@@ -646,13 +612,9 @@ class AppSettings(
                             )
                     else:
                         # Setting nested field: torrents.<filepath>.<field>
-                        old_value = self._get_nested_value(
-                            {"torrents": self._transient_data}, key
-                        )
+                        old_value = self._get_nested_value({"torrents": self._transient_data}, key)
                         if old_value != value:
-                            self._set_nested_value(
-                                {"torrents": self._transient_data}, key, value
-                            )
+                            self._set_nested_value({"torrents": self._transient_data}, key, value)
                             should_emit = True
                             logger.debug(
                                 f"Updated transient field: {key} (NO disk write)",
@@ -700,9 +662,7 @@ class AppSettings(
         # Private attributes should not be handled here - raise AttributeError
         # to prevent infinite recursion during initialization
         if name.startswith("_"):
-            raise AttributeError(
-                f"'{type(self).__name__}' object has no attribute '{name}'"
-            )
+            raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
 
         if name == "settings":
             try:
@@ -740,9 +700,7 @@ class AppSettings(
             except AttributeError:
                 return default_value
         else:
-            raise AttributeError(
-                f"Setting '{name}' not found in user settings or defaults."
-            )
+            raise AttributeError(f"Setting '{name}' not found in user settings or defaults.")
 
     def __setattr__(self, name: Any, value: Any) -> None:
         """
@@ -777,9 +735,7 @@ class AppSettings(
             "AppSettings",
         )
 
-        self.logger.trace(
-            "Settings __setattr__", extra={"class_name": self.__class__.__name__}
-        )
+        self.logger.trace("Settings __setattr__", extra={"class_name": self.__class__.__name__})
 
         # Determine what to emit BEFORE acquiring lock
         should_emit = False
@@ -898,9 +854,7 @@ class AppSettings(
             # pylint: disable=reimported,import-outside-toplevel,redefined-outer-name
             from d_fake_seeder.lib.logger import logger
 
-            logger.trace(
-                "AppSettings get instance", extra={"class_name": "AppSettings"}
-            )
+            logger.trace("AppSettings get instance", extra={"class_name": "AppSettings"})
         except ImportError:
             pass
         if cls._instance is None:
@@ -1025,9 +979,7 @@ class AppSettings(
                     system_locale = current_locale
                 else:
                     # Fallback to environment variables
-                    system_locale = (
-                        os.environ.get("LANG") or os.environ.get("LC_ALL") or ""
-                    )
+                    system_locale = os.environ.get("LANG") or os.environ.get("LC_ALL") or ""
             except (ValueError, TypeError, AttributeError):
                 system_locale = os.environ.get("LANG") or os.environ.get("LC_ALL") or ""
 
@@ -1625,9 +1577,7 @@ class AppSettings(
         self.logger.info(f"   Old speed_distribution: {old_speed_dist}")
 
         speed_dist = copy.deepcopy(old_speed_dist)
-        self.logger.info(
-            f"   Deep copied (id changed: {id(old_speed_dist)} -> {id(speed_dist)})"
-        )
+        self.logger.info(f"   Deep copied (id changed: {id(old_speed_dist)} -> {id(speed_dist)})")
 
         # Handle None case (when settings file has null)
         if speed_dist is None or not isinstance(speed_dist, dict):
@@ -1644,11 +1594,7 @@ class AppSettings(
     @property
     def upload_distribution_spread_percentage(self) -> Any:
         """Get upload distribution spread percentage."""
-        return (
-            self.get("speed_distribution", {})
-            .get("upload", {})
-            .get("spread_percentage", 50)
-        )
+        return self.get("speed_distribution", {}).get("upload", {}).get("spread_percentage", 50)
 
     @upload_distribution_spread_percentage.setter
     def upload_distribution_spread_percentage(self, value: Any) -> Any:
@@ -1666,11 +1612,7 @@ class AppSettings(
     @property
     def upload_distribution_redistribution_mode(self) -> Any:
         """Get upload distribution redistribution mode."""
-        return (
-            self.get("speed_distribution", {})
-            .get("upload", {})
-            .get("redistribution_mode", "tick")
-        )
+        return self.get("speed_distribution", {}).get("upload", {}).get("redistribution_mode", "tick")
 
     @upload_distribution_redistribution_mode.setter
     def upload_distribution_redistribution_mode(self, value: Any) -> Any:
@@ -1688,11 +1630,7 @@ class AppSettings(
     @property
     def upload_distribution_custom_interval_minutes(self) -> Any:
         """Get upload distribution custom interval in minutes."""
-        return (
-            self.get("speed_distribution", {})
-            .get("upload", {})
-            .get("custom_interval_minutes", 5)
-        )
+        return self.get("speed_distribution", {}).get("upload", {}).get("custom_interval_minutes", 5)
 
     @upload_distribution_custom_interval_minutes.setter
     def upload_distribution_custom_interval_minutes(self, value: Any) -> Any:
@@ -1711,11 +1649,7 @@ class AppSettings(
     @property
     def download_distribution_algorithm(self) -> Any:
         """Get download distribution algorithm setting."""
-        return (
-            self.get("speed_distribution", {})
-            .get("download", {})
-            .get("algorithm", "off")
-        )
+        return self.get("speed_distribution", {}).get("download", {}).get("algorithm", "off")
 
     @download_distribution_algorithm.setter
     def download_distribution_algorithm(self, value: Any) -> Any:
@@ -1733,11 +1667,7 @@ class AppSettings(
     @property
     def download_distribution_spread_percentage(self) -> Any:
         """Get download distribution spread percentage."""
-        return (
-            self.get("speed_distribution", {})
-            .get("download", {})
-            .get("spread_percentage", 50)
-        )
+        return self.get("speed_distribution", {}).get("download", {}).get("spread_percentage", 50)
 
     @download_distribution_spread_percentage.setter
     def download_distribution_spread_percentage(self, value: Any) -> Any:
@@ -1755,11 +1685,7 @@ class AppSettings(
     @property
     def download_distribution_redistribution_mode(self) -> Any:
         """Get download distribution redistribution mode."""
-        return (
-            self.get("speed_distribution", {})
-            .get("download", {})
-            .get("redistribution_mode", "tick")
-        )
+        return self.get("speed_distribution", {}).get("download", {}).get("redistribution_mode", "tick")
 
     @download_distribution_redistribution_mode.setter
     def download_distribution_redistribution_mode(self, value: Any) -> Any:
@@ -1777,11 +1703,7 @@ class AppSettings(
     @property
     def download_distribution_custom_interval_minutes(self) -> Any:
         """Get download distribution custom interval in minutes."""
-        return (
-            self.get("speed_distribution", {})
-            .get("download", {})
-            .get("custom_interval_minutes", 5)
-        )
+        return self.get("speed_distribution", {}).get("download", {}).get("custom_interval_minutes", 5)
 
     @download_distribution_custom_interval_minutes.setter
     def download_distribution_custom_interval_minutes(self, value: Any) -> Any:
@@ -1800,11 +1722,7 @@ class AppSettings(
     @property
     def upload_distribution_stopped_min_percentage(self) -> Any:
         """Get upload distribution stopped min percentage."""
-        return (
-            self.get("speed_distribution", {})
-            .get("upload", {})
-            .get("stopped_min_percentage", 20)
-        )
+        return self.get("speed_distribution", {}).get("upload", {}).get("stopped_min_percentage", 20)
 
     @upload_distribution_stopped_min_percentage.setter
     def upload_distribution_stopped_min_percentage(self, value: Any) -> Any:
@@ -1822,11 +1740,7 @@ class AppSettings(
     @property
     def upload_distribution_stopped_max_percentage(self) -> Any:
         """Get upload distribution stopped max percentage."""
-        return (
-            self.get("speed_distribution", {})
-            .get("upload", {})
-            .get("stopped_max_percentage", 40)
-        )
+        return self.get("speed_distribution", {}).get("upload", {}).get("stopped_max_percentage", 40)
 
     @upload_distribution_stopped_max_percentage.setter
     def upload_distribution_stopped_max_percentage(self, value: Any) -> Any:
@@ -1845,11 +1759,7 @@ class AppSettings(
     @property
     def download_distribution_stopped_min_percentage(self) -> Any:
         """Get download distribution stopped min percentage."""
-        return (
-            self.get("speed_distribution", {})
-            .get("download", {})
-            .get("stopped_min_percentage", 20)
-        )
+        return self.get("speed_distribution", {}).get("download", {}).get("stopped_min_percentage", 20)
 
     @download_distribution_stopped_min_percentage.setter
     def download_distribution_stopped_min_percentage(self, value: Any) -> Any:
@@ -1867,11 +1777,7 @@ class AppSettings(
     @property
     def download_distribution_stopped_max_percentage(self) -> Any:
         """Get download distribution stopped max percentage."""
-        return (
-            self.get("speed_distribution", {})
-            .get("download", {})
-            .get("stopped_max_percentage", 40)
-        )
+        return self.get("speed_distribution", {}).get("download", {}).get("stopped_max_percentage", 40)
 
     @download_distribution_stopped_max_percentage.setter
     def download_distribution_stopped_max_percentage(self, value: Any) -> Any:
