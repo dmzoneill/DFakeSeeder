@@ -9,7 +9,7 @@ allow_prereleases = true
 [packages]
 requests = ">=2.32.0"
 typer = ">=0.20.0"
-urllib3 = ">=2.0.0"
+urllib3 = ">=2.7.0"
 bencodepy = "*"
 watchdog = "*"
 aiohttp-session = ">=2.12.0"
