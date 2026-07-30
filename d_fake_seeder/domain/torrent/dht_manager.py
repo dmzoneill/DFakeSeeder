@@ -92,14 +92,20 @@ class DHTManager:  # pylint: disable=too-many-instance-attributes
 
     def _get_poll_interval(self) -> Any:
         """Get poll interval from settings."""
-        dht_config = getattr(self.settings, "dht_manager", {})  # type: ignore[attr-defined]
+        settings = getattr(self, "settings", None)
+        if settings is None:
+            return 0.1
+        dht_config = getattr(settings, "dht_manager", {})
         if isinstance(dht_config, dict):
             return dht_config.get("poll_interval_seconds", 0.1)
         return 0.1
 
     def _get_error_retry_interval(self) -> Any:
         """Get error retry interval from settings."""
-        dht_config = getattr(self.settings, "dht_manager", {})  # type: ignore[attr-defined]
+        settings = getattr(self, "settings", None)
+        if settings is None:
+            return 1.0
+        dht_config = getattr(settings, "dht_manager", {})
         if isinstance(dht_config, dict):
             return dht_config.get("error_retry_interval_seconds", 1.0)
         return 1.0
