@@ -47,7 +47,7 @@ class HTTPSeeder(BaseSeeder):
 
     def load_peers(
         self,
-    ) -> None:  # pylint: disable=too-many-branches,too-many-statements
+    ) -> bool:  # pylint: disable=too-many-branches,too-many-statements
         """Load peers from HTTP tracker."""
         logger.trace("Seeder load peers", extra={"class_name": self.__class__.__name__})
 
@@ -56,7 +56,7 @@ class HTTPSeeder(BaseSeeder):
                 "🛑 Shutdown requested, aborting load_peers",
                 extra={"class_name": self.__class__.__name__},
             )
-            return False  # type: ignore[return-value]
+            return False
 
         semaphore_acquired = False
         try:
@@ -66,7 +66,7 @@ class HTTPSeeder(BaseSeeder):
                     "⏱️ Timeout acquiring tracker semaphore for load_peers",
                     extra={"class_name": self.__class__.__name__},
                 )
-                return False  # type: ignore[return-value]
+                return False
 
             semaphore_acquired = True
 
@@ -214,7 +214,7 @@ class HTTPSeeder(BaseSeeder):
 
                 # If tracker returned a failure, return False
                 if b"failure reason" in data:
-                    return False  # type: ignore[return-value]
+                    return False
 
                 # Apply jitter to announce interval to prevent request storms
                 if b"interval" in self.info:
@@ -238,13 +238,13 @@ class HTTPSeeder(BaseSeeder):
                 if self.first_announce:
                     self.first_announce = False
 
-                return True  # type: ignore[return-value]
+                return True
 
             logger.error(
                 "❌ Failed to decode tracker response",
                 extra={"class_name": self.__class__.__name__},
             )
-            return False  # type: ignore[return-value]
+            return False
         except (requests.RequestException, OSError, ValueError, RuntimeError) as e:
             # Update tracker model with failure
             if "request_start_time" in locals():
@@ -256,7 +256,7 @@ class HTTPSeeder(BaseSeeder):
 
             self.set_random_announce_url()
             self.handle_exception(e, "Seeder unknown error in load_peers_http")
-            return False  # type: ignore[return-value]
+            return False
         finally:
             if semaphore_acquired:
                 self.get_tracker_semaphore().release()

@@ -57,11 +57,11 @@ class Seeder:
                     extra={"class_name": self.__class__.__name__},
                 )
 
-    def load_peers(self) -> None:
+    def load_peers(self) -> bool:
         """Load peers from tracker via the seeder."""
         if self.seeder:
             return self.seeder.load_peers()
-        return False  # type: ignore[return-value]
+        return False
 
     def upload(self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any) -> Any:
         """Send upload stats to tracker."""

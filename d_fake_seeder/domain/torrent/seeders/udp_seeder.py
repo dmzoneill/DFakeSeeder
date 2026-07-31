@@ -269,7 +269,7 @@ class UDPSeeder(BaseSeeder):
             self.handle_exception(e, f"Seeder unknown error in {log_msg}")
             return False  # type: ignore[return-value]
 
-    def load_peers(self) -> None:
+    def load_peers(self) -> bool:
         """Load peers from UDP tracker."""
         logger.trace(
             "🔄 Starting UDP peer discovery",
@@ -281,7 +281,7 @@ class UDPSeeder(BaseSeeder):
                 "🛑 Shutdown requested, aborting UDP load_peers",
                 extra={"class_name": self.__class__.__name__},
             )
-            return False  # type: ignore[return-value]
+            return False
 
         # Use timeout for semaphore acquisition
         if not self.get_tracker_semaphore().acquire(timeout=TimeoutConstants.TRACKER_SEMAPHORE_UDP):
@@ -289,7 +289,7 @@ class UDPSeeder(BaseSeeder):
                 "⏱️ Timeout acquiring tracker semaphore for UDP load_peers",
                 extra={"class_name": self.__class__.__name__},
             )
-            return False  # type: ignore[return-value]
+            return False
 
         try:
             # Send initial announce with download_left = total_size
@@ -316,7 +316,7 @@ class UDPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
 
-        return result  # type: ignore[no-any-return]
+        return bool(result)
 
     def upload(self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any) -> Any:
         """Upload stats to UDP tracker."""
