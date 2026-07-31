@@ -54,8 +54,8 @@ def _decode(raw_buffer: Any, elements: Any, index: Any = 0) -> Any:
             data = raw_buffer[index : index + size]  # noqa: E203
             index += size
             elements.append(data)
-        except BaseException:  # pylint: disable=broad-exception-caught
-            pass
+        except (ValueError, IndexError, TypeError):
+            index += 1
     return index
 
 
