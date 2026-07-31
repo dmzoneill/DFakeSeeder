@@ -734,9 +734,9 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
 
         # Match based on derived state
         if self.active_filter_state == "seeding":
-            return progress >= 100.0 and uploading
+            return progress >= 1.0 and uploading
         if self.active_filter_state == "downloading":
-            return progress < 100.0 and active
+            return progress < 1.0 and active
         if self.active_filter_state == "active":
             return active
         if self.active_filter_state == "paused":
