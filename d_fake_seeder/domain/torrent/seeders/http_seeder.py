@@ -58,6 +58,7 @@ class HTTPSeeder(BaseSeeder):
             )
             return False  # type: ignore[return-value]
 
+        semaphore_acquired = False
         try:
             # Use timeout for semaphore acquisition
             if not self.get_tracker_semaphore().acquire(timeout=5.0):
@@ -66,6 +67,8 @@ class HTTPSeeder(BaseSeeder):
                     extra={"class_name": self.__class__.__name__},
                 )
                 return False  # type: ignore[return-value]
+
+            semaphore_acquired = True
 
             # Notify with torrent name for context
             if View.instance is not None:
@@ -209,9 +212,8 @@ class HTTPSeeder(BaseSeeder):
                         extra={"class_name": self.__class__.__name__},
                     )
 
-                # If tracker returned a failure, release semaphore and return False
+                # If tracker returned a failure, return False
                 if b"failure reason" in data:
-                    self.get_tracker_semaphore().release()
                     return False  # type: ignore[return-value]
 
                 # Apply jitter to announce interval to prevent request storms
@@ -236,14 +238,12 @@ class HTTPSeeder(BaseSeeder):
                 if self.first_announce:
                     self.first_announce = False
 
-                self.get_tracker_semaphore().release()
                 return True  # type: ignore[return-value]
 
             logger.error(
                 "❌ Failed to decode tracker response",
                 extra={"class_name": self.__class__.__name__},
             )
-            self.get_tracker_semaphore().release()
             return False  # type: ignore[return-value]
         except (requests.RequestException, OSError, ValueError, RuntimeError) as e:
             # Update tracker model with failure
@@ -257,6 +257,9 @@ class HTTPSeeder(BaseSeeder):
             self.set_random_announce_url()
             self.handle_exception(e, "Seeder unknown error in load_peers_http")
             return False  # type: ignore[return-value]
+        finally:
+            if semaphore_acquired:
+                self.get_tracker_semaphore().release()
 
     def upload(  # pylint: disable=too-many-branches,too-many-statements
         self, uploaded_bytes: Any, downloaded_bytes: Any, download_left: Any
@@ -350,7 +353,7 @@ class HTTPSeeder(BaseSeeder):
                 self.get_tracker_semaphore().release()
                 return  # Success, exit the loop
 
-            except BaseException as e:  # pylint: disable=broad-exception-caught
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 retry_count += 1
                 if self.shutdown_requested:
                     logger.trace(
