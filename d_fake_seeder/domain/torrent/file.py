@@ -66,10 +66,10 @@ class File:
         if b"files" in torrent_info:
             # Multiple File Mode
             for file_info in torrent_info[b"files"]:
-                size += file_info[b"length"]
+                size += file_info.get(b"length", 0)
         else:
             # Single File Mode
-            size = torrent_info[b"length"]
+            size = torrent_info.get(b"length", 0)
 
         return size
 
@@ -105,8 +105,8 @@ class File:
         torrent_info = self.torrent_header[b"info"]
         piece_len = torrent_info[b"piece length"]
         result += f"Piece len: {helpers.sizeof_fmt(piece_len)}\n"
-        pieces = len(torrent_info[b"pieces"]) / 20
-        result += f"Pieces: {int(pieces)}\n"
+        pieces = len(torrent_info.get(b"pieces", b"")) // 20
+        result += f"Pieces: {pieces}\n"
 
         torrent_name = torrent_info[b"name"].decode("utf-8")
         result += f"Name: {torrent_name}\n"
@@ -116,7 +116,7 @@ class File:
             # Multiple File Mode
             result += "Files:\n"
             for file_info in torrent_info[b"files"]:
-                fullpath = "/".join([x.decode("utf-8") for x in file_info[b"path"]])
+                fullpath = "/".join([x.decode("utf-8") for x in file_info.get(b"path", [b"unknown"])])
                 result += f"  '{fullpath}' ({helpers.sizeof_fmt(file_info[b'length'])})\n"
         else:
             # Single File Mode
@@ -227,7 +227,7 @@ class File:
 
     def get_num_pieces(self) -> Any:
         """Get number of pieces in torrent."""
-        return len(self.torrent_header[b"info"][b"pieces"]) / 20
+        return len(self.torrent_header[b"info"].get(b"pieces", b"")) // 20
 
     def get_torrent_name(self) -> Any:
         """Get torrent name from info dict."""
@@ -238,7 +238,7 @@ class File:
         files = []
         if b"files" in self.torrent_header[b"info"]:
             for file_info in self.torrent_header[b"info"][b"files"]:
-                fullpath = "/".join([x.decode("utf-8") for x in file_info[b"path"]])
+                fullpath = "/".join([x.decode("utf-8") for x in file_info.get(b"path", [b"unknown"])])
                 # Return raw byte length for consistent formatting by UI components
                 files.append((fullpath, file_info[b"length"]))
         return files
