@@ -554,6 +554,7 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
         self.model.connect("selection-changed", self.statusbar.model_selection_changed)
         self.model.connect("selection-changed", self.toolbar.model_selection_changed)  # type: ignore[union-attr]
         signal.signal(signal.SIGINT, self.quit)
+        signal.signal(signal.SIGTERM, self.quit)
 
     # Connecting signals for different events
     def remove_signals(self) -> None:
@@ -818,6 +819,11 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             extra={"class_name": self.__class__.__name__},
         )
         try:
+            for torrent in self.model.get_torrents():
+                try:
+                    torrent.save_to_transient()
+                except Exception:
+                    pass
             self.settings.save_quit()
             logger.trace(
                 "✅ Settings saved successfully",

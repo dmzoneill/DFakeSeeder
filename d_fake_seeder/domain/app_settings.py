@@ -52,6 +52,10 @@ else:
         def stop(self) -> Any:
             """Stub stop method."""
 
+        def is_alive(self) -> bool:
+            """Stub is_alive method."""
+            return False
+
 # fmt: on
 
 
@@ -532,7 +536,10 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
         # Cancel any pending debounced save timer
         if self._save_timer is not None:
-            GLib.source_remove(self._save_timer)
+            try:
+                GLib.source_remove(self._save_timer)
+            except Exception:
+                pass
             self._save_timer = None
             self._pending_save = False
 
