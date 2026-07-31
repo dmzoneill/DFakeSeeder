@@ -326,8 +326,7 @@ class Torrent(GObject.GObject):  # pylint: disable=too-many-instance-attributes
             self.threshold = threshold
 
         if self.progress >= (threshold / 100) and not self.uploading:  # type: ignore[has-type]
-            if self.uploading is False:  # type: ignore[has-type]
-                self.uploading = True
+            self.uploading = True
 
         if self.uploading:
             upload_factor = int(
