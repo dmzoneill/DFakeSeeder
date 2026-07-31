@@ -10,6 +10,7 @@ The Model uses GObject signals to notify observers of state changes.
 # isort: skip_file
 from typing import List,  Any
 import os
+import threading
 from urllib.parse import urlparse
 
 import gi  # noqa
@@ -96,6 +97,7 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
         if hasattr(self.translation_manager, "translate_func"):
             ColumnTranslations.register_translation_function(self.translation_manager.translate_func)
             logger.trace("Registered translation function with ColumnTranslations", "Model")
+        self._model_lock = threading.Lock()
         self.torrent_list: List[Any] = []  # List to hold all torrent instances
         self._torrent_by_filepath: dict = {}  # filepath -> Torrent for O(1) lookup
         # Debounce state for coalescing rapid attribute-changed signals
@@ -120,54 +122,56 @@ class Model(GObject.GObject):  # pylint: disable=too-many-instance-attributes
     # Method to add a new torrent
     def add_torrent(self, filepath: Any) -> None:
         """Add a new torrent from the given file path to the model."""
-        logger.trace("Model add torrent", extra={"class_name": self.__class__.__name__})
-        # Create new Torrent instance
-        torrent = Torrent(filepath)
-        torrent.connect("attribute-changed", self.handle_model_changed)
-        self.torrent_list.append(torrent)
-        self._torrent_by_filepath[filepath] = torrent
-        self.torrent_list_attributes.append(torrent.get_attributes())
-        current_id = 1
-        for torrent in self.torrent_list:
-            if torrent.id != current_id:
-                torrent.id = current_id
-            current_id += 1
-        # Update filtered list if search is active
-        if self.search_filter:
-            self._update_filtered_list()
+        with self._model_lock:
+            logger.trace("Model add torrent", extra={"class_name": self.__class__.__name__})
+            # Create new Torrent instance
+            torrent = Torrent(filepath)
+            torrent.connect("attribute-changed", self.handle_model_changed)
+            self.torrent_list.append(torrent)
+            self._torrent_by_filepath[filepath] = torrent
+            self.torrent_list_attributes.append(torrent.get_attributes())
+            current_id = 1
+            for torrent in self.torrent_list:
+                if torrent.id != current_id:
+                    torrent.id = current_id
+                current_id += 1
+            # Update filtered list if search is active
+            if self.search_filter:
+                self._update_filtered_list()
 
-        # Register with inbuilt tracker if enabled (INT-5.1)
-        self._register_with_local_tracker(torrent)
+            # Register with inbuilt tracker if enabled (INT-5.1)
+            self._register_with_local_tracker(torrent)
 
-        # Emit 'data-changed' signal with torrent instance and message
-        self.emit("data-changed", torrent, "add")
+            # Emit 'data-changed' signal with torrent instance and message
+            self.emit("data-changed", torrent, "add")
 
     # Method to remove a torrent
     def remove_torrent(self, filepath: Any) -> None:
         """Remove a torrent with the given file path from the model."""
-        logger.trace("Model remove torrent", extra={"class_name": self.__class__.__name__})
-        # Find the Torrent instance via index
-        torrent = self._torrent_by_filepath.pop(filepath, None)
-        if torrent is not None:
-            # Unregister from inbuilt tracker if enabled (INT-5.2)
-            self._unregister_from_local_tracker(torrent)
+        with self._model_lock:
+            logger.trace("Model remove torrent", extra={"class_name": self.__class__.__name__})
+            # Find the Torrent instance via index
+            torrent = self._torrent_by_filepath.pop(filepath, None)
+            if torrent is not None:
+                # Unregister from inbuilt tracker if enabled (INT-5.2)
+                self._unregister_from_local_tracker(torrent)
 
-            self.torrent_list.remove(torrent)
-            for index, item in enumerate(self.torrent_list_attributes):
-                if item.filepath == torrent.filepath:
-                    del self.torrent_list_attributes[index]
-                    break
-            sorted_list = sorted(self.torrent_list_attributes, key=lambda x: x.id)
-            # Sort the list by member attribute 'id'
-            for item in sorted_list:
-                if item.id <= torrent.id:
-                    continue
-                item.id -= 1
-        # Update filtered list if search is active
-        if self.search_filter:
-            self._update_filtered_list()
-        # Emit 'data-changed' signal with torrent instance and message
-        self.emit("data-changed", torrent, "remove")
+                self.torrent_list.remove(torrent)
+                for index, item in enumerate(self.torrent_list_attributes):
+                    if item.filepath == torrent.filepath:
+                        del self.torrent_list_attributes[index]
+                        break
+                sorted_list = sorted(self.torrent_list_attributes, key=lambda x: x.id)
+                # Sort the list by member attribute 'id'
+                for item in sorted_list:
+                    if item.id <= torrent.id:
+                        continue
+                    item.id -= 1
+            # Update filtered list if search is active
+            if self.search_filter:
+                self._update_filtered_list()
+            # Emit 'data-changed' signal with torrent instance and message
+            self.emit("data-changed", torrent, "remove")
 
     # Method to get ListStore of torrents for Gtk.TreeView
     def get_liststore(self) -> Any:
