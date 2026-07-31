@@ -16,7 +16,7 @@ import os
 import shutil
 import tempfile
 from pathlib import Path
-from threading import Lock
+from threading import RLock
 
 import gi
 
@@ -87,7 +87,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
     }
 
     _instance = None
-    _lock = Lock()  # Thread safety
+    _lock = RLock()  # Thread safety (reentrant to avoid deadlock in __getattr__ -> save_settings)
     _logger = None  # Lazy logger instance
     _file_path: Any = None  # File path for settings (set in __init__)
     _observer: Any = None  # File watcher observer (set in __init__)
@@ -555,12 +555,13 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
     def get(self, key: Any, default: Any = None) -> Any:
         """Get a setting value (supports dot notation for nested values)"""
-        # Try nested access first for dot notation keys (e.g., "watch_folder.enabled")
-        value = self._get_nested_value(self._settings, key)
-        if value is not None:
-            return value
-        # Fallback to direct key access for backward compatibility
-        return self._settings.get(key, default)
+        with AppSettings._lock:
+            # Try nested access first for dot notation keys (e.g., "watch_folder.enabled")
+            value = self._get_nested_value(self._settings, key)
+            if value is not None:
+                return value
+            # Fallback to direct key access for backward compatibility
+            return self._settings.get(key, default)
 
     def set(self, key: Any, value: Any) -> Any:
         """
