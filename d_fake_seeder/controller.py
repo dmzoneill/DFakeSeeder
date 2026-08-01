@@ -56,9 +56,7 @@ except ImportError:
 class Controller:  # pylint: disable=too-many-instance-attributes
     """Controller coordinating Model-View interactions and background operations."""
 
-    def __init__(
-        self, view: Any, model: Any
-    ) -> None:  # pylint: disable=too-many-statements
+    def __init__(self, view: Any, model: Any) -> None:  # pylint: disable=too-many-statements
         logger.trace("Startup", extra={"class_name": self.__class__.__name__})
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
