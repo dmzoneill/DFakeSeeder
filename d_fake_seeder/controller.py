@@ -83,7 +83,7 @@ class Controller:  # pylint: disable=too-many-instance-attributes
         self.dht_manager = None
         if dht_enabled:
             dht_port = self.settings.get("connection.listening_port", 6881)
-            self.dht_manager = DHTManager(port=dht_port)
+            self.dht_manager = DHTManager(port=dht_port, settings=self.settings)
 
         # Initialize speed distribution manager
         self.speed_distribution_manager = SpeedDistributionManager(model)
@@ -408,7 +408,7 @@ class Controller:  # pylint: disable=too-many-instance-attributes
             if hasattr(self, "dht_manager"):
                 if value and not self.dht_manager:
                     dht_port = self.settings.get("connection.listening_port", 6881)
-                    self.dht_manager = DHTManager(port=dht_port)
+                    self.dht_manager = DHTManager(port=dht_port, settings=self.settings)
                     self.dht_manager.start()
                     logger.info("DHT Manager started", "Controller")
                 elif not value and self.dht_manager:
