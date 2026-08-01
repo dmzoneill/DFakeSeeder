@@ -48,7 +48,12 @@ class DHTManager:  # pylint: disable=too-many-instance-attributes
     ROUTING_TABLE_K = 8  # K-bucket size
     TOKEN_LENGTH = 4
 
-    def __init__(self, port: int = DHT_PORT, peer_callback: Optional[Callable] = None, settings: Any = None) -> None:
+    def __init__(
+        self,
+        port: int = DHT_PORT,
+        peer_callback: Optional[Callable] = None,
+        settings: Any = None,
+    ) -> None:
         """
         Initialize DHT manager.
 

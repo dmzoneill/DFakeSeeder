@@ -56,7 +56,9 @@ except ImportError:
 class Controller:  # pylint: disable=too-many-instance-attributes
     """Controller coordinating Model-View interactions and background operations."""
 
-    def __init__(self, view: Any, model: Any) -> None:  # pylint: disable=too-many-statements
+    def __init__(
+        self, view: Any, model: Any
+    ) -> None:  # pylint: disable=too-many-statements
         logger.trace("Startup", extra={"class_name": self.__class__.__name__})
         # subscribe to settings changed
         self.settings = AppSettings.get_instance()
@@ -89,7 +91,10 @@ class Controller:  # pylint: disable=too-many-instance-attributes
         self.speed_distribution_manager = SpeedDistributionManager(model)
 
         # Initialize client behavior simulator
-        behavior_profile = self.settings.get("simulation.client_behavior_engine.primary_client", "balanced")
+        behavior_profile = self.settings.get(
+            "simulation.client_behavior_engine.primary_client",
+            "balanced",
+        )
         self.client_behavior_simulator = ClientBehaviorSimulator(behavior_profile)
 
         # Tick timer for speed distribution and behavior simulation
@@ -580,7 +585,7 @@ class Controller:  # pylint: disable=too-many-instance-attributes
             return
 
         async def _start() -> None:
-            if await server.start():
+            if server and await server.start():
                 logger.info("Web UI server started", "Controller")
 
         self._run_async_in_background(_start, "WebUI-Start")
@@ -592,7 +597,8 @@ class Controller:  # pylint: disable=too-many-instance-attributes
             return
 
         async def _stop() -> None:
-            await server.stop()
+            if server:
+                await server.stop()
 
         self._run_async_in_background(_stop, "WebUI-Stop")
 
@@ -603,7 +609,7 @@ class Controller:  # pylint: disable=too-many-instance-attributes
             return
 
         async def _start() -> None:
-            if await lpd.start():
+            if lpd and await lpd.start():
                 logger.info("Local Peer Discovery started", "Controller")
 
         self._run_async_in_background(_start, "LPD-Start")
@@ -615,7 +621,8 @@ class Controller:  # pylint: disable=too-many-instance-attributes
             return
 
         async def _stop() -> None:
-            await lpd.stop()
+            if lpd:
+                await lpd.stop()
 
         self._run_async_in_background(_stop, "LPD-Stop")
 
