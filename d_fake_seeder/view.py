@@ -143,9 +143,6 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             "Statusbar component created successfully (took {(statusbar_end - statusbar_start)*1000:.1f}ms)",
             "View",
         )
-        logger.trace("About to create TrackerTab component", "View")
-        self.tracker_tab = TrackerTab(self.builder, None)
-        logger.trace("TrackerTab component created successfully", "View")
         # Getting relevant objects
         self.quit_menu_item = self.builder.get_object("quit_menu_item")
         self.help_menu_item = self.builder.get_object("help_menu_item")
@@ -198,6 +195,13 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             "Notification overlay setup completed (took {(overlay_end - overlay_start)*1000:.1f}ms)",
             "View",
         )
+
+        # Create TrackerTab AFTER notification_manager so auto-start notifications
+        # use the toast system instead of the fallback label
+        logger.trace("About to create TrackerTab component", "View")
+        self.tracker_tab = TrackerTab(self.builder, None)
+        logger.trace("TrackerTab component created successfully", "View")
+
         # Get UI settings for configurable timeouts using proper AppSettings API
         self.resize_delay = self.settings.get("ui_settings.resize_delay_seconds", 1.0)
         self.splash_display_duration = self.settings.get("ui_settings.splash_display_duration_seconds", 2)
@@ -474,7 +478,7 @@ class View(CleanupMixin):  # pylint: disable=too-many-instance-attributes
             # Create timeout source and store reference
             self.timeout_source = GLib.timeout_source_new(notification_timeout)
             self.timeout_source.set_callback(  # type: ignore[attr-defined]
-                lambda user_data: self.notify_label.set_visible(False) or self.notify_label.hide()
+                lambda: (self.notify_label.set_visible(False), self.notify_label.hide()) and False
             )
             self.timeout_id = self.timeout_source.attach(GLib.MainContext.default())  # type: ignore[attr-defined]
             return False  # Don't repeat
