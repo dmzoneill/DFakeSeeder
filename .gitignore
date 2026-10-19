@@ -38,6 +38,18 @@ tools/translations/*.backup
 tools/translations/*_fallbacks_to_translate.json
 .pot_linecount
 
+# Compiled GtkBuilder UI. Source is components/ui/*.xml and components/ui/settings/*.xml;
+# `make` runs `xmllint --xinclude` into this directory. The files stay tracked because
+# the app loads them at runtime. jscpd reads .gitignore by default, and the shared
+# CICD workflow overwrites .github/linters/.jscpd.json, so this exclusion is how those
+# generated copies are left out of copy-paste detection.
+d_fake_seeder/components/ui/generated/
+
+# Translation catalogs. Parallel message files (the English source is repeated
+# into every language). They stay tracked; jscpd skips them the same way it
+# skips the generated UI above.
+tools/translations/*.json
+
 # translations
 tools/translations/*_translation_request.json# AI tool configurations
 .claude/
