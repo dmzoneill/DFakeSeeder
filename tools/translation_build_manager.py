@@ -468,11 +468,27 @@ msgstr ""
         with open(english_file, "w", encoding="utf-8") as f:
             json.dump(english_translations, f, indent=2, ensure_ascii=False)
 
-        # Other language files omit untranslated keys. PO generation uses the
-        # msgid itself when a key is absent, so copying the English string into
-        # every catalog would only duplicate the source text.
-        print(f"   ✅ Added {len(new_strings)} strings to the English catalog")
-        print("   ↪️  Other languages fall back to those strings until translated")
+        # Add new strings to all other language files (with English as fallback)
+        for lang_code in LANGUAGES:
+            if lang_code == "en":
+                continue
+
+            json_file = self.translations_dir / f"{lang_code}.json"
+            if not json_file.exists():
+                continue
+
+            with open(json_file, "r", encoding="utf-8") as f:
+                translations = json.load(f)
+
+            # Add new strings with English fallback
+            for string in new_strings:
+                translations[string] = string  # Use English as fallback
+
+            # Save updated language file
+            with open(json_file, "w", encoding="utf-8") as f:
+                json.dump(translations, f, indent=2, ensure_ascii=False)
+
+        print(f"   ✅ Added {len(new_strings)} strings to all language files")
         return True
 
     def _extract_strings_from_pot(self, pot_file: str) -> set:
@@ -608,17 +624,13 @@ msgstr ""
             existing = self._load_json_translation(lang_code)
             missing_strings = all_strings - set(existing.keys())
 
-            if lang_code != "en" and missing_strings:
-                # Leave the key out. _generate_po_file substitutes the msgid,
-                # which is the English source, when a translation is absent.
-                print(f"      ↪️  {len(missing_strings)} untranslated strings " "fall back to English at PO generation")
-            elif missing_strings and lang_code == "en":
+            if missing_strings:
                 complete_translations = {}
                 for key in all_strings:
                     if key in existing:
                         complete_translations[key] = existing[key]
                     else:
-                        complete_translations[key] = key
+                        complete_translations[key] = key  # English fallback
 
                 self._save_json_translation(lang_code, complete_translations)
                 print(f"      ➕ Added {len(missing_strings)} missing strings")
@@ -880,35 +892,34 @@ msgstr ""
             missing_keys = english_keys - lang_keys
             extra_keys = lang_keys - english_keys
 
-            # Omitted keys and values equal to the English source both fall
-            # back to that source. PO generation uses the msgid when a key is
-            # absent, so catalogs do not store a second copy of those strings.
-            fallback_count = len(missing_keys)
-            for key in english_keys & lang_keys:
-                if lang_translations[key] == english_translations[key]:
-                    fallback_count += 1
+            # Count English fallbacks (where translation equals English)
+            fallback_count = 0
+            for key in english_keys:
+                if key in lang_translations and key in english_translations:
+                    if lang_translations[key] == english_translations[key]:
+                        fallback_count += 1
 
-            native_count = len(english_keys) - fallback_count
             fallback_summary[lang_code] = {
                 "total_keys": len(lang_keys),
                 "missing_keys": len(missing_keys),
                 "extra_keys": len(extra_keys),
                 "fallback_count": fallback_count,
-                "native_translations": native_count,
+                "native_translations": len(lang_keys) - fallback_count,
                 "fallback_percentage": (fallback_count / len(english_keys) * 100) if english_keys else 0,
             }
 
-            if extra_keys:
+            if missing_keys or extra_keys:
                 all_consistent = False
                 print(f"❌ {lang_code}: Key mismatch")
-                print(f"   Extra {len(extra_keys)} keys")
+                if missing_keys:
+                    print(f"   Missing {len(missing_keys)} keys")
+                if extra_keys:
+                    print(f"   Extra {len(extra_keys)} keys")
             else:
                 print(f"✅ {lang_code}: {len(lang_keys)} keys (consistent)")
-                if missing_keys:
-                    print(f"   ↪️  {len(missing_keys)} keys use the English source")
 
             # Report fallback status
-            native_percentage = (native_count / len(english_keys) * 100) if english_keys else 0
+            native_percentage = ((len(lang_keys) - fallback_count) / len(english_keys) * 100) if english_keys else 0
             if fallback_count > 0:
                 fallback_pct = fallback_summary[lang_code]["fallback_percentage"]
                 print(f"   📊 {fallback_count}/{len(english_keys)} English fallbacks ({fallback_pct:.1f}%)")
@@ -1373,6 +1384,8 @@ msgstr ""
         languages = [target_lang] if target_lang else [lang for lang in LANGUAGES.keys() if lang != "en"]
         print(f"DEBUG: Processing languages: {languages}")
 
+        total_added = 0
+
         for lang_code in languages:
             print(f"DEBUG: Processing language {lang_code}")
             if lang_code not in LANGUAGES:
@@ -1400,15 +1413,30 @@ msgstr ""
                 print(f"✅ {lang_config['name']} ({lang_code}): Already complete ({len(existing_keys)} keys)")
                 continue
 
-            # Do not copy the English string into this catalog. PO generation
-            # substitutes the msgid for keys that are not translated yet.
-            print(
-                f"↪️  {lang_config['name']} ({lang_code}): {len(missing_keys)} keys "
-                "fall back to English at PO generation"
-            )
+            print(f"🔧 {lang_config['name']} ({lang_code}): Adding {len(missing_keys)} missing keys")
+
+            # Add missing keys with English fallback
+            print(f"DEBUG: Creating updated translations for {lang_code}...")
+            updated_translations = existing_translations.copy()
+            for key in missing_keys:
+                updated_translations[key] = english_translations[key]  # Use English as fallback
+
+            print(f"DEBUG: Saving updated file for {lang_code}...")
+            # Save updated file with sorted keys
+            with open(json_file, "w", encoding="utf-8") as f:
+                json.dump(
+                    updated_translations,
+                    f,
+                    ensure_ascii=False,
+                    indent=2,
+                    sort_keys=True,
+                )
+
+            print(f"   ✅ Added {len(missing_keys)} keys (now {len(updated_translations)} total)")
+            total_added += len(missing_keys)
 
         print()
-        print("🎉 Sync complete. Untranslated keys fall back to English at PO generation.")
+        print(f"🎉 Sync complete! Added {total_added} total missing keys across all languages")
         print("DEBUG: sync_missing_keys method completed")
         return True
 
@@ -1534,12 +1562,21 @@ msgstr ""
             with open(json_file, "r", encoding="utf-8") as f:
                 translations = json.load(f)
 
+            original_count = len(translations)
             missing_keys = english_keys - set(translations.keys())
 
             if missing_keys:
-                # Untranslated keys stay out of the catalog. PO generation
-                # uses the English msgid for them.
-                print(f"   ↪️  {lang_code}: {len(missing_keys)} strings fall back to English")
+                # Add missing keys as untranslated
+                with open(english_file, "r", encoding="utf-8") as f:
+                    english_translations = json.load(f)
+
+                for key in missing_keys:
+                    if key in english_translations:
+                        translations[key] = english_translations[key]
+
+                self._save_json_translation(lang_code, translations)
+                added = len(translations) - original_count
+                print(f"   ✅ {lang_code}: Added {added} missing strings")
                 enhanced_count += 1
 
         # Add translatable attributes to XML files
