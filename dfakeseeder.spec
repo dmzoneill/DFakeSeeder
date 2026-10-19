@@ -1,5 +1,5 @@
 Name:           dfakeseeder
-Version:        1.1.14
+Version:        1.1.15
 Release:        1%{?dist}
 Summary:        BitTorrent seeding simulator for testing and development
 
