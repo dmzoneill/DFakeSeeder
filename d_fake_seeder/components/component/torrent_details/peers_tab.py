@@ -7,7 +7,7 @@ Displays torrent peer information in a column view with sorting capabilities.
 # isort: skip_file
 
 # fmt: off
-from typing import Any, Dict, List
+from typing import Any
 
 import gi
 
@@ -168,7 +168,7 @@ class PeersTab(
 
             # Create sorter for the column
             property_expression = Gtk.PropertyExpression.new(TorrentPeer, None, property_name)
-            sorter = self._create_property_sorter(property_name, property_expression)  # type: ignore[func-returns-value]  # noqa: E501
+            sorter = self._create_property_sorter(property_name, property_expression)
             if sorter:
                 column.set_sorter(sorter)
 
@@ -180,7 +180,7 @@ class PeersTab(
         except Exception as e:
             self.logger.error(f"Error creating peer column {property_name}: {e}")
 
-    def _create_property_sorter(self, property_name: str, property_expression: Any) -> None:
+    def _create_property_sorter(self, property_name: str, property_expression: Any) -> Any:
         """
         Create appropriate sorter based on property type.
 
@@ -200,9 +200,7 @@ class PeersTab(
 
             if property_type == GObject.TYPE_STRING:
                 return Gtk.StringSorter.new(property_expression)  # type: ignore[no-any-return]
-            elif property_type in [GObject.TYPE_FLOAT, GObject.TYPE_DOUBLE]:
-                return Gtk.NumericSorter.new(property_expression)  # type: ignore[no-any-return]
-            elif property_type == GObject.TYPE_BOOLEAN:
+            elif property_type in [GObject.TYPE_FLOAT, GObject.TYPE_DOUBLE] or property_type == GObject.TYPE_BOOLEAN:
                 return Gtk.NumericSorter.new(property_expression)  # type: ignore[no-any-return]
             else:
                 return Gtk.StringSorter.new(property_expression)  # type: ignore[no-any-return]
@@ -298,7 +296,7 @@ class PeersTab(
             List of peer data dictionaries
         """
         try:
-            peer_data: List[Dict[str, Any]] = []
+            peer_data: list[dict[str, Any]] = []
 
             # Get data from global peer manager
             global_peer_count = self._add_global_peer_data(torrent, peer_data)

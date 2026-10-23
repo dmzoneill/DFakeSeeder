@@ -10,7 +10,7 @@ Now extends BaseTorrentTab for consistent hierarchy with other torrent detail ta
 # isort: skip_file
 
 # fmt: off
-from typing import Dict, Any
+from typing import Any
 import gi
 
 from d_fake_seeder.domain.app_settings import AppSettings
@@ -60,7 +60,7 @@ class OutgoingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTransla
         self.connection_manager = get_connection_manager()
 
         # Data store for UI display (filtered view)
-        self.outgoing_connections: Dict[str, Any] = {}  # ip:port -> ConnectionPeer
+        self.outgoing_connections: dict[str, Any] = {}  # ip:port -> ConnectionPeer
         self.count_update_callback = None  # Callback to update connection counts
 
         # Initialize parent (calls _init_widgets, _connect_signals, etc.)
@@ -146,7 +146,6 @@ class OutgoingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTransla
         """Notify connection count changed (handled by main data-changed signal)"""
         # Connection count updates now handled by main data-changed signal
         # to respect tickspeed intervals and prevent UI flooding
-        pass
 
     def init_outgoing_column_view(self) -> None:
         """Initialize the outgoing connections column view"""
@@ -193,10 +192,7 @@ class OutgoingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTransla
                 "download_rate",
                 "requests_sent",
                 "pieces_received",
-            ]:
-                property_expression = Gtk.PropertyExpression.new(ConnectionPeer, None, property_name)
-                sorter = Gtk.NumericSorter.new(property_expression)
-            elif property_name in [
+            ] or property_name in [
                 "handshake_complete",
                 "am_interested",
                 "peer_choking",
@@ -228,7 +224,7 @@ class OutgoingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTransla
         """Handle model selection change"""
         self.selected_torrent = torrent
         logger.trace(
-            f"Outgoing connections selection changed: " f"{torrent.id if torrent else 'None'}",
+            f"Outgoing connections selection changed: {torrent.id if torrent else 'None'}",
             extra={"class_name": self.__class__.__name__},
         )
         self.apply_filter()

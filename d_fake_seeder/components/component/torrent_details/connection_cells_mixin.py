@@ -10,7 +10,8 @@ declares via the class attributes below.
 
 # fmt: off
 import datetime
-from typing import Any, Tuple
+from typing import Any
+from collections.abc import Callable
 
 import gi
 
@@ -27,10 +28,16 @@ from gi.repository import GLib, GObject, Gtk, Pango  # noqa: E402
 class ConnectionCellsMixin:
     """setup_cell/bind_cell/format_bytes for connection column views."""
 
-    BOOL_PROPERTIES: Tuple[str, ...] = ()
+    BOOL_PROPERTIES: tuple[str, ...] = ()
     BYTES_PROPERTY: str = ""
     RATE_PROPERTY: str = ""
-    COUNT_PROPERTIES: Tuple[str, ...] = ()
+    COUNT_PROPERTIES: tuple[str, ...] = ()
+
+    # Provided by the concrete tab (BaseTorrentTab / CleanupMixin)
+    kb_threshold: int
+    mb_threshold: int
+    gb_threshold: int
+    track_binding: Callable[[Any], Any]
 
     def setup_cell(self, widget: Any, item: Any, property_name: Any) -> None:
         """Setup cell widget based on property type"""

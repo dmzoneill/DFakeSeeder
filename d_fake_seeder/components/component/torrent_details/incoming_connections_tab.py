@@ -10,7 +10,7 @@ Now extends BaseTorrentTab for consistent hierarchy with other torrent detail ta
 # isort: skip_file
 
 # fmt: off
-from typing import Dict, Any
+from typing import Any
 import gi
 
 from d_fake_seeder.domain.app_settings import AppSettings
@@ -60,7 +60,7 @@ class IncomingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTransla
         self.connection_manager = get_connection_manager()
 
         # Data store for UI display (filtered view)
-        self.incoming_connections: Dict[str, Any] = {}  # ip:port -> ConnectionPeer
+        self.incoming_connections: dict[str, Any] = {}  # ip:port -> ConnectionPeer
         self.count_update_callback = None  # Callback to update connection counts
 
         # Initialize parent (calls _init_widgets, _connect_signals, etc.)
@@ -146,7 +146,6 @@ class IncomingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTransla
         """Notify connection count changed (handled by main data-changed signal)"""
         # Connection count updates now handled by main data-changed signal
         # to respect tickspeed intervals and prevent UI flooding
-        pass
 
     def init_incoming_column_view(self) -> None:
         """Initialize the incoming connections column view"""
@@ -193,10 +192,7 @@ class IncomingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTransla
                 "upload_rate",
                 "requests_received",
                 "pieces_sent",
-            ]:
-                property_expression = Gtk.PropertyExpression.new(ConnectionPeer, None, property_name)
-                sorter = Gtk.NumericSorter.new(property_expression)
-            elif property_name in [
+            ] or property_name in [
                 "handshake_complete",
                 "peer_interested",
                 "am_choking",
@@ -228,7 +224,7 @@ class IncomingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTransla
         """Handle model selection change"""
         self.selected_torrent = torrent
         logger.trace(
-            f"Incoming connections selection changed: " f"{torrent.id if torrent else 'None'}",
+            f"Incoming connections selection changed: {torrent.id if torrent else 'None'}",
             extra={"class_name": self.__class__.__name__},
         )
         self.apply_filter()
@@ -341,13 +337,13 @@ class IncomingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTransla
             if connection_key in self.all_connections:
                 import time
 
-                display_start = self.connection_display_timers.get(connection_key, time.time())  # type: ignore[attr-defined]  # noqa: E501
+                display_start = self.connection_display_timers.get(connection_key, time.time())  # type: ignore[attr-defined]
                 elapsed = time.time() - display_start
 
                 # Only remove if minimum display time has passed
                 if elapsed >= self.min_display_time:  # type: ignore[attr-defined]
                     logger.trace(
-                        f"Auto-removing connection after {elapsed:.1f}s display: " f"{connection_key}",
+                        f"Auto-removing connection after {elapsed:.1f}s display: {connection_key}",
                         extra={"class_name": self.__class__.__name__},
                     )
                     self.remove_incoming_connection_by_key(connection_key)
@@ -361,7 +357,7 @@ class IncomingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTransla
             return False  # Don't repeat the timer  # type: ignore
 
         # Schedule initial check after minimum display time
-        timer_id = GLib.timeout_add_seconds(int(self.min_display_time), remove_after_display_time)  # type: ignore[attr-defined]  # noqa: E501
+        timer_id = GLib.timeout_add_seconds(int(self.min_display_time), remove_after_display_time)  # type: ignore[attr-defined]
         self.removal_timers[connection_key] = timer_id  # type: ignore[attr-defined]
 
     def remove_incoming_connection_by_key(self, connection_key: Any) -> Any:

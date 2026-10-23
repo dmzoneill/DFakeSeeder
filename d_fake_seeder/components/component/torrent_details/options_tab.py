@@ -5,7 +5,7 @@ Displays editable torrent options with dynamic widgets based on configuration.
 """
 
 # fmt: off
-from typing import Any, List
+from typing import Any
 
 import gi
 
@@ -13,7 +13,7 @@ from .base_tab import BaseTorrentTab
 from .tab_mixins import DataUpdateMixin, UIUtilityMixin
 
 gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk  # noqa
+from gi.repository import Gtk  # noqa: E402
 
 # fmt: on
 
@@ -28,7 +28,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
     def __init__(self, builder: Gtk.Builder, model: Any) -> None:
         """Initialize the options tab."""
         super().__init__(builder, model)
-        self._options_grid_children: List[Any] = []
+        self._options_grid_children: list[Any] = []
 
         # Connect to language change signal for translation updates
         if hasattr(self.model, "connect"):
@@ -146,7 +146,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
                 # Create the dynamic widget
                 widget_type = edit_widgets[attribute]
-                dynamic_widget = self._create_dynamic_widget(torrent, attribute, widget_type)  # type: ignore[func-returns-value]  # noqa: E501
+                dynamic_widget = self._create_dynamic_widget(torrent, attribute, widget_type)
 
                 if not dynamic_widget:
                     continue
@@ -192,7 +192,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         except Exception as e:
             self.logger.error(f"Error creating option widgets: {e}")
 
-    def _create_dynamic_widget(self, torrent: Any, attribute: str, widget_type: str) -> None:
+    def _create_dynamic_widget(self, torrent: Any, attribute: str, widget_type: str) -> Any:
         """
         Create a dynamic widget for a torrent attribute.
 
