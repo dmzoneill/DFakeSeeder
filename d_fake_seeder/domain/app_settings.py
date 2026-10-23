@@ -18,13 +18,6 @@ import tempfile
 from pathlib import Path
 from threading import RLock
 
-import gi
-
-gi.require_version("Gdk", "4.0")
-gi.require_version("Gtk", "4.0")
-
-from gi.repository import GLib, GObject  # noqa: E402
-
 from d_fake_seeder.lib.handlers.file_modified_event_handler import (
     WATCHDOG_AVAILABLE,
     FileModifiedEventHandler,
@@ -32,6 +25,13 @@ from d_fake_seeder.lib.handlers.file_modified_event_handler import (
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.constants import NetworkConstants
 from d_fake_seeder.lib.util.xdg_paths import get_config_dir
+
+import gi
+
+gi.require_version("Gdk", "4.0")
+gi.require_version("Gtk", "4.0")
+
+from gi.repository import GLib, GObject  # noqa: E402
 
 if WATCHDOG_AVAILABLE:
     from watchdog.observers import Observer  # pylint: disable=import-error

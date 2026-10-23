@@ -337,7 +337,8 @@ class IncomingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTransla
             if connection_key in self.all_connections:
                 import time
 
-                display_start = self.connection_display_timers.get(connection_key, time.time())  # type: ignore[attr-defined]
+                display_timers = self.connection_display_timers  # type: ignore[attr-defined]
+                display_start = display_timers.get(connection_key, time.time())
                 elapsed = time.time() - display_start
 
                 # Only remove if minimum display time has passed
@@ -357,7 +358,8 @@ class IncomingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTransla
             return False  # Don't repeat the timer  # type: ignore
 
         # Schedule initial check after minimum display time
-        timer_id = GLib.timeout_add_seconds(int(self.min_display_time), remove_after_display_time)  # type: ignore[attr-defined]
+        min_display = int(self.min_display_time)  # type: ignore[attr-defined]
+        timer_id = GLib.timeout_add_seconds(min_display, remove_after_display_time)
         self.removal_timers[connection_key] = timer_id  # type: ignore[attr-defined]
 
     def remove_incoming_connection_by_key(self, connection_key: Any) -> Any:
