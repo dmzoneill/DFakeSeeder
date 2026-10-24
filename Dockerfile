@@ -7,6 +7,9 @@ RUN dnf update -y && \
     dnf install -y \
         python3 \
         python3-pip \
+        python3-devel \
+        gcc \
+        make \
         python3-gobject \
         gtk4 \
         xauth \
