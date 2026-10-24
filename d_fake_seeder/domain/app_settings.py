@@ -10,13 +10,21 @@ and GObject signal emission for settings changes.
 
 # fmt: off
 # isort: skip_file
-from typing import Dict,  Any
+from typing import Any
 import json
 import os
 import shutil
 import tempfile
 from pathlib import Path
 from threading import RLock
+
+from d_fake_seeder.lib.handlers.file_modified_event_handler import (
+    WATCHDOG_AVAILABLE,
+    FileModifiedEventHandler,
+)
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.constants import NetworkConstants
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir
 
 import gi
 
@@ -25,16 +33,8 @@ gi.require_version("Gtk", "4.0")
 
 from gi.repository import GLib, GObject  # noqa: E402
 
-from d_fake_seeder.lib.handlers.file_modified_event_handler import (  # noqa: E402
-    WATCHDOG_AVAILABLE,
-    FileModifiedEventHandler,
-)
-from d_fake_seeder.lib.logger import logger  # noqa: E402
-from d_fake_seeder.lib.util.constants import NetworkConstants  # noqa: E402
-from d_fake_seeder.lib.util.xdg_paths import get_config_dir  # noqa: E402
-
 if WATCHDOG_AVAILABLE:
-    from watchdog.observers import Observer  # noqa: E402  # pylint: disable=import-error
+    from watchdog.observers import Observer  # pylint: disable=import-error
 else:
     # Fallback if watchdog is not available
     class Observer:  # type: ignore[no-redef]
@@ -149,10 +149,10 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
         # 3. _transient_data: Runtime-only data (ENTIRE torrents dictionary)
         self._defaults = {}  # type: ignore[var-annotated]
         self._user_settings = {}  # type: ignore[var-annotated]
-        self._transient_data: Dict[str, Any] = {}  # ENTIRE torrents dictionary stored here
+        self._transient_data: dict[str, Any] = {}  # ENTIRE torrents dictionary stored here
 
         # Merged view for reading (rebuilt when any layer changes)
-        self._settings: Dict[str, Any] = {}  # Legacy compatibility - will be merged view
+        self._settings: dict[str, Any] = {}  # Legacy compatibility - will be merged view
 
         # File watching state
         self._last_modified = 0
@@ -214,9 +214,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
                 import logging
                 from d_fake_seeder.lib.logger import add_trace_to_logger
 
-                AppSettings._logger = add_trace_to_logger(  # type: ignore[func-returns-value]
-                    logging.getLogger(__name__)
-                )
+                AppSettings._logger = add_trace_to_logger(logging.getLogger(__name__))
         return AppSettings._logger
 
     @property
@@ -267,7 +265,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
 
         return deep_merge(self._defaults, user_settings)
 
-    def _build_merged_view(self) -> None:
+    def _build_merged_view(self) -> dict[str, Any]:
         """
         Build merged settings view from three layers:
         1. Defaults (from default.json)
@@ -356,7 +354,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
                 self._user_settings = loaded_data
 
                 # Rebuild merged view
-                self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
+                self._settings = self._build_merged_view()
                 self._last_modified = modified  # type: ignore[assignment]
 
                 self.logger.debug(
@@ -369,7 +367,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
             self.logger.warning("Settings file not found, creating from defaults")
             self._user_settings = {}
             self._transient_data = {}
-            self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
+            self._settings = self._build_merged_view()
 
             if not os.path.exists(self._file_path):
                 # Create the JSON file with default contents (no torrents yet)
@@ -382,7 +380,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
             self.logger.error(f"Settings file contains invalid JSON, using defaults: {e}")
             self._user_settings = {}
             self._transient_data = {}
-            self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
+            self._settings = self._build_merged_view()
 
         except (OSError, TypeError, KeyError) as e:
             self.logger.error(f"Error loading settings: {e}", exc_info=True)
@@ -630,7 +628,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
                             )
 
                 # Rebuild merged view to include updated transient data
-                self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
+                self._settings = self._build_merged_view()
 
             else:
                 # PERSISTENT DATA: Update user_settings and queue save
@@ -646,7 +644,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
                     )
 
                     # Rebuild merged view
-                    self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
+                    self._settings = self._build_merged_view()
 
                     # Queue debounced save (1 second delay)
                     self._queue_save()
@@ -800,7 +798,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
                 # Load defaults
                 self._user_settings = self._defaults.copy()
                 # Rebuild merged view
-                self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
+                self._settings = self._build_merged_view()
                 # Save to disk
                 self._save_settings_unlocked()
                 self.logger.debug("Settings reset to defaults")
@@ -838,7 +836,7 @@ class AppSettings(GObject.GObject):  # pylint: disable=too-many-instance-attribu
                 # Update user settings
                 self._user_settings = imported_settings.copy()
                 # Rebuild merged view
-                self._settings = self._build_merged_view()  # type: ignore[func-returns-value]
+                self._settings = self._build_merged_view()
                 # Save to disk
                 self._save_settings_unlocked()
                 self.logger.info(f"Settings imported from: {file_path}")

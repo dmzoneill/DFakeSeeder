@@ -10,10 +10,9 @@ Now extends BaseTorrentTab for consistent hierarchy with other torrent detail ta
 # isort: skip_file
 
 # fmt: off
-from typing import Dict, Any
+from typing import Any
 import gi
 
-from d_fake_seeder.components.component.base_component import Component
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.domain.torrent.connection_manager import get_connection_manager
 from d_fake_seeder.domain.torrent.model.connection_peer import ConnectionPeer
@@ -21,21 +20,27 @@ from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.column_translation_mixin import ColumnTranslationMixin
 
 from .base_tab import BaseTorrentTab
+from .connection_cells_mixin import ConnectionCellsMixin
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("GioUnix", "2.0")
 
 from gi.repository import Gio  # noqa: E402
-from gi.repository import GLib, GObject, Gtk, Pango  # noqa: E402
+from gi.repository import GLib, Gtk  # noqa: E402
 
 # fmt: on
 
 
-class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
+class IncomingConnectionsTab(ConnectionCellsMixin, BaseTorrentTab, ColumnTranslationMixin):
     """Component for managing incoming connections display.
 
     Extends BaseTorrentTab for consistent hierarchy with other torrent detail tabs.
     """
+
+    BOOL_PROPERTIES = ("handshake_complete", "peer_interested", "am_choking")
+    BYTES_PROPERTY = "bytes_uploaded"
+    RATE_PROPERTY = "upload_rate"
+    COUNT_PROPERTIES = ("requests_received", "pieces_sent")
 
     @property
     def tab_name(self) -> str:
@@ -55,7 +60,7 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         self.connection_manager = get_connection_manager()
 
         # Data store for UI display (filtered view)
-        self.incoming_connections: Dict[str, Any] = {}  # ip:port -> ConnectionPeer
+        self.incoming_connections: dict[str, Any] = {}  # ip:port -> ConnectionPeer
         self.count_update_callback = None  # Callback to update connection counts
 
         # Initialize parent (calls _init_widgets, _connect_signals, etc.)
@@ -141,7 +146,6 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         """Notify connection count changed (handled by main data-changed signal)"""
         # Connection count updates now handled by main data-changed signal
         # to respect tickspeed intervals and prevent UI flooding
-        pass
 
     def init_incoming_column_view(self) -> None:
         """Initialize the incoming connections column view"""
@@ -188,10 +192,7 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
                 "upload_rate",
                 "requests_received",
                 "pieces_sent",
-            ]:
-                property_expression = Gtk.PropertyExpression.new(ConnectionPeer, None, property_name)
-                sorter = Gtk.NumericSorter.new(property_expression)
-            elif property_name in [
+            ] or property_name in [
                 "handshake_complete",
                 "peer_interested",
                 "am_choking",
@@ -211,232 +212,6 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         self.selection = Gtk.SingleSelection.new(self.sort_model)
         self.incoming_columnview.set_model(self.selection)
 
-    def setup_cell(self, widget: Any, item: Any, property_name: Any) -> None:
-        """Setup cell widget based on property type"""
-
-        def setup_when_idle() -> None:
-            obj = item.get_item()
-            if obj is None:
-                return
-
-            # Use appropriate widget type
-            if property_name in ["handshake_complete", "peer_interested", "am_choking"]:
-                widget_obj = Gtk.CheckButton()
-                widget_obj.set_sensitive(False)  # Read-only
-            else:
-                widget_obj = Gtk.Label()
-                # Add ellipsization to prevent forcing column/window width
-                widget_obj.set_ellipsize(Pango.EllipsizeMode.END)
-                widget_obj.set_width_chars(5)
-                # Align based on text direction (RTL for Arabic, Hebrew, etc.)
-                text_direction = widget_obj.get_direction()
-                if text_direction == Gtk.TextDirection.RTL:
-                    widget_obj.set_xalign(1)  # Right align for RTL
-                else:
-                    widget_obj.set_xalign(0)  # Left align for LTR
-
-            item.set_child(widget_obj)
-
-        GLib.idle_add(setup_when_idle)
-
-    def bind_cell(self, widget: Any, item: Any, property_name: Any) -> None:
-        """Bind cell data to widget"""
-
-        def bind_when_idle() -> None:
-            try:
-                # Early validation - exit immediately if any required objects are None
-                if item is None:
-                    return
-
-                child = item.get_child()
-                obj = item.get_item()
-
-                # Check if both child and obj are valid before proceeding
-                if obj is None or child is None:
-                    return
-
-                # Validate that obj has the property we're trying to bind
-                if not hasattr(obj, property_name):
-                    return
-
-                # Re-check validity right before each operation to handle race conditions
-                if property_name in [
-                    "handshake_complete",
-                    "peer_interested",
-                    "am_choking",
-                ]:
-                    # Double check before binding - ensure child has expected properties
-                    if (
-                        obj is not None
-                        and child is not None
-                        and hasattr(obj, property_name)
-                        and hasattr(child, "active")
-                        and hasattr(obj, "bind_property")
-                    ):
-                        try:
-                            binding = obj.bind_property(
-                                property_name,
-                                child,
-                                "active",
-                                GObject.BindingFlags.SYNC_CREATE,
-                            )
-                            self.track_binding(binding)
-                        except Exception as e:
-                            logger.error(
-                                f"Error binding boolean property {property_name}: {e}",
-                                extra={"class_name": self.__class__.__name__},
-                            )
-                elif property_name == "connection_time":
-                    # Format timestamp with additional checks
-                    if (
-                        obj is not None
-                        and child is not None
-                        and hasattr(obj, "connection_time")
-                        and hasattr(child, "set_text")
-                    ):
-                        import datetime
-
-                        try:
-                            dt = datetime.datetime.fromtimestamp(obj.connection_time)
-                            child.set_text(dt.strftime("%H:%M:%S"))
-                        except Exception as e:
-                            logger.error(
-                                f"Error formatting connection time: {e}",
-                                extra={"class_name": self.__class__.__name__},
-                            )
-                elif property_name in [
-                    "bytes_uploaded",
-                    "upload_rate",
-                    "requests_received",
-                    "pieces_sent",
-                ]:
-                    # Format bytes/rates/counts with additional checks
-                    if (
-                        obj is not None
-                        and child is not None
-                        and hasattr(obj, property_name)
-                        and hasattr(child, "set_text")
-                    ):
-                        try:
-                            value = getattr(obj, property_name)
-                            if property_name == "bytes_uploaded":
-                                child.set_text(self.format_bytes(value))
-                            elif property_name == "upload_rate":
-                                child.set_text(f"{value:.1f} B/s")
-                            elif property_name in ["requests_received", "pieces_sent"]:
-                                child.set_text(str(value))
-                        except Exception as e:
-                            logger.error(
-                                f"Error formatting {property_name}: {e}",
-                                extra={"class_name": self.__class__.__name__},
-                            )
-                elif property_name == "status":
-                    # Format status with visual indicators
-                    if (
-                        obj is not None
-                        and child is not None
-                        and hasattr(child, "set_text")
-                        and hasattr(child, "add_css_class")
-                    ):
-                        try:
-                            status = getattr(obj, property_name, "unknown")
-                            status_icons = {
-                                "connecting": "🔌",
-                                "connected": "✅",
-                                "failed": "❌",
-                                "disconnected": "🔴",
-                            }
-                            icon = status_icons.get(status, "❓")
-                            child.set_text(f"{icon} {status.title()}")
-
-                            # Set color based on status
-                            if status == "failed":
-                                child.add_css_class("error")
-                            elif status == "connected":
-                                child.add_css_class("success")
-                        except Exception as e:
-                            logger.error(
-                                f"Error formatting status: {e}",
-                                extra={"class_name": self.__class__.__name__},
-                            )
-                elif property_name in ["address", "client"]:
-                    # Direct text setting for address and client fields
-                    if obj is not None and child is not None and hasattr(child, "set_text"):
-                        try:
-                            value = getattr(obj, property_name, "")
-                            if property_name == "address" and hasattr(obj, "port"):
-                                # Combine address and port for display
-                                port = getattr(obj, "port", 0)
-                                if value and port:
-                                    child.set_text(f"{value}:{port}")
-                                elif value:
-                                    child.set_text(value)
-                                else:
-                                    child.set_text("")
-                            else:
-                                child.set_text(str(value) if value else "")
-                        except Exception as e:
-                            logger.error(
-                                f"Error formatting {property_name}: {e}",
-                                extra={"class_name": self.__class__.__name__},
-                            )
-                elif property_name == "failure_reason":
-                    # Only show failure reason if status is failed
-                    if obj is not None and child is not None and hasattr(child, "set_text"):
-                        try:
-                            status = getattr(obj, "status", "")
-                            if status == "failed":
-                                reason = getattr(obj, property_name, "")
-                                child.set_text(reason if reason else "Unknown error")
-                            else:
-                                child.set_text("")
-                        except Exception as e:
-                            logger.error(
-                                f"Error formatting failure reason: {e}",
-                                extra={"class_name": self.__class__.__name__},
-                            )
-                else:
-                    # Default property binding with additional checks
-                    if (
-                        obj is not None
-                        and child is not None
-                        and hasattr(obj, property_name)
-                        and hasattr(child, "label")
-                        and hasattr(obj, "bind_property")
-                    ):
-                        try:
-                            binding = obj.bind_property(
-                                property_name,
-                                child,
-                                "label",
-                                GObject.BindingFlags.SYNC_CREATE,
-                                Component.to_str,
-                            )
-                            self.track_binding(binding)
-                        except Exception as e:
-                            logger.error(
-                                f"Error binding default property {property_name}: {e}",
-                                extra={"class_name": self.__class__.__name__},
-                            )
-            except Exception as e:
-                logger.error(
-                    f"Error binding cell {property_name}: {e}",
-                    extra={"class_name": self.__class__.__name__},
-                )
-
-        GLib.idle_add(bind_when_idle)
-
-    def format_bytes(self, bytes_value: Any) -> Any:
-        """Format bytes in human readable format using configurable thresholds"""
-        if bytes_value < self.kb_threshold:
-            return f"{bytes_value} B"
-        elif bytes_value < self.mb_threshold:
-            return f"{bytes_value / self.kb_threshold:.1f} KB"
-        elif bytes_value < self.gb_threshold:
-            return f"{bytes_value / self.mb_threshold:.1f} MB"
-        else:
-            return f"{bytes_value / self.gb_threshold:.1f} GB"
-
     def on_filter_toggled(self, checkbox: Any) -> None:
         """Handle filter checkbox toggle"""
         logger.trace(
@@ -449,7 +224,7 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
         """Handle model selection change"""
         self.selected_torrent = torrent
         logger.trace(
-            f"Incoming connections selection changed: " f"{torrent.id if torrent else 'None'}",
+            f"Incoming connections selection changed: {torrent.id if torrent else 'None'}",
             extra={"class_name": self.__class__.__name__},
         )
         self.apply_filter()
@@ -562,13 +337,14 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
             if connection_key in self.all_connections:
                 import time
 
-                display_start = self.connection_display_timers.get(connection_key, time.time())  # type: ignore[attr-defined]  # noqa: E501
+                display_timers = self.connection_display_timers  # type: ignore[attr-defined]
+                display_start = display_timers.get(connection_key, time.time())
                 elapsed = time.time() - display_start
 
                 # Only remove if minimum display time has passed
                 if elapsed >= self.min_display_time:  # type: ignore[attr-defined]
                     logger.trace(
-                        f"Auto-removing connection after {elapsed:.1f}s display: " f"{connection_key}",
+                        f"Auto-removing connection after {elapsed:.1f}s display: {connection_key}",
                         extra={"class_name": self.__class__.__name__},
                     )
                     self.remove_incoming_connection_by_key(connection_key)
@@ -582,7 +358,8 @@ class IncomingConnectionsTab(BaseTorrentTab, ColumnTranslationMixin):
             return False  # Don't repeat the timer  # type: ignore
 
         # Schedule initial check after minimum display time
-        timer_id = GLib.timeout_add_seconds(int(self.min_display_time), remove_after_display_time)  # type: ignore[attr-defined]  # noqa: E501
+        min_display = int(self.min_display_time)  # type: ignore[attr-defined]
+        timer_id = GLib.timeout_add_seconds(min_display, remove_after_display_time)
         self.removal_timers[connection_key] = timer_id  # type: ignore[attr-defined]
 
     def remove_incoming_connection_by_key(self, connection_key: Any) -> Any:
