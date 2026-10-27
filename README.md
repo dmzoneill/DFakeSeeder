@@ -1,12 +1,12 @@
-<p align="center">
-  <img src=".github/logo.png" alt="DFakeSeeder logo" width="128" />
-</p>
-
 <!-- markdownlint-disable MD041 -->
 
 ![DFakeSeeder screenshot](https://github.com/dmzoneill/dFakeSeeder/blob/main/d_fake_seeder/components/images/dfakeseeder.png)
 
 # D' Fake Seeder
+
+<p align="center">
+  <img src=".github/logo.png" alt="DFakeSeeder logo" width="128" />
+</p>
 
 [![CI/CD](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/main.yml/badge.svg)](https://github.com/dmzoneill/DFakeSeeder/actions/workflows/main.yml)
 [![PyPI](https://img.shields.io/pypi/v/d-fake-seeder)](https://pypi.org/project/d-fake-seeder/)
