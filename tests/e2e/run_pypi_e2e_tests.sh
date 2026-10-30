@@ -11,13 +11,13 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Determine container engine
-if command -v podman &> /dev/null; then
-    CONTAINER_ENGINE="podman"
-elif command -v docker &> /dev/null; then
-    CONTAINER_ENGINE="docker"
+if command -v podman &>/dev/null; then
+	CONTAINER_ENGINE="podman"
+elif command -v docker &>/dev/null; then
+	CONTAINER_ENGINE="docker"
 else
-    echo -e "${RED}[ERROR]${NC} Neither podman nor docker found"
-    exit 1
+	echo -e "${RED}[ERROR]${NC} Neither podman nor docker found"
+	exit 1
 fi
 
 # Configuration
@@ -27,87 +27,87 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 DIST_DIR="$PROJECT_ROOT/dist"
 
 log_info() {
-    echo -e "${GREEN}[INFO]${NC} $1"
+	echo -e "${GREEN}[INFO]${NC} $1"
 }
 
 log_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+	echo -e "${RED}[ERROR]${NC} $1"
 }
 
 log_section() {
-    echo ""
-    echo -e "${BLUE}========================================${NC}"
-    echo -e "${BLUE}$1${NC}"
-    echo -e "${BLUE}========================================${NC}"
-    echo ""
+	echo ""
+	echo -e "${BLUE}========================================${NC}"
+	echo -e "${BLUE}$1${NC}"
+	echo -e "${BLUE}========================================${NC}"
+	echo ""
 }
 
 # Build Python package
 build_package() {
-    log_section "Step 1: Building Python Package"
+	log_section "Step 1: Building Python Package"
 
-    cd "$PROJECT_ROOT"
+	cd "$PROJECT_ROOT"
 
-    # Clean previous builds
-    rm -rf dist/ build/ ./*.egg-info
+	# Clean previous builds
+	rm -rf dist/ build/ ./*.egg-info
 
-    log_info "Building wheel and sdist..."
-    python3 setup.py sdist bdist_wheel
+	log_info "Building wheel and sdist..."
+	python3 setup.py sdist bdist_wheel
 
-    if [ -d "$DIST_DIR" ] && [ "$(ls -A "$DIST_DIR"/*.whl 2>/dev/null)" ]; then
-        log_info "✓ Package built successfully"
-        ls -lh "$DIST_DIR"
-    else
-        log_error "✗ Package build failed"
-        exit 1
-    fi
+	if [[ -d "$DIST_DIR" ]] && [[ "$(ls -A "$DIST_DIR"/*.whl 2>/dev/null)" ]]; then
+		log_info "✓ Package built successfully"
+		ls -lh "$DIST_DIR"
+	else
+		log_error "✗ Package build failed"
+		exit 1
+	fi
 }
 
 # Build test image if needed
 build_test_image() {
-    log_section "Step 2: Checking Test Container Image"
+	log_section "Step 2: Checking Test Container Image"
 
-    cd "$SCRIPT_DIR"
+	cd "$SCRIPT_DIR"
 
-    # Check if image exists
-    if $CONTAINER_ENGINE images | grep -q "$TEST_IMAGE"; then
-        log_info "Test image exists: $TEST_IMAGE"
-    else
-        log_info "Building test image..."
-        # For docker, use buildx plugin directly (docker CLI is broken on this system)
-        # For podman, use build directly
-        if [ "$CONTAINER_ENGINE" = "docker" ]; then
-            if /usr/libexec/docker/cli-plugins/docker-buildx build -t "$TEST_IMAGE" -f Dockerfile.fedora .; then
-                log_info "✓ Test image built successfully"
-            else
-                log_error "✗ Failed to build test image"
-                exit 1
-            fi
-        else
-            if $CONTAINER_ENGINE build -t "$TEST_IMAGE" -f Dockerfile.fedora .; then
-                log_info "✓ Test image built successfully"
-            else
-                log_error "✗ Failed to build test image"
-                exit 1
-            fi
-        fi
-    fi
+	# Check if image exists
+	if $CONTAINER_ENGINE images | grep -q "$TEST_IMAGE"; then
+		log_info "Test image exists: $TEST_IMAGE"
+	else
+		log_info "Building test image..."
+		# For docker, use buildx plugin directly (docker CLI is broken on this system)
+		# For podman, use build directly
+		if [[ "$CONTAINER_ENGINE" = "docker" ]]; then
+			if /usr/libexec/docker/cli-plugins/docker-buildx build -t "$TEST_IMAGE" -f Dockerfile.fedora .; then
+				log_info "✓ Test image built successfully"
+			else
+				log_error "✗ Failed to build test image"
+				exit 1
+			fi
+		else
+			if $CONTAINER_ENGINE build -t "$TEST_IMAGE" -f Dockerfile.fedora .; then
+				log_info "✓ Test image built successfully"
+			else
+				log_error "✗ Failed to build test image"
+				exit 1
+			fi
+		fi
+	fi
 }
 
 # Run installation tests
 run_installation_tests() {
-    log_section "Step 3: Running Installation Tests"
+	log_section "Step 3: Running Installation Tests"
 
-    log_info "Installing package from wheel in container..."
+	log_info "Installing package from wheel in container..."
 
-    # Find the wheel file
-    WHEEL_FILE=$(find "$DIST_DIR" -name "*.whl" -type f | head -1)
-    WHEEL_NAME=$(basename "$WHEEL_FILE")
+	# Find the wheel file
+	WHEEL_FILE=$(find "$DIST_DIR" -name "*.whl" -type f | head -1)
+	WHEEL_NAME=$(basename "$WHEEL_FILE")
 
-    if $CONTAINER_ENGINE run --rm \
-        -v "$DIST_DIR:/packages:ro" \
-        "$TEST_IMAGE" \
-        bash -c "
+	if $CONTAINER_ENGINE run --rm \
+		-v "$DIST_DIR:/packages:ro" \
+		"$TEST_IMAGE" \
+		bash -c "
             set -e
             echo '=== Installing package ==='
             pip3 install --no-cache-dir /packages/$WHEEL_NAME
@@ -126,26 +126,26 @@ run_installation_tests() {
             echo '=== Testing imports ==='
             python3 -c 'import d_fake_seeder; print(\"✓ Package imports successfully\")'
         "; then
-        log_info "✓ Installation tests passed"
-    else
-        log_error "✗ Installation tests failed"
-        exit 1
-    fi
+		log_info "✓ Installation tests passed"
+	else
+		log_error "✗ Installation tests failed"
+		exit 1
+	fi
 }
 
 # Run application launch tests
 run_launch_tests() {
-    log_section "Step 4: Running Application Launch Tests"
+	log_section "Step 4: Running Application Launch Tests"
 
-    WHEEL_FILE=$(find "$DIST_DIR" -name "*.whl" -type f | head -1)
-    WHEEL_NAME=$(basename "$WHEEL_FILE")
+	WHEEL_FILE=$(find "$DIST_DIR" -name "*.whl" -type f | head -1)
+	WHEEL_NAME=$(basename "$WHEEL_FILE")
 
-    # Run the test script inside the container
-    if $CONTAINER_ENGINE run --rm \
-        -v "$DIST_DIR:/packages:ro" \
-        -v "$SCRIPT_DIR/test_pypi_install.sh:/test_pypi_install.sh:ro" \
-        "$TEST_IMAGE" \
-        bash -c "
+	# Run the test script inside the container
+	if $CONTAINER_ENGINE run --rm \
+		-v "$DIST_DIR:/packages:ro" \
+		-v "$SCRIPT_DIR/test_pypi_install.sh:/test_pypi_install.sh:ro" \
+		"$TEST_IMAGE" \
+		bash -c "
             set -e
             # Install the package
             pip3 install --no-cache-dir /packages/$WHEEL_NAME
@@ -153,24 +153,24 @@ run_launch_tests() {
             # Run the E2E test script
             bash /test_pypi_install.sh
         "; then
-        log_info "✓ Launch tests passed"
-    else
-        log_error "✗ Launch tests failed"
-        exit 1
-    fi
+		log_info "✓ Launch tests passed"
+	else
+		log_error "✗ Launch tests failed"
+		exit 1
+	fi
 }
 
 # Run uninstallation tests
 run_uninstall_tests() {
-    log_section "Step 5: Running Uninstallation Tests"
+	log_section "Step 5: Running Uninstallation Tests"
 
-    WHEEL_FILE=$(find "$DIST_DIR" -name "*.whl" -type f | head -1)
-    WHEEL_NAME=$(basename "$WHEEL_FILE")
+	WHEEL_FILE=$(find "$DIST_DIR" -name "*.whl" -type f | head -1)
+	WHEEL_NAME=$(basename "$WHEEL_FILE")
 
-    if $CONTAINER_ENGINE run --rm \
-        -v "$DIST_DIR:/packages:ro" \
-        "$TEST_IMAGE" \
-        bash -c "
+	if $CONTAINER_ENGINE run --rm \
+		-v "$DIST_DIR:/packages:ro" \
+		"$TEST_IMAGE" \
+		bash -c "
             set -e
             # Install the package
             pip3 install --no-cache-dir /packages/$WHEEL_NAME
@@ -192,18 +192,18 @@ run_uninstall_tests() {
                 exit 1
             fi
         "; then
-        log_info "✓ Uninstall tests passed"
-    else
-        log_error "✗ Uninstall tests failed"
-        exit 1
-    fi
+		log_info "✓ Uninstall tests passed"
+	else
+		log_error "✗ Uninstall tests failed"
+		exit 1
+	fi
 }
 
 # Generate test report
 generate_report() {
-    log_section "Generating Test Report"
+	log_section "Generating Test Report"
 
-    cat > "$DIST_DIR/pypi-e2e-test-report.txt" << EOF
+	cat >"$DIST_DIR/pypi-e2e-test-report.txt" <<EOF
 DFakeSeeder PyPI Package E2E Test Report
 ========================================
 Date: $(date)
@@ -220,31 +220,31 @@ Test Results:
 All tests completed successfully!
 EOF
 
-    log_info "Report saved to: $DIST_DIR/pypi-e2e-test-report.txt"
+	log_info "Report saved to: $DIST_DIR/pypi-e2e-test-report.txt"
 }
 
 # Main execution
 main() {
-    echo "=========================================="
-    echo "DFakeSeeder PyPI Package E2E Tests"
-    echo "=========================================="
-    echo ""
-    echo "Container Engine: $CONTAINER_ENGINE"
-    echo "Project Root: $PROJECT_ROOT"
-    echo ""
+	echo "=========================================="
+	echo "DFakeSeeder PyPI Package E2E Tests"
+	echo "=========================================="
+	echo ""
+	echo "Container Engine: $CONTAINER_ENGINE"
+	echo "Project Root: $PROJECT_ROOT"
+	echo ""
 
-    # Run test phases
-    build_package
-    build_test_image
-    run_installation_tests
-    run_launch_tests
-    run_uninstall_tests
-    generate_report
+	# Run test phases
+	build_package
+	build_test_image
+	run_installation_tests
+	run_launch_tests
+	run_uninstall_tests
+	generate_report
 
-    # Final summary
-    log_section "Final Summary"
-    log_info "✓✓✓ ALL PYPI E2E TESTS PASSED ✓✓✓"
-    log_info "Cleaning up..."
+	# Final summary
+	log_section "Final Summary"
+	log_info "✓✓✓ ALL PYPI E2E TESTS PASSED ✓✓✓"
+	log_info "Cleaning up..."
 }
 
 # Run main
