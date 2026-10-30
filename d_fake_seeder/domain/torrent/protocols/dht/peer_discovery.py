@@ -257,10 +257,12 @@ class PeerDiscovery:
         """Discover peers from DHT network"""
         # Prevent concurrent discoveries for same torrent
         if info_hash in self.active_discoveries:
-            try:
-                return await self.active_discoveries[info_hash]  # type: ignore[no-any-return]
-            except asyncio.CancelledError:
-                pass
+            existing = self.active_discoveries[info_hash]
+            # Wait without swallowing our own cancellation; if the other discovery
+            # was cancelled, fall through and start a fresh one.
+            await asyncio.wait([existing])
+            if not existing.cancelled():
+                return existing.result()  # type: ignore[no-any-return]
 
         # Create discovery task
         task = asyncio.create_task(self._perform_get_peers(info_hash, count))

@@ -34,6 +34,7 @@ class UTPManager:
         # Socket and connections
         self.socket = None
         self.running = False
+        self._background_tasks: "set[asyncio.Task[Any]]" = set()
         self.connections: Dict[int, UTPConnection] = {}  # connection_id -> UTPConnection
         self.next_connection_id = 1
 
@@ -79,7 +80,7 @@ class UTPManager:
             self.running = True
 
             # Start listening loop
-            asyncio.create_task(self._listen_loop())
+            self._spawn_background(self._listen_loop())
 
             logger.trace(
                 f"µTP manager started on port {self.port}",
@@ -93,6 +94,13 @@ class UTPManager:
                 extra={"class_name": self.__class__.__name__},
             )
             return False
+
+    def _spawn_background(self, coro: Any) -> "asyncio.Task[Any]":
+        """Start a background task and keep a reference so it is not garbage collected."""
+        task = asyncio.create_task(coro)
+        self._background_tasks.add(task)
+        task.add_done_callback(self._background_tasks.discard)
+        return task
 
     async def stop(self) -> Any:
         """Stop µTP manager"""
@@ -174,10 +182,10 @@ class UTPManager:
                 data, addr = await asyncio.get_running_loop().sock_recvfrom(self.socket, UTPConstants.MAX_PACKET_SIZE)  # type: ignore[attr-defined]  # noqa: E501
 
                 # Route to appropriate connection
-                asyncio.create_task(self._route_packet(data, addr))
+                self._spawn_background(self._route_packet(data, addr))
 
             except asyncio.CancelledError:
-                break
+                raise
             except Exception as e:
                 logger.error(
                     f"µTP listen error: {e}",

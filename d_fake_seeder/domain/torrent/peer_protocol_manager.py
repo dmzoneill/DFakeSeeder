@@ -310,6 +310,7 @@ class PeerProtocolManager:  # pylint: disable=too-many-instance-attributes
                 "🛑 PeerProtocolManager async loop cancelled",
                 extra={"class_name": self.__class__.__name__},
             )
+            raise
         finally:
             logger.trace(
                 "🛑 PeerProtocolManager loop stopped",

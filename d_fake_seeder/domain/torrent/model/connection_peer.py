@@ -57,7 +57,7 @@ class ConnectionPeer(GObject.Object):
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        if self.connection_time == 0.0:
+        if self.connection_time <= 0.0:
             self.connection_time = time.time()
 
     @property

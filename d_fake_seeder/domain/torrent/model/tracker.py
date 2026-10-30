@@ -76,7 +76,7 @@ class Tracker(GObject.Object):
 
         # Initialize timing
         current_time = time.time()
-        if self.get_property("last_announce") == 0.0:
+        if self.get_property("last_announce") <= 0.0:
             self.set_property("last_announce", current_time)
 
         # Performance tracking
