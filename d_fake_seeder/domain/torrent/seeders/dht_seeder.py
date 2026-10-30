@@ -34,6 +34,7 @@ class DHTSeeder(BaseSeeder):  # pylint: disable=too-many-instance-attributes
         self.info_hash = self._calculate_info_hash()
         self.announce_task = None
         self.last_announce_time = 0
+        self._background_tasks: "set[asyncio.Task[Any]]" = set()
 
         # DHT-specific configuration
         dht_config = getattr(self.settings, "protocols", {}).get("dht", {})
@@ -118,6 +119,13 @@ class DHTSeeder(BaseSeeder):  # pylint: disable=too-many-instance-attributes
             )
             return False
 
+    def _spawn_background(self, coro: Any) -> "asyncio.Task[Any]":
+        """Start a background task and keep a reference so it is not garbage collected."""
+        task = asyncio.create_task(coro)
+        self._background_tasks.add(task)
+        task.add_done_callback(self._background_tasks.discard)
+        return task
+
     async def stop(self) -> Any:
         """Stop DHT seeding"""
         logger.info("Stopping DHT seeder", extra={"class_name": self.__class__.__name__})
@@ -128,10 +136,8 @@ class DHTSeeder(BaseSeeder):  # pylint: disable=too-many-instance-attributes
         # Cancel announcement task
         if self.announce_task:
             self.announce_task.cancel()
-            try:
-                await self.announce_task
-            except asyncio.CancelledError:
-                pass
+            # Wait for the cancelled task to finish without swallowing our own cancellation.
+            await asyncio.wait([self.announce_task])
 
         # Stop DHT node
         if self.dht_node:
@@ -153,7 +159,7 @@ class DHTSeeder(BaseSeeder):  # pylint: disable=too-many-instance-attributes
                 await asyncio.sleep(self._get_check_interval())  # type: ignore[attr-defined]
 
             except asyncio.CancelledError:
-                break
+                raise
             except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.error(
                     f"DHT announce loop error: {e}",
@@ -279,7 +285,7 @@ class DHTSeeder(BaseSeeder):  # pylint: disable=too-many-instance-attributes
                 self.dht_enabled = value
                 if not value and self.active:
                     # Stop if DHT was disabled
-                    asyncio.create_task(self.stop())
+                    self._spawn_background(self.stop())
             elif key == "protocols.dht.announcement_interval":
                 # Apply jitter to new interval to prevent request storms
                 self.announce_interval = self._apply_announce_jitter(value)

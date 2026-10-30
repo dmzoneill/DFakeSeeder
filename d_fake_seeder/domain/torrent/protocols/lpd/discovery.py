@@ -160,18 +160,14 @@ class LocalPeerDiscovery:
         # Cancel tasks
         if self._listen_task:
             self._listen_task.cancel()
-            try:
-                await self._listen_task
-            except asyncio.CancelledError:
-                pass
+            # Wait for the cancelled task to finish without swallowing our own cancellation.
+            await asyncio.wait([self._listen_task])
             self._listen_task = None
 
         if self._announce_task:
             self._announce_task.cancel()
-            try:
-                await self._announce_task
-            except asyncio.CancelledError:
-                pass
+            # Wait for the cancelled task to finish without swallowing our own cancellation.
+            await asyncio.wait([self._announce_task])
             self._announce_task = None
 
         self._cleanup_socket()
@@ -265,7 +261,7 @@ class LocalPeerDiscovery:
             except asyncio.TimeoutError:
                 continue
             except asyncio.CancelledError:
-                break
+                raise
             except Exception as e:
                 if self.running:
                     logger.warning(

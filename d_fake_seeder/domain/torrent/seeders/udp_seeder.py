@@ -46,7 +46,7 @@ class UDPSeeder(BaseSeeder):
         uploaded: Any = 0,
         downloaded: Any = 0,
         left: Any = 0,
-    ) -> None:  # noqa: E501
+    ) -> bytes:  # noqa: E501
         """Build UDP announce packet for tracker."""
         info_hash = (info_hash + b"\x00" * 20)[:20]
         peer_id = (peer_id + b"\x00" * 20)[:20]
@@ -77,9 +77,9 @@ class UDPSeeder(BaseSeeder):
             -1,  # num_want (-1 = default)
             NetworkConstants.DEFAULT_PORT,
         )
-        return packet  # type: ignore[return-value]
+        return packet
 
-    def process_announce_response(self, response: Any) -> None:
+    def process_announce_response(self, response: Any) -> tuple[list[tuple[str, int]], int, int, int]:
         """Parse UDP announce response and extract peers."""
         peers = []
         _action, _transaction_id, interval, leechers, seeders = struct.unpack_from("!IIIII", response, offset=0)
@@ -89,11 +89,11 @@ class UDPSeeder(BaseSeeder):
             ip = socket.inet_ntoa(struct.pack("!I", ip))
             peers.append((ip, port))
             offset += UDPTrackerConstants.IPV4_WITH_PORT_LENGTH
-        return peers, interval, leechers, seeders  # type: ignore[return-value]
+        return peers, interval, leechers, seeders
 
     def handle_announce(  # pylint: disable=too-many-locals,too-many-statements
         self, packet_data: Any, timeout: Any, log_msg: Any
-    ) -> None:
+    ) -> bool:
         """Handle UDP announce request to tracker."""
         logger.trace(log_msg, extra={"class_name": self.__class__.__name__})
 
@@ -136,7 +136,7 @@ class UDPSeeder(BaseSeeder):
                     extra={"class_name": self.__class__.__name__},
                 )
 
-                announce_packet = self.build_announce_packet(  # type: ignore[func-returns-value]
+                announce_packet = self.build_announce_packet(
                     connection_id,
                     transaction_id,
                     self.torrent.file_hash,
@@ -161,7 +161,7 @@ class UDPSeeder(BaseSeeder):
                         extra={"class_name": self.__class__.__name__},
                     )
 
-                    result = self.process_announce_response(response)  # type: ignore[func-returns-value]
+                    result = self.process_announce_response(response)
                     peers, interval, leechers, seeders = result
 
                     # Calculate response time and update tracker model
@@ -228,7 +228,7 @@ class UDPSeeder(BaseSeeder):
                             event=event,
                         )
 
-                    return True  # type: ignore[return-value]
+                    return True
                 except socket.timeout:
                     # Update tracker model with timeout failure
                     request_end_time = time.time()
@@ -245,7 +245,7 @@ class UDPSeeder(BaseSeeder):
                         f"🔄 Switched to backup tracker: " f"{self.tracker_hostname}:{self.tracker_port}",
                         extra={"class_name": self.__class__.__name__},
                     )
-                    return False  # type: ignore[return-value]
+                    return False
 
         except Exception as e:  # pylint: disable=broad-exception-caught
             # Update tracker model with failure
@@ -267,7 +267,7 @@ class UDPSeeder(BaseSeeder):
                 extra={"class_name": self.__class__.__name__},
             )
             self.handle_exception(e, f"Seeder unknown error in {log_msg}")
-            return False  # type: ignore[return-value]
+            return False
 
     def load_peers(self) -> bool:
         """Load peers from UDP tracker."""
@@ -293,7 +293,7 @@ class UDPSeeder(BaseSeeder):
 
         try:
             # Send initial announce with download_left = total_size
-            result = self.handle_announce(  # type: ignore[func-returns-value]
+            result = self.handle_announce(
                 packet_data=(
                     0,
                     0,
@@ -353,7 +353,7 @@ class UDPSeeder(BaseSeeder):
             downloaded_bytes = max_reasonable_bytes
 
         packet_data = (uploaded_bytes, downloaded_bytes, download_left)
-        result = self.handle_announce(  # type: ignore[func-returns-value]
+        result = self.handle_announce(
             packet_data=packet_data,
             timeout=getattr(self.settings, "seeders", {}).get("udp_upload_timeout_seconds", 4),
             log_msg="Seeder upload",

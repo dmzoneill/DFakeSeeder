@@ -313,11 +313,8 @@ def validate_gtk_environment(gtk_version: str) -> bool:
         gi.require_version("Gtk", f"{gtk_version}.0")
         from gi.repository import Gtk
 
-        # Try to create a simple widget to ensure GTK is working
-        if gtk_version == "3":
-            widget = Gtk.Label()
-        else:  # GTK4
-            widget = Gtk.Label()
+        # Try to create a simple widget to ensure GTK is working (same API on GTK3 and GTK4)
+        widget = Gtk.Label()
 
         return widget is not None
 

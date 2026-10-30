@@ -133,7 +133,7 @@ class Torrents(Component, ColumnTranslationMixin):
         # === CONTEXT-AWARE ACTIONS ===
         if progress < 1.0:
             menu.append(self._("Force Complete"), "app.force_complete")
-        if progress == 0.0:
+        if progress <= 0.0:
             menu.append(self._("Set Random Progress"), "app.set_random_progress")
 
         # === COPY SUBMENU ===

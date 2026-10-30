@@ -53,6 +53,7 @@ class DHTNode:
         # Network state
         self.socket = None
         self.running = False
+        self._background_tasks: "set[asyncio.Task[Any]]" = set()
         self.bootstrap_nodes = [
             ("router.bittorrent.com", 6881),
             ("dht.transmissionbt.com", 6881),
@@ -110,9 +111,9 @@ class DHTNode:
             self.peer_discovery = PeerDiscovery(self.node_id, self.routing_table, self.socket)  # type: ignore[assignment]  # noqa: E501
 
             # Start background tasks
-            asyncio.create_task(self._listen_loop())
-            asyncio.create_task(self._bootstrap())
-            asyncio.create_task(self._maintenance_loop())
+            self._spawn_background(self._listen_loop())
+            self._spawn_background(self._bootstrap())
+            self._spawn_background(self._maintenance_loop())
 
             logger.trace(
                 "DHT node started successfully",
@@ -125,6 +126,13 @@ class DHTNode:
                 extra={"class_name": self.__class__.__name__},
             )
             self.running = False
+
+    def _spawn_background(self, coro: Any) -> "asyncio.Task[Any]":
+        """Start a background task and keep a reference so it is not garbage collected."""
+        task = asyncio.create_task(coro)
+        self._background_tasks.add(task)
+        task.add_done_callback(self._background_tasks.discard)
+        return task
 
     async def stop(self) -> Any:
         """Stop the DHT node"""
@@ -227,10 +235,10 @@ class DHTNode:
                 data, addr = await asyncio.get_running_loop().sock_recvfrom(self.socket, 1024)  # type: ignore[attr-defined]  # noqa: E501
 
                 # Process message in background
-                asyncio.create_task(self._handle_message(data, addr))
+                self._spawn_background(self._handle_message(data, addr))
 
             except asyncio.CancelledError:
-                break
+                raise
             except Exception as e:
                 logger.error(
                     f"DHT listen error: {e}",
@@ -358,7 +366,7 @@ class DHTNode:
                 await asyncio.sleep(self.announcement_interval)
 
             except asyncio.CancelledError:
-                break
+                raise
             except Exception as e:
                 logger.error(
                     f"DHT maintenance error: {e}",

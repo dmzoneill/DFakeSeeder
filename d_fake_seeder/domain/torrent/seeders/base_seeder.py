@@ -81,7 +81,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         self.peer_data: Dict[str, Any] = {}  # Store detailed peer information
 
         # Load client speed profiles from settings
-        self.client_speed_profiles = self._load_client_speed_profiles()  # type: ignore[func-returns-value]
+        self.client_speed_profiles = self._load_client_speed_profiles()
 
         self.tracker_url = self.torrent.announce
         self.parsed_url = urlparse(self.tracker_url)
@@ -93,7 +93,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
         self.tracker_hostname = self.parsed_url.hostname
         self.tracker_port = self.parsed_url.port
 
-    def _load_client_speed_profiles(self) -> None:
+    def _load_client_speed_profiles(self) -> Dict[str, Dict[str, Any]]:
         """Load client speed profiles from settings with conversion to bytes/s"""
         # Get client speed profiles from settings
         profiles_config = getattr(self.settings, "client_speed_profiles", {})
@@ -112,7 +112,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
                 "seed_ratio": profile.get("seed_ratio", 0.25),  # Keep as-is
             }
 
-        return converted_profiles  # type: ignore[return-value]
+        return converted_profiles
 
     def _apply_announce_jitter(self, interval: float) -> float:
         """
@@ -589,7 +589,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
                     )
 
                     # Create comprehensive peer data
-                    peer_data = self.create_peer_data(ip, port, peer_id.encode())  # type: ignore[func-returns-value]
+                    peer_data = self.create_peer_data(ip, port, peer_id.encode())
                     self.peer_data[peer_address] = peer_data
                     BaseSeeder.peer_clients[peer_address] = peer_data["client"]
             else:
@@ -612,7 +612,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
                         )
 
                         # Create comprehensive peer data
-                        peer_data = self.create_peer_data(ip, port)  # type: ignore[func-returns-value]
+                        peer_data = self.create_peer_data(ip, port)
                         self.peer_data[peer_address] = peer_data
                         BaseSeeder.peer_clients[peer_address] = peer_data["client"]
 
@@ -637,7 +637,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
                         )
 
                         # Create comprehensive peer data (no peer_id available in UDP)
-                        peer_data = self.create_peer_data(ip, port)  # type: ignore[func-returns-value]
+                        peer_data = self.create_peer_data(ip, port)
                         self.peer_data[peer_address] = peer_data
                         BaseSeeder.peer_clients[peer_address] = peer_data["client"]
 
@@ -689,7 +689,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
                                 )
 
                             # Create comprehensive peer data with peer ID
-                            peer_data = self.create_peer_data(ip, port, peer_id)  # type: ignore[func-returns-value]
+                            peer_data = self.create_peer_data(ip, port, peer_id)
                             self.peer_data[peer_address] = peer_data
                             BaseSeeder.peer_clients[peer_address] = peer_data["client"]
                 else:
@@ -809,7 +809,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
 
     def create_peer_data(  # pylint: disable=too-many-locals,too-many-branches
         self, ip: Any, port: Any, peer_id: Any = None, client_name: Any = None
-    ) -> None:
+    ) -> Dict[str, Any]:
         """Create comprehensive peer data structure"""
         address = f"{ip}:{port}"
 
@@ -911,7 +911,7 @@ class BaseSeeder:  # pylint: disable=too-many-instance-attributes
             ),
         }
 
-        return peer_data  # type: ignore[return-value]
+        return peer_data
 
     # TODO: UNUSED METHOD - Consider removing or integrating into active code path  # pylint: disable=fixme
     # def update_peer_speeds(self):
