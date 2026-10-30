@@ -5,7 +5,7 @@
 
 # Function to show usage
 show_usage() {
-    cat << EOF
+	cat <<EOF
 D' Fake Seeder - BitTorrent seeding simulator
 
 Usage:
@@ -39,9 +39,9 @@ LOG_LEVEL="${LOG_LEVEL:-INFO}"
 PIPENV="${PIPENV:-$(command -v pipenv || echo /usr/bin/pipenv)}"
 
 # Check if installation exists
-if [ ! -d "$DFS_PATH" ]; then
-    echo "Error: DFakeSeeder installation not found at $DFS_PATH" >&2
-    exit 1
+if [[ ! -d "$DFS_PATH" ]]; then
+	echo "Error: DFakeSeeder installation not found at $DFS_PATH" >&2
+	exit 1
 fi
 
 # Parse command line arguments
@@ -49,28 +49,28 @@ WITH_TRAY=false
 TRAY_ONLY=false
 
 for arg in "$@"; do
-    case "$arg" in
-        --with-tray)
-            WITH_TRAY=true
-            ;;
-        --tray-only)
-            TRAY_ONLY=true
-            WITH_TRAY=true
-            ;;
-        --help|-h)
-            show_usage
-            exit 0
-            ;;
-        --version|-v)
-            cd "$DFS_PATH" || exit 1
-            exec "$PYTHON" -c "from d_fake_seeder.domain.app_settings import AppSettings; s = AppSettings(); print(f\"D' Fake Seeder v{s.get('version', '1.0')}\")"
-            ;;
-        *)
-            echo "Unknown option: $arg" >&2
-            echo "Use --help for usage information" >&2
-            exit 1
-            ;;
-    esac
+	case "$arg" in
+	--with-tray)
+		WITH_TRAY=true
+		;;
+	--tray-only)
+		TRAY_ONLY=true
+		WITH_TRAY=true
+		;;
+	--help | -h)
+		show_usage
+		exit 0
+		;;
+	--version | -v)
+		cd "$DFS_PATH" || exit 1
+		exec "$PYTHON" -c "from d_fake_seeder.domain.app_settings import AppSettings; s = AppSettings(); print(f\"D' Fake Seeder v{s.get('version', '1.0')}\")"
+		;;
+	*)
+		echo "Unknown option: $arg" >&2
+		echo "Use --help for usage information" >&2
+		exit 1
+		;;
+	esac
 done
 
 # Change to application directory
@@ -83,23 +83,23 @@ PYTHON="${PYTHON:-python3}"
 # Launch application based on options
 # DFS_PATH needs to point to the directory containing 'components' folder
 # For RPM installations, this is the d_fake_seeder directory
-if [ "$TRAY_ONLY" = true ]; then
-    # Launch only tray application
-    exec env LOG_LEVEL="$LOG_LEVEL" DFS_PATH="$DFS_APP_PATH" PYTHONPATH="$DFS_PATH" \
-        "$PYTHON" dfakeseeder_tray.py
-elif [ "$WITH_TRAY" = true ]; then
-    # Launch main app in background, then tray
-    env LOG_LEVEL="$LOG_LEVEL" DFS_PATH="$DFS_APP_PATH" PYTHONPATH="$DFS_PATH" \
-        "$PYTHON" dfakeseeder.py &
+if [[ "$TRAY_ONLY" = true ]]; then
+	# Launch only tray application
+	exec env LOG_LEVEL="$LOG_LEVEL" DFS_PATH="$DFS_APP_PATH" PYTHONPATH="$DFS_PATH" \
+		"$PYTHON" dfakeseeder_tray.py
+elif [[ "$WITH_TRAY" = true ]]; then
+	# Launch main app in background, then tray
+	env LOG_LEVEL="$LOG_LEVEL" DFS_PATH="$DFS_APP_PATH" PYTHONPATH="$DFS_PATH" \
+		"$PYTHON" dfakeseeder.py &
 
-    # Wait a moment for main app to initialize
-    sleep 2
+	# Wait a moment for main app to initialize
+	sleep 2
 
-    # Launch tray application
-    exec env LOG_LEVEL="$LOG_LEVEL" DFS_PATH="$DFS_APP_PATH" PYTHONPATH="$DFS_PATH" \
-        "$PYTHON" dfakeseeder_tray.py
+	# Launch tray application
+	exec env LOG_LEVEL="$LOG_LEVEL" DFS_PATH="$DFS_APP_PATH" PYTHONPATH="$DFS_PATH" \
+		"$PYTHON" dfakeseeder_tray.py
 else
-    # Launch main application only
-    exec env LOG_LEVEL="$LOG_LEVEL" DFS_PATH="$DFS_APP_PATH" PYTHONPATH="$DFS_PATH" \
-        "$PYTHON" dfakeseeder.py
+	# Launch main application only
+	exec env LOG_LEVEL="$LOG_LEVEL" DFS_PATH="$DFS_APP_PATH" PYTHONPATH="$DFS_PATH" \
+		"$PYTHON" dfakeseeder.py
 fi
