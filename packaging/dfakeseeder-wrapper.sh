@@ -39,7 +39,7 @@ LOG_LEVEL="${LOG_LEVEL:-INFO}"
 PIPENV="${PIPENV:-$(command -v pipenv || echo /usr/bin/pipenv)}"
 
 # Check if installation exists
-if [ ! -d "$DFS_PATH" ]; then
+if [[ ! -d "$DFS_PATH" ]]; then
     echo "Error: DFakeSeeder installation not found at $DFS_PATH" >&2
     exit 1
 fi
@@ -83,11 +83,11 @@ PYTHON="${PYTHON:-python3}"
 # Launch application based on options
 # DFS_PATH needs to point to the directory containing 'components' folder
 # For RPM installations, this is the d_fake_seeder directory
-if [ "$TRAY_ONLY" = true ]; then
+if [[ "$TRAY_ONLY" = true ]]; then
     # Launch only tray application
     exec env LOG_LEVEL="$LOG_LEVEL" DFS_PATH="$DFS_APP_PATH" PYTHONPATH="$DFS_PATH" \
         "$PYTHON" dfakeseeder_tray.py
-elif [ "$WITH_TRAY" = true ]; then
+elif [[ "$WITH_TRAY" = true ]]; then
     # Launch main app in background, then tray
     env LOG_LEVEL="$LOG_LEVEL" DFS_PATH="$DFS_APP_PATH" PYTHONPATH="$DFS_PATH" \
         "$PYTHON" dfakeseeder.py &

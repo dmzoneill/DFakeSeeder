@@ -61,7 +61,7 @@ cleanup() {
     $CONTAINER_ENGINE ps -a | grep dfakeseeder-e2e | awk '{print $1}' | xargs -r "$CONTAINER_ENGINE" rm -f || true
 
     # Remove test artifacts if requested
-    if [ "${CLEANUP_ARTIFACTS:-false}" = "true" ]; then
+    if [[ "${CLEANUP_ARTIFACTS:-false}" = "true" ]]; then
         log_info "Removing test artifacts..."
         rm -rf "$PROJECT_ROOT/rpmbuild/test-artifacts" || true
     fi
@@ -87,7 +87,7 @@ build_rpm() {
     # Find RPM file
     RPM_FILE=$(find "$PROJECT_ROOT/rpmbuild/RPMS" -name "dfakeseeder-*.rpm" 2>/dev/null | head -1)
 
-    if [ -z "$RPM_FILE" ]; then
+    if [[ -z "$RPM_FILE" ]]; then
         log_error "No RPM file found after build"
         exit 1
     fi
@@ -104,7 +104,7 @@ build_test_image() {
 
     # For docker, use buildx plugin directly (docker CLI is broken on this system)
     # For podman, use build directly
-    if [ "$CONTAINER_ENGINE" = "docker" ]; then
+    if [[ "$CONTAINER_ENGINE" = "docker" ]]; then
         if /usr/libexec/docker/cli-plugins/docker-buildx build -t "$TEST_IMAGE" -f Dockerfile.fedora .; then
             log_info "✓ Test image built successfully"
         else
@@ -139,7 +139,7 @@ run_installation_tests() {
 
     local exit_code=$?
 
-    if [ $exit_code -eq 0 ]; then
+    if [[ $exit_code -eq 0 ]]; then
         log_info "✓ Installation tests passed"
         return 0
     else
@@ -177,7 +177,7 @@ run_launch_tests() {
 
     local exit_code=$?
 
-    if [ $exit_code -eq 0 ]; then
+    if [[ $exit_code -eq 0 ]]; then
         log_info "✓ Launch tests passed"
         return 0
     else
@@ -220,7 +220,7 @@ run_uninstall_tests() {
 
     local exit_code=$?
 
-    if [ $exit_code -eq 0 ]; then
+    if [[ $exit_code -eq 0 ]]; then
         log_info "✓ Uninstall tests passed"
         return 0
     else
@@ -247,19 +247,19 @@ Test Results:
 -------------
 EOF
 
-    if [ "${INSTALL_TESTS_PASSED:-false}" = "true" ]; then
+    if [[ "${INSTALL_TESTS_PASSED:-false}" = "true" ]]; then
         echo "✓ Installation Tests: PASSED" >> "$report_file"
     else
         echo "✗ Installation Tests: FAILED" >> "$report_file"
     fi
 
-    if [ "${LAUNCH_TESTS_PASSED:-false}" = "true" ]; then
+    if [[ "${LAUNCH_TESTS_PASSED:-false}" = "true" ]]; then
         echo "✓ Launch Tests: PASSED" >> "$report_file"
     else
         echo "✗ Launch Tests: FAILED" >> "$report_file"
     fi
 
-    if [ "${UNINSTALL_TESTS_PASSED:-false}" = "true" ]; then
+    if [[ "${UNINSTALL_TESTS_PASSED:-false}" = "true" ]]; then
         echo "✓ Uninstall Tests: PASSED" >> "$report_file"
     else
         echo "✗ Uninstall Tests: FAILED" >> "$report_file"
@@ -284,7 +284,7 @@ main() {
     SKIP_IMAGE=false
     TESTS_TO_RUN="all"
 
-    while [ $# -gt 0 ]; do
+    while [[ $# -gt 0 ]]; do
         case "$1" in
             --skip-build)
                 SKIP_BUILD=true
@@ -311,19 +311,19 @@ main() {
     done
 
     # Build RPM if not skipped
-    if [ "$SKIP_BUILD" = "false" ]; then
+    if [[ "$SKIP_BUILD" = "false" ]]; then
         build_rpm
     else
         log_warning "Skipping RPM build"
         RPM_FILE=$(find "$PROJECT_ROOT/rpmbuild/RPMS" -name "dfakeseeder-*.rpm" 2>/dev/null | head -1)
-        if [ -z "$RPM_FILE" ]; then
+        if [[ -z "$RPM_FILE" ]]; then
             log_error "No RPM file found and build skipped"
             exit 1
         fi
     fi
 
     # Build test image if not skipped
-    if [ "$SKIP_IMAGE" = "false" ]; then
+    if [[ "$SKIP_IMAGE" = "false" ]]; then
         build_test_image
     else
         log_warning "Skipping test image build"
@@ -334,19 +334,19 @@ main() {
     LAUNCH_TESTS_PASSED=false
     UNINSTALL_TESTS_PASSED=false
 
-    if [ "$TESTS_TO_RUN" = "all" ] || [ "$TESTS_TO_RUN" = "install" ]; then
+    if [[ "$TESTS_TO_RUN" = "all" ]] || [[ "$TESTS_TO_RUN" = "install" ]]; then
         if run_installation_tests; then
             INSTALL_TESTS_PASSED=true
         fi
     fi
 
-    if [ "$TESTS_TO_RUN" = "all" ] || [ "$TESTS_TO_RUN" = "launch" ]; then
+    if [[ "$TESTS_TO_RUN" = "all" ]] || [[ "$TESTS_TO_RUN" = "launch" ]]; then
         if run_launch_tests; then
             LAUNCH_TESTS_PASSED=true
         fi
     fi
 
-    if [ "$TESTS_TO_RUN" = "all" ] || [ "$TESTS_TO_RUN" = "uninstall" ]; then
+    if [[ "$TESTS_TO_RUN" = "all" ]] || [[ "$TESTS_TO_RUN" = "uninstall" ]]; then
         if run_uninstall_tests; then
             UNINSTALL_TESTS_PASSED=true
         fi
@@ -360,19 +360,19 @@ main() {
 
     local all_passed=true
 
-    if [ "$TESTS_TO_RUN" = "all" ] || [ "$TESTS_TO_RUN" = "install" ]; then
-        [ "$INSTALL_TESTS_PASSED" = "true" ] || all_passed=false
+    if [[ "$TESTS_TO_RUN" = "all" ]] || [[ "$TESTS_TO_RUN" = "install" ]]; then
+        [[ "$INSTALL_TESTS_PASSED" = "true" ]] || all_passed=false
     fi
 
-    if [ "$TESTS_TO_RUN" = "all" ] || [ "$TESTS_TO_RUN" = "launch" ]; then
-        [ "$LAUNCH_TESTS_PASSED" = "true" ] || all_passed=false
+    if [[ "$TESTS_TO_RUN" = "all" ]] || [[ "$TESTS_TO_RUN" = "launch" ]]; then
+        [[ "$LAUNCH_TESTS_PASSED" = "true" ]] || all_passed=false
     fi
 
-    if [ "$TESTS_TO_RUN" = "all" ] || [ "$TESTS_TO_RUN" = "uninstall" ]; then
-        [ "$UNINSTALL_TESTS_PASSED" = "true" ] || all_passed=false
+    if [[ "$TESTS_TO_RUN" = "all" ]] || [[ "$TESTS_TO_RUN" = "uninstall" ]]; then
+        [[ "$UNINSTALL_TESTS_PASSED" = "true" ]] || all_passed=false
     fi
 
-    if [ "$all_passed" = "true" ]; then
+    if [[ "$all_passed" = "true" ]]; then
         log_info "✓✓✓ ALL E2E TESTS PASSED ✓✓✓"
         exit 0
     else
