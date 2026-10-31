@@ -8,6 +8,7 @@ The shared ``settings_module`` / ``make_settings_tab`` fixtures provide the
 mocked GTK import and tab builder.
 """
 
+import importlib
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -24,7 +25,8 @@ def _spin(value: int) -> Any:
 
 def test_inverted_ranges_report_errors(settings_module: Any, make_settings_tab: Any) -> None:
     """Inverted seeder-port and transaction-id ranges each raise an error."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.peer_protocol_tab")
         widgets = {
             "seeder_port_min": _spin(6889),
             "seeder_port_max": _spin(6881),
@@ -38,7 +40,8 @@ def test_inverted_ranges_report_errors(settings_module: Any, make_settings_tab: 
 
 def test_ordered_ranges_pass(settings_module: Any, make_settings_tab: Any) -> None:
     """Well-ordered ranges produce no validation errors."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.peer_protocol_tab")
         widgets = {
             "seeder_port_min": _spin(6881),
             "seeder_port_max": _spin(6889),
