@@ -312,3 +312,74 @@
     </object>
 </child>
 </template>
+
+<!-- Grid row: label in column 0, SpinButton in column 1 -->
+<template name="grid-spin">
+<child>
+    <object class="GtkLabel">
+        <property name="label" translatable="yes">{label}</property>
+        <property name="halign">start</property>
+        <property name="valign">center</property>
+        <layout>
+            <property name="column">0</property>
+            <property name="row">{row}</property>
+        </layout>
+    </object>
+</child>
+<child>
+    <object class="GtkSpinButton" id="{id}">
+        <property name="adjustment">
+            <object class="GtkAdjustment">
+                <property name="lower">{lower}</property>
+                <property name="upper">{upper}</property>
+                <property name="step-increment">{step}</property>
+                <property name="page-increment">{page}</property>
+                <property name="value">{value}</property>
+            </object>
+        </property>
+        <property name="tooltip-text" translatable="yes">{tooltip}</property>
+        <property name="numeric">True</property>
+        <property name="editable">True</property>
+        <layout>
+            <property name="column">1</property>
+            <property name="row">{row}</property>
+        </layout>
+    </object>
+</child>
+</template>
+
+<!-- Grid row: label in column 0, decimal SpinButton in column 1 -->
+<template name="grid-spin-decimal">
+<child>
+    <object class="GtkLabel">
+        <property name="label" translatable="yes">{label}</property>
+        <property name="halign">start</property>
+        <property name="valign">center</property>
+        <layout>
+            <property name="column">0</property>
+            <property name="row">{row}</property>
+        </layout>
+    </object>
+</child>
+<child>
+    <object class="GtkSpinButton" id="{id}">
+        <property name="adjustment">
+            <object class="GtkAdjustment">
+                <property name="lower">{lower}</property>
+                <property name="upper">{upper}</property>
+                <property name="step-increment">{step}</property>
+                <property name="page-increment">{page}</property>
+                <property name="value">{value}</property>
+            </object>
+        </property>
+        <property name="digits">{digits}</property>
+        <property name="tooltip-text" translatable="yes">{tooltip}</property>
+        <property name="numeric">True</property>
+        <property name="editable">True</property>
+        <layout>
+            <property name="column">1</property>
+            <property name="row">{row}</property>
+        </layout>
+    </object>
+</child>
+</template>

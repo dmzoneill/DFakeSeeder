@@ -5321,7 +5321,6 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.05</property>
-
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
@@ -5356,7 +5355,6 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.2</property>
-
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
@@ -5479,7 +5477,6 @@
                                             <property name="step-increment">0.1</property>
                                             <property name="page-increment">0.1</property>
                                             <property name="value">0.3</property>
-
                                         </object>
                                     </property>
                                     <property name="digits">1</property>
@@ -5514,7 +5511,6 @@
                                             <property name="step-increment">0.05</property>
                                             <property name="page-increment">0.1</property>
                                             <property name="value">0.25</property>
-
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
@@ -5582,7 +5578,6 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.15</property>
-
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
@@ -5617,7 +5612,6 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.1</property>
-
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
@@ -5740,7 +5734,6 @@
                                             <property name="step-increment">0.1</property>
                                             <property name="page-increment">0.1</property>
                                             <property name="value">0.5</property>
-
                                         </object>
                                     </property>
                                     <property name="digits">1</property>
@@ -5775,7 +5768,6 @@
                                             <property name="step-increment">0.05</property>
                                             <property name="page-increment">0.1</property>
                                             <property name="value">0.4</property>
-
                                         </object>
                                     </property>
                                     <property name="digits">1</property>
@@ -5843,7 +5835,6 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.3</property>
-
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
@@ -5878,7 +5869,6 @@
                                             <property name="step-increment">0.01</property>
                                             <property name="page-increment">0.05</property>
                                             <property name="value">0.05</property>
-
                                         </object>
                                     </property>
                                     <property name="digits">2</property>
@@ -5958,7 +5948,6 @@
                                                     <property name="step-increment">0.1</property>
                                                     <property name="page-increment">0.1</property>
                                                     <property name="value">0.5</property>
-
                                                 </object>
                                             </property>
                                             <property name="digits">1</property>
