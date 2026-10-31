@@ -30,25 +30,9 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable Tracker -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="tracker_enabled_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Enable the inbuilt BitTorrent tracker server</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable tracker server</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="tracker_enabled_switch"
+                                     tooltip="Enable the inbuilt BitTorrent tracker server"
+                                     label="Enable tracker server"/>
                         </object>
                     </child>
                 </object>
@@ -73,55 +57,13 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable HTTP -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="tracker_http_enabled_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Enable HTTP tracker protocol (BEP 3)</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable HTTP tracker</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="tracker_http_enabled_switch"
+                                     tooltip="Enable HTTP tracker protocol (BEP 3)" label="Enable HTTP tracker"/>
 
                             <!-- HTTP Port -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">HTTP Port</property>
-                                            <property name="halign">start</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="tracker_http_port_spin">
-                                            <property name="valign">center</property>
-                                            <property name="width-chars">6</property>
-                                            <property name="tooltip-text" translatable="yes">Port for HTTP tracker (default: 6969)</property>
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">1024</property>
-                                                    <property name="upper">65535</property>
-                                                    <property name="step-increment">1</property>
-                                                    <property name="page-increment">100</property>
-                                                    <property name="value">6969</property>
-                                                </object>
-                                            </property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-end" label="HTTP Port" id="tracker_http_port_spin" chars="6"
+                                     tooltip="Port for HTTP tracker (default: 6969)" lower="1024" upper="65535"
+                                     step="1" page="100" value="6969"/>
 
                             <!-- Bind Address -->
                             <child>
@@ -168,55 +110,13 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable UDP -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="tracker_udp_enabled_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Enable UDP tracker protocol (BEP 15)</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable UDP tracker</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="tracker_udp_enabled_switch"
+                                     tooltip="Enable UDP tracker protocol (BEP 15)" label="Enable UDP tracker"/>
 
                             <!-- UDP Port -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">UDP Port</property>
-                                            <property name="halign">start</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="tracker_udp_port_spin">
-                                            <property name="valign">center</property>
-                                            <property name="width-chars">6</property>
-                                            <property name="tooltip-text" translatable="yes">Port for UDP tracker (default: 6969)</property>
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">1024</property>
-                                                    <property name="upper">65535</property>
-                                                    <property name="step-increment">1</property>
-                                                    <property name="page-increment">100</property>
-                                                    <property name="value">6969</property>
-                                                </object>
-                                            </property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-end" label="UDP Port" id="tracker_udp_port_spin" chars="6"
+                                     tooltip="Port for UDP tracker (default: 6969)" lower="1024" upper="65535"
+                                     step="1" page="100" value="6969"/>
                         </object>
                     </child>
                 </object>
@@ -241,94 +141,22 @@
                             <property name="margin-start">12</property>
 
                             <!-- Announce Interval -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Announce Interval (seconds)</property>
-                                            <property name="halign">start</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="tracker_announce_interval_spin">
-                                            <property name="valign">center</property>
-                                            <property name="width-chars">6</property>
-                                            <property name="tooltip-text" translatable="yes">Time between client announces (default: 1800 = 30 minutes)</property>
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">60</property>
-                                                    <property name="upper">7200</property>
-                                                    <property name="step-increment">60</property>
-                                                    <property name="page-increment">300</property>
-                                                    <property name="value">1800</property>
-                                                </object>
-                                            </property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-end" label="Announce Interval (seconds)"
+                                     id="tracker_announce_interval_spin" chars="6"
+                                     tooltip="Time between client announces (default: 1800 = 30 minutes)" lower="60"
+                                     upper="7200" step="60" page="300" value="1800"/>
 
                             <!-- Peer Timeout Multiplier -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Peer Timeout Multiplier</property>
-                                            <property name="halign">start</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="tracker_peer_timeout_multiplier_spin">
-                                            <property name="valign">center</property>
-                                            <property name="width-chars">4</property>
-                                            <property name="tooltip-text" translatable="yes">Multiply announce interval for peer timeout (default: 3)</property>
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">2</property>
-                                                    <property name="upper">10</property>
-                                                    <property name="step-increment">1</property>
-                                                    <property name="page-increment">1</property>
-                                                    <property name="value">3</property>
-                                                </object>
-                                            </property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-end" label="Peer Timeout Multiplier"
+                                     id="tracker_peer_timeout_multiplier_spin" chars="4"
+                                     tooltip="Multiply announce interval for peer timeout (default: 3)" lower="2"
+                                     upper="10" step="1" page="1" value="3"/>
 
                             <!-- Max Peers per Announce -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Max Peers per Announce</property>
-                                            <property name="halign">start</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="tracker_max_peers_spin">
-                                            <property name="valign">center</property>
-                                            <property name="width-chars">4</property>
-                                            <property name="tooltip-text" translatable="yes">Maximum peers returned per announce (default: 50)</property>
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">10</property>
-                                                    <property name="upper">200</property>
-                                                    <property name="step-increment">10</property>
-                                                    <property name="page-increment">50</property>
-                                                    <property name="value">50</property>
-                                                </object>
-                                            </property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-end" label="Max Peers per Announce"
+                                     id="tracker_max_peers_spin" chars="4"
+                                     tooltip="Maximum peers returned per announce (default: 50)" lower="10"
+                                     upper="200" step="10" page="50" value="50"/>
                         </object>
                     </child>
                 </object>
@@ -353,67 +181,18 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable Scrape -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="tracker_enable_scrape_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Enable /scrape endpoint for torrent statistics</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable scrape endpoint</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="tracker_enable_scrape_switch"
+                                     tooltip="Enable /scrape endpoint for torrent statistics"
+                                     label="Enable scrape endpoint"/>
 
                             <!-- Private Mode -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="tracker_private_mode_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Only allow pre-registered torrents</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Private mode (registered torrents only)</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="tracker_private_mode_switch"
+                                     tooltip="Only allow pre-registered torrents"
+                                     label="Private mode (registered torrents only)"/>
 
                             <!-- Log Announces -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="tracker_log_announces_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Log all announce requests (for debugging)</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Log announces (debug)</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="tracker_log_announces_switch"
+                                     tooltip="Log all announce requests (for debugging)" label="Log announces (debug)"/>
                         </object>
                     </child>
                 </object>
@@ -438,88 +217,22 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable Self-Tracking -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="tracker_self_tracking_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Report own torrents to this tracker</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable self-tracking</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="tracker_self_tracking_switch"
+                                     tooltip="Report own torrents to this tracker" label="Enable self-tracking"/>
 
                             <!-- Announce with Seeders -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="tracker_announce_seeders_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Include seeder stats in announces</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Announce with seeder statistics</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="tracker_announce_seeders_switch"
+                                     tooltip="Include seeder stats in announces"
+                                     label="Announce with seeder statistics"/>
 
                             <!-- Sync on Add -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="tracker_sync_on_add_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Register torrent with tracker when added</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Sync on torrent add</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="tracker_sync_on_add_switch"
+                                     tooltip="Register torrent with tracker when added" label="Sync on torrent add"/>
 
                             <!-- Sync on Remove -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="tracker_sync_on_remove_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Unregister torrent from tracker when removed</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Sync on torrent remove</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="tracker_sync_on_remove_switch"
+                                     tooltip="Unregister torrent from tracker when removed"
+                                     label="Sync on torrent remove"/>
                         </object>
                     </child>
                 </object>
@@ -544,34 +257,10 @@
                             <property name="margin-start">12</property>
 
                             <!-- Rate Limit -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Rate Limit (requests/minute)</property>
-                                            <property name="halign">start</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="tracker_rate_limit_spin">
-                                            <property name="valign">center</property>
-                                            <property name="width-chars">4</property>
-                                            <property name="tooltip-text" translatable="yes">Maximum requests per minute per IP (0 = unlimited)</property>
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">0</property>
-                                                    <property name="upper">1000</property>
-                                                    <property name="step-increment">10</property>
-                                                    <property name="page-increment">50</property>
-                                                    <property name="value">60</property>
-                                                </object>
-                                            </property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-end" label="Rate Limit (requests/minute)"
+                                     id="tracker_rate_limit_spin" chars="4"
+                                     tooltip="Maximum requests per minute per IP (0 = unlimited)" lower="0"
+                                     upper="1000" step="10" page="50" value="60"/>
 
                             <!-- IP Whitelist -->
                             <child>
