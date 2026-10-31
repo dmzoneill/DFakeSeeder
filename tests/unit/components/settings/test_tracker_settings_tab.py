@@ -9,6 +9,7 @@ addresses. The shared ``settings_module`` / ``make_settings_tab`` fixtures
 provide the mocked GTK import and tab builder.
 """
 
+import importlib
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -20,7 +21,8 @@ _MODULE = "d_fake_seeder.components.component.settings.tracker_settings_tab"
 
 def test_is_valid_ipv4_accepts_and_rejects(settings_module: Any) -> None:
     """The dotted-quad check accepts valid octets and rejects malformed input."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.tracker_settings_tab")
         check = getattr(mod.TrackerSettingsTab, _IS_VALID_IPV4)
         assert check("192.168.0.1") is True
         assert check("0.1.2.3") is True
@@ -32,7 +34,8 @@ def test_is_valid_ipv4_accepts_and_rejects(settings_module: Any) -> None:
 
 def test_collect_toggle_records_active_state(settings_module: Any, make_settings_tab: Any) -> None:
     """A present toggle widget's active state is stored under its settings key."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.tracker_settings_tab")
         switch = MagicMock()
         switch.get_active.return_value = True
         tab = make_settings_tab(mod.TrackerSettingsTab, {"tracker_enabled": switch})
@@ -43,7 +46,8 @@ def test_collect_toggle_records_active_state(settings_module: Any, make_settings
 
 def test_validate_ports_flags_range_and_privilege(settings_module: Any, make_settings_tab: Any) -> None:
     """Ports outside 1-65535 report a range error; low ports report a privilege error."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.tracker_settings_tab")
         http = MagicMock()
         http.get_value.return_value = 70000
         udp = MagicMock()

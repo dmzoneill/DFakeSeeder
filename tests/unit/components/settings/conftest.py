@@ -5,14 +5,14 @@ Every settings-tab test needs to import a GTK-dependent module headless, so the
 GTK stack (``gi`` + ``gi.repository.*``), the ``gi_gtk4`` bootstrap and
 ``AppSettings`` are replaced with mocks before import and restored afterwards.
 Centralising that setup here keeps the individual test modules free of the
-duplicated boilerplate that previously tripped the duplicate-code checks.
+duplicated boilerplate that previously tripped the duplicate-code checks. Each
+test performs its own ``importlib.import_module`` of a literal module path
+inside the context manager, so the heavy mock plumbing lives here only once.
 """
 
 import contextlib
-import importlib
 import sys
 from collections.abc import Callable, Iterator
-from types import ModuleType
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -33,11 +33,13 @@ _GI_MODULES = (
 
 
 @contextlib.contextmanager
-def _load_settings_module(module_name: str, *, real_glib_error: bool = True) -> Iterator[ModuleType]:
-    """Import ``module_name`` with the GTK layer and AppSettings mocked, then restore.
+def _settings_env(module_name: str, *, real_glib_error: bool = True) -> Iterator[None]:
+    """Mock the GTK layer and AppSettings for a fresh import of ``module_name``, then restore.
 
-    When ``real_glib_error`` is true the mocked ``gi_gtk4.GLib.Error`` is a real
-    ``Exception`` subclass so narrowed ``except (... GLib.Error)`` clauses stay valid.
+    The caller imports ``module_name`` itself (with a literal path) inside the
+    ``with`` block. When ``real_glib_error`` is true the mocked
+    ``gi_gtk4.GLib.Error`` is a real ``Exception`` subclass so narrowed
+    ``except (... GLib.Error)`` clauses stay valid.
     """
     extra = ["d_fake_seeder.lib.gi_gtk4", "d_fake_seeder.domain.app_settings", module_name]
     saved = {name: sys.modules.get(name) for name in (*_GI_MODULES, *extra)}
@@ -50,7 +52,7 @@ def _load_settings_module(module_name: str, *, real_glib_error: bool = True) -> 
     sys.modules["d_fake_seeder.domain.app_settings"] = MagicMock()
     sys.modules.pop(module_name, None)
     try:
-        yield importlib.import_module(module_name)
+        yield
     finally:
         for name, module in saved.items():
             if module is not None:
@@ -61,8 +63,8 @@ def _load_settings_module(module_name: str, *, real_glib_error: bool = True) -> 
 
 @pytest.fixture
 def settings_module() -> Callable[..., Any]:
-    """Return a context manager that imports a settings module with GTK/AppSettings mocked."""
-    return _load_settings_module
+    """Return a context manager that mocks GTK/AppSettings around a fresh module import."""
+    return _settings_env
 
 
 @pytest.fixture

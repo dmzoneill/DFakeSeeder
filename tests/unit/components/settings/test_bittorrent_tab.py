@@ -9,6 +9,7 @@ index, and interval spin values are coerced to int seconds. The shared
 and tab builder.
 """
 
+import importlib
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -28,7 +29,8 @@ def _widget(**returns: Any) -> MagicMock:
 
 def test_collect_maps_toggles_encryption_and_predefined_agent(settings_module: Any, make_settings_tab: Any) -> None:
     """Toggles, encryption mode and a predefined user agent map to nested keys."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.bittorrent_tab")
         widgets = {
             "enable_dht": _widget(get_active=True),
             "enable_pex": _widget(get_active=False),
@@ -52,7 +54,8 @@ def test_collect_maps_toggles_encryption_and_predefined_agent(settings_module: A
 
 def test_collect_custom_user_agent(settings_module: Any, make_settings_tab: Any) -> None:
     """Selecting index 7 reads the free-text custom user agent."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.bittorrent_tab")
         widgets = {
             "user_agent": _widget(get_selected=7),
             "custom_user_agent": _widget(get_text="MyClient/1.2"),
@@ -66,7 +69,8 @@ def test_collect_custom_user_agent(settings_module: Any, make_settings_tab: Any)
 
 def test_collect_intervals_coerced_to_int(settings_module: Any, make_settings_tab: Any) -> None:
     """Interval spin values are coerced to int seconds."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.bittorrent_tab")
         widgets = {
             "announce_interval": _widget(get_value=1800.9),
             "scrape_interval": _widget(get_value=900.0),

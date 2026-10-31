@@ -9,6 +9,7 @@ rejecting missing or invalid ports. The shared ``settings_module`` /
 ``make_settings_tab`` fixtures provide the mocked GTK import and tab builder.
 """
 
+import importlib
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -20,7 +21,8 @@ _MODULE = "d_fake_seeder.components.component.settings.dht_tab"
 
 def test_bootstrap_node_error_accepts_and_rejects(settings_module: Any) -> None:
     """A host:port node is accepted; a missing or invalid port is rejected."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.dht_tab")
         node_error = getattr(mod.DHTTab, _NODE_ERROR)
         assert node_error("router.bittorrent.com:6881") is None
         assert "should be host:port" in node_error("router.bittorrent.com")
@@ -30,7 +32,8 @@ def test_bootstrap_node_error_accepts_and_rejects(settings_module: Any) -> None:
 
 def test_collect_toggle_records_active_state(settings_module: Any, make_settings_tab: Any) -> None:
     """A present toggle widget's active state is stored under its settings key."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.dht_tab")
         switch = MagicMock()
         switch.get_active.return_value = True
         tab = make_settings_tab(mod.DHTTab, {"dht_enabled": switch})
@@ -41,7 +44,8 @@ def test_collect_toggle_records_active_state(settings_module: Any, make_settings
 
 def test_validate_ranges_flags_routing_table_size(settings_module: Any, make_settings_tab: Any) -> None:
     """A routing-table size outside 8-512 is reported as an error."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.dht_tab")
         size_widget = MagicMock()
         size_widget.get_value.return_value = 1000
         tab = make_settings_tab(mod.DHTTab, {"routing_table_size": size_widget})

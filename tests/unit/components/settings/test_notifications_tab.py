@@ -8,6 +8,7 @@ documented default. The shared ``settings_module`` / ``make_settings_tab``
 fixtures provide the mocked GTK import and tab builder.
 """
 
+import importlib
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -18,7 +19,8 @@ _MODULE = "d_fake_seeder.components.component.settings.notifications_tab"
 
 def test_known_position_maps_to_index(settings_module: Any, make_settings_tab: Any) -> None:
     """A known position value selects its index in POSITION_VALUES."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.notifications_tab")
         position = MagicMock()
         tab = make_settings_tab(mod.NotificationsTab, {"notification_position": position})
         getattr(tab, _LOAD_DROPDOWNS)({"position": "bottom-left"})
@@ -27,7 +29,8 @@ def test_known_position_maps_to_index(settings_module: Any, make_settings_tab: A
 
 def test_unknown_position_falls_back_to_default(settings_module: Any, make_settings_tab: Any) -> None:
     """An unknown position falls back to the default index (2)."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.notifications_tab")
         position = MagicMock()
         tab = make_settings_tab(mod.NotificationsTab, {"notification_position": position})
         getattr(tab, _LOAD_DROPDOWNS)({"position": "nowhere"})
@@ -36,7 +39,8 @@ def test_unknown_position_falls_back_to_default(settings_module: Any, make_setti
 
 def test_spin_uses_stored_value_or_default(settings_module: Any, make_settings_tab: Any) -> None:
     """Spin buttons take the stored value when present, else the default."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.notifications_tab")
         info = MagicMock()
         max_visible = MagicMock()
         tab = make_settings_tab(
