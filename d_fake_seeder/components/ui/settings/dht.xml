@@ -16,13 +16,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;DHT (Distributed Hash Table)&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="DHT (Distributed Hash Table)"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -30,25 +24,9 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable DHT -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="dht_enabled_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Enable or disable DHT for trackerless torrent support</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable DHT</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="dht_enabled_switch"
+                                     tooltip="Enable or disable DHT for trackerless torrent support"
+                                     label="Enable DHT"/>
                         </object>
                     </child>
                 </object>
@@ -59,13 +37,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Node Configuration&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Node Configuration"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -73,25 +45,8 @@
                             <property name="margin-start">12</property>
 
                             <!-- Auto-generate node ID -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="node_id_auto_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Automatically generate a unique node ID</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Auto-generate node ID</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="node_id_auto_check" active="True"
+                                     tooltip="Automatically generate a unique node ID" label="Auto-generate node ID"/>
 
                             <!-- Custom node ID -->
                             <child>
@@ -119,37 +74,9 @@
                             </child>
 
                             <!-- Routing table size -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Routing Table Size:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="routing_table_size_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">8</property>
-                                                    <property name="upper">512</property>
-                                                    <property name="step-increment">8</property>
-                                                    <property name="page-increment">32</property>
-                                                    <property name="value">160</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Maximum number of nodes in the routing table</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill" label="Routing Table Size:" label_chars="18"
+                                     id="routing_table_size_spin" lower="8" upper="512" step="8" page="32" value="160"
+                                     tooltip="Maximum number of nodes in the routing table"/>
                         </object>
                     </child>
                 </object>
@@ -160,13 +87,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Timing Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Timing Settings"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -302,13 +223,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Network Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Network Settings"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -316,103 +231,19 @@
                             <property name="margin-start">12</property>
 
                             <!-- Max nodes -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Max Nodes:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="dht_max_nodes_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">100</property>
-                                                    <property name="upper">5000</property>
-                                                    <property name="step-increment">50</property>
-                                                    <property name="page-increment">500</property>
-                                                    <property name="value">1000</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Maximum number of DHT nodes to maintain</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill" label="Max Nodes:" label_chars="18"
+                                     id="dht_max_nodes_spin" lower="100" upper="5000" step="50" page="500"
+                                     value="1000" tooltip="Maximum number of DHT nodes to maintain"/>
 
                             <!-- Bucket size -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Bucket Size:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="dht_bucket_size_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">4</property>
-                                                    <property name="upper">20</property>
-                                                    <property name="step-increment">1</property>
-                                                    <property name="page-increment">2</property>
-                                                    <property name="value">8</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Maximum number of nodes per bucket</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill" label="Bucket Size:" label_chars="18"
+                                     id="dht_bucket_size_spin" lower="4" upper="20" step="1" page="2" value="8"
+                                     tooltip="Maximum number of nodes per bucket"/>
 
                             <!-- Concurrent queries -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Concurrent Queries:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="dht_concurrent_queries_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">1</property>
-                                                    <property name="upper">10</property>
-                                                    <property name="step-increment">1</property>
-                                                    <property name="page-increment">1</property>
-                                                    <property name="value">3</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Maximum number of concurrent DHT queries</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill" label="Concurrent Queries:" label_chars="18"
+                                     id="dht_concurrent_queries_spin" lower="1" upper="10" step="1" page="1" value="3"
+                                     tooltip="Maximum number of concurrent DHT queries"/>
                         </object>
                     </child>
                 </object>
@@ -423,13 +254,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Bootstrap Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Bootstrap Settings"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -437,25 +262,9 @@
                             <property name="margin-start">12</property>
 
                             <!-- Auto bootstrap -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="auto_bootstrap_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Automatically bootstrap DHT using known nodes</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Auto-bootstrap DHT</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="auto_bootstrap_check" active="True"
+                                     tooltip="Automatically bootstrap DHT using known nodes"
+                                     label="Auto-bootstrap DHT"/>
 
                             <!-- Bootstrap nodes -->
                             <child>
@@ -498,13 +307,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Statistics and Security&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Statistics and Security"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -512,25 +315,8 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable statistics -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="dht_enable_stats_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable DHT statistics collection</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable statistics</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="dht_enable_stats_check" active="True"
+                                     tooltip="Enable DHT statistics collection" label="Enable statistics"/>
 
                             <!-- Statistics interval -->
                             <child>
@@ -573,79 +359,17 @@
                             </child>
 
                             <!-- Validate tokens -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="dht_validate_tokens_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Validate DHT security tokens</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Validate security tokens</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="dht_validate_tokens_check" active="True"
+                                     tooltip="Validate DHT security tokens" label="Validate security tokens"/>
 
                             <!-- Rate limiting -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="dht_rate_limit_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable DHT query rate limiting</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable rate limiting</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="dht_rate_limit_check" active="True"
+                                     tooltip="Enable DHT query rate limiting" label="Enable rate limiting"/>
 
                             <!-- Max queries per second -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Max Queries/Second:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="dht_max_queries_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">1</property>
-                                                    <property name="upper">100</property>
-                                                    <property name="step-increment">1</property>
-                                                    <property name="page-increment">5</property>
-                                                    <property name="value">10</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Maximum DHT queries per second</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill" label="Max Queries/Second:" label_chars="18"
+                                     id="dht_max_queries_spin" lower="1" upper="100" step="1" page="5" value="10"
+                                     tooltip="Maximum DHT queries per second"/>
                         </object>
                     </child>
                 </object>
