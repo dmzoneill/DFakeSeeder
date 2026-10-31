@@ -23,7 +23,9 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = REPO_ROOT / "d_fake_seeder" / "components" / "ui" / "templates"
-TEMPLATE_RE = re.compile(r'^<template name="([\w-]+)">\n(.*?)\n</template>$', re.MULTILINE | re.DOTALL)
+GENERATED_DIR = REPO_ROOT / "d_fake_seeder" / "components" / "ui" / "generated"
+TEMPLATE_START_RE = re.compile(r'<template name="([\w-]+)">')
+TEMPLATE_END = "</template>"
 MACRO_RE = re.compile(r"<dfs-use\b[^>]*/>")
 PLACEHOLDER_RE = re.compile(r"\{(\w+)\}")
 ATTRIBUTE_RE = re.compile(r'([\w-]+)="([^"]*)"')
@@ -39,10 +41,17 @@ def load_templates(template_dir: Path = TEMPLATE_DIR) -> dict[str, str]:
     """All templates found in ``template_dir/*.xml.in``, by name."""
     templates: dict[str, str] = {}
     for path in sorted(template_dir.glob("*.xml.in")):
-        for name, body in TEMPLATE_RE.findall(path.read_text(encoding="utf-8")):
-            if name in templates:
-                raise TemplateError(f"Duplicate template {name!r} in {path}")
-            templates[name] = body
+        name, body = "", list[str]()
+        for line in path.read_text(encoding="utf-8").split("\n"):
+            start = TEMPLATE_START_RE.fullmatch(line)
+            if start:
+                name, body = start.group(1), []
+            elif name and line == TEMPLATE_END:
+                if name in templates:
+                    raise TemplateError(f"Duplicate template {name!r} in {path}")
+                templates[name], name = "\n".join(body), ""
+            elif name:
+                body.append(line)
     return templates
 
 
@@ -85,15 +94,16 @@ def _line_indent(text: str, position: int) -> str:
 
 
 def main(argv: list[str]) -> int:
-    """Expand macros in each file given on the command line, in place."""
+    """Expand macros in place in each generated UI file given on the command line."""
     if not argv:
         print(__doc__.strip().splitlines()[-1], file=sys.stderr)
         return 2
     templates = load_templates()
+    generated = {path.resolve(): path for path in GENERATED_DIR.glob("*.xml")}
     for name in argv:
-        path = Path(name).resolve()
-        if not path.is_relative_to(REPO_ROOT) or path.suffix != ".xml":
-            raise TemplateError(f"Refusing to rewrite {name}: not an .xml file inside {REPO_ROOT}")
+        path = generated.get(Path(name).resolve())
+        if path is None:
+            raise TemplateError(f"Refusing to rewrite {name}: not a generated UI file in {GENERATED_DIR}")
         path.write_text(expand(path.read_text(encoding="utf-8"), templates), encoding="utf-8")
     return 0
 

@@ -110,7 +110,7 @@ def test_main_rewrites_file_in_place(tmp_path: Path, monkeypatch: pytest.MonkeyP
     """The CLI expands the given file with the shipped templates."""
     templates = expander.load_templates()
     monkeypatch.setattr(expander, "load_templates", lambda: templates)
-    monkeypatch.setattr(expander, "REPO_ROOT", tmp_path.resolve())
+    monkeypatch.setattr(expander, "GENERATED_DIR", tmp_path)
     target = tmp_path / "ui.xml"
     target.write_text(
         '<interface>\n    <dfs-use template="spin-row" id="s" label="L" lower="0" upper="9" value="1"'
@@ -122,11 +122,11 @@ def test_main_rewrites_file_in_place(tmp_path: Path, monkeypatch: pytest.MonkeyP
     assert expander.main([]) == 2
 
 
-def test_main_refuses_paths_outside_repo(tmp_path: Path) -> None:
-    """Only .xml files inside the repository are rewritten."""
+def test_main_refuses_files_outside_generated_dir(tmp_path: Path) -> None:
+    """Only generated UI files are rewritten."""
     outside = tmp_path / "ui.xml"
     outside.write_text("<interface/>\n", encoding="utf-8")
     with pytest.raises(expander.TemplateError):
         expander.main([str(outside)])
     with pytest.raises(expander.TemplateError):
-        expander.main([str(expander.REPO_ROOT / "Makefile")])
+        expander.main([str(UI_DIR / "settings" / "speed.xml")])
