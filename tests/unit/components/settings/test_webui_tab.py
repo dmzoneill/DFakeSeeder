@@ -8,6 +8,7 @@ int. The shared ``settings_module`` / ``make_settings_tab`` fixtures provide the
 mocked GTK import and tab builder.
 """
 
+import importlib
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -19,7 +20,8 @@ _MODULE = "d_fake_seeder.components.component.settings.webui_tab"
 
 def test_interface_error_distinguishes_format_and_range(settings_module: Any) -> None:
     """A valid quad passes; a short quad is a format error; a big octet is a range error."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.webui_tab")
         interface_error = getattr(mod.WebUITab, _INTERFACE_ERROR)
         assert interface_error("192.168.1.10") is None
         assert interface_error("1.2.3") == "Invalid IP address format"
@@ -28,7 +30,8 @@ def test_interface_error_distinguishes_format_and_range(settings_module: Any) ->
 
 def test_collect_bools_records_active_state(settings_module: Any, make_settings_tab: Any) -> None:
     """A present switch widget's active state is stored under its nested key."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.webui_tab")
         switch = MagicMock()
         switch.get_active.return_value = True
         tab = make_settings_tab(mod.WebUITab, {"enable_webui": switch})
@@ -39,7 +42,8 @@ def test_collect_bools_records_active_state(settings_module: Any, make_settings_
 
 def test_collect_ints_coerces_port(settings_module: Any, make_settings_tab: Any) -> None:
     """The port spin value is coerced to an int under its nested key."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.webui_tab")
         port = MagicMock()
         port.get_value.return_value = 8080.0
         tab = make_settings_tab(mod.WebUITab, {"webui_port": port})
