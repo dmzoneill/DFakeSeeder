@@ -57,7 +57,7 @@ def loaded_widget() -> Iterator[ModuleType]:
     sys.modules["d_fake_seeder.lib.gi_gtk4"] = gtk4
     sys.modules.pop(name, None)
     try:
-        yield importlib.import_module(name)
+        yield importlib.import_module("d_fake_seeder.lib.util.notification_widget")
     finally:
         for n, mod in saved.items():
             if mod is not None:
