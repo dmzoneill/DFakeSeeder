@@ -16,13 +16,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Global Speed Limits&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Global Speed Limits"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -30,11 +24,17 @@
                             <property name="margin-start">12</property>
 
                             <!-- Upload limit -->
-                            <dfs-use template="spin-row-hint" label="Upload limit (KB/s):" id="settings_upload_limit" lower="0" upper="999999" value="0" step="1" page="10" tooltip="Global upload speed limit in KB/s (0 = unlimited)" hint="(0 = unlimited)"/>
+                            <dfs-use template="spin-row-hint" label="Upload limit (KB/s):" id="settings_upload_limit"
+                                     lower="0" upper="999999" value="0" step="1" page="10"
+                                     tooltip="Global upload speed limit in KB/s (0 = unlimited)"
+                                     hint="(0 = unlimited)"/>
 
                             <!-- Download limit -->
-                            <dfs-use template="spin-row-hint" label="Download limit (KB/s):" id="settings_download_limit" lower="0" upper="999999" value="0" step="1" page="10" tooltip="Global download speed limit in KB/s (0 = unlimited)" hint="(0 = unlimited)"/>
-                        </object>
+                            <dfs-use template="spin-row-hint" label="Download limit (KB/s):"
+                                     id="settings_download_limit" lower="0" upper="999999" value="0" step="1"
+                                     page="10" tooltip="Global download speed limit in KB/s (0 = unlimited)"
+                                     hint="(0 = unlimited)"/>
+                                </object>
                     </child>
                 </object>
             </child>
@@ -44,13 +44,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Alternative Speed Limits&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Alternative Speed Limits"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -58,25 +52,9 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable alternative speeds -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_enable_alt_speeds">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Enable alternative speed limits (useful for limiting speeds during certain hours)</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable alternative speed limits</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_enable_alt_speeds"
+                                     tooltip="Enable alternative speed limits (useful for limiting speeds during certain hours)"
+                                     label="Enable alternative speed limits"/>
 
                             <!-- Alternative speed settings -->
                             <child>
@@ -86,9 +64,14 @@
                                     <property name="sensitive">False</property>
 
                                     <!-- Alt upload limit -->
-                                    <dfs-use template="spin-row" label="Alt upload limit (KB/s):" id="settings_alt_upload_limit" lower="0" upper="999999" value="50" step="1" page="10" tooltip="Alternative upload speed limit in KB/s"/>
+                                    <dfs-use template="spin-row" label="Alt upload limit (KB/s):"
+                                             id="settings_alt_upload_limit" lower="0" upper="999999" value="50"
+                                             step="1" page="10" tooltip="Alternative upload speed limit in KB/s"/>
                                     <!-- Alt download limit -->
-                                    <dfs-use template="spin-row" label="Alt download limit (KB/s):" id="settings_alt_download_limit" lower="0" upper="999999" value="100" step="1" page="10" tooltip="Alternative download speed limit in KB/s"/>                                </object>
+                                    <dfs-use template="spin-row" label="Alt download limit (KB/s):"
+                                             id="settings_alt_download_limit" lower="0" upper="999999" value="100"
+                                             step="1" page="10" tooltip="Alternative download speed limit in KB/s"/>
+                                </object>
                             </child>
                         </object>
                     </child>
@@ -100,13 +83,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Speed Scheduler&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Speed Scheduler"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -114,25 +91,9 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable scheduler -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_enable_scheduler">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Automatically switch to alternative speeds during specified hours</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable speed scheduler</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_enable_scheduler"
+                                     tooltip="Automatically switch to alternative speeds during specified hours"
+                                     label="Enable speed scheduler"/>
 
                             <!-- Scheduler settings -->
                             <child>
@@ -265,49 +226,21 @@
                                             <child>
                                                 <object class="GtkBox">
                                                     <property name="spacing">4</property>
-                                                    <child>
-                                                        <object class="GtkCheckButton" id="settings_scheduler_mon">
-                                                            <property name="label" translatable="yes">Mon</property>
-                                                            <property name="tooltip-text" translatable="yes">Monday</property>
-                                                        </object>
-                                                    </child>
-                                                    <child>
-                                                        <object class="GtkCheckButton" id="settings_scheduler_tue">
-                                                            <property name="label" translatable="yes">Tue</property>
-                                                            <property name="tooltip-text" translatable="yes">Tuesday</property>
-                                                        </object>
-                                                    </child>
-                                                    <child>
-                                                        <object class="GtkCheckButton" id="settings_scheduler_wed">
-                                                            <property name="label" translatable="yes">Wed</property>
-                                                            <property name="tooltip-text" translatable="yes">Wednesday</property>
-                                                        </object>
-                                                    </child>
-                                                    <child>
-                                                        <object class="GtkCheckButton" id="settings_scheduler_thu">
-                                                            <property name="label" translatable="yes">Thu</property>
-                                                            <property name="tooltip-text" translatable="yes">Thursday</property>
-                                                        </object>
-                                                    </child>
-                                                    <child>
-                                                        <object class="GtkCheckButton" id="settings_scheduler_fri">
-                                                            <property name="label" translatable="yes">Fri</property>
-                                                            <property name="tooltip-text" translatable="yes">Friday</property>
-                                                        </object>
-                                                    </child>
-                                                    <child>
-                                                        <object class="GtkCheckButton" id="settings_scheduler_sat">
-                                                            <property name="label" translatable="yes">Sat</property>
-                                                            <property name="tooltip-text" translatable="yes">Saturday</property>
-                                                        </object>
-                                                    </child>
-                                                    <child>
-                                                        <object class="GtkCheckButton" id="settings_scheduler_sun">
-                                                            <property name="label" translatable="yes">Sun</property>
-                                                            <property name="tooltip-text" translatable="yes">Sunday</property>
-                                                        </object>
-                                                    </child>
-                                                </object>
+                                                    <dfs-use template="labelled-check" id="settings_scheduler_mon"
+                                                             label="Mon" tooltip="Monday"/>
+                                                    <dfs-use template="labelled-check" id="settings_scheduler_tue"
+                                                             label="Tue" tooltip="Tuesday"/>
+                                                    <dfs-use template="labelled-check" id="settings_scheduler_wed"
+                                                             label="Wed" tooltip="Wednesday"/>
+                                                    <dfs-use template="labelled-check" id="settings_scheduler_thu"
+                                                             label="Thu" tooltip="Thursday"/>
+                                                    <dfs-use template="labelled-check" id="settings_scheduler_fri"
+                                                             label="Fri" tooltip="Friday"/>
+                                                    <dfs-use template="labelled-check" id="settings_scheduler_sat"
+                                                             label="Sat" tooltip="Saturday"/>
+                                                    <dfs-use template="labelled-check" id="settings_scheduler_sun"
+                                                             label="Sun" tooltip="Sunday"/>
+                                </object>
                                             </child>
                                         </object>
                                     </child>
@@ -323,13 +256,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Speed Distribution&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Speed Distribution"/>
 
                     <!-- Info message about redistribution timing -->
                     <child>
@@ -378,7 +305,7 @@
 
                             <!-- Download Distribution -->
                             <dfs-use template="speed-distribution" dir="download" Dir="Download"/>
-                        </object>
+                                </object>
                     </child>
                 </object>
             </child>

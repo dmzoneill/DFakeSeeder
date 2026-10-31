@@ -1,0 +1,81 @@
+<!--
+  More row templates for the settings tabs; same syntax as settings_rows.xml.in.
+-->
+
+<!-- Label (given width) + SpinButton filling the row + unit label -->
+<template name="spin-row-fill-unit">
+<child>
+    <object class="GtkBox">
+        <property name="spacing">12</property>
+        <property name="halign">fill</property>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{label}</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="hexpand">False</property>
+                <property name="width-chars">{label_chars}</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkSpinButton" id="{id}">
+                <property name="adjustment">
+                    <object class="GtkAdjustment">
+                        <property name="lower">{lower}</property>
+                        <property name="upper">{upper}</property>
+                        <property name="step-increment">{step}</property>
+                        <property name="page-increment">{page}</property>
+                        <property name="value">{value}</property>
+                    </object>
+                </property>
+                <property name="tooltip-text" translatable="yes">{tooltip}</property>
+                <property name="hexpand">True</property>
+                <property name="numeric">True</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{unit}</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+            </object>
+        </child>
+    </object>
+</child>
+</template>
+
+<!-- CheckButton carrying its own label -->
+<template name="labelled-check">
+<child>
+    <object class="GtkCheckButton" id="{id}">
+        <property name="label" translatable="yes">{label}</property>
+        <property name="tooltip-text" translatable="yes">{tooltip}</property>
+    </object>
+</child>
+</template>
+
+<!-- Label (given width) + Entry with placeholder filling the row -->
+<template name="entry-row">
+<child>
+    <object class="GtkBox">
+        <property name="spacing">12</property>
+        <property name="halign">fill</property>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{label}</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="hexpand">False</property>
+                <property name="width-chars">{label_chars}</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkEntry" id="{id}">
+                <property name="placeholder-text" translatable="yes">{placeholder}</property>
+                <property name="tooltip-text" translatable="yes">{tooltip}</property>
+                <property name="hexpand">True</property>
+            </object>
+        </child>
+    </object>
+</child>
+</template>

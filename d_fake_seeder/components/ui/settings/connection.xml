@@ -120,28 +120,8 @@
                                      items="None|HTTP|SOCKS5|SOCKS4" tooltip="Select proxy type for connections"/>
 
                             <!-- Proxy server -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Server:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">15</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkEntry" id="settings_proxy_server">
-                                            <property name="placeholder-text" translatable="yes">proxy.example.com</property>
-                                            <property name="tooltip-text" translatable="yes">Proxy server hostname or IP address</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="entry-row" label="Server:" label_chars="15" id="settings_proxy_server"
+                                     placeholder="proxy.example.com" tooltip="Proxy server hostname or IP address"/>
 
                             <!-- Proxy port -->
                             <dfs-use template="spin-row-sized" label="Port:" label_chars="15" id="settings_proxy_port"

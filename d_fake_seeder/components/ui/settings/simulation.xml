@@ -16,13 +16,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Client Behavior Engine&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Client Behavior Engine"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -35,40 +29,10 @@
                                      label="Enable client behavior simulation"/>
 
                             <!-- Primary client -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Primary Client:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkDropDown" id="primary_client_combo">
-                                            <property name="model">
-                                                <object class="GtkStringList">
-                                                    <items>
-                                                        <item translatable="yes">qBittorrent</item>
-                                                        <item translatable="yes">Deluge</item>
-                                                        <item translatable="yes">Transmission</item>
-                                                        <item translatable="yes">µTorrent</item>
-                                                        <item translatable="yes">Vuze</item>
-                                                        <item translatable="yes">rTorrent</item>
-                                                        <item translatable="yes">BiglyBT</item>
-                                                    </items>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Primary BitTorrent client to simulate</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="dropdown-row" label="Primary Client:" label_chars="18"
+                                     id="primary_client_combo"
+                                     items="qBittorrent|Deluge|Transmission|µTorrent|Vuze|rTorrent|BiglyBT"
+                                     tooltip="Primary BitTorrent client to simulate"/>
 
                             <!-- Behavior variation -->
                             <child>
@@ -139,78 +103,19 @@
                             </child>
 
                             <!-- Advanced behavior settings -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="client_profile_switching_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable dynamic client profile switching</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Dynamic profile switching</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="client_profile_switching_check" active="True"
+                                     tooltip="Enable dynamic client profile switching"
+                                     label="Dynamic profile switching"/>
 
                             <!-- Protocol compliance level -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Protocol Compliance:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkDropDown" id="protocol_compliance_level_combo">
-                                            <property name="model">
-                                                <object class="GtkStringList">
-                                                    <items>
-                                                        <item translatable="yes">Strict</item>
-                                                        <item translatable="yes">Standard</item>
-                                                        <item translatable="yes">Relaxed</item>
-                                                    </items>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Level of BitTorrent protocol compliance</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="dropdown-row" label="Protocol Compliance:" label_chars="18"
+                                     id="protocol_compliance_level_combo" items="Strict|Standard|Relaxed"
+                                     tooltip="Level of BitTorrent protocol compliance"/>
 
                             <!-- Behavior randomization -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="behavior_randomization_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable random variations in client behavior</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Behavior randomization</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="behavior_randomization_check" active="True"
+                                     tooltip="Enable random variations in client behavior"
+                                     label="Behavior randomization"/>
                         </object>
                     </child>
                 </object>
@@ -221,13 +126,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Traffic Pattern Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Traffic Pattern Settings"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -235,78 +134,18 @@
                             <property name="margin-start">12</property>
 
                             <!-- Traffic profile -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Traffic Profile:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkDropDown" id="traffic_profile_combo">
-                                            <property name="model">
-                                                <object class="GtkStringList">
-                                                    <items>
-                                                        <item translatable="yes">Conservative</item>
-                                                        <item translatable="yes">Balanced</item>
-                                                        <item translatable="yes">Aggressive</item>
-                                                    </items>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Traffic pattern profile for simulation</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="dropdown-row" label="Traffic Profile:" label_chars="18"
+                                     id="traffic_profile_combo" items="Conservative|Balanced|Aggressive"
+                                     tooltip="Traffic pattern profile for simulation"/>
 
                             <!-- Realistic variations -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="realistic_variations_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable realistic traffic variations</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Realistic variations</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="realistic_variations_check" active="True"
+                                     tooltip="Enable realistic traffic variations" label="Realistic variations"/>
 
                             <!-- Time-based patterns -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="time_based_patterns_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable time-based traffic patterns (peak hours, night hours)</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Time-based patterns</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="time_based_patterns_check" active="True"
+                                     tooltip="Enable time-based traffic patterns (peak hours, night hours)"
+                                     label="Time-based patterns"/>
                         </object>
                     </child>
                 </object>
@@ -317,13 +156,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Conservative Profile Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Conservative Profile Settings"/>
                     <child>
                         <object class="GtkGrid">
                             <property name="margin-start">12</property>
@@ -378,13 +211,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Balanced Profile Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Balanced Profile Settings"/>
                     <child>
                         <object class="GtkGrid">
                             <property name="margin-start">12</property>
@@ -438,13 +265,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Aggressive Profile Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Aggressive Profile Settings"/>
                     <child>
                         <object class="GtkGrid">
                             <property name="margin-start">12</property>
@@ -499,13 +320,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Swarm Intelligence&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Swarm Intelligence"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -513,25 +328,9 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable swarm intelligence -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="swarm_intelligence_enabled_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable swarm intelligence for adaptive behavior</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable swarm intelligence</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="swarm_intelligence_enabled_check" active="True"
+                                     tooltip="Enable swarm intelligence for adaptive behavior"
+                                     label="Enable swarm intelligence"/>
 
                             <!-- Adaptation rate -->
                             <child>

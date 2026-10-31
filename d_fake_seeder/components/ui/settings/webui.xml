@@ -16,13 +16,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Web Interface&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Web Interface"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -55,13 +49,7 @@
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
                     <property name="sensitive">False</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Connection Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Connection Settings"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -157,13 +145,7 @@
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
                     <property name="sensitive">False</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Authentication&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Authentication"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -276,13 +258,7 @@
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
                     <property name="sensitive">False</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Security Options&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Security Options"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
