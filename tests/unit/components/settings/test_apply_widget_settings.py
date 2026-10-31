@@ -61,3 +61,26 @@ def test_unknown_widget_id_raises_key_error() -> None:
     """Like the per-tab loops it replaces, an unknown widget id raises KeyError for the caller's handler."""
     with _base_tab() as mod, pytest.raises(KeyError):
         mod.BaseSettingsTab.apply_widget_settings(_stub({}, {}), [("missing", "k", 1)], "set_active")
+
+
+def test_collect_widget_values_converts_and_skips_missing() -> None:
+    """Present widgets are read via the getter (and converter); absent ones are skipped."""
+    spin = MagicMock()
+    spin.get_value.return_value = 7.0
+    stub = _stub({"spin": spin, "gone": None}, {})
+    settings: dict = {}
+    with _base_tab() as mod:
+        mod.BaseSettingsTab.collect_widget_values(
+            stub, [("spin", "a"), ("gone", "b"), ("x", "c")], settings, "get_value", int
+        )
+    assert settings == {"a": 7}
+    assert isinstance(settings["a"], int)
+
+
+def test_read_text_lines_strips_and_drops_blanks() -> None:
+    """Text-view contents become a list of stripped, non-empty lines."""
+    widget = MagicMock()
+    widget.get_buffer.return_value.get_bounds.return_value = (0, 1)
+    widget.get_buffer.return_value.get_text.return_value = " a \n\n b\n  \n"
+    with _base_tab() as mod:
+        assert mod.BaseSettingsTab.read_text_lines(widget) == ["a", "b"]

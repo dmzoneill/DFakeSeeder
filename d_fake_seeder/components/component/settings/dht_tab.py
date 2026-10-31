@@ -11,6 +11,26 @@ from d_fake_seeder.lib.gi_gtk4 import GLib
 
 from .base_tab import BaseSettingsTab
 
+# Widgets enabled/disabled together with the DHT master switch
+DHT_SENSITIVE_WIDGETS = (
+    "node_id_auto",
+    "node_id_custom",
+    "routing_table_size",
+    "announcement_interval",
+    "bootstrap_timeout",
+    "query_timeout",
+    "max_nodes",
+    "bucket_size",
+    "concurrent_queries",
+    "bootstrap_nodes",
+    "auto_bootstrap",
+    "enable_stats",
+    "stats_interval",
+    "validate_tokens",
+    "rate_limit_enabled",
+    "max_queries_per_second",
+)
+
 
 class DHTTab(BaseSettingsTab):
     """DHT configuration tab"""
@@ -177,9 +197,7 @@ class DHTTab(BaseSettingsTab):
             ("validate_tokens", "protocols.dht.validate_tokens"),
             ("rate_limit_enabled", "protocols.dht.rate_limit_enabled"),
         ]
-        for widget_id, key in toggles:
-            if self._widgets.get(widget_id):
-                settings[key] = self._widgets[widget_id].get_active()
+        self.collect_widget_values(toggles, settings, "get_active")
 
     def _collect_numeric_settings(self, settings: dict[str, Any]) -> None:
         """Collect the integer spin-button values into ``settings``."""
@@ -194,9 +212,7 @@ class DHTTab(BaseSettingsTab):
             ("stats_interval", "protocols.dht.stats_interval"),
             ("max_queries_per_second", "protocols.dht.max_queries_per_second"),
         ]
-        for widget_id, key in numerics:
-            if self._widgets.get(widget_id):
-                settings[key] = int(self._widgets[widget_id].get_value())
+        self.collect_widget_values(numerics, settings, "get_value", int)
 
     def _collect_node_and_bootstrap(self, settings: dict[str, Any]) -> None:
         """Collect the node-id choice and the bootstrap-nodes list into ``settings``."""
@@ -208,15 +224,13 @@ class DHTTab(BaseSettingsTab):
                 settings["protocols.dht.node_id"] = custom_id
 
         if self._widgets.get("bootstrap_nodes"):
-            settings["protocols.dht.bootstrap_nodes"] = self._read_text_lines(self._widgets["bootstrap_nodes"])
+            settings["protocols.dht.bootstrap_nodes"] = self.read_text_lines(self._widgets["bootstrap_nodes"])
 
-    @staticmethod
-    def _read_text_lines(widget: Any) -> list[str]:
-        """Return the non-empty, stripped lines from a text-view widget."""
-        buffer = widget.get_buffer()
-        start, end = buffer.get_bounds()
-        text = buffer.get_text(start, end, False)
-        return [line.strip() for line in text.split("\n") if line.strip()]
+    def _set_dht_widgets_sensitive(self, state: Any) -> None:
+        """Enable/disable all DHT widgets together with the master switch."""
+        for widget_name in DHT_SENSITIVE_WIDGETS:
+            if self._widgets.get(widget_name):
+                self._widgets[widget_name].set_sensitive(state)
 
     def _setup_dependencies(self) -> None:
         """Set up dependencies between UI elements"""
@@ -225,33 +239,7 @@ class DHTTab(BaseSettingsTab):
             if self._widgets.get("dht_enabled"):
                 state = self._widgets["dht_enabled"].get_active()
                 # Control ALL DHT widgets based on dht_enabled state
-                sensitive_widgets = [
-                    # Node configuration
-                    "node_id_auto",
-                    "node_id_custom",
-                    "routing_table_size",
-                    # Timing settings
-                    "announcement_interval",
-                    "bootstrap_timeout",
-                    "query_timeout",
-                    # Network settings
-                    "max_nodes",
-                    "bucket_size",
-                    "concurrent_queries",
-                    # Bootstrap settings
-                    "bootstrap_nodes",
-                    "auto_bootstrap",
-                    # Statistics settings
-                    "enable_stats",
-                    "stats_interval",
-                    # Security settings
-                    "validate_tokens",
-                    "rate_limit_enabled",
-                    "max_queries_per_second",
-                ]
-                for widget_name in sensitive_widgets:
-                    if self._widgets.get(widget_name):
-                        self._widgets[widget_name].set_sensitive(state)
+                self._set_dht_widgets_sensitive(state)
 
             # Node ID custom field sensitivity (only if DHT is enabled)
             if self._widgets.get("node_id_auto") and self._widgets.get("node_id_custom"):
@@ -326,7 +314,7 @@ class DHTTab(BaseSettingsTab):
         """Validate that each bootstrap node is a well-formed host:port entry."""
         if not self._widgets.get("bootstrap_nodes"):
             return
-        for node in self._read_text_lines(self._widgets["bootstrap_nodes"]):
+        for node in self.read_text_lines(self._widgets["bootstrap_nodes"]):
             message = self._bootstrap_node_error(node)
             if message:
                 errors["bootstrap_nodes"] = message
@@ -356,34 +344,8 @@ class DHTTab(BaseSettingsTab):
         # NOTE: Setting will be saved in batch via _collect_settings()
 
         # Enable/disable ALL DHT widgets based on state
-        sensitive_widgets = [
-            # Node configuration
-            "node_id_auto",
-            "node_id_custom",
-            "routing_table_size",
-            # Timing settings
-            "announcement_interval",
-            "bootstrap_timeout",
-            "query_timeout",
-            # Network settings
-            "max_nodes",
-            "bucket_size",
-            "concurrent_queries",
-            # Bootstrap settings
-            "bootstrap_nodes",
-            "auto_bootstrap",
-            # Statistics settings
-            "enable_stats",
-            "stats_interval",
-            # Security settings
-            "validate_tokens",
-            "rate_limit_enabled",
-            "max_queries_per_second",
-        ]
 
-        for widget_name in sensitive_widgets:
-            if self._widgets.get(widget_name):
-                self._widgets[widget_name].set_sensitive(state)
+        self._set_dht_widgets_sensitive(state)
 
     def _on_node_id_auto_toggled(self, check_button: Any) -> None:
         """Handle automatic node ID toggle"""
