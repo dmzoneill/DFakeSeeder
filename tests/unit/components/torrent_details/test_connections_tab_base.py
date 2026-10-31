@@ -63,10 +63,17 @@ def fixture_tabs() -> Iterator[SimpleNamespace]:
     for n in _TABS:
         sys.modules.pop(n, None)
     try:
+        base = importlib.import_module("d_fake_seeder.components.component.torrent_details.connections_tab_base")
+        incoming = importlib.import_module(
+            "d_fake_seeder.components.component.torrent_details.incoming_connections_tab"
+        )
+        outgoing = importlib.import_module(
+            "d_fake_seeder.components.component.torrent_details.outgoing_connections_tab"
+        )
         yield SimpleNamespace(
-            base=importlib.import_module(_TABS[0]),
-            incoming=importlib.import_module(_TABS[1]).IncomingConnectionsTab,
-            outgoing=importlib.import_module(_TABS[2]).OutgoingConnectionsTab,
+            base=base,
+            incoming=incoming.IncomingConnectionsTab,
+            outgoing=outgoing.OutgoingConnectionsTab,
         )
     finally:
         for n, mod in saved.items():
