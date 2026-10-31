@@ -7,25 +7,12 @@ into focused helpers. The GTK stack is mocked so the component imports headless;
 the pure helpers run on an instance built without ``__init__``.
 """
 
-import contextlib
 import importlib
-import sys
 import time
-from collections.abc import Iterator
 from types import SimpleNamespace
 from typing import Any
-from unittest.mock import MagicMock
 
 _MODULE = "d_fake_seeder.components.component.tracker_tab"
-_GI_MODULES = (
-    "gi",
-    "gi.repository",
-    "gi.repository.Gtk",
-    "gi.repository.Gdk",
-    "gi.repository.Gio",
-    "gi.repository.GLib",
-    "gi.repository.GObject",
-)
 
 _CLEANUP_DONE = "_cleanup_done"
 _RUNTIME = "_runtime"
@@ -33,26 +20,6 @@ _FORMAT_BYTES = "_format_bytes"
 _FORMAT_SPEED = "_format_speed"
 _FORMAT_LAST_ACTIVITY = "_format_last_activity"
 _COMPUTE_SPEEDS = "_compute_speeds"
-
-
-@contextlib.contextmanager
-def _tracker_env() -> Iterator[None]:
-    """Mock the GTK layer and AppSettings so the tracker module imports headless."""
-    extra = ["d_fake_seeder.lib.gi_gtk4", "d_fake_seeder.domain.app_settings", _MODULE]
-    saved = {name: sys.modules.get(name) for name in (*_GI_MODULES, *extra)}
-    for name in _GI_MODULES:
-        sys.modules[name] = MagicMock()
-    sys.modules["d_fake_seeder.lib.gi_gtk4"] = MagicMock()
-    sys.modules["d_fake_seeder.domain.app_settings"] = MagicMock()
-    sys.modules.pop(_MODULE, None)
-    try:
-        yield
-    finally:
-        for name, module in saved.items():
-            if module is not None:
-                sys.modules[name] = module
-            else:
-                sys.modules.pop(name, None)
 
 
 def _make_tracker(mod: Any) -> Any:
@@ -63,9 +30,9 @@ def _make_tracker(mod: Any) -> Any:
     return tab
 
 
-def test_format_bytes_scales_units() -> None:
+def test_format_bytes_scales_units(component_module: Any) -> None:
     """Bytes are formatted into B/KB/MB/GB at the expected thresholds."""
-    with _tracker_env():
+    with component_module(_MODULE):
         mod = importlib.import_module(_MODULE)
         fmt = getattr(mod.TrackerTab, _FORMAT_BYTES)
         assert fmt(512) == "512 B"
@@ -74,9 +41,9 @@ def test_format_bytes_scales_units() -> None:
         assert fmt(3 * 1024 * 1024 * 1024) == "3.00 GB"
 
 
-def test_format_speed_scales_units() -> None:
+def test_format_speed_scales_units(component_module: Any) -> None:
     """Speed is formatted into B/s, KB/s and MB/s at the expected thresholds."""
-    with _tracker_env():
+    with component_module(_MODULE):
         mod = importlib.import_module(_MODULE)
         fmt = getattr(mod.TrackerTab, _FORMAT_SPEED)
         assert fmt(500) == "500 B/s"
@@ -84,9 +51,9 @@ def test_format_speed_scales_units() -> None:
         assert fmt(5 * 1024 * 1024) == "5.0 MB/s"
 
 
-def test_format_last_activity_buckets_elapsed_time() -> None:
+def test_format_last_activity_buckets_elapsed_time(component_module: Any) -> None:
     """Elapsed time since last announce is bucketed into seconds/minutes/hours."""
-    with _tracker_env():
+    with component_module(_MODULE):
         mod = importlib.import_module(_MODULE)
         fmt = getattr(mod.TrackerTab, _FORMAT_LAST_ACTIVITY)
         now = time.time()
@@ -95,9 +62,9 @@ def test_format_last_activity_buckets_elapsed_time() -> None:
         assert fmt(now - 7200) == "2h ago"
 
 
-def test_compute_speeds_uses_differentials() -> None:
+def test_compute_speeds_uses_differentials(component_module: Any) -> None:
     """The first sample reports zero speed and stores state; the next yields a rate."""
-    with _tracker_env():
+    with component_module(_MODULE):
         mod = importlib.import_module(_MODULE)
         tab = _make_tracker(mod)
         compute = getattr(tab, _COMPUTE_SPEEDS)

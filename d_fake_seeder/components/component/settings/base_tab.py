@@ -254,6 +254,31 @@ class BaseSettingsTab(Component):
     def _load_settings(self) -> None:
         """Load current settings into UI widgets."""
 
+    def load_settings(self) -> None:
+        """Public entry point to (re)load this tab's settings into its widgets.
+
+        Delegates to the tab-specific ``_load_settings`` hook so callers outside
+        the class need not reach into a protected method.
+        """
+        self._load_settings()
+
+    def collect_settings(self) -> dict[str, Any]:
+        """Public entry point returning this tab's current settings values.
+
+        Delegates to the tab-specific ``_collect_settings`` hook.
+        """
+        return self._collect_settings()
+
+    def populate_language_dropdown(self) -> None:
+        """Populate this tab's language dropdown if it provides one.
+
+        Only the general tab implements ``_populate_language_dropdown``; for every
+        other tab this is a no-op, so callers need no ``hasattr`` guard.
+        """
+        impl = getattr(self, "_populate_language_dropdown", None)
+        if impl is not None:
+            impl()
+
     @abstractmethod
     def _setup_dependencies(self) -> None:
         """Set up dependencies between UI elements."""
@@ -685,7 +710,7 @@ class BaseSettingsTab(Component):
 
         return False
 
-    def print_coverage_report(self) -> None:
+    def _print_coverage_report(self) -> None:
         """Log a human-readable coverage report."""
         report = self.validate_handler_coverage()
 

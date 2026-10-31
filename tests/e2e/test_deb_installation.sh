@@ -5,27 +5,8 @@
 set -e
 set -u
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
-
-# Test tracking
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-log_info() {
-	echo -e "${GREEN}[INFO]${NC} $1"
-}
-
-log_error() {
-	echo -e "${RED}[ERROR]${NC} $1"
-}
-
-log_warning() {
-	echo -e "${YELLOW}[WARNING]${NC} $1"
-}
+# shellcheck source=SCRIPTDIR/e2e_common.sh
+source "$(dirname "${BASH_SOURCE[0]}")/e2e_common.sh"
 
 # Test: DEB package file exists
 test_deb_file_exists() {
@@ -336,24 +317,7 @@ main() {
 	test_package_query
 	test_uninstall
 
-	# Summary
-	echo ""
-	echo "=========================================="
-	echo "TEST SUMMARY"
-	echo "=========================================="
-	echo ""
-	echo "Tests Passed: $TESTS_PASSED"
-	echo "Tests Failed: $TESTS_FAILED"
-	echo "Total Tests:  $((TESTS_PASSED + TESTS_FAILED))"
-	echo ""
-
-	if [[ $TESTS_FAILED -eq 0 ]]; then
-		log_info "All tests passed! ✓"
-		exit 0
-	else
-		log_error "Some tests failed! ✗"
-		exit 1
-	fi
+	print_summary_and_exit
 }
 
 # Run tests
