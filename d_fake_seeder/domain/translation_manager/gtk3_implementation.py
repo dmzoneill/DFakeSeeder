@@ -13,7 +13,14 @@ from typing import Any, ClassVar
 
 from d_fake_seeder.lib.logger import logger
 
-from .common import LABEL, PLACEHOLDER, TITLE, TOOLTIP, TranslationManagerCommon, read_text_properties
+from .common import (
+    LABEL,
+    PLACEHOLDER,
+    TITLE,
+    TOOLTIP,
+    TranslationManagerCommon,
+    read_text_properties,
+)
 
 _GTK_ERRORS: tuple[type[BaseException], ...] = (RuntimeError, AttributeError, TypeError)
 

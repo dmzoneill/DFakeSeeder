@@ -13,7 +13,14 @@ from typing import Any, ClassVar
 from d_fake_seeder.lib.gi_gtk4 import Gtk
 from d_fake_seeder.lib.logger import logger
 
-from .common import LABEL, PLACEHOLDER, TITLE, TOOLTIP, TranslationManagerCommon, read_text_properties
+from .common import (
+    LABEL,
+    PLACEHOLDER,
+    TITLE,
+    TOOLTIP,
+    TranslationManagerCommon,
+    read_text_properties,
+)
 
 # Widget types scanned for translatable text, checked in order (first match wins)
 _SCAN_RULES: tuple[tuple[str, tuple[tuple[str, str], ...]], ...] = (

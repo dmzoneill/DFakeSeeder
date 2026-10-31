@@ -198,8 +198,9 @@ def test_gtk4_menus_refresh_on_switch(tm: SimpleNamespace) -> None:
         assert menu.remove_all.call_count == expected_calls
 
 
-def test_gtk4_options(tm: SimpleNamespace) -> None:
+def test_gtk4_options(tm: SimpleNamespace, tmp_path: Path) -> None:
     """GTK 4 keeps the config_file option and rejects unknown options."""
-    assert tm.gtk4(localedir=LOCALEDIR, config_file="/tmp/c.json").config_file == "/tmp/c.json"
+    config_file = str(tmp_path / "config.json")
+    assert tm.gtk4(localedir=LOCALEDIR, config_file=config_file).config_file == config_file
     with pytest.raises(TypeError):
         tm.gtk4(localedir=LOCALEDIR, bogus=1)
