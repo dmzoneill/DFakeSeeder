@@ -6,20 +6,17 @@ Provides collapsible sections for:
 - Trackers (All, individual trackers with counts)
 """
 
-# isort: skip_file
-
-# fmt: off
+from collections import namedtuple
 from typing import Any
-import gi
+from urllib.parse import urlparse
 
 from d_fake_seeder.components.component.base_component import Component
 from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.gi_gtk4 import Gtk
 from d_fake_seeder.lib.logger import logger
 
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk  # noqa: E402
-
-# fmt: on
+# Groups an expander with its listbox so the sidebar keeps one attribute per section.
+_Section = namedtuple("_Section", ["expander", "listbox"])
 
 
 class FilterItem(Gtk.Box):
@@ -58,6 +55,10 @@ class FilterItem(Gtk.Box):
         """Update the count badge."""
         self.count_label.set_label(str(count))
 
+    def get_filter_id(self) -> Any:
+        """Return the filter identifier this item represents."""
+        return self.filter_id
+
 
 class Sidebar(Component):
     """
@@ -87,15 +88,12 @@ class Sidebar(Component):
         self.sidebar_box.set_size_request(200, -1)
         self.sidebar_box.add_css_class("sidebar")
 
-        # Create states section
-        self._create_states_section()
+        # Track current selection (by filter dimension)
+        self.selection: dict[str, Any] = {"state": None, "tracker": None}
 
-        # Create trackers section
-        self._create_trackers_section()
-
-        # Track current selection
-        self.selected_state = None
-        self.selected_tracker = None
+        # Create collapsible sections
+        self.states_section = self._create_states_section()
+        self.trackers_section = self._create_trackers_section()
 
         logger.trace(
             "Sidebar.__init__() completed",
@@ -122,66 +120,71 @@ class Sidebar(Component):
             ("queued", _("Queued"), "view-list-symbolic"),
         ]
 
-    def _create_states_section(self) -> None:
-        """Create the collapsible States section."""
+    def _create_states_section(self) -> _Section:
+        """Create the collapsible States section and return its expander/listbox."""
         # Expander for states
-        self.states_expander = Gtk.Expander()
-        self.states_expander.set_label(self._("States"))
-        self.states_expander.set_expanded(True)
-        self.states_expander.add_css_class("sidebar-expander")
+        expander = Gtk.Expander()
+        expander.set_label(self._("States"))
+        expander.set_expanded(True)
+        expander.add_css_class("sidebar-expander")
 
         # ListBox for state items
-        self.states_listbox = Gtk.ListBox()
-        self.states_listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
-        self.states_listbox.add_css_class("sidebar-listbox")
+        listbox = Gtk.ListBox()
+        listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        listbox.add_css_class("sidebar-listbox")
 
         # Connect selection signal
         self.track_signal(
-            self.states_listbox,
-            self.states_listbox.connect("row-selected", self._on_state_selected),
+            listbox,
+            listbox.connect("row-selected", self._on_state_selected),
         )
 
         # Add to expander
-        self.states_expander.set_child(self.states_listbox)
-        self.sidebar_box.append(self.states_expander)
+        expander.set_child(listbox)
+        self.sidebar_box.append(expander)
 
+        section = _Section(expander, listbox)
+        self.states_section = section
         # Populate state items
         self._populate_states()
+        return section
 
-    def _create_trackers_section(self) -> None:
-        """Create the collapsible Trackers section."""
+    def _create_trackers_section(self) -> _Section:
+        """Create the collapsible Trackers section and return its expander/listbox."""
         # Expander for trackers
-        self.trackers_expander = Gtk.Expander()
-        self.trackers_expander.set_label(self._("Trackers"))
-        self.trackers_expander.set_expanded(True)
-        self.trackers_expander.add_css_class("sidebar-expander")
+        expander = Gtk.Expander()
+        expander.set_label(self._("Trackers"))
+        expander.set_expanded(True)
+        expander.add_css_class("sidebar-expander")
 
         # ListBox for tracker items
-        self.trackers_listbox = Gtk.ListBox()
-        self.trackers_listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
-        self.trackers_listbox.add_css_class("sidebar-listbox")
+        listbox = Gtk.ListBox()
+        listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        listbox.add_css_class("sidebar-listbox")
 
         # Connect selection signal
         self.track_signal(
-            self.trackers_listbox,
-            self.trackers_listbox.connect("row-selected", self._on_tracker_selected),
+            listbox,
+            listbox.connect("row-selected", self._on_tracker_selected),
         )
 
         # Add to expander
-        self.trackers_expander.set_child(self.trackers_listbox)
-        self.sidebar_box.append(self.trackers_expander)
+        expander.set_child(listbox)
+        self.sidebar_box.append(expander)
+
+        return _Section(expander, listbox)
 
     def _populate_states(self) -> Any:
         """Populate the states list with filter items."""
         # Clear existing
-        self.states_listbox.remove_all()
+        self.states_section.listbox.remove_all()
 
         # Add state filter items
         state_filters = self.get_state_filters()
         for state_id, label, icon in state_filters:
             count = self._get_state_count(state_id)
             filter_item = FilterItem(state_id, label, icon, count)
-            self.states_listbox.append(filter_item)
+            self.states_section.listbox.append(filter_item)
 
         logger.trace(
             f"Populated {len(state_filters)} state filters",
@@ -194,12 +197,12 @@ class Sidebar(Component):
             return
 
         # Clear existing
-        self.trackers_listbox.remove_all()
+        self.trackers_section.listbox.remove_all()
 
         # Add "All" tracker item
         all_count = len(self.model.torrent_list) if hasattr(self.model, "torrent_list") else 0
         all_item = FilterItem("all", self._("All"), "", all_count)
-        self.trackers_listbox.append(all_item)
+        self.trackers_section.listbox.append(all_item)
 
         # Get tracker statistics from model
         tracker_stats = self._get_tracker_stats()
@@ -208,12 +211,29 @@ class Sidebar(Component):
         for domain, count, has_error in tracker_stats:
             icon = "dialog-warning-symbolic" if has_error else ""
             filter_item = FilterItem(domain, domain, icon, count)
-            self.trackers_listbox.append(filter_item)
+            self.trackers_section.listbox.append(filter_item)
 
         logger.trace(
             f"Populated {len(tracker_stats) + 1} tracker filters",
             extra={"class_name": self.__class__.__name__},
         )
+
+    @staticmethod
+    def _state_matches(state_id: Any, active: Any, uploading: Any, progress: Any) -> bool:
+        """Return whether a torrent's derived state matches ``state_id``.
+
+        Unimplemented states (checking/error/queued) never match, preserving the
+        previous behaviour where they always counted as zero.
+        """
+        if state_id == "seeding":
+            return progress >= 100.0 and uploading
+        if state_id == "downloading":
+            return progress < 100.0 and active
+        if state_id == "active":
+            return bool(active)
+        if state_id == "paused":
+            return not active
+        return False
 
     def _get_state_count(self, state_id: Any) -> Any:
         """Get count of torrents matching a state."""
@@ -223,40 +243,14 @@ class Sidebar(Component):
         if state_id == "all":
             return len(self.model.torrent_list)
 
-        # Count torrents by derived state (based on available torrent properties)
+        # Count torrents whose derived state matches
         count = 0
         for torrent in self.model.torrent_list:
-            # Get torrent attributes
             active = getattr(torrent, "active", True)
             uploading = getattr(torrent, "uploading", False)
             progress = getattr(torrent, "progress", 0.0)
-
-            # Derive state from properties
-            if state_id == "seeding":
-                # Seeding: progress is 100% and uploading
-                if progress >= 100.0 and uploading:
-                    count += 1
-            elif state_id == "downloading":
-                # Downloading: progress < 100%
-                if progress < 100.0 and active:
-                    count += 1
-            elif state_id == "active":
-                # Active: active flag is true
-                if active:
-                    count += 1
-            elif state_id == "paused":
-                # Paused: active flag is false
-                if not active:
-                    count += 1
-            elif state_id == "checking":
-                # Checking: Not implemented yet, always 0
-                pass
-            elif state_id == "error":
-                # Error: Not implemented yet, always 0
-                pass
-            elif state_id == "queued":
-                # Queued: Not implemented yet, always 0
-                pass
+            if self._state_matches(state_id, active, uploading, progress):
+                count += 1
 
         return count
 
@@ -270,7 +264,7 @@ class Sidebar(Component):
         if not self.model or not hasattr(self.model, "torrent_list"):
             return []
 
-        tracker_stats = {}
+        tracker_stats: dict[str, dict[str, Any]] = {}
 
         for torrent in self.model.torrent_list:
             # Get trackers from torrent file
@@ -302,8 +296,6 @@ class Sidebar(Component):
 
     def _extract_domain(self, url: Any) -> Any:
         """Extract domain from tracker URL."""
-        from urllib.parse import urlparse
-
         try:
             parsed = urlparse(url)
             return parsed.hostname or url
@@ -316,7 +308,7 @@ class Sidebar(Component):
             return
 
         filter_item = row.get_child()
-        state_id = filter_item.filter_id
+        state_id = filter_item.get_filter_id()
 
         logger.trace(
             f"State selected: {state_id}",
@@ -324,16 +316,17 @@ class Sidebar(Component):
         )
 
         # Clear tracker selection
-        self.trackers_listbox.unselect_all()
+        self.trackers_section.listbox.unselect_all()
 
-        # Apply filter
+        # Apply filter (model is duck-typed; a local keeps mypy off the base None type)
+        model: Any = self.model
         if state_id == "all":
-            self.model.clear_filter("state")  # type: ignore[attr-defined]
+            model.clear_filter("state")
         else:
-            self.model.set_filter_criteria("state", state_id)  # type: ignore[attr-defined]
+            model.set_filter_criteria("state", state_id)
 
-        self.selected_state = state_id
-        self.selected_tracker = None
+        self.selection["state"] = state_id
+        self.selection["tracker"] = None
 
     def _on_tracker_selected(self, listbox: Any, row: Any) -> None:
         """Handle tracker filter selection."""
@@ -341,7 +334,7 @@ class Sidebar(Component):
             return
 
         filter_item = row.get_child()
-        tracker_id = filter_item.filter_id
+        tracker_id = filter_item.get_filter_id()
 
         logger.trace(
             f"Tracker selected: {tracker_id}",
@@ -349,70 +342,82 @@ class Sidebar(Component):
         )
 
         # Clear state selection
-        self.states_listbox.unselect_all()
+        self.states_section.listbox.unselect_all()
 
-        # Apply filter
+        # Apply filter (model is duck-typed; a local keeps mypy off the base None type)
+        model: Any = self.model
         if tracker_id == "all":
-            self.model.clear_filter("tracker")  # type: ignore[attr-defined]
+            model.clear_filter("tracker")
         else:
-            self.model.set_filter_criteria("tracker", tracker_id)  # type: ignore[attr-defined]
+            model.set_filter_criteria("tracker", tracker_id)
 
-        self.selected_tracker = tracker_id
-        self.selected_state = None
+        self.selection["tracker"] = tracker_id
+        self.selection["state"] = None
 
-    def update_counts(self) -> None:
-        """Update all filter item counts in-place, only rebuilding trackers when the set changes."""
-        if not self.model:
-            return
-
-        # Update state counts in-place
+    def _update_state_counts(self) -> None:
+        """Update the state rows' counts in-place."""
         state_filters = self.get_state_filters()
         for i in range(len(state_filters)):
-            row = self.states_listbox.get_row_at_index(i)
+            row = self.states_section.listbox.get_row_at_index(i)
             if row:
                 filter_item = row.get_child()
                 count = self._get_state_count(filter_item.filter_id)
                 filter_item.update_count(count)
 
-        # Update tracker counts in-place — only rebuild if tracker list changed
-        current_stats = self._get_tracker_stats()
-        current_domains = {domain for domain, _, _ in current_stats}
-
-        # Check existing tracker items (skip index 0 which is "All")
+    def _existing_tracker_domains(self) -> set:
+        """Return the tracker domains currently shown (excluding the "All" row)."""
         existing_domains = set()
         i = 1
         while True:
-            row = self.trackers_listbox.get_row_at_index(i)
+            row = self.trackers_section.listbox.get_row_at_index(i)
             if not row:
                 break
             filter_item = row.get_child()
             if filter_item and hasattr(filter_item, "filter_id") and filter_item.filter_id != "all":
                 existing_domains.add(filter_item.filter_id)
             i += 1
+        return existing_domains
 
-        if current_domains != existing_domains:
+    def _update_tracker_counts_in_place(self, current_stats: Any) -> None:
+        """Update the "All" row and each tracker row's count without rebuilding."""
+        all_count = len(self.model.torrent_list) if self.model and hasattr(self.model, "torrent_list") else 0
+        row = self.trackers_section.listbox.get_row_at_index(0)
+        if row:
+            filter_item = row.get_child()
+            if filter_item:
+                filter_item.update_count(all_count)
+
+        stats_by_domain = {domain: count for domain, count, _ in current_stats}
+        j = 1
+        while True:
+            row = self.trackers_section.listbox.get_row_at_index(j)
+            if not row:
+                break
+            filter_item = row.get_child()
+            if filter_item and hasattr(filter_item, "filter_id"):
+                count = stats_by_domain.get(filter_item.filter_id, 0)
+                filter_item.update_count(count)
+            j += 1
+
+    def _update_tracker_counts(self) -> None:
+        """Update tracker counts in-place, rebuilding only when the tracker set changed."""
+        current_stats = self._get_tracker_stats()
+        current_domains = {domain for domain, _, _ in current_stats}
+
+        if current_domains != self._existing_tracker_domains():
             # Tracker list changed (torrent added/removed) — full rebuild needed
             self._populate_trackers()
         else:
             # Only update counts in-place — no widget destruction
-            all_count = len(self.model.torrent_list) if hasattr(self.model, "torrent_list") else 0
-            row = self.trackers_listbox.get_row_at_index(0)
-            if row:
-                filter_item = row.get_child()
-                if filter_item:
-                    filter_item.update_count(all_count)
+            self._update_tracker_counts_in_place(current_stats)
 
-            stats_by_domain = {domain: count for domain, count, _ in current_stats}
-            j = 1
-            while True:
-                row = self.trackers_listbox.get_row_at_index(j)
-                if not row:
-                    break
-                filter_item = row.get_child()
-                if filter_item and hasattr(filter_item, "filter_id"):
-                    count = stats_by_domain.get(filter_item.filter_id, 0)
-                    filter_item.update_count(count)
-                j += 1
+    def update_counts(self) -> None:
+        """Update all filter item counts in-place, only rebuilding trackers when the set changes."""
+        if not self.model:
+            return
+
+        self._update_state_counts()
+        self._update_tracker_counts()
 
     def refresh_trackers(self) -> None:
         """Rebuild tracker list (when trackers change)."""
@@ -424,8 +429,8 @@ class Sidebar(Component):
         self.model = model
 
         # Update section headers with proper translations now that model is available
-        self.states_expander.set_label(self._("States"))
-        self.trackers_expander.set_label(self._("Trackers"))
+        self.states_section.expander.set_label(self._("States"))
+        self.trackers_section.expander.set_label(self._("Trackers"))
 
         # Rebuild state labels with proper translations now that model is available
         self._populate_states()
@@ -468,8 +473,8 @@ class Sidebar(Component):
             extra={"class_name": self.__class__.__name__},
         )
         # Update section headers
-        self.states_expander.set_label(self._("States"))
-        self.trackers_expander.set_label(self._("Trackers"))
+        self.states_section.expander.set_label(self._("States"))
+        self.trackers_section.expander.set_label(self._("Trackers"))
 
         # Rebuild states list with translated labels
         self._populate_states()
@@ -480,4 +485,3 @@ class Sidebar(Component):
     def model_selection_changed(self, source: Any, model: Any, torrent: Any) -> Any:
         """Handle torrent selection changes (compatibility with States interface)."""
         # Sidebar doesn't need to respond to torrent selection
-        pass
