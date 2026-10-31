@@ -318,11 +318,12 @@ class Sidebar(Component):
         # Clear tracker selection
         self.trackers_section.listbox.unselect_all()
 
-        # Apply filter
+        # Apply filter (model is duck-typed; a local keeps mypy off the base None type)
+        model: Any = self.model
         if state_id == "all":
-            self.model.clear_filter("state")  # type: ignore[attr-defined]
+            model.clear_filter("state")
         else:
-            self.model.set_filter_criteria("state", state_id)  # type: ignore[attr-defined]
+            model.set_filter_criteria("state", state_id)
 
         self.selection["state"] = state_id
         self.selection["tracker"] = None
@@ -343,11 +344,12 @@ class Sidebar(Component):
         # Clear state selection
         self.states_section.listbox.unselect_all()
 
-        # Apply filter
+        # Apply filter (model is duck-typed; a local keeps mypy off the base None type)
+        model: Any = self.model
         if tracker_id == "all":
-            self.model.clear_filter("tracker")  # type: ignore[attr-defined]
+            model.clear_filter("tracker")
         else:
-            self.model.set_filter_criteria("tracker", tracker_id)  # type: ignore[attr-defined]
+            model.set_filter_criteria("tracker", tracker_id)
 
         self.selection["tracker"] = tracker_id
         self.selection["state"] = None
