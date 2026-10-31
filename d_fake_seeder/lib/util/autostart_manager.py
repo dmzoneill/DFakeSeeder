@@ -68,7 +68,7 @@ def enable_autostart() -> bool:
             )
 
         return True
-    except Exception as e:  # noqa: BLE001  # pylint: disable=broad-exception-caught
+    except OSError as e:
         logger.error(f"Failed to enable autostart: {e}", "AutostartManager", exc_info=True)
 
         # Notify user of failure
@@ -104,7 +104,7 @@ def disable_autostart() -> bool:
                 )
 
         return True
-    except Exception as e:  # noqa: BLE001  # pylint: disable=broad-exception-caught
+    except OSError as e:
         logger.error(f"Failed to disable autostart: {e}", "AutostartManager", exc_info=True)
 
         # Notify user of failure
