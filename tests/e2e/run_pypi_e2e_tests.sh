@@ -144,6 +144,7 @@ run_launch_tests() {
 	if $CONTAINER_ENGINE run --rm \
 		-v "$DIST_DIR:/packages:ro" \
 		-v "$SCRIPT_DIR/test_pypi_install.sh:/test_pypi_install.sh:ro" \
+		-v "$SCRIPT_DIR/e2e_common.sh:/e2e_common.sh:ro" \
 		"$TEST_IMAGE" \
 		bash -c "
             set -e
