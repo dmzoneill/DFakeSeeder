@@ -4,18 +4,12 @@ Options tab for torrent details.
 Displays editable torrent options with dynamic widgets based on configuration.
 """
 
-# fmt: off
 from typing import Any
 
-import gi
+from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
 
 from .base_tab import BaseTorrentTab
 from .tab_mixins import DataUpdateMixin, UIUtilityMixin
-
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk  # noqa: E402
-
-# fmt: on
 
 
 class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
@@ -65,12 +59,12 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                     elif child.get_parent():
                         # Remove from actual parent if different
                         child.get_parent().remove(child)
-                except Exception as e:
+                except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
                     self.logger.error(f"Error removing options grid child: {e}")
 
             self._options_grid_children = []
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error clearing options tab content: {e}")
 
     def update_content(self, torrent: Any) -> None:
@@ -111,7 +105,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             # Create dynamic widgets for each editable attribute
             self._create_option_widgets(torrent, edit_widgets)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error updating options tab content: {e}")
 
     def _get_edit_widgets_config(self) -> dict:
@@ -125,7 +119,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if hasattr(self.settings, "editwidgets"):
                 return self.settings.editwidgets  # type: ignore[no-any-return]
             return {}
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error getting edit widgets config: {e}")
             return {}
 
@@ -189,7 +183,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 if col == 2:
                     row += 1
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error creating option widgets: {e}")
 
     def _create_dynamic_widget(self, torrent: Any, attribute: str, widget_type: str) -> Any:
@@ -252,9 +246,9 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 dynamic_widget = widget_class()
                 dynamic_widget.set_hexpand(False)
 
-            return dynamic_widget  # type: ignore[no-any-return]
+            return dynamic_widget
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error creating dynamic widget for {attribute}: {e}")
             return None
 
@@ -279,7 +273,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             return allowed_widgets.get(widget_type)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error getting widget class for {widget_type}: {e}")
             return None
 
@@ -303,7 +297,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 widget.connect("state-set", self._on_switch_value_changed, torrent, attribute),
             )
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error configuring switch widget for {attribute}: {e}")
 
     def _configure_adjustment_widget(self, widget: Any, torrent: Any, attribute: str) -> None:
@@ -341,7 +335,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                             window.set_focus(spinbutton)
                         spinbutton.grab_focus()
                         self.logger.trace(f"SpinButton {attribute} focused on activate")
-                    except Exception as e:
+                    except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
                         self.logger.error(f"Error focusing SpinButton on activate: {e}")
 
                 self.track_signal(
@@ -349,7 +343,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                     widget.connect("activate", on_spinbutton_activate),
                 )
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error configuring adjustment widget for {attribute}: {e}")
 
     def _create_option_label(self, attribute: str) -> Gtk.Label:
@@ -413,12 +407,8 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 "force_start": translate_func("Force Start"),
             }
 
-            # Use mapped display name or fallback to translated attribute name
-            if attribute in attribute_display_map:
-                display_text = attribute_display_map[attribute]
-            else:
-                # Fallback: translate the attribute name directly
-                display_text = translate_func(attribute.replace("_", " ").title())
+            # Use mapped display name or fallback to the translated attribute name
+            display_text = attribute_display_map.get(attribute, translate_func(attribute.replace("_", " ").title()))
 
             label = Gtk.Label()
             label.set_text(display_text)
@@ -428,7 +418,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             label.set_halign(Gtk.Align.START)
             return label
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error creating option label for {attribute}: {e}")
             return Gtk.Label()
 
@@ -448,7 +438,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 self._options_grid.attach(message_label, 0, 0, 2, 1)
                 self._options_grid_children.append(message_label)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error showing no options message: {e}")
 
     # Signal handlers
@@ -465,7 +455,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         try:
             setattr(torrent, attribute, state)
             self.logger.trace(f"Updated {attribute} to {state}")
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error updating switch value for {attribute}: {e}")
 
     def _on_adjustment_value_changed(self, widget: Any, torrent: Any, attribute: str) -> None:
@@ -482,7 +472,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             value = adjustment.get_value()
             setattr(torrent, attribute, value)
             self.logger.trace(f"Updated {attribute} to {value}")
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error updating adjustment value for {attribute}: {e}")
 
     def get_option_count(self) -> int:
@@ -495,7 +485,7 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         try:
             edit_widgets = self._get_edit_widgets_config()
             return len(edit_widgets)
-        except Exception:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error):
             return 0
 
     def on_language_changed(self, source: Any = None, new_language: Any = None) -> None:
@@ -511,5 +501,5 @@ class OptionsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             # Refresh content to update all labels with new translations
             if hasattr(self, "_current_torrent") and self._current_torrent:
                 self.update_content(self._current_torrent)
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error handling language change in options tab: {e}")
