@@ -274,7 +274,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             import datetime
 
             if isinstance(date_value, (int, float)):
-                dt = datetime.datetime.fromtimestamp(date_value)
+                dt = datetime.datetime.fromtimestamp(date_value, tz=datetime.timezone.utc).astimezone()
                 return dt.strftime("%Y-%m-%d %H:%M:%S")
 
             return str(date_value)
