@@ -19,46 +19,8 @@
                     <property name="margin-end">15</property>
                     <property name="margin-top">15</property>
                     <property name="margin-bottom">15</property>
-                    <child>
-                        <object class="GtkBox" id="details_empty_state">
-                            <property name="visible">False</property>
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">20</property>
-                            <property name="halign">center</property>
-                            <property name="valign">center</property>
-                            <property name="vexpand">True</property>
-                            <child>
-                                <object class="GtkImage">
-                                    <property name="icon-name">document-properties-symbolic</property>
-                                    <property name="pixel-size">128</property>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">No Torrent Selected</property>
-                                    <property name="wrap">True</property>
-                                    <attributes>
-                                        <attribute name="scale" value="1.5"/>
-                                        <attribute name="weight" value="bold"/>
-                                    </attributes>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Select a torrent to view its details</property>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                        </object>
-                    </child>
+                    <dfs-use template="empty-state" id="details_empty_state" icon="document-properties-symbolic"
+                             title="No Torrent Selected" subtitle="Select a torrent to view its details"/>
                     <child>
                         <object class="GtkGrid" id="details_grid">
                             <property name="visible">True</property>
@@ -71,23 +33,7 @@
             </child>
         </object>
     </child>
-    <child type="tab">
-        <object class="GtkBox">
-            <property name="spacing">5</property>
-            <property name="orientation">horizontal</property>
-            <property name="margin-start">8</property>
-            <child>
-                <object class="GtkImage">
-                    <property name="icon-name">document-properties-symbolic</property>
-                </object>
-            </child>
-            <child>
-                <object class="GtkLabel">
-                    <property name="label" translatable="yes">Details</property>
-                </object>
-            </child>
-        </object>
-    </child>
+    <dfs-use template="notebook-tab-label" icon="document-properties-symbolic" label="Details"/>
 
     <child>
         <object class="GtkScrolledWindow">
@@ -102,67 +48,13 @@
                     <property name="margin-end">15</property>
                     <property name="margin-top">15</property>
                     <property name="margin-bottom">15</property>
-                    <child>
-                        <object class="GtkBox" id="status_empty_state">
-                            <property name="visible">False</property>
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">20</property>
-                            <property name="halign">center</property>
-                            <property name="valign">center</property>
-                            <property name="vexpand">True</property>
-                            <child>
-                                <object class="GtkImage">
-                                    <property name="icon-name">view-list-symbolic</property>
-                                    <property name="pixel-size">128</property>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">No Torrent Selected</property>
-                                    <property name="wrap">True</property>
-                                    <attributes>
-                                        <attribute name="scale" value="1.5"/>
-                                        <attribute name="weight" value="bold"/>
-                                    </attributes>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Select a torrent to view its status information</property>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                        </object>
-                    </child>
+                    <dfs-use template="empty-state" id="status_empty_state" icon="view-list-symbolic"
+                             title="No Torrent Selected" subtitle="Select a torrent to view its status information"/>
                 </object>
             </child>
         </object>
     </child>
-    <child type="tab">
-        <object class="GtkBox">
-            <property name="spacing">5</property>
-            <property name="orientation">horizontal</property>
-            <property name="margin-start">8</property>
-            <child>
-                <object class="GtkImage">
-                    <property name="icon-name">view-list-symbolic</property>
-                </object>
-            </child>
-            <child>
-                <object class="GtkLabel">
-                    <property name="label" translatable="yes">Status</property>
-                </object>
-            </child>
-        </object>
-    </child>
+    <dfs-use template="notebook-tab-label" icon="view-list-symbolic" label="Status"/>
 
     <child>
         <object class="GtkScrolledWindow">
@@ -179,46 +71,8 @@
                     <property name="margin-end">15</property>
                     <property name="margin-top">15</property>
                     <property name="margin-bottom">15</property>
-                    <child>
-                        <object class="GtkBox" id="options_empty_state">
-                            <property name="visible">False</property>
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">20</property>
-                            <property name="halign">center</property>
-                            <property name="valign">center</property>
-                            <property name="vexpand">True</property>
-                            <child>
-                                <object class="GtkImage">
-                                    <property name="icon-name">emblem-system-symbolic</property>
-                                    <property name="pixel-size">128</property>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">No Torrent Selected</property>
-                                    <property name="wrap">True</property>
-                                    <attributes>
-                                        <attribute name="scale" value="1.5"/>
-                                        <attribute name="weight" value="bold"/>
-                                    </attributes>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Select a torrent to configure its options</property>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                        </object>
-                    </child>
+                    <dfs-use template="empty-state" id="options_empty_state" icon="emblem-system-symbolic"
+                             title="No Torrent Selected" subtitle="Select a torrent to configure its options"/>
                     <child>
                         <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="options.xml"/>
                     </child>
@@ -226,23 +80,7 @@
             </child>
         </object>
     </child>    
-    <child type="tab">
-        <object class="GtkBox">
-            <property name="spacing">5</property>
-            <property name="orientation">horizontal</property>
-            <property name="margin-start">8</property>
-            <child>
-                <object class="GtkImage">
-                    <property name="icon-name">emblem-system-symbolic</property>
-                </object>
-            </child>
-            <child>
-                <object class="GtkLabel">
-                    <property name="label" translatable="yes">Options</property>
-                </object>
-            </child>
-        </object>
-    </child>
+    <dfs-use template="notebook-tab-label" icon="emblem-system-symbolic" label="Options"/>
 
     <child>
         <object class="GtkScrolledWindow">
@@ -257,67 +95,13 @@
                     <property name="margin-end">15</property>
                     <property name="margin-top">15</property>
                     <property name="margin-bottom">15</property>
-                    <child>
-                        <object class="GtkBox" id="files_empty_state">
-                            <property name="visible">False</property>
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">20</property>
-                            <property name="halign">center</property>
-                            <property name="valign">center</property>
-                            <property name="vexpand">True</property>
-                            <child>
-                                <object class="GtkImage">
-                                    <property name="icon-name">folder-documents-symbolic</property>
-                                    <property name="pixel-size">128</property>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">No Torrent Selected</property>
-                                    <property name="wrap">True</property>
-                                    <attributes>
-                                        <attribute name="scale" value="1.5"/>
-                                        <attribute name="weight" value="bold"/>
-                                    </attributes>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Select a torrent to view its files</property>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                        </object>
-                    </child>
+                    <dfs-use template="empty-state" id="files_empty_state" icon="folder-documents-symbolic"
+                             title="No Torrent Selected" subtitle="Select a torrent to view its files"/>
                 </object>
             </child>
         </object>
     </child>
-    <child type="tab">
-        <object class="GtkBox">
-            <property name="spacing">5</property>
-            <property name="orientation">horizontal</property>
-            <property name="margin-start">8</property>
-            <child>
-                <object class="GtkImage">
-                    <property name="icon-name">folder-documents-symbolic</property>
-                </object>
-            </child>
-            <child>
-                <object class="GtkLabel">
-                    <property name="label" translatable="yes">Files</property>
-                </object>
-            </child>
-        </object>
-    </child>
+    <dfs-use template="notebook-tab-label" icon="folder-documents-symbolic" label="Files"/>
 
     <child>
         <object class="GtkScrolledWindow">
@@ -332,46 +116,8 @@
                     <property name="margin-end">15</property>
                     <property name="margin-top">15</property>
                     <property name="margin-bottom">15</property>
-                    <child>
-                        <object class="GtkBox" id="peers_empty_state">
-                            <property name="visible">False</property>
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">20</property>
-                            <property name="halign">center</property>
-                            <property name="valign">center</property>
-                            <property name="vexpand">True</property>
-                            <child>
-                                <object class="GtkImage">
-                                    <property name="icon-name">network-workgroup-symbolic</property>
-                                    <property name="pixel-size">128</property>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">No Torrent Selected</property>
-                                    <property name="wrap">True</property>
-                                    <attributes>
-                                        <attribute name="scale" value="1.5"/>
-                                        <attribute name="weight" value="bold"/>
-                                    </attributes>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Select a torrent to view its peers</property>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                        </object>
-                    </child>
+                    <dfs-use template="empty-state" id="peers_empty_state" icon="network-workgroup-symbolic"
+                             title="No Torrent Selected" subtitle="Select a torrent to view its peers"/>
                     <child>
                         <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="peers.xml"/>
                     </child>
@@ -379,23 +125,7 @@
             </child>
         </object>
     </child>
-    <child type="tab">
-        <object class="GtkBox">
-            <property name="spacing">5</property>
-            <property name="orientation">horizontal</property>
-            <property name="margin-start">8</property>
-            <child>
-                <object class="GtkImage">
-                    <property name="icon-name">network-workgroup-symbolic</property>
-                </object>
-            </child>
-            <child>
-                <object class="GtkLabel">
-                    <property name="label" translatable="yes">Peers</property>
-                </object>
-            </child>
-        </object>
-    </child>
+    <dfs-use template="notebook-tab-label" icon="network-workgroup-symbolic" label="Peers"/>
 
     <child>
         <object class="GtkScrolledWindow">
@@ -417,23 +147,7 @@
             </child>
         </object>
     </child>
-    <child type="tab">
-        <object class="GtkBox">
-            <property name="spacing">5</property>
-            <property name="orientation">horizontal</property>
-            <property name="margin-start">8</property>
-            <child>
-                <object class="GtkImage">
-                    <property name="icon-name">network-receive-symbolic</property>
-                </object>
-            </child>
-            <child>
-                <object class="GtkLabel">
-                    <property name="label" translatable="yes">Incoming</property>
-                </object>
-            </child>
-        </object>
-    </child>
+    <dfs-use template="notebook-tab-label" icon="network-receive-symbolic" label="Incoming"/>
 
     <child>
         <object class="GtkScrolledWindow">
@@ -455,23 +169,7 @@
             </child>
         </object>
     </child>
-    <child type="tab">
-        <object class="GtkBox">
-            <property name="spacing">5</property>
-            <property name="orientation">horizontal</property>
-            <property name="margin-start">8</property>
-            <child>
-                <object class="GtkImage">
-                    <property name="icon-name">network-transmit-symbolic</property>
-                </object>
-            </child>
-            <child>
-                <object class="GtkLabel">
-                    <property name="label" translatable="yes">Outgoing</property>
-                </object>
-            </child>
-        </object>
-    </child>
+    <dfs-use template="notebook-tab-label" icon="network-transmit-symbolic" label="Outgoing"/>
 
     <child>
         <object class="GtkScrolledWindow">
@@ -486,66 +184,12 @@
                     <property name="margin-end">15</property>
                     <property name="margin-top">15</property>
                     <property name="margin-bottom">15</property>
-                    <child>
-                        <object class="GtkBox" id="trackers_empty_state">
-                            <property name="visible">False</property>
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">20</property>
-                            <property name="halign">center</property>
-                            <property name="valign">center</property>
-                            <property name="vexpand">True</property>
-                            <child>
-                                <object class="GtkImage">
-                                    <property name="icon-name">network-server-symbolic</property>
-                                    <property name="pixel-size">128</property>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">No Torrent Selected</property>
-                                    <property name="wrap">True</property>
-                                    <attributes>
-                                        <attribute name="scale" value="1.5"/>
-                                        <attribute name="weight" value="bold"/>
-                                    </attributes>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Select a torrent to view its trackers</property>
-                                    <style>
-                                        <class name="dim-label"/>
-                                    </style>
-                                </object>
-                            </child>
-                        </object>
-                    </child>
+                    <dfs-use template="empty-state" id="trackers_empty_state" icon="network-server-symbolic"
+                             title="No Torrent Selected" subtitle="Select a torrent to view its trackers"/>
                 </object>
             </child>
         </object>
     </child>
-    <child type="tab">
-        <object class="GtkBox">
-            <property name="spacing">5</property>
-            <property name="orientation">horizontal</property>
-            <property name="margin-start">8</property>
-            <child>
-                <object class="GtkImage">
-                    <property name="icon-name">network-server-symbolic</property>
-                </object>
-            </child>
-            <child>
-                <object class="GtkLabel">
-                    <property name="label" translatable="yes">Trackers</property>
-                </object>
-            </child>
-        </object>
-    </child>
+    <dfs-use template="notebook-tab-label" icon="network-server-symbolic" label="Trackers"/>
 
 </object>
