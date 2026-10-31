@@ -5,23 +5,18 @@ Provides configuration interface for the inbuilt BitTorrent tracker.
 Manages tracker server settings, self-tracking options, and security settings.
 """
 
-# fmt: off
-from typing import Any, Dict
+from typing import Any, ClassVar
 
-import gi
+from d_fake_seeder.lib.gi_gtk4 import GLib
 
-gi.require_version("Gtk", "4.0")
-
-from .base_tab import BaseSettingsTab  # noqa: E402
-
-# fmt: on
+from .base_tab import BaseSettingsTab
 
 
 class TrackerSettingsTab(BaseSettingsTab):
     """Tracker configuration tab"""
 
     # Note: Tracker settings use manual loading/saving due to nested structure
-    WIDGET_MAPPINGS: list = []
+    WIDGET_MAPPINGS: ClassVar[list] = []
 
     @property
     def tab_name(self) -> str:
@@ -94,198 +89,137 @@ class TrackerSettingsTab(BaseSettingsTab):
     def _load_settings(self) -> None:
         """Load tracker settings from configuration."""
         try:
-            # Main enable
-            if self._widgets["tracker_enabled"]:
-                value = self.app_settings.get("tracker_settings.enabled", False)
-                self._widgets["tracker_enabled"].set_active(value)
-
-            # HTTP Settings
-            if self._widgets["http_enabled"]:
-                value = self.app_settings.get("tracker_settings.http_enabled", True)
-                self._widgets["http_enabled"].set_active(value)
-
-            if self._widgets["http_port"]:
-                value = self.app_settings.get("tracker_settings.http_port", 6969)
-                self._widgets["http_port"].set_value(value)
-
-            if self._widgets["bind_address"]:
-                value = self.app_settings.get("tracker_settings.bind_address", "0.0.0.0")
-                self._widgets["bind_address"].set_text(value)
-
-            # UDP Settings
-            if self._widgets["udp_enabled"]:
-                value = self.app_settings.get("tracker_settings.udp_enabled", False)
-                self._widgets["udp_enabled"].set_active(value)
-
-            if self._widgets["udp_port"]:
-                value = self.app_settings.get("tracker_settings.udp_port", 6969)
-                self._widgets["udp_port"].set_value(value)
-
-            # Announce Settings
-            if self._widgets["announce_interval"]:
-                value = self.app_settings.get("tracker_settings.announce_interval_seconds", 1800)
-                self._widgets["announce_interval"].set_value(value)
-
-            if self._widgets["peer_timeout_multiplier"]:
-                value = self.app_settings.get("tracker_settings.peer_timeout_multiplier", 3)
-                self._widgets["peer_timeout_multiplier"].set_value(value)
-
-            if self._widgets["max_peers_per_announce"]:
-                value = self.app_settings.get("tracker_settings.max_peers_per_announce", 50)
-                self._widgets["max_peers_per_announce"].set_value(value)
-
-            # Features
-            if self._widgets["enable_scrape"]:
-                value = self.app_settings.get("tracker_settings.enable_scrape", True)
-                self._widgets["enable_scrape"].set_active(value)
-
-            if self._widgets["private_mode"]:
-                value = self.app_settings.get("tracker_settings.private_mode", False)
-                self._widgets["private_mode"].set_active(value)
-
-            if self._widgets["log_announces"]:
-                value = self.app_settings.get("tracker_settings.log_announces", False)
-                self._widgets["log_announces"].set_active(value)
-
-            # Self-Tracking
-            if self._widgets["self_tracking_enabled"]:
-                value = self.app_settings.get("tracker_settings.self_tracking.enabled", True)
-                self._widgets["self_tracking_enabled"].set_active(value)
-
-            if self._widgets["announce_with_seeders"]:
-                value = self.app_settings.get("tracker_settings.self_tracking.announce_with_seeders", True)
-                self._widgets["announce_with_seeders"].set_active(value)
-
-            if self._widgets["sync_on_add"]:
-                value = self.app_settings.get("tracker_settings.self_tracking.sync_on_add", True)
-                self._widgets["sync_on_add"].set_active(value)
-
-            if self._widgets["sync_on_remove"]:
-                value = self.app_settings.get("tracker_settings.self_tracking.sync_on_remove", True)
-                self._widgets["sync_on_remove"].set_active(value)
-
-            # Security
-            if self._widgets["rate_limit"]:
-                value = self.app_settings.get("tracker_settings.security.rate_limit_per_minute", 60)
-                self._widgets["rate_limit"].set_value(value)
-
-            if self._widgets["ip_whitelist"]:
-                buffer = self._widgets["ip_whitelist"].get_buffer()
-                whitelist = self.app_settings.get("tracker_settings.security.ip_whitelist", [])
-                buffer.set_text("\n".join(whitelist))
-
-            if self._widgets["ip_blacklist"]:
-                buffer = self._widgets["ip_blacklist"].get_buffer()
-                blacklist = self.app_settings.get("tracker_settings.security.ip_blacklist", [])
-                buffer.set_text("\n".join(blacklist))
-
+            self._load_toggle_settings()
+            self._load_numeric_settings()
+            self._load_address_settings()
             self.logger.trace(
                 "Tracker settings loaded successfully",
                 extra={"class_name": self.__class__.__name__},
             )
-
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(
                 f"Failed to load tracker settings: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _collect_settings(self) -> Dict[str, Any]:
+    def _load_toggle_settings(self) -> None:
+        """Load the on/off switch widgets."""
+        toggles = [
+            ("tracker_enabled", "tracker_settings.enabled", False),
+            ("http_enabled", "tracker_settings.http_enabled", True),
+            ("udp_enabled", "tracker_settings.udp_enabled", False),
+            ("enable_scrape", "tracker_settings.enable_scrape", True),
+            ("private_mode", "tracker_settings.private_mode", False),
+            ("log_announces", "tracker_settings.log_announces", False),
+            ("self_tracking_enabled", "tracker_settings.self_tracking.enabled", True),
+            ("announce_with_seeders", "tracker_settings.self_tracking.announce_with_seeders", True),
+            ("sync_on_add", "tracker_settings.self_tracking.sync_on_add", True),
+            ("sync_on_remove", "tracker_settings.self_tracking.sync_on_remove", True),
+        ]
+        for widget_id, key, default in toggles:
+            widget = self._widgets[widget_id]
+            if widget:
+                widget.set_active(self.app_settings.get(key, default))
+
+    def _load_numeric_settings(self) -> None:
+        """Load the spin-button widgets."""
+        numerics = [
+            ("http_port", "tracker_settings.http_port", 6969),
+            ("udp_port", "tracker_settings.udp_port", 6969),
+            ("announce_interval", "tracker_settings.announce_interval_seconds", 1800),
+            ("peer_timeout_multiplier", "tracker_settings.peer_timeout_multiplier", 3),
+            ("max_peers_per_announce", "tracker_settings.max_peers_per_announce", 50),
+            ("rate_limit", "tracker_settings.security.rate_limit_per_minute", 60),
+        ]
+        for widget_id, key, default in numerics:
+            widget = self._widgets[widget_id]
+            if widget:
+                widget.set_value(self.app_settings.get(key, default))
+
+    def _load_address_settings(self) -> None:
+        """Load the bind-address entry and the IP whitelist/blacklist buffers."""
+        if self._widgets["bind_address"]:
+            value = self.app_settings.get("tracker_settings.bind_address", "0.0.0.0")
+            self._widgets["bind_address"].set_text(value)
+
+        ip_lists = [
+            ("ip_whitelist", "tracker_settings.security.ip_whitelist"),
+            ("ip_blacklist", "tracker_settings.security.ip_blacklist"),
+        ]
+        for widget_id, key in ip_lists:
+            if self._widgets[widget_id]:
+                buffer = self._widgets[widget_id].get_buffer()
+                buffer.set_text("\n".join(self.app_settings.get(key, [])))
+
+    def _collect_settings(self) -> dict[str, Any]:
         """Collect current tracker settings from UI widgets."""
-        settings: Dict[str, Any] = {}
+        settings: dict[str, Any] = {}
 
         try:
-            # Main enable
-            if self._widgets.get("tracker_enabled"):
-                settings["tracker_settings.enabled"] = self._widgets["tracker_enabled"].get_active()
-
-            # HTTP Settings
-            if self._widgets.get("http_enabled"):
-                settings["tracker_settings.http_enabled"] = self._widgets["http_enabled"].get_active()
-
-            if self._widgets.get("http_port"):
-                settings["tracker_settings.http_port"] = int(self._widgets["http_port"].get_value())
-
-            if self._widgets.get("bind_address"):
-                settings["tracker_settings.bind_address"] = self._widgets["bind_address"].get_text().strip()
-
-            # UDP Settings
-            if self._widgets.get("udp_enabled"):
-                settings["tracker_settings.udp_enabled"] = self._widgets["udp_enabled"].get_active()
-
-            if self._widgets.get("udp_port"):
-                settings["tracker_settings.udp_port"] = int(self._widgets["udp_port"].get_value())
-
-            # Announce Settings
-            if self._widgets.get("announce_interval"):
-                settings["tracker_settings.announce_interval_seconds"] = int(
-                    self._widgets["announce_interval"].get_value()
-                )
-
-            if self._widgets.get("peer_timeout_multiplier"):
-                settings["tracker_settings.peer_timeout_multiplier"] = int(
-                    self._widgets["peer_timeout_multiplier"].get_value()
-                )
-
-            if self._widgets.get("max_peers_per_announce"):
-                settings["tracker_settings.max_peers_per_announce"] = int(
-                    self._widgets["max_peers_per_announce"].get_value()
-                )
-
-            # Features
-            if self._widgets.get("enable_scrape"):
-                settings["tracker_settings.enable_scrape"] = self._widgets["enable_scrape"].get_active()
-
-            if self._widgets.get("private_mode"):
-                settings["tracker_settings.private_mode"] = self._widgets["private_mode"].get_active()
-
-            if self._widgets.get("log_announces"):
-                settings["tracker_settings.log_announces"] = self._widgets["log_announces"].get_active()
-
-            # Self-Tracking
-            if self._widgets.get("self_tracking_enabled"):
-                settings["tracker_settings.self_tracking.enabled"] = self._widgets["self_tracking_enabled"].get_active()
-
-            if self._widgets.get("announce_with_seeders"):
-                settings["tracker_settings.self_tracking.announce_with_seeders"] = self._widgets[
-                    "announce_with_seeders"
-                ].get_active()
-
-            if self._widgets.get("sync_on_add"):
-                settings["tracker_settings.self_tracking.sync_on_add"] = self._widgets["sync_on_add"].get_active()
-
-            if self._widgets.get("sync_on_remove"):
-                settings["tracker_settings.self_tracking.sync_on_remove"] = self._widgets["sync_on_remove"].get_active()
-
-            # Security
-            if self._widgets.get("rate_limit"):
-                settings["tracker_settings.security.rate_limit_per_minute"] = int(
-                    self._widgets["rate_limit"].get_value()
-                )
-
-            if self._widgets.get("ip_whitelist"):
-                buffer = self._widgets["ip_whitelist"].get_buffer()
-                start, end = buffer.get_bounds()
-                text = buffer.get_text(start, end, False)
-                ips = [line.strip() for line in text.split("\n") if line.strip()]
-                settings["tracker_settings.security.ip_whitelist"] = ips
-
-            if self._widgets.get("ip_blacklist"):
-                buffer = self._widgets["ip_blacklist"].get_buffer()
-                start, end = buffer.get_bounds()
-                text = buffer.get_text(start, end, False)
-                ips = [line.strip() for line in text.split("\n") if line.strip()]
-                settings["tracker_settings.security.ip_blacklist"] = ips
-
+            self._collect_toggle_settings(settings)
+            self._collect_numeric_settings(settings)
+            self._collect_address_settings(settings)
             self.logger.trace(f"Collected {len(settings)} settings from Tracker tab")
             return settings
-
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(
                 f"Failed to collect tracker settings: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
             return {}
+
+    def _collect_toggle_settings(self, settings: dict[str, Any]) -> None:
+        """Collect the on/off switch values into ``settings``."""
+        toggles = [
+            ("tracker_enabled", "tracker_settings.enabled"),
+            ("http_enabled", "tracker_settings.http_enabled"),
+            ("udp_enabled", "tracker_settings.udp_enabled"),
+            ("enable_scrape", "tracker_settings.enable_scrape"),
+            ("private_mode", "tracker_settings.private_mode"),
+            ("log_announces", "tracker_settings.log_announces"),
+            ("self_tracking_enabled", "tracker_settings.self_tracking.enabled"),
+            ("announce_with_seeders", "tracker_settings.self_tracking.announce_with_seeders"),
+            ("sync_on_add", "tracker_settings.self_tracking.sync_on_add"),
+            ("sync_on_remove", "tracker_settings.self_tracking.sync_on_remove"),
+        ]
+        for widget_id, key in toggles:
+            if self._widgets.get(widget_id):
+                settings[key] = self._widgets[widget_id].get_active()
+
+    def _collect_numeric_settings(self, settings: dict[str, Any]) -> None:
+        """Collect the integer spin-button values into ``settings``."""
+        numerics = [
+            ("http_port", "tracker_settings.http_port"),
+            ("udp_port", "tracker_settings.udp_port"),
+            ("announce_interval", "tracker_settings.announce_interval_seconds"),
+            ("peer_timeout_multiplier", "tracker_settings.peer_timeout_multiplier"),
+            ("max_peers_per_announce", "tracker_settings.max_peers_per_announce"),
+            ("rate_limit", "tracker_settings.security.rate_limit_per_minute"),
+        ]
+        for widget_id, key in numerics:
+            if self._widgets.get(widget_id):
+                settings[key] = int(self._widgets[widget_id].get_value())
+
+    def _collect_address_settings(self, settings: dict[str, Any]) -> None:
+        """Collect the bind address and IP whitelist/blacklist into ``settings``."""
+        if self._widgets.get("bind_address"):
+            settings["tracker_settings.bind_address"] = self._widgets["bind_address"].get_text().strip()
+
+        ip_lists = [
+            ("ip_whitelist", "tracker_settings.security.ip_whitelist"),
+            ("ip_blacklist", "tracker_settings.security.ip_blacklist"),
+        ]
+        for widget_id, key in ip_lists:
+            if self._widgets.get(widget_id):
+                settings[key] = self._read_ip_lines(self._widgets[widget_id])
+
+    @staticmethod
+    def _read_ip_lines(widget: Any) -> list[str]:
+        """Return the non-empty, stripped lines from a text-view widget."""
+        buffer = widget.get_buffer()
+        start, end = buffer.get_bounds()
+        text = buffer.get_text(start, end, False)
+        return [line.strip() for line in text.split("\n") if line.strip()]
 
     def _setup_dependencies(self, tracker_enabled_override: Any = None) -> None:
         """Set up dependencies between UI elements.
@@ -354,69 +288,72 @@ class TrackerSettingsTab(BaseSettingsTab):
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(
                 f"Failed to set up tracker dependencies: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _validate_tab_settings(self) -> Dict[str, str]:
+    def _validate_tab_settings(self) -> dict[str, str]:
         """Validate tracker settings."""
-        errors: Dict[str, str] = {}
+        errors: dict[str, str] = {}
 
         try:
-            # Validate ports
-            if self._widgets.get("http_port"):
-                port = int(self._widgets["http_port"].get_value())
-                if port < 1 or port > 65535:
-                    errors["http_port"] = "HTTP port must be between 1 and 65535"
-                elif port < 1024:
-                    errors["http_port"] = "Ports below 1024 require root privileges"
-
-            if self._widgets.get("udp_port"):
-                port = int(self._widgets["udp_port"].get_value())
-                if port < 1 or port > 65535:
-                    errors["udp_port"] = "UDP port must be between 1 and 65535"
-                elif port < 1024:
-                    errors["udp_port"] = "Ports below 1024 require root privileges"
-
-            # Validate announce interval
-            if self._widgets.get("announce_interval"):
-                interval = int(self._widgets["announce_interval"].get_value())
-                if interval < 60:
-                    errors["announce_interval"] = "Announce interval should be at least 60 seconds"
-
-            # Validate IP lists
-            for ip_widget_name in ["ip_whitelist", "ip_blacklist"]:
-                if self._widgets.get(ip_widget_name):
-                    buffer = self._widgets[ip_widget_name].get_buffer()
-                    start, end = buffer.get_bounds()
-                    text = buffer.get_text(start, end, False)
-                    lines = [line.strip() for line in text.split("\n") if line.strip()]
-
-                    for line in lines:
-                        # Basic IP validation (could be enhanced)
-                        parts = line.split(".")
-                        if len(parts) != 4:
-                            errors[ip_widget_name] = f"Invalid IP format: {line}"
-                            break
-                        try:
-                            for part in parts:
-                                num = int(part)
-                                if num < 0 or num > 255:
-                                    raise ValueError
-                        except ValueError:
-                            errors[ip_widget_name] = f"Invalid IP format: {line}"
-                            break
-
-        except Exception as e:
-            errors["general"] = f"Validation error: {str(e)}"
+            self._validate_ports(errors)
+            self._validate_announce_interval(errors)
+            self._validate_ip_lists(errors)
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
+            errors["general"] = f"Validation error: {e}"
             self.logger.error(
                 f"Tracker settings validation failed: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
         return errors
+
+    def _validate_ports(self, errors: dict[str, str]) -> None:
+        """Validate the HTTP and UDP port widgets."""
+        ports = [("http_port", "HTTP port"), ("udp_port", "UDP port")]
+        for widget_id, label in ports:
+            if not self._widgets.get(widget_id):
+                continue
+            port = int(self._widgets[widget_id].get_value())
+            if port < 1 or port > 65535:
+                errors[widget_id] = f"{label} must be between 1 and 65535"
+            elif port < 1024:
+                errors[widget_id] = "Ports below 1024 require root privileges"
+
+    def _validate_announce_interval(self, errors: dict[str, str]) -> None:
+        """Validate the announce-interval widget."""
+        if self._widgets.get("announce_interval"):
+            interval = int(self._widgets["announce_interval"].get_value())
+            if interval < 60:
+                errors["announce_interval"] = "Announce interval should be at least 60 seconds"
+
+    def _validate_ip_lists(self, errors: dict[str, str]) -> None:
+        """Validate the whitelist/blacklist IP widgets."""
+        for widget_id in ("ip_whitelist", "ip_blacklist"):
+            if not self._widgets.get(widget_id):
+                continue
+            for line in self._read_ip_lines(self._widgets[widget_id]):
+                if not self._is_valid_ipv4(line):
+                    errors[widget_id] = f"Invalid IP format: {line}"
+                    break
+
+    @staticmethod
+    def _is_valid_ipv4(line: str) -> bool:
+        """Return whether ``line`` is a dotted-quad IPv4 address (0-255 per octet)."""
+        parts = line.split(".")
+        if len(parts) != 4:
+            return False
+        for part in parts:
+            try:
+                num = int(part)
+            except ValueError:
+                return False
+            if num < 0 or num > 255:
+                return False
+        return True
 
     # Signal handlers
     def _on_tracker_enabled_changed(self, switch: Any, state: bool) -> None:
