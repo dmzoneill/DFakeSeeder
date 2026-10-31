@@ -72,7 +72,8 @@ def test_is_valid_ipv4_accepts_and_rejects() -> None:
     with loaded_tab() as mod:
         check = getattr(mod.TrackerSettingsTab, _IS_VALID_IPV4)
         assert check("192.168.0.1") is True
-        assert check("0.0.0.0") is True
+        assert check("0.1.2.3") is True
+        assert check("255.255.255.255") is True
         assert check("256.1.1.1") is False
         assert check("1.2.3") is False
         assert check("a.b.c.d") is False
