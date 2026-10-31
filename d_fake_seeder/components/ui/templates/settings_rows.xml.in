@@ -552,3 +552,98 @@
     </object>
 </child>
 </template>
+
+<!-- Preference row: expanding label, SpinButton at the end (visible) -->
+<template name="pref-spin">
+<child>
+    <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">12</property>
+        <child>
+            <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">{label}</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkSpinButton" id="{id}">
+                <property name="visible">True</property>
+                <property name="halign">end</property>
+                <property name="width-chars">{chars}</property>
+                <property name="tooltip-text" translatable="yes">{tooltip}</property>
+                <property name="adjustment">
+                    <object class="GtkAdjustment">
+                        <property name="lower">{lower}</property>
+                        <property name="upper">{upper}</property>
+                        <property name="step-increment">{step}</property>
+                        <property name="page-increment">{page}</property>
+                        <property name="value">{value}</property>
+                    </object>
+                </property>
+            </object>
+        </child>
+    </object>
+</child>
+</template>
+
+<!-- Preference row: expanding label, DropDown at the end (visible); items is a |-separated list -->
+<template name="pref-dropdown">
+<child>
+    <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">12</property>
+        <child>
+            <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">{label}</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkDropDown" id="{id}">
+                <property name="visible">True</property>
+                <property name="halign">end</property>
+                <property name="tooltip-text" translatable="yes">{tooltip}</property>
+                <property name="model">
+                    <object class="GtkStringList">
+                        <items>
+                            <item translatable="yes">{items[]}</item>
+                        </items>
+                    </object>
+                </property>
+            </object>
+        </child>
+    </object>
+</child>
+</template>
+
+<!-- Preference row: expanding label, Switch at the end (visible) -->
+<template name="pref-switch">
+<child>
+    <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">12</property>
+        <child>
+            <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">{label}</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkSwitch" id="{id}">
+                <property name="visible">True</property>
+                <property name="halign">end</property>
+                <property name="tooltip-text" translatable="yes">{tooltip}</property>
+            </object>
+        </child>
+    </object>
+</child>
+</template>
