@@ -9,6 +9,7 @@ the response-time smoothing value is kept as a float. The shared
 import and tab builder.
 """
 
+import importlib
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -19,7 +20,8 @@ _MODULE = "d_fake_seeder.components.component.settings.multi_tracker_tab"
 
 def test_collect_toggle_records_active_state(settings_module: Any, make_settings_tab: Any) -> None:
     """A present toggle widget's active state is stored under its flat key."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.multi_tracker_tab")
         switch = MagicMock()
         switch.get_active.return_value = True
         tab = make_settings_tab(mod.MultiTrackerTab, {"multi_tracker_enabled": switch})
@@ -30,7 +32,8 @@ def test_collect_toggle_records_active_state(settings_module: Any, make_settings
 
 def test_collect_numeric_coerces_int_and_keeps_float(settings_module: Any, make_settings_tab: Any) -> None:
     """Integer spins are coerced to int; smoothing keeps its float value."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.multi_tracker_tab")
         failures = MagicMock()
         failures.get_value.return_value = 7.0
         smoothing = MagicMock()
