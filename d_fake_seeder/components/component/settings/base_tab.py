@@ -273,6 +273,34 @@ class BaseSettingsTab(Component):
 
         return self._widgets[widget_id]
 
+    def apply_widget_settings(self, specs: list[tuple[str, str, Any]], setter: str) -> None:
+        """Load (widget_id, settings key, default) specs into widgets via ``setter``.
+
+        ``setter`` is the widget method used to apply the value, e.g. ``set_active`` for
+        switches or ``set_value`` for spin buttons. Widgets that are None are skipped.
+        """
+        for widget_id, key, default in specs:
+            widget = self._widgets[widget_id]
+            if widget:
+                getattr(widget, setter)(self.app_settings.get(key, default))
+
+    def collect_widget_values(
+        self, specs: list[tuple[str, str]], settings: dict[str, Any], getter: str, convert: Any = None
+    ) -> None:
+        """Store each present widget's ``getter()`` value (optionally converted) under its settings key."""
+        for widget_id, key in specs:
+            if self._widgets.get(widget_id):
+                value = getattr(self._widgets[widget_id], getter)()
+                settings[key] = convert(value) if convert else value
+
+    @staticmethod
+    def read_text_lines(widget: Any) -> list[str]:
+        """Return the non-empty, stripped lines from a text-view widget."""
+        buffer = widget.get_buffer()
+        start, end = buffer.get_bounds()
+        text = buffer.get_text(start, end, False)
+        return [line.strip() for line in text.split("\n") if line.strip()]
+
     def save_settings(self) -> dict[str, Any]:
         """
         Save current UI state to settings.
