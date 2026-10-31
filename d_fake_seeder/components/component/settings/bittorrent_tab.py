@@ -4,20 +4,17 @@ BitTorrent settings tab for the settings dialog.
 Handles BitTorrent protocol features, user agent settings, and announce intervals.
 """
 
-# fmt: off
-from typing import Any, Dict
+from typing import Any, ClassVar
 
-import gi
+from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
 
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk  # noqa: E402
-
-from .base_tab import BaseSettingsTab  # noqa
-from .settings_mixins import NotificationMixin  # noqa: E402
-from .settings_mixins import TranslationMixin  # noqa: E402
-from .settings_mixins import UtilityMixin, ValidationMixin  # noqa: E402
-
-# fmt: on
+from .base_tab import BaseSettingsTab
+from .settings_mixins import (
+    NotificationMixin,
+    TranslationMixin,
+    UtilityMixin,
+    ValidationMixin,
+)
 
 
 class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
@@ -33,7 +30,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
     # Note: Most BitTorrent settings use manual loading/saving due to nested structure
     # and custom user agent logic
-    WIDGET_MAPPINGS: list = []
+    WIDGET_MAPPINGS: ClassVar[list] = []
 
     @property
     def tab_name(self) -> str:
@@ -87,7 +84,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Load BitTorrent protocol settings using nested keys
             self._load_bittorrent_settings()
             self.logger.info("BitTorrent tab settings loaded")
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error loading BitTorrent tab settings: {e}")
 
     def _load_bittorrent_settings(self) -> None:
@@ -142,7 +139,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 value = self.app_settings.get("bittorrent.scrape_interval_seconds", 900)
                 scrape_interval.set_value(value)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error loading BitTorrent settings: {e}")
 
     def _setup_user_agent_dropdown(self) -> None:
@@ -160,7 +157,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Deluge, qBittorrent, Transmission, uTorrent, Vuze, BitTorrent, rTorrent, Custom
             self.logger.trace("User agent dropdown initialized from XML model")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error setting up user agent dropdown: {e}")
 
     def _update_user_agent_dropdown(self) -> None:
@@ -197,7 +194,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
             self._update_user_agent_dependencies()
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error updating user agent dropdown: {e}")
 
     def _setup_dependencies(self) -> None:
@@ -221,16 +218,16 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             self.update_widget_sensitivity("custom_agent_box", is_custom)
             self.update_widget_sensitivity("custom_user_agent", is_custom)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error updating user agent dependencies: {e}")
 
-    def _collect_settings(self) -> Dict[str, Any]:
+    def _collect_settings(self) -> dict[str, Any]:
         """Collect current settings from BitTorrent tab widgets.
 
         Returns:
             Dictionary of setting_key -> value pairs for all widgets
         """
-        settings: Dict[str, Any] = {}
+        settings: dict[str, Any] = {}
 
         # Collect BitTorrent settings with nested keys
         bittorrent_settings = self._collect_bittorrent_settings()
@@ -239,77 +236,93 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         self.logger.trace(f"Collected {len(settings)} settings from BitTorrent tab")
         return settings
 
-    def _collect_bittorrent_settings(self) -> Dict[str, Any]:
+    def _collect_bittorrent_settings(self) -> dict[str, Any]:
         """Collect BitTorrent protocol settings with nested keys."""
-        settings: Dict[str, Any] = {}
-
+        settings: dict[str, Any] = {}
         try:
-            # Protocol features
-            dht = self.get_widget("enable_dht")
-            if dht:
-                settings["bittorrent.enable_dht"] = dht.get_active()
-
-            pex = self.get_widget("enable_pex")
-            if pex:
-                settings["bittorrent.enable_pex"] = pex.get_active()
-
-            lpd = self.get_widget("enable_lpd")
-            if lpd:
-                settings["bittorrent.enable_lpd"] = lpd.get_active()
-
-            # Encryption mode
-            encryption_mode = self.get_widget("encryption_mode")
-            if encryption_mode:
-                selected = encryption_mode.get_selected()
-                encryption_modes = ["disabled", "enabled", "forced"]
-                if selected < len(encryption_modes):
-                    settings["bittorrent.encryption_mode"] = encryption_modes[selected]
-
-            # User agent
-            user_agent_dropdown = self.get_widget("user_agent")
-            if user_agent_dropdown:
-                selected_index = user_agent_dropdown.get_selected()
-                if selected_index == 7:  # Custom
-                    custom_user_agent = self.get_widget("custom_user_agent")
-                    if custom_user_agent:
-                        settings["bittorrent.user_agent"] = custom_user_agent.get_text()
-                else:
-                    predefined_agents = [
-                        "Deluge/2.0.3 libtorrent/2.0.5.0",
-                        "qBittorrent/4.3.1",
-                        "Transmission/3.00",
-                        "uTorrent/3.5.5",
-                        "Vuze/5.7.6.0",
-                        "BitTorrent/7.10.5",
-                        "rTorrent/0.9.6",
-                    ]
-                    if selected_index < len(predefined_agents):
-                        settings["bittorrent.user_agent"] = predefined_agents[selected_index]
-
-            # Peer ID prefix
-            peer_id_prefix = self.get_widget("peer_id_prefix")
-            if peer_id_prefix:
-                settings["bittorrent.peer_id_prefix"] = peer_id_prefix.get_text()
-
-            # Announce intervals
-            announce = self.get_widget("announce_interval")
-            if announce:
-                settings["bittorrent.announce_interval_seconds"] = int(announce.get_value())
-
-            min_announce = self.get_widget("min_announce_interval")
-            if min_announce:
-                settings["bittorrent.min_announce_interval_seconds"] = int(min_announce.get_value())
-
-            scrape_interval = self.get_widget("scrape_interval")
-            if scrape_interval:
-                settings["bittorrent.scrape_interval_seconds"] = int(scrape_interval.get_value())
-
-        except Exception as e:
+            settings.update(self._collect_protocol_feature_settings())
+            settings.update(self._collect_encryption_setting())
+            settings.update(self._collect_user_agent_setting())
+            settings.update(self._collect_peer_id_setting())
+            settings.update(self._collect_interval_settings())
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error collecting BitTorrent settings: {e}")
 
         return settings
 
-    def _validate_tab_settings(self) -> Dict[str, str]:
+    def _collect_protocol_feature_settings(self) -> dict[str, Any]:
+        """Collect DHT/PEX/LPD protocol-feature toggles."""
+        result: dict[str, Any] = {}
+        for widget_id, key in (
+            ("enable_dht", "bittorrent.enable_dht"),
+            ("enable_pex", "bittorrent.enable_pex"),
+            ("enable_lpd", "bittorrent.enable_lpd"),
+        ):
+            widget = self.get_widget(widget_id)
+            if widget:
+                result[key] = widget.get_active()
+        return result
+
+    def _collect_encryption_setting(self) -> dict[str, Any]:
+        """Collect the encryption-mode setting."""
+        result: dict[str, Any] = {}
+        encryption_mode = self.get_widget("encryption_mode")
+        if encryption_mode:
+            selected = encryption_mode.get_selected()
+            encryption_modes = ["disabled", "enabled", "forced"]
+            if selected < len(encryption_modes):
+                result["bittorrent.encryption_mode"] = encryption_modes[selected]
+        return result
+
+    def _collect_user_agent_setting(self) -> dict[str, Any]:
+        """Collect the predefined or custom user-agent setting."""
+        result: dict[str, Any] = {}
+        user_agent_dropdown = self.get_widget("user_agent")
+        if not user_agent_dropdown:
+            return result
+
+        selected_index = user_agent_dropdown.get_selected()
+        if selected_index == 7:  # Custom
+            custom_user_agent = self.get_widget("custom_user_agent")
+            if custom_user_agent:
+                result["bittorrent.user_agent"] = custom_user_agent.get_text()
+            return result
+
+        predefined_agents = [
+            "Deluge/2.0.3 libtorrent/2.0.5.0",
+            "qBittorrent/4.3.1",
+            "Transmission/3.00",
+            "uTorrent/3.5.5",
+            "Vuze/5.7.6.0",
+            "BitTorrent/7.10.5",
+            "rTorrent/0.9.6",
+        ]
+        if selected_index < len(predefined_agents):
+            result["bittorrent.user_agent"] = predefined_agents[selected_index]
+        return result
+
+    def _collect_peer_id_setting(self) -> dict[str, Any]:
+        """Collect the peer-id prefix setting."""
+        result: dict[str, Any] = {}
+        peer_id_prefix = self.get_widget("peer_id_prefix")
+        if peer_id_prefix:
+            result["bittorrent.peer_id_prefix"] = peer_id_prefix.get_text()
+        return result
+
+    def _collect_interval_settings(self) -> dict[str, Any]:
+        """Collect announce/scrape interval settings (seconds)."""
+        result: dict[str, Any] = {}
+        for widget_id, key in (
+            ("announce_interval", "bittorrent.announce_interval_seconds"),
+            ("min_announce_interval", "bittorrent.min_announce_interval_seconds"),
+            ("scrape_interval", "bittorrent.scrape_interval_seconds"),
+        ):
+            widget = self.get_widget(widget_id)
+            if widget:
+                result[key] = int(widget.get_value())
+        return result
+
+    def _validate_tab_settings(self) -> dict[str, str]:
         """Validate BitTorrent tab settings."""
         errors = {}
 
@@ -332,7 +345,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                     if not custom_text:
                         errors["custom_user_agent"] = "Custom user agent cannot be empty"
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error validating BitTorrent tab settings: {e}")
             errors["general"] = str(e)
 
@@ -364,7 +377,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             elif selected_index == 7:  # Custom
                 self.logger.trace("Custom user agent selected")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error changing user agent: {e}")
 
     def _reset_tab_defaults(self) -> None:
@@ -414,7 +427,7 @@ class BitTorrentTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             self.update_dependencies()
             self.show_notification(self._("BitTorrent settings reset to defaults"), "success")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error resetting BitTorrent tab to defaults: {e}")
 
     def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
