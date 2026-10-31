@@ -41,7 +41,7 @@ def loaded_base() -> Iterator[ModuleType]:
     sys.modules["d_fake_seeder.domain.app_settings"] = MagicMock()
     sys.modules.pop(name, None)
     try:
-        yield importlib.import_module(name)
+        yield importlib.import_module("d_fake_seeder.components.component.settings.base_tab")
     finally:
         for n, mod in saved.items():
             if mod is not None:
