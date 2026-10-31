@@ -26,10 +26,10 @@ except ImportError:
     class FileSystemEventHandler:  # type: ignore[no-redef]
         """Stub fallback for watchdog's FileSystemEventHandler."""
 
-        def dispatch(self, event: Any) -> None:
+        def dispatch(self, _event: Any) -> None:
             """No-op event dispatch used when watchdog is unavailable."""
 
-        def on_any_event(self, event: Any) -> None:
+        def on_any_event(self, _event: Any) -> None:
             """No-op catch-all event hook used when watchdog is unavailable."""
 
     class Observer:  # type: ignore[no-redef]
