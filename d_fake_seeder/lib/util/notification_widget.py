@@ -5,20 +5,12 @@ A modern, animated notification toast with support for different types,
 icons, and optional action buttons.
 """
 
-# isort: skip_file
-
-# fmt: off
+from collections.abc import Callable
 from enum import Enum
-from typing import Callable, Optional
+from typing import ClassVar
 
-import gi
-
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, GLib, GObject  # noqa: E402
-
-from d_fake_seeder.lib.logger import logger  # noqa: E402
-
-# fmt: on
+from d_fake_seeder.lib.gi_gtk4 import GLib, GObject, Gtk
+from d_fake_seeder.lib.logger import logger
 
 
 class NotificationType(Enum):
@@ -62,17 +54,17 @@ class NotificationWidget(Gtk.Frame):
     - Non-focusable (doesn't interfere with keyboard)
     """
 
-    __gsignals__ = {
+    __gsignals__: ClassVar = {
         "closed": (GObject.SignalFlags.RUN_FIRST, None, ()),
         "action-clicked": (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
-    def __init__(  # pylint: disable=too-many-arguments,too-many-positional-arguments
+    def __init__(
         self,
         message: str,
         notification_type: NotificationType = NotificationType.INFO,
-        action_label: Optional[str] = None,
-        action_callback: Optional[Callable[[], None]] = None,
+        action_label: str | None = None,
+        action_callback: Callable[[], None] | None = None,
         show_close_button: bool = True,
     ) -> None:
         """
@@ -90,7 +82,7 @@ class NotificationWidget(Gtk.Frame):
         self.message = message
         self.notification_type = notification_type
         self.action_callback = action_callback
-        self._timeout_id: Optional[int] = None
+        self._timeout_id: int | None = None
 
         # CRITICAL: Block clicks but don't steal keyboard focus
         # can_target=True: captures mouse events (prevents click-through)
@@ -171,7 +163,7 @@ class NotificationWidget(Gtk.Frame):
         self,
         message: str,
         notification_type: NotificationType,
-        action_label: Optional[str],
+        action_label: str | None,
         show_close_button: bool,
     ) -> None:
         """Build the notification UI."""
@@ -229,7 +221,7 @@ class NotificationWidget(Gtk.Frame):
         if self.action_callback:
             try:
                 self.action_callback()
-            except Exception as e:  # pylint: disable=broad-exception-caught
+            except (AttributeError, TypeError, ValueError, RuntimeError, GLib.Error) as e:
                 logger.error(f"Error in notification action callback: {e}", exc_info=True)
         self.emit("action-clicked")
         self.dismiss()
