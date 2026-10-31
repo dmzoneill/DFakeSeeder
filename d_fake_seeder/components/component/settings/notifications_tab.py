@@ -4,21 +4,17 @@ Notifications settings tab for the settings dialog.
 Handles configuration of toast notification appearance and behavior.
 """
 
-# isort: skip_file
+from typing import Any, ClassVar
 
-# fmt: off
-from typing import Any, Dict, List
+from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
 
-import gi
-
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk  # noqa: E402
-
-from .base_tab import BaseSettingsTab  # noqa
-from .settings_mixins import NotificationMixin  # noqa: E402
-from .settings_mixins import TranslationMixin  # noqa: E402
-from .settings_mixins import UtilityMixin  # noqa: E402
-from .settings_mixins import ValidationMixin  # noqa: E402
+from .base_tab import BaseSettingsTab
+from .settings_mixins import (
+    NotificationMixin,
+    TranslationMixin,
+    UtilityMixin,
+    ValidationMixin,
+)
 
 # fmt: on
 
@@ -34,7 +30,7 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
     """
 
     # Dropdown items for translation
-    POSITION_ITEMS = [
+    POSITION_ITEMS: ClassVar[list[str]] = [
         "Top Left",
         "Top Center",
         "Top Right",
@@ -42,10 +38,10 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
         "Bottom Center",
         "Bottom Right",
     ]
-    ANIMATION_ITEMS = ["None", "Fade", "Slide"]
+    ANIMATION_ITEMS: ClassVar[list[str]] = ["None", "Fade", "Slide"]
 
     # Position value mapping
-    POSITION_VALUES = [
+    POSITION_VALUES: ClassVar[list[str]] = [
         "top-left",
         "top-center",
         "top-right",
@@ -53,10 +49,10 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
         "bottom-center",
         "bottom-right",
     ]
-    ANIMATION_VALUES = ["none", "fade", "slide"]
+    ANIMATION_VALUES: ClassVar[list[str]] = ["none", "fade", "slide"]
 
     # Widget mappings for auto-connect
-    WIDGET_MAPPINGS: List[Dict[str, Any]] = [
+    WIDGET_MAPPINGS: ClassVar[list[dict[str, Any]]] = [
         {
             "id": "notification_enabled",
             "name": "notification_enabled",
@@ -154,61 +150,56 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
             if notification_settings is None:
                 notification_settings = {}
 
-            # Load position dropdown
-            position_dropdown = self.get_widget("notification_position")
-            if position_dropdown:
-                position = notification_settings.get("position", "top-right")
-                try:
-                    idx = self.POSITION_VALUES.index(position)
-                    position_dropdown.set_selected(idx)
-                except ValueError:
-                    position_dropdown.set_selected(2)  # Default: top-right
+            self._load_dropdown_settings(notification_settings)
+            self._load_switch_settings(notification_settings)
+            self._load_spin_settings(notification_settings)
 
-            # Load animation dropdown
-            animation_dropdown = self.get_widget("notification_animation")
-            if animation_dropdown:
-                animation = notification_settings.get("animation", "slide")
-                try:
-                    idx = self.ANIMATION_VALUES.index(animation)
-                    animation_dropdown.set_selected(idx)
-                except ValueError:
-                    animation_dropdown.set_selected(2)  # Default: slide
-
-            # Load enabled switch
-            enabled_switch = self.get_widget("notification_enabled")
-            if enabled_switch:
-                self.set_switch_state(enabled_switch, notification_settings.get("enabled", True))
-
-            # Load other switches
-            statusbar_switch = self.get_widget("notification_show_statusbar")
-            if statusbar_switch:
-                self.set_switch_state(
-                    statusbar_switch,
-                    notification_settings.get("show_in_statusbar", True),
-                )
-
-            sound_switch = self.get_widget("notification_sound")
-            if sound_switch:
-                self.set_switch_state(sound_switch, notification_settings.get("sound_enabled", False))
-
-            # Load spin buttons
-            spin_mappings = [
-                ("notification_animation_duration", "animation_duration_ms", 300),
-                ("notification_max_visible", "max_visible", 3),
-                ("notification_info_timeout", "info_timeout_ms", 3000),
-                ("notification_success_timeout", "success_timeout_ms", 3000),
-                ("notification_warning_timeout", "warning_timeout_ms", 5000),
-                ("notification_error_timeout", "error_timeout_ms", 0),
-            ]
-
-            for widget_id, setting_key, default in spin_mappings:
-                spin = self.get_widget(widget_id)
-                if spin:
-                    value = notification_settings.get(setting_key, default)
-                    spin.set_value(value)
-
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error loading notification settings: {e}")
+
+    def _load_dropdown_settings(self, notification_settings: dict[str, Any]) -> None:
+        """Load the position and animation dropdowns."""
+        position_dropdown = self.get_widget("notification_position")
+        if position_dropdown:
+            position = notification_settings.get("position", "top-right")
+            try:
+                position_dropdown.set_selected(self.POSITION_VALUES.index(position))
+            except ValueError:
+                position_dropdown.set_selected(2)  # Default: top-right
+
+        animation_dropdown = self.get_widget("notification_animation")
+        if animation_dropdown:
+            animation = notification_settings.get("animation", "slide")
+            try:
+                animation_dropdown.set_selected(self.ANIMATION_VALUES.index(animation))
+            except ValueError:
+                animation_dropdown.set_selected(2)  # Default: slide
+
+    def _load_switch_settings(self, notification_settings: dict[str, Any]) -> None:
+        """Load the enabled/statusbar/sound switches."""
+        for widget_id, setting_key, default in (
+            ("notification_enabled", "enabled", True),
+            ("notification_show_statusbar", "show_in_statusbar", True),
+            ("notification_sound", "sound_enabled", False),
+        ):
+            switch = self.get_widget(widget_id)
+            if switch:
+                self.set_switch_state(switch, notification_settings.get(setting_key, default))
+
+    def _load_spin_settings(self, notification_settings: dict[str, Any]) -> None:
+        """Load the spin-button timeout/limit settings."""
+        spin_mappings = [
+            ("notification_animation_duration", "animation_duration_ms", 300),
+            ("notification_max_visible", "max_visible", 3),
+            ("notification_info_timeout", "info_timeout_ms", 3000),
+            ("notification_success_timeout", "success_timeout_ms", 3000),
+            ("notification_warning_timeout", "warning_timeout_ms", 5000),
+            ("notification_error_timeout", "error_timeout_ms", 0),
+        ]
+        for widget_id, setting_key, default in spin_mappings:
+            spin = self.get_widget(widget_id)
+            if spin:
+                spin.set_value(notification_settings.get(setting_key, default))
 
     def _connect_signals(self) -> None:
         """Connect notification tab signals."""
@@ -313,7 +304,7 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
                 nm.show_error(self._("This is an error notification"))
             else:
                 self.show_notification(self._("Test notifications sent"), "info")
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error showing test notifications: {e}")
             self.show_notification(self._("Could not show test notifications"), "error")
 
@@ -366,12 +357,12 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
             self.update_dependencies()
             self.show_notification(self._("Notification settings reset to defaults"), "success")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error resetting Notifications tab: {e}")
 
-    def _collect_settings(self) -> Dict[str, Any]:
+    def _collect_settings(self) -> dict[str, Any]:
         """Collect current notification settings."""
-        settings: Dict[str, Any] = {}
+        settings: dict[str, Any] = {}
 
         try:
             # Position
@@ -430,7 +421,7 @@ class NotificationsTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Uti
                 if spin:
                     settings[setting_key] = int(spin.get_value())
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error collecting notification settings: {e}")
 
         return settings
