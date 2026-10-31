@@ -6,12 +6,13 @@ Peer Database for the inbuilt BitTorrent tracker.
 Stores peer information with automatic expiry based on last announce time.
 """
 
+import secrets
 import socket
 import struct
 import threading
 import time
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from d_fake_seeder.lib.logger import logger
 
@@ -44,10 +45,10 @@ class PeerInfo:  # pylint: disable=too-many-instance-attributes
             ip_bytes = socket.inet_aton(self.ip)
             port_bytes = struct.pack(">H", self.port)
             return ip_bytes + port_bytes
-        except (socket.error, struct.error):
+        except (OSError, struct.error):
             return b""
 
-    def to_dict(self) -> Dict[bytes, Any]:
+    def to_dict(self) -> dict[bytes, Any]:
         """Convert to dictionary for non-compact response."""
         return {
             b"peer id": self.peer_id,
@@ -73,7 +74,7 @@ class PeerDatabase:
                                   Default is 5400 (3 * 1800 announce interval).
         """
         self._lock = threading.RLock()
-        self._peers: Dict[bytes, Dict[bytes, PeerInfo]] = {}  # info_hash -> peer_id -> PeerInfo
+        self._peers: dict[bytes, dict[bytes, PeerInfo]] = {}  # info_hash -> peer_id -> PeerInfo
         self._peer_timeout = peer_timeout_seconds
         self._stats = {
             "total_announces": 0,
@@ -133,7 +134,7 @@ class PeerDatabase:
                 self._stats["total_peers_added"] += 1
 
             logger.trace(
-                f"Peer {'added' if is_new else 'updated'}: " f"{ip}:{port} for {info_hash.hex()[:16]}",
+                f"Peer {'added' if is_new else 'updated'}: {ip}:{port} for {info_hash.hex()[:16]}",
                 extra={"class_name": self.__class__.__name__},
             )
 
@@ -168,9 +169,9 @@ class PeerDatabase:
         self,
         info_hash: bytes,
         max_peers: int = 50,
-        exclude_peer_id: Optional[bytes] = None,
+        exclude_peer_id: bytes | None = None,
         compact: bool = True,
-    ) -> Tuple[bytes, List[Dict[bytes, Any]]]:
+    ) -> tuple[bytes, list[dict[bytes, Any]]]:
         """
         Get peers for a torrent.
 
@@ -196,16 +197,14 @@ class PeerDatabase:
 
             # Limit to max_peers (random selection if more)
             if len(peers) > max_peers:
-                import random
-
-                peers = random.sample(peers, max_peers)
+                peers = secrets.SystemRandom().sample(peers, max_peers)
 
             if compact:
                 compact_data = b"".join(p.compact_ipv4 for p in peers if p.compact_ipv4)
                 return compact_data, []
             return b"", [p.to_dict() for p in peers]
 
-    def get_stats(self, info_hash: bytes) -> Dict[str, int]:
+    def get_stats(self, info_hash: bytes) -> dict[str, int]:
         """
         Get statistics for a torrent.
 
@@ -229,7 +228,7 @@ class PeerDatabase:
                 "downloaded": 0,  # TODO: Track completed downloads  # pylint: disable=fixme
             }
 
-    def get_all_info_hashes(self) -> List[bytes]:
+    def get_all_info_hashes(self) -> list[bytes]:
         """Get list of all tracked info hashes."""
         with self._lock:
             return list(self._peers.keys())
@@ -276,7 +275,7 @@ class PeerDatabase:
 
         return removed
 
-    def get_database_stats(self) -> Dict[str, Any]:
+    def get_database_stats(self) -> dict[str, Any]:
         """Get overall database statistics."""
         with self._lock:
             return {
