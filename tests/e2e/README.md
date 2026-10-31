@@ -52,7 +52,6 @@ make test-e2e-fast
 ```text
 tests/e2e/
 ├── Dockerfile.fedora              # Test container definition
-├── e2e_common.sh                  # Shared helpers sourced by the test_*.sh scripts
 ├── test_rpm_installation.sh       # Installation and file verification tests
 ├── test_rpm_launch.sh             # Application launch and GUI tests
 ├── run_e2e_tests.sh               # Main test orchestrator
