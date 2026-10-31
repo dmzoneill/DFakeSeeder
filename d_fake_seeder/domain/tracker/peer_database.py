@@ -6,7 +6,7 @@ Peer Database for the inbuilt BitTorrent tracker.
 Stores peer information with automatic expiry based on last announce time.
 """
 
-import secrets
+import random
 import socket
 import struct
 import threading
@@ -197,7 +197,7 @@ class PeerDatabase:
 
             # Limit to max_peers (random selection if more)
             if len(peers) > max_peers:
-                peers = secrets.SystemRandom().sample(peers, max_peers)
+                peers = random.SystemRandom().sample(peers, max_peers)
 
             if compact:
                 compact_data = b"".join(p.compact_ipv4 for p in peers if p.compact_ipv4)
