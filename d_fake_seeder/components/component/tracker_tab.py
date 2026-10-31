@@ -1,100 +1,91 @@
-# fmt: off
-# isort: skip_file
 """
 Tracker Tab - Inbuilt BitTorrent Tracker management UI.
 
 Displays tracker status, statistics, and tracked torrents.
 """
 
-from typing import Any, Optional
+import time
+from types import SimpleNamespace
+from typing import Any
 
-import gi
+from d_fake_seeder.components.component.base_component import Component
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.gi_gtk4 import Gio, GLib, GObject, Gtk
+from d_fake_seeder.lib.logger import logger
 
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gio, GLib, GObject, Gtk  # noqa: E402
-
-from d_fake_seeder.components.component.base_component import Component  # noqa: E402
-from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
-from d_fake_seeder.lib.logger import logger  # noqa: E402
-
-# fmt: on
+# Narrowed replacement for the previous broad ``except Exception`` clauses: the
+# tracker start/stop/update paths touch settings, GLib timers, networking and
+# optional imports, so these are the failures worth swallowing defensively.
+_TRACKER_ERRORS = (AttributeError, TypeError, ValueError, KeyError, IndexError, OSError, GLib.Error)
 
 
 class TrackedTorrentItem(GObject.Object):
-    """GObject wrapper for tracked torrent display."""
+    """GObject wrapper exposing a tracked torrent's display fields as bindable properties.
+
+    The payload is a plain ``dict`` so the row carries its eleven display values
+    without the wrapper itself accumulating that many instance attributes.
+    """
 
     __gtype_name__ = "TrackedTorrentItem"
 
-    def __init__(
-        self,
-        info_hash: str,
-        name: str,
-        seeders: int,
-        leechers: int,
-        completed: int,
-        last_activity: str,
-        is_internal: bool,
-        uploaded: str = "0 B",
-        downloaded: str = "0 B",
-        upload_speed: str = "0 B/s",
-        download_speed: str = "0 B/s",
-    ) -> None:
+    def __init__(self, data: dict) -> None:
         super().__init__()
-        self._info_hash = info_hash
-        self._name = name
-        self._seeders = seeders
-        self._leechers = leechers
-        self._completed = completed
-        self._last_activity = last_activity
-        self._is_internal = is_internal
-        self._uploaded = uploaded
-        self._downloaded = downloaded
-        self._upload_speed = upload_speed
-        self._download_speed = download_speed
+        self._data = data
 
     @GObject.Property(type=str)
     def info_hash(self) -> str:
-        return self._info_hash
+        """Truncated info hash shown for the torrent."""
+        return self._data["info_hash"]
 
     @GObject.Property(type=str)
     def name(self) -> str:
-        return self._name
+        """Display name of the torrent."""
+        return self._data["name"]
 
     @GObject.Property(type=int)
     def seeders(self) -> int:
-        return self._seeders
+        """Number of seeders reported for the torrent."""
+        return self._data["seeders"]
 
     @GObject.Property(type=int)
     def leechers(self) -> int:
-        return self._leechers
+        """Number of leechers reported for the torrent."""
+        return self._data["leechers"]
 
     @GObject.Property(type=int)
     def completed(self) -> int:
-        return self._completed
+        """Number of completed downloads recorded by the tracker."""
+        return self._data["completed"]
 
     @GObject.Property(type=str)
     def last_activity(self) -> str:
-        return self._last_activity
+        """Human-readable time since the last announce."""
+        return self._data["last_activity"]
 
     @GObject.Property(type=bool, default=False)
     def is_internal(self) -> bool:
-        return self._is_internal
+        """Whether the torrent is tracked internally by DFakeSeeder."""
+        return self._data["is_internal"]
 
     @GObject.Property(type=str)
     def uploaded(self) -> str:
-        return self._uploaded
+        """Formatted total uploaded bytes."""
+        return self._data["uploaded"]
 
     @GObject.Property(type=str)
     def downloaded(self) -> str:
-        return self._downloaded
+        """Formatted total downloaded bytes."""
+        return self._data["downloaded"]
 
     @GObject.Property(type=str)
     def upload_speed(self) -> str:
-        return self._upload_speed
+        """Formatted upload speed."""
+        return self._data["upload_speed"]
 
     @GObject.Property(type=str)
     def download_speed(self) -> str:
-        return self._download_speed
+        """Formatted download speed."""
+        return self._data["download_speed"]
 
 
 class TrackerTab(Component):
@@ -121,6 +112,17 @@ class TrackerTab(Component):
         self.model = model
         self.settings = AppSettings.get_instance()
 
+        # Display labels, list-view widgets and mutable runtime state are grouped
+        # so the component stays within the instance-attribute limit.
+        self._labels: dict[str, Any] = {}
+        self._view = SimpleNamespace(store=None, selection=None, column=None)
+        self._runtime = SimpleNamespace(
+            server=None,
+            timer_id=None,
+            prev_stats={},
+            last_update_time=time.time(),
+        )
+
         # Get the tracker tab content container
         self.container = self.builder.get_object("tracker_tab_content")
         if not self.container:
@@ -144,10 +146,6 @@ class TrackerTab(Component):
         self.container.set_halign(Gtk.Align.FILL)
         self.container.set_valign(Gtk.Align.FILL)
 
-        # Tracker server reference
-        self._tracker_server: Any = None
-        self._update_timer_id: Optional[int] = None
-
         # Build UI
         self._build_ui()
 
@@ -166,19 +164,26 @@ class TrackerTab(Component):
         return text
 
     def _build_ui(self) -> None:
-        """Build the tracker tab UI."""
-        # === HEADER SECTION ===
+        """Build the tracker tab UI from its component sections."""
+        self._build_header_section()
+        self._build_status_section()
+        self._build_stats_section()
+        self._build_torrents_section()
+
+        # Load initial settings
+        self._load_settings()
+
+    def _build_header_section(self) -> None:
+        """Build the title/info header row."""
         header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
         header_box.set_halign(Gtk.Align.FILL)
 
-        # Title
         title_label = Gtk.Label(label=self._("Inbuilt BitTorrent Tracker"))
         title_label.add_css_class("title-1")
         title_label.set_halign(Gtk.Align.START)
         title_label.set_hexpand(True)
         header_box.append(title_label)
 
-        # Info label (points to settings)
         info_label = Gtk.Label(label=self._("Configure in Preferences → Tracker"))
         info_label.add_css_class("dim-label")
         info_label.set_halign(Gtk.Align.END)
@@ -186,7 +191,8 @@ class TrackerTab(Component):
 
         self.container.append(header_box)
 
-        # === STATUS SECTION ===
+    def _build_status_section(self) -> None:
+        """Build the server-status frame (status/address/uptime)."""
         status_frame = Gtk.Frame()
         status_frame.set_label(self._("Server Status"))
         status_frame.set_margin_top(8)
@@ -199,30 +205,31 @@ class TrackerTab(Component):
         status_grid.set_margin_top(12)
         status_grid.set_margin_bottom(12)
 
-        # Status row
         status_grid.attach(Gtk.Label(label=self._("Status:"), halign=Gtk.Align.END), 0, 0, 1, 1)
-        self.status_label = Gtk.Label(label=self._("Stopped"))
-        self.status_label.set_halign(Gtk.Align.START)
-        self.status_label.add_css_class("dim-label")
-        status_grid.attach(self.status_label, 1, 0, 1, 1)
+        status_label = Gtk.Label(label=self._("Stopped"))
+        status_label.set_halign(Gtk.Align.START)
+        status_label.add_css_class("dim-label")
+        status_grid.attach(status_label, 1, 0, 1, 1)
+        self._labels["status"] = status_label
 
-        # Address row
         status_grid.attach(Gtk.Label(label=self._("Address:"), halign=Gtk.Align.END), 0, 1, 1, 1)
-        self.address_label = Gtk.Label(label="-")
-        self.address_label.set_halign(Gtk.Align.START)
-        self.address_label.set_selectable(True)
-        status_grid.attach(self.address_label, 1, 1, 1, 1)
+        address_label = Gtk.Label(label="-")
+        address_label.set_halign(Gtk.Align.START)
+        address_label.set_selectable(True)
+        status_grid.attach(address_label, 1, 1, 1, 1)
+        self._labels["address"] = address_label
 
-        # Uptime row
         status_grid.attach(Gtk.Label(label=self._("Uptime:"), halign=Gtk.Align.END), 0, 2, 1, 1)
-        self.uptime_label = Gtk.Label(label="-")
-        self.uptime_label.set_halign(Gtk.Align.START)
-        status_grid.attach(self.uptime_label, 1, 2, 1, 1)
+        uptime_label = Gtk.Label(label="-")
+        uptime_label.set_halign(Gtk.Align.START)
+        status_grid.attach(uptime_label, 1, 2, 1, 1)
+        self._labels["uptime"] = uptime_label
 
         status_frame.set_child(status_grid)
         self.container.append(status_frame)
 
-        # === STATISTICS SECTION ===
+    def _build_stats_section(self) -> None:
+        """Build the statistics frame (torrents/internal/peers/announces)."""
         stats_frame = Gtk.Frame()
         stats_frame.set_label(self._("Statistics"))
         stats_frame.set_margin_top(8)
@@ -235,101 +242,62 @@ class TrackerTab(Component):
         stats_grid.set_margin_top(12)
         stats_grid.set_margin_bottom(12)
 
-        # Torrents row
-        stats_grid.attach(
-            Gtk.Label(label=self._("Tracked Torrents:"), halign=Gtk.Align.END),
-            0,
-            0,
-            1,
-            1,
+        rows = (
+            ("torrents", self._("Tracked Torrents:"), "0"),
+            ("internal", self._("Internal (DFakeSeeder):"), "0"),
+            ("peers", self._("Active Peers:"), "0"),
+            ("announces", self._("Total Announces:"), "0"),
         )
-        self.torrents_label = Gtk.Label(label="0")
-        self.torrents_label.set_halign(Gtk.Align.START)
-        stats_grid.attach(self.torrents_label, 1, 0, 1, 1)
-
-        # Internal torrents row
-        stats_grid.attach(
-            Gtk.Label(label=self._("Internal (DFakeSeeder):"), halign=Gtk.Align.END),
-            0,
-            1,
-            1,
-            1,
-        )
-        self.internal_label = Gtk.Label(label="0")
-        self.internal_label.set_halign(Gtk.Align.START)
-        stats_grid.attach(self.internal_label, 1, 1, 1, 1)
-
-        # Active peers row
-        stats_grid.attach(Gtk.Label(label=self._("Active Peers:"), halign=Gtk.Align.END), 0, 2, 1, 1)
-        self.peers_label = Gtk.Label(label="0")
-        self.peers_label.set_halign(Gtk.Align.START)
-        stats_grid.attach(self.peers_label, 1, 2, 1, 1)
-
-        # Total announces row
-        stats_grid.attach(
-            Gtk.Label(label=self._("Total Announces:"), halign=Gtk.Align.END),
-            0,
-            3,
-            1,
-            1,
-        )
-        self.announces_label = Gtk.Label(label="0")
-        self.announces_label.set_halign(Gtk.Align.START)
-        stats_grid.attach(self.announces_label, 1, 3, 1, 1)
+        for row, (key, caption, initial) in enumerate(rows):
+            stats_grid.attach(Gtk.Label(label=caption, halign=Gtk.Align.END), 0, row, 1, 1)
+            value_label = Gtk.Label(label=initial)
+            value_label.set_halign(Gtk.Align.START)
+            stats_grid.attach(value_label, 1, row, 1, 1)
+            self._labels[key] = value_label
 
         stats_frame.set_child(stats_grid)
         self.container.append(stats_frame)
 
-        # === TORRENTS LIST SECTION ===
+    def _build_torrents_section(self) -> None:
+        """Build the tracked-torrents column view inside a scrolled frame."""
         torrents_frame = Gtk.Frame()
         torrents_frame.set_label(self._("Tracked Torrents"))
         torrents_frame.set_margin_top(8)
         torrents_frame.set_vexpand(True)
 
-        # Create scrolled window
         scrolled = Gtk.ScrolledWindow()
         scrolled.set_vexpand(True)
         scrolled.set_hexpand(True)
         scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         scrolled.set_min_content_height(200)
 
-        # Create list store
-        self.torrents_store = Gio.ListStore.new(TrackedTorrentItem)
+        self._view.store = Gio.ListStore.new(TrackedTorrentItem)
+        self._view.selection = Gtk.SingleSelection.new(self._view.store)
+        self._view.column = Gtk.ColumnView.new(self._view.selection)
+        self._view.column.set_show_row_separators(True)
+        self._view.column.set_show_column_separators(True)
+        self._view.column.add_css_class("data-table")
 
-        # Create selection model
-        self.selection_model = Gtk.SingleSelection.new(self.torrents_store)
+        columns = (
+            (self._("Source"), "is_internal", self._source_factory),
+            (self._("Name"), "name", self._text_factory),
+            (self._("Seeders"), "seeders", self._number_factory),
+            (self._("Leechers"), "leechers", self._number_factory),
+            (self._("Uploaded"), "uploaded", self._text_factory),
+            (self._("Downloaded"), "downloaded", self._text_factory),
+            (self._("Up Speed"), "upload_speed", self._text_factory),
+            (self._("Down Speed"), "download_speed", self._text_factory),
+            (self._("Completed"), "completed", self._number_factory),
+            (self._("Last Activity"), "last_activity", self._text_factory),
+        )
+        for title, property_name, factory_func in columns:
+            self._add_column(title, property_name, factory_func)
 
-        # Create column view
-        self.column_view = Gtk.ColumnView.new(self.selection_model)
-        self.column_view.set_show_row_separators(True)
-        self.column_view.set_show_column_separators(True)
-        self.column_view.add_css_class("data-table")
-
-        # Add columns
-        self._add_column(self._("Source"), "is_internal", self._source_factory)
-        self._add_column(self._("Name"), "name", self._text_factory)
-        self._add_column(self._("Seeders"), "seeders", self._number_factory)
-        self._add_column(self._("Leechers"), "leechers", self._number_factory)
-        self._add_column(self._("Uploaded"), "uploaded", self._text_factory)
-        self._add_column(self._("Downloaded"), "downloaded", self._text_factory)
-        self._add_column(self._("Up Speed"), "upload_speed", self._text_factory)
-        self._add_column(self._("Down Speed"), "download_speed", self._text_factory)
-        self._add_column(self._("Completed"), "completed", self._number_factory)
-        self._add_column(self._("Last Activity"), "last_activity", self._text_factory)
-
-        scrolled.set_child(self.column_view)
+        scrolled.set_child(self._view.column)
         torrents_frame.set_child(scrolled)
         self.container.append(torrents_frame)
 
-        # Load initial settings
-        self._load_settings()
-
-    def _add_column(
-        self,
-        title: str,
-        property_name: str,
-        factory_func: Any,
-    ) -> None:
+    def _add_column(self, title: str, property_name: str, factory_func: Any) -> None:
         """Add a column to the column view."""
         factory = Gtk.SignalListItemFactory()
         factory.connect("setup", lambda f, item: self._setup_cell(item))
@@ -337,9 +305,9 @@ class TrackerTab(Component):
 
         column = Gtk.ColumnViewColumn.new(title, factory)
         column.set_resizable(True)
-        self.column_view.append_column(column)
+        self._view.column.append_column(column)
 
-    def _setup_cell(self, item: Gtk.ListItem) -> None:
+    def _setup_cell(self, item: Any) -> None:
         """Setup a cell with a label."""
         label = Gtk.Label()
         label.set_halign(Gtk.Align.START)
@@ -347,7 +315,7 @@ class TrackerTab(Component):
         label.set_margin_end(8)
         item.set_child(label)
 
-    def _source_factory(self, item: Gtk.ListItem, prop: str) -> None:
+    def _source_factory(self, item: Any, prop: str) -> None:
         """Factory for source column (internal/external icon)."""
         label = item.get_child()
         obj = item.get_item()
@@ -359,7 +327,7 @@ class TrackerTab(Component):
             else:
                 label.set_text("🌐 " + self._("External"))
 
-    def _text_factory(self, item: Gtk.ListItem, prop: str) -> None:
+    def _text_factory(self, item: Any, prop: str) -> None:
         """Factory for text columns."""
         label = item.get_child()
         obj = item.get_item()
@@ -367,7 +335,7 @@ class TrackerTab(Component):
             value = obj.get_property(prop)
             label.set_text(str(value) if value else "-")
 
-    def _number_factory(self, item: Gtk.ListItem, prop: str) -> None:
+    def _number_factory(self, item: Any, prop: str) -> None:
         """Factory for number columns."""
         label = item.get_child()
         obj = item.get_item()
@@ -385,12 +353,12 @@ class TrackerTab(Component):
             self.settings.connect("attribute-changed", self._on_settings_changed)
 
             # Auto-start if enabled
-            if enabled and not self._tracker_server:
+            if enabled and not self._runtime.server:
                 self._start_tracker()
-            elif not enabled and self._tracker_server:
+            elif not enabled and self._runtime.server:
                 self._stop_tracker()
 
-        except Exception as e:
+        except _TRACKER_ERRORS as e:
             logger.warning(
                 f"Failed to load tracker settings: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -399,9 +367,9 @@ class TrackerTab(Component):
     def _on_settings_changed(self, source: Any, key: str, value: Any) -> None:
         """Handle settings changes from preferences dialog."""
         if key == "tracker_settings.enabled":
-            if value and not self._tracker_server:
+            if value and not self._runtime.server:
                 self._start_tracker()
-            elif not value and self._tracker_server:
+            elif not value and self._runtime.server:
                 self._stop_tracker()
 
     def _start_tracker(self) -> None:
@@ -410,11 +378,9 @@ class TrackerTab(Component):
             from d_fake_seeder.domain.tracker import TrackerServer
 
             tracker_settings = getattr(self.settings, "tracker_settings", {})
-
-            # Get security settings
             security_settings = tracker_settings.get("security", {})
 
-            self._tracker_server = TrackerServer(
+            self._runtime.server = TrackerServer(
                 bind_address=tracker_settings.get("bind_address", "0.0.0.0"),
                 http_port=tracker_settings.get("http_port", 6969),
                 udp_enabled=tracker_settings.get("udp_enabled", False),
@@ -430,9 +396,9 @@ class TrackerTab(Component):
                 rate_limit_per_minute=security_settings.get("rate_limit_per_minute", 60),
             )
 
-            if self._tracker_server.start():
+            if self._runtime.server.start():
                 logger.info(
-                    f"Inbuilt tracker started at {self._tracker_server.announce_url}",
+                    f"Inbuilt tracker started at {self._runtime.server.announce_url}",
                     extra={"class_name": self.__class__.__name__},
                 )
                 self._update_status()
@@ -440,21 +406,14 @@ class TrackerTab(Component):
                 # Register existing torrents with the tracker (sync_on_add missed them)
                 self._register_existing_torrents()
 
-                # Show notification
-                from d_fake_seeder.view import View
-
-                if View.instance:
-                    View.instance.notify(
-                        self._("Tracker started"),
-                        notification_type="success",
-                    )
+                self._notify(self._("Tracker started"), "success")
             else:
                 logger.error(
                     "Failed to start tracker",
                     extra={"class_name": self.__class__.__name__},
                 )
 
-        except Exception as e:
+        except _TRACKER_ERRORS as e:
             logger.error(
                 f"Error starting tracker: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -463,9 +422,9 @@ class TrackerTab(Component):
     def _stop_tracker(self) -> None:
         """Stop the inbuilt tracker."""
         try:
-            if self._tracker_server:
-                self._tracker_server.stop()
-                self._tracker_server = None
+            if self._runtime.server:
+                self._runtime.server.stop()
+                self._runtime.server = None
                 self._update_status()
 
                 logger.info(
@@ -473,20 +432,21 @@ class TrackerTab(Component):
                     extra={"class_name": self.__class__.__name__},
                 )
 
-                # Show notification
-                from d_fake_seeder.view import View
+                self._notify(self._("Tracker stopped"), "info")
 
-                if View.instance:
-                    View.instance.notify(
-                        self._("Tracker stopped"),
-                        notification_type="info",
-                    )
-
-        except Exception as e:
+        except _TRACKER_ERRORS as e:
             logger.error(
                 f"Error stopping tracker: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
+
+    @staticmethod
+    def _notify(message: str, notification_type: str) -> None:
+        """Show a view notification when a view instance is available."""
+        from d_fake_seeder.view import View
+
+        if View.instance:
+            View.instance.notify(message, notification_type=notification_type)
 
     def _register_existing_torrents(self) -> None:
         """Register all existing torrents with the inbuilt tracker.
@@ -505,65 +465,75 @@ class TrackerTab(Component):
                 )
                 return
 
-            if not self._tracker_server or not self._tracker_server.is_running:
+            if not self._runtime.server or not self._runtime.server.is_running:
                 return
 
-            # Get model from view
-            from d_fake_seeder.view import View
-
-            if not View.instance or not hasattr(View.instance, "model"):
-                return
-
-            model = View.instance.model
-            if not model or not hasattr(model, "torrent_list"):
+            model = self._view_model()
+            if model is None:
                 return
 
             registered_count = 0
             for torrent in model.torrent_list:
-                try:
-                    # Get info_hash from torrent (info_hash_bytes property)
-                    info_hash = getattr(torrent, "info_hash_bytes", None)
-                    if not info_hash:
-                        continue
-
-                    # info_hash_bytes should already be bytes, but handle strings just in case
-                    if isinstance(info_hash, str):
-                        info_hash = bytes.fromhex(info_hash)
-
-                    # Register with tracker
-                    self._tracker_server.register_torrent(
-                        info_hash=info_hash,
-                        name=getattr(torrent, "name", "Unknown"),
-                        total_size=getattr(torrent, "total_size", 0),
-                        is_internal=True,
-                    )
+                if self._register_one_torrent(torrent):
                     registered_count += 1
-
-                except Exception as e:
-                    logger.trace(
-                        f"Failed to register torrent {getattr(torrent, 'name', 'unknown')}: {e}",
-                        extra={"class_name": self.__class__.__name__},
-                    )
 
             logger.info(
                 f"Registered {registered_count} existing torrents with inbuilt tracker",
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except _TRACKER_ERRORS as e:
             logger.error(
                 f"Error registering existing torrents: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
+    def _register_one_torrent(self, torrent: Any) -> bool:
+        """Register a single torrent with the tracker; return whether it was registered."""
+        try:
+            info_hash = getattr(torrent, "info_hash_bytes", None)
+            if not info_hash:
+                return False
+
+            # info_hash_bytes should already be bytes, but handle strings just in case
+            if isinstance(info_hash, str):
+                info_hash = bytes.fromhex(info_hash)
+
+            self._runtime.server.register_torrent(
+                info_hash=info_hash,
+                name=getattr(torrent, "name", "Unknown"),
+                total_size=getattr(torrent, "total_size", 0),
+                is_internal=True,
+            )
+            return True
+
+        except _TRACKER_ERRORS as e:
+            logger.trace(
+                f"Failed to register torrent {getattr(torrent, 'name', 'unknown')}: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return False
+
+    @staticmethod
+    def _view_model() -> Any:
+        """Return the active model from the view singleton, or ``None``."""
+        from d_fake_seeder.view import View
+
+        if not View.instance or not hasattr(View.instance, "model"):
+            return None
+        model = View.instance.model
+        if not model or not hasattr(model, "torrent_list"):
+            return None
+        return model
+
     def _start_update_timer(self) -> None:
         """Start the periodic update timer using the app's tickspeed setting."""
-        if self._update_timer_id:
-            GLib.source_remove(self._update_timer_id)
+        if self._runtime.timer_id:
+            GLib.source_remove(self._runtime.timer_id)
 
         # Use the same tickspeed as the main app for consistent refresh rates
         tick_speed = getattr(self.settings, "tickspeed", 9)
-        self._update_timer_id = GLib.timeout_add_seconds(tick_speed, self._update_status)
+        self._runtime.timer_id = GLib.timeout_add_seconds(tick_speed, self._update_status)
 
     def _update_status(self) -> bool:
         """Update the status display."""
@@ -573,44 +543,11 @@ class TrackerTab(Component):
             tracker = TrackerServer.get_instance()
 
             if tracker and tracker.is_running:
-                stats = tracker.get_stats()
-
-                self.status_label.set_text(self._("Running"))
-                self.status_label.remove_css_class("dim-label")
-                self.status_label.add_css_class("success")
-
-                self.address_label.set_text(stats.get("announce_url", "-"))
-
-                uptime = stats.get("uptime", 0)
-                hours, remainder = divmod(int(uptime), 3600)
-                minutes, seconds = divmod(remainder, 60)
-                self.uptime_label.set_text(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
-
-                self.torrents_label.set_text(str(stats.get("total_torrents", 0)))
-                self.internal_label.set_text(str(stats.get("internal_torrents", 0)))
-                self.peers_label.set_text(str(stats.get("total_peers", 0)))
-                # Total announces = internal announces sent via LocalAnnouncer
-                self.announces_label.set_text(str(stats.get("announces_sent", 0)))
-
-                # Update torrents list
-                self._update_torrents_list(tracker)
-
+                self._apply_running_stats(tracker)
             else:
-                self.status_label.set_text(self._("Stopped"))
-                self.status_label.remove_css_class("success")
-                self.status_label.add_css_class("dim-label")
+                self._apply_stopped_stats()
 
-                self.address_label.set_text("-")
-                self.uptime_label.set_text("-")
-                self.torrents_label.set_text("0")
-                self.internal_label.set_text("0")
-                self.peers_label.set_text("0")
-                self.announces_label.set_text("0")
-
-                # Clear torrents list
-                self.torrents_store.remove_all()
-
-        except Exception as e:
+        except _TRACKER_ERRORS as e:
             logger.warning(
                 f"Failed to update tracker status: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -618,149 +555,182 @@ class TrackerTab(Component):
 
         return True  # Keep timer running
 
-    def _format_bytes(self, bytes_val: int) -> str:
+    def _apply_running_stats(self, tracker: Any) -> None:
+        """Populate the status/stats labels and list from a running tracker."""
+        stats = tracker.get_stats()
+
+        self._labels["status"].set_text(self._("Running"))
+        self._labels["status"].remove_css_class("dim-label")
+        self._labels["status"].add_css_class("success")
+
+        self._labels["address"].set_text(stats.get("announce_url", "-"))
+
+        uptime = stats.get("uptime", 0)
+        hours, remainder = divmod(int(uptime), 3600)
+        minutes, seconds = divmod(remainder, 60)
+        self._labels["uptime"].set_text(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
+
+        self._labels["torrents"].set_text(str(stats.get("total_torrents", 0)))
+        self._labels["internal"].set_text(str(stats.get("internal_torrents", 0)))
+        self._labels["peers"].set_text(str(stats.get("total_peers", 0)))
+        # Total announces = internal announces sent via LocalAnnouncer
+        self._labels["announces"].set_text(str(stats.get("announces_sent", 0)))
+
+        self._update_torrents_list(tracker)
+
+    def _apply_stopped_stats(self) -> None:
+        """Reset the status/stats labels and clear the list when stopped."""
+        self._labels["status"].set_text(self._("Stopped"))
+        self._labels["status"].remove_css_class("success")
+        self._labels["status"].add_css_class("dim-label")
+
+        self._labels["address"].set_text("-")
+        self._labels["uptime"].set_text("-")
+        for key in ("torrents", "internal", "peers", "announces"):
+            self._labels[key].set_text("0")
+
+        self._view.store.remove_all()
+
+    @staticmethod
+    def _format_bytes(bytes_val: int) -> str:
         """Format bytes to human readable string."""
         if bytes_val < 1024:
             return f"{bytes_val} B"
-        elif bytes_val < 1024 * 1024:
+        if bytes_val < 1024 * 1024:
             return f"{bytes_val / 1024:.1f} KB"
-        elif bytes_val < 1024 * 1024 * 1024:
+        if bytes_val < 1024 * 1024 * 1024:
             return f"{bytes_val / (1024 * 1024):.1f} MB"
-        else:
-            return f"{bytes_val / (1024 * 1024 * 1024):.2f} GB"
+        return f"{bytes_val / (1024 * 1024 * 1024):.2f} GB"
 
-    def _format_speed(self, bytes_per_sec: float) -> str:
+    @staticmethod
+    def _format_speed(bytes_per_sec: float) -> str:
         """Format speed to human readable string."""
         if bytes_per_sec < 1024:
             return f"{bytes_per_sec:.0f} B/s"
-        elif bytes_per_sec < 1024 * 1024:
+        if bytes_per_sec < 1024 * 1024:
             return f"{bytes_per_sec / 1024:.1f} KB/s"
-        else:
-            return f"{bytes_per_sec / (1024 * 1024):.1f} MB/s"
+        return f"{bytes_per_sec / (1024 * 1024):.1f} MB/s"
+
+    @staticmethod
+    def _format_last_activity(last_announce: float) -> str:
+        """Format the elapsed time since a torrent's last announce."""
+        elapsed = time.time() - last_announce
+        if elapsed < 60:
+            return f"{int(elapsed)}s ago"
+        if elapsed < 3600:
+            return f"{int(elapsed / 60)}m ago"
+        return f"{int(elapsed / 3600)}h ago"
+
+    @staticmethod
+    def _collect_model_torrents() -> dict:
+        """Map info-hash bytes to the matching model torrent for data lookups."""
+        from d_fake_seeder.view import View
+
+        model_torrents: dict = {}
+        if View.instance and hasattr(View.instance, "model") and View.instance.model:
+            for t in View.instance.model.torrent_list:
+                info_hash = getattr(t, "info_hash_bytes", None)
+                if info_hash:
+                    model_torrents[info_hash] = t
+        return model_torrents
+
+    def _compute_speeds(self, info_hash_hex: str, uploaded: int, downloaded: int, time_delta: float) -> tuple:
+        """Return (upload_speed, download_speed) from the stored differentials."""
+        upload_speed = 0.0
+        download_speed = 0.0
+        prev = self._runtime.prev_stats.get(info_hash_hex)
+        if prev:
+            upload_diff = uploaded - prev.get("uploaded", 0)
+            download_diff = downloaded - prev.get("downloaded", 0)
+            if upload_diff > 0:
+                upload_speed = upload_diff / time_delta
+            if download_diff > 0:
+                download_speed = download_diff / time_delta
+        self._runtime.prev_stats[info_hash_hex] = {"uploaded": uploaded, "downloaded": downloaded}
+        return upload_speed, download_speed
+
+    def _make_tracked_item(self, torrent: Any, model_torrents: dict, time_delta: float) -> TrackedTorrentItem:
+        """Build a :class:`TrackedTorrentItem` from a registry torrent and model data."""
+        uploaded = 0
+        downloaded = 0
+        upload_speed = 0.0
+        download_speed = 0.0
+        seeders = 0
+        leechers = 0
+
+        model_torrent = model_torrents.get(torrent.info_hash)
+        if model_torrent:
+            uploaded = getattr(model_torrent, "total_uploaded", 0) or 0
+            downloaded = getattr(model_torrent, "total_downloaded", 0) or 0
+            # Get real seeders/leechers from external tracker announces
+            seeders = getattr(model_torrent, "seeders", 0) or 0
+            leechers = getattr(model_torrent, "leechers", 0) or 0
+            upload_speed, download_speed = self._compute_speeds(
+                torrent.info_hash.hex(), uploaded, downloaded, time_delta
+            )
+
+        short_hash = torrent.info_hash.hex()[:16] + "..."
+        return TrackedTorrentItem(
+            {
+                "info_hash": short_hash,
+                "name": torrent.name or short_hash,
+                "seeders": seeders,
+                "leechers": leechers,
+                "completed": torrent.times_completed,
+                "last_activity": self._format_last_activity(torrent.last_announce),
+                "is_internal": torrent.is_internal,
+                "uploaded": self._format_bytes(uploaded),
+                "downloaded": self._format_bytes(downloaded),
+                "upload_speed": self._format_speed(upload_speed),
+                "download_speed": self._format_speed(download_speed),
+            }
+        )
 
     def _update_torrents_list(self, tracker: Any) -> None:
         """Update the tracked torrents list."""
-        import time
-
         try:
             # Detach model to prevent O(n²) re-sort on each append
-            self.column_view.set_model(None)
+            self._view.column.set_model(None)
+            self._view.store.remove_all()
 
-            self.torrents_store.remove_all()
-
-            # Get model to look up actual torrent data
-            from d_fake_seeder.view import View
-
-            model_torrents = {}
-            if View.instance and hasattr(View.instance, "model") and View.instance.model:
-                for t in View.instance.model.torrent_list:
-                    info_hash = getattr(t, "info_hash_bytes", None)
-                    if info_hash:
-                        model_torrents[info_hash] = t
-
-            # Initialize previous stats tracking if not exists
-            if not hasattr(self, "_prev_stats"):
-                self._prev_stats: dict = {}
-            if not hasattr(self, "_last_update_time"):
-                self._last_update_time: float = time.time()
+            model_torrents = self._collect_model_torrents()
 
             current_time = time.time()
-            time_delta = current_time - self._last_update_time
+            time_delta = current_time - self._runtime.last_update_time
             if time_delta < 0.1:
                 time_delta = 1.0  # Avoid division by very small numbers
 
             for torrent in tracker.torrent_registry.get_all_torrents():
-                # Format last activity
-                elapsed = time.time() - torrent.last_announce
-                if elapsed < 60:
-                    last_activity = f"{int(elapsed)}s ago"
-                elif elapsed < 3600:
-                    last_activity = f"{int(elapsed / 60)}m ago"
-                else:
-                    last_activity = f"{int(elapsed / 3600)}h ago"
+                self._view.store.append(self._make_tracked_item(torrent, model_torrents, time_delta))
 
-                # Get data from model torrent (includes real seeders/leechers from trackers)
-                uploaded = 0
-                downloaded = 0
-                upload_speed = 0.0
-                download_speed = 0.0
-                seeders = 0
-                leechers = 0
+            self._runtime.last_update_time = current_time
 
-                model_torrent = model_torrents.get(torrent.info_hash)
-                if model_torrent:
-                    uploaded = getattr(model_torrent, "total_uploaded", 0) or 0
-                    downloaded = getattr(model_torrent, "total_downloaded", 0) or 0
-                    # Get real seeders/leechers from external tracker announces
-                    seeders = getattr(model_torrent, "seeders", 0) or 0
-                    leechers = getattr(model_torrent, "leechers", 0) or 0
-
-                    # Calculate speeds from differentials
-                    info_hash_hex = torrent.info_hash.hex()
-                    if info_hash_hex in self._prev_stats:
-                        prev = self._prev_stats[info_hash_hex]
-                        upload_diff = uploaded - prev.get("uploaded", 0)
-                        download_diff = downloaded - prev.get("downloaded", 0)
-                        if upload_diff > 0:
-                            upload_speed = upload_diff / time_delta
-                        if download_diff > 0:
-                            download_speed = download_diff / time_delta
-
-                    # Store current stats for next calculation
-                    self._prev_stats[info_hash_hex] = {
-                        "uploaded": uploaded,
-                        "downloaded": downloaded,
-                    }
-
-                item = TrackedTorrentItem(
-                    info_hash=torrent.info_hash.hex()[:16] + "...",
-                    name=torrent.name or torrent.info_hash.hex()[:16] + "...",
-                    seeders=seeders,
-                    leechers=leechers,
-                    completed=torrent.times_completed,
-                    last_activity=last_activity,
-                    is_internal=torrent.is_internal,
-                    uploaded=self._format_bytes(uploaded),
-                    downloaded=self._format_bytes(downloaded),
-                    upload_speed=self._format_speed(upload_speed),
-                    download_speed=self._format_speed(download_speed),
-                )
-                self.torrents_store.append(item)
-
-            self._last_update_time = current_time
-
-        except Exception as e:
+        except _TRACKER_ERRORS as e:
             logger.warning(
                 f"Failed to update torrents list: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
         finally:
-            self.column_view.set_model(self.selection_model)
+            self._view.column.set_model(self._view.selection)
 
     # === ABSTRACT METHOD IMPLEMENTATIONS ===
 
     def handle_model_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
-        """Handle model data changes."""
-        pass  # Tracker tab doesn't depend on torrent model changes
+        """Handle model data changes (tracker tab is independent of torrent model changes)."""
 
     def handle_attribute_changed(self, source: Any, key: Any, value: Any) -> None:
-        """Handle attribute changes."""
-        pass  # Tracker tab doesn't depend on attribute changes
+        """Handle attribute changes (tracker tab is independent of attribute changes)."""
 
     def handle_settings_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
-        """Handle settings changes."""
-        # Could reload tracker settings here if needed
-        pass
+        """Handle settings changes (tracker settings are reloaded via _on_settings_changed)."""
 
     def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
-        """Update the view."""
-        # Tracker tab updates on its own timer
-        pass
+        """Update the view (tracker tab refreshes on its own timer)."""
 
     def cleanup(self) -> None:
         """Cleanup resources."""
-        if self._update_timer_id:
-            GLib.source_remove(self._update_timer_id)
-            self._update_timer_id = None
+        if self._runtime.timer_id:
+            GLib.source_remove(self._runtime.timer_id)
+            self._runtime.timer_id = None
 
         super().cleanup()

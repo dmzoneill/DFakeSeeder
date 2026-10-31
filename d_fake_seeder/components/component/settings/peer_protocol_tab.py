@@ -4,18 +4,12 @@ Peer Protocol settings tab for the settings dialog.
 Handles peer protocol timeouts, seeder settings, and peer behavior configuration.
 """
 
-# fmt: off
-from typing import Any, Dict
+from typing import Any, ClassVar
 
-import gi
+from d_fake_seeder.lib.gi_gtk4 import GLib
 
-gi.require_version("Gtk", "4.0")
-
-from .base_tab import BaseSettingsTab  # noqa: E402
-from .settings_mixins import NotificationMixin  # noqa: E402
-from .settings_mixins import UtilityMixin, ValidationMixin  # noqa: E402
-
-# fmt: on
+from .base_tab import BaseSettingsTab
+from .settings_mixins import NotificationMixin, UtilityMixin, ValidationMixin
 
 
 class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, UtilityMixin):
@@ -29,7 +23,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
     """
 
     # Auto-connect simple widgets with WIDGET_MAPPINGS
-    WIDGET_MAPPINGS = [
+    WIDGET_MAPPINGS: ClassVar[list] = [
         # Peer Protocol Timeouts
         {
             "id": "settings_handshake_timeout",
@@ -219,10 +213,10 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
 
             self.logger.info("Peer Protocol tab settings loaded")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error loading Peer Protocol tab settings: {e}")
 
-    def _load_peer_protocol_settings(self, peer_protocol: Dict[str, Any]) -> None:
+    def _load_peer_protocol_settings(self, peer_protocol: dict[str, Any]) -> None:
         """Load peer protocol timeout settings."""
         try:
             handshake_timeout = self.get_widget("handshake_timeout")
@@ -241,10 +235,10 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
             if peer_contact_interval:
                 peer_contact_interval.set_value(peer_protocol.get("contact_interval_seconds", 300.0))
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error loading peer protocol settings: {e}")
 
-    def _load_seeder_settings(self, seeders: Dict[str, Any]) -> None:
+    def _load_seeder_settings(self, seeders: dict[str, Any]) -> None:
         """Load seeder protocol settings."""
         try:
             udp_seeder_timeout = self.get_widget("udp_seeder_timeout")
@@ -275,10 +269,10 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
             if peer_request_count:
                 peer_request_count.set_value(seeders.get("peer_request_count", 200))
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error loading seeder settings: {e}")
 
-    def _load_peer_behavior_settings(self, peer_behavior: Dict[str, Any]) -> None:
+    def _load_peer_behavior_settings(self, peer_behavior: dict[str, Any]) -> None:
         """Load peer behavior settings."""
         try:
             seeder_upload_activity = self.get_widget("seeder_upload_activity")
@@ -317,14 +311,13 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
             if connection_rotation:
                 connection_rotation.set_value(peer_behavior.get("connection_rotation_percentage", 0.1))
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error loading peer behavior settings: {e}")
 
     def _setup_dependencies(self) -> None:
         """Set up dependencies for Peer Protocol tab."""
-        pass
 
-    def _collect_settings(self) -> Dict[str, Any]:
+    def _collect_settings(self) -> dict[str, Any]:
         """Collect current settings from Peer Protocol tab widgets.
 
         Returns:
@@ -351,7 +344,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
         self.logger.trace(f"Collected {len(settings)} settings from Peer Protocol tab")
         return settings
 
-    def _collect_peer_protocol_settings(self) -> Dict[str, Any]:
+    def _collect_peer_protocol_settings(self) -> dict[str, Any]:
         """Collect peer protocol timeout settings."""
         peer_protocol = {}
 
@@ -372,12 +365,12 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
             if peer_contact_interval:
                 peer_protocol["contact_interval_seconds"] = peer_contact_interval.get_value()
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error collecting peer protocol settings: {e}")
 
         return peer_protocol
 
-    def _collect_seeder_settings(self) -> Dict[str, Any]:
+    def _collect_seeder_settings(self) -> dict[str, Any]:
         """Collect seeder protocol settings."""
         seeders = {}
 
@@ -410,12 +403,12 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
             if peer_request_count:
                 seeders["peer_request_count"] = int(peer_request_count.get_value())
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error collecting seeder settings: {e}")
 
         return seeders
 
-    def _collect_peer_behavior_settings(self) -> Dict[str, Any]:
+    def _collect_peer_behavior_settings(self) -> dict[str, Any]:
         """Collect peer behavior settings."""
         peer_behavior = {}
 
@@ -456,12 +449,12 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
             if connection_rotation:
                 peer_behavior["connection_rotation_percentage"] = connection_rotation.get_value()
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error collecting peer behavior settings: {e}")
 
         return peer_behavior
 
-    def _validate_tab_settings(self) -> Dict[str, str]:
+    def _validate_tab_settings(self) -> dict[str, str]:
         """Validate Peer Protocol tab settings."""
         errors = {}
 
@@ -484,7 +477,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
                 if min_id >= max_id:
                     errors["transaction_id_range"] = "Minimum transaction ID must be less than maximum"
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error validating Peer Protocol tab settings: {e}")
             errors["general"] = str(e)
 
@@ -538,7 +531,7 @@ class PeerProtocolTab(BaseSettingsTab, NotificationMixin, ValidationMixin, Utili
 
             self.show_notification(self._("Peer Protocol settings reset to defaults"), "success")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error resetting Peer Protocol tab to defaults: {e}")
 
     def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:

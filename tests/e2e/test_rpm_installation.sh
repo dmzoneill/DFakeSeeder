@@ -5,29 +5,11 @@
 set -e # Exit on error
 set -u # Exit on undefined variable
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+# shellcheck source=SCRIPTDIR/e2e_common.sh
+source "$(dirname "${BASH_SOURCE[0]}")/e2e_common.sh"
 
-# Test results tracking
-TESTS_PASSED=0
-TESTS_FAILED=0
+# Per-test results for the summary
 TEST_RESULTS=()
-
-# Logging functions
-log_info() {
-	echo -e "${GREEN}[INFO]${NC} $1"
-}
-
-log_error() {
-	echo -e "${RED}[ERROR]${NC} $1"
-}
-
-log_warning() {
-	echo -e "${YELLOW}[WARNING]${NC} $1"
-}
 
 # Test assertion functions
 assert_success() {
