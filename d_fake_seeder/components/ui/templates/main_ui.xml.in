@@ -1,0 +1,69 @@
+<!--
+  Templates for the main window UI (ui.xml -> generated/generated.xml), expanded at build
+  time by tools/expand_ui_templates.py; see settings_rows.xml.in for the syntax.
+-->
+
+<!-- Notebook tab header: icon + label -->
+<template name="notebook-tab-label">
+<child type="tab">
+    <object class="GtkBox">
+        <property name="spacing">5</property>
+        <property name="orientation">horizontal</property>
+        <property name="margin-start">8</property>
+        <child>
+            <object class="GtkImage">
+                <property name="icon-name">{icon}</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{label}</property>
+            </object>
+        </child>
+    </object>
+</child>
+</template>
+
+<!-- Dimmed empty-state placeholder: large icon, bold title, subtitle -->
+<template name="empty-state">
+<child>
+    <object class="GtkBox" id="{id}">
+        <property name="visible">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">20</property>
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        <property name="vexpand">True</property>
+        <child>
+            <object class="GtkImage">
+                <property name="icon-name">{icon}</property>
+                <property name="pixel-size">128</property>
+                <style>
+                    <class name="dim-label"/>
+                </style>
+            </object>
+        </child>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{title}</property>
+                <property name="wrap">True</property>
+                <attributes>
+                    <attribute name="scale" value="1.5"/>
+                    <attribute name="weight" value="bold"/>
+                </attributes>
+                <style>
+                    <class name="dim-label"/>
+                </style>
+            </object>
+        </child>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{subtitle}</property>
+                <style>
+                    <class name="dim-label"/>
+                </style>
+            </object>
+        </child>
+    </object>
+</child>
+</template>

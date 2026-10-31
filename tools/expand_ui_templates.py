@@ -2,7 +2,8 @@
 """
 Expand ``<dfs-use .../>`` row macros in a generated GtkBuilder XML file.
 
-The settings tabs (``components/ui/settings/*.xml``) describe repeated rows compactly::
+The UI sources (e.g. the settings tabs in ``components/ui/settings/*.xml``) describe repeated
+rows compactly::
 
     <dfs-use template="spin-row" id="settings_upload_limit" label="Upload limit (KB/s):" .../>
 
@@ -15,6 +16,7 @@ Everything outside the macros is left byte-for-byte unchanged, so widget IDs, pr
 and the ``translatable="yes"`` markup the i18n extraction scans for are exactly as written.
 
 Usage: xmllint --xinclude settings.xml | expand_ui_templates.py > generated/settings_generated.xml
+       (``make ui-build`` does the same for ui.xml -> generated/generated.xml)
 """
 
 import re
