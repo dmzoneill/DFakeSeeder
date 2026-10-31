@@ -1,5 +1,5 @@
 Name:           dfakeseeder
-Version:        1.2.3
+Version:        1.2.4
 Release:        1%{?dist}
 Summary:        BitTorrent seeding simulator for testing and development
 
@@ -60,7 +60,7 @@ install -d %{buildroot}/usr/share/icons/hicolor/48x48/apps/
 install -d %{buildroot}/usr/share/icons/hicolor/64x64/apps/
 install -d %{buildroot}/usr/share/icons/hicolor/96x96/apps/
 install -d %{buildroot}/usr/share/icons/hicolor/128x128/apps/
-install -d %{buildroot}/usr/share/icons/hicolor/1.2.392/apps/
+install -d %{buildroot}/usr/share/icons/hicolor/1.2.492/apps/
 install -d %{buildroot}/usr/share/icons/hicolor/256x256/apps/
 
 # Install application files (maintain d_fake_seeder package structure)
@@ -99,7 +99,7 @@ Icon=dfakeseeder
 EOF
 
 # Install icons to system directories (all sizes)
-for size in 16 32 48 64 96 128 1.2.356; do
+for size in 16 32 48 64 96 128 1.2.456; do
     install -m 0644 d_fake_seeder/components/images/dfakeseeder.png \
         %{buildroot}/usr/share/icons/hicolor/${size}x${size}/apps/dfakeseeder.png
 done
@@ -129,7 +129,7 @@ if [ -n "$SUDO_USER" ]; then
     # Get the actual user's home directory
     USER_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
 
-    for size in 16 32 48 64 96 128 1.2.356; do
+    for size in 16 32 48 64 96 128 1.2.456; do
         mkdir -p "$USER_HOME/.local/share/icons/hicolor/${size}x${size}/apps" 2>/dev/null || :
         cp -f /usr/share/icons/hicolor/${size}x${size}/apps/dfakeseeder.png \
             "$USER_HOME/.local/share/icons/hicolor/${size}x${size}/apps/" 2>/dev/null || :
