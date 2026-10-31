@@ -1,21 +1,18 @@
-# fmt: off
-# isort: skip_file
+"""States component: tracker/count ColumnView for the DFakeSeeder main window."""
+
+import contextlib
 from typing import Any
-import gi
 
 from d_fake_seeder.components.component.base_component import Component
 from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.column_translation_mixin import ColumnTranslationMixin
 
-gi.require_version("Gdk", "4.0")
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk  # noqa
-
-# fmt: on
-
 
 class States(Component, ColumnTranslationMixin):
+    """ColumnView component showing per-tracker torrent state counts."""
+
     def __init__(self, builder: Any, model: Any) -> None:
 
         logger.info("States.__init__() started", "States")
@@ -44,6 +41,7 @@ class States(Component, ColumnTranslationMixin):
         logger.trace("States.__init__() TOTAL TIME: ms", "States")
 
     def create_columns(self) -> None:
+        """Create the tracker and count columns with their factories."""
 
         # Create the column for the tracker name
         tracker_col = Gtk.ColumnViewColumn()
@@ -82,7 +80,6 @@ class States(Component, ColumnTranslationMixin):
 
     def create_essential_columns_only(self) -> None:
         """Create only the most essential column immediately for fast startup."""
-        from gi.repository import GLib
 
         # Only create tracker column immediately (most important for display)
         tracker_col = Gtk.ColumnViewColumn()
@@ -98,10 +95,9 @@ class States(Component, ColumnTranslationMixin):
         tracker_col.set_factory(tracker_factory)
         self.states_columnview.append_column(tracker_col)
         # Register for translation after creation to reduce blocking
-        try:
+        # Translation registration can fail, column still works
+        with contextlib.suppress(AttributeError, TypeError, KeyError, ValueError):
             self.register_translatable_column(self.states_columnview, tracker_col, "tracker", "states")
-        except Exception:
-            pass  # Translation registration can fail, column still works
         logger.trace(
             "Essential tracker column created in {(tracker_end - tracker_start)*1000:.1f}ms",
             "UnknownClass",
@@ -124,19 +120,19 @@ class States(Component, ColumnTranslationMixin):
             count_col.set_factory(count_factory)
             self.states_columnview.append_column(count_col)
             # Register count column for translation
-            try:
+            with contextlib.suppress(AttributeError, TypeError, KeyError, ValueError):
                 self.register_translatable_column(self.states_columnview, count_col, "count", "states")
-            except Exception:
-                pass
             logger.info("Background count column created successfully", "States")
-        except Exception:
+        except (AttributeError, TypeError, ValueError, GLib.Error):
             logger.error("Background count column creation error:", "States")
         return False  # Don't repeat this idle task  # type: ignore
 
     def setup_tracker_factory(self, factory: Any, item: Any) -> None:
+        """Set up a list item widget for the tracker column."""
         item.set_child(Gtk.Label(halign=Gtk.Align.START))
 
     def bind_tracker_factory(self, factory: Any, item: Any) -> None:
+        """Bind a torrent state's tracker name to its list item label."""
         # Get the item from the factory
         torrent_state = item.get_item()
         # Update the label with just the tracker data
@@ -144,9 +140,11 @@ class States(Component, ColumnTranslationMixin):
         item.get_child().set_label(tracker_name)
 
     def setup_count_factory(self, factory: Any, item: Any) -> None:
+        """Set up a list item widget for the count column."""
         item.set_child(Gtk.Label(halign=Gtk.Align.START))
 
     def bind_count_factory(self, factory: Any, item: Any) -> None:
+        """Bind a torrent state's count to its list item label."""
         # Get the item from the factory
         torrent_state = item.get_item()
         # Update the label with the count data
@@ -164,7 +162,7 @@ class States(Component, ColumnTranslationMixin):
                     "Connected to language-changed signal for column translation",
                     extra={"class_name": self.__class__.__name__},
                 )
-            except Exception as e:
+            except (AttributeError, TypeError, GLib.Error) as e:
                 logger.trace(
                     f"Could not connect to language-changed signal: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -172,28 +170,33 @@ class States(Component, ColumnTranslationMixin):
 
     # Method to update the ColumnView with compatible attributes
     def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
+        """Refresh the ColumnView selection model from the trackers liststore."""
         selection_model = Gtk.SingleSelection.new(model.get_trackers_liststore())
         self.states_columnview.set_model(selection_model)
 
     def handle_settings_changed(self, source: Any, key: Any, value: Any) -> None:
+        """Handle an application settings change (no-op refresh hook)."""
         logger.trace(
             "Torrents view settings changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
+        """Handle a model change notification."""
         logger.trace(
             "States settings update",
             extra={"class_name": self.__class__.__name__},
         )
 
     def handle_attribute_changed(self, source: Any, key: Any, value: Any) -> None:
+        """Handle an attribute change notification."""
         logger.trace(
             "Attribute changed",
             extra={"class_name": self.__class__.__name__},
         )
 
     def model_selection_changed(self, source: Any, model: Any, torrent: Any) -> Any:
+        """Handle a selection change in the model."""
         logger.trace(
             "Model selection changed",
             extra={"class_name": self.__class__.__name__},
