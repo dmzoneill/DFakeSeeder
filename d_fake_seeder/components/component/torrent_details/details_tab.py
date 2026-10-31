@@ -4,21 +4,13 @@ Details tab for torrent details.
 Displays key torrent information like name, ID, file path, size, and progress.
 """
 
-# isort: skip_file
-
-# fmt: off
 from typing import Any
-import gi
 
+from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
 from d_fake_seeder.lib.util.constants import SIZE_UNITS_BASIC
 
 from .base_tab import BaseTorrentTab
 from .tab_mixins import DataUpdateMixin, UIUtilityMixin
-
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk  # noqa
-
-# fmt: on
 
 
 class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
@@ -51,7 +43,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             # Show empty state
             super().clear_content()
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error clearing details tab content: {e}")
 
     def _clear_grid(self) -> None:
@@ -86,7 +78,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             for row, (label_text, value_text) in enumerate(details):
                 self._create_detail_row(label_text, value_text, row)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error updating details tab content: {e}")
 
     def _get_torrent_details(self, torrent: Any) -> list:
@@ -142,7 +134,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             return details
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error getting torrent details: {e}")
             err_func: Any = str
             if self.model is not None and hasattr(self.model, "get_translate_func"):
@@ -189,7 +181,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             return additional
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error getting additional details: {e}")
             return []
 
@@ -220,7 +212,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 self._details_grid.attach(label, 0, row, 1, 1)
                 self._details_grid.attach(value, 1, row, 1, 1)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error creating detail row {label_text}={value_text}: {e}")
 
     def _format_size(self, size_value: Any) -> str:
@@ -282,12 +274,12 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             import datetime
 
             if isinstance(date_value, (int, float)):
-                dt = datetime.datetime.fromtimestamp(date_value)
+                dt = datetime.datetime.fromtimestamp(date_value, tz=datetime.timezone.utc).astimezone()
                 return dt.strftime("%Y-%m-%d %H:%M:%S")
 
             return str(date_value)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, OverflowError, OSError, GLib.Error) as e:
             self.logger.error(f"Error formatting date: {e}")
             return str(date_value)
 
@@ -321,7 +313,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             return f"{size:.1f} {units[unit_index]}"
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error formatting bytes: {e}")
             return f"{bytes_count} B"
 
@@ -346,6 +338,6 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             return ""
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error getting detail value for {label}: {e}")
             return ""
