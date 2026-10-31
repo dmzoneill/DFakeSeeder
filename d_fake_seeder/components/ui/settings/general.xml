@@ -16,13 +16,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Application Behavior&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Application Behavior"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -30,67 +24,18 @@
                             <property name="margin-start">12</property>
 
                             <!-- Start on system startup -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_auto_start">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Start DFakeSeeder automatically when the system boots</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Start on system startup</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_auto_start"
+                                     tooltip="Start DFakeSeeder automatically when the system boots"
+                                     label="Start on system startup"/>
 
                             <!-- Start minimized -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_start_minimized">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Start the application minimized to system tray</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Start minimized</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_start_minimized"
+                                     tooltip="Start the application minimized to system tray" label="Start minimized"/>
 
                             <!-- Minimize to tray -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_minimize_to_tray">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Hide to system tray when window is minimized</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Minimize to system tray</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_minimize_to_tray"
+                                     tooltip="Hide to system tray when window is minimized"
+                                     label="Minimize to system tray"/>
                         </object>
                     </child>
                 </object>
@@ -101,13 +46,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Watch Folder&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Watch Folder"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -115,25 +54,9 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable watch folder -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_watch_folder_enabled">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Automatically monitor a folder for new torrent files</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable watch folder</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_watch_folder_enabled"
+                                     tooltip="Automatically monitor a folder for new torrent files"
+                                     label="Enable watch folder"/>
 
                             <!-- Watch folder path -->
                             <child>
@@ -218,46 +141,14 @@
                             </child>
 
                             <!-- Auto-start torrents -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_watch_folder_auto_start">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Automatically start torrents when added from watch folder</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Auto-start added torrents</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_watch_folder_auto_start"
+                                     tooltip="Automatically start torrents when added from watch folder"
+                                     label="Auto-start added torrents"/>
 
                             <!-- Delete added torrents -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_watch_folder_delete_added">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Delete torrent files after they are successfully added</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Delete added torrent files</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_watch_folder_delete_added"
+                                     tooltip="Delete torrent files after they are successfully added"
+                                     label="Delete added torrent files"/>
                         </object>
                     </child>
                 </object>
@@ -268,13 +159,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Interface&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Interface"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -282,127 +167,24 @@
                             <property name="margin-start">12</property>
 
                             <!-- Theme Style selection -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Theme Style:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">15</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkDropDown" id="settings_theme">
-                                            <property name="model">
-                                                <object class="GtkStringList">
-                                                    <items>
-                                                        <item translatable="yes">System Theme</item>
-                                                        <item translatable="yes">Deluge Theme</item>
-                                                        <item translatable="yes">Modern Chunky</item>
-                                                    </items>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Choose the UI theme style</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="dropdown-row" label="Theme Style:" label_chars="15" id="settings_theme"
+                                     items="System Theme|Deluge Theme|Modern Chunky"
+                                     tooltip="Choose the UI theme style"/>
 
                             <!-- Color Scheme selection -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Color Scheme:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">15</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkDropDown" id="settings_color_scheme">
-                                            <property name="model">
-                                                <object class="GtkStringList">
-                                                    <items>
-                                                        <item translatable="yes">Auto (Follow System)</item>
-                                                        <item translatable="yes">Light</item>
-                                                        <item translatable="yes">Dark</item>
-                                                    </items>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Choose light or dark color scheme</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="dropdown-row" label="Color Scheme:" label_chars="15"
+                                     id="settings_color_scheme" items="Auto (Follow System)|Light|Dark"
+                                     tooltip="Choose light or dark color scheme"/>
 
                             <!-- Language selection -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Language:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">15</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkDropDown" id="settings_language">
-                                            <property name="model">
-                                                <object class="GtkStringList">
-                                                    <items>
-                                                        <item translatable="yes">English</item>
-                                                        <item translatable="yes">Spanish</item>
-                                                        <item translatable="yes">French</item>
-                                                        <item translatable="yes">German</item>
-                                                        <item translatable="yes">Italian</item>
-                                                        <item translatable="yes">Portuguese</item>
-                                                        <item translatable="yes">Russian</item>
-                                                        <item translatable="yes">Chinese</item>
-                                                        <item translatable="yes">Japanese</item>
-                                                    </items>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Choose the interface language</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="dropdown-row" label="Language:" label_chars="15" id="settings_language"
+                                     items="English|Spanish|French|German|Italian|Portuguese|Russian|Chinese|Japanese"
+                                     tooltip="Choose the interface language"/>
 
                             <!-- Window size persistence -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_remember_window_size">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Remember window size and position between sessions</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Remember window size and position</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_remember_window_size"
+                                     tooltip="Remember window size and position between sessions"
+                                     label="Remember window size and position"/>
                         </object>
                     </child>
                 </object>
@@ -413,13 +195,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Configuration Management&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Configuration Management"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">horizontal</property>
@@ -506,13 +282,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Seeding Profiles&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Seeding Profiles"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -520,37 +290,9 @@
                             <property name="margin-start">12</property>
 
                             <!-- Profile selection -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Active Profile:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">15</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkDropDown" id="settings_seeding_profile">
-                                            <property name="model">
-                                                <object class="GtkStringList">
-                                                    <items>
-                                                        <item translatable="yes">Conservative</item>
-                                                        <item translatable="yes">Balanced</item>
-                                                        <item translatable="yes">Aggressive</item>
-                                                        <item translatable="yes">Custom</item>
-                                                    </items>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Choose a pre-configured seeding profile</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="dropdown-row" label="Active Profile:" label_chars="15"
+                                     id="settings_seeding_profile" items="Conservative|Balanced|Aggressive|Custom"
+                                     tooltip="Choose a pre-configured seeding profile"/>
 
                             <!-- Profile description -->
                             <child>

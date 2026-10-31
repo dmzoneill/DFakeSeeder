@@ -86,7 +86,7 @@ def test_template_strings_reach_generated_ui() -> None:
     assert {"Upload limit (KB/s):", "Download Distribution", "Stopped max %:", "Pareto"} <= strings
     assert {"Enable Web UI", "Enable CSRF protection", "Session timeout (min):"} <= strings
     assert {"Automatic logout after inactivity (5-1440 minutes)"} <= strings
-    assert {"Handshake timeout (seconds):"} <= strings
+    assert {"Handshake timeout (seconds):", "Deluge Theme", "Japanese"} <= strings
 
 
 def test_expand_indents_escapes_and_nests() -> None:
@@ -105,6 +105,16 @@ def test_expand_indents_escapes_and_nests() -> None:
         "  </child>\n"
         "</root>"
     )
+
+
+def test_list_parameter_repeats_its_line() -> None:
+    """A {key[]} line is emitted once per |-separated value, each XML-escaped."""
+    templates = {"list": "<items>\n    <item>{items[]}</item>\n</items>"}
+    assert expander.expand('  <dfs-use template="list" items="A|B &amp; C"/>', templates) == (
+        "  <items>\n      <item>A</item>\n      <item>B &amp; C</item>\n  </items>"
+    )
+    with pytest.raises(expander.TemplateError):
+        expander.expand('<dfs-use template="list"/>', templates)
 
 
 def test_expand_errors() -> None:

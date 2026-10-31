@@ -9,7 +9,8 @@ The settings tabs (``components/ui/settings/*.xml``) describe repeated rows comp
 ``make ui-build`` pipes the XInclude-resolved output of xmllint through this filter, which
 replaces every macro with the named template from
 ``components/ui/templates/*.xml.in`` (``{param}`` placeholders filled with the XML-escaped
-attribute values, re-indented to the macro's column). Templates may use further macros.
+attribute values, re-indented to the macro's column). Templates may use further macros. A line
+holding ``{key[]}`` is repeated once per ``|``-separated value of ``key`` (e.g. dropdown items).
 Everything outside the macros is left byte-for-byte unchanged, so widget IDs, properties
 and the ``translatable="yes"`` markup the i18n extraction scans for are exactly as written.
 
@@ -27,6 +28,8 @@ TEMPLATE_START_RE = re.compile(r'<template name="([\w-]+)">')
 TEMPLATE_END = "</template>"
 MACRO_RE = re.compile(r"<dfs-use\b[^>]*>")
 PLACEHOLDER_RE = re.compile(r"\{(\w+)\}")
+LIST_PLACEHOLDER_RE = re.compile(r"\{(\w+)\[\]\}")
+LIST_SEPARATOR = "|"
 XML_ESCAPES = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}
 MAX_DEPTH = 10
 
@@ -65,6 +68,22 @@ def _attributes(macro: str) -> dict[str, str]:
     }
 
 
+def _repeat_list_lines(body: str, params: dict[str, str], name: str) -> str:
+    """Repeat each line holding a ``{key[]}`` placeholder once per ``|``-separated value of ``key``."""
+    lines = []
+    for line in body.split("\n"):
+        match = LIST_PLACEHOLDER_RE.search(line)
+        if not match:
+            lines.append(line)
+            continue
+        key = match.group(1)
+        if key not in params:
+            raise TemplateError(f"Template {name!r} needs list parameter {key!r}")
+        placeholder = match.group(0)
+        lines.extend(line.replace(placeholder, _xml_escape(value)) for value in params[key].split(LIST_SEPARATOR))
+    return "\n".join(lines)
+
+
 def _render(macro: str, indent: str, templates: dict[str, str]) -> str:
     params = _attributes(macro)
     if not macro.endswith("/>"):
@@ -79,7 +98,7 @@ def _render(macro: str, indent: str, templates: dict[str, str]) -> str:
             raise TemplateError(f"Template {name!r} needs parameter {key!r} ({macro})")
         return _xml_escape(params[key])
 
-    body = PLACEHOLDER_RE.sub(fill, templates[name])
+    body = PLACEHOLDER_RE.sub(fill, _repeat_list_lines(templates[name], params, name))
     return "\n".join(f"{indent}{line}" if line and i else line for i, line in enumerate(body.split("\n")))
 
 
