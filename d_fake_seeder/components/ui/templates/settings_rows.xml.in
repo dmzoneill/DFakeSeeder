@@ -1,0 +1,224 @@
+<!--
+  Row templates for the settings tabs, expanded at build time by tools/expand_ui_templates.py
+  (run by `make ui-build` after the XInclude step). Use one from a tab with:
+
+    <dfs-use template="NAME" param="value" .../>
+
+  Each template body sits between <template name="..."> and </template> lines, starts at
+  column 0 and is re-indented to the macro's column. {param} placeholders are replaced by
+  the XML-escaped macro attribute values; bodies may contain further <dfs-use> macros.
+  Not a .xml file on purpose: the XML string extractor must only see real (expanded) UI.
+-->
+
+<!-- Label + SpinButton -->
+<template name="spin-row">
+<child>
+    <object class="GtkBox">
+        <property name="spacing">12</property>
+        <property name="halign">fill</property>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{label}</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="hexpand">False</property>
+                <property name="width-chars">20</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkSpinButton" id="{id}">
+                <property name="adjustment">
+                    <object class="GtkAdjustment">
+                        <property name="lower">{lower}</property>
+                        <property name="upper">{upper}</property>
+                        <property name="value">{value}</property>
+                        <property name="step-increment">{step}</property>
+                        <property name="page-increment">{page}</property>
+                    </object>
+                </property>
+                <property name="tooltip-text" translatable="yes">{tooltip}</property>
+                <property name="hexpand">False</property>
+                <property name="width-chars">10</property>
+                <property name="numeric">True</property>
+            </object>
+        </child>
+    </object>
+</child>
+
+</template>
+
+<!-- Label + SpinButton + dimmed hint label -->
+<template name="spin-row-hint">
+<child>
+    <object class="GtkBox">
+        <property name="spacing">12</property>
+        <property name="halign">fill</property>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{label}</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="hexpand">False</property>
+                <property name="width-chars">20</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkSpinButton" id="{id}">
+                <property name="adjustment">
+                    <object class="GtkAdjustment">
+                        <property name="lower">{lower}</property>
+                        <property name="upper">{upper}</property>
+                        <property name="value">{value}</property>
+                        <property name="step-increment">{step}</property>
+                        <property name="page-increment">{page}</property>
+                    </object>
+                </property>
+                <property name="tooltip-text" translatable="yes">{tooltip}</property>
+                <property name="hexpand">False</property>
+                <property name="width-chars">10</property>
+                <property name="numeric">True</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{hint}</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="css-classes">dim-label</property>
+            </object>
+        </child>
+    </object>
+</child>
+</template>
+
+<!-- Speed tab: one direction of the speed distribution group (dir=upload|download, Dir=Upload|Download) -->
+<template name="speed-distribution">
+<child>
+    <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">12</property>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{Dir} Distribution</property>
+                <property name="halign">start</property>
+                <attributes>
+                    <attribute name="weight" value="bold"/>
+                </attributes>
+            </object>
+        </child>
+        <child>
+            <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="spacing">8</property>
+                <property name="margin-start">12</property>
+
+                <!-- {Dir} algorithm -->
+                <child>
+                    <object class="GtkBox">
+                        <property name="spacing">12</property>
+                        <property name="halign">fill</property>
+                        <child>
+                            <object class="GtkLabel">
+                                <property name="label" translatable="yes">Algorithm:</property>
+                                <property name="halign">start</property>
+                                <property name="valign">center</property>
+                                <property name="hexpand">False</property>
+                                <property name="width-chars">20</property>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkDropDown" id="settings_{dir}_dist_algorithm">
+                                <property name="model">
+                                    <object class="GtkStringList">
+                                        <items>
+                                            <item translatable="yes">Off</item>
+                                            <item translatable="yes">Pareto</item>
+                                            <item translatable="yes">Power-Law</item>
+                                            <item translatable="yes">Log-Normal</item>
+                                        </items>
+                                    </object>
+                                </property>
+                                <property name="tooltip-text" translatable="yes">Speed distribution algorithm for {dir}s</property>
+                                <property name="hexpand">True</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+
+                <!-- {Dir} spread percentage -->
+                <dfs-use template="spin-row" label="Spread percentage:" id="settings_{dir}_dist_percentage" lower="0" upper="100" value="50" step="1" page="10" tooltip="Algorithm-specific spread parameter (0-100)"/>
+                <!-- {Dir} redistribution mode -->
+                <child>
+                    <object class="GtkBox">
+                        <property name="spacing">12</property>
+                        <property name="halign">fill</property>
+                        <child>
+                            <object class="GtkLabel">
+                                <property name="label" translatable="yes">Redistribution mode:</property>
+                                <property name="halign">start</property>
+                                <property name="valign">center</property>
+                                <property name="hexpand">False</property>
+                                <property name="width-chars">20</property>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkDropDown" id="settings_{dir}_dist_mode">
+                                <property name="model">
+                                    <object class="GtkStringList">
+                                        <items>
+                                            <item translatable="yes">Tick speed</item>
+                                            <item translatable="yes">Time Interval</item>
+                                            <item translatable="yes">Announce Interval</item>
+                                        </items>
+                                    </object>
+                                </property>
+                                <property name="tooltip-text" translatable="yes">How often to redistribute speeds</property>
+                                <property name="hexpand">True</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+
+                <!-- {Dir} custom interval -->
+                <child>
+                    <object class="GtkBox" id="settings_{dir}_dist_interval_box">
+                        <property name="spacing">12</property>
+                        <property name="halign">fill</property>
+                        <property name="visible">False</property>
+                        <child>
+                            <object class="GtkLabel">
+                                <property name="label" translatable="yes">Custom interval (minutes):</property>
+                                <property name="halign">start</property>
+                                <property name="valign">center</property>
+                                <property name="hexpand">False</property>
+                                <property name="width-chars">20</property>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkSpinButton" id="settings_{dir}_dist_interval">
+                                <property name="adjustment">
+                                    <object class="GtkAdjustment">
+                                        <property name="lower">1</property>
+                                        <property name="upper">1440</property>
+                                        <property name="value">5</property>
+                                        <property name="step-increment">1</property>
+                                        <property name="page-increment">5</property>
+                                    </object>
+                                </property>
+                                <property name="tooltip-text" translatable="yes">Custom redistribution interval in minutes</property>
+                                <property name="hexpand">False</property>
+                                <property name="width-chars">10</property>
+                                <property name="numeric">True</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+
+                <!-- {Dir} stopped min percentage -->
+                <dfs-use template="spin-row" label="Stopped min %:" id="settings_{dir}_dist_stopped_min" lower="0" upper="100" value="20" step="1" page="10" tooltip="Minimum percentage of torrents to stop completely"/>
+                <!-- {Dir} stopped max percentage -->
+                <dfs-use template="spin-row" label="Stopped max %:" id="settings_{dir}_dist_stopped_max" lower="0" upper="100" value="40" step="1" page="10" tooltip="Maximum percentage of torrents to stop completely"/>                                        </object>
+        </child>
+    </object>
+</child>
+</template>

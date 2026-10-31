@@ -39,7 +39,8 @@ tools/translations/*_fallbacks_to_translate.json
 .pot_linecount
 
 # Compiled GtkBuilder UI. Source is components/ui/*.xml and components/ui/settings/*.xml;
-# `make` runs `xmllint --xinclude` into this directory. The files stay tracked because
+# `make` runs `xmllint --xinclude` plus tools/expand_ui_templates.py into this directory
+# (row macros in the settings tabs are expanded there). The files stay tracked because
 # the app loads them at runtime. jscpd reads .gitignore by default, and the shared
 # CICD workflow overwrites .github/linters/.jscpd.json, so this exclusion is how those
 # generated copies are left out of copy-paste detection.

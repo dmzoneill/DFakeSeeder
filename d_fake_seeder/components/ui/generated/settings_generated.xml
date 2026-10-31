@@ -2328,7 +2328,8 @@
                                             <property name="label" translatable="yes">Upload Distribution</property>
                                             <property name="halign">start</property>
                                             <attributes>
-                                                <attribute name="weight" value="bold"/></attributes>
+                                                <attribute name="weight" value="bold"/>
+                                            </attributes>
                                         </object>
                                     </child>
                                     <child>
