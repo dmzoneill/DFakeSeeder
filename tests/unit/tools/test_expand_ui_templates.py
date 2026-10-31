@@ -81,7 +81,7 @@ def test_translatable_strings_survive_expansion(tab: str) -> None:
 
 
 def test_template_strings_reach_generated_ui() -> None:
-    """Strings passed to row templates (speed, Web UI and peer protocol tabs) end up translatable in the generated UI."""
+    """Strings passed to row templates end up translatable in the generated UI."""
     strings = set(TRANSLATABLE.findall(GENERATED.read_text(encoding="utf-8")))
     assert {"Upload limit (KB/s):", "Download Distribution", "Stopped max %:", "Pareto"} <= strings
     assert {"Enable Web UI", "Enable CSRF protection", "Session timeout (min):"} <= strings
