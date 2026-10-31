@@ -10,8 +10,8 @@
   Not a .xml file on purpose: the XML string extractor must only see real (expanded) UI.
 -->
 
-<!-- Label + SpinButton -->
-<template name="spin-row">
+<!-- Label + SpinButton, label/spin widths given in characters -->
+<template name="spin-row-sized">
 <child>
     <object class="GtkBox">
         <property name="spacing">12</property>
@@ -22,7 +22,7 @@
                 <property name="halign">start</property>
                 <property name="valign">center</property>
                 <property name="hexpand">False</property>
-                <property name="width-chars">20</property>
+                <property name="width-chars">{label_chars}</property>
             </object>
         </child>
         <child>
@@ -38,13 +38,66 @@
                 </property>
                 <property name="tooltip-text" translatable="yes">{tooltip}</property>
                 <property name="hexpand">False</property>
-                <property name="width-chars">10</property>
+                <property name="width-chars">{chars}</property>
                 <property name="numeric">True</property>
             </object>
         </child>
     </object>
 </child>
+</template>
 
+<!-- Label + SpinButton (20/10 characters wide) -->
+<template name="spin-row">
+<dfs-use template="spin-row-sized" label="{label}" label_chars="20" id="{id}" lower="{lower}" upper="{upper}"
+         value="{value}" step="{step}" page="{page}" tooltip="{tooltip}" chars="10"/>
+
+</template>
+
+<!-- Switch followed by its label -->
+<template name="switch-row">
+<child>
+    <object class="GtkBox">
+        <property name="spacing">12</property>
+        <property name="halign">start</property>
+        <child>
+            <object class="GtkSwitch" id="{id}">
+                <property name="valign">center</property>
+                <property name="tooltip-text" translatable="yes">{tooltip}</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{label}</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+            </object>
+        </child>
+    </object>
+</child>
+</template>
+
+<!-- Switch (with an initial active state) followed by its label -->
+<template name="switch-row-active">
+<child>
+    <object class="GtkBox">
+        <property name="spacing">12</property>
+        <property name="halign">start</property>
+        <child>
+            <object class="GtkSwitch" id="{id}">
+                <property name="valign">center</property>
+                <property name="active">{active}</property>
+                <property name="tooltip-text" translatable="yes">{tooltip}</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{label}</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+            </object>
+        </child>
+    </object>
+</child>
 </template>
 
 <!-- Label + SpinButton + dimmed hint label -->

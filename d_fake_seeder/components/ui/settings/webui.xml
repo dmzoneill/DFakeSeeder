@@ -30,25 +30,8 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable Web UI -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_enable_webui">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Enable web-based remote control interface</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable Web UI</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_enable_webui"
+                                     tooltip="Enable web-based remote control interface" label="Enable Web UI"/>
 
                             <!-- Warning note -->
                             <child>
@@ -129,47 +112,14 @@
                             </child>
 
                             <!-- Enable HTTPS -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_webui_https_enabled">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Use HTTPS for secure connections (requires SSL certificate)</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Use HTTPS (SSL/TLS)</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_webui_https_enabled"
+                                     tooltip="Use HTTPS for secure connections (requires SSL certificate)"
+                                     label="Use HTTPS (SSL/TLS)"/>
 
                             <!-- Bind to localhost only -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_webui_localhost_only">
-                                            <property name="valign">center</property>
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Only allow connections from localhost (more secure)</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Bind to localhost only</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row-active" id="settings_webui_localhost_only" active="True"
+                                     tooltip="Only allow connections from localhost (more secure)"
+                                     label="Bind to localhost only"/>
 
                             <!-- Interface/IP Address -->
                             <child>
@@ -221,26 +171,9 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable authentication -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_webui_auth_enabled">
-                                            <property name="valign">center</property>
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Require username and password for web access</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Require authentication</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row-active" id="settings_webui_auth_enabled" active="True"
+                                     tooltip="Require username and password for web access"
+                                     label="Require authentication"/>
 
                             <!-- Auth settings box -->
                             <child>
@@ -326,38 +259,10 @@
                                     </child>
 
                                     <!-- Session timeout -->
-                                    <child>
-                                        <object class="GtkBox">
-                                            <property name="spacing">12</property>
-                                            <property name="halign">fill</property>
-                                            <child>
-                                                <object class="GtkLabel">
-                                                    <property name="label" translatable="yes">Session timeout (min):</property>
-                                                    <property name="halign">start</property>
-                                                    <property name="valign">center</property>
-                                                    <property name="hexpand">False</property>
-                                                    <property name="width-chars">15</property>
-                                                </object>
-                                            </child>
-                                            <child>
-                                                <object class="GtkSpinButton" id="settings_webui_session_timeout">
-                                                    <property name="adjustment">
-                                                        <object class="GtkAdjustment">
-                                                            <property name="lower">5</property>
-                                                            <property name="upper">1440</property>
-                                                            <property name="value">60</property>
-                                                            <property name="step-increment">5</property>
-                                                            <property name="page-increment">30</property>
-                                                        </object>
-                                                    </property>
-                                                    <property name="tooltip-text" translatable="yes">Automatic logout after inactivity (5-1440 minutes)</property>
-                                                    <property name="hexpand">False</property>
-                                                    <property name="width-chars">8</property>
-                                                    <property name="numeric">True</property>
-                                                </object>
-                                            </child>
-                                        </object>
-                                    </child>
+                                    <dfs-use template="spin-row-sized" label="Session timeout (min):" label_chars="15"
+                                             id="settings_webui_session_timeout" lower="5" upper="1440" value="60"
+                                             step="5" page="30"
+                                             tooltip="Automatic logout after inactivity (5-1440 minutes)" chars="8"/>
                                 </object>
                             </child>
                         </object>
@@ -385,126 +290,30 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable CSRF protection -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_webui_csrf_protection">
-                                            <property name="valign">center</property>
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable Cross-Site Request Forgery protection</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable CSRF protection</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row-active" id="settings_webui_csrf_protection" active="True"
+                                     tooltip="Enable Cross-Site Request Forgery protection"
+                                     label="Enable CSRF protection"/>
 
                             <!-- Enable clickjacking protection -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_webui_clickjacking_protection">
-                                            <property name="valign">center</property>
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Prevent embedding in frames (X-Frame-Options)</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable clickjacking protection</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row-active" id="settings_webui_clickjacking_protection"
+                                     active="True" tooltip="Prevent embedding in frames (X-Frame-Options)"
+                                     label="Enable clickjacking protection"/>
 
                             <!-- Secure headers -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_webui_secure_headers">
-                                            <property name="valign">center</property>
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Send security-related HTTP headers</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable secure HTTP headers</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row-active" id="settings_webui_secure_headers" active="True"
+                                     tooltip="Send security-related HTTP headers" label="Enable secure HTTP headers"/>
 
                             <!-- Host header validation -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_webui_host_header_validation">
-                                            <property name="valign">center</property>
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Validate HTTP Host header to prevent DNS rebinding attacks</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable host header validation</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row-active" id="settings_webui_host_header_validation"
+                                     active="True"
+                                     tooltip="Validate HTTP Host header to prevent DNS rebinding attacks"
+                                     label="Enable host header validation"/>
 
                             <!-- Ban after failures -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Ban after failed logins:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">20</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="settings_webui_ban_after_failures">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">1</property>
-                                                    <property name="upper">100</property>
-                                                    <property name="value">5</property>
-                                                    <property name="step-increment">1</property>
-                                                    <property name="page-increment">5</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Number of failed login attempts before temporarily banning IP</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">8</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-sized" label="Ban after failed logins:" label_chars="20"
+                                     id="settings_webui_ban_after_failures" lower="1" upper="100" value="5" step="1"
+                                     page="5" tooltip="Number of failed login attempts before temporarily banning IP"
+                                     chars="8"/>
                         </object>
                     </child>
                 </object>
