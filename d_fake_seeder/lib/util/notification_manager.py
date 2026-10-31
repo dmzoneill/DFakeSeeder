@@ -15,7 +15,10 @@ from typing import Any
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
 from d_fake_seeder.lib.logger import logger
-from d_fake_seeder.lib.util.notification_widget import NotificationType, NotificationWidget
+from d_fake_seeder.lib.util.notification_widget import (
+    NotificationType,
+    NotificationWidget,
+)
 
 
 class NotificationPosition(Enum):
