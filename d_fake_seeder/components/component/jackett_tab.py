@@ -567,41 +567,33 @@ class JackettTab(Component):
 
         return False
 
+    _STATUS_CLASSES = ("dim-label", "success", "error")
+
     def _update_connection_status(self, connected: bool | None = None) -> None:
         """Update connection status indicator."""
         jackett_settings = self.settings.get("jackett_settings", {})
         api_key = jackett_settings.get("api_key", "")
 
         if connected is True:
-            self._widgets["status_indicator"].set_text("●")
-            self._widgets["status_indicator"].remove_css_class("dim-label")
-            self._widgets["status_indicator"].remove_css_class("error")
-            self._widgets["status_indicator"].add_css_class("success")
-            self._widgets["status_label"].set_text(self._("Connected"))
-            self._widgets["status_label"].remove_css_class("dim-label")
-            self._widgets["status_label"].add_css_class("success")
+            self._apply_status("success", self._("Connected"), "success")
         elif connected is False:
-            self._widgets["status_indicator"].set_text("●")
-            self._widgets["status_indicator"].remove_css_class("dim-label")
-            self._widgets["status_indicator"].remove_css_class("success")
-            self._widgets["status_indicator"].add_css_class("error")
-            self._widgets["status_label"].set_text(self._("Connection Failed"))
-            self._widgets["status_label"].remove_css_class("dim-label")
-            self._widgets["status_label"].add_css_class("error")
+            self._apply_status("error", self._("Connection Failed"), "error")
         elif api_key:
-            self._widgets["status_indicator"].set_text("●")
-            self._widgets["status_indicator"].remove_css_class("success")
-            self._widgets["status_indicator"].remove_css_class("error")
-            self._widgets["status_indicator"].add_css_class("dim-label")
-            self._widgets["status_label"].set_text(self._("Configured"))
-            self._widgets["status_label"].add_css_class("dim-label")
+            self._apply_status("dim-label", self._("Configured"), "dim-label")
         else:
-            self._widgets["status_indicator"].set_text("●")
-            self._widgets["status_indicator"].remove_css_class("success")
-            self._widgets["status_indicator"].remove_css_class("error")
-            self._widgets["status_indicator"].add_css_class("dim-label")
-            self._widgets["status_label"].set_text(self._("Not Configured"))
-            self._widgets["status_label"].add_css_class("dim-label")
+            self._apply_status("dim-label", self._("Not Configured"), "dim-label")
+
+    def _apply_status(self, indicator_css: str, label_text: str, label_css: str) -> None:
+        """Set the indicator/label text and swap each to its single status CSS class."""
+        indicator = self._widgets["status_indicator"]
+        label = self._widgets["status_label"]
+        indicator.set_text("●")
+        for css in self._STATUS_CLASSES:
+            indicator.remove_css_class(css)
+            label.remove_css_class(css)
+        indicator.add_css_class(indicator_css)
+        label.set_text(label_text)
+        label.add_css_class(label_css)
 
     def _on_search_activated(self, entry: Gtk.Entry) -> None:
         """Handle Enter key in search entry."""
