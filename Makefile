@@ -221,13 +221,18 @@ icons: lint
 	} || true
 	@echo "✅ Icons installed!"
 
+# Settings UI is built via temp files so a failed xmllint/expander never replaces it
+SETTINGS_UI := d_fake_seeder/components/ui/generated/settings_generated.xml
+
 ui-build: icons
 	@echo "🏗️  Building GTK4 UI..."
 	@echo "   → Compiling main UI (ui.xml → generated.xml)..."
 	@xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml
 	@sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml
 	@echo "   → Compiling settings UI (settings.xml → settings_generated.xml, row templates expanded)..."
-	@xmllint --xinclude d_fake_seeder/components/ui/settings.xml | python3 tools/expand_ui_templates.py > d_fake_seeder/components/ui/generated/settings_generated.xml
+	@xmllint --xinclude d_fake_seeder/components/ui/settings.xml > $(SETTINGS_UI).xi.tmp && \
+		python3 tools/expand_ui_templates.py < $(SETTINGS_UI).xi.tmp > $(SETTINGS_UI).tmp && \
+		mv $(SETTINGS_UI).tmp $(SETTINGS_UI) && rm -f $(SETTINGS_UI).xi.tmp
 	@sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/settings_generated.xml
 	@echo "   → Validating settings UI structure..."
 	@python3 tools/validate_settings_xml.py > /dev/null 2>&1 || python3 tools/validate_settings_xml.py
@@ -251,7 +256,9 @@ ui-build-fast:
 		xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml; \
 		sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml; \
 		echo "Building settings UI..."; \
-		xmllint --xinclude d_fake_seeder/components/ui/settings.xml | python3 tools/expand_ui_templates.py > d_fake_seeder/components/ui/generated/settings_generated.xml; \
+		{ xmllint --xinclude d_fake_seeder/components/ui/settings.xml > $(SETTINGS_UI).xi.tmp && \
+			python3 tools/expand_ui_templates.py < $(SETTINGS_UI).xi.tmp > $(SETTINGS_UI).tmp && \
+			mv $(SETTINGS_UI).tmp $(SETTINGS_UI) && rm -f $(SETTINGS_UI).xi.tmp; } || exit 1; \
 		sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/settings_generated.xml; \
 		echo "✅ UI built successfully (fast mode)!"; \
 	fi
