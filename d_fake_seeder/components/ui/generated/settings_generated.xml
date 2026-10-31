@@ -1915,7 +1915,7 @@
                                     </child>
                                 </object>
                             </child>
-                        </object>
+                                </object>
                     </child>
                 </object>
             </child>
@@ -2033,6 +2033,7 @@
                                             </child>
                                         </object>
                                     </child>
+
                                 </object>
                             </child>
                         </object>
@@ -2252,7 +2253,7 @@
                                                             <property name="tooltip-text" translatable="yes">Sunday</property>
                                                         </object>
                                                     </child>
-                                                </object>
+                                </object>
                                             </child>
                                         </object>
                                     </child>
@@ -2769,7 +2770,7 @@
                                     </child>
                                 </object>
                             </child>
-                        </object>
+                                </object>
                     </child>
                 </object>
             </child>

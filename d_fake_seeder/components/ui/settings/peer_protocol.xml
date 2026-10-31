@@ -16,13 +16,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Peer Protocol Timeouts&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Peer Protocol Timeouts"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -61,13 +55,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Seeder Protocol Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Seeder Protocol Settings"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -118,13 +106,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Peer Behavior Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Peer Behavior Settings"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>

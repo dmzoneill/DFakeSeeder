@@ -95,124 +95,20 @@
                             <property name="margin-start">12</property>
 
                             <!-- Announcement interval -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Announcement Interval:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="dht_announcement_interval_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">300</property>
-                                                    <property name="upper">7200</property>
-                                                    <property name="step-increment">60</property>
-                                                    <property name="page-increment">300</property>
-                                                    <property name="value">1800</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Interval between DHT announcements (seconds)</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">seconds</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill-unit" label="Announcement Interval:" label_chars="18"
+                                     id="dht_announcement_interval_spin" lower="300" upper="7200" step="60" page="300"
+                                     value="1800" tooltip="Interval between DHT announcements (seconds)"
+                                     unit="seconds"/>
 
                             <!-- Bootstrap timeout -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Bootstrap Timeout:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="bootstrap_timeout_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">5</property>
-                                                    <property name="upper">300</property>
-                                                    <property name="step-increment">5</property>
-                                                    <property name="page-increment">30</property>
-                                                    <property name="value">30</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Timeout for DHT bootstrap operations (seconds)</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">seconds</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill-unit" label="Bootstrap Timeout:" label_chars="18"
+                                     id="bootstrap_timeout_spin" lower="5" upper="300" step="5" page="30" value="30"
+                                     tooltip="Timeout for DHT bootstrap operations (seconds)" unit="seconds"/>
 
                             <!-- Query timeout -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Query Timeout:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="dht_query_timeout_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">5</property>
-                                                    <property name="upper">120</property>
-                                                    <property name="step-increment">5</property>
-                                                    <property name="page-increment">15</property>
-                                                    <property name="value">10</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Timeout for DHT queries (seconds)</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">seconds</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill-unit" label="Query Timeout:" label_chars="18"
+                                     id="dht_query_timeout_spin" lower="5" upper="120" step="5" page="15" value="10"
+                                     tooltip="Timeout for DHT queries (seconds)" unit="seconds"/>
                         </object>
                     </child>
                 </object>
@@ -319,44 +215,9 @@
                                      tooltip="Enable DHT statistics collection" label="Enable statistics"/>
 
                             <!-- Statistics interval -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Stats Update Interval:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="dht_stats_interval_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">10</property>
-                                                    <property name="upper">600</property>
-                                                    <property name="step-increment">10</property>
-                                                    <property name="page-increment">60</property>
-                                                    <property name="value">60</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Interval for DHT statistics updates (seconds)</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">seconds</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill-unit" label="Stats Update Interval:" label_chars="18"
+                                     id="dht_stats_interval_spin" lower="10" upper="600" step="10" page="60"
+                                     value="60" tooltip="Interval for DHT statistics updates (seconds)" unit="seconds"/>
 
                             <!-- Validate tokens -->
                             <dfs-use template="check-row" id="dht_validate_tokens_check" active="True"

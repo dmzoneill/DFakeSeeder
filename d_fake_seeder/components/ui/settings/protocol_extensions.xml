@@ -86,44 +86,9 @@
                             <property name="margin-start">12</property>
 
                             <!-- PEX interval -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">PEX Interval:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="pex_interval_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">30</property>
-                                                    <property name="upper">300</property>
-                                                    <property name="step-increment">5</property>
-                                                    <property name="page-increment">30</property>
-                                                    <property name="value">60</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Interval between PEX message exchanges (seconds)</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">seconds</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill-unit" label="PEX Interval:" label_chars="18"
+                                     id="pex_interval_spin" lower="30" upper="300" step="5" page="30" value="60"
+                                     tooltip="Interval between PEX message exchanges (seconds)" unit="seconds"/>
 
                             <!-- Max peers per message -->
                             <dfs-use template="spin-row-fill" label="Max Peers/Message:" label_chars="18"
@@ -165,84 +130,14 @@
                                      tooltip="Enable metadata extension features" label="Enable metadata extension"/>
 
                             <!-- Metadata piece size -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Metadata Piece Size:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="metadata_piece_size_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">1024</property>
-                                                    <property name="upper">65536</property>
-                                                    <property name="step-increment">1024</property>
-                                                    <property name="page-increment">4096</property>
-                                                    <property name="value">16384</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Size of metadata pieces in bytes</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">bytes</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill-unit" label="Metadata Piece Size:" label_chars="18"
+                                     id="metadata_piece_size_spin" lower="1024" upper="65536" step="1024" page="4096"
+                                     value="16384" tooltip="Size of metadata pieces in bytes" unit="bytes"/>
 
                             <!-- Metadata timeout -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Metadata Timeout:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="metadata_timeout_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">10</property>
-                                                    <property name="upper">300</property>
-                                                    <property name="step-increment">10</property>
-                                                    <property name="page-increment">30</property>
-                                                    <property name="value">60</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Timeout for metadata requests (seconds)</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">seconds</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill-unit" label="Metadata Timeout:" label_chars="18"
+                                     id="metadata_timeout_spin" lower="10" upper="300" step="10" page="30" value="60"
+                                     tooltip="Timeout for metadata requests (seconds)" unit="seconds"/>
 
                             <!-- Synthetic metadata -->
                             <dfs-use template="check-row" id="metadata_synthetic_check" active="True"
@@ -275,84 +170,14 @@
                                      tooltip="Fall back to TCP if µTP fails" label="TCP fallback"/>
 
                             <!-- Connection timeout -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Connection Timeout:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="ext_connection_timeout_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">5</property>
-                                                    <property name="upper">120</property>
-                                                    <property name="step-increment">5</property>
-                                                    <property name="page-increment">15</property>
-                                                    <property name="value">30</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Connection timeout for extensions (seconds)</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">seconds</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill-unit" label="Connection Timeout:" label_chars="18"
+                                     id="ext_connection_timeout_spin" lower="5" upper="120" step="5" page="15"
+                                     value="30" tooltip="Connection timeout for extensions (seconds)" unit="seconds"/>
 
                             <!-- Keep alive interval -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Keep Alive Interval:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="ext_keep_alive_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">30</property>
-                                                    <property name="upper">600</property>
-                                                    <property name="step-increment">30</property>
-                                                    <property name="page-increment">60</property>
-                                                    <property name="value">120</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Keep alive interval for connections (seconds)</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">seconds</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill-unit" label="Keep Alive Interval:" label_chars="18"
+                                     id="ext_keep_alive_spin" lower="30" upper="600" step="30" page="60" value="120"
+                                     tooltip="Keep alive interval for connections (seconds)" unit="seconds"/>
 
                             <!-- Nagle algorithm -->
                             <dfs-use template="check-row" id="nagle_algorithm_check" active="False"
@@ -379,128 +204,25 @@
                             <property name="margin-start">12</property>
 
                             <!-- Extension timeout -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Extension Timeout:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="extension_timeout_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">10</property>
-                                                    <property name="upper">300</property>
-                                                    <property name="step-increment">10</property>
-                                                    <property name="page-increment">30</property>
-                                                    <property name="value">30</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">General timeout for extension operations (seconds)</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">seconds</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill-unit" label="Extension Timeout:" label_chars="18"
+                                     id="extension_timeout_spin" lower="10" upper="300" step="10" page="30" value="30"
+                                     tooltip="General timeout for extension operations (seconds)" unit="seconds"/>
 
                             <!-- Max extension message size -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Max Message Size:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="max_extension_msg_size_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">1024</property>
-                                                    <property name="upper">10485760</property>
-                                                    <property name="step-increment">4096</property>
-                                                    <property name="page-increment">65536</property>
-                                                    <property name="value">1048576</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Maximum size for extension messages (bytes)</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">bytes</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill-unit" label="Max Message Size:" label_chars="18"
+                                     id="max_extension_msg_size_spin" lower="1024" upper="10485760" step="4096"
+                                     page="65536" value="1048576"
+                                     tooltip="Maximum size for extension messages (bytes)" unit="bytes"/>
 
                             <!-- Track extension statistics -->
                             <dfs-use template="check-row" id="track_extension_stats_check" active="True"
                                      tooltip="Track extension usage statistics" label="Track extension statistics"/>
 
                             <!-- Statistics update interval -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Stats Update Interval:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="ext_stats_interval_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">10</property>
-                                                    <property name="upper">600</property>
-                                                    <property name="step-increment">10</property>
-                                                    <property name="page-increment">60</property>
-                                                    <property name="value">60</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Extension statistics update interval (seconds)</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">seconds</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill-unit" label="Stats Update Interval:" label_chars="18"
+                                     id="ext_stats_interval_spin" lower="10" upper="600" step="10" page="60"
+                                     value="60" tooltip="Extension statistics update interval (seconds)"
+                                     unit="seconds"/>
 
                             <!-- Validate extensions -->
                             <dfs-use template="check-row" id="validate_extensions_check" active="True"
