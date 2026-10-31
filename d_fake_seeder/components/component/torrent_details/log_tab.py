@@ -255,7 +255,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             self.logger.info(f"Log saved to {file_path}")
             return True
 
-        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, OSError, GLib.Error) as e:
             self.logger.error(f"Error saving log to file: {e}")
             return False
 
