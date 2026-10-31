@@ -7,8 +7,9 @@ BitTorrent protocols, and random string generation.
 """
 
 # fmt: off
-import random
+import secrets
 import string
+from datetime import datetime
 from typing import Any
 
 # fmt: on
@@ -39,7 +40,8 @@ def urlencode(data: Any) -> Any:
 
 def random_id(length: Any) -> Any:
     """Generate a random ID of given length."""
-    return "".join(random.choices(string.ascii_letters + string.digits, k=length))
+    alphabet = string.ascii_letters + string.digits
+    return "".join(secrets.choice(alphabet) for _ in range(length))
 
 
 def humanbytes(B: Any) -> Any:  # pylint: disable=invalid-name
@@ -98,13 +100,12 @@ def add_percent(percent: Any) -> None:
 
 def format_timestamp(timestamp: Any) -> Any:
     """Convert Unix timestamp to readable date string. Uses current time if blank/invalid."""
-    from datetime import datetime
-
     try:
         ts = int(timestamp) if timestamp else 0
         if ts == 0:
-            ts = int(datetime.now().timestamp())
-        dt = datetime.fromtimestamp(ts)
+            ts = int(datetime.now().astimezone().timestamp())
+        # Local time, as before; .astimezone() just makes the datetime tz-aware.
+        dt = datetime.fromtimestamp(ts).astimezone()
         return dt.strftime("%Y-%m-%d %H:%M")
     except (ValueError, OSError, TypeError):
-        return datetime.now().strftime("%Y-%m-%d %H:%M")
+        return datetime.now().astimezone().strftime("%Y-%m-%d %H:%M")
