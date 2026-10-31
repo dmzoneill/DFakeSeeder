@@ -6,14 +6,11 @@ This mixin integrates with the existing TranslationManager to support runtime
 language switching for column headers.
 """
 
-# fmt: off
-from typing import Any, Dict
+from typing import Any
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.column_translations import ColumnTranslations
-
-# fmt: on
 
 
 class ColumnTranslationMixin:
@@ -28,7 +25,7 @@ class ColumnTranslationMixin:
         super().__init__(*args, **kwargs)
 
         # Track columns for translation updates
-        self._translatable_columns: Dict[str, Any] = {}  # column_view -> [(column, property_name, column_type)]
+        self._translatable_columns: dict[str, Any] = {}  # column_view -> [(column, property_name, column_type)]
 
         # Get settings instance for language access
         self.settings = AppSettings.get_instance()
@@ -73,7 +70,7 @@ class ColumnTranslationMixin:
                 f"Updated column title: {property_name} -> '{translated_title}'",
                 extra={"class_name": self.__class__.__name__},
             )
-        except Exception as e:  # pylint: disable=broad-exception-caught
+        except (AttributeError, TypeError, KeyError, ValueError) as e:
             logger.error(
                 f"Failed to update column title for {property_name}: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -145,7 +142,7 @@ class ColumnTranslationMixin:
         property_name: Any,
         column_type: Any,
         factory: Any = None,
-    ) -> None:  # noqa: E501
+    ) -> None:
         """
         Helper method to create a column with translation support
 
@@ -159,10 +156,7 @@ class ColumnTranslationMixin:
             The created Gtk.ColumnViewColumn instance
         """
         try:
-            import gi
-
-            gi.require_version("Gtk", "4.0")
-            from gi.repository import Gtk
+            from d_fake_seeder.lib.gi_gtk4 import Gtk
 
             # Create column
             if factory:
@@ -185,7 +179,7 @@ class ColumnTranslationMixin:
 
             return column  # type: ignore[no-any-return]
 
-        except Exception as e:  # pylint: disable=broad-exception-caught
+        except (ImportError, ValueError, AttributeError, TypeError) as e:
             logger.error(
                 f"Failed to create translated column {property_name}: {e}",
                 extra={"class_name": self.__class__.__name__},
