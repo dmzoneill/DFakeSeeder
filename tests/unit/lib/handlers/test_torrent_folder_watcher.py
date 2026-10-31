@@ -68,14 +68,14 @@ def _watcher_with_config(mod: ModuleType, config: dict) -> Any:
     return mod.TorrentFolderWatcher(MagicMock(), settings)
 
 
-def test_start_false_when_disabled() -> None:
+def test_start_false_when_disabled(tmp_path: Path) -> None:
     """A disabled watch folder makes start() return False."""
     with (
         loaded_watcher() as mod,
         patch.object(mod, "WATCHDOG_AVAILABLE", True),
         patch.object(mod, "Observer", MagicMock()),
     ):
-        watcher = _watcher_with_config(mod, {"enabled": False, "path": "/tmp"})
+        watcher = _watcher_with_config(mod, {"enabled": False, "path": str(tmp_path)})
         assert watcher.start() is False
 
 
