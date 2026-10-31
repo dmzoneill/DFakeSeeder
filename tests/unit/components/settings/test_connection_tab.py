@@ -8,6 +8,7 @@ the matching proxy type. The shared ``settings_module`` / ``make_settings_tab``
 fixtures provide the mocked GTK import and tab builder.
 """
 
+import importlib
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -18,7 +19,8 @@ _MODULE = "d_fake_seeder.components.component.settings.connection_tab"
 
 def test_update_proxy_auth_fields_propagates_sensitivity(settings_module: Any, make_settings_tab: Any) -> None:
     """Enabling auth sets both the username and password widgets sensitive."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.connection_tab")
         username = MagicMock()
         password = MagicMock()
         tab = make_settings_tab(mod.ConnectionTab, {"proxy_username": username, "proxy_password": password})
@@ -29,7 +31,8 @@ def test_update_proxy_auth_fields_propagates_sensitivity(settings_module: Any, m
 
 def test_collect_proxy_settings_maps_dropdown_type(settings_module: Any, make_settings_tab: Any) -> None:
     """The proxy-type dropdown index is mapped to its named type."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.connection_tab")
         proxy_type = MagicMock()
         proxy_type.get_selected.return_value = 2  # socks4
         server = MagicMock()
