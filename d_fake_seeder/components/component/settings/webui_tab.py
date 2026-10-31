@@ -4,23 +4,17 @@ Web UI settings tab for the settings dialog.
 Handles web interface configuration, authentication, and security settings.
 """
 
-# fmt: off
-from typing import Any, Dict
+from typing import Any, ClassVar
 
-import gi
+from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
 
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk  # noqa: E402
-
-from .base_tab import BaseSettingsTab  # noqa
-from .settings_mixins import NotificationMixin  # noqa: E402
-from .settings_mixins import (  # noqa: E402
+from .base_tab import BaseSettingsTab
+from .settings_mixins import (
+    NotificationMixin,
     TranslationMixin,
     UtilityMixin,
     ValidationMixin,
 )
-
-# fmt: on
 
 
 class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
@@ -36,7 +30,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
     # Note: Most WebUI settings use manual loading/saving due to nested structure
     # and complex dependency logic
-    WIDGET_MAPPINGS: list = []
+    WIDGET_MAPPINGS: ClassVar[list] = []
 
     @property
     def tab_name(self) -> str:
@@ -137,73 +131,58 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
             self.logger.info("Web UI tab settings loaded")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error loading Web UI tab settings: {e}")
 
     def _load_webui_settings(self) -> None:
         """Load Web UI settings using nested keys."""
         try:
-            # Main settings
-            enable_webui = self.get_widget("enable_webui")
-            if enable_webui:
-                self.set_switch_state(enable_webui, self.app_settings.webui_enabled)
-
-            webui_port = self.get_widget("webui_port")
-            if webui_port:
-                webui_port.set_value(self.app_settings.webui_port)
-
-            webui_https = self.get_widget("webui_https_enabled")
-            if webui_https:
-                self.set_switch_state(webui_https, self.app_settings.webui_https_enabled)
-
-            webui_localhost = self.get_widget("webui_localhost_only")
-            if webui_localhost:
-                self.set_switch_state(webui_localhost, self.app_settings.webui_localhost_only)
-
-            webui_interface = self.get_widget("webui_interface")
-            if webui_interface:
-                webui_interface.set_text(self.app_settings.webui_interface)
-
-            # Authentication
-            webui_auth = self.get_widget("webui_auth_enabled")
-            if webui_auth:
-                self.set_switch_state(webui_auth, self.app_settings.webui_auth_enabled)
-
-            webui_username = self.get_widget("webui_username")
-            if webui_username:
-                webui_username.set_text(self.app_settings.webui_username)
-
-            webui_password = self.get_widget("webui_password")
-            if webui_password:
-                webui_password.set_text(self.app_settings.webui_password)
-
-            webui_session = self.get_widget("webui_session_timeout")
-            if webui_session:
-                webui_session.set_value(self.app_settings.webui_session_timeout)
-
-            # Security
-            webui_csrf = self.get_widget("webui_csrf_protection")
-            if webui_csrf:
-                self.set_switch_state(webui_csrf, self.app_settings.webui_csrf_protection)
-
-            webui_clickjacking = self.get_widget("webui_clickjacking_protection")
-            if webui_clickjacking:
-                self.set_switch_state(webui_clickjacking, self.app_settings.webui_clickjacking_protection)
-
-            webui_secure_headers = self.get_widget("webui_secure_headers")
-            if webui_secure_headers:
-                self.set_switch_state(webui_secure_headers, self.app_settings.webui_secure_headers)
-
-            webui_host_header = self.get_widget("webui_host_header_validation")
-            if webui_host_header:
-                self.set_switch_state(webui_host_header, self.app_settings.webui_host_header_validation)
-
-            webui_ban = self.get_widget("webui_ban_after_failures")
-            if webui_ban:
-                webui_ban.set_value(self.app_settings.webui_ban_after_failures)
-
-        except Exception as e:
+            self._load_webui_switches()
+            self._load_webui_values()
+            self._load_webui_texts()
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error loading Web UI settings: {e}")
+
+    def _load_webui_switches(self) -> None:
+        """Load the Web UI on/off switch widgets from app settings."""
+        switches = [
+            ("enable_webui", "webui_enabled"),
+            ("webui_https_enabled", "webui_https_enabled"),
+            ("webui_localhost_only", "webui_localhost_only"),
+            ("webui_auth_enabled", "webui_auth_enabled"),
+            ("webui_csrf_protection", "webui_csrf_protection"),
+            ("webui_clickjacking_protection", "webui_clickjacking_protection"),
+            ("webui_secure_headers", "webui_secure_headers"),
+            ("webui_host_header_validation", "webui_host_header_validation"),
+        ]
+        for widget_id, attr in switches:
+            widget = self.get_widget(widget_id)
+            if widget:
+                self.set_switch_state(widget, getattr(self.app_settings, attr))
+
+    def _load_webui_values(self) -> None:
+        """Load the Web UI spin-button widgets from app settings."""
+        values = [
+            ("webui_port", "webui_port"),
+            ("webui_session_timeout", "webui_session_timeout"),
+            ("webui_ban_after_failures", "webui_ban_after_failures"),
+        ]
+        for widget_id, attr in values:
+            widget = self.get_widget(widget_id)
+            if widget:
+                widget.set_value(getattr(self.app_settings, attr))
+
+    def _load_webui_texts(self) -> None:
+        """Load the Web UI text-entry widgets from app settings."""
+        texts = [
+            ("webui_interface", "webui_interface"),
+            ("webui_username", "webui_username"),
+            ("webui_password", "webui_password"),
+        ]
+        for widget_id, attr in texts:
+            widget = self.get_widget(widget_id)
+            if widget:
+                widget.set_text(getattr(self.app_settings, attr))
 
     def _setup_dependencies(self) -> None:
         """Set up dependencies for Web UI tab."""
@@ -256,16 +235,16 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             self.update_widget_sensitivity("webui_host_header_validation", webui_enabled)
             self.update_widget_sensitivity("webui_ban_after_failures", webui_enabled)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error updating Web UI dependencies: {e}")
 
-    def _collect_settings(self) -> Dict[str, Any]:
+    def _collect_settings(self) -> dict[str, Any]:
         """Collect current settings from WebUI tab widgets.
 
         Returns:
             Dictionary of setting_key -> value pairs for all widgets
         """
-        settings: Dict[str, Any] = {}
+        settings: dict[str, Any] = {}
 
         # Collect WebUI settings with proper nested key prefixes
         settings.update(self._collect_webui_settings())
@@ -273,134 +252,126 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
         self.logger.trace(f"Collected {len(settings)} settings from WebUI tab")
         return settings
 
-    def _collect_webui_settings(self) -> Dict[str, Any]:
+    def _collect_webui_settings(self) -> dict[str, Any]:
         """Collect Web UI settings with nested keys."""
-        settings: Dict[str, Any] = {}
+        settings: dict[str, Any] = {}
 
         try:
-            # Main settings
-            enable_webui = self.get_widget("enable_webui")
-            if enable_webui:
-                settings["webui.enabled"] = enable_webui.get_active()
-
-            webui_port = self.get_widget("webui_port")
-            if webui_port:
-                settings["webui.port"] = int(webui_port.get_value())
-
-            webui_https = self.get_widget("webui_https_enabled")
-            if webui_https:
-                settings["webui.https_enabled"] = webui_https.get_active()
-
-            webui_localhost = self.get_widget("webui_localhost_only")
-            if webui_localhost:
-                settings["webui.localhost_only"] = webui_localhost.get_active()
-
-            webui_interface = self.get_widget("webui_interface")
-            if webui_interface:
-                settings["webui.interface"] = webui_interface.get_text()
-
-            # Authentication
-            webui_auth = self.get_widget("webui_auth_enabled")
-            if webui_auth:
-                settings["webui.auth_enabled"] = webui_auth.get_active()
-
-            webui_username = self.get_widget("webui_username")
-            if webui_username:
-                settings["webui.username"] = webui_username.get_text()
-
-            webui_password = self.get_widget("webui_password")
-            if webui_password:
-                settings["webui.password"] = webui_password.get_text()
-
-            webui_session = self.get_widget("webui_session_timeout")
-            if webui_session:
-                settings["webui.session_timeout_minutes"] = int(webui_session.get_value())
-
-            # Security
-            webui_csrf = self.get_widget("webui_csrf_protection")
-            if webui_csrf:
-                settings["webui.csrf_protection"] = webui_csrf.get_active()
-
-            webui_clickjacking = self.get_widget("webui_clickjacking_protection")
-            if webui_clickjacking:
-                settings["webui.clickjacking_protection"] = webui_clickjacking.get_active()
-
-            webui_secure_headers = self.get_widget("webui_secure_headers")
-            if webui_secure_headers:
-                settings["webui.secure_headers"] = webui_secure_headers.get_active()
-
-            webui_host_header = self.get_widget("webui_host_header_validation")
-            if webui_host_header:
-                settings["webui.host_header_validation"] = webui_host_header.get_active()
-
-            webui_ban = self.get_widget("webui_ban_after_failures")
-            if webui_ban:
-                settings["webui.ban_after_failures"] = int(webui_ban.get_value())
-
-        except Exception as e:
+            self._collect_webui_bools(settings)
+            self._collect_webui_ints(settings)
+            self._collect_webui_texts(settings)
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error collecting Web UI settings: {e}")
 
         return settings
 
-    def _validate_tab_settings(self) -> Dict[str, str]:
+    def _collect_webui_bools(self, settings: dict[str, Any]) -> None:
+        """Collect the Web UI switch states into ``settings``."""
+        bools = [
+            ("enable_webui", "webui.enabled"),
+            ("webui_https_enabled", "webui.https_enabled"),
+            ("webui_localhost_only", "webui.localhost_only"),
+            ("webui_auth_enabled", "webui.auth_enabled"),
+            ("webui_csrf_protection", "webui.csrf_protection"),
+            ("webui_clickjacking_protection", "webui.clickjacking_protection"),
+            ("webui_secure_headers", "webui.secure_headers"),
+            ("webui_host_header_validation", "webui.host_header_validation"),
+        ]
+        for widget_id, key in bools:
+            widget = self.get_widget(widget_id)
+            if widget:
+                settings[key] = widget.get_active()
+
+    def _collect_webui_ints(self, settings: dict[str, Any]) -> None:
+        """Collect the Web UI integer spin values into ``settings``."""
+        integers = [
+            ("webui_port", "webui.port"),
+            ("webui_session_timeout", "webui.session_timeout_minutes"),
+            ("webui_ban_after_failures", "webui.ban_after_failures"),
+        ]
+        for widget_id, key in integers:
+            widget = self.get_widget(widget_id)
+            if widget:
+                settings[key] = int(widget.get_value())
+
+    def _collect_webui_texts(self, settings: dict[str, Any]) -> None:
+        """Collect the Web UI text-entry values into ``settings``."""
+        texts = [
+            ("webui_interface", "webui.interface"),
+            ("webui_username", "webui.username"),
+            ("webui_password", "webui.password"),
+        ]
+        for widget_id, key in texts:
+            widget = self.get_widget(widget_id)
+            if widget:
+                settings[key] = widget.get_text()
+
+    def _validate_tab_settings(self) -> dict[str, str]:
         """Validate Web UI tab settings."""
-        errors = {}  # type: ignore[var-annotated]
+        errors: dict[str, str] = {}
 
         try:
             # Only validate WebUI settings when WebUI is actually enabled
             enable_webui = self.get_widget("enable_webui")
             webui_enabled = enable_webui and enable_webui.get_active()
-
             if not webui_enabled:
                 # Skip all validation when WebUI is disabled
                 return errors
 
-            # Validate port (only when WebUI is enabled)
-            webui_port = self.get_widget("webui_port")
-            if webui_port:
-                port_errors = self.validate_port(webui_port.get_value())
-                errors.update(port_errors)
-
-            # Validate interface (basic IP validation, only when WebUI is enabled)
-            webui_interface = self.get_widget("webui_interface")
-            if webui_interface:
-                interface = webui_interface.get_text().strip()
-                if interface and interface != "0.0.0.0" and interface != "127.0.0.1":
-                    # Basic IP validation
-                    parts = interface.split(".")
-                    if len(parts) != 4:
-                        errors["webui_interface"] = "Invalid IP address format"
-                    else:
-                        try:
-                            for part in parts:
-                                num = int(part)
-                                if num < 0 or num > 255:
-                                    errors["webui_interface"] = "Invalid IP address"
-                                    break
-                        except ValueError:
-                            errors["webui_interface"] = "Invalid IP address"
-
-            # Validate authentication (only when WebUI AND auth are both enabled)
-
-            webui_auth = self.get_widget("webui_auth_enabled")
-            if webui_enabled and webui_auth and webui_auth.get_active():
-                webui_username = self.get_widget("webui_username")
-                if webui_username:
-                    username = webui_username.get_text().strip()
-                    if not username:
-                        errors["webui_username"] = "Username cannot be empty when authentication is enabled"
-
-                webui_password = self.get_widget("webui_password")
-                if webui_password:
-                    password = webui_password.get_text()
-                    if not password:
-                        errors["webui_password"] = "Password cannot be empty when authentication is enabled"
-
-        except Exception as e:
+            self._validate_webui_port(errors)
+            self._validate_webui_interface(errors)
+            self._validate_webui_auth(errors)
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error validating Web UI tab settings: {e}")
             errors["general"] = str(e)
 
         return errors
+
+    def _validate_webui_port(self, errors: dict[str, str]) -> None:
+        """Validate the Web UI port widget."""
+        webui_port = self.get_widget("webui_port")
+        if webui_port:
+            errors.update(self.validate_port(webui_port.get_value()))
+
+    def _validate_webui_interface(self, errors: dict[str, str]) -> None:
+        """Validate the Web UI bind-interface, skipping loopback and all-zeros."""
+        webui_interface = self.get_widget("webui_interface")
+        if not webui_interface:
+            return
+        interface = webui_interface.get_text().strip()
+        # Skip empty, loopback, and the all-zeros (bind-all) interface.
+        if not interface or interface == "127.0.0.1" or interface.split(".") == ["0", "0", "0", "0"]:
+            return
+        message = self._interface_error(interface)
+        if message:
+            errors["webui_interface"] = message
+
+    @staticmethod
+    def _interface_error(interface: str) -> str | None:
+        """Return an error message for a malformed IPv4 interface, else ``None``."""
+        parts = interface.split(".")
+        if len(parts) != 4:
+            return "Invalid IP address format"
+        for part in parts:
+            try:
+                num = int(part)
+            except ValueError:
+                return "Invalid IP address"
+            if num < 0 or num > 255:
+                return "Invalid IP address"
+        return None
+
+    def _validate_webui_auth(self, errors: dict[str, str]) -> None:
+        """Validate that username and password are set when auth is enabled."""
+        webui_auth = self.get_widget("webui_auth_enabled")
+        if not (webui_auth and webui_auth.get_active()):
+            return
+        webui_username = self.get_widget("webui_username")
+        if webui_username and not webui_username.get_text().strip():
+            errors["webui_username"] = "Username cannot be empty when authentication is enabled"
+        webui_password = self.get_widget("webui_password")
+        if webui_password and not webui_password.get_text():
+            errors["webui_password"] = "Password cannot be empty when authentication is enabled"
 
     # Signal handlers
     def on_enable_webui_changed(self, switch: Gtk.Switch, state: bool) -> None:
@@ -412,7 +383,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             # NOTE: Setting will be saved in batch via _collect_settings()
             message = "Web UI will be " + ("enabled" if state else "disabled")
             self.show_notification(message, "info")
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error changing Web UI enable setting: {e}")
 
     def on_webui_port_changed(self, spin_button: Gtk.SpinButton) -> None:
@@ -427,7 +398,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
                 # NOTE: Setting will be saved in batch via _collect_settings()
                 self.logger.trace(f"Web UI port changed to: {port}")
                 self._update_url_label()
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error changing Web UI port: {e}")
 
     def on_webui_https_changed(self, switch: Gtk.Switch, state: bool) -> None:
@@ -438,7 +409,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             self._update_url_label()
             message = "HTTPS will be " + ("enabled" if state else "disabled")
             self.show_notification(message, "info")
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error changing HTTPS setting: {e}")
 
     def on_webui_localhost_changed(self, switch: Gtk.Switch, state: bool) -> None:
@@ -449,7 +420,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             self.update_dependencies()
             message = "Localhost only will be " + ("enabled" if state else "disabled")
             self.show_notification(message, "info")
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error changing localhost setting: {e}")
 
     def _update_url_label(self) -> None:
@@ -467,7 +438,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
 
             protocol = "https" if https else "http"
             url_label.set_text(f"URL: {protocol}://localhost:{port}")
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error updating URL label: {e}")
 
     def on_webui_auth_changed(self, switch: Gtk.Switch, state: bool) -> None:
@@ -479,7 +450,7 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
             # NOTE: Setting will be saved in batch via _collect_settings()
             message = "Web UI authentication will be " + ("enabled" if state else "disabled")
             self.show_notification(message, "info")
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error changing Web UI authentication: {e}")
 
     def on_generate_password_clicked(self, button: Gtk.Button) -> None:
@@ -496,77 +467,68 @@ class WebUITab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationM
                 webui_password.set_text(new_password)
                 self.show_notification(self._("Secure password generated"), "success")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error generating password: {e}")
 
     def _reset_tab_defaults(self) -> None:
         """Reset Web UI tab to default values."""
         try:
-            # Reset main settings
-            enable_webui = self.get_widget("enable_webui")
-            if enable_webui:
-                self.set_switch_state(enable_webui, False)
-
-            webui_port = self.get_widget("webui_port")
-            if webui_port:
-                webui_port.set_value(8080)
-
-            webui_https = self.get_widget("webui_https_enabled")
-            if webui_https:
-                self.set_switch_state(webui_https, False)
-
-            webui_localhost = self.get_widget("webui_localhost_only")
-            if webui_localhost:
-                self.set_switch_state(webui_localhost, True)
-
-            webui_interface = self.get_widget("webui_interface")
-            if webui_interface:
-                webui_interface.set_text("127.0.0.1")
-
-            # Reset authentication
-            webui_auth = self.get_widget("webui_auth_enabled")
-            if webui_auth:
-                self.set_switch_state(webui_auth, True)
-
-            webui_username = self.get_widget("webui_username")
-            if webui_username:
-                webui_username.set_text("admin")
-
-            webui_password = self.get_widget("webui_password")
-            if webui_password:
-                webui_password.set_text("")
-
-            webui_session = self.get_widget("webui_session_timeout")
-            if webui_session:
-                webui_session.set_value(60)
-
-            # Reset security settings
-            webui_csrf = self.get_widget("webui_csrf_protection")
-            if webui_csrf:
-                self.set_switch_state(webui_csrf, True)
-
-            webui_clickjacking = self.get_widget("webui_clickjacking_protection")
-            if webui_clickjacking:
-                self.set_switch_state(webui_clickjacking, True)
-
-            webui_secure_headers = self.get_widget("webui_secure_headers")
-            if webui_secure_headers:
-                self.set_switch_state(webui_secure_headers, True)
-
-            webui_host_header = self.get_widget("webui_host_header_validation")
-            if webui_host_header:
-                self.set_switch_state(webui_host_header, True)
-
-            webui_ban = self.get_widget("webui_ban_after_failures")
-            if webui_ban:
-                webui_ban.set_value(5)
-
+            self._reset_webui_main()
+            self._reset_webui_auth()
+            self._reset_webui_security()
             self.update_dependencies()
             self._update_url_label()
             self.show_notification(self._("Web UI settings reset to defaults"), "success")
-
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error resetting Web UI tab to defaults: {e}")
+
+    def _reset_webui_main(self) -> None:
+        """Reset the main Web UI connection settings to defaults."""
+        enable_webui = self.get_widget("enable_webui")
+        if enable_webui:
+            self.set_switch_state(enable_webui, False)
+        webui_port = self.get_widget("webui_port")
+        if webui_port:
+            webui_port.set_value(8080)
+        webui_https = self.get_widget("webui_https_enabled")
+        if webui_https:
+            self.set_switch_state(webui_https, False)
+        webui_localhost = self.get_widget("webui_localhost_only")
+        if webui_localhost:
+            self.set_switch_state(webui_localhost, True)
+        webui_interface = self.get_widget("webui_interface")
+        if webui_interface:
+            webui_interface.set_text("127.0.0.1")
+
+    def _reset_webui_auth(self) -> None:
+        """Reset the Web UI authentication settings to defaults."""
+        webui_auth = self.get_widget("webui_auth_enabled")
+        if webui_auth:
+            self.set_switch_state(webui_auth, True)
+        webui_username = self.get_widget("webui_username")
+        if webui_username:
+            webui_username.set_text("admin")
+        webui_password = self.get_widget("webui_password")
+        if webui_password:
+            webui_password.set_text("")
+        webui_session = self.get_widget("webui_session_timeout")
+        if webui_session:
+            webui_session.set_value(60)
+
+    def _reset_webui_security(self) -> None:
+        """Reset the Web UI security settings to defaults."""
+        for widget_id in (
+            "webui_csrf_protection",
+            "webui_clickjacking_protection",
+            "webui_secure_headers",
+            "webui_host_header_validation",
+        ):
+            widget = self.get_widget(widget_id)
+            if widget:
+                self.set_switch_state(widget, True)
+        webui_ban = self.get_widget("webui_ban_after_failures")
+        if webui_ban:
+            webui_ban.set_value(5)
 
     def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
         """Update view based on model changes."""
