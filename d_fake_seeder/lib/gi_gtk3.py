@@ -8,10 +8,12 @@ re-exports the ``gi.repository`` namespaces it needs, so the tray can do::
 
 without per-import ``# noqa: E402``. Keeping the GTK 3 pins in a dedicated
 module (separate from :mod:`d_fake_seeder.lib.gi_gtk4`) ensures a version is
-only required in the process that actually imports it.
+only required in the process that actually imports it. The re-exports are typed
+``Any`` because the typelib members are resolved dynamically at runtime.
 """
 
 from importlib import import_module
+from typing import Any
 
 import gi
 
@@ -21,11 +23,11 @@ gi.require_version("AppIndicator3", "0.1")
 gi.require_version("Notify", "0.7")
 gi.require_version("Gio", "2.0")
 
-Gdk = import_module("gi.repository.Gdk")
-Gtk = import_module("gi.repository.Gtk")
-AppIndicator3 = import_module("gi.repository.AppIndicator3")
-Notify = import_module("gi.repository.Notify")
-Gio = import_module("gi.repository.Gio")
-GLib = import_module("gi.repository.GLib")
+Gdk: Any = import_module("gi.repository.Gdk")
+Gtk: Any = import_module("gi.repository.Gtk")
+AppIndicator3: Any = import_module("gi.repository.AppIndicator3")
+Notify: Any = import_module("gi.repository.Notify")
+Gio: Any = import_module("gi.repository.Gio")
+GLib: Any = import_module("gi.repository.GLib")
 
-__all__ = ["Gdk", "Gtk", "AppIndicator3", "Notify", "Gio", "GLib"]
+__all__ = ["AppIndicator3", "GLib", "Gdk", "Gio", "Gtk", "Notify"]
