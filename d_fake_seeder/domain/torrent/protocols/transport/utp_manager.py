@@ -1,3 +1,5 @@
+# Network handlers deliberately log and survive any per-packet/peer failure.
+# ruff: noqa: BLE001
 """
 µTP Connection Manager
 
@@ -7,7 +9,7 @@ Manages multiple µTP connections and provides connection pooling.
 # fmt: off
 import asyncio
 import socket
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.logger import logger
@@ -34,8 +36,8 @@ class UTPManager:
         # Socket and connections
         self.socket = None
         self.running = False
-        self._background_tasks: "set[asyncio.Task[Any]]" = set()
-        self.connections: Dict[int, UTPConnection] = {}  # connection_id -> UTPConnection
+        self._background_tasks: set[asyncio.Task[Any]] = set()
+        self.connections: dict[int, UTPConnection] = {}  # connection_id -> UTPConnection
         self.next_connection_id = 1
 
         # Configuration
@@ -119,7 +121,7 @@ class UTPManager:
             self.socket.close()
             self.socket = None
 
-    async def connect(self, host: str, port: int, timeout: float = 30.0) -> Optional[UTPConnection]:
+    async def connect(self, host: str, port: int, timeout: float = 30.0) -> UTPConnection | None:
         """
         Create outgoing µTP connection
 
@@ -179,7 +181,9 @@ class UTPManager:
         while self.running:
             try:
                 # Receive packet
-                data, addr = await asyncio.get_running_loop().sock_recvfrom(self.socket, UTPConstants.MAX_PACKET_SIZE)  # type: ignore[attr-defined,arg-type]  # noqa: E501
+                loop = asyncio.get_running_loop()
+                size = UTPConstants.MAX_PACKET_SIZE
+                data, addr = await loop.sock_recvfrom(self.socket, size)  # type: ignore[attr-defined,arg-type]
 
                 # Route to appropriate connection
                 self._spawn_background(self._route_packet(data, addr))
@@ -193,7 +197,7 @@ class UTPManager:
                 )
                 await asyncio.sleep(self._get_poll_interval())  # type: ignore[attr-defined]
 
-    async def _route_packet(self, data: bytes, addr: Tuple[str, int]) -> Any:
+    async def _route_packet(self, data: bytes, addr: tuple[str, int]) -> Any:
         """
         Route incoming packet to appropriate connection
 
@@ -225,7 +229,7 @@ class UTPManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-    async def _accept_connection(self, data: bytes, addr: Tuple[str, int], connection_id: int) -> Any:
+    async def _accept_connection(self, data: bytes, addr: tuple[str, int], connection_id: int) -> Any:
         """
         Accept incoming µTP connection
 
@@ -276,7 +280,7 @@ class UTPManager:
         if connection_id in self.connections:
             del self.connections[connection_id]
 
-    def get_statistics(self) -> Dict:
+    def get_statistics(self) -> dict:
         """Get µTP manager statistics"""
         connection_stats = [conn.get_statistics() for conn in self.connections.values()]
 
