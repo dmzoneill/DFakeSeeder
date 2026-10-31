@@ -1,57 +1,22 @@
 """
-Unit tests for the BitTorrentTab settings-collection logic.
+Unit tests for BitTorrentTab settings collection.
 
-These cover the behaviour-preserving refactor of _collect_bittorrent_settings
-(split into focused helpers to resolve too-many-branches/locals): widget values
-are mapped to their nested bittorrent.* keys, the encryption mode and predefined
-vs custom user agent are selected correctly, and interval values are coerced to
-int. The GTK layer and AppSettings are mocked so the module imports headless.
+These cover the helpers extracted from the oversized _collect_bittorrent_settings
+(too-many-branches/locals): toggles, encryption mode and user-agent selection map
+to their nested keys, the custom user-agent free text is read on the custom
+index, and interval spin values are coerced to int seconds. The shared
+``settings_module`` / ``make_settings_tab`` fixtures provide the mocked GTK import
+and tab builder.
 """
 
-import contextlib
 import importlib
-import sys
-from collections.abc import Iterator
-from types import ModuleType
 from typing import Any
 from unittest.mock import MagicMock
 
-# Internal names referenced indirectly to avoid protected-member lint.
-_CLEANUP_DONE = "_cleanup_done"
-_WIDGETS = "_widgets"
 _COLLECT_ALL = "_collect_bittorrent_settings"
 _COLLECT_USER_AGENT = "_collect_user_agent_setting"
 _COLLECT_INTERVALS = "_collect_interval_settings"
-
-
-@contextlib.contextmanager
-def loaded_tab() -> Iterator[ModuleType]:
-    """Import bittorrent_tab with the GTK layer and AppSettings mocked."""
-    name = "d_fake_seeder.components.component.settings.bittorrent_tab"
-    gi_names = [
-        "gi",
-        "gi.repository",
-        "gi.repository.Gtk",
-        "gi.repository.Gdk",
-        "gi.repository.Gio",
-        "gi.repository.GLib",
-        "gi.repository.GObject",
-    ]
-    extra = ["d_fake_seeder.lib.gi_gtk4", "d_fake_seeder.domain.app_settings", name]
-    saved = {n: sys.modules.get(n) for n in gi_names + extra}
-    for n in gi_names:
-        sys.modules[n] = MagicMock()
-    sys.modules["d_fake_seeder.lib.gi_gtk4"] = MagicMock()
-    sys.modules["d_fake_seeder.domain.app_settings"] = MagicMock()
-    sys.modules.pop(name, None)
-    try:
-        yield importlib.import_module("d_fake_seeder.components.component.settings.bittorrent_tab")
-    finally:
-        for n, mod in saved.items():
-            if mod is not None:
-                sys.modules[n] = mod
-            else:
-                sys.modules.pop(n, None)
+_MODULE = "d_fake_seeder.components.component.settings.bittorrent_tab"
 
 
 def _widget(**returns: Any) -> MagicMock:
@@ -62,20 +27,10 @@ def _widget(**returns: Any) -> MagicMock:
     return widget
 
 
-def _tab(mod: ModuleType, widgets: dict[str, Any]) -> Any:
-    """Build a BitTorrentTab wired to a builder serving the given widgets."""
-    tab = mod.BitTorrentTab.__new__(mod.BitTorrentTab)
-    setattr(tab, _CLEANUP_DONE, True)  # avoid CleanupMixin.__del__ noise (no __init__ run)
-    setattr(tab, _WIDGETS, {})
-    tab.logger = MagicMock()
-    tab.builder = MagicMock()
-    tab.builder.get_object.side_effect = widgets.get
-    return tab
-
-
-def test_collect_maps_toggles_encryption_and_predefined_agent() -> None:
+def test_collect_maps_toggles_encryption_and_predefined_agent(settings_module: Any, make_settings_tab: Any) -> None:
     """Toggles, encryption mode and a predefined user agent map to nested keys."""
-    with loaded_tab() as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.bittorrent_tab")
         widgets = {
             "enable_dht": _widget(get_active=True),
             "enable_pex": _widget(get_active=False),
@@ -84,7 +39,7 @@ def test_collect_maps_toggles_encryption_and_predefined_agent() -> None:
             "user_agent": _widget(get_selected=1),  # -> "qBittorrent/4.3.1"
             "announce_interval": _widget(get_value=1800.0),
         }
-        tab = _tab(mod, widgets)
+        tab = make_settings_tab(mod.BitTorrentTab, widgets)
 
         result = getattr(tab, _COLLECT_ALL)()
 
@@ -97,28 +52,30 @@ def test_collect_maps_toggles_encryption_and_predefined_agent() -> None:
         assert isinstance(result["bittorrent.announce_interval_seconds"], int)
 
 
-def test_collect_custom_user_agent() -> None:
+def test_collect_custom_user_agent(settings_module: Any, make_settings_tab: Any) -> None:
     """Selecting index 7 reads the free-text custom user agent."""
-    with loaded_tab() as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.bittorrent_tab")
         widgets = {
             "user_agent": _widget(get_selected=7),
             "custom_user_agent": _widget(get_text="MyClient/1.2"),
         }
-        tab = _tab(mod, widgets)
+        tab = make_settings_tab(mod.BitTorrentTab, widgets)
 
         result = getattr(tab, _COLLECT_USER_AGENT)()
 
         assert result == {"bittorrent.user_agent": "MyClient/1.2"}
 
 
-def test_collect_intervals_coerced_to_int() -> None:
+def test_collect_intervals_coerced_to_int(settings_module: Any, make_settings_tab: Any) -> None:
     """Interval spin values are coerced to int seconds."""
-    with loaded_tab() as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.bittorrent_tab")
         widgets = {
             "announce_interval": _widget(get_value=1800.9),
             "scrape_interval": _widget(get_value=900.0),
         }
-        tab = _tab(mod, widgets)
+        tab = make_settings_tab(mod.BitTorrentTab, widgets)
 
         result = getattr(tab, _COLLECT_INTERVALS)()
 
