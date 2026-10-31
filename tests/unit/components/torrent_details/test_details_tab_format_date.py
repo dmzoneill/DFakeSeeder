@@ -74,9 +74,9 @@ _FORMAT_DATE = "_format_date"
 
 def test_format_date_handles_out_of_range_timestamp() -> None:
     """A wildly out-of-range timestamp is swallowed and returned as a string."""
-    from d_fake_seeder.components.component.torrent_details.details_tab import DetailsTab
+    from d_fake_seeder.components.component.torrent_details import details_tab
 
-    format_date = getattr(DetailsTab, _FORMAT_DATE)
+    format_date = getattr(details_tab.DetailsTab, _FORMAT_DATE)
     stub = SimpleNamespace(logger=MagicMock())
 
     # 1e30 is far beyond any platform's supported timestamp range -> OverflowError/OSError.
@@ -88,9 +88,9 @@ def test_format_date_handles_out_of_range_timestamp() -> None:
 
 def test_format_date_formats_normal_timestamp() -> None:
     """A normal timestamp is formatted (and does not hit the error path)."""
-    from d_fake_seeder.components.component.torrent_details.details_tab import DetailsTab
+    from d_fake_seeder.components.component.torrent_details import details_tab
 
-    format_date = getattr(DetailsTab, _FORMAT_DATE)
+    format_date = getattr(details_tab.DetailsTab, _FORMAT_DATE)
     stub = SimpleNamespace(logger=MagicMock())
 
     result = format_date(stub, 1_700_000_000)
