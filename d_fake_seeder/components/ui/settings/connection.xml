@@ -16,13 +16,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Listening Port&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Listening Port"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -70,25 +64,9 @@
                             </child>
 
                             <!-- UPnP/NAT-PMP -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_upnp_enabled">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Automatically configure router port forwarding using UPnP/NAT-PMP</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable UPnP/NAT-PMP port mapping</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_upnp_enabled"
+                                     tooltip="Automatically configure router port forwarding using UPnP/NAT-PMP"
+                                     label="Enable UPnP/NAT-PMP port mapping"/>
                         </object>
                     </child>
                 </object>
@@ -99,13 +77,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Connection Limits&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Connection Limits"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -113,106 +85,19 @@
                             <property name="margin-start">12</property>
 
                             <!-- Max global connections -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Max global connections:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">20</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="settings_max_global_connections">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">1</property>
-                                                    <property name="upper">9999</property>
-                                                    <property name="value">200</property>
-                                                    <property name="step-increment">1</property>
-                                                    <property name="page-increment">10</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Maximum number of connections to all torrents</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">8</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-sized" label="Max global connections:" label_chars="20"
+                                     id="settings_max_global_connections" lower="1" upper="9999" value="200" step="1"
+                                     page="10" tooltip="Maximum number of connections to all torrents" chars="8"/>
 
                             <!-- Max connections per torrent -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Max per torrent:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">20</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="settings_max_per_torrent">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">1</property>
-                                                    <property name="upper">999</property>
-                                                    <property name="value">50</property>
-                                                    <property name="step-increment">1</property>
-                                                    <property name="page-increment">10</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Maximum number of connections per individual torrent</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">8</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-sized" label="Max per torrent:" label_chars="20"
+                                     id="settings_max_per_torrent" lower="1" upper="999" value="50" step="1" page="10"
+                                     tooltip="Maximum number of connections per individual torrent" chars="8"/>
 
                             <!-- Max upload slots -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Max upload slots:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">20</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="settings_max_upload_slots">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">1</property>
-                                                    <property name="upper">999</property>
-                                                    <property name="value">4</property>
-                                                    <property name="step-increment">1</property>
-                                                    <property name="page-increment">5</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Maximum number of simultaneous upload slots</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">8</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-sized" label="Max upload slots:" label_chars="20"
+                                     id="settings_max_upload_slots" lower="1" upper="999" value="4" step="1" page="5"
+                                     tooltip="Maximum number of simultaneous upload slots" chars="8"/>
                         </object>
                     </child>
                 </object>
@@ -223,13 +108,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Proxy Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Proxy Settings"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -237,37 +116,8 @@
                             <property name="margin-start">12</property>
 
                             <!-- Proxy type -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Type:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">15</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkDropDown" id="settings_proxy_type">
-                                            <property name="model">
-                                                <object class="GtkStringList">
-                                                    <items>
-                                                        <item translatable="yes">None</item>
-                                                        <item translatable="yes">HTTP</item>
-                                                        <item translatable="yes">SOCKS5</item>
-                                                        <item translatable="yes">SOCKS4</item>
-                                                    </items>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Select proxy type for connections</property>
-                                            <property name="hexpand">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="dropdown-row" label="Type:" label_chars="15" id="settings_proxy_type"
+                                     items="None|HTTP|SOCKS5|SOCKS4" tooltip="Select proxy type for connections"/>
 
                             <!-- Proxy server -->
                             <child>
@@ -294,59 +144,13 @@
                             </child>
 
                             <!-- Proxy port -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Port:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">15</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="settings_proxy_port">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">1</property>
-                                                    <property name="upper">65535</property>
-                                                    <property name="value">8080</property>
-                                                    <property name="step-increment">1</property>
-                                                    <property name="page-increment">10</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Proxy server port number</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">8</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-sized" label="Port:" label_chars="15" id="settings_proxy_port"
+                                     lower="1" upper="65535" value="8080" step="1" page="10"
+                                     tooltip="Proxy server port number" chars="8"/>
 
                             <!-- Proxy authentication -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="settings_proxy_auth_enabled">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Enable proxy authentication</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Use authentication</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="settings_proxy_auth_enabled"
+                                     tooltip="Enable proxy authentication" label="Use authentication"/>
 
                             <!-- Proxy username -->
                             <child>
