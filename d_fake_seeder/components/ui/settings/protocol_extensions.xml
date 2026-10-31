@@ -16,13 +16,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Protocol Extensions&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Protocol Extensions"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -30,25 +24,9 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable Extensions -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="extensions_enabled_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Enable or disable BitTorrent protocol extensions</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable Protocol Extensions</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="extensions_enabled_switch"
+                                     tooltip="Enable or disable BitTorrent protocol extensions"
+                                     label="Enable Protocol Extensions"/>
                         </object>
                     </child>
                 </object>
@@ -59,13 +37,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Extension Protocol (BEP-010)&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Extension Protocol (BEP-010)"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -73,109 +45,29 @@
                             <property name="margin-start">12</property>
 
                             <!-- ut_metadata -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="ut_metadata_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable ut_metadata extension for metadata exchange</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">ut_metadata (Metadata Exchange)</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="ut_metadata_check" active="True"
+                                     tooltip="Enable ut_metadata extension for metadata exchange"
+                                     label="ut_metadata (Metadata Exchange)"/>
 
                             <!-- ut_pex -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="ut_pex_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable ut_pex extension for peer exchange</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">ut_pex (Peer Exchange)</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="ut_pex_check" active="True"
+                                     tooltip="Enable ut_pex extension for peer exchange"
+                                     label="ut_pex (Peer Exchange)"/>
 
                             <!-- lt_donthave -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="lt_donthave_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable lt_donthave extension for piece availability</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">lt_donthave (Piece Availability)</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="lt_donthave_check" active="True"
+                                     tooltip="Enable lt_donthave extension for piece availability"
+                                     label="lt_donthave (Piece Availability)"/>
 
                             <!-- Fast Extension -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="fast_extension_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable Fast Extension (BEP-006) for improved performance</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Fast Extension (BEP-006)</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="fast_extension_check" active="True"
+                                     tooltip="Enable Fast Extension (BEP-006) for improved performance"
+                                     label="Fast Extension (BEP-006)"/>
 
                             <!-- ut_holepunch -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="ut_holepunch_check">
-                                            <property name="active">False</property>
-                                            <property name="tooltip-text" translatable="yes">Enable ut_holepunch extension for NAT traversal</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">ut_holepunch (NAT Traversal)</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="ut_holepunch_check" active="False"
+                                     tooltip="Enable ut_holepunch extension for NAT traversal"
+                                     label="ut_holepunch (NAT Traversal)"/>
                         </object>
                     </child>
                 </object>
@@ -186,13 +78,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Peer Exchange (PEX) Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Peer Exchange (PEX) Settings"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -240,124 +126,23 @@
                             </child>
 
                             <!-- Max peers per message -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Max Peers/Message:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="pex_max_peers_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">10</property>
-                                                    <property name="upper">200</property>
-                                                    <property name="step-increment">5</property>
-                                                    <property name="page-increment">25</property>
-                                                    <property name="value">50</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Maximum peers to include in a PEX message</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill" label="Max Peers/Message:" label_chars="18"
+                                     id="pex_max_peers_spin" lower="10" upper="200" step="5" page="25" value="50"
+                                     tooltip="Maximum peers to include in a PEX message"/>
 
                             <!-- Max dropped peers -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Max Dropped Peers:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="pex_max_dropped_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">5</property>
-                                                    <property name="upper">100</property>
-                                                    <property name="step-increment">5</property>
-                                                    <property name="page-increment">10</property>
-                                                    <property name="value">20</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Maximum dropped peers to track for PEX</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill" label="Max Dropped Peers:" label_chars="18"
+                                     id="pex_max_dropped_spin" lower="5" upper="100" step="5" page="10" value="20"
+                                     tooltip="Maximum dropped peers to track for PEX"/>
 
                             <!-- Generate synthetic peers -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="pex_synthetic_peers_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Generate synthetic peer data for PEX</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Generate synthetic peers</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="pex_synthetic_peers_check" active="True"
+                                     tooltip="Generate synthetic peer data for PEX" label="Generate synthetic peers"/>
 
                             <!-- Synthetic peer count -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Synthetic Peer Count:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="pex_synthetic_count_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">5</property>
-                                                    <property name="upper">100</property>
-                                                    <property name="step-increment">5</property>
-                                                    <property name="page-increment">10</property>
-                                                    <property name="value">20</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Number of synthetic peers to generate</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill" label="Synthetic Peer Count:" label_chars="18"
+                                     id="pex_synthetic_count_spin" lower="5" upper="100" step="5" page="10" value="20"
+                                     tooltip="Number of synthetic peers to generate"/>
                         </object>
                     </child>
                 </object>
@@ -368,13 +153,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Metadata Extension Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Metadata Extension Settings"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -382,25 +161,8 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable metadata extension -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="metadata_enabled_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable metadata extension features</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable metadata extension</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="metadata_enabled_check" active="True"
+                                     tooltip="Enable metadata extension features" label="Enable metadata extension"/>
 
                             <!-- Metadata piece size -->
                             <child>
@@ -483,25 +245,9 @@
                             </child>
 
                             <!-- Synthetic metadata -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="metadata_synthetic_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Generate synthetic metadata for simulation</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Generate synthetic metadata</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="metadata_synthetic_check" active="True"
+                                     tooltip="Generate synthetic metadata for simulation"
+                                     label="Generate synthetic metadata"/>
                         </object>
                     </child>
                 </object>
@@ -512,13 +258,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Transport Protocol Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Transport Protocol Settings"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -526,46 +266,13 @@
                             <property name="margin-start">12</property>
 
                             <!-- µTP enabled -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="utp_enabled_check">
-                                            <property name="active">False</property>
-                                            <property name="tooltip-text" translatable="yes">Enable µTP (Micro Transport Protocol)</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable µTP (Micro Transport Protocol)</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="utp_enabled_check" active="False"
+                                     tooltip="Enable µTP (Micro Transport Protocol)"
+                                     label="Enable µTP (Micro Transport Protocol)"/>
 
                             <!-- TCP fallback -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="tcp_fallback_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Fall back to TCP if µTP fails</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">TCP fallback</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="tcp_fallback_check" active="True"
+                                     tooltip="Fall back to TCP if µTP fails" label="TCP fallback"/>
 
                             <!-- Connection timeout -->
                             <child>
@@ -648,46 +355,12 @@
                             </child>
 
                             <!-- Nagle algorithm -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="nagle_algorithm_check">
-                                            <property name="active">False</property>
-                                            <property name="tooltip-text" translatable="yes">Enable Nagle algorithm for TCP</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable Nagle algorithm</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="nagle_algorithm_check" active="False"
+                                     tooltip="Enable Nagle algorithm for TCP" label="Enable Nagle algorithm"/>
 
                             <!-- TCP keepalive -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="tcp_keepalive_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Enable TCP keepalive</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">TCP keepalive</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="tcp_keepalive_check" active="True"
+                                     tooltip="Enable TCP keepalive" label="TCP keepalive"/>
                         </object>
                     </child>
                 </object>
@@ -698,13 +371,7 @@
                 <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
-                    <child>
-                        <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;b&gt;Advanced Extension Settings&lt;/b&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="halign">start</property>
-                        </object>
-                    </child>
+                    <dfs-use template="section-heading" title="Advanced Extension Settings"/>
                     <child>
                         <object class="GtkBox">
                             <property name="orientation">vertical</property>
@@ -792,25 +459,8 @@
                             </child>
 
                             <!-- Track extension statistics -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="track_extension_stats_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Track extension usage statistics</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Track extension statistics</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="track_extension_stats_check" active="True"
+                                     tooltip="Track extension usage statistics" label="Track extension statistics"/>
 
                             <!-- Statistics update interval -->
                             <child>
@@ -853,79 +503,18 @@
                             </child>
 
                             <!-- Validate extensions -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="validate_extensions_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Validate extension messages for security</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Validate extension messages</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="validate_extensions_check" active="True"
+                                     tooltip="Validate extension messages for security"
+                                     label="Validate extension messages"/>
 
                             <!-- Limit extension messages -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkCheckButton" id="limit_extension_msgs_check">
-                                            <property name="active">True</property>
-                                            <property name="tooltip-text" translatable="yes">Limit extension message rate</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Limit extension message rate</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="check-row" id="limit_extension_msgs_check" active="True"
+                                     tooltip="Limit extension message rate" label="Limit extension message rate"/>
 
                             <!-- Max messages per second -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">fill</property>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Max Messages/Second:</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                            <property name="hexpand">False</property>
-                                            <property name="width-chars">18</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkSpinButton" id="max_ext_msgs_per_sec_spin">
-                                            <property name="adjustment">
-                                                <object class="GtkAdjustment">
-                                                    <property name="lower">1</property>
-                                                    <property name="upper">200</property>
-                                                    <property name="step-increment">5</property>
-                                                    <property name="page-increment">25</property>
-                                                    <property name="value">50</property>
-                                                </object>
-                                            </property>
-                                            <property name="tooltip-text" translatable="yes">Maximum extension messages per second</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="numeric">True</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="spin-row-fill" label="Max Messages/Second:" label_chars="18"
+                                     id="max_ext_msgs_per_sec_spin" lower="1" upper="200" step="5" page="25"
+                                     value="50" tooltip="Maximum extension messages per second"/>
                         </object>
                     </child>
                 </object>
