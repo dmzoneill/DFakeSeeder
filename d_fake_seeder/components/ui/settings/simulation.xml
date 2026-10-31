@@ -30,25 +30,9 @@
                             <property name="margin-start">12</property>
 
                             <!-- Enable client behavior engine -->
-                            <child>
-                                <object class="GtkBox">
-                                    <property name="spacing">12</property>
-                                    <property name="halign">start</property>
-                                    <child>
-                                        <object class="GtkSwitch" id="client_behavior_enabled_switch">
-                                            <property name="valign">center</property>
-                                            <property name="tooltip-text" translatable="yes">Enable client behavior simulation engine</property>
-                                        </object>
-                                    </child>
-                                    <child>
-                                        <object class="GtkLabel">
-                                            <property name="label" translatable="yes">Enable client behavior simulation</property>
-                                            <property name="halign">start</property>
-                                            <property name="valign">center</property>
-                                        </object>
-                                    </child>
-                                </object>
-                            </child>
+                            <dfs-use template="switch-row" id="client_behavior_enabled_switch"
+                                     tooltip="Enable client behavior simulation engine"
+                                     label="Enable client behavior simulation"/>
 
                             <!-- Primary client -->
                             <child>
@@ -347,241 +331,43 @@
                             <property name="column-spacing">12</property>
 
                             <!-- Upload speed -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Upload Speed (KB/s):</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">0</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="conservative_upload_speed_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">10</property>
-                                            <property name="upper">1000</property>
-                                            <property name="step-increment">10</property>
-                                            <property name="page-increment">50</property>
-                                            <property name="value">50</property>
-                                        </object>
-                                    </property>
-                                    <property name="tooltip-text" translatable="yes">Conservative profile upload speed</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">0</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin" label="Upload Speed (KB/s):" row="0"
+                                     id="conservative_upload_speed_spin" lower="10" upper="1000" step="10" page="50"
+                                     value="50" tooltip="Conservative profile upload speed"/>
 
                             <!-- Download speed -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Download Speed (KB/s):</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">1</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="conservative_download_speed_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">50</property>
-                                            <property name="upper">5000</property>
-                                            <property name="step-increment">50</property>
-                                            <property name="page-increment">100</property>
-                                            <property name="value">200</property>
-                                        </object>
-                                    </property>
-                                    <property name="tooltip-text" translatable="yes">Conservative profile download speed</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">1</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin" label="Download Speed (KB/s):" row="1"
+                                     id="conservative_download_speed_spin" lower="50" upper="5000" step="50"
+                                     page="100" value="200" tooltip="Conservative profile download speed"/>
 
                             <!-- Upload variance -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Upload Variance:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">2</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="conservative_upload_variance_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0.0</property>
-                                            <property name="upper">1.0</property>
-                                            <property name="step-increment">0.1</property>
-                                            <property name="page-increment">0.1</property>
-                                            <property name="value">0.1</property>
-                                        </object>
-                                    </property>
-                                    <property name="digits">1</property>
-                                    <property name="tooltip-text" translatable="yes">Upload speed variance for conservative profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">2</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin-decimal" label="Upload Variance:" row="2"
+                                     id="conservative_upload_variance_spin" lower="0.0" upper="1.0" step="0.1"
+                                     page="0.1" value="0.1" digits="1"
+                                     tooltip="Upload speed variance for conservative profile"/>
 
                             <!-- Download variance -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Download Variance:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">3</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="conservative_download_variance_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0.0</property>
-                                            <property name="upper">1.0</property>
-                                            <property name="step-increment">0.1</property>
-                                            <property name="page-increment">0.1</property>
-                                            <property name="value">0.15</property>
-                                        </object>
-                                    </property>
-                                    <property name="digits">1</property>
-                                    <property name="tooltip-text" translatable="yes">Download speed variance for conservative profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">3</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin-decimal" label="Download Variance:" row="3"
+                                     id="conservative_download_variance_spin" lower="0.0" upper="1.0" step="0.1"
+                                     page="0.1" value="0.15" digits="1"
+                                     tooltip="Download speed variance for conservative profile"/>
 
                             <!-- Max connections -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Max Connections:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">4</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="conservative_max_connections_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">10</property>
-                                            <property name="upper">500</property>
-                                            <property name="step-increment">10</property>
-                                            <property name="page-increment">50</property>
-                                            <property name="value">100</property>
-                                        </object>
-                                    </property>
-                                    <property name="tooltip-text" translatable="yes">Maximum connections for conservative profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">4</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin" label="Max Connections:" row="4"
+                                     id="conservative_max_connections_spin" lower="10" upper="500" step="10" page="50"
+                                     value="100" tooltip="Maximum connections for conservative profile"/>
 
                             <!-- Burst probability -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Burst Probability:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">5</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="conservative_burst_probability_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0.0</property>
-                                            <property name="upper">1.0</property>
-                                            <property name="step-increment">0.01</property>
-                                            <property name="page-increment">0.05</property>
-                                            <property name="value">0.05</property>
-
-                                        </object>
-                                    </property>
-                                    <property name="digits">2</property>
-                                    <property name="tooltip-text" translatable="yes">Probability of traffic bursts for conservative profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">5</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin-decimal" label="Burst Probability:" row="5"
+                                     id="conservative_burst_probability_spin" lower="0.0" upper="1.0" step="0.01"
+                                     page="0.05" value="0.05" digits="2"
+                                     tooltip="Probability of traffic bursts for conservative profile"/>
 
                             <!-- Idle probability -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Idle Probability:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">6</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="conservative_idle_probability_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0.0</property>
-                                            <property name="upper">1.0</property>
-                                            <property name="step-increment">0.01</property>
-                                            <property name="page-increment">0.05</property>
-                                            <property name="value">0.2</property>
-
-                                        </object>
-                                    </property>
-                                    <property name="digits">2</property>
-                                    <property name="tooltip-text" translatable="yes">Probability of idle periods for conservative profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">6</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin-decimal" label="Idle Probability:" row="6"
+                                     id="conservative_idle_probability_spin" lower="0.0" upper="1.0" step="0.01"
+                                     page="0.05" value="0.2" digits="2"
+                                     tooltip="Probability of idle periods for conservative profile"/>
                         </object>
                     </child>
                 </object>
@@ -606,243 +392,42 @@
                             <property name="column-spacing">12</property>
 
                             <!-- Upload speed -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Upload Speed (KB/s):</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">0</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="balanced_upload_speed_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">50</property>
-                                            <property name="upper">2000</property>
-                                            <property name="step-increment">25</property>
-                                            <property name="page-increment">100</property>
-                                            <property name="value">200</property>
-                                        </object>
-                                    </property>
-                                    <property name="tooltip-text" translatable="yes">Balanced profile upload speed</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">0</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin" label="Upload Speed (KB/s):" row="0"
+                                     id="balanced_upload_speed_spin" lower="50" upper="2000" step="25" page="100"
+                                     value="200" tooltip="Balanced profile upload speed"/>
 
                             <!-- Download speed -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Download Speed (KB/s):</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">1</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="balanced_download_speed_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">200</property>
-                                            <property name="upper">10000</property>
-                                            <property name="step-increment">100</property>
-                                            <property name="page-increment">500</property>
-                                            <property name="value">800</property>
-                                        </object>
-                                    </property>
-                                    <property name="tooltip-text" translatable="yes">Balanced profile download speed</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">1</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin" label="Download Speed (KB/s):" row="1"
+                                     id="balanced_download_speed_spin" lower="200" upper="10000" step="100" page="500"
+                                     value="800" tooltip="Balanced profile download speed"/>
 
                             <!-- Upload variance -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Upload Variance:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">2</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="balanced_upload_variance_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0.0</property>
-                                            <property name="upper">1.0</property>
-                                            <property name="step-increment">0.1</property>
-                                            <property name="page-increment">0.1</property>
-                                            <property name="value">0.3</property>
-
-                                        </object>
-                                    </property>
-                                    <property name="digits">1</property>
-                                    <property name="tooltip-text" translatable="yes">Upload speed variance for balanced profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">2</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin-decimal" label="Upload Variance:" row="2"
+                                     id="balanced_upload_variance_spin" lower="0.0" upper="1.0" step="0.1" page="0.1"
+                                     value="0.3" digits="1" tooltip="Upload speed variance for balanced profile"/>
 
                             <!-- Download variance -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Download Variance:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">3</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="balanced_download_variance_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0.0</property>
-                                            <property name="upper">1.0</property>
-                                            <property name="step-increment">0.05</property>
-                                            <property name="page-increment">0.1</property>
-                                            <property name="value">0.25</property>
-
-                                        </object>
-                                    </property>
-                                    <property name="digits">2</property>
-                                    <property name="tooltip-text" translatable="yes">Download speed variance for balanced profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">3</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin-decimal" label="Download Variance:" row="3"
+                                     id="balanced_download_variance_spin" lower="0.0" upper="1.0" step="0.05"
+                                     page="0.1" value="0.25" digits="2"
+                                     tooltip="Download speed variance for balanced profile"/>
 
                             <!-- Max connections -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Max Connections:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">4</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="balanced_max_connections_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">50</property>
-                                            <property name="upper">1000</property>
-                                            <property name="step-increment">25</property>
-                                            <property name="page-increment">100</property>
-                                            <property name="value">200</property>
-                                        </object>
-                                    </property>
-                                    <property name="tooltip-text" translatable="yes">Maximum connections for balanced profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">4</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin" label="Max Connections:" row="4"
+                                     id="balanced_max_connections_spin" lower="50" upper="1000" step="25" page="100"
+                                     value="200" tooltip="Maximum connections for balanced profile"/>
 
                             <!-- Burst probability -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Burst Probability:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">5</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="balanced_burst_probability_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0.0</property>
-                                            <property name="upper">1.0</property>
-                                            <property name="step-increment">0.01</property>
-                                            <property name="page-increment">0.05</property>
-                                            <property name="value">0.15</property>
-
-                                        </object>
-                                    </property>
-                                    <property name="digits">2</property>
-                                    <property name="tooltip-text" translatable="yes">Probability of traffic bursts for balanced profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">5</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin-decimal" label="Burst Probability:" row="5"
+                                     id="balanced_burst_probability_spin" lower="0.0" upper="1.0" step="0.01"
+                                     page="0.05" value="0.15" digits="2"
+                                     tooltip="Probability of traffic bursts for balanced profile"/>
 
                             <!-- Idle probability -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Idle Probability:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">6</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="balanced_idle_probability_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0.0</property>
-                                            <property name="upper">1.0</property>
-                                            <property name="step-increment">0.01</property>
-                                            <property name="page-increment">0.05</property>
-                                            <property name="value">0.1</property>
-
-                                        </object>
-                                    </property>
-                                    <property name="digits">2</property>
-                                    <property name="tooltip-text" translatable="yes">Probability of idle periods for balanced profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">6</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin-decimal" label="Idle Probability:" row="6"
+                                     id="balanced_idle_probability_spin" lower="0.0" upper="1.0" step="0.01"
+                                     page="0.05" value="0.1" digits="2"
+                                     tooltip="Probability of idle periods for balanced profile"/>
                         </object>
                     </child>
                 </object>
@@ -867,243 +452,43 @@
                             <property name="column-spacing">12</property>
 
                             <!-- Upload speed -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Upload Speed (KB/s):</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">0</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="aggressive_upload_speed_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0</property>
-                                            <property name="upper">5000</property>
-                                            <property name="step-increment">50</property>
-                                            <property name="page-increment">250</property>
-                                            <property name="value">500</property>
-                                        </object>
-                                    </property>
-                                    <property name="tooltip-text" translatable="yes">Aggressive profile upload speed (0 = unlimited)</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">0</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin" label="Upload Speed (KB/s):" row="0"
+                                     id="aggressive_upload_speed_spin" lower="0" upper="5000" step="50" page="250"
+                                     value="500" tooltip="Aggressive profile upload speed (0 = unlimited)"/>
 
                             <!-- Download speed -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Download Speed (KB/s):</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">1</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="aggressive_download_speed_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">500</property>
-                                            <property name="upper">20000</property>
-                                            <property name="step-increment">250</property>
-                                            <property name="page-increment">1000</property>
-                                            <property name="value">2048</property>
-                                        </object>
-                                    </property>
-                                    <property name="tooltip-text" translatable="yes">Aggressive profile download speed</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">1</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin" label="Download Speed (KB/s):" row="1"
+                                     id="aggressive_download_speed_spin" lower="500" upper="20000" step="250"
+                                     page="1000" value="2048" tooltip="Aggressive profile download speed"/>
 
                             <!-- Upload variance -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Upload Variance:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">2</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="aggressive_upload_variance_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0.0</property>
-                                            <property name="upper">1.0</property>
-                                            <property name="step-increment">0.1</property>
-                                            <property name="page-increment">0.1</property>
-                                            <property name="value">0.5</property>
-
-                                        </object>
-                                    </property>
-                                    <property name="digits">1</property>
-                                    <property name="tooltip-text" translatable="yes">Upload speed variance for aggressive profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">2</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin-decimal" label="Upload Variance:" row="2"
+                                     id="aggressive_upload_variance_spin" lower="0.0" upper="1.0" step="0.1"
+                                     page="0.1" value="0.5" digits="1"
+                                     tooltip="Upload speed variance for aggressive profile"/>
 
                             <!-- Download variance -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Download Variance:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">3</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="aggressive_download_variance_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0.0</property>
-                                            <property name="upper">1.0</property>
-                                            <property name="step-increment">0.05</property>
-                                            <property name="page-increment">0.1</property>
-                                            <property name="value">0.4</property>
-
-                                        </object>
-                                    </property>
-                                    <property name="digits">1</property>
-                                    <property name="tooltip-text" translatable="yes">Download speed variance for aggressive profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">3</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin-decimal" label="Download Variance:" row="3"
+                                     id="aggressive_download_variance_spin" lower="0.0" upper="1.0" step="0.05"
+                                     page="0.1" value="0.4" digits="1"
+                                     tooltip="Download speed variance for aggressive profile"/>
 
                             <!-- Max connections -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Max Connections:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">4</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="aggressive_max_connections_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">100</property>
-                                            <property name="upper">2000</property>
-                                            <property name="step-increment">50</property>
-                                            <property name="page-increment">250</property>
-                                            <property name="value">500</property>
-                                        </object>
-                                    </property>
-                                    <property name="tooltip-text" translatable="yes">Maximum connections for aggressive profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">4</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin" label="Max Connections:" row="4"
+                                     id="aggressive_max_connections_spin" lower="100" upper="2000" step="50"
+                                     page="250" value="500" tooltip="Maximum connections for aggressive profile"/>
 
                             <!-- Burst probability -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Burst Probability:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">5</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="aggressive_burst_probability_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0.0</property>
-                                            <property name="upper">1.0</property>
-                                            <property name="step-increment">0.01</property>
-                                            <property name="page-increment">0.05</property>
-                                            <property name="value">0.3</property>
-
-                                        </object>
-                                    </property>
-                                    <property name="digits">2</property>
-                                    <property name="tooltip-text" translatable="yes">Probability of traffic bursts for aggressive profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">5</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin-decimal" label="Burst Probability:" row="5"
+                                     id="aggressive_burst_probability_spin" lower="0.0" upper="1.0" step="0.01"
+                                     page="0.05" value="0.3" digits="2"
+                                     tooltip="Probability of traffic bursts for aggressive profile"/>
 
                             <!-- Idle probability -->
-                            <child>
-                                <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Idle Probability:</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <layout>
-                                        <property name="column">0</property>
-                                        <property name="row">6</property>
-                                    </layout>
-                                </object>
-                            </child>
-                            <child>
-                                <object class="GtkSpinButton" id="aggressive_idle_probability_spin">
-                                    <property name="adjustment">
-                                        <object class="GtkAdjustment">
-                                            <property name="lower">0.0</property>
-                                            <property name="upper">1.0</property>
-                                            <property name="step-increment">0.01</property>
-                                            <property name="page-increment">0.05</property>
-                                            <property name="value">0.05</property>
-
-                                        </object>
-                                    </property>
-                                    <property name="digits">2</property>
-                                    <property name="tooltip-text" translatable="yes">Probability of idle periods for aggressive profile</property>
-                                    <property name="numeric">True</property>
-                                    <property name="editable">True</property>
-                                    <layout>
-                                        <property name="column">1</property>
-                                        <property name="row">6</property>
-                                    </layout>
-                                </object>
-                            </child>
+                            <dfs-use template="grid-spin-decimal" label="Idle Probability:" row="6"
+                                     id="aggressive_idle_probability_spin" lower="0.0" upper="1.0" step="0.01"
+                                     page="0.05" value="0.05" digits="2"
+                                     tooltip="Probability of idle periods for aggressive profile"/>
                         </object>
                     </child>
                 </object>
@@ -1171,7 +556,6 @@
                                                     <property name="step-increment">0.1</property>
                                                     <property name="page-increment">0.1</property>
                                                     <property name="value">0.5</property>
-
                                                 </object>
                                             </property>
                                             <property name="digits">1</property>
