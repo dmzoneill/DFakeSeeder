@@ -108,7 +108,7 @@ def test_get_state_count_without_model_is_zero() -> None:
 
 
 def test_extract_domain_returns_hostname_or_raw() -> None:
-    """A URL yields its hostname; an unparseable value falls back to the raw input."""
+    """A URL yields its hostname; an unparsable value falls back to the raw input."""
     with _sidebar_env():
         mod = importlib.import_module(_MODULE)
         sidebar = _make_sidebar(mod, None)
