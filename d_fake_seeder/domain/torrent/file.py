@@ -88,7 +88,7 @@ class File:
         if b"creation date" in self.torrent_header:
             try:
                 creation_date = self.torrent_header[b"creation date"]
-                creation_date = datetime.fromtimestamp(creation_date)
+                creation_date = datetime.fromtimestamp(creation_date)  # noqa: DTZ006 - local time intended
                 result += f"Date: {creation_date.strftime('%Y/%m/%d %H:%M:%S')}\n"
             except (TypeError, ValueError, OSError):
                 # Invalid creation date, skip it
@@ -135,7 +135,7 @@ class File:
         if b"creation date" in self.torrent_header:
             try:
                 creation_date = self.torrent_header[b"creation date"]
-                creation_date = datetime.fromtimestamp(creation_date)
+                creation_date = datetime.fromtimestamp(creation_date)  # noqa: DTZ006 - local time intended
                 return creation_date.strftime("%Y/%m/%d %H:%M:%S")
             except (TypeError, ValueError, OSError):
                 # Invalid creation date (wrong type, out of range, etc.)

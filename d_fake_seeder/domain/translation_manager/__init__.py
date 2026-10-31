@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Translation Manager Package
 
@@ -45,17 +44,17 @@ from .factory import (
 
 # Export the main factory function and utilities
 __all__ = [
-    # Main factory function
-    "create_translation_manager",
+    # Base class (for type hints)
+    "TranslationManagerBase",
     # Convenience functions
     "create_gtk3_translation_manager",
     "create_gtk4_translation_manager",
+    # Main factory function
+    "create_translation_manager",
     # Utility functions
     "detect_gtk_version",
     "get_available_gtk_versions",
     "validate_gtk_environment",
-    # Base class (for type hints)
-    "TranslationManagerBase",
 ]
 
 # Backwards compatibility aliases (PascalCase for class-like factory functions)

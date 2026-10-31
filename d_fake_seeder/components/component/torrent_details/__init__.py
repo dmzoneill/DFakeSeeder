@@ -25,19 +25,19 @@ from .tab_mixins import DataUpdateMixin, UIUtilityMixin
 from .trackers_tab import TrackersTab
 
 __all__ = [
-    "TorrentDetailsNotebook",
-    "StatusTab",
-    "FilesTab",
-    "DetailsTab",
-    "OptionsTab",
-    "PeersTab",
-    "TrackersTab",
-    "LogTab",
     "BaseTorrentTab",
     "DataUpdateMixin",
-    "UIUtilityMixin",
+    "DetailsTab",
+    "FilesTab",
     "IncomingConnectionsTab",
+    "LogTab",
+    "OptionsTab",
     "OutgoingConnectionsTab",
+    "PeersTab",
+    "StatusTab",
+    "TorrentDetailsNotebook",
+    "TrackersTab",
+    "UIUtilityMixin",
 ]
 
 # fmt: on

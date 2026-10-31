@@ -13,11 +13,11 @@ from .metadata import MetadataExtension
 from .pex import PeerExchangeExtension
 
 __all__ = [
+    "DontHaveExtension",
     "ExtensionManager",
+    "FastExtension",
     "MetadataExtension",
     "PeerExchangeExtension",
-    "DontHaveExtension",
-    "FastExtension",
 ]
 
 # fmt: on

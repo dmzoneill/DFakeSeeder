@@ -16,10 +16,10 @@ from .traffic_patterns import TrafficPatternSimulator
 
 __all__ = [
     "ClientBehaviorEngine",
-    "TrafficPatternSimulator",
-    "SwarmIntelligence",
-    "SwarmHealthMetrics",
     "PieceSelectionStrategy",
+    "SwarmHealthMetrics",
+    "SwarmIntelligence",
+    "TrafficPatternSimulator",
 ]
 
 # fmt: on

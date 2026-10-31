@@ -11,6 +11,6 @@ from .peer_discovery import PeerDiscovery
 from .routing_table import RoutingTable
 from .seeder import DHTSeeder
 
-__all__ = ["DHTNode", "RoutingTable", "PeerDiscovery", "DHTSeeder"]
+__all__ = ["DHTNode", "DHTSeeder", "PeerDiscovery", "RoutingTable"]
 
 # fmt: on
