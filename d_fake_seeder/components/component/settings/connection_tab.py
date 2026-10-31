@@ -5,24 +5,18 @@ Handles network connection settings like listening port, connection limits,
 proxy configuration, and UPnP settings.
 """
 
-# isort: skip_file
+from typing import Any, ClassVar
 
-# fmt: off
-from typing import Any, Dict
+from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
+from d_fake_seeder.lib.util.constants import NetworkConstants
 
-import gi
-
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk  # noqa: E402
-
-from d_fake_seeder.lib.util.constants import NetworkConstants  # noqa: E402
-
-from .base_tab import BaseSettingsTab  # noqa
-from .settings_mixins import NotificationMixin  # noqa: E402
-from .settings_mixins import TranslationMixin  # noqa: E402
-from .settings_mixins import UtilityMixin, ValidationMixin  # noqa: E402
-
-# fmt: on
+from .base_tab import BaseSettingsTab
+from .settings_mixins import (
+    NotificationMixin,
+    TranslationMixin,
+    UtilityMixin,
+    ValidationMixin,
+)
 
 
 class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
@@ -39,7 +33,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     # Auto-connect simple widgets with WIDGET_MAPPINGS
     # Note: Most connection settings are handled manually in _load_settings/_collect_settings
     # for better control over nested settings structure
-    WIDGET_MAPPINGS: list = []
+    WIDGET_MAPPINGS: ClassVar[list] = []
 
     @property
     def tab_name(self) -> str:
@@ -182,10 +176,10 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
             self.logger.info("Connection tab settings loaded")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error loading Connection tab settings: {e}")
 
-    def _load_proxy_settings(self, proxy_settings: Dict[str, Any]) -> None:
+    def _load_proxy_settings(self, proxy_settings: dict[str, Any]) -> None:
         """Load proxy settings into widgets."""
         try:
             # Proxy type
@@ -222,7 +216,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             auth_enabled = proxy_settings.get("auth_enabled", False)
             self._update_proxy_auth_fields(auth_enabled)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error loading proxy settings: {e}")
 
     def _setup_dependencies(self) -> None:
@@ -257,16 +251,16 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             self.update_widget_sensitivity("proxy_username", auth_enabled)
             self.update_widget_sensitivity("proxy_password", auth_enabled)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error updating proxy dependencies: {e}")
 
-    def _collect_settings(self) -> Dict[str, Any]:
+    def _collect_settings(self) -> dict[str, Any]:
         """Collect current settings from Connection tab widgets.
 
         Returns:
             Dictionary of setting_key -> value pairs for all widgets
         """
-        settings: Dict[str, Any] = {}
+        settings: dict[str, Any] = {}
 
         # Collect listening port
         listening_port = self.get_widget("listening_port")
@@ -299,9 +293,9 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         self.logger.trace(f"Collected {len(settings)} settings from Connection tab")
         return settings
 
-    def _collect_proxy_settings(self) -> Dict[str, Any]:
+    def _collect_proxy_settings(self) -> dict[str, Any]:
         """Collect proxy settings from widgets."""
-        proxy_settings: Dict[str, Any] = {}
+        proxy_settings: dict[str, Any] = {}
 
         try:
             proxy_type = self.get_widget("proxy_type")
@@ -329,12 +323,12 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             if proxy_password:
                 proxy_settings["password"] = proxy_password.get_text()
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error collecting proxy settings: {e}")
 
         return proxy_settings
 
-    def _validate_tab_settings(self) -> Dict[str, str]:
+    def _validate_tab_settings(self) -> dict[str, str]:
         """Validate Connection tab settings."""
         errors = {}
 
@@ -353,7 +347,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 if proxy_port_errors:
                     errors["proxy_port"] = proxy_port_errors.get("port", "Invalid proxy port")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error validating Connection tab settings: {e}")
             errors["general"] = str(e)
 
@@ -374,7 +368,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 # NOTE: Setting will be saved in batch via _collect_settings()
                 self.logger.trace(f"Listening port changed to: {port}")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error changing listening port: {e}")
 
     def on_random_port_clicked(self, button: Gtk.Button) -> None:
@@ -397,7 +391,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                     "success",
                 )
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error generating random port: {e}")
 
     def on_upnp_changed(self, switch: Gtk.Switch, state: bool) -> None:
@@ -409,7 +403,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             status = "enabled" if state else "disabled"
             self.logger.trace(f"UPnP {status}")
             self.show_notification(self._("UPnP {status}").format(status=self._(status)), "success")
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error changing UPnP setting: {e}")
 
     def on_connection_limit_changed(self, spin_button: Gtk.SpinButton) -> None:
@@ -429,8 +423,8 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             elif widget_name == "settings_max_upload_slots":
                 self.logger.trace(f"Max upload slots changed to: {value}")
 
-        except Exception as e:
-            self.logger.error(f"Error handling connection limit change: {e}", exc_info=True)
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error):
+            self.logger.exception("Error handling connection limit change")
 
     def on_proxy_type_changed(self, dropdown: Gtk.DropDown, param: Any) -> None:
         """Handle proxy type change."""
@@ -445,7 +439,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # NOTE: Setting will be saved in batch via _collect_settings()
             self.logger.trace(f"Proxy type changed to: {proxy_type}")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error changing proxy type: {e}")
 
     def on_proxy_auth_changed(self, switch: Gtk.Switch, state: bool) -> None:
@@ -457,7 +451,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             # Update proxy username/password field sensitivity
             self._update_proxy_auth_fields(state)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error changing proxy authentication: {e}")
 
     def _update_proxy_auth_fields(self, enabled: bool) -> None:
@@ -473,7 +467,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
 
             self.logger.trace(f"Proxy auth fields sensitivity set to: {enabled}")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error updating proxy auth fields: {e}")
 
     def on_proxy_port_changed(self, spin_button: Gtk.SpinButton) -> None:
@@ -490,7 +484,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 # NOTE: Setting will be saved in batch via _collect_settings()
                 self.logger.trace(f"Proxy port changed to: {port}")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error changing proxy port: {e}")
 
     def _reset_tab_defaults(self) -> None:
@@ -529,7 +523,7 @@ class ConnectionTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
             self.update_dependencies()
             self.show_notification(self._("Connection settings reset to defaults"), "success")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error resetting Connection tab to defaults: {e}")
 
     def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
