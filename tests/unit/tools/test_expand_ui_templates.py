@@ -104,29 +104,18 @@ def test_expand_errors() -> None:
         expander.expand('<dfs-use template="nope"/>', {})
     with pytest.raises(expander.TemplateError):
         expander.expand('<dfs-use template="t"/>', {"t": "<a>{missing}</a>"})
+    with pytest.raises(expander.TemplateError):
+        expander.expand('<dfs-use template="t"></dfs-use>', {"t": "<a/>"})
 
 
-def test_main_rewrites_file_in_place(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    """The CLI expands the given file with the shipped templates."""
-    templates = expander.load_templates()
-    monkeypatch.setattr(expander, "load_templates", lambda: templates)
-    monkeypatch.setattr(expander, "GENERATED_DIR", tmp_path)
+def test_main_rewrites_file_in_place(tmp_path: Path) -> None:
+    """The CLI expands the generated file with the shipped templates."""
     target = tmp_path / "ui.xml"
     target.write_text(
         '<interface>\n    <dfs-use template="spin-row" id="s" label="L" lower="0" upper="9" value="1"'
         ' step="1" page="5" tooltip="T"/>\n</interface>\n',
         encoding="utf-8",
     )
-    assert expander.main([str(target)]) == 0
+    assert expander.main(target) == 0
     assert '<object class="GtkSpinButton" id="s">' in target.read_text(encoding="utf-8")
-    assert expander.main([]) == 2
-
-
-def test_main_refuses_files_outside_generated_dir(tmp_path: Path) -> None:
-    """Only generated UI files are rewritten."""
-    outside = tmp_path / "ui.xml"
-    outside.write_text("<interface/>\n", encoding="utf-8")
-    with pytest.raises(expander.TemplateError):
-        expander.main([str(outside)])
-    with pytest.raises(expander.TemplateError):
-        expander.main([str(UI_DIR / "settings" / "speed.xml")])
+    assert expander.SETTINGS_GENERATED == GENERATED

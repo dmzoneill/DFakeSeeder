@@ -230,7 +230,7 @@ ui-build: icons
 	@xmllint --xinclude d_fake_seeder/components/ui/settings.xml > d_fake_seeder/components/ui/generated/settings_generated.xml
 	@sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/settings_generated.xml
 	@echo "   → Expanding settings row templates..."
-	@python3 tools/expand_ui_templates.py d_fake_seeder/components/ui/generated/settings_generated.xml
+	@python3 tools/expand_ui_templates.py
 	@echo "   → Validating settings UI structure..."
 	@python3 tools/validate_settings_xml.py > /dev/null 2>&1 || python3 tools/validate_settings_xml.py
 	@echo "✅ UI built successfully!"
@@ -255,7 +255,7 @@ ui-build-fast:
 		echo "Building settings UI..."; \
 		xmllint --xinclude d_fake_seeder/components/ui/settings.xml > d_fake_seeder/components/ui/generated/settings_generated.xml; \
 		sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/settings_generated.xml; \
-		python3 tools/expand_ui_templates.py d_fake_seeder/components/ui/generated/settings_generated.xml; \
+		python3 tools/expand_ui_templates.py; \
 		echo "✅ UI built successfully (fast mode)!"; \
 	fi
 

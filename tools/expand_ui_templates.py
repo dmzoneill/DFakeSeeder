@@ -13,7 +13,7 @@ attribute values, re-indented to the macro's column). Templates may use further 
 Everything outside the macros is left byte-for-byte unchanged, so widget IDs, properties
 and the ``translatable="yes"`` markup the i18n extraction scans for are exactly as written.
 
-Usage: expand_ui_templates.py FILE [FILE ...]   (files are rewritten in place)
+Usage: expand_ui_templates.py   (rewrites generated/settings_generated.xml in place)
 """
 
 import re
@@ -23,10 +23,10 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = REPO_ROOT / "d_fake_seeder" / "components" / "ui" / "templates"
-GENERATED_DIR = REPO_ROOT / "d_fake_seeder" / "components" / "ui" / "generated"
+SETTINGS_GENERATED = REPO_ROOT / "d_fake_seeder" / "components" / "ui" / "generated" / "settings_generated.xml"
 TEMPLATE_START_RE = re.compile(r'<template name="([\w-]+)">')
 TEMPLATE_END = "</template>"
-MACRO_RE = re.compile(r"<dfs-use\b[^>]*/>")
+MACRO_RE = re.compile(r"<dfs-use\b[^>]*>")
 PLACEHOLDER_RE = re.compile(r"\{(\w+)\}")
 ATTRIBUTE_RE = re.compile(r'([\w-]+)="([^"]*)"')
 XML_ESCAPES = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}
@@ -61,6 +61,8 @@ def _xml_escape(value: str) -> str:
 
 def _render(macro: str, indent: str, templates: dict[str, str]) -> str:
     params = {key: unescape(value) for key, value in ATTRIBUTE_RE.findall(macro)}
+    if not macro.endswith("/>"):
+        raise TemplateError(f"Macro must be an empty element: {macro}")
     name = params.pop("template", "")
     if name not in templates:
         raise TemplateError(f"Unknown template {name!r} in {macro}")
@@ -93,20 +95,11 @@ def _line_indent(text: str, position: int) -> str:
     return prefix if not prefix.strip() else ""
 
 
-def main(argv: list[str]) -> int:
-    """Expand macros in place in each generated UI file given on the command line."""
-    if not argv:
-        print(__doc__.strip().splitlines()[-1], file=sys.stderr)
-        return 2
-    templates = load_templates()
-    generated = {path.resolve(): path for path in GENERATED_DIR.glob("*.xml")}
-    for name in argv:
-        path = generated.get(Path(name).resolve())
-        if path is None:
-            raise TemplateError(f"Refusing to rewrite {name}: not a generated UI file in {GENERATED_DIR}")
-        path.write_text(expand(path.read_text(encoding="utf-8"), templates), encoding="utf-8")
+def main(path: Path = SETTINGS_GENERATED) -> int:
+    """Expand the macros in the generated settings UI, in place."""
+    path.write_text(expand(path.read_text(encoding="utf-8"), load_templates()), encoding="utf-8")
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(main())
