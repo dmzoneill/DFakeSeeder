@@ -4,24 +4,15 @@ Base class for settings tab components.
 Provides common functionality and interface for all settings tabs.
 """
 
-# isort: skip_file
-
-# fmt: off
-from abc import abstractmethod
-from typing import Any, Dict, List, Optional
 import os
+from abc import abstractmethod
+from typing import Any, ClassVar
 
-import gi
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.gi_gtk4 import GObject, Gtk
+from d_fake_seeder.lib.logger import logger
 
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, GObject  # noqa
-
-from d_fake_seeder.domain.app_settings import AppSettings  # noqa
-from d_fake_seeder.lib.logger import logger  # noqa
-
-from ..base_component import Component  # noqa
-
-# fmt: on
+from ..base_component import Component
 
 
 class BaseSettingsTab(Component):
@@ -40,7 +31,7 @@ class BaseSettingsTab(Component):
     """
 
     # Subclasses can override this with declarative widget mappings
-    WIDGET_MAPPINGS: List[Dict[str, Any]] = []
+    WIDGET_MAPPINGS: ClassVar[list[dict[str, Any]]] = []
 
     # Widgets that don't need handlers (containers, labels, etc.)
     IGNORE_WIDGET_TYPES = (
@@ -92,7 +83,7 @@ class BaseSettingsTab(Component):
         self.logger = logger
 
         # Store UI widgets specific to this tab
-        self._widgets: Dict[str, Any] = {}
+        self._widgets: dict[str, Any] = {}
 
         # Track which widgets have been connected (for validation)
         self._connected_widgets: set = set()
@@ -105,6 +96,34 @@ class BaseSettingsTab(Component):
 
         # Only do minimal initialization - defer full setup until tab is first viewed
         logger.trace("Tab created (deferred initialization)", "BaseTab")
+
+    def handle_model_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
+        """Settings tabs are widget-driven; model-change events are only traced."""
+        self.logger.trace(
+            "Settings tab model changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def handle_attribute_changed(self, source: Any, key: Any, value: Any) -> None:
+        """Settings tabs are widget-driven; attribute-change events are only traced."""
+        self.logger.trace(
+            "Settings tab attribute changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def handle_settings_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
+        """Settings tabs are widget-driven; settings-change events are only traced."""
+        self.logger.trace(
+            "Settings tab settings changed",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
+        """Settings tabs don't render per-torrent attributes; updates are only traced."""
+        self.logger.trace(
+            "Settings tab update_view",
+            extra={"class_name": self.__class__.__name__},
+        )
 
     def _(self, text: str) -> str:
         """Helper for translating strings using the model's translation function."""
@@ -160,7 +179,7 @@ class BaseSettingsTab(Component):
                 self.translate_all_dropdowns()
                 logger.trace("Completed dropdown translation for", "BaseTab")
             except (AttributeError, TypeError, ValueError) as e:
-                logger.error(f"Error translating dropdowns: {e}", exc_info=True)
+                logger.exception(f"Error translating dropdowns: {e}")
 
         # VALIDATE handler coverage in debug mode
         if self._is_debug_mode():
@@ -176,17 +195,14 @@ class BaseSettingsTab(Component):
     @abstractmethod
     def tab_name(self) -> str:
         """Return the name of this tab for identification."""
-        pass
 
     @abstractmethod
     def _init_widgets(self) -> None:
         """Initialize and cache tab-specific widgets."""
-        pass
 
     @abstractmethod
     def _connect_signals(self) -> None:
         """Connect all signal handlers for this tab."""
-        pass
 
     def _disconnect_signals(self) -> None:
         """
@@ -198,7 +214,6 @@ class BaseSettingsTab(Component):
         Override this only if you need custom disconnection logic.
         """
         # Default implementation - subclasses should override if they need custom disconnection
-        pass
 
     def cleanup(self) -> None:
         """
@@ -238,12 +253,10 @@ class BaseSettingsTab(Component):
     @abstractmethod
     def _load_settings(self) -> None:
         """Load current settings into UI widgets."""
-        pass
 
     @abstractmethod
     def _setup_dependencies(self) -> None:
         """Set up dependencies between UI elements."""
-        pass
 
     def get_widget(self, widget_id: str) -> Gtk.Widget:
         """
@@ -260,7 +273,7 @@ class BaseSettingsTab(Component):
 
         return self._widgets[widget_id]
 
-    def save_settings(self) -> Dict[str, Any]:
+    def save_settings(self) -> dict[str, Any]:
         """
         Save current UI state to settings.
 
@@ -285,24 +298,20 @@ class BaseSettingsTab(Component):
             self.logger.info(f"{self.tab_name} tab settings saved: {len(changed_settings)} items")
             return changed_settings
 
-        except (KeyError, AttributeError, TypeError, ValueError) as e:
-            self.logger.error(
-                f"Error saving {self.tab_name} tab settings: {e}",
-                exc_info=True,
-            )
+        except (KeyError, AttributeError, TypeError, ValueError):
+            self.logger.exception(f"Error saving {self.tab_name} tab settings")
             return {}
 
     @abstractmethod
-    def _collect_settings(self) -> Dict[str, Any]:
+    def _collect_settings(self) -> dict[str, Any]:
         """
         Collect current settings from UI widgets.
 
         Returns:
             Dictionary of setting_key -> value pairs
         """
-        pass
 
-    def _collect_mapped_settings(self) -> Dict[str, Any]:
+    def _collect_mapped_settings(self) -> dict[str, Any]:
         """
         Helper method to collect settings from all WIDGET_MAPPINGS.
 
@@ -339,7 +348,7 @@ class BaseSettingsTab(Component):
 
         return settings
 
-    def validate_settings(self) -> Dict[str, str]:
+    def validate_settings(self) -> dict[str, str]:
         """
         Validate current settings.
 
@@ -349,13 +358,10 @@ class BaseSettingsTab(Component):
         try:
             return self._validate_tab_settings()
         except (KeyError, TypeError, ValueError) as e:
-            self.logger.error(
-                f"Error validating {self.tab_name} tab settings: {e}",
-                exc_info=True,
-            )
+            self.logger.exception(f"Error validating {self.tab_name} tab settings")
             return {"general": f"Validation error: {e}"}
 
-    def _validate_tab_settings(self) -> Dict[str, str]:
+    def _validate_tab_settings(self) -> dict[str, str]:
         """
         Tab-specific validation logic.
 
@@ -369,30 +375,22 @@ class BaseSettingsTab(Component):
         """Update UI element dependencies."""
         try:
             self._update_tab_dependencies()
-        except (AttributeError, TypeError, ValueError) as e:
-            self.logger.error(
-                f"Error updating {self.tab_name} tab dependencies: {e}",
-                exc_info=True,
-            )
+        except (AttributeError, TypeError, ValueError):
+            self.logger.exception(f"Error updating {self.tab_name} tab dependencies")
 
     def _update_tab_dependencies(self) -> None:
         """Tab-specific dependency update logic. Override in subclasses."""
-        pass
 
     def reset_to_defaults(self) -> None:
         """Reset tab settings to default values."""
         try:
             self._reset_tab_defaults()
             self.logger.trace(f"{self.tab_name} tab reset to defaults")
-        except (AttributeError, TypeError, ValueError) as e:
-            self.logger.error(
-                f"Error resetting {self.tab_name} tab to defaults: {e}",
-                exc_info=True,
-            )
+        except (AttributeError, TypeError, ValueError):
+            self.logger.exception(f"Error resetting {self.tab_name} tab to defaults")
 
     def _reset_tab_defaults(self) -> None:
         """Tab-specific reset logic. Override in subclasses."""
-        pass
 
     def on_setting_changed(self, widget: Gtk.Widget, *args: Any) -> None:
         """
@@ -410,11 +408,8 @@ class BaseSettingsTab(Component):
             widget_name = getattr(widget, "get_name", lambda: "unknown")()
             self.logger.trace(f"{self.tab_name} tab setting changed: {widget_name}")
 
-        except (AttributeError, TypeError, ValueError) as e:
-            self.logger.error(
-                f"Error handling setting change in {self.tab_name} tab: {e}",
-                exc_info=True,
-            )
+        except (AttributeError, TypeError, ValueError):
+            self.logger.exception(f"Error handling setting change in {self.tab_name} tab")
 
     # ========== HYBRID APPROACH: Auto-Connect Methods ==========
 
@@ -433,13 +428,11 @@ class BaseSettingsTab(Component):
             try:
                 self._connect_widget_mapping(mapping)
             except (KeyError, AttributeError, TypeError) as e:
-                logger.error(
-                    f"{self.tab_name}: Failed to connect widget {mapping.get('id', 'unknown')}: {e}",
-                    "BaseTab",
-                    exc_info=True,
+                logger.exception(
+                    f"{self.tab_name}: Failed to connect widget {mapping.get('id', 'unknown')}: {e}", "BaseTab"
                 )
 
-    def _connect_widget_mapping(self, mapping: Dict[str, Any]) -> None:
+    def _connect_widget_mapping(self, mapping: dict[str, Any]) -> None:
         """Connect a single widget from mapping config."""
         widget_id = mapping["id"]
         widget = self.builder.get_object(widget_id)
@@ -500,25 +493,23 @@ class BaseSettingsTab(Component):
 
     def _auto_detect_signal(self, widget: Gtk.Widget) -> str:
         """Auto-detect appropriate signal for widget type."""
-        if isinstance(widget, Gtk.Switch):
-            return "state-set"
-        elif isinstance(widget, Gtk.SpinButton):
-            return "value-changed"
-        elif isinstance(widget, Gtk.Entry):
-            return "changed"
-        elif isinstance(widget, Gtk.DropDown):
-            return "notify::selected"
-        elif isinstance(widget, (Gtk.CheckButton, Gtk.ToggleButton)):
-            return "toggled"
-        elif isinstance(widget, Gtk.Button):
-            return "clicked"
-        elif isinstance(widget, Gtk.Scale):
-            return "value-changed"
-        elif isinstance(widget, Gtk.ComboBox):
-            return "changed"
+        # Ordered so more specific types (e.g. ToggleButton) are matched before Button.
+        signal_by_widget_type = (
+            (Gtk.Switch, "state-set"),
+            (Gtk.SpinButton, "value-changed"),
+            (Gtk.Entry, "changed"),
+            (Gtk.DropDown, "notify::selected"),
+            ((Gtk.CheckButton, Gtk.ToggleButton), "toggled"),
+            (Gtk.Button, "clicked"),
+            (Gtk.Scale, "value-changed"),
+            (Gtk.ComboBox, "changed"),
+        )
+        for widget_types, signal in signal_by_widget_type:
+            if isinstance(widget, widget_types):
+                return signal
         return "changed"  # Default fallback
 
-    def _extract_widget_value(self, widget: Gtk.Widget, value_type: Optional[type] = None) -> Any:
+    def _extract_widget_value(self, widget: Gtk.Widget, value_type: type | None = None) -> Any:
         """Extract value from widget."""
         value = None
 
@@ -541,13 +532,13 @@ class BaseSettingsTab(Component):
 
         # Apply type conversion
         if value is not None and value_type:
-            if value_type == int:
+            if value_type is int:
                 return int(value)
-            elif value_type == float:
+            if value_type is float:
                 return float(value)
-            elif value_type == bool:
+            if value_type is bool:
                 return bool(value)
-            elif value_type == str:
+            if value_type is str:
                 return str(value)
 
         return value
@@ -585,7 +576,7 @@ class BaseSettingsTab(Component):
                 "BaseTab",
             )
 
-    def validate_handler_coverage(self) -> Dict[str, Any]:
+    def validate_handler_coverage(self) -> dict[str, Any]:
         """Validate that all interactive widgets have handlers."""
         report = {
             "total_widgets": 0,
@@ -635,7 +626,8 @@ class BaseSettingsTab(Component):
 
         # Calculate coverage
         if report["interactive_widgets"] > 0:  # type: ignore[operator]
-            report["coverage_percent"] = (report["connected_widgets"] / report["interactive_widgets"]) * 100  # type: ignore[operator]  # noqa: E501
+            covered = report["connected_widgets"] / report["interactive_widgets"]  # type: ignore[operator]
+            report["coverage_percent"] = covered * 100
 
         return report
 
@@ -654,7 +646,7 @@ class BaseSettingsTab(Component):
             signal_name = self._auto_detect_signal(widget)
             # Strip signal detail (e.g., "notify::selected" -> "notify") for lookup
             # signal_lookup doesn't understand the "::detail" syntax
-            base_signal = signal_name.split("::")[0]
+            base_signal = signal_name.split("::", maxsplit=1)[0]
             signal_id = GObject.signal_lookup(base_signal, type(widget))
             if signal_id > 0:
                 # Very basic check - if signal exists, assume it might be connected
