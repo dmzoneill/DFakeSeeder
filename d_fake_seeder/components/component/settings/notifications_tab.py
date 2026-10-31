@@ -9,7 +9,12 @@ from typing import Any, ClassVar
 from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
 
 from .base_tab import BaseSettingsTab
-from .settings_mixins import NotificationMixin, TranslationMixin, UtilityMixin, ValidationMixin
+from .settings_mixins import (
+    NotificationMixin,
+    TranslationMixin,
+    UtilityMixin,
+    ValidationMixin,
+)
 
 # fmt: on
 
