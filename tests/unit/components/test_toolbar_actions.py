@@ -7,48 +7,16 @@ demoted the signal handlers to protected methods. The GTK stack is mocked so the
 component imports headless; handlers run on an instance built without __init__.
 """
 
-import contextlib
 import importlib
-import sys
-from collections.abc import Iterator
 from types import SimpleNamespace
 from typing import Any
 from unittest.mock import MagicMock
 
 _MODULE = "d_fake_seeder.components.component.toolbar"
-_GI_MODULES = (
-    "gi",
-    "gi.repository",
-    "gi.repository.Gtk",
-    "gi.repository.Gdk",
-    "gi.repository.Gio",
-    "gi.repository.GLib",
-    "gi.repository.GObject",
-)
 _SPEED_DOUBLE = "_on_toolbar_speed_double_clicked"
 _SEARCH_CHANGED = "_on_search_entry_changed"
 _WIDGETS = "_widgets"
 _STATE = "_state"
-
-
-@contextlib.contextmanager
-def _toolbar_env() -> Iterator[None]:
-    """Mock the GTK layer and AppSettings so the toolbar module imports headless."""
-    extra = ["d_fake_seeder.lib.gi_gtk4", "d_fake_seeder.domain.app_settings", _MODULE]
-    saved = {name: sys.modules.get(name) for name in (*_GI_MODULES, *extra)}
-    for name in _GI_MODULES:
-        sys.modules[name] = MagicMock()
-    sys.modules["d_fake_seeder.lib.gi_gtk4"] = MagicMock()
-    sys.modules["d_fake_seeder.domain.app_settings"] = MagicMock()
-    sys.modules.pop(_MODULE, None)
-    try:
-        yield
-    finally:
-        for name, module in saved.items():
-            if module is not None:
-                sys.modules[name] = module
-            else:
-                sys.modules.pop(name, None)
 
 
 def _make_toolbar(mod: Any, model: Any = None, entry: Any = None) -> Any:
@@ -70,9 +38,9 @@ def _make_toolbar(mod: Any, model: Any = None, entry: Any = None) -> Any:
     return toolbar
 
 
-def test_get_selected_and_selection_change() -> None:
+def test_get_selected_and_selection_change(component_module: Any) -> None:
     """model_selection_changed stores the torrent that get_selected_torrent returns."""
-    with _toolbar_env():
+    with component_module(_MODULE):
         mod = importlib.import_module(_MODULE)
         toolbar = _make_toolbar(mod)
         assert toolbar.get_selected_torrent() is None
@@ -81,9 +49,9 @@ def test_get_selected_and_selection_change() -> None:
         assert toolbar.get_selected_torrent() is sentinel
 
 
-def test_toggle_search_entry_toggles_visibility() -> None:
+def test_toggle_search_entry_toggles_visibility(component_module: Any) -> None:
     """toggle_search_entry flips the flag and drives the entry's visibility."""
-    with _toolbar_env():
+    with component_module(_MODULE):
         mod = importlib.import_module(_MODULE)
         entry = MagicMock()
         toolbar = _make_toolbar(mod, model=MagicMock(), entry=entry)
@@ -93,9 +61,9 @@ def test_toggle_search_entry_toggles_visibility() -> None:
         entry.grab_focus.assert_called_once_with()
 
 
-def test_speed_double_scales_uploads_and_emits() -> None:
+def test_speed_double_scales_uploads_and_emits(component_module: Any) -> None:
     """The speed-double handler doubles each torrent's upload speed and emits once."""
-    with _toolbar_env():
+    with component_module(_MODULE):
         mod = importlib.import_module(_MODULE)
         torrents = [SimpleNamespace(upload_speed=10), SimpleNamespace(upload_speed=5)]
         model = MagicMock()
@@ -106,9 +74,9 @@ def test_speed_double_scales_uploads_and_emits() -> None:
         model.emit.assert_called_once_with("data-changed", model, None)
 
 
-def test_search_entry_changed_sets_filter() -> None:
+def test_search_entry_changed_sets_filter(component_module: Any) -> None:
     """Typing in the search entry forwards the trimmed text to the model filter."""
-    with _toolbar_env():
+    with component_module(_MODULE):
         mod = importlib.import_module(_MODULE)
         model = MagicMock()
         toolbar = _make_toolbar(mod, model=model)

@@ -12,23 +12,10 @@ Lightweight stand-ins mimic the ElementTree ``item`` interface so the tests do
 not parse XML (avoiding a real XML parser on test input entirely).
 """
 
-import contextlib
 import importlib
-import sys
-from collections.abc import Iterator
 from typing import Any
-from unittest.mock import MagicMock
 
 _MODULE = "d_fake_seeder.components.component.jackett_tab"
-_GI_MODULES = (
-    "gi",
-    "gi.repository",
-    "gi.repository.Gtk",
-    "gi.repository.Gdk",
-    "gi.repository.Gio",
-    "gi.repository.GLib",
-    "gi.repository.GObject",
-)
 
 _CLEANUP_DONE = "_cleanup_done"
 _PARSE_ITEM = "_parse_item"
@@ -96,35 +83,15 @@ def _full_item() -> _FakeElement:
     )
 
 
-@contextlib.contextmanager
-def _jackett_env() -> Iterator[None]:
-    """Mock the GTK layer and AppSettings so the jackett module imports headless."""
-    extra = ["d_fake_seeder.lib.gi_gtk4", "d_fake_seeder.domain.app_settings", _MODULE]
-    saved = {name: sys.modules.get(name) for name in (*_GI_MODULES, *extra)}
-    for name in _GI_MODULES:
-        sys.modules[name] = MagicMock()
-    sys.modules["d_fake_seeder.lib.gi_gtk4"] = MagicMock()
-    sys.modules["d_fake_seeder.domain.app_settings"] = MagicMock()
-    sys.modules.pop(_MODULE, None)
-    try:
-        yield
-    finally:
-        for name, module in saved.items():
-            if module is not None:
-                sys.modules[name] = module
-            else:
-                sys.modules.pop(name, None)
-
-
 def _make_tab(mod: Any) -> Any:
     tab = mod.JackettTab.__new__(mod.JackettTab)
     setattr(tab, _CLEANUP_DONE, True)
     return tab
 
 
-def test_parse_item_maps_all_fields() -> None:
+def test_parse_item_maps_all_fields(component_module: Any) -> None:
     """A full torznab item is parsed into the expected result dict."""
-    with _jackett_env():
+    with component_module(_MODULE):
         mod = importlib.import_module(_MODULE)
         tab = _make_tab(mod)
         result = getattr(tab, _PARSE_ITEM)(_full_item(), _NS)
@@ -140,9 +107,9 @@ def test_parse_item_maps_all_fields() -> None:
         assert result["publish_date"] == "Mon, 01 Jan"
 
 
-def test_parse_size_falls_back_to_enclosure() -> None:
+def test_parse_size_falls_back_to_enclosure(component_module: Any) -> None:
     """When no size attr is present, the enclosure length is used."""
-    with _jackett_env():
+    with component_module(_MODULE):
         mod = importlib.import_module(_MODULE)
         parse_size = getattr(mod.JackettTab, _PARSE_SIZE)
         attr_values = getattr(mod.JackettTab, _ATTR_VALUES)
@@ -150,9 +117,9 @@ def test_parse_size_falls_back_to_enclosure() -> None:
         assert parse_size(item, attr_values(item, _NS)) == 2048
 
 
-def test_parse_peers_clamps_at_zero() -> None:
+def test_parse_peers_clamps_at_zero(component_module: Any) -> None:
     """Leechers never go negative when peers is below the seeder count."""
-    with _jackett_env():
+    with component_module(_MODULE):
         mod = importlib.import_module(_MODULE)
         parse_peers = getattr(mod.JackettTab, _PARSE_PEERS)
         assert parse_peers({"seeders": "5", "peers": "8"}) == (5, 3)
@@ -160,9 +127,9 @@ def test_parse_peers_clamps_at_zero() -> None:
         assert parse_peers({}) == (0, 0)
 
 
-def test_simplify_date_trims_to_leading_tokens() -> None:
+def test_simplify_date_trims_to_leading_tokens(component_module: Any) -> None:
     """A pubDate is trimmed to its first three space-separated tokens."""
-    with _jackett_env():
+    with component_module(_MODULE):
         mod = importlib.import_module(_MODULE)
         simplify = getattr(mod.JackettTab, _SIMPLIFY_DATE)
         assert simplify("Mon, 01 Jan 2024 12:00:00 +0000") == "Mon, 01 Jan"
