@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 D-Bus Unifier - Inter-process communication bridge for DFakeSeeder
 
@@ -6,23 +5,13 @@ Provides D-Bus service for communication between main application and tray appli
 Integrates directly with AppSettings for settings management and signal forwarding.
 """
 
-# isort: skip_file
-
-# fmt: off
 import json
 import time
 from typing import Any
 
-import gi
-
-gi.require_version("Gio", "2.0")
-
-from gi.repository import Gio, GLib  # noqa: E402
-
-from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
-from d_fake_seeder.lib.logger import logger  # noqa: E402
-
-# fmt: on
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.gi_base import Gio, GLib
+from d_fake_seeder.lib.logger import logger
 
 
 class DBusUnifier:
@@ -168,17 +157,15 @@ class DBusUnifier:
             )
             return False
 
-    def _handle_method_call(  # pylint: disable=too-many-arguments,too-many-positional-arguments
-        self,
-        connection: Any,
-        sender: Any,
-        object_path: Any,
-        interface_name: Any,
-        method_name: Any,
-        parameters: Any,
-        invocation: Any,
-    ) -> None:  # noqa: E501
-        """Handle incoming D-Bus method calls"""
+    def _handle_method_call(self, *args: Any) -> None:
+        """Handle incoming D-Bus method calls.
+
+        The signature matches the GDBus method-call callback, which is always
+        invoked positionally with:
+        (connection, sender, object_path, interface_name, method_name,
+        parameters, invocation).
+        """
+        _connection, _sender, _object_path, _interface_name, method_name, parameters, invocation = args
         try:
             self._message_count += 1
             logger.trace(
@@ -240,7 +227,7 @@ class DBusUnifier:
             invocation.return_error_literal(
                 Gio.dbus_error_quark(),
                 Gio.DBusError.FAILED,
-                f"Internal error: {str(e)}",
+                f"Internal error: {e!s}",
             )
 
     def _handle_get_settings(self) -> str:
