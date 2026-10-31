@@ -415,3 +415,46 @@
     </object>
 </child>
 </template>
+
+<!-- Bold section heading -->
+<template name="section-heading">
+<child>
+    <object class="GtkLabel">
+        <property name="label" translatable="yes">&lt;b&gt;{title}&lt;/b&gt;</property>
+        <property name="use-markup">True</property>
+        <property name="halign">start</property>
+    </object>
+</child>
+</template>
+
+<!-- Label + DropDown; items is a |-separated list -->
+<template name="dropdown-row">
+<child>
+    <object class="GtkBox">
+        <property name="spacing">12</property>
+        <property name="halign">fill</property>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{label}</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="hexpand">False</property>
+                <property name="width-chars">{label_chars}</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkDropDown" id="{id}">
+                <property name="model">
+                    <object class="GtkStringList">
+                        <items>
+                            <item translatable="yes">{items[]}</item>
+                        </items>
+                    </object>
+                </property>
+                <property name="tooltip-text" translatable="yes">{tooltip}</property>
+                <property name="hexpand">True</property>
+            </object>
+        </child>
+    </object>
+</child>
+</template>
