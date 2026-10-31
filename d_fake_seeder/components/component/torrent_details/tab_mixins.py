@@ -5,20 +5,11 @@ These mixins provide reusable functionality that can be composed
 into different torrent details tab classes.
 """
 
-# isort: skip_file
+from collections.abc import Callable
+from typing import Any
 
-# fmt: off
-from typing import Any, Callable, Optional
-
-import gi
-
+from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
 from d_fake_seeder.lib.logger import logger
-
-gi.require_version("Gtk", "4.0")
-from gi.repository import GLib  # noqa: E402
-from gi.repository import Gtk  # noqa: E402
-
-# fmt: on
 
 
 class DataUpdateMixin:
@@ -41,7 +32,7 @@ class DataUpdateMixin:
                 model.connect("data-changed", callback)
                 model.connect("selection-changed", callback)
             logger.trace(f"Data binding set up for {getattr(self, 'tab_name', 'unknown')} tab")
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error setting up data binding: {e}")
 
     def safe_get_property(self, obj: Any, property_name: str, default: Any = "") -> Any:
@@ -61,11 +52,10 @@ class DataUpdateMixin:
             if hasattr(obj, property_name):
                 return getattr(obj, property_name)
             # Fallback to GObject get_property for actual GObject instances
-            elif hasattr(obj, "get_property"):
+            if hasattr(obj, "get_property"):
                 return obj.get_property(property_name)
-            else:
-                return default
-        except Exception as e:
+            return default
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error getting property {property_name}: {e}")
             return default
 
@@ -82,7 +72,7 @@ class DataUpdateMixin:
         try:
             if value is None:
                 return "N/A"
-            elif isinstance(value, bool):
+            if isinstance(value, bool):
                 # Get translation function from model if available
                 translate_func = (
                     self.model.get_translate_func()
@@ -90,11 +80,10 @@ class DataUpdateMixin:
                     else lambda x: x
                 )
                 return translate_func("Yes") if value else translate_func("No")  # type: ignore[no-any-return]
-            elif isinstance(value, (int, float)):
+            if isinstance(value, (int, float)):
                 return str(value)
-            else:
-                return str(value)
-        except Exception:
+            return str(value)
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error):
             return "N/A"
 
     def batch_update(self, update_func: Callable, *args: Any, **kwargs: Any) -> Any:
@@ -110,7 +99,7 @@ class DataUpdateMixin:
         def update_when_idle() -> Any:
             try:
                 update_func(*args, **kwargs)
-            except Exception as e:
+            except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
                 logger.error(f"Error in batch update: {e}")
             return False  # Don't repeat  # type: ignore
 
@@ -143,7 +132,7 @@ class UIUtilityMixin:
                 # For older GTK versions
                 for child in container.get_children():
                     container.remove(child)
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error removing children from container: {e}")
 
     def create_scrolled_window(self, child: Gtk.Widget) -> Gtk.ScrolledWindow:
@@ -163,11 +152,11 @@ class UIUtilityMixin:
             scrolled.set_vexpand(True)
             scrolled.set_child(child)
             return scrolled
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error creating scrolled window: {e}")
             return Gtk.ScrolledWindow()
 
-    def create_list_view(self, model: Optional[Any] = None) -> Gtk.ListView:
+    def create_list_view(self, model: Any | None = None) -> Gtk.ListView:
         """
         Create a list view with standard settings.
 
@@ -184,7 +173,7 @@ class UIUtilityMixin:
             list_view.set_hexpand(True)
             list_view.set_vexpand(True)
             return list_view
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error creating list view: {e}")
             return Gtk.ListView()
 
@@ -201,7 +190,7 @@ class UIUtilityMixin:
             column_view.set_vexpand(True)
             column_view.set_reorderable(True)
             return column_view
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error creating column view: {e}")
             return Gtk.ColumnView()
 
@@ -223,7 +212,7 @@ class UIUtilityMixin:
             text_view.set_vexpand(True)
             text_view.set_wrap_mode(Gtk.WrapMode.WORD)
             return text_view
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error creating text view: {e}")
             return Gtk.TextView()
 
@@ -239,7 +228,7 @@ class UIUtilityMixin:
             progress_bar.set_hexpand(True)
             progress_bar.set_show_text(True)
             return progress_bar
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error creating progress bar: {e}")
             return Gtk.ProgressBar()
 
@@ -263,7 +252,7 @@ class UIUtilityMixin:
             grid.set_vexpand(True)
             # DO NOT add margins - parent container (status_tab/files_tab/trackers_tab) already has 20px margins
             return grid
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error creating grid: {e}")
             return Gtk.Grid()
 
@@ -294,7 +283,7 @@ class UIUtilityMixin:
             grid.attach(name_label, 0, row, 1, 1)
             grid.attach(value_label, 1, row, 1, 1)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error creating label pair: {e}")
 
     def set_widget_margins(self, widget: Gtk.Widget, margin: int = 10) -> None:
@@ -310,7 +299,7 @@ class UIUtilityMixin:
             widget.set_margin_bottom(margin)
             widget.set_margin_start(margin)
             widget.set_margin_end(margin)
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error setting widget margins: {e}")
 
     def create_info_label(self, text: str, selectable: bool = True) -> Gtk.Label:
@@ -332,7 +321,7 @@ class UIUtilityMixin:
             label.set_wrap(True)
             label.set_xalign(0)
             return label
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error creating info label: {e}")
             return Gtk.Label()
 
@@ -364,7 +353,7 @@ class UIUtilityMixin:
             mark = buffer.get_insert()
             text_view.scroll_mark_onscreen(mark)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error updating text buffer: {e}")
 
 
@@ -395,7 +384,7 @@ class PerformanceMixin:
                 if self._update_pending:
                     update_func()
                     self._update_pending = False
-            except Exception as e:
+            except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
                 logger.error(f"Error in debounced update: {e}")
             return False  # Don't repeat
 
@@ -424,7 +413,7 @@ class PerformanceMixin:
             while self._update_queue:
                 update_func, args, kwargs = self._update_queue.pop(0)
                 update_func(*args, **kwargs)
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             logger.error(f"Error processing update queue: {e}")
         finally:
             self._queue_idle_pending = False
@@ -456,5 +445,5 @@ class PerformanceMixin:
                 parent = parent.get_parent()
 
             return True
-        except Exception:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error):
             return True  # Assume visible if can't determine
