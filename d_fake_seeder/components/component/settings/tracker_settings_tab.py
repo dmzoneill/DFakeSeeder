@@ -116,10 +116,7 @@ class TrackerSettingsTab(BaseSettingsTab):
             ("sync_on_add", "tracker_settings.self_tracking.sync_on_add", True),
             ("sync_on_remove", "tracker_settings.self_tracking.sync_on_remove", True),
         ]
-        for widget_id, key, default in toggles:
-            widget = self._widgets[widget_id]
-            if widget:
-                widget.set_active(self.app_settings.get(key, default))
+        self.apply_widget_settings(toggles, "set_active")
 
     def _load_numeric_settings(self) -> None:
         """Load the spin-button widgets."""
@@ -131,10 +128,7 @@ class TrackerSettingsTab(BaseSettingsTab):
             ("max_peers_per_announce", "tracker_settings.max_peers_per_announce", 50),
             ("rate_limit", "tracker_settings.security.rate_limit_per_minute", 60),
         ]
-        for widget_id, key, default in numerics:
-            widget = self._widgets[widget_id]
-            if widget:
-                widget.set_value(self.app_settings.get(key, default))
+        self.apply_widget_settings(numerics, "set_value")
 
     def _load_address_settings(self) -> None:
         """Load the bind-address entry and the IP whitelist/blacklist buffers."""
@@ -182,9 +176,7 @@ class TrackerSettingsTab(BaseSettingsTab):
             ("sync_on_add", "tracker_settings.self_tracking.sync_on_add"),
             ("sync_on_remove", "tracker_settings.self_tracking.sync_on_remove"),
         ]
-        for widget_id, key in toggles:
-            if self._widgets.get(widget_id):
-                settings[key] = self._widgets[widget_id].get_active()
+        self.collect_widget_values(toggles, settings, "get_active")
 
     def _collect_numeric_settings(self, settings: dict[str, Any]) -> None:
         """Collect the integer spin-button values into ``settings``."""
@@ -196,9 +188,7 @@ class TrackerSettingsTab(BaseSettingsTab):
             ("max_peers_per_announce", "tracker_settings.max_peers_per_announce"),
             ("rate_limit", "tracker_settings.security.rate_limit_per_minute"),
         ]
-        for widget_id, key in numerics:
-            if self._widgets.get(widget_id):
-                settings[key] = int(self._widgets[widget_id].get_value())
+        self.collect_widget_values(numerics, settings, "get_value", int)
 
     def _collect_address_settings(self, settings: dict[str, Any]) -> None:
         """Collect the bind address and IP whitelist/blacklist into ``settings``."""
@@ -211,15 +201,7 @@ class TrackerSettingsTab(BaseSettingsTab):
         ]
         for widget_id, key in ip_lists:
             if self._widgets.get(widget_id):
-                settings[key] = self._read_ip_lines(self._widgets[widget_id])
-
-    @staticmethod
-    def _read_ip_lines(widget: Any) -> list[str]:
-        """Return the non-empty, stripped lines from a text-view widget."""
-        buffer = widget.get_buffer()
-        start, end = buffer.get_bounds()
-        text = buffer.get_text(start, end, False)
-        return [line.strip() for line in text.split("\n") if line.strip()]
+                settings[key] = self.read_text_lines(self._widgets[widget_id])
 
     def _setup_dependencies(self, tracker_enabled_override: Any = None) -> None:
         """Set up dependencies between UI elements.
@@ -335,7 +317,7 @@ class TrackerSettingsTab(BaseSettingsTab):
         for widget_id in ("ip_whitelist", "ip_blacklist"):
             if not self._widgets.get(widget_id):
                 continue
-            for line in self._read_ip_lines(self._widgets[widget_id]):
+            for line in self.read_text_lines(self._widgets[widget_id]):
                 if not self._is_valid_ipv4(line):
                     errors[widget_id] = f"Invalid IP format: {line}"
                     break
