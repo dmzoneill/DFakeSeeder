@@ -5,23 +5,18 @@ Provides configuration interface for DHT (Distributed Hash Table) settings.
 Manages DHT node configuration, bootstrap settings, and trackerless operation parameters.
 """
 
-# fmt: off
-from typing import Any, Dict
+from typing import Any, ClassVar
 
-import gi
+from d_fake_seeder.lib.gi_gtk4 import GLib
 
-gi.require_version("Gtk", "4.0")
-
-from .base_tab import BaseSettingsTab  # noqa: E402
-
-# fmt: on
+from .base_tab import BaseSettingsTab
 
 
 class DHTTab(BaseSettingsTab):
     """DHT configuration tab"""
 
     # Note: DHT settings use manual loading/saving due to nested structure (protocols.dht.*)
-    WIDGET_MAPPINGS: list = []
+    WIDGET_MAPPINGS: ClassVar[list] = []
 
     @property
     def tab_name(self) -> str:
@@ -90,189 +85,144 @@ class DHTTab(BaseSettingsTab):
     def _load_settings(self) -> None:
         """Load DHT settings from configuration using nested keys."""
         try:
-            # Basic DHT settings
-            if self._widgets["dht_enabled"]:
-                value = self.app_settings.get("protocols.dht.enabled", True)
-                self._widgets["dht_enabled"].set_active(value)
-
-            # Node configuration
-            node_id_setting = self.app_settings.get("protocols.dht.node_id", "auto_generate")
-            if self._widgets["node_id_auto"]:
-                self._widgets["node_id_auto"].set_active(node_id_setting == "auto_generate")
-
-            if self._widgets["node_id_custom"]:
-                if node_id_setting != "auto_generate":
-                    self._widgets["node_id_custom"].set_text(str(node_id_setting))
-                self._widgets["node_id_custom"].set_sensitive(node_id_setting != "auto_generate")
-
-            # Network settings
-            if self._widgets["routing_table_size"]:
-                value = self.app_settings.get("protocols.dht.routing_table_size", 160)
-                self._widgets["routing_table_size"].set_value(value)
-
-            if self._widgets["announcement_interval"]:
-                value = self.app_settings.get("protocols.dht.announcement_interval", 1800)
-                self._widgets["announcement_interval"].set_value(value)
-
-            # Extended settings (now directly in protocols.dht.*)
-            if self._widgets["bootstrap_timeout"]:
-                value = self.app_settings.get("protocols.dht.bootstrap_timeout", 30)
-                self._widgets["bootstrap_timeout"].set_value(value)
-
-            if self._widgets["query_timeout"]:
-                value = self.app_settings.get("protocols.dht.query_timeout", 10)
-                self._widgets["query_timeout"].set_value(value)
-
-            if self._widgets["max_nodes"]:
-                value = self.app_settings.get("protocols.dht.max_nodes", 1000)
-                self._widgets["max_nodes"].set_value(value)
-
-            if self._widgets["bucket_size"]:
-                value = self.app_settings.get("protocols.dht.bucket_size", 8)
-                self._widgets["bucket_size"].set_value(value)
-
-            if self._widgets["concurrent_queries"]:
-                value = self.app_settings.get("protocols.dht.concurrent_queries", 3)
-                self._widgets["concurrent_queries"].set_value(value)
-
-            # Bootstrap settings
-            if self._widgets["auto_bootstrap"]:
-                value = self.app_settings.get("protocols.dht.auto_bootstrap", True)
-                self._widgets["auto_bootstrap"].set_active(value)
-
-            # Bootstrap nodes text
-            if self._widgets["bootstrap_nodes"]:
-                buffer = self._widgets["bootstrap_nodes"].get_buffer()
-                bootstrap_list = self.app_settings.get(
-                    "protocols.dht.bootstrap_nodes",
-                    [
-                        "router.bittorrent.com:6881",
-                        "dht.transmissionbt.com:6881",
-                        "router.utorrent.com:6881",
-                    ],
-                )
-                buffer.set_text("\n".join(bootstrap_list))
-
-            # Statistics settings
-            if self._widgets["enable_stats"]:
-                value = self.app_settings.get("protocols.dht.enable_stats", True)
-                self._widgets["enable_stats"].set_active(value)
-
-            if self._widgets["stats_interval"]:
-                value = self.app_settings.get("protocols.dht.stats_interval", 60)
-                self._widgets["stats_interval"].set_value(value)
-
-            # Security settings
-            if self._widgets["validate_tokens"]:
-                value = self.app_settings.get("protocols.dht.validate_tokens", True)
-                self._widgets["validate_tokens"].set_active(value)
-
-            if self._widgets["rate_limit_enabled"]:
-                value = self.app_settings.get("protocols.dht.rate_limit_enabled", True)
-                self._widgets["rate_limit_enabled"].set_active(value)
-
-            if self._widgets["max_queries_per_second"]:
-                value = self.app_settings.get("protocols.dht.max_queries_per_second", 10)
-                self._widgets["max_queries_per_second"].set_value(value)
-
+            self._load_toggle_settings()
+            self._load_numeric_settings()
+            self._load_node_and_bootstrap()
             self.logger.trace(
                 "DHT settings loaded successfully",
                 extra={"class_name": self.__class__.__name__},
             )
-
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(
                 f"Failed to load DHT settings: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _collect_settings(self) -> Dict[str, Any]:
+    def _load_toggle_settings(self) -> None:
+        """Load the on/off switch widgets."""
+        toggles = [
+            ("dht_enabled", "protocols.dht.enabled", True),
+            ("auto_bootstrap", "protocols.dht.auto_bootstrap", True),
+            ("enable_stats", "protocols.dht.enable_stats", True),
+            ("validate_tokens", "protocols.dht.validate_tokens", True),
+            ("rate_limit_enabled", "protocols.dht.rate_limit_enabled", True),
+        ]
+        for widget_id, key, default in toggles:
+            widget = self._widgets[widget_id]
+            if widget:
+                widget.set_active(self.app_settings.get(key, default))
+
+    def _load_numeric_settings(self) -> None:
+        """Load the spin-button widgets."""
+        numerics = [
+            ("routing_table_size", "protocols.dht.routing_table_size", 160),
+            ("announcement_interval", "protocols.dht.announcement_interval", 1800),
+            ("bootstrap_timeout", "protocols.dht.bootstrap_timeout", 30),
+            ("query_timeout", "protocols.dht.query_timeout", 10),
+            ("max_nodes", "protocols.dht.max_nodes", 1000),
+            ("bucket_size", "protocols.dht.bucket_size", 8),
+            ("concurrent_queries", "protocols.dht.concurrent_queries", 3),
+            ("stats_interval", "protocols.dht.stats_interval", 60),
+            ("max_queries_per_second", "protocols.dht.max_queries_per_second", 10),
+        ]
+        for widget_id, key, default in numerics:
+            widget = self._widgets[widget_id]
+            if widget:
+                widget.set_value(self.app_settings.get(key, default))
+
+    def _load_node_and_bootstrap(self) -> None:
+        """Load the node-id controls and the bootstrap-nodes buffer."""
+        node_id_setting = self.app_settings.get("protocols.dht.node_id", "auto_generate")
+        is_auto = node_id_setting == "auto_generate"
+        if self._widgets["node_id_auto"]:
+            self._widgets["node_id_auto"].set_active(is_auto)
+        if self._widgets["node_id_custom"]:
+            if not is_auto:
+                self._widgets["node_id_custom"].set_text(str(node_id_setting))
+            self._widgets["node_id_custom"].set_sensitive(not is_auto)
+
+        if self._widgets["bootstrap_nodes"]:
+            buffer = self._widgets["bootstrap_nodes"].get_buffer()
+            bootstrap_list = self.app_settings.get(
+                "protocols.dht.bootstrap_nodes",
+                [
+                    "router.bittorrent.com:6881",
+                    "dht.transmissionbt.com:6881",
+                    "router.utorrent.com:6881",
+                ],
+            )
+            buffer.set_text("\n".join(bootstrap_list))
+
+    def _collect_settings(self) -> dict[str, Any]:
         """Collect current DHT settings from UI widgets.
 
         Returns:
             Dictionary of setting_key -> value pairs for all widgets
         """
-        settings: Dict[str, Any] = {}
+        settings: dict[str, Any] = {}
 
         try:
-            # Basic settings
-            if self._widgets.get("dht_enabled"):
-                settings["protocols.dht.enabled"] = self._widgets["dht_enabled"].get_active()
-
-            # Node configuration
-            if self._widgets.get("node_id_auto") and self._widgets["node_id_auto"].get_active():
-                settings["protocols.dht.node_id"] = "auto_generate"
-            elif self._widgets.get("node_id_custom"):
-                custom_id = self._widgets["node_id_custom"].get_text().strip()
-                if custom_id:
-                    settings["protocols.dht.node_id"] = custom_id
-
-            # Network settings
-            if self._widgets.get("routing_table_size"):
-                settings["protocols.dht.routing_table_size"] = int(self._widgets["routing_table_size"].get_value())
-
-            if self._widgets.get("announcement_interval"):
-                settings["protocols.dht.announcement_interval"] = int(
-                    self._widgets["announcement_interval"].get_value()
-                )
-
-            # Extended settings (now directly in protocols.dht.*)
-            if self._widgets.get("bootstrap_timeout"):
-                settings["protocols.dht.bootstrap_timeout"] = int(self._widgets["bootstrap_timeout"].get_value())
-
-            if self._widgets.get("query_timeout"):
-                settings["protocols.dht.query_timeout"] = int(self._widgets["query_timeout"].get_value())
-
-            if self._widgets.get("max_nodes"):
-                settings["protocols.dht.max_nodes"] = int(self._widgets["max_nodes"].get_value())
-
-            if self._widgets.get("bucket_size"):
-                settings["protocols.dht.bucket_size"] = int(self._widgets["bucket_size"].get_value())
-
-            if self._widgets.get("concurrent_queries"):
-                settings["protocols.dht.concurrent_queries"] = int(self._widgets["concurrent_queries"].get_value())
-
-            # Bootstrap settings
-            if self._widgets.get("auto_bootstrap"):
-                settings["protocols.dht.auto_bootstrap"] = self._widgets["auto_bootstrap"].get_active()
-
-            # Bootstrap nodes
-            if self._widgets.get("bootstrap_nodes"):
-                buffer = self._widgets["bootstrap_nodes"].get_buffer()
-                start, end = buffer.get_bounds()
-                text = buffer.get_text(start, end, False)
-                nodes = [line.strip() for line in text.split("\n") if line.strip()]
-                settings["protocols.dht.bootstrap_nodes"] = nodes
-
-            # Statistics settings
-            if self._widgets.get("enable_stats"):
-                settings["protocols.dht.enable_stats"] = self._widgets["enable_stats"].get_active()
-
-            if self._widgets.get("stats_interval"):
-                settings["protocols.dht.stats_interval"] = int(self._widgets["stats_interval"].get_value())
-
-            # Security settings
-            if self._widgets.get("validate_tokens"):
-                settings["protocols.dht.validate_tokens"] = self._widgets["validate_tokens"].get_active()
-
-            if self._widgets.get("rate_limit_enabled"):
-                settings["protocols.dht.rate_limit_enabled"] = self._widgets["rate_limit_enabled"].get_active()
-
-            if self._widgets.get("max_queries_per_second"):
-                settings["protocols.dht.max_queries_per_second"] = int(
-                    self._widgets["max_queries_per_second"].get_value()
-                )
-
+            self._collect_toggle_settings(settings)
+            self._collect_numeric_settings(settings)
+            self._collect_node_and_bootstrap(settings)
             self.logger.trace(f"Collected {len(settings)} settings from DHT tab")
-
             return settings
-
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(
                 f"Failed to collect DHT settings: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
             return {}
+
+    def _collect_toggle_settings(self, settings: dict[str, Any]) -> None:
+        """Collect the on/off switch values into ``settings``."""
+        toggles = [
+            ("dht_enabled", "protocols.dht.enabled"),
+            ("auto_bootstrap", "protocols.dht.auto_bootstrap"),
+            ("enable_stats", "protocols.dht.enable_stats"),
+            ("validate_tokens", "protocols.dht.validate_tokens"),
+            ("rate_limit_enabled", "protocols.dht.rate_limit_enabled"),
+        ]
+        for widget_id, key in toggles:
+            if self._widgets.get(widget_id):
+                settings[key] = self._widgets[widget_id].get_active()
+
+    def _collect_numeric_settings(self, settings: dict[str, Any]) -> None:
+        """Collect the integer spin-button values into ``settings``."""
+        numerics = [
+            ("routing_table_size", "protocols.dht.routing_table_size"),
+            ("announcement_interval", "protocols.dht.announcement_interval"),
+            ("bootstrap_timeout", "protocols.dht.bootstrap_timeout"),
+            ("query_timeout", "protocols.dht.query_timeout"),
+            ("max_nodes", "protocols.dht.max_nodes"),
+            ("bucket_size", "protocols.dht.bucket_size"),
+            ("concurrent_queries", "protocols.dht.concurrent_queries"),
+            ("stats_interval", "protocols.dht.stats_interval"),
+            ("max_queries_per_second", "protocols.dht.max_queries_per_second"),
+        ]
+        for widget_id, key in numerics:
+            if self._widgets.get(widget_id):
+                settings[key] = int(self._widgets[widget_id].get_value())
+
+    def _collect_node_and_bootstrap(self, settings: dict[str, Any]) -> None:
+        """Collect the node-id choice and the bootstrap-nodes list into ``settings``."""
+        if self._widgets.get("node_id_auto") and self._widgets["node_id_auto"].get_active():
+            settings["protocols.dht.node_id"] = "auto_generate"
+        elif self._widgets.get("node_id_custom"):
+            custom_id = self._widgets["node_id_custom"].get_text().strip()
+            if custom_id:
+                settings["protocols.dht.node_id"] = custom_id
+
+        if self._widgets.get("bootstrap_nodes"):
+            settings["protocols.dht.bootstrap_nodes"] = self._read_text_lines(self._widgets["bootstrap_nodes"])
+
+    @staticmethod
+    def _read_text_lines(widget: Any) -> list[str]:
+        """Return the non-empty, stripped lines from a text-view widget."""
+        buffer = widget.get_buffer()
+        start, end = buffer.get_bounds()
+        text = buffer.get_text(start, end, False)
+        return [line.strip() for line in text.split("\n") if line.strip()]
 
     def _setup_dependencies(self) -> None:
         """Set up dependencies between UI elements"""
@@ -332,71 +282,75 @@ class DHTTab(BaseSettingsTab):
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(
                 f"Failed to set up DHT dependencies: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-    def _validate_tab_settings(self) -> Dict[str, str]:
+    def _validate_tab_settings(self) -> dict[str, str]:
         """Validate DHT settings. Returns dict of field_name -> error_message."""
-        errors: Dict[str, str] = {}
+        errors: dict[str, str] = {}
 
         try:
-            # Validate custom node ID format
-            if (
-                self._widgets.get("node_id_auto")
-                and not self._widgets["node_id_auto"].get_active()
-                and self._widgets.get("node_id_custom")
-            ):
-                custom_id = self._widgets["node_id_custom"].get_text().strip()
-                if custom_id and len(custom_id) != 40:  # 20 bytes = 40 hex chars
-                    errors["node_id_custom"] = "Node ID must be 40 hexadecimal characters (20 bytes)"
-
-            # Validate routing table size
-            if self._widgets.get("routing_table_size"):
-                size = self._widgets["routing_table_size"].get_value()
-                if size < 8 or size > 512:
-                    errors["routing_table_size"] = "Routing table size should be between 8 and 512"
-
-            # Validate announcement interval
-            if self._widgets.get("announcement_interval"):
-                interval = self._widgets["announcement_interval"].get_value()
-                if interval < 300:  # 5 minutes
-                    errors["announcement_interval"] = (
-                        "Announcement interval below 5 minutes may cause high network load"
-                    )
-
-            # Validate bootstrap nodes format
-            if self._widgets.get("bootstrap_nodes"):
-                buffer = self._widgets["bootstrap_nodes"].get_buffer()
-                start, end = buffer.get_bounds()
-                text = buffer.get_text(start, end, False)
-                nodes = [line.strip() for line in text.split("\n") if line.strip()]
-
-                for node in nodes:
-                    if ":" not in node:
-                        errors["bootstrap_nodes"] = f"Invalid bootstrap node format: {node} (should be host:port)"
-                        break
-                    else:
-                        host, port_str = node.rsplit(":", 1)
-                        try:
-                            port = int(port_str)
-                            if port < 1 or port > 65535:
-                                errors["bootstrap_nodes"] = f"Invalid port in bootstrap node: {node}"
-                                break
-                        except ValueError:
-                            errors["bootstrap_nodes"] = f"Invalid port in bootstrap node: {node}"
-                            break
-
-        except Exception as e:
-            errors["general"] = f"Validation error: {str(e)}"
+            self._validate_node_id(errors)
+            self._validate_ranges(errors)
+            self._validate_bootstrap_nodes(errors)
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
+            errors["general"] = f"Validation error: {e}"
             self.logger.error(
                 f"DHT settings validation failed: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
         return errors
+
+    def _validate_node_id(self, errors: dict[str, str]) -> None:
+        """Validate the custom node-id length when auto-generation is off."""
+        if (
+            self._widgets.get("node_id_auto")
+            and not self._widgets["node_id_auto"].get_active()
+            and self._widgets.get("node_id_custom")
+        ):
+            custom_id = self._widgets["node_id_custom"].get_text().strip()
+            if custom_id and len(custom_id) != 40:  # 20 bytes = 40 hex chars
+                errors["node_id_custom"] = "Node ID must be 40 hexadecimal characters (20 bytes)"
+
+    def _validate_ranges(self, errors: dict[str, str]) -> None:
+        """Validate the routing-table size and announcement interval."""
+        if self._widgets.get("routing_table_size"):
+            size = self._widgets["routing_table_size"].get_value()
+            if size < 8 or size > 512:
+                errors["routing_table_size"] = "Routing table size should be between 8 and 512"
+
+        if self._widgets.get("announcement_interval"):
+            interval = self._widgets["announcement_interval"].get_value()
+            if interval < 300:  # 5 minutes
+                errors["announcement_interval"] = "Announcement interval below 5 minutes may cause high network load"
+
+    def _validate_bootstrap_nodes(self, errors: dict[str, str]) -> None:
+        """Validate that each bootstrap node is a well-formed host:port entry."""
+        if not self._widgets.get("bootstrap_nodes"):
+            return
+        for node in self._read_text_lines(self._widgets["bootstrap_nodes"]):
+            message = self._bootstrap_node_error(node)
+            if message:
+                errors["bootstrap_nodes"] = message
+                break
+
+    @staticmethod
+    def _bootstrap_node_error(node: str) -> str | None:
+        """Return an error message for a malformed host:port node, else ``None``."""
+        if ":" not in node:
+            return f"Invalid bootstrap node format: {node} (should be host:port)"
+        _host, port_str = node.rsplit(":", 1)
+        try:
+            port = int(port_str)
+        except ValueError:
+            return f"Invalid port in bootstrap node: {node}"
+        if port < 1 or port > 65535:
+            return f"Invalid port in bootstrap node: {node}"
+        return None
 
     # Signal handlers
     def _on_dht_enabled_changed(self, switch: Any, state: Any) -> None:
