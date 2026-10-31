@@ -204,107 +204,67 @@ class Toolbar(Component):
             )
         self._model.remove_torrent(selected.filepath)
 
-    def _on_toolbar_pause_clicked(self, button: Any) -> None:
-        """Handle the pause clicked action."""
-        logger.trace(
-            "Toolbar pause button clicked",
-            extra={"class_name": self.__class__.__name__},
-        )
+    def _emit_selected_active(self, active: bool) -> None:
+        """Set the selected torrent's active flag and broadcast the change."""
         selected = self.get_selected_torrent()
         if not selected:
             return
-        selected.active = False
+        selected.active = active
         self._model.emit("data-changed", self.model, selected)
+
+    def _move_selected(self, delta: int) -> None:
+        """Move the selected torrent up (delta -1) or down (delta +1) in the list."""
+        selected = self.get_selected_torrent()
+        if not selected:
+            return
+        target_id = selected.id + delta
+        if target_id < 1 or target_id > len(self._model.torrent_list):
+            return
+        for torrent in self._model.torrent_list:
+            if torrent.id == target_id:
+                torrent.id = selected.id
+                selected.id = target_id
+                self._model.emit("data-changed", self.model, selected)
+                self._model.emit("data-changed", self.model, torrent)
+                break
+
+    def _scale_speed(self, field: str, operation: Any) -> None:
+        """Apply a scaling operation to every torrent's upload or download speed."""
+        for torrent in self._model.torrent_list:
+            setattr(torrent, field, operation(getattr(torrent, field)))
+        self._model.emit("data-changed", self.model, None)
+
+    def _on_toolbar_pause_clicked(self, button: Any) -> None:
+        """Handle the pause clicked action."""
+        self._emit_selected_active(False)
 
     def _on_toolbar_resume_clicked(self, button: Any) -> None:
         """Handle the resume clicked action."""
-        logger.trace(
-            "Toolbar resume button clicked",
-            extra={"class_name": self.__class__.__name__},
-        )
-        selected = self.get_selected_torrent()
-        if not selected:
-            return
-        selected.active = True
-        self._model.emit("data-changed", self.model, selected)
+        self._emit_selected_active(True)
 
     def _on_toolbar_up_clicked(self, button: Any) -> None:
         """Handle the up clicked action."""
-        logger.trace(
-            "Toolbar up button clicked",
-            extra={"class_name": self.__class__.__name__},
-        )
-        selected = self.get_selected_torrent()
-        if not selected:
-            return
-        if not selected or selected.id == 1:
-            return
-        for torrent in self._model.torrent_list:
-            if torrent.id == selected.id - 1:
-                torrent.id = selected.id
-                selected.id -= 1
-                self._model.emit("data-changed", self.model, selected)
-                self._model.emit("data-changed", self.model, torrent)
-                break
+        self._move_selected(-1)
 
     def _on_toolbar_down_clicked(self, button: Any) -> None:
         """Handle the down clicked action."""
-        logger.trace(
-            "Toolbar down button clicked",
-            extra={"class_name": self.__class__.__name__},
-        )
-        selected = self.get_selected_torrent()
-        if not selected:
-            return
-        if not selected or selected.id == len(self._model.torrent_list):
-            return
-        for torrent in self._model.torrent_list:
-            if torrent.id == selected.id + 1:
-                torrent.id = selected.id
-                selected.id += 1
-                self._model.emit("data-changed", self.model, selected)
-                self._model.emit("data-changed", self.model, torrent)
-                break
+        self._move_selected(1)
 
     def _on_toolbar_speed_double_clicked(self, button: Any) -> None:
         """Handle the speed double clicked action."""
-        logger.trace(
-            "Toolbar speed double button clicked",
-            extra={"class_name": self.__class__.__name__},
-        )
-        for torrent in self._model.torrent_list:
-            torrent.upload_speed = torrent.upload_speed * 2
-        self._model.emit("data-changed", self.model, None)
+        self._scale_speed("upload_speed", lambda v: v * 2)
 
     def _on_toolbar_speed_halve_clicked(self, button: Any) -> None:
         """Handle the speed halve clicked action."""
-        logger.trace(
-            "Toolbar speed halve button clicked",
-            extra={"class_name": self.__class__.__name__},
-        )
-        for torrent in self._model.torrent_list:
-            torrent.upload_speed = max(1, torrent.upload_speed // 2)
-        self._model.emit("data-changed", self.model, None)
+        self._scale_speed("upload_speed", lambda v: max(1, v // 2))
 
     def _on_toolbar_download_speed_double_clicked(self, button: Any) -> None:
         """Handle the download speed double clicked action."""
-        logger.trace(
-            "Toolbar download speed double button clicked",
-            extra={"class_name": self.__class__.__name__},
-        )
-        for torrent in self._model.torrent_list:
-            torrent.download_speed = torrent.download_speed * 2
-        self._model.emit("data-changed", self.model, None)
+        self._scale_speed("download_speed", lambda v: v * 2)
 
     def _on_toolbar_download_speed_halve_clicked(self, button: Any) -> None:
         """Handle the download speed halve clicked action."""
-        logger.trace(
-            "Toolbar download speed halve button clicked",
-            extra={"class_name": self.__class__.__name__},
-        )
-        for torrent in self._model.torrent_list:
-            torrent.download_speed = max(1, torrent.download_speed // 2)
-        self._model.emit("data-changed", self.model, None)
+        self._scale_speed("download_speed", lambda v: max(1, v // 2))
 
     def _on_toolbar_search_clicked(self, button: Any) -> None:
         """Handle the search clicked action."""
