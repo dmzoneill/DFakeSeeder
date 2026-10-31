@@ -72,13 +72,20 @@ def test_committed_generated_ui_has_no_macros_left() -> None:
     assert "<dfs-use" not in GENERATED.read_text(encoding="utf-8")
 
 
-def test_translatable_strings_survive_expansion() -> None:
-    """Every translatable string of the expanded speed tab is in the generated UI the extractor scans."""
-    templates = expander.load_templates()
-    speed = expander.expand((UI_DIR / "settings" / "speed.xml").read_text(encoding="utf-8"), templates)
-    strings = set(TRANSLATABLE.findall(speed))
+@pytest.mark.parametrize("tab", sorted(path.name for path in (UI_DIR / "settings").glob("*.xml")))
+def test_translatable_strings_survive_expansion(tab: str) -> None:
+    """Every translatable string of an expanded settings tab is in the generated UI the extractor scans."""
+    expanded = expander.expand((UI_DIR / "settings" / tab).read_text(encoding="utf-8"), expander.load_templates())
+    assert "<dfs-use" not in expanded
+    assert set(TRANSLATABLE.findall(expanded)) <= set(TRANSLATABLE.findall(GENERATED.read_text(encoding="utf-8")))
+
+
+def test_template_strings_reach_generated_ui() -> None:
+    """Strings passed to row templates (speed and Web UI tabs) end up translatable in the generated UI."""
+    strings = set(TRANSLATABLE.findall(GENERATED.read_text(encoding="utf-8")))
     assert {"Upload limit (KB/s):", "Download Distribution", "Stopped max %:", "Pareto"} <= strings
-    assert strings <= set(TRANSLATABLE.findall(GENERATED.read_text(encoding="utf-8")))
+    assert {"Enable Web UI", "Enable CSRF protection", "Session timeout (min):"} <= strings
+    assert {"Automatic logout after inactivity (5-1440 minutes)"} <= strings
 
 
 def test_expand_indents_escapes_and_nests() -> None:
