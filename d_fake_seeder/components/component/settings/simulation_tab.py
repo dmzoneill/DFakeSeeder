@@ -5,29 +5,24 @@ Provides configuration interface for client behavior simulation engine,
 traffic pattern simulation, and swarm intelligence features.
 """
 
-# fmt: off
-from typing import Any, Dict
+from typing import Any, ClassVar
 
-import gi
+from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
 
-gi.require_version("Gtk", "4.0")
-
-from .base_tab import BaseSettingsTab  # noqa: E402
-from .settings_mixins import NotificationMixin  # noqa: E402
-from .settings_mixins import (  # noqa: E402
+from .base_tab import BaseSettingsTab
+from .settings_mixins import (
+    NotificationMixin,
     TranslationMixin,
     UtilityMixin,
     ValidationMixin,
 )
-
-# fmt: on
 
 
 class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, ValidationMixin, UtilityMixin):
     """Advanced Simulation configuration tab"""
 
     # Note: Simulation settings use manual loading/saving due to deeply nested structure
-    WIDGET_MAPPINGS: list = []
+    WIDGET_MAPPINGS: ClassVar[list] = []
 
     @property
     def tab_name(self) -> str:
@@ -123,81 +118,69 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
     def _load_settings(self) -> None:
         """Load Advanced Simulation settings from configuration using nested keys."""
         try:
-            # Client Behavior Engine Settings
-            if self._widgets["client_behavior_enabled"]:
-                value = self.app_settings.get("simulation.client_behavior_engine.enabled", True)
-                self._widgets["client_behavior_enabled"].set_active(value)
-
-            if self._widgets["primary_client"]:
-                value = self.app_settings.get("simulation.client_behavior_engine.primary_client", "qBittorrent")
-                self._set_combo_active_text(self._widgets["primary_client"], value)
-
-            if self._widgets["behavior_variation"]:
-                value = self.app_settings.get("simulation.client_behavior_engine.behavior_variation", 0.3)
-                self._widgets["behavior_variation"].set_value(value)
-
-            if self._widgets["switch_client_probability"]:
-                value = self.app_settings.get("simulation.client_behavior_engine.switch_client_probability", 0.05)
-                self._widgets["switch_client_probability"].set_value(value)
-
-            if self._widgets["client_profile_switching"]:
-                value = self.app_settings.get("simulation.client_behavior_engine.client_profile_switching", True)
-                self._widgets["client_profile_switching"].set_active(value)
-
-            if self._widgets["protocol_compliance_level"]:
-                value = self.app_settings.get(
-                    "simulation.client_behavior_engine.protocol_compliance_level",
-                    "standard",
-                )
-                self._set_combo_active_text(self._widgets["protocol_compliance_level"], value)
-
-            if self._widgets["behavior_randomization"]:
-                value = self.app_settings.get("simulation.client_behavior_engine.behavior_randomization", True)
-                self._widgets["behavior_randomization"].set_active(value)
-
-            # Traffic Pattern Settings
-            if self._widgets["traffic_profile"]:
-                value = self.app_settings.get("simulation.traffic_patterns.profile", "balanced")
-                self._set_combo_active_text(self._widgets["traffic_profile"], value)
-
-            if self._widgets["realistic_variations"]:
-                value = self.app_settings.get("simulation.traffic_patterns.realistic_variations", True)
-                self._widgets["realistic_variations"].set_active(value)
-
-            if self._widgets["time_based_patterns"]:
-                value = self.app_settings.get("simulation.traffic_patterns.time_based_patterns", True)
-                self._widgets["time_based_patterns"].set_active(value)
-
-            # Conservative Profile
+            self._load_client_behavior()
+            self._load_traffic_patterns()
             self._load_profile_settings("conservative")
-            # Balanced Profile
             self._load_profile_settings("balanced")
-            # Aggressive Profile
             self._load_profile_settings("aggressive")
-
-            # Swarm Intelligence Settings
-            if self._widgets["swarm_intelligence_enabled"]:
-                value = self.app_settings.get("simulation.swarm_intelligence.enabled", True)
-                self._widgets["swarm_intelligence_enabled"].set_active(value)
-
-            if self._widgets["adaptation_rate"]:
-                value = self.app_settings.get("simulation.swarm_intelligence.adaptation_rate", 0.5)
-                self._widgets["adaptation_rate"].set_value(value)
-
-            if self._widgets["peer_analysis_depth"]:
-                value = self.app_settings.get("simulation.swarm_intelligence.peer_analysis_depth", 10)
-                self._widgets["peer_analysis_depth"].set_value(value)
-
+            self._load_swarm_intelligence()
             self.logger.trace(
                 "Advanced Simulation settings loaded successfully",
                 extra={"class_name": self.__class__.__name__},
             )
-
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(
                 f"Failed to load Advanced Simulation settings: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
+
+    def _load_client_behavior(self) -> None:
+        """Load the client-behavior engine widgets."""
+        if self._widgets["client_behavior_enabled"]:
+            value = self.app_settings.get("simulation.client_behavior_engine.enabled", True)
+            self._widgets["client_behavior_enabled"].set_active(value)
+        if self._widgets["primary_client"]:
+            value = self.app_settings.get("simulation.client_behavior_engine.primary_client", "qBittorrent")
+            self._set_combo_active_text(self._widgets["primary_client"], value)
+        if self._widgets["behavior_variation"]:
+            value = self.app_settings.get("simulation.client_behavior_engine.behavior_variation", 0.3)
+            self._widgets["behavior_variation"].set_value(value)
+        if self._widgets["switch_client_probability"]:
+            value = self.app_settings.get("simulation.client_behavior_engine.switch_client_probability", 0.05)
+            self._widgets["switch_client_probability"].set_value(value)
+        if self._widgets["client_profile_switching"]:
+            value = self.app_settings.get("simulation.client_behavior_engine.client_profile_switching", True)
+            self._widgets["client_profile_switching"].set_active(value)
+        if self._widgets["protocol_compliance_level"]:
+            value = self.app_settings.get("simulation.client_behavior_engine.protocol_compliance_level", "standard")
+            self._set_combo_active_text(self._widgets["protocol_compliance_level"], value)
+        if self._widgets["behavior_randomization"]:
+            value = self.app_settings.get("simulation.client_behavior_engine.behavior_randomization", True)
+            self._widgets["behavior_randomization"].set_active(value)
+
+    def _load_traffic_patterns(self) -> None:
+        """Load the traffic-pattern widgets."""
+        if self._widgets["traffic_profile"]:
+            value = self.app_settings.get("simulation.traffic_patterns.profile", "balanced")
+            self._set_combo_active_text(self._widgets["traffic_profile"], value)
+        if self._widgets["realistic_variations"]:
+            value = self.app_settings.get("simulation.traffic_patterns.realistic_variations", True)
+            self._widgets["realistic_variations"].set_active(value)
+        if self._widgets["time_based_patterns"]:
+            value = self.app_settings.get("simulation.traffic_patterns.time_based_patterns", True)
+            self._widgets["time_based_patterns"].set_active(value)
+
+    def _load_swarm_intelligence(self) -> None:
+        """Load the swarm-intelligence widgets."""
+        if self._widgets["swarm_intelligence_enabled"]:
+            value = self.app_settings.get("simulation.swarm_intelligence.enabled", True)
+            self._widgets["swarm_intelligence_enabled"].set_active(value)
+        if self._widgets["adaptation_rate"]:
+            value = self.app_settings.get("simulation.swarm_intelligence.adaptation_rate", 0.5)
+            self._widgets["adaptation_rate"].set_value(value)
+        if self._widgets["peer_analysis_depth"]:
+            value = self.app_settings.get("simulation.swarm_intelligence.peer_analysis_depth", 10)
+            self._widgets["peer_analysis_depth"].set_value(value)
 
     def _load_profile_settings(self, profile_name: str) -> None:
         """Load settings for a specific profile (conservative, balanced, aggressive)."""
@@ -303,97 +286,88 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 for widget_name in swarm_widgets:
                     if self._widgets.get(widget_name):
                         self._widgets[widget_name].set_sensitive(enabled)
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error setting up Simulation tab dependencies: {e}")
 
-    def _collect_settings(self) -> Dict[str, Any]:
+    def _collect_settings(self) -> dict[str, Any]:
         """Collect current settings from Simulation tab widgets.
 
         Returns:
             Dictionary of setting_key -> value pairs for all widgets
         """
-        settings: Dict[str, Any] = {}
+        settings: dict[str, Any] = {}
 
         try:
-            # Client Behavior Engine Settings
-            if self._widgets.get("client_behavior_enabled"):
-                settings["simulation.client_behavior_engine.enabled"] = self._widgets[
-                    "client_behavior_enabled"
-                ].get_active()
-
-            if self._widgets.get("primary_client"):
-                settings["simulation.client_behavior_engine.primary_client"] = self._get_combo_active_text(
-                    self._widgets["primary_client"]
-                )
-
-            if self._widgets.get("behavior_variation"):
-                settings["simulation.client_behavior_engine.behavior_variation"] = self._widgets[
-                    "behavior_variation"
-                ].get_value()
-
-            if self._widgets.get("switch_client_probability"):
-                settings["simulation.client_behavior_engine.switch_client_probability"] = self._widgets[
-                    "switch_client_probability"
-                ].get_value()
-
-            if self._widgets.get("client_profile_switching"):
-                settings["simulation.client_behavior_engine.client_profile_switching"] = self._widgets[
-                    "client_profile_switching"
-                ].get_active()
-
-            if self._widgets.get("protocol_compliance_level"):
-                settings["simulation.client_behavior_engine.protocol_compliance_level"] = self._get_combo_active_text(
-                    self._widgets["protocol_compliance_level"]
-                )
-
-            if self._widgets.get("behavior_randomization"):
-                settings["simulation.client_behavior_engine.behavior_randomization"] = self._widgets[
-                    "behavior_randomization"
-                ].get_active()
-
-            # Traffic Pattern Settings
-            if self._widgets.get("traffic_profile"):
-                settings["simulation.traffic_patterns.profile"] = self._get_combo_active_text(
-                    self._widgets["traffic_profile"]
-                )
-
-            if self._widgets.get("realistic_variations"):
-                settings["simulation.traffic_patterns.realistic_variations"] = self._widgets[
-                    "realistic_variations"
-                ].get_active()
-
-            if self._widgets.get("time_based_patterns"):
-                settings["simulation.traffic_patterns.time_based_patterns"] = self._widgets[
-                    "time_based_patterns"
-                ].get_active()
-
-            # Swarm Intelligence Settings
-            if self._widgets.get("swarm_intelligence_enabled"):
-                settings["simulation.swarm_intelligence.enabled"] = self._widgets[
-                    "swarm_intelligence_enabled"
-                ].get_active()
-
-            if self._widgets.get("adaptation_rate"):
-                settings["simulation.swarm_intelligence.adaptation_rate"] = self._widgets["adaptation_rate"].get_value()
-
-            if self._widgets.get("peer_analysis_depth"):
-                settings["simulation.swarm_intelligence.peer_analysis_depth"] = int(
-                    self._widgets["peer_analysis_depth"].get_value()
-                )
-
-            # Profile Settings - Conservative, Balanced, Aggressive
+            self._collect_client_behavior(settings)
+            self._collect_traffic_patterns(settings)
+            self._collect_swarm_intelligence(settings)
             self._collect_profile_settings(settings, "conservative")
             self._collect_profile_settings(settings, "balanced")
             self._collect_profile_settings(settings, "aggressive")
-
             self.logger.trace(f"Collected {len(settings)} settings from Simulation tab")
-
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error collecting Simulation tab settings: {e}")
 
         return settings
 
-    def _collect_profile_settings(self, settings: Dict[str, Any], profile_name: str) -> None:
+    def _collect_client_behavior(self, settings: dict[str, Any]) -> None:
+        """Collect the client-behavior engine values into ``settings``."""
+        if self._widgets.get("client_behavior_enabled"):
+            settings["simulation.client_behavior_engine.enabled"] = self._widgets[
+                "client_behavior_enabled"
+            ].get_active()
+        if self._widgets.get("primary_client"):
+            settings["simulation.client_behavior_engine.primary_client"] = self._get_combo_active_text(
+                self._widgets["primary_client"]
+            )
+        if self._widgets.get("behavior_variation"):
+            settings["simulation.client_behavior_engine.behavior_variation"] = self._widgets[
+                "behavior_variation"
+            ].get_value()
+        if self._widgets.get("switch_client_probability"):
+            settings["simulation.client_behavior_engine.switch_client_probability"] = self._widgets[
+                "switch_client_probability"
+            ].get_value()
+        if self._widgets.get("client_profile_switching"):
+            settings["simulation.client_behavior_engine.client_profile_switching"] = self._widgets[
+                "client_profile_switching"
+            ].get_active()
+        if self._widgets.get("protocol_compliance_level"):
+            settings["simulation.client_behavior_engine.protocol_compliance_level"] = self._get_combo_active_text(
+                self._widgets["protocol_compliance_level"]
+            )
+        if self._widgets.get("behavior_randomization"):
+            settings["simulation.client_behavior_engine.behavior_randomization"] = self._widgets[
+                "behavior_randomization"
+            ].get_active()
+
+    def _collect_traffic_patterns(self, settings: dict[str, Any]) -> None:
+        """Collect the traffic-pattern values into ``settings``."""
+        if self._widgets.get("traffic_profile"):
+            settings["simulation.traffic_patterns.profile"] = self._get_combo_active_text(
+                self._widgets["traffic_profile"]
+            )
+        if self._widgets.get("realistic_variations"):
+            settings["simulation.traffic_patterns.realistic_variations"] = self._widgets[
+                "realistic_variations"
+            ].get_active()
+        if self._widgets.get("time_based_patterns"):
+            settings["simulation.traffic_patterns.time_based_patterns"] = self._widgets[
+                "time_based_patterns"
+            ].get_active()
+
+    def _collect_swarm_intelligence(self, settings: dict[str, Any]) -> None:
+        """Collect the swarm-intelligence values into ``settings``."""
+        if self._widgets.get("swarm_intelligence_enabled"):
+            settings["simulation.swarm_intelligence.enabled"] = self._widgets["swarm_intelligence_enabled"].get_active()
+        if self._widgets.get("adaptation_rate"):
+            settings["simulation.swarm_intelligence.adaptation_rate"] = self._widgets["adaptation_rate"].get_value()
+        if self._widgets.get("peer_analysis_depth"):
+            settings["simulation.swarm_intelligence.peer_analysis_depth"] = int(
+                self._widgets["peer_analysis_depth"].get_value()
+            )
+
+    def _collect_profile_settings(self, settings: dict[str, Any], profile_name: str) -> None:
         """Collect settings for a specific profile."""
         prefix = f"simulation.profiles.{profile_name}"
         widget_map = [
@@ -412,78 +386,67 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
                 value = self._widgets[widget_name].get_value()
                 settings[f"{prefix}.{key}"] = value_type(value)
 
-    def _validate_tab_settings(self) -> Dict[str, str]:
+    def _validate_tab_settings(self) -> dict[str, str]:
         """Validate Advanced Simulation settings. Returns dict of field_name -> error_message."""
-        errors: Dict[str, str] = {}
+        errors: dict[str, str] = {}
 
         try:
-            # Validate behavior variation range
-            if self._widgets.get("behavior_variation"):
-                variation = self._widgets["behavior_variation"].get_value()
-                if variation < 0 or variation > 1:
-                    errors["behavior_variation"] = "Behavior variation must be between 0.0 and 1.0"
-
-            # Validate switch client probability
-            if self._widgets.get("switch_client_probability"):
-                probability = self._widgets["switch_client_probability"].get_value()
-                if probability < 0 or probability > 1:
-                    errors["switch_client_probability"] = "Switch client probability must be between 0.0 and 1.0"
-
-            # Validate adaptation rate
-            if self._widgets.get("adaptation_rate"):
-                rate = self._widgets["adaptation_rate"].get_value()
-                if rate < 0 or rate > 1:
-                    errors["adaptation_rate"] = "Adaptation rate must be between 0.0 and 1.0"
-
-            # Validate variance values for all profiles
-            variance_widgets = [
-                "conservative_upload_variance",
-                "conservative_download_variance",
-                "balanced_upload_variance",
-                "balanced_download_variance",
-                "aggressive_upload_variance",
-                "aggressive_download_variance",
-            ]
-
-            for widget_name in variance_widgets:
-                if self._widgets.get(widget_name):
-                    variance = self._widgets[widget_name].get_value()
-                    if variance < 0 or variance > 1:
-                        errors[widget_name] = f"{widget_name.replace('_', ' ').title()} must be between 0.0 and 1.0"
-
-            # Validate probability values
-            probability_widgets = [
-                "conservative_burst_probability",
-                "conservative_idle_probability",
-                "balanced_burst_probability",
-                "balanced_idle_probability",
-                "aggressive_burst_probability",
-                "aggressive_idle_probability",
-            ]
-
-            for widget_name in probability_widgets:
-                if self._widgets.get(widget_name):
-                    probability = self._widgets[widget_name].get_value()
-                    if probability < 0 or probability > 1:
-                        errors[widget_name] = f"{widget_name.replace('_', ' ').title()} must be between 0.0 and 1.0"
-
-            # Warning for aggressive settings
-            if (
-                self._widgets.get("aggressive_max_connections")
-                and self._widgets["aggressive_max_connections"].get_value() > 1000
-            ):
-                errors["aggressive_max_connections"] = (
-                    "Aggressive profile with >1000 connections may cause high resource usage"
-                )
-
-        except Exception as e:
-            errors["general"] = f"Validation error: {str(e)}"
+            self._validate_rate_fields(errors)
+            self._validate_profile_ranges(errors)
+            self._validate_aggressive_connections(errors)
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
+            errors["general"] = f"Validation error: {e!s}"
             self.logger.error(
                 f"Advanced Simulation settings validation failed: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
 
         return errors
+
+    def _validate_rate_fields(self, errors: dict[str, str]) -> None:
+        """Validate the single-value 0.0-1.0 rate fields."""
+        rate_fields = [
+            ("behavior_variation", "Behavior variation must be between 0.0 and 1.0"),
+            ("switch_client_probability", "Switch client probability must be between 0.0 and 1.0"),
+            ("adaptation_rate", "Adaptation rate must be between 0.0 and 1.0"),
+        ]
+        for widget_id, message in rate_fields:
+            if self._widgets.get(widget_id):
+                value = self._widgets[widget_id].get_value()
+                if value < 0 or value > 1:
+                    errors[widget_id] = message
+
+    def _validate_profile_ranges(self, errors: dict[str, str]) -> None:
+        """Validate the per-profile variance and probability fields (0.0-1.0)."""
+        range_widgets = [
+            "conservative_upload_variance",
+            "conservative_download_variance",
+            "balanced_upload_variance",
+            "balanced_download_variance",
+            "aggressive_upload_variance",
+            "aggressive_download_variance",
+            "conservative_burst_probability",
+            "conservative_idle_probability",
+            "balanced_burst_probability",
+            "balanced_idle_probability",
+            "aggressive_burst_probability",
+            "aggressive_idle_probability",
+        ]
+        for widget_name in range_widgets:
+            if self._widgets.get(widget_name):
+                value = self._widgets[widget_name].get_value()
+                if value < 0 or value > 1:
+                    errors[widget_name] = f"{widget_name.replace('_', ' ').title()} must be between 0.0 and 1.0"
+
+    def _validate_aggressive_connections(self, errors: dict[str, str]) -> None:
+        """Warn when the aggressive profile allows an excessive connection count."""
+        if (
+            self._widgets.get("aggressive_max_connections")
+            and self._widgets["aggressive_max_connections"].get_value() > 1000
+        ):
+            errors["aggressive_max_connections"] = (
+                "Aggressive profile with >1000 connections may cause high resource usage"
+            )
 
     # Helper methods
     def _set_combo_active_text(self, dropdown: Any, text: Any) -> Any:
@@ -623,9 +586,9 @@ class SimulationTab(BaseSettingsTab, NotificationMixin, TranslationMixin, Valida
         self._language_change_connected = True  # Block TranslationMixin from connecting
         self.translate_all_dropdowns()
 
-    def _create_notification_overlay(self) -> gi.repository.Gtk.Overlay:
+    def _create_notification_overlay(self) -> Gtk.Overlay:
         """Create notification overlay for this tab."""
         # Create a minimal overlay for the notification system
-        overlay = gi.repository.Gtk.Overlay()
+        overlay = Gtk.Overlay()
         self._notification_overlay = overlay
         return overlay
