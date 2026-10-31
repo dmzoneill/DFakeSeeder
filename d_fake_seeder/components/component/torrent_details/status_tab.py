@@ -4,21 +4,13 @@ Status tab for torrent details.
 Displays torrent attributes and status information in a grid layout.
 """
 
-# isort: skip_file
-
-# fmt: off
 from typing import Any
-import gi
 
 from d_fake_seeder.domain.torrent.model.attributes import Attributes
+from d_fake_seeder.lib.gi_base import GLib, GObject
 
 from .base_tab import BaseTorrentTab
 from .tab_mixins import DataUpdateMixin, UIUtilityMixin
-
-gi.require_version("Gtk", "4.0")
-from gi.repository import GObject  # noqa
-
-# fmt: on
 
 
 class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
@@ -54,7 +46,7 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             # Show empty state
             super().clear_content()
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, GLib.Error) as e:
             self.logger.error(f"Error clearing status tab content: {e}")
 
     def _remove_current_grid(self) -> None:
@@ -69,7 +61,7 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 # If it has a different parent, remove from that parent
                 self._status_grid_child.get_parent().remove(self._status_grid_child)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, GLib.Error) as e:
             self.logger.error(f"Error removing status grid child: {e}")
 
     def update_content(self, torrent: Any) -> None:
@@ -107,7 +99,7 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if self._status_tab:
                 self._status_tab.append(self._status_grid_child)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, GLib.Error) as e:
             self.logger.error(f"Error updating status tab content: {e}")
 
     def _show_no_data_message(self) -> None:
@@ -119,7 +111,7 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if self._status_tab:
                 self._status_tab.append(message_label)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, GLib.Error) as e:
             self.logger.error(f"Error showing no data message: {e}")
 
     def _get_compatible_attributes(self) -> list:
@@ -130,9 +122,8 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             List of attribute names
         """
         try:
-            ATTRIBUTES = Attributes
-            return [prop.name.replace("-", "_") for prop in GObject.list_properties(ATTRIBUTES)]
-        except Exception as e:
+            return [prop.name.replace("-", "_") for prop in GObject.list_properties(Attributes)]
+        except (AttributeError, TypeError, ValueError, GLib.Error) as e:
             self.logger.error(f"Error getting compatible attributes: {e}")
             return []
 
@@ -156,7 +147,7 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             # Create the label pair
             self.create_label_pair(display_name, formatted_value, row, self._status_grid_child)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, GLib.Error) as e:
             self.logger.error(f"Error creating attribute row for {attribute}: {e}")
 
     def _convert_attribute_to_display_name(self, attribute: str) -> str:
@@ -207,9 +198,8 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         # Return the mapped display name or a formatted version of the attribute
         if attribute in attribute_display_map:
             return attribute_display_map[attribute]  # type: ignore[no-any-return]
-        else:
-            # Fallback: convert underscore_case to Title Case
-            return attribute.replace("_", " ").title()
+        # Fallback: convert underscore_case to Title Case
+        return attribute.replace("_", " ").title()
 
     def get_attribute_count(self) -> int:
         """
@@ -220,7 +210,7 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
         """
         try:
             return len(self._get_compatible_attributes())
-        except Exception:
+        except (AttributeError, TypeError, ValueError, GLib.Error):
             return 0
 
     def get_attribute_value(self, attribute: str) -> str:
@@ -238,6 +228,6 @@ class StatusTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 value = self.safe_get_property(self._current_torrent, attribute, "N/A")
                 return self.format_property_value(value)
             return "N/A"
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, GLib.Error) as e:
             self.logger.error(f"Error getting attribute value for {attribute}: {e}")
             return "N/A"
