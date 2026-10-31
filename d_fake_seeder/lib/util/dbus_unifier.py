@@ -8,15 +8,21 @@ Integrates directly with AppSettings for settings management and signal forwardi
 
 # isort: skip_file
 
+# fmt: off
 import json
 import time
 from typing import Any
 
+import gi
 
-from d_fake_seeder.lib.gi_base import Gio, GLib
+gi.require_version("Gio", "2.0")
+
+from gi.repository import Gio, GLib  # noqa: E402
 
 from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
 from d_fake_seeder.lib.logger import logger  # noqa: E402
+
+# fmt: on
 
 
 class DBusUnifier:

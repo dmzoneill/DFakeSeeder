@@ -31,14 +31,19 @@ Usage:
 
 # isort: skip_file
 
+# fmt: off
 import warnings
 import weakref
 from typing import Any, List, Tuple
 
+import gi
 
 from d_fake_seeder.lib.logger import logger
 
-from d_fake_seeder.lib.gi_base import GLib, GObject
+gi.require_version("Gtk", "4.0")
+from gi.repository import GLib, GObject  # noqa: E402
+
+# fmt: on
 
 
 class CleanupMixin:

@@ -7,9 +7,15 @@ Monitors a specified folder for new torrent files and automatically adds them to
 import os
 import shutil
 import time
+
+# fmt: off
 from typing import Any, Dict, Set
 
-from d_fake_seeder.lib.gi_base import GLib
+import gi
+
+gi.require_version("Gtk", "4.0")
+from gi.repository import GLib  # noqa: E402
+
 from d_fake_seeder.lib.logger import logger  # noqa: E402
 from d_fake_seeder.lib.util.xdg_paths import get_config_dir  # noqa: E402
 from d_fake_seeder.view import View  # noqa: E402
@@ -28,6 +34,8 @@ except ImportError:
         """Stub fallback when watchdog is not available."""
 
     WATCHDOG_AVAILABLE = False
+
+# fmt: on
 
 
 class TorrentFolderWatcher:
