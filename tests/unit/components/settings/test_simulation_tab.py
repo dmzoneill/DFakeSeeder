@@ -8,6 +8,7 @@ to int on collection. The shared ``settings_module`` / ``make_settings_tab``
 fixtures provide the mocked GTK import and tab builder.
 """
 
+import importlib
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -26,7 +27,8 @@ def _spin(value: float) -> Any:
 
 def test_rate_fields_flag_out_of_range(settings_module: Any, make_settings_tab: Any) -> None:
     """A rate above 1.0 is flagged; an in-range rate is not."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.simulation_tab")
         tab = make_settings_tab(mod.SimulationTab, {"behavior_variation": _spin(1.5), "adaptation_rate": _spin(0.5)})
         errors: dict[str, str] = {}
         getattr(tab, _VALIDATE_RATES)(errors)
@@ -36,7 +38,8 @@ def test_rate_fields_flag_out_of_range(settings_module: Any, make_settings_tab: 
 
 def test_profile_ranges_flag_out_of_range(settings_module: Any, make_settings_tab: Any) -> None:
     """A profile variance below 0 is flagged with a humanised field name."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.simulation_tab")
         tab = make_settings_tab(mod.SimulationTab, {"conservative_upload_variance": _spin(-0.2)})
         errors: dict[str, str] = {}
         getattr(tab, _VALIDATE_PROFILES)(errors)
@@ -45,7 +48,8 @@ def test_profile_ranges_flag_out_of_range(settings_module: Any, make_settings_ta
 
 def test_collect_swarm_coerces_depth_to_int(settings_module: Any, make_settings_tab: Any) -> None:
     """The peer-analysis-depth value is coerced to an int."""
-    with settings_module(_MODULE) as mod:
+    with settings_module(_MODULE):
+        mod = importlib.import_module("d_fake_seeder.components.component.settings.simulation_tab")
         tab = make_settings_tab(mod.SimulationTab, {"peer_analysis_depth": _spin(12.0)})
         collected: dict[str, Any] = {}
         getattr(tab, _COLLECT_SWARM)(collected)
