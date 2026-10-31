@@ -18,14 +18,16 @@ Usage: expand_ui_templates.py FILE [FILE ...]   (files are rewritten in place)
 
 import re
 import sys
-import xml.etree.ElementTree as ET
+from html import unescape
 from pathlib import Path
-from xml.sax.saxutils import escape
 
-TEMPLATE_DIR = Path(__file__).resolve().parent.parent / "d_fake_seeder" / "components" / "ui" / "templates"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+TEMPLATE_DIR = REPO_ROOT / "d_fake_seeder" / "components" / "ui" / "templates"
 TEMPLATE_RE = re.compile(r'^<template name="([\w-]+)">\n(.*?)\n</template>$', re.MULTILINE | re.DOTALL)
 MACRO_RE = re.compile(r"<dfs-use\b[^>]*/>")
 PLACEHOLDER_RE = re.compile(r"\{(\w+)\}")
+ATTRIBUTE_RE = re.compile(r'([\w-]+)="([^"]*)"')
+XML_ESCAPES = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}
 MAX_DEPTH = 10
 
 
@@ -44,8 +46,12 @@ def load_templates(template_dir: Path = TEMPLATE_DIR) -> dict[str, str]:
     return templates
 
 
+def _xml_escape(value: str) -> str:
+    return "".join(XML_ESCAPES.get(char, char) for char in value)
+
+
 def _render(macro: str, indent: str, templates: dict[str, str]) -> str:
-    params = dict(ET.fromstring(macro).attrib)
+    params = {key: unescape(value) for key, value in ATTRIBUTE_RE.findall(macro)}
     name = params.pop("template", "")
     if name not in templates:
         raise TemplateError(f"Unknown template {name!r} in {macro}")
@@ -54,7 +60,7 @@ def _render(macro: str, indent: str, templates: dict[str, str]) -> str:
         key = match.group(1)
         if key not in params:
             raise TemplateError(f"Template {name!r} needs parameter {key!r} ({macro})")
-        return escape(params[key], {'"': "&quot;"})
+        return _xml_escape(params[key])
 
     body = PLACEHOLDER_RE.sub(fill, templates[name])
     return "\n".join(f"{indent}{line}" if line and i else line for i, line in enumerate(body.split("\n")))
@@ -85,7 +91,9 @@ def main(argv: list[str]) -> int:
         return 2
     templates = load_templates()
     for name in argv:
-        path = Path(name)
+        path = Path(name).resolve()
+        if not path.is_relative_to(REPO_ROOT) or path.suffix != ".xml":
+            raise TemplateError(f"Refusing to rewrite {name}: not an .xml file inside {REPO_ROOT}")
         path.write_text(expand(path.read_text(encoding="utf-8"), templates), encoding="utf-8")
     return 0
 
