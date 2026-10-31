@@ -1,5 +1,3 @@
-# Network handlers deliberately log and survive any per-packet/peer failure.
-# ruff: noqa: BLE001
 """
 µTP Connection Manager
 
@@ -19,6 +17,18 @@ from .utp_connection import UTPConnection
 
 # fmt: on
 
+# Failures from malformed peer packets, bad addresses, socket I/O and protocol state.
+_PEER_ERRORS: tuple[type[Exception], ...] = (
+    OSError,
+    ValueError,
+    TypeError,
+    KeyError,
+    IndexError,
+    AttributeError,
+    UnicodeError,
+    RuntimeError,
+)
+
 
 class UTPManager:
     """Manages µTP connections"""
@@ -34,7 +44,7 @@ class UTPManager:
         self.settings = AppSettings.get_instance()
 
         # Socket and connections
-        self.socket = None
+        self.socket: socket.socket | None = None
         self.running = False
         self._background_tasks: set[asyncio.Task[Any]] = set()
         self.connections: dict[int, UTPConnection] = {}  # connection_id -> UTPConnection
@@ -70,14 +80,14 @@ class UTPManager:
             # Create UDP socket
             from d_fake_seeder.lib.util.network import get_bind_tuple
 
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # type: ignore[assignment]
-            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # type: ignore[attr-defined]
-            self.socket.bind(get_bind_tuple(self.port))  # type: ignore[attr-defined]
-            self.socket.setblocking(False)  # type: ignore[attr-defined]
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.socket.bind(get_bind_tuple(self.port))
+            self.socket.setblocking(False)
 
             # Get actual port if random was chosen
             if self.port == 0:
-                self.port = self.socket.getsockname()[1]  # type: ignore[attr-defined]
+                self.port = self.socket.getsockname()[1]
 
             self.running = True
 
@@ -90,7 +100,7 @@ class UTPManager:
             )
             return True
 
-        except Exception as e:
+        except _PEER_ERRORS as e:
             logger.error(
                 f"Failed to start µTP manager: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -169,33 +179,43 @@ class UTPManager:
                 del self.connections[connection_id]
                 return None
 
-        except Exception as e:
+        except _PEER_ERRORS as e:
             logger.error(
                 f"Failed to create µTP connection: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
             return None
 
+    def _get_poll_interval(self) -> float:
+        """Get the back-off after a listen error from settings."""
+        utp_config = getattr(self.settings, "protocols", {}).get("transport", {}).get("utp", {})
+        if isinstance(utp_config, dict):
+            return float(utp_config.get("poll_interval_seconds", 0.1))
+        return 0.1
+
     async def _listen_loop(self) -> Any:
         """Main listening loop for incoming packets"""
         while self.running:
             try:
                 # Receive packet
+                sock = self.socket
+                if sock is None:
+                    break
                 loop = asyncio.get_running_loop()
                 size = UTPConstants.MAX_PACKET_SIZE
-                data, addr = await loop.sock_recvfrom(self.socket, size)  # type: ignore[attr-defined,arg-type]
+                data, addr = await loop.sock_recvfrom(sock, size)
 
                 # Route to appropriate connection
                 self._spawn_background(self._route_packet(data, addr))
 
             except asyncio.CancelledError:
                 raise
-            except Exception as e:
+            except _PEER_ERRORS as e:
                 logger.error(
                     f"µTP listen error: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                await asyncio.sleep(self._get_poll_interval())  # type: ignore[attr-defined]
+                await asyncio.sleep(self._get_poll_interval())
 
     async def _route_packet(self, data: bytes, addr: tuple[str, int]) -> Any:
         """
@@ -223,7 +243,7 @@ class UTPManager:
                 if packet_type == 4:  # ST_SYN
                     await self._accept_connection(data, addr, connection_id)
 
-        except Exception as e:
+        except _PEER_ERRORS as e:
             logger.error(
                 f"Error routing µTP packet: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -258,7 +278,7 @@ class UTPManager:
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except _PEER_ERRORS as e:
             logger.error(
                 f"Failed to accept µTP connection: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -300,7 +320,7 @@ class UTPManager:
 
     def is_enabled(self) -> bool:
         """Check if µTP is enabled"""
-        return self.enabled  # type: ignore[no-any-return]
+        return bool(self.enabled)
 
     def is_running(self) -> bool:
         """Check if µTP manager is running"""

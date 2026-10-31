@@ -1,5 +1,3 @@
-# Network handlers deliberately log and survive any per-packet/peer failure.
-# ruff: noqa: BLE001
 """
 DHT Node Implementation (BEP-005)
 
@@ -30,6 +28,19 @@ except ImportError:
 
 # fmt: on
 
+# Failures from malformed peer packets, bad addresses, socket I/O and protocol state.
+_PEER_ERRORS: tuple[type[Exception], ...] = (
+    OSError,
+    ValueError,
+    TypeError,
+    KeyError,
+    IndexError,
+    AttributeError,
+    UnicodeError,
+    RuntimeError,
+)
+_PEER_ERRORS += tuple(e for e in (getattr(bencode, "BTFailure", None),) if isinstance(e, type))
+
 
 class DHTNode:
     """DHT node implementation for peer discovery and announcement"""
@@ -53,7 +64,7 @@ class DHTNode:
         self.announcement_interval = dht_config.get("announcement_interval", 1800)
 
         # Network state
-        self.socket = None
+        self.socket: socket.socket | None = None
         self.running = False
         self._background_tasks: set[asyncio.Task[Any]] = set()
         self.bootstrap_nodes = [
@@ -64,7 +75,7 @@ class DHTNode:
 
         # DHT data structures
         self.routing_table = RoutingTable(self.node_id)
-        self.peer_discovery = None  # Will be initialized after socket creation
+        self.peer_discovery: PeerDiscovery | None = None  # Will be initialized after socket creation
         self.token_storage: dict[str, tuple[bytes, float]] = {}  # IP -> (token, timestamp) mapping for announce_peer
         self.pending_queries: dict[bytes, dict[str, Any]] = {}  # Transaction ID -> query info
 
@@ -102,16 +113,16 @@ class DHTNode:
             # Create UDP socket
             from d_fake_seeder.lib.util.network import get_bind_tuple
 
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # type: ignore[assignment]
-            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # type: ignore[attr-defined]
-            self.socket.bind(get_bind_tuple(self.port))  # type: ignore[attr-defined]
-            self.socket.setblocking(False)  # type: ignore[attr-defined]
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.socket.bind(get_bind_tuple(self.port))
+            self.socket.setblocking(False)
 
             self.running = True
 
             # Initialize peer discovery with socket
             discovery = PeerDiscovery(self.node_id, self.routing_table, self.socket)
-            self.peer_discovery = discovery  # type: ignore[assignment]
+            self.peer_discovery = discovery
 
             # Start background tasks
             self._spawn_background(self._listen_loop())
@@ -123,7 +134,7 @@ class DHTNode:
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except _PEER_ERRORS as e:
             logger.error(
                 f"Failed to start DHT node: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -185,7 +196,7 @@ class DHTNode:
                 )
                 return False
 
-        except Exception as e:
+        except _PEER_ERRORS as e:
             logger.error(
                 f"DHT announcement failed: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -223,32 +234,42 @@ class DHTNode:
 
             return peers
 
-        except Exception as e:
+        except _PEER_ERRORS as e:
             logger.error(
                 f"DHT peer query failed: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
             return []
 
+    def _get_sleep_interval(self) -> float:
+        """Get the back-off after a listen error from settings."""
+        dht_config = getattr(self.settings, "protocols", {}).get("dht", {})
+        if isinstance(dht_config, dict):
+            return float(dht_config.get("poll_interval_seconds", 0.1))
+        return 0.1
+
     async def _listen_loop(self) -> Any:
         """Main listening loop for DHT messages"""
         while self.running:
             try:
                 # Receive DHT message
+                sock = self.socket
+                if sock is None:
+                    break
                 loop = asyncio.get_running_loop()
-                data, addr = await loop.sock_recvfrom(self.socket, 1024)  # type: ignore[attr-defined,arg-type]
+                data, addr = await loop.sock_recvfrom(sock, 1024)
 
                 # Process message in background
                 self._spawn_background(self._handle_message(data, addr))
 
             except asyncio.CancelledError:
                 raise
-            except Exception as e:
+            except _PEER_ERRORS as e:
                 logger.error(
                     f"DHT listen error: {e}",
                     extra={"class_name": self.__class__.__name__},
                 )
-                await asyncio.sleep(self._get_sleep_interval())  # type: ignore[attr-defined]
+                await asyncio.sleep(self._get_sleep_interval())
 
     async def _handle_message(self, data: bytes, addr: tuple[str, int]) -> None:
         """Handle incoming DHT message"""
@@ -267,7 +288,7 @@ class DHTNode:
             elif message_type == b"e":  # Error
                 await self._handle_error(message, addr)
 
-        except Exception as e:
+        except _PEER_ERRORS as e:
             logger.trace(
                 f"Failed to decode DHT message from {addr}: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -296,7 +317,7 @@ class DHTNode:
                 if response:
                     await self._send_message(response, addr)
 
-        except Exception as e:
+        except _PEER_ERRORS as e:
             logger.trace(
                 f"Failed to handle DHT query: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -314,7 +335,7 @@ class DHTNode:
                 return
             data = bencode.bencode(message)
             await asyncio.get_running_loop().sock_sendto(self.socket, data, addr)
-        except Exception as e:
+        except _PEER_ERRORS as e:
             logger.trace(
                 f"Failed to send DHT message to {addr}: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -330,7 +351,7 @@ class DHTNode:
                 addr = (socket.gethostbyname(host), port)
                 await self._send_ping(addr)
                 await asyncio.sleep(DHTConstants.RATE_LIMIT_DELAY_SECONDS)  # Rate limiting
-            except Exception as e:
+            except _PEER_ERRORS as e:
                 logger.trace(
                     f"Bootstrap failed for {host}:{port}: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -363,14 +384,15 @@ class DHTNode:
                 # Clean up old data
                 self._cleanup_old_data()
                 self.routing_table.cleanup_stale_nodes()
-                self.peer_discovery.cleanup_old_peers()  # type: ignore[attr-defined]
+                if self.peer_discovery is not None:
+                    self.peer_discovery.cleanup_old_peers()
 
                 # Wait for next maintenance cycle
                 await asyncio.sleep(self.announcement_interval)
 
             except asyncio.CancelledError:
                 raise
-            except Exception as e:
+            except _PEER_ERRORS as e:
                 logger.error(
                     f"DHT maintenance error: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -423,7 +445,7 @@ class DHTNode:
             await self._send_message(message, node_addr)
             return True
 
-        except Exception as e:
+        except _PEER_ERRORS as e:
             logger.trace(
                 f"Failed to send announce_peer to {node_addr}: {e}",
                 extra={"class_name": self.__class__.__name__},
