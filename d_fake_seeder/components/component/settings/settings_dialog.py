@@ -3,40 +3,27 @@ Main settings dialog component.
 Coordinates all settings tabs and provides the main settings interface.
 """
 
-# isort: skip_file
-
-# fmt: off
 import os
-from typing import Any, Dict, List
+from types import SimpleNamespace
+from typing import Any
 
-import gi
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.tab_config import get_settings_tab_classes
 
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk  # noqa
-
-from d_fake_seeder.domain.app_settings import AppSettings  # noqa
-from d_fake_seeder.lib.logger import logger  # noqa
-
-# Import tab configuration system
-from d_fake_seeder.lib.util.tab_config import get_settings_tab_classes  # noqa: E402
-
-# Component inheritance removed - settings dialog should not be a general model observer
-from .advanced_tab import AdvancedTab  # noqa
-from .bittorrent_tab import BitTorrentTab  # noqa
-from .connection_tab import ConnectionTab  # noqa
-from .dht_tab import DHTTab  # noqa
-from .notifications_tab import NotificationsTab  # noqa
-
-# Import all tab classes  # noqa
-from .general_tab import GeneralTab  # noqa
-from .peer_protocol_tab import PeerProtocolTab  # noqa
-from .protocol_extensions_tab import ProtocolExtensionsTab  # noqa
-from .simulation_tab import SimulationTab  # noqa
-from .speed_tab import SpeedTab  # noqa
-from .tracker_settings_tab import TrackerSettingsTab  # noqa
-from .webui_tab import WebUITab  # noqa
-
-# fmt: on
+from .advanced_tab import AdvancedTab
+from .bittorrent_tab import BitTorrentTab
+from .connection_tab import ConnectionTab
+from .dht_tab import DHTTab
+from .general_tab import GeneralTab
+from .notifications_tab import NotificationsTab
+from .peer_protocol_tab import PeerProtocolTab
+from .protocol_extensions_tab import ProtocolExtensionsTab
+from .simulation_tab import SimulationTab
+from .speed_tab import SpeedTab
+from .tracker_settings_tab import TrackerSettingsTab
+from .webui_tab import WebUITab
 
 
 class SettingsDialog:
@@ -48,83 +35,50 @@ class SettingsDialog:
 
     def __init__(self, parent_window: Any, app: Any = None, model: Any = None) -> None:
         """Initialize the settings dialog."""
-        logger.trace("===== SettingsDialog.__init__ START =====", "SettingsDialog")
-        logger.trace("parent_window:", "SettingsDialog")
-        logger.trace("app:", "SettingsDialog")
-        logger.trace("model:", "SettingsDialog")
-        # Initialize dialog (no Component inheritance - settings don't need general model observation)
-        logger.trace("super().__init__() completed", "SettingsDialog")
         logger.trace("startup", extra={"class_name": self.__class__.__name__})
-        logger.trace("Setting instance variables", "SettingsDialog")
-        self.parent_window = parent_window
-        self.app = app
         self.model = model
-        logger.trace("About to get AppSettings instance", "SettingsDialog")
         self.app_settings = AppSettings.get_instance()
-        logger.trace("AppSettings instance:", "SettingsDialog")
+        self.tabs: list[Any] = []
+        # UI widget references; the main window stays a public attribute because
+        # external callers (e.g. the toolbar) read ``settings_dialog.window``.
+        self._ui = SimpleNamespace(parent_window=parent_window, builder=None, notebook=None)
+        # Runtime state and configuration.
+        self._state = SimpleNamespace(
+            app=app,
+            deferred_model=model,
+            settings_dirty=False,
+            first_show_complete=False,
+        )
 
         # Connect to AppSettings changes for theme updates
         self.app_settings.connect("attribute-changed", self._on_app_settings_changed)
-        logger.trace("Connected to AppSettings attribute-changed signal", "SettingsDialog")
 
-        # Load the settings UI
-        logger.trace("Creating Gtk.Builder", "SettingsDialog")
-        self.builder = Gtk.Builder()
-        logger.trace("About to load UI file", "SettingsDialog")
-        ui_file_path = os.environ.get("DFS_PATH") + "/components/ui/generated/settings_generated.xml"  # type: ignore[operator]  # noqa: E501
-        logger.trace("UI file path:", "SettingsDialog")
-        logger.trace("UI file exists:", "SettingsDialog")
-        self.builder.add_from_file(ui_file_path)
+        # Load the settings UI and initialize tab components
+        self._load_ui()
+        self._initialize_tabs()
+
+        # Connect signals and set up global keyboard shortcuts
+        self._connect_window_signals()
+        self._connect_button_signals()
+        self._setup_global_shortcuts()
+        logger.trace("SettingsDialog.__init__ completed", "SettingsDialog")
+
+    def _load_ui(self) -> None:
+        """Load the settings UI file and resolve the main window and notebook."""
+        self._ui.builder = Gtk.Builder()
+        ui_file_path = os.environ["DFS_PATH"] + "/components/ui/generated/settings_generated.xml"
+        self._ui.builder.add_from_file(ui_file_path)
         logger.info("UI file loaded successfully", "SettingsDialog")
-        # Get main window
-        logger.trace("Getting settings_window from builder", "SettingsDialog")
-        self.window = self.builder.get_object("settings_window")
-        logger.trace("Settings window:", "SettingsDialog")
+        self.window = self._ui.builder.get_object("settings_window")
 
         # Apply dark mode class if currently in dark mode
         ui_settings = self.app_settings.get("ui_settings", {})
-        color_scheme = ui_settings.get("color_scheme", "auto")
-        if color_scheme == "dark":
+        if ui_settings.get("color_scheme", "auto") == "dark":
             self.window.add_css_class("dark")
-            logger.trace("Added 'dark' CSS class to settings dialog", "SettingsDialog")
 
-        logger.trace("Setting transient parent", "SettingsDialog")
-        self.window.set_transient_for(parent_window)
-        logger.debug("Setting modal to False", "SettingsDialog")
+        self.window.set_transient_for(self._ui.parent_window)
         self.window.set_modal(False)
-        logger.trace("Window setup completed", "SettingsDialog")
-        # Get notebook for tab management
-        self.notebook = self.builder.get_object("settings_notebook")
-        # Initialize all tab components (lazy loading - only structures created)
-        self.tabs: List[Any] = []
-        self._initialize_tabs()
-
-        # Store model reference for lazy initialization later
-        self._deferred_model = self.model
-
-        # Track whether settings have been modified (dirty flag)
-        self._settings_dirty = False
-
-        # Connect window signals
-        logger.trace("About to connect window signals", "SettingsDialog")
-        self._connect_window_signals()
-        logger.trace("Window signals connected", "SettingsDialog")
-
-        # Connect button signals
-        logger.trace("About to connect button signals", "SettingsDialog")
-        self._connect_button_signals()
-        logger.trace("Button signals connected", "SettingsDialog")
-        # Setup global keyboard shortcuts
-        logger.trace("About to setup global shortcuts", "SettingsDialog")
-        self._setup_global_shortcuts()
-        logger.trace("Global shortcuts setup completed", "SettingsDialog")
-
-        # Flag to track if first show initialization is done
-        self._first_show_complete = False
-        logger.trace(
-            "===== SettingsDialog.__init__ COMPLETED SUCCESSFULLY =====",
-            "SettingsDialog",
-        )
+        self._ui.notebook = self._ui.builder.get_object("settings_notebook")
 
     def _(self, text: str) -> str:
         """Helper for translating strings using the model's translation function."""
@@ -169,9 +123,9 @@ class SettingsDialog:
                 try:
                     # Pass app reference to GeneralTab for UI restart functionality
                     if tab_class.__name__ == "GeneralTab":
-                        tab = tab_class(self.builder, self.app_settings, self.app)
+                        tab = tab_class(self._ui.builder, self.app_settings, self._state.app)
                     else:
-                        tab = tab_class(self.builder, self.app_settings)
+                        tab = tab_class(self._ui.builder, self.app_settings)
 
                     # Set back-reference to settings dialog for cross-tab communication
                     tab.settings_dialog = self
@@ -192,7 +146,7 @@ class SettingsDialog:
         try:
             logger.trace("Starting _update_tabs_with_model for  tabs", "SettingsDialog")
             # Special handling for GeneralTab to populate language dropdown
-            for i, tab in enumerate(self.tabs):
+            for tab in self.tabs:
                 logger.trace("Checking tab :", "SettingsDialog")
                 if tab.tab_name == "General" and hasattr(tab, "update_view"):
                     logger.trace(
@@ -202,8 +156,7 @@ class SettingsDialog:
                     logger.trace(f"Calling update_view on {tab.tab_name} tab for language dropdown")
                     # Just store the model reference and populate language dropdown
                     tab.model = self.model
-                    if hasattr(tab, "_populate_language_dropdown"):
-                        tab._populate_language_dropdown()
+                    tab.populate_language_dropdown()
                     logger.trace("Completed language dropdown population for", "SettingsDialog")
                 elif hasattr(tab, "update_view"):
                     logger.trace("Storing model reference for  tab", "SettingsDialog")
@@ -220,12 +173,12 @@ class SettingsDialog:
         """Connect window-level signals."""
         try:
             # Window close
-            self.window.connect("close-request", self.on_window_close)
+            self.window.connect("close-request", self._on_window_close)
             # Window shown - for deferred initialization
-            self.window.connect("map", self.on_window_shown)
+            self.window.connect("map", self._on_window_shown)
             # Notebook page switching
-            if self.notebook:
-                self.notebook.connect("switch-page", self.on_page_switched)
+            if self._ui.notebook:
+                self._ui.notebook.connect("switch-page", self._on_page_switched)
         except (AttributeError, TypeError) as e:
             logger.error(f"Error connecting window signals: {e}", exc_info=True)
 
@@ -233,14 +186,14 @@ class SettingsDialog:
         """Connect action button signals."""
         try:
             # Get button widgets
-            cancel_button = self.builder.get_object("settings_cancel_button")
-            apply_button = self.builder.get_object("settings_apply_button")
-            ok_button = self.builder.get_object("settings_ok_button")
-            reset_button = self.builder.get_object("settings_reset_button")
+            cancel_button = self._ui.builder.get_object("settings_cancel_button")
+            apply_button = self._ui.builder.get_object("settings_apply_button")
+            ok_button = self._ui.builder.get_object("settings_ok_button")
+            reset_button = self._ui.builder.get_object("settings_reset_button")
 
             # Connect signals
             if cancel_button:
-                cancel_button.connect("clicked", self.on_cancel_clicked)
+                cancel_button.connect("clicked", self._on_cancel_clicked)
             if apply_button:
                 apply_button.connect("clicked", self.on_apply_clicked)
             if ok_button:
@@ -252,9 +205,9 @@ class SettingsDialog:
         except (AttributeError, TypeError) as e:
             logger.error(f"Error connecting button signals: {e}", exc_info=True)
 
-    def on_window_shown(self, window: Any) -> None:
+    def _on_window_shown(self, window: Any) -> None:
         """Handle window shown event - perform deferred initialization."""
-        if self._first_show_complete:
+        if self._state.first_show_complete:
             return
 
         logger.trace(
@@ -263,17 +216,15 @@ class SettingsDialog:
         )
 
         # Use idle_add to defer initialization until after window is rendered
-        from gi.repository import GLib
-
         def _deferred_init() -> Any:
             try:
                 # Pass model to tabs BEFORE initialization so they can use it
-                if self._deferred_model:
+                if self._state.deferred_model:
                     for tab in self.tabs:
-                        tab.model = self._deferred_model
+                        tab.model = self._state.deferred_model
 
                 # Initialize currently visible tab only
-                current_page = self.notebook.get_current_page() if self.notebook else 0
+                current_page = self._ui.notebook.get_current_page() if self._ui.notebook else 0
                 if 0 <= current_page < len(self.tabs):
                     tab = self.tabs[current_page]
                     logger.trace(f"Initializing visible tab: {tab.tab_name}", "SettingsDialog")
@@ -281,24 +232,20 @@ class SettingsDialog:
 
                     # Special handling for GeneralTab language dropdown
                     if hasattr(tab, "tab_name") and tab.tab_name == "General":
-                        if hasattr(tab, "_populate_language_dropdown"):
-                            logger.trace(
-                                "Populating language dropdown for GeneralTab",
-                                "SettingsDialog",
+                        logger.trace("Populating language dropdown for GeneralTab", "SettingsDialog")
+                        try:
+                            tab.populate_language_dropdown()
+                        except (AttributeError, TypeError, ValueError) as e:
+                            logger.error(
+                                f"Error populating language dropdown: {e}",
+                                exc_info=True,
                             )
-                            try:
-                                tab._populate_language_dropdown()
-                            except (AttributeError, TypeError, ValueError) as e:
-                                logger.error(
-                                    f"Error populating language dropdown: {e}",
-                                    exc_info=True,
-                                )
 
                 # Register for translation (if model available)
-                if self._deferred_model:
+                if self._state.deferred_model:
                     self._register_for_translation()
 
-                self._first_show_complete = True
+                self._state.first_show_complete = True
                 logger.trace("Deferred initialization complete", "SettingsDialog")
             except (AttributeError, TypeError, ValueError) as e:
                 logger.error(f"Error in deferred initialization: {e}", exc_info=True)
@@ -366,7 +313,7 @@ class SettingsDialog:
                 # Get initial widget count
                 initial_count = len(self.model.translation_manager.translatable_widgets)
                 # Register settings dialog builder widgets
-                self.model.translation_manager.scan_builder_widgets(self.builder)
+                self.model.translation_manager.scan_builder_widgets(self._ui.builder)
                 final_count = len(self.model.translation_manager.translatable_widgets)
                 new_widgets = final_count - initial_count
                 logger.trace(
@@ -433,10 +380,10 @@ class SettingsDialog:
                 error_message = "Please fix the following errors before closing:\n\n"
                 for tab_name, errors in validation_errors.items():
                     error_message += f"{tab_name}:\n"
-                    for field, error in errors.items():
+                    for error in errors.values():
                         error_message += f"  - {error}\n"
                     error_message += "\n"
-                # TODO: Show error dialog
+                # Error dialog UI is not wired here; the failure is logged below.
                 logger.error(f"Settings validation failed: {validation_errors}")
                 return
             # Save all settings before closing
@@ -445,7 +392,7 @@ class SettingsDialog:
         except (AttributeError, TypeError, KeyError) as e:
             logger.error(f"Error closing settings dialog: {e}", exc_info=True)
 
-    def save_all_settings(self) -> Dict[str, Any]:
+    def save_all_settings(self) -> dict[str, Any]:
         """Save settings from all tabs."""
         try:
             all_saved_settings = {}
@@ -462,7 +409,7 @@ class SettingsDialog:
             logger.error(f"Error saving all settings: {e}", exc_info=True)
             return {}
 
-    def validate_all_settings(self) -> Dict[str, Dict[str, str]]:
+    def validate_all_settings(self) -> dict[str, dict[str, str]]:
         """Validate settings from all tabs."""
         try:
             all_validation_errors = {}
@@ -485,9 +432,9 @@ class SettingsDialog:
     def reset_current_tab(self) -> None:
         """Reset the currently active tab to defaults."""
         try:
-            if not self.notebook:
+            if not self._ui.notebook:
                 return
-            current_page = self.notebook.get_current_page()
+            current_page = self._ui.notebook.get_current_page()
             if 0 <= current_page < len(self.tabs):
                 tab = self.tabs[current_page]
                 tab.reset_to_defaults()
@@ -511,24 +458,24 @@ class SettingsDialog:
     def next_tab(self) -> None:
         """Switch to the next tab."""
         try:
-            if not self.notebook:
+            if not self._ui.notebook:
                 return
-            current_page = self.notebook.get_current_page()
-            total_pages = self.notebook.get_n_pages()
+            current_page = self._ui.notebook.get_current_page()
+            total_pages = self._ui.notebook.get_n_pages()
             next_page = (current_page + 1) % total_pages
-            self.notebook.set_current_page(next_page)
+            self._ui.notebook.set_current_page(next_page)
         except (AttributeError, TypeError) as e:
             logger.error(f"Error switching to next tab: {e}", exc_info=True)
 
     def previous_tab(self) -> None:
         """Switch to the previous tab."""
         try:
-            if not self.notebook:
+            if not self._ui.notebook:
                 return
-            current_page = self.notebook.get_current_page()
-            total_pages = self.notebook.get_n_pages()
+            current_page = self._ui.notebook.get_current_page()
+            total_pages = self._ui.notebook.get_n_pages()
             previous_page = (current_page - 1) % total_pages
-            self.notebook.set_current_page(previous_page)
+            self._ui.notebook.set_current_page(previous_page)
         except (AttributeError, TypeError) as e:
             logger.error(f"Error switching to previous tab: {e}", exc_info=True)
 
@@ -547,26 +494,23 @@ class SettingsDialog:
         """Switch to a specific tab by name."""
         try:
             for i, tab in enumerate(self.tabs):
-                if tab.tab_name == tab_name:
-                    if self.notebook:
-                        self.notebook.set_current_page(i)
-                        return True
+                if tab.tab_name == tab_name and self._ui.notebook:
+                    self._ui.notebook.set_current_page(i)
+                    return True
             return False
         except (AttributeError, TypeError) as e:
             logger.error(f"Error switching to tab {tab_name}: {e}", exc_info=True)
             return False
 
     # Signal handlers
-    def on_window_close(self, window: Any) -> bool:
+    def _on_window_close(self, window: Any) -> bool:
         """Handle window close request (X button or Alt+F4)."""
         try:
             logger.trace("Settings window close requested via window controls")
 
             # Check if there are unsaved changes
-            if self._settings_dirty:
+            if self._state.settings_dirty:
                 # Show confirmation dialog for unsaved changes
-                from gi.repository import GLib
-
                 def _show_unsaved_dialog() -> Any:
                     dialog = Gtk.AlertDialog()
                     dialog.set_message("Unsaved Changes")
@@ -595,10 +539,9 @@ class SettingsDialog:
 
                 GLib.idle_add(_show_unsaved_dialog)
                 return True  # Prevent immediate close
-            else:
-                # No unsaved changes - just close
-                self._cleanup_and_close()
-                return False  # Allow default close behavior
+            # No unsaved changes - just close
+            self._cleanup_and_close()
+            return False  # Allow default close behavior
         except (AttributeError, TypeError) as e:
             logger.error(f"Error handling window close: {e}", exc_info=True)
             return False  # Allow close even if there was an error
@@ -616,14 +559,14 @@ class SettingsDialog:
                         logger.error(f"Error cleaning up tab: {e}", exc_info=True)
 
             # Reset dirty flag
-            self._settings_dirty = False
+            self._state.settings_dirty = False
 
             self.hide()
             logger.trace("Settings dialog closed and cleaned up")
         except (AttributeError, TypeError) as e:
             logger.error(f"Error during cleanup and close: {e}", exc_info=True)
 
-    def on_page_switched(self, notebook: Gtk.Notebook, page: Gtk.Widget, page_num: int) -> None:
+    def _on_page_switched(self, notebook: Gtk.Notebook, page: Gtk.Widget, page_num: int) -> None:
         """Handle notebook page switch."""
         try:
             if 0 <= page_num < len(self.tabs):
@@ -637,14 +580,14 @@ class SettingsDialog:
             logger.error(f"Error handling page switch: {e}", exc_info=True)
 
     # Button signal handlers
-    def on_cancel_clicked(self, button: Any) -> None:
+    def _on_cancel_clicked(self, button: Any) -> None:
         """Handle Cancel button click - close without saving."""
         try:
             logger.trace("Cancel button clicked")
             # Reload all settings to discard changes
             self.reload_all_tab_settings()
             # Reset dirty flag
-            self._settings_dirty = False
+            self._state.settings_dirty = False
             # Close the dialog
             self._cleanup_and_close()
         except (AttributeError, TypeError) as e:
@@ -663,7 +606,7 @@ class SettingsDialog:
             # Save all settings
             self.save_all_settings()
             # Reset dirty flag
-            self._settings_dirty = False
+            self._state.settings_dirty = False
             logger.info("Settings applied successfully")
 
             # Show brief confirmation
@@ -684,7 +627,7 @@ class SettingsDialog:
             # Save all settings
             self.save_all_settings()
             # Reset dirty flag
-            self._settings_dirty = False
+            self._state.settings_dirty = False
             # Close the dialog
             self._cleanup_and_close()
             logger.info("Settings saved and dialog closed")
@@ -698,20 +641,20 @@ class SettingsDialog:
             # Reset the current tab
             self.reset_current_tab()
             # Mark settings as modified
-            self._settings_dirty = True
+            self._state.settings_dirty = True
             logger.info("Current tab reset to defaults")
         except (AttributeError, TypeError) as e:
             logger.error(f"Error handling reset button: {e}", exc_info=True)
 
     # Helper methods
-    def _show_validation_errors(self, validation_errors: Dict[str, Dict[str, str]]) -> None:
+    def _show_validation_errors(self, validation_errors: dict[str, dict[str, str]]) -> None:
         """Show validation error dialog."""
         try:
             # Build error message
             error_message = "Please fix the following errors:\n\n"
             for tab_name, errors in validation_errors.items():
                 error_message += f"{tab_name}:\n"
-                for field, error in errors.items():
+                for error in errors.values():
                     error_message += f"  • {error}\n"
                 error_message += "\n"
 
@@ -738,22 +681,21 @@ class SettingsDialog:
             # For now, just log the message
             # In the future, this could show a toast notification
             logger.info(message)
-            # TODO: Implement toast notification UI
         except (AttributeError, TypeError) as e:
             logger.error(f"Error showing notification: {e}", exc_info=True)
 
     def mark_dirty(self) -> None:
         """Mark settings as modified (dirty)."""
-        self._settings_dirty = True
+        self._state.settings_dirty = True
         logger.trace("Settings marked as dirty")
 
     # Utility methods for external access
     def get_current_tab(self) -> Any:
         """Get the currently active tab."""
         try:
-            if not self.notebook:
+            if not self._ui.notebook:
                 return None
-            current_page = self.notebook.get_current_page()
+            current_page = self._ui.notebook.get_current_page()
             if 0 <= current_page < len(self.tabs):
                 return self.tabs[current_page]
             return None
@@ -761,7 +703,7 @@ class SettingsDialog:
             logger.error(f"Error getting current tab: {e}", exc_info=True)
             return None
 
-    def get_all_tab_names(self) -> List[str]:
+    def get_all_tab_names(self) -> list[str]:
         """Get names of all tabs."""
         try:
             return [tab.tab_name for tab in self.tabs]
@@ -769,13 +711,13 @@ class SettingsDialog:
             logger.error(f"Error getting tab names: {e}", exc_info=True)
             return []
 
-    def export_settings(self) -> Dict[str, Any]:
+    def export_settings(self) -> dict[str, Any]:
         """Export all settings from all tabs."""
         try:
             exported_settings = {}
             for tab in self.tabs:
                 try:
-                    tab_settings = tab._collect_settings()
+                    tab_settings = tab.collect_settings()
                     exported_settings.update(tab_settings)
                 except (AttributeError, TypeError, KeyError) as e:
                     logger.error(
@@ -796,7 +738,7 @@ class SettingsDialog:
                     # Ensure tab is initialized first (handles lazy-loaded tabs)
                     tab.ensure_initialized()
                     # Reload settings for each tab
-                    tab._load_settings()
+                    tab.load_settings()
                 except (AttributeError, TypeError, KeyError) as e:
                     logger.error(
                         f"Error reloading settings for {tab.tab_name} tab: {e}",
@@ -808,14 +750,14 @@ class SettingsDialog:
             logger.error(f"Error reloading tab settings: {e}", exc_info=True)
             return False
 
-    def import_settings(self, settings: Dict[str, Any]) -> bool:
+    def import_settings(self, settings: dict[str, Any]) -> bool:
         """Import settings to all relevant tabs."""
         try:
             success = True
             for tab in self.tabs:
                 try:
                     # Reload settings for each tab
-                    tab._load_settings()
+                    tab.load_settings()
                     tab.update_dependencies()
                 except (AttributeError, TypeError, KeyError) as e:
                     logger.error(
