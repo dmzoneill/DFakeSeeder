@@ -219,7 +219,7 @@ class CleanupMixin:
                 obj.disconnect(handler_id)
                 disconnected += 1
 
-            except (TypeError, AttributeError, ValueError, RuntimeError) as e:
+            except (TypeError, AttributeError, ValueError, RuntimeError, GLib.Error) as e:
                 logger.trace(
                     f"Failed to disconnect handler {handler_id}: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -243,7 +243,7 @@ class CleanupMixin:
             try:
                 binding.unbind()
                 unbound += 1
-            except (TypeError, AttributeError, ValueError, RuntimeError) as e:
+            except (TypeError, AttributeError, ValueError, RuntimeError, GLib.Error) as e:
                 logger.trace(
                     f"Failed to unbind binding: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -274,7 +274,7 @@ class CleanupMixin:
                     else:
                         # Source already removed or invalid
                         pass
-                except (TypeError, AttributeError, ValueError, RuntimeError) as e:
+                except (TypeError, AttributeError, ValueError, RuntimeError, GLib.Error) as e:
                     logger.trace(
                         f"Failed to remove timeout source {source_id}: {e}",
                         extra={"class_name": self.__class__.__name__},
@@ -313,7 +313,7 @@ class CleanupMixin:
                     store.clear()
                     cleared += 1
 
-            except (TypeError, AttributeError, ValueError, RuntimeError) as e:
+            except (TypeError, AttributeError, ValueError, RuntimeError, GLib.Error) as e:
                 logger.trace(
                     f"Failed to clear store: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -338,7 +338,7 @@ class CleanupMixin:
             )
             try:
                 self.cleanup()
-            except (TypeError, AttributeError, ValueError, RuntimeError) as e:
+            except (TypeError, AttributeError, ValueError, RuntimeError, GLib.Error) as e:
                 logger.error(
                     f"Error during __del__ cleanup: {e}",
                     extra={"class_name": self.__class__.__name__},
