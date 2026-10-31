@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Window Manager - GTK4 native window management for DFakeSeeder
 
@@ -6,25 +5,14 @@ Provides clean window control operations integrated with AppSettings.
 Replaces external window manipulation tools with native GTK4 functionality.
 """
 
-# isort: skip_file
-
-# fmt: off
 import os
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
-import gi
-
-gi.require_version("Gtk", "4.0")
-gi.require_version("Gdk", "4.0")
-
-from gi.repository import Gdk, GLib, Gtk  # noqa: E402
-
-from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
-from d_fake_seeder.lib.logger import logger  # noqa: E402
-from d_fake_seeder.lib.util.xdg_paths import get_config_dir  # noqa: E402
-
-# fmt: on
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.gi_gtk4 import Gdk, GLib, Gtk
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir
 
 
 class WindowManager:
@@ -38,7 +26,7 @@ class WindowManager:
     # Path to tray PID lock file
     TRAY_LOCK_FILE = os.path.join(get_config_dir(), "dfakeseeder-tray.lock")
 
-    def __init__(self, window: Optional[Gtk.Window] = None) -> None:
+    def __init__(self, window: Gtk.Window | None = None) -> None:
         """
         Initialize window manager
 
