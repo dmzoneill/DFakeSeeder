@@ -279,7 +279,7 @@ class DetailsTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             return str(date_value)
 
-        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, OverflowError, OSError, GLib.Error) as e:
             self.logger.error(f"Error formatting date: {e}")
             return str(date_value)
 
