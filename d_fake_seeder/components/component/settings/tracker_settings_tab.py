@@ -116,10 +116,7 @@ class TrackerSettingsTab(BaseSettingsTab):
             ("sync_on_add", "tracker_settings.self_tracking.sync_on_add", True),
             ("sync_on_remove", "tracker_settings.self_tracking.sync_on_remove", True),
         ]
-        for widget_id, key, default in toggles:
-            widget = self._widgets[widget_id]
-            if widget:
-                widget.set_active(self.app_settings.get(key, default))
+        self.apply_widget_settings(toggles, "set_active")
 
     def _load_numeric_settings(self) -> None:
         """Load the spin-button widgets."""
@@ -131,10 +128,7 @@ class TrackerSettingsTab(BaseSettingsTab):
             ("max_peers_per_announce", "tracker_settings.max_peers_per_announce", 50),
             ("rate_limit", "tracker_settings.security.rate_limit_per_minute", 60),
         ]
-        for widget_id, key, default in numerics:
-            widget = self._widgets[widget_id]
-            if widget:
-                widget.set_value(self.app_settings.get(key, default))
+        self.apply_widget_settings(numerics, "set_value")
 
     def _load_address_settings(self) -> None:
         """Load the bind-address entry and the IP whitelist/blacklist buffers."""

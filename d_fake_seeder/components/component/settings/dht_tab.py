@@ -107,10 +107,7 @@ class DHTTab(BaseSettingsTab):
             ("validate_tokens", "protocols.dht.validate_tokens", True),
             ("rate_limit_enabled", "protocols.dht.rate_limit_enabled", True),
         ]
-        for widget_id, key, default in toggles:
-            widget = self._widgets[widget_id]
-            if widget:
-                widget.set_active(self.app_settings.get(key, default))
+        self.apply_widget_settings(toggles, "set_active")
 
     def _load_numeric_settings(self) -> None:
         """Load the spin-button widgets."""
@@ -125,10 +122,7 @@ class DHTTab(BaseSettingsTab):
             ("stats_interval", "protocols.dht.stats_interval", 60),
             ("max_queries_per_second", "protocols.dht.max_queries_per_second", 10),
         ]
-        for widget_id, key, default in numerics:
-            widget = self._widgets[widget_id]
-            if widget:
-                widget.set_value(self.app_settings.get(key, default))
+        self.apply_widget_settings(numerics, "set_value")
 
     def _load_node_and_bootstrap(self) -> None:
         """Load the node-id controls and the bootstrap-nodes buffer."""

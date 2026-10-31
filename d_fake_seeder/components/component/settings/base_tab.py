@@ -273,6 +273,17 @@ class BaseSettingsTab(Component):
 
         return self._widgets[widget_id]
 
+    def apply_widget_settings(self, specs: list[tuple[str, str, Any]], setter: str) -> None:
+        """Load (widget_id, settings key, default) specs into widgets via ``setter``.
+
+        ``setter`` is the widget method used to apply the value, e.g. ``set_active`` for
+        switches or ``set_value`` for spin buttons. Widgets that are None are skipped.
+        """
+        for widget_id, key, default in specs:
+            widget = self._widgets[widget_id]
+            if widget:
+                getattr(widget, setter)(self.app_settings.get(key, default))
+
     def save_settings(self) -> dict[str, Any]:
         """
         Save current UI state to settings.
