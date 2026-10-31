@@ -7,18 +7,12 @@ Monitors a specified folder for new torrent files and automatically adds them to
 import os
 import shutil
 import time
+from typing import Any
 
-# fmt: off
-from typing import Any, Dict, Set
-
-import gi
-
-gi.require_version("Gtk", "4.0")
-from gi.repository import GLib  # noqa: E402
-
-from d_fake_seeder.lib.logger import logger  # noqa: E402
-from d_fake_seeder.lib.util.xdg_paths import get_config_dir  # noqa: E402
-from d_fake_seeder.view import View  # noqa: E402
+from d_fake_seeder.lib.gi_base import GLib
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir
+from d_fake_seeder.view import View
 
 try:
     from watchdog.events import FileSystemEventHandler
@@ -26,16 +20,34 @@ try:
 
     WATCHDOG_AVAILABLE = True
 except ImportError:
-    # Fallback if watchdog is not available
-    class FileSystemEventHandler:  # type: ignore[no-redef]  # pylint: disable=too-few-public-methods
-        """Stub fallback when watchdog is not available."""
+    # Fallback no-op implementations when watchdog is not installed. They mirror
+    # the subset of the watchdog interface this module touches so nothing breaks
+    # if they are ever reached (the watch-folder feature stays disabled).
+    class FileSystemEventHandler:  # type: ignore[no-redef]
+        """Stub fallback for watchdog's FileSystemEventHandler."""
 
-    class Observer:  # type: ignore[no-redef]  # pylint: disable=too-few-public-methods
-        """Stub fallback when watchdog is not available."""
+        def dispatch(self, _event: Any) -> None:
+            """No-op event dispatch used when watchdog is unavailable."""
+
+        def on_any_event(self, _event: Any) -> None:
+            """No-op catch-all event hook used when watchdog is unavailable."""
+
+    class Observer:  # type: ignore[no-redef]
+        """Stub fallback for watchdog's Observer."""
+
+        def schedule(self, *args: Any, **kwargs: Any) -> None:
+            """No-op schedule used when watchdog is unavailable."""
+
+        def start(self) -> None:
+            """No-op start used when watchdog is unavailable."""
+
+        def stop(self) -> None:
+            """No-op stop used when watchdog is unavailable."""
+
+        def join(self, *args: Any, **kwargs: Any) -> None:
+            """No-op join used when watchdog is unavailable."""
 
     WATCHDOG_AVAILABLE = False
-
-# fmt: on
 
 
 class TorrentFolderWatcher:
@@ -54,8 +66,8 @@ class TorrentFolderWatcher:
         self.settings = settings
         self.global_peer_manager = global_peer_manager
         self.observer: Any = None
-        self.event_handler = None
-        self.watch_path = None
+        self.event_handler: Any = None
+        self.watch_path: str | None = None
         self.is_running = False
 
         logger.trace(
@@ -63,7 +75,50 @@ class TorrentFolderWatcher:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def start(self) -> Any:  # pylint: disable=too-many-return-statements
+    def _resolve_watch_path(self, watch_config: Any) -> str | None:
+        """
+        Validate the configured watch folder and return its expanded path.
+
+        Args:
+            watch_config: The ``watch_folder`` settings dict.
+
+        Returns:
+            The validated, expanded folder path, or ``None`` when the feature is
+            disabled or misconfigured (reason is logged).
+        """
+        if not watch_config.get("enabled", False):
+            logger.trace(
+                "Watch folder is disabled in settings",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return None
+
+        watch_path = watch_config.get("path", "")
+        if not watch_path:
+            logger.warning(
+                "Watch folder enabled but no path configured",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return None
+
+        expanded: str = os.path.expanduser(watch_path)
+        if not os.path.exists(expanded):
+            logger.warning(
+                f"Watch folder path does not exist: {expanded}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return None
+
+        if not os.path.isdir(expanded):
+            logger.warning(
+                f"Watch folder path is not a directory: {expanded}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return None
+
+        return expanded
+
+    def start(self) -> Any:
         """Start watching the configured folder"""
         if not WATCHDOG_AVAILABLE:
             logger.warning(
@@ -72,49 +127,15 @@ class TorrentFolderWatcher:
             )
             return False
 
-        # Get watch folder configuration
         watch_config = getattr(self.settings, "watch_folder", {})
-        enabled = watch_config.get("enabled", False)
-        watch_path = watch_config.get("path", "")
-
-        if not enabled:
-            logger.trace(
-                "Watch folder is disabled in settings",
-                extra={"class_name": self.__class__.__name__},
-            )
+        watch_path = self._resolve_watch_path(watch_config)
+        if watch_path is None:
             return False
-
-        if not watch_path:
-            logger.warning(
-                "Watch folder enabled but no path configured",
-                extra={"class_name": self.__class__.__name__},
-            )
-            return False
-
-        # Expand path and validate
-        self.watch_path = os.path.expanduser(watch_path)
-
-        if not os.path.exists(self.watch_path):  # type: ignore[arg-type]
-            logger.warning(
-                f"Watch folder path does not exist: {self.watch_path}",
-                extra={"class_name": self.__class__.__name__},
-            )
-            return False
-
-        if not os.path.isdir(self.watch_path):  # type: ignore[arg-type]
-            logger.warning(
-                f"Watch folder path is not a directory: {self.watch_path}",
-                extra={"class_name": self.__class__.__name__},
-            )
-            return False
+        self.watch_path = watch_path
 
         try:
-            # Create event handler
-            self.event_handler = TorrentFileEventHandler(  # type: ignore[assignment]
-                self.model, watch_config, self.global_peer_manager
-            )
+            self.event_handler = TorrentFileEventHandler(self.model, watch_config, self.global_peer_manager)
 
-            # Create and start observer
             self.observer = Observer()
             self.observer.schedule(self.event_handler, self.watch_path, recursive=False)
             self.observer.start()
@@ -125,12 +146,11 @@ class TorrentFolderWatcher:
                 extra={"class_name": self.__class__.__name__},
             )
 
-            # Scan existing files in folder
             self._scan_existing_files()
 
             return True
 
-        except Exception as e:  # pylint: disable=broad-exception-caught
+        except (OSError, RuntimeError, AttributeError, TypeError, ValueError) as e:
             logger.error(
                 f"Failed to start watch folder: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -149,7 +169,7 @@ class TorrentFolderWatcher:
                     "Stopped watching torrent folder",
                     extra={"class_name": self.__class__.__name__},
                 )
-            except Exception as e:  # pylint: disable=broad-exception-caught
+            except (OSError, RuntimeError, AttributeError) as e:
                 logger.error(
                     f"Error stopping watch folder: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -173,7 +193,7 @@ class TorrentFolderWatcher:
                     if os.path.isfile(torrent_path):
                         self.event_handler.process_torrent_file(torrent_path)
 
-        except Exception as e:  # pylint: disable=broad-exception-caught
+        except (OSError, AttributeError, TypeError) as e:
             logger.error(
                 f"Error scanning existing files: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -197,8 +217,8 @@ class TorrentFileEventHandler(FileSystemEventHandler):
         self.model = model
         self.watch_config = watch_config
         self.global_peer_manager = global_peer_manager
-        self.processed_files: Set[Any] = set()  # Track processed files to avoid duplicates
-        self.last_process_time: Dict[str, Any] = {}  # Track when files were last processed
+        self.processed_files: set[Any] = set()  # Track processed files to avoid duplicates
+        self.last_process_time: dict[str, Any] = {}  # Track when files were last processed
 
     def on_created(self, event: Any) -> None:
         """Handle file creation events"""
@@ -227,7 +247,89 @@ class TorrentFileEventHandler(FileSystemEventHandler):
         self.process_torrent_file(file_path)
         return False  # Don't repeat
 
-    def process_torrent_file(self, file_path: Any) -> None:  # pylint: disable=too-many-branches
+    def _is_recently_processed(self, file_path: Any) -> bool:
+        """Return True when the file was processed within the last 2 seconds."""
+        last = self.last_process_time.get(file_path)
+        if last is not None and time.time() - last < 2.0:
+            logger.trace(
+                f"Skipping recently processed file: {file_path}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return True
+        return False
+
+    def _is_readable_torrent(self, file_path: Any) -> bool:
+        """Return True when the torrent file still exists and is readable."""
+        if not os.path.exists(file_path):
+            logger.trace(
+                f"Torrent file no longer exists: {file_path}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return False
+
+        if not os.access(file_path, os.R_OK):
+            logger.warning(
+                f"Cannot read torrent file: {file_path}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return False
+
+        return True
+
+    def _maybe_delete_watch_file(self, file_path: Any, filename: str, duplicate: bool) -> None:
+        """Delete the source file from the watch folder when configured to do so."""
+        if not self.watch_config.get("delete_added_torrents", False):
+            return
+
+        deleted_msg = (
+            f"Deleted duplicate torrent from watch folder: {filename}"
+            if duplicate
+            else f"Deleted source torrent file from watch folder: {filename}"
+        )
+        failed_msg = (
+            f"Failed to delete torrent file {filename}"
+            if duplicate
+            else f"Failed to delete source torrent file {filename}"
+        )
+        try:
+            os.remove(file_path)
+            logger.info(deleted_msg, extra={"class_name": self.__class__.__name__})
+        except OSError as e:
+            logger.warning(f"{failed_msg}: {e}", extra={"class_name": self.__class__.__name__})
+
+    def _register_with_peer_manager(self, filename: str) -> None:
+        """Add the most recently added torrent to the global peer manager, if present."""
+        if not self.global_peer_manager:
+            return
+
+        torrents = self.model.get_torrents()
+        if not torrents:
+            return
+
+        new_torrent = torrents[-1]  # Last added torrent
+        self.global_peer_manager.add_torrent(new_torrent)
+        logger.trace(
+            f"Added torrent to global peer manager: {filename}",
+            extra={"class_name": self.__class__.__name__},
+        )
+
+    def _notify_added(self, filename: str) -> None:
+        """Show a transient notification that a torrent was auto-added."""
+        if not View.instance:
+            return
+
+        # Truncate long filenames for display
+        display_name = filename.removesuffix(".torrent")
+        if len(display_name) > 40:
+            display_name = display_name[:37] + "..."
+        View.instance.notify(
+            f"Auto-added: {display_name}",
+            notification_type="success",
+            timeout_ms=2500,
+            translate=False,  # Contains dynamic filename
+        )
+
+    def process_torrent_file(self, file_path: Any) -> None:
         """
         Process a torrent file by copying it to the config directory
 
@@ -236,30 +338,11 @@ class TorrentFileEventHandler(FileSystemEventHandler):
         """
         try:
             # Avoid processing the same file multiple times in quick succession
-            current_time = time.time()
-            if file_path in self.last_process_time:
-                if current_time - self.last_process_time[file_path] < 2.0:
-                    logger.trace(
-                        f"Skipping recently processed file: {file_path}",
-                        extra={"class_name": self.__class__.__name__},
-                    )
-                    return
-
-            self.last_process_time[file_path] = current_time
-
-            # Verify file still exists and is readable
-            if not os.path.exists(file_path):
-                logger.trace(
-                    f"Torrent file no longer exists: {file_path}",
-                    extra={"class_name": self.__class__.__name__},
-                )
+            if self._is_recently_processed(file_path):
                 return
+            self.last_process_time[file_path] = time.time()
 
-            if not os.access(file_path, os.R_OK):
-                logger.warning(
-                    f"Cannot read torrent file: {file_path}",
-                    extra={"class_name": self.__class__.__name__},
-                )
+            if not self._is_readable_torrent(file_path):
                 return
 
             # Get filename and check if already exists in config directory
@@ -274,18 +357,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
                     extra={"class_name": self.__class__.__name__},
                 )
                 # Still delete from watch folder if configured
-                if self.watch_config.get("delete_added_torrents", False):
-                    try:
-                        os.remove(file_path)
-                        logger.info(
-                            f"Deleted duplicate torrent from watch folder: {filename}",
-                            extra={"class_name": self.__class__.__name__},
-                        )
-                    except Exception as e:  # pylint: disable=broad-exception-caught
-                        logger.warning(
-                            f"Failed to delete torrent file {filename}: {e}",
-                            extra={"class_name": self.__class__.__name__},
-                        )
+                self._maybe_delete_watch_file(file_path, filename, duplicate=True)
                 return
 
             # Ensure torrents directory exists
@@ -303,16 +375,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
             self.model.add_torrent(destination_path)
 
             # Add to global peer manager if available (same as controller.run() does)
-            if self.global_peer_manager:
-                # Get the newly added torrent from the model
-                torrents = self.model.get_torrents()
-                if torrents:
-                    new_torrent = torrents[-1]  # Last added torrent
-                    self.global_peer_manager.add_torrent(new_torrent)
-                    logger.trace(
-                        f"Added torrent to global peer manager: {filename}",
-                        extra={"class_name": self.__class__.__name__},
-                    )
+            self._register_with_peer_manager(filename)
 
             logger.info(
                 f"Successfully added torrent from watch folder: {filename}",
@@ -320,33 +383,12 @@ class TorrentFileEventHandler(FileSystemEventHandler):
             )
 
             # Notify user of auto-added torrent
-            if View.instance:
-                # Truncate long filenames for display
-                display_name = filename[:-8] if filename.endswith(".torrent") else filename
-                if len(display_name) > 40:
-                    display_name = display_name[:37] + "..."
-                View.instance.notify(
-                    f"Auto-added: {display_name}",
-                    notification_type="success",
-                    timeout_ms=2500,
-                    translate=False,  # Contains dynamic filename
-                )
+            self._notify_added(filename)
 
             # Handle source file deletion if configured
-            if self.watch_config.get("delete_added_torrents", False):
-                try:
-                    os.remove(file_path)
-                    logger.info(
-                        f"Deleted source torrent file from watch folder: {filename}",
-                        extra={"class_name": self.__class__.__name__},
-                    )
-                except Exception as e:  # pylint: disable=broad-exception-caught
-                    logger.warning(
-                        f"Failed to delete source torrent file {filename}: {e}",
-                        extra={"class_name": self.__class__.__name__},
-                    )
+            self._maybe_delete_watch_file(file_path, filename, duplicate=False)
 
-        except Exception as e:  # pylint: disable=broad-exception-caught
+        except (OSError, shutil.Error, AttributeError, TypeError, ValueError, LookupError, RuntimeError) as e:
             logger.error(
                 f"Error processing torrent file {file_path}: {e}",
                 extra={"class_name": self.__class__.__name__},
