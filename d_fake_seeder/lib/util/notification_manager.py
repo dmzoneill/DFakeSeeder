@@ -8,25 +8,14 @@ Handles:
 - Auto-dismiss timeouts per notification type
 """
 
-# isort: skip_file
-
-# fmt: off
+from collections.abc import Callable
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any
 
-import gi
-
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, GLib  # noqa: E402
-
-from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
-from d_fake_seeder.lib.logger import logger  # noqa: E402
-from d_fake_seeder.lib.util.notification_widget import (  # noqa: E402
-    NotificationType,
-    NotificationWidget,
-)
-
-# fmt: on
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.notification_widget import NotificationType, NotificationWidget
 
 
 class NotificationPosition(Enum):
@@ -77,7 +66,7 @@ class NotificationManager:
     - Non-blocking (doesn't interfere with keyboard)
     """
 
-    def __init__(self, overlay: Gtk.Overlay, statusbar_callback: Optional[Callable] = None) -> None:
+    def __init__(self, overlay: Gtk.Overlay, statusbar_callback: Callable | None = None) -> None:
         """
         Initialize the notification manager.
 
@@ -90,8 +79,8 @@ class NotificationManager:
         self.settings = AppSettings.get_instance()
 
         # Active notifications
-        self._notifications: List[NotificationWidget] = []
-        self._queue: List[Dict[str, Any]] = []
+        self._notifications: list[NotificationWidget] = []
+        self._queue: list[dict[str, Any]] = []
 
         # Container for notifications (positioned via CSS)
         # can_target=True: allows child widgets to receive mouse events
@@ -116,7 +105,7 @@ class NotificationManager:
             extra={"class_name": self.__class__.__name__},
         )
 
-    def _get_settings(self) -> Dict[str, Any]:
+    def _get_settings(self) -> dict[str, Any]:
         """Get notification settings with defaults."""
         notification_settings = self.settings.get("notification_settings", {})
         if notification_settings is None:
@@ -162,14 +151,14 @@ class NotificationManager:
         if key.startswith("notification_settings"):
             self._apply_position()
 
-    def show(  # pylint: disable=too-many-arguments,too-many-positional-arguments
+    def show(
         self,
         message: str,
         notification_type: NotificationType = NotificationType.INFO,
-        action_label: Optional[str] = None,
-        action_callback: Optional[Callable[[], None]] = None,
-        timeout_ms: Optional[int] = None,
-    ) -> Optional[NotificationWidget]:
+        action_label: str | None = None,
+        action_callback: Callable[[], None] | None = None,
+        timeout_ms: int | None = None,
+    ) -> NotificationWidget | None:
         """
         Show a notification.
 
@@ -277,7 +266,7 @@ class NotificationManager:
 
             GLib.timeout_add(300, _deferred_show)
 
-    def _show_from_queue(self, queued: Dict[str, Any]) -> None:
+    def _show_from_queue(self, queued: dict[str, Any]) -> None:
         """
         Show a notification from the queue, bypassing the queue check.
         This prevents infinite re-queuing when multiple notifications close together.
@@ -321,19 +310,19 @@ class NotificationManager:
         if settings.get("show_in_statusbar", True) and self.statusbar_callback:
             self.statusbar_callback(queued["message"])
 
-    def show_info(self, message: str, **kwargs: Any) -> Optional[NotificationWidget]:
+    def show_info(self, message: str, **kwargs: Any) -> NotificationWidget | None:
         """Show an info notification."""
         return self.show(message, NotificationType.INFO, **kwargs)
 
-    def show_success(self, message: str, **kwargs: Any) -> Optional[NotificationWidget]:
+    def show_success(self, message: str, **kwargs: Any) -> NotificationWidget | None:
         """Show a success notification."""
         return self.show(message, NotificationType.SUCCESS, **kwargs)
 
-    def show_warning(self, message: str, **kwargs: Any) -> Optional[NotificationWidget]:
+    def show_warning(self, message: str, **kwargs: Any) -> NotificationWidget | None:
         """Show a warning notification."""
         return self.show(message, NotificationType.WARNING, **kwargs)
 
-    def show_error(self, message: str, **kwargs: Any) -> Optional[NotificationWidget]:
+    def show_error(self, message: str, **kwargs: Any) -> NotificationWidget | None:
         """Show an error notification."""
         return self.show(message, NotificationType.ERROR, **kwargs)
 
