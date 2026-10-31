@@ -6,19 +6,12 @@ like name, size, hash, and tracker information as GObject properties
 with change notification support.
 """
 
-# fmt: off
 import uuid
-
-import gi
-
-gi.require_version("GObject", "2.0")
 
 from gi.repository import GObject
 
-# fmt: on
 
-
-class Attributes(GObject.Object):  # pylint: disable=too-few-public-methods
+class Attributes(GObject.Object):
     """GObject storing torrent metadata attributes with change notifications."""
 
     # Hidden attributes

@@ -6,17 +6,9 @@ status, statistics, and protocol information.
 """
 
 import time
-
-# fmt: off
 from typing import Any
 
-import gi
-
-gi.require_version("GObject", "2.0")
-
 from gi.repository import GObject
-
-# fmt: on
 
 
 class ConnectionPeer(GObject.Object):
