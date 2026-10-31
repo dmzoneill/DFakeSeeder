@@ -6,19 +6,13 @@ Handles communication with the main DFakeSeeder application via D-Bus.
 
 # isort: skip_file
 
-# fmt: off
 import json
-from typing import Any, Dict, Optional
+from typing import Any
 
-import gi
 
-gi.require_version("Gio", "2.0")
+from d_fake_seeder.lib.gi_base import Gio, GLib
 
-from gi.repository import Gio, GLib  # noqa: E402
-
-from d_fake_seeder.lib.logger import logger  # noqa: E402
-
-# fmt: on
+from d_fake_seeder.lib.logger import logger
 
 
 class DBusClient:
@@ -120,7 +114,7 @@ class DBusClient:
             self.connected = False
             return False
 
-    def get_settings(self) -> Optional[str]:
+    def get_settings(self) -> str | None:
         """Get settings from main application"""
         try:
             if not self.connected:
@@ -162,7 +156,7 @@ class DBusClient:
             )
             return None
 
-    def update_settings(self, changes: Dict[str, Any]) -> bool:
+    def update_settings(self, changes: dict[str, Any]) -> bool:
         """Update settings in main application"""
         try:
             if not self.connected:
