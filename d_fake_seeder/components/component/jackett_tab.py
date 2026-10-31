@@ -1,5 +1,3 @@
-# fmt: off
-# isort: skip_file
 """
 Jackett Tab - Torrent search integration via Jackett API.
 
@@ -9,109 +7,103 @@ and add results directly to DFakeSeeder.
 
 import os
 import threading
-import urllib.request
 import urllib.parse
+import urllib.request
 import xml.etree.ElementTree as ET
-from typing import Any, Optional, List, Dict
+from types import SimpleNamespace
+from typing import Any
 
-import gi
+from d_fake_seeder.components.component.base_component import Component
+from d_fake_seeder.domain.app_settings import AppSettings
+from d_fake_seeder.lib.gi_gtk4 import Gio, GLib, GObject, Gtk
+from d_fake_seeder.lib.logger import logger
+from d_fake_seeder.lib.util.xdg_paths import get_config_dir
 
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gio, GLib, GObject, Gtk  # noqa: E402
-
-from d_fake_seeder.components.component.base_component import Component  # noqa: E402
-from d_fake_seeder.domain.app_settings import AppSettings  # noqa: E402
-from d_fake_seeder.lib.logger import logger  # noqa: E402
-from d_fake_seeder.lib.util.xdg_paths import get_config_dir  # noqa: E402
-
-# fmt: on
+# Narrowed replacement for the previous broad ``except Exception`` clauses: the
+# search/config/add paths touch settings, networking, XML parsing, GLib and the
+# filesystem, so these are the failures worth swallowing defensively.
+_JACKETT_ERRORS = (AttributeError, TypeError, ValueError, KeyError, IndexError, OSError, GLib.Error)
 
 
 class JackettSearchResult(GObject.Object):
-    """GObject wrapper for Jackett search result display."""
+    """GObject wrapper exposing a Jackett result's display fields as bindable properties.
+
+    The payload is a plain ``dict`` so the row carries its display values without
+    the wrapper itself accumulating that many instance attributes.
+    """
 
     __gtype_name__ = "JackettSearchResult"
 
-    def __init__(
-        self,
-        title: str,
-        size: int,
-        seeders: int,
-        leechers: int,
-        category: str,
-        indexer: str,
-        download_url: str,
-        magnet_url: str,
-        info_url: str,
-        publish_date: str,
-    ) -> None:
+    def __init__(self, data: dict) -> None:
         super().__init__()
-        self._title = title
-        self._size = size
-        self._size_str = self._format_bytes(size)
-        self._seeders = seeders
-        self._leechers = leechers
-        self._category = category
-        self._indexer = indexer
-        self._download_url = download_url
-        self._magnet_url = magnet_url
-        self._info_url = info_url
-        self._publish_date = publish_date
+        self._data = dict(data)
+        self._data["size_str"] = self._format_bytes(self._data["size"])
 
-    def _format_bytes(self, bytes_val: int) -> str:
+    @staticmethod
+    def _format_bytes(bytes_val: int) -> str:
         """Format bytes to human readable string."""
         if bytes_val < 1024:
             return f"{bytes_val} B"
-        elif bytes_val < 1024 * 1024:
+        if bytes_val < 1024 * 1024:
             return f"{bytes_val / 1024:.1f} KB"
-        elif bytes_val < 1024 * 1024 * 1024:
+        if bytes_val < 1024 * 1024 * 1024:
             return f"{bytes_val / (1024 * 1024):.1f} MB"
-        else:
-            return f"{bytes_val / (1024 * 1024 * 1024):.2f} GB"
+        return f"{bytes_val / (1024 * 1024 * 1024):.2f} GB"
 
     @GObject.Property(type=str)
     def title(self) -> str:
-        return self._title
+        """Torrent title."""
+        return self._data["title"]
 
     @GObject.Property(type=int)
     def size(self) -> int:
-        return self._size
+        """Size in bytes."""
+        return self._data["size"]
 
     @GObject.Property(type=str)
     def size_str(self) -> str:
-        return self._size_str
+        """Human-readable size."""
+        return self._data["size_str"]
 
     @GObject.Property(type=int)
     def seeders(self) -> int:
-        return self._seeders
+        """Number of seeders."""
+        return self._data["seeders"]
 
     @GObject.Property(type=int)
     def leechers(self) -> int:
-        return self._leechers
+        """Number of leechers."""
+        return self._data["leechers"]
 
     @GObject.Property(type=str)
     def category(self) -> str:
-        return self._category
+        """Torznab category label."""
+        return self._data["category"]
 
     @GObject.Property(type=str)
     def indexer(self) -> str:
-        return self._indexer
+        """Indexer that produced the result."""
+        return self._data["indexer"]
 
     @GObject.Property(type=str)
     def download_url(self) -> str:
-        return self._download_url
+        """Direct .torrent download URL."""
+        return self._data["download_url"]
 
     @GObject.Property(type=str)
     def magnet_url(self) -> str:
-        return self._magnet_url
+        """Magnet URI, if provided."""
+        return self._data["magnet_url"]
 
     @GObject.Property(type=str)
     def info_url(self) -> str:
-        return self._info_url
+        """Details/comments URL."""
+        return self._data["info_url"]
 
     @GObject.Property(type=str)
     def publish_date(self) -> str:
-        return self._publish_date
+        """Publication date string."""
+        return self._data["publish_date"]
 
 
 class JackettTab(Component):
@@ -161,9 +153,10 @@ class JackettTab(Component):
         self.container.set_halign(Gtk.Align.FILL)
         self.container.set_valign(Gtk.Align.FILL)
 
-        # Search state
-        self._is_searching = False
-        self._search_results: List[JackettSearchResult] = []
+        # Display widgets and the list-view objects are grouped so the component
+        # stays within the instance-attribute limit.
+        self._widgets: dict[str, Any] = {}
+        self._view = SimpleNamespace(store=None, selection=None, column=None)
 
         # Build UI
         self._build_ui()
@@ -183,8 +176,15 @@ class JackettTab(Component):
         return text
 
     def _build_ui(self) -> None:
-        """Build the Jackett tab UI."""
-        # === HEADER SECTION ===
+        """Build the Jackett tab UI from its component sections."""
+        self._build_header_section()
+        self._build_config_section()
+        self._build_search_section()
+        self._build_results_section()
+        self._update_connection_status()
+
+    def _build_header_section(self) -> None:
+        """Build the title/status header row."""
         header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
         header_box.set_halign(Gtk.Align.FILL)
 
@@ -196,19 +196,20 @@ class JackettTab(Component):
         header_box.append(title_label)
 
         # Connection status indicator
-        self.status_indicator = Gtk.Label(label="●")
-        self.status_indicator.add_css_class("dim-label")
-        self.status_indicator.set_halign(Gtk.Align.END)
-        header_box.append(self.status_indicator)
+        self._widgets["status_indicator"] = Gtk.Label(label="●")
+        self._widgets["status_indicator"].add_css_class("dim-label")
+        self._widgets["status_indicator"].set_halign(Gtk.Align.END)
+        header_box.append(self._widgets["status_indicator"])
 
-        self.status_label = Gtk.Label(label=self._("Not Configured"))
-        self.status_label.add_css_class("dim-label")
-        self.status_label.set_halign(Gtk.Align.END)
-        header_box.append(self.status_label)
+        self._widgets["status_label"] = Gtk.Label(label=self._("Not Configured"))
+        self._widgets["status_label"].add_css_class("dim-label")
+        self._widgets["status_label"].set_halign(Gtk.Align.END)
+        header_box.append(self._widgets["status_label"])
 
         self.container.append(header_box)
 
-        # === CONFIGURATION SECTION ===
+    def _build_config_section(self) -> None:
+        """Build the Jackett configuration frame."""
         config_frame = Gtk.Frame()
         config_frame.set_label(self._("Jackett Configuration"))
         config_frame.set_margin_top(8)
@@ -223,46 +224,47 @@ class JackettTab(Component):
 
         # API URL row
         config_grid.attach(Gtk.Label(label=self._("API URL:"), halign=Gtk.Align.END), 0, 0, 1, 1)
-        self.api_url_entry = Gtk.Entry()
-        self.api_url_entry.set_hexpand(True)
-        self.api_url_entry.set_placeholder_text("http://localhost:9117")
+        self._widgets["api_url_entry"] = Gtk.Entry()
+        self._widgets["api_url_entry"].set_hexpand(True)
+        self._widgets["api_url_entry"].set_placeholder_text("http://localhost:9117")
         jackett_settings = self.settings.get("jackett_settings", {})
-        self.api_url_entry.set_text(jackett_settings.get("api_url", "http://localhost:9117"))
-        self.api_url_entry.connect("changed", self._on_config_changed)
-        config_grid.attach(self.api_url_entry, 1, 0, 2, 1)
+        self._widgets["api_url_entry"].set_text(jackett_settings.get("api_url", "http://localhost:9117"))
+        self._widgets["api_url_entry"].connect("changed", self._on_config_changed)
+        config_grid.attach(self._widgets["api_url_entry"], 1, 0, 2, 1)
 
         # API Key row
         config_grid.attach(Gtk.Label(label=self._("API Key:"), halign=Gtk.Align.END), 0, 1, 1, 1)
-        self.api_key_entry = Gtk.Entry()
-        self.api_key_entry.set_hexpand(True)
-        self.api_key_entry.set_placeholder_text(self._("Enter your Jackett API key"))
-        self.api_key_entry.set_visibility(False)  # Hide API key
-        self.api_key_entry.set_text(jackett_settings.get("api_key", ""))
-        self.api_key_entry.connect("changed", self._on_config_changed)
-        config_grid.attach(self.api_key_entry, 1, 1, 1, 1)
+        self._widgets["api_key_entry"] = Gtk.Entry()
+        self._widgets["api_key_entry"].set_hexpand(True)
+        self._widgets["api_key_entry"].set_placeholder_text(self._("Enter your Jackett API key"))
+        self._widgets["api_key_entry"].set_visibility(False)  # Hide API key
+        self._widgets["api_key_entry"].set_text(jackett_settings.get("api_key", ""))
+        self._widgets["api_key_entry"].connect("changed", self._on_config_changed)
+        config_grid.attach(self._widgets["api_key_entry"], 1, 1, 1, 1)
 
         # Show/Hide API key button
-        self.show_key_button = Gtk.Button()
-        self.show_key_button.set_icon_name("view-reveal-symbolic")
-        self.show_key_button.set_tooltip_text(self._("Show/Hide API Key"))
-        self.show_key_button.connect("clicked", self._on_toggle_key_visibility)
-        config_grid.attach(self.show_key_button, 2, 1, 1, 1)
+        self._widgets["show_key_button"] = Gtk.Button()
+        self._widgets["show_key_button"].set_icon_name("view-reveal-symbolic")
+        self._widgets["show_key_button"].set_tooltip_text(self._("Show/Hide API Key"))
+        self._widgets["show_key_button"].connect("clicked", self._on_toggle_key_visibility)
+        config_grid.attach(self._widgets["show_key_button"], 2, 1, 1, 1)
 
         # Test connection button
-        self.test_button = Gtk.Button(label=self._("Test Connection"))
-        self.test_button.connect("clicked", self._on_test_connection)
-        config_grid.attach(self.test_button, 0, 2, 1, 1)
+        self._widgets["test_button"] = Gtk.Button(label=self._("Test Connection"))
+        self._widgets["test_button"].connect("clicked", self._on_test_connection)
+        config_grid.attach(self._widgets["test_button"], 0, 2, 1, 1)
 
         # Save config button
-        self.save_config_button = Gtk.Button(label=self._("Save Configuration"))
-        self.save_config_button.add_css_class("suggested-action")
-        self.save_config_button.connect("clicked", self._on_save_config)
-        config_grid.attach(self.save_config_button, 1, 2, 1, 1)
+        self._widgets["save_config_button"] = Gtk.Button(label=self._("Save Configuration"))
+        self._widgets["save_config_button"].add_css_class("suggested-action")
+        self._widgets["save_config_button"].connect("clicked", self._on_save_config)
+        config_grid.attach(self._widgets["save_config_button"], 1, 2, 1, 1)
 
         config_frame.set_child(config_grid)
         self.container.append(config_frame)
 
-        # === SEARCH SECTION ===
+    def _build_search_section(self) -> None:
+        """Build the search input frame."""
         search_frame = Gtk.Frame()
         search_frame.set_label(self._("Search"))
         search_frame.set_margin_top(8)
@@ -277,14 +279,14 @@ class JackettTab(Component):
         search_input_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         search_input_box.set_hexpand(True)
 
-        self.search_entry = Gtk.Entry()
-        self.search_entry.set_hexpand(True)
-        self.search_entry.set_placeholder_text(self._("Enter search query..."))
-        self.search_entry.connect("activate", self._on_search_activated)
-        search_input_box.append(self.search_entry)
+        self._widgets["search_entry"] = Gtk.Entry()
+        self._widgets["search_entry"].set_hexpand(True)
+        self._widgets["search_entry"].set_placeholder_text(self._("Enter search query..."))
+        self._widgets["search_entry"].connect("activate", self._on_search_activated)
+        search_input_box.append(self._widgets["search_entry"])
 
         # Category dropdown
-        self.category_dropdown = Gtk.DropDown()
+        self._widgets["category_dropdown"] = Gtk.DropDown()
         category_list = Gtk.StringList.new(
             [
                 self._("All"),
@@ -297,28 +299,29 @@ class JackettTab(Component):
                 self._("Books"),
             ]
         )
-        self.category_dropdown.set_model(category_list)
-        self.category_dropdown.set_selected(0)
-        search_input_box.append(self.category_dropdown)
+        self._widgets["category_dropdown"].set_model(category_list)
+        self._widgets["category_dropdown"].set_selected(0)
+        search_input_box.append(self._widgets["category_dropdown"])
 
         # Search button
-        self.search_button = Gtk.Button(label=self._("Search"))
-        self.search_button.add_css_class("suggested-action")
-        self.search_button.connect("clicked", self._on_search_clicked)
-        search_input_box.append(self.search_button)
+        self._widgets["search_button"] = Gtk.Button(label=self._("Search"))
+        self._widgets["search_button"].add_css_class("suggested-action")
+        self._widgets["search_button"].connect("clicked", self._on_search_clicked)
+        search_input_box.append(self._widgets["search_button"])
 
         search_box.append(search_input_box)
 
         # Search status label
-        self.search_status_label = Gtk.Label(label="")
-        self.search_status_label.set_halign(Gtk.Align.START)
-        self.search_status_label.add_css_class("dim-label")
-        search_box.append(self.search_status_label)
+        self._widgets["search_status_label"] = Gtk.Label(label="")
+        self._widgets["search_status_label"].set_halign(Gtk.Align.START)
+        self._widgets["search_status_label"].add_css_class("dim-label")
+        search_box.append(self._widgets["search_status_label"])
 
         search_frame.set_child(search_box)
         self.container.append(search_frame)
 
-        # === RESULTS SECTION ===
+    def _build_results_section(self) -> None:
+        """Build the results column view frame."""
         results_frame = Gtk.Frame()
         results_frame.set_label(self._("Search Results"))
         results_frame.set_margin_top(8)
@@ -332,16 +335,16 @@ class JackettTab(Component):
         scrolled.set_min_content_height(300)
 
         # Create list store
-        self.results_store = Gio.ListStore.new(JackettSearchResult)
+        self._view.store = Gio.ListStore.new(JackettSearchResult)
 
         # Create selection model
-        self.selection_model = Gtk.SingleSelection.new(self.results_store)
+        self._view.selection = Gtk.SingleSelection.new(self._view.store)
 
         # Create column view
-        self.column_view = Gtk.ColumnView.new(self.selection_model)
-        self.column_view.set_show_row_separators(True)
-        self.column_view.set_show_column_separators(True)
-        self.column_view.add_css_class("data-table")
+        self._view.column = Gtk.ColumnView.new(self._view.selection)
+        self._view.column.set_show_row_separators(True)
+        self._view.column.set_show_column_separators(True)
+        self._view.column.add_css_class("data-table")
 
         # Add columns
         self._add_column(self._("Title"), "title", self._title_factory, expand=True)
@@ -353,12 +356,9 @@ class JackettTab(Component):
         self._add_column(self._("Date"), "publish_date", self._text_factory)
         self._add_action_column()
 
-        scrolled.set_child(self.column_view)
+        scrolled.set_child(self._view.column)
         results_frame.set_child(scrolled)
         self.container.append(results_frame)
-
-        # Update status
-        self._update_connection_status()
 
     def _add_column(
         self,
@@ -376,7 +376,7 @@ class JackettTab(Component):
         column.set_resizable(True)
         if expand:
             column.set_expand(True)
-        self.column_view.append_column(column)
+        self._view.column.append_column(column)
 
     def _add_action_column(self) -> None:
         """Add action column with download button."""
@@ -386,7 +386,7 @@ class JackettTab(Component):
 
         column = Gtk.ColumnViewColumn.new(self._("Action"), factory)
         column.set_resizable(False)
-        self.column_view.append_column(column)
+        self._view.column.append_column(column)
 
     def _setup_cell(self, item: Gtk.ListItem) -> None:
         """Setup a cell with a label."""
@@ -413,7 +413,7 @@ class JackettTab(Component):
             # Disconnect previous handler if any
             try:
                 button.disconnect_by_func(self._on_add_torrent)
-            except Exception:
+            except _JACKETT_ERRORS:
                 pass
             button.connect("clicked", self._on_add_torrent, result)
 
@@ -463,22 +463,21 @@ class JackettTab(Component):
 
     def _on_toggle_key_visibility(self, button: Gtk.Button) -> None:
         """Toggle API key visibility."""
-        visible = self.api_key_entry.get_visibility()
-        self.api_key_entry.set_visibility(not visible)
+        visible = self._widgets["api_key_entry"].get_visibility()
+        self._widgets["api_key_entry"].set_visibility(not visible)
         if visible:
             button.set_icon_name("view-reveal-symbolic")
         else:
             button.set_icon_name("view-conceal-symbolic")
 
     def _on_config_changed(self, entry: Gtk.Entry) -> None:
-        """Handle config entry changes."""
-        pass  # Just marks that config has been modified
+        """Handle config entry changes (no-op; config is read on save)."""
 
     def _on_save_config(self, button: Gtk.Button) -> None:
         """Save Jackett configuration to settings."""
         try:
-            api_url = self.api_url_entry.get_text().strip()
-            api_key = self.api_key_entry.get_text().strip()
+            api_url = self._widgets["api_url_entry"].get_text().strip()
+            api_key = self._widgets["api_key_entry"].get_text().strip()
 
             # Update settings
             self.settings.set("jackett_settings.api_url", api_url)
@@ -502,7 +501,7 @@ class JackettTab(Component):
                 extra={"class_name": self.__class__.__name__},
             )
 
-        except Exception as e:
+        except _JACKETT_ERRORS as e:
             logger.error(
                 f"Error saving Jackett config: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -510,13 +509,13 @@ class JackettTab(Component):
 
     def _on_test_connection(self, button: Gtk.Button) -> None:
         """Test connection to Jackett API."""
-        self.test_button.set_sensitive(False)
-        self.test_button.set_label(self._("Testing..."))
+        self._widgets["test_button"].set_sensitive(False)
+        self._widgets["test_button"].set_label(self._("Testing..."))
 
         def test_thread() -> None:
             try:
-                api_url = self.api_url_entry.get_text().strip().rstrip("/")
-                api_key = self.api_key_entry.get_text().strip()
+                api_url = self._widgets["api_url_entry"].get_text().strip().rstrip("/")
+                api_key = self._widgets["api_key_entry"].get_text().strip()
 
                 if not api_url or not api_key:
                     GLib.idle_add(self._show_test_result, False, self._("Missing API URL or Key"))
@@ -542,7 +541,7 @@ class JackettTab(Component):
                 GLib.idle_add(self._show_test_result, False, f"HTTP Error: {e.code}")
             except urllib.error.URLError as e:
                 GLib.idle_add(self._show_test_result, False, f"Connection Error: {e.reason}")
-            except Exception as e:
+            except _JACKETT_ERRORS as e:
                 GLib.idle_add(self._show_test_result, False, str(e))
 
         thread = threading.Thread(target=test_thread, daemon=True)
@@ -550,8 +549,8 @@ class JackettTab(Component):
 
     def _show_test_result(self, success: bool, message: str) -> bool:
         """Show test connection result."""
-        self.test_button.set_sensitive(True)
-        self.test_button.set_label(self._("Test Connection"))
+        self._widgets["test_button"].set_sensitive(True)
+        self._widgets["test_button"].set_label(self._("Test Connection"))
 
         from d_fake_seeder.view import View
 
@@ -568,49 +567,49 @@ class JackettTab(Component):
 
         return False
 
-    def _update_connection_status(self, connected: Optional[bool] = None) -> None:
+    def _update_connection_status(self, connected: bool | None = None) -> None:
         """Update connection status indicator."""
         jackett_settings = self.settings.get("jackett_settings", {})
         api_key = jackett_settings.get("api_key", "")
 
         if connected is True:
-            self.status_indicator.set_text("●")
-            self.status_indicator.remove_css_class("dim-label")
-            self.status_indicator.remove_css_class("error")
-            self.status_indicator.add_css_class("success")
-            self.status_label.set_text(self._("Connected"))
-            self.status_label.remove_css_class("dim-label")
-            self.status_label.add_css_class("success")
+            self._widgets["status_indicator"].set_text("●")
+            self._widgets["status_indicator"].remove_css_class("dim-label")
+            self._widgets["status_indicator"].remove_css_class("error")
+            self._widgets["status_indicator"].add_css_class("success")
+            self._widgets["status_label"].set_text(self._("Connected"))
+            self._widgets["status_label"].remove_css_class("dim-label")
+            self._widgets["status_label"].add_css_class("success")
         elif connected is False:
-            self.status_indicator.set_text("●")
-            self.status_indicator.remove_css_class("dim-label")
-            self.status_indicator.remove_css_class("success")
-            self.status_indicator.add_css_class("error")
-            self.status_label.set_text(self._("Connection Failed"))
-            self.status_label.remove_css_class("dim-label")
-            self.status_label.add_css_class("error")
+            self._widgets["status_indicator"].set_text("●")
+            self._widgets["status_indicator"].remove_css_class("dim-label")
+            self._widgets["status_indicator"].remove_css_class("success")
+            self._widgets["status_indicator"].add_css_class("error")
+            self._widgets["status_label"].set_text(self._("Connection Failed"))
+            self._widgets["status_label"].remove_css_class("dim-label")
+            self._widgets["status_label"].add_css_class("error")
         elif api_key:
-            self.status_indicator.set_text("●")
-            self.status_indicator.remove_css_class("success")
-            self.status_indicator.remove_css_class("error")
-            self.status_indicator.add_css_class("dim-label")
-            self.status_label.set_text(self._("Configured"))
-            self.status_label.add_css_class("dim-label")
+            self._widgets["status_indicator"].set_text("●")
+            self._widgets["status_indicator"].remove_css_class("success")
+            self._widgets["status_indicator"].remove_css_class("error")
+            self._widgets["status_indicator"].add_css_class("dim-label")
+            self._widgets["status_label"].set_text(self._("Configured"))
+            self._widgets["status_label"].add_css_class("dim-label")
         else:
-            self.status_indicator.set_text("●")
-            self.status_indicator.remove_css_class("success")
-            self.status_indicator.remove_css_class("error")
-            self.status_indicator.add_css_class("dim-label")
-            self.status_label.set_text(self._("Not Configured"))
-            self.status_label.add_css_class("dim-label")
+            self._widgets["status_indicator"].set_text("●")
+            self._widgets["status_indicator"].remove_css_class("success")
+            self._widgets["status_indicator"].remove_css_class("error")
+            self._widgets["status_indicator"].add_css_class("dim-label")
+            self._widgets["status_label"].set_text(self._("Not Configured"))
+            self._widgets["status_label"].add_css_class("dim-label")
 
     def _on_search_activated(self, entry: Gtk.Entry) -> None:
         """Handle Enter key in search entry."""
         self._on_search_clicked(None)
 
-    def _on_search_clicked(self, button: Optional[Gtk.Button]) -> None:
+    def _on_search_clicked(self, button: Gtk.Button | None) -> None:
         """Perform search via Jackett API."""
-        query = self.search_entry.get_text().strip()
+        query = self._widgets["search_entry"].get_text().strip()
         if not query:
             return
 
@@ -639,15 +638,14 @@ class JackettTab(Component):
             6: "5070",  # Anime
             7: "7000",  # Books
         }
-        selected_idx = self.category_dropdown.get_selected()
+        selected_idx = self._widgets["category_dropdown"].get_selected()
         category = category_map.get(selected_idx, "")
 
         # Start search
-        self._is_searching = True
-        self.search_button.set_sensitive(False)
-        self.search_button.set_label(self._("Searching..."))
-        self.search_status_label.set_text(self._("Searching..."))
-        self.results_store.remove_all()
+        self._widgets["search_button"].set_sensitive(False)
+        self._widgets["search_button"].set_label(self._("Searching..."))
+        self._widgets["search_status_label"].set_text(self._("Searching..."))
+        self._view.store.remove_all()
 
         def search_thread() -> None:
             try:
@@ -680,7 +678,7 @@ class JackettTab(Component):
                 GLib.idle_add(self._display_search_results, [], f"HTTP Error: {e.code}")
             except urllib.error.URLError as e:
                 GLib.idle_add(self._display_search_results, [], f"Connection Error: {e.reason}")
-            except Exception as e:
+            except _JACKETT_ERRORS as e:
                 logger.error(
                     f"Jackett search error: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -690,122 +688,88 @@ class JackettTab(Component):
         thread = threading.Thread(target=search_thread, daemon=True)
         thread.start()
 
-    def _parse_torznab_results(self, xml_data: str, max_results: int) -> List[Dict]:
-        """Parse Torznab XML response."""
-        results = []
+    def _parse_torznab_results(self, xml_data: str, max_results: int) -> list[dict]:
+        """Parse a Torznab XML response into a list of result dicts."""
+        results: list[dict] = []
         try:
-            # Torznab namespace
             ns = {
                 "torznab": "http://torznab.com/schemas/2015/feed",
                 "atom": "http://www.w3.org/2005/Atom",
             }
-
             root = ET.fromstring(xml_data)
-
-            # Find all items
-            items = root.findall(".//item")
-
-            for item in items[:max_results]:
-                try:
-                    title = item.findtext("title", "")
-
-                    # Get size from torznab:attr or enclosure
-                    size = 0
-                    for attr in item.findall("torznab:attr", ns):
-                        if attr.get("name") == "size":
-                            size = int(attr.get("value", 0))
-                            break
-
-                    if not size:
-                        enclosure = item.find("enclosure")
-                        if enclosure is not None:
-                            size = int(enclosure.get("length", 0))
-
-                    # Get seeders and leechers
-                    seeders = 0
-                    leechers = 0
-                    for attr in item.findall("torznab:attr", ns):
-                        name = attr.get("name", "")
-                        value = attr.get("value", "0")
-                        if name == "seeders":
-                            seeders = int(value)
-                        elif name == "peers":
-                            leechers = max(0, int(value) - seeders)
-
-                    # Get category
-                    category = item.findtext("category", "")
-
-                    # Get indexer (from jackettindexer or source)
-                    indexer = ""
-                    for attr in item.findall("torznab:attr", ns):
-                        if attr.get("name") == "jackettindexer":
-                            indexer = attr.get("value", "")
-                            break
-                    if not indexer:
-                        indexer = item.findtext("source", "Unknown")
-
-                    # Get download URL
-                    download_url = item.findtext("link", "")
-
-                    # Get magnet URL
-                    magnet_url = ""
-                    for attr in item.findall("torznab:attr", ns):
-                        if attr.get("name") == "magneturl":
-                            magnet_url = attr.get("value", "")
-                            break
-
-                    # Get info URL
-                    info_url = item.findtext("guid", "") or item.findtext("comments", "")
-
-                    # Get publish date
-                    pub_date = item.findtext("pubDate", "")
-                    # Simplify date display
-                    if pub_date:
-                        try:
-                            # Try to extract just date part
-                            date_parts = pub_date.split(" ")[0:3]
-                            pub_date = " ".join(date_parts)
-                        except Exception:
-                            pass
-
-                    results.append(
-                        {
-                            "title": title,
-                            "size": size,
-                            "seeders": seeders,
-                            "leechers": leechers,
-                            "category": category,
-                            "indexer": indexer,
-                            "download_url": download_url,
-                            "magnet_url": magnet_url,
-                            "info_url": info_url,
-                            "publish_date": pub_date,
-                        }
-                    )
-
-                except Exception as e:
-                    logger.trace(
-                        f"Error parsing result item: {e}",
-                        extra={"class_name": self.__class__.__name__},
-                    )
-                    continue
-
+            for item in root.findall(".//item")[:max_results]:
+                parsed = self._parse_item(item, ns)
+                if parsed is not None:
+                    results.append(parsed)
         except ET.ParseError as e:
             logger.error(
                 f"XML parse error: {e}",
                 extra={"class_name": self.__class__.__name__},
             )
-
         return results
 
-    def _display_search_results(self, results: List[Dict], error: Optional[str]) -> bool:
+    def _parse_item(self, item: Any, ns: dict) -> dict | None:
+        """Parse a single Torznab ``item`` element into a result dict, or None on error."""
+        try:
+            attrs = self._attr_values(item, ns)
+            seeders, leechers = self._parse_peers(attrs)
+            return {
+                "title": item.findtext("title", ""),
+                "size": self._parse_size(item, attrs),
+                "seeders": seeders,
+                "leechers": leechers,
+                "category": item.findtext("category", ""),
+                "indexer": attrs.get("jackettindexer") or item.findtext("source", "Unknown"),
+                "download_url": item.findtext("link", ""),
+                "magnet_url": attrs.get("magneturl", ""),
+                "info_url": item.findtext("guid", "") or item.findtext("comments", ""),
+                "publish_date": self._simplify_date(item.findtext("pubDate", "")),
+            }
+        except _JACKETT_ERRORS as e:
+            logger.trace(
+                f"Error parsing result item: {e}",
+                extra={"class_name": self.__class__.__name__},
+            )
+            return None
+
+    @staticmethod
+    def _attr_values(item: Any, ns: dict) -> dict:
+        """Collect the torznab:attr name->value pairs on an item."""
+        return {attr.get("name", ""): attr.get("value", "") for attr in item.findall("torznab:attr", ns)}
+
+    @staticmethod
+    def _parse_size(item: Any, attrs: dict) -> int:
+        """Resolve a result's size from the torznab size attr or the enclosure length."""
+        raw_size = attrs.get("size")
+        if raw_size:
+            return int(raw_size)
+        enclosure = item.find("enclosure")
+        if enclosure is not None:
+            return int(enclosure.get("length", 0))
+        return 0
+
+    @staticmethod
+    def _parse_peers(attrs: dict) -> tuple:
+        """Resolve (seeders, leechers) from the torznab seeders/peers attrs."""
+        seeders = int(attrs.get("seeders", 0) or 0)
+        raw_peers = attrs.get("peers")
+        leechers = max(0, int(raw_peers) - seeders) if raw_peers else 0
+        return seeders, leechers
+
+    @staticmethod
+    def _simplify_date(pub_date: str) -> str:
+        """Trim a pubDate string to its leading day/date tokens for display."""
+        if not pub_date:
+            return pub_date
+        return " ".join(pub_date.split(" ")[0:3])
+
+    def _display_search_results(self, results: list[dict], error: str | None) -> bool:
         """Display search results in the UI."""
-        self._is_searching = False
-        self.search_button.set_sensitive(True)
-        self.search_button.set_label(self._("Search"))
+        self._widgets["search_button"].set_sensitive(True)
+        self._widgets["search_button"].set_label(self._("Search"))
 
         if error:
-            self.search_status_label.set_text(f"{self._('Error')}: {error}")
+            self._widgets["search_status_label"].set_text(f"{self._('Error')}: {error}")
             from d_fake_seeder.view import View
 
             if View.instance:
@@ -816,25 +780,15 @@ class JackettTab(Component):
             return False
 
         # Clear and populate results
-        self.results_store.remove_all()
+        self._view.store.remove_all()
 
         for result in results:
-            item = JackettSearchResult(
-                title=result["title"],
-                size=result["size"],
-                seeders=result["seeders"],
-                leechers=result["leechers"],
-                category=result["category"],
-                indexer=result["indexer"],
-                download_url=result["download_url"],
-                magnet_url=result["magnet_url"],
-                info_url=result["info_url"],
-                publish_date=result["publish_date"],
-            )
-            self.results_store.append(item)
+            self._view.store.append(JackettSearchResult(result))
 
         count = len(results)
-        self.search_status_label.set_text(f"{count} {self._('result' if count == 1 else 'results')} {self._('found')}")
+        self._widgets["search_status_label"].set_text(
+            f"{count} {self._('result' if count == 1 else 'results')} {self._('found')}"
+        )
 
         logger.info(
             f"Jackett search returned {count} results",
@@ -916,7 +870,7 @@ class JackettTab(Component):
                 GLib.idle_add(self._show_add_result, False, f"HTTP Error: {e.code}")
             except urllib.error.URLError as e:
                 GLib.idle_add(self._show_add_result, False, f"Connection Error: {e.reason}")
-            except Exception as e:
+            except _JACKETT_ERRORS as e:
                 logger.error(
                     f"Error adding torrent: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -945,7 +899,7 @@ class JackettTab(Component):
             else:
                 self._show_add_result(False, self._("Could not add torrent - controller not available"))
 
-        except Exception as e:
+        except _JACKETT_ERRORS as e:
             logger.error(
                 f"Error adding torrent to model: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -975,27 +929,19 @@ class JackettTab(Component):
             self._update_connection_status()
             # Update UI fields from settings
             jackett_settings = self.settings.get("jackett_settings", {})
-            self.api_url_entry.set_text(jackett_settings.get("api_url", "http://localhost:9117"))
-            self.api_key_entry.set_text(jackett_settings.get("api_key", ""))
+            self._widgets["api_url_entry"].set_text(jackett_settings.get("api_url", "http://localhost:9117"))
+            self._widgets["api_key_entry"].set_text(jackett_settings.get("api_key", ""))
 
     # === ABSTRACT METHOD IMPLEMENTATIONS ===
 
     def handle_model_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
-        """Handle model data changes."""
-        pass  # Jackett tab doesn't depend on torrent model changes
+        """Handle model data changes (Jackett tab is independent of torrent model changes)."""
 
     def handle_attribute_changed(self, source: Any, key: Any, value: Any) -> None:
-        """Handle attribute changes."""
-        pass
+        """Handle attribute changes (unused by the Jackett tab)."""
 
     def handle_settings_changed(self, source: Any, data_obj: Any, _data_changed: Any) -> None:
-        """Handle settings changes."""
-        pass
+        """Handle settings changes (updates flow via _on_settings_changed)."""
 
     def update_view(self, model: Any, torrent: Any, attribute: Any) -> None:
-        """Update the view."""
-        pass  # Jackett tab is independent of torrent selection
-
-    def cleanup(self) -> None:
-        """Cleanup resources."""
-        super().cleanup()
+        """Update the view (Jackett tab is independent of torrent selection)."""
