@@ -186,14 +186,6 @@ class Toolbar(Component):
         selected = self.get_selected_torrent()
         if not selected:
             return
-        logger.trace(
-            "Toolbar remove " + selected.filepath,
-            extra={"class_name": self.__class__.__name__},
-        )
-        logger.trace(
-            "Toolbar remove " + str(selected.id),
-            extra={"class_name": self.__class__.__name__},
-        )
         try:
             os.remove(selected.filepath)
         except OSError as e:
@@ -441,25 +433,13 @@ class Toolbar(Component):
                 )
 
     def handle_model_changed(self, source: Any, data_obj: Any, data_changed: Any) -> None:
-        """React to the model changed signal."""
-        logger.trace(
-            "Toolbar settings changed",
-            extra={"class_name": self.__class__.__name__},
-        )
+        """No-op override: the toolbar does not react to model-changed signals."""
 
     def handle_attribute_changed(self, source: Any, key: Any, value: Any) -> None:
-        """React to the attribute changed signal."""
-        logger.trace(
-            "Attribute changed",
-            extra={"class_name": self.__class__.__name__},
-        )
+        """No-op override: the toolbar does not react to attribute-changed signals."""
 
     def model_selection_changed(self, source: Any, model: Any, torrent: Any) -> Any:
-        """Handle model selectichanged."""
-        logger.trace(
-            "Model selection changed",
-            extra={"class_name": self.__class__.__name__},
-        )
+        """Remember the currently selected torrent."""
         self._state.selection = torrent
 
     def toggle_search_entry(self) -> Any:
