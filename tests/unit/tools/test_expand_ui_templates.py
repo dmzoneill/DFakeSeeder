@@ -8,6 +8,7 @@ so the compact tab sources and the UI the app loads cannot drift apart.
 """
 
 import importlib.util
+import io
 import re
 from pathlib import Path
 from types import ModuleType
@@ -108,14 +109,12 @@ def test_expand_errors() -> None:
         expander.expand('<dfs-use template="t"></dfs-use>', {"t": "<a/>"})
 
 
-def test_main_rewrites_file_in_place(tmp_path: Path) -> None:
-    """The CLI expands the generated file with the shipped templates."""
-    target = tmp_path / "ui.xml"
-    target.write_text(
+def test_main_filters_stdin_to_stdout(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    """The CLI expands stdin with the shipped templates (as `make ui-build` pipes xmllint into it)."""
+    source = (
         '<interface>\n    <dfs-use template="spin-row" id="s" label="L" lower="0" upper="9" value="1"'
-        ' step="1" page="5" tooltip="T"/>\n</interface>\n',
-        encoding="utf-8",
+        ' step="1" page="5" tooltip="T"/>\n</interface>\n'
     )
-    assert expander.main(target) == 0
-    assert '<object class="GtkSpinButton" id="s">' in target.read_text(encoding="utf-8")
-    assert expander.SETTINGS_GENERATED == GENERATED
+    monkeypatch.setattr("sys.stdin", io.StringIO(source))
+    assert expander.main() == 0
+    assert '<object class="GtkSpinButton" id="s">' in capsys.readouterr().out

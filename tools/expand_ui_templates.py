@@ -6,14 +6,14 @@ The settings tabs (``components/ui/settings/*.xml``) describe repeated rows comp
 
     <dfs-use template="spin-row" id="settings_upload_limit" label="Upload limit (KB/s):" .../>
 
-``make ui-build`` resolves the XIncludes with xmllint and then runs this script on the
-output, replacing every macro with the named template from
+``make ui-build`` pipes the XInclude-resolved output of xmllint through this filter, which
+replaces every macro with the named template from
 ``components/ui/templates/*.xml.in`` (``{param}`` placeholders filled with the XML-escaped
 attribute values, re-indented to the macro's column). Templates may use further macros.
 Everything outside the macros is left byte-for-byte unchanged, so widget IDs, properties
 and the ``translatable="yes"`` markup the i18n extraction scans for are exactly as written.
 
-Usage: expand_ui_templates.py   (rewrites generated/settings_generated.xml in place)
+Usage: xmllint --xinclude settings.xml | expand_ui_templates.py > generated/settings_generated.xml
 """
 
 import re
@@ -23,12 +23,10 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = REPO_ROOT / "d_fake_seeder" / "components" / "ui" / "templates"
-SETTINGS_GENERATED = REPO_ROOT / "d_fake_seeder" / "components" / "ui" / "generated" / "settings_generated.xml"
 TEMPLATE_START_RE = re.compile(r'<template name="([\w-]+)">')
 TEMPLATE_END = "</template>"
 MACRO_RE = re.compile(r"<dfs-use\b[^>]*>")
 PLACEHOLDER_RE = re.compile(r"\{(\w+)\}")
-ATTRIBUTE_RE = re.compile(r'([\w-]+)="([^"]*)"')
 XML_ESCAPES = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}
 MAX_DEPTH = 10
 
@@ -59,8 +57,16 @@ def _xml_escape(value: str) -> str:
     return "".join(XML_ESCAPES.get(char, char) for char in value)
 
 
+def _attributes(macro: str) -> dict[str, str]:
+    """Attributes of ``<dfs-use a="1" b="2"/>`` as a dict (values unescaped)."""
+    parts = macro.split('"')
+    return {
+        parts[i].rstrip().removesuffix("=").split()[-1]: unescape(parts[i + 1]) for i in range(0, len(parts) - 1, 2)
+    }
+
+
 def _render(macro: str, indent: str, templates: dict[str, str]) -> str:
-    params = {key: unescape(value) for key, value in ATTRIBUTE_RE.findall(macro)}
+    params = _attributes(macro)
     if not macro.endswith("/>"):
         raise TemplateError(f"Macro must be an empty element: {macro}")
     name = params.pop("template", "")
@@ -95,9 +101,9 @@ def _line_indent(text: str, position: int) -> str:
     return prefix if not prefix.strip() else ""
 
 
-def main(path: Path = SETTINGS_GENERATED) -> int:
-    """Expand the macros in the generated settings UI, in place."""
-    path.write_text(expand(path.read_text(encoding="utf-8"), load_templates()), encoding="utf-8")
+def main() -> int:
+    """Filter: read GtkBuilder XML on stdin, write it with all macros expanded to stdout."""
+    sys.stdout.write(expand(sys.stdin.read(), load_templates()))
     return 0
 
 
