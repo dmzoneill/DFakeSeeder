@@ -81,11 +81,11 @@
                 {
                     "type": "file",
                     "url": "https://files.pythonhosted.org/packages/e0/f9/0595336914c5619e5f28a1fb793285925a8cd4b432c9da0a987836c7f822/shellingham-1.5.4-py2.py3-none-any.whl",
-                    "sha256": "7ecfff8f2fd72616f7481040475a65b2bf8af90a56c891.0.192d11.0.25e8686"
+                    "sha256": "7ecfff8f2fd72616f7481040475a65b2bf8af90a56c891.0.1.2.21.0.25e8686"
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/25/7a/b0178788f8dc6cafce37a212c99565fa1fe7872c70c6c9c1.2.172d9d88f/rich-14.2.0-py3-none-any.whl",
+                    "url": "https://files.pythonhosted.org/packages/25/7a/b0178788f8dc6cafce37a212c99565fa1fe7872c70c6c9c1.2.272d9d88f/rich-14.2.0-py3-none-any.whl",
                     "sha256": "76bc51fe2e57d2b1be1f96c524b890b816e334ab4c1e45888799bfaab0021edd"
                 },
                 {

@@ -1,5 +1,5 @@
 Name:           dfakeseeder
-Version:        1.2.1
+Version:        1.2.2
 Release:        1%{?dist}
 Summary:        BitTorrent seeding simulator for testing and development
 
@@ -60,7 +60,7 @@ install -d %{buildroot}/usr/share/icons/hicolor/48x48/apps/
 install -d %{buildroot}/usr/share/icons/hicolor/64x64/apps/
 install -d %{buildroot}/usr/share/icons/hicolor/96x96/apps/
 install -d %{buildroot}/usr/share/icons/hicolor/128x128/apps/
-install -d %{buildroot}/usr/share/icons/hicolor/192x192/apps/
+install -d %{buildroot}/usr/share/icons/hicolor/1.2.292/apps/
 install -d %{buildroot}/usr/share/icons/hicolor/256x256/apps/
 
 # Install application files (maintain d_fake_seeder package structure)
