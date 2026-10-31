@@ -12,8 +12,9 @@ import atexit
 import os
 import socket
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
+from d_fake_seeder.lib.gi_base import Gio, GLib
 from d_fake_seeder.lib.logger import logger
 from d_fake_seeder.lib.util.xdg_paths import get_config_dir
 
@@ -43,11 +44,6 @@ class DBusSingleInstance(SingleInstanceChecker):
     def is_already_running(self) -> bool:
         """Check if D-Bus service is already registered"""
         try:
-            import gi
-
-            gi.require_version("Gio", "2.0")
-            from gi.repository import Gio, GLib
-
             connection = Gio.bus_get_sync(Gio.BusType.SESSION, None)
             if not connection:
                 logger.trace(
@@ -92,7 +88,7 @@ class DBusSingleInstance(SingleInstanceChecker):
 
             return False
 
-        except Exception as e:  # pylint: disable=broad-exception-caught
+        except (AttributeError, OSError, GLib.Error) as e:
             logger.trace(
                 f"D-Bus instance check failed: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -158,7 +154,7 @@ class PIDFileLock(SingleInstanceChecker):
             )
             return False
 
-        except Exception as e:  # pylint: disable=broad-exception-caught
+        except (OSError, ValueError) as e:
             logger.error(
                 f"PID file check failed: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -196,7 +192,7 @@ class SocketLock(SingleInstanceChecker):
 
     def __init__(self, name: str) -> None:
         super().__init__(name)
-        self.socket: Optional[socket.socket] = None
+        self.socket: socket.socket | None = None
         self.socket_address = f"\0dfakeseeder_{name}"  # Abstract namespace
 
     def is_already_running(self) -> bool:
@@ -227,7 +223,7 @@ class SocketLock(SingleInstanceChecker):
                 self.socket.close()
                 self.socket = None
             return True
-        except Exception as e:  # pylint: disable=broad-exception-caught
+        except (ValueError, AttributeError, RuntimeError) as e:
             logger.error(
                 f"Socket lock error: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -247,7 +243,7 @@ class SocketLock(SingleInstanceChecker):
                     f"Socket lock released: {self.socket_address}",
                     extra={"class_name": self.__class__.__name__},
                 )
-        except Exception as e:  # pylint: disable=broad-exception-caught
+        except OSError as e:
             logger.trace(
                 f"Error releasing socket lock: {e}",
                 extra={"class_name": self.__class__.__name__},
@@ -267,7 +263,7 @@ class MultiMethodSingleInstance:
     def __init__(
         self,
         app_name: str,
-        dbus_service: Optional[str] = None,
+        dbus_service: str | None = None,
         use_pidfile: bool = True,
     ) -> None:
         self.app_name = app_name
@@ -276,7 +272,7 @@ class MultiMethodSingleInstance:
         self.locks = []  # type: ignore[var-annotated]
         self.detected_by = None
 
-    def is_already_running(self) -> tuple[bool, Optional[str]]:
+    def is_already_running(self) -> tuple[bool, str | None]:
         """
         Check if another instance is already running.
 
