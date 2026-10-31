@@ -6,19 +6,13 @@ Handles communication with the main DFakeSeeder application via D-Bus.
 
 # isort: skip_file
 
-# fmt: off
 import json
 from typing import Any, Dict, Optional
 
-import gi
 
-gi.require_version("Gio", "2.0")
-
-from gi.repository import Gio, GLib  # noqa: E402
+from d_fake_seeder.lib.gi_base import Gio, GLib
 
 from d_fake_seeder.lib.logger import logger  # noqa: E402
-
-# fmt: on
 
 
 class DBusClient:
