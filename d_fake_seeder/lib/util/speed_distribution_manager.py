@@ -13,7 +13,10 @@ from typing import Any
 from d_fake_seeder.domain.app_settings import AppSettings
 from d_fake_seeder.lib.gi_base import GLib
 from d_fake_seeder.lib.logger import logger
-from d_fake_seeder.lib.util.speed_distribution import create_distributor, format_debug_output
+from d_fake_seeder.lib.util.speed_distribution import (
+    create_distributor,
+    format_debug_output,
+)
 
 LOG = "SpeedDistributionManager"
 DIRECTIONS = ("upload", "download")
