@@ -221,13 +221,16 @@ icons: lint
 	} || true
 	@echo "✅ Icons installed!"
 
-# Settings UI is built via temp files so a failed xmllint/expander never replaces it
+# The UIs are built via temp files so a failed xmllint/expander never replaces it
 SETTINGS_UI := d_fake_seeder/components/ui/generated/settings_generated.xml
+MAIN_UI := d_fake_seeder/components/ui/generated/generated.xml
 
 ui-build: icons
 	@echo "🏗️  Building GTK4 UI..."
-	@echo "   → Compiling main UI (ui.xml → generated.xml)..."
-	@xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml
+	@echo "   → Compiling main UI (ui.xml → generated.xml, templates expanded)..."
+	@xmllint --xinclude d_fake_seeder/components/ui/ui.xml > $(MAIN_UI).xi.tmp && \
+		python3 tools/expand_ui_templates.py < $(MAIN_UI).xi.tmp > $(MAIN_UI).tmp && \
+		mv $(MAIN_UI).tmp $(MAIN_UI) && rm -f $(MAIN_UI).xi.tmp
 	@sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml
 	@echo "   → Compiling settings UI (settings.xml → settings_generated.xml, row templates expanded)..."
 	@xmllint --xinclude d_fake_seeder/components/ui/settings.xml > $(SETTINGS_UI).xi.tmp && \
@@ -253,7 +256,9 @@ ui-build-fast:
 			$(MAKE) setup; \
 		fi; \
 		echo "Generating UI from XML templates..."; \
-		xmllint --xinclude d_fake_seeder/components/ui/ui.xml > d_fake_seeder/components/ui/generated/generated.xml; \
+		{ xmllint --xinclude d_fake_seeder/components/ui/ui.xml > $(MAIN_UI).xi.tmp && \
+			python3 tools/expand_ui_templates.py < $(MAIN_UI).xi.tmp > $(MAIN_UI).tmp && \
+			mv $(MAIN_UI).tmp $(MAIN_UI) && rm -f $(MAIN_UI).xi.tmp; } || exit 1; \
 		sed -i 's/xml:base="[^"]*"//g' d_fake_seeder/components/ui/generated/generated.xml; \
 		echo "Building settings UI..."; \
 		{ xmllint --xinclude d_fake_seeder/components/ui/settings.xml > $(SETTINGS_UI).xi.tmp && \

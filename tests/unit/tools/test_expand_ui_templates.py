@@ -18,6 +18,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[3]
 UI_DIR = ROOT / "d_fake_seeder" / "components" / "ui"
 GENERATED = UI_DIR / "generated" / "settings_generated.xml"
+MAIN_GENERATED = UI_DIR / "generated" / "generated.xml"
+BUILDS = [("settings.xml", GENERATED), ("ui.xml", MAIN_GENERATED)]
 INCLUDE = re.compile(r'^[ \t]*<xi:include\b[^>]*\bhref="([^"]+)"[^>]*/>', re.MULTILINE)
 DECLARATION = re.compile(r"^<\?xml[^>]*\?>\s*")
 COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
@@ -45,31 +47,50 @@ def _canonical(xml: str) -> list[str]:
             tokens.append(token.replace(" />", "/>").replace(" >", ">"))
         elif token.strip():
             tokens.append(token.strip())
-    return tokens
+    return _collapse_empty_elements(tokens)
 
 
-def _build_settings_ui() -> str:
-    """What `make ui-build` produces: XIncludes resolved (each tab file inlined), then macros expanded."""
+def _collapse_empty_elements(tokens: list[str]) -> list[str]:
+    """``<a x="1"></a>`` and ``<a x="1"/>`` are the same element (xmllint writes the short form)."""
+    collapsed: list[str] = []
+    for token in tokens:
+        previous = collapsed[-1] if collapsed else ""
+        name = previous[1:].split(" ", 1)[0].rstrip(">")
+        if token == f"</{name}>" and not previous.startswith("</") and not previous.endswith("/>"):
+            collapsed[-1] = previous[:-1] + "/>"
+        else:
+            collapsed.append(token)
+    return collapsed
+
+
+def _resolve_includes(path: Path) -> str:
+    """Inline every XInclude of ``path`` (hrefs relative to the including file), recursively."""
 
     def include(match: re.Match[str]) -> str:
-        return DECLARATION.sub("", (UI_DIR / match.group(1)).read_text(encoding="utf-8"))
+        return DECLARATION.sub("", _resolve_includes(path.parent / match.group(1)))
 
-    settings = INCLUDE.sub(include, (UI_DIR / "settings.xml").read_text(encoding="utf-8"))
-    built: str = expander.expand(settings, expander.load_templates())
+    return INCLUDE.sub(include, path.read_text(encoding="utf-8"))
+
+
+def _build_ui(source: str) -> str:
+    """What `make ui-build` produces: XIncludes resolved, then macros expanded."""
+    built: str = expander.expand(_resolve_includes(UI_DIR / source), expander.load_templates())
     return built
 
 
-def test_compact_sources_expand_to_committed_generated_ui() -> None:
-    """Expanded sources are semantically identical to the committed generated settings UI."""
-    built = _build_settings_ui()
+@pytest.mark.parametrize(("source", "generated"), BUILDS, ids=[source for source, _ in BUILDS])
+def test_compact_sources_expand_to_committed_generated_ui(source: str, generated: Path) -> None:
+    """Expanded sources are semantically identical to the committed generated UI."""
+    built = _build_ui(source)
     assert "dfs-use" not in built
     assert "xi:include" not in built
-    assert _canonical(built) == _canonical(GENERATED.read_text(encoding="utf-8"))
+    assert _canonical(built) == _canonical(generated.read_text(encoding="utf-8"))
 
 
-def test_committed_generated_ui_has_no_macros_left() -> None:
-    """The file the app loads contains plain GtkBuilder XML only."""
-    assert "<dfs-use" not in GENERATED.read_text(encoding="utf-8")
+@pytest.mark.parametrize("generated", [generated for _, generated in BUILDS], ids=[s for s, _ in BUILDS])
+def test_committed_generated_ui_has_no_macros_left(generated: Path) -> None:
+    """The files the app loads contain plain GtkBuilder XML only."""
+    assert "<dfs-use" not in generated.read_text(encoding="utf-8")
 
 
 @pytest.mark.parametrize("tab", sorted(path.name for path in (UI_DIR / "settings").glob("*.xml")))
@@ -87,6 +108,12 @@ def test_template_strings_reach_generated_ui() -> None:
     assert {"Enable Web UI", "Enable CSRF protection", "Session timeout (min):"} <= strings
     assert {"Automatic logout after inactivity (5-1440 minutes)"} <= strings
     assert {"Handshake timeout (seconds):", "Deluge Theme", "Japanese"} <= strings
+
+
+def test_notebook_template_strings_reach_main_ui() -> None:
+    """Tab labels and empty-state texts passed to the notebook templates are translatable in generated.xml."""
+    strings = set(TRANSLATABLE.findall(MAIN_GENERATED.read_text(encoding="utf-8")))
+    assert {"Details", "Trackers", "No Torrent Selected", "Select a torrent to view its details"} <= strings
 
 
 def test_expand_indents_escapes_and_nests() -> None:
