@@ -383,3 +383,35 @@
     </object>
 </child>
 </template>
+
+<!-- Expanding label with a SpinButton at the end of the row -->
+<template name="spin-row-end">
+<child>
+    <object class="GtkBox">
+        <property name="spacing">12</property>
+        <child>
+            <object class="GtkLabel">
+                <property name="label" translatable="yes">{label}</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkSpinButton" id="{id}">
+                <property name="valign">center</property>
+                <property name="width-chars">{chars}</property>
+                <property name="tooltip-text" translatable="yes">{tooltip}</property>
+                <property name="adjustment">
+                    <object class="GtkAdjustment">
+                        <property name="lower">{lower}</property>
+                        <property name="upper">{upper}</property>
+                        <property name="step-increment">{step}</property>
+                        <property name="page-increment">{page}</property>
+                        <property name="value">{value}</property>
+                    </object>
+                </property>
+            </object>
+        </child>
+    </object>
+</child>
+</template>
