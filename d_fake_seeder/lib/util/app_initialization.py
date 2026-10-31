@@ -33,7 +33,7 @@ class AppInitializationHelper:
 
             logger.info("Application settings initialized")
 
-        except Exception as e:  # noqa: BLE001  # pylint: disable=broad-exception-caught
+        except (ImportError, OSError, ValueError, KeyError) as e:
             logger.error(f"Error initializing application settings: {e}", exc_info=True)
 
     @classmethod
@@ -63,7 +63,7 @@ class AppInitializationHelper:
                     os.environ["DFS_PATH"] = package_root
                     logger.trace(f"DFS_PATH set to fallback path: {package_root}")
 
-        except Exception as e:  # noqa: BLE001  # pylint: disable=broad-exception-caught
+        except (ImportError, OSError) as e:
             logger.error(f"Error setting up resource paths: {e}", exc_info=True)
 
     @classmethod
@@ -83,5 +83,5 @@ class AppInitializationHelper:
 
             logger.trace("Full application initialization completed")
 
-        except Exception as e:  # noqa: BLE001  # pylint: disable=broad-exception-caught
+        except (ImportError, OSError, RuntimeError) as e:
             logger.error(f"Error during full application initialization: {e}", exc_info=True)
