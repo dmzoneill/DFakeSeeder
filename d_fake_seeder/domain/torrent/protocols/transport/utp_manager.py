@@ -179,7 +179,7 @@ class UTPManager:
         while self.running:
             try:
                 # Receive packet
-                data, addr = await asyncio.get_running_loop().sock_recvfrom(self.socket, UTPConstants.MAX_PACKET_SIZE)  # type: ignore[attr-defined]  # noqa: E501
+                data, addr = await asyncio.get_running_loop().sock_recvfrom(self.socket, UTPConstants.MAX_PACKET_SIZE)  # type: ignore[attr-defined,arg-type]  # noqa: E501
 
                 # Route to appropriate connection
                 self._spawn_background(self._route_packet(data, addr))

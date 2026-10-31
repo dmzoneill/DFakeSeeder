@@ -232,7 +232,7 @@ class DHTNode:
         while self.running:
             try:
                 # Receive DHT message
-                data, addr = await asyncio.get_running_loop().sock_recvfrom(self.socket, 1024)  # type: ignore[attr-defined]  # noqa: E501
+                data, addr = await asyncio.get_running_loop().sock_recvfrom(self.socket, 1024)  # type: ignore[attr-defined,arg-type]  # noqa: E501
 
                 # Process message in background
                 self._spawn_background(self._handle_message(data, addr))
