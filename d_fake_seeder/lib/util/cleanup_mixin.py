@@ -31,19 +31,14 @@ Usage:
 
 # isort: skip_file
 
-# fmt: off
 import warnings
 import weakref
-from typing import Any, List, Tuple
+from typing import Any
 
-import gi
 
 from d_fake_seeder.lib.logger import logger
 
-gi.require_version("Gtk", "4.0")
-from gi.repository import GLib, GObject  # noqa: E402
-
-# fmt: on
+from d_fake_seeder.lib.gi_base import GLib, GObject
 
 
 class CleanupMixin:
@@ -60,16 +55,16 @@ class CleanupMixin:
     def __init__(self) -> None:
         """Initialize cleanup tracking structures."""
         # Track signal connections: [(weakref(object), handler_id), ...]
-        self._tracked_signals: List[Tuple[Any, int]] = []
+        self._tracked_signals: list[tuple[Any, int]] = []
 
         # Track property bindings: [binding, ...]
-        self._tracked_bindings: List[GObject.Binding] = []
+        self._tracked_bindings: list[GObject.Binding] = []
 
         # Track timeout/idle sources: [source_id, ...]
-        self._tracked_timeouts: List[int] = []
+        self._tracked_timeouts: list[int] = []
 
         # Track ListStore instances: [weakref(store), ...]
-        self._tracked_stores: List[Any] = []
+        self._tracked_stores: list[Any] = []
 
         # Cleanup performed flag
         self._cleanup_done = False
@@ -224,7 +219,7 @@ class CleanupMixin:
                 obj.disconnect(handler_id)
                 disconnected += 1
 
-            except Exception as e:  # pylint: disable=broad-exception-caught
+            except (TypeError, AttributeError, ValueError, RuntimeError) as e:
                 logger.trace(
                     f"Failed to disconnect handler {handler_id}: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -248,7 +243,7 @@ class CleanupMixin:
             try:
                 binding.unbind()
                 unbound += 1
-            except Exception as e:  # pylint: disable=broad-exception-caught
+            except (TypeError, AttributeError, ValueError, RuntimeError) as e:
                 logger.trace(
                     f"Failed to unbind binding: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -279,7 +274,7 @@ class CleanupMixin:
                     else:
                         # Source already removed or invalid
                         pass
-                except Exception as e:  # pylint: disable=broad-exception-caught
+                except (TypeError, AttributeError, ValueError, RuntimeError) as e:
                     logger.trace(
                         f"Failed to remove timeout source {source_id}: {e}",
                         extra={"class_name": self.__class__.__name__},
@@ -318,7 +313,7 @@ class CleanupMixin:
                     store.clear()
                     cleared += 1
 
-            except Exception as e:  # pylint: disable=broad-exception-caught
+            except (TypeError, AttributeError, ValueError, RuntimeError) as e:
                 logger.trace(
                     f"Failed to clear store: {e}",
                     extra={"class_name": self.__class__.__name__},
@@ -343,7 +338,7 @@ class CleanupMixin:
             )
             try:
                 self.cleanup()
-            except Exception as e:  # pylint: disable=broad-exception-caught
+            except (TypeError, AttributeError, ValueError, RuntimeError) as e:
                 logger.error(
                     f"Error during __del__ cleanup: {e}",
                     extra={"class_name": self.__class__.__name__},
