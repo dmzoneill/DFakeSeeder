@@ -5,9 +5,9 @@ Coordinates the application of speed distribution algorithms across all torrents
 Upload and download are handled by the same code, parameterised by direction.
 """
 
-import random
 import time
 from dataclasses import dataclass
+from secrets import SystemRandom
 from typing import Any
 
 from d_fake_seeder.domain.app_settings import AppSettings
@@ -19,6 +19,8 @@ from d_fake_seeder.lib.util.speed_distribution import (
 )
 
 LOG = "SpeedDistributionManager"
+# Randomised spread of simulated bandwidth (OS entropy; no seeding needed)
+_RANDOM = SystemRandom()
 DIRECTIONS = ("upload", "download")
 HEADLINES = {"upload": "🔄 REDISTRIBUTING UPLOAD SPEEDS", "download": "⬇️  REDISTRIBUTING DOWNLOAD SPEEDS"}
 
@@ -158,7 +160,7 @@ class SpeedDistributionManager:
             # Example: 6000 KB/s with 50% spread = 3000 to 9000 KB/s
             low = base * (1.0 - percentage / 100.0)
             high = base * (1.0 + percentage / 100.0)
-            plan = BandwidthPlan(base, random.uniform(low, high), low, high)
+            plan = BandwidthPlan(base, _RANDOM.uniform(low, high), low, high)
             logger.debug(
                 f"{title} bandwidth randomized: {base:.1f} KB/s ±{percentage}% "
                 f"= {low:.1f} to {high:.1f} KB/s, using {plan.total:.1f} KB/s",
@@ -185,7 +187,7 @@ class SpeedDistributionManager:
         self._log_header(direction, algorithm, percentage, plan, len(torrents))
         stopped_min = self._setting(direction, "stopped_min_percentage")
         stopped_max = self._setting(direction, "stopped_max_percentage")
-        stopped_percentage = random.uniform(stopped_min, stopped_max)
+        stopped_percentage = _RANDOM.uniform(stopped_min, stopped_max)
         logger.debug(
             f"{direction.capitalize()} stopped torrents: {stopped_percentage:.1f}% "
             f"(range: {stopped_min}-{stopped_max}%)",
