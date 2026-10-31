@@ -388,7 +388,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
             # Handle source file deletion if configured
             self._maybe_delete_watch_file(file_path, filename, duplicate=False)
 
-        except (OSError, shutil.Error, AttributeError, TypeError, ValueError, KeyError, RuntimeError) as e:
+        except (OSError, shutil.Error, AttributeError, TypeError, ValueError, LookupError, RuntimeError) as e:
             logger.error(
                 f"Error processing torrent file {file_path}: {e}",
                 extra={"class_name": self.__class__.__name__},

@@ -197,3 +197,21 @@ def test_process_notifies_when_view_active(tmp_path: Path) -> None:
         with patch.object(mod, "get_config_dir", return_value=str(config_dir)):
             handler.process_torrent_file(str(source))
         mod.View.instance.notify.assert_called_once()
+
+
+def test_process_swallows_lookup_error_from_truncated_torrent(tmp_path: Path) -> None:
+    """A truncated .torrent whose parse raises LookupError is logged, not propagated."""
+    config_dir = tmp_path / "config"
+    config_dir.mkdir()
+    source = tmp_path / "truncated.torrent"
+    source.write_bytes(b"d4:infod4:name")  # truncated bencode -> parse raises LookupError
+
+    with loaded_watcher() as mod:
+        handler, model = _make_handler(mod)
+        # A real bencode parser raises IndexError/KeyError (LookupError) on truncated data.
+        model.add_torrent.side_effect = LookupError("bencode: unexpected end of data")
+        with patch.object(mod, "get_config_dir", return_value=str(config_dir)):
+            # Must not raise: the except tuple now includes LookupError.
+            handler.process_torrent_file(str(source))
+
+    model.add_torrent.assert_called_once()
