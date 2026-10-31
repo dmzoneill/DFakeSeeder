@@ -4,20 +4,13 @@ Files tab for torrent details.
 Displays torrent file listing with file paths and sizes.
 """
 
-# isort: skip_file
-
-# fmt: off
 from typing import Any
-import gi
 
+from d_fake_seeder.lib.gi_base import GLib
 from d_fake_seeder.lib.util.constants import SIZE_UNITS_BASIC
 
 from .base_tab import BaseTorrentTab
 from .tab_mixins import DataUpdateMixin, UIUtilityMixin
-
-gi.require_version("Gtk", "4.0")
-
-# fmt: on
 
 
 class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
@@ -51,7 +44,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 self.remove_all_children(self._files_tab)
             self._files_grid_child = None
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error clearing files tab content: {e}")
 
     def _remove_current_grid(self) -> None:
@@ -62,25 +55,25 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 self.remove_all_children(self._files_tab)
             self._files_grid_child = None
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error removing files grid child: {e}")
 
-    def update_content(self, attributes: Any) -> None:
+    def update_content(self, torrent: Any) -> None:
         """
         Update files tab content with torrent file data.
 
         Args:
-            attributes: Attributes object from the torrent list
+            torrent: Attributes object from the torrent list
         """
         try:
             self.logger.trace(
-                f"🔄 FILES TAB: Starting update_content for attributes: {attributes}",
+                f"🔄 FILES TAB: Starting update_content for torrent: {torrent}",
                 extra={"class_name": self.__class__.__name__},
             )
 
-            if attributes is None:
+            if torrent is None:
                 self.logger.warning(
-                    "🚨 FILES TAB: Received None attributes in update_content",
+                    "🚨 FILES TAB: Received None torrent in update_content",
                     extra={"class_name": self.__class__.__name__},
                 )
                 self.clear_content()
@@ -105,7 +98,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 "🔍 FILES TAB: Calling _get_torrent_files()",
                 extra={"class_name": self.__class__.__name__},
             )
-            files_data = self._get_torrent_files(attributes)
+            files_data = self._get_torrent_files(torrent)
             self.logger.trace(
                 f"📊 FILES TAB: Retrieved {len(files_data) if files_data else 0} files from torrent",
                 extra={"class_name": self.__class__.__name__},
@@ -123,7 +116,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if self._files_tab:
                 self._files_tab.append(self._files_grid_child)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error updating files tab content: {e}")
 
     def _get_torrent_files(self, attributes: Any) -> list:
@@ -247,7 +240,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             )
             return files
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error getting torrent files: {e}")
             return []
 
@@ -267,7 +260,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             # Create the label pair for file path and size
             self.create_label_pair(fullpath, formatted_length, row, self._files_grid_child)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error creating file row for {fullpath}: {e}")
 
     def _format_file_size(self, size_str: str) -> str:
@@ -322,7 +315,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             return f"{size:.1f} {units[unit_index]}"
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error formatting bytes: {e}")
             return f"{bytes_count} B"
 
@@ -344,7 +337,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
             if self._files_tab and self._files_grid_child:
                 self._files_tab.append(self._files_grid_child)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error showing no files message: {e}")
 
     def get_file_count(self) -> int:
@@ -359,7 +352,7 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
                 files_data = self._get_torrent_files(self._current_torrent)
                 return len(files_data)
             return 0
-        except Exception:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error):
             return 0
 
     def get_total_size(self) -> int:
@@ -384,6 +377,6 @@ class FilesTab(BaseTorrentTab, DataUpdateMixin, UIUtilityMixin):
 
             return total_size
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error calculating total size: {e}")
             return 0
