@@ -9,6 +9,7 @@ copy-to-config, model add, optional delete, notification). The heavy GTK
 """
 
 import contextlib
+import importlib
 import sys
 from collections.abc import Iterator
 from pathlib import Path
@@ -16,12 +17,12 @@ from types import ModuleType
 from typing import Any
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 
 @contextlib.contextmanager
 def loaded_watcher() -> Iterator[ModuleType]:
     """Import the watcher module with the heavy GTK ``View`` dependency mocked."""
-    import importlib
-
     fake_view = MagicMock()
     fake_view.View.instance = None
     saved_view = sys.modules.get("d_fake_seeder.view")
@@ -41,8 +42,6 @@ def test_stub_fallbacks_expose_noop_interface() -> None:
     """When watchdog is unavailable the stubs provide the called methods as no-ops."""
     with loaded_watcher() as mod:
         if mod.WATCHDOG_AVAILABLE:
-            import pytest
-
             pytest.skip("watchdog is installed; fallback stubs are not in use")
 
         observer = mod.Observer()
