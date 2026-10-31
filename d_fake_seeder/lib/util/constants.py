@@ -8,6 +8,8 @@ Constants are organized into logical classes for better organization and
 to make it clear which category each constant belongs to.
 """
 
+from typing import ClassVar
+
 
 class NetworkConstants:  # pylint: disable=too-few-public-methods
     """Network-related timeout and connection constants."""
@@ -54,7 +56,7 @@ class UIConstants:  # pylint: disable=too-few-public-methods
     NOTIFICATION_DEFAULT = 3000
 
     # Icon sizes
-    ICON_SIZES = [
+    ICON_SIZES: ClassVar[list[str]] = [
         "16x16",
         "32x32",
         "48x48",
@@ -416,8 +418,8 @@ class SizeConstants:  # pylint: disable=too-few-public-methods
     """File size units and conversions."""
 
     # Size unit arrays
-    SIZE_UNITS_BASIC = ["B", "KB", "MB", "GB", "TB"]
-    SIZE_UNITS_EXTENDED = ["B", "KB", "MB", "GB", "TB", "PB"]
+    SIZE_UNITS_BASIC: ClassVar[list[str]] = ["B", "KB", "MB", "GB", "TB"]
+    SIZE_UNITS_EXTENDED: ClassVar[list[str]] = ["B", "KB", "MB", "GB", "TB", "PB"]
 
 
 # Backward compatibility: Keep module-level constants for existing code

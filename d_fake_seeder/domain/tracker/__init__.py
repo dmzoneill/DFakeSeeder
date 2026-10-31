@@ -18,9 +18,9 @@ from d_fake_seeder.domain.tracker.udp_handler import UDPTrackerHandler
 # fmt: on
 
 __all__ = [
+    "LocalAnnouncer",
     "PeerDatabase",
     "TorrentRegistry",
-    "LocalAnnouncer",
     "TrackerServer",
     "UDPTrackerHandler",
 ]

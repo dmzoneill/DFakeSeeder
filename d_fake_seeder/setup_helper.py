@@ -112,7 +112,7 @@ def run_desktop_integration() -> None:
         install_desktop_integration()
         print("✅ Desktop integration installed successfully!")
         return True  # type: ignore[return-value]
-    except Exception as e:  # pylint: disable=broad-exception-caught
+    except Exception as e:  # noqa: BLE001  # pylint: disable=broad-exception-caught
         print(f"⚠️  Desktop integration failed: {e}")
         print("You can try again later with: dfs-install-desktop")
         return False  # type: ignore[return-value]

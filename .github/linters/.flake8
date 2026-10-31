@@ -1,0 +1,4 @@
+[flake8]
+max-line-length = 120
+# E402: gi.require_version() must precede gi.repository imports (pylint C0413 is disabled in pyproject.toml for the same reason)
+extend-ignore = E203,W503,E402

@@ -14,12 +14,12 @@ import gi
 
 gi.require_version("GObject", "2.0")
 
-from gi.repository import GObject  # noqa: E402
+from gi.repository import GObject
 
 # fmt: on
 
 
-class TorrentState(GObject.Object):
+class TorrentState(GObject.Object):  # pylint: disable=too-few-public-methods
     """GObject representing aggregated state for torrents by tracker."""
 
     tracker = GObject.Property(type=GObject.TYPE_STRING, default="")

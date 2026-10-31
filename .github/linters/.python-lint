@@ -1,0 +1,15 @@
+[MAIN]
+# Mirrors [tool.pylint] in pyproject.toml so super-linter uses the project's own pylint settings
+jobs=0
+extension-pkg-whitelist=gi
+ignore-paths=.git,__pycache__,build,dist,.venv,.eggs,rpmbuild,debbuild
+
+[MESSAGES CONTROL]
+# import-error: super-linter does not install dependencies
+disable=import-error,E0611,E1101,E1120,C0413,W0201,W0613,C0415,R0801,C0302,C0411
+
+[FORMAT]
+max-line-length=120
+
+[TYPECHECK]
+generated-members=gi.repository.*,Gtk.*,Gdk.*,GLib.*,Gio.*,Adw.*,GObject.*

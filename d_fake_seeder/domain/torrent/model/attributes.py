@@ -13,12 +13,12 @@ import gi
 
 gi.require_version("GObject", "2.0")
 
-from gi.repository import GObject  # noqa: E402
+from gi.repository import GObject
 
 # fmt: on
 
 
-class Attributes(GObject.Object):
+class Attributes(GObject.Object):  # pylint: disable=too-few-public-methods
     """GObject storing torrent metadata attributes with change notifications."""
 
     # Hidden attributes

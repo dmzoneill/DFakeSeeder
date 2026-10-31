@@ -14,12 +14,12 @@ import gi
 
 gi.require_version("GObject", "2.0")
 
-from gi.repository import GObject  # noqa: E402
+from gi.repository import GObject
 
 # fmt: on
 
 
-class TorrentPeer(GObject.Object):  # pylint: disable=too-many-instance-attributes
+class TorrentPeer(GObject.Object):  # pylint: disable=too-many-instance-attributes,too-few-public-methods
     """GObject representing a connected peer with address, client, and stats."""
 
     # Core peer information
@@ -50,7 +50,7 @@ class TorrentPeer(GObject.Object):  # pylint: disable=too-many-instance-attribut
         up_speed: Any = 0.0,
         seed: Any = False,
         peer_id: Any = "",
-    ) -> None:  # noqa: E501
+    ) -> None:
         super().__init__()
         self.uuid = str(uuid.uuid4())
         self.address = address
