@@ -4,24 +4,14 @@ Log tab for torrent details.
 Displays application log messages in a scrollable text view with batched updates.
 """
 
-# isort: skip_file
-
-# fmt: off
 import logging
-from typing import Any, List, Optional
+from typing import Any
 
-import gi
+from d_fake_seeder.lib.gi_gtk4 import GLib, Gtk
+from d_fake_seeder.lib.logger import logger
 
 from .base_tab import BaseTorrentTab
 from .tab_mixins import PerformanceMixin, UIUtilityMixin
-
-gi.require_version("Gtk", "4.0")
-from gi.repository import GLib  # noqa: E402
-from gi.repository import Gtk  # noqa: E402
-
-from d_fake_seeder.lib.logger import logger  # noqa: E402
-
-# fmt: on
 
 
 class LogTabHandler(logging.Handler):
@@ -41,7 +31,7 @@ class LogTabHandler(logging.Handler):
         """Emit a log record by calling the callback."""
         try:
             self._callback(record)
-        except Exception:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error):
             self.handleError(record)
 
 
@@ -58,9 +48,9 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
         PerformanceMixin.__init__(self)
 
         # Log batching for performance
-        self._log_message_queue: List[str] = []
+        self._log_message_queue: list[str] = []
         self._log_flush_timer = None
-        self._log_handler: Optional[LogTabHandler] = None
+        self._log_handler: LogTabHandler | None = None
 
         # Get log buffer limit from settings
         ui_settings = getattr(self.settings, "ui_settings", {})
@@ -92,7 +82,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
                 buffer = self._log_viewer.get_buffer()
                 buffer.set_text("")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error clearing log tab content: {e}")
 
     def update_content(self, torrent: Any) -> None:
@@ -107,7 +97,6 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
         """
         # Log tab doesn't need torrent-specific updates
         # Content is updated via the log handler
-        pass
 
     def _setup_log_viewer_handler(self) -> None:
         """Set up log handler to capture messages for the log viewer."""
@@ -129,7 +118,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
 
             self.logger.info("Log viewer handler set up successfully")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error setting up log viewer handler: {e}")
 
     def _queue_log_message(self, message: str) -> None:
@@ -148,7 +137,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
                 flush_delay = max(1, int(getattr(self.settings, "tickspeed", 3) / 3))
                 self._log_flush_timer = GLib.timeout_add_seconds(flush_delay, self._flush_log_messages)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error queuing log message: {e}")
 
     def _flush_log_messages(self) -> bool:
@@ -167,7 +156,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
                 # Single UI update for all messages
                 GLib.idle_add(lambda: (self._update_text_buffer(combined_msg), False)[1])
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error flushing log messages: {e}")
 
         # Reset timer
@@ -206,7 +195,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             mark = buffer.get_insert()
             self._log_viewer.scroll_mark_onscreen(mark)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             # Use logger error to capture this properly
             logger.error(f"Error updating text buffer: {e}", "LogTab", exc_info=True)
 
@@ -224,7 +213,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
                 self._log_handler.setLevel(level)
                 self.logger.info(f"Log level set to {logging.getLevelName(level)}")
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error setting log level: {e}")
 
     def add_manual_message(self, message: str, level: str = "INFO") -> None:
@@ -239,7 +228,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             formatted_msg = f"{level}: {message}\n"
             self._queue_log_message(formatted_msg)
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error adding manual message: {e}")
 
     def save_log_to_file(self, file_path: str) -> bool:
@@ -266,7 +255,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             self.logger.info(f"Log saved to {file_path}")
             return True
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, OSError, GLib.Error) as e:
             self.logger.error(f"Error saving log to file: {e}")
             return False
 
@@ -285,7 +274,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             start_iter, end_iter = buffer.get_bounds()
             return buffer.get_text(start_iter, end_iter, False)  # type: ignore[no-any-return]
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error getting log content: {e}")
             return ""
 
@@ -303,7 +292,7 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             buffer = self._log_viewer.get_buffer()
             return buffer.get_line_count()  # type: ignore[no-any-return]
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error getting line count: {e}")
             return 0
 
@@ -326,5 +315,5 @@ class LogTab(BaseTorrentTab, UIUtilityMixin, PerformanceMixin):
             # Call parent cleanup
             super().cleanup()
 
-        except Exception as e:
+        except (AttributeError, TypeError, ValueError, KeyError, IndexError, GLib.Error) as e:
             self.logger.error(f"Error cleaning up log tab: {e}")
