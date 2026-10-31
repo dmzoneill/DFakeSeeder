@@ -319,7 +319,7 @@ class TorrentFileEventHandler(FileSystemEventHandler):
             return
 
         # Truncate long filenames for display
-        display_name = filename[:-8] if filename.endswith(".torrent") else filename
+        display_name = filename.removesuffix(".torrent")
         if len(display_name) > 40:
             display_name = display_name[:37] + "..."
         View.instance.notify(

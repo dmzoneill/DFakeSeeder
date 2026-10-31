@@ -10,7 +10,6 @@ copy-to-config, model add, optional delete, notification). The heavy GTK
 
 import contextlib
 import sys
-import types
 from collections.abc import Iterator
 from pathlib import Path
 from types import ModuleType
@@ -23,10 +22,8 @@ def loaded_watcher() -> Iterator[ModuleType]:
     """Import the watcher module with the heavy GTK ``View`` dependency mocked."""
     import importlib
 
-    fake_view = types.ModuleType("d_fake_seeder.view")
-    view_stub = MagicMock()
-    view_stub.instance = None
-    setattr(fake_view, "View", view_stub)
+    fake_view = MagicMock()
+    fake_view.View.instance = None
     saved_view = sys.modules.get("d_fake_seeder.view")
     sys.modules["d_fake_seeder.view"] = fake_view
     sys.modules.pop("d_fake_seeder.lib.handlers.torrent_folder_watcher", None)
