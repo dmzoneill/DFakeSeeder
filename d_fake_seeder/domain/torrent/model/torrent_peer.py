@@ -6,17 +6,10 @@ to a torrent. It stores peer information such as IP address, port, client
 identifier, and connection state.
 """
 
-# fmt: off
 import uuid
 from typing import Any
 
-import gi
-
-gi.require_version("GObject", "2.0")
-
 from gi.repository import GObject
-
-# fmt: on
 
 
 class TorrentPeer(GObject.Object):  # pylint: disable=too-many-instance-attributes,too-few-public-methods

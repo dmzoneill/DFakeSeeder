@@ -6,20 +6,13 @@ runtime state of a torrent including progress, upload/download stats,
 and connection status.
 """
 
-# fmt: off
 import uuid
 from typing import Any
 
-import gi
-
-gi.require_version("GObject", "2.0")
-
 from gi.repository import GObject
 
-# fmt: on
 
-
-class TorrentState(GObject.Object):  # pylint: disable=too-few-public-methods
+class TorrentState(GObject.Object):
     """GObject representing aggregated state for torrents by tracker."""
 
     tracker = GObject.Property(type=GObject.TYPE_STRING, default="")
