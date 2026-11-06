@@ -1,5 +1,5 @@
 # Stage 1: Build Environment
-FROM fedora:44
+FROM fedora:45
 
 # Install necessary packages and clean up in the same layer
 # hadolint ignore=DL3041
