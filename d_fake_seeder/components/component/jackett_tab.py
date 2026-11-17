@@ -7,6 +7,7 @@ and add results directly to DFakeSeeder.
 
 import os
 import threading
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -23,6 +24,14 @@ from d_fake_seeder.lib.util.xdg_paths import get_config_dir
 # search/config/add paths touch settings, networking, XML parsing, GLib and the
 # filesystem, so these are the failures worth swallowing defensively.
 _JACKETT_ERRORS = (AttributeError, TypeError, ValueError, KeyError, IndexError, OSError, GLib.Error)
+
+
+def _http_urlopen(request, timeout):
+    """Open an HTTP or HTTPS URL, rejecting other schemes."""
+    parsed = urllib.parse.urlparse(request.full_url)
+    if parsed.scheme not in {"http", "https"}:
+        raise ValueError(f"Unsupported URL scheme: {parsed.scheme!r}")
+    return urllib.request.urlopen(request, timeout=timeout)
 
 
 class JackettSearchResult(GObject.Object):
@@ -527,7 +536,7 @@ class JackettTab(Component):
                 req = urllib.request.Request(url)
                 req.add_header("User-Agent", "DFakeSeeder/1.0")
 
-                with urllib.request.urlopen(req, timeout=10) as response:
+                with _http_urlopen(req, timeout=10) as response:
                     if response.status == 200:
                         GLib.idle_add(
                             self._show_test_result,
@@ -658,7 +667,7 @@ class JackettTab(Component):
                 timeout = jackett_settings.get("timeout_seconds", 30)
                 max_results = jackett_settings.get("max_results", 100)
 
-                with urllib.request.urlopen(req, timeout=timeout) as response:
+                with _http_urlopen(req, timeout=timeout) as response:
                     if response.status == 200:
                         xml_data = response.read().decode("utf-8")
                         results = self._parse_torznab_results(xml_data, max_results)
@@ -833,7 +842,7 @@ class JackettTab(Component):
                 req = urllib.request.Request(url)
                 req.add_header("User-Agent", "DFakeSeeder/1.0")
 
-                with urllib.request.urlopen(req, timeout=timeout) as response:
+                with _http_urlopen(req, timeout=timeout) as response:
                     torrent_data = response.read()
 
                 # Save to torrents directory
