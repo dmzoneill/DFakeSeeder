@@ -128,7 +128,12 @@ class DBusClient:
                 "Calling GetSettings via D-Bus proxy",
                 extra={"class_name": self.__class__.__name__},
             )
-            assert self.proxy is not None
+            if self.proxy is None:
+                logger.warning(
+                    "GetSettings called without a D-Bus proxy",
+                    extra={"class_name": self.__class__.__name__},
+                )
+                return None
             result = self.proxy.call_sync("GetSettings", None, Gio.DBusCallFlags.NONE, 5000, None)  # 5 second timeout
             logger.trace(
                 f"GetSettings result type: {type(result)}",
@@ -212,7 +217,8 @@ class DBusClient:
             if not self.connected:
                 return False
 
-            assert self.proxy is not None
+            if self.proxy is None:
+                return False
             result = self.proxy.call_sync("Ping", None, Gio.DBusCallFlags.NONE, 1000, None)  # 1 second timeout
             return result.unpack()[0] if result else False
 
