@@ -65,7 +65,7 @@ class DHTSeeder(BaseSeeder):  # pylint: disable=too-many-instance-attributes
                     import bencode
 
                     info_data = bencode.bencode(torrent_data[b"info"])
-                    return hashlib.sha1(info_data).digest()
+                    return hashlib.sha1(info_data, usedforsecurity=False).digest()
 
             logger.warning(
                 "Could not calculate info hash for DHT",

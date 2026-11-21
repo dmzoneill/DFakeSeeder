@@ -174,7 +174,7 @@ class MSEHandler:
             shared_bytes = shared_int.to_bytes(96, "big")
 
             # Hash the shared secret
-            self.shared_secret = hashlib.sha1(shared_bytes).digest()
+            self.shared_secret = hashlib.sha1(shared_bytes, usedforsecurity=False).digest()
 
             self.state = MSEState.DH_RECEIVED
 
@@ -208,12 +208,12 @@ class MSEHandler:
 
             if self.is_initiator:
                 # Initiator uses keyA for encryption, keyB for decryption
-                enc_key = hashlib.sha1(b"keyA" + self.shared_secret + self.info_hash).digest()
-                dec_key = hashlib.sha1(b"keyB" + self.shared_secret + self.info_hash).digest()
+                enc_key = hashlib.sha1(b"keyA" + self.shared_secret + self.info_hash, usedforsecurity=False).digest()
+                dec_key = hashlib.sha1(b"keyB" + self.shared_secret + self.info_hash, usedforsecurity=False).digest()
             else:
                 # Responder uses keyB for encryption, keyA for decryption
-                enc_key = hashlib.sha1(b"keyB" + self.shared_secret + self.info_hash).digest()
-                dec_key = hashlib.sha1(b"keyA" + self.shared_secret + self.info_hash).digest()
+                enc_key = hashlib.sha1(b"keyB" + self.shared_secret + self.info_hash, usedforsecurity=False).digest()
+                dec_key = hashlib.sha1(b"keyA" + self.shared_secret + self.info_hash, usedforsecurity=False).digest()
 
             # Create RC4 ciphers
             self.encrypt_cipher = ARC4.new(enc_key)
@@ -284,9 +284,9 @@ class MSEHandler:
         # HASH('req1' + S) for initiator
         # HASH('req2' + SKEY) for responder
         if self.is_initiator:
-            return hashlib.sha1(b"req1" + self.shared_secret).digest()
+            return hashlib.sha1(b"req1" + self.shared_secret, usedforsecurity=False).digest()
         else:
-            return hashlib.sha1(b"req2" + self.info_hash).digest()
+            return hashlib.sha1(b"req2" + self.info_hash, usedforsecurity=False).digest()
 
     def verify_sync_hash(self, received_hash: bytes) -> bool:
         """
@@ -303,9 +303,9 @@ class MSEHandler:
 
         # Verify opposite of what we send
         if self.is_initiator:
-            expected = hashlib.sha1(b"req2" + self.info_hash).digest()
+            expected = hashlib.sha1(b"req2" + self.info_hash, usedforsecurity=False).digest()
         else:
-            expected = hashlib.sha1(b"req1" + self.shared_secret).digest()
+            expected = hashlib.sha1(b"req1" + self.shared_secret, usedforsecurity=False).digest()
 
         return received_hash == expected
 

@@ -369,7 +369,7 @@ class FastExtension:
             import hashlib
 
             seed_data = info_hash + peer_ip.encode()
-            hash_value = hashlib.sha1(seed_data).digest()
+            hash_value = hashlib.sha1(seed_data, usedforsecurity=False).digest()
 
             # Use hash to select pieces
             for i in range(max_fast):

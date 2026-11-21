@@ -488,7 +488,7 @@ class PeerDiscovery:
             return None
 
         # Generate token for this IP
-        token = hashlib.sha1(f"{addr[0]}{time.time()}".encode()).digest()[:8]
+        token = hashlib.sha1(f"{addr[0]}{time.time()}".encode(), usedforsecurity=False).digest()[:8]
         self.token_storage[addr[0]] = (token, time.time())
 
         # Check if we have peers for this info hash

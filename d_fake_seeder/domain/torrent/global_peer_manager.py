@@ -582,4 +582,4 @@ class GlobalPeerManager:  # pylint: disable=too-many-instance-attributes
         import uuid
 
         unique_id = str(uuid.uuid4()).encode()
-        return hashlib.sha1(unique_id).digest()[:20]
+        return hashlib.sha1(unique_id, usedforsecurity=False).digest()[:20]
