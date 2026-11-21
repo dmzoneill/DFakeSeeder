@@ -96,7 +96,7 @@ class DHTNode:
 
     def _generate_node_id(self) -> bytes:
         """Generate a random 20-byte node ID"""
-        return hashlib.sha1(str(random.getrandbits(DHTConstants.NODE_ID_BITS)).encode()).digest()
+        return hashlib.sha1(str(random.getrandbits(DHTConstants.NODE_ID_BITS)).encode(), usedforsecurity=False).digest()
 
     async def start(self) -> Any:
         """Start the DHT node"""
@@ -428,7 +428,7 @@ class DHTNode:
             transaction_id = self._get_transaction_id()
 
             # Generate token (simplified)
-            token = hashlib.sha1(f"{node_addr[0]}{time.time()}".encode()).digest()[:8]
+            token = hashlib.sha1(f"{node_addr[0]}{time.time()}".encode(), usedforsecurity=False).digest()[:8]
 
             message = {
                 b"t": transaction_id,
@@ -490,7 +490,7 @@ class DHTNode:
     async def _send_get_peers_response(self, message: dict, transaction_id: bytes, addr: tuple[str, int]) -> Any:
         """Send get_peers response"""
         # Generate token for potential announce_peer
-        token = hashlib.sha1(f"{addr[0]}{time.time()}".encode()).digest()[:8]
+        token = hashlib.sha1(f"{addr[0]}{time.time()}".encode(), usedforsecurity=False).digest()[:8]
         self.token_storage[addr[0]] = (token, time.time())
 
         response = {

@@ -43,7 +43,7 @@ class File:
                         self.announce_list = announce_urls
 
                 torrent_info = self.torrent_header[b"info"]
-                m = hashlib.sha1()
+                m = hashlib.sha1(usedforsecurity=False)
                 m.update(bencoding.encode(torrent_info))
                 self.file_hash = m.digest()
                 break

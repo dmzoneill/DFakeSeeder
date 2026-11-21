@@ -117,7 +117,7 @@ class DHTManager:  # pylint: disable=too-many-instance-attributes
 
     def _generate_node_id(self) -> bytes:
         """Generate random 20-byte node ID"""
-        return hashlib.sha1(str(random.random()).encode()).digest()
+        return hashlib.sha1(str(random.random()).encode(), usedforsecurity=False).digest()
 
     def start(self) -> Any:
         """Start DHT manager background thread"""
